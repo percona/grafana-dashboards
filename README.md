@@ -3,11 +3,25 @@
 This is a set of Grafana dashboards to be used with Prometheus datasource for MySQL and system monitoring.
 The dashboards rely on `alias` label in your Prometheus config. 
 
+ * Cross Server Graphs
+ * Disk Performance
+ * Galera Graphs
+ * MySQL InnoDB Metrics
+ * MySQL MyISAM Metrics
+ * MySQL Overview
+ * MySQL Replication
+ * MySQL Table Statistics
+ * MySQL User Statistics
+ * System Overview
+
 ### Setup instructions
+
 #### Add datasource in Grafana
+
 ![image](assets/datasource.png)
 
 #### Edit Prometheus config
+
 The dashboards use `alias` label to work with individual hosts.
 Ensure you have `alias` defined for each of your targets.
 For example, if you want to monitor `192.168.56.107` the excerpt of the config will be look like this: 
@@ -30,6 +44,7 @@ Note, adding a new label to the existing Prometheus instance will introduce a me
 So it is recommended to start with `alias` from scratch.
 
 #### Edit Grafana config
+
 Enable JSON dashboards by uncommenting those lines in `grafana.ini`:
 
     [dashboards.json]
@@ -49,7 +64,7 @@ If you wish you may import the individual dashboards via UI and ignore this and 
  
 ### Update instructions
 
-Simply install the new dashboards and restart Grafana (the last 2 steps from setup instructions).
+Simply copy the new dashboards to `/var/lib/grafana/dashboards` and restart Grafana.
 
 ### Graph samples
  
