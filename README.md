@@ -13,6 +13,7 @@ The dashboards rely on `alias` label in your Prometheus config.
  * MySQL Table Statistics
  * MySQL User Statistics
  * System Overview
+ * TokuDB Graphs
 
 ### Setup instructions
 
