@@ -4,7 +4,7 @@
     }, 
     "editable": true, 
     "hideControls": false, 
-    "id": null, 
+    "id": 36, 
     "links": [], 
     "originalTitle": "MySQL Table Statistics", 
     "refresh": false, 
@@ -351,7 +351,7 @@
             "height": "250px", 
             "panels": [
                 {
-                    "content": "These graphs require additional options to be enabled for mysqld_exporter:\n\n`-collect.info_schema.tablestats=true -collect.auto_increment.columns=true`", 
+                    "content": "These graphs require additional options to be enabled for mysqld_exporter: `-collect.info_schema.tablestats=true`\n\nAlso `userstat` should be enabled on MySQL.", 
                     "editable": true, 
                     "error": false, 
                     "height": "50px", 
@@ -515,13 +515,27 @@
                     ]
                 }, 
                 {
+                    "content": "These graphs require additional options to be enabled for mysqld_exporter: `-collect.auto_increment.columns=true`", 
+                    "editable": true, 
+                    "error": false, 
+                    "height": "50px", 
+                    "id": 49, 
+                    "links": [], 
+                    "mode": "markdown", 
+                    "span": 12, 
+                    "style": {}, 
+                    "title": "", 
+                    "transparent": true, 
+                    "type": "text"
+                }, 
+                {
                     "aliasColors": {}, 
                     "bars": false, 
                     "datasource": null, 
                     "decimals": null, 
                     "editable": true, 
                     "error": false, 
-                    "fill": 2, 
+                    "fill": 0, 
                     "grid": {
                         "leftLogBase": 1, 
                         "leftMax": null, 
@@ -536,16 +550,16 @@
                     }, 
                     "id": 45, 
                     "legend": {
-                        "alignAsTable": false, 
+                        "alignAsTable": true, 
                         "avg": false, 
-                        "current": false, 
+                        "current": true, 
                         "hideEmpty": false, 
                         "max": false, 
                         "min": false, 
-                        "rightSide": false, 
+                        "rightSide": true, 
                         "show": true, 
                         "total": false, 
-                        "values": false
+                        "values": true
                     }, 
                     "lines": true, 
                     "linewidth": 2, 
@@ -556,7 +570,7 @@
                     "points": false, 
                     "renderer": "flot", 
                     "seriesOverrides": [], 
-                    "span": 6, 
+                    "span": 12, 
                     "stack": false, 
                     "steppedLine": false, 
                     "targets": [
@@ -564,14 +578,14 @@
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "topk(5, mysql_info_schema_auto_increment_column{alias=\"$host\"} / mysql_info_schema_auto_increment_column_max{alias=\"$host\"} * 100)", 
+                            "expr": "topk(10, mysql_info_schema_auto_increment_column{alias=\"$host\"} / mysql_info_schema_auto_increment_column_max{alias=\"$host\"} * 100)", 
                             "interval": "", 
                             "intervalFactor": 2, 
                             "legendFormat": "{{ schema }}.{{ table }}", 
                             "metric": "", 
                             "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22topk(5%2C%20mysql_info_schema_auto_increment_column%7Balias%3D%5C%22%24host%5C%22%7D%20%2F%20mysql_info_schema_auto_increment_column_max%7Balias%3D%5C%22%24host%5C%22%7D%20*%20100)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-10-6%208%3A18%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
                             "refId": "A", 
-                            "step": 120
+                            "step": 60
                         }
                     ], 
                     "timeFrom": null, 
@@ -586,7 +600,7 @@
                     "y-axis": true, 
                     "y_formats": [
                         "percent", 
-                        "percent"
+                        "short"
                     ]
                 }
             ], 
@@ -622,6 +636,11 @@
                         "selected": false, 
                         "text": "cdba2", 
                         "value": "cdba2"
+                    }, 
+                    {
+                        "selected": false, 
+                        "text": "edison", 
+                        "value": "edison"
                     }
                 ], 
                 "query": "label_values(alias)", 
@@ -669,5 +688,5 @@
     }, 
     "timezone": "browser", 
     "title": "MySQL Table Statistics", 
-    "version": 0
+    "version": 3
 }

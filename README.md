@@ -9,6 +9,7 @@ The dashboards rely on `alias` label in your Prometheus config.
  * MySQL InnoDB Metrics
  * MySQL MyISAM Metrics
  * MySQL Overview
+ * MySQL Query Response Time Histograms
  * MySQL Replication
  * MySQL Table Statistics
  * MySQL User Statistics
