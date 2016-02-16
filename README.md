@@ -1,7 +1,7 @@
-# Grafana dashboards with Prometheus for MySQL
+# Grafana dashboards for measuring MySQL performance with Prometheus and InfluxDB
 
-This is a set of Grafana dashboards to be used with Prometheus datasource for MySQL and system monitoring.
-The dashboards rely on `alias` label in your Prometheus config. 
+This is a set of Grafana dashboards to be used with Prometheus and InfluxDB datasources for MySQL and system monitoring.
+The dashboards rely on `alias` label in the Prometheus config.
 
  * Cross Server Graphs
  * Disk Performance
@@ -15,6 +15,10 @@ The dashboards rely on `alias` label in your Prometheus config.
  * MySQL User Statistics
  * System Overview
  * TokuDB Graphs
+ * Trending: 1h downsample [InfluxDB]
+ * Trending: 5m downsample [InfluxDB]
+
+For trending dashboards to work you need to create the continuous queries in InfluxDB, see [the instructions](InfluxDB.md).
 
 ### Setup instructions
 
@@ -26,24 +30,22 @@ The dashboards rely on `alias` label in your Prometheus config.
 
 The dashboards use `alias` label to work with individual hosts.
 Ensure you have `alias` defined for each of your targets.
-For example, if you want to monitor `192.168.56.107` the excerpt of the config will be look like this: 
+For example, if you want to monitor `192.168.1.7` the excerpt of the config will be look like this:
 
     scrape_configs:
-      - job_name: mysql
+      - job_name: monitor
         target_groups:
-          - targets: ['192.168.56.107:9104']
+          - targets: ['192.168.1.7:9100', '192.168.1.7:9104']
             labels:
-              alias: myhost1
-    
-      - job_name: linux
-        target_groups:
-          - targets: ['192.168.56.107:9100']
-            labels:
-              alias: myhost1
+              alias: db1
 
-`job_name` is not important.
 Note, adding a new label to the existing Prometheus instance will introduce a mess with the time-series.
-So it is recommended to start with `alias` from scratch.
+So it is recommended to start using `alias` from scratch.
+
+Also it is assumed that the exporters are run with this minimal set of options:
+
+ * node_exporter: `-collectors.enabled="diskstats,filesystem,loadavg,meminfo,netdev,stat,time,uname"`
+ * mysqld_exporter: `-collect.binlog_size=true -collect.info_schema.processlist=true`
 
 #### Edit Grafana config
 
