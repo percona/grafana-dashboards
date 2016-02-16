@@ -1,4 +1,4 @@
-# Grafana dashboards for measuring MySQL performance with Prometheus and InfluxDB
+## Grafana dashboards for measuring MySQL performance with Prometheus and InfluxDB
 
 This is a set of Grafana dashboards to be used with Prometheus and InfluxDB datasources for MySQL and system monitoring.
 The dashboards rely on `alias` label in the Prometheus config.
@@ -18,7 +18,7 @@ The dashboards rely on `alias` label in the Prometheus config.
  * Trending: 1h downsample [InfluxDB]
  * Trending: 5m downsample [InfluxDB]
 
-For trending dashboards to work you need to create the continuous queries in InfluxDB, see [the instructions](InfluxDB.md).
+For trending dashboards to work you need to create the continuous queries in InfluxDB, see [the instructions](influxdb.md).
 
 ### Setup instructions
 
