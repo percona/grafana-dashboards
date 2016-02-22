@@ -15,6 +15,58 @@
       "height": "100px",
       "panels": [
         {
+          "title": "Containers Observed",
+          "error": false,
+          "span": 2,
+          "editable": true,
+          "type": "singlestat",
+          "isNew": true,
+          "id": 19,
+          "links": [],
+          "datasource": null,
+          "maxDataPoints": 100,
+          "interval": null,
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "count(container_last_seen{name != \"\"})",
+              "intervalFactor": 2,
+              "step": 120
+            }
+          ],
+          "cacheTimeout": null,
+          "format": "none",
+          "prefix": "",
+          "postfix": "",
+          "nullText": null,
+          "valueMaps": [
+            {
+              "value": "null",
+              "op": "=",
+              "text": "N/A"
+            }
+          ],
+          "nullPointMode": "connected",
+          "valueName": "avg",
+          "prefixFontSize": "50%",
+          "valueFontSize": "80%",
+          "postfixFontSize": "50%",
+          "thresholds": "",
+          "colorBackground": false,
+          "colorValue": false,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "sparkline": {
+            "show": false,
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "fillColor": "rgba(31, 118, 189, 0.18)"
+          }
+        },
+        {
           "cacheTimeout": null,
           "colorBackground": false,
           "colorValue": false,
@@ -38,7 +90,7 @@
           "postfixFontSize": "50%",
           "prefix": "",
           "prefixFontSize": "50%",
-          "span": 3,
+          "span": 2,
           "sparkline": {
             "fillColor": "rgba(31, 118, 189, 0.18)",
             "full": false,
@@ -47,17 +99,17 @@
           },
           "targets": [
             {
-              "expr": "count(container_cpu_usage_seconds_total{name != \"\"})",
+              "expr": "count(container_last_seen{name != \"\"})",
               "hide": false,
               "intervalFactor": 2,
               "legendFormat": "",
-              "metric": "container_cpu_usage_seconds_total",
+              "metric": "container_last_seen",
               "refId": "A",
-              "step": 120
+              "step": 2
             }
           ],
           "thresholds": "",
-          "title": "Containers Running",
+          "title": "Containers Running (Last 30s)",
           "type": "singlestat",
           "valueFontSize": "80%",
           "valueMaps": [
@@ -67,7 +119,10 @@
               "value": "null"
             }
           ],
-          "valueName": "avg"
+          "valueName": "avg",
+          "timeFrom": "30s",
+          "timeShift": null,
+          "hideTimeOverride": true
         },
         {
           "cacheTimeout": null,
@@ -93,7 +148,7 @@
           "postfixFontSize": "50%",
           "prefix": "",
           "prefixFontSize": "50%",
-          "span": 3,
+          "span": 2,
           "sparkline": {
             "fillColor": "rgba(31, 118, 189, 0.18)",
             "full": false,
@@ -112,9 +167,9 @@
             }
           ],
           "thresholds": "0,60,80",
-          "timeFrom": "1m",
+          "timeFrom": "30s",
           "timeShift": null,
-          "title": "CPU Usage",
+          "title": "CPU Usage (Last 30s)",
           "type": "singlestat",
           "valueFontSize": "80%",
           "valueMaps": [
@@ -124,7 +179,8 @@
               "value": "null"
             }
           ],
-          "valueName": "avg"
+          "valueName": "avg",
+          "hideTimeOverride": true
         },
         {
           "cacheTimeout": null,
@@ -150,7 +206,7 @@
           "postfixFontSize": "50%",
           "prefix": "",
           "prefixFontSize": "50%",
-          "span": 3,
+          "span": 2,
           "sparkline": {
             "fillColor": "rgba(31, 118, 189, 0.18)",
             "full": false,
@@ -170,9 +226,9 @@
             }
           ],
           "thresholds": "0,75,90",
-          "timeFrom": "1m",
+          "timeFrom": "30s",
           "timeShift": null,
-          "title": "Memory Usage",
+          "title": "Memory Usage (Last 30s)",
           "type": "singlestat",
           "valueFontSize": "80%",
           "valueMaps": [
@@ -182,7 +238,8 @@
               "value": "null"
             }
           ],
-          "valueName": "avg"
+          "valueName": "avg",
+          "hideTimeOverride": true
         },
         {
           "cacheTimeout": null,
@@ -208,7 +265,7 @@
           "postfixFontSize": "50%",
           "prefix": "",
           "prefixFontSize": "50%",
-          "span": 3,
+          "span": 2,
           "sparkline": {
             "fillColor": "rgba(31, 118, 189, 0.18)",
             "full": false,
@@ -226,8 +283,8 @@
             }
           ],
           "thresholds": "0,80,90",
-          "timeFrom": "1m",
-          "title": "Filesystem Usage",
+          "timeFrom": "30s",
+          "title": "Filesystem Usage (Last 30s)",
           "type": "singlestat",
           "valueFontSize": "80%",
           "valueMaps": [
@@ -237,7 +294,62 @@
               "value": "null"
             }
           ],
-          "valueName": "avg"
+          "valueName": "avg",
+          "hideTimeOverride": true
+        },
+        {
+          "title": "Average Container Lifespan",
+          "error": false,
+          "span": 2,
+          "editable": true,
+          "type": "singlestat",
+          "isNew": true,
+          "id": 20,
+          "links": [],
+          "datasource": null,
+          "maxDataPoints": 100,
+          "interval": null,
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "avg(container_last_seen{name != \"\"}) - avg(container_start_time_seconds{name != \"\"})",
+              "intervalFactor": 2,
+              "metric": "container_s",
+              "step": 120,
+              "legendFormat": ""
+            }
+          ],
+          "cacheTimeout": null,
+          "format": "s",
+          "prefix": "",
+          "postfix": "",
+          "nullText": null,
+          "valueMaps": [
+            {
+              "value": "null",
+              "op": "=",
+              "text": "N/A"
+            }
+          ],
+          "nullPointMode": "connected",
+          "valueName": "avg",
+          "prefixFontSize": "50%",
+          "valueFontSize": "80%",
+          "postfixFontSize": "50%",
+          "thresholds": "",
+          "colorBackground": false,
+          "colorValue": false,
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "sparkline": {
+            "show": false,
+            "full": false,
+            "lineColor": "rgb(31, 120, 193)",
+            "fillColor": "rgba(31, 118, 189, 0.18)"
+          }
         }
       ],
       "showTitle": true,
@@ -355,6 +467,7 @@
           },
           "id": 9,
           "isNew": true,
+          "leftYAxisLabel": "Cores",
           "legend": {
             "avg": false,
             "current": false,
@@ -399,8 +512,7 @@
           "y_formats": [
             "short",
             "short"
-          ],
-          "leftYAxisLabel": "Cores"
+          ]
         }
       ],
       "showTitle": true,
@@ -594,6 +706,7 @@
           },
           "id": 12,
           "isNew": true,
+          "leftYAxisLabel": "",
           "legend": {
             "avg": false,
             "current": false,
@@ -646,8 +759,7 @@
           "y_formats": [
             "iops",
             "short"
-          ],
-          "leftYAxisLabel": ""
+          ]
         },
         {
           "aliasColors": {},
