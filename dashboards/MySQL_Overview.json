@@ -18,7 +18,7 @@
                     "aliasColors": {}, 
                     "bars": false, 
                     "datasource": null, 
-                    "decimals": null, 
+                    "decimals": 0, 
                     "editable": true, 
                     "error": false, 
                     "fill": 2, 
@@ -32,16 +32,17 @@
                         "threshold1": null, 
                         "threshold1Color": "rgba(216, 200, 27, 0.27)", 
                         "threshold2": null, 
-                        "threshold2Color": "rgba(234, 112, 112, 0.22)"
+                        "threshold2Color": "rgba(234, 112, 112, 0.22)", 
+                        "thresholdLine": false
                     }, 
-                    "id": 10, 
+                    "id": 2, 
+                    "leftYAxisLabel": "Connections", 
                     "legend": {
                         "alignAsTable": true, 
                         "avg": true, 
                         "current": false, 
                         "max": true, 
                         "min": true, 
-                        "rightSide": false, 
                         "show": true, 
                         "total": false, 
                         "values": true
@@ -54,14 +55,18 @@
                     "pointradius": 5, 
                     "points": false, 
                     "renderer": "flot", 
+                    "rightYAxisLabel": "Max Connections", 
                     "seriesOverrides": [
                         {
-                            "alias": "Threads Running", 
-                            "color": "#E24D42"
+                            "alias": "Max Used Connections", 
+                            "fill": 0, 
+                            "linewidth": 1, 
+                            "yaxis": 2
                         }, 
                         {
-                            "alias": "Threads Connected", 
-                            "color": "#EAB839"
+                            "alias": "Max Connections", 
+                            "fill": 0, 
+                            "yaxis": 2
                         }
                     ], 
                     "span": 8, 
@@ -72,13 +77,12 @@
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "mysql_global_status_threads_connected{alias=\"$host\"}", 
-                            "hide": false, 
+                            "expr": "rate(mysql_global_status_connections{alias=\"$host\"}[5m])", 
                             "interval": "", 
                             "intervalFactor": 2, 
-                            "legendFormat": "Threads Connected", 
+                            "legendFormat": "Connections", 
                             "metric": "", 
-                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22mysql_global_status_threads_connected%7Balias%3D%5C%22%24host%5C%22%7D%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-9-18%2013%3A9%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_connections%7Balias%3D%5C%22%24host%5C%22%7D%5B5m%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-10-6%207%3A44%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
                             "refId": "A", 
                             "step": 120
                         }, 
@@ -86,22 +90,35 @@
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "mysql_global_status_threads_running{alias=\"$host\"}", 
-                            "interval": "", 
+                            "expr": "mysql_global_status_max_used_connections{alias=\"$host\"}", 
                             "intervalFactor": 2, 
-                            "legendFormat": "Threads Running", 
+                            "legendFormat": "Max Used Connections", 
                             "metric": "", 
-                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22mysql_global_status_threads_running%7Balias%3D%5C%22%24host%5C%22%7D%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-9-18%2013%3A9%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22mysql_global_status_max_used_connections%7Balias%3D%5C%22%24host%5C%22%7D%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-10-6%207%3A44%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
                             "refId": "B", 
-                            "step": 120
+                            "step": 120, 
+                            "target": ""
+                        }, 
+                        {
+                            "calculatedInterval": "2m", 
+                            "datasourceErrors": {}, 
+                            "errors": {}, 
+                            "expr": "mysql_global_variables_max_connections{alias=\"$host\"}", 
+                            "intervalFactor": 2, 
+                            "legendFormat": "Max Connections", 
+                            "metric": "", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22mysql_global_variables_max_connections%7Balias%3D%5C%22%24host%5C%22%7D%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-10-6%207%3A44%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
+                            "refId": "C", 
+                            "step": 120, 
+                            "target": ""
                         }
                     ], 
                     "timeFrom": null, 
                     "timeShift": null, 
-                    "title": "MySQL Active Threads", 
+                    "title": "MySQL Connections", 
                     "tooltip": {
                         "shared": true, 
-                        "value_type": "individual"
+                        "value_type": "cumulative"
                     }, 
                     "type": "graph", 
                     "x-axis": true, 
@@ -223,7 +240,7 @@
                     "aliasColors": {}, 
                     "bars": false, 
                     "datasource": null, 
-                    "decimals": 0, 
+                    "decimals": null, 
                     "editable": true, 
                     "error": false, 
                     "fill": 2, 
@@ -237,16 +254,16 @@
                         "threshold1": null, 
                         "threshold1Color": "rgba(216, 200, 27, 0.27)", 
                         "threshold2": null, 
-                        "threshold2Color": "rgba(234, 112, 112, 0.22)", 
-                        "thresholdLine": false
+                        "threshold2Color": "rgba(234, 112, 112, 0.22)"
                     }, 
-                    "id": 2, 
+                    "id": 10, 
                     "legend": {
                         "alignAsTable": true, 
                         "avg": true, 
                         "current": false, 
                         "max": true, 
                         "min": true, 
+                        "rightSide": false, 
                         "show": true, 
                         "total": false, 
                         "values": true
@@ -261,12 +278,12 @@
                     "renderer": "flot", 
                     "seriesOverrides": [
                         {
-                            "alias": "Max Used Connections", 
-                            "fill": 0
+                            "alias": "Threads Running", 
+                            "color": "#E24D42"
                         }, 
                         {
-                            "alias": "Max Connections", 
-                            "fill": 0
+                            "alias": "Threads Connected", 
+                            "color": "#EAB839"
                         }
                     ], 
                     "span": 6, 
@@ -277,12 +294,13 @@
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "rate(mysql_global_status_connections{alias=\"$host\"}[5m])", 
+                            "expr": "mysql_global_status_threads_connected{alias=\"$host\"}", 
+                            "hide": false, 
                             "interval": "", 
                             "intervalFactor": 2, 
-                            "legendFormat": "Connections", 
+                            "legendFormat": "Threads Connected", 
                             "metric": "", 
-                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_connections%7Balias%3D%5C%22%24host%5C%22%7D%5B5m%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-10-6%207%3A44%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22mysql_global_status_threads_connected%7Balias%3D%5C%22%24host%5C%22%7D%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-9-18%2013%3A9%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
                             "refId": "A", 
                             "step": 120
                         }, 
@@ -290,35 +308,22 @@
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "mysql_global_status_max_used_connections{alias=\"$host\"}", 
+                            "expr": "mysql_global_status_threads_running{alias=\"$host\"}", 
+                            "interval": "", 
                             "intervalFactor": 2, 
-                            "legendFormat": "Max Used Connections", 
+                            "legendFormat": "Threads Running", 
                             "metric": "", 
-                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22mysql_global_status_max_used_connections%7Balias%3D%5C%22%24host%5C%22%7D%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-10-6%207%3A44%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22mysql_global_status_threads_running%7Balias%3D%5C%22%24host%5C%22%7D%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-9-18%2013%3A9%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
                             "refId": "B", 
-                            "step": 120, 
-                            "target": ""
-                        }, 
-                        {
-                            "calculatedInterval": "2m", 
-                            "datasourceErrors": {}, 
-                            "errors": {}, 
-                            "expr": "mysql_global_variables_max_connections{alias=\"$host\"}", 
-                            "intervalFactor": 2, 
-                            "legendFormat": "Max Connections", 
-                            "metric": "", 
-                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22mysql_global_variables_max_connections%7Balias%3D%5C%22%24host%5C%22%7D%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-10-6%207%3A44%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
-                            "refId": "C", 
-                            "step": 120, 
-                            "target": ""
+                            "step": 120
                         }
                     ], 
                     "timeFrom": null, 
                     "timeShift": null, 
-                    "title": "MySQL Connections", 
+                    "title": "MySQL Active Threads", 
                     "tooltip": {
                         "shared": true, 
-                        "value_type": "cumulative"
+                        "value_type": "individual"
                     }, 
                     "type": "graph", 
                     "x-axis": true, 
@@ -2024,28 +2029,12 @@
         "list": [
             {
                 "allFormat": "glob", 
-                "current": {
-                    "text": "cdba", 
-                    "value": "cdba"
-                }, 
                 "datasource": null, 
                 "includeAll": false, 
                 "label": "Host", 
                 "multi": false, 
                 "multiFormat": "regex values", 
                 "name": "host", 
-                "options": [
-                    {
-                        "selected": true, 
-                        "text": "cdba", 
-                        "value": "cdba"
-                    }, 
-                    {
-                        "selected": false, 
-                        "text": "cdba2", 
-                        "value": "cdba2"
-                    }
-                ], 
                 "query": "label_values(alias)", 
                 "refresh": true, 
                 "refresh_on_load": false, 
@@ -2091,5 +2080,5 @@
     }, 
     "timezone": "browser", 
     "title": "MySQL Overview", 
-    "version": 1
+    "version": 0
 }
