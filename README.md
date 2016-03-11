@@ -13,6 +13,7 @@ The dashboards rely on `alias` label in the Prometheus config.
  * MySQL Replication
  * MySQL Table Statistics
  * MySQL User Statistics
+ * Prometheus
  * System Overview
  * TokuDB Graphs
  * Trending: 1h downsample [InfluxDB]
@@ -33,14 +34,26 @@ Ensure you have `alias` defined for each of your targets.
 For example, if you want to monitor `192.168.1.7` the excerpt of the config will be look like this:
 
     scrape_configs:
-      - job_name: monitor
+      - job_name: prometheus
         target_groups:
-          - targets: ['192.168.1.7:9100', '192.168.1.7:9104']
+          - targets: ['localhost:9090']
+
+      - job_name: linux
+        target_groups:
+          - targets: ['192.168.1.7:9100']
+            labels:
+              alias: db1
+
+      - job_name: mysql
+        target_groups:
+          - targets: ['192.168.1.7:9104']
             labels:
               alias: db1
 
 Note, adding a new label to the existing Prometheus instance will introduce a mess with the time-series.
 So it is recommended to start using `alias` from scratch.
+
+How you name jobs is not important. However, "Prometheus" dashboard assumes the job name is `prometheus`.
 
 Also it is assumed that the exporters are run with this minimal set of options:
 
