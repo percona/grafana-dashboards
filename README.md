@@ -70,7 +70,7 @@ Enable JSON dashboards by uncommenting those lines in `grafana.ini`:
 
 If you wish you may import the individual dashboards via UI and ignore this and the next steps.
 
-### Apply Grafana patch
+#### Apply Grafana patch
 
 It is important to apply the following minor patch on your Grafana in order to use the interval template variable to get the good zoomable graphs. The fix is simply to allow variable in Step field on Grafana graph editor page. For more information, take a look at [PR#3757](https://github.com/grafana/grafana/pull/3757) and [PR#4257](https://github.com/grafana/grafana/pull/4257). We hope the last one will be released with the next Grafana version.
     
