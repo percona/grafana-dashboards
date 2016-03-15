@@ -4,7 +4,7 @@
     }, 
     "editable": true, 
     "hideControls": false, 
-    "id": 47, 
+    "id": null, 
     "links": [], 
     "originalTitle": "MySQL Query Response Time Histograms", 
     "refresh": false, 
@@ -82,15 +82,15 @@
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "rate(mysql_info_schema_query_response_time_count_sum{alias=\"$host\"}[5m]) / on (alias) rate(mysql_info_schema_query_response_time_count_count{alias=\"$host\"}[5m]) * 1000", 
+                            "expr": "rate(mysql_info_schema_query_response_time_count_sum{alias=\"$host\"}[$interval]) / on (alias) rate(mysql_info_schema_query_response_time_count_count{alias=\"$host\"}[$interval]) * 1000", 
                             "hide": false, 
-                            "interval": "", 
+                            "interval": "$interval", 
                             "intervalFactor": 1, 
                             "legendFormat": "Time", 
                             "metric": "", 
-                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_connections%5B5m%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-10-6%207%3A46%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_connections%5B%24interval%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-10-6%207%3A46%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
                             "refId": "B", 
-                            "step": 30
+                            "step": 300
                         }
                     ], 
                     "timeFrom": null, 
@@ -158,71 +158,71 @@
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "label_replace(rate(mysql_info_schema_query_response_time_count_bucket{alias=\"$host\", le=\"1e-06\"}[5m]), \"le\", \"0.000001\", \"le\", \"1e-06\")", 
+                            "expr": "label_replace(rate(mysql_info_schema_query_response_time_count_bucket{alias=\"$host\", le=\"1e-06\"}[$interval]), \"le\", \"0.000001\", \"le\", \"1e-06\")", 
                             "hide": false, 
-                            "interval": "", 
+                            "interval": "$interval", 
                             "intervalFactor": 1, 
                             "legendFormat": "0 - {{ le }} s", 
                             "metric": "", 
-                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_connections%5B5m%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-10-6%207%3A46%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_connections%5B%24interval%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-10-6%207%3A46%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
                             "refId": "B", 
-                            "step": 60
+                            "step": 300
                         }, 
                         {
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "label_replace(rate(mysql_info_schema_query_response_time_count_bucket{alias=\"$host\", le=\"1e-05\"}[5m]), \"le\", \"0.00001\", \"le\", \"1e-05\")", 
+                            "expr": "label_replace(rate(mysql_info_schema_query_response_time_count_bucket{alias=\"$host\", le=\"1e-05\"}[$interval]), \"le\", \"0.00001\", \"le\", \"1e-05\")", 
                             "hide": false, 
-                            "interval": "", 
+                            "interval": "$interval", 
                             "intervalFactor": 1, 
                             "legendFormat": "0 - {{ le }} s", 
                             "metric": "", 
-                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_connections%5B5m%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-10-6%207%3A46%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_connections%5B%24interval%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-10-6%207%3A46%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
                             "refId": "C", 
-                            "step": 60
+                            "step": 300
                         }, 
                         {
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "rate(mysql_info_schema_query_response_time_count_bucket{alias=\"$host\", le!~\"1e.0.|\\\\+Inf\"}[5m])", 
+                            "expr": "rate(mysql_info_schema_query_response_time_count_bucket{alias=\"$host\", le!~\"1e.0.|\\\\+Inf\"}[$interval])", 
                             "hide": false, 
-                            "interval": "", 
+                            "interval": "$interval", 
                             "intervalFactor": 1, 
                             "legendFormat": "0 - {{ le }} s", 
                             "metric": "", 
-                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_connections%5B5m%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-10-6%207%3A46%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_connections%5B%24interval%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-10-6%207%3A46%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
                             "refId": "A", 
-                            "step": 60
+                            "step": 300
                         }, 
                         {
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "label_replace(rate(mysql_info_schema_query_response_time_count_bucket{alias=\"$host\", le=\"1e+06\"}[5m]), \"le\", \"1000000\", \"le\", \"1e\\\\+06\")", 
+                            "expr": "label_replace(rate(mysql_info_schema_query_response_time_count_bucket{alias=\"$host\", le=\"1e+06\"}[$interval]), \"le\", \"1000000\", \"le\", \"1e\\\\+06\")", 
                             "hide": false, 
-                            "interval": "", 
+                            "interval": "$interval", 
                             "intervalFactor": 1, 
                             "legendFormat": "0 - {{ le }} s", 
                             "metric": "", 
-                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_connections%5B5m%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-10-6%207%3A46%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_connections%5B%24interval%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-10-6%207%3A46%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
                             "refId": "D", 
-                            "step": 60
+                            "step": 300
                         }, 
                         {
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "rate(mysql_info_schema_query_response_time_count_bucket{alias=\"$host\", le=\"+Inf\"}[5m])", 
+                            "expr": "rate(mysql_info_schema_query_response_time_count_bucket{alias=\"$host\", le=\"+Inf\"}[$interval])", 
                             "hide": false, 
-                            "interval": "", 
+                            "interval": "$interval", 
                             "intervalFactor": 1, 
                             "legendFormat": "0 - {{ le }} s", 
                             "metric": "", 
-                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_connections%5B5m%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-10-6%207%3A46%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_connections%5B%24interval%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-10-6%207%3A46%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
                             "refId": "E", 
-                            "step": 60
+                            "step": 300
                         }
                     ], 
                     "timeFrom": null, 
@@ -289,71 +289,71 @@
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "label_replace(rate(mysql_info_schema_query_response_time_total{alias=\"$host\", le=\"1e-06\"}[5m]), \"le\", \"0.000001\", \"le\", \"1e-06\") * 1000", 
+                            "expr": "label_replace(rate(mysql_info_schema_query_response_time_total{alias=\"$host\", le=\"1e-06\"}[$interval]), \"le\", \"0.000001\", \"le\", \"1e-06\") * 1000", 
                             "hide": false, 
-                            "interval": "", 
+                            "interval": "$interval", 
                             "intervalFactor": 1, 
                             "legendFormat": "0 - {{ le }} s", 
                             "metric": "", 
-                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_connections%5B5m%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-10-6%207%3A46%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_connections%5B%24interval%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-10-6%207%3A46%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
                             "refId": "B", 
-                            "step": 60
+                            "step": 300
                         }, 
                         {
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "label_replace(rate(mysql_info_schema_query_response_time_total{alias=\"$host\", le=\"1e-05\"}[5m]), \"le\", \"0.00001\", \"le\", \"1e-05\") * 1000", 
+                            "expr": "label_replace(rate(mysql_info_schema_query_response_time_total{alias=\"$host\", le=\"1e-05\"}[$interval]), \"le\", \"0.00001\", \"le\", \"1e-05\") * 1000", 
                             "hide": false, 
-                            "interval": "", 
+                            "interval": "$interval", 
                             "intervalFactor": 1, 
                             "legendFormat": "0 - {{ le }} s", 
                             "metric": "", 
-                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_connections%5B5m%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-10-6%207%3A46%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_connections%5B%24interval%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-10-6%207%3A46%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
                             "refId": "C", 
-                            "step": 60
+                            "step": 300
                         }, 
                         {
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "rate(mysql_info_schema_query_response_time_total{alias=\"$host\", le!~\"1e.0.|\\\\+Inf\"}[5m]) * 1000", 
+                            "expr": "rate(mysql_info_schema_query_response_time_total{alias=\"$host\", le!~\"1e.0.|\\\\+Inf\"}[$interval]) * 1000", 
                             "hide": false, 
-                            "interval": "", 
+                            "interval": "$interval", 
                             "intervalFactor": 1, 
                             "legendFormat": "0 - {{ le }} s", 
                             "metric": "", 
-                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_connections%5B5m%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-10-6%207%3A46%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_connections%5B%24interval%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-10-6%207%3A46%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
                             "refId": "A", 
-                            "step": 60
+                            "step": 300
                         }, 
                         {
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "label_replace(rate(mysql_info_schema_query_response_time_total{alias=\"$host\", le=\"1e+06\"}[5m]), \"le\", \"1000000\", \"le\", \"1e\\\\+06\") * 1000", 
+                            "expr": "label_replace(rate(mysql_info_schema_query_response_time_total{alias=\"$host\", le=\"1e+06\"}[$interval]), \"le\", \"1000000\", \"le\", \"1e\\\\+06\") * 1000", 
                             "hide": false, 
-                            "interval": "", 
+                            "interval": "$interval", 
                             "intervalFactor": 1, 
                             "legendFormat": "0 - {{ le }} s", 
                             "metric": "", 
-                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_connections%5B5m%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-10-6%207%3A46%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_connections%5B%24interval%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-10-6%207%3A46%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
                             "refId": "D", 
-                            "step": 60
+                            "step": 300
                         }, 
                         {
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "rate(mysql_info_schema_query_response_time_total{alias=\"$host\", le=\"+Inf\"}[5m]) * 1000", 
+                            "expr": "rate(mysql_info_schema_query_response_time_total{alias=\"$host\", le=\"+Inf\"}[$interval]) * 1000", 
                             "hide": false, 
-                            "interval": "", 
+                            "interval": "$interval", 
                             "intervalFactor": 1, 
                             "legendFormat": "0 - {{ le }} s", 
                             "metric": "", 
-                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_connections%5B5m%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-10-6%207%3A46%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_connections%5B%24interval%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-10-6%207%3A46%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
                             "refId": "E", 
-                            "step": 60
+                            "step": 300
                         }
                     ], 
                     "timeFrom": null, 
@@ -393,6 +393,86 @@
                 "query": "label_values(alias)", 
                 "refresh": true, 
                 "type": "query"
+            }, 
+            {
+                "allFormat": "glob", 
+                "auto": true, 
+                "auto_count": 200, 
+                "current": {
+                    "text": "auto", 
+                    "value": "$__auto_interval"
+                }, 
+                "datasource": null, 
+                "includeAll": false, 
+                "label": "Interval", 
+                "multi": false, 
+                "multiFormat": "glob", 
+                "name": "interval", 
+                "options": [
+                    {
+                        "selected": true, 
+                        "text": "auto", 
+                        "value": "$__auto_interval"
+                    }, 
+                    {
+                        "selected": false, 
+                        "text": "5s", 
+                        "value": "5s"
+                    }, 
+                    {
+                        "selected": false, 
+                        "text": "10s", 
+                        "value": "10s"
+                    }, 
+                    {
+                        "selected": false, 
+                        "text": "30s", 
+                        "value": "30s"
+                    }, 
+                    {
+                        "selected": false, 
+                        "text": "1m", 
+                        "value": "1m"
+                    }, 
+                    {
+                        "selected": false, 
+                        "text": "5m", 
+                        "value": "5m"
+                    }, 
+                    {
+                        "selected": false, 
+                        "text": "15m", 
+                        "value": "15m"
+                    }, 
+                    {
+                        "selected": false, 
+                        "text": "30m", 
+                        "value": "30m"
+                    }, 
+                    {
+                        "selected": false, 
+                        "text": "1h", 
+                        "value": "1h"
+                    }, 
+                    {
+                        "selected": false, 
+                        "text": "6h", 
+                        "value": "6h"
+                    }, 
+                    {
+                        "selected": false, 
+                        "text": "12h", 
+                        "value": "12h"
+                    }, 
+                    {
+                        "selected": false, 
+                        "text": "1d", 
+                        "value": "1d"
+                    }
+                ], 
+                "query": "5s,10s,30s,1m,5m,15m,30m,1h,6h,12h,1d", 
+                "refresh": false, 
+                "type": "interval"
             }
         ]
     }, 

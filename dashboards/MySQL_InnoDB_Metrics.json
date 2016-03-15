@@ -4,7 +4,7 @@
     }, 
     "editable": true, 
     "hideControls": false, 
-    "id": 32, 
+    "id": null, 
     "links": [], 
     "originalTitle": "MySQL InnoDB Metrics", 
     "refresh": false, 
@@ -66,13 +66,13 @@
                             "datasourceErrors": {}, 
                             "errors": {}, 
                             "expr": "mysql_global_status_innodb_checkpoint_age{alias=\"$host\"}", 
-                            "interval": "", 
-                            "intervalFactor": 2, 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
                             "legendFormat": "Uncheckpointed Bytes", 
                             "metric": "", 
-                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_innodb_checkpoint_age%7Balias%3D%5C%22%24host%5C%22%7D%5B5m%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-8-24%2010%3A30%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_innodb_checkpoint_age%7Balias%3D%5C%22%24host%5C%22%7D%5B%24interval%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-8-24%2010%3A30%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
                             "refId": "A", 
-                            "step": 120
+                            "step": 300
                         }
                     ], 
                     "timeFrom": null, 
@@ -106,7 +106,7 @@
                     "format": "bytes", 
                     "height": "130px", 
                     "id": 4, 
-                    "interval": null, 
+                    "interval": "$interval", 
                     "links": [], 
                     "maxDataPoints": 100, 
                     "nullPointMode": "connected", 
@@ -128,12 +128,13 @@
                             "datasourceErrors": {}, 
                             "errors": {}, 
                             "expr": "mysql_global_variables_innodb_buffer_pool_size{alias=\"$host\"}", 
-                            "intervalFactor": 2, 
+                            "interval": "5m", 
+                            "intervalFactor": 1, 
                             "legendFormat": "", 
                             "metric": "", 
                             "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22mysql_global_variables_innodb_buffer_pool_size%7Balias%3D%5C%22%24host%5C%22%7D%22%2C%22range_input%22%3A%2243201s%22%2C%22end_input%22%3A%222015-9-3%206%3A28%22%2C%22step_input%22%3A%22%22%2C%22tab%22%3A0%7D%5D", 
                             "refId": "A", 
-                            "step": 600
+                            "step": 300
                         }
                     ], 
                     "thresholds": "0,90,95", 
@@ -160,7 +161,7 @@
                     "format": "percent", 
                     "height": "128px", 
                     "id": 5, 
-                    "interval": null, 
+                    "interval": "$interval", 
                     "links": [], 
                     "maxDataPoints": 100, 
                     "nullPointMode": "connected", 
@@ -183,12 +184,13 @@
                             "datasourceErrors": {}, 
                             "errors": {}, 
                             "expr": "(mysql_global_variables_innodb_buffer_pool_size{alias=\"$host\"} * 100) / on (alias) node_memory_MemTotal{alias=\"$host\"}", 
-                            "intervalFactor": 2, 
+                            "interval": "5m", 
+                            "intervalFactor": 1, 
                             "legendFormat": "", 
                             "metric": "", 
                             "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22(mysql_global_variables_innodb_buffer_pool_size%7Balias%3D%5C%22%24host%5C%22%7D%20*%20100)%20%2F%20on%20(alias)%20node_memory_MemTotal%7Balias%3D%5C%22%24host%5C%22%7D%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-9-18%2013%3A15%22%2C%22step_input%22%3A%22%22%2C%22tab%22%3A0%7D%5D", 
                             "refId": "A", 
-                            "step": 600
+                            "step": 300
                         }
                     ], 
                     "thresholds": "0,35,75", 
@@ -248,27 +250,27 @@
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "rate(mysql_global_status_innodb_max_trx_id{alias=\"$host\"}[5m])", 
-                            "interval": "", 
-                            "intervalFactor": 2, 
+                            "expr": "rate(mysql_global_status_innodb_max_trx_id{alias=\"$host\"}[$interval])", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
                             "legendFormat": "InnoDB Transactions", 
                             "metric": "", 
-                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_innodb_max_trx_id%7Balias%3D%5C%22%24host%5C%22%7D%5B5m%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-9-18%2013%3A14%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_innodb_max_trx_id%7Balias%3D%5C%22%24host%5C%22%7D%5B%24interval%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-9-18%2013%3A14%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
                             "refId": "A", 
-                            "step": 120
+                            "step": 300
                         }, 
                         {
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
                             "expr": "mysql_global_status_innodb_history_list_length{alias=\"$host\"}", 
-                            "interval": "", 
-                            "intervalFactor": 2, 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
                             "legendFormat": "History Length", 
                             "metric": "", 
                             "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22mysql_global_status_innodb_history_list_length%7Balias%3D%5C%22%24host%5C%22%7D%22%2C%22range_input%22%3A%2243201s%22%2C%22end_input%22%3A%222015-9-18%2013%3A14%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
                             "refId": "B", 
-                            "step": 120
+                            "step": 300
                         }
                     ], 
                     "timeFrom": null, 
@@ -356,52 +358,52 @@
                             "datasourceErrors": {}, 
                             "errors": {}, 
                             "expr": "mysql_global_status_innodb_buffer_pool_pages_total{alias=\"$host\"}", 
-                            "interval": "", 
-                            "intervalFactor": 2, 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
                             "legendFormat": "Pool Size", 
                             "metric": "", 
                             "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22mysql_global_status_innodb_buffer_pool_pages_free%7Balias%3D%5C%22%24host%5C%22%7D%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-9-2%207%3A21%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Atrue%2C%22tab%22%3A0%7D%5D", 
                             "refId": "D", 
-                            "step": 120
+                            "step": 300
                         }, 
                         {
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
                             "expr": "mysql_global_status_innodb_buffer_pool_pages_data{alias=\"$host\"}", 
-                            "interval": "", 
-                            "intervalFactor": 2, 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
                             "legendFormat": "Database Pages", 
                             "metric": "", 
                             "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22mysql_global_status_innodb_buffer_pool_pages_data%7Balias%3D%5C%22%24host%5C%22%7D%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-9-2%207%3A21%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Atrue%2C%22tab%22%3A0%7D%5D", 
                             "refId": "B", 
-                            "step": 120
+                            "step": 300
                         }, 
                         {
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
                             "expr": "mysql_global_status_innodb_buffer_pool_pages_free{alias=\"$host\"}", 
-                            "interval": "", 
-                            "intervalFactor": 2, 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
                             "legendFormat": "Free Pages", 
                             "metric": "", 
                             "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22mysql_global_status_innodb_buffer_pool_pages_free%7Balias%3D%5C%22%24host%5C%22%7D%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-9-2%207%3A21%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Atrue%2C%22tab%22%3A0%7D%5D", 
                             "refId": "C", 
-                            "step": 120
+                            "step": 300
                         }, 
                         {
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
                             "expr": "mysql_global_status_innodb_buffer_pool_pages_dirty{alias=\"$host\"}", 
-                            "interval": "", 
-                            "intervalFactor": 2, 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
                             "legendFormat": "Modified Pages", 
                             "metric": "", 
                             "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22mysql_global_status_innodb_buffer_pool_pages_dirty%7Balias%3D%5C%22%24host%5C%22%7D%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-9-2%207%3A21%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Atrue%2C%22tab%22%3A0%7D%5D", 
                             "refId": "A", 
-                            "step": 120
+                            "step": 300
                         }
                     ], 
                     "timeFrom": null, 
@@ -468,40 +470,40 @@
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "rate(mysql_global_status_innodb_pages_created{alias=\"$host\"}[5m])", 
-                            "interval": "", 
-                            "intervalFactor": 2, 
+                            "expr": "rate(mysql_global_status_innodb_pages_created{alias=\"$host\"}[$interval])", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
                             "legendFormat": "Pages Created", 
                             "metric": "", 
-                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_innodb_pages_created%7Balias%3D%5C%22%24host%5C%22%7D%5B5m%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-8-20%2016%3A2%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_innodb_pages_created%7Balias%3D%5C%22%24host%5C%22%7D%5B%24interval%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-8-20%2016%3A2%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
                             "refId": "A", 
-                            "step": 120
+                            "step": 300
                         }, 
                         {
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "rate(mysql_global_status_innodb_pages_read{alias=\"$host\"}[5m])", 
-                            "interval": "", 
-                            "intervalFactor": 2, 
+                            "expr": "rate(mysql_global_status_innodb_pages_read{alias=\"$host\"}[$interval])", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
                             "legendFormat": "Pages Read", 
                             "metric": "", 
-                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_innodb_pages_read%7Balias%3D%5C%22%24host%5C%22%7D%5B5m%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-8-20%2016%3A2%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_innodb_pages_read%7Balias%3D%5C%22%24host%5C%22%7D%5B%24interval%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-8-20%2016%3A2%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
                             "refId": "B", 
-                            "step": 120
+                            "step": 300
                         }, 
                         {
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "rate(mysql_global_status_innodb_pages_written{alias=\"$host\"}[5m])", 
-                            "interval": "", 
-                            "intervalFactor": 2, 
+                            "expr": "rate(mysql_global_status_innodb_pages_written{alias=\"$host\"}[$interval])", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
                             "legendFormat": "Pages Written", 
                             "metric": "", 
-                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_innodb_pages_written%7Balias%3D%5C%22%24host%5C%22%7D%5B5m%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-8-20%2016%3A2%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_innodb_pages_written%7Balias%3D%5C%22%24host%5C%22%7D%5B%24interval%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-8-20%2016%3A2%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
                             "refId": "C", 
-                            "step": 120
+                            "step": 300
                         }
                     ], 
                     "timeFrom": null, 
@@ -568,27 +570,27 @@
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "rate(mysql_global_status_innodb_buffer_pool_read_requests{alias=\"$host\"}[5m])", 
-                            "interval": "", 
-                            "intervalFactor": 2, 
+                            "expr": "rate(mysql_global_status_innodb_buffer_pool_read_requests{alias=\"$host\"}[$interval])", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
                             "legendFormat": "Read Requests", 
                             "metric": "", 
-                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_innodb_row_ops_total%7Balias%3D%5C%22%24host%5C%22%7D%5B5m%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-8-27%2010%3A30%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_innodb_row_ops_total%7Balias%3D%5C%22%24host%5C%22%7D%5B%24interval%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-8-27%2010%3A30%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
                             "refId": "A", 
-                            "step": 120
+                            "step": 300
                         }, 
                         {
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "rate(mysql_global_status_innodb_buffer_pool_write_requests{alias=\"$host\"}[5m])", 
-                            "interval": "", 
-                            "intervalFactor": 2, 
+                            "expr": "rate(mysql_global_status_innodb_buffer_pool_write_requests{alias=\"$host\"}[$interval])", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
                             "legendFormat": "Write Requests", 
                             "metric": "", 
-                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_innodb_row_ops_total%7Balias%3D%5C%22%24host%5C%22%7D%5B5m%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-8-27%2010%3A30%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_innodb_row_ops_total%7Balias%3D%5C%22%24host%5C%22%7D%5B%24interval%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-8-27%2010%3A30%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
                             "refId": "B", 
-                            "step": 120
+                            "step": 300
                         }
                     ], 
                     "timeFrom": null, 
@@ -655,53 +657,53 @@
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "rate(mysql_global_status_innodb_data_reads{alias=\"$host\"}[5m])", 
-                            "interval": "", 
-                            "intervalFactor": 2, 
+                            "expr": "rate(mysql_global_status_innodb_data_reads{alias=\"$host\"}[$interval])", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
                             "legendFormat": "Data Reads", 
                             "metric": "", 
-                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_innodb_max_trx_id%7Balias%3D%5C%22%24host%5C%22%7D%5B5m%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-9-18%2013%3A14%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_innodb_max_trx_id%7Balias%3D%5C%22%24host%5C%22%7D%5B%24interval%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-9-18%2013%3A14%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
                             "refId": "C", 
-                            "step": 120
+                            "step": 300
                         }, 
                         {
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "rate(mysql_global_status_innodb_data_writes{alias=\"$host\"}[5m])", 
-                            "interval": "", 
-                            "intervalFactor": 2, 
+                            "expr": "rate(mysql_global_status_innodb_data_writes{alias=\"$host\"}[$interval])", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
                             "legendFormat": "Data Writes", 
                             "metric": "", 
-                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_innodb_max_trx_id%7Balias%3D%5C%22%24host%5C%22%7D%5B5m%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-9-18%2013%3A14%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_innodb_max_trx_id%7Balias%3D%5C%22%24host%5C%22%7D%5B%24interval%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-9-18%2013%3A14%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
                             "refId": "D", 
-                            "step": 120
+                            "step": 300
                         }, 
                         {
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "rate(mysql_global_status_innodb_data_fsyncs{alias=\"$host\"}[5m])", 
-                            "interval": "", 
-                            "intervalFactor": 2, 
+                            "expr": "rate(mysql_global_status_innodb_data_fsyncs{alias=\"$host\"}[$interval])", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
                             "legendFormat": "Data Fsyncs", 
                             "metric": "", 
-                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_innodb_max_trx_id%7Balias%3D%5C%22%24host%5C%22%7D%5B5m%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-9-18%2013%3A14%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_innodb_max_trx_id%7Balias%3D%5C%22%24host%5C%22%7D%5B%24interval%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-9-18%2013%3A14%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
                             "refId": "A", 
-                            "step": 120
+                            "step": 300
                         }, 
                         {
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "rate(mysql_global_status_innodb_log_writes{alias=\"$host\"}[5m])", 
-                            "interval": "", 
-                            "intervalFactor": 2, 
+                            "expr": "rate(mysql_global_status_innodb_log_writes{alias=\"$host\"}[$interval])", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
                             "legendFormat": "Log Writes", 
                             "metric": "", 
                             "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22mysql_global_status_innodb_history_list_length%7Balias%3D%5C%22%24host%5C%22%7D%22%2C%22range_input%22%3A%2243201s%22%2C%22end_input%22%3A%222015-9-18%2013%3A14%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
                             "refId": "B", 
-                            "step": 120
+                            "step": 300
                         }
                     ], 
                     "timeFrom": null, 
@@ -785,7 +787,7 @@
                             "intervalFactor": 1, 
                             "legendFormat": "Data Written", 
                             "metric": "", 
-                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_innodb_row_ops_total%7Balias%3D%5C%22%24host%5C%22%7D%5B5m%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-8-27%2010%3A30%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_innodb_row_ops_total%7Balias%3D%5C%22%24host%5C%22%7D%5B%24interval%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-8-27%2010%3A30%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
                             "refId": "A", 
                             "step": 3600
                         }, 
@@ -794,13 +796,13 @@
                             "datasourceErrors": {}, 
                             "errors": {}, 
                             "expr": "mysql_global_variables_innodb_log_files_in_group{alias=\"$host\"} * mysql_global_variables_innodb_log_file_size{alias=\"$host\"}", 
-                            "interval": "", 
-                            "intervalFactor": 2, 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
                             "legendFormat": "Total Size of InnoDB Log Files", 
                             "metric": "", 
-                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_innodb_row_ops_total%7Balias%3D%5C%22%24host%5C%22%7D%5B5m%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-8-27%2010%3A30%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_innodb_row_ops_total%7Balias%3D%5C%22%24host%5C%22%7D%5B%24interval%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-8-27%2010%3A30%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
                             "refId": "B", 
-                            "step": 120
+                            "step": 300
                         }
                     ], 
                     "timeFrom": null, 
@@ -886,39 +888,39 @@
                             "datasourceErrors": {}, 
                             "errors": {}, 
                             "expr": "mysql_global_status_innodb_ibuf_segment_size{alias=\"$host\"}", 
-                            "interval": "", 
-                            "intervalFactor": 2, 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
                             "legendFormat": "Segment Size", 
                             "metric": "", 
-                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_innodb_checkpoint_age%7Balias%3D%5C%22%24host%5C%22%7D%5B5m%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-8-24%2010%3A30%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_innodb_checkpoint_age%7Balias%3D%5C%22%24host%5C%22%7D%5B%24interval%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-8-24%2010%3A30%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
                             "refId": "A", 
-                            "step": 120
+                            "step": 300
                         }, 
                         {
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
                             "expr": "mysql_global_status_innodb_ibuf_free_list{alias=\"$host\"}", 
-                            "interval": "", 
-                            "intervalFactor": 2, 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
                             "legendFormat": "Free Pages", 
                             "metric": "", 
-                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_innodb_checkpoint_age%7Balias%3D%5C%22%24host%5C%22%7D%5B5m%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-8-24%2010%3A30%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_innodb_checkpoint_age%7Balias%3D%5C%22%24host%5C%22%7D%5B%24interval%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-8-24%2010%3A30%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
                             "refId": "B", 
-                            "step": 120
+                            "step": 300
                         }, 
                         {
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
                             "expr": "mysql_global_status_innodb_ibuf_size{alias=\"$host\"}", 
-                            "interval": "", 
-                            "intervalFactor": 2, 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
                             "legendFormat": "Unmerged Pages", 
                             "metric": "", 
-                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_innodb_checkpoint_age%7Balias%3D%5C%22%24host%5C%22%7D%5B5m%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-8-24%2010%3A30%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_innodb_checkpoint_age%7Balias%3D%5C%22%24host%5C%22%7D%5B%24interval%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-8-24%2010%3A30%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
                             "refId": "C", 
-                            "step": 120
+                            "step": 300
                         }
                     ], 
                     "timeFrom": null, 
@@ -985,53 +987,53 @@
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "rate(mysql_global_status_innodb_ibuf_merges{alias=\"$host\"}[5m])", 
-                            "interval": "", 
-                            "intervalFactor": 2, 
+                            "expr": "rate(mysql_global_status_innodb_ibuf_merges{alias=\"$host\"}[$interval])", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
                             "legendFormat": "Merges", 
                             "metric": "", 
-                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_innodb_pages_created%7Balias%3D%5C%22%24host%5C%22%7D%5B5m%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-8-20%2016%3A2%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_innodb_pages_created%7Balias%3D%5C%22%24host%5C%22%7D%5B%24interval%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-8-20%2016%3A2%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
                             "refId": "A", 
-                            "step": 120
+                            "step": 300
                         }, 
                         {
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "rate(mysql_global_status_innodb_ibuf_merged_inserts{alias=\"$host\"}[5m])", 
-                            "interval": "", 
-                            "intervalFactor": 2, 
+                            "expr": "rate(mysql_global_status_innodb_ibuf_merged_inserts{alias=\"$host\"}[$interval])", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
                             "legendFormat": "Merged Inserts", 
                             "metric": "", 
-                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_innodb_pages_read%7Balias%3D%5C%22%24host%5C%22%7D%5B5m%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-8-20%2016%3A2%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_innodb_pages_read%7Balias%3D%5C%22%24host%5C%22%7D%5B%24interval%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-8-20%2016%3A2%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
                             "refId": "B", 
-                            "step": 120
+                            "step": 300
                         }, 
                         {
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "rate(mysql_global_status_innodb_ibuf_merged_deletes{alias=\"$host\"}[5m])", 
-                            "interval": "", 
-                            "intervalFactor": 2, 
+                            "expr": "rate(mysql_global_status_innodb_ibuf_merged_deletes{alias=\"$host\"}[$interval])", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
                             "legendFormat": "Merged Deletes", 
                             "metric": "", 
-                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_innodb_pages_read%7Balias%3D%5C%22%24host%5C%22%7D%5B5m%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-8-20%2016%3A2%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_innodb_pages_read%7Balias%3D%5C%22%24host%5C%22%7D%5B%24interval%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-8-20%2016%3A2%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
                             "refId": "C", 
-                            "step": 120
+                            "step": 300
                         }, 
                         {
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "rate(mysql_global_status_innodb_ibuf_merged_delete_marks{alias=\"$host\"}[5m])", 
-                            "interval": "", 
-                            "intervalFactor": 2, 
+                            "expr": "rate(mysql_global_status_innodb_ibuf_merged_delete_marks{alias=\"$host\"}[$interval])", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
                             "legendFormat": "Merged Delete Marks", 
                             "metric": "", 
-                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_innodb_pages_read%7Balias%3D%5C%22%24host%5C%22%7D%5B5m%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-8-20%2016%3A2%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_innodb_pages_read%7Balias%3D%5C%22%24host%5C%22%7D%5B%24interval%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-8-20%2016%3A2%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
                             "refId": "D", 
-                            "step": 120
+                            "step": 300
                         }
                     ], 
                     "timeFrom": null, 
@@ -1098,14 +1100,14 @@
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "rate(mysql_global_status_innodb_row_ops_total{alias=\"$host\"}[5m])", 
-                            "interval": "", 
-                            "intervalFactor": 2, 
+                            "expr": "rate(mysql_global_status_innodb_row_ops_total{alias=\"$host\"}[$interval])", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
                             "legendFormat": "Rows {{ operation }}", 
                             "metric": "", 
-                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_innodb_row_ops_total%7Balias%3D%5C%22%24host%5C%22%7D%5B5m%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-8-27%2010%3A30%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_innodb_row_ops_total%7Balias%3D%5C%22%24host%5C%22%7D%5B%24interval%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-8-27%2010%3A30%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
                             "refId": "A", 
-                            "step": 120
+                            "step": 300
                         }
                     ], 
                     "timeFrom": null, 
@@ -1147,6 +1149,87 @@
                 "refresh_on_load": false, 
                 "regex": "", 
                 "type": "query"
+            }, 
+            {
+                "allFormat": "glob", 
+                "auto": true, 
+                "auto_count": 200, 
+                "current": {
+                    "tags": [], 
+                    "text": "auto", 
+                    "value": "$__auto_interval"
+                }, 
+                "datasource": null, 
+                "includeAll": false, 
+                "label": "Interval", 
+                "multi": false, 
+                "multiFormat": "glob", 
+                "name": "interval", 
+                "options": [
+                    {
+                        "selected": true, 
+                        "text": "auto", 
+                        "value": "$__auto_interval"
+                    }, 
+                    {
+                        "selected": false, 
+                        "text": "5s", 
+                        "value": "5s"
+                    }, 
+                    {
+                        "selected": false, 
+                        "text": "10s", 
+                        "value": "10s"
+                    }, 
+                    {
+                        "selected": false, 
+                        "text": "30s", 
+                        "value": "30s"
+                    }, 
+                    {
+                        "selected": false, 
+                        "text": "1m", 
+                        "value": "1m"
+                    }, 
+                    {
+                        "selected": false, 
+                        "text": "5m", 
+                        "value": "5m"
+                    }, 
+                    {
+                        "selected": false, 
+                        "text": "15m", 
+                        "value": "15m"
+                    }, 
+                    {
+                        "selected": false, 
+                        "text": "30m", 
+                        "value": "30m"
+                    }, 
+                    {
+                        "selected": false, 
+                        "text": "1h", 
+                        "value": "1h"
+                    }, 
+                    {
+                        "selected": false, 
+                        "text": "6h", 
+                        "value": "6h"
+                    }, 
+                    {
+                        "selected": false, 
+                        "text": "12h", 
+                        "value": "12h"
+                    }, 
+                    {
+                        "selected": false, 
+                        "text": "1d", 
+                        "value": "1d"
+                    }
+                ], 
+                "query": "5s,10s,30s,1m,5m,15m,30m,1h,6h,12h,1d", 
+                "refresh": false, 
+                "type": "interval"
             }
         ]
     }, 
