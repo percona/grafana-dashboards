@@ -156,7 +156,7 @@
                     }, 
                     "targets": [
                         {
-                            "expr": "sum(rate(http_request_duration_microseconds_sum{job=\"prometheus\"}[$interval])) /  sum(rate(http_request_duration_microseconds_count{job=\"prometheus\"}[$interval]))", 
+                            "expr": "sum(rate(http_request_duration_microseconds_sum{job=\"prometheus\"}[$interval])) /  sum(rate(http_request_duration_microseconds_count{job=\"prometheus\"}[$interval])) or sum(irate(http_request_duration_microseconds_sum{job=\"prometheus\"}[5m])) /  sum(irate(http_request_duration_microseconds_count{job=\"prometheus\"}[5m]))", 
                             "interval": "5m", 
                             "intervalFactor": 1, 
                             "legendFormat": "", 
@@ -212,7 +212,7 @@
                     }, 
                     "targets": [
                         {
-                            "expr": "sum(rate(http_response_size_bytes_sum{job=\"prometheus\"}[$interval])) /  sum(rate(http_response_size_bytes_count{job=\"prometheus\"}[$interval]))", 
+                            "expr": "sum(rate(http_response_size_bytes_sum{job=\"prometheus\"}[$interval])) /  sum(rate(http_response_size_bytes_count{job=\"prometheus\"}[$interval])) or sum(irate(http_response_size_bytes_sum{job=\"prometheus\"}[5m])) /  sum(irate(http_response_size_bytes_count{job=\"prometheus\"}[5m]))", 
                             "interval": "5m", 
                             "intervalFactor": 1, 
                             "refId": "A", 
@@ -279,7 +279,7 @@
                     "steppedLine": false, 
                     "targets": [
                         {
-                            "expr": "rate(prometheus_local_storage_ingested_samples_total[$interval])", 
+                            "expr": "rate(prometheus_local_storage_ingested_samples_total[$interval]) or irate(prometheus_local_storage_ingested_samples_total[5m])", 
                             "interval": "$interval", 
                             "intervalFactor": 1, 
                             "legendFormat": "Samples", 
@@ -352,7 +352,7 @@
                     "steppedLine": false, 
                     "targets": [
                         {
-                            "expr": "sum(rate(http_requests_total{job=\"prometheus\"}[$interval])) by (handler)", 
+                            "expr": "sum(rate(http_requests_total{job=\"prometheus\"}[$interval])) by (handler) or sum(irate(http_requests_total{job=\"prometheus\"}[5m])) by (handler)", 
                             "interval": "$interval", 
                             "intervalFactor": 1, 
                             "legendFormat": "{{ handler }}", 
@@ -427,7 +427,7 @@
                     "steppedLine": false, 
                     "targets": [
                         {
-                            "expr": "rate(process_cpu_seconds_total{job=\"prometheus\"}[$interval])", 
+                            "expr": "rate(process_cpu_seconds_total{job=\"prometheus\"}[$interval]) or irate(process_cpu_seconds_total{job=\"prometheus\"}[5m])", 
                             "hide": false, 
                             "interval": "$interval", 
                             "intervalFactor": 1, 
