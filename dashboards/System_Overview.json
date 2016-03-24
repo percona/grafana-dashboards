@@ -215,7 +215,7 @@
                             "calculatedInterval": "10m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "(node_memory_MemFree{alias=\"$host\"} + node_memory_Buffers{alias=\"$host\"} + node_memory_Cached{alias=\"$host\"}) / node_memory_MemTotal{alias=\"$host\"} * 100", 
+                            "expr": "(node_memory_MemAvailable{alias=\"$host\"} or (node_memory_MemFree{alias=\"$host\"} + node_memory_Buffers{alias=\"$host\"} + node_memory_Cached{alias=\"$host\"})) / node_memory_MemTotal{alias=\"$host\"} * 100", 
                             "interval": "5m", 
                             "intervalFactor": 1, 
                             "legendFormat": "", 
@@ -226,7 +226,7 @@
                         }
                     ], 
                     "thresholds": "0,90,95", 
-                    "title": "Free Memory", 
+                    "title": "Memory Available", 
                     "transparent": false, 
                     "type": "singlestat", 
                     "valueFontSize": "80%", 
@@ -452,7 +452,7 @@
                     "grid": {
                         "leftLogBase": 1, 
                         "leftMax": null, 
-                        "leftMin": null, 
+                        "leftMin": 0, 
                         "rightLogBase": 1, 
                         "rightMax": null, 
                         "rightMin": null, 
@@ -491,7 +491,7 @@
                             "color": "#0A437C"
                         }, 
                         {
-                            "alias": "Free", 
+                            "alias": "Available", 
                             "color": "#5195CE"
                         }, 
                         {
@@ -523,7 +523,7 @@
                             "calculatedInterval": "2s", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "node_memory_MemTotal{alias=\"$host\"} - (node_memory_MemFree{alias=\"$host\"} + node_memory_Buffers{alias=\"$host\"} + node_memory_Cached{alias=\"$host\"})", 
+                            "expr": "node_memory_MemTotal{alias=\"$host\"} - (node_memory_MemAvailable{alias=\"$host\"} or (node_memory_MemFree{alias=\"$host\"} + node_memory_Buffers{alias=\"$host\"} + node_memory_Cached{alias=\"$host\"}))", 
                             "interval": "$interval", 
                             "intervalFactor": 1, 
                             "legendFormat": "Used", 
@@ -537,10 +537,10 @@
                             "calculatedInterval": "2s", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "node_memory_MemFree{alias=\"$host\"} + node_memory_Buffers{alias=\"$host\"} + node_memory_Cached{alias=\"$host\"}", 
+                            "expr": "node_memory_MemAvailable{alias=\"$host\"} or (node_memory_MemFree{alias=\"$host\"} + node_memory_Buffers{alias=\"$host\"} + node_memory_Cached{alias=\"$host\"})", 
                             "interval": "$interval", 
                             "intervalFactor": 1, 
-                            "legendFormat": "Free", 
+                            "legendFormat": "Available", 
                             "metric": "", 
                             "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22node_memory_MemFree%7Balias%3D%5C%22%24host%5C%22%7D%20%2B%20node_memory_Buffers%7Balias%3D%5C%22%24host%5C%22%7D%20%2B%20node_memory_Cached%7Balias%3D%5C%22%24host%5C%22%7D%22%2C%22range_input%22%3A%22900s%22%2C%22end_input%22%3A%222015-10-22%2015%3A25%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Atrue%2C%22tab%22%3A0%7D%5D", 
                             "refId": "B", 
@@ -575,7 +575,7 @@
                     "grid": {
                         "leftLogBase": 1, 
                         "leftMax": null, 
-                        "leftMin": null, 
+                        "leftMin": 0, 
                         "rightLogBase": 1, 
                         "rightMax": null, 
                         "rightMin": null, 
@@ -585,7 +585,8 @@
                         "threshold2Color": "rgba(234, 112, 112, 0.22)", 
                         "thresholdLine": false
                     }, 
-                    "id": 23, 
+                    "height": "", 
+                    "id": 29, 
                     "leftYAxisLabel": "", 
                     "legend": {
                         "alignAsTable": true, 
@@ -607,16 +608,7 @@
                     "pointradius": 5, 
                     "points": false, 
                     "renderer": "flot", 
-                    "seriesOverrides": [
-                        {
-                            "alias": "Used", 
-                            "color": "#584477"
-                        }, 
-                        {
-                            "alias": "Free", 
-                            "color": "#AEA2E0"
-                        }
-                    ], 
+                    "seriesOverrides": [], 
                     "span": 6, 
                     "stack": true, 
                     "steppedLine": false, 
@@ -625,7 +617,7 @@
                             "calculatedInterval": "2s", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "node_memory_SwapTotal{alias=\"$host\"} - node_memory_SwapFree{alias=\"$host\"}", 
+                            "expr": "node_memory_MemTotal{alias=\"$host\"} - (node_memory_MemFree{alias=\"$host\"} + node_memory_Buffers{alias=\"$host\"} + node_memory_Cached{alias=\"$host\"})", 
                             "interval": "$interval", 
                             "intervalFactor": 1, 
                             "legendFormat": "Used", 
@@ -639,7 +631,7 @@
                             "calculatedInterval": "2s", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "node_memory_SwapFree{alias=\"$host\"}", 
+                            "expr": "node_memory_MemFree{alias=\"$host\"}", 
                             "interval": "$interval", 
                             "intervalFactor": 1, 
                             "legendFormat": "Free", 
@@ -648,11 +640,39 @@
                             "refId": "B", 
                             "step": 300, 
                             "target": ""
+                        }, 
+                        {
+                            "calculatedInterval": "2s", 
+                            "datasourceErrors": {}, 
+                            "errors": {}, 
+                            "expr": "node_memory_Buffers{alias=\"$host\"}", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "Buffers", 
+                            "metric": "", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22node_memory_MemFree%7Balias%3D%5C%22%24host%5C%22%7D%20%2B%20node_memory_Buffers%7Balias%3D%5C%22%24host%5C%22%7D%20%2B%20node_memory_Cached%7Balias%3D%5C%22%24host%5C%22%7D%22%2C%22range_input%22%3A%22900s%22%2C%22end_input%22%3A%222015-10-22%2015%3A25%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Atrue%2C%22tab%22%3A0%7D%5D", 
+                            "refId": "D", 
+                            "step": 300, 
+                            "target": ""
+                        }, 
+                        {
+                            "calculatedInterval": "2s", 
+                            "datasourceErrors": {}, 
+                            "errors": {}, 
+                            "expr": "node_memory_Cached{alias=\"$host\"}", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "Cached", 
+                            "metric": "", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22node_memory_MemFree%7Balias%3D%5C%22%24host%5C%22%7D%20%2B%20node_memory_Buffers%7Balias%3D%5C%22%24host%5C%22%7D%20%2B%20node_memory_Cached%7Balias%3D%5C%22%24host%5C%22%7D%22%2C%22range_input%22%3A%22900s%22%2C%22end_input%22%3A%222015-10-22%2015%3A25%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Atrue%2C%22tab%22%3A0%7D%5D", 
+                            "refId": "E", 
+                            "step": 300, 
+                            "target": ""
                         }
                     ], 
                     "timeFrom": null, 
                     "timeShift": null, 
-                    "title": "Swap", 
+                    "title": "Memory Distribution", 
                     "tooltip": {
                         "shared": true, 
                         "value_type": "individual"
@@ -859,6 +879,262 @@
                     "decimals": 2, 
                     "editable": true, 
                     "error": false, 
+                    "fill": 2, 
+                    "grid": {
+                        "leftLogBase": 1, 
+                        "leftMax": null, 
+                        "leftMin": null, 
+                        "rightLogBase": 1, 
+                        "rightMax": null, 
+                        "rightMin": null, 
+                        "threshold1": null, 
+                        "threshold1Color": "rgb(241, 156, 15)", 
+                        "threshold2": null, 
+                        "threshold2Color": "rgb(246, 17, 17)", 
+                        "thresholdLine": true
+                    }, 
+                    "id": 27, 
+                    "leftYAxisLabel": "", 
+                    "legend": {
+                        "alignAsTable": true, 
+                        "avg": true, 
+                        "current": false, 
+                        "hideEmpty": false, 
+                        "max": true, 
+                        "min": true, 
+                        "rightSide": false, 
+                        "show": true, 
+                        "total": false, 
+                        "values": true
+                    }, 
+                    "lines": true, 
+                    "linewidth": 2, 
+                    "links": [], 
+                    "nullPointMode": "null", 
+                    "percentage": false, 
+                    "pointradius": 5, 
+                    "points": false, 
+                    "renderer": "flot", 
+                    "seriesOverrides": [], 
+                    "span": 6, 
+                    "stack": false, 
+                    "steppedLine": false, 
+                    "targets": [
+                        {
+                            "calculatedInterval": "2m", 
+                            "datasourceErrors": {}, 
+                            "errors": {}, 
+                            "expr": "rate(node_context_switches{alias=\"$host\"}[$interval]) or irate(node_context_switches{alias=\"$host\"}[5m])", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "Context Switches", 
+                            "metric": "", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22node_procs_running%7Balias%3D%5C%22%24host%5C%22%7D%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-9-18%2013%3A46%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Atrue%2C%22tab%22%3A0%7D%5D", 
+                            "refId": "A", 
+                            "step": 300, 
+                            "target": ""
+                        }
+                    ], 
+                    "timeFrom": null, 
+                    "timeShift": null, 
+                    "title": "Context Switches", 
+                    "tooltip": {
+                        "shared": true, 
+                        "value_type": "individual"
+                    }, 
+                    "transparent": false, 
+                    "type": "graph", 
+                    "x-axis": true, 
+                    "y-axis": true, 
+                    "y_formats": [
+                        "none", 
+                        "none"
+                    ]
+                }, 
+                {
+                    "aliasColors": {}, 
+                    "bars": false, 
+                    "datasource": null, 
+                    "decimals": 2, 
+                    "editable": true, 
+                    "error": false, 
+                    "fill": 2, 
+                    "grid": {
+                        "leftLogBase": 1, 
+                        "leftMax": null, 
+                        "leftMin": null, 
+                        "rightLogBase": 1, 
+                        "rightMax": null, 
+                        "rightMin": null, 
+                        "threshold1": null, 
+                        "threshold1Color": "rgb(241, 156, 15)", 
+                        "threshold2": null, 
+                        "threshold2Color": "rgb(246, 17, 17)", 
+                        "thresholdLine": true
+                    }, 
+                    "id": 28, 
+                    "leftYAxisLabel": "", 
+                    "legend": {
+                        "alignAsTable": true, 
+                        "avg": true, 
+                        "current": false, 
+                        "hideEmpty": false, 
+                        "max": true, 
+                        "min": true, 
+                        "rightSide": false, 
+                        "show": true, 
+                        "total": false, 
+                        "values": true
+                    }, 
+                    "lines": true, 
+                    "linewidth": 2, 
+                    "links": [], 
+                    "nullPointMode": "null", 
+                    "percentage": false, 
+                    "pointradius": 5, 
+                    "points": false, 
+                    "renderer": "flot", 
+                    "seriesOverrides": [
+                        {
+                            "alias": "Interrupts", 
+                            "color": "#D683CE"
+                        }
+                    ], 
+                    "span": 6, 
+                    "stack": false, 
+                    "steppedLine": false, 
+                    "targets": [
+                        {
+                            "calculatedInterval": "2m", 
+                            "datasourceErrors": {}, 
+                            "errors": {}, 
+                            "expr": "rate(node_intr{alias=\"$host\"}[$interval]) or irate(node_intr{alias=\"$host\"}[5m])", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "Interrupts", 
+                            "metric": "", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22node_procs_running%7Balias%3D%5C%22%24host%5C%22%7D%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-9-18%2013%3A46%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Atrue%2C%22tab%22%3A0%7D%5D", 
+                            "refId": "A", 
+                            "step": 300, 
+                            "target": ""
+                        }
+                    ], 
+                    "timeFrom": null, 
+                    "timeShift": null, 
+                    "title": "Interrupts", 
+                    "tooltip": {
+                        "shared": true, 
+                        "value_type": "individual"
+                    }, 
+                    "transparent": false, 
+                    "type": "graph", 
+                    "x-axis": true, 
+                    "y-axis": true, 
+                    "y_formats": [
+                        "none", 
+                        "none"
+                    ]
+                }, 
+                {
+                    "aliasColors": {}, 
+                    "bars": true, 
+                    "datasource": null, 
+                    "decimals": 2, 
+                    "editable": true, 
+                    "error": false, 
+                    "fill": 6, 
+                    "grid": {
+                        "leftLogBase": 1, 
+                        "leftMax": null, 
+                        "leftMin": null, 
+                        "rightLogBase": 1, 
+                        "rightMax": null, 
+                        "rightMin": null, 
+                        "threshold1": null, 
+                        "threshold1Color": "rgba(216, 200, 27, 0.27)", 
+                        "threshold2": null, 
+                        "threshold2Color": "rgba(234, 112, 112, 0.22)", 
+                        "thresholdLine": false
+                    }, 
+                    "id": 22, 
+                    "leftYAxisLabel": "", 
+                    "legend": {
+                        "alignAsTable": true, 
+                        "avg": true, 
+                        "current": false, 
+                        "hideEmpty": false, 
+                        "max": true, 
+                        "min": true, 
+                        "rightSide": false, 
+                        "show": true, 
+                        "total": false, 
+                        "values": true
+                    }, 
+                    "lines": false, 
+                    "linewidth": 2, 
+                    "links": [], 
+                    "nullPointMode": "null", 
+                    "percentage": false, 
+                    "pointradius": 5, 
+                    "points": false, 
+                    "renderer": "flot", 
+                    "seriesOverrides": [], 
+                    "span": 6, 
+                    "stack": true, 
+                    "steppedLine": false, 
+                    "targets": [
+                        {
+                            "calculatedInterval": "2s", 
+                            "datasourceErrors": {}, 
+                            "errors": {}, 
+                            "expr": "sum(increase(node_network_receive_bytes{alias=\"$host\", device!=\"lo\"}[1h]))", 
+                            "interval": "1h", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "Received", 
+                            "metric": "", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22node_memory_MemTotal%7Balias%3D%5C%22%24host%5C%22%7D%20-%20(node_memory_MemFree%7Balias%3D%5C%22%24host%5C%22%7D%20%2B%20node_memory_Buffers%7Balias%3D%5C%22%24host%5C%22%7D%20%2B%20node_memory_Cached%7Balias%3D%5C%22%24host%5C%22%7D)%22%2C%22range_input%22%3A%22900s%22%2C%22end_input%22%3A%222015-10-22%2015%3A25%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Atrue%2C%22tab%22%3A0%7D%5D", 
+                            "refId": "A", 
+                            "step": 3600, 
+                            "target": ""
+                        }, 
+                        {
+                            "calculatedInterval": "2s", 
+                            "datasourceErrors": {}, 
+                            "errors": {}, 
+                            "expr": "sum(increase(node_network_transmit_bytes{alias=\"$host\", device!=\"lo\"}[1h]))", 
+                            "interval": "1h", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "Sent", 
+                            "metric": "", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22node_memory_MemTotal%7Balias%3D%5C%22%24host%5C%22%7D%20-%20(node_memory_MemFree%7Balias%3D%5C%22%24host%5C%22%7D%20%2B%20node_memory_Buffers%7Balias%3D%5C%22%24host%5C%22%7D%20%2B%20node_memory_Cached%7Balias%3D%5C%22%24host%5C%22%7D)%22%2C%22range_input%22%3A%22900s%22%2C%22end_input%22%3A%222015-10-22%2015%3A25%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Atrue%2C%22tab%22%3A0%7D%5D", 
+                            "refId": "B", 
+                            "step": 3600, 
+                            "target": ""
+                        }
+                    ], 
+                    "timeFrom": "24h", 
+                    "timeShift": null, 
+                    "title": "Network Utilization Hourly", 
+                    "tooltip": {
+                        "shared": true, 
+                        "value_type": "individual"
+                    }, 
+                    "transparent": false, 
+                    "type": "graph", 
+                    "x-axis": true, 
+                    "y-axis": true, 
+                    "y_formats": [
+                        "bytes", 
+                        "bytes"
+                    ]
+                }, 
+                {
+                    "aliasColors": {}, 
+                    "bars": false, 
+                    "datasource": null, 
+                    "decimals": 2, 
+                    "editable": true, 
+                    "error": false, 
                     "fill": 6, 
                     "grid": {
                         "leftLogBase": 1, 
@@ -947,7 +1223,7 @@
                 }, 
                 {
                     "aliasColors": {}, 
-                    "bars": true, 
+                    "bars": false, 
                     "datasource": null, 
                     "decimals": 2, 
                     "editable": true, 
@@ -956,7 +1232,7 @@
                     "grid": {
                         "leftLogBase": 1, 
                         "leftMax": null, 
-                        "leftMin": null, 
+                        "leftMin": 0, 
                         "rightLogBase": 1, 
                         "rightMax": null, 
                         "rightMin": null, 
@@ -966,7 +1242,7 @@
                         "threshold2Color": "rgba(234, 112, 112, 0.22)", 
                         "thresholdLine": false
                     }, 
-                    "id": 22, 
+                    "id": 23, 
                     "leftYAxisLabel": "", 
                     "legend": {
                         "alignAsTable": true, 
@@ -980,7 +1256,7 @@
                         "total": false, 
                         "values": true
                     }, 
-                    "lines": false, 
+                    "lines": true, 
                     "linewidth": 2, 
                     "links": [], 
                     "nullPointMode": "null", 
@@ -988,7 +1264,16 @@
                     "pointradius": 5, 
                     "points": false, 
                     "renderer": "flot", 
-                    "seriesOverrides": [], 
+                    "seriesOverrides": [
+                        {
+                            "alias": "Used", 
+                            "color": "#584477"
+                        }, 
+                        {
+                            "alias": "Free", 
+                            "color": "#AEA2E0"
+                        }
+                    ], 
                     "span": 6, 
                     "stack": true, 
                     "steppedLine": false, 
@@ -997,34 +1282,34 @@
                             "calculatedInterval": "2s", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "sum(increase(node_network_receive_bytes{alias=\"$host\", device!=\"lo\"}[1h]))", 
-                            "interval": "1h", 
+                            "expr": "node_memory_SwapTotal{alias=\"$host\"} - node_memory_SwapFree{alias=\"$host\"}", 
+                            "interval": "$interval", 
                             "intervalFactor": 1, 
-                            "legendFormat": "Received", 
+                            "legendFormat": "Used", 
                             "metric": "", 
                             "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22node_memory_MemTotal%7Balias%3D%5C%22%24host%5C%22%7D%20-%20(node_memory_MemFree%7Balias%3D%5C%22%24host%5C%22%7D%20%2B%20node_memory_Buffers%7Balias%3D%5C%22%24host%5C%22%7D%20%2B%20node_memory_Cached%7Balias%3D%5C%22%24host%5C%22%7D)%22%2C%22range_input%22%3A%22900s%22%2C%22end_input%22%3A%222015-10-22%2015%3A25%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Atrue%2C%22tab%22%3A0%7D%5D", 
                             "refId": "A", 
-                            "step": 3600, 
+                            "step": 300, 
                             "target": ""
                         }, 
                         {
                             "calculatedInterval": "2s", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "sum(increase(node_network_transmit_bytes{alias=\"$host\", device!=\"lo\"}[1h]))", 
-                            "interval": "1h", 
+                            "expr": "node_memory_SwapFree{alias=\"$host\"}", 
+                            "interval": "$interval", 
                             "intervalFactor": 1, 
-                            "legendFormat": "Sent", 
+                            "legendFormat": "Free", 
                             "metric": "", 
-                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22node_memory_MemTotal%7Balias%3D%5C%22%24host%5C%22%7D%20-%20(node_memory_MemFree%7Balias%3D%5C%22%24host%5C%22%7D%20%2B%20node_memory_Buffers%7Balias%3D%5C%22%24host%5C%22%7D%20%2B%20node_memory_Cached%7Balias%3D%5C%22%24host%5C%22%7D)%22%2C%22range_input%22%3A%22900s%22%2C%22end_input%22%3A%222015-10-22%2015%3A25%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Atrue%2C%22tab%22%3A0%7D%5D", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22node_memory_MemFree%7Balias%3D%5C%22%24host%5C%22%7D%20%2B%20node_memory_Buffers%7Balias%3D%5C%22%24host%5C%22%7D%20%2B%20node_memory_Cached%7Balias%3D%5C%22%24host%5C%22%7D%22%2C%22range_input%22%3A%22900s%22%2C%22end_input%22%3A%222015-10-22%2015%3A25%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Atrue%2C%22tab%22%3A0%7D%5D", 
                             "refId": "B", 
-                            "step": 3600, 
+                            "step": 300, 
                             "target": ""
                         }
                     ], 
-                    "timeFrom": "24h", 
+                    "timeFrom": null, 
                     "timeShift": null, 
-                    "title": "Network Utilization Hourly", 
+                    "title": "Swap", 
                     "tooltip": {
                         "shared": true, 
                         "value_type": "individual"
