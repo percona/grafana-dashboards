@@ -505,19 +505,6 @@
                             "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_table_locks_waited%7Balias%3D%5C%22%24host%5C%22%7D%5B%24interval%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-9-18%2015%3A45%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
                             "refId": "B", 
                             "step": 300
-                        }, 
-                        {
-                            "calculatedInterval": "2m", 
-                            "datasourceErrors": {}, 
-                            "errors": {}, 
-                            "expr": "rate(mysql_global_status_slow_queries{alias=\"$host\"}[$interval]) or irate(mysql_global_status_slow_queries{alias=\"$host\"}[5m])", 
-                            "interval": "$interval", 
-                            "intervalFactor": 1, 
-                            "legendFormat": "Slow Queries", 
-                            "metric": "", 
-                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_slow_queries%7Balias%3D%5C%22%24host%5C%22%7D%5B%24interval%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-9-18%2015%3A46%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
-                            "refId": "C", 
-                            "step": 300
                         }
                     ], 
                     "timeFrom": null, 
@@ -773,6 +760,7 @@
                         "alignAsTable": true, 
                         "avg": true, 
                         "current": false, 
+                        "hideZero": false, 
                         "max": true, 
                         "min": true, 
                         "rightSide": false, 
@@ -1324,14 +1312,14 @@
                     "id": 39, 
                     "legend": {
                         "alignAsTable": true, 
-                        "avg": false, 
+                        "avg": true, 
                         "current": false, 
-                        "max": false, 
-                        "min": false, 
+                        "max": true, 
+                        "min": true, 
                         "rightSide": true, 
                         "show": true, 
                         "total": false, 
-                        "values": false
+                        "values": true
                     }, 
                     "lines": false, 
                     "linewidth": 2, 
@@ -1548,15 +1536,15 @@
                     "id": 40, 
                     "legend": {
                         "alignAsTable": true, 
-                        "avg": false, 
+                        "avg": true, 
                         "current": false, 
                         "hideZero": false, 
-                        "max": false, 
+                        "max": true, 
                         "min": false, 
                         "rightSide": true, 
                         "show": true, 
                         "total": false, 
-                        "values": false
+                        "values": true
                     }, 
                     "lines": true, 
                     "linewidth": 2, 
@@ -1588,6 +1576,80 @@
                     "timeFrom": null, 
                     "timeShift": null, 
                     "title": "Top Process States", 
+                    "tooltip": {
+                        "shared": true, 
+                        "value_type": "individual"
+                    }, 
+                    "type": "graph", 
+                    "x-axis": true, 
+                    "y-axis": true, 
+                    "y_formats": [
+                        "short", 
+                        "short"
+                    ]
+                }, 
+                {
+                    "aliasColors": {}, 
+                    "bars": true, 
+                    "datasource": null, 
+                    "decimals": 2, 
+                    "editable": true, 
+                    "error": false, 
+                    "fill": 6, 
+                    "grid": {
+                        "leftLogBase": 1, 
+                        "leftMax": null, 
+                        "leftMin": null, 
+                        "rightLogBase": 1, 
+                        "rightMax": null, 
+                        "rightMin": null, 
+                        "threshold1": null, 
+                        "threshold1Color": "rgba(216, 200, 27, 0.27)", 
+                        "threshold2": null, 
+                        "threshold2Color": "rgba(234, 112, 112, 0.22)"
+                    }, 
+                    "id": 49, 
+                    "legend": {
+                        "alignAsTable": true, 
+                        "avg": true, 
+                        "current": false, 
+                        "max": true, 
+                        "min": false, 
+                        "rightSide": true, 
+                        "show": true, 
+                        "total": false, 
+                        "values": true
+                    }, 
+                    "lines": false, 
+                    "linewidth": 2, 
+                    "links": [], 
+                    "nullPointMode": "null", 
+                    "percentage": false, 
+                    "pointradius": 5, 
+                    "points": false, 
+                    "renderer": "flot", 
+                    "seriesOverrides": [], 
+                    "span": 12, 
+                    "stack": true, 
+                    "steppedLine": false, 
+                    "targets": [
+                        {
+                            "calculatedInterval": "2m", 
+                            "datasourceErrors": {}, 
+                            "errors": {}, 
+                            "expr": "topk(5, increase(mysql_info_schema_threads{alias=\"$host\"}[1h]))", 
+                            "interval": "1h", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "{{ state }}", 
+                            "metric": "", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22topk(5%2C%20rate(mysql_global_status_commands_total%7Balias%3D%5C%22%24host%5C%22%7D%5B%24interval%5D))%22%2C%22range_input%22%3A%2243201s%22%2C%22end_input%22%3A%222015-10-12%207%3A5%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Atrue%2C%22tab%22%3A0%7D%5D", 
+                            "refId": "A", 
+                            "step": 3600
+                        }
+                    ], 
+                    "timeFrom": "24h", 
+                    "timeShift": null, 
+                    "title": "Top Processes Hourly", 
                     "tooltip": {
                         "shared": true, 
                         "value_type": "individual"
