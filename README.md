@@ -60,7 +60,7 @@ How you name jobs is not important. However, "Prometheus" dashboard assumes the 
 
 Also it is assumed that the exporters are run with this minimal set of options:
 
- * node_exporter: `-collectors.enabled="diskstats,filesystem,loadavg,meminfo,netdev,stat,time,uname"`
+ * node_exporter: `-collectors.enabled="diskstats,filesystem,loadavg,meminfo,netdev,stat,time,uname,vmstat"`
  * mysqld_exporter: `-collect.binlog_size=true -collect.info_schema.processlist=true`
 
 #### Edit Grafana config
