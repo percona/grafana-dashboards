@@ -9,15 +9,18 @@ The dashboards rely on `alias` label in the Prometheus config and on the small p
  * MySQL InnoDB Metrics
  * MySQL MyISAM Metrics
  * MySQL Overview
- * MySQL Query Response Time Histograms
+ * MySQL Performance Schema
+ * MySQL Query Response Time
  * MySQL Replication
  * MySQL Table Statistics
  * MySQL User Statistics
  * Prometheus
+ * Summary Dashboard
  * System Overview
  * TokuDB Graphs
- * Trending: 1h downsample [InfluxDB]
- * Trending: 5m downsample [InfluxDB]
+ * Trends Dashboard
+ * [InfluxDB] 1h downsample
+ * [InfluxDB] 5m downsample
 
 For trending dashboards to work you need to create the continuous queries in InfluxDB, see [the instructions](influxdb.md).
 

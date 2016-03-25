@@ -1,0 +1,853 @@
+{
+    "annotations": {
+        "list": []
+    }, 
+    "editable": true, 
+    "hideControls": false, 
+    "id": 52, 
+    "links": [], 
+    "originalTitle": "Summary Dashboard", 
+    "refresh": false, 
+    "rows": [
+        {
+            "collapse": false, 
+            "editable": true, 
+            "height": "250px", 
+            "panels": [
+                {
+                    "aliasColors": {}, 
+                    "bars": false, 
+                    "datasource": null, 
+                    "decimals": 2, 
+                    "editable": true, 
+                    "error": false, 
+                    "fill": 6, 
+                    "grid": {
+                        "leftLogBase": 1, 
+                        "leftMax": 100, 
+                        "leftMin": null, 
+                        "rightLogBase": 1, 
+                        "rightMax": null, 
+                        "rightMin": null, 
+                        "threshold1": null, 
+                        "threshold1Color": "rgba(216, 200, 27, 0.27)", 
+                        "threshold2": null, 
+                        "threshold2Color": "rgba(234, 112, 112, 0.22)", 
+                        "thresholdLine": false
+                    }, 
+                    "height": "", 
+                    "id": 2, 
+                    "leftYAxisLabel": "", 
+                    "legend": {
+                        "alignAsTable": true, 
+                        "avg": true, 
+                        "current": false, 
+                        "hideEmpty": false, 
+                        "max": true, 
+                        "min": true, 
+                        "rightSide": true, 
+                        "show": true, 
+                        "total": false, 
+                        "values": true
+                    }, 
+                    "lines": true, 
+                    "linewidth": 2, 
+                    "links": [], 
+                    "nullPointMode": "null", 
+                    "percentage": false, 
+                    "pointradius": 5, 
+                    "points": false, 
+                    "renderer": "flot", 
+                    "seriesOverrides": [], 
+                    "span": 12, 
+                    "stack": true, 
+                    "steppedLine": false, 
+                    "targets": [
+                        {
+                            "calculatedInterval": "2s", 
+                            "datasourceErrors": {}, 
+                            "errors": {}, 
+                            "expr": "sum(rate(node_cpu{alias=\"$host\"}[$interval])) by (mode) * 100 / count_scalar(node_cpu{mode=\"user\", alias=\"$host\"}) or sum(irate(node_cpu{alias=\"$host\"}[5m])) by (mode) * 100 / count_scalar(node_cpu{mode=\"user\", alias=\"$host\"})", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "{{ mode }}", 
+                            "metric": "", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22sum(rate(node_cpu%7Balias%3D%5C%22%24host%5C%22%7D%5B%24interval%5D))%20by%20(mode)%20*%20100%22%2C%22range_input%22%3A%223600s%22%2C%22end_input%22%3A%222015-10-22%2015%3A27%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Atrue%2C%22tab%22%3A0%7D%5D", 
+                            "refId": "A", 
+                            "step": 300
+                        }
+                    ], 
+                    "timeFrom": null, 
+                    "timeShift": null, 
+                    "title": "CPU Usage", 
+                    "tooltip": {
+                        "shared": true, 
+                        "value_type": "individual"
+                    }, 
+                    "type": "graph", 
+                    "x-axis": true, 
+                    "y-axis": true, 
+                    "y_formats": [
+                        "percent", 
+                        "short"
+                    ]
+                }
+            ], 
+            "showTitle": true, 
+            "title": "System Stats"
+        }, 
+        {
+            "collapse": false, 
+            "editable": true, 
+            "height": "300px", 
+            "panels": [
+                {
+                    "aliasColors": {}, 
+                    "bars": true, 
+                    "datasource": null, 
+                    "decimals": 2, 
+                    "editable": true, 
+                    "error": false, 
+                    "fill": 2, 
+                    "grid": {
+                        "leftLogBase": 1, 
+                        "leftMax": null, 
+                        "leftMin": null, 
+                        "rightLogBase": 1, 
+                        "rightMax": null, 
+                        "rightMin": null, 
+                        "threshold1": null, 
+                        "threshold1Color": "rgb(241, 156, 15)", 
+                        "threshold2": null, 
+                        "threshold2Color": "rgb(246, 17, 17)", 
+                        "thresholdLine": true
+                    }, 
+                    "id": 20, 
+                    "leftYAxisLabel": "", 
+                    "legend": {
+                        "alignAsTable": true, 
+                        "avg": true, 
+                        "current": false, 
+                        "hideEmpty": false, 
+                        "max": true, 
+                        "min": true, 
+                        "rightSide": false, 
+                        "show": true, 
+                        "total": false, 
+                        "values": true
+                    }, 
+                    "lines": false, 
+                    "linewidth": 2, 
+                    "links": [], 
+                    "nullPointMode": "null", 
+                    "percentage": false, 
+                    "pointradius": 5, 
+                    "points": false, 
+                    "renderer": "flot", 
+                    "seriesOverrides": [
+                        {
+                            "alias": "Processes blocked waiting for I/O to complete", 
+                            "color": "#E24D42"
+                        }, 
+                        {
+                            "alias": "Processes in runnable state", 
+                            "color": "#6ED0E0"
+                        }
+                    ], 
+                    "span": 6, 
+                    "stack": true, 
+                    "steppedLine": false, 
+                    "targets": [
+                        {
+                            "calculatedInterval": "2m", 
+                            "datasourceErrors": {}, 
+                            "errors": {}, 
+                            "expr": "node_procs_running{alias=\"$host\"}", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "Processes in runnable state", 
+                            "metric": "", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22node_procs_running%7Balias%3D%5C%22%24host%5C%22%7D%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-9-18%2013%3A46%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Atrue%2C%22tab%22%3A0%7D%5D", 
+                            "refId": "A", 
+                            "step": 300, 
+                            "target": ""
+                        }, 
+                        {
+                            "calculatedInterval": "2m", 
+                            "datasourceErrors": {}, 
+                            "errors": {}, 
+                            "expr": "node_procs_blocked{alias=\"$host\"}", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "Processes blocked waiting for I/O to complete", 
+                            "metric": "", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22node_procs_blocked%7Balias%3D%5C%22%24host%5C%22%7D%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-9-18%2013%3A46%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Atrue%2C%22tab%22%3A0%7D%5D", 
+                            "refId": "B", 
+                            "step": 300, 
+                            "target": ""
+                        }
+                    ], 
+                    "timeFrom": null, 
+                    "timeShift": null, 
+                    "title": "Processes", 
+                    "tooltip": {
+                        "shared": true, 
+                        "value_type": "individual"
+                    }, 
+                    "transparent": false, 
+                    "type": "graph", 
+                    "x-axis": true, 
+                    "y-axis": true, 
+                    "y_formats": [
+                        "none", 
+                        "none"
+                    ]
+                }, 
+                {
+                    "aliasColors": {}, 
+                    "bars": false, 
+                    "datasource": null, 
+                    "decimals": 2, 
+                    "editable": true, 
+                    "error": false, 
+                    "fill": 6, 
+                    "grid": {
+                        "leftLogBase": 1, 
+                        "leftMax": null, 
+                        "leftMin": null, 
+                        "rightLogBase": 1, 
+                        "rightMax": null, 
+                        "rightMin": null, 
+                        "threshold1": null, 
+                        "threshold1Color": "rgba(216, 200, 27, 0.27)", 
+                        "threshold2": null, 
+                        "threshold2Color": "rgba(234, 112, 112, 0.22)", 
+                        "thresholdLine": false
+                    }, 
+                    "id": 21, 
+                    "leftYAxisLabel": "", 
+                    "legend": {
+                        "alignAsTable": true, 
+                        "avg": true, 
+                        "current": false, 
+                        "hideEmpty": false, 
+                        "max": true, 
+                        "min": true, 
+                        "rightSide": false, 
+                        "show": true, 
+                        "total": false, 
+                        "values": true
+                    }, 
+                    "lines": true, 
+                    "linewidth": 2, 
+                    "links": [], 
+                    "nullPointMode": "null", 
+                    "percentage": false, 
+                    "pointradius": 5, 
+                    "points": false, 
+                    "renderer": "flot", 
+                    "seriesOverrides": [], 
+                    "span": 6, 
+                    "stack": true, 
+                    "steppedLine": false, 
+                    "targets": [
+                        {
+                            "calculatedInterval": "2s", 
+                            "datasourceErrors": {}, 
+                            "errors": {}, 
+                            "expr": "sum(rate(node_network_receive_bytes{alias=\"$host\", device!=\"lo\"}[$interval])) or sum(irate(node_network_receive_bytes{alias=\"$host\", device!=\"lo\"}[5m]))", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "Inbound", 
+                            "metric": "", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22node_memory_MemFree%7Balias%3D%5C%22%24host%5C%22%7D%20%2B%20node_memory_Buffers%7Balias%3D%5C%22%24host%5C%22%7D%20%2B%20node_memory_Cached%7Balias%3D%5C%22%24host%5C%22%7D%22%2C%22range_input%22%3A%22900s%22%2C%22end_input%22%3A%222015-10-22%2015%3A25%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Atrue%2C%22tab%22%3A0%7D%5D", 
+                            "refId": "B", 
+                            "step": 300, 
+                            "target": ""
+                        }, 
+                        {
+                            "calculatedInterval": "2s", 
+                            "datasourceErrors": {}, 
+                            "errors": {}, 
+                            "expr": "sum(rate(node_network_transmit_bytes{alias=\"$host\", device!=\"lo\"}[$interval])) or sum(irate(node_network_transmit_bytes{alias=\"$host\", device!=\"lo\"}[5m]))", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "Outbound", 
+                            "metric": "", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22node_memory_MemTotal%7Balias%3D%5C%22%24host%5C%22%7D%20-%20(node_memory_MemFree%7Balias%3D%5C%22%24host%5C%22%7D%20%2B%20node_memory_Buffers%7Balias%3D%5C%22%24host%5C%22%7D%20%2B%20node_memory_Cached%7Balias%3D%5C%22%24host%5C%22%7D)%22%2C%22range_input%22%3A%22900s%22%2C%22end_input%22%3A%222015-10-22%2015%3A25%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Atrue%2C%22tab%22%3A0%7D%5D", 
+                            "refId": "A", 
+                            "step": 300, 
+                            "target": ""
+                        }
+                    ], 
+                    "timeFrom": null, 
+                    "timeShift": null, 
+                    "title": "Network Traffic", 
+                    "tooltip": {
+                        "shared": true, 
+                        "value_type": "individual"
+                    }, 
+                    "transparent": false, 
+                    "type": "graph", 
+                    "x-axis": true, 
+                    "y-axis": true, 
+                    "y_formats": [
+                        "Bps", 
+                        "bytes"
+                    ]
+                }, 
+                {
+                    "aliasColors": {}, 
+                    "bars": false, 
+                    "datasource": null, 
+                    "decimals": 2, 
+                    "editable": true, 
+                    "error": false, 
+                    "fill": 2, 
+                    "grid": {
+                        "leftLogBase": 1, 
+                        "leftMax": null, 
+                        "leftMin": 0, 
+                        "rightLogBase": 1, 
+                        "rightMax": null, 
+                        "rightMin": null, 
+                        "threshold1": null, 
+                        "threshold1Color": "rgba(216, 200, 27, 0.27)", 
+                        "threshold2": null, 
+                        "threshold2Color": "rgba(234, 112, 112, 0.22)", 
+                        "thresholdLine": false
+                    }, 
+                    "id": 31, 
+                    "leftYAxisLabel": "", 
+                    "legend": {
+                        "alignAsTable": true, 
+                        "avg": true, 
+                        "current": false, 
+                        "hideEmpty": false, 
+                        "max": true, 
+                        "min": true, 
+                        "rightSide": false, 
+                        "show": true, 
+                        "total": false, 
+                        "values": true
+                    }, 
+                    "lines": true, 
+                    "linewidth": 2, 
+                    "links": [], 
+                    "nullPointMode": "null", 
+                    "percentage": false, 
+                    "pointradius": 5, 
+                    "points": false, 
+                    "renderer": "flot", 
+                    "seriesOverrides": [], 
+                    "span": 6, 
+                    "stack": false, 
+                    "steppedLine": false, 
+                    "targets": [
+                        {
+                            "calculatedInterval": "2s", 
+                            "datasourceErrors": {}, 
+                            "errors": {}, 
+                            "expr": "rate(node_vmstat_pgpgin{alias=\"$host\"}[$interval]) or irate(node_vmstat_pgpgin{alias=\"$host\"}[5m])", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "Page In", 
+                            "metric": "", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22node_memory_MemTotal%7Balias%3D%5C%22%24host%5C%22%7D%20-%20(node_memory_MemFree%7Balias%3D%5C%22%24host%5C%22%7D%20%2B%20node_memory_Buffers%7Balias%3D%5C%22%24host%5C%22%7D%20%2B%20node_memory_Cached%7Balias%3D%5C%22%24host%5C%22%7D)%22%2C%22range_input%22%3A%22900s%22%2C%22end_input%22%3A%222015-10-22%2015%3A25%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Atrue%2C%22tab%22%3A0%7D%5D", 
+                            "refId": "A", 
+                            "step": 300, 
+                            "target": ""
+                        }, 
+                        {
+                            "calculatedInterval": "2s", 
+                            "datasourceErrors": {}, 
+                            "errors": {}, 
+                            "expr": "rate(node_vmstat_pgpgout{alias=\"$host\"}[$interval]) or irate(node_vmstat_pgpgout{alias=\"$host\"}[5m])", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "Page Out", 
+                            "metric": "", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22node_memory_MemFree%7Balias%3D%5C%22%24host%5C%22%7D%20%2B%20node_memory_Buffers%7Balias%3D%5C%22%24host%5C%22%7D%20%2B%20node_memory_Cached%7Balias%3D%5C%22%24host%5C%22%7D%22%2C%22range_input%22%3A%22900s%22%2C%22end_input%22%3A%222015-10-22%2015%3A25%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Atrue%2C%22tab%22%3A0%7D%5D", 
+                            "refId": "B", 
+                            "step": 300, 
+                            "target": ""
+                        }
+                    ], 
+                    "timeFrom": null, 
+                    "timeShift": null, 
+                    "title": "I/O Activity", 
+                    "tooltip": {
+                        "shared": true, 
+                        "value_type": "individual"
+                    }, 
+                    "transparent": false, 
+                    "type": "graph", 
+                    "x-axis": true, 
+                    "y-axis": true, 
+                    "y_formats": [
+                        "kbytes", 
+                        "bytes"
+                    ]
+                }
+            ], 
+            "title": "New row"
+        }, 
+        {
+            "collapse": false, 
+            "editable": true, 
+            "height": "250px", 
+            "panels": [
+                {
+                    "aliasColors": {}, 
+                    "bars": false, 
+                    "datasource": null, 
+                    "decimals": 2, 
+                    "editable": true, 
+                    "error": false, 
+                    "fill": 2, 
+                    "grid": {
+                        "leftLogBase": 1, 
+                        "leftMax": null, 
+                        "leftMin": null, 
+                        "rightLogBase": 1, 
+                        "rightMax": null, 
+                        "rightMin": null, 
+                        "threshold1": null, 
+                        "threshold1Color": "rgba(216, 200, 27, 0.27)", 
+                        "threshold2": null, 
+                        "threshold2Color": "rgba(234, 112, 112, 0.22)"
+                    }, 
+                    "id": 35, 
+                    "legend": {
+                        "alignAsTable": true, 
+                        "avg": true, 
+                        "current": false, 
+                        "max": true, 
+                        "min": true, 
+                        "rightSide": false, 
+                        "show": true, 
+                        "total": false, 
+                        "values": true
+                    }, 
+                    "lines": true, 
+                    "linewidth": 2, 
+                    "links": [], 
+                    "nullPointMode": "null", 
+                    "percentage": false, 
+                    "pointradius": 5, 
+                    "points": false, 
+                    "renderer": "flot", 
+                    "seriesOverrides": [], 
+                    "span": 6, 
+                    "stack": false, 
+                    "steppedLine": false, 
+                    "targets": [
+                        {
+                            "calculatedInterval": "2m", 
+                            "datasourceErrors": {}, 
+                            "errors": {}, 
+                            "expr": "rate(mysql_global_status_queries{alias=\"$host\"}[$interval]) or irate(mysql_global_status_queries{alias=\"$host\"}[5m])", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "Queries", 
+                            "metric": "", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_innodb_row_ops_total%7Balias%3D%5C%22%24host%5C%22%7D%5B%24interval%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-8-27%2010%3A30%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
+                            "refId": "A", 
+                            "step": 300
+                        }
+                    ], 
+                    "timeFrom": null, 
+                    "timeShift": null, 
+                    "title": "MySQL Queries", 
+                    "tooltip": {
+                        "shared": true, 
+                        "value_type": "individual"
+                    }, 
+                    "type": "graph", 
+                    "x-axis": true, 
+                    "y-axis": true, 
+                    "y_formats": [
+                        "short", 
+                        "short"
+                    ]
+                }, 
+                {
+                    "aliasColors": {}, 
+                    "bars": false, 
+                    "datasource": null, 
+                    "decimals": 2, 
+                    "editable": true, 
+                    "error": false, 
+                    "fill": 2, 
+                    "grid": {
+                        "leftLogBase": 1, 
+                        "leftMax": null, 
+                        "leftMin": null, 
+                        "rightLogBase": 1, 
+                        "rightMax": null, 
+                        "rightMin": null, 
+                        "threshold1": null, 
+                        "threshold1Color": "rgba(216, 200, 27, 0.27)", 
+                        "threshold2": null, 
+                        "threshold2Color": "rgba(234, 112, 112, 0.22)"
+                    }, 
+                    "id": 34, 
+                    "legend": {
+                        "alignAsTable": true, 
+                        "avg": true, 
+                        "current": false, 
+                        "max": true, 
+                        "min": true, 
+                        "rightSide": false, 
+                        "show": true, 
+                        "total": false, 
+                        "values": true
+                    }, 
+                    "lines": true, 
+                    "linewidth": 2, 
+                    "links": [], 
+                    "nullPointMode": "null", 
+                    "percentage": false, 
+                    "pointradius": 5, 
+                    "points": false, 
+                    "renderer": "flot", 
+                    "seriesOverrides": [], 
+                    "span": 6, 
+                    "stack": false, 
+                    "steppedLine": false, 
+                    "targets": [
+                        {
+                            "calculatedInterval": "2m", 
+                            "datasourceErrors": {}, 
+                            "errors": {}, 
+                            "expr": "rate(mysql_global_status_innodb_row_ops_total{alias=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_row_ops_total{alias=\"$host\"}[5m])", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "Rows {{ operation }}", 
+                            "metric": "", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_innodb_row_ops_total%7Balias%3D%5C%22%24host%5C%22%7D%5B%24interval%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-8-27%2010%3A30%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Afalse%2C%22tab%22%3A0%7D%5D", 
+                            "refId": "A", 
+                            "step": 300
+                        }
+                    ], 
+                    "timeFrom": null, 
+                    "timeShift": null, 
+                    "title": "InnoDB Row Operations", 
+                    "tooltip": {
+                        "shared": true, 
+                        "value_type": "individual"
+                    }, 
+                    "type": "graph", 
+                    "x-axis": true, 
+                    "y-axis": true, 
+                    "y_formats": [
+                        "short", 
+                        "short"
+                    ]
+                }, 
+                {
+                    "aliasColors": {}, 
+                    "bars": false, 
+                    "datasource": null, 
+                    "decimals": 2, 
+                    "editable": true, 
+                    "error": false, 
+                    "fill": 2, 
+                    "grid": {
+                        "leftLogBase": 1, 
+                        "leftMax": null, 
+                        "leftMin": null, 
+                        "rightLogBase": 1, 
+                        "rightMax": null, 
+                        "rightMin": null, 
+                        "threshold1": null, 
+                        "threshold1Color": "rgba(216, 200, 27, 0.27)", 
+                        "threshold2": null, 
+                        "threshold2Color": "rgba(234, 112, 112, 0.22)"
+                    }, 
+                    "id": 32, 
+                    "legend": {
+                        "alignAsTable": true, 
+                        "avg": true, 
+                        "current": false, 
+                        "hideEmpty": false, 
+                        "hideZero": false, 
+                        "max": true, 
+                        "min": true, 
+                        "rightSide": true, 
+                        "show": true, 
+                        "total": false, 
+                        "values": true
+                    }, 
+                    "lines": true, 
+                    "linewidth": 2, 
+                    "links": [], 
+                    "nullPointMode": "null", 
+                    "percentage": false, 
+                    "pointradius": 5, 
+                    "points": false, 
+                    "renderer": "flot", 
+                    "seriesOverrides": [], 
+                    "span": 12, 
+                    "stack": false, 
+                    "steppedLine": false, 
+                    "targets": [
+                        {
+                            "calculatedInterval": "2m", 
+                            "datasourceErrors": {}, 
+                            "errors": {}, 
+                            "expr": "topk(5, rate(mysql_global_status_commands_total{alias=\"$host\"}[$interval])>0) or topk(5, irate(mysql_global_status_commands_total{alias=\"$host\"}[5m])>0)", 
+                            "hide": false, 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "Com_{{ command }}", 
+                            "metric": "", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_commands_total%7Bcommand%3D%5C%22select%5C%22%2C%20alias%3D%5C%22%24host%5C%22%7D%5B%24interval%5D)%22%2C%22range_input%22%3A%2243201s%22%2C%22end_input%22%3A%222015-9-18%2015%3A28%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Atrue%2C%22tab%22%3A0%7D%5D", 
+                            "refId": "B", 
+                            "step": 300
+                        }
+                    ], 
+                    "timeFrom": null, 
+                    "timeShift": null, 
+                    "title": "Top MySQL Commands", 
+                    "tooltip": {
+                        "shared": true, 
+                        "value_type": "individual"
+                    }, 
+                    "type": "graph", 
+                    "x-axis": true, 
+                    "y-axis": true, 
+                    "y_formats": [
+                        "short", 
+                        "short"
+                    ]
+                }, 
+                {
+                    "aliasColors": {}, 
+                    "bars": false, 
+                    "datasource": null, 
+                    "decimals": 2, 
+                    "editable": true, 
+                    "error": false, 
+                    "fill": 2, 
+                    "grid": {
+                        "leftLogBase": 1, 
+                        "leftMax": null, 
+                        "leftMin": null, 
+                        "rightLogBase": 1, 
+                        "rightMax": null, 
+                        "rightMin": null, 
+                        "threshold1": null, 
+                        "threshold1Color": "rgba(216, 200, 27, 0.27)", 
+                        "threshold2": null, 
+                        "threshold2Color": "rgba(234, 112, 112, 0.22)"
+                    }, 
+                    "id": 33, 
+                    "legend": {
+                        "alignAsTable": true, 
+                        "avg": true, 
+                        "current": false, 
+                        "hideZero": true, 
+                        "max": true, 
+                        "min": true, 
+                        "rightSide": true, 
+                        "show": true, 
+                        "total": false, 
+                        "values": true
+                    }, 
+                    "lines": true, 
+                    "linewidth": 2, 
+                    "links": [], 
+                    "nullPointMode": "null", 
+                    "percentage": false, 
+                    "pointradius": 5, 
+                    "points": false, 
+                    "renderer": "flot", 
+                    "seriesOverrides": [], 
+                    "span": 12, 
+                    "stack": false, 
+                    "steppedLine": false, 
+                    "targets": [
+                        {
+                            "calculatedInterval": "2m", 
+                            "datasourceErrors": {}, 
+                            "errors": {}, 
+                            "expr": "topk(5, rate(mysql_global_status_handlers_total{alias=\"$host\"}[$interval])>0) or topk(5, irate(mysql_global_status_handlers_total{alias=\"$host\"}[5m])>0)", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "{{ handler }}", 
+                            "metric": "", 
+                            "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22rate(mysql_global_status_handler_read_rnd_next%7Balias%3D%5C%22%24host%5C%22%7D%5B%24interval%5D)%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-8-20%2016%3A0%22%2C%22step_input%22%3A%22%22%2C%22stacked%22%3Atrue%2C%22tab%22%3A0%7D%5D", 
+                            "refId": "J", 
+                            "step": 300
+                        }
+                    ], 
+                    "timeFrom": null, 
+                    "timeShift": null, 
+                    "title": "Top MySQL Handlers", 
+                    "tooltip": {
+                        "shared": true, 
+                        "value_type": "individual"
+                    }, 
+                    "type": "graph", 
+                    "x-axis": true, 
+                    "y-axis": true, 
+                    "y_formats": [
+                        "short", 
+                        "short"
+                    ]
+                }
+            ], 
+            "showTitle": true, 
+            "title": "MySQL Stats"
+        }
+    ], 
+    "schemaVersion": 8, 
+    "sharedCrosshair": true, 
+    "style": "dark", 
+    "tags": [
+        "OS", 
+        "Percona", 
+        "MySQL"
+    ], 
+    "templating": {
+        "list": [
+            {
+                "allFormat": "glob", 
+                "datasource": null, 
+                "includeAll": false, 
+                "label": "Host", 
+                "multi": false, 
+                "multiFormat": "regex values", 
+                "name": "host", 
+                "query": "label_values(alias)", 
+                "refresh": true, 
+                "refresh_on_load": false, 
+                "regex": "", 
+                "tagValuesQuery": "alias", 
+                "tagsQuery": "up", 
+                "type": "query", 
+                "useTags": false
+            }, 
+            {
+                "allFormat": "glob", 
+                "auto": true, 
+                "auto_count": 200, 
+                "current": {
+                    "tags": [], 
+                    "text": "auto", 
+                    "value": "$__auto_interval"
+                }, 
+                "datasource": null, 
+                "includeAll": false, 
+                "label": "Interval", 
+                "multi": false, 
+                "multiFormat": "glob", 
+                "name": "interval", 
+                "options": [
+                    {
+                        "selected": true, 
+                        "text": "auto", 
+                        "value": "$__auto_interval"
+                    }, 
+                    {
+                        "selected": false, 
+                        "text": "5s", 
+                        "value": "5s"
+                    }, 
+                    {
+                        "selected": false, 
+                        "text": "10s", 
+                        "value": "10s"
+                    }, 
+                    {
+                        "selected": false, 
+                        "text": "30s", 
+                        "value": "30s"
+                    }, 
+                    {
+                        "selected": false, 
+                        "text": "1m", 
+                        "value": "1m"
+                    }, 
+                    {
+                        "selected": false, 
+                        "text": "5m", 
+                        "value": "5m"
+                    }, 
+                    {
+                        "selected": false, 
+                        "text": "15m", 
+                        "value": "15m"
+                    }, 
+                    {
+                        "selected": false, 
+                        "text": "30m", 
+                        "value": "30m"
+                    }, 
+                    {
+                        "selected": false, 
+                        "text": "1h", 
+                        "value": "1h"
+                    }, 
+                    {
+                        "selected": false, 
+                        "text": "6h", 
+                        "value": "6h"
+                    }, 
+                    {
+                        "selected": false, 
+                        "text": "12h", 
+                        "value": "12h"
+                    }, 
+                    {
+                        "selected": false, 
+                        "text": "1d", 
+                        "value": "1d"
+                    }
+                ], 
+                "query": "5s,10s,30s,1m,5m,15m,30m,1h,6h,12h,1d", 
+                "refresh": false, 
+                "type": "interval"
+            }
+        ]
+    }, 
+    "time": {
+        "from": "now-12h", 
+        "to": "now"
+    }, 
+    "timepicker": {
+        "collapse": false, 
+        "enable": true, 
+        "notice": false, 
+        "now": true, 
+        "refresh_intervals": [
+            "5s", 
+            "10s", 
+            "30s", 
+            "1m", 
+            "5m", 
+            "15m", 
+            "30m", 
+            "1h", 
+            "2h", 
+            "1d"
+        ], 
+        "status": "Stable", 
+        "time_options": [
+            "5m", 
+            "15m", 
+            "1h", 
+            "6h", 
+            "12h", 
+            "24h", 
+            "2d", 
+            "7d", 
+            "30d"
+        ], 
+        "type": "timepicker"
+    }, 
+    "timezone": "browser", 
+    "title": "Summary Dashboard", 
+    "version": 0
+}
