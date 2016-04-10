@@ -5,6 +5,7 @@ The dashboards rely on `alias` label in the Prometheus config and on the small p
 
  * Cross Server Graphs
  * Disk Performance
+ * Disk Space
  * Galera Graphs
  * MySQL InnoDB Metrics
  * MySQL MyISAM Metrics
