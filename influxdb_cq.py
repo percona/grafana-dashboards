@@ -65,12 +65,12 @@ def main():
     # Recreate trending db
     if options.drop_db:
         client.drop_database(TRENDING_DB)
-        print '[%s] Database dropped.'
+        print '[%s] Database dropped.' % (TRENDING_DB,)
 
     dbs = [x['name'] for x in client.get_list_database()]
     if TRENDING_DB not in dbs:
         client.create_database(TRENDING_DB, if_not_exists=True)
-        print '[%s] Database created.'
+        print '[%s] Database created.' % (TRENDING_DB,)
 
     # Create new CQ
     count = 0
