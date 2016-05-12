@@ -1,11 +1,11 @@
-## Grafana dashboards for measuring MySQL performance with Prometheus and InfluxDB
+## Grafana dashboards for measuring MySQL performance with Prometheus
 
-This is a set of Grafana dashboards to be used with Prometheus and InfluxDB datasources for MySQL and system monitoring.
-The dashboards rely on `alias` label in the Prometheus config and on the small patch applied on Grafana 2.6.
+This is a set of Grafana dashboards to be used with Prometheus datasource for MySQL and system monitoring.
+The dashboards rely on `alias` label in the Prometheus config and depend from the small patch applied on Grafana.
 
  * Cross Server Graphs
- * Disk Performance
- * Disk Space
+ * Disk Performance (Grafana 3.0+)
+ * Disk Space (Grafana 3.0+)
  * Galera Graphs
  * MySQL InnoDB Metrics
  * MySQL MyISAM Metrics
@@ -20,10 +20,6 @@ The dashboards rely on `alias` label in the Prometheus config and on the small p
  * System Overview
  * TokuDB Graphs
  * Trends Dashboard
- * [InfluxDB] 1h downsample
- * [InfluxDB] 5m downsample
-
-For trending dashboards to work you need to create the continuous queries in InfluxDB, see [the instructions](influxdb.md).
 
 ### Setup instructions
 
@@ -59,7 +55,7 @@ So it is recommended to start using `alias` from scratch.
 
 How you name jobs is not important. However, "Prometheus" dashboard assumes the job name is `prometheus`.
 
-Also it is assumed that the exporters are run with this minimal set of options:
+Also it is assumed that the exporters are run at least with this minimal set of options:
 
  * node_exporter: `-collectors.enabled="diskstats,filesystem,loadavg,meminfo,netdev,stat,time,uname,vmstat"`
  * mysqld_exporter: `-collect.binlog_size=true -collect.info_schema.processlist=true`
@@ -76,10 +72,17 @@ If you wish you may import the individual dashboards via UI and ignore this and 
 
 #### Apply Grafana patch
 
-It is important to apply the following minor patch on your Grafana in order to use the interval template variable to get the good zoomable graphs. The fix is simply to allow variable in Step field on Grafana graph editor page. For more information, take a look at [PR#3757](https://github.com/grafana/grafana/pull/3757) and [PR#4257](https://github.com/grafana/grafana/pull/4257). We hope the last one will be released with the next Grafana version.
-    
+It is important to apply the following minor patch on your Grafana installation in order to use the interval template variable to get the good zoomable graphs. The fix is simply to allow variable in Step field of graph editor page. For more information, take a look at [PR#3757](https://github.com/grafana/grafana/pull/3757) and [PR#4257](https://github.com/grafana/grafana/pull/4257). We hope the last one will be released soon.
+
+Grafana 2.6.0:
+
     sed -i 's/step_input:""/step_input:c.target.step/; s/ HH:MM/ HH:mm/; s/,function(c)/,"templateSrv",function(c,g)/; s/expr:c.target.expr/expr:g.replace(c.target.expr,c.panel.scopedVars)/' /usr/share/grafana/public/app/plugins/datasource/prometheus/query_ctrl.js
     sed -i 's/h=a.interval/h=g.replace(a.interval, c.scopedVars)/' /usr/share/grafana/public/app/plugins/datasource/prometheus/datasource.js
+
+Grafana 3.0.1:
+
+    sed -i 's/h=b.interval/h=i.replace(b.interval, a.scopedVars)/' /usr/share/grafana/public/app/plugins/datasource/prometheus/datasource.js
+    sed -i 's/,range_input/.replace(\/"{\/g,"\\"").replace(\/}"\/g,"\\""),range_input/; s/step_input:""/step_input:this.target.step/' /usr/share/grafana/public/app/plugins/datasource/prometheus/query_ctrl.js
 
 Those changes are idemportent and do not break anything.
 

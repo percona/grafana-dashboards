@@ -37,12 +37,6 @@
                     "error": false, 
                     "fill": 2, 
                     "grid": {
-                        "leftLogBase": 2, 
-                        "leftMax": null, 
-                        "leftMin": 0, 
-                        "rightLogBase": 1, 
-                        "rightMax": null, 
-                        "rightMin": 0, 
                         "threshold1": null, 
                         "threshold1Color": "rgba(216, 76, 27, 0.5)", 
                         "threshold2": null, 
@@ -50,7 +44,6 @@
                         "thresholdLine": false
                     }, 
                     "id": 11, 
-                    "leftYAxisLabel": "", 
                     "legend": {
                         "alignAsTable": true, 
                         "avg": true, 
@@ -72,7 +65,6 @@
                     "pointradius": 1, 
                     "points": true, 
                     "renderer": "flot", 
-                    "rightYAxisLabel": "", 
                     "seriesOverrides": [], 
                     "span": 12, 
                     "stack": false, 
@@ -82,7 +74,7 @@
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "(rate(node_disk_read_time_ms{device!~\"dm-.+\", alias=\"$host\"}[$interval]) / rate(node_disk_reads_completed{device!~\"dm-.+\", alias=\"$host\"}[$interval])) or (irate(node_disk_read_time_ms{device!~\"dm-.+\", alias=\"$host\"}[5m]) / irate(node_disk_reads_completed{device!~\"dm-.+\", alias=\"$host\"}[5m]))", 
+                            "expr": "(rate(node_disk_read_time_ms{device=~\"$device\", alias=\"$host\"}[$interval]) / rate(node_disk_reads_completed{device=~\"$device\", alias=\"$host\"}[$interval])) or (irate(node_disk_read_time_ms{device=~\"$device\", alias=\"$host\"}[5m]) / irate(node_disk_reads_completed{device=~\"$device\", alias=\"$host\"}[5m]))", 
                             "interval": "$interval", 
                             "intervalFactor": 1, 
                             "legendFormat": "Read: {{ device }}", 
@@ -96,7 +88,7 @@
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "(rate(node_disk_write_time_ms{device!~\"dm-.+\", alias=\"$host\"}[$interval]) / rate(node_disk_writes_completed{device!~\"dm-.+\", alias=\"$host\"}[$interval])) or (irate(node_disk_write_time_ms{device!~\"dm-.+\", alias=\"$host\"}[5m]) / irate(node_disk_writes_completed{device!~\"dm-.+\", alias=\"$host\"}[5m]))", 
+                            "expr": "(rate(node_disk_write_time_ms{device=~\"$device\", alias=\"$host\"}[$interval]) / rate(node_disk_writes_completed{device=~\"$device\", alias=\"$host\"}[$interval])) or (irate(node_disk_write_time_ms{device=~\"$device\", alias=\"$host\"}[5m]) / irate(node_disk_writes_completed{device=~\"$device\", alias=\"$host\"}[5m]))", 
                             "interval": "$interval", 
                             "intervalFactor": 1, 
                             "legendFormat": "Write: {{ device }}", 
@@ -111,16 +103,32 @@
                     "timeShift": null, 
                     "title": "Disk Latency", 
                     "tooltip": {
+                        "msResolution": false, 
                         "shared": true, 
                         "value_type": "individual"
                     }, 
                     "transparent": false, 
                     "type": "graph", 
-                    "x-axis": true, 
-                    "y-axis": true, 
-                    "y_formats": [
-                        "ms", 
-                        "ms"
+                    "xaxis": {
+                        "show": true
+                    }, 
+                    "yaxes": [
+                        {
+                            "format": "ms", 
+                            "label": "", 
+                            "logBase": 2, 
+                            "max": null, 
+                            "min": 0, 
+                            "show": true
+                        }, 
+                        {
+                            "format": "ms", 
+                            "label": "", 
+                            "logBase": 1, 
+                            "max": null, 
+                            "min": 0, 
+                            "show": true
+                        }
                     ]
                 }, 
                 {
@@ -132,12 +140,6 @@
                     "error": false, 
                     "fill": 2, 
                     "grid": {
-                        "leftLogBase": 1, 
-                        "leftMax": null, 
-                        "leftMin": 0, 
-                        "rightLogBase": 1, 
-                        "rightMax": null, 
-                        "rightMin": 0, 
                         "threshold1": null, 
                         "threshold1Color": "rgba(216, 76, 27, 0.5)", 
                         "threshold2": null, 
@@ -145,7 +147,6 @@
                         "thresholdLine": false
                     }, 
                     "id": 15, 
-                    "leftYAxisLabel": "", 
                     "legend": {
                         "alignAsTable": true, 
                         "avg": true, 
@@ -167,7 +168,6 @@
                     "pointradius": 1, 
                     "points": false, 
                     "renderer": "flot", 
-                    "rightYAxisLabel": "", 
                     "seriesOverrides": [], 
                     "span": 12, 
                     "stack": false, 
@@ -177,7 +177,7 @@
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "rate(node_disk_reads_completed{device!~\"dm-.+\", alias=\"$host\"}[$interval]) or irate(node_disk_reads_completed{device!~\"dm-.+\", alias=\"$host\"}[5m])", 
+                            "expr": "rate(node_disk_reads_completed{device=~\"$device\", alias=\"$host\"}[$interval]) or irate(node_disk_reads_completed{device=~\"$device\", alias=\"$host\"}[5m])", 
                             "interval": "$interval", 
                             "intervalFactor": 1, 
                             "legendFormat": "Read: {{ device }}", 
@@ -191,7 +191,7 @@
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "rate(node_disk_writes_completed{device!~\"dm-.+\", alias=\"$host\"}[$interval]) or irate(node_disk_writes_completed{device!~\"dm-.+\", alias=\"$host\"}[5m])", 
+                            "expr": "rate(node_disk_writes_completed{device=~\"$device\", alias=\"$host\"}[$interval]) or irate(node_disk_writes_completed{device=~\"$device\", alias=\"$host\"}[5m])", 
                             "interval": "$interval", 
                             "intervalFactor": 1, 
                             "legendFormat": "Write: {{ device }}", 
@@ -206,16 +206,32 @@
                     "timeShift": null, 
                     "title": "Disk Operations", 
                     "tooltip": {
+                        "msResolution": false, 
                         "shared": true, 
                         "value_type": "individual"
                     }, 
                     "transparent": false, 
                     "type": "graph", 
-                    "x-axis": true, 
-                    "y-axis": true, 
-                    "y_formats": [
-                        "iops", 
-                        "short"
+                    "xaxis": {
+                        "show": true
+                    }, 
+                    "yaxes": [
+                        {
+                            "format": "iops", 
+                            "label": "", 
+                            "logBase": 1, 
+                            "max": null, 
+                            "min": 0, 
+                            "show": true
+                        }, 
+                        {
+                            "format": "short", 
+                            "label": "", 
+                            "logBase": 1, 
+                            "max": null, 
+                            "min": 0, 
+                            "show": true
+                        }
                     ]
                 }, 
                 {
@@ -227,12 +243,6 @@
                     "error": false, 
                     "fill": 2, 
                     "grid": {
-                        "leftLogBase": 1, 
-                        "leftMax": null, 
-                        "leftMin": 0, 
-                        "rightLogBase": 1, 
-                        "rightMax": null, 
-                        "rightMin": 0, 
                         "threshold1": null, 
                         "threshold1Color": "rgba(216, 76, 27, 0.5)", 
                         "threshold2": null, 
@@ -240,7 +250,6 @@
                         "thresholdLine": false
                     }, 
                     "id": 16, 
-                    "leftYAxisLabel": "", 
                     "legend": {
                         "alignAsTable": true, 
                         "avg": true, 
@@ -262,7 +271,6 @@
                     "pointradius": 1, 
                     "points": false, 
                     "renderer": "flot", 
-                    "rightYAxisLabel": "", 
                     "seriesOverrides": [], 
                     "span": 12, 
                     "stack": false, 
@@ -272,7 +280,7 @@
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "rate(node_disk_bytes_read{device!~\"dm-.+\", alias=\"$host\"}[$interval]) or irate(node_disk_bytes_read{device!~\"dm-.+\", alias=\"$host\"}[5m])", 
+                            "expr": "rate(node_disk_bytes_read{device=~\"$device\", alias=\"$host\"}[$interval]) or irate(node_disk_bytes_read{device=~\"$device\", alias=\"$host\"}[5m])", 
                             "interval": "$interval", 
                             "intervalFactor": 1, 
                             "legendFormat": "Read: {{ device }}", 
@@ -286,7 +294,7 @@
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "rate(node_disk_bytes_written{device!~\"dm-.+\", alias=\"$host\"}[$interval]) or irate(node_disk_bytes_written{device!~\"dm-.+\", alias=\"$host\"}[5m])", 
+                            "expr": "rate(node_disk_bytes_written{device=~\"$device\", alias=\"$host\"}[$interval]) or irate(node_disk_bytes_written{device=~\"$device\", alias=\"$host\"}[5m])", 
                             "interval": "$interval", 
                             "intervalFactor": 1, 
                             "legendFormat": "Write: {{ device }}", 
@@ -301,16 +309,32 @@
                     "timeShift": null, 
                     "title": "Disk Bandwidth", 
                     "tooltip": {
+                        "msResolution": false, 
                         "shared": true, 
                         "value_type": "individual"
                     }, 
                     "transparent": false, 
                     "type": "graph", 
-                    "x-axis": true, 
-                    "y-axis": true, 
-                    "y_formats": [
-                        "Bps", 
-                        "short"
+                    "xaxis": {
+                        "show": true
+                    }, 
+                    "yaxes": [
+                        {
+                            "format": "Bps", 
+                            "label": "", 
+                            "logBase": 1, 
+                            "max": null, 
+                            "min": 0, 
+                            "show": true
+                        }, 
+                        {
+                            "format": "short", 
+                            "label": "", 
+                            "logBase": 1, 
+                            "max": null, 
+                            "min": 0, 
+                            "show": true
+                        }
                     ]
                 }, 
                 {
@@ -322,12 +346,6 @@
                     "error": false, 
                     "fill": 2, 
                     "grid": {
-                        "leftLogBase": 1, 
-                        "leftMax": null, 
-                        "leftMin": 0, 
-                        "rightLogBase": 1, 
-                        "rightMax": null, 
-                        "rightMin": 0, 
                         "threshold1": null, 
                         "threshold1Color": "rgba(216, 76, 27, 0.5)", 
                         "threshold2": null, 
@@ -335,7 +353,6 @@
                         "thresholdLine": false
                     }, 
                     "id": 14, 
-                    "leftYAxisLabel": "", 
                     "legend": {
                         "alignAsTable": true, 
                         "avg": true, 
@@ -357,7 +374,6 @@
                     "pointradius": 1, 
                     "points": true, 
                     "renderer": "flot", 
-                    "rightYAxisLabel": "", 
                     "seriesOverrides": [], 
                     "span": 12, 
                     "stack": false, 
@@ -367,7 +383,7 @@
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "rate(node_disk_read_time_ms{device!~\"dm-.+\", alias=\"$host\"}[$interval])/1000 or irate(node_disk_read_time_ms{device!~\"dm-.+\", alias=\"$host\"}[5m])/1000", 
+                            "expr": "rate(node_disk_read_time_ms{device=~\"$device\", alias=\"$host\"}[$interval])/1000 or irate(node_disk_read_time_ms{device=~\"$device\", alias=\"$host\"}[5m])/1000", 
                             "interval": "$interval", 
                             "intervalFactor": 1, 
                             "legendFormat": "Read: {{ device }}", 
@@ -381,7 +397,7 @@
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "rate(node_disk_write_time_ms{device!~\"dm-.+\", alias=\"$host\"}[$interval])/1000 or irate(node_disk_write_time_ms{device!~\"dm-.+\", alias=\"$host\"}[5m])/1000", 
+                            "expr": "rate(node_disk_write_time_ms{device=~\"$device\", alias=\"$host\"}[$interval])/1000 or irate(node_disk_write_time_ms{device=~\"$device\", alias=\"$host\"}[5m])/1000", 
                             "interval": "$interval", 
                             "intervalFactor": 1, 
                             "legendFormat": "Write: {{ device }}", 
@@ -396,16 +412,32 @@
                     "timeShift": null, 
                     "title": "Disk Load", 
                     "tooltip": {
+                        "msResolution": false, 
                         "shared": true, 
                         "value_type": "individual"
                     }, 
                     "transparent": false, 
                     "type": "graph", 
-                    "x-axis": true, 
-                    "y-axis": true, 
-                    "y_formats": [
-                        "short", 
-                        "short"
+                    "xaxis": {
+                        "show": true
+                    }, 
+                    "yaxes": [
+                        {
+                            "format": "short", 
+                            "label": "", 
+                            "logBase": 1, 
+                            "max": null, 
+                            "min": 0, 
+                            "show": true
+                        }, 
+                        {
+                            "format": "short", 
+                            "label": "", 
+                            "logBase": 1, 
+                            "max": null, 
+                            "min": 0, 
+                            "show": true
+                        }
                     ]
                 }, 
                 {
@@ -417,12 +449,6 @@
                     "error": false, 
                     "fill": 2, 
                     "grid": {
-                        "leftLogBase": 1, 
-                        "leftMax": null, 
-                        "leftMin": 0, 
-                        "rightLogBase": 1, 
-                        "rightMax": null, 
-                        "rightMin": 0, 
                         "threshold1": null, 
                         "threshold1Color": "rgba(216, 76, 27, 0.5)", 
                         "threshold2": null, 
@@ -430,7 +456,6 @@
                         "thresholdLine": false
                     }, 
                     "id": 17, 
-                    "leftYAxisLabel": "", 
                     "legend": {
                         "alignAsTable": true, 
                         "avg": true, 
@@ -452,7 +477,6 @@
                     "pointradius": 1, 
                     "points": false, 
                     "renderer": "flot", 
-                    "rightYAxisLabel": "", 
                     "seriesOverrides": [], 
                     "span": 12, 
                     "stack": false, 
@@ -462,7 +486,7 @@
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "rate(node_disk_io_time_ms{device!~\"dm-.+\", alias=\"$host\"}[$interval])/1000 or irate(node_disk_io_time_ms{device!~\"dm-.+\", alias=\"$host\"}[5m])/1000", 
+                            "expr": "rate(node_disk_io_time_ms{device=~\"$device\", alias=\"$host\"}[$interval])/1000 or irate(node_disk_io_time_ms{device=~\"$device\", alias=\"$host\"}[5m])/1000", 
                             "interval": "$interval", 
                             "intervalFactor": 1, 
                             "legendFormat": "{{ device }}", 
@@ -477,16 +501,32 @@
                     "timeShift": null, 
                     "title": "Disk IO Utilization", 
                     "tooltip": {
+                        "msResolution": false, 
                         "shared": true, 
                         "value_type": "individual"
                     }, 
                     "transparent": false, 
                     "type": "graph", 
-                    "x-axis": true, 
-                    "y-axis": true, 
-                    "y_formats": [
-                        "percentunit", 
-                        "short"
+                    "xaxis": {
+                        "show": true
+                    }, 
+                    "yaxes": [
+                        {
+                            "format": "percentunit", 
+                            "label": "", 
+                            "logBase": 1, 
+                            "max": null, 
+                            "min": 0, 
+                            "show": true
+                        }, 
+                        {
+                            "format": "short", 
+                            "label": "", 
+                            "logBase": 1, 
+                            "max": null, 
+                            "min": 0, 
+                            "show": true
+                        }
                     ]
                 }, 
                 {
@@ -498,12 +538,6 @@
                     "error": false, 
                     "fill": 2, 
                     "grid": {
-                        "leftLogBase": 1, 
-                        "leftMax": null, 
-                        "leftMin": 0, 
-                        "rightLogBase": 1, 
-                        "rightMax": null, 
-                        "rightMin": 0, 
                         "threshold1": null, 
                         "threshold1Color": "rgba(216, 76, 27, 0.5)", 
                         "threshold2": null, 
@@ -511,7 +545,6 @@
                         "thresholdLine": false
                     }, 
                     "id": 18, 
-                    "leftYAxisLabel": "", 
                     "legend": {
                         "alignAsTable": true, 
                         "avg": true, 
@@ -533,7 +566,6 @@
                     "pointradius": 1, 
                     "points": true, 
                     "renderer": "flot", 
-                    "rightYAxisLabel": "", 
                     "seriesOverrides": [], 
                     "span": 12, 
                     "stack": false, 
@@ -543,7 +575,7 @@
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "(1 + rate(node_disk_reads_merged{device!~\"dm-.+\", alias=\"$host\"}[$interval]) / rate(node_disk_reads_completed{device!~\"dm-.+\", alias=\"$host\"}[$interval])) or (1 + irate(node_disk_reads_merged{device!~\"dm-.+\", alias=\"$host\"}[5m]) / irate(node_disk_reads_completed{device!~\"dm-.+\", alias=\"$host\"}[5m]))", 
+                            "expr": "(1 + rate(node_disk_reads_merged{device=~\"$device\", alias=\"$host\"}[$interval]) / rate(node_disk_reads_completed{device=~\"$device\", alias=\"$host\"}[$interval])) or (1 + irate(node_disk_reads_merged{device=~\"$device\", alias=\"$host\"}[5m]) / irate(node_disk_reads_completed{device=~\"$device\", alias=\"$host\"}[5m]))", 
                             "interval": "$interval", 
                             "intervalFactor": 1, 
                             "legendFormat": "Read Ratio: {{ device }}", 
@@ -557,7 +589,7 @@
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "(1 + rate(node_disk_writes_merged{device!~\"dm-.+\", alias=\"$host\"}[$interval]) / rate(node_disk_writes_completed{device!~\"dm-.+\", alias=\"$host\"}[$interval])) or (1 + irate(node_disk_writes_merged{device!~\"dm-.+\", alias=\"$host\"}[5m]) / irate(node_disk_writes_completed{device!~\"dm-.+\", alias=\"$host\"}[5m]))", 
+                            "expr": "(1 + rate(node_disk_writes_merged{device=~\"$device\", alias=\"$host\"}[$interval]) / rate(node_disk_writes_completed{device=~\"$device\", alias=\"$host\"}[$interval])) or (1 + irate(node_disk_writes_merged{device=~\"$device\", alias=\"$host\"}[5m]) / irate(node_disk_writes_completed{device=~\"$device\", alias=\"$host\"}[5m]))", 
                             "interval": "$interval", 
                             "intervalFactor": 1, 
                             "legendFormat": "Write Ratio: {{ device }}", 
@@ -572,16 +604,32 @@
                     "timeShift": null, 
                     "title": "Disk Operations Merge Ratio", 
                     "tooltip": {
+                        "msResolution": false, 
                         "shared": true, 
                         "value_type": "individual"
                     }, 
                     "transparent": false, 
                     "type": "graph", 
-                    "x-axis": true, 
-                    "y-axis": true, 
-                    "y_formats": [
-                        "short", 
-                        "short"
+                    "xaxis": {
+                        "show": true
+                    }, 
+                    "yaxes": [
+                        {
+                            "format": "short", 
+                            "label": "", 
+                            "logBase": 1, 
+                            "max": null, 
+                            "min": 0, 
+                            "show": true
+                        }, 
+                        {
+                            "format": "short", 
+                            "label": "", 
+                            "logBase": 1, 
+                            "max": null, 
+                            "min": 0, 
+                            "show": true
+                        }
                     ]
                 }, 
                 {
@@ -596,12 +644,6 @@
                     "error": false, 
                     "fill": 2, 
                     "grid": {
-                        "leftLogBase": 1, 
-                        "leftMax": null, 
-                        "leftMin": 0, 
-                        "rightLogBase": 1, 
-                        "rightMax": null, 
-                        "rightMin": 0, 
                         "threshold1": null, 
                         "threshold1Color": "rgba(216, 76, 27, 0.5)", 
                         "threshold2": null, 
@@ -609,7 +651,6 @@
                         "thresholdLine": false
                     }, 
                     "id": 20, 
-                    "leftYAxisLabel": "", 
                     "legend": {
                         "alignAsTable": true, 
                         "avg": true, 
@@ -631,7 +672,6 @@
                     "pointradius": 1, 
                     "points": true, 
                     "renderer": "flot", 
-                    "rightYAxisLabel": "", 
                     "seriesOverrides": [], 
                     "span": 12, 
                     "stack": false, 
@@ -641,7 +681,7 @@
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "rate(node_disk_sectors_read{alias=\"$host\", device!~\"dm-.+\"}[$interval]) * 512 / rate(node_disk_reads_completed{alias=\"$host\", device!~\"dm-.+\"}[$interval]) or irate(node_disk_sectors_read{alias=\"$host\", device!~\"dm-.+\"}[5m]) * 512 / irate(node_disk_reads_completed{alias=\"$host\", device!~\"dm-.+\"}[5m]) ", 
+                            "expr": "rate(node_disk_sectors_read{alias=\"$host\", device=~\"$device\"}[$interval]) * 512 / rate(node_disk_reads_completed{alias=\"$host\", device=~\"$device\"}[$interval]) or irate(node_disk_sectors_read{alias=\"$host\", device=~\"$device\"}[5m]) * 512 / irate(node_disk_reads_completed{alias=\"$host\", device=~\"$device\"}[5m]) ", 
                             "interval": "$interval", 
                             "intervalFactor": 1, 
                             "legendFormat": "Read size: {{ device }}", 
@@ -655,7 +695,7 @@
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "rate(node_disk_sectors_written{alias=\"$host\", device!~\"dm-.+\"}[$interval]) * 512 / rate(node_disk_writes_completed{alias=\"$host\", device!~\"dm-.+\"}[$interval]) or irate(node_disk_sectors_written{alias=\"$host\", device!~\"dm-.+\"}[5m]) * 512 / irate(node_disk_writes_completed{alias=\"$host\", device!~\"dm-.+\"}[5m]) ", 
+                            "expr": "rate(node_disk_sectors_written{alias=\"$host\", device=~\"$device\"}[$interval]) * 512 / rate(node_disk_writes_completed{alias=\"$host\", device=~\"$device\"}[$interval]) or irate(node_disk_sectors_written{alias=\"$host\", device=~\"$device\"}[5m]) * 512 / irate(node_disk_writes_completed{alias=\"$host\", device=~\"$device\"}[5m]) ", 
                             "interval": "$interval", 
                             "intervalFactor": 1, 
                             "legendFormat": "Write size: {{ device }}", 
@@ -670,16 +710,32 @@
                     "timeShift": null, 
                     "title": "Disk IO Size", 
                     "tooltip": {
+                        "msResolution": false, 
                         "shared": true, 
                         "value_type": "individual"
                     }, 
                     "transparent": false, 
                     "type": "graph", 
-                    "x-axis": true, 
-                    "y-axis": true, 
-                    "y_formats": [
-                        "bytes", 
-                        "short"
+                    "xaxis": {
+                        "show": true
+                    }, 
+                    "yaxes": [
+                        {
+                            "format": "bytes", 
+                            "label": "", 
+                            "logBase": 1, 
+                            "max": null, 
+                            "min": 0, 
+                            "show": true
+                        }, 
+                        {
+                            "format": "short", 
+                            "label": "", 
+                            "logBase": 1, 
+                            "max": null, 
+                            "min": 0, 
+                            "show": true
+                        }
                     ]
                 }
             ], 
@@ -709,7 +765,7 @@
             "title": "HELP"
         }
     ], 
-    "schemaVersion": 8, 
+    "schemaVersion": 12, 
     "sharedCrosshair": true, 
     "style": "dark", 
     "tags": [
@@ -720,23 +776,6 @@
         "list": [
             {
                 "allFormat": "glob", 
-                "datasource": null, 
-                "includeAll": false, 
-                "label": "Host", 
-                "multi": false, 
-                "multiFormat": "regex values", 
-                "name": "host", 
-                "query": "label_values(alias)", 
-                "refresh": true, 
-                "refresh_on_load": false, 
-                "regex": "", 
-                "tagValuesQuery": "alias", 
-                "tagsQuery": "up", 
-                "type": "query", 
-                "useTags": false
-            }, 
-            {
-                "allFormat": "glob", 
                 "auto": true, 
                 "auto_count": 200, 
                 "current": {
@@ -744,6 +783,7 @@
                     "value": "$__auto_interval"
                 }, 
                 "datasource": null, 
+                "hide": 0, 
                 "includeAll": false, 
                 "label": "Interval", 
                 "multi": false, 
@@ -817,8 +857,68 @@
                     }
                 ], 
                 "query": "2s,5s,10s,30s,1m,5m,15m,30m,1h,6h,12h,1d", 
-                "refresh": false, 
+                "refresh": 0, 
                 "type": "interval"
+            }, 
+            {
+                "allFormat": "glob", 
+                "datasource": null, 
+                "hide": 0, 
+                "includeAll": false, 
+                "label": "Host", 
+                "multi": false, 
+                "multiFormat": "regex values", 
+                "name": "host", 
+                "query": "label_values(alias)", 
+                "refresh": 1, 
+                "refresh_on_load": false, 
+                "regex": "", 
+                "tagValuesQuery": "alias", 
+                "tagsQuery": "up", 
+                "type": "query", 
+                "useTags": false
+            }, 
+            {
+                "allFormat": "glob", 
+                "current": {
+                    "tags": [], 
+                    "text": "All", 
+                    "value": [
+                        "$__all"
+                    ]
+                }, 
+                "datasource": null, 
+                "hide": 0, 
+                "includeAll": true, 
+                "label": "Device", 
+                "multi": true, 
+                "multiFormat": "regex values", 
+                "name": "device", 
+                "options": [
+                    {
+                        "selected": true, 
+                        "text": "All", 
+                        "value": "$__all"
+                    }, 
+                    {
+                        "selected": false, 
+                        "text": "xvdb", 
+                        "value": "xvdb"
+                    }, 
+                    {
+                        "selected": false, 
+                        "text": "xvdf", 
+                        "value": "xvdf"
+                    }
+                ], 
+                "query": "label_values(node_disk_reads_completed{alias=\"$host\", device!~\"dm-.+\"}, device)", 
+                "refresh": 1, 
+                "refresh_on_load": false, 
+                "regex": "", 
+                "tagValuesQuery": "alias", 
+                "tagsQuery": "up", 
+                "type": "query", 
+                "useTags": false
             }
         ]
     }, 
