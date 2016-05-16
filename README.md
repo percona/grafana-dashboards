@@ -27,6 +27,8 @@ The dashboards rely on `alias` label in the Prometheus config and depend from th
 
 ![image](assets/datasource.png)
 
+Prometheus should be a default datasource in Grafana. Otherwise, you will need to pick it up for each of the graphs.
+
 #### Edit Prometheus config
 
 The dashboards use `alias` label to work with individual hosts.
