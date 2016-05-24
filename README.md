@@ -1,6 +1,6 @@
 ## Grafana dashboards for measuring MySQL performance with Prometheus
 
-This is a set of Grafana dashboards to be used with Prometheus datasource for MySQL and system monitoring.
+This is a set of Grafana dashboards for MySQL and system monitoring to be used with Prometheus datasource.
 The dashboards rely on `alias` label in the Prometheus config and depend from the small patch applied on Grafana.
 
  * Cross Server Graphs
@@ -27,7 +27,7 @@ The dashboards rely on `alias` label in the Prometheus config and depend from th
 
 ![image](assets/datasource.png)
 
-Prometheus should be a default datasource in Grafana. Otherwise, you will need to pick it up for each of the graphs.
+The datasource should be named `Prometheus` so it is automatically picked up by the graphs.
 
 #### Edit Prometheus config
 
