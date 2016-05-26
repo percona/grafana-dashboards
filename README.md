@@ -8,6 +8,7 @@ The dashboards rely on `alias` label in the Prometheus config and depend from th
  * Disk Space (Grafana 3.0+)
  * Galera Graphs
  * MySQL InnoDB Metrics
+ * MySQL InnoDB Metrics Advanced
  * MySQL MyISAM Metrics
  * MySQL Overview
  * MySQL Performance Schema
