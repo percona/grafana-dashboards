@@ -22,6 +22,10 @@ The dashboards rely on `alias` label in the Prometheus config and depend from th
  * TokuDB Graphs
  * Trends Dashboard
 
+These dashboards are also a part of [Percona Monitoring and Management](https://www.percona.com/doc/percona-monitoring-and-management/index.html) project and [Percona App](https://grafana.net/plugins/percona-percona-app) for Grafana.
+
+Live demo is available at http://pmmdemo.percona.com/graph/
+
 ### Setup instructions
 
 #### Add datasource in Grafana
