@@ -6,7 +6,6 @@ The dashboards rely on the small patch applied on Grafana.
  * Cross Server Graphs
  * Disk Performance (Grafana 3.0+)
  * Disk Space (Grafana 3.0+)
- * Galera Graphs
  * MySQL InnoDB Metrics
  * MySQL InnoDB Metrics Advanced
  * MySQL MyISAM Metrics
@@ -16,6 +15,8 @@ The dashboards rely on the small patch applied on Grafana.
  * MySQL Replication
  * MySQL Table Statistics
  * MySQL User Statistics
+ * PXC/Galera Cluster Overview
+ * PXC/Galera Graphs
  * Prometheus
  * Summary Dashboard
  * System Overview
