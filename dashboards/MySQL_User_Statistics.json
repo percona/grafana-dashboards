@@ -15,21 +15,6 @@
             "height": "250px", 
             "panels": [
                 {
-                    "content": "These graphs require additional options to be enabled for mysqld_exporter: `-collect.info_schema.userstats=true`\n\nAlso `userstat` should be enabled on MySQL.", 
-                    "datasource": "Prometheus", 
-                    "editable": true, 
-                    "error": false, 
-                    "height": "50px", 
-                    "id": 36, 
-                    "links": [], 
-                    "mode": "markdown", 
-                    "span": 12, 
-                    "style": {}, 
-                    "title": "", 
-                    "transparent": true, 
-                    "type": "text"
-                }, 
-                {
                     "aliasColors": {}, 
                     "bars": false, 
                     "datasource": "Prometheus", 
@@ -88,7 +73,7 @@
                     "tooltip": {
                         "msResolution": false, 
                         "shared": true, 
-                        "sort": 0, 
+                        "sort": 2, 
                         "value_type": "individual"
                     }, 
                     "type": "graph", 
@@ -171,7 +156,7 @@
                     "tooltip": {
                         "msResolution": false, 
                         "shared": true, 
-                        "sort": 0, 
+                        "sort": 2, 
                         "value_type": "individual"
                     }, 
                     "type": "graph", 
@@ -248,7 +233,7 @@
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "topk(5, rate(mysql_info_schema_user_statistics_rows_fetched_total{instance=\"$host\"}[$interval])>0) or topk(5, irate(mysql_info_schema_user_statistics_rows_fetched_total{instance=\"$host\"}[5m])>0)", 
+                            "expr": "topk(5, rate(mysql_info_schema_user_statistics_rows_fetched_total{instance=\"$host\"}[$interval])>0) or topk(5, irate(mysql_info_schema_user_statistics_rows_fetched_total{instance=\"$host\"}[5m])>0) or topk(5, rate(mysql_info_schema_user_statistics_rows_read_total{instance=\"$host\"}[$interval])>0) or topk(5, irate(mysql_info_schema_user_statistics_rows_read_total{instance=\"$host\"}[5m])>0)", 
                             "interval": "$interval", 
                             "intervalFactor": 1, 
                             "legendFormat": "{{ user }}", 
@@ -259,11 +244,11 @@
                     ], 
                     "timeFrom": null, 
                     "timeShift": null, 
-                    "title": "Top Users by Rows Fetched", 
+                    "title": "Top Users by Rows Fetched/Read", 
                     "tooltip": {
                         "msResolution": false, 
                         "shared": true, 
-                        "sort": 0, 
+                        "sort": 2, 
                         "value_type": "individual"
                     }, 
                     "type": "graph", 
@@ -346,7 +331,7 @@
                     "tooltip": {
                         "msResolution": false, 
                         "shared": true, 
-                        "sort": 0, 
+                        "sort": 2, 
                         "value_type": "individual"
                     }, 
                     "type": "graph", 
@@ -437,7 +422,7 @@
                     "tooltip": {
                         "msResolution": false, 
                         "shared": true, 
-                        "sort": 0, 
+                        "sort": 2, 
                         "value_type": "individual"
                     }, 
                     "type": "graph", 
@@ -520,7 +505,7 @@
                     "tooltip": {
                         "msResolution": false, 
                         "shared": true, 
-                        "sort": 0, 
+                        "sort": 2, 
                         "value_type": "individual"
                     }, 
                     "type": "graph", 
@@ -546,6 +531,29 @@
                 }
             ], 
             "title": "Busy"
+        }, 
+        {
+            "collapse": false, 
+            "editable": true, 
+            "height": "50px", 
+            "panels": [
+                {
+                    "content": "These graphs are available only for [Percona Server](https://www.percona.com/doc/percona-server/5.6/diagnostics/user_stats.html) and [MariaDB](https://mariadb.com/kb/en/mariadb/user-statistics/) and require `userstat` variable turned on.", 
+                    "datasource": "Prometheus", 
+                    "editable": true, 
+                    "error": false, 
+                    "height": "50px", 
+                    "id": 36, 
+                    "links": [], 
+                    "mode": "markdown", 
+                    "span": 12, 
+                    "style": {}, 
+                    "title": "", 
+                    "transparent": true, 
+                    "type": "text"
+                }
+            ], 
+            "title": "Text"
         }
     ], 
     "schemaVersion": 12, 
@@ -628,7 +636,7 @@
                 "multi": false, 
                 "multiFormat": "regex values", 
                 "name": "host", 
-                "query": "label_values(mysql_up, instance)", 
+                "query": "label_values(mysql_info_schema_user_statistics_bytes_sent_total, instance)", 
                 "refresh": 1, 
                 "refresh_on_load": false, 
                 "regex": "", 
