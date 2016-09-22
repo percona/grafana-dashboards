@@ -34,6 +34,7 @@
                         "thresholdMarkers": true
                     }, 
                     "height": "125px", 
+                    "hideTimeOverride": false, 
                     "id": 8, 
                     "interval": "$interval", 
                     "isNew": true, 
@@ -80,6 +81,7 @@
                         }
                     ], 
                     "thresholds": "", 
+                    "timeFrom": null, 
                     "title": "Time Series", 
                     "type": "singlestat", 
                     "valueFontSize": "80%", 
@@ -113,6 +115,7 @@
                         "thresholdMarkers": true
                     }, 
                     "height": "125px", 
+                    "hideTimeOverride": false, 
                     "id": 9, 
                     "interval": "$interval", 
                     "isNew": true, 
@@ -159,6 +162,7 @@
                         }
                     ], 
                     "thresholds": "", 
+                    "timeFrom": null, 
                     "title": "Memory Chunks", 
                     "type": "singlestat", 
                     "valueFontSize": "80%", 
@@ -193,6 +197,7 @@
                         "thresholdMarkers": true
                     }, 
                     "height": "125px", 
+                    "hideTimeOverride": true, 
                     "id": 11, 
                     "interval": "$interval", 
                     "isNew": true, 
@@ -240,6 +245,8 @@
                         }
                     ], 
                     "thresholds": "", 
+                    "timeFrom": "12h", 
+                    "timeShift": null, 
                     "title": "HTTP Request Duration", 
                     "type": "singlestat", 
                     "valueFontSize": "80%", 
@@ -274,6 +281,7 @@
                         "thresholdMarkers": true
                     }, 
                     "height": "125px", 
+                    "hideTimeOverride": true, 
                     "id": 10, 
                     "interval": "$interval", 
                     "isNew": true, 
@@ -320,6 +328,7 @@
                         }
                     ], 
                     "thresholds": "", 
+                    "timeFrom": "12h", 
                     "title": "HTTP Response Size", 
                     "type": "singlestat", 
                     "valueFontSize": "80%", 
@@ -701,7 +710,7 @@
                     "links": [], 
                     "nullPointMode": "null", 
                     "percentage": false, 
-                    "pointradius": 5, 
+                    "pointradius": 2, 
                     "points": false, 
                     "renderer": "flot", 
                     "seriesOverrides": [], 
@@ -724,7 +733,7 @@
                     "title": "Targets Heartbeat by job/instance", 
                     "tooltip": {
                         "msResolution": false, 
-                        "shared": true, 
+                        "shared": false, 
                         "sort": 0, 
                         "value_type": "individual"
                     }, 
@@ -752,6 +761,94 @@
             ], 
             "showTitle": false, 
             "title": "Prometheus Statistics"
+        }, 
+        {
+            "collapse": false, 
+            "editable": true, 
+            "height": "250px", 
+            "panels": [
+                {
+                    "columns": [
+                        {
+                            "text": "Current", 
+                            "value": "current"
+                        }
+                    ], 
+                    "datasource": "Prometheus", 
+                    "editable": true, 
+                    "error": false, 
+                    "fontSize": "100%", 
+                    "height": "420px", 
+                    "hideTimeOverride": true, 
+                    "id": 13, 
+                    "isNew": true, 
+                    "links": [], 
+                    "pageSize": null, 
+                    "scroll": false, 
+                    "showHeader": true, 
+                    "sort": {
+                        "col": 1, 
+                        "desc": true
+                    }, 
+                    "span": 6, 
+                    "styles": [], 
+                    "targets": [
+                        {
+                            "expr": "topk(10, count({__name__=~\".+\"})  by (__name__))", 
+                            "interval": "5m", 
+                            "intervalFactor": 2, 
+                            "legendFormat": "{{ __name__ }}", 
+                            "refId": "A", 
+                            "step": 600
+                        }
+                    ], 
+                    "timeFrom": "5m", 
+                    "title": "Top 10 metrics by time series count", 
+                    "transform": "timeseries_aggregations", 
+                    "type": "table"
+                }, 
+                {
+                    "columns": [
+                        {
+                            "text": "Current", 
+                            "value": "current"
+                        }
+                    ], 
+                    "datasource": "Prometheus", 
+                    "editable": true, 
+                    "error": false, 
+                    "fontSize": "100%", 
+                    "height": "420px", 
+                    "hideTimeOverride": true, 
+                    "id": 14, 
+                    "isNew": true, 
+                    "links": [], 
+                    "pageSize": null, 
+                    "scroll": false, 
+                    "showHeader": true, 
+                    "sort": {
+                        "col": 1, 
+                        "desc": true
+                    }, 
+                    "span": 6, 
+                    "styles": [], 
+                    "targets": [
+                        {
+                            "expr": "topk(10, count({__name__=~\".+\"})  by (instance))", 
+                            "interval": "5m", 
+                            "intervalFactor": 2, 
+                            "legendFormat": "{{ instance }}", 
+                            "refId": "A", 
+                            "step": 600
+                        }
+                    ], 
+                    "timeFrom": "5m", 
+                    "title": "Top 10 hosts by time series count", 
+                    "transform": "timeseries_aggregations", 
+                    "type": "table"
+                }
+            ], 
+            "title": "New row"
         }
     ], 
     "schemaVersion": 12, 
