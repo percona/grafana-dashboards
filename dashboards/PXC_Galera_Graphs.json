@@ -18,7 +18,7 @@
                     "aliasColors": {}, 
                     "bars": false, 
                     "datasource": "Prometheus", 
-                    "decimals": 0, 
+                    "decimals": null, 
                     "editable": true, 
                     "error": false, 
                     "fill": 2, 
@@ -205,7 +205,7 @@
                     "aliasColors": {}, 
                     "bars": false, 
                     "datasource": "Prometheus", 
-                    "decimals": 0, 
+                    "decimals": null, 
                     "editable": true, 
                     "error": false, 
                     "fill": 0, 
@@ -235,7 +235,13 @@
                     "pointradius": 5, 
                     "points": false, 
                     "renderer": "flot", 
-                    "seriesOverrides": [], 
+                    "seriesOverrides": [
+                        {
+                            "alias": "Paused due to Flow Control", 
+                            "linewidth": 1, 
+                            "yaxis": 2
+                        }
+                    ], 
                     "span": 6, 
                     "stack": false, 
                     "steppedLine": false, 
@@ -244,7 +250,7 @@
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "mysql_global_status_wsrep_flow_control_recv{instance=\"$host\"}", 
+                            "expr": "rate(mysql_global_status_wsrep_flow_control_recv{instance=\"$host\"}[$interval]) or irate(mysql_global_status_wsrep_flow_control_recv{instance=\"$host\"}[5m])", 
                             "interval": "$interval", 
                             "intervalFactor": 1, 
                             "legendFormat": "FC Messages Received", 
@@ -256,7 +262,7 @@
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "mysql_global_status_wsrep_flow_control_sent{instance=\"$host\"}", 
+                            "expr": "rate(mysql_global_status_wsrep_flow_control_sent{instance=\"$host\"}[$interval]) or irate(mysql_global_status_wsrep_flow_control_sent{instance=\"$host\"}[5m])", 
                             "interval": "$interval", 
                             "intervalFactor": 1, 
                             "legendFormat": "FC Messages Sent", 
@@ -269,10 +275,10 @@
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "mysql_global_status_wsrep_flow_control_paused{instance=\"$host\"}", 
+                            "expr": "(rate(mysql_global_status_wsrep_flow_control_paused_ns{instance=\"$host\"}[$interval]) or irate(mysql_global_status_wsrep_flow_control_paused_ns{instance=\"$host\"}[5m]))/1000000000", 
                             "interval": "$interval", 
                             "intervalFactor": 1, 
-                            "legendFormat": "FC Messages Paused", 
+                            "legendFormat": "Paused due to Flow Control", 
                             "metric": "", 
                             "refId": "C", 
                             "step": 300, 
@@ -301,7 +307,7 @@
                             "show": true
                         }, 
                         {
-                            "format": "short", 
+                            "format": "percentunit", 
                             "logBase": 1, 
                             "max": null, 
                             "min": 0, 
@@ -335,7 +341,7 @@
                     "aliasColors": {}, 
                     "bars": false, 
                     "datasource": "Prometheus", 
-                    "decimals": 0, 
+                    "decimals": null, 
                     "editable": true, 
                     "error": false, 
                     "fill": 2, 
@@ -411,14 +417,14 @@
                     }, 
                     "yaxes": [
                         {
-                            "format": "short", 
+                            "format": "ops", 
                             "logBase": 1, 
                             "max": null, 
                             "min": 0, 
                             "show": true
                         }, 
                         {
-                            "format": "short", 
+                            "format": "ops", 
                             "logBase": 1, 
                             "max": null, 
                             "min": 0, 
@@ -452,7 +458,7 @@
                     "aliasColors": {}, 
                     "bars": false, 
                     "datasource": "Prometheus", 
-                    "decimals": 0, 
+                    "decimals": null, 
                     "editable": true, 
                     "error": false, 
                     "fill": 0, 
@@ -582,7 +588,7 @@
                     "aliasColors": {}, 
                     "bars": false, 
                     "datasource": "Prometheus", 
-                    "decimals": 0, 
+                    "decimals": null, 
                     "editable": true, 
                     "error": false, 
                     "fill": 2, 
@@ -933,7 +939,7 @@
                             "step": 3600
                         }
                     ], 
-                    "timeFrom": null, 
+                    "timeFrom": "24h", 
                     "timeShift": null, 
                     "title": "Galera Network Usage Hourly", 
                     "tooltip": {
@@ -972,7 +978,8 @@
     "style": "dark", 
     "tags": [
         "MySQL", 
-        "Percona"
+        "Percona", 
+        "HA"
     ], 
     "templating": {
         "list": [
@@ -1043,11 +1050,26 @@
                 "datasource": "Prometheus", 
                 "hide": 0, 
                 "includeAll": false, 
+                "label": "Cluster", 
+                "multi": false, 
+                "multiFormat": "regex values", 
+                "name": "cluster", 
+                "query": "label_values(mysql_galera_variables_info, wsrep_cluster_name)", 
+                "refresh": 1, 
+                "refresh_on_load": false, 
+                "regex": "", 
+                "type": "query"
+            }, 
+            {
+                "allFormat": "glob", 
+                "datasource": "Prometheus", 
+                "hide": 0, 
+                "includeAll": false, 
                 "label": "Host", 
                 "multi": false, 
                 "multiFormat": "regex values", 
                 "name": "host", 
-                "query": "label_values(mysql_global_status_wsrep_cluster_size, instance)", 
+                "query": "label_values(mysql_galera_variables_info{wsrep_cluster_name =\"$cluster\"}, instance)", 
                 "refresh": 1, 
                 "refresh_on_load": false, 
                 "regex": "", 
