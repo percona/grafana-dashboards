@@ -18,6 +18,7 @@ The dashboards rely on the small patch applied on Grafana.
  * PXC/Galera Cluster Overview
  * PXC/Galera Graphs
  * Prometheus
+ * ProxySQL Overview
  * Summary Dashboard
  * System Overview
  * TokuDB Graphs
