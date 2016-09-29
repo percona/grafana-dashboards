@@ -7,6 +7,7 @@
     "hideControls": true, 
     "id": null, 
     "links": [], 
+    "refresh": false, 
     "rows": [
         {
             "collapse": false, 
@@ -365,14 +366,14 @@
                     "id": 2, 
                     "isNew": true, 
                     "legend": {
-                        "alignAsTable": false, 
-                        "avg": false, 
+                        "alignAsTable": true, 
+                        "avg": true, 
                         "current": false, 
-                        "max": false, 
-                        "min": false, 
-                        "show": false, 
+                        "max": true, 
+                        "min": true, 
+                        "show": true, 
                         "total": false, 
-                        "values": false
+                        "values": true
                     }, 
                     "lines": true, 
                     "linewidth": 2, 
@@ -435,33 +436,33 @@
                     "datasource": "Prometheus", 
                     "editable": true, 
                     "error": false, 
-                    "fill": 2, 
+                    "fill": 0, 
                     "grid": {
                         "threshold1": null, 
                         "threshold1Color": "rgba(216, 200, 27, 0.27)", 
                         "threshold2": null, 
-                        "threshold2Color": "rgba(234, 112, 112, 0.22)"
+                        "threshold2Color": "rgba(234, 112, 112, 0.22)", 
+                        "thresholdLine": false
                     }, 
-                    "id": 1, 
+                    "id": 12, 
                     "isNew": true, 
                     "legend": {
-                        "alignAsTable": false, 
-                        "avg": false, 
+                        "alignAsTable": true, 
+                        "avg": true, 
                         "current": false, 
-                        "hideZero": true, 
-                        "max": false, 
-                        "min": false, 
+                        "max": true, 
+                        "min": true, 
                         "rightSide": false, 
                         "show": true, 
                         "total": false, 
-                        "values": false
+                        "values": true
                     }, 
                     "lines": true, 
                     "linewidth": 2, 
                     "links": [], 
                     "nullPointMode": "null", 
                     "percentage": false, 
-                    "pointradius": 5, 
+                    "pointradius": 2, 
                     "points": false, 
                     "renderer": "flot", 
                     "seriesOverrides": [], 
@@ -470,10 +471,10 @@
                     "steppedLine": false, 
                     "targets": [
                         {
-                            "expr": "sum(rate(http_requests_total{job=\"prometheus\"}[$interval])) by (handler) or sum(irate(http_requests_total{job=\"prometheus\"}[5m])) by (handler)", 
+                            "expr": "count(up)", 
                             "interval": "$interval", 
                             "intervalFactor": 1, 
-                            "legendFormat": "{{ handler }}", 
+                            "legendFormat": "Count", 
                             "metric": "", 
                             "refId": "A", 
                             "step": 300
@@ -481,12 +482,12 @@
                     ], 
                     "timeFrom": null, 
                     "timeShift": null, 
-                    "title": "HTTP Requests by Handler", 
+                    "title": "Prometheus Targets", 
                     "tooltip": {
                         "msResolution": false, 
-                        "shared": true, 
+                        "shared": false, 
                         "sort": 0, 
-                        "value_type": "cumulative"
+                        "value_type": "individual"
                     }, 
                     "type": "graph", 
                     "xaxis": {
@@ -495,7 +496,6 @@
                     "yaxes": [
                         {
                             "format": "short", 
-                            "label": "", 
                             "logBase": 1, 
                             "max": null, 
                             "min": 0, 
@@ -503,14 +503,21 @@
                         }, 
                         {
                             "format": "short", 
-                            "label": "", 
                             "logBase": 1, 
                             "max": null, 
                             "min": 0, 
                             "show": true
                         }
                     ]
-                }, 
+                }
+            ], 
+            "title": "New row"
+        }, 
+        {
+            "collapse": false, 
+            "editable": true, 
+            "height": "250px", 
+            "panels": [
                 {
                     "aliasColors": {}, 
                     "bars": false, 
@@ -527,13 +534,14 @@
                     "id": 3, 
                     "isNew": true, 
                     "legend": {
-                        "avg": false, 
+                        "alignAsTable": true, 
+                        "avg": true, 
                         "current": false, 
-                        "max": false, 
-                        "min": false, 
-                        "show": false, 
+                        "max": true, 
+                        "min": true, 
+                        "show": true, 
                         "total": false, 
-                        "values": false
+                        "values": true
                     }, 
                     "lines": true, 
                     "linewidth": 2, 
@@ -545,7 +553,7 @@
                     "renderer": "flot", 
                     "seriesOverrides": [
                         {
-                            "alias": "cpu", 
+                            "alias": "CPU", 
                             "color": "#E24D42"
                         }
                     ], 
@@ -558,7 +566,7 @@
                             "hide": false, 
                             "interval": "$interval", 
                             "intervalFactor": 1, 
-                            "legendFormat": "cpu", 
+                            "legendFormat": "CPU", 
                             "metric": "", 
                             "refId": "A", 
                             "step": 300
@@ -612,13 +620,15 @@
                     "id": 5, 
                     "isNew": true, 
                     "legend": {
-                        "avg": false, 
+                        "alignAsTable": true, 
+                        "avg": true, 
                         "current": false, 
-                        "max": false, 
-                        "min": false, 
-                        "show": false, 
+                        "max": true, 
+                        "min": true, 
+                        "rightSide": false, 
+                        "show": true, 
                         "total": false, 
-                        "values": false
+                        "values": true
                     }, 
                     "lines": true, 
                     "linewidth": 2, 
@@ -630,7 +640,7 @@
                     "renderer": "flot", 
                     "seriesOverrides": [
                         {
-                            "alias": "memory", 
+                            "alias": "Memory", 
                             "color": "#EF843C"
                         }
                     ], 
@@ -642,7 +652,7 @@
                             "expr": "process_resident_memory_bytes{job=\"prometheus\"}", 
                             "interval": "$interval", 
                             "intervalFactor": 1, 
-                            "legendFormat": "memory", 
+                            "legendFormat": "Memory", 
                             "metric": "", 
                             "refId": "A", 
                             "step": 300
@@ -677,27 +687,37 @@
                             "show": true
                         }
                     ]
-                }, 
+                }
+            ], 
+            "showTitle": false, 
+            "title": "Prometheus Statistics"
+        }, 
+        {
+            "collapse": false, 
+            "editable": true, 
+            "height": "250px", 
+            "panels": [
                 {
                     "aliasColors": {}, 
                     "bars": false, 
                     "datasource": "Prometheus", 
                     "editable": true, 
                     "error": false, 
-                    "fill": 0, 
+                    "fill": 2, 
                     "grid": {
                         "threshold1": null, 
                         "threshold1Color": "rgba(216, 200, 27, 0.27)", 
                         "threshold2": null, 
-                        "threshold2Color": "rgba(234, 112, 112, 0.22)", 
-                        "thresholdLine": false
+                        "threshold2Color": "rgba(234, 112, 112, 0.22)"
                     }, 
-                    "id": 12, 
+                    "id": 1, 
                     "isNew": true, 
                     "legend": {
                         "alignAsTable": true, 
                         "avg": false, 
                         "current": false, 
+                        "hideEmpty": false, 
+                        "hideZero": true, 
                         "max": false, 
                         "min": false, 
                         "rightSide": true, 
@@ -706,23 +726,23 @@
                         "values": false
                     }, 
                     "lines": true, 
-                    "linewidth": 1, 
+                    "linewidth": 2, 
                     "links": [], 
                     "nullPointMode": "null", 
                     "percentage": false, 
-                    "pointradius": 2, 
+                    "pointradius": 5, 
                     "points": false, 
                     "renderer": "flot", 
                     "seriesOverrides": [], 
                     "span": 12, 
-                    "stack": true, 
+                    "stack": false, 
                     "steppedLine": false, 
                     "targets": [
                         {
-                            "expr": "up", 
+                            "expr": "sum(rate(http_requests_total{job=\"prometheus\"}[$interval])) by (handler) or sum(irate(http_requests_total{job=\"prometheus\"}[5m])) by (handler)", 
                             "interval": "$interval", 
                             "intervalFactor": 1, 
-                            "legendFormat": "{{ job }}/{{ instance }}", 
+                            "legendFormat": "{{ handler }}", 
                             "metric": "", 
                             "refId": "A", 
                             "step": 300
@@ -730,12 +750,12 @@
                     ], 
                     "timeFrom": null, 
                     "timeShift": null, 
-                    "title": "Targets Heartbeat by job/instance", 
+                    "title": "HTTP Requests by Handler", 
                     "tooltip": {
                         "msResolution": false, 
-                        "shared": false, 
-                        "sort": 0, 
-                        "value_type": "individual"
+                        "shared": true, 
+                        "sort": 2, 
+                        "value_type": "cumulative"
                     }, 
                     "type": "graph", 
                     "xaxis": {
@@ -744,6 +764,7 @@
                     "yaxes": [
                         {
                             "format": "short", 
+                            "label": "", 
                             "logBase": 1, 
                             "max": null, 
                             "min": 0, 
@@ -751,6 +772,7 @@
                         }, 
                         {
                             "format": "short", 
+                            "label": "", 
                             "logBase": 1, 
                             "max": null, 
                             "min": 0, 
@@ -759,8 +781,7 @@
                     ]
                 }
             ], 
-            "showTitle": false, 
-            "title": "Prometheus Statistics"
+            "title": "New row"
         }, 
         {
             "collapse": false, 
