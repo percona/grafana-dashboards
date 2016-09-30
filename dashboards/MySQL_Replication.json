@@ -393,15 +393,15 @@
                     }, 
                     "id": 16, 
                     "legend": {
-                        "alignAsTable": false, 
-                        "avg": false, 
+                        "alignAsTable": true, 
+                        "avg": true, 
                         "current": false, 
-                        "max": false, 
-                        "min": false, 
-                        "rightSide": false, 
-                        "show": false, 
+                        "max": true, 
+                        "min": true, 
+                        "rightSide": true, 
+                        "show": true, 
                         "total": false, 
-                        "values": false
+                        "values": true
                     }, 
                     "lines": true, 
                     "linewidth": 2, 
@@ -413,7 +413,7 @@
                     "renderer": "flot", 
                     "seriesOverrides": [
                         {
-                            "alias": "Seconds_Behind_Master", 
+                            "alias": "Lag", 
                             "color": "#E24D42"
                         }
                     ], 
@@ -428,7 +428,7 @@
                             "expr": "mysql_slave_status_seconds_behind_master{instance=\"$host\"}", 
                             "interval": "$interval", 
                             "intervalFactor": 1, 
-                            "legendFormat": "Seconds_Behind_Master", 
+                            "legendFormat": "Lag", 
                             "metric": "", 
                             "refId": "A", 
                             "step": 300
@@ -463,12 +463,21 @@
                             "show": true
                         }
                     ]
-                }, 
+                }
+            ], 
+            "showTitle": false, 
+            "title": "Replication"
+        }, 
+        {
+            "collapse": false, 
+            "editable": true, 
+            "height": "250px", 
+            "panels": [
                 {
                     "aliasColors": {}, 
                     "bars": false, 
                     "datasource": "Prometheus", 
-                    "decimals": 2, 
+                    "decimals": null, 
                     "editable": true, 
                     "error": false, 
                     "fill": 2, 
@@ -486,7 +495,7 @@
                         "max": true, 
                         "min": true, 
                         "rightSide": false, 
-                        "show": false, 
+                        "show": true, 
                         "total": false, 
                         "values": true
                     }, 
@@ -637,7 +646,15 @@
                             "show": true
                         }
                     ]
-                }, 
+                }
+            ], 
+            "title": "New row"
+        }, 
+        {
+            "collapse": false, 
+            "editable": true, 
+            "height": "250px", 
+            "panels": [
                 {
                     "aliasColors": {}, 
                     "bars": false, 
@@ -654,15 +671,15 @@
                     }, 
                     "id": 34, 
                     "legend": {
-                        "alignAsTable": false, 
-                        "avg": false, 
+                        "alignAsTable": true, 
+                        "avg": true, 
                         "current": false, 
-                        "max": false, 
-                        "min": false, 
+                        "max": true, 
+                        "min": true, 
                         "rightSide": false, 
-                        "show": false, 
+                        "show": true, 
                         "total": false, 
-                        "values": false
+                        "values": true
                     }, 
                     "lines": true, 
                     "linewidth": 2, 
@@ -811,12 +828,20 @@
                             "show": true
                         }
                     ]
-                }, 
+                }
+            ], 
+            "title": "New row"
+        }, 
+        {
+            "collapse": false, 
+            "editable": true, 
+            "height": "250px", 
+            "panels": [
                 {
                     "aliasColors": {}, 
                     "bars": false, 
                     "datasource": "Prometheus", 
-                    "decimals": 2, 
+                    "decimals": null, 
                     "editable": true, 
                     "error": false, 
                     "fill": 2, 
@@ -834,7 +859,7 @@
                         "max": true, 
                         "min": true, 
                         "rightSide": false, 
-                        "show": false, 
+                        "show": true, 
                         "total": false, 
                         "values": true
                     }, 
@@ -987,8 +1012,7 @@
                     ]
                 }
             ], 
-            "showTitle": false, 
-            "title": "Replication"
+            "title": "New row"
         }
     ], 
     "schemaVersion": 12, 
@@ -1071,7 +1095,7 @@
                 "multi": false, 
                 "multiFormat": "regex values", 
                 "name": "host", 
-                "query": "label_values(mysql_binlog_files, instance)", 
+                "query": "label_values({__name__=~\"(mysql_binlog_files|mysql_slave_status_seconds_behind_master)\"}, instance)", 
                 "refresh": 1, 
                 "refresh_on_load": false, 
                 "regex": "", 
