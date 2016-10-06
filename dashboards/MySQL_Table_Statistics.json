@@ -93,7 +93,7 @@
                     ], 
                     "targets": [
                         {
-                            "expr": "topk(10, sum(mysql_info_schema_table_rows{instance=\"$host\"}) by (schema, table))", 
+                            "expr": "topk(10, sum(mysql_info_schema_table_rows{instance=\"$host\"}) by (schema, table)) > 0", 
                             "interval": "5m", 
                             "intervalFactor": 1, 
                             "legendFormat": "{{ schema }}.{{ table }}", 
@@ -148,7 +148,7 @@
                     ], 
                     "targets": [
                         {
-                            "expr": "topk(10, sum(mysql_info_schema_table_size{instance=\"$host\", component!=\"data_free\"}) by (schema, table))", 
+                            "expr": "topk(10, sum(mysql_info_schema_table_size{instance=\"$host\", component!=\"data_free\"}) by (schema, table)) > 0", 
                             "interval": "5m", 
                             "intervalFactor": 1, 
                             "legendFormat": "{{ schema }}.{{ table }}", 
@@ -171,53 +171,100 @@
             "panels": [
                 {
                     "aliasColors": {
-                        "Data + Index": "#0A437C", 
-                        "Freeable": "#EAB839"
+                        "Data + Index Size": "#65C5DB"
                     }, 
-                    "cacheTimeout": null, 
+                    "bars": false, 
                     "datasource": "Prometheus", 
+                    "decimals": 2, 
                     "editable": true, 
                     "error": false, 
-                    "fontSize": "80%", 
-                    "format": "bytes", 
-                    "hideTimeOverride": true, 
-                    "id": 52, 
-                    "interval": null, 
-                    "isNew": true, 
-                    "legend": {
-                        "show": true, 
-                        "values": true
+                    "fill": 2, 
+                    "grid": {
+                        "threshold1": null, 
+                        "threshold1Color": "rgba(216, 200, 27, 0.27)", 
+                        "threshold2": null, 
+                        "threshold2Color": "rgba(234, 112, 112, 0.22)"
                     }, 
-                    "legendType": "Right side", 
+                    "id": 54, 
+                    "legend": {
+                        "alignAsTable": false, 
+                        "avg": false, 
+                        "current": false, 
+                        "hideEmpty": false, 
+                        "max": false, 
+                        "min": false, 
+                        "rightSide": false, 
+                        "show": true, 
+                        "total": false, 
+                        "values": false
+                    }, 
+                    "lines": true, 
+                    "linewidth": 2, 
                     "links": [], 
-                    "maxDataPoints": 3, 
-                    "nullPointMode": "connected", 
-                    "pieType": "pie", 
+                    "nullPointMode": "null", 
+                    "percentage": false, 
+                    "pointradius": 5, 
+                    "points": false, 
+                    "renderer": "flot", 
+                    "seriesOverrides": [], 
                     "span": 6, 
-                    "strokeWidth": "1", 
+                    "stack": false, 
+                    "steppedLine": false, 
                     "targets": [
                         {
+                            "calculatedInterval": "2m", 
+                            "datasourceErrors": {}, 
+                            "errors": {}, 
                             "expr": "sum(mysql_info_schema_table_size{instance=\"$host\", component!=\"data_free\"})", 
-                            "interval": "5m", 
+                            "interval": "$interval", 
                             "intervalFactor": 1, 
-                            "legendFormat": "Data + Index", 
+                            "legendFormat": "Data + Index Size", 
+                            "metric": "", 
                             "refId": "A", 
                             "step": 300
                         }, 
                         {
+                            "calculatedInterval": "2m", 
+                            "datasourceErrors": {}, 
+                            "errors": {}, 
                             "expr": "sum(mysql_info_schema_table_size{instance=\"$host\", component=\"data_free\"})", 
-                            "interval": "5m", 
+                            "interval": "$interval", 
                             "intervalFactor": 1, 
-                            "legendFormat": "Freeable", 
+                            "legendFormat": "Freeable Size", 
+                            "metric": "", 
                             "refId": "B", 
                             "step": 300
                         }
                     ], 
-                    "timeFrom": "5m", 
+                    "timeFrom": null, 
+                    "timeShift": null, 
                     "title": "Total Database Size", 
-                    "transparent": false, 
-                    "type": "grafana-piechart-panel", 
-                    "valueName": "current"
+                    "tooltip": {
+                        "msResolution": false, 
+                        "shared": true, 
+                        "sort": 0, 
+                        "value_type": "individual"
+                    }, 
+                    "type": "graph", 
+                    "xaxis": {
+                        "show": true
+                    }, 
+                    "yaxes": [
+                        {
+                            "format": "bytes", 
+                            "logBase": 1, 
+                            "max": null, 
+                            "min": 0, 
+                            "show": true
+                        }, 
+                        {
+                            "format": "short", 
+                            "logBase": 1, 
+                            "max": null, 
+                            "min": 0, 
+                            "show": true
+                        }
+                    ]
                 }, 
                 {
                     "columns": [
@@ -261,7 +308,7 @@
                     ], 
                     "targets": [
                         {
-                            "expr": "topk(5, sum(mysql_info_schema_table_size{instance=\"$host\", component=\"data_free\"}) by (schema, table))", 
+                            "expr": "topk(5, sum(mysql_info_schema_table_size{instance=\"$host\", component=\"data_free\"}) by (schema, table)) > 0", 
                             "interval": "5m", 
                             "intervalFactor": 1, 
                             "legendFormat": "{{ schema }}.{{ table }}", 
@@ -421,6 +468,7 @@
                         "avg": true, 
                         "current": false, 
                         "hideEmpty": false, 
+                        "hideZero": false, 
                         "max": false, 
                         "min": false, 
                         "rightSide": true, 
