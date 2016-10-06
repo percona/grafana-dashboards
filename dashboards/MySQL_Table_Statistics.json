@@ -8,42 +8,42 @@
     "id": null, 
     "links": [
         {
-            "asDropdown": true,
-            "icon": "external link",
-            "includeVars": true,
-            "keepTime": true,
+            "asDropdown": true, 
+            "icon": "external link", 
+            "includeVars": true, 
+            "keepTime": true, 
             "tags": [
                 "OS"
-            ],
-            "targetBlank": true,
-            "title": "OS",
+            ], 
+            "targetBlank": true, 
+            "title": "OS", 
             "type": "dashboards"
-        },
+        }, 
         {
-            "asDropdown": true,
-            "icon": "external link",
-            "includeVars": true,
-            "keepTime": true,
+            "asDropdown": true, 
+            "icon": "external link", 
+            "includeVars": true, 
+            "keepTime": true, 
             "tags": [
                 "MySQL"
-            ],
-            "targetBlank": true,
-            "title": "MySQL",
+            ], 
+            "targetBlank": true, 
+            "title": "MySQL", 
             "type": "dashboards"
-        },
+        }, 
         {
-            "asDropdown": true,
-            "icon": "external link",
-            "includeVars": true,
-            "keepTime": true,
+            "asDropdown": true, 
+            "icon": "external link", 
+            "includeVars": true, 
+            "keepTime": true, 
             "tags": [
                 "HA"
-            ],
-            "targetBlank": true,
-            "title": "HA",
+            ], 
+            "targetBlank": true, 
+            "title": "HA", 
             "type": "dashboards"
         }
-    ],
+    ], 
     "refresh": false, 
     "rows": [
         {
@@ -52,186 +52,117 @@
             "height": "250px", 
             "panels": [
                 {
-                    "aliasColors": {}, 
-                    "bars": false, 
+                    "columns": [
+                        {
+                            "text": "Current", 
+                            "value": "current"
+                        }
+                    ], 
                     "datasource": "Prometheus", 
-                    "decimals": 2, 
                     "editable": true, 
                     "error": false, 
-                    "fill": 2, 
-                    "grid": {
-                        "threshold1": null, 
-                        "threshold1Color": "rgba(216, 200, 27, 0.27)", 
-                        "threshold2": null, 
-                        "threshold2Color": "rgba(234, 112, 112, 0.22)"
-                    }, 
-                    "id": 40, 
-                    "legend": {
-                        "alignAsTable": false, 
-                        "avg": false, 
-                        "current": false, 
-                        "hideEmpty": false, 
-                        "max": false, 
-                        "min": false, 
-                        "rightSide": false, 
-                        "show": true, 
-                        "total": false, 
-                        "values": false
-                    }, 
-                    "lines": true, 
-                    "linewidth": 2, 
+                    "fontSize": "100%", 
+                    "height": "", 
+                    "hideTimeOverride": true, 
+                    "id": 49, 
+                    "isNew": true, 
                     "links": [], 
-                    "nullPointMode": "null", 
-                    "percentage": false, 
-                    "pointradius": 5, 
-                    "points": false, 
-                    "renderer": "flot", 
-                    "seriesOverrides": [], 
+                    "pageSize": null, 
+                    "scroll": false, 
+                    "showHeader": true, 
+                    "sort": {
+                        "col": 1, 
+                        "desc": true
+                    }, 
                     "span": 6, 
-                    "stack": false, 
-                    "steppedLine": false, 
+                    "styles": [
+                        {
+                            "colorMode": null, 
+                            "colors": [
+                                "rgba(245, 54, 54, 0.9)", 
+                                "rgba(237, 129, 40, 0.89)", 
+                                "rgba(50, 172, 45, 0.97)"
+                            ], 
+                            "dateFormat": "YYYY-MM-DD HH:mm:ss", 
+                            "decimals": null, 
+                            "pattern": "/.*/", 
+                            "thresholds": [], 
+                            "type": "number", 
+                            "unit": "short"
+                        }
+                    ], 
                     "targets": [
                         {
-                            "calculatedInterval": "2m", 
-                            "datasourceErrors": {}, 
-                            "errors": {}, 
-                            "expr": "sum(mysql_info_schema_table_size{instance=\"$host\", component!=\"data_free\"})", 
-                            "interval": "$interval", 
+                            "expr": "topk(10, sum(mysql_info_schema_table_rows{instance=\"$host\"}) by (schema, table))", 
+                            "interval": "5m", 
                             "intervalFactor": 1, 
-                            "legendFormat": "Data + Index Size", 
-                            "metric": "", 
+                            "legendFormat": "{{ schema }}.{{ table }}", 
                             "refId": "A", 
-                            "step": 300
-                        }, 
-                        {
-                            "calculatedInterval": "2m", 
-                            "datasourceErrors": {}, 
-                            "errors": {}, 
-                            "expr": "sum(mysql_info_schema_table_size{instance=\"$host\", component=\"data_free\"})", 
-                            "interval": "$interval", 
-                            "intervalFactor": 1, 
-                            "legendFormat": "Freeable Size", 
-                            "metric": "", 
-                            "refId": "B", 
                             "step": 300
                         }
                     ], 
-                    "timeFrom": null, 
-                    "timeShift": null, 
-                    "title": "Total Database Size", 
-                    "tooltip": {
-                        "msResolution": false, 
-                        "shared": true, 
-                        "sort": 0, 
-                        "value_type": "individual"
-                    }, 
-                    "type": "graph", 
-                    "xaxis": {
-                        "show": true
-                    }, 
-                    "yaxes": [
-                        {
-                            "format": "short", 
-                            "logBase": 1, 
-                            "max": null, 
-                            "min": 0, 
-                            "show": true
-                        }, 
-                        {
-                            "format": "short", 
-                            "logBase": 1, 
-                            "max": null, 
-                            "min": 0, 
-                            "show": true
-                        }
-                    ]
+                    "timeFrom": "5m", 
+                    "title": "Largest Tables by Row Count", 
+                    "transform": "timeseries_aggregations", 
+                    "type": "table"
                 }, 
                 {
-                    "aliasColors": {}, 
-                    "bars": false, 
+                    "columns": [
+                        {
+                            "text": "Current", 
+                            "value": "current"
+                        }
+                    ], 
                     "datasource": "Prometheus", 
-                    "decimals": 2, 
                     "editable": true, 
                     "error": false, 
-                    "fill": 2, 
-                    "grid": {
-                        "threshold1": null, 
-                        "threshold1Color": "rgba(216, 200, 27, 0.27)", 
-                        "threshold2": null, 
-                        "threshold2Color": "rgba(234, 112, 112, 0.22)"
-                    }, 
-                    "id": 38, 
-                    "legend": {
-                        "alignAsTable": false, 
-                        "avg": false, 
-                        "current": false, 
-                        "hideEmpty": false, 
-                        "max": false, 
-                        "min": false, 
-                        "rightSide": false, 
-                        "show": true, 
-                        "total": false, 
-                        "values": false
-                    }, 
-                    "lines": true, 
-                    "linewidth": 2, 
+                    "fontSize": "100%", 
+                    "height": "", 
+                    "hideTimeOverride": true, 
+                    "id": 51, 
+                    "isNew": true, 
                     "links": [], 
-                    "nullPointMode": "null", 
-                    "percentage": false, 
-                    "pointradius": 5, 
-                    "points": false, 
-                    "renderer": "flot", 
-                    "seriesOverrides": [], 
+                    "pageSize": null, 
+                    "scroll": false, 
+                    "showHeader": true, 
+                    "sort": {
+                        "col": 1, 
+                        "desc": true
+                    }, 
                     "span": 6, 
-                    "stack": false, 
-                    "steppedLine": false, 
+                    "styles": [
+                        {
+                            "colorMode": null, 
+                            "colors": [
+                                "rgba(245, 54, 54, 0.9)", 
+                                "rgba(237, 129, 40, 0.89)", 
+                                "rgba(50, 172, 45, 0.97)"
+                            ], 
+                            "dateFormat": "YYYY-MM-DD HH:mm:ss", 
+                            "decimals": null, 
+                            "pattern": "/.*/", 
+                            "thresholds": [], 
+                            "type": "number", 
+                            "unit": "bytes"
+                        }
+                    ], 
                     "targets": [
                         {
-                            "calculatedInterval": "2m", 
-                            "datasourceErrors": {}, 
-                            "errors": {}, 
-                            "expr": "topk(5, sum(mysql_info_schema_table_size{instance=\"$host\", component!=\"data_free\"}) by (schema) >0)", 
-                            "interval": "$interval", 
+                            "expr": "topk(10, sum(mysql_info_schema_table_size{instance=\"$host\", component!=\"data_free\"}) by (schema, table))", 
+                            "interval": "5m", 
                             "intervalFactor": 1, 
-                            "legendFormat": "{{ schema }}", 
-                            "metric": "", 
+                            "legendFormat": "{{ schema }}.{{ table }}", 
                             "refId": "A", 
                             "step": 300
                         }
                     ], 
-                    "timeFrom": null, 
-                    "timeShift": null, 
-                    "title": "Largest Databases", 
-                    "tooltip": {
-                        "msResolution": false, 
-                        "shared": true, 
-                        "sort": 0, 
-                        "value_type": "individual"
-                    }, 
-                    "type": "graph", 
-                    "xaxis": {
-                        "show": true
-                    }, 
-                    "yaxes": [
-                        {
-                            "format": "bytes", 
-                            "logBase": 1, 
-                            "max": null, 
-                            "min": 0, 
-                            "show": true
-                        }, 
-                        {
-                            "format": "short", 
-                            "logBase": 1, 
-                            "max": null, 
-                            "min": 0, 
-                            "show": true
-                        }
-                    ]
+                    "timeFrom": "5m", 
+                    "title": "Largest Tables by Size", 
+                    "transform": "timeseries_aggregations", 
+                    "type": "table"
                 }
             ], 
-            "showTitle": true, 
-            "title": "Table Size"
+            "title": "New row"
         }, 
         {
             "collapse": false, 
@@ -239,173 +170,113 @@
             "height": "250px", 
             "panels": [
                 {
-                    "aliasColors": {}, 
-                    "bars": false, 
+                    "aliasColors": {
+                        "Data + Index": "#0A437C", 
+                        "Freeable": "#EAB839"
+                    }, 
+                    "cacheTimeout": null, 
                     "datasource": "Prometheus", 
-                    "decimals": 2, 
                     "editable": true, 
                     "error": false, 
-                    "fill": 2, 
-                    "grid": {
-                        "threshold1": null, 
-                        "threshold1Color": "rgba(216, 200, 27, 0.27)", 
-                        "threshold2": null, 
-                        "threshold2Color": "rgba(234, 112, 112, 0.22)"
-                    }, 
-                    "id": 37, 
+                    "fontSize": "80%", 
+                    "format": "bytes", 
+                    "hideTimeOverride": true, 
+                    "id": 52, 
+                    "interval": null, 
+                    "isNew": true, 
                     "legend": {
-                        "alignAsTable": false, 
-                        "avg": false, 
-                        "current": false, 
-                        "hideEmpty": false, 
-                        "max": false, 
-                        "min": false, 
-                        "rightSide": false, 
                         "show": true, 
-                        "total": false, 
-                        "values": false
+                        "values": true
                     }, 
-                    "lines": true, 
-                    "linewidth": 2, 
+                    "legendType": "Right side", 
                     "links": [], 
-                    "nullPointMode": "null", 
-                    "percentage": false, 
-                    "pointradius": 5, 
-                    "points": false, 
-                    "renderer": "flot", 
-                    "seriesOverrides": [], 
+                    "maxDataPoints": 3, 
+                    "nullPointMode": "connected", 
+                    "pieType": "pie", 
                     "span": 6, 
-                    "stack": false, 
-                    "steppedLine": false, 
+                    "strokeWidth": "1", 
                     "targets": [
                         {
-                            "calculatedInterval": "2m", 
-                            "datasourceErrors": {}, 
-                            "errors": {}, 
-                            "expr": "topk(5, sum(mysql_info_schema_table_size{instance=\"$host\", component!=\"data_free\"}) by (schema, table) >0)", 
-                            "interval": "$interval", 
+                            "expr": "sum(mysql_info_schema_table_size{instance=\"$host\", component!=\"data_free\"})", 
+                            "interval": "5m", 
                             "intervalFactor": 1, 
-                            "legendFormat": "{{ schema }}.{{ table }}", 
-                            "metric": "", 
+                            "legendFormat": "Data + Index", 
                             "refId": "A", 
+                            "step": 300
+                        }, 
+                        {
+                            "expr": "sum(mysql_info_schema_table_size{instance=\"$host\", component=\"data_free\"})", 
+                            "interval": "5m", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "Freeable", 
+                            "refId": "B", 
                             "step": 300
                         }
                     ], 
-                    "timeFrom": null, 
-                    "timeShift": null, 
-                    "title": "Largest Tables", 
-                    "tooltip": {
-                        "msResolution": false, 
-                        "shared": true, 
-                        "sort": 2, 
-                        "value_type": "individual"
-                    }, 
-                    "type": "graph", 
-                    "xaxis": {
-                        "show": true
-                    }, 
-                    "yaxes": [
-                        {
-                            "format": "bytes", 
-                            "logBase": 1, 
-                            "max": null, 
-                            "min": 0, 
-                            "show": true
-                        }, 
-                        {
-                            "format": "short", 
-                            "logBase": 1, 
-                            "max": null, 
-                            "min": 0, 
-                            "show": true
-                        }
-                    ]
+                    "timeFrom": "5m", 
+                    "title": "Total Database Size", 
+                    "transparent": false, 
+                    "type": "grafana-piechart-panel", 
+                    "valueName": "current"
                 }, 
                 {
-                    "aliasColors": {}, 
-                    "bars": false, 
+                    "columns": [
+                        {
+                            "text": "Current", 
+                            "value": "current"
+                        }
+                    ], 
                     "datasource": "Prometheus", 
-                    "decimals": 2, 
                     "editable": true, 
                     "error": false, 
-                    "fill": 2, 
-                    "grid": {
-                        "threshold1": null, 
-                        "threshold1Color": "rgba(216, 200, 27, 0.27)", 
-                        "threshold2": null, 
-                        "threshold2Color": "rgba(234, 112, 112, 0.22)"
-                    }, 
-                    "id": 39, 
-                    "legend": {
-                        "alignAsTable": false, 
-                        "avg": false, 
-                        "current": false, 
-                        "hideEmpty": false, 
-                        "max": false, 
-                        "min": false, 
-                        "rightSide": false, 
-                        "show": true, 
-                        "total": false, 
-                        "values": false
-                    }, 
-                    "lines": true, 
-                    "linewidth": 2, 
+                    "fontSize": "100%", 
+                    "height": "", 
+                    "hideTimeOverride": true, 
+                    "id": 50, 
+                    "isNew": true, 
                     "links": [], 
-                    "nullPointMode": "null", 
-                    "percentage": false, 
-                    "pointradius": 5, 
-                    "points": false, 
-                    "renderer": "flot", 
-                    "seriesOverrides": [], 
+                    "pageSize": null, 
+                    "scroll": false, 
+                    "showHeader": true, 
+                    "sort": {
+                        "col": 1, 
+                        "desc": true
+                    }, 
                     "span": 6, 
-                    "stack": false, 
-                    "steppedLine": false, 
+                    "styles": [
+                        {
+                            "colorMode": null, 
+                            "colors": [
+                                "rgba(245, 54, 54, 0.9)", 
+                                "rgba(237, 129, 40, 0.89)", 
+                                "rgba(50, 172, 45, 0.97)"
+                            ], 
+                            "dateFormat": "YYYY-MM-DD HH:mm:ss", 
+                            "decimals": null, 
+                            "pattern": "/.*/", 
+                            "thresholds": [], 
+                            "type": "number", 
+                            "unit": "bytes"
+                        }
+                    ], 
                     "targets": [
                         {
-                            "calculatedInterval": "2m", 
-                            "datasourceErrors": {}, 
-                            "errors": {}, 
-                            "expr": "topk(5, mysql_info_schema_table_size{instance=\"$host\", component=\"data_free\"}>0)", 
-                            "interval": "$interval", 
+                            "expr": "topk(5, sum(mysql_info_schema_table_size{instance=\"$host\", component=\"data_free\"}) by (schema, table))", 
+                            "interval": "5m", 
                             "intervalFactor": 1, 
                             "legendFormat": "{{ schema }}.{{ table }}", 
-                            "metric": "", 
                             "refId": "A", 
                             "step": 300
                         }
                     ], 
-                    "timeFrom": null, 
-                    "timeShift": null, 
+                    "timeFrom": "5m", 
                     "title": "Most Fragmented Tables by Freeable Size", 
-                    "tooltip": {
-                        "msResolution": false, 
-                        "shared": true, 
-                        "sort": 2, 
-                        "value_type": "individual"
-                    }, 
-                    "type": "graph", 
-                    "xaxis": {
-                        "show": true
-                    }, 
-                    "yaxes": [
-                        {
-                            "format": "bytes", 
-                            "logBase": 1, 
-                            "max": null, 
-                            "min": 0, 
-                            "show": true
-                        }, 
-                        {
-                            "format": "short", 
-                            "logBase": 1, 
-                            "max": null, 
-                            "min": 0, 
-                            "show": true
-                        }
-                    ]
+                    "transform": "timeseries_aggregations", 
+                    "type": "table"
                 }
             ], 
-            "title": "New row"
+            "showTitle": false, 
+            "title": "Pie"
         }, 
         {
             "collapse": false, 
@@ -624,90 +495,62 @@
             "height": "250px", 
             "panels": [
                 {
-                    "aliasColors": {}, 
-                    "bars": false, 
+                    "columns": [
+                        {
+                            "text": "Current", 
+                            "value": "current"
+                        }
+                    ], 
                     "datasource": "Prometheus", 
-                    "decimals": 2, 
                     "editable": true, 
                     "error": false, 
-                    "fill": 0, 
-                    "grid": {
-                        "threshold1": null, 
-                        "threshold1Color": "rgba(216, 200, 27, 0.27)", 
-                        "threshold2": null, 
-                        "threshold2Color": "rgba(234, 112, 112, 0.22)"
-                    }, 
-                    "height": "290px", 
-                    "id": 45, 
-                    "legend": {
-                        "alignAsTable": true, 
-                        "avg": false, 
-                        "current": true, 
-                        "hideEmpty": false, 
-                        "max": false, 
-                        "min": false, 
-                        "rightSide": true, 
-                        "show": true, 
-                        "sort": "current", 
-                        "sortDesc": true, 
-                        "total": false, 
-                        "values": true
-                    }, 
-                    "lines": true, 
-                    "linewidth": 2, 
+                    "fontSize": "100%", 
+                    "height": "", 
+                    "hideTimeOverride": true, 
+                    "id": 53, 
+                    "isNew": true, 
                     "links": [], 
-                    "nullPointMode": "null", 
-                    "percentage": false, 
-                    "pointradius": 5, 
-                    "points": false, 
-                    "renderer": "flot", 
-                    "seriesOverrides": [], 
-                    "span": 12, 
-                    "stack": false, 
-                    "steppedLine": false, 
+                    "pageSize": null, 
+                    "scroll": false, 
+                    "showHeader": true, 
+                    "sort": {
+                        "col": 1, 
+                        "desc": true
+                    }, 
+                    "span": 6, 
+                    "styles": [
+                        {
+                            "colorMode": null, 
+                            "colors": [
+                                "rgba(50, 172, 45, 0.97)", 
+                                "rgba(237, 129, 40, 0.89)", 
+                                "rgba(245, 54, 54, 0.9)"
+                            ], 
+                            "dateFormat": "YYYY-MM-DD HH:mm:ss", 
+                            "decimals": 2, 
+                            "pattern": "/.*/", 
+                            "thresholds": [
+                                "95", 
+                                "98"
+                            ], 
+                            "type": "number", 
+                            "unit": "percentunit"
+                        }
+                    ], 
                     "targets": [
                         {
-                            "calculatedInterval": "2m", 
-                            "datasourceErrors": {}, 
-                            "errors": {}, 
-                            "expr": "topk(10, mysql_info_schema_auto_increment_column{instance=\"$host\"} / mysql_info_schema_auto_increment_column_max{instance=\"$host\"} * 100 >0)", 
-                            "interval": "$interval", 
+                            "expr": "topk(10, mysql_info_schema_auto_increment_column{instance=\"$host\"} / mysql_info_schema_auto_increment_column_max{instance=\"$host\"})", 
+                            "interval": "5m", 
                             "intervalFactor": 1, 
                             "legendFormat": "{{ schema }}.{{ table }}", 
-                            "metric": "", 
                             "refId": "A", 
                             "step": 300
                         }
                     ], 
-                    "timeFrom": null, 
-                    "timeShift": null, 
+                    "timeFrom": "5m", 
                     "title": "Top Tables by Auto Increment Usage", 
-                    "tooltip": {
-                        "msResolution": false, 
-                        "shared": true, 
-                        "sort": 0, 
-                        "value_type": "individual"
-                    }, 
-                    "type": "graph", 
-                    "xaxis": {
-                        "show": true
-                    }, 
-                    "yaxes": [
-                        {
-                            "format": "percent", 
-                            "logBase": 1, 
-                            "max": null, 
-                            "min": 0, 
-                            "show": true
-                        }, 
-                        {
-                            "format": "short", 
-                            "logBase": 1, 
-                            "max": null, 
-                            "min": 0, 
-                            "show": true
-                        }
-                    ]
+                    "transform": "timeseries_aggregations", 
+                    "type": "table"
                 }
             ], 
             "title": "New row"
