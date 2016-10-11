@@ -44,7 +44,6 @@
             "type": "dashboards"
         }
     ], 
-    "refresh": false, 
     "rows": [
         {
             "collapse": false, 
@@ -73,8 +72,8 @@
                         "hideZero": false, 
                         "max": true, 
                         "min": true, 
-                        "rightSide": false, 
-                        "show": false, 
+                        "rightSide": true, 
+                        "show": true, 
                         "total": false, 
                         "values": true
                     }, 
@@ -95,7 +94,7 @@
                             "calculatedInterval": "2m", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "rate(mysql_info_schema_query_response_time_count_sum{instance=\"$host\"}[$interval]) / on (instance) rate(mysql_info_schema_query_response_time_count_count{instance=\"$host\"}[$interval]) * 1000 or irate(mysql_info_schema_query_response_time_count_sum{instance=\"$host\"}[5m]) / on (instance) irate(mysql_info_schema_query_response_time_count_count{instance=\"$host\"}[5m]) * 1000", 
+                            "expr": "rate(mysql_info_schema_query_response_time_count_sum{instance=\"$host\"}[$interval]) / rate(mysql_info_schema_query_response_time_count_count{instance=\"$host\"}[$interval]) * 1000 or irate(mysql_info_schema_query_response_time_count_sum{instance=\"$host\"}[5m]) / irate(mysql_info_schema_query_response_time_count_count{instance=\"$host\"}[5m]) * 1000", 
                             "hide": false, 
                             "interval": "$interval", 
                             "intervalFactor": 1, 
@@ -134,7 +133,15 @@
                             "show": true
                         }
                     ]
-                }, 
+                }
+            ], 
+            "title": "New row"
+        }, 
+        {
+            "collapse": false, 
+            "editable": true, 
+            "height": "250px", 
+            "panels": [
                 {
                     "aliasColors": {}, 
                     "bars": false, 
@@ -253,7 +260,7 @@
                     ]
                 }, 
                 {
-                    "content": "These graphs are available only for [Percona Server](https://www.percona.com/doc/percona-server/5.6/diagnostics/response_time_distribution.html) and [MariaDB](https://mariadb.com/kb/en/mariadb/query_response_time-plugin/). It requires query response time plugin installed and `query_response_time_stats ` variable turned on.", 
+                    "content": "These graphs are available only for [Percona Server](https://www.percona.com/doc/percona-server/5.6/diagnostics/response_time_distribution.html) and [MariaDB](https://mariadb.com/kb/en/mariadb/query_response_time-plugin/). It requires query response time plugin installed and `query_response_time_stats ` variable turned on.\n\nRead/write split below is available only for Percona Server 5.6/5.7.", 
                     "datasource": "Prometheus", 
                     "editable": true, 
                     "error": false, 
@@ -270,6 +277,354 @@
             ], 
             "showTitle": false, 
             "title": "Query Response Time Distribution"
+        }, 
+        {
+            "collapse": false, 
+            "editable": true, 
+            "height": "250px", 
+            "panels": [
+                {
+                    "aliasColors": {}, 
+                    "bars": false, 
+                    "datasource": "Prometheus", 
+                    "decimals": 2, 
+                    "editable": true, 
+                    "error": false, 
+                    "fill": 2, 
+                    "grid": {
+                        "threshold1": null, 
+                        "threshold1Color": "rgba(216, 200, 27, 0.27)", 
+                        "threshold2": null, 
+                        "threshold2Color": "rgba(234, 112, 112, 0.22)"
+                    }, 
+                    "id": 8, 
+                    "legend": {
+                        "alignAsTable": true, 
+                        "avg": true, 
+                        "current": false, 
+                        "hideZero": false, 
+                        "max": true, 
+                        "min": true, 
+                        "rightSide": true, 
+                        "show": true, 
+                        "total": false, 
+                        "values": true
+                    }, 
+                    "lines": true, 
+                    "linewidth": 2, 
+                    "links": [], 
+                    "nullPointMode": "null", 
+                    "percentage": false, 
+                    "pointradius": 5, 
+                    "points": false, 
+                    "renderer": "flot", 
+                    "seriesOverrides": [], 
+                    "span": 12, 
+                    "stack": false, 
+                    "steppedLine": false, 
+                    "targets": [
+                        {
+                            "calculatedInterval": "2m", 
+                            "datasourceErrors": {}, 
+                            "errors": {}, 
+                            "expr": "rate(mysql_info_schema_query_response_time_read_count_sum{instance=\"$host\"}[$interval]) / rate(mysql_info_schema_query_response_time_read_count_count{instance=\"$host\"}[$interval]) * 1000 or irate(mysql_info_schema_query_response_time_read_count_sum{instance=\"$host\"}[5m]) / irate(mysql_info_schema_query_response_time_read_count_count{instance=\"$host\"}[5m]) * 1000", 
+                            "hide": false, 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "Read", 
+                            "metric": "", 
+                            "refId": "B", 
+                            "step": 300
+                        }, 
+                        {
+                            "calculatedInterval": "2m", 
+                            "datasourceErrors": {}, 
+                            "errors": {}, 
+                            "expr": "rate(mysql_info_schema_query_response_time_write_count_sum{instance=\"$host\"}[$interval]) / rate(mysql_info_schema_query_response_time_write_count_count{instance=\"$host\"}[$interval]) * 1000 or irate(mysql_info_schema_query_response_time_write_count_sum{instance=\"$host\"}[5m]) / irate(mysql_info_schema_query_response_time_write_count_count{instance=\"$host\"}[5m]) * 1000", 
+                            "hide": false, 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "Write", 
+                            "metric": "", 
+                            "refId": "A", 
+                            "step": 300
+                        }
+                    ], 
+                    "timeFrom": null, 
+                    "timeShift": null, 
+                    "title": "Average Query Response Time", 
+                    "tooltip": {
+                        "msResolution": false, 
+                        "shared": true, 
+                        "sort": 0, 
+                        "value_type": "cumulative"
+                    }, 
+                    "type": "graph", 
+                    "xaxis": {
+                        "show": true
+                    }, 
+                    "yaxes": [
+                        {
+                            "format": "ms", 
+                            "logBase": 1, 
+                            "max": null, 
+                            "min": 0, 
+                            "show": true
+                        }, 
+                        {
+                            "format": "short", 
+                            "logBase": 1, 
+                            "max": null, 
+                            "min": 0, 
+                            "show": true
+                        }
+                    ]
+                }
+            ], 
+            "showTitle": true, 
+            "title": "Read/Write Split"
+        }, 
+        {
+            "collapse": false, 
+            "editable": true, 
+            "height": "250px", 
+            "panels": [
+                {
+                    "aliasColors": {}, 
+                    "bars": false, 
+                    "datasource": "Prometheus", 
+                    "decimals": 2, 
+                    "editable": true, 
+                    "error": false, 
+                    "fill": 2, 
+                    "grid": {
+                        "threshold1": null, 
+                        "threshold1Color": "rgba(216, 200, 27, 0.27)", 
+                        "threshold2": null, 
+                        "threshold2Color": "rgba(234, 112, 112, 0.22)"
+                    }, 
+                    "height": "", 
+                    "hideTimeOverride": false, 
+                    "id": 9, 
+                    "isNew": true, 
+                    "legend": {
+                        "alignAsTable": true, 
+                        "avg": true, 
+                        "current": false, 
+                        "hideEmpty": false, 
+                        "hideZero": false, 
+                        "max": true, 
+                        "min": true, 
+                        "rightSide": false, 
+                        "show": true, 
+                        "sort": null, 
+                        "sortDesc": null, 
+                        "total": false, 
+                        "values": true
+                    }, 
+                    "lines": true, 
+                    "linewidth": 2, 
+                    "links": [], 
+                    "nullPointMode": "null", 
+                    "percentage": false, 
+                    "pointradius": 5, 
+                    "points": false, 
+                    "renderer": "flot", 
+                    "seriesOverrides": [
+                        {
+                            "alias": "Queries >10s", 
+                            "color": "#E24D42"
+                        }, 
+                        {
+                            "alias": "Queries 1s - 10s", 
+                            "color": "#EF843C"
+                        }, 
+                        {
+                            "alias": "Queries 100ms - 1s", 
+                            "color": "#EAB839"
+                        }
+                    ], 
+                    "span": 6, 
+                    "stack": false, 
+                    "steppedLine": false, 
+                    "targets": [
+                        {
+                            "expr": "(rate(mysql_info_schema_query_response_time_read_count_bucket{instance=\"$host\",le='1'}[$interval]) - on (instance) rate(mysql_info_schema_query_response_time_read_count_bucket{instance=\"$host\",le='0.1'}[$interval])) or (irate(mysql_info_schema_query_response_time_read_count_bucket{instance=\"$host\",le='1'}[5m]) - on (instance) irate(mysql_info_schema_query_response_time_read_count_bucket{instance=\"$host\",le='0.1'}[5m]))", 
+                            "hide": false, 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "Queries 100ms - 1s", 
+                            "metric": "", 
+                            "refId": "A", 
+                            "step": 300
+                        }, 
+                        {
+                            "expr": "(rate(mysql_info_schema_query_response_time_read_count_bucket{instance=\"$host\",le='10'}[$interval])  - on (instance) rate(mysql_info_schema_query_response_time_read_count_bucket{instance=\"$host\",le='1'}[$interval])) or (irate(mysql_info_schema_query_response_time_read_count_bucket{instance=\"$host\",le='10'}[5m])  - on (instance) irate(mysql_info_schema_query_response_time_read_count_bucket{instance=\"$host\",le='1'}[5m]))", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "Queries 1s - 10s", 
+                            "refId": "B", 
+                            "step": 300
+                        }, 
+                        {
+                            "expr": "(rate(mysql_info_schema_query_response_time_read_count_bucket{instance=\"$host\",le='100000'}[$interval])  - on (instance) rate(mysql_info_schema_query_response_time_read_count_bucket{instance=\"$host\",le='10'}[$interval])) or (irate(mysql_info_schema_query_response_time_read_count_bucket{instance=\"$host\",le='100000'}[5m])  - on (instance) irate(mysql_info_schema_query_response_time_read_count_bucket{instance=\"$host\",le='10'}[5m]))", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "Queries >10s", 
+                            "refId": "C", 
+                            "step": 300
+                        }
+                    ], 
+                    "timeFrom": null, 
+                    "timeShift": null, 
+                    "title": "Read Query Response Time Distribution", 
+                    "tooltip": {
+                        "msResolution": false, 
+                        "shared": true, 
+                        "sort": 0, 
+                        "value_type": "individual"
+                    }, 
+                    "transparent": false, 
+                    "type": "graph", 
+                    "xaxis": {
+                        "show": true
+                    }, 
+                    "yaxes": [
+                        {
+                            "format": "ops", 
+                            "logBase": 1, 
+                            "max": null, 
+                            "min": 0, 
+                            "show": true
+                        }, 
+                        {
+                            "format": "ops", 
+                            "logBase": 1, 
+                            "max": null, 
+                            "min": 0, 
+                            "show": true
+                        }
+                    ]
+                }, 
+                {
+                    "aliasColors": {}, 
+                    "bars": false, 
+                    "datasource": "Prometheus", 
+                    "decimals": 2, 
+                    "editable": true, 
+                    "error": false, 
+                    "fill": 2, 
+                    "grid": {
+                        "threshold1": null, 
+                        "threshold1Color": "rgba(216, 200, 27, 0.27)", 
+                        "threshold2": null, 
+                        "threshold2Color": "rgba(234, 112, 112, 0.22)"
+                    }, 
+                    "height": "", 
+                    "hideTimeOverride": false, 
+                    "id": 10, 
+                    "isNew": true, 
+                    "legend": {
+                        "alignAsTable": true, 
+                        "avg": true, 
+                        "current": false, 
+                        "hideEmpty": false, 
+                        "hideZero": false, 
+                        "max": true, 
+                        "min": true, 
+                        "rightSide": false, 
+                        "show": true, 
+                        "sort": null, 
+                        "sortDesc": null, 
+                        "total": false, 
+                        "values": true
+                    }, 
+                    "lines": true, 
+                    "linewidth": 2, 
+                    "links": [], 
+                    "nullPointMode": "null", 
+                    "percentage": false, 
+                    "pointradius": 5, 
+                    "points": false, 
+                    "renderer": "flot", 
+                    "seriesOverrides": [
+                        {
+                            "alias": "Queries >10s", 
+                            "color": "#E24D42"
+                        }, 
+                        {
+                            "alias": "Queries 1s - 10s", 
+                            "color": "#EF843C"
+                        }, 
+                        {
+                            "alias": "Queries 100ms - 1s", 
+                            "color": "#EAB839"
+                        }
+                    ], 
+                    "span": 6, 
+                    "stack": false, 
+                    "steppedLine": false, 
+                    "targets": [
+                        {
+                            "expr": "(rate(mysql_info_schema_query_response_time_write_count_bucket{instance=\"$host\",le='1'}[$interval]) - on (instance) rate(mysql_info_schema_query_response_time_write_count_bucket{instance=\"$host\",le='0.1'}[$interval])) or (irate(mysql_info_schema_query_response_time_write_count_bucket{instance=\"$host\",le='1'}[5m]) - on (instance) irate(mysql_info_schema_query_response_time_write_count_bucket{instance=\"$host\",le='0.1'}[5m]))", 
+                            "hide": false, 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "Queries 100ms - 1s", 
+                            "metric": "", 
+                            "refId": "A", 
+                            "step": 300
+                        }, 
+                        {
+                            "expr": "(rate(mysql_info_schema_query_response_time_write_count_bucket{instance=\"$host\",le='10'}[$interval])  - on (instance) rate(mysql_info_schema_query_response_time_write_count_bucket{instance=\"$host\",le='1'}[$interval])) or (irate(mysql_info_schema_query_response_time_write_count_bucket{instance=\"$host\",le='10'}[5m])  - on (instance) irate(mysql_info_schema_query_response_time_write_count_bucket{instance=\"$host\",le='1'}[5m]))", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "Queries 1s - 10s", 
+                            "refId": "B", 
+                            "step": 300
+                        }, 
+                        {
+                            "expr": "(rate(mysql_info_schema_query_response_time_write_count_bucket{instance=\"$host\",le='100000'}[$interval])  - on (instance) rate(mysql_info_schema_query_response_time_write_count_bucket{instance=\"$host\",le='10'}[$interval])) or (irate(mysql_info_schema_query_response_time_write_count_bucket{instance=\"$host\",le='100000'}[5m])  - on (instance) irate(mysql_info_schema_query_response_time_write_count_bucket{instance=\"$host\",le='10'}[5m]))", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "Queries >10s", 
+                            "refId": "C", 
+                            "step": 300
+                        }
+                    ], 
+                    "timeFrom": null, 
+                    "timeShift": null, 
+                    "title": "Write Query Response Time Distribution", 
+                    "tooltip": {
+                        "msResolution": false, 
+                        "shared": true, 
+                        "sort": 0, 
+                        "value_type": "individual"
+                    }, 
+                    "transparent": false, 
+                    "type": "graph", 
+                    "xaxis": {
+                        "show": true
+                    }, 
+                    "yaxes": [
+                        {
+                            "format": "ops", 
+                            "logBase": 1, 
+                            "max": null, 
+                            "min": 0, 
+                            "show": true
+                        }, 
+                        {
+                            "format": "ops", 
+                            "logBase": 1, 
+                            "max": null, 
+                            "min": 0, 
+                            "show": true
+                        }
+                    ]
+                }
+            ], 
+            "title": "New row"
         }
     ], 
     "schemaVersion": 12, 
