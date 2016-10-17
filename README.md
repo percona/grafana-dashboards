@@ -3,9 +3,10 @@
 This is a set of Grafana dashboards for MySQL and system monitoring to be used with Prometheus datasource.
 The dashboards rely on the small patch applied on Grafana.
 
+ * Amazon RDS OS metrics
  * Cross Server Graphs
- * Disk Performance (Grafana 3.0+)
- * Disk Space (Grafana 3.0+)
+ * Disk Performance
+ * Disk Space
  * MySQL InnoDB Metrics
  * MySQL InnoDB Metrics Advanced
  * MySQL MyISAM Metrics
