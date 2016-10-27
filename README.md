@@ -20,6 +20,7 @@ The dashboards rely on the small patch applied on Grafana (see below).
  * MySQL Query Response Time
  * MySQL Replication
  * MySQL Table Statistics
+ * MySQL TokuDB Graphs
  * MySQL User Statistics
  * PXC/Galera Cluster Overview
  * PXC/Galera Graphs
@@ -27,7 +28,6 @@ The dashboards rely on the small patch applied on Grafana (see below).
  * ProxySQL Overview
  * Summary Dashboard
  * System Overview
- * TokuDB Graphs
  * Trends Dashboard
 
 These dashboards are also a part of [Percona Monitoring and Management](https://www.percona.com/doc/percona-monitoring-and-management/index.html) project.
