@@ -1,12 +1,17 @@
-## Grafana dashboards for measuring MySQL performance with Prometheus
+## Grafana dashboards for measuring MySQL and MongoDB performance using Prometheus
 
-This is a set of Grafana dashboards for MySQL and system monitoring to be used with Prometheus datasource.
-The dashboards rely on the small patch applied on Grafana.
+This is a set of Grafana dashboards for database and system monitoring using Prometheus datasource.
+The dashboards rely on the small patch applied on Grafana (see below).
 
  * Amazon RDS OS metrics (CloudWatch datasource)
  * Cross Server Graphs
  * Disk Performance
  * Disk Space
+ * MongoDB Cluster Summary
+ * MongoDB Overview
+ * MongoDB ReplSet
+ * MongoDB RocksDB
+ * MongoDB WiredTiger
  * MySQL InnoDB Metrics
  * MySQL InnoDB Metrics Advanced
  * MySQL MyISAM Metrics
@@ -67,8 +72,9 @@ How you name jobs is not important. However, "Prometheus" dashboard assumes the 
 
 Here is the minimal set of options for the exporters:
 
- * node_exporter: `-collectors.enabled="diskstats,filesystem,loadavg,meminfo,netdev,stat,time,uname,vmstat"`
+ * node_exporter: `-collectors.enabled="diskstats,filefd,filesystem,loadavg,meminfo,netdev,stat,time,uname,vmstat"`
  * mysqld_exporter: `-collect.binlog_size=true -collect.info_schema.processlist=true`
+ * mongodb_exporter: the defaults are fine.
 
 #### Edit Grafana config
 
