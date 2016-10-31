@@ -1238,7 +1238,7 @@
                     "decimals": null, 
                     "editable": true, 
                     "error": false, 
-                    "fill": 6, 
+                    "fill": 2, 
                     "grid": {
                         "threshold1": null, 
                         "threshold1Color": "rgba(216, 200, 27, 0.27)", 
@@ -1256,8 +1256,8 @@
                         "min": true, 
                         "rightSide": false, 
                         "show": true, 
-                        "sort": "avg", 
-                        "sortDesc": true, 
+                        "sort": null, 
+                        "sortDesc": null, 
                         "total": false, 
                         "values": true
                     }, 
@@ -1269,19 +1269,24 @@
                     "pointradius": 5, 
                     "points": false, 
                     "renderer": "flot", 
-                    "seriesOverrides": [], 
+                    "seriesOverrides": [
+                        {
+                            "alias": "Outbound", 
+                            "transform": "negative-Y"
+                        }
+                    ], 
                     "span": 6, 
-                    "stack": true, 
+                    "stack": false, 
                     "steppedLine": false, 
                     "targets": [
                         {
                             "calculatedInterval": "2s", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "rate(node_network_receive_bytes{instance=\"$host\", device!=\"lo\"}[$interval]) or irate(node_network_receive_bytes{instance=\"$host\", device!=\"lo\"}[5m])", 
+                            "expr": "sum(rate(node_network_receive_bytes{instance=\"$host\", device!=\"lo\"}[$interval]) or irate(node_network_receive_bytes{instance=\"$host\", device!=\"lo\"}[5m]))", 
                             "interval": "$interval", 
                             "intervalFactor": 1, 
-                            "legendFormat": "Inbound: {{ device }}", 
+                            "legendFormat": "Inbound", 
                             "metric": "", 
                             "refId": "B", 
                             "step": 300, 
@@ -1291,10 +1296,10 @@
                             "calculatedInterval": "2s", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "rate(node_network_transmit_bytes{instance=\"$host\", device!=\"lo\"}[$interval]) or irate(node_network_transmit_bytes{instance=\"$host\", device!=\"lo\"}[5m])", 
+                            "expr": "sum(rate(node_network_transmit_bytes{instance=\"$host\", device!=\"lo\"}[$interval]) or irate(node_network_transmit_bytes{instance=\"$host\", device!=\"lo\"}[5m]))", 
                             "interval": "$interval", 
                             "intervalFactor": 1, 
-                            "legendFormat": "Outbound: {{ device }}", 
+                            "legendFormat": "Outbound", 
                             "metric": "", 
                             "refId": "A", 
                             "step": 300, 
@@ -1321,7 +1326,7 @@
                             "label": "", 
                             "logBase": 1, 
                             "max": null, 
-                            "min": 0, 
+                            "min": null, 
                             "show": true
                         }, 
                         {
@@ -1358,8 +1363,8 @@
                         "min": true, 
                         "rightSide": false, 
                         "show": true, 
-                        "sort": "avg", 
-                        "sortDesc": true, 
+                        "sort": null, 
+                        "sortDesc": null, 
                         "total": false, 
                         "values": true
                     }, 
