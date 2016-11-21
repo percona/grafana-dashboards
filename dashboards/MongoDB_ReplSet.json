@@ -661,7 +661,7 @@
                     "steppedLine": false, 
                     "targets": [
                         {
-                            "expr": "max(mongodb_mongod_replset_member_optime_date{instance=\"$host\", state=\"PRIMARY\"})-min(mongodb_mongod_replset_member_optime_date{instance=\"$host\", state=\"SECONDARY\"})", 
+                            "expr": "(max(mongodb_mongod_replset_member_optime_date{state=\"PRIMARY\", set=\"$replset\"}) - min(mongodb_mongod_replset_member_optime_date{state=\"SECONDARY\"} * on (name) group_left mongodb_mongod_replset_my_name{instance=\"$host\"})) or vector(0)", 
                             "interval": "$interval", 
                             "intervalFactor": 1, 
                             "legendFormat": "Lag", 
