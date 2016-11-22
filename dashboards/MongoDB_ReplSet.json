@@ -854,11 +854,11 @@
                     "steppedLine": false, 
                     "targets": [
                         {
-                            "expr": "mongodb_mongod_replset_member_uptime{instance=\"$host\"}", 
+                            "expr": "mongodb_mongod_replset_member_uptime{instance=\"$host\"} * on (name) group_right(state) mongodb_mongod_replset_my_name", 
                             "hide": false, 
                             "interval": "$interval", 
                             "intervalFactor": 1, 
-                            "legendFormat": "{{name}} - {{state}}", 
+                            "legendFormat": "{{ instance }} - {{state}}", 
                             "metric": "", 
                             "refId": "J", 
                             "step": 300
@@ -949,11 +949,11 @@
                     "steppedLine": false, 
                     "targets": [
                         {
-                            "expr": "time() - max(mongodb_mongod_replset_member_last_heartbeat{instance=\"$host\"}) by (name)", 
+                            "expr": "time() - max(mongodb_mongod_replset_member_last_heartbeat{instance=\"$host\"}) by (name) * on (name) group_right mongodb_mongod_replset_my_name", 
                             "hide": false, 
                             "interval": "$interval", 
                             "intervalFactor": 1, 
-                            "legendFormat": "{{name}}", 
+                            "legendFormat": "{{instance}}", 
                             "metric": "", 
                             "refId": "J", 
                             "step": 300
@@ -1052,10 +1052,10 @@
                     "steppedLine": false, 
                     "targets": [
                         {
-                            "expr": "mongodb_mongod_replset_member_ping_ms{instance=\"$host\"}", 
+                            "expr": "mongodb_mongod_replset_member_ping_ms{instance=\"$host\"} * on (name) group_right mongodb_mongod_replset_my_name", 
                             "interval": "$interval", 
                             "intervalFactor": 1, 
-                            "legendFormat": "{{name}}", 
+                            "legendFormat": "{{instance}}", 
                             "refId": "A", 
                             "step": 300
                         }
@@ -1116,7 +1116,6 @@
                 "auto_count": 200, 
                 "auto_min": "1s", 
                 "current": {
-                    "selected": true, 
                     "text": "auto", 
                     "value": "$__auto_interval"
                 }, 
