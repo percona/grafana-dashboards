@@ -387,7 +387,7 @@
                     }, 
                     "targets": [
                         {
-                            "expr": "max(mongodb_mongod_replset_member_optime_date{instance=\"$host\", state=\"PRIMARY\"})-min(mongodb_mongod_replset_member_optime_date{instance=\"$host\", state=\"SECONDARY\"})", 
+                            "expr": "(max(mongodb_mongod_replset_member_optime_date{state=\"PRIMARY\", set=\"$replset\"}) - min(mongodb_mongod_replset_member_optime_date{state=\"SECONDARY\"} * on (name) group_left mongodb_mongod_replset_my_name{instance=\"$host\"})) or vector(0)", 
                             "interval": "5m", 
                             "intervalFactor": 1, 
                             "legendFormat": "", 
@@ -1116,6 +1116,7 @@
                 "auto_count": 200, 
                 "auto_min": "1s", 
                 "current": {
+                    "selected": true, 
                     "text": "auto", 
                     "value": "$__auto_interval"
                 }, 
