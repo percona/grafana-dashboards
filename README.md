@@ -1,7 +1,6 @@
 ## Grafana dashboards for measuring MySQL and MongoDB performance using Prometheus
 
 This is a set of Grafana dashboards for database and system monitoring using Prometheus datasource.
-The dashboards rely on the small patch applied on Grafana (see below).
 
  * Amazon RDS OS metrics (CloudWatch datasource)
  * Cross Server Graphs
@@ -95,27 +94,13 @@ If you wish you may import the individual dashboards via UI and ignore this and 
 
     service grafana-server restart
 
-#### Apply Grafana patch
+#### Apply patch (only Grafana 3.x)
 
-It is important to apply the following small patch on your Grafana installation in order to use the interval template variable to get the good zoomable graphs.
-The fix is simply to allow a variable in `Step` field of graph editor page.
-For more information, take a look at [PR#5839](https://github.com/grafana/grafana/pull/5839).
-
-Grafana 2.6.0:
-
-    sed -i 's/step_input:""/step_input:c.target.step/; s/ HH:MM/ HH:mm/; s/,function(c)/,"templateSrv",function(c,g)/; s/expr:c.target.expr/expr:g.replace(c.target.expr,c.panel.scopedVars)/' /usr/share/grafana/public/app/plugins/datasource/prometheus/query_ctrl.js
-    sed -i 's/h=a.interval/h=g.replace(a.interval, c.scopedVars)/' /usr/share/grafana/public/app/plugins/datasource/prometheus/datasource.js
-
-Grafana 3.x:
+If you are using Grafana 3.x you need to apply a small patch on your installation to allow the interval template variable in `Step` field of graph editor page
+to get the good zoomable graphs. For more information, take a look at [PR#5839](https://github.com/grafana/grafana/pull/5839).
 
     sed -i 's/expr=\(.\)\.replace(\(.\)\.expr,\(.\)\.scopedVars\(.*\)var \(.\)=\(.\)\.interval/expr=\1.replace(\2.expr,\3.scopedVars\4var \5=\1.replace(\6.interval, \3.scopedVars)/' /usr/share/grafana/public/app/plugins/datasource/prometheus/datasource.js
     sed -i 's/,range_input/.replace(\/"{\/g,"\\"").replace(\/}"\/g,"\\""),range_input/; s/step_input:""/step_input:this.target.step/' /usr/share/grafana/public/app/plugins/datasource/prometheus/query_ctrl.js
-
-Grafana 4.x (unreleased):
-
-    There won't be a need to apply this patch.
-
-Those changes are idempotent and do not break anything.
 
 ### Update instructions
 
