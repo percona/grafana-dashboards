@@ -1,4 +1,4 @@
-## Grafana dashboards for measuring MySQL and MongoDB performance using Prometheus
+## Grafana dashboards for MySQL and MongoDB monitoring using Prometheus
 
 This is a set of Grafana dashboards for database and system monitoring using Prometheus datasource.
 
