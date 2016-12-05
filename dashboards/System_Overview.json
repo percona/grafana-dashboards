@@ -608,7 +608,14 @@
             "height": "300px", 
             "panels": [
                 {
-                    "aliasColors": {}, 
+                    "aliasColors": {
+                        "idle": "#806EB7", 
+                        "iowait": "#E24D42", 
+                        "nice": "#1F78C1", 
+                        "softirq": "#806EB7", 
+                        "system": "#EAB839", 
+                        "user": "#508642"
+                    }, 
                     "bars": false, 
                     "datasource": "Prometheus", 
                     "decimals": null, 
@@ -656,7 +663,7 @@
                             "calculatedInterval": "2s", 
                             "datasourceErrors": {}, 
                             "errors": {}, 
-                            "expr": "sum(rate(node_cpu{instance=\"$host\"}[$interval])) by (mode) * 100 / count_scalar(node_cpu{mode=\"user\", instance=\"$host\"}) or sum(irate(node_cpu{instance=\"$host\"}[5m])) by (mode) * 100 / count_scalar(node_cpu{mode=\"user\", instance=\"$host\"})", 
+                            "expr": "sum(rate(node_cpu{instance=\"$host\", mode!=\"idle\"}[$interval])) by (mode)* 100 / count_scalar(node_cpu{mode=\"user\", instance=\"$host\"}) or sum(irate(node_cpu{instance=\"$host\", mode!=\"idle\"}[5m])) by (mode) * 100 / count_scalar(node_cpu{mode=\"user\", instance=\"$host\"})", 
                             "interval": "$interval", 
                             "intervalFactor": 1, 
                             "legendFormat": "{{ mode }}", 
