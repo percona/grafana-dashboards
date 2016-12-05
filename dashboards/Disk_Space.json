@@ -60,7 +60,6 @@
     "rows": [
         {
             "collapse": false, 
-            "editable": true, 
             "height": "250px", 
             "panels": [
                 {
@@ -74,13 +73,7 @@
                     "editable": true, 
                     "error": false, 
                     "fill": 0, 
-                    "grid": {
-                        "threshold1": null, 
-                        "threshold1Color": "rgba(216, 200, 27, 0.27)", 
-                        "threshold2": null, 
-                        "threshold2Color": "rgba(234, 112, 112, 0.22)", 
-                        "thresholdLine": false
-                    }, 
+                    "grid": {}, 
                     "id": 9, 
                     "legend": {
                         "alignAsTable": true, 
@@ -125,6 +118,7 @@
                             "step": 300
                         }
                     ], 
+                    "thresholds": [], 
                     "timeFrom": null, 
                     "timeShift": null, 
                     "title": "Mountpoint Usage", 
@@ -137,7 +131,10 @@
                     "transparent": false, 
                     "type": "graph", 
                     "xaxis": {
-                        "show": true
+                        "mode": "time", 
+                        "name": null, 
+                        "show": true, 
+                        "values": []
                     }, 
                     "yaxes": [
                         {
@@ -158,11 +155,15 @@
                     ]
                 }
             ], 
-            "title": "New row"
+            "repeat": null, 
+            "repeatIteration": null, 
+            "repeatRowId": null, 
+            "showTitle": false, 
+            "title": "New row", 
+            "titleSize": "h6"
         }, 
         {
             "collapse": false, 
-            "editable": true, 
             "height": "250px", 
             "panels": [
                 {
@@ -172,7 +173,6 @@
                     "error": false, 
                     "height": "50px", 
                     "id": 7, 
-                    "isNew": true, 
                     "links": [], 
                     "mode": "markdown", 
                     "span": 12, 
@@ -192,13 +192,7 @@
                     "editable": true, 
                     "error": false, 
                     "fill": 6, 
-                    "grid": {
-                        "threshold1": null, 
-                        "threshold1Color": "rgba(216, 200, 27, 0.27)", 
-                        "threshold2": null, 
-                        "threshold2Color": "rgba(234, 112, 112, 0.22)", 
-                        "thresholdLine": false
-                    }, 
+                    "grid": {}, 
                     "id": 4, 
                     "legend": {
                         "alignAsTable": true, 
@@ -222,129 +216,6 @@
                     "points": false, 
                     "renderer": "flot", 
                     "repeat": "mountpoint", 
-                    "scopedVars": {
-                        "mountpoint": {
-                            "selected": false, 
-                            "text": "/", 
-                            "value": "/"
-                        }
-                    }, 
-                    "seriesOverrides": [
-                        {
-                            "alias": "/Used/", 
-                            "color": "#99440A"
-                        }, 
-                        {
-                            "alias": "/Free/", 
-                            "color": "#EF843C"
-                        }
-                    ], 
-                    "span": 6, 
-                    "stack": true, 
-                    "steppedLine": false, 
-                    "targets": [
-                        {
-                            "calculatedInterval": "2m", 
-                            "datasourceErrors": {}, 
-                            "errors": {}, 
-                            "expr": "node_filesystem_size{instance=\"$host\",mountpoint=\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"} - node_filesystem_free{instance=\"$host\",mountpoint=\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}", 
-                            "hide": false, 
-                            "interval": "$interval", 
-                            "intervalFactor": 1, 
-                            "legendFormat": "Used (device {{ device }}, {{ fstype }})", 
-                            "metric": "", 
-                            "refId": "B", 
-                            "step": 300
-                        }, 
-                        {
-                            "calculatedInterval": "2m", 
-                            "datasourceErrors": {}, 
-                            "errors": {}, 
-                            "expr": "node_filesystem_free{instance=\"$host\", mountpoint=\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}", 
-                            "interval": "$interval", 
-                            "intervalFactor": 1, 
-                            "legendFormat": "Free (device {{ device }}, {{ fstype }})", 
-                            "metric": "", 
-                            "refId": "A", 
-                            "step": 300, 
-                            "target": ""
-                        }
-                    ], 
-                    "timeFrom": null, 
-                    "timeShift": null, 
-                    "title": "Mountpoint $mountpoint", 
-                    "tooltip": {
-                        "msResolution": false, 
-                        "shared": true, 
-                        "sort": 0, 
-                        "value_type": "individual"
-                    }, 
-                    "transparent": false, 
-                    "type": "graph", 
-                    "xaxis": {
-                        "show": true
-                    }, 
-                    "yaxes": [
-                        {
-                            "format": "bytes", 
-                            "label": "", 
-                            "logBase": 1, 
-                            "max": null, 
-                            "min": 0, 
-                            "show": true
-                        }, 
-                        {
-                            "format": "bytes", 
-                            "logBase": 1, 
-                            "max": null, 
-                            "min": null, 
-                            "show": true
-                        }
-                    ]
-                }, 
-                {
-                    "aliasColors": {
-                        "Free (device /dev/xvda1, ext4)": "#82B5D8", 
-                        "Used (device /dev/xvda1, ext4)": "#BA43A9"
-                    }, 
-                    "bars": false, 
-                    "datasource": "Prometheus", 
-                    "decimals": 2, 
-                    "editable": true, 
-                    "error": false, 
-                    "fill": 6, 
-                    "grid": {
-                        "threshold1": null, 
-                        "threshold1Color": "rgba(216, 200, 27, 0.27)", 
-                        "threshold2": null, 
-                        "threshold2Color": "rgba(234, 112, 112, 0.22)", 
-                        "thresholdLine": false
-                    }, 
-                    "id": 8, 
-                    "legend": {
-                        "alignAsTable": true, 
-                        "avg": true, 
-                        "current": false, 
-                        "hideEmpty": false, 
-                        "max": true, 
-                        "min": true, 
-                        "rightSide": false, 
-                        "show": true, 
-                        "total": false, 
-                        "values": true
-                    }, 
-                    "lines": true, 
-                    "linewidth": 2, 
-                    "links": [], 
-                    "minSpan": 6, 
-                    "nullPointMode": "null", 
-                    "percentage": false, 
-                    "pointradius": 5, 
-                    "points": false, 
-                    "renderer": "flot", 
-                    "repeat": null, 
-                    "repeatIteration": 1478174123085, 
-                    "repeatPanelId": 4, 
                     "scopedVars": {
                         "mountpoint": {
                             "selected": false, 
@@ -393,6 +264,7 @@
                             "target": ""
                         }
                     ], 
+                    "thresholds": [], 
                     "timeFrom": null, 
                     "timeShift": null, 
                     "title": "Mountpoint $mountpoint", 
@@ -405,7 +277,131 @@
                     "transparent": false, 
                     "type": "graph", 
                     "xaxis": {
-                        "show": true
+                        "mode": "time", 
+                        "name": null, 
+                        "show": true, 
+                        "values": []
+                    }, 
+                    "yaxes": [
+                        {
+                            "format": "bytes", 
+                            "label": "", 
+                            "logBase": 1, 
+                            "max": null, 
+                            "min": 0, 
+                            "show": true
+                        }, 
+                        {
+                            "format": "bytes", 
+                            "logBase": 1, 
+                            "max": null, 
+                            "min": null, 
+                            "show": true
+                        }
+                    ]
+                }, 
+                {
+                    "aliasColors": {
+                        "Free (device /dev/xvda1, ext4)": "#82B5D8", 
+                        "Used (device /dev/xvda1, ext4)": "#BA43A9"
+                    }, 
+                    "bars": false, 
+                    "datasource": "Prometheus", 
+                    "decimals": 2, 
+                    "editable": true, 
+                    "error": false, 
+                    "fill": 6, 
+                    "grid": {}, 
+                    "id": 8, 
+                    "legend": {
+                        "alignAsTable": true, 
+                        "avg": true, 
+                        "current": false, 
+                        "hideEmpty": false, 
+                        "max": true, 
+                        "min": true, 
+                        "rightSide": false, 
+                        "show": true, 
+                        "total": false, 
+                        "values": true
+                    }, 
+                    "lines": true, 
+                    "linewidth": 2, 
+                    "links": [], 
+                    "minSpan": 6, 
+                    "nullPointMode": "null", 
+                    "percentage": false, 
+                    "pointradius": 5, 
+                    "points": false, 
+                    "renderer": "flot", 
+                    "repeat": null, 
+                    "repeatIteration": 1480943686527, 
+                    "repeatPanelId": 4, 
+                    "scopedVars": {
+                        "mountpoint": {
+                            "selected": false, 
+                            "text": "/", 
+                            "value": "/"
+                        }
+                    }, 
+                    "seriesOverrides": [
+                        {
+                            "alias": "/Used/", 
+                            "color": "#99440A"
+                        }, 
+                        {
+                            "alias": "/Free/", 
+                            "color": "#EF843C"
+                        }
+                    ], 
+                    "span": 6, 
+                    "stack": true, 
+                    "steppedLine": false, 
+                    "targets": [
+                        {
+                            "calculatedInterval": "2m", 
+                            "datasourceErrors": {}, 
+                            "errors": {}, 
+                            "expr": "node_filesystem_size{instance=\"$host\",mountpoint=\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"} - node_filesystem_free{instance=\"$host\",mountpoint=\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}", 
+                            "hide": false, 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "Used (device {{ device }}, {{ fstype }})", 
+                            "metric": "", 
+                            "refId": "B", 
+                            "step": 300
+                        }, 
+                        {
+                            "calculatedInterval": "2m", 
+                            "datasourceErrors": {}, 
+                            "errors": {}, 
+                            "expr": "node_filesystem_free{instance=\"$host\", mountpoint=\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "Free (device {{ device }}, {{ fstype }})", 
+                            "metric": "", 
+                            "refId": "A", 
+                            "step": 300, 
+                            "target": ""
+                        }
+                    ], 
+                    "thresholds": [], 
+                    "timeFrom": null, 
+                    "timeShift": null, 
+                    "title": "Mountpoint $mountpoint", 
+                    "tooltip": {
+                        "msResolution": false, 
+                        "shared": true, 
+                        "sort": 0, 
+                        "value_type": "individual"
+                    }, 
+                    "transparent": false, 
+                    "type": "graph", 
+                    "xaxis": {
+                        "mode": "time", 
+                        "name": null, 
+                        "show": true, 
+                        "values": []
                     }, 
                     "yaxes": [
                         {
@@ -427,18 +423,14 @@
                 }
             ], 
             "repeat": null, 
-            "scopedVars": {
-                "host": {
-                    "selected": true, 
-                    "text": "cdba", 
-                    "value": "cdba"
-                }
-            }, 
+            "repeatIteration": null, 
+            "repeatRowId": null, 
             "showTitle": false, 
-            "title": "Disk Space"
+            "title": "Disk Space", 
+            "titleSize": "h6"
         }
     ], 
-    "schemaVersion": 12, 
+    "schemaVersion": 13, 
     "sharedCrosshair": true, 
     "style": "dark", 
     "tags": [
@@ -506,11 +498,12 @@
                     }
                 ], 
                 "query": "1s,5s,1m,5m,1h,6h,1d", 
-                "refresh": 0, 
+                "refresh": 2, 
                 "type": "interval"
             }, 
             {
                 "allFormat": "glob", 
+                "allValue": null, 
                 "datasource": "Prometheus", 
                 "hide": 0, 
                 "includeAll": false, 
@@ -522,6 +515,7 @@
                 "refresh": 1, 
                 "refresh_on_load": false, 
                 "regex": "", 
+                "sort": 1, 
                 "tagValuesQuery": "instance", 
                 "tagsQuery": "up", 
                 "type": "query", 
@@ -529,6 +523,7 @@
             }, 
             {
                 "allFormat": "wildcard", 
+                "allValue": null, 
                 "datasource": "Prometheus", 
                 "hide": 2, 
                 "hideLabel": false, 
@@ -541,6 +536,7 @@
                 "refresh": 1, 
                 "refresh_on_load": false, 
                 "regex": "", 
+                "sort": 1, 
                 "tagValuesQuery": "instance", 
                 "tagsQuery": "up", 
                 "type": "query", 
