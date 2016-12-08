@@ -44,7 +44,6 @@
             "type": "dashboards"
         }
     ], 
-    "refresh": false, 
     "rows": [
         {
             "collapse": false, 
@@ -2710,7 +2709,6 @@
                         "min": true, 
                         "rightSide": false, 
                         "show": true, 
-                        "sort": "avg", 
                         "sortDesc": true, 
                         "total": false, 
                         "values": true
@@ -2750,6 +2748,14 @@
                             "legendFormat": "Open Files Limit", 
                             "metric": "", 
                             "refId": "D", 
+                            "step": 300
+                        }, 
+                        {
+                            "expr": "mysql_global_status_innodb_num_open_files{instance=\"$host\"}", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "InnoDB Open Files", 
+                            "refId": "B", 
                             "step": 300
                         }
                     ], 
@@ -2817,6 +2823,8 @@
                         "min": true, 
                         "rightSide": false, 
                         "show": true, 
+                        "sort": "avg", 
+                        "sortDesc": true, 
                         "total": false, 
                         "values": true
                     }, 
@@ -2828,7 +2836,12 @@
                     "pointradius": 5, 
                     "points": false, 
                     "renderer": "flot", 
-                    "seriesOverrides": [], 
+                    "seriesOverrides": [
+                        {
+                            "alias": "Table Open Cache Hit Ratio", 
+                            "yaxis": 2
+                        }
+                    ], 
                     "span": 6, 
                     "stack": false, 
                     "steppedLine": false, 
@@ -2844,12 +2857,44 @@
                             "metric": "", 
                             "refId": "A", 
                             "step": 300
+                        }, 
+                        {
+                            "expr": "rate(mysql_global_status_table_open_cache_hits{instance=\"$host\"}[$interval]) or irate(mysql_global_status_table_open_cache_hits{instance=\"$host\"}[5m])", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "Hits", 
+                            "refId": "B", 
+                            "step": 300
+                        }, 
+                        {
+                            "expr": "rate(mysql_global_status_table_open_cache_misses{instance=\"$host\"}[$interval]) or irate(mysql_global_status_table_open_cache_misses{instance=\"$host\"}[5m])", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "Misses", 
+                            "refId": "C", 
+                            "step": 300
+                        }, 
+                        {
+                            "expr": "rate(mysql_global_status_table_open_cache_overflows{instance=\"$host\"}[$interval]) or irate(mysql_global_status_table_open_cache_overflows{instance=\"$host\"}[5m])", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "Misses due to Overflows", 
+                            "refId": "D", 
+                            "step": 300
+                        }, 
+                        {
+                            "expr": "(rate(mysql_global_status_table_open_cache_hits{instance=\"$host\"}[$interval]) or irate(mysql_global_status_table_open_cache_hits{instance=\"$host\"}[5m]))/((rate(mysql_global_status_table_open_cache_hits{instance=\"$host\"}[$interval]) or irate(mysql_global_status_table_open_cache_hits{instance=\"$host\"}[5m]))+(rate(mysql_global_status_table_open_cache_misses{instance=\"$host\"}[$interval]) or irate(mysql_global_status_table_open_cache_misses{instance=\"$host\"}[5m])))", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "Table Open Cache Hit Ratio", 
+                            "refId": "E", 
+                            "step": 300
                         }
                     ], 
                     "thresholds": [], 
                     "timeFrom": null, 
                     "timeShift": null, 
-                    "title": "MySQL Table Openings", 
+                    "title": "MySQL Table Open Cache Status", 
                     "tooltip": {
                         "msResolution": false, 
                         "shared": true, 
@@ -2872,7 +2917,7 @@
                             "show": true
                         }, 
                         {
-                            "format": "short", 
+                            "format": "percentunit", 
                             "logBase": 1, 
                             "max": null, 
                             "min": 0, 
@@ -2981,6 +3026,126 @@
             "repeatRowId": null, 
             "showTitle": false, 
             "title": "Table Openings", 
+            "titleSize": "h6"
+        }, 
+        {
+            "collapse": false, 
+            "height": 250, 
+            "panels": [
+                {
+                    "aliasColors": {}, 
+                    "bars": false, 
+                    "datasource": "Prometheus", 
+                    "decimals": 2, 
+                    "editable": true, 
+                    "error": false, 
+                    "fill": 2, 
+                    "grid": {}, 
+                    "id": 54, 
+                    "legend": {
+                        "alignAsTable": true, 
+                        "avg": true, 
+                        "current": false, 
+                        "max": true, 
+                        "min": true, 
+                        "rightSide": false, 
+                        "show": true, 
+                        "sort": "avg", 
+                        "sortDesc": true, 
+                        "total": false, 
+                        "values": true
+                    }, 
+                    "lines": true, 
+                    "linewidth": 2, 
+                    "links": [], 
+                    "nullPointMode": "null", 
+                    "percentage": false, 
+                    "pointradius": 5, 
+                    "points": false, 
+                    "renderer": "flot", 
+                    "seriesOverrides": [
+                        {
+                            "alias": "Opened Table Definitions", 
+                            "yaxis": 2
+                        }
+                    ], 
+                    "span": 6, 
+                    "stack": false, 
+                    "steppedLine": false, 
+                    "targets": [
+                        {
+                            "calculatedInterval": "2m", 
+                            "datasourceErrors": {}, 
+                            "errors": {}, 
+                            "expr": "mysql_global_status_open_table_definitions{instance=\"$host\"}", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "Open Table Definitions", 
+                            "metric": "", 
+                            "refId": "B", 
+                            "step": 300
+                        }, 
+                        {
+                            "calculatedInterval": "2m", 
+                            "datasourceErrors": {}, 
+                            "errors": {}, 
+                            "expr": "mysql_global_variables_table_definition_cache{instance=\"$host\"}", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "Table Definitions Cache Size", 
+                            "metric": "", 
+                            "refId": "C", 
+                            "step": 300
+                        }, 
+                        {
+                            "expr": "rate(mysql_global_status_opened_table_definitions{instance=\"$host\"}[$interval]) or irate(mysql_global_status_opened_table_definitions{instance=\"$host\"}[5m])", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "Opened Table Definitions", 
+                            "refId": "A", 
+                            "step": 300
+                        }
+                    ], 
+                    "thresholds": [], 
+                    "timeFrom": null, 
+                    "timeShift": null, 
+                    "title": "MySQL Table Definition Cache", 
+                    "tooltip": {
+                        "msResolution": false, 
+                        "shared": true, 
+                        "sort": 0, 
+                        "value_type": "individual"
+                    }, 
+                    "type": "graph", 
+                    "xaxis": {
+                        "mode": "time", 
+                        "name": null, 
+                        "show": true, 
+                        "values": []
+                    }, 
+                    "yaxes": [
+                        {
+                            "format": "short", 
+                            "logBase": 1, 
+                            "max": null, 
+                            "min": 0, 
+                            "show": true
+                        }, 
+                        {
+                            "format": "short", 
+                            "logBase": 1, 
+                            "max": null, 
+                            "min": 0, 
+                            "show": true
+                        }
+                    ]
+                }
+            ], 
+            "repeat": null, 
+            "repeatIteration": null, 
+            "repeatRowId": null, 
+            "showTitle": false, 
+            "title": "Dashboard Row", 
             "titleSize": "h6"
         }, 
         {
