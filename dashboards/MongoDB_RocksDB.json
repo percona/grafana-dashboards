@@ -495,26 +495,29 @@
                     "steppedLine": false, 
                     "targets": [
                         {
-                            "expr": "rate(mongodb_mongod_rocksdb_writes_total{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_rocksdb_writes_total{instance=\"$host\"}[5m])", 
+                            "expr": "rate(mongodb_mongod_rocksdb_writes_per_second{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_rocksdb_writes_per_second{instance=\"$host\"}[5m])", 
                             "interval": "$interval", 
                             "intervalFactor": 1, 
                             "legendFormat": "total", 
+                            "metric": "mongodb_mongod_rocksdb_writes_per_second", 
                             "refId": "A", 
                             "step": 300
                         }, 
                         {
-                            "expr": "rate(mongodb_mongod_rocksdb_write_batches_total{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_rocksdb_write_batches_total{instance=\"$host\"}[5m])", 
+                            "expr": "rate(mongodb_mongod_rocksdb_writes_per_batch{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_rocksdb_writes_per_batch{instance=\"$host\"}[5m])", 
                             "interval": "$interval", 
                             "intervalFactor": 1, 
                             "legendFormat": "batched", 
+                            "metric": "mongodb_mongod_rocksdb_writes_per_batch", 
                             "refId": "C", 
                             "step": 300
                         }, 
                         {
-                            "expr": "rate(mongodb_mongod_rocksdb_write_ahead_log_operations_total{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_rocksdb_write_ahead_log_operations_total{instance=\"$host\"}[5m])", 
+                            "expr": "rate(mongodb_mongod_rocksdb_write_ahead_log_writes_per_sync{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_rocksdb_write_ahead_log_writes_per_sync{instance=\"$host\"}[5m])", 
                             "interval": "$interval", 
                             "intervalFactor": 1, 
                             "legendFormat": "WAL-{{type}}", 
+                            "metric": "mongodb_mongod_rocksdb_write_ahead_log_writes_per_sync", 
                             "refId": "B", 
                             "step": 300
                         }
@@ -691,18 +694,20 @@
                     "steppedLine": false, 
                     "targets": [
                         {
-                            "expr": "mongodb_mongod_rocksdb_memtable_active_entries{instance=\"$host\"}", 
+                            "expr": "mongodb_mongod_rocksdb_memtable_entries{instance=\"$host\"}", 
                             "interval": "$interval", 
                             "intervalFactor": 1, 
                             "legendFormat": "active", 
+                            "metric": "mongodb_mongod_rocksdb_memtable_entries", 
                             "refId": "A", 
                             "step": 300
                         }, 
                         {
-                            "expr": "mongodb_mongod_rocksdb_immutable_memtable_entries{instance=\"$host\"}", 
+                            "expr": "mongodb_mongod_rocksdb_immutable_memtables{instance=\"$host\"}", 
                             "interval": "$interval", 
                             "intervalFactor": 1, 
                             "legendFormat": "immutable", 
+                            "metric": "mongodb_mongod_rocksdb_immutable_memtables", 
                             "refId": "B", 
                             "step": 300
                         }
@@ -1064,10 +1069,11 @@
                     "steppedLine": false, 
                     "targets": [
                         {
-                            "expr": "rate(mongodb_mongod_rocksdb_compaction_keys_total{instance=\"$host\", level=~\"L[0-9]\"}[$interval]) or irate(mongodb_mongod_rocksdb_compaction_keys_total{instance=\"$host\", level=~\"L[0-9]\"}[5m])", 
+                            "expr": "rate(mongodb_mongod_rocksdb_compactions_total{instance=\"$host\", level=~\"L[0-9]\"}[$interval]) or irate(mongodb_mongod_rocksdb_compactions_total{instance=\"$host\", level=~\"L[0-9]\"}[5m])", 
                             "interval": "$interval", 
                             "intervalFactor": 1, 
-                            "legendFormat": "{{level}}_{{type}}", 
+                            "legendFormat": "{{level}}", 
+                            "metric": "mongodb_mongod_rocksdb_compactions_total", 
                             "refId": "A", 
                             "step": 300
                         }
@@ -1162,11 +1168,12 @@
                     "steppedLine": false, 
                     "targets": [
                         {
-                            "expr": "rate(mongodb_mongod_rocksdb_compaction_bytes_total{instance=\"$host\", level!=\"Sum\", type=~\"read.*\"}[$interval]) or irate(mongodb_mongod_rocksdb_compaction_bytes_total{instance=\"$host\", level!=\"Sum\", type=~\"read.*\"}[5m])", 
+                            "expr": "rate(mongodb_mongod_rocksdb_compaction_bytes_per_second{instance=\"$host\", level!=\"Sum\", type=~\"read.*\"}[$interval]) or irate(mongodb_mongod_rocksdb_compaction_bytes_per_second{instance=\"$host\", level!=\"Sum\", type=~\"read.*\"}[5m])", 
                             "hide": false, 
                             "interval": "$interval", 
                             "intervalFactor": 1, 
-                            "legendFormat": "{{level}}-{{type}}", 
+                            "legendFormat": "{{level}}", 
+                            "metric": "mongodb_mongod_rocksdb_compaction_bytes_per_second", 
                             "refId": "B", 
                             "step": 300
                         }
@@ -1251,11 +1258,11 @@
                     "steppedLine": false, 
                     "targets": [
                         {
-                            "expr": "rate(mongodb_mongod_rocksdb_compaction_bytes_total{instance=\"$host\", level!=\"Sum\", type=~\"write.*\"}[$interval]) or irate(mongodb_mongod_rocksdb_compaction_bytes_total{instance=\"$host\", level!=\"Sum\", type=~\"write.*\"}[5m])", 
+                            "expr": "rate(mongodb_mongod_rocksdb_compaction_bytes_per_second{instance=\"$host\", level!=\"Sum\", type=~\"write.*\"}[$interval]) or irate(mongodb_mongod_rocksdb_compaction_bytes_per_second{instance=\"$host\", level!=\"Sum\", type=~\"write.*\"}[5m])", 
                             "hide": false, 
                             "interval": "$interval", 
                             "intervalFactor": 1, 
-                            "legendFormat": "{{level}}-{{type}}", 
+                            "legendFormat": "{{level}}", 
                             "refId": "B", 
                             "step": 300
                         }
@@ -1350,6 +1357,7 @@
                             "interval": "$interval", 
                             "intervalFactor": 1, 
                             "legendFormat": "{{level}}", 
+                            "metric": "mongodb_mongod_rocksdb_compaction_file_threads", 
                             "refId": "A", 
                             "step": 300
                         }
@@ -1428,11 +1436,12 @@
                     "steppedLine": false, 
                     "targets": [
                         {
-                            "expr": "mongodb_mongod_rocksdb_num_files{instance=\"$host\", level!=\"Sum\"}", 
+                            "expr": "mongodb_mongod_rocksdb_files{instance=\"$host\", level!=\"Sum\"}", 
                             "hide": false, 
                             "interval": "$interval", 
                             "intervalFactor": 1, 
                             "legendFormat": "{{level}}", 
+                            "metric": "mongodb_mongod_rocksdb_files", 
                             "refId": "A", 
                             "step": 300
                         }
@@ -1525,10 +1534,11 @@
                     "steppedLine": false, 
                     "targets": [
                         {
-                            "expr": "rate(mongodb_mongod_rocksdb_write_ahead_log_bytes_total{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_rocksdb_write_ahead_log_bytes_total{instance=\"$host\"}[5m])", 
+                            "expr": "rate(mongodb_mongod_rocksdb_write_ahead_log_bytes_per_second{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_rocksdb_write_ahead_log_bytes_per_second{instance=\"$host\"}[5m])", 
                             "interval": "$interval", 
                             "intervalFactor": 1, 
                             "legendFormat": "Write Rate", 
+                            "metric": "mongodb_mongod_rocksdb_write_ahead_log_bytes_per_second", 
                             "refId": "A", 
                             "step": 300
                         }
@@ -1704,11 +1714,11 @@
                     "steppedLine": false, 
                     "targets": [
                         {
-                            "expr": "rate(mongodb_mongod_rocksdb_flushed_bytes_total{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_rocksdb_flushed_bytes_total{instance=\"$host\"}[5m])", 
+                            "expr": "rate(mongodb_mongod_rocksdb_compaction_bytes_per_second{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_rocksdb_compaction_bytes_per_second{instance=\"$host\"}[5m])", 
                             "interval": "$interval", 
                             "intervalFactor": 1, 
-                            "legendFormat": "Flush Rate", 
-                            "metric": "", 
+                            "legendFormat": "{{level}}_{{type}}", 
+                            "metric": "rocksdb", 
                             "refId": "A", 
                             "step": 300
                         }
