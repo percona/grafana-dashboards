@@ -77,6 +77,12 @@ Here is the minimal set of options for the exporters:
  * mysqld_exporter: `-collect.binlog_size=true -collect.info_schema.processlist=true`
  * mongodb_exporter: the defaults are fine.
 
+Additionally, if you are using [pt-heartbeat][pth], enable
+`-collect.heartbeat=true` with mysqld_exporter >= 0.10 to get more accurate
+mysql replication delay graph.
+
+[pth]:https://www.percona.com/doc/percona-toolkit/2.2/pt-heartbeat.html
+
 #### Edit Grafana config
 
 Enable JSON dashboards by uncommenting those lines in `grafana.ini`:
