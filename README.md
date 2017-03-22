@@ -11,6 +11,7 @@ This is a set of Grafana dashboards for database and system monitoring using Pro
  * MongoDB ReplSet
  * MongoDB RocksDB
  * MongoDB WiredTiger
+ * MongoDB MMAPv1 
  * MySQL InnoDB Metrics
  * MySQL InnoDB Metrics Advanced
  * MySQL MyISAM Metrics
