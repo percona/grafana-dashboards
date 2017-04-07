@@ -4,9 +4,18 @@
     }, 
     "editable": true, 
     "gnetId": null, 
+    "graphTooltip": 1, 
     "hideControls": true, 
     "id": null, 
     "links": [
+        {
+            "icon": "doc", 
+            "tags": [], 
+            "targetBlank": true, 
+            "title": "MongoDB Dashboards", 
+            "type": "link", 
+            "url": "https://www.percona.com/doc/percona-monitoring-and-management/mm-dashboards.html?utm_source=installed-pmm&utm_medium=dashboard&utm_campaign=mongodb&utm_term=mongodb&utm_content=mongodb-replset"
+        }, 
         {
             "asDropdown": true, 
             "icon": "external link", 
@@ -32,6 +41,7 @@
             "type": "dashboards"
         }
     ], 
+    "refresh": false, 
     "rows": [
         {
             "collapse": false, 
@@ -48,6 +58,7 @@
                     ], 
                     "datasource": "Prometheus", 
                     "decimals": 0, 
+                    "description": "Shows the role of the selected member instance (PRIMARY or SECONDARY)", 
                     "editable": true, 
                     "error": false, 
                     "format": "none", 
@@ -178,6 +189,7 @@
                     ], 
                     "datasource": "Prometheus", 
                     "decimals": 0, 
+                    "description": "Shows the number of members in the replica set", 
                     "editable": true, 
                     "error": false, 
                     "format": "none", 
@@ -255,6 +267,7 @@
                     ], 
                     "datasource": "Prometheus", 
                     "decimals": 1, 
+                    "description": "Shows how long ago the last election occurred", 
                     "editable": true, 
                     "error": false, 
                     "format": "s", 
@@ -332,6 +345,7 @@
                     ], 
                     "datasource": "Prometheus", 
                     "decimals": 1, 
+                    "description": "Shows the current replication lag for the selected member", 
                     "editable": true, 
                     "error": false, 
                     "format": "s", 
@@ -409,6 +423,7 @@
                     ], 
                     "datasource": "Prometheus", 
                     "decimals": 0, 
+                    "description": "Shows the storage engine used on the instance", 
                     "editable": true, 
                     "error": false, 
                     "format": "none", 
@@ -529,10 +544,10 @@
                     "steppedLine": false, 
                     "targets": [
                         {
-                            "expr": "rate(mongodb_mongod_metrics_repl_oplog_insert_total_milliseconds{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_metrics_repl_oplog_insert_total_milliseconds{instance=\"$host\"}[5m])", 
+                            "expr": "rate(mongodb_mongod_op_counters_repl_total{instance=\"$host\", type!~\"(command|getmore|query)\"}[$interval]) or irate(mongodb_mongod_op_counters_repl_total{instance=\"$host\", type!~\"(command|getmore|query)\"}[5m])", 
                             "interval": "$interval", 
                             "intervalFactor": 1, 
-                            "legendFormat": "Time", 
+                            "legendFormat": "{{type}}", 
                             "refId": "A", 
                             "step": 300
                         }
@@ -540,7 +555,7 @@
                     "thresholds": [], 
                     "timeFrom": null, 
                     "timeShift": null, 
-                    "title": "Oplog Insert Time", 
+                    "title": "Replication Operations", 
                     "tooltip": {
                         "msResolution": false, 
                         "shared": true, 
@@ -562,7 +577,7 @@
                     ], 
                     "yaxes": [
                         {
-                            "format": "ms", 
+                            "format": "ops", 
                             "label": "", 
                             "logBase": 1, 
                             "max": null, 
@@ -583,6 +598,7 @@
                     "bars": false, 
                     "datasource": "Prometheus", 
                     "decimals": null, 
+                    "description": "Shows the time range in the oplog and the oldest backed up operation.", 
                     "editable": true, 
                     "error": false, 
                     "fill": 2, 
@@ -697,6 +713,7 @@
                     "bars": false, 
                     "datasource": "Prometheus", 
                     "decimals": null, 
+                    "description": "Shows the delay between an operation occurring on the primary and that same operation getting applied on the selected member", 
                     "editable": true, 
                     "error": false, 
                     "fill": 2, 
@@ -788,6 +805,7 @@
                     "bars": false, 
                     "datasource": "Prometheus", 
                     "decimals": null, 
+                    "description": "Elections happen when a primary becomes unavailable. Look at this graph over longer periods (weeks or months) to determine patterns and correlate elections with other events.", 
                     "editable": true, 
                     "error": false, 
                     "fill": 2, 
@@ -857,7 +875,7 @@
                     ], 
                     "yaxes": [
                         {
-                            "format": "none", 
+                            "format": "short", 
                             "label": "", 
                             "logBase": 1, 
                             "max": null, 
@@ -878,7 +896,7 @@
             "repeatIteration": null, 
             "repeatRowId": null, 
             "showTitle": false, 
-            "title": "New row", 
+            "title": "Replication Lag and Elections", 
             "titleSize": "h6"
         }, 
         {
@@ -890,6 +908,7 @@
                     "bars": false, 
                     "datasource": "Prometheus", 
                     "decimals": null, 
+                    "description": "Shows how long various members were in PRIMARY and SECONDARY roles", 
                     "editable": true, 
                     "error": false, 
                     "fill": 2, 
@@ -985,6 +1004,7 @@
                     "bars": false, 
                     "datasource": "Prometheus", 
                     "decimals": null, 
+                    "description": "Shows the heartbeat return times sent by the current member to other members in the replica set.", 
                     "editable": true, 
                     "error": false, 
                     "fill": 2, 
@@ -1079,7 +1099,7 @@
             "repeatIteration": null, 
             "repeatRowId": null, 
             "showTitle": false, 
-            "title": "New row", 
+            "title": "Member Uptime and Heartbeat Time", 
             "titleSize": "h6"
         }, 
         {
@@ -1091,6 +1111,7 @@
                     "bars": false, 
                     "datasource": "Prometheus", 
                     "decimals": null, 
+                    "description": "This can show a correlation with the replication lag value", 
                     "editable": true, 
                     "error": false, 
                     "fill": 2, 
@@ -1177,18 +1198,544 @@
                             "show": true
                         }
                     ]
+                }, 
+                {
+                    "aliasColors": {}, 
+                    "bars": false, 
+                    "datasource": "Prometheus", 
+                    "decimals": null, 
+                    "editable": true, 
+                    "error": false, 
+                    "fill": 2, 
+                    "grid": {
+                        "leftLogBase": 1, 
+                        "leftMax": null, 
+                        "leftMin": 0, 
+                        "rightLogBase": 1, 
+                        "rightMax": null, 
+                        "rightMin": null
+                    }, 
+                    "id": 79, 
+                    "legend": {
+                        "alignAsTable": true, 
+                        "avg": true, 
+                        "current": false, 
+                        "max": true, 
+                        "min": true, 
+                        "show": true, 
+                        "sort": "avg", 
+                        "sortDesc": true, 
+                        "total": false, 
+                        "values": true
+                    }, 
+                    "lines": true, 
+                    "linewidth": 2, 
+                    "links": [], 
+                    "nullPointMode": "null", 
+                    "percentage": false, 
+                    "pointradius": 5, 
+                    "points": false, 
+                    "renderer": "flot", 
+                    "seriesOverrides": [], 
+                    "span": 6, 
+                    "stack": false, 
+                    "steppedLine": false, 
+                    "targets": [
+                        {
+                            "expr": "rate(mongodb_mongod_metrics_repl_network_getmores_total_milliseconds{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_metrics_repl_network_getmores_total_milliseconds{instance=\"$host\"}[5m])", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "{{instance}}", 
+                            "refId": "A", 
+                            "step": 300
+                        }
+                    ], 
+                    "thresholds": [], 
+                    "timeFrom": null, 
+                    "timeShift": null, 
+                    "title": "Oplog Getmore Time", 
+                    "tooltip": {
+                        "msResolution": false, 
+                        "shared": true, 
+                        "sort": 0, 
+                        "value_type": "cumulative"
+                    }, 
+                    "type": "graph", 
+                    "x-axis": true, 
+                    "xaxis": {
+                        "mode": "time", 
+                        "name": null, 
+                        "show": true, 
+                        "values": []
+                    }, 
+                    "y-axis": true, 
+                    "y_formats": [
+                        "ms", 
+                        "short"
+                    ], 
+                    "yaxes": [
+                        {
+                            "format": "ms", 
+                            "label": "", 
+                            "logBase": 1, 
+                            "max": null, 
+                            "min": 0, 
+                            "show": true
+                        }, 
+                        {
+                            "format": "short", 
+                            "logBase": 1, 
+                            "max": null, 
+                            "min": null, 
+                            "show": true
+                        }
+                    ]
                 }
             ], 
             "repeat": null, 
             "repeatIteration": null, 
             "repeatRowId": null, 
             "showTitle": false, 
-            "title": "New row", 
+            "title": "Member Ping Time and Oplog Getmore Time", 
+            "titleSize": "h6"
+        }, 
+        {
+            "collapse": false, 
+            "height": 250, 
+            "panels": [
+                {
+                    "aliasColors": {}, 
+                    "bars": false, 
+                    "datasource": "Prometheus", 
+                    "decimals": null, 
+                    "editable": true, 
+                    "error": false, 
+                    "fill": 2, 
+                    "grid": {
+                        "leftLogBase": 1, 
+                        "leftMax": null, 
+                        "leftMin": 0, 
+                        "rightLogBase": 1, 
+                        "rightMax": null, 
+                        "rightMin": null
+                    }, 
+                    "id": 81, 
+                    "legend": {
+                        "alignAsTable": true, 
+                        "avg": true, 
+                        "current": false, 
+                        "max": true, 
+                        "min": true, 
+                        "show": true, 
+                        "sort": "avg", 
+                        "sortDesc": true, 
+                        "total": false, 
+                        "values": true
+                    }, 
+                    "lines": true, 
+                    "linewidth": 2, 
+                    "links": [], 
+                    "nullPointMode": "null", 
+                    "percentage": false, 
+                    "pointradius": 5, 
+                    "points": false, 
+                    "renderer": "flot", 
+                    "seriesOverrides": [], 
+                    "span": 6, 
+                    "stack": false, 
+                    "steppedLine": false, 
+                    "targets": [
+                        {
+                            "expr": "rate(mongodb_mongod_metrics_repl_preload_docs_num_total{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_metrics_repl_preload_docs_num_total{instance=\"$host\"}[5m])", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "Document Preload", 
+                            "metric": "mongodb_mongod_metrics_repl_preload_indexes_num_total", 
+                            "refId": "A", 
+                            "step": 300
+                        }, 
+                        {
+                            "expr": "rate(mongodb_mongod_metrics_repl_preload_indexes_num_total{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_metrics_repl_preload_indexes_num_total{instance=\"$host\"}[5m])", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "Index Preload", 
+                            "metric": "mongodb_mongod_metrics_repl_preload_indexes_num_total", 
+                            "refId": "B", 
+                            "step": 300
+                        }, 
+                        {
+                            "expr": "rate(mongodb_mongod_metrics_repl_apply_ops_total{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_metrics_repl_apply_ops_total{instance=\"$host\"}[5m])", 
+                            "intervalFactor": 2, 
+                            "legendFormat": "Batch Apply", 
+                            "refId": "C", 
+                            "step": 120
+                        }
+                    ], 
+                    "thresholds": [], 
+                    "timeFrom": null, 
+                    "timeShift": null, 
+                    "title": "Oplog Operations", 
+                    "tooltip": {
+                        "msResolution": false, 
+                        "shared": true, 
+                        "sort": 0, 
+                        "value_type": "cumulative"
+                    }, 
+                    "type": "graph", 
+                    "x-axis": true, 
+                    "xaxis": {
+                        "mode": "time", 
+                        "name": null, 
+                        "show": true, 
+                        "values": []
+                    }, 
+                    "y-axis": true, 
+                    "y_formats": [
+                        "ms", 
+                        "short"
+                    ], 
+                    "yaxes": [
+                        {
+                            "format": "ops", 
+                            "label": "", 
+                            "logBase": 1, 
+                            "max": null, 
+                            "min": 0, 
+                            "show": true
+                        }, 
+                        {
+                            "format": "short", 
+                            "logBase": 1, 
+                            "max": null, 
+                            "min": null, 
+                            "show": true
+                        }
+                    ]
+                }, 
+                {
+                    "aliasColors": {}, 
+                    "bars": false, 
+                    "datasource": "Prometheus", 
+                    "decimals": null, 
+                    "editable": true, 
+                    "error": false, 
+                    "fill": 2, 
+                    "grid": {
+                        "leftLogBase": 1, 
+                        "leftMax": null, 
+                        "leftMin": 0, 
+                        "rightLogBase": 1, 
+                        "rightMax": null, 
+                        "rightMin": null
+                    }, 
+                    "id": 84, 
+                    "legend": {
+                        "alignAsTable": true, 
+                        "avg": true, 
+                        "current": false, 
+                        "max": true, 
+                        "min": true, 
+                        "show": true, 
+                        "sort": "avg", 
+                        "sortDesc": true, 
+                        "total": false, 
+                        "values": true
+                    }, 
+                    "lines": true, 
+                    "linewidth": 2, 
+                    "links": [], 
+                    "nullPointMode": "null", 
+                    "percentage": false, 
+                    "pointradius": 5, 
+                    "points": false, 
+                    "renderer": "flot", 
+                    "seriesOverrides": [], 
+                    "span": 6, 
+                    "stack": false, 
+                    "steppedLine": false, 
+                    "targets": [
+                        {
+                            "expr": "rate(mongodb_mongod_metrics_repl_preload_docs_total_milliseconds{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_metrics_repl_preload_docs_total_milliseconds{instance=\"$host\"}[5m])", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "Document Preload", 
+                            "refId": "A", 
+                            "step": 300
+                        }, 
+                        {
+                            "expr": "rate(mongodb_mongod_metrics_repl_preload_indexes_total_milliseconds{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_metrics_repl_preload_indexes_total_milliseconds{instance=\"$host\"}[5m])", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "Index Preload", 
+                            "metric": "mongodb_mongod_metrics_repl_preload_indexes_total_milliseconds", 
+                            "refId": "B", 
+                            "step": 300
+                        }, 
+                        {
+                            "expr": "rate(mongodb_mongod_metrics_repl_apply_batches_total_milliseconds{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_metrics_repl_apply_batches_total_milliseconds{instance=\"$host\"}[5m])", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "Batch Apply", 
+                            "metric": "mongodb_mongod_metrics_repl_preload_indexes_total_milliseconds", 
+                            "refId": "C", 
+                            "step": 300
+                        }
+                    ], 
+                    "thresholds": [], 
+                    "timeFrom": null, 
+                    "timeShift": null, 
+                    "title": "Oplog Processing Time", 
+                    "tooltip": {
+                        "msResolution": false, 
+                        "shared": true, 
+                        "sort": 0, 
+                        "value_type": "cumulative"
+                    }, 
+                    "type": "graph", 
+                    "x-axis": true, 
+                    "xaxis": {
+                        "mode": "time", 
+                        "name": null, 
+                        "show": true, 
+                        "values": []
+                    }, 
+                    "y-axis": true, 
+                    "y_formats": [
+                        "ms", 
+                        "short"
+                    ], 
+                    "yaxes": [
+                        {
+                            "format": "ms", 
+                            "label": "", 
+                            "logBase": 1, 
+                            "max": null, 
+                            "min": 0, 
+                            "show": true
+                        }, 
+                        {
+                            "format": "short", 
+                            "logBase": 1, 
+                            "max": null, 
+                            "min": null, 
+                            "show": true
+                        }
+                    ]
+                }
+            ], 
+            "repeat": null, 
+            "repeatIteration": null, 
+            "repeatRowId": null, 
+            "showTitle": false, 
+            "title": "Oplog Operations and Processing Time", 
+            "titleSize": "h6"
+        }, 
+        {
+            "collapse": false, 
+            "height": 250, 
+            "panels": [
+                {
+                    "aliasColors": {}, 
+                    "bars": false, 
+                    "datasource": "Prometheus", 
+                    "decimals": null, 
+                    "editable": true, 
+                    "error": false, 
+                    "fill": 2, 
+                    "grid": {
+                        "leftLogBase": 1, 
+                        "leftMax": null, 
+                        "leftMin": 0, 
+                        "rightLogBase": 1, 
+                        "rightMax": null, 
+                        "rightMin": null
+                    }, 
+                    "id": 85, 
+                    "legend": {
+                        "alignAsTable": true, 
+                        "avg": true, 
+                        "current": false, 
+                        "max": true, 
+                        "min": true, 
+                        "show": true, 
+                        "sort": "avg", 
+                        "sortDesc": true, 
+                        "total": false, 
+                        "values": true
+                    }, 
+                    "lines": true, 
+                    "linewidth": 2, 
+                    "links": [], 
+                    "nullPointMode": "null", 
+                    "percentage": false, 
+                    "pointradius": 5, 
+                    "points": false, 
+                    "renderer": "flot", 
+                    "seriesOverrides": [], 
+                    "span": 6, 
+                    "stack": false, 
+                    "steppedLine": false, 
+                    "targets": [
+                        {
+                            "expr": "mongodb_mongod_metrics_repl_buffer_count{instance=\"$host\"}", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "Current", 
+                            "refId": "A", 
+                            "step": 300
+                        }
+                    ], 
+                    "thresholds": [], 
+                    "timeFrom": null, 
+                    "timeShift": null, 
+                    "title": "Oplog Buffered Operations", 
+                    "tooltip": {
+                        "msResolution": false, 
+                        "shared": true, 
+                        "sort": 0, 
+                        "value_type": "cumulative"
+                    }, 
+                    "type": "graph", 
+                    "x-axis": true, 
+                    "xaxis": {
+                        "mode": "time", 
+                        "name": null, 
+                        "show": true, 
+                        "values": []
+                    }, 
+                    "y-axis": true, 
+                    "y_formats": [
+                        "ms", 
+                        "short"
+                    ], 
+                    "yaxes": [
+                        {
+                            "format": "ops", 
+                            "label": "", 
+                            "logBase": 1, 
+                            "max": null, 
+                            "min": 0, 
+                            "show": true
+                        }, 
+                        {
+                            "format": "short", 
+                            "logBase": 1, 
+                            "max": null, 
+                            "min": null, 
+                            "show": true
+                        }
+                    ]
+                }, 
+                {
+                    "aliasColors": {}, 
+                    "bars": false, 
+                    "datasource": "Prometheus", 
+                    "decimals": null, 
+                    "editable": true, 
+                    "error": false, 
+                    "fill": 2, 
+                    "grid": {
+                        "leftLogBase": 1, 
+                        "leftMax": null, 
+                        "leftMin": 0, 
+                        "rightLogBase": 1, 
+                        "rightMax": null, 
+                        "rightMin": null
+                    }, 
+                    "id": 80, 
+                    "legend": {
+                        "alignAsTable": true, 
+                        "avg": true, 
+                        "current": false, 
+                        "max": true, 
+                        "min": true, 
+                        "show": true, 
+                        "sort": "avg", 
+                        "sortDesc": true, 
+                        "total": false, 
+                        "values": true
+                    }, 
+                    "lines": true, 
+                    "linewidth": 2, 
+                    "links": [], 
+                    "nullPointMode": "null", 
+                    "percentage": false, 
+                    "pointradius": 5, 
+                    "points": false, 
+                    "renderer": "flot", 
+                    "seriesOverrides": [], 
+                    "span": 6, 
+                    "stack": false, 
+                    "steppedLine": false, 
+                    "targets": [
+                        {
+                            "expr": "mongodb_mongod_metrics_repl_buffer_size_bytes{instance=\"$host\"}", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "Used", 
+                            "refId": "A", 
+                            "step": 300
+                        }, 
+                        {
+                            "expr": "mongodb_mongod_metrics_repl_buffer_max_size_bytes{instance=\"$host\"}", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "Max", 
+                            "refId": "B", 
+                            "step": 300
+                        }
+                    ], 
+                    "thresholds": [], 
+                    "timeFrom": null, 
+                    "timeShift": null, 
+                    "title": "Oplog Buffer Capacity", 
+                    "tooltip": {
+                        "msResolution": false, 
+                        "shared": true, 
+                        "sort": 0, 
+                        "value_type": "cumulative"
+                    }, 
+                    "type": "graph", 
+                    "x-axis": true, 
+                    "xaxis": {
+                        "mode": "time", 
+                        "name": null, 
+                        "show": true, 
+                        "values": []
+                    }, 
+                    "y-axis": true, 
+                    "y_formats": [
+                        "ms", 
+                        "short"
+                    ], 
+                    "yaxes": [
+                        {
+                            "format": "decbytes", 
+                            "label": "", 
+                            "logBase": 10, 
+                            "max": null, 
+                            "min": 0, 
+                            "show": true
+                        }, 
+                        {
+                            "format": "short", 
+                            "logBase": 1, 
+                            "max": null, 
+                            "min": null, 
+                            "show": true
+                        }
+                    ]
+                }
+            ], 
+            "repeat": null, 
+            "repeatIteration": null, 
+            "repeatRowId": null, 
+            "showTitle": false, 
+            "title": "Oplog Buffer", 
             "titleSize": "h6"
         }
     ], 
-    "schemaVersion": 13, 
-    "sharedCrosshair": true, 
+    "schemaVersion": 14, 
     "style": "dark", 
     "tags": [
         "MongoDB", 
@@ -1273,8 +1820,10 @@
                 "regex": "", 
                 "sort": 1, 
                 "tagValuesQuery": null, 
+                "tags": [], 
                 "tagsQuery": null, 
-                "type": "query"
+                "type": "query", 
+                "useTags": false
             }, 
             {
                 "allFormat": "glob", 
@@ -1291,8 +1840,10 @@
                 "regex": "", 
                 "sort": 1, 
                 "tagValuesQuery": null, 
+                "tags": [], 
                 "tagsQuery": null, 
-                "type": "query"
+                "type": "query", 
+                "useTags": false
             }, 
             {
                 "allFormat": "glob", 
@@ -1309,6 +1860,7 @@
                 "regex": "", 
                 "sort": 1, 
                 "tagValuesQuery": null, 
+                "tags": [], 
                 "tagsQuery": "", 
                 "type": "query", 
                 "useTags": false
@@ -1346,6 +1898,6 @@
         ]
     }, 
     "timezone": "browser", 
-    "title": "MongoDB ReplSet", 
+    "title": "MongoDB ReplSet 1.1.3", 
     "version": 0
 }
