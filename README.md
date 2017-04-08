@@ -6,6 +6,7 @@ This is a set of Grafana dashboards for database and system monitoring using Pro
  * Cross Server Graphs
  * Disk Performance
  * Disk Space
+ * MariaDB
  * MongoDB Cluster Summary
  * MongoDB Overview
  * MongoDB ReplSet
