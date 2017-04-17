@@ -4,9 +4,18 @@
     }, 
     "editable": true, 
     "gnetId": null, 
+    "graphTooltip": 1, 
     "hideControls": true, 
     "id": null, 
     "links": [
+        {
+            "icon": "doc", 
+            "tags": [], 
+            "targetBlank": true, 
+            "title": "MongoDB Dashboards", 
+            "type": "link", 
+            "url": "https://www.percona.com/doc/percona-monitoring-and-management/mm-dashboards.html?utm_source=installed-pmm&utm_medium=dashboard&utm_campaign=mongodb&utm_term=mongodb&utm_content=mongodb-overview"
+        }, 
         {
             "asDropdown": true, 
             "icon": "external link", 
@@ -32,6 +41,7 @@
             "type": "dashboards"
         }
     ], 
+    "refresh": false, 
     "rows": [
         {
             "collapse": false, 
@@ -42,6 +52,7 @@
                     "bars": false, 
                     "datasource": "Prometheus", 
                     "decimals": 1, 
+                    "description": "Shows how many times a command is executed per second on average during the selected interval.", 
                     "editable": true, 
                     "error": false, 
                     "fill": 2, 
@@ -97,6 +108,15 @@
                             "intervalFactor": 1, 
                             "legendFormat": "repl_{{type}}", 
                             "refId": "A", 
+                            "step": 300
+                        }, 
+                        {
+                            "expr": "rate(mongodb_mongod_metrics_ttl_deleted_documents_total{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_metrics_ttl_deleted_documents_total{instance=\"$host\"}[5m])", 
+                            "hide": false, 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "ttl_delete", 
+                            "refId": "B", 
                             "step": 300
                         }
                     ], 
@@ -158,6 +178,7 @@
                     "bars": false, 
                     "datasource": "Prometheus", 
                     "decimals": null, 
+                    "description": "Keep in mind the hard limit on the maximum number of connections set by your distribution.", 
                     "editable": true, 
                     "error": false, 
                     "fill": 2, 
@@ -230,7 +251,7 @@
                     ], 
                     "yaxes": [
                         {
-                            "format": "none", 
+                            "format": "short", 
                             "label": "", 
                             "logBase": 1, 
                             "max": null, 
@@ -251,6 +272,7 @@
                     "bars": false, 
                     "datasource": "Prometheus", 
                     "decimals": null, 
+                    "description": "Helps identify why connections are increasing. Shows active cursors compared to cursors being automatically killed after 10 minutes due to an application not closing the connection.", 
                     "editable": true, 
                     "error": false, 
                     "fill": 2, 
@@ -359,6 +381,7 @@
                     "bars": false, 
                     "datasource": "Prometheus", 
                     "decimals": null, 
+                    "description": "When used in combination with 'Command Operations', this graph can help identify write amplification. For example, when one insert or update command actually inserts or updates hundreds, thousands, or even millions of documents.", 
                     "editable": true, 
                     "error": false, 
                     "fill": 2, 
@@ -454,6 +477,7 @@
                     "bars": false, 
                     "datasource": "Prometheus", 
                     "decimals": null, 
+                    "description": "Any number of queued operations for long periods of time is an indication of possible issues. Find the cause and fix it before requests get stuck in the queue.", 
                     "editable": true, 
                     "error": false, 
                     "fill": 2, 
@@ -554,6 +578,209 @@
         }, 
         {
             "collapse": false, 
+            "height": 250, 
+            "panels": [
+                {
+                    "aliasColors": {}, 
+                    "bars": false, 
+                    "datasource": "Prometheus", 
+                    "decimals": 2, 
+                    "editable": true, 
+                    "error": false, 
+                    "fill": 2, 
+                    "grid": {
+                        "leftLogBase": 1, 
+                        "leftMax": null, 
+                        "leftMin": 0, 
+                        "rightLogBase": 1, 
+                        "rightMax": null, 
+                        "rightMin": null
+                    }, 
+                    "height": "250px", 
+                    "id": 63, 
+                    "legend": {
+                        "alignAsTable": true, 
+                        "avg": true, 
+                        "current": false, 
+                        "max": true, 
+                        "min": true, 
+                        "show": true, 
+                        "total": false, 
+                        "values": true
+                    }, 
+                    "lines": true, 
+                    "linewidth": 2, 
+                    "links": [], 
+                    "nullPointMode": "null", 
+                    "percentage": true, 
+                    "pointradius": 5, 
+                    "points": false, 
+                    "renderer": "flot", 
+                    "seriesOverrides": [], 
+                    "span": 6, 
+                    "stack": false, 
+                    "steppedLine": false, 
+                    "targets": [
+                        {
+                            "expr": "sum(increase(mongodb_mongod_metrics_query_executor_total{instance=\"$host\", state=\"scanned_objects\"}[5m]))/sum(increase(mongodb_mongod_metrics_document_total{instance=\"$host\", state=\"returned\"}[5m]))", 
+                            "hide": false, 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "Document", 
+                            "refId": "J", 
+                            "step": 300
+                        }, 
+                        {
+                            "expr": "sum(increase(mongodb_mongod_metrics_query_executor_total{instance=\"$host\", state=\"scanned\"}[5m]))/sum(increase(mongodb_mongod_metrics_document_total{instance=\"$host\", state=\"returned\"}[5m]))", 
+                            "hide": false, 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "Index", 
+                            "refId": "A", 
+                            "step": 300
+                        }
+                    ], 
+                    "thresholds": [], 
+                    "timeFrom": null, 
+                    "timeShift": null, 
+                    "title": "Query Efficiency", 
+                    "tooltip": {
+                        "msResolution": false, 
+                        "shared": true, 
+                        "sort": 0, 
+                        "value_type": "cumulative"
+                    }, 
+                    "type": "graph", 
+                    "x-axis": true, 
+                    "xaxis": {
+                        "mode": "time", 
+                        "name": null, 
+                        "show": true, 
+                        "values": []
+                    }, 
+                    "y-axis": true, 
+                    "y_formats": [
+                        "short", 
+                        "short"
+                    ], 
+                    "yaxes": [
+                        {
+                            "format": "percentunit", 
+                            "label": "", 
+                            "logBase": 1, 
+                            "max": null, 
+                            "min": 0, 
+                            "show": true
+                        }, 
+                        {
+                            "format": "none", 
+                            "logBase": 1, 
+                            "max": null, 
+                            "min": null, 
+                            "show": true
+                        }
+                    ]
+                }, 
+                {
+                    "aliasColors": {}, 
+                    "bars": false, 
+                    "datasource": "Prometheus", 
+                    "decimals": null, 
+                    "editable": true, 
+                    "error": false, 
+                    "fill": 2, 
+                    "grid": {}, 
+                    "id": 64, 
+                    "legend": {
+                        "alignAsTable": true, 
+                        "avg": true, 
+                        "current": false, 
+                        "hideZero": true, 
+                        "max": true, 
+                        "min": true, 
+                        "rightSide": false, 
+                        "show": true, 
+                        "sort": "avg", 
+                        "sortDesc": true, 
+                        "total": false, 
+                        "values": true
+                    }, 
+                    "lines": true, 
+                    "linewidth": 2, 
+                    "links": [], 
+                    "nullPointMode": "null", 
+                    "percentage": false, 
+                    "pointradius": 5, 
+                    "points": false, 
+                    "renderer": "flot", 
+                    "seriesOverrides": [], 
+                    "span": 6, 
+                    "stack": false, 
+                    "steppedLine": false, 
+                    "targets": [
+                        {
+                            "expr": "rate(mongodb_mongod_metrics_query_executor_total{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_metrics_query_executor_total{instance=\"$host\"}[5m])", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "{{state}}", 
+                            "metric": "", 
+                            "refId": "A", 
+                            "step": 300
+                        }, 
+                        {
+                            "expr": "rate(mongodb_mongod_metrics_record_moves_total{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_metrics_record_moves_total{instance=\"$host\"}[5m])", 
+                            "interval": "$interval", 
+                            "intervalFactor": 1, 
+                            "legendFormat": "moved", 
+                            "refId": "B", 
+                            "step": 300
+                        }
+                    ], 
+                    "thresholds": [], 
+                    "timeFrom": null, 
+                    "timeShift": null, 
+                    "title": "Scanned and Moved Objects", 
+                    "tooltip": {
+                        "msResolution": false, 
+                        "shared": true, 
+                        "sort": 0, 
+                        "value_type": "cumulative"
+                    }, 
+                    "type": "graph", 
+                    "xaxis": {
+                        "mode": "time", 
+                        "name": null, 
+                        "show": true, 
+                        "values": []
+                    }, 
+                    "yaxes": [
+                        {
+                            "format": "ops", 
+                            "label": "", 
+                            "logBase": 1, 
+                            "max": null, 
+                            "min": 0, 
+                            "show": true
+                        }, 
+                        {
+                            "format": "short", 
+                            "logBase": 1, 
+                            "max": null, 
+                            "min": null, 
+                            "show": true
+                        }
+                    ]
+                }
+            ], 
+            "repeat": null, 
+            "repeatIteration": null, 
+            "repeatRowId": null, 
+            "showTitle": false, 
+            "title": "Dashboard Row", 
+            "titleSize": "h6"
+        }, 
+        {
+            "collapse": false, 
             "height": "250px", 
             "panels": [
                 {
@@ -561,6 +788,7 @@
                     "bars": false, 
                     "datasource": "Prometheus", 
                     "decimals": null, 
+                    "description": "This is useful for write-heavy workloads to understand how long it takes to verify writes and how many concurrent writes are occurring.", 
                     "editable": true, 
                     "error": false, 
                     "fill": 2, 
@@ -652,6 +880,7 @@
                     "bars": false, 
                     "datasource": "Prometheus", 
                     "decimals": null, 
+                    "description": "This is useful for write-heavy workloads to understand how long it takes to verify writes and how many concurrent writes are occurring.", 
                     "editable": true, 
                     "error": false, 
                     "fill": 2, 
@@ -768,6 +997,7 @@
                     "bars": false, 
                     "datasource": "Prometheus", 
                     "decimals": null, 
+                    "description": "Asserts are not important by themselves, but you can correlate spikes with other graphs.", 
                     "editable": true, 
                     "error": false, 
                     "fill": 2, 
@@ -864,6 +1094,7 @@
                     "bars": false, 
                     "datasource": "Prometheus", 
                     "decimals": null, 
+                    "description": "Page faults indicate that requests are processed from disk either because an index is missing or there is not enough memory for the data set. Consider increasing memory or sharding out.", 
                     "editable": true, 
                     "error": false, 
                     "fill": 2, 
@@ -913,7 +1144,7 @@
                     "thresholds": [], 
                     "timeFrom": null, 
                     "timeShift": null, 
-                    "title": "Memory Faults", 
+                    "title": "Page Faults", 
                     "tooltip": {
                         "msResolution": false, 
                         "shared": true, 
@@ -935,7 +1166,7 @@
                     ], 
                     "yaxes": [
                         {
-                            "format": "none", 
+                            "format": "short", 
                             "label": "", 
                             "logBase": 1, 
                             "max": null, 
@@ -960,8 +1191,7 @@
             "titleSize": "h6"
         }
     ], 
-    "schemaVersion": 13, 
-    "sharedCrosshair": true, 
+    "schemaVersion": 14, 
     "style": "dark", 
     "tags": [
         "MongoDB", 
@@ -1046,8 +1276,10 @@
                 "regex": "", 
                 "sort": 1, 
                 "tagValuesQuery": null, 
+                "tags": [], 
                 "tagsQuery": null, 
-                "type": "query"
+                "type": "query", 
+                "useTags": false
             }, 
             {
                 "allFormat": "glob", 
@@ -1064,6 +1296,7 @@
                 "regex": "", 
                 "sort": 1, 
                 "tagValuesQuery": null, 
+                "tags": [], 
                 "tagsQuery": "", 
                 "type": "query", 
                 "useTags": false
