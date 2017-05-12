@@ -65,7 +65,7 @@ def dash_cleanup(a):
 
         j += 1
 
-    return json.dumps(a, sort_keys=True, indent=4)
+    return json.dumps(a, sort_keys=True, indent=4, separators=(',', ': '))
 
 
 if __name__ == '__main__':
