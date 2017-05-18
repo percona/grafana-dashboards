@@ -316,8 +316,8 @@
                         "alignAsTable": true,
                         "avg": true,
                         "current": true,
-                        "hideEmpty": false,
-                        "hideZero": false,
+                        "hideEmpty": true,
+                        "hideZero": true,
                         "max": true,
                         "min": true,
                         "rightSide": false,
@@ -355,7 +355,7 @@
                             "legendFormat": "Index Page Merge Attempts",
                             "metric": "",
                             "refId": "B",
-                            "step": 1
+                            "step": 300
                         },
                         {
                             "expr": "rate(mysql_info_schema_innodb_metrics_index_index_page_merge_successful_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_index_index_page_merge_successful_total{instance=\"$host\"}[5m])",
@@ -363,7 +363,7 @@
                             "intervalFactor": 1,
                             "legendFormat": "Index Page Merge Successful",
                             "refId": "A",
-                            "step": 1
+                            "step": 300
                         },
                         {
                             "expr": "rate(mysql_info_schema_innodb_metrics_index_index_page_splits_total{instance=\"$host\"}[$interval])/rate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_btree_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_total{instance=\"$host\"}[$interval])/rate(mysql_info_schema_innodb_metrics_index_index_page_splits_total{instance=\"$host\"}[5m])",
@@ -371,15 +371,15 @@
                             "intervalFactor": 1,
                             "legendFormat": "Index Page Splits",
                             "refId": "C",
-                            "step": 1
+                            "step": 300
                         },
                         {
-                            "expr": "mysql_info_schema_innodb_metrics_index_index_page_merge_successful_total / mysql_info_schema_innodb_metrics_index_index_page_merge_attempts_total * 100",
+                            "expr": "(rate(mysql_info_schema_innodb_metrics_index_index_page_merge_successful_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_index_index_page_merge_successful_total{instance=\"$host\"}[5m])) / (rate(mysql_info_schema_innodb_metrics_index_index_page_merge_attempts_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_index_index_page_merge_attempts_total{instance=\"$host\"}[5m])) * 100",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Page Merge Successes / Page Merge Attempts",
                             "refId": "D",
-                            "step": 1
+                            "step": 300
                         }
                     ],
                     "thresholds": [],
@@ -408,7 +408,7 @@
                     "yaxes": [
                         {
                             "format": "short",
-                            "label": null,
+                            "label": "Pages",
                             "logBase": 1,
                             "max": null,
                             "min": 0,
@@ -416,7 +416,7 @@
                         },
                         {
                             "format": "percent",
-                            "label": "",
+                            "label": "Page Merge Successes / Page Merge Attempts",
                             "logBase": 1,
                             "max": null,
                             "min": 0,
@@ -446,8 +446,8 @@
                         "alignAsTable": true,
                         "avg": true,
                         "current": true,
-                        "hideEmpty": false,
-                        "hideZero": false,
+                        "hideEmpty": true,
+                        "hideZero": true,
                         "max": true,
                         "min": true,
                         "rightSide": false,
@@ -485,7 +485,7 @@
                             "intervalFactor": 1,
                             "legendFormat": "Index Page Reorg Attempts",
                             "refId": "E",
-                            "step": 1
+                            "step": 300
                         },
                         {
                             "expr": "rate(mysql_info_schema_innodb_metrics_index_index_page_reorg_successful_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_index_index_page_reorg_successful_total{instance=\"$host\"}[5m])",
@@ -493,15 +493,15 @@
                             "intervalFactor": 1,
                             "legendFormat": "Index Page Reorg Successful",
                             "refId": "F",
-                            "step": 1
+                            "step": 300
                         },
                         {
-                            "expr": "mysql_info_schema_innodb_metrics_index_index_page_reorg_successful_total / mysql_info_schema_innodb_metrics_index_index_page_reorg_attempts_total * 100",
+                            "expr": "(rate(mysql_info_schema_innodb_metrics_index_index_page_reorg_successful_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_index_index_page_reorg_successful_total{instance=\"$host\"}[5m])) / (rate(mysql_info_schema_innodb_metrics_index_index_page_reorg_attempts_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_index_index_page_reorg_attempts_total{instance=\"$host\"}[5m])) * 100",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Reorg Successes / Reorg Attempts",
                             "refId": "G",
-                            "step": 1
+                            "step": 300
                         }
                     ],
                     "thresholds": [],
@@ -540,7 +540,7 @@
                             "format": "percent",
                             "label": "",
                             "logBase": 1,
-                            "max": null,
+                            "max": "100",
                             "min": 0,
                             "show": true
                         }
@@ -1702,12 +1702,12 @@
                     },
                     "y-axis": true,
                     "y_formats": [
-                        "µs",
+                        "\u00b5s",
                         "short"
                     ],
                     "yaxes": [
                         {
-                            "format": "µs",
+                            "format": "\u00b5s",
                             "label": null,
                             "logBase": 1,
                             "max": null,
@@ -2078,7 +2078,6 @@
                 "multi": false,
                 "multiFormat": "regex values",
                 "name": "host",
-                "options": [],
                 "query": "label_values(mysql_up, instance)",
                 "refresh": 1,
                 "refresh_on_load": false,
