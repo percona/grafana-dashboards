@@ -45,7 +45,6 @@
             "type": "dashboards"
         }
     ],
-    "refresh": false,
     "rows": [
         {
             "collapse": false,
@@ -810,6 +809,120 @@
                             "max": null,
                             "min": 0,
                             "show": true
+                        }
+                    ]
+                },
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "datasource": "Prometheus",
+                    "description": "Index Condition Pushdown (ICP) is an optimization for the case where MySQL retrieves rows from a table using an index. Without ICP, the storage engine traverses the index to locate rows in the base table and returns them to the MySQL server which evaluates the\u00a0WHERE condition for the rows. With ICP enabled, and if parts of the\u00a0WHERE\u00a0condition can be evaluated by using only columns from the index, the MySQL server pushes this part of the\u00a0WHERE\u00a0condition down to the storage engine. The storage engine then evaluates the pushed index condition by using the index entry and only if this is satisfied is the row read from the table. ICP can reduce the number of times the storage engine must access the base table and the number of times the MySQL server must access the storage engine.",
+                    "fill": 1,
+                    "id": 48,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": true,
+                        "hideEmpty": false,
+                        "hideZero": true,
+                        "max": true,
+                        "min": true,
+                        "rightSide": false,
+                        "show": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 1,
+                    "links": [
+                        {
+                            "targetBlank": true,
+                            "title": "Index Condition Pushdown optimisation - MySQL 5.7 Manual",
+                            "type": "absolute",
+                            "url": "https://dev.mysql.com/doc/refman/5.7/en/index-condition-pushdown-optimization.html"
+                        },
+                        {
+                            "targetBlank": true,
+                            "title": "ICP counters and how to interpret them",
+                            "type": "absolute",
+                            "url": "https://www.percona.com/blog/2017/05/09/mariadb-handler_icp_-counters-what-they-are-and-how-to-use-them/"
+                        }
+                    ],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "span": 6,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "expr": "rate(mysql_info_schema_innodb_metrics_icp_icp_attempts_total{instance=\"$host\"}[$interval])",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Attempts",
+                            "refId": "A",
+                            "step": 300
+                        },
+                        {
+                            "expr": "rate(mysql_info_schema_innodb_metrics_icp_icp_match_total{instance=\"$host\"}[$interval])",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Matches",
+                            "refId": "B",
+                            "step": 300
+                        },
+                        {
+                            "expr": "rate(mysql_info_schema_innodb_metrics_icp_icp_no_match_total{instance=\"$host\"}[$interval])",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "No Matches",
+                            "refId": "C",
+                            "step": 300
+                        },
+                        {
+                            "expr": "rate(mysql_info_schema_innodb_metrics_icp_icp_out_of_range_total{instance=\"$host\"}[$interval])",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Out of Range",
+                            "refId": "D",
+                            "step": 300
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Index Condition Pushdown (ICP)",
+                    "tooltip": {
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "short",
+                            "label": "",
+                            "logBase": 1,
+                            "max": null,
+                            "min": "0",
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": false
                         }
                     ]
                 }
