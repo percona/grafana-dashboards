@@ -28,6 +28,7 @@ def main():
         name = data['title'].replace(' ', '_').replace('/', '_').replace(':', '').replace('[', '').replace(']', '')
         tmp = open(DIR + name + '.json', 'w')
         tmp.write(dash)
+        tmp.write('\n')
         tmp.close()
 
 
