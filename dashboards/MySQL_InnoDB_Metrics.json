@@ -4,6 +4,7 @@
     },
     "editable": true,
     "gnetId": null,
+    "graphTooltip": 1,
     "hideControls": true,
     "id": null,
     "links": [
@@ -207,7 +208,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "mysql_global_status_innodb_history_list_length{instance=\"$host\"} or mysql_info_schema_innodb_metrics_transaction_trx_rseg_history_len{instance=\"$host\"}",
+                            "expr": "max_over_time(mysql_global_status_innodb_history_list_length{instance=\"$host\"}[$interval]) or max_over_time(mysql_info_schema_innodb_metrics_transaction_trx_rseg_history_len{instance=\"$host\"}[$interval])",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "History Length",
@@ -1455,8 +1456,7 @@
             "titleSize": "h6"
         }
     ],
-    "schemaVersion": 13,
-    "sharedCrosshair": true,
+    "schemaVersion": 14,
     "style": "dark",
     "tags": [
         "MySQL",
@@ -1542,8 +1542,10 @@
                 "regex": "",
                 "sort": 1,
                 "tagValuesQuery": null,
+                "tags": [],
                 "tagsQuery": null,
-                "type": "query"
+                "type": "query",
+                "useTags": false
             }
         ]
     },
