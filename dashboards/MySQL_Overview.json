@@ -4,6 +4,7 @@
     },
     "editable": true,
     "gnetId": null,
+    "graphTooltip": 1,
     "hideControls": true,
     "id": null,
     "links": [
@@ -511,7 +512,7 @@
                         "max": true,
                         "min": true,
                         "rightSide": false,
-                        "show": true,
+                        "show": false,
                         "sort": "avg",
                         "sortDesc": true,
                         "total": false,
@@ -543,7 +544,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "mysql_global_status_threads_connected{instance=\"$host\"}",
+                            "expr": "max_over_time(mysql_global_status_threads_connected{instance=\"$host\"}[$interval])",
                             "hide": false,
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -556,7 +557,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "mysql_global_status_threads_running{instance=\"$host\"}",
+                            "expr": "max_over_time(mysql_global_status_threads_running{instance=\"$host\"}[$interval])",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Threads Running",
@@ -571,7 +572,7 @@
                     "title": "MySQL Active Threads",
                     "tooltip": {
                         "msResolution": false,
-                        "shared": true,
+                        "shared": false,
                         "sort": 0,
                         "value_type": "individual"
                     },
@@ -580,11 +581,14 @@
                         "mode": "time",
                         "name": null,
                         "show": true,
-                        "values": []
+                        "values": [
+                            "total"
+                        ]
                     },
                     "yaxes": [
                         {
                             "format": "short",
+                            "label": "Threads",
                             "logBase": 1,
                             "max": null,
                             "min": 0,
@@ -592,10 +596,11 @@
                         },
                         {
                             "format": "short",
+                            "label": "",
                             "logBase": 1,
                             "max": null,
                             "min": 0,
-                            "show": true
+                            "show": false
                         }
                     ]
                 }
@@ -3782,8 +3787,7 @@
             "titleSize": "h6"
         }
     ],
-    "schemaVersion": 13,
-    "sharedCrosshair": true,
+    "schemaVersion": 14,
     "style": "dark",
     "tags": [
         "Percona",
@@ -3869,8 +3873,10 @@
                 "regex": "",
                 "sort": 1,
                 "tagValuesQuery": null,
+                "tags": [],
                 "tagsQuery": null,
-                "type": "query"
+                "type": "query",
+                "useTags": false
             }
         ]
     },
