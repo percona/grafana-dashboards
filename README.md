@@ -1,4 +1,4 @@
-## Grafana dashboards for MySQL and MongoDB monitoring using Prometheus
+## Grafana dashboards for MySQL and MongoDB monitoring using Prometheus [![Build Status](https://travis-ci.org/percona/grafana-dashboards.svg?branch=master)](https://travis-ci.org/percona/grafana-dashboards)
 
 This is a set of Grafana dashboards for database and system monitoring using Prometheus datasource.
 
@@ -12,7 +12,7 @@ This is a set of Grafana dashboards for database and system monitoring using Pro
  * MongoDB ReplSet
  * MongoDB RocksDB
  * MongoDB WiredTiger
- * MongoDB MMAPv1 
+ * MongoDB MMAPv1
  * MySQL InnoDB Metrics
  * MySQL InnoDB Metrics Advanced
  * MySQL MyISAM Metrics
