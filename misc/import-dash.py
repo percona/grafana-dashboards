@@ -6,14 +6,21 @@ import json
 import os
 import requests
 
-HOST = 'https://pmmdemo.percona.com/graph'
-API_KEY = '***'
+HOST = os.getenv('IMPORT_DASH_HOST', 'https://pmmdemo.percona.com/graph')
+API_KEY = os.getenv('IMPORT_DASH_API_KEY', '***')
+USERNAME = os.getenv('IMPORT_DASH_USERNAME')
+PASSWORD = os.getenv('IMPORT_DASH_PASSWORD')
 
 DIR = 'dashboards/'
 
 
 def main():
-    headers = {'Authorization': 'Bearer %s' % (API_KEY,), 'Content-Type': 'application/json'}
+    headers = {'Content-Type': 'application/json'}
+    auth = None
+    if USERNAME is None:
+        headers['Authorization'] = 'Bearer %s' % (API_KEY,)
+    else:
+        auth = (USERNAME, PASSWORD)
 
     for file in os.listdir(DIR):
         if not file.endswith('.json'):
@@ -25,10 +32,10 @@ def main():
         f.close()
 
         data = {'dashboard': dash, 'overwrite': True}
-        r = requests.post('%s/api/dashboards/db' % (HOST,), json=data, headers=headers)
+        r = requests.post('%s/api/dashboards/db' % (HOST,), json=data, headers=headers, auth=auth)
         if r.status_code != 200:
             print r.status_code, r.content
-            break
+            exit(1)
 
 
 if __name__ == '__main__':
