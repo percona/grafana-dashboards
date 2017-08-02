@@ -119,6 +119,7 @@
                         "lineColor": "rgb(31, 120, 193)",
                         "show": false
                     },
+                    "tableColumn": "",
                     "targets": [
                         {
                             "calculatedInterval": "10m",
@@ -212,6 +213,7 @@
                         "lineColor": "rgb(31, 120, 193)",
                         "show": true
                     },
+                    "tableColumn": "",
                     "targets": [
                         {
                             "calculatedInterval": "10m",
@@ -299,6 +301,7 @@
                         "lineColor": "rgb(31, 120, 193)",
                         "show": false
                     },
+                    "tableColumn": "",
                     "targets": [
                         {
                             "calculatedInterval": "10m",
@@ -387,6 +390,7 @@
                         "lineColor": "rgb(31, 120, 193)",
                         "show": false
                     },
+                    "tableColumn": "",
                     "targets": [
                         {
                             "calculatedInterval": "10m",
@@ -424,6 +428,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 0,
                     "description": "**Max Connections** is the maximum permitted number of simultaneous client connections. This is the value of the ``max_connections`` variable.\n\n**Max Used Connections** is the maximum number of connections that have been in use simultaneously since the server was started.\n\n**Connections** is the number of connection attempts (successful or not) to the MySQL server.",
@@ -466,6 +472,7 @@
                             "fill": 0
                         }
                     ],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
@@ -521,6 +528,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -548,6 +556,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 2,
                     "description": "**Threads Connected** is the number of open connections.\n\n**Threads Running** is the number of threads not sleeping.",
@@ -587,6 +597,7 @@
                             "color": "#EAB839"
                         }
                     ],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
@@ -629,6 +640,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -670,6 +682,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": null,
                     "description": "The number of queries sent to the server by clients, *excluding those executed within stored programs*.\n\nThis variable does not count the following commands:\n* ``COM_PING``\n* ``COM_STATISTICS``\n* ``COM_STMT_PREPARE``\n* ``COM_STMT_CLOSE``\n* ``COM_STMT_RESET``\n\nSee also:",
@@ -711,6 +725,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
@@ -740,6 +755,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -765,8 +781,11 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 2,
+                    "description": "**Thread Cache Size** is the value of the [thread_cache_size](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_thread_cache_size) system variable that defines how many threads the server should cache for reuse. When a client disconnects, the client's threads are put in the cache (unless it is full). As of MySQL 5.6.8, default thread cache size depends on the value of [max_connections](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_max_connections) and is capped at 100 threads. Requests for threads are satisfied by reusing threads taken from the cache if possible, and only when the cache is empty is a new thread created.\n\n**Threads Cached** is the number of threads in the thread cache.\n\n**Threads Created** is the number of threads created to handle connections.",
                     "editable": true,
                     "error": false,
                     "fill": 2,
@@ -799,6 +818,7 @@
                             "fill": 0
                         }
                     ],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
@@ -808,6 +828,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "mysql_global_variables_thread_cache_size{instance=\"$host\"}",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Thread Cache Size",
@@ -820,6 +841,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "mysql_global_status_threads_cached{instance=\"$host\"}",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Threads Cached",
@@ -832,6 +854,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "rate(mysql_global_status_threads_created{instance=\"$host\"}[$interval]) or irate(mysql_global_status_threads_created{instance=\"$host\"}[5m])",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Threads Created",
@@ -850,8 +873,10 @@
                         "sort": 0,
                         "value_type": "individual"
                     },
+                    "transparent": false,
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -889,6 +914,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 2,
                     "editable": true,
@@ -918,6 +945,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
@@ -971,6 +999,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -996,8 +1025,11 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 2,
+                    "description": "Shows how many selects were done without indexes. Such operations can impact performance.\n\n* **Select Scan** is how many queries caused full table scans, in which all the data in the table had to be read and either discarded or returned.\n\n* **Select Range** is how many queries used a range scan, which means MySQL scanned all rows in a given range.\n\n* **Select Full Join** is the number of joins that are not joined on an index, this is usually a huge performance hit.",
                     "editable": true,
                     "error": false,
                     "fill": 2,
@@ -1027,6 +1059,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
@@ -1036,6 +1069,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "rate(mysql_global_status_select_full_join{instance=\"$host\"}[$interval]) or irate(mysql_global_status_select_full_join{instance=\"$host\"}[5m])",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Select Full Join",
@@ -1048,6 +1082,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "rate(mysql_global_status_select_full_range_join{instance=\"$host\"}[$interval]) or irate(mysql_global_status_select_full_range_join{instance=\"$host\"}[5m])",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Select Full Range Join",
@@ -1060,6 +1095,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "rate(mysql_global_status_select_range{instance=\"$host\"}[$interval]) or irate(mysql_global_status_select_range{instance=\"$host\"}[5m])",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Select Range",
@@ -1072,6 +1108,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "rate(mysql_global_status_select_range_check{instance=\"$host\"}[$interval]) or irate(mysql_global_status_select_range_check{instance=\"$host\"}[5m])",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Select Range Check",
@@ -1084,6 +1121,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "rate(mysql_global_status_select_scan{instance=\"$host\"}[$interval]) or irate(mysql_global_status_select_scan{instance=\"$host\"}[5m])",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Select Scan",
@@ -1104,6 +1142,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -1141,8 +1180,11 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 2,
+                    "description": "**Sort Rows** shows how many rows had to be sorted to return them in the correct order.\n\nFor sorts that could not use indexes, it is important to note the following:\n\n* **Sort Scan** shows how many sorts caused a full table scan.\n\n* **Sort Range** shows how many sorts used a range scan.",
                     "editable": true,
                     "error": false,
                     "fill": 2,
@@ -1171,6 +1213,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
@@ -1180,6 +1223,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "rate(mysql_global_status_sort_rows{instance=\"$host\"}[$interval]) or irate(mysql_global_status_sort_rows{instance=\"$host\"}[5m])",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Sort Rows",
@@ -1192,6 +1236,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "rate(mysql_global_status_sort_range{instance=\"$host\"}[$interval]) or irate(mysql_global_status_sort_range{instance=\"$host\"}[5m])",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Sort Range",
@@ -1204,6 +1249,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "rate(mysql_global_status_sort_merge_passes{instance=\"$host\"}[$interval]) or irate(mysql_global_status_sort_merge_passes{instance=\"$host\"}[5m])",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Sort Merge Passes",
@@ -1216,6 +1262,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "rate(mysql_global_status_sort_scan{instance=\"$host\"}[$interval]) or irate(mysql_global_status_sort_scan{instance=\"$host\"}[5m])",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Sort Scan",
@@ -1236,6 +1283,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -1261,8 +1309,11 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 2,
+                    "description": "Shows how many *slow queries* were executed by the server. A query is considered slow if it takes more time than the value of the [long_query_time](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_long_query_time) system variable.",
                     "editable": true,
                     "error": false,
                     "fill": 2,
@@ -1287,6 +1338,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
@@ -1296,6 +1348,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "rate(mysql_global_status_slow_queries{instance=\"$host\"}[$interval]) or irate(mysql_global_status_slow_queries{instance=\"$host\"}[5m])",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Slow Queries",
@@ -1316,6 +1369,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -1355,8 +1409,11 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 2,
+                    "description": "**Aborted Clients** shows how many connections were aborted (the client disconnected improperly or was terminated).\n\n**Aborted Connects** shows how many attempts to connect to the MySQL server failed. If the number of attempts from a host reaches the value of the [max_connect_errors](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_max_connect_errors) system variable, the server blocks that host from further connections. To unblock the host, flush the host cache using `FLUSH HOSTS`.",
                     "editable": true,
                     "error": false,
                     "fill": 2,
@@ -1376,13 +1433,21 @@
                     },
                     "lines": true,
                     "linewidth": 2,
-                    "links": [],
+                    "links": [
+                        {
+                            "targetBlank": true,
+                            "title": "Communication Errors and Aborted Connections",
+                            "type": "absolute",
+                            "url": "https://dev.mysql.com/doc/refman/5.7/en/communication-errors.html"
+                        }
+                    ],
                     "nullPointMode": "null",
                     "percentage": false,
                     "pointradius": 5,
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
@@ -1392,6 +1457,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "rate(mysql_global_status_aborted_connects{instance=\"$host\"}[$interval]) or irate(mysql_global_status_aborted_connects{instance=\"$host\"}[5m])",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Aborted Connects (attempts)",
@@ -1404,6 +1470,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "rate(mysql_global_status_aborted_clients{instance=\"$host\"}[$interval]) or irate(mysql_global_status_aborted_clients{instance=\"$host\"}[5m])",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Aborted Clients (timeout)",
@@ -1425,6 +1492,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -1452,8 +1520,11 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 2,
+                    "description": "Shows how many table locks MySQL server requested from the storage engine.\n\n**Table Locks Immediate** shows the number of times that a request for a table lock could be granted immediately.\n\n**Table Locks Waited** shows the number of times that a request for a table lock could not be granted immediately. If this metric is rising, you need to deal with lock contention:\n\n* Optimize queries that require table locks.\n* Split tables that require frequent locking or replicate them.",
                     "editable": true,
                     "error": false,
                     "fill": 2,
@@ -1481,6 +1552,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
@@ -1490,6 +1562,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "rate(mysql_global_status_table_locks_immediate{instance=\"$host\"}[$interval]) or irate(mysql_global_status_table_locks_immediate{instance=\"$host\"}[5m])",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Table Locks Immediate",
@@ -1502,6 +1575,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "rate(mysql_global_status_table_locks_waited{instance=\"$host\"}[$interval]) or irate(mysql_global_status_table_locks_waited{instance=\"$host\"}[5m])",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Table Locks Waited",
@@ -1522,6 +1596,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -1559,8 +1634,11 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 2,
+                    "description": "Shows how much network traffic is generated by MySQL.\n\n**Outbound** is traffic sent from the server.\n\n**Inbound** is traffic received by the server.",
                     "editable": true,
                     "error": false,
                     "fill": 6,
@@ -1588,6 +1666,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": true,
                     "steppedLine": false,
@@ -1597,6 +1676,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "rate(mysql_global_status_bytes_received{instance=\"$host\"}[$interval]) or irate(mysql_global_status_bytes_received{instance=\"$host\"}[5m])",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Inbound",
@@ -1609,6 +1689,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "rate(mysql_global_status_bytes_sent{instance=\"$host\"}[$interval]) or irate(mysql_global_status_bytes_sent{instance=\"$host\"}[5m])",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Outbound",
@@ -1629,6 +1710,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -1654,8 +1736,11 @@
                 {
                     "aliasColors": {},
                     "bars": true,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 2,
+                    "description": "Shows how much data was *sent* from the MySQL server and how much data was *received* by the server every hour in the last 24 hours.",
                     "editable": true,
                     "error": false,
                     "fill": 6,
@@ -1684,6 +1769,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": true,
                     "steppedLine": false,
@@ -1693,6 +1779,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "increase(mysql_global_status_bytes_received{instance=\"$host\"}[1h])",
+                            "format": "time_series",
                             "interval": "1h",
                             "intervalFactor": 1,
                             "legendFormat": "Received",
@@ -1705,6 +1792,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "increase(mysql_global_status_bytes_sent{instance=\"$host\"}[1h])",
+                            "format": "time_series",
                             "interval": "1h",
                             "intervalFactor": 1,
                             "legendFormat": "Sent",
@@ -1725,6 +1813,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -1762,8 +1851,11 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 0,
+                    "description": "Shows various uses of memory within MySQL.\n\n**System Memory** is the total memory for the system.\n\n**InnoDB Buffer Pool Data** is the size of the [InnoDB buffer pool](https://dev.mysql.com/doc/refman/5.7/en/innodb-buffer-pool.html) for caching data and indexes in memory.\n\n**TokuDB Cache Size** is the size of the [TokuDB cache table](https://www.percona.com/doc/percona-server/LATEST/tokudb/tokudb_variables.html#tokudb_cache_size). For more information, see [Considerations to Run TokuDB in Production](https://www.percona.com/doc/percona-server/LATEST/tokudb/tokudb_quickstart.html#considerations-to-run-tokudb-in-production)\n\n**Key Buffer Size** is the size of the [buffer used for index blocks](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_key_buffer_size) in MyISAM tables. The key buffer is also known as the *key cache*.\n \n**Adaptive Hash Index Size** is the size of the [adaptive hash index](https://dev.mysql.com/doc/refman/5.7/en/innodb-adaptive-hash.html), which enables InnoDB to perform more like an in-memory database. When InnoDB notices that some index values are being accessed very frequently, it builds a hash index for them in memory on top of B-Tree indexes. This allows for very fast hashed lookups.\n\n**Query Cache Size** is the size of the [MySQL query cache](https://dev.mysql.com/doc/refman/5.7/en/query-cache.html), which stores the text of a `SELECT` statement together with the corresponding result that was sent to the client. The query cache has huge scalability problems, because only one thread can do an operation in the query cache at a time. This serialization is true for `SELECT`, `INSERT`, `UPDATE`, and `DELETE` queries. The larger the query cache size is set to, the slower those operations become.\n\n**InnoDB Dictionary Size** is the size of the [InnoDB data dictionary](https://dev.mysql.com/doc/refman/5.7/en/innodb-data-dictionary.html), which is the internal catalog of tables. InnoDB stores the data dictionary on disk, and loads entries into memory while the server is running. This is somewhat analogous to MySQL\u2018s table cache, but instead of operating at the server level, it is internal to the InnoDB storage engine.\n\n**InnoDB Log Buffer Size** the size of the [InnoDB redo log buffer](https://dev.mysql.com/doc/refman/5.6/en/innodb-redo-log-buffer.html). It allows transactions to run without having to write the log to disk until the transaction commits.",
                     "editable": true,
                     "error": false,
                     "fill": 6,
@@ -1799,12 +1891,14 @@
                             "stack": false
                         }
                     ],
+                    "spaceLength": 10,
                     "span": 12,
                     "stack": true,
                     "steppedLine": false,
                     "targets": [
                         {
                             "expr": "node_memory_MemTotal{instance=\"$host\"}",
+                            "format": "time_series",
                             "intervalFactor": 2,
                             "legendFormat": "System Memory",
                             "refId": "G",
@@ -1812,6 +1906,7 @@
                         },
                         {
                             "expr": "mysql_global_status_innodb_page_size{instance=\"$host\"} * on (instance) mysql_global_status_buffer_pool_pages{instance=\"$host\",state=\"data\"}",
+                            "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1821,6 +1916,7 @@
                         },
                         {
                             "expr": "mysql_global_variables_innodb_log_buffer_size{instance=\"$host\"}",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "InnoDB Log Buffer Size",
@@ -1829,6 +1925,7 @@
                         },
                         {
                             "expr": "mysql_global_variables_innodb_additional_mem_pool_size{instance=\"$host\"}",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 2,
                             "legendFormat": "InnoDB Additional Memory Pool Size",
@@ -1837,6 +1934,7 @@
                         },
                         {
                             "expr": "mysql_global_status_innodb_mem_dictionary{instance=\"$host\"}",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "InnoDB Dictionary Size",
@@ -1845,6 +1943,7 @@
                         },
                         {
                             "expr": "mysql_global_variables_key_buffer_size{instance=\"$host\"}",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Key Buffer Size",
@@ -1853,6 +1952,7 @@
                         },
                         {
                             "expr": "mysql_global_variables_query_cache_size{instance=\"$host\"}",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Query Cache Size",
@@ -1861,6 +1961,7 @@
                         },
                         {
                             "expr": "mysql_global_status_innodb_mem_adaptive_hash{instance=\"$host\"}",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Adaptive Hash Index Size",
@@ -1869,6 +1970,7 @@
                         },
                         {
                             "expr": "mysql_global_variables_tokudb_cache_size{instance=\"$host\"}",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "TokuDB Cache Size",
@@ -1888,6 +1990,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -1927,6 +2030,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 2,
                     "editable": true,
@@ -1958,6 +2063,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 12,
                     "stack": false,
                     "steppedLine": false,
@@ -1988,6 +2094,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -2013,6 +2120,8 @@
                 {
                     "aliasColors": {},
                     "bars": true,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 2,
                     "editable": true,
@@ -2042,6 +2151,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 12,
                     "stack": true,
                     "steppedLine": false,
@@ -2071,6 +2181,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -2096,6 +2207,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 2,
                     "editable": true,
@@ -2126,6 +2239,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 12,
                     "stack": false,
                     "steppedLine": false,
@@ -2155,6 +2269,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -2180,6 +2295,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 2,
                     "editable": true,
@@ -2210,6 +2327,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 12,
                     "stack": false,
                     "steppedLine": false,
@@ -2239,6 +2357,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -2264,6 +2383,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 2,
                     "editable": true,
@@ -2294,6 +2415,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 12,
                     "stack": false,
                     "steppedLine": false,
@@ -2323,6 +2445,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -2348,6 +2471,8 @@
                 {
                     "aliasColors": {},
                     "bars": true,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 2,
                     "editable": true,
@@ -2378,6 +2503,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 12,
                     "stack": true,
                     "steppedLine": false,
@@ -2407,6 +2533,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -2444,6 +2571,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 2,
                     "editable": true,
@@ -2473,6 +2602,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
@@ -2514,6 +2644,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -2539,6 +2670,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 2,
                     "editable": true,
@@ -2569,6 +2702,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
@@ -2646,6 +2780,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -2683,6 +2818,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 2,
                     "editable": true,
@@ -2710,6 +2847,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
@@ -2739,6 +2877,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -2764,6 +2903,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 2,
                     "editable": true,
@@ -2792,6 +2933,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
@@ -2841,6 +2983,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -2878,6 +3021,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 2,
                     "editable": true,
@@ -2912,6 +3057,7 @@
                             "yaxis": 2
                         }
                     ],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
@@ -2973,6 +3119,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -2998,6 +3145,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 2,
                     "editable": true,
@@ -3027,6 +3176,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
@@ -3068,6 +3218,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -3105,6 +3256,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 2,
                     "editable": true,
@@ -3139,6 +3292,7 @@
                             "yaxis": 2
                         }
                     ],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
@@ -3188,6 +3342,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
