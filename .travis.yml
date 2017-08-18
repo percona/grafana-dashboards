@@ -1,0 +1,27 @@
+dist: trusty
+sudo: required
+
+# http://docs.grafana.org/installation/debian/
+# https://docs.travis-ci.com/user/installing-dependencies/
+before_script:
+  - curl https://packagecloud.io/gpg.key | sudo apt-key add -
+  - echo "deb https://packagecloud.io/grafana/stable/debian/ jessie main" | sudo tee -a /etc/apt/sources.list
+  - sudo apt-get update -q
+  - sudo apt-get install -y grafana
+  - sudo service grafana-server start
+  - pip install requests
+
+env:
+  IMPORT_DASH_HOST: http://127.0.0.1:3000
+  IMPORT_DASH_USERNAME: admin
+  IMPORT_DASH_PASSWORD: admin
+
+script:
+  - ./misc/import-dash.py
+
+notifications:
+  slack:
+    on_success: change
+    on_failure: always
+    rooms:
+      secure: Sr0udEnOu7xOSuGlUF7i3J33DVjj2pxMsYpRoCp9Z9R+qbgVqggNmzAGuep5aSDPPKb9p8EpMDwjSA5V9GOhb/8znfZIpjIfibVB+CZwaO9f9BzaQ8GU0zKLs02732j42uK0D8Kb3+9P6YlB9svMhgPsQTRX5wdwG8lGIPCjRiF3wbq35UPzDG9AZFgz7sRRmvQr1TuW3PI6cOPzPEqRrDZMXdZ62GuxZnKM2WN1gDze/SsJmIdgGORSuA+G4QxCIGvFA9S1PFcH8cekWhjfk6gnwlGRR5lgV117QvyQmID+8g44iVCkE/cL6bSm2Rgmi+HIXatgaVDmxf94vxpGsXTEb5sE7eTtKLirrhn/UUkv462q/PhMq+LfMsxdLNAZX7gUa+COWHYu3PHqFBwrxB+JH6mq1xHd8cwMIvq2VzLzwIq0mxTiZZnGOJsrmR8rj5Y1S4sH85ZOL+8EAyGN8X+CZw92KPZQjkf1CbSVYhjkdkVcVssXzW6aIQkTA5vzde6e5LpGsPxIyr4NtfTtmS10eOmdFwVHB6v6uRZtqLnfHl9xQIYD98IpyEI+kRsFNFMVa33ElkGi6rmqjXxfvX4pr+TuRiMfIC/qNNQG7t/dkvzdHK1bGvjyQq0GhrT4yb1WSF692qkBdUlU4vANpYeb0OyDju6wUAAf170OQU4=
