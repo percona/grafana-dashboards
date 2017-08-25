@@ -1,1 +1,10 @@
-To get started, <a href="https://goo.gl/forms/pfjaTq2akPDLqtaJ2">sign the Individual Contributor License Agreement</a> or <a href="https://goo.gl/forms/ZuXlckMyblaLwQr52">sign the Corporate Contributor License Agreement</a>
+# Contributing notes
+
+## Local setup
+
+The easiest way to make a local development setup is to use Docker Compose.
+
+```
+docker-compose up
+make
+```
