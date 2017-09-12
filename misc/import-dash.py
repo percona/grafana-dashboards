@@ -31,6 +31,17 @@ def main():
         dash = json.load(f)
         f.close()
 
+        # check for the most common merge error: duplicate row ids
+        # more checks may be implemented: https://jira.percona.com/browse/PMM-1319
+        ids = set()
+        for row in dash['rows']:
+            for panel in row['panels']:
+                id = panel['id']
+                if id in ids:
+                    print "Duplicate row id %d in %s" % (id, file)
+                    exit(1)
+                ids.add(id)
+
         data = {'dashboard': dash, 'overwrite': True}
         r = requests.post('%s/api/dashboards/db' % (HOST,), json=data, headers=headers, auth=auth)
         if r.status_code != 200:
