@@ -560,7 +560,7 @@
                     "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 2,
-                    "description": "**Threads Connected** is the number of open connections.\n\n**Threads Running** is the number of threads not sleeping.",
+                    "description": "**Peak Threads Connected**  is number of peak number of connections MySQL had in the period of time\n\n**Peak Threads Running** is the peak number of threads considered \"Running\" by MySQL, not Sleeping or Waiting on Table level locks which can be indicative for workload spikes\n\n**Avg Threads Running** is the average number of Threads running over interval which can be indicative of sustained load",
                     "editable": true,
                     "error": false,
                     "fill": 2,
@@ -569,12 +569,11 @@
                     "legend": {
                         "alignAsTable": true,
                         "avg": true,
-                        "current": false,
+                        "current": true,
                         "max": true,
                         "min": true,
                         "rightSide": false,
-                        "show": false,
-                        "sort": "avg",
+                        "show": true,
                         "sortDesc": true,
                         "total": false,
                         "values": true
@@ -589,11 +588,18 @@
                     "renderer": "flot",
                     "seriesOverrides": [
                         {
-                            "alias": "Threads Running",
-                            "color": "#E24D42"
+                            "alias": "Peak Threads Running",
+                            "color": "#E24D42",
+                            "lines": false,
+                            "pointradius": 1,
+                            "points": true
                         },
                         {
-                            "alias": "Threads Connected",
+                            "alias": "Peak Threads Connected",
+                            "color": "#1F78C1"
+                        },
+                        {
+                            "alias": "Avg Threads Running",
                             "color": "#EAB839"
                         }
                     ],
@@ -607,10 +613,11 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "max_over_time(mysql_global_status_threads_connected{instance=\"$host\"}[$interval])",
+                            "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
                             "intervalFactor": 1,
-                            "legendFormat": "Threads Connected",
+                            "legendFormat": "Peak Threads Connected",
                             "metric": "",
                             "refId": "A",
                             "step": 20
@@ -620,21 +627,31 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "max_over_time(mysql_global_status_threads_running{instance=\"$host\"}[$interval])",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
-                            "legendFormat": "Threads Running",
+                            "legendFormat": "Peak Threads Running",
                             "metric": "",
                             "refId": "B",
+                            "step": 20
+                        },
+                        {
+                            "expr": "avg_over_time(mysql_global_status_threads_running{instance=\"$host\"}[$interval])",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Avg Threads Running",
+                            "refId": "C",
                             "step": 20
                         }
                     ],
                     "thresholds": [],
                     "timeFrom": null,
                     "timeShift": null,
-                    "title": "MySQL Active Threads",
+                    "title": "MySQL Client Thread Activity",
                     "tooltip": {
                         "msResolution": false,
-                        "shared": false,
+                        "shared": true,
                         "sort": 0,
                         "value_type": "individual"
                     },
@@ -3388,7 +3405,7 @@
                     "error": false,
                     "fill": 2,
                     "grid": {},
-                    "id": 310,
+                    "id": 31,
                     "legend": {
                         "alignAsTable": false,
                         "avg": true,
@@ -3626,7 +3643,7 @@
                     "fill": 6,
                     "grid": {},
                     "height": "",
-                    "id": 20,
+                    "id": 2,
                     "legend": {
                         "alignAsTable": false,
                         "avg": true,
@@ -3947,7 +3964,7 @@
                     "error": false,
                     "fill": 2,
                     "grid": {},
-                    "id": 380,
+                    "id": 38,
                     "legend": {
                         "alignAsTable": false,
                         "avg": true,
