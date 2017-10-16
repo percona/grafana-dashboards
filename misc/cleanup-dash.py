@@ -32,6 +32,16 @@ def set_timezone(dashboard):
     dashboard['timezone'] = raw_input(prompt) or dashboard['timezone']
     return dashboard
 
+def set_refresh(dashboard):
+    """Set Dashboard Time zone."""
+    prompt = 'Refresh (conventional: **False**) [%s]: ' % (dashboard['refresh'],)
+    user_input = raw_input(prompt)
+    if user_input:
+        if user_input == 'False':
+            dashboard['refresh'] = False
+        else:
+            dashboard['refresh'] = user_input
+    return dashboard
 
 def main():
     """Execute cleanups."""
@@ -41,6 +51,7 @@ def main():
     dashboard = set_title(dashboard)
     dashboard = set_time(dashboard)
     dashboard = set_timezone(dashboard)
+    dashboard = set_refresh(dashboard)
 
     dashboard_json = json.dumps(dashboard, sort_keys=True, indent=4,
                                 separators=(',', ': '))
