@@ -43,6 +43,19 @@ def set_refresh(dashboard):
             dashboard['refresh'] = user_input
     return dashboard
 
+
+def set_hide_controls(dashboard):
+    """Set Dashboard Hide Controls."""
+    prompt = 'Hide Controls (conventional: **True**) [%s]: ' % (dashboard['hideControls'],)
+    user_input = raw_input(prompt)
+    if user_input:
+        if user_input == 'True':
+            dashboard['hideControls'] = True
+        else:
+            dashboard['hideControls'] = False
+    return dashboard
+
+
 def main():
     """Execute cleanups."""
     with open(sys.argv[1], 'r') as dashboard_file:
@@ -52,6 +65,7 @@ def main():
     dashboard = set_time(dashboard)
     dashboard = set_timezone(dashboard)
     dashboard = set_refresh(dashboard)
+    dashboard = set_hide_controls(dashboard)
 
     dashboard_json = json.dumps(dashboard, sort_keys=True, indent=4,
                                 separators=(',', ': '))
