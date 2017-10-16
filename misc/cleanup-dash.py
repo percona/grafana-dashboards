@@ -33,7 +33,7 @@ def set_timezone(dashboard):
     return dashboard
 
 def set_refresh(dashboard):
-    """Set Dashboard Time zone."""
+    """Set Dashboard refresh."""
     prompt = 'Refresh (conventional: **False**) [%s]: ' % (dashboard['refresh'],)
     user_input = raw_input(prompt)
     if user_input:
