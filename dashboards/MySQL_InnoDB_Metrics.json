@@ -538,7 +538,7 @@
                     "renderer": "flot",
                     "seriesOverrides": [],
                     "spaceLength": 10,
-                    "span": 6,
+                    "span": 4,
                     "stack": false,
                     "steppedLine": false,
                     "targets": [
@@ -673,7 +673,7 @@
                         }
                     ],
                     "spaceLength": 10,
-                    "span": 6,
+                    "span": 4,
                     "stack": false,
                     "steppedLine": false,
                     "targets": [
@@ -731,6 +731,129 @@
                         {
                             "format": "short",
                             "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        }
+                    ]
+                },
+                {
+                    "aliasColors": {
+                        "Data Written to Logs": "#E24D42",
+                        "Time to Use Redo Log Space ": "#447EBC"
+                    },
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": 2,
+                    "editable": true,
+                    "error": false,
+                    "fill": 2,
+                    "grid": {},
+                    "id": 50,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "rightSide": false,
+                        "show": true,
+                        "sort": null,
+                        "sortDesc": null,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": false,
+                    "linewidth": 2,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 1,
+                    "points": true,
+                    "renderer": "flot",
+                    "seriesOverrides": [
+                        {
+                            "alias": "Time to Use Redo Log Space ",
+                            "yaxis": 2
+                        },
+                        {
+                            "alias": "Time to Use In-Memory Log Buffer",
+                            "yaxis": 2
+                        }
+                    ],
+                    "spaceLength": 10,
+                    "span": 4,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "rate(mysql_global_status_innodb_os_log_written{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_os_log_written{instance=\"$host\"}[5m])",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Data Written to Logs",
+                            "metric": "",
+                            "refId": "A",
+                            "step": 300
+                        },
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "(mysql_global_variables_innodb_log_files_in_group{instance=\"$host\"} * mysql_global_variables_innodb_log_file_size{instance=\"$host\"})/(rate(mysql_global_status_innodb_os_log_written{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_os_log_written{instance=\"$host\"}[5m]))",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Time to Use Redo Log Space ",
+                            "metric": "",
+                            "refId": "B",
+                            "step": 300
+                        },
+                        {
+                            "expr": "(mysql_global_variables_innodb_log_buffer_size{instance=\"$host\"})/(rate(mysql_global_status_innodb_os_log_written{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_os_log_written{instance=\"$host\"}[5m]))",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Time to Use In-Memory Log Buffer",
+                            "refId": "C",
+                            "step": 300
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Innodb Logging Performance",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "Bps",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        },
+                        {
+                            "format": "s",
+                            "label": "",
+                            "logBase": 2,
                             "max": null,
                             "min": 0,
                             "show": true
@@ -1199,7 +1322,7 @@
                     "renderer": "flot",
                     "seriesOverrides": [],
                     "spaceLength": 10,
-                    "span": 6,
+                    "span": 4,
                     "stack": false,
                     "steppedLine": false,
                     "targets": [
@@ -1310,7 +1433,7 @@
                     "renderer": "flot",
                     "seriesOverrides": [],
                     "spaceLength": 10,
-                    "span": 6,
+                    "span": 4,
                     "stack": false,
                     "steppedLine": false,
                     "targets": [
@@ -1367,6 +1490,149 @@
                         },
                         {
                             "format": "short",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        }
+                    ]
+                },
+                {
+                    "aliasColors": {
+                        "Paged Fetched by Random Read Ahead": "#6ED0E0",
+                        "Paged Fetched by Read Ahead but Never Accessed": "#EF843C",
+                        "Percent of IO Caused by Read Ahead": "#0A437C",
+                        "Read Ahead Waste Percent": "#BF1B00"
+                    },
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": 2,
+                    "editable": true,
+                    "error": false,
+                    "fill": 2,
+                    "grid": {},
+                    "id": 49,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "rightSide": false,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [
+                        {
+                            "alias": "Read Ahead Waste Percent",
+                            "yaxis": 2
+                        },
+                        {
+                            "alias": "Percent of IO Caused by Read Ahead",
+                            "yaxis": 2
+                        }
+                    ],
+                    "spaceLength": 10,
+                    "span": 4,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "rate(mysql_global_status_innodb_buffer_pool_read_ahead{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_buffer_pool_read_ahead{instance=\"$host\"}[5m])",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Pages Fetched by Linear Read Ahead ",
+                            "metric": "",
+                            "refId": "A",
+                            "step": 300
+                        },
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "rate(mysql_global_status_innodb_buffer_pool_read_ahead_rnd{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_buffer_pool_read_ahead_rnd{instance=\"$host\"}[5m])",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Paged Fetched by Random Read Ahead",
+                            "metric": "",
+                            "refId": "B",
+                            "step": 300
+                        },
+                        {
+                            "expr": "rate(mysql_global_status_innodb_buffer_pool_read_ahead_evicted{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_buffer_pool_read_ahead_evicted{instance=\"$host\"}[5m])",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Paged Fetched by Read Ahead but Never Accessed",
+                            "metric": "go_gc_duration_seconds_count",
+                            "refId": "C",
+                            "step": 300
+                        },
+                        {
+                            "expr": "(rate(mysql_global_status_innodb_buffer_pool_read_ahead_evicted{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_buffer_pool_read_ahead_evicted{instance=\"$host\"}[5m])) / ((rate(mysql_global_status_innodb_buffer_pool_read_ahead{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_buffer_pool_read_ahead{instance=\"$host\"}[5m])) + (rate(mysql_global_status_innodb_buffer_pool_read_ahead_rnd{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_buffer_pool_read_ahead_rnd{instance=\"$host\"}[5m])))",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Read Ahead Waste Percent",
+                            "refId": "D",
+                            "step": 300
+                        },
+                        {
+                            "expr": "((rate(mysql_global_status_innodb_buffer_pool_read_ahead{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_buffer_pool_read_ahead{instance=\"$host\"}[5m]))+(rate(mysql_global_status_innodb_buffer_pool_read_ahead_rnd{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_buffer_pool_read_ahead_rnd{instance=\"$host\"}[5m])))/(rate(mysql_global_status_innodb_pages_read{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_pages_read{instance=\"$host\"}[5m])\n)",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Percent of IO Caused by Read Ahead",
+                            "refId": "E",
+                            "step": 300
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Innodb Read-Ahead",
+                    "tooltip": {
+                        "msResolution": true,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "short",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        },
+                        {
+                            "format": "percentunit",
                             "logBase": 1,
                             "max": null,
                             "min": 0,
@@ -1635,6 +1901,7 @@
                 "auto_count": 200,
                 "auto_min": "1s",
                 "current": {
+                    "selected": true,
                     "text": "auto",
                     "value": "$__auto_interval"
                 },
