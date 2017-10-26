@@ -1,0 +1,2022 @@
+{
+    "annotations": {
+        "list": []
+    },
+    "editable": true,
+    "gnetId": null,
+    "graphTooltip": 1,
+    "hideControls": true,
+    "id": null,
+    "links": [
+        {
+            "asDropdown": true,
+            "icon": "external link",
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "OS"
+            ],
+            "targetBlank": true,
+            "title": "OS",
+            "type": "dashboards"
+        },
+        {
+            "asDropdown": true,
+            "icon": "external link",
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "MySQL"
+            ],
+            "targetBlank": true,
+            "title": "MySQL",
+            "type": "dashboards"
+        },
+        {
+            "asDropdown": true,
+            "icon": "external link",
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "HA"
+            ],
+            "targetBlank": true,
+            "title": "HA",
+            "type": "dashboards"
+        }
+    ],
+    "rows": [
+        {
+            "collapse": false,
+            "height": "250px",
+            "panels": [
+                {
+                    "aliasColors": {
+                        "Max Checkpoint Age": "#BF1B00",
+                        "Uncheckpointed Bytes": "#E0752D"
+                    },
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": 2,
+                    "editable": true,
+                    "error": false,
+                    "fill": 2,
+                    "grid": {},
+                    "id": 19,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "rightSide": false,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [
+                        {
+                            "alias": "Max Checkpoint Age",
+                            "color": "#BF1B00",
+                            "fill": 0
+                        }
+                    ],
+                    "spaceLength": 10,
+                    "span": 6,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "mysql_global_status_innodb_checkpoint_age{instance=\"$host\"}",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Uncheckpointed Bytes",
+                            "metric": "",
+                            "refId": "A",
+                            "step": 300
+                        },
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "mysql_global_status_innodb_checkpoint_max_age{instance=\"$host\"}",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Max Checkpoint Age",
+                            "metric": "",
+                            "refId": "B",
+                            "step": 300
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "InnoDB Checkpoint Age",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "bytes",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        },
+                        {
+                            "format": "bytes",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        }
+                    ]
+                },
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": 2,
+                    "description": "**Innodb Transactions** is number of Innodb transactions system is handling per second used to understand the load\n\n**History Length** is number of Innodb transactions which has not been purged yet.  Large number of unpurged transactions can cause significant performance regression",
+                    "editable": true,
+                    "error": false,
+                    "fill": 2,
+                    "grid": {},
+                    "id": 20,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "hideZero": true,
+                        "max": true,
+                        "min": true,
+                        "rightSide": false,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [
+                        {
+                            "alias": "InnoDB Transactions",
+                            "yaxis": 2
+                        }
+                    ],
+                    "spaceLength": 10,
+                    "span": 6,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "rate(mysql_global_status_innodb_max_trx_id{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_max_trx_id{instance=\"$host\"}[5m])",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "InnoDB Transactions",
+                            "metric": "",
+                            "refId": "A",
+                            "step": 300
+                        },
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "max_over_time(mysql_global_status_innodb_history_list_length{instance=\"$host\"}[$interval]) or max_over_time(mysql_info_schema_innodb_metrics_transaction_trx_rseg_history_len{instance=\"$host\"}[$interval])",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "History Length",
+                            "metric": "",
+                            "refId": "B",
+                            "step": 300
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "InnoDB Transactions",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "short",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        }
+                    ]
+                }
+            ],
+            "repeat": null,
+            "repeatIteration": null,
+            "repeatRowId": null,
+            "showTitle": false,
+            "title": "Checkpoint",
+            "titleSize": "h6"
+        },
+        {
+            "collapse": false,
+            "height": "250px",
+            "panels": [
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": 2,
+                    "editable": true,
+                    "error": false,
+                    "fill": 2,
+                    "grid": {},
+                    "id": 23,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "rightSide": false,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "span": 6,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "rate(mysql_global_status_innodb_row_ops_total{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_row_ops_total{instance=\"$host\"}[5m])",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Rows {{ operation }}",
+                            "metric": "",
+                            "refId": "A",
+                            "step": 300
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "InnoDB Row Operations",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "short",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        }
+                    ]
+                },
+                {
+                    "aliasColors": {
+                        "Avg Row Lock Wait Time": "#BF1B00"
+                    },
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": 2,
+                    "editable": true,
+                    "error": false,
+                    "fill": 1,
+                    "grid": {
+                        "leftLogBase": 1,
+                        "leftMax": null,
+                        "leftMin": 0,
+                        "rightLogBase": 1,
+                        "rightMax": null,
+                        "rightMin": 0
+                    },
+                    "id": 46,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "rightSide": false,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": false,
+                    "linewidth": 2,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 1,
+                    "points": true,
+                    "renderer": "flot",
+                    "seriesOverrides": [
+                        {
+                            "alias": "Avg Row Lock Wait Time",
+                            "yaxis": 2
+                        }
+                    ],
+                    "spaceLength": 10,
+                    "span": 6,
+                    "stack": false,
+                    "steppedLine": true,
+                    "targets": [
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "rate(mysql_global_status_innodb_row_lock_waits{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_row_lock_waits{instance=\"$host\"}[5m])",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Row Lock Waits",
+                            "metric": "",
+                            "refId": "B",
+                            "step": 300
+                        },
+                        {
+                            "expr": "rate(mysql_global_status_innodb_row_lock_time{instance=\"$host\"}[$interval])/1000 or irate(mysql_global_status_innodb_row_lock_time{instance=\"$host\"}[5m])/1000",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Row Lock Wait Load",
+                            "metric": "",
+                            "refId": "A",
+                            "step": 300
+                        },
+                        {
+                            "expr": "rate(mysql_global_status_innodb_row_lock_time{instance=\"$host\"}[$interval])/rate(mysql_global_status_innodb_row_lock_waits{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_row_lock_time{instance=\"$host\"}[5m])/irate(mysql_global_status_innodb_row_lock_waits{instance=\"$host\"}[5m])",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Avg Row Lock Wait Time",
+                            "refId": "C",
+                            "step": 300
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "InnoDB Row Lock Time",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "x-axis": true,
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "y-axis": true,
+                    "y_formats": [
+                        "short",
+                        "ms"
+                    ],
+                    "yaxes": [
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        },
+                        {
+                            "format": "ms",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        }
+                    ]
+                }
+            ],
+            "repeat": null,
+            "repeatIteration": null,
+            "repeatRowId": null,
+            "showTitle": false,
+            "title": "Row Ops",
+            "titleSize": "h6"
+        },
+        {
+            "collapse": false,
+            "height": "250px",
+            "panels": [
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": 2,
+                    "editable": true,
+                    "error": false,
+                    "fill": 2,
+                    "grid": {},
+                    "id": 38,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "rightSide": false,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "span": 4,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "rate(mysql_global_status_innodb_data_reads{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_data_reads{instance=\"$host\"}[5m])",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Data Reads",
+                            "metric": "",
+                            "refId": "C",
+                            "step": 300
+                        },
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "rate(mysql_global_status_innodb_data_writes{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_data_writes{instance=\"$host\"}[5m])",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Data Writes",
+                            "metric": "",
+                            "refId": "D",
+                            "step": 300
+                        },
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "rate(mysql_global_status_innodb_data_fsyncs{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_data_fsyncs{instance=\"$host\"}[5m])",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Data Fsyncs",
+                            "metric": "",
+                            "refId": "A",
+                            "step": 300
+                        },
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "rate(mysql_global_status_innodb_log_writes{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_log_writes{instance=\"$host\"}[5m])",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Log Writes",
+                            "metric": "",
+                            "refId": "B",
+                            "step": 300
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "InnoDB I/O",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "short",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        }
+                    ]
+                },
+                {
+                    "aliasColors": {},
+                    "bars": true,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": 2,
+                    "editable": true,
+                    "error": false,
+                    "fill": 2,
+                    "grid": {},
+                    "id": 37,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "rightSide": false,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": false,
+                    "linewidth": 2,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [
+                        {
+                            "alias": "Total Size of InnoDB Log Files",
+                            "bars": false,
+                            "color": "#E24D42",
+                            "fill": 0,
+                            "lines": true
+                        },
+                        {
+                            "alias": "Data Written",
+                            "color": "#E0752D"
+                        }
+                    ],
+                    "spaceLength": 10,
+                    "span": 4,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "increase(mysql_global_status_innodb_os_log_written{instance=\"$host\"}[1h])",
+                            "interval": "1h",
+                            "intervalFactor": 1,
+                            "legendFormat": "Data Written",
+                            "metric": "",
+                            "refId": "A",
+                            "step": 3600
+                        },
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "mysql_global_variables_innodb_log_files_in_group{instance=\"$host\"} * mysql_global_variables_innodb_log_file_size{instance=\"$host\"}",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Total Size of InnoDB Log Files",
+                            "metric": "",
+                            "refId": "B",
+                            "step": 300
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": "24h",
+                    "timeShift": null,
+                    "title": "InnoDB Log File Usage Hourly",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "bytes",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        }
+                    ]
+                },
+                {
+                    "aliasColors": {
+                        "Data Written to Logs": "#E24D42",
+                        "Time to Use Redo Log Space ": "#447EBC"
+                    },
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": 2,
+                    "editable": true,
+                    "error": false,
+                    "fill": 2,
+                    "grid": {},
+                    "id": 50,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "rightSide": false,
+                        "show": true,
+                        "sort": null,
+                        "sortDesc": null,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": false,
+                    "linewidth": 2,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 1,
+                    "points": true,
+                    "renderer": "flot",
+                    "seriesOverrides": [
+                        {
+                            "alias": "Time to Use Redo Log Space ",
+                            "yaxis": 2
+                        },
+                        {
+                            "alias": "Time to Use In-Memory Log Buffer",
+                            "yaxis": 2
+                        }
+                    ],
+                    "spaceLength": 10,
+                    "span": 4,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "rate(mysql_global_status_innodb_os_log_written{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_os_log_written{instance=\"$host\"}[5m])",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Data Written to Logs",
+                            "metric": "",
+                            "refId": "A",
+                            "step": 300
+                        },
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "(mysql_global_variables_innodb_log_files_in_group{instance=\"$host\"} * mysql_global_variables_innodb_log_file_size{instance=\"$host\"})/(rate(mysql_global_status_innodb_os_log_written{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_os_log_written{instance=\"$host\"}[5m]))",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Time to Use Redo Log Space ",
+                            "metric": "",
+                            "refId": "B",
+                            "step": 300
+                        },
+                        {
+                            "expr": "(mysql_global_variables_innodb_log_buffer_size{instance=\"$host\"})/(rate(mysql_global_status_innodb_os_log_written{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_os_log_written{instance=\"$host\"}[5m]))",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Time to Use In-Memory Log Buffer",
+                            "refId": "C",
+                            "step": 300
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Innodb Logging Performance",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "Bps",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        },
+                        {
+                            "format": "s",
+                            "label": "",
+                            "logBase": 2,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        }
+                    ]
+                }
+            ],
+            "repeat": null,
+            "repeatIteration": null,
+            "repeatRowId": null,
+            "showTitle": false,
+            "title": "I/O",
+            "titleSize": "h6"
+        },
+        {
+            "collapse": false,
+            "height": "250px",
+            "panels": [
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": 2,
+                    "editable": true,
+                    "error": false,
+                    "fill": 2,
+                    "grid": {},
+                    "id": 47,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "rightSide": false,
+                        "show": true,
+                        "sort": null,
+                        "sortDesc": null,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "span": 6,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "(rate(mysql_global_status_innodb_deadlocks{instance=\"$host\"}[$interval]) or rate(mysql_info_schema_innodb_metrics_lock_lock_deadlocks_total{instance=\"$host\"}[$interval])) or (irate(mysql_global_status_innodb_deadlocks{instance=\"$host\"}[5m]) or irate(mysql_info_schema_innodb_metrics_lock_lock_deadlocks_total{instance=\"$host\"}[5m]))",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Deadlocks",
+                            "metric": "",
+                            "refId": "B",
+                            "step": 300
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "InnoDB Deadlocks",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "short",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        }
+                    ]
+                },
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "description": "Index Condition Pushdown (ICP) is an optimization for the case where MySQL retrieves rows from a table using an index. Without ICP, the storage engine traverses the index to locate rows in the base table and returns them to the MySQL server which evaluates the\u00a0WHERE condition for the rows. With ICP enabled, and if parts of the\u00a0WHERE\u00a0condition can be evaluated by using only columns from the index, the MySQL server pushes this part of the\u00a0WHERE\u00a0condition down to the storage engine. The storage engine then evaluates the pushed index condition by using the index entry and only if this is satisfied is the row read from the table. ICP can reduce the number of times the storage engine must access the base table and the number of times the MySQL server must access the storage engine.",
+                    "fill": 1,
+                    "id": 48,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": true,
+                        "hideEmpty": false,
+                        "hideZero": true,
+                        "max": true,
+                        "min": true,
+                        "rightSide": false,
+                        "show": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 1,
+                    "links": [
+                        {
+                            "targetBlank": true,
+                            "title": "Index Condition Pushdown optimisation - MySQL 5.7 Manual",
+                            "type": "absolute",
+                            "url": "https://dev.mysql.com/doc/refman/5.7/en/index-condition-pushdown-optimization.html"
+                        },
+                        {
+                            "targetBlank": true,
+                            "title": "ICP counters and how to interpret them",
+                            "type": "absolute",
+                            "url": "https://www.percona.com/blog/2017/05/09/mariadb-handler_icp_-counters-what-they-are-and-how-to-use-them/"
+                        }
+                    ],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "span": 6,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "expr": "rate(mysql_info_schema_innodb_metrics_icp_icp_attempts_total{instance=\"$host\"}[$interval])",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Attempts",
+                            "refId": "A",
+                            "step": 300
+                        },
+                        {
+                            "expr": "rate(mysql_info_schema_innodb_metrics_icp_icp_match_total{instance=\"$host\"}[$interval])",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Matches",
+                            "refId": "B",
+                            "step": 300
+                        },
+                        {
+                            "expr": "rate(mysql_info_schema_innodb_metrics_icp_icp_no_match_total{instance=\"$host\"}[$interval])",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "No Matches",
+                            "refId": "C",
+                            "step": 300
+                        },
+                        {
+                            "expr": "rate(mysql_info_schema_innodb_metrics_icp_icp_out_of_range_total{instance=\"$host\"}[$interval])",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Out of Range",
+                            "refId": "D",
+                            "step": 300
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Index Condition Pushdown (ICP)",
+                    "tooltip": {
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "short",
+                            "label": "",
+                            "logBase": 1,
+                            "max": null,
+                            "min": "0",
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": false
+                        }
+                    ]
+                }
+            ],
+            "repeat": null,
+            "repeatIteration": null,
+            "repeatRowId": null,
+            "showTitle": false,
+            "title": "New row",
+            "titleSize": "h6"
+        },
+        {
+            "collapse": false,
+            "height": "250px",
+            "panels": [
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": 2,
+                    "editable": true,
+                    "error": false,
+                    "fill": 2,
+                    "grid": {},
+                    "id": 42,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "rightSide": false,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "span": 6,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "mysql_global_status_innodb_buffer_pool_bytes_data{instance=\"$host\"}",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Data Total",
+                            "metric": "",
+                            "refId": "B",
+                            "step": 300
+                        },
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "mysql_global_status_innodb_buffer_pool_bytes_dirty{instance=\"$host\"}",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Data Dirty",
+                            "metric": "",
+                            "refId": "A",
+                            "step": 300
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "InnoDB Buffer Pool Content",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "bytes",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        }
+                    ]
+                },
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": 2,
+                    "editable": true,
+                    "error": false,
+                    "fill": 6,
+                    "grid": {},
+                    "id": 3,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "rightSide": false,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "span": 6,
+                    "stack": true,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "mysql_global_status_buffer_pool_pages{instance=\"$host\", state!=\"dirty\"}",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "{{ state }}",
+                            "metric": "",
+                            "refId": "B",
+                            "step": 300
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "InnoDB Buffer Pool Pages",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "short",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        }
+                    ]
+                }
+            ],
+            "repeat": null,
+            "repeatIteration": null,
+            "repeatRowId": null,
+            "showTitle": true,
+            "title": "Buffer Pool",
+            "titleSize": "h6"
+        },
+        {
+            "collapse": false,
+            "height": "250px",
+            "panels": [
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": 2,
+                    "editable": true,
+                    "error": false,
+                    "fill": 2,
+                    "grid": {},
+                    "id": 21,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "rightSide": false,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "span": 4,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "rate(mysql_global_status_innodb_pages_created{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_pages_created{instance=\"$host\"}[5m])",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Pages Created",
+                            "metric": "",
+                            "refId": "A",
+                            "step": 300
+                        },
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "rate(mysql_global_status_innodb_pages_read{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_pages_read{instance=\"$host\"}[5m])",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Pages Read",
+                            "metric": "",
+                            "refId": "B",
+                            "step": 300
+                        },
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "rate(mysql_global_status_innodb_pages_written{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_pages_written{instance=\"$host\"}[5m])",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Pages Written",
+                            "metric": "",
+                            "refId": "C",
+                            "step": 300
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "InnoDB Buffer Pool I/O",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "short",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        }
+                    ]
+                },
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": 2,
+                    "editable": true,
+                    "error": false,
+                    "fill": 2,
+                    "grid": {},
+                    "id": 41,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "rightSide": false,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "span": 4,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "rate(mysql_global_status_innodb_buffer_pool_read_requests{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_buffer_pool_read_requests{instance=\"$host\"}[5m])",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Read Requests",
+                            "metric": "",
+                            "refId": "A",
+                            "step": 300
+                        },
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "rate(mysql_global_status_innodb_buffer_pool_write_requests{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_buffer_pool_write_requests{instance=\"$host\"}[5m])",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Write Requests",
+                            "metric": "",
+                            "refId": "B",
+                            "step": 300
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "InnoDB Buffer Pool Requests",
+                    "tooltip": {
+                        "msResolution": true,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "short",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        }
+                    ]
+                },
+                {
+                    "aliasColors": {
+                        "Paged Fetched by Random Read Ahead": "#6ED0E0",
+                        "Paged Fetched by Read Ahead but Never Accessed": "#EF843C",
+                        "Percent of IO Caused by Read Ahead": "#0A437C",
+                        "Read Ahead Waste Percent": "#BF1B00"
+                    },
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": 2,
+                    "editable": true,
+                    "error": false,
+                    "fill": 2,
+                    "grid": {},
+                    "id": 49,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "rightSide": false,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [
+                        {
+                            "alias": "Read Ahead Waste Percent",
+                            "yaxis": 2
+                        },
+                        {
+                            "alias": "Percent of IO Caused by Read Ahead",
+                            "yaxis": 2
+                        }
+                    ],
+                    "spaceLength": 10,
+                    "span": 4,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "rate(mysql_global_status_innodb_buffer_pool_read_ahead{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_buffer_pool_read_ahead{instance=\"$host\"}[5m])",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Pages Fetched by Linear Read Ahead ",
+                            "metric": "",
+                            "refId": "A",
+                            "step": 300
+                        },
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "rate(mysql_global_status_innodb_buffer_pool_read_ahead_rnd{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_buffer_pool_read_ahead_rnd{instance=\"$host\"}[5m])",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Paged Fetched by Random Read Ahead",
+                            "metric": "",
+                            "refId": "B",
+                            "step": 300
+                        },
+                        {
+                            "expr": "rate(mysql_global_status_innodb_buffer_pool_read_ahead_evicted{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_buffer_pool_read_ahead_evicted{instance=\"$host\"}[5m])",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Paged Fetched by Read Ahead but Never Accessed",
+                            "metric": "go_gc_duration_seconds_count",
+                            "refId": "C",
+                            "step": 300
+                        },
+                        {
+                            "expr": "(rate(mysql_global_status_innodb_buffer_pool_read_ahead_evicted{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_buffer_pool_read_ahead_evicted{instance=\"$host\"}[5m])) / ((rate(mysql_global_status_innodb_buffer_pool_read_ahead{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_buffer_pool_read_ahead{instance=\"$host\"}[5m])) + (rate(mysql_global_status_innodb_buffer_pool_read_ahead_rnd{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_buffer_pool_read_ahead_rnd{instance=\"$host\"}[5m])))",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Read Ahead Waste Percent",
+                            "refId": "D",
+                            "step": 300
+                        },
+                        {
+                            "expr": "((rate(mysql_global_status_innodb_buffer_pool_read_ahead{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_buffer_pool_read_ahead{instance=\"$host\"}[5m]))+(rate(mysql_global_status_innodb_buffer_pool_read_ahead_rnd{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_buffer_pool_read_ahead_rnd{instance=\"$host\"}[5m])))/(rate(mysql_global_status_innodb_pages_read{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_pages_read{instance=\"$host\"}[5m])\n)",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Percent of IO Caused by Read Ahead",
+                            "refId": "E",
+                            "step": 300
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Innodb Read-Ahead",
+                    "tooltip": {
+                        "msResolution": true,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "short",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        },
+                        {
+                            "format": "percentunit",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        }
+                    ]
+                }
+            ],
+            "repeat": null,
+            "repeatIteration": null,
+            "repeatRowId": null,
+            "showTitle": false,
+            "title": "Buffer Pool I/O",
+            "titleSize": "h6"
+        },
+        {
+            "collapse": false,
+            "height": "250px",
+            "panels": [
+                {
+                    "aliasColors": {
+                        "Uncheckpointed Bytes": "#E0752D"
+                    },
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": 2,
+                    "editable": true,
+                    "error": false,
+                    "fill": 6,
+                    "grid": {},
+                    "id": 39,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "rightSide": false,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "span": 6,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "mysql_global_status_innodb_ibuf_segment_size{instance=\"$host\"} * mysql_global_status_innodb_page_size{instance=\"$host\"}",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Allocated",
+                            "metric": "",
+                            "refId": "A",
+                            "step": 300
+                        },
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "(mysql_global_status_innodb_ibuf_segment_size{instance=\"$host\"} - mysql_global_status_innodb_ibuf_free_list{instance=\"$host\"})*mysql_global_status_innodb_page_size{instance=\"$host\"}",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Used",
+                            "metric": "",
+                            "refId": "B",
+                            "step": 300
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "InnoDB Change Buffer",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "bytes",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        }
+                    ]
+                },
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": 2,
+                    "editable": true,
+                    "error": false,
+                    "fill": 2,
+                    "grid": {},
+                    "id": 40,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "hideEmpty": false,
+                        "hideZero": false,
+                        "max": true,
+                        "min": true,
+                        "rightSide": false,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "span": 6,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "rate(mysql_global_status_innodb_ibuf_merges{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_ibuf_merges{instance=\"$host\"}[5m]) or rate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_total{instance=\"$host\"}[5m])",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Merges",
+                            "metric": "",
+                            "refId": "A",
+                            "step": 300
+                        },
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "rate(mysql_global_status_innodb_ibuf_merged_inserts{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_ibuf_merged_inserts{instance=\"$host\"}[5m]) or rate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_insert_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_insert_total{instance=\"$host\"}[5m])",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Merged Inserts",
+                            "metric": "",
+                            "refId": "B",
+                            "step": 300
+                        },
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "rate(mysql_global_status_innodb_ibuf_merged_deletes{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_ibuf_merged_deletes{instance=\"$host\"}[5m]) or rate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_delete_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_delete_total{instance=\"$host\"}[5m])",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Merged Deletes",
+                            "metric": "",
+                            "refId": "C",
+                            "step": 300
+                        },
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "rate(mysql_global_status_innodb_ibuf_merged_delete_marks{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_ibuf_merged_delete_marks{instance=\"$host\"}[5m]) or rate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_delete_mark_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_delete_mark_total{instance=\"$host\"}[5m])",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Merged Delete Marks",
+                            "metric": "",
+                            "refId": "D",
+                            "step": 300
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "InnoDB Change Buffer Activity",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "short",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        }
+                    ]
+                }
+            ],
+            "repeat": null,
+            "repeatIteration": null,
+            "repeatRowId": null,
+            "showTitle": true,
+            "title": "Change/Insert Buffer",
+            "titleSize": "h6"
+        }
+    ],
+    "schemaVersion": 14,
+    "style": "dark",
+    "tags": [
+        "MySQL",
+        "Percona"
+    ],
+    "templating": {
+        "list": [
+            {
+                "allFormat": "glob",
+                "auto": true,
+                "auto_count": 200,
+                "auto_min": "1s",
+                "current": {
+                    "selected": true,
+                    "text": "auto",
+                    "value": "$__auto_interval"
+                },
+                "datasource": "Prometheus",
+                "hide": 0,
+                "includeAll": false,
+                "label": "Interval",
+                "multi": false,
+                "multiFormat": "glob",
+                "name": "interval",
+                "options": [
+                    {
+                        "selected": true,
+                        "text": "auto",
+                        "value": "$__auto_interval"
+                    },
+                    {
+                        "selected": false,
+                        "text": "1s",
+                        "value": "1s"
+                    },
+                    {
+                        "selected": false,
+                        "text": "5s",
+                        "value": "5s"
+                    },
+                    {
+                        "selected": false,
+                        "text": "1m",
+                        "value": "1m"
+                    },
+                    {
+                        "selected": false,
+                        "text": "5m",
+                        "value": "5m"
+                    },
+                    {
+                        "selected": false,
+                        "text": "1h",
+                        "value": "1h"
+                    },
+                    {
+                        "selected": false,
+                        "text": "6h",
+                        "value": "6h"
+                    },
+                    {
+                        "selected": false,
+                        "text": "1d",
+                        "value": "1d"
+                    }
+                ],
+                "query": "1s,5s,1m,5m,1h,6h,1d",
+                "refresh": 2,
+                "type": "interval"
+            },
+            {
+                "allFormat": "glob",
+                "allValue": null,
+                "datasource": "Prometheus",
+                "hide": 0,
+                "includeAll": false,
+                "label": "Host",
+                "multi": false,
+                "multiFormat": "regex values",
+                "name": "host",
+                "query": "label_values(mysql_up, instance)",
+                "refresh": 1,
+                "refresh_on_load": false,
+                "regex": "",
+                "sort": 1,
+                "tagValuesQuery": null,
+                "tags": [],
+                "tagsQuery": null,
+                "type": "query",
+                "useTags": false
+            }
+        ]
+    },
+    "time": {
+        "from": "now-12h",
+        "to": "now"
+    },
+    "timepicker": {
+        "collapse": false,
+        "enable": true,
+        "notice": false,
+        "now": true,
+        "refresh_intervals": [
+            "5s",
+            "10s",
+            "30s",
+            "1m",
+            "5m",
+            "15m",
+            "30m",
+            "1h",
+            "2h",
+            "1d"
+        ],
+        "status": "Stable",
+        "time_options": [
+            "5m",
+            "15m",
+            "1h",
+            "6h",
+            "12h",
+            "24h",
+            "2d",
+            "7d",
+            "30d"
+        ],
+        "type": "timepicker"
+    },
+    "timezone": "browser",
+    "title": "MySQL InnoDB Metrics",
+    "version": 0
+}
