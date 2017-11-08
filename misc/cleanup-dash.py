@@ -9,9 +9,6 @@ import json
 
 __version__ = '1.0.0'
 
-# registered cleanupers.
-CLEANUPERS = [set_title, set_time, set_timezone, set_refresh,
-              set_hide_controls, set_unique_ids]
 
 def set_title(dashboard):
     """Set Dashboard Title."""
@@ -96,6 +93,10 @@ def main():
     """Execute cleanups."""
     with open(sys.argv[1], 'r') as dashboard_file:
         dashboard = json.loads(dashboard_file.read())
+
+    # registered cleanupers.
+    CLEANUPERS = [set_title, set_time, set_timezone, set_refresh,
+                  set_hide_controls, set_unique_ids]
 
     for func in CLEANUPERS:
         dashboard = func(dashboard)
