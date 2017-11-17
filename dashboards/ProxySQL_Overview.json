@@ -9,42 +9,96 @@
     "id": null,
     "links": [
         {
+            "icon": "dashboard",
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "QAN"
+            ],
+            "targetBlank": false,
+            "title": "Query Analytics",
+            "type": "link",
+            "url": "/graph/dashboard/db/_pmm-query-analytics"
+        },
+        {
             "asDropdown": true,
-            "icon": "external link",
             "includeVars": true,
             "keepTime": true,
             "tags": [
                 "OS"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "OS",
             "type": "dashboards"
         },
         {
             "asDropdown": true,
-            "icon": "external link",
             "includeVars": true,
             "keepTime": true,
             "tags": [
                 "MySQL"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "MySQL",
             "type": "dashboards"
         },
         {
             "asDropdown": true,
-            "icon": "external link",
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "MongoDB"
+            ],
+            "targetBlank": false,
+            "title": "MongoDB",
+            "type": "dashboards"
+        },
+        {
+            "asDropdown": true,
             "includeVars": true,
             "keepTime": true,
             "tags": [
                 "HA"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "HA",
+            "type": "dashboards"
+        },
+        {
+            "asDropdown": true,
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "Cloud"
+            ],
+            "targetBlank": false,
+            "title": "Cloud",
+            "type": "dashboards"
+        },
+        {
+            "asDropdown": true,
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "Insight"
+            ],
+            "targetBlank": false,
+            "title": "Insight",
+            "type": "dashboards"
+        },
+        {
+            "asDropdown": true,
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "PMM"
+            ],
+            "targetBlank": false,
+            "title": "PMM",
             "type": "dashboards"
         }
     ],
+    "refresh": false,
     "rows": [
         {
             "collapse": false,
@@ -53,6 +107,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 0,
                     "editable": true,
@@ -62,7 +118,7 @@
                     "id": 42,
                     "legend": {
                         "alignAsTable": true,
-                        "avg": true,
+                        "avg": false,
                         "current": false,
                         "max": true,
                         "min": true,
@@ -85,6 +141,7 @@
                             "color": "#5195CE"
                         }
                     ],
+                    "spaceLength": 10,
                     "span": 12,
                     "stack": false,
                     "steppedLine": true,
@@ -93,13 +150,14 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "count_scalar(proxysql_connection_pool_status{instance=\"$proxysql\", hostgroup=\"$hostgroup\"})",
+                            "expr": "scalar(count(proxysql_connection_pool_status{instance=\"$proxysql\", hostgroup=\"$hostgroup\"}))",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Size",
                             "metric": "",
                             "refId": "C",
-                            "step": 300,
+                            "step": 60,
                             "target": ""
                         }
                     ],
@@ -116,6 +174,7 @@
                     "transparent": true,
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": false,
@@ -154,6 +213,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": null,
                     "editable": true,
@@ -180,6 +241,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": true,
                     "steppedLine": false,
@@ -189,12 +251,13 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "proxysql_mysql_status_client_connections_connected{instance=\"$proxysql\"}",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Connections",
                             "metric": "",
                             "refId": "A",
-                            "step": 300
+                            "step": 60
                         }
                     ],
                     "thresholds": [],
@@ -209,6 +272,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -235,6 +299,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": null,
                     "editable": true,
@@ -261,6 +327,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": true,
                     "steppedLine": false,
@@ -270,12 +337,13 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "rate(proxysql_mysql_status_questions{instance=\"$proxysql\"}[$interval]) or irate(proxysql_mysql_status_questions{instance=\"$proxysql\"}[5m])",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Question Rate",
                             "metric": "",
                             "refId": "A",
-                            "step": 300
+                            "step": 60
                         }
                     ],
                     "thresholds": [],
@@ -290,6 +358,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -344,12 +413,13 @@
                     "scroll": true,
                     "showHeader": true,
                     "sort": {
-                        "col": 1,
+                        "col": 3,
                         "desc": false
                     },
                     "span": 9,
                     "styles": [
                         {
+                            "alias": "Status",
                             "colorMode": "cell",
                             "colors": [
                                 "rgba(50, 172, 45, 0.97)",
@@ -358,29 +428,76 @@
                             ],
                             "dateFormat": "YYYY-MM-DD HH:mm:ss",
                             "decimals": 0,
-                            "pattern": "Current",
+                            "pattern": "Value",
                             "thresholds": [
                                 "3",
                                 "4"
                             ],
                             "type": "number",
                             "unit": "none"
+                        },
+                        {
+                            "alias": "",
+                            "colorMode": null,
+                            "colors": [
+                                "rgba(245, 54, 54, 0.9)",
+                                "rgba(237, 129, 40, 0.89)",
+                                "rgba(50, 172, 45, 0.97)"
+                            ],
+                            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                            "decimals": 2,
+                            "pattern": "__name__",
+                            "thresholds": [],
+                            "type": "hidden",
+                            "unit": "short"
+                        },
+                        {
+                            "alias": "",
+                            "colorMode": null,
+                            "colors": [
+                                "rgba(245, 54, 54, 0.9)",
+                                "rgba(237, 129, 40, 0.89)",
+                                "rgba(50, 172, 45, 0.97)"
+                            ],
+                            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                            "decimals": 2,
+                            "pattern": "Time",
+                            "thresholds": [],
+                            "type": "hidden",
+                            "unit": "short"
+                        },
+                        {
+                            "alias": "",
+                            "colorMode": null,
+                            "colors": [
+                                "rgba(245, 54, 54, 0.9)",
+                                "rgba(237, 129, 40, 0.89)",
+                                "rgba(50, 172, 45, 0.97)"
+                            ],
+                            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                            "decimals": 2,
+                            "pattern": "job",
+                            "thresholds": [],
+                            "type": "hidden",
+                            "unit": "short"
                         }
                     ],
                     "targets": [
                         {
-                            "expr": "proxysql_connection_pool_status{instance=\"$proxysql\", hostgroup=\"$hostgroup\"}",
+                            "expr": "proxysql_connection_pool_status{instance=\"$proxysql\", hostgroup=~\"$hostgroup\"}",
+                            "format": "table",
+                            "instant": true,
                             "interval": "5m",
                             "intervalFactor": 1,
                             "legendFormat": "{{ endpoint }}",
                             "metric": "",
                             "refId": "A",
-                            "step": 300
+                            "step": 600
                         }
                     ],
                     "timeFrom": "5m",
                     "title": "Endpoint Status",
-                    "transform": "timeseries_aggregations",
+                    "transform": "table",
                     "type": "table"
                 },
                 {
@@ -411,6 +528,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": null,
                     "editable": true,
@@ -437,6 +556,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": true,
                     "steppedLine": false,
@@ -445,13 +565,14 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "proxysql_connection_pool_conn_used{instance=\"$proxysql\", hostgroup=\"$hostgroup\"}",
+                            "expr": "proxysql_connection_pool_conn_used{instance=\"$proxysql\", hostgroup=~\"$hostgroup\"}",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "{{ endpoint }}",
                             "metric": "",
                             "refId": "A",
-                            "step": 300
+                            "step": 60
                         }
                     ],
                     "thresholds": [],
@@ -466,6 +587,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -492,6 +614,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": null,
                     "editable": true,
@@ -518,6 +642,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": true,
                     "steppedLine": false,
@@ -526,13 +651,14 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "rate(proxysql_connection_pool_conn_err{instance=\"$proxysql\", hostgroup=\"$hostgroup\"}[$interval]) or irate(proxysql_connection_pool_conn_err{instance=\"$proxysql\", hostgroup=\"$hostgroup\"}[5m])",
+                            "expr": "rate(proxysql_connection_pool_conn_err{instance=\"$proxysql\", hostgroup=~\"$hostgroup\"}[$interval]) or irate(proxysql_connection_pool_conn_err{instance=\"$proxysql\", hostgroup=~\"$hostgroup\"}[5m])",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "{{ endpoint }}",
                             "metric": "",
                             "refId": "A",
-                            "step": 300
+                            "step": 60
                         }
                     ],
                     "thresholds": [],
@@ -547,6 +673,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -585,6 +712,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": null,
                     "editable": true,
@@ -611,6 +740,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
@@ -619,13 +749,14 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "rate(proxysql_connection_pool_queries{instance=\"$proxysql\", hostgroup=\"$hostgroup\"}[$interval]) or irate(proxysql_connection_pool_queries{instance=\"$proxysql\", hostgroup=\"$hostgroup\"}[5m])",
+                            "expr": "rate(proxysql_connection_pool_queries{instance=\"$proxysql\", hostgroup=~\"$hostgroup\"}[$interval]) or irate(proxysql_connection_pool_queries{instance=\"$proxysql\", hostgroup=~\"$hostgroup\"}[5m])",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "{{ endpoint }}",
                             "metric": "",
                             "refId": "A",
-                            "step": 300
+                            "step": 60
                         }
                     ],
                     "thresholds": [],
@@ -640,6 +771,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -666,6 +798,211 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "fill": 1,
+                    "id": 59,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": true,
+                        "max": true,
+                        "min": true,
+                        "show": true,
+                        "total": true,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [
+                        {
+                            "alias": "QP_efficency_query",
+                            "yaxis": 2
+                        },
+                        {
+                            "alias": "QP_time",
+                            "yaxis": 2
+                        }
+                    ],
+                    "spaceLength": 10,
+                    "span": 6,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "expr": "(rate(proxysql_mysql_status_query_processor_time_nsec{instance=\"$proxysql\"}[$interval]) or irate(proxysql_mysql_status_query_processor_time_nsec{instance=\"$proxysql\"}[5m]))/(rate(proxysql_mysql_status_questions{instance=\"$proxysql\"}[$interval]) or irate(proxysql_mysql_status_questions{instance=\"$proxysql\"}[5m]))",
+                            "format": "time_series",
+                            "hide": false,
+                            "interval": "",
+                            "intervalFactor": 1,
+                            "legendFormat": "QP_efficency_query",
+                            "refId": "A",
+                            "step": 10
+                        },
+                        {
+                            "expr": "(rate(proxysql_mysql_status_query_processor_time_nsec{instance=\"$proxysql\"}[$interval]) or irate(proxysql_mysql_status_query_processor_time_nsec{instance=\"$proxysql\"}[5m]))",
+                            "format": "time_series",
+                            "hide": true,
+                            "intervalFactor": 1,
+                            "legendFormat": "QP_time",
+                            "refId": "B",
+                            "step": 1
+                        },
+                        {
+                            "expr": "(rate(proxysql_mysql_status_questions{instance=\"$proxysql\"}[$interval]) or irate(proxysql_mysql_status_questions{instance=\"$proxysql\"}[5m]))",
+                            "format": "time_series",
+                            "intervalFactor": 1,
+                            "legendFormat": "Questions",
+                            "refId": "C",
+                            "step": 10
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Query processor time efficecy",
+                    "tooltip": {
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        },
+                        {
+                            "format": "ns",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        }
+                    ]
+                }
+            ],
+            "repeat": null,
+            "repeatIteration": null,
+            "repeatRowId": null,
+            "showTitle": false,
+            "title": "Network",
+            "titleSize": "h6"
+        },
+        {
+            "collapse": false,
+            "height": "250px",
+            "panels": [
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": null,
+                    "editable": true,
+                    "error": false,
+                    "fill": 2,
+                    "grid": {},
+                    "id": 60,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "show": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "span": 6,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "proxysql_connection_pool_conn_free{instance=\"$proxysql\", hostgroup=~\"$hostgroup\"}",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "{{ endpoint }}",
+                            "metric": "",
+                            "refId": "A",
+                            "step": 60
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Connection Free",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "cumulative"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "short",
+                            "label": "",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        }
+                    ]
+                },
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": null,
                     "editable": true,
@@ -692,6 +1029,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
@@ -700,13 +1038,14 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "proxysql_connection_pool_latency_us{instance=\"$proxysql\", hostgroup=\"$hostgroup\"}",
+                            "expr": "proxysql_connection_pool_latency_us{instance=\"$proxysql\", hostgroup=~\"$hostgroup\"}",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "{{ endpoint }}",
                             "metric": "",
                             "refId": "A",
-                            "step": 300
+                            "step": 60
                         }
                     ],
                     "thresholds": [],
@@ -721,6 +1060,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -753,11 +1093,105 @@
         },
         {
             "collapse": false,
-            "height": "250px",
+            "height": 250,
             "panels": [
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "fill": 1,
+                    "id": 62,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": true,
+                        "max": true,
+                        "min": true,
+                        "show": true,
+                        "total": true,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [
+                        {
+                            "alias": "Bytes for cached query avg",
+                            "yaxis": 2
+                        }
+                    ],
+                    "spaceLength": 10,
+                    "span": 6,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "expr": "proxysql_mysql_status_query_cache_memory_bytes{instance=\"$proxysql\"}",
+                            "format": "time_series",
+                            "hide": false,
+                            "interval": "",
+                            "intervalFactor": 1,
+                            "legendFormat": "QC Total Memory used",
+                            "refId": "A",
+                            "step": 10
+                        },
+                        {
+                            "expr": "proxysql_mysql_status_query_cache_memory_bytes{instance=\"$proxysql\"}/proxysql_mysql_status_query_cache_entries{instance=\"$proxysql\"}",
+                            "format": "time_series",
+                            "intervalFactor": 1,
+                            "legendFormat": "Bytes for cached query avg",
+                            "refId": "B",
+                            "step": 10
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Query Cache memory",
+                    "tooltip": {
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "bytes",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": "0",
+                            "show": true
+                        },
+                        {
+                            "format": "bytes",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        }
+                    ]
+                },
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": null,
                     "editable": true,
@@ -783,7 +1217,13 @@
                     "pointradius": 5,
                     "points": false,
                     "renderer": "flot",
-                    "seriesOverrides": [],
+                    "seriesOverrides": [
+                        {
+                            "alias": "Insert VS read efficnecy (high is good)",
+                            "yaxis": 2
+                        }
+                    ],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
@@ -792,13 +1232,121 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "(rate(proxysql_connection_pool_bytes_data_recv{instance=\"$proxysql\", hostgroup=\"$hostgroup\"}[$interval]) + rate(proxysql_connection_pool_bytes_data_sent{instance=\"$proxysql\", hostgroup=\"$hostgroup\"}[$interval])) or (irate(proxysql_connection_pool_bytes_data_recv{instance=\"$proxysql\", hostgroup=\"$hostgroup\"}[5m]) + irate(proxysql_connection_pool_bytes_data_sent{instance=\"$proxysql\", hostgroup=\"$hostgroup\"}[5m]))",
+                            "expr": "((rate(proxysql_mysql_status_query_cache_count_get_ok{instance=\"$proxysql\"}[$interval]) + rate(proxysql_mysql_status_query_cache_count_get_ok{instance=\"$proxysql\"}[$interval])) or (irate(proxysql_mysql_status_query_cache_count_get_ok{instance=\"$proxysql\"}[5m]) + irate(proxysql_mysql_status_query_cache_count_get_ok{instance=\"$proxysql\"}[5m]))/(rate(proxysql_mysql_status_query_cache_count_get{instance=\"$proxysql\"}[$interval]) + rate(proxysql_mysql_status_query_cache_count_get{instance=\"$proxysql\"}[$interval])) or (irate(proxysql_mysql_status_query_cache_count_get{instance=\"$proxysql\"}[5m]) + irate(proxysql_mysql_status_query_cache_count_get{instance=\"$proxysql\"}[5m])))        ",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Query Cache GET efficency",
+                            "metric": "",
+                            "refId": "A",
+                            "step": 60
+                        },
+                        {
+                            "expr": "((rate(proxysql_mysql_status_query_cache_bytes_out{instance=\"$proxysql\"}[$interval]) + rate(proxysql_mysql_status_query_cache_bytes_out{instance=\"$proxysql\"}[$interval])) or (irate(proxysql_mysql_status_query_cache_bytes_out{instance=\"$proxysql\"}[5m]) + irate(proxysql_mysql_status_query_cache_bytes_out{instance=\"$proxysql\"}[5m]))/(rate(proxysql_mysql_status_query_cache_bytes_in{instance=\"$proxysql\"}[$interval]) + rate(proxysql_mysql_status_query_cache_bytes_in{instance=\"$proxysql\"}[$interval])) or (irate(proxysql_mysql_status_query_cache_bytes_in{instance=\"$proxysql\"}[5m]) + irate(proxysql_mysql_status_query_cache_bytes_in{instance=\"$proxysql\"}[5m])))        ",
+                            "format": "time_series",
+                            "interval": "",
+                            "intervalFactor": 2,
+                            "legendFormat": "Insert VS read efficency (high is good)",
+                            "refId": "B",
+                            "step": 20
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Query Cache efficiency",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "cumulative"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "percent",
+                            "label": "",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        },
+                        {
+                            "format": "percent",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        }
+                    ]
+                }
+            ],
+            "repeat": null,
+            "repeatIteration": null,
+            "repeatRowId": null,
+            "showTitle": false,
+            "title": "Dashboard Row",
+            "titleSize": "h6"
+        },
+        {
+            "collapse": false,
+            "height": 250,
+            "panels": [
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": null,
+                    "editable": true,
+                    "error": false,
+                    "fill": 2,
+                    "grid": {},
+                    "id": 65,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "show": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "span": 6,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "(rate(proxysql_connection_pool_bytes_data_recv{instance=\"$proxysql\", hostgroup=~\"$hostgroup\"}[$interval]) + rate(proxysql_connection_pool_bytes_data_sent{instance=\"$proxysql\", hostgroup=~\"$hostgroup\"}[$interval])) or (irate(proxysql_connection_pool_bytes_data_recv{instance=\"$proxysql\", hostgroup=~\"$hostgroup\"}[5m]) + irate(proxysql_connection_pool_bytes_data_sent{instance=\"$proxysql\", hostgroup=~\"$hostgroup\"}[5m]))",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "{{ endpoint }}",
                             "metric": "",
                             "refId": "A",
-                            "step": 300
+                            "step": 60
                         }
                     ],
                     "thresholds": [],
@@ -813,6 +1361,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -835,13 +1384,211 @@
                             "show": true
                         }
                     ]
+                },
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "fill": 1,
+                    "id": 61,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": true,
+                        "max": true,
+                        "min": true,
+                        "show": true,
+                        "total": true,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [
+                        {
+                            "alias": "Concurrent Mirror threads",
+                            "yaxis": 2
+                        }
+                    ],
+                    "spaceLength": 10,
+                    "span": 6,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "expr": "proxysql_mysql_status_mirror_concurrency{instance=\"$proxysql\"}",
+                            "format": "time_series",
+                            "hide": false,
+                            "interval": "",
+                            "intervalFactor": 1,
+                            "legendFormat": "Concurrent Mirror threads",
+                            "refId": "A",
+                            "step": 10
+                        },
+                        {
+                            "expr": "proxysql_mysql_status_mirror_queue_length{instance=\"$proxysql\"}",
+                            "format": "time_series",
+                            "intervalFactor": 1,
+                            "legendFormat": "Mirror queue lenght (queries)",
+                            "refId": "B",
+                            "step": 20
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Mirroring efficency",
+                    "tooltip": {
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": "0",
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": "0",
+                            "show": true
+                        }
+                    ]
                 }
             ],
             "repeat": null,
             "repeatIteration": null,
             "repeatRowId": null,
             "showTitle": false,
-            "title": "Network",
+            "title": "Dashboard Row",
+            "titleSize": "h6"
+        },
+        {
+            "collapse": false,
+            "height": "250",
+            "panels": [
+                {
+                    "aliasColors": {},
+                    "bars": true,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "fill": 1,
+                    "id": 66,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "show": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": false,
+                    "linewidth": 1,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "span": 12,
+                    "stack": true,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "expr": "proxysql_mysql_status_query_cache_memory_bytes{instance=\"$proxysql\"}",
+                            "format": "time_series",
+                            "intervalFactor": 2,
+                            "legendFormat": "Query Cache",
+                            "refId": "A",
+                            "step": 20
+                        },
+                        {
+                            "expr": "proxysql_mysql_status_sqlite3_memory_bytes{instance=\"$proxysql\"}",
+                            "format": "time_series",
+                            "intervalFactor": 2,
+                            "legendFormat": "SQLite",
+                            "refId": "B",
+                            "step": 20
+                        },
+                        {
+                            "expr": "proxysql_mysql_status_connpool_memory_bytes{instance=\"$proxysql\"}",
+                            "format": "time_series",
+                            "intervalFactor": 2,
+                            "legendFormat": "Connection Pool",
+                            "metric": "",
+                            "refId": "C",
+                            "step": 20
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Memory Utilization",
+                    "tooltip": {
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "decbytes",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        }
+                    ]
+                }
+            ],
+            "repeat": null,
+            "repeatIteration": null,
+            "repeatRowId": null,
+            "showTitle": true,
+            "title": "Memory",
             "titleSize": "h6"
         }
     ],
@@ -918,6 +1665,7 @@
             {
                 "allFormat": "glob",
                 "allValue": null,
+                "current": {},
                 "datasource": "Prometheus",
                 "hide": 0,
                 "includeAll": false,
@@ -925,6 +1673,7 @@
                 "multi": false,
                 "multiFormat": "regex values",
                 "name": "proxysql",
+                "options": [],
                 "query": "label_values(proxysql_mysql_status_active_transactions, instance)",
                 "refresh": 1,
                 "refresh_on_load": false,
@@ -939,13 +1688,15 @@
             {
                 "allFormat": "glob",
                 "allValue": null,
+                "current": {},
                 "datasource": "Prometheus",
                 "hide": 0,
                 "includeAll": false,
                 "label": "Hostgroup",
-                "multi": false,
+                "multi": true,
                 "multiFormat": "regex values",
                 "name": "hostgroup",
+                "options": [],
                 "query": "label_values(proxysql_connection_pool_status{instance=\"$proxysql\"}, hostgroup)",
                 "refresh": 1,
                 "refresh_on_load": false,
@@ -996,5 +1747,5 @@
     },
     "timezone": "browser",
     "title": "ProxySQL Overview",
-    "version": 0
+    "version": 7
 }
