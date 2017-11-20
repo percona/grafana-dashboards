@@ -81,3 +81,25 @@ declare module 'app/plugins/sdk' {
         constructor($scope: any, $injector: any);
     }
 }
+
+declare module 'app/core/config' {
+    export class Settings {
+        datasources: any;
+        panels: any;
+        appSubUrl: string;
+        window_title_prefix: string;
+        buildInfo: any;
+        new_panel_title: string;
+        bootData: any;
+        externalUserMngLinkUrl: string;
+        externalUserMngLinkName: string;
+        externalUserMngInfo: string;
+        allowOrgCreate: boolean;
+        disableLoginForm: boolean;
+        defaultDatasource: string;
+        alertingEnabled: boolean;
+        constructor(options);
+    }
+    const config: Settings
+    export default config;
+}
