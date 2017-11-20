@@ -1,6 +1,7 @@
 /// <reference path="../../headers/common.d.ts" />
 
 import { MetricsPanelCtrl } from 'app/plugins/sdk';
+import config from 'app/core/config';
 
 export class PanelCtrl extends MetricsPanelCtrl {
 
@@ -18,7 +19,8 @@ export class PanelCtrl extends MetricsPanelCtrl {
 			'var-host': null,
 			'from': null,
 			'to': null,
-			'tz': 'local'
+			'tz': config.bootData.user.timezone,
+			'theme': config.bootData.user.lightTheme ? 'light' : 'dark'
 		};
     
     const setUrl = () => { // translates Grafana's variables into iframe's URL;
@@ -33,10 +35,6 @@ export class PanelCtrl extends MetricsPanelCtrl {
 				$scope.qanParams.to = newValue.to.valueOf();
 			}
 		}, true);
-
-		$scope.$watch('ctrl.dashboard.timezone', (newValue, oldValue) => {
-			$scope.qanParams.tz = newValue === 'utc' ? 'utc' : 'local';
-		}, true);
   }
 
   public encodeData(data: any): string {
@@ -50,7 +48,11 @@ export class PanelCtrl extends MetricsPanelCtrl {
 	link($scope, elem, attrs) {
 		const frame = elem.find('iframe');
 		const panel = elem.find('div.panel-container');
-		panel.css({'background-color': '#141414', 'border': 'none'});
+		const bgcolor = $scope.qanParams.theme === 'light' ? '#ffffff' : '#141414';
+		panel.css({
+			'background-color': bgcolor,
+			'border': 'none'
+		});
 		frame[0].onload = (event) => {
 			frame.contents().bind('DOMSubtreeModified', () => {
 				const h = frame.contents().find('body').height();

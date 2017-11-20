@@ -1,5 +1,5 @@
 /// <reference path="../../headers/common.d.ts" />
-System.register(["app/plugins/sdk"], function (exports_1, context_1) {
+System.register(["app/plugins/sdk", "app/core/config"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -12,23 +12,37 @@ System.register(["app/plugins/sdk"], function (exports_1, context_1) {
         };
     })();
     var __moduleName = context_1 && context_1.id;
-    var sdk_1, PanelCtrl;
+    var sdk_1, config_1, PanelCtrl;
     return {
         setters: [
             function (sdk_1_1) {
                 sdk_1 = sdk_1_1;
+            },
+            function (config_1_1) {
+                config_1 = config_1_1;
             }
         ],
         execute: function () {/// <reference path="../../headers/common.d.ts" />
             PanelCtrl = /** @class */ (function (_super) {
                 __extends(PanelCtrl, _super);
                 function PanelCtrl($scope, $injector, templateSrv, $sce, $http) {
-                    return _super.call(this, $scope, $injector) || this;
+                    var _this = _super.call(this, $scope, $injector) || this;
+                    _this.base_url = '/qan/add-instance';
+                    $scope.trustSrc = function (src) { return $sce.trustAsResourceUrl(src); };
+                    $scope.qanParams = {
+                        'theme': config_1.default.bootData.user.lightTheme ? 'light' : 'dark'
+                    };
+                    $scope.url = _this.base_url + '?theme=' + $scope.qanParams.theme;
+                    return _this;
                 }
                 PanelCtrl.prototype.link = function ($scope, elem, attrs) {
                     var frame = elem.find('iframe');
                     var panel = elem.find('div.panel-container');
-                    panel.css({ 'background-color': '#141414', 'border': 'none' });
+                    var bgcolor = $scope.qanParams.theme === 'light' ? '#ffffff' : '#141414';
+                    panel.css({
+                        'background-color': bgcolor,
+                        'border': 'none'
+                    });
                     frame[0].onload = function (event) {
                         frame.contents().bind('DOMSubtreeModified', function () {
                             var h = frame.contents().find('body').height();
@@ -37,7 +51,7 @@ System.register(["app/plugins/sdk"], function (exports_1, context_1) {
                         });
                     };
                 };
-                PanelCtrl.template = "\n\t\t<iframe src=\"/qan/add-instance\"\n\t\t\tstyle=\"width: 100%; height: 400px; border: 0;\" />\n\t";
+                PanelCtrl.template = "\n\t\t<iframe ng-src=\"{{ trustSrc(url) }}\"\n\t\t\tstyle=\"width: 100%; height: 400px; border: 0;\" />\n\t";
                 return PanelCtrl;
             }(sdk_1.MetricsPanelCtrl));
             exports_1("PanelCtrl", PanelCtrl);

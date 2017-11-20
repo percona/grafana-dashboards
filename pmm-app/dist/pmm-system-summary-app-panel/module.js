@@ -1,5 +1,5 @@
 /// <reference path="../../headers/common.d.ts" />
-System.register(["app/plugins/sdk"], function (exports_1, context_1) {
+System.register(["app/plugins/sdk", "app/core/config"], function (exports_1, context_1) {
     "use strict";
     var __extends = (this && this.__extends) || (function () {
         var extendStatics = Object.setPrototypeOf ||
@@ -12,11 +12,14 @@ System.register(["app/plugins/sdk"], function (exports_1, context_1) {
         };
     })();
     var __moduleName = context_1 && context_1.id;
-    var sdk_1, PanelCtrl;
+    var sdk_1, config_1, PanelCtrl;
     return {
         setters: [
             function (sdk_1_1) {
                 sdk_1 = sdk_1_1;
+            },
+            function (config_1_1) {
+                config_1 = config_1_1;
             }
         ],
         execute: function () {/// <reference path="../../headers/common.d.ts" />
@@ -26,8 +29,12 @@ System.register(["app/plugins/sdk"], function (exports_1, context_1) {
                     var _this = _super.call(this, $scope, $injector) || this;
                     _this.base_url = '/qan/sys-summary?var-host=';
                     $scope.trustSrc = function (src) { return $sce.trustAsResourceUrl(src); };
+                    $scope.qanParams = {
+                        'theme': config_1.default.bootData.user.lightTheme ? 'light' : 'dark'
+                    };
                     var setUrl = function () {
                         $scope.url = _this.base_url + templateSrv.variables[0].current.value;
+                        $scope.url += '&theme=' + $scope.qanParams.theme;
                     };
                     $scope.$root.onAppEvent('template-variable-value-updated', setUrl);
                     setUrl();
@@ -36,7 +43,11 @@ System.register(["app/plugins/sdk"], function (exports_1, context_1) {
                 PanelCtrl.prototype.link = function ($scope, elem, attrs) {
                     var frame = elem.find('iframe');
                     var panel = elem.find('div.panel-container');
-                    panel.css({ 'background-color': '#141414', 'border': 'none' });
+                    var bgcolor = $scope.qanParams.theme === 'light' ? '#ffffff' : '#141414';
+                    panel.css({
+                        'background-color': bgcolor,
+                        'border': 'none'
+                    });
                     frame[0].onload = function (event) {
                         frame.contents().bind('DOMSubtreeModified', function () {
                             var h = frame.contents().find('body').height();
