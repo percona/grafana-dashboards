@@ -1,4 +1,4 @@
-## What makes a good README?
+## PMM Query Analytics Dashboard
 The *Query Analytics* dashboard enables database administrators and application
 developers to analyze database queries over periods of time and find performance
 problems.
@@ -10,5 +10,5 @@ get detailed metrics for them.
 
 
 #### Screenshots
-![PMM Query Analytics](src/img/pmm.qan.1.png "PMM Query Analytics")
+![PMM Query Analytics](/graph/public/plugins/pmm-app/img/pmm.qan.1.png "PMM Query Analytics")
 
