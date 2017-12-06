@@ -43,15 +43,14 @@ System.register(["app/plugins/sdk", "app/core/config"], function (exports_1, con
                         'background-color': bgcolor,
                         'border': 'none'
                     });
-                    frame[0].onload = function (event) {
-                        frame.contents().bind('DOMSubtreeModified', function () {
-                            var h = frame.contents().find('body').height();
-                            frame.height(h + 100 + 'px');
-                            panel.height(h + 150 + 'px');
-                        });
+                    var setHeight = function () {
+                        var h = frame.contents().find('body').height() || 400;
+                        frame.height(h + 100 + 'px');
+                        panel.height(h + 150 + 'px');
                     };
+                    frame[0].onload = function (event) { return frame.contents().bind('DOMSubtreeModified', function () { return setTimeout(setHeight, 100); }); };
                 };
-                PanelCtrl.template = "\n\t\t<iframe ng-src=\"{{ trustSrc(url) }}\"\n\t\t\tstyle=\"width: 100%; height: 400px; border: 0;\" />\n\t";
+                PanelCtrl.template = "\n\t\t<iframe ng-src=\"{{ trustSrc(url) }}\"\n\t\t\tstyle=\"width: 100%; height: 400px; border: 0;\" scrolling=\"no\" />\n\t";
                 return PanelCtrl;
             }(sdk_1.MetricsPanelCtrl));
             exports_1("PanelCtrl", PanelCtrl);
