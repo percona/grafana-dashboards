@@ -5,13 +5,14 @@ export class PanelCtrl extends MetricsPanelCtrl {
     static template = `<iframe ng-src="{{trustSrc(url)}}" style="width: 100%; height: 400px; border: 0;" scrolling="no" />`;
 
     constructor($scope, $injector, templateSrv, $sce) {
+
         super($scope, $injector);
 
         $scope.qanParams = {
             'var-host': null,
             'from': null,
-            'queryID': null,
-            'type': 'mySQL',
+            'queryID': 'F592CF5347F8ECD7',
+            'type': null,
             'to': null,
             'tz': config.bootData.user.timezone,
             'theme': config.bootData.user.lightTheme ? 'light' : 'dark'
@@ -30,28 +31,60 @@ export class PanelCtrl extends MetricsPanelCtrl {
         }, true);
     }
 
-    link($scope, elem) {
+    link($scope, elem, $location, $window) {
         const frame = elem.find('iframe');
         const panel = elem.find('div.panel-container');
         const bgcolor = $scope.qanParams.theme === 'light' ? '#ffffff' : '#141414';
+        // TODO: investigate this workaround. Inside $window - CtrlPanel
+        const location = $window.$injector.get('$location');
+
         panel.css({
             'background-color': bgcolor,
             'border': 'none'
         });
 
         // init url
-        this.resetUrl($scope);
         // updated url
         $scope.$watch('qanParams', this.resetUrl.bind(this, $scope), true);
 
-        frame.on('load', () => frame.contents().bind('DOMSubtreeModified', event => {
-                const h = frame.contents().find('body').height() || 400;
-                frame.height(`${h + 100}px`);
-                panel.height(`${h + 150}px`);
-            }
-        ));
+        [$scope.qanParams.queryID, $scope.qanParams.type]  = this.retrieveDashboardURLParams(location.absUrl());
+
+        frame.on('load', () => {
+            frame.contents().bind('click', event => {
+                const [queryID, type] = this.retrieveIFrameURLParams(event.currentTarget.URL);
+                this.reloadQuery(location, queryID, type)
+            });
+
+            frame.contents().bind('DOMSubtreeModified', event => {
+                    const h = frame.contents().find('body').height() || 400;
+                    frame.height(`${h + 100}px`);
+                    panel.height(`${h + 150}px`);
+                }
+            )
+        });
     }
 
+    private reloadQuery(location, queryID = null, type = null) {
+        location.search('queryID', queryID);
+        location.search('type', type);
+
+        history.pushState({}, null, location.absUrl());
+    }
+
+    private retrieveDashboardURLParams(url): Array<string> {
+        const currentURL = new URL(url);
+
+        return [currentURL.searchParams.get('queryID'), currentURL.searchParams.get('type')];
+    }
+
+    private retrieveIFrameURLParams(url): Array<string> {
+        const currentURL = new URL(url);
+        const id = currentURL.searchParams.get('queryID');
+        const urlArr = url.split('/');
+        const type = urlArr[urlArr.length - 1].split('?')[0];
+
+        return [id, type];
+    }
 
     private encodeData(data: Object): string {
         return Object.keys(data)
@@ -65,6 +98,9 @@ export class PanelCtrl extends MetricsPanelCtrl {
     }
 
     private resetUrl($scope) {
-        $scope.url = `/qan/profile?${this.encodeData($scope.qanParams)}`;
+        let data = this.encodeData($scope.qanParams);
+
+        if ($scope.qanParams.type && $scope.qanParams.queryID) $scope.url = `/qan/profile/report/${$scope.qanParams.type}?${data}`;
+        else $scope.url = `/qan/profile/?${data}`;
     }
 }
