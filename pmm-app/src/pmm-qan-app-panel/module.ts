@@ -11,7 +11,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
         $scope.qanParams = {
             'var-host': null,
             'from': null,
-            'queryID': 'F592CF5347F8ECD7',
+            'queryID': null,
             'type': null,
             'to': null,
             'tz': config.bootData.user.timezone,
