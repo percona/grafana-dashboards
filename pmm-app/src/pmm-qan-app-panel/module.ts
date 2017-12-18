@@ -37,6 +37,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
         const bgcolor = $scope.qanParams.theme === 'light' ? '#ffffff' : '#141414';
         // TODO: investigate this workaround. Inside $window - CtrlPanel
         const location = $window.$injector.get('$location');
+        const window = $window.$injector.get('$window');
 
         panel.css({
             'background-color': bgcolor,
@@ -52,7 +53,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
         frame.on('load', () => {
             frame.contents().bind('click', event => {
                 const [queryID, type] = this.retrieveIFrameURLParams(event.currentTarget.URL);
-                this.reloadQuery(location, queryID, type)
+                this.reloadQuery(window, queryID, type)
             });
 
             frame.contents().bind('DOMSubtreeModified', event => {
@@ -64,11 +65,10 @@ export class PanelCtrl extends MetricsPanelCtrl {
         });
     }
 
-    private reloadQuery(location, queryID = null, type = null) {
-        location.search('queryID', queryID);
-        location.search('type', type);
+    private reloadQuery(window, queryID = null, type = null) {
+        const url = `${window.location.href.split('&queryID')[0]}&${this.encodeData({queryID, type})}` ;
 
-        history.pushState({}, null, location.absUrl());
+        history.pushState({}, null, url);
     }
 
     private retrieveDashboardURLParams(url): Array<string> {
