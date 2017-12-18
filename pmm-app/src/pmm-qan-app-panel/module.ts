@@ -48,25 +48,25 @@ export class PanelCtrl extends MetricsPanelCtrl {
         // updated url
         $scope.$watch('qanParams', this.resetUrl.bind(this, $scope), true);
 
-        [$scope.qanParams.queryID, $scope.qanParams.type]  = this.retrieveDashboardURLParams(location.absUrl());
+        [$scope.qanParams.queryID, $scope.qanParams.type] = this.retrieveDashboardURLParams(location.absUrl());
 
         frame.on('load', () => {
             frame.contents().bind('click', event => {
                 const [queryID, type] = this.retrieveIFrameURLParams(event.currentTarget.URL);
                 this.reloadQuery(window, queryID, type)
             });
-
-            frame.contents().bind('DOMSubtreeModified', event => {
+            
+            frame.contents().bind('DOMSubtreeModified', () => setTimeout(() => {
                     const h = frame.contents().find('body').height() || 400;
                     frame.height(`${h + 100}px`);
                     panel.height(`${h + 150}px`);
-                }
+                }, 100)
             )
         });
     }
 
     private reloadQuery(window, queryID = null, type = null) {
-        const url = `${window.location.href.split('&queryID')[0]}&${this.encodeData({queryID, type})}` ;
+        const url = `${window.location.href.split('&queryID')[0]}&${this.encodeData({queryID, type})}`;
 
         history.pushState({}, null, url);
     }
