@@ -1,4 +1,6 @@
-import {MetricsPanelCtrl} from 'app/plugins/sdk';
+/// <reference path="../../headers/common.d.ts" />
+
+import { MetricsPanelCtrl } from 'app/plugins/sdk';
 import config from 'app/core/config';
 
 export class PanelCtrl extends MetricsPanelCtrl {
@@ -55,7 +57,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
                 const [queryID, type] = this.retrieveIFrameURLParams(event.currentTarget.URL);
                 this.reloadQuery(window, queryID, type)
             });
-            
+
             frame.contents().bind('DOMSubtreeModified', () => setTimeout(() => {
                     const h = frame.contents().find('body').height() || 400;
                     frame.height(`${h + 100}px`);
