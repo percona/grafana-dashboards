@@ -23,7 +23,7 @@ System.register(["app/plugins/sdk", "app/core/config"], function (exports_1, con
             }
         ],
         execute: function () {/// <reference path="../../headers/common.d.ts" />
-            PanelCtrl = /** @class */ (function (_super) {
+            PanelCtrl = (function (_super) {
                 __extends(PanelCtrl, _super);
                 function PanelCtrl($scope, $injector, templateSrv, $sce, $http) {
                     var _this = _super.call(this, $scope, $injector) || this;

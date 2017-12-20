@@ -23,62 +23,93 @@ System.register(["app/plugins/sdk", "app/core/config"], function (exports_1, con
             }
         ],
         execute: function () {/// <reference path="../../headers/common.d.ts" />
-            PanelCtrl = /** @class */ (function (_super) {
+            PanelCtrl = (function (_super) {
                 __extends(PanelCtrl, _super);
-                function PanelCtrl($scope, $injector, templateSrv, $sce, $http) {
+                function PanelCtrl($scope, $injector, templateSrv, $sce) {
                     var _this = _super.call(this, $scope, $injector) || this;
-                    _this.base_url = '/qan/profile';
-                    $scope.trustSrc = function (src) { return $sce.trustAsResourceUrl(src); };
                     $scope.qanParams = {
                         'var-host': null,
                         'from': null,
+                        'queryID': null,
+                        'type': null,
                         'to': null,
                         'tz': config_1.default.bootData.user.timezone,
                         'theme': config_1.default.bootData.user.lightTheme ? 'light' : 'dark'
                     };
-                    var setUrl = function () {
-                        $scope.qanParams['var-host'] = templateSrv.variables[0].current.value;
-                    };
-                    $scope.$root.onAppEvent('template-variable-value-updated', setUrl);
-                    setUrl();
-                    $scope.$watch('ctrl.range', function (newValue, oldValue) {
-                        if (newValue) {
-                            $scope.qanParams.from = newValue.from.valueOf();
-                            $scope.qanParams.to = newValue.to.valueOf();
-                        }
+                    $scope.trustSrc = function (src) { return $sce.trustAsResourceUrl(src); };
+                    _this.setUrl($scope, templateSrv);
+                    $scope.$root.onAppEvent('template-variable-value-updated', _this.setUrl.bind(_this, $scope, templateSrv));
+                    $scope.$watch('ctrl.range', function (newValue) {
+                        if (!newValue)
+                            return;
+                        $scope.qanParams.from = newValue.from.valueOf();
+                        $scope.qanParams.to = newValue.to.valueOf();
                     }, true);
                     return _this;
                 }
-                PanelCtrl.prototype.encodeData = function (data) {
-                    return Object.keys(data).map(function (key) {
-                        if (data[key]) {
-                            return [key, data[key]].map(encodeURIComponent).join('=');
-                        }
-                    }).join('&');
-                };
-                PanelCtrl.prototype.link = function ($scope, elem, attrs) {
+                PanelCtrl.prototype.link = function ($scope, elem, $location, $window) {
                     var _this = this;
                     var frame = elem.find('iframe');
                     var panel = elem.find('div.panel-container');
                     var bgcolor = $scope.qanParams.theme === 'light' ? '#ffffff' : '#141414';
+                    // TODO: investigate this workaround. Inside $window - CtrlPanel
+                    var location = $window.$injector.get('$location');
+                    var window = $window.$injector.get('$window');
                     panel.css({
                         'background-color': bgcolor,
                         'border': 'none'
                     });
-                    var setHeight = function () {
-                        var h = frame.contents().find('body').height() || 400;
-                        frame.height(h + 100 + 'px');
-                        panel.height(h + 150 + 'px');
-                    };
-                    frame[0].onload = function (event) { return frame.contents().bind('DOMSubtreeModified', function () { return setTimeout(setHeight, 100); }); };
-                    // initial url
-                    $scope.url = this.base_url + '?' + this.encodeData($scope.qanParams);
+                    // init url
                     // updated url
-                    $scope.$watch('qanParams', function (newValue, oldValue) {
-                        $scope.url = _this.base_url + '?' + _this.encodeData($scope.qanParams);
-                    }, true);
+                    $scope.$watch('qanParams', this.resetUrl.bind(this, $scope), true);
+                    _a = this.retrieveDashboardURLParams(location.absUrl()), $scope.qanParams.queryID = _a[0], $scope.qanParams.type = _a[1];
+                    frame.on('load', function () {
+                        frame.contents().bind('click', function (event) {
+                            var _a = _this.retrieveIFrameURLParams(event.currentTarget.URL), queryID = _a[0], type = _a[1];
+                            _this.reloadQuery(window, queryID, type);
+                        });
+                        frame.contents().bind('DOMSubtreeModified', function () { return setTimeout(function () {
+                            var h = frame.contents().find('body').height() || 400;
+                            frame.height(h + 100 + "px");
+                            panel.height(h + 150 + "px");
+                        }, 100); });
+                    });
+                    var _a;
                 };
-                PanelCtrl.template = "\n    <iframe ng-src=\"{{ trustSrc(url) }}\"\n      style=\"width: 100%; height: 400px; border: 0;\" scrolling=\"no\" />\n  ";
+                PanelCtrl.prototype.reloadQuery = function (window, queryID, type) {
+                    if (queryID === void 0) { queryID = null; }
+                    if (type === void 0) { type = null; }
+                    var url = window.location.href.split('&queryID')[0] + "&" + this.encodeData({ queryID: queryID, type: type });
+                    history.pushState({}, null, url);
+                };
+                PanelCtrl.prototype.retrieveDashboardURLParams = function (url) {
+                    var currentURL = new URL(url);
+                    return [currentURL.searchParams.get('queryID'), currentURL.searchParams.get('type')];
+                };
+                PanelCtrl.prototype.retrieveIFrameURLParams = function (url) {
+                    var currentURL = new URL(url);
+                    var id = currentURL.searchParams.get('queryID');
+                    var urlArr = url.split('/');
+                    var type = urlArr[urlArr.length - 1].split('?')[0];
+                    return [id, type];
+                };
+                PanelCtrl.prototype.encodeData = function (data) {
+                    return Object.keys(data)
+                        .map(function (key) { return data.hasOwnProperty(key) ? encodeURIComponent(key) + "=" + encodeURIComponent(data[key]) : null; })
+                        .join('&');
+                };
+                // translates Grafana's variables into iframe's URL;
+                PanelCtrl.prototype.setUrl = function ($scope, templateSrv) {
+                    $scope.qanParams['var-host'] = templateSrv.variables[0].current.value;
+                };
+                PanelCtrl.prototype.resetUrl = function ($scope) {
+                    var data = this.encodeData($scope.qanParams);
+                    if ($scope.qanParams.type && $scope.qanParams.queryID)
+                        $scope.url = "/qan/profile/report/" + $scope.qanParams.type + "?" + data;
+                    else
+                        $scope.url = "/qan/profile/?" + data;
+                };
+                PanelCtrl.template = "<iframe ng-src=\"{{trustSrc(url)}}\" style=\"width: 100%; height: 400px; border: 0;\" scrolling=\"no\" />";
                 return PanelCtrl;
             }(sdk_1.MetricsPanelCtrl));
             exports_1("PanelCtrl", PanelCtrl);
