@@ -90,7 +90,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
 
     private encodeData(data: Object): string {
         return Object.keys(data)
-            .map(key => data[key] ? `${encodeURIComponent(key)}=${encodeURIComponent(data[key])}` : null)
+            .map(key => data.hasOwnProperty(key) ? `${encodeURIComponent(key)}=${encodeURIComponent(data[key])}` : null)
             .join('&');
     }
 
