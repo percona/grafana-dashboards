@@ -5,7 +5,7 @@ System.register([], function (exports_1, context_1) {
     return {
         setters: [],
         execute: function () {
-            ConfigCtrl = /** @class */ (function () {
+            ConfigCtrl = (function () {
                 function ConfigCtrl() {
                 }
                 ConfigCtrl.template = '<h3 class="page-heading">PMM App</h3>';
