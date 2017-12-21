@@ -684,7 +684,7 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "sum(rate(node_cpu{instance=\"$host\", mode!=\"idle\"}[$interval])) by (mode)* 100 / count_scalar(node_cpu{mode=\"user\", instance=\"$host\"}) or sum(irate(node_cpu{instance=\"$host\", mode!=\"idle\"}[5m])) by (mode) * 100 / count_scalar(node_cpu{mode=\"user\", instance=\"$host\"})",
+                            "expr": "sum(rate(node_cpu{instance=\"$host\", mode!=\"idle\"}[$interval])) by (mode)* 100 / scalar(count(node_cpu{mode=\"user\", instance=\"$host\"})) or sum(irate(node_cpu{instance=\"$host\", mode!=\"idle\"}[5m])) by (mode) * 100 / scalar(count(node_cpu{mode=\"user\", instance=\"$host\"}))",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "{{ mode }}",
@@ -921,7 +921,7 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "(avg_over_time(node_procs_running{instance=\"$host\"}[$interval])-1) / count_scalar(node_cpu{mode=\"user\", instance=\"$host\"})",
+                            "expr": "(avg_over_time(node_procs_running{instance=\"$host\"}[$interval])-1) / scalar(count(node_cpu{mode=\"user\", instance=\"$host\"}))",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Normalized CPU Load",
@@ -1555,7 +1555,7 @@
                             "target": ""
                         },
                         {
-                            "expr": "(rate(node_context_switches{instance=\"$host\"}[$interval]) or irate(node_context_switches{instance=\"$host\"}[5m])) / count_scalar(node_cpu{mode=\"user\", instance=\"$host\"})",
+                            "expr": "(rate(node_context_switches{instance=\"$host\"}[$interval]) or irate(node_context_switches{instance=\"$host\"}[5m])) / scalar(count(node_cpu{mode=\"user\", instance=\"$host\"}))",
                             "format": "time_series",
                             "intervalFactor": 1,
                             "legendFormat": "Context Switches per Virtual CPU",
