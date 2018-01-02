@@ -1,0 +1,22 @@
+<div>
+    <span>v.{{version}}</span>
+    <a ng-click="checkForUpdate()" ng-if="!waitingForResponse && !shouldBeUpdated && !isUpdating">
+        <i class="fa fa-refresh"></i>
+    </a>
+    <div class="loader" ng-if="waitingForResponse"
+         style="border: 2px solid #f3f3f3;
+          border-top: 2px solid darkorange;
+          border-radius: 50%;
+          width: 1em; height: 1em;
+          display: inline-block;
+          vertical-align: baseline;
+          animation: spin 2s linear infinite;">
+    </div>
+
+    <a ng-click="update()" style="color: darkorange;" ng-if="shouldBeUpdated && !waitingForResponse">Update</a>
+    <a ng-click="toggleFullOutput(true)" style="color: darkorange;" ng-if="isUpdating && !showFull">Show full output</a>
+    <a ng-click="toggleFullOutput(false)" style="color: darkorange;" ng-if="isUpdating && showFull">Hide full output</a>
+
+    <div class="progress" style="width: 100%; height: 100%; color: darkorange" ng-if="isUpdating && !showFull">{{shortOutput}}</div>
+    <div class="progress" style="width: 100%; height: 100%; color: darkorange" ng-if="isUpdating && showFull">{{output}}</div>
+</div>
