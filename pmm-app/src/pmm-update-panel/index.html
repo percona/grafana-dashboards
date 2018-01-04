@@ -1,22 +1,43 @@
+<style>
+    .loader {
+        border: 2px solid #f3f3f3;
+        border-top: 2px solid darkorange;
+        border-radius: 50%;
+        width: 12px;
+        height: 12px;
+        display: inline-block;
+        vertical-align: baseline;
+        animation: spin 2s linear infinite;
+    }
+
+    .progress {
+        width: 100%;
+        height: 10em;
+        overflow-y: scroll;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
 <div>
-    <span>v.{{version}}</span>
-    <a ng-click="checkForUpdate()" ng-if="!waitingForResponse && !shouldBeUpdated && !isUpdating">
-        <i class="fa fa-refresh"></i>
-    </a>
-    <div class="loader" ng-if="waitingForResponse"
-         style="border: 2px solid #f3f3f3;
-          border-top: 2px solid darkorange;
-          border-radius: 50%;
-          width: 1em; height: 1em;
-          display: inline-block;
-          vertical-align: baseline;
-          animation: spin 2s linear infinite;">
+    <div>
+        <span>v.{{version}}</span>
+        <a ng-click="checkForUpdate()" ng-if="!waitingForResponse && !shouldBeUpdated && !isUpdating">
+            <i class="fa fa-refresh"></i>
+        </a>
+        <div class="loader" ng-if="waitingForResponse"></div>
+        <a ng-click="toggleOutput()" ng-if="isUpdating">
+            <i class="fa" ng-class="{'fa-eye-slash': showOutput, 'fa-eye': !showOutput}"></i>
+        </a>
     </div>
-
-    <a ng-click="update()" style="color: darkorange;" ng-if="shouldBeUpdated && !waitingForResponse">Update</a>
-    <a ng-click="toggleFullOutput(true)" style="color: darkorange;" ng-if="isUpdating && !showFull">Show full output</a>
-    <a ng-click="toggleFullOutput(false)" style="color: darkorange;" ng-if="isUpdating && showFull">Hide full output</a>
-
-    <div class="progress" style="width: 100%; height: 100%; color: darkorange" ng-if="isUpdating && !showFull">{{shortOutput}}</div>
-    <div class="progress" style="width: 100%; height: 100%; color: darkorange" ng-if="isUpdating && showFull">{{output}}</div>
+    <div>
+        <a ng-click="update()" ng-if="shouldBeUpdated && !waitingForResponse"></a>
+    </div>
+    <div class="progress" ng-if="isUpdating && showOutput">{{output}}</div>
 </div>

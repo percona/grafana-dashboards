@@ -5,61 +5,78 @@ import config from 'app/core/config';
 
 export class PanelCtrl extends MetricsPanelCtrl {
     static templateUrl: string = 'pmm-update-panel/index.html';
-    static stylesUrl: string = 'pmm-update-panel/style.css';
+    static checkUpdateURL: string = '/configurator/v1/check-update';
+    static updateURL: string = '/configurator/v1/updates';
 
-    constructor($scope, $injector) {
+    static PROCESS_STATUSES = {
+        IN_PROGRESS: 'running',
+        DONE: 'succeeded'
+    };
+
+    constructor($scope, $injector, $http) {
         super($scope, $injector);
+
+        let location = '';
 
         $scope.version = '1.0.0';
         this.reset($scope);
 
-        // GET Current version
         $scope.checkForUpdate = () => {
-            // check if current version match with responded from server
             $scope.waitingForResponse = true;
 
-            setTimeout(() => {
+            $http({
+                method: 'GET',
+                url: PanelCtrl.checkUpdateURL,
+            }).then(response => {
                 $scope.waitingForResponse = false;
                 $scope.shouldBeUpdated = true;
-                $scope.$apply();
-            }, 500)
-            // TODO: Check for Update query
+            }, error => {
+                $scope.waitingForResponse = false;
+                $scope.shouldBeUpdated = true; // remove
+
+            });
         };
 
-        $scope.toggleFullOutput = (isFull) => {
-            $scope.showFull = isFull;
+        $scope.toggleOutput = () => {
+            $scope.showOutput = !$scope.showOutput;
         };
 
         $scope.update = () => {
             $scope.isUpdating = true;
+            $scope.waitingForResponse = true;
 
-            const interval = setInterval(() => {
-                console.log($scope.output, $scope.showFull);
-                $scope.output += ` ${Math.random()}`;
-                $scope.shortOutput = $scope.output.slice($scope.output.length - 20);
-                $scope.waitingForResponse = true;
-                $scope.$apply();
-            }, 100);
+            $http({
+                method: 'POST',
+                url: PanelCtrl.updateURL,
+            }).then(response => {
 
-            setTimeout(() => {
-                clearInterval(interval);
-                $scope.version = '5.0.0';
-                this.reset($scope);
-                $scope.$apply();
-            }, 5000);
+                location = response.headers('Location');
+                $scope.getLog();
+            }, error => {
+                $scope.waitingForResponse = false;
+            });
         };
 
+        $scope.getLog = () => {
+            if (!location.length) return;
+
+            $http({
+                method: 'GET',
+                url: location,
+            }).then(response => {
+                $scope.output += response.data.detail;
+
+                if (response.data.title === PanelCtrl.PROCESS_STATUSES.IN_PROGRESS) window.setTimeout($scope.getLog, 1000);
+                if (response.data.title === PanelCtrl.PROCESS_STATUSES.DONE) $scope.waitingForResponse = false;
+            }, error => {});
+        }
     }
 
     reset($scope) {
         $scope.output = '';
-        $scope.shortOutput = '';
-        $scope.showFull = false;
+        $scope.showOutput = false;
         $scope.waitingForResponse = false;
         $scope.shouldBeUpdated = false;
         $scope.isUpdating = false;
-    }
-
-    link() {
     }
 }
