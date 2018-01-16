@@ -16,6 +16,10 @@
         overflow-y: scroll;
     }
 
+    .btn-block {
+        width: 100%;
+    }
+
     @keyframes spin {
         0% {
             transform: rotate(0deg);
@@ -26,18 +30,72 @@
     }
 </style>
 <div>
-    <div>
-        <span>v.{{version}}</span>
-        <a ng-click="checkForUpdate()" ng-if="!waitingForResponse && !shouldBeUpdated && !isUpdating">
-            <i class="fa fa-refresh"></i>
-        </a>
-        <div class="loader" ng-if="waitingForResponse"></div>
-        <a ng-click="toggleOutput()" ng-if="isUpdating">
-            <i class="fa" ng-class="{'fa-eye-slash': showOutput, 'fa-eye': !showOutput}"></i>
-        </a>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+            <h3>Updates</h3>
+        </div>
     </div>
-    <div>
-        <a ng-click="update()" ng-if="shouldBeUpdated && !waitingForResponse"></a>
+
+    <div class="row">
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-right">
+            Current version:
+        </div>
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+            {{version}}(23 Aug, 2017)
+        </div>
     </div>
-    <div class="progress" ng-if="isUpdating && showOutput">{{output}}</div>
+    <div class="row" ng-if="shouldBeUpdated">
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-right">
+            Available version:
+        </div>
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+            <strong>{{version}}</strong>(23 Aug, 2017)
+        </div>
+    </div>
+    <div class="row" ng-if="shouldBeUpdated">
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 offset-xs-6 offset-sm-6 offset-md-6 offset-lg-6 offset-xl-6">
+           <a href="/" ng-click="showReleaseNotes()">What's new?</a>
+        </div>
+    </div>
+    <div class="row"  ng-if="!shouldBeUpdated">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+            <button class="btn btn-inverse btn-block" ng-click="checkForUpdate()">Check for updates manually</button>
+        </div>
+    </div>
+    <div class="row"  ng-if="shouldBeUpdated">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+            <button class="btn btn-secondary btn-block" ng-click="update()">i class="fa fa-download"></i> Update to {{version}}</button>
+        </div>
+    </div>
+
+    <!--<p>Current version: <span>{{version}}</span> (23 Aug, 2017)</p>-->
+    <!--<p>Available version: <span>{{version}}</span> (23 Aug, 2017)</p>-->
+    <!--<a>What's new?</a>-->
+    <!--<button class="btn btn-light" ng-click="checkForUpdate()">Check for updates manually</button>-->
+    <!--<button class="btn btn-secondary" ng-click="update()"><i class="fa fa-download"></i> Update to {{version}}</button>-->
+    <!--&lt;!&ndash; Button trigger modal &ndash;&gt;-->
+    <!--<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">-->
+    <!--Launch demo modal-->
+    <!--</button>-->
+
+    <!-- Modal -->
+
+    <!--<div>-->
+    <!--<a ng-click="checkForUpdate()" ng-if="!waitingForResponse && !shouldBeUpdated && !updated">-->
+    <!--<i class="fa fa-refresh"></i>-->
+    <!--</a>-->
+    <!--<div class="loader" ng-if="waitingForResponse"></div>-->
+    <!--<a ng-click="toggleOutput()" ng-if="waitingForResponse && shouldBeUpdated">-->
+    <!--<i class="fa" ng-class="{'fa-eye-slash': showOutput, 'fa-eye': !showOutput}"></i>-->
+    <!--</a>-->
+    <!--</div>-->
+    <!--<div>-->
+    <!--<span ng-if="shouldBeUpdated && !waitingForResponse">-->
+    <!--New version is available <i ng-click="update()" class="fa fa-cloud-download"></i>-->
+    <!--</span>-->
+    <!--<span ng-if="!shouldBeUpdated && !waitingForResponse">-->
+    <!--Nothing to update-->
+    <!--</span>-->
+    <!--</div>-->
+    <!--<div class="progress" ng-if="showOutput">{{output}}</div>-->
 </div>

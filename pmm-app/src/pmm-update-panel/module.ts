@@ -1,82 +1,140 @@
 /// <reference path="../../headers/common.d.ts" />
 
 import {MetricsPanelCtrl} from 'app/plugins/sdk';
+import AppEvents from 'app/core/app_events';
+
 import config from 'app/core/config';
 
 export class PanelCtrl extends MetricsPanelCtrl {
-    static templateUrl: string = 'pmm-update-panel/index.html';
-    static checkUpdateURL: string = '/configurator/v1/check-update';
-    static updateURL: string = '/configurator/v1/updates';
+    /*
+    *
+    * Urls to define panels templates
+    *
+    * */
+    static TEMPLATES = {
+        MAIN: 'pmm-update-panel/index.html',
+        MODAL: 'public/plugins/pmm-update-panel/modal.html',
+    };
 
+    /*
+    *
+    * Urls to define API endpoints
+    *
+    * */
+    static API = {
+        CHECK_FOR_UPDATE: '/configurator/v1/check-update',
+        UPDATE: '/configurator/v1/updates'
+    };
+
+    /*
+    *
+    * Possible statuses of update version process (returned by backend)
+    *
+    * */
     static PROCESS_STATUSES = {
         IN_PROGRESS: 'running',
-        DONE: 'succeeded'
+        DONE: 'succeeded',
+        ERROR: 'error'
     };
+
+    /*
+    *
+    * Grafana param, define url of template that will be used for panel
+    *
+    * */
+    static templateUrl: string = PanelCtrl.TEMPLATES.MAIN;
 
     constructor($scope, $injector, $http) {
         super($scope, $injector);
-
-        let location = '';
-
-        $scope.version = '1.0.0';
+        // Re-init all scope params
         this.reset($scope);
 
-        $scope.checkForUpdate = () => {
-            $scope.waitingForResponse = true;
+        let location = '';
+        $scope.version = '1.0.0';
 
-            $http({
-                method: 'GET',
-                url: PanelCtrl.checkUpdateURL,
-            }).then(response => {
-                $scope.waitingForResponse = false;
-                $scope.shouldBeUpdated = true;
-            }, error => {
-                $scope.waitingForResponse = false;
-                $scope.shouldBeUpdated = true; // remove
-
-            });
-        };
-
-        $scope.toggleOutput = () => {
-            $scope.showOutput = !$scope.showOutput;
-        };
-
-        $scope.update = () => {
-            $scope.isUpdating = true;
-            $scope.waitingForResponse = true;
-
-            $http({
-                method: 'POST',
-                url: PanelCtrl.updateURL,
-            }).then(response => {
-
-                location = response.headers('Location');
-                $scope.getLog();
-            }, error => {
-                $scope.waitingForResponse = false;
-            });
-        };
-
-        $scope.getLog = () => {
-            if (!location.length) return;
-
-            $http({
-                method: 'GET',
-                url: location,
-            }).then(response => {
-                $scope.output += response.data.detail;
-
-                if (response.data.title === PanelCtrl.PROCESS_STATUSES.IN_PROGRESS) window.setTimeout($scope.getLog, 1000);
-                if (response.data.title === PanelCtrl.PROCESS_STATUSES.DONE) $scope.waitingForResponse = false;
-            }, error => {});
-        }
+        $scope.checkForUpdate = this.update.bind(this, $scope, $http);
+        $scope.update = this.update.bind(this, $scope, $http);
+        $scope.getLog = this.getLog.bind(this, $scope, $http, location);
+        $scope.showReleaseNotes = this.showReleaseNotes.bind(this, $scope);
     }
 
-    reset($scope) {
+    /*
+    *
+    * Send request for update version
+    *
+    * */
+    private update($scope, $http): void {
+        $scope.waitingForResponse = true;
+
+        $http({
+            method: 'POST',
+            url: PanelCtrl.API.UPDATE,
+        }).then(response => {
+            location = response.headers('Location');
+            $scope.getLog();
+        }, error => {
+        });
+    }
+
+    /*
+    *
+    * Send request to check if update possible and re-init params
+    *
+    * */
+    private checkForUpdate($scope, $http): void {
+        AppEvents.emit('show-modal', {
+            src: PanelCtrl.TEMPLATES.MODAL,
+            modalClass: 'confirm-modal'
+        });
+
+        $http({
+            method: 'GET',
+            url: PanelCtrl.API.CHECK_FOR_UPDATE,
+        }).then(response => {
+            $scope.shouldBeUpdated = true;
+        }, error => {
+            $scope.shouldBeUpdated = false;
+        });
+    }
+
+    /*
+    *
+    * Send request for get info about update status
+    *
+    * */
+    private getLog($scope, $http, location): void {
+        if (!location.length) return;
+
+        $http({
+            method: 'GET',
+            url: location,
+        }).then(response => {
+            $scope.output = response.data.detail;
+
+            if (response.data.title === PanelCtrl.PROCESS_STATUSES.IN_PROGRESS) window.setTimeout($scope.getLog, 1000);
+            if (response.data.title === PanelCtrl.PROCESS_STATUSES.DONE) {
+                $scope.shouldBeUpdated = false;
+            }
+        }, error => {
+        });
+    }
+
+    /*
+    *
+    * Send request to get info about new version
+    *
+    * */
+    private showReleaseNotes($scope) {
+    }
+
+    /*
+    *
+    * Re-init all inner parameters that can be changed during update
+    *
+    * */
+    private reset($scope): void {
         $scope.output = '';
         $scope.showOutput = false;
-        $scope.waitingForResponse = false;
         $scope.shouldBeUpdated = false;
-        $scope.isUpdating = false;
     }
 }
