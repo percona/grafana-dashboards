@@ -56,12 +56,20 @@ export class PanelCtrl extends MetricsPanelCtrl {
      * Send request for update version
      */
     private update($scope, $http): void {
-        $scope.isLoaderShown = true;
+        const modalScope = $scope.$new(true);
+        $scope.$watch(newState => {
+            modalScope.output = newState.output;
+            modalScope.isLoaderShown = newState.isLoaderShown;
+            modalScope.isChecked = newState.isChecked;
+            modalScope.isUpdated = newState.isUpdated;
+            modalScope.isOutputShown = newState.isOutputShown;
+            modalScope.shouldBeUpdated = newState.shouldBeUpdated;
+        });
 
+        $scope.isLoaderShown = true;
         AppEvents.emit('show-modal', {
             src: PanelCtrl.TEMPLATES.MODAL,
-            modalClass: 'confirm-modal',
-            scope: $scope
+            scope: modalScope
         });
 
         $http({
@@ -95,7 +103,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
                 $scope.$apply();
             }, 5000);
 
-            $scope.shouldBeUpdated = false;
+            $scope.shouldBeUpdated = true;
         });
     }
 
@@ -111,15 +119,15 @@ export class PanelCtrl extends MetricsPanelCtrl {
         }).then(response => {
             $scope.output = response.data.detail;
 
-            if (response.data.title === PanelCtrl.PROCESS_STATUSES.IN_PROGRESS) window.setTimeout($scope.getLog, 1000);
+            if (response.data.title === PanelCtrl.PROCESS_STATUSES.IN_PROGRESS) window.setTimeout(this.getLog.bind(this, $scope, $http), 1000);
 
             if (response.data.title === PanelCtrl.PROCESS_STATUSES.DONE) {
-                $scope.shouldBeUpdated = false;
+                this.reset($scope);
+
                 $scope.isUpdated = true;
-                $scope.isLoaderShown = false;
             }
         }).catch(() => {
-            $scope.isLoaderShown = false;
+            this.reset($scope);
         });
     }
 
