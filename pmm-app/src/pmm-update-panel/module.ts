@@ -49,7 +49,6 @@ export class PanelCtrl extends MetricsPanelCtrl {
         $scope.update = this.update.bind(this, $scope, $http);
         $scope.getLog = this.getLog.bind(this, $scope, $http);
         $scope.showReleaseNotes = this.showReleaseNotes.bind(this, $scope);
-        $scope.copyToClipboard = this.copyToClipboard.bind(this, $scope);
     }
 
     /**
@@ -103,7 +102,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
                 $scope.$apply();
             }, 5000);
 
-            $scope.shouldBeUpdated = true;
+            $scope.shouldBeUpdated = false;
         });
     }
 
@@ -136,12 +135,6 @@ export class PanelCtrl extends MetricsPanelCtrl {
      */
     private showReleaseNotes($scope) {
         // TODO: will be implemented after API release
-    }
-
-    /**
-     * Send request to get info about new version
-     */
-    private copyToClipboard($scope) {
     }
 
     /**
