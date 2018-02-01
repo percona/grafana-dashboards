@@ -633,6 +633,7 @@
             "panels": [
                 {
                     "aliasColors": {
+                        "Max Core Utilization": "#bf1b00",
                         "idle": "#806EB7",
                         "iowait": "#E24D42",
                         "nice": "#1F78C1",
@@ -647,7 +648,7 @@
                     "decimals": null,
                     "editable": true,
                     "error": false,
-                    "fill": 6,
+                    "fill": 5,
                     "grid": {},
                     "height": "",
                     "id": 2,
@@ -667,30 +668,42 @@
                         "values": true
                     },
                     "lines": true,
-                    "linewidth": 2,
+                    "linewidth": 1,
                     "links": [],
                     "nullPointMode": "null",
                     "percentage": false,
                     "pointradius": 5,
                     "points": false,
                     "renderer": "flot",
-                    "seriesOverrides": [],
+                    "seriesOverrides": [
+                        {
+                            "alias": "Max Core Utilization",
+                            "lines": false,
+                            "pointradius": 1,
+                            "points": true,
+                            "stack": false
+                        }
+                    ],
                     "spaceLength": 10,
                     "span": 6,
                     "stack": true,
                     "steppedLine": false,
                     "targets": [
                         {
-                            "calculatedInterval": "2s",
-                            "datasourceErrors": {},
-                            "errors": {},
-                            "expr": "sum(rate(node_cpu{instance=\"$host\", mode!=\"idle\"}[$interval])) by (mode)* 100 / scalar(count(node_cpu{mode=\"user\", instance=\"$host\"})) or sum(irate(node_cpu{instance=\"$host\", mode!=\"idle\"}[5m])) by (mode) * 100 / scalar(count(node_cpu{mode=\"user\", instance=\"$host\"}))",
+                            "expr": "clamp_max((avg by (mode) ( (clamp_max(rate(node_cpu{instance=\"$host\",mode!=\"idle\"}[$interval]),1)) or (clamp_max(irate(node_cpu{instance=\"$host\",mode!=\"idle\"}[5m]),1)) )),1)",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "{{ mode }}",
-                            "metric": "",
-                            "refId": "A",
-                            "step": 300
+                            "refId": "B"
+                        },
+                        {
+                            "expr": "clamp_max(max by () (sum  by (cpu) ( (clamp_max(rate(node_cpu{instance=\"$host\",mode!=\"idle\",mode!=\"iowait\"}[$interval]),1)) or (clamp_max(irate(node_cpu{instance=\"$host\",mode!=\"idle\",mode!=\"iowait\"}[5m]),1)) )),1)",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Max Core Utilization",
+                            "refId": "C"
                         }
                     ],
                     "thresholds": [],
@@ -713,14 +726,16 @@
                     },
                     "yaxes": [
                         {
-                            "format": "percent",
+                            "decimals": 1,
+                            "format": "percentunit",
                             "label": "",
                             "logBase": 1,
-                            "max": 100,
+                            "max": "1",
                             "min": 0,
                             "show": true
                         },
                         {
+                            "decimals": null,
                             "format": "short",
                             "logBase": 1,
                             "max": null,
@@ -2453,6 +2468,7 @@
             {
                 "allFormat": "glob",
                 "allValue": null,
+                "current": {},
                 "datasource": "Prometheus",
                 "hide": 0,
                 "includeAll": false,
@@ -2460,6 +2476,7 @@
                 "multi": false,
                 "multiFormat": "regex values",
                 "name": "host",
+                "options": [],
                 "query": "label_values(node_load1, instance)",
                 "refresh": 1,
                 "refresh_on_load": false,
@@ -2510,5 +2527,5 @@
     },
     "timezone": "browser",
     "title": "System Overview",
-    "version": 1 
+    "version": 2 
 }
