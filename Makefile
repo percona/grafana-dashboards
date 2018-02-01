@@ -24,4 +24,8 @@ disable:
 enable:
 	curl -X POST --retry-delay 5 --retry 5 'http://admin:admin@localhost/graph/api/plugins/pmm-app/settings' -d 'enabled=true'
 
-test: pack disable install enable
+test:
+	make pack
+	curl -X POST 'http://admin:admin@127.0.0.1:3000/graph/api/plugins/pmm-app/settings' -d 'enabled=false'
+	make install
+	curl -X POST --retry-delay 5 --retry 5 'http://admin:admin@127.0.0.1:3000/graph/api/plugins/pmm-app/settings' -d 'enabled=true'
