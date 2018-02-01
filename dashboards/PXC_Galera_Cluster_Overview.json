@@ -1013,7 +1013,6 @@
         }
     ],
     "schemaVersion": 13,
-    "sharedCrosshair": true,
     "style": "dark",
     "tags": [
         "Percona",
@@ -1084,8 +1083,29 @@
                 "type": "interval"
             },
             {
+                "allValue": null,
+                "current": {},
+                "datasource": "Prometheus",
+                "hide": 2,
+                "includeAll": true,
+                "label": "Instance",
+                "multi": true,
+                "name": "instances",
+                "options": [],
+                "query": "label_values(mysql_global_status_wsrep_local_state, instance)",
+                "refresh": 1,
+                "regex": "",
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            },
+            {
                 "allFormat": "glob",
                 "allValue": null,
+                "current": {},
                 "datasource": "Prometheus",
                 "hide": 0,
                 "includeAll": false,
@@ -1093,14 +1113,17 @@
                 "multi": false,
                 "multiFormat": "regex values",
                 "name": "cluster",
-                "query": "label_values(mysql_galera_variables_info, wsrep_cluster_name)",
+                "options": [],
+                "query": "label_values(mysql_galera_variables_info{instance=~\"$instances\"}, wsrep_cluster_name)",
                 "refresh": 1,
                 "refresh_on_load": false,
                 "regex": "",
                 "sort": 1,
                 "tagValuesQuery": null,
+                "tags": [],
                 "tagsQuery": null,
-                "type": "query"
+                "type": "query",
+                "useTags": false
             }
         ]
     },
@@ -1141,5 +1164,5 @@
     },
     "timezone": "browser",
     "title": "PXC/Galera Cluster Overview",
-    "version": 0
+    "version": 1 
 }
