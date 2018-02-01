@@ -7,6 +7,8 @@ all: build disable install enable
 
 build:
 	cd pmm-app && npm run build && cd ..
+
+pack:
 	tar czf pmm-app.tar.gz pmm-app
 
 install:
@@ -22,5 +24,4 @@ disable:
 enable:
 	curl -X POST --retry-delay 5 --retry 5 'http://admin:admin@localhost/graph/api/plugins/pmm-app/settings' -d 'enabled=true'
 
-test:
-	./misc/import-dash.py
+test: pack disable install enable
