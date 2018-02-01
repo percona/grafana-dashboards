@@ -55,7 +55,7 @@
             "type": "dashboards"
         }
     ],
-    "refresh": "1m",
+    "refresh": false,
     "rows": [
         {
             "collapse": false,
@@ -3631,7 +3631,13 @@
                 },
                 {
                     "aliasColors": {
-                        "Load 1m": "#58140C"
+                        "Load 1m": "#58140C",
+                        "Max Core Utilization": "#bf1b00",
+                        "iowait": "#e24d42",
+                        "nice": "#1f78c1",
+                        "softirq": "#806eb7",
+                        "system": "#eab839",
+                        "user": "#508642"
                     },
                     "bars": false,
                     "dashLength": 10,
@@ -3669,6 +3675,13 @@
                     "renderer": "flot",
                     "seriesOverrides": [
                         {
+                            "alias": "Max Core Utilization",
+                            "lines": false,
+                            "pointradius": 1,
+                            "points": true,
+                            "stack": false
+                        },
+                        {
                             "alias": "Load 1m",
                             "color": "#58140C",
                             "fill": 2,
@@ -3685,7 +3698,9 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "sum(rate(node_cpu{instance=\"$host\"}[$interval])) by (mode) * 100 / scalar(count(node_cpu{mode=\"user\", instance=\"$host\"})) or sum(irate(node_cpu{instance=\"$host\"}[5m])) by (mode) * 100 / scalar(count(node_cpu{mode=\"user\", instance=\"$host\"}))",
+                            "expr": "clamp_max((avg by (mode) ( (clamp_max(rate(node_cpu{instance=\"$host\",mode!=\"idle\"}[$interval]),1)) or (clamp_max(irate(node_cpu{instance=\"$host\",mode!=\"idle\"}[5m]),1)) ))*100,100)",
+                            "format": "time_series",
+                            "hide": false,
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "{{ mode }}",
@@ -3694,12 +3709,22 @@
                             "step": 20
                         },
                         {
-                            "expr": "node_load1{instance=\"$host\"}",
+                            "expr": "clamp_max(max by () (sum  by (cpu) ( (clamp_max(rate(node_cpu{instance=\"$host\",mode!=\"idle\",mode!=\"iowait\"}[$interval]),1)) or (clamp_max(irate(node_cpu{instance=\"$host\",mode!=\"idle\",mode!=\"iowait\"}[5m]),1)) ))*100,100)",
+                            "format": "time_series",
+                            "hide": true,
                             "interval": "$interval",
                             "intervalFactor": 1,
-                            "legendFormat": "Load 1m",
+                            "legendFormat": "Max Core Utilization",
                             "refId": "B",
                             "step": 20
+                        },
+                        {
+                            "expr": "node_load1{instance=\"$host\"}",
+                            "format": "time_series",
+                            "hide": false,
+                            "intervalFactor": 2,
+                            "legendFormat": "Load 1m",
+                            "refId": "C"
                         }
                     ],
                     "thresholds": [],
@@ -3722,6 +3747,7 @@
                     },
                     "yaxes": [
                         {
+                            "decimals": 1,
                             "format": "percent",
                             "label": "",
                             "logBase": 1,
@@ -4139,6 +4165,7 @@
             {
                 "allFormat": "glob",
                 "allValue": null,
+                "current": {},
                 "datasource": "Prometheus",
                 "hide": 0,
                 "includeAll": false,
@@ -4146,6 +4173,7 @@
                 "multi": false,
                 "multiFormat": "regex values",
                 "name": "host",
+                "options": [],
                 "query": "label_values(mysql_up, instance)",
                 "refresh": 1,
                 "refresh_on_load": false,
@@ -4196,5 +4224,5 @@
     },
     "timezone": "browser",
     "title": "MySQL Overview",
-    "version": 1 
+    "version": 2 
 }
