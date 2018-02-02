@@ -11,7 +11,7 @@ API_KEY = os.getenv('IMPORT_DASH_API_KEY', '***')
 USERNAME = os.getenv('IMPORT_DASH_USERNAME')
 PASSWORD = os.getenv('IMPORT_DASH_PASSWORD')
 
-DIR = 'dashboards/'
+DIR = 'pmm-app/src/dashboards/'
 
 
 def main():
