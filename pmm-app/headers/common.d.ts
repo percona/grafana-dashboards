@@ -103,3 +103,11 @@ declare module 'app/core/config' {
     const config: Settings
     export default config;
 }
+
+declare module 'app/core/app_events' {
+    export default class AppEvents {
+        static emit: any;
+
+        constructor(options);
+    }
+}
