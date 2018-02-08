@@ -2,7 +2,24 @@
 ---
 version: '3'
 services:
-  grafana:
-    image: grafana/grafana
+  pmm-data:
+    container_name: pmm-data
+    image: percona/pmm-server:latest
+    volumes:
+      - "/opt/prometheus/data"
+      - "/opt/consul-data"
+      - "/var/lib/mysql"
+      - "/var/lib/grafana"
+  pmm-server:
+    container_name: pmm-server
+    image: percona/pmm-server:latest
+    volumes:
+      - "/opt/prometheus/data"
+      - "/opt/consul-data"
+      - "/var/lib/mysql"
+      - "/var/lib/grafana"
     ports:
-      - 127.0.0.1:3000:3000
+      - "80:80"
+    restart: always
+    depends_on:
+      - pmm-data
