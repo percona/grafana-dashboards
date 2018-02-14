@@ -7,8 +7,6 @@ all: build pack disable install enable
 
 build:
 	cd pmm-app && npm run build && cd ..
-	rm pmm-app/dist/dashboards
-	cp -r dashboards/ pmm-app/dist/dashboards/
 
 pack:
 	tar czf pmm-app.tar.gz pmm-app
