@@ -18,6 +18,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
      * Urls to define API endpoints
      */
     static API = {
+        GET_CURRENT_VERSION: '/managed/v1/version',
         CHECK_FOR_UPDATE: '/configurator/v1/check-update',
         UPDATE: '/configurator/v1/updates'
     };
@@ -26,9 +27,17 @@ export class PanelCtrl extends MetricsPanelCtrl {
      * Possible statuses of update version process (returned by backend)
      */
     static PROCESS_STATUSES = {
+        FAILED: 'failed',
         IN_PROGRESS: 'running',
         DONE: 'succeeded',
         ERROR: 'error'
+    };
+    /**
+     * Possible errors during update process
+     */
+    static ERRORS = {
+        UPDATE: 'Error during update',
+        NOTHING_TO_UPDATE: 'Nothing to update'
     };
 
     /**
@@ -43,12 +52,17 @@ export class PanelCtrl extends MetricsPanelCtrl {
         this.reset($scope);
 
         $scope.logLocation = '';
-        $scope.version = '1.0.0';
+        $scope.version = '';
+        $scope.nextVersion = '';
+        $scope.errorMessage = '';
 
         $scope.checkForUpdate = this.checkForUpdate.bind(this, $scope, $http);
         $scope.update = this.update.bind(this, $scope, $http);
         $scope.getLog = this.getLog.bind(this, $scope, $http);
         $scope.showReleaseNotes = this.showReleaseNotes.bind(this, $scope);
+        $scope.getCurrentVersion = this.getCurrentVersion.bind(this, $scope, $http);
+        $scope.getCurrentVersion($scope, $http);
+
     }
 
     /**
@@ -63,6 +77,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
             modalScope.isUpdated = newState.isUpdated;
             modalScope.isOutputShown = newState.isOutputShown;
             modalScope.shouldBeUpdated = newState.shouldBeUpdated;
+            modalScope.errorMessage = newState.errorMessage;
         });
 
         $scope.isLoaderShown = true;
@@ -89,20 +104,38 @@ export class PanelCtrl extends MetricsPanelCtrl {
         $http({
             method: 'GET',
             url: PanelCtrl.API.CHECK_FOR_UPDATE,
-        }).then(() => {
+        }).then((res) => {
             $scope.isLoaderShown = false;
             $scope.shouldBeUpdated = true;
             $scope.isChecked = true;
+            $scope.nextVersion = res.data.to;
+            $scope.version = res.data.from;
         }).catch(() => {
             $scope.isLoaderShown = false;
             $scope.isChecked = true;
+            $scope.errorMessage = PanelCtrl.ERRORS.NOTHING_TO_UPDATE;
             // TODO: Error handler should be clarified
             setTimeout(() => {
                 $scope.isChecked = false;
+                $scope.errorMessage = '';
                 $scope.$apply();
             }, 5000);
 
             $scope.shouldBeUpdated = false;
+        });
+    }
+
+    /**
+     * Send request to get current version
+     */
+    private getCurrentVersion($scope, $http): void {
+        $http({
+            method: 'GET',
+            url: PanelCtrl.API.GET_CURRENT_VERSION,
+        }).then((res) => {
+            $scope.version = res.data.version;
+        }).catch(() => {
+            //TODO: add error handler
         });
     }
 
@@ -122,8 +155,14 @@ export class PanelCtrl extends MetricsPanelCtrl {
 
             if (response.data.title === PanelCtrl.PROCESS_STATUSES.DONE) {
                 this.reset($scope);
-
+                $scope.version = $scope.errorMessage ? $scope.version : $scope.nextVersion;
                 $scope.isUpdated = true;
+            }
+            if (response.data.title === PanelCtrl.PROCESS_STATUSES.FAILED) {
+                $scope.isLoaderShown = false;
+                $scope.isChecked = true;
+                $scope.shouldBeUpdated = true;
+                $scope.errorMessage = PanelCtrl.ERRORS.UPDATE;
             }
         }).catch(() => {
             this.reset($scope);

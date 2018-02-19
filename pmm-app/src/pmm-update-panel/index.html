@@ -18,7 +18,8 @@
             Current version:
         </div>
         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-            {{version}}(23 Aug, 2017)
+            <i class="fa fa-spinner fa-spin" ng-if="!version"></i>
+            {{version}}
         </div>
     </div>
     <div class="row" ng-if="shouldBeUpdated">
@@ -26,7 +27,7 @@
             Available version:
         </div>
         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-            <strong>{{version}}</strong>(23 Aug, 2017)
+            <strong>{{nextVersion}}</strong>
         </div>
     </div>
     <div class="row" ng-if="shouldBeUpdated">
@@ -36,12 +37,14 @@
     </div>
     <div class="row" style="height: 2em;">
         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 offset-xs-6 offset-sm-6 offset-md-6 offset-lg-6 offset-xl-6">
-            <em class="text-error" ng-if="!shouldBeUpdated && isChecked && !isUpdated">Nothing to update</em>
+            <em class="text-error">{{errorMessage}}</em>
         </div>
     </div>
     <div class="row btn-holder" ng-show="!shouldBeUpdated">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-            <button class="btn btn-inverse btn-block" ng-click="checkForUpdate()">Check for updates manually
+            <button class="btn btn-inverse btn-block"
+                    ng-disabled="!version"
+                    ng-click="checkForUpdate()">Check for updates manually
                 <i class="fa fa-spinner fa-spin" ng-if="isLoaderShown"></i>
             </button>
         </div>
@@ -49,7 +52,7 @@
     <div class="row btn-holder" ng-if="shouldBeUpdated">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
             <button class="btn btn-secondary btn-block" ng-click="update()"><i class="fa fa-download"></i> Update to
-                {{version}}
+                {{nextVersion}}
             </button>
         </div>
     </div>
