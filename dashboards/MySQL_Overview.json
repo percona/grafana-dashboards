@@ -1817,13 +1817,7 @@
                     },
                     "lines": false,
                     "linewidth": 2,
-                    "links": [
-                        {
-                            "title": "Server Status Variables (Com_xxx)",
-                            "type": "absolute",
-                            "url": "https://dev.mysql.com/doc/refman/5.7/en/server-status-variables.html#statvar_Com_xxx"
-                        }
-                    ],
+                    "links": [],
                     "nullPointMode": "null",
                     "percentage": false,
                     "pointradius": 5,
@@ -1916,7 +1910,7 @@
                     "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 0,
-                    "description": "This graph shows the various uses of memory within MySQL.\n* ***System Memory***: Total Memory for the system.\n* ***InnoDB Buffer Pool Data***: InnoDB maintains a storage area called the buffer pool for caching data and indexes in memory. Knowing how the InnoDB buffer pool works, and taking advantage of it to keep frequently accessed data in memory, is an important aspect of MySQL tuning.\n* ***TokuDB Cache Size***: Similar in function to the InnoDB Buffer Pool_,_ TokuDB will allocate 50% of the installed RAM for its own cache. While this is optimal in most situations, there are cases where it may lead to memory over allocation. If the system tries to allocate more memory than is available, the machine will begin swapping and run much slower than normal.\n* ***Key Buffer Size***: Index blocks for MYISAM {{}}{{}}tables are buffered and are shared by all threads. key_buffer_size is the size of the buffer used for index blocks. The key buffer is also known as the key cache. \n* ***Adaptive Hash Index Size***: The InnoDB storage engine has a special feature called adaptive hash indexes. When InnoDB notices that some index values are being accessed very frequently, it builds a hash index for them in memory on top of B-Tree indexes. This allows for very fast hashed lookups.\n* ***Query Cache Size***: The query cache stores the text of a SELECT statement together with the corresponding result that was sent to the client. The query cache has huge scalability problems in that only one thread can do an operation in the query cache at the same time. This serialization is true for SELECTs and also for INSERT/UPDATE/DELETE. This also means that the larger the query_cache_size is set to, the slower those operations become.\n* ***InnoDB Dictionary Size***: The data dictionary is InnoDB \u2018s internal catalog of tables. InnoDB stores the data dictionary on disk, and loads entries into memory while the server is running. This is somewhat analogous to MySQL \u2018s table cache, but instead of operating at the server level, it is internal to the InnoDB storage engine. \n* ***InnoDB Log Buffer Size***: The MySQL InnoDB log buffer allows transactions to run without having to write the log to disk before the transactions commit. The size of this buffer is configured with the innodb_log_buffer_size variable.",
+                    "description": "***System Memory***: Total Memory for the system.\\\n***InnoDB Buffer Pool Data***: InnoDB maintains a storage area called the buffer pool for caching data and indexes in memory.\\\n***TokuDB Cache Size***: Similar in function to the InnoDB Buffer Pool,  TokuDB will allocate 50% of the installed RAM for its own cache.\\\n***Key Buffer Size***: Index blocks for MYISAM tables are buffered and are shared by all threads. key_buffer_size is the size of the buffer used for index blocks.\\\n***Adaptive Hash Index Size***: When InnoDB notices that some index values are being accessed very frequently, it builds a hash index for them in memory on top of B-Tree indexes.\\\n ***Query Cache Size***: The query cache stores the text of a SELECT statement together with the corresponding result that was sent to the client. The query cache has huge scalability problems in that only one thread can do an operation in the query cache at the same time.\\\n***InnoDB Dictionary Size***: The data dictionary is InnoDB \u2018s internal catalog of tables. InnoDB stores the data dictionary on disk, and loads entries into memory while the server is running.\\\n***InnoDB Log Buffer Size***: The MySQL InnoDB log buffer allows transactions to run without having to write the log to disk before the transactions commit.",
                     "editable": true,
                     "error": false,
                     "fill": 6,
@@ -1941,24 +1935,9 @@
                     "linewidth": 2,
                     "links": [
                         {
-                            "title": "The InnoDB Buffer Pool",
+                            "title": "Detailed descriptions about metrics",
                             "type": "absolute",
-                            "url": "https://dev.mysql.com/doc/refman/5.7/en/innodb-buffer-pool.html"
-                        },
-                        {
-                            "title": "Run TokuDB in Production",
-                            "type": "absolute",
-                            "url": "https://www.percona.com/doc/percona-server/LATEST/tokudb/tokudb_quickstart.html#considerations-to-run-tokudb-in-production"
-                        },
-                        {
-                            "title": "Server System Variables (key_buffer_size)",
-                            "type": "absolute",
-                            "url": "https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_key_buffer_size"
-                        },
-                        {
-                            "title": "Is Adaptive Hash Index in InnoDB right for my workload?",
-                            "type": "absolute",
-                            "url": "https://www.percona.com/blog/2016/04/12/is-adaptive-hash-index-in-innodb-right-for-my-workload/"
+                            "url": "https://www.percona.com/doc/percona-monitoring-and-management/dashboard.mysql-overview.html#mysql-internal-memory-overview"
                         }
                     ],
                     "nullPointMode": "null",
@@ -2116,7 +2095,7 @@
                     "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 2,
-                    "description": "**Top Command Counters**\n\nThe Com_{{xxx}} statement counter variables indicate the number of times each xxx statement has been executed. There is one status variable for each type of statement. For example, Com_delete and Com_update count ``DELETE`` and ``UPDATE`` statements, respectively. Com_delete_multi and Com_update_multi are similar but apply to ``DELETE`` and ``UPDATE`` statements that use multiple-table syntax.",
+                    "description": "**Top Command Counters**\n\nThe Com_{{xxx}} statement counter variables indicate the number of times each xxx statement has been executed. There is one status variable for each type of statement. For example, Com_delete and Com_update count [``DELETE``](https://dev.mysql.com/doc/refman/5.7/en/delete.html) and [``UPDATE``](https://dev.mysql.com/doc/refman/5.7/en/update.html) statements, respectively. Com_delete_multi and Com_update_multi are similar but apply to [``DELETE``](https://dev.mysql.com/doc/refman/5.7/en/delete.html) and [``UPDATE``](https://dev.mysql.com/doc/refman/5.7/en/update.html) statements that use multiple-table syntax.",
                     "editable": true,
                     "error": false,
                     "fill": 2,
@@ -2214,7 +2193,7 @@
                     "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 2,
-                    "description": "**Top Command Counters Hourly**\n\nThe Com_{{xxx}} statement counter variables indicate the number of times each xxx statement has been executed. There is one status variable for each type of statement. For example, Com_delete and Com_update count ``DELETE`` and ``UPDATE`` statements, respectively. Com_delete_multi and Com_update_multi are similar but apply to ``DELETE`` and ``UPDATE`` statements that use multiple-table syntax.",
+                    "description": "**Top Command Counters Hourly**\n\nThe Com_{{xxx}} statement counter variables indicate the number of times each xxx statement has been executed. There is one status variable for each type of statement. For example, Com_delete and Com_update count [``DELETE``](https://dev.mysql.com/doc/refman/5.7/en/delete.html) and [``UPDATE``](https://dev.mysql.com/doc/refman/5.7/en/update.html) statements, respectively. Com_delete_multi and Com_update_multi are similar but apply to [``DELETE``](https://dev.mysql.com/doc/refman/5.7/en/delete.html) and [``UPDATE``](https://dev.mysql.com/doc/refman/5.7/en/update.html) statements that use multiple-table syntax.",
                     "editable": true,
                     "error": false,
                     "fill": 6,
@@ -3515,7 +3494,7 @@
             "titleSize": "h6"
         },
         {
-            "collapse": true,
+            "collapse": false,
             "height": "250px",
             "panels": [
                 {
@@ -4348,5 +4327,5 @@
     },
     "timezone": "browser",
     "title": "MySQL Overview",
-    "version": 3
+    "version": 4
 }
