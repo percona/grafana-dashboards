@@ -78,6 +78,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
             modalScope.isOutputShown = newState.isOutputShown;
             modalScope.shouldBeUpdated = newState.shouldBeUpdated;
             modalScope.errorMessage = newState.errorMessage;
+            modalScope.version = newState.version;
         });
 
         $scope.isLoaderShown = true;
