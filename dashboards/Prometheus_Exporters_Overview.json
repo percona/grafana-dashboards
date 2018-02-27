@@ -1,16 +1,6 @@
 {
     "annotations": {
-        "list": [
-            {
-                "builtIn": 1,
-                "datasource": "-- Grafana --",
-                "enable": true,
-                "hide": true,
-                "iconColor": "rgba(0, 211, 255, 1)",
-                "name": "Annotations & Alerts",
-                "type": "dashboard"
-            }
-        ]
+        "list": []
     },
     "editable": true,
     "gnetId": null,
@@ -890,7 +880,7 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "(sum(rate(process_cpu_seconds_total{instance=\"$host\",job!=\"prometheus\",job!=\"grafana\"}[$interval])) by (instance) or sum(irate(process_cpu_seconds_total{instance=\"$host\",job!=\"prometheus\",job!=\"grafana\"}[5m])) by (instance)) / count(node_cpu{instance=\"$host\",mode=\"user\"}) by (instance)*100",
+                            "expr": "((sum(rate(process_cpu_seconds_total{instance=\"$host\",job!=\"prometheus\",job!=\"grafana\"}[$interval])) by (instance) \nor sum(irate(process_cpu_seconds_total{instance=\"$host\",job!=\"prometheus\",job!=\"grafana\"}[5m])) by (instance)) \n/ count(node_cpu{instance=\"$host\",mode=\"user\"}) by (instance)*100) or \nsum by () ((max_over_time(node_cpu_average{instance=~\"$host\", mode=\"total\"}[$interval]) or max_over_time(node_cpu_average{instance=~\"$host\", mode=\"total\"}[5m])))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1230,7 +1220,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "count(node_cpu{mode=\"user\", instance=\"$host\"})",
+                            "expr": "count(node_cpu{mode=\"user\", instance=\"$host\"}) or count(rdsosmetrics_General_numVCPUs)",
                             "format": "time_series",
                             "instant": true,
                             "interval": "$interval",
