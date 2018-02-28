@@ -2,7 +2,7 @@
     "annotations": {
         "list": []
     },
-    "editable": false,
+    "editable": true,
     "gnetId": null,
     "graphTooltip": 1,
     "hideControls": true,
@@ -126,7 +126,7 @@
             "titleSize": "h6"
         },
         {
-            "collapse": true,
+            "collapse": false,
             "height": "10px",
             "panels": [
                 {
@@ -442,7 +442,7 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "avg by () ((sum by (instance,cpu) ( (clamp_max(rate(node_cpu{mode!='idle',mode!=\"iowait\"}[$interval]),1)) or  (clamp_max(irate(node_cpu{mode!='idle',mode!=\"iowait\"}[5m]),1)) ))*100 or (avg_over_time(node_cpu_average{instance=~\"$host\", mode=\"total\"}[$interval]) or avg_over_time(node_cpu_average{instance=~\"$host\", mode=\"total\"}[5m])))",
+                            "expr": "avg by () ((sum by (instance,cpu) ( (clamp_max(rate(node_cpu{instance=~\"$host\",mode!='idle',mode!=\"iowait\"}[$interval]),1)) or  (clamp_max(irate(node_cpu{instance=~\"$host\",mode!='idle',mode!=\"iowait\"}[5m]),1)) ))*100 or (avg_over_time(node_cpu_average{instance=~\"$host\", mode=\"total\"}[$interval]) or avg_over_time(node_cpu_average{instance=~\"$host\", mode=\"total\"}[5m])))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -523,7 +523,7 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "avg by () ((node_memory_MemAvailable{} or (node_memory_MemFree{} + node_memory_Buffers{} + node_memory_Cached{})) / node_memory_MemTotal{}) * 100",
+                            "expr": "avg by () ((node_memory_MemAvailable{instance=~\"$host\"} or (node_memory_MemFree{instance=~\"$host\"} + node_memory_Buffers{instance=~\"$host\"} + node_memory_Cached{instance=~\"$host\"})) / node_memory_MemTotal{instance=~\"$host\"}) * 100",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -614,7 +614,7 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "sum by () (rate(node_vmstat_pgpgin{}[$interval]) or irate(node_vmstat_pgpgin{}[5m])) * 1024",
+                            "expr": "sum by () (rate(node_vmstat_pgpgin{instance=~\"$host\"}[$interval]) or irate(node_vmstat_pgpgin{instance=~\"$host\"}[5m])) * 1024",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -695,7 +695,7 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "sum by () (rate(node_vmstat_pgpgout{}[$interval]) or irate(node_vmstat_pgpgout{}[5m])) * 1024",
+                            "expr": "sum by () (rate(node_vmstat_pgpgout{instance=~\"$host\"}[$interval]) or irate(node_vmstat_pgpgout{instance=~\"$host\"}[5m])) * 1024",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -776,7 +776,7 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "avg by () (sum(rate(node_network_receive_bytes{device!=\"lo\"}[$interval]) or irate(node_network_receive_bytes{device!=\"lo\"}[5m])) + (sum(rate(node_network_transmit_bytes{device!=\"lo\"}[$interval]) or irate(node_network_transmit_bytes{device!=\"lo\"}[5m]))) + (sum(max_over_time(rdsosmetrics_network_rx[$interval])) or sum(max_over_time(rdsosmetrics_network_rx[5m]))) + (sum(max_over_time(rdsosmetrics_network_tx[$interval])) or sum(max_over_time(rdsosmetrics_network_tx[5m]))))",
+                            "expr": "sum(rate(node_network_receive_bytes{instance=~\"$host\",device!=\"lo\"}[$interval]) \nor irate(node_network_receive_bytes{instance=~\"$host\",device!=\"lo\"}[5m]) \nor max_over_time(rdsosmetrics_network_rx{instance=~\"$host\"}[$interval]) \nor max_over_time(rdsosmetrics_network_rx{instance=~\"$host\"}[5m]))\n+\nsum(rate(node_network_transmit_bytes{instance=~\"$host\",device!=\"lo\"}[$interval]) \nor irate(node_network_transmit_bytes{instance=~\"$host\",device!=\"lo\"}[5m])\nor max_over_time(rdsosmetrics_network_tx{instance=~\"$host\"}[$interval]) \nor max_over_time(rdsosmetrics_network_tx{instance=~\"$host\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -804,7 +804,7 @@
                         "rgba(50, 172, 45, 0.97)"
                     ],
                     "datasource": "Prometheus",
-                    "decimals": 2,
+                    "decimals": null,
                     "editable": true,
                     "error": false,
                     "format": "short",
@@ -876,7 +876,7 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "sum by () (max_over_time(mysql_global_status_threads_connected{}[$interval]) or max_over_time(mongodb_mongod_connections{state=\"current\"}[$interval]))",
+                            "expr": "sum by () (max_over_time(mysql_global_status_threads_connected{instance=~\"$host\"}[$interval]) or max_over_time(mongodb_mongod_connections{instance=~\"$host\",state=\"current\"}[$interval]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -957,7 +957,7 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "sum by () (rate(mysql_global_status_queries{instance=\"$host\"}[$interval]) or irate(mysql_global_status_queries{}[5m])) or (sum(rate(mongodb_mongod_op_counters_total{instance=\"$host\", type!=\"command\"}[$interval])) or sum(irate(mongodb_mongod_op_counters_total{type!=\"command\"}[5m])))",
+                            "expr": "sum by () (rate(mysql_global_status_queries{instance=~\"$host\"}[$interval]) or irate(mysql_global_status_queries{instance=~\"$host\"}[5m])) or (sum(rate(mongodb_mongod_op_counters_total{instance=~\"$host\",type!=\"command\"}[$interval])) or sum(irate(mongodb_mongod_op_counters_total{instance=~\"$host\",type!=\"command\"}[5m])))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1034,7 +1034,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "count(node_cpu{mode=\"user\"}) or count(rdsosmetrics_General_numVCPUs)",
+                            "expr": "count(node_cpu{instance=~\"$host\",mode=\"user\"} or rdsosmetrics_General_numVCPUs{instance=~\"$host\"})",
                             "format": "time_series",
                             "instant": true,
                             "interval": "$interval",
@@ -1117,7 +1117,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "sum by () (node_memory_MemTotal{})",
+                            "expr": "sum by () (node_memory_MemTotal{instance=~\"$host\"})",
                             "format": "time_series",
                             "instant": true,
                             "interval": "5m",
@@ -1149,7 +1149,7 @@
                         "rgba(50, 172, 45, 0.97)"
                     ],
                     "datasource": "Prometheus",
-                    "decimals": 0,
+                    "decimals": 1,
                     "description": "AVG   Uptime for  `All`",
                     "editable": true,
                     "error": false,
@@ -1232,7 +1232,7 @@
                         "rgba(50, 172, 45, 0.97)"
                     ],
                     "datasource": "Prometheus",
-                    "decimals": 2,
+                    "decimals": 1,
                     "description": "AVG for  `All`",
                     "editable": true,
                     "error": false,
@@ -1288,7 +1288,7 @@
                             "errors": {},
                             "expr": "avg(mysql_global_status_uptime{instance=~\"$host\"} or mongodb_mongod_instance_uptime_seconds {instance=~\"$host\"})",
                             "format": "time_series",
-                            "instant": true,
+                            "instant": false,
                             "interval": "5m",
                             "intervalFactor": 1,
                             "legendFormat": "",
@@ -1427,7 +1427,13 @@
                     "transparent": false,
                     "type": "singlestat",
                     "valueFontSize": "80%",
-                    "valueMaps": [],
+                    "valueMaps": [
+                        {
+                            "op": "=",
+                            "text": "N/A",
+                            "value": "null"
+                        }
+                    ],
                     "valueName": "current"
                 },
                 {
@@ -1508,7 +1514,13 @@
                     "transparent": false,
                     "type": "singlestat",
                     "valueFontSize": "80%",
-                    "valueMaps": [],
+                    "valueMaps": [
+                        {
+                            "op": "=",
+                            "text": "N/A",
+                            "value": "null"
+                        }
+                    ],
                     "valueName": "current"
                 },
                 {
@@ -2005,7 +2017,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "count(node_cpu{mode=\"user\", instance=\"$host\"}) or count(rdsosmetrics_General_numVCPUs)",
+                            "expr": "count(node_cpu{mode=\"user\", instance=\"$host\"}) or count(rdsosmetrics_General_numVCPUs{instance=\"$host\"})",
                             "format": "time_series",
                             "instant": true,
                             "interval": "5m",
@@ -2362,7 +2374,7 @@
                 "multiFormat": "regex values",
                 "name": "host",
                 "options": [],
-                "query": "label_values(node_load1, instance)",
+                "query": "label_values({__name__=~\"node_load1|process_start_time_seconds\"}, instance)",
                 "refresh": 1,
                 "refresh_on_load": false,
                 "regex": "",
