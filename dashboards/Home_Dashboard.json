@@ -2,7 +2,7 @@
     "annotations": {
         "list": []
     },
-    "editable": true,
+    "editable": false,
     "gnetId": null,
     "graphTooltip": 1,
     "hideControls": true,
@@ -126,7 +126,7 @@
             "titleSize": "h6"
         },
         {
-            "collapse": false,
+            "collapse": true,
             "height": "10px",
             "panels": [
                 {
@@ -442,7 +442,7 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "avg by () (sum by (instance,cpu) ( (clamp_max(rate(node_cpu{mode!='idle',mode!=\"iowait\"}[$interval]),1)) or  (clamp_max(irate(node_cpu{mode!='idle',mode!=\"iowait\"}[5m]),1)) )) *100",
+                            "expr": "avg by () ((sum by (instance,cpu) ( (clamp_max(rate(node_cpu{mode!='idle',mode!=\"iowait\"}[$interval]),1)) or  (clamp_max(irate(node_cpu{mode!='idle',mode!=\"iowait\"}[5m]),1)) ))*100 or (avg_over_time(node_cpu_average{instance=~\"$host\", mode=\"total\"}[$interval]) or avg_over_time(node_cpu_average{instance=~\"$host\", mode=\"total\"}[5m])))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1034,7 +1034,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "count(node_cpu{mode=\"user\"})",
+                            "expr": "count(node_cpu{mode=\"user\"}) or count(rdsosmetrics_General_numVCPUs)",
                             "format": "time_series",
                             "instant": true,
                             "interval": "$interval",
@@ -1232,7 +1232,7 @@
                         "rgba(50, 172, 45, 0.97)"
                     ],
                     "datasource": "Prometheus",
-                    "decimals": null,
+                    "decimals": 2,
                     "description": "AVG for  `All`",
                     "editable": true,
                     "error": false,
@@ -1412,7 +1412,7 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "clamp_max(avg by (instance) (sum by (cpu) ( (clamp_max(rate(node_cpu{instance=\"$host\",mode!='idle',mode!=\"iowait\"}[$interval]),1)) or  (clamp_max(irate(node_cpu{instance=\"$host\",mode!='idle',mode!=\"iowait\"}[5m]),1)) )),1) *100",
+                            "expr": "clamp_max(avg by (instance) (sum by (cpu) ( (clamp_max(rate(node_cpu{instance=\"$host\",mode!='idle',mode!=\"iowait\"}[$interval]),1)) or  (clamp_max(irate(node_cpu{instance=\"$host\",mode!='idle',mode!=\"iowait\"}[5m]),1)) )),1) *100 or (avg_over_time(node_cpu_average{instance=~\"$host\", mode=\"total\"}[$interval]) or avg_over_time(node_cpu_average{instance=~\"$host\", mode=\"total\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2005,7 +2005,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "count(node_cpu{mode=\"user\", instance=\"$host\"})",
+                            "expr": "count(node_cpu{mode=\"user\", instance=\"$host\"}) or count(rdsosmetrics_General_numVCPUs)",
                             "format": "time_series",
                             "instant": true,
                             "interval": "5m",

@@ -1,16 +1,6 @@
 {
     "annotations": {
-        "list": [
-            {
-                "builtIn": 1,
-                "datasource": "-- Grafana --",
-                "enable": true,
-                "hide": true,
-                "iconColor": "rgba(0, 211, 255, 1)",
-                "name": "Annotations & Alerts",
-                "type": "dashboard"
-            }
-        ]
+        "list": []
     },
     "editable": true,
     "gnetId": null,
@@ -176,7 +166,7 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "clamp_max((avg by (mode) ( (clamp_max(rate(node_cpu{instance=\"$host\",mode!=\"idle\"}[$interval]),1)) or (clamp_max(irate(node_cpu{instance=\"$host\",mode!=\"idle\"}[5m]),1)) )),1)",
+                            "expr": "clamp_max(((avg by (mode) ( (clamp_max(rate(node_cpu{instance=\"$host\",mode!=\"idle\"}[$interval]),1)) or (clamp_max(irate(node_cpu{instance=\"$host\",mode!=\"idle\"}[5m]),1)) ))*100 or (max_over_time(node_cpu_average{instance=~\"$host\", mode!=\"total\", mode!=\"idle\"}[$interval]) or max_over_time(node_cpu_average{instance=~\"$host\", mode!=\"total\", mode!=\"idle\"}[5m]))),100)",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -187,7 +177,7 @@
                             "step": 300
                         },
                         {
-                            "expr": "clamp_max(max by () (sum  by (cpu) ( (clamp_max(rate(node_cpu{instance=\"$host\",mode!=\"idle\",mode!=\"iowait\"}[$interval]),1)) or (clamp_max(irate(node_cpu{instance=\"$host\",mode!=\"idle\",mode!=\"iowait\"}[5m]),1)) )),1)",
+                            "expr": "clamp_max(max by () ((sum  by (cpu) ( (clamp_max(rate(node_cpu{instance=\"$host\",mode!=\"idle\",mode!=\"iowait\"}[$interval]),1)) or (clamp_max(irate(node_cpu{instance=\"$host\",mode!=\"idle\",mode!=\"iowait\"}[5m]),1)) )*100) or (max_over_time(node_cpu_average{instance=~\"$host\", mode!=\"total\", mode!=\"idle\", mode!=\"wait\"}[$interval]) or max_over_time(node_cpu_average{instance=~\"$host\", mode!=\"total\",mode!=\"idle\", mode!=\"wait\"}[5m]))),100)",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -217,10 +207,10 @@
                     "yaxes": [
                         {
                             "decimals": 1,
-                            "format": "percentunit",
+                            "format": "percent",
                             "label": "",
                             "logBase": 1,
-                            "max": "1",
+                            "max": "100",
                             "min": 0,
                             "show": true
                         },
@@ -294,8 +284,9 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "clamp_max(avg by () (sum by (cpu) ( (clamp_max(irate(node_cpu{instance=\"$host\",mode!=\"idle\",mode!=\"iowait\"}[5m]),1)) )),1)",
+                            "expr": "clamp_max(avg by () ((sum by (cpu) ( (clamp_max(irate(node_cpu{instance=\"$host\",mode!=\"idle\",mode!=\"iowait\"}[5m]),1))*100 )) or max_over_time(node_cpu_average{instance=~\"$host\", mode!=\"total\",mode!=\"idle\", mode!=\"wait\"}[5m])) ,100)",
                             "format": "time_series",
+                            "hide": false,
                             "instant": true,
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -306,13 +297,13 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "clamp_max((sum by (cpu) ( (clamp_max(irate(node_cpu{instance=\"$host\",mode!=\"idle\",mode!=\"iowait\"}[5m]),1)) )),1)",
+                            "expr": "clamp_max((sum by (cpu) ( (clamp_max(irate(node_cpu{instance=\"$host\",mode!=\"idle\",mode!=\"iowait\"}[5m])*100,100)) )) or sum by (cpu) (max_over_time(node_cpu_average{instance=~\"$host\", mode!=\"total\",mode!=\"idle\", mode!=\"wait\"}[5m])) ,100)",
                             "format": "time_series",
                             "hide": false,
                             "instant": true,
                             "interval": "$interval",
                             "intervalFactor": 1,
-                            "legendFormat": " ",
+                            "legendFormat": " {{cpu}}",
                             "metric": "",
                             "refId": "A",
                             "step": 300
@@ -341,10 +332,10 @@
                     "yaxes": [
                         {
                             "decimals": 1,
-                            "format": "percentunit",
+                            "format": "percent",
                             "label": "",
                             "logBase": 1,
-                            "max": "1",
+                            "max": "100",
                             "min": 0,
                             "show": true
                         },
@@ -425,7 +416,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "clamp_max(sum by () (avg by (mode) ( (clamp_max(rate(node_cpu{instance=\"$host\",mode!=\"idle\",mode!=\"iowait\"}[$interval]),1)) or (clamp_max(irate(node_cpu{instance=\"$host\",cpu=\"$cpu\",mode!=\"idle\",mode!=\"iowait\"}[5m]),1)) )) *100,100)",
+                            "expr": "clamp_max(sum by () ((avg by (mode) ( (clamp_max(rate(node_cpu{instance=\"$host\",mode!=\"idle\",mode!=\"iowait\"}[$interval]),1)) or (clamp_max(irate(node_cpu{instance=\"$host\",cpu=\"$cpu\",mode!=\"idle\",mode!=\"iowait\"}[5m]),1)) )) *100 or (max_over_time(node_cpu_average{instance=~\"$host\", mode=\"total\"}[$interval]) or max_over_time(node_cpu_average{instance=~\"$host\", mode=\"total\"}[5m]))),100)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -501,7 +492,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "clamp_max((avg by (mode) ( (clamp_max(rate(node_cpu{instance=\"$host\",mode=\"user\"}[$interval]),1)) or (clamp_max(irate(node_cpu{instance=\"$host\",mode=\"user\"}[5m]),1)) )) *100,100)",
+                            "expr": "clamp_max(((avg by (mode) ( (clamp_max(rate(node_cpu{instance=\"$host\",mode=\"user\"}[$interval]),1)) or (clamp_max(irate(node_cpu{instance=\"$host\",mode=\"user\"}[5m]),1)) )) *100 or (avg_over_time(node_cpu_average{instance=\"$host\", mode=\"user\"}[$interval]) or avg_over_time(node_cpu_average{instance=\"$host\", mode=\"user\"}[5m]))),100)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -577,7 +568,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "clamp_max( (avg by (mode) ( (clamp_max(rate(node_cpu{instance=\"$host\",mode=\"system\"}[$interval]),1)) or (clamp_max(irate(node_cpu{instance=\"$host\",mode=\"system\"}[5m]),1)) )) *100,100)",
+                            "expr": "clamp_max(((avg by (mode) ( (clamp_max(rate(node_cpu{instance=\"$host\",mode=\"system\"}[$interval]),1)) or (clamp_max(irate(node_cpu{instance=\"$host\",mode=\"system\"}[5m]),1)) )) *100 or (avg_over_time(node_cpu_average{instance=\"$host\", mode=\"system\"}[$interval]) or avg_over_time(node_cpu_average{instance=\"$host\", mode=\"system\"}[5m]))),100)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -653,7 +644,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "clamp_max( (avg by (mode) ( (clamp_max(rate(node_cpu{instance=\"$host\",mode=\"iowait\"}[$interval]),1)) or (clamp_max(irate(node_cpu{instance=\"$host\",mode=\"iowait\"}[5m]),1)) )) *100,100)",
+                            "expr": "clamp_max(((avg by (mode) ( (clamp_max(rate(node_cpu{instance=\"$host\",mode=\"iowait\"}[$interval]),1)) or (clamp_max(irate(node_cpu{instance=\"$host\",mode=\"iowait\"}[5m]),1)) )) *100 or (avg_over_time(node_cpu_average{instance=\"$host\", mode=\"wait\"}[$interval]) or avg_over_time(node_cpu_average{instance=\"$host\", mode=\"wait\"}[5m]))),100)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -729,7 +720,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "clamp_max( (avg by (mode) ( (clamp_max(rate(node_cpu{instance=\"$host\",mode=\"steal\"}[$interval]),1)) or (clamp_max(irate(node_cpu{instance=\"$host\",mode=\"steal\"}[5m]),1)) )) *100,100)",
+                            "expr": "clamp_max(((avg by (mode) ( (clamp_max(rate(node_cpu{instance=\"$host\",mode=\"steal\"}[$interval]),1)) or (clamp_max(irate(node_cpu{instance=\"$host\",mode=\"steal\"}[5m]),1)) )) *100 or (avg_over_time(node_cpu_average{instance=\"$host\", mode=\"steal\"}[$interval]) or avg_over_time(node_cpu_average{instance=\"$host\", mode=\"steal\"}[5m]))),100)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -805,7 +796,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "clamp_max(sum by () (avg by (mode) ( (clamp_max(rate(node_cpu{instance=\"$host\",mode!=\"idle\",mode!=\"user\",mode!=\"system\",mode!=\"iowait\",mode!=\"steal\"}[$interval]),1)) or (clamp_max(irate(node_cpu{instance=\"$host\",mode!=\"idle\",mode!=\"user\",mode!=\"system\",mode!=\"iowait\",mode!=\"steal\"}[5m]),1)) )) *100,100)",
+                            "expr": "clamp_max(((sum by () (avg by (mode) ( (clamp_max(rate(node_cpu{instance=\"$host\",mode!=\"idle\",mode!=\"user\",mode!=\"system\",mode!=\"iowait\",mode!=\"steal\"}[$interval]),1)) or (clamp_max(irate(node_cpu{instance=\"$host\",mode!=\"idle\",mode!=\"user\",mode!=\"system\",mode!=\"iowait\",mode!=\"steal\"}[5m]),1)) )) *100) or (sum(avg_over_time(node_cpu_average{instance=\"$host\", mode!=\"total\",mode!=\"idle\",mode!=\"user\",mode!=\"system\",mode!=\"wait\",mode!=\"steal\"}[$interval])) or sum(avg_over_time(node_cpu_average{instance=\"$host\", mode!=\"total\",mode!=\"idle\",mode!=\"user\",mode!=\"system\",mode!=\"wait\",mode!=\"steal\"}[5m])))),100) ",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -914,7 +905,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "clamp_max(sum by () (avg by (mode) ( (clamp_max(rate(node_cpu{instance=\"$host\",cpu=\"$cpu\",mode!=\"idle\",mode!=\"iowait\"}[$interval]),1)) or (clamp_max(irate(node_cpu{instance=\"$host\",cpu=\"$cpu\",mode!=\"idle\",mode!=\"iowait\"}[5m]),1)) )) *100,100)",
+                            "expr": "clamp_max((sum by () ((avg by (mode) ( (clamp_max(rate(node_cpu{instance=\"$host\",mode!=\"idle\",mode!=\"iowait\"}[$interval]),1)) or (clamp_max(irate(node_cpu{instance=\"$host\",cpu=\"$cpu\",mode!=\"idle\",mode!=\"iowait\"}[5m]),1)) )) *100) or (max_over_time(node_cpu_average{instance=\"$host\",mode=\"total\"}[$interval]) or max_over_time(node_cpu_average{instance=\"$host\",mode=\"total\"}[5m]))),100)",
                             "format": "time_series",
                             "instant": false,
                             "interval": "$interval",
@@ -991,7 +982,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "clamp_max( (avg by (mode) ( (clamp_max(rate(node_cpu{instance=\"$host\",cpu=\"$cpu\",mode=\"user\"}[$interval]),1)) or (clamp_max(irate(node_cpu{instance=\"$host\",cpu=\"$cpu\",mode=\"user\"}[5m]),1)) )) *100,100)",
+                            "expr": "clamp_max(((avg by (mode) ( (clamp_max(rate(node_cpu{instance=\"$host\",cpu=\"$cpu\",mode=\"user\"}[$interval]),1)) or (clamp_max(irate(node_cpu{instance=\"$host\",cpu=\"$cpu\",mode=\"user\"}[5m]),1)) )) *100 or (avg_over_time(node_cpu_average{instance=\"$host\", cpu=\"All\", mode=\"user\"}[$interval]) or avg_over_time(node_cpu_average{instance=\"$host\", cpu=\"All\", mode=\"user\"}[5m]))),100)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1067,7 +1058,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "clamp_max( (avg by (mode) ( (clamp_max(rate(node_cpu{instance=\"$host\",cpu=\"$cpu\",mode=\"system\"}[$interval]),1)) or (clamp_max(irate(node_cpu{instance=\"$host\",cpu=\"$cpu\",mode=\"system\"}[5m]),1)) )) *100,100)",
+                            "expr": "clamp_max(((avg by (mode) ( (clamp_max(rate(node_cpu{instance=\"$host\",cpu=\"$cpu\",mode=\"system\"}[$interval]),1)) or (clamp_max(irate(node_cpu{instance=\"$host\",cpu=\"$cpu\",mode=\"system\"}[5m]),1)) )) *100 or (avg_over_time(node_cpu_average{instance=\"$host\", cpu=\"All\", mode=\"system\"}[$interval]) or avg_over_time(node_cpu_average{instance=\"$host\", cpu=\"All\", mode=\"system\"}[5m]))),100)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1143,7 +1134,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "clamp_max( (avg by (mode) ( (clamp_max(rate(node_cpu{instance=\"$host\",cpu=\"$cpu\",mode=\"iowait\"}[$interval]),1)) or (clamp_max(irate(node_cpu{instance=\"$host\",cpu=\"$cpu\",mode=\"iowait\"}[5m]),1)) )) *100,100)",
+                            "expr": "clamp_max(((avg by (mode) ( (clamp_max(rate(node_cpu{instance=\"$host\",cpu=\"$cpu\",mode=\"iowait\"}[$interval]),1)) or (clamp_max(irate(node_cpu{instance=\"$host\",cpu=\"$cpu\",mode=\"iowait\"}[5m]),1)) )) *100 or (avg_over_time(node_cpu_average{instance=\"$host\", cpu=\"All\", mode=\"wait\"}[$interval]) or avg_over_time(node_cpu_average{instance=\"$host\", cpu=\"All\", mode=\"wait\"}[5m]))),100)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1219,7 +1210,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "clamp_max( (avg by (mode) ( (clamp_max(rate(node_cpu{instance=\"$host\",cpu=\"$cpu\",mode=\"steal\"}[$interval]),1)) or (clamp_max(irate(node_cpu{instance=\"$host\",cpu=\"$cpu\",mode=\"steal\"}[5m]),1)) )) *100,100)",
+                            "expr": "clamp_max(((avg by (mode) ( (clamp_max(rate(node_cpu{instance=\"$host\",cpu=\"$cpu\",mode=\"steal\"}[$interval]),1)) or (clamp_max(irate(node_cpu{instance=\"$host\",cpu=\"$cpu\",mode=\"steal\"}[5m]),1)) )) *100 or (avg_over_time(node_cpu_average{instance=\"$host\", cpu=\"All\", mode=\"steal\"}[$interval]) or avg_over_time(node_cpu_average{instance=\"$host\", cpu=\"All\", mode=\"steal\"}[5m]))),100)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1295,7 +1286,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "clamp_max(sum by (instance) (avg by (mode) ( (clamp_max(rate(node_cpu{instance=\"$host\",cpu=\"$cpu\",mode!=\"idle\",mode!=\"user\",mode!=\"system\",mode!=\"iowait\",mode!=\"steal\"}[$interval]),1)) or (clamp_max(irate(node_cpu{instance=\"$host\",cpu=\"$cpu\",mode!=\"idle\",mode!=\"user\",mode!=\"system\",mode!=\"iowait\",mode!=\"steal\"}[5m]),1)) )) *100,100)",
+                            "expr": "clamp_max(((sum by (instance) (avg by (mode) ( (clamp_max(rate(node_cpu{instance=\"$host\",cpu=\"$cpu\",mode!=\"idle\",mode!=\"user\",mode!=\"system\",mode!=\"iowait\",mode!=\"steal\"}[$interval]),1)) or (clamp_max(irate(node_cpu{instance=\"$host\",cpu=\"$cpu\",mode!=\"idle\",mode!=\"user\",mode!=\"system\",mode!=\"iowait\",mode!=\"steal\"}[5m]),1)) )) *100) or (sum(avg_over_time(node_cpu_average{instance=\"$host\", cpu=\"All\",mode!=\"total\",mode!=\"idle\",mode!=\"user\",mode!=\"system\",mode!=\"wait\",mode!=\"steal\"}[$interval])) or sum(avg_over_time(node_cpu_average{instance=\"$host\",cpu=\"All\",mode!=\"total\",mode!=\"idle\",mode!=\"user\",mode!=\"system\",mode!=\"wait\",mode!=\"steal\"}[5m])))),100)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1407,7 +1398,7 @@
                 "multiFormat": "pipe",
                 "name": "host",
                 "options": [],
-                "query": "label_values({__name__=~\"node_cpu\", job!=\"prometheus\"}, instance)",
+                "query": "label_values({__name__=~\"node_cpu|node_cpu_average\", job!=\"prometheus\"}, instance)",
                 "refresh": 1,
                 "regex": "",
                 "sort": 1,
