@@ -9,8 +9,19 @@
     "id": null,
     "links": [
         {
+            "icon": "dashboard",
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "QAN"
+            ],
+            "targetBlank": false,
+            "title": "Query Analytics",
+            "type": "link",
+            "url": "/graph/dashboard/db/_pmm-query-analytics"
+        },
+        {
             "asDropdown": true,
-            "icon": "external link",
             "includeVars": true,
             "keepTime": true,
             "tags": [
@@ -22,7 +33,6 @@
         },
         {
             "asDropdown": true,
-            "icon": "external link",
             "includeVars": true,
             "keepTime": true,
             "tags": [
@@ -34,7 +44,17 @@
         },
         {
             "asDropdown": true,
-            "icon": "external link",
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "MongoDB"
+            ],
+            "targetBlank": true,
+            "title": "MongoDB",
+            "type": "dashboards"
+        },
+        {
+            "asDropdown": true,
             "includeVars": true,
             "keepTime": true,
             "tags": [
@@ -42,6 +62,39 @@
             ],
             "targetBlank": true,
             "title": "HA",
+            "type": "dashboards"
+        },
+        {
+            "asDropdown": true,
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "Cloud"
+            ],
+            "targetBlank": true,
+            "title": "Cloud",
+            "type": "dashboards"
+        },
+        {
+            "asDropdown": true,
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "Insight"
+            ],
+            "targetBlank": true,
+            "title": "Insight",
+            "type": "dashboards"
+        },
+        {
+            "asDropdown": true,
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "PMM"
+            ],
+            "targetBlank": true,
+            "title": "PMM",
             "type": "dashboards"
         }
     ],
@@ -189,7 +242,8 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "count(node_cpu{mode=\"user\", instance=\"$host\"})",
+                            "expr": "count(node_cpu{mode=\"user\", instance=\"$host\"}) or count(rdsosmetrics_General_numVCPUs)",
+                            "format": "time_series",
                             "interval": "5m",
                             "intervalFactor": 1,
                             "refId": "A",
@@ -633,6 +687,7 @@
             "panels": [
                 {
                     "aliasColors": {
+                        "Max Core Utilization": "#bf1b00",
                         "idle": "#806EB7",
                         "iowait": "#E24D42",
                         "nice": "#1F78C1",
@@ -647,7 +702,7 @@
                     "decimals": null,
                     "editable": true,
                     "error": false,
-                    "fill": 6,
+                    "fill": 5,
                     "grid": {},
                     "height": "",
                     "id": 2,
@@ -667,30 +722,43 @@
                         "values": true
                     },
                     "lines": true,
-                    "linewidth": 2,
+                    "linewidth": 1,
                     "links": [],
                     "nullPointMode": "null",
                     "percentage": false,
                     "pointradius": 5,
                     "points": false,
                     "renderer": "flot",
-                    "seriesOverrides": [],
+                    "seriesOverrides": [
+                        {
+                            "alias": "Max Core Utilization",
+                            "lines": false,
+                            "pointradius": 1,
+                            "points": true,
+                            "stack": false
+                        }
+                    ],
                     "spaceLength": 10,
                     "span": 6,
                     "stack": true,
                     "steppedLine": false,
                     "targets": [
                         {
-                            "calculatedInterval": "2s",
-                            "datasourceErrors": {},
-                            "errors": {},
-                            "expr": "sum(rate(node_cpu{instance=\"$host\", mode!=\"idle\"}[$interval])) by (mode)* 100 / count_scalar(node_cpu{mode=\"user\", instance=\"$host\"}) or sum(irate(node_cpu{instance=\"$host\", mode!=\"idle\"}[5m])) by (mode) * 100 / count_scalar(node_cpu{mode=\"user\", instance=\"$host\"})",
+                            "expr": "clamp_max(((avg by (mode) ( (clamp_max(rate(node_cpu{instance=\"$host\",mode!=\"idle\"}[$interval]),1)) or (clamp_max(irate(node_cpu{instance=\"$host\",mode!=\"idle\"}[5m]),1)) ))*100 or (avg_over_time(node_cpu_average{instance=~\"$host\", mode!=\"total\", mode!=\"idle\"}[$interval]) or avg_over_time(node_cpu_average{instance=~\"$host\", mode!=\"total\", mode!=\"idle\"}[5m]))),100)",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "{{ mode }}",
-                            "metric": "",
-                            "refId": "A",
-                            "step": 300
+                            "refId": "B"
+                        },
+                        {
+                            "expr": "clamp_max(max by () (sum  by (cpu) ( (clamp_max(rate(node_cpu{instance=\"$host\",mode!=\"idle\",mode!=\"iowait\"}[$interval]),1)) or (clamp_max(irate(node_cpu{instance=\"$host\",mode!=\"idle\",mode!=\"iowait\"}[5m]),1)) )),1)",
+                            "format": "time_series",
+                            "hide": true,
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Max Core Utilization",
+                            "refId": "C"
                         }
                     ],
                     "thresholds": [],
@@ -713,19 +781,21 @@
                     },
                     "yaxes": [
                         {
+                            "decimals": 1,
                             "format": "percent",
                             "label": "",
                             "logBase": 1,
-                            "max": 100,
+                            "max": "100",
                             "min": 0,
                             "show": true
                         },
                         {
+                            "decimals": null,
                             "format": "short",
                             "logBase": 1,
                             "max": null,
                             "min": 0,
-                            "show": true
+                            "show": false
                         }
                     ]
                 },
@@ -921,7 +991,9 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "(avg_over_time(node_procs_running{instance=\"$host\"}[$interval])-1) / count_scalar(node_cpu{mode=\"user\", instance=\"$host\"})",
+                            "expr": "(avg_over_time(node_procs_running{instance=\"$host\"}[$interval])-1) / scalar(count(node_cpu{mode=\"user\", instance=\"$host\"})) or (avg_over_time(node_procs_running{instance=\"$host\"}[5m])-1) / scalar(count(node_cpu{mode=\"user\", instance=\"$host\"}))",
+                            "format": "time_series",
+                            "hide": false,
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Normalized CPU Load",
@@ -934,7 +1006,8 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "avg_over_time(node_procs_blocked{instance=\"$host\"}[$interval])",
+                            "expr": "avg_over_time(node_procs_blocked{instance=\"$host\"}[$interval]) or avg_over_time(node_procs_blocked{instance=\"$host\"}[5m])",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "IO Load ",
@@ -1555,7 +1628,7 @@
                             "target": ""
                         },
                         {
-                            "expr": "(rate(node_context_switches{instance=\"$host\"}[$interval]) or irate(node_context_switches{instance=\"$host\"}[5m])) / count_scalar(node_cpu{mode=\"user\", instance=\"$host\"})",
+                            "expr": "(rate(node_context_switches{instance=\"$host\"}[$interval]) or irate(node_context_switches{instance=\"$host\"}[5m])) / scalar(count(node_cpu{mode=\"user\", instance=\"$host\"}))",
                             "format": "time_series",
                             "intervalFactor": 1,
                             "legendFormat": "Context Switches per Virtual CPU",
@@ -1755,7 +1828,8 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "sum(rate(node_network_receive_bytes{instance=\"$host\", device!=\"lo\"}[$interval]) or irate(node_network_receive_bytes{instance=\"$host\", device!=\"lo\"}[5m]))",
+                            "expr": "sum(rate(node_network_receive_bytes{instance=\"$host\", device!=\"lo\"}[$interval])) or sum(irate(node_network_receive_bytes{instance=\"$host\", device!=\"lo\"}[5m])) or sum(max_over_time(rdsosmetrics_network_rx{instance=\"$host\"}[$interval])) or sum(max_over_time(rdsosmetrics_network_rx{instance=\"$host\"}[5m])) ",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Inbound",
@@ -1768,7 +1842,8 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "sum(rate(node_network_transmit_bytes{instance=\"$host\", device!=\"lo\"}[$interval]) or irate(node_network_transmit_bytes{instance=\"$host\", device!=\"lo\"}[5m]))",
+                            "expr": "sum(rate(node_network_transmit_bytes{instance=\"$host\", device!=\"lo\"}[$interval])) or sum(irate(node_network_transmit_bytes{instance=\"$host\", device!=\"lo\"}[5m])) or\nsum(max_over_time(rdsosmetrics_network_tx{instance=\"$host\"}[$interval])) or sum(max_over_time(rdsosmetrics_network_tx{instance=\"$host\"}[5m]))",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Outbound",
@@ -2091,7 +2166,7 @@
                             "expr": "rate(node_vmstat_pswpin{instance=\"$host\"}[$interval]) * 4096 or irate(node_vmstat_pswpin{instance=\"$host\"}[5m]) * 4096",
                             "interval": "$interval",
                             "intervalFactor": 1,
-                            "legendFormat": "Swap In",
+                            "legendFormat": "Swap In (Reads)",
                             "metric": "",
                             "refId": "A",
                             "step": 300,
@@ -2104,7 +2179,7 @@
                             "expr": "rate(node_vmstat_pswpout{instance=\"$host\"}[$interval]) * 4096 or irate(node_vmstat_pswpout{instance=\"$host\"}[5m]) * 4096",
                             "interval": "$interval",
                             "intervalFactor": 1,
-                            "legendFormat": "Swap Out",
+                            "legendFormat": "Swap Out (Writes)",
                             "metric": "",
                             "refId": "B",
                             "step": 300,
@@ -2205,6 +2280,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "rate(node_vmstat_pgpgin{instance=\"$host\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{instance=\"$host\"}[5m]) * 1024",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Page In",
@@ -2218,6 +2294,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "rate(node_vmstat_pgpgout{instance=\"$host\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{instance=\"$host\"}[5m]) * 1024",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Page Out",
@@ -2453,6 +2530,7 @@
             {
                 "allFormat": "glob",
                 "allValue": null,
+                "current": {},
                 "datasource": "Prometheus",
                 "hide": 0,
                 "includeAll": false,
@@ -2460,6 +2538,7 @@
                 "multi": false,
                 "multiFormat": "regex values",
                 "name": "host",
+                "options": [],
                 "query": "label_values(node_load1, instance)",
                 "refresh": 1,
                 "refresh_on_load": false,
@@ -2510,5 +2589,5 @@
     },
     "timezone": "browser",
     "title": "System Overview",
-    "version": 0
+    "version": 2
 }

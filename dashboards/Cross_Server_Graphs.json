@@ -4,12 +4,24 @@
     },
     "editable": true,
     "gnetId": null,
+    "graphTooltip": 0,
     "hideControls": true,
     "id": null,
     "links": [
         {
+            "icon": "dashboard",
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "QAN"
+            ],
+            "targetBlank": false,
+            "title": "Query Analytics",
+            "type": "link",
+            "url": "/graph/dashboard/db/_pmm-query-analytics"
+        },
+        {
             "asDropdown": true,
-            "icon": "external link",
             "includeVars": true,
             "keepTime": true,
             "tags": [
@@ -21,7 +33,6 @@
         },
         {
             "asDropdown": true,
-            "icon": "external link",
             "includeVars": true,
             "keepTime": true,
             "tags": [
@@ -33,7 +44,17 @@
         },
         {
             "asDropdown": true,
-            "icon": "external link",
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "MongoDB"
+            ],
+            "targetBlank": true,
+            "title": "MongoDB",
+            "type": "dashboards"
+        },
+        {
+            "asDropdown": true,
             "includeVars": true,
             "keepTime": true,
             "tags": [
@@ -41,6 +62,39 @@
             ],
             "targetBlank": true,
             "title": "HA",
+            "type": "dashboards"
+        },
+        {
+            "asDropdown": true,
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "Cloud"
+            ],
+            "targetBlank": true,
+            "title": "Cloud",
+            "type": "dashboards"
+        },
+        {
+            "asDropdown": true,
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "Insight"
+            ],
+            "targetBlank": true,
+            "title": "Insight",
+            "type": "dashboards"
+        },
+        {
+            "asDropdown": true,
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "PMM"
+            ],
+            "targetBlank": true,
+            "title": "PMM",
             "type": "dashboards"
         }
     ],
@@ -53,8 +107,11 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 2,
+                    "description": "**Load Average**\n\nOn Linux, this is the number of processes which are in \u201crunning\u201d state or in \u201cuninterruptible sleep\u201d state which typically corresponds to disk IO. You can also map LoadAvg to VMSTAT output \u2013 it is something like moving average of sum of \u201cr\u201d and \u201cb\u201d columns from VMSTAT.\n\nThis chart is best used for trends. If you notice the load average rising, it may be due to innefficient queries. In that case, it is a good idea to look at PMM's Query Analytics.",
                     "editable": true,
                     "error": false,
                     "fill": 2,
@@ -74,13 +131,28 @@
                     },
                     "lines": true,
                     "linewidth": 2,
-                    "links": [],
+                    "links": [
+                        {
+                            "dashUri": "db/_pmm-query-analytics",
+                            "dashboard": "_PMM Query Analytics",
+                            "title": "PMM Query Analytics",
+                            "type": "dashboard",
+                            "url": "/qan/"
+                        },
+                        {
+                            "dashboard": "https://www.percona.com/blog/2006/12/04/using-loadavg-for-performance-optimization/",
+                            "title": "Using LoadAvg for Performance Optimization",
+                            "type": "absolute",
+                            "url": "https://www.percona.com/blog/2006/12/04/using-loadavg-for-performance-optimization/"
+                        }
+                    ],
                     "nullPointMode": "null",
                     "percentage": false,
                     "pointradius": 5,
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
@@ -90,6 +162,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "node_load1{instance=~\"$host\"}",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "{{ instance }}",
@@ -120,6 +193,7 @@
                     "transparent": false,
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -146,6 +220,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 2,
                     "editable": true,
@@ -174,6 +250,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
@@ -213,6 +290,7 @@
                     "transparent": false,
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -251,6 +329,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "editable": true,
                     "error": false,
@@ -275,6 +355,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
@@ -304,6 +385,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -329,8 +411,11 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 2,
+                    "description": "**MySQL Queries**\n\nBased on the queries reported by MySQL's ``SHOW STATUS`` command, it is the average number of statements executed by the server. This variable includes statements executed within stored programs, unlike the Questions variable. It does not count COM_PING or COM_STATISTICS commands.",
                     "editable": true,
                     "error": false,
                     "fill": 0,
@@ -352,13 +437,20 @@
                     },
                     "lines": true,
                     "linewidth": 2,
-                    "links": [],
+                    "links": [
+                        {
+                            "title": "Server Status Variables (Queries)",
+                            "type": "absolute",
+                            "url": "https://dev.mysql.com/doc/refman/5.6/en/server-status-variables.html#statvar_Queries"
+                        }
+                    ],
                     "nullPointMode": "null",
                     "percentage": false,
                     "pointradius": 5,
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
@@ -368,6 +460,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "rate(mysql_global_status_queries{instance=~\"$host\"}[$interval]) or irate(mysql_global_status_queries{instance=~\"$host\"}[5m])",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "{{ instance }}",
@@ -388,6 +481,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -425,8 +519,11 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 2,
+                    "description": "**MySQL Traffic**\n\nNetwork traffic used by the MySQL process.",
                     "editable": true,
                     "error": false,
                     "fill": 2,
@@ -454,6 +551,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
@@ -463,6 +561,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "(rate(mysql_global_status_bytes_received{instance=~\"$host\"}[$interval]) + rate(mysql_global_status_bytes_sent{instance=~\"$host\"}[$interval])) or (irate(mysql_global_status_bytes_received{instance=~\"$host\"}[5m]) + irate(mysql_global_status_bytes_sent{instance=~\"$host\"}[5m]))",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "{{ instance }}",
@@ -483,6 +582,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -508,6 +608,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 2,
                     "editable": true,
@@ -538,6 +640,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
@@ -546,7 +649,8 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "sum(rate(node_network_receive_bytes{instance=~\"$host\", device!=\"lo\"}[$interval]) + rate(node_network_transmit_bytes{instance=~\"$host\", device!=\"lo\"}[$interval])) by (instance) or sum(irate(node_network_receive_bytes{instance=~\"$host\", device!=\"lo\"}[5m]) + irate(node_network_transmit_bytes{instance=~\"$host\", device!=\"lo\"}[5m])) by (instance)",
+                            "expr": "sum(rate(node_network_receive_bytes{instance=~\"$host\", device!=\"lo\"}[$interval]) + rate(node_network_transmit_bytes{instance=~\"$host\", device!=\"lo\"}[$interval])) by (instance) or sum(irate(node_network_receive_bytes{instance=~\"$host\", device!=\"lo\"}[5m]) + irate(node_network_transmit_bytes{instance=~\"$host\", device!=\"lo\"}[5m])) by (instance) or\nsum(max_over_time(rdsosmetrics_network_rx{instance=~\"$host\"}[$interval]) + max_over_time(rdsosmetrics_network_tx{instance=~\"$host\"}[$interval])) by (instance) or sum(max_over_time(rdsosmetrics_network_rx{instance=~\"$host\"}[5m]) + max_over_time(rdsosmetrics_network_tx{instance=~\"$host\"}[5m])) by (instance)",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "{{ instance }}",
@@ -569,6 +673,7 @@
                     "transparent": false,
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -689,11 +794,10 @@
         }
     ],
     "schemaVersion": 14,
-    "sharedCrosshair": true,
     "style": "dark",
     "tags": [
         "Percona",
-        "Insight "
+        "Insight"
     ],
     "templating": {
         "list": [
@@ -763,6 +867,7 @@
             {
                 "allFormat": "pipe",
                 "allValue": null,
+                "current": {},
                 "datasource": "Prometheus",
                 "hide": 0,
                 "includeAll": true,
@@ -770,13 +875,16 @@
                 "multi": true,
                 "multiFormat": "pipe",
                 "name": "host",
+                "options": [],
                 "query": "label_values({__name__=~\"node_load1|mysql_up\", job!=\"prometheus\"}, instance)",
                 "refresh": 1,
                 "regex": "",
                 "sort": 1,
                 "tagValuesQuery": null,
+                "tags": [],
                 "tagsQuery": null,
-                "type": "query"
+                "type": "query",
+                "useTags": false
             }
         ]
     },
@@ -817,5 +925,5 @@
     },
     "timezone": "browser",
     "title": "Cross Server Graphs",
-    "version": 0
+    "version": 2
 }

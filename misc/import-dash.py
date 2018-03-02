@@ -11,7 +11,7 @@ API_KEY = os.getenv('IMPORT_DASH_API_KEY', '***')
 USERNAME = os.getenv('IMPORT_DASH_USERNAME')
 PASSWORD = os.getenv('IMPORT_DASH_PASSWORD')
 
-DIR = 'dashboards/'
+DIR = 'pmm-app/src/dashboards/'
 
 
 def main():
@@ -32,7 +32,6 @@ def main():
         f.close()
 
         # check for the most common merge error: duplicate row ids
-        # more checks may be implemented: https://jira.percona.com/browse/PMM-1319
         ids = set()
         for row in dash['rows']:
             for panel in row['panels']:

@@ -10,8 +10,19 @@
     "id": null,
     "links": [
         {
+            "icon": "dashboard",
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "QAN"
+            ],
+            "targetBlank": false,
+            "title": "Query Analytics",
+            "type": "link",
+            "url": "/graph/dashboard/db/_pmm-query-analytics"
+        },
+        {
             "asDropdown": true,
-            "icon": "external link",
             "includeVars": true,
             "keepTime": true,
             "tags": [
@@ -23,7 +34,6 @@
         },
         {
             "asDropdown": true,
-            "icon": "external link",
             "includeVars": true,
             "keepTime": true,
             "tags": [
@@ -35,7 +45,17 @@
         },
         {
             "asDropdown": true,
-            "icon": "external link",
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "MongoDB"
+            ],
+            "targetBlank": true,
+            "title": "MongoDB",
+            "type": "dashboards"
+        },
+        {
+            "asDropdown": true,
             "includeVars": true,
             "keepTime": true,
             "tags": [
@@ -43,6 +63,39 @@
             ],
             "targetBlank": true,
             "title": "HA",
+            "type": "dashboards"
+        },
+        {
+            "asDropdown": true,
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "Cloud"
+            ],
+            "targetBlank": true,
+            "title": "Cloud",
+            "type": "dashboards"
+        },
+        {
+            "asDropdown": true,
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "Insight"
+            ],
+            "targetBlank": true,
+            "title": "Insight",
+            "type": "dashboards"
+        },
+        {
+            "asDropdown": true,
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "PMM"
+            ],
+            "targetBlank": true,
+            "title": "PMM",
             "type": "dashboards"
         }
     ],
@@ -2065,6 +2118,254 @@
             "repeatRowId": null,
             "showTitle": false,
             "title": "AHI",
+            "titleSize": "h6"
+        },
+        {
+            "collapse": false,
+            "height": 250,
+            "panels": [
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": 0,
+                    "editable": true,
+                    "error": false,
+                    "fill": 2,
+                    "grid": {},
+                    "id": 60,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": false,
+                        "current": true,
+                        "max": false,
+                        "min": false,
+                        "rightSide": false,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [
+                        {
+                            "alias": "% Progress",
+                            "yaxis": 2
+                        }
+                    ],
+                    "spaceLength": 10,
+                    "span": 6,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "mysql_global_status_innodb_onlineddl_pct_progress{instance=\"$host\"}/100",
+                            "format": "time_series",
+                            "hide": false,
+                            "interval": "",
+                            "intervalFactor": 1,
+                            "legendFormat": "% Progress",
+                            "metric": "",
+                            "refId": "D",
+                            "step": 5
+                        },
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "rate(mysql_global_status_innodb_onlineddl_rowlog_pct_used{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_onlineddl_rowlog_pct_used{instance=\"$host\"}[5m])",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Row Log % Used",
+                            "metric": "",
+                            "refId": "C",
+                            "step": 20
+                        },
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "rate(mysql_global_status_innodb_onlineddl_rowlog_rows{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_onlineddl_rowlog_rows{instance=\"$host\"}[5m])",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Row Log Rows",
+                            "metric": "",
+                            "refId": "A",
+                            "step": 20
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "InnoDB Online DDL",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "transparent": false,
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "short",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        },
+                        {
+                            "format": "percent",
+                            "label": "",
+                            "logBase": 1,
+                            "max": "100",
+                            "min": 0,
+                            "show": true
+                        }
+                    ]
+                },
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": 2,
+                    "editable": true,
+                    "error": false,
+                    "fill": 2,
+                    "grid": {},
+                    "id": 61,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "rightSide": false,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "span": 6,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "rate(mysql_global_status_innodb_defragment_count{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_defragment_count{instance=\"$host\"}[5m])",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Count",
+                            "metric": "",
+                            "refId": "D",
+                            "step": 20
+                        },
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "rate(mysql_global_status_innodb_defragment_compression_failures{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_defragment_compression_failures{instance=\"$host\"}[5m])",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Re-Compression Failures",
+                            "metric": "",
+                            "refId": "C",
+                            "step": 20
+                        },
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "rate(mysql_global_status_innodb_defragment_failures{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_defragment_failures{instance=\"$host\"}[5m])",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Failures",
+                            "metric": "",
+                            "refId": "A",
+                            "step": 20
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "InnoDB Defragmentation",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "short",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        }
+                    ]
+                }
+            ],
+            "repeat": null,
+            "repeatIteration": null,
+            "repeatRowId": null,
+            "showTitle": false,
+            "title": "MariaDB metrics",
             "titleSize": "h6"
         }
     ],

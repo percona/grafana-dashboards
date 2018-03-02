@@ -9,8 +9,19 @@
     "id": null,
     "links": [
         {
+            "icon": "dashboard",
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "QAN"
+            ],
+            "targetBlank": false,
+            "title": "Query Analytics",
+            "type": "link",
+            "url": "/graph/dashboard/db/_pmm-query-analytics"
+        },
+        {
             "asDropdown": true,
-            "icon": "external link",
             "includeVars": true,
             "keepTime": true,
             "tags": [
@@ -22,7 +33,6 @@
         },
         {
             "asDropdown": true,
-            "icon": "external link",
             "includeVars": true,
             "keepTime": true,
             "tags": [
@@ -34,7 +44,17 @@
         },
         {
             "asDropdown": true,
-            "icon": "external link",
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "MongoDB"
+            ],
+            "targetBlank": true,
+            "title": "MongoDB",
+            "type": "dashboards"
+        },
+        {
+            "asDropdown": true,
             "includeVars": true,
             "keepTime": true,
             "tags": [
@@ -42,6 +62,39 @@
             ],
             "targetBlank": true,
             "title": "HA",
+            "type": "dashboards"
+        },
+        {
+            "asDropdown": true,
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "Cloud"
+            ],
+            "targetBlank": true,
+            "title": "Cloud",
+            "type": "dashboards"
+        },
+        {
+            "asDropdown": true,
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "Insight"
+            ],
+            "targetBlank": true,
+            "title": "Insight",
+            "type": "dashboards"
+        },
+        {
+            "asDropdown": true,
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "PMM"
+            ],
+            "targetBlank": true,
+            "title": "PMM",
             "type": "dashboards"
         }
     ],
@@ -60,6 +113,7 @@
                     "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 2,
+                    "description": "**InnoDB Checkpoint Age**\n\nThe maximum checkpoint age is determined by the total length of all transaction log files (`innodb_log_file_size`).\n\nWhen the checkpoint age reaches the maximum checkpoint age, blocks are flushed syncronously. The rules of the thumb is to keep one hour of traffic in those logs and let the checkpointing perform its work as smooth as possible. If you don't do this, InnoDB will do synchronous flushing at the worst possible time, ie when you are busiest.",
                     "editable": true,
                     "error": false,
                     "fill": 2,
@@ -103,6 +157,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "mysql_global_status_innodb_checkpoint_age{instance=\"$host\"}",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Uncheckpointed Bytes",
@@ -115,6 +170,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "mysql_global_status_innodb_checkpoint_max_age{instance=\"$host\"}",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Max Checkpoint Age",
@@ -165,7 +221,7 @@
                     "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 2,
-                    "description": "**Innodb Transactions** is number of Innodb transactions system is handling per second used to understand the load\n\n**History Length** is number of Innodb transactions which has not been purged yet.  Large number of unpurged transactions can cause significant performance regression",
+                    "description": "**Innodb Transactions** \n\nInnoDB is an MVCC storage engine, which means you can start a transaction and continue to see a consistent snapshot \neven as the data changes. This is implemented by keeping old versions of rows as they are modified.\n\nThe InnoDB History List is the undo logs which are used to store these modifications. They are a fundamental part of InnoDB\u2019s transactional architecture.\n\nIf history length is rising regularly, do not let open connections linger for a long period as this can affect the performance of InnoDB considerably. It is also a good idea to look for long running queries in PMM's Query Analytics.",
                     "editable": true,
                     "error": false,
                     "fill": 2,
@@ -187,7 +243,14 @@
                     },
                     "lines": true,
                     "linewidth": 2,
-                    "links": [],
+                    "links": [
+                        {
+                            "dashUri": "db/_pmm-query-analytics",
+                            "dashboard": "_PMM Query Analytics",
+                            "title": "Query Analytics",
+                            "type": "dashboard"
+                        }
+                    ],
                     "nullPointMode": "null",
                     "percentage": false,
                     "pointradius": 5,
@@ -285,6 +348,7 @@
                     "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 2,
+                    "description": "**InnoDB Row Operations**\n\nThis graph allows you to see which operations occur and the number of rows affected per operation. A graph like Queries Per Second will give you an idea of queries, but one query could effect millions of rows.",
                     "editable": true,
                     "error": false,
                     "fill": 2,
@@ -322,6 +386,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "rate(mysql_global_status_innodb_row_ops_total{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_row_ops_total{instance=\"$host\"}[5m])",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Rows {{ operation }}",
@@ -374,6 +439,7 @@
                     "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 2,
+                    "description": "**InnoDB Row Lock Time**\n\nWhen data is locked, then that means that another ***session can NOT update that data until the lock*** is released (which unlocks the data and allows other users to update that data). Locks are usually released by either a ROLLBACK or COMMIT SQL statement.\n\nInnoDB implements standard row-level locking where there are two types of locks, [shared (S) locks](https://dev.mysql.com/doc/refman/5.7/en/glossary.html#glos_shared_lock) and [exclusive (X) locks](https://dev.mysql.com/doc/refman/5.7/en/glossary.html#glos_exclusive_lock).\n\n* A [shared (S) lock](https://dev.mysql.com/doc/refman/5.7/en/glossary.html#glos_shared_lock) permits the transaction that holds the lock to read a row.\n* An [exclusive (X) lock](https://dev.mysql.com/doc/refman/5.7/en/glossary.html#glos_exclusive_lock) permits the transaction that holds the lock to update or delete a row.\n\n_Average Row Lock Wait Time_ is the row lock wait time divided by the number of row locks.\\\n_Row Lock Waits_ are how many times a transaction waited on a row lock per second.\\\n_Row Lock Wait Load_ is a rolling 5 minute average of Row Lock Waits.",
                     "editable": true,
                     "error": false,
                     "fill": 1,
@@ -401,7 +467,15 @@
                     },
                     "lines": false,
                     "linewidth": 2,
-                    "links": [],
+                    "links": [
+                        {
+                            "dashboard": "https://dev.mysql.com/doc/refman/5.7/en/innodb-locking.html",
+                            "targetBlank": true,
+                            "title": "InnoDB Locking",
+                            "type": "absolute",
+                            "url": "https://dev.mysql.com/doc/refman/5.7/en/innodb-locking.html"
+                        }
+                    ],
                     "nullPointMode": "null",
                     "percentage": false,
                     "pointradius": 1,
@@ -423,6 +497,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "rate(mysql_global_status_innodb_row_lock_waits{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_row_lock_waits{instance=\"$host\"}[5m])",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Row Lock Waits",
@@ -432,6 +507,7 @@
                         },
                         {
                             "expr": "rate(mysql_global_status_innodb_row_lock_time{instance=\"$host\"}[$interval])/1000 or irate(mysql_global_status_innodb_row_lock_time{instance=\"$host\"}[5m])/1000",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Row Lock Wait Load",
@@ -441,6 +517,7 @@
                         },
                         {
                             "expr": "rate(mysql_global_status_innodb_row_lock_time{instance=\"$host\"}[$interval])/rate(mysql_global_status_innodb_row_lock_waits{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_row_lock_time{instance=\"$host\"}[5m])/irate(mysql_global_status_innodb_row_lock_waits{instance=\"$host\"}[5m])",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Avg Row Lock Wait Time",
@@ -510,6 +587,7 @@
                     "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 2,
+                    "description": "**InnoDB I/O**\n\n_Data Writes_ - The total number of InnoDB data writes.\\\n_Data Reads_ - The total number of InnoDB data reads (OS file reads).\\\n_Log Writes_ - The number of physical writes to the InnoDB redo log file.\\\n_Data Fsyncs_ - The number of fsync() operations. The frequency of fsync() calls is influenced by the setting of the `innodb_flush_method` configuration option.",
                     "editable": true,
                     "error": false,
                     "fill": 2,
@@ -547,6 +625,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "rate(mysql_global_status_innodb_data_reads{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_data_reads{instance=\"$host\"}[5m])",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Data Reads",
@@ -559,6 +638,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "rate(mysql_global_status_innodb_data_writes{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_data_writes{instance=\"$host\"}[5m])",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Data Writes",
@@ -571,6 +651,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "rate(mysql_global_status_innodb_data_fsyncs{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_data_fsyncs{instance=\"$host\"}[5m])",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Data Fsyncs",
@@ -583,6 +664,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "rate(mysql_global_status_innodb_log_writes{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_log_writes{instance=\"$host\"}[5m])",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Log Writes",
@@ -633,6 +715,7 @@
                     "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 2,
+                    "description": "**InnoDB Log File Usage Hourly**\n\nAlong with the buffer pool size, `innodb_log_file_size` is the most important setting when we are working with InnoDB. This graph shows how much data was written to InnoDB's redo logs over each hour. When the InnoDB log files are full, InnoDB needs to flush the modified pages from memory to disk.\n\nThe rules of the thumb is to keep one hour of traffic in those logs and let the checkpointing perform its work as smooth as possible. If you don't do this, InnoDB will do synchronous flushing at the worst possible time, ie when you are busiest.\n\nThis graph can help guide you in setting the correct `innodb_log_file_size`.",
                     "editable": true,
                     "error": false,
                     "fill": 2,
@@ -653,7 +736,20 @@
                     },
                     "lines": false,
                     "linewidth": 2,
-                    "links": [],
+                    "links": [
+                        {
+                            "targetBlank": true,
+                            "title": "How to calculate a good InnoDB log file size",
+                            "type": "absolute",
+                            "url": "https://www.percona.com/blog/2008/11/21/how-to-calculate-a-good-innodb-log-file-size/"
+                        },
+                        {
+                            "targetBlank": true,
+                            "title": "System Variables (innodb_log_file_size)",
+                            "type": "absolute",
+                            "url": "http://www.percona.com/doc/percona-server/5.5/scalability/innodb_io_55.html#innodb_log_file_size"
+                        }
+                    ],
                     "nullPointMode": "null",
                     "percentage": false,
                     "pointradius": 5,
@@ -682,6 +778,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "increase(mysql_global_status_innodb_os_log_written{instance=\"$host\"}[1h])",
+                            "format": "time_series",
                             "interval": "1h",
                             "intervalFactor": 1,
                             "legendFormat": "Data Written",
@@ -694,6 +791,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "mysql_global_variables_innodb_log_files_in_group{instance=\"$host\"} * mysql_global_variables_innodb_log_file_size{instance=\"$host\"}",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Total Size of InnoDB Log Files",
@@ -879,6 +977,7 @@
                     "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 2,
+                    "description": "**InnoDB Deadlocks**\n\nA deadlock in MySQL happens when two or more transactions mutually hold and request for locks, creating a cycle of dependencies. In a transaction system, deadlocks are a fact of life and not completely avoidable. InnoDB automatically detects transaction deadlocks, rollbacks a transaction immediately and returns an error.",
                     "editable": true,
                     "error": false,
                     "fill": 2,
@@ -899,7 +998,14 @@
                     },
                     "lines": true,
                     "linewidth": 2,
-                    "links": [],
+                    "links": [
+                        {
+                            "targetBlank": true,
+                            "title": "How to deal with MySQL deadlocks",
+                            "type": "absolute",
+                            "url": "https://www.percona.com/blog/2014/10/28/how-to-deal-with-mysql-deadlocks/"
+                        }
+                    ],
                     "nullPointMode": "null",
                     "percentage": false,
                     "pointradius": 5,
@@ -916,6 +1022,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "(rate(mysql_global_status_innodb_deadlocks{instance=\"$host\"}[$interval]) or rate(mysql_info_schema_innodb_metrics_lock_lock_deadlocks_total{instance=\"$host\"}[$interval])) or (irate(mysql_global_status_innodb_deadlocks{instance=\"$host\"}[5m]) or irate(mysql_info_schema_innodb_metrics_lock_lock_deadlocks_total{instance=\"$host\"}[5m]))",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Deadlocks",
@@ -1231,7 +1338,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "mysql_global_status_buffer_pool_pages{instance=\"$host\", state!=\"dirty\"}",
+                            "expr": "mysql_global_status_buffer_pool_pages{instance=\"$host\", state=~\"free|data|misc\"}",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "{{ state }}",
@@ -1431,7 +1538,12 @@
                     "pointradius": 5,
                     "points": false,
                     "renderer": "flot",
-                    "seriesOverrides": [],
+                    "seriesOverrides": [
+                        {
+                            "alias": "Disk Reads",
+                            "yaxis": 2
+                        }
+                    ],
                     "spaceLength": 10,
                     "span": 4,
                     "stack": false,
@@ -1459,6 +1571,18 @@
                             "legendFormat": "Write Requests",
                             "metric": "",
                             "refId": "B",
+                            "step": 300
+                        },
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "rate(mysql_global_status_innodb_buffer_pool_reads{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_buffer_pool_reads{instance=\"$host\"}[5m]) ",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Disk Reads",
+                            "metric": "",
+                            "refId": "C",
                             "step": 300
                         }
                     ],
@@ -1901,7 +2025,6 @@
                 "auto_count": 200,
                 "auto_min": "1s",
                 "current": {
-                    "selected": true,
                     "text": "auto",
                     "value": "$__auto_interval"
                 },
@@ -1961,6 +2084,7 @@
             {
                 "allFormat": "glob",
                 "allValue": null,
+                "current": {},
                 "datasource": "Prometheus",
                 "hide": 0,
                 "includeAll": false,
@@ -1968,6 +2092,7 @@
                 "multi": false,
                 "multiFormat": "regex values",
                 "name": "host",
+                "options": [],
                 "query": "label_values(mysql_up, instance)",
                 "refresh": 1,
                 "refresh_on_load": false,
@@ -2018,5 +2143,5 @@
     },
     "timezone": "browser",
     "title": "MySQL InnoDB Metrics",
-    "version": 0
+    "version": 1
 }

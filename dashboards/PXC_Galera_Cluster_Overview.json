@@ -8,8 +8,19 @@
     "id": null,
     "links": [
         {
+            "icon": "dashboard",
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "QAN"
+            ],
+            "targetBlank": false,
+            "title": "Query Analytics",
+            "type": "link",
+            "url": "/graph/dashboard/db/_pmm-query-analytics"
+        },
+        {
             "asDropdown": true,
-            "icon": "external link",
             "includeVars": true,
             "keepTime": true,
             "tags": [
@@ -21,7 +32,6 @@
         },
         {
             "asDropdown": true,
-            "icon": "external link",
             "includeVars": true,
             "keepTime": true,
             "tags": [
@@ -33,7 +43,17 @@
         },
         {
             "asDropdown": true,
-            "icon": "external link",
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "MongoDB"
+            ],
+            "targetBlank": true,
+            "title": "MongoDB",
+            "type": "dashboards"
+        },
+        {
+            "asDropdown": true,
             "includeVars": true,
             "keepTime": true,
             "tags": [
@@ -41,6 +61,39 @@
             ],
             "targetBlank": true,
             "title": "HA",
+            "type": "dashboards"
+        },
+        {
+            "asDropdown": true,
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "Cloud"
+            ],
+            "targetBlank": true,
+            "title": "Cloud",
+            "type": "dashboards"
+        },
+        {
+            "asDropdown": true,
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "Insight"
+            ],
+            "targetBlank": true,
+            "title": "Insight",
+            "type": "dashboards"
+        },
+        {
+            "asDropdown": true,
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "PMM"
+            ],
+            "targetBlank": true,
+            "title": "PMM",
             "type": "dashboards"
         }
     ],
@@ -1013,7 +1066,6 @@
         }
     ],
     "schemaVersion": 13,
-    "sharedCrosshair": true,
     "style": "dark",
     "tags": [
         "Percona",
@@ -1084,8 +1136,29 @@
                 "type": "interval"
             },
             {
+                "allValue": null,
+                "current": {},
+                "datasource": "Prometheus",
+                "hide": 2,
+                "includeAll": true,
+                "label": "Instance",
+                "multi": true,
+                "name": "instances",
+                "options": [],
+                "query": "label_values(mysql_global_status_wsrep_local_state, instance)",
+                "refresh": 1,
+                "regex": "",
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            },
+            {
                 "allFormat": "glob",
                 "allValue": null,
+                "current": {},
                 "datasource": "Prometheus",
                 "hide": 0,
                 "includeAll": false,
@@ -1093,14 +1166,17 @@
                 "multi": false,
                 "multiFormat": "regex values",
                 "name": "cluster",
-                "query": "label_values(mysql_galera_variables_info, wsrep_cluster_name)",
+                "options": [],
+                "query": "label_values(mysql_galera_variables_info{instance=~\"$instances\"}, wsrep_cluster_name)",
                 "refresh": 1,
                 "refresh_on_load": false,
                 "regex": "",
                 "sort": 1,
                 "tagValuesQuery": null,
+                "tags": [],
                 "tagsQuery": null,
-                "type": "query"
+                "type": "query",
+                "useTags": false
             }
         ]
     },
@@ -1141,5 +1217,5 @@
     },
     "timezone": "browser",
     "title": "PXC/Galera Cluster Overview",
-    "version": 0
+    "version": 1
 }
