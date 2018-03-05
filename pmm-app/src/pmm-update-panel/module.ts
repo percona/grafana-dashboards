@@ -18,7 +18,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
      * Urls to define API endpoints
      */
     static API = {
-        GET_CURRENT_VERSION: '/managed/v1/version',
+        GET_CURRENT_VERSION: '/configurator/v1/version',
         CHECK_FOR_UPDATE: '/configurator/v1/check-update',
         UPDATE: '/configurator/v1/updates'
     };
@@ -134,7 +134,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
             method: 'GET',
             url: PanelCtrl.API.GET_CURRENT_VERSION,
         }).then((res) => {
-            $scope.version = res.data.version;
+            $scope.version = res.data.title;
         }).catch(() => {
             //TODO: add error handler
         });
