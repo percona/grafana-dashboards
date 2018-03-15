@@ -6,8 +6,9 @@ etc."""
 
 import sys
 import json
+import copy
 
-__version__ = '1.0.0'
+__version__ = '1.1.0'
 
 
 def set_title(dashboard):
@@ -88,6 +89,45 @@ def set_unique_ids(dashboard):
 
     return dashboard
 
+def add_links(dashboard):
+    """Add default set of consistent linking to dashboard."""
+    prompt = 'Set default consistent linking to the dashboard (conventional: **Yes**) [%s]: ' % (
+        "No",
+    )
+    user_input = raw_input(prompt)
+    if user_input:
+        if user_input == 'Yes':
+            setOfLinks = ['QAN', 'OS', 'MySQL', 'MongoDB', 'HA', 'Cloud', 'Insight', 'PMM']
+            for link in copy.deepcopy(dashboard['links']):
+                dashboard['links'].remove(link)
+
+            for tag in setOfLinks:
+                if tag == 'QAN':
+                    add_item = {
+                        'asDropdown': True,
+                        'icon': 'dashboard',
+                        'includeVars': True,
+                        'keepTime': True,
+                        'tags': [ tag ],
+                        'targetBlank': False,
+                        'title': 'Query Analytics',
+                        'type': 'link',
+                        'url': '/qan/'
+                    }
+                else:
+                    add_item = {
+                        'asDropdown': True,
+                        'icon': 'external link',
+                        'includeVars': True,
+                        'keepTime': True,
+                        'tags': [ tag ],
+                        'targetBlank': True,
+                        'title': tag,
+                        'type': 'dashboards'
+                    }
+                dashboard['links'].append(add_item)
+
+    return dashboard
 
 def main():
     """Execute cleanups."""
@@ -96,7 +136,7 @@ def main():
 
     # registered cleanupers.
     CLEANUPERS = [set_title, set_time, set_timezone, set_refresh,
-                  set_hide_controls, set_unique_ids]
+                  set_hide_controls, set_unique_ids, add_links]
 
     for func in CLEANUPERS:
         dashboard = func(dashboard)
