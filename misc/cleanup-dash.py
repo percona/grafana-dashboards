@@ -6,9 +6,10 @@ etc."""
 
 import sys
 import json
+import copy
 
 __version__ = '1.0.0'
-
+refresh_intervals = ['5s','10s','30s','1m','5m','15m','30m','1h','2h','1d']
 
 def set_title(dashboard):
     """Set Dashboard Title."""
@@ -37,23 +38,72 @@ def set_timezone(dashboard):
     dashboard['timezone'] = raw_input(prompt) or dashboard['timezone']
     return dashboard
 
+def set_default_refresh_intervals(dashboard):
+    """Set Dashboard refresh intervals."""
+    if 'timepicker' not in dashboard.keys():
+        return dashboard
+    dashboard['timepicker']['refresh_intervals'] = refresh_intervals 
+    return dashboard
 
 def set_refresh(dashboard):
     """Set Dashboard refresh."""
     if 'refresh' not in dashboard.keys():
         return dashboard
+    while 1:
+        print ('Enabled refresh intervals: %s' % (refresh_intervals))
+        prompt = 'Refresh (conventional: **1m**) [%s]: ' % (
+            dashboard['refresh'],
+        )
+        user_input = raw_input(prompt)
+        if user_input:
+            if user_input == 'False':
+                dashboard['refresh'] = False
+                return dashboard
+            else:
+                if user_input in refresh_intervals:
+                    dashboard['refresh'] = user_input
+                    return dashboard
+                else:
+                    print "Provided interval isn't enabled"
+        else:
+            return dashboard
 
-    prompt = 'Refresh (conventional: **False**) [%s]: ' % (
-        dashboard['refresh'],
+def add_links(dashboard):
+    """Add default set of consistent linking to dashboard."""
+    prompt = 'Set default consistent linking to the dashboard (conventional: **Yes**) [%s]: ' % (
+        "No",
     )
     user_input = raw_input(prompt)
     if user_input:
-        if user_input == 'False':
-            dashboard['refresh'] = False
-        else:
-            dashboard['refresh'] = user_input
-    return dashboard
+        if user_input == 'Yes':
+            setOfLinks = ['QAN', 'OS', 'MySQL', 'MongoDB', 'HA', 'Cloud', 'Insight', 'PMM']
+            for link in copy.deepcopy(dashboard['links']):
+                dashboard['links'].remove(link)
 
+            for tag in setOfLinks:
+                if tag == 'QAN':
+                    add_item = {
+                        'icon': 'dashboard',
+                        'includeVars': True if tag in dashboard['tags'] else False,
+                        'keepTime': True,
+                        'tags': [ tag ],
+                        'targetBlank': False,
+                        'title': 'Query Analytics',
+                        'type': 'link',
+                        'url': '/graph/dashboard/db/_pmm-query-analytics'
+                    }
+                else:
+                    add_item = {
+                        'asDropdown': True,
+                        'includeVars': True if tag in dashboard['tags'] else False,
+                        'keepTime': True,
+                        'tags': [ tag ],
+                        'targetBlank': False,
+                        'title': tag,
+                        'type': 'dashboards'
+                    }
+                dashboard['links'].append(add_item)
+    return dashboard
 
 def set_hide_controls(dashboard):
     """Set Dashboard Hide Controls."""
@@ -95,8 +145,8 @@ def main():
         dashboard = json.loads(dashboard_file.read())
 
     # registered cleanupers.
-    CLEANUPERS = [set_title, set_time, set_timezone, set_refresh,
-                  set_hide_controls, set_unique_ids]
+    CLEANUPERS = [set_title, set_time, set_timezone, set_default_refresh_intervals, set_refresh,
+                  add_links, set_hide_controls, set_unique_ids]
 
     for func in CLEANUPERS:
         dashboard = func(dashboard)

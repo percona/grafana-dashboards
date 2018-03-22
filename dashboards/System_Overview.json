@@ -10,7 +10,7 @@
     "links": [
         {
             "icon": "dashboard",
-            "includeVars": true,
+            "includeVars": false,
             "keepTime": true,
             "tags": [
                 "QAN"
@@ -27,77 +27,78 @@
             "tags": [
                 "OS"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "OS",
             "type": "dashboards"
         },
         {
             "asDropdown": true,
-            "includeVars": true,
+            "includeVars": false,
             "keepTime": true,
             "tags": [
                 "MySQL"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "MySQL",
             "type": "dashboards"
         },
         {
             "asDropdown": true,
-            "includeVars": true,
+            "includeVars": false,
             "keepTime": true,
             "tags": [
                 "MongoDB"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "MongoDB",
             "type": "dashboards"
         },
         {
             "asDropdown": true,
-            "includeVars": true,
+            "includeVars": false,
             "keepTime": true,
             "tags": [
                 "HA"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "HA",
             "type": "dashboards"
         },
         {
             "asDropdown": true,
-            "includeVars": true,
+            "includeVars": false,
             "keepTime": true,
             "tags": [
                 "Cloud"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "Cloud",
             "type": "dashboards"
         },
         {
             "asDropdown": true,
-            "includeVars": true,
+            "includeVars": false,
             "keepTime": true,
             "tags": [
                 "Insight"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "Insight",
             "type": "dashboards"
         },
         {
             "asDropdown": true,
-            "includeVars": true,
+            "includeVars": false,
             "keepTime": true,
             "tags": [
                 "PMM"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "PMM",
             "type": "dashboards"
         }
     ],
+    "refresh": "1m",
     "rows": [
         {
             "collapse": false,
@@ -166,7 +167,9 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "node_time{instance=\"$host\"} - node_boot_time{instance=\"$host\"}",
+                            "expr": "(node_time{instance=\"$host\"} - node_boot_time{instance=\"$host\"}) or (time() - node_boot_time{instance=\"$host\"})",
+                            "format": "time_series",
+                            "hide": false,
                             "interval": "5m",
                             "intervalFactor": 1,
                             "legendFormat": "",
@@ -1934,7 +1937,9 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "sum(increase(node_network_receive_bytes{instance=\"$host\", device!=\"lo\"}[1h]))",
+                            "expr": "sum(increase(node_network_receive_bytes{instance=\"$host\", device!=\"lo\"}[1h])) or sum(increase(rdsosmetrics_network_rx{instance=\"$host\", device!=\"lo\"}[1h]))",
+                            "format": "time_series",
+                            "hide": false,
                             "interval": "1h",
                             "intervalFactor": 1,
                             "legendFormat": "Received",
@@ -1947,7 +1952,9 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "sum(increase(node_network_transmit_bytes{instance=\"$host\", device!=\"lo\"}[1h]))",
+                            "expr": "sum(increase(node_network_transmit_bytes{instance=\"$host\", device!=\"lo\"}[1h])) or sum(increase(rdsosmetrics_network_tx{instance=\"$host\", device!=\"lo\"}[1h]))",
+                            "format": "time_series",
+                            "hide": false,
                             "interval": "1h",
                             "intervalFactor": 1,
                             "legendFormat": "Sent",
@@ -2389,6 +2396,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "node_filefd_maximum{instance=\"$host\"}",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Limit",
@@ -2402,6 +2410,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "node_filefd_allocated{instance=\"$host\"}",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Allocated",
@@ -2589,5 +2598,5 @@
     },
     "timezone": "browser",
     "title": "System Overview",
-    "version": 2
+    "version": 4
 }
