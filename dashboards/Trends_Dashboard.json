@@ -4,12 +4,13 @@
     },
     "editable": true,
     "gnetId": null,
+    "graphTooltip": 1,
     "hideControls": true,
     "id": null,
     "links": [
         {
             "icon": "dashboard",
-            "includeVars": true,
+            "includeVars": false,
             "keepTime": true,
             "tags": [
                 "QAN"
@@ -21,56 +22,56 @@
         },
         {
             "asDropdown": true,
-            "includeVars": true,
+            "includeVars": false,
             "keepTime": true,
             "tags": [
                 "OS"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "OS",
             "type": "dashboards"
         },
         {
             "asDropdown": true,
-            "includeVars": true,
+            "includeVars": false,
             "keepTime": true,
             "tags": [
                 "MySQL"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "MySQL",
             "type": "dashboards"
         },
         {
             "asDropdown": true,
-            "includeVars": true,
+            "includeVars": false,
             "keepTime": true,
             "tags": [
                 "MongoDB"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "MongoDB",
             "type": "dashboards"
         },
         {
             "asDropdown": true,
-            "includeVars": true,
+            "includeVars": false,
             "keepTime": true,
             "tags": [
                 "HA"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "HA",
             "type": "dashboards"
         },
         {
             "asDropdown": true,
-            "includeVars": true,
+            "includeVars": false,
             "keepTime": true,
             "tags": [
                 "Cloud"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "Cloud",
             "type": "dashboards"
         },
@@ -81,23 +82,23 @@
             "tags": [
                 "Insight"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "Insight",
             "type": "dashboards"
         },
         {
             "asDropdown": true,
-            "includeVars": true,
+            "includeVars": false,
             "keepTime": true,
             "tags": [
                 "PMM"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "PMM",
             "type": "dashboards"
         }
     ],
-    "refresh": false,
+    "refresh": "1m",
     "rows": [
         {
             "collapse": false,
@@ -106,6 +107,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": null,
                     "editable": true,
@@ -136,6 +139,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 12,
                     "stack": false,
                     "steppedLine": false,
@@ -144,7 +148,9 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "avg by (instance) (sum by (mode) ( (clamp_max(rate(node_cpu{instance=\"$host\",mode!=\"idle\"}[$interval]),1)) or (clamp_max(irate(node_cpu{instance=\"$host\",mode!=\"idle\"}[5m]),1)) ))",
+                            "expr": "avg by (instance) ((sum by (mode) (\n(clamp_max(rate(node_cpu{instance=\"$host\",mode!=\"idle\"}[$interval]),1)) or \n(clamp_max(irate(node_cpu{instance=\"$host\",mode!=\"idle\"}[5m]),1)) ))*100 \nor (sum by (mode) (\nclamp_max(((max_over_time(node_cpu_average{instance=\"$host\", mode!=\"idle\"}[$interval]) or \nmax_over_time(node_cpu_average{instance=\"$host\", mode!=\"idle\"}[5m]))),100))))",
+                            "format": "time_series",
+                            "hide": false,
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Busy State",
@@ -156,7 +162,9 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "avg by (instance) (sum by (mode) ( (clamp_max(rate(node_cpu{instance=\"$host\",mode!=\"idle\"}[$interval] offset 1d),1)) or (clamp_max(irate(node_cpu{instance=\"$host\",mode!=\"idle\"}[5m] offset 1d),1)) ))",
+                            "expr": "avg by (instance) ((sum by (mode) (\n(clamp_max(rate(node_cpu{instance=\"$host\",mode!=\"idle\"}[$interval] offset 1d),1)) or \n(clamp_max(irate(node_cpu{instance=\"$host\",mode!=\"idle\"}[5m] offset 1d),1)) ))*100 \nor (sum by (mode) (\nclamp_max(((max_over_time(node_cpu_average{instance=\"$host\", mode!=\"idle\"}[$interval] offset 1d) or \nmax_over_time(node_cpu_average{instance=\"$host\", mode!=\"idle\"}[5m] offset 1d))),100))))",
+                            "format": "time_series",
+                            "hide": false,
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Busy State 1d ago",
@@ -168,7 +176,9 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "avg by (instance) (sum by (mode) ( (clamp_max(rate(node_cpu{instance=\"$host\",mode!=\"idle\"}[$interval] offset 1w),1)) or (clamp_max(irate(node_cpu{instance=\"$host\",mode!=\"idle\"}[5m] offset 1w),1)) ))",
+                            "expr": "avg by (instance) ((sum by (mode) (\n(clamp_max(rate(node_cpu{instance=\"$host\",mode!=\"idle\"}[$interval] offset 1w),1)) or \n(clamp_max(irate(node_cpu{instance=\"$host\",mode!=\"idle\"}[5m] offset 1w),1)) ))*100 \nor (sum by (mode) (\nclamp_max(((max_over_time(node_cpu_average{instance=\"$host\", mode!=\"idle\"}[$interval] offset 1w) or \nmax_over_time(node_cpu_average{instance=\"$host\", mode!=\"idle\"}[5m] offset 1w))),100))))",
+                            "format": "time_series",
+                            "hide": false,
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Busy State 1w ago",
@@ -189,6 +199,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -196,10 +207,10 @@
                     },
                     "yaxes": [
                         {
-                            "format": "percentunit",
+                            "format": "percent",
                             "label": "",
                             "logBase": 1,
-                            "max": 1,
+                            "max": null,
                             "min": 0,
                             "show": true
                         },
@@ -215,6 +226,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": null,
                     "editable": true,
@@ -243,6 +256,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
@@ -252,6 +266,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "rate(node_vmstat_pgpgin{instance=\"$host\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{instance=\"$host\"}[5m]) * 1024",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Page In",
@@ -265,6 +280,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "rate(node_vmstat_pgpgin{instance=\"$host\"}[$interval] offset 1d) * 1024 or irate(node_vmstat_pgpgin{instance=\"$host\"}[5m] offset 1d) * 1024",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Page In 1d ago",
@@ -278,6 +294,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "rate(node_vmstat_pgpgin{instance=\"$host\"}[$interval] offset 1w) * 1024 or irate(node_vmstat_pgpgin{instance=\"$host\"}[5m] offset 1w) * 1024",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Page In 1w ago",
@@ -300,6 +317,7 @@
                     "transparent": false,
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -326,6 +344,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": null,
                     "editable": true,
@@ -354,6 +374,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
@@ -363,6 +384,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "rate(node_vmstat_pgpgout{instance=\"$host\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{instance=\"$host\"}[5m]) * 1024",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Page Out",
@@ -376,6 +398,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "rate(node_vmstat_pgpgout{instance=\"$host\"}[$interval] offset 1d) * 1024 or irate(node_vmstat_pgpgout{instance=\"$host\"}[5m] offset 1d) * 1024",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Page Out 1d ago",
@@ -389,6 +412,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "rate(node_vmstat_pgpgout{instance=\"$host\"}[$interval] offset 1w) * 1024 or irate(node_vmstat_pgpgout{instance=\"$host\"}[5m] offset 1w) * 1024",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Page Out 1w ago",
@@ -411,6 +435,7 @@
                     "transparent": false,
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -449,6 +474,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": null,
                     "editable": true,
@@ -476,6 +503,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
@@ -529,6 +557,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -554,6 +583,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": null,
                     "editable": true,
@@ -581,6 +612,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
@@ -634,6 +666,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -671,6 +704,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": null,
                     "editable": true,
@@ -698,6 +733,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
@@ -751,6 +787,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -782,8 +819,7 @@
             "titleSize": "h6"
         }
     ],
-    "schemaVersion": 13,
-    "sharedCrosshair": true,
+    "schemaVersion": 14,
     "style": "dark",
     "tags": [
         "Percona",
@@ -856,6 +892,7 @@
             {
                 "allFormat": "glob",
                 "allValue": null,
+                "current": {},
                 "datasource": "Prometheus",
                 "hide": 0,
                 "includeAll": false,
@@ -863,12 +900,14 @@
                 "multi": false,
                 "multiFormat": "regex values",
                 "name": "host",
+                "options": [],
                 "query": "label_values(node_load1, instance)",
                 "refresh": 1,
                 "refresh_on_load": false,
                 "regex": "",
                 "sort": 1,
                 "tagValuesQuery": "instance",
+                "tags": [],
                 "tagsQuery": "up",
                 "type": "query",
                 "useTags": false
