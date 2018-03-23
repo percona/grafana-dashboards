@@ -263,6 +263,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "mysql_global_status_wsrep_local_state{instance=\"$host\"}",
+                            "format": "time_series",
                             "interval": "5m",
                             "intervalFactor": 1,
                             "legendFormat": "",
@@ -367,6 +368,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "mysql_global_variables_wsrep_desync{instance=\"$host\"}",
+                            "format": "time_series",
                             "interval": "5m",
                             "intervalFactor": 1,
                             "legendFormat": "",
@@ -461,6 +463,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "mysql_global_status_wsrep_cluster_status{instance=\"$host\"}",
+                            "format": "time_series",
                             "interval": "5m",
                             "intervalFactor": 1,
                             "legendFormat": "",
@@ -554,6 +557,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "mysql_galera_gcache_size_bytes{instance=\"$host\"}",
+                            "format": "time_series",
                             "interval": "5m",
                             "intervalFactor": 1,
                             "legendFormat": "",
@@ -563,11 +567,98 @@
                         }
                     ],
                     "thresholds": "90,95",
-                    "title": "gcache size",
+                    "title": "gcache Size",
                     "transparent": false,
                     "type": "singlestat",
                     "valueFontSize": "80%",
                     "valueMaps": [],
+                    "valueName": "current"
+                },
+                {
+                    "cacheTimeout": null,
+                    "colorBackground": false,
+                    "colorValue": true,
+                    "colors": [
+                        "#ef843c",
+                        "#508642",
+                        "#299c46"
+                    ],
+                    "datasource": "Prometheus",
+                    "format": "short",
+                    "gauge": {
+                        "maxValue": 100,
+                        "minValue": 0,
+                        "show": false,
+                        "thresholdLabels": false,
+                        "thresholdMarkers": true
+                    },
+                    "id": 55,
+                    "interval": null,
+                    "links": [],
+                    "mappingType": 1,
+                    "mappingTypes": [
+                        {
+                            "name": "value to text",
+                            "value": 1
+                        },
+                        {
+                            "name": "range to text",
+                            "value": 2
+                        }
+                    ],
+                    "maxDataPoints": 100,
+                    "minSpan": 2,
+                    "nullPointMode": "connected",
+                    "nullText": null,
+                    "postfix": "",
+                    "postfixFontSize": "50%",
+                    "prefix": "",
+                    "prefixFontSize": "50%",
+                    "rangeMaps": [
+                        {
+                            "from": "null",
+                            "text": "N/A",
+                            "to": "null"
+                        }
+                    ],
+                    "span": 2,
+                    "sparkline": {
+                        "fillColor": "rgba(31, 118, 189, 0.18)",
+                        "full": false,
+                        "lineColor": "rgb(31, 120, 193)",
+                        "show": false
+                    },
+                    "tableColumn": "",
+                    "targets": [
+                        {
+                            "expr": "mysql_global_status_wsrep_flow_control_status{instance=\"$host\"}",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "refId": "A"
+                        }
+                    ],
+                    "thresholds": "0.5,1",
+                    "title": "FC (normal traffic)",
+                    "type": "singlestat",
+                    "valueFontSize": "80%",
+                    "valueMaps": [
+                        {
+                            "op": "=",
+                            "text": "OFF",
+                            "value": "0"
+                        },
+                        {
+                            "op": "=",
+                            "text": "ON",
+                            "value": "1"
+                        },
+                        {
+                            "op": "=",
+                            "text": "N/A",
+                            "value": "null"
+                        }
+                    ],
                     "valueName": "current"
                 }
             ],
@@ -945,6 +1036,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "rate(mysql_global_status_wsrep_flow_control_recv{instance=\"$host\"}[$interval]) or irate(mysql_global_status_wsrep_flow_control_recv{instance=\"$host\"}[5m])",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "FC Messages Received",
@@ -957,6 +1049,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "rate(mysql_global_status_wsrep_flow_control_sent{instance=\"$host\"}[$interval]) or irate(mysql_global_status_wsrep_flow_control_sent{instance=\"$host\"}[5m])",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "FC Messages Sent",
@@ -970,6 +1063,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "(rate(mysql_global_status_wsrep_flow_control_paused_ns{instance=\"$host\"}[$interval]) or irate(mysql_global_status_wsrep_flow_control_paused_ns{instance=\"$host\"}[5m]))/1000000000",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Paused due to Flow Control",
@@ -1056,6 +1150,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "mysql_global_status_wsrep_apply_window{instance=\"$host\"}",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Apply Window",
@@ -1068,6 +1163,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "mysql_global_status_wsrep_commit_window{instance=\"$host\"}",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Commit Window",
@@ -1081,6 +1177,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "mysql_global_status_wsrep_cert_deps_distance{instance=\"$host\"}",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Cert Deps Distance",
