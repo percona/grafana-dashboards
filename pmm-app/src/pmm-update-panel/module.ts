@@ -54,6 +54,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
         $scope.logLocation = '';
         $scope.version = '';
         $scope.nextVersion = '';
+        $scope.linkVersion = '';
         $scope.errorMessage = '';
 
         $scope.checkForUpdate = this.checkForUpdate.bind(this, $scope, $http);
@@ -111,6 +112,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
             $scope.isChecked = true;
             $scope.nextVersion = res.data.to;
             $scope.version = res.data.from;
+            $scope.linkVersion = $scope.nextVersion.split(' ')[0];
         }).catch(() => {
             $scope.isLoaderShown = false;
             $scope.isChecked = true;
