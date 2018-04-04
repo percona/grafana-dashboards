@@ -4,47 +4,101 @@
     },
     "editable": true,
     "gnetId": null,
+    "graphTooltip": 0,
     "hideControls": true,
     "id": null,
     "links": [
         {
+            "icon": "dashboard",
+            "includeVars": false,
+            "keepTime": true,
+            "tags": [
+                "QAN"
+            ],
+            "targetBlank": false,
+            "title": "Query Analytics",
+            "type": "link",
+            "url": "/graph/dashboard/db/_pmm-query-analytics"
+        },
+        {
             "asDropdown": true,
-            "icon": "external link",
-            "includeVars": true,
+            "includeVars": false,
             "keepTime": true,
             "tags": [
                 "OS"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "OS",
             "type": "dashboards"
         },
         {
             "asDropdown": true,
-            "icon": "external link",
-            "includeVars": true,
+            "includeVars": false,
             "keepTime": true,
             "tags": [
                 "MySQL"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "MySQL",
             "type": "dashboards"
         },
         {
             "asDropdown": true,
-            "icon": "external link",
+            "includeVars": false,
+            "keepTime": true,
+            "tags": [
+                "MongoDB"
+            ],
+            "targetBlank": false,
+            "title": "MongoDB",
+            "type": "dashboards"
+        },
+        {
+            "asDropdown": true,
             "includeVars": true,
             "keepTime": true,
             "tags": [
                 "HA"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "HA",
+            "type": "dashboards"
+        },
+        {
+            "asDropdown": true,
+            "includeVars": false,
+            "keepTime": true,
+            "tags": [
+                "Cloud"
+            ],
+            "targetBlank": false,
+            "title": "Cloud",
+            "type": "dashboards"
+        },
+        {
+            "asDropdown": true,
+            "includeVars": false,
+            "keepTime": true,
+            "tags": [
+                "Insight"
+            ],
+            "targetBlank": false,
+            "title": "Insight",
+            "type": "dashboards"
+        },
+        {
+            "asDropdown": true,
+            "includeVars": false,
+            "keepTime": true,
+            "tags": [
+                "PMM"
+            ],
+            "targetBlank": false,
+            "title": "PMM",
             "type": "dashboards"
         }
     ],
-    "refresh": false,
+    "refresh": "1m",
     "rows": [
         {
             "collapse": false,
@@ -53,6 +107,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 0,
                     "editable": true,
@@ -85,6 +141,7 @@
                             "color": "#5195CE"
                         }
                     ],
+                    "spaceLength": 10,
                     "span": 12,
                     "stack": false,
                     "steppedLine": true,
@@ -116,6 +173,7 @@
                     "transparent": true,
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": false,
@@ -154,6 +212,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": null,
                     "editable": true,
@@ -180,6 +240,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
@@ -188,7 +249,8 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "(rate(mysql_global_status_wsrep_flow_control_paused_ns[$interval]) or irate(mysql_global_status_wsrep_flow_control_paused_ns[5m]))/1000000000 * on (instance) group_left mysql_galera_variables_info{wsrep_cluster_name=\"$cluster\"}",
+                            "expr": "clamp_max((rate(mysql_global_status_wsrep_flow_control_paused_ns[$interval]) or irate(mysql_global_status_wsrep_flow_control_paused_ns[5m]))/1000000000 * on (instance) group_left mysql_galera_variables_info{wsrep_cluster_name=\"$cluster\"},1)",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "{{ instance }}",
@@ -209,6 +271,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -216,6 +279,7 @@
                     },
                     "yaxes": [
                         {
+                            "decimals": 0,
                             "format": "percentunit",
                             "logBase": 1,
                             "max": 1,
@@ -227,13 +291,15 @@
                             "logBase": 1,
                             "max": null,
                             "min": 0,
-                            "show": true
+                            "show": false
                         }
                     ]
                 },
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": null,
                     "editable": true,
@@ -260,6 +326,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
@@ -289,6 +356,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -326,6 +394,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": null,
                     "editable": true,
@@ -353,6 +423,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": true,
                     "steppedLine": false,
@@ -382,6 +453,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -407,6 +479,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": null,
                     "editable": true,
@@ -434,6 +508,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": true,
                     "steppedLine": false,
@@ -463,6 +538,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -500,6 +576,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": null,
                     "editable": true,
@@ -526,6 +604,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
@@ -555,6 +634,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -580,6 +660,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": null,
                     "editable": true,
@@ -606,6 +688,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
@@ -635,6 +718,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -672,6 +756,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": null,
                     "editable": true,
@@ -698,6 +784,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
@@ -727,6 +814,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -752,6 +840,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": null,
                     "editable": true,
@@ -778,6 +868,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
@@ -807,6 +898,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -844,6 +936,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": null,
                     "editable": true,
@@ -871,6 +965,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
@@ -900,6 +995,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -925,6 +1021,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": null,
                     "editable": true,
@@ -952,6 +1050,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
@@ -981,6 +1080,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -1010,10 +1110,282 @@
             "showTitle": false,
             "title": "Writeset",
             "titleSize": "h6"
+        },
+        {
+            "collapse": false,
+            "height": 250,
+            "panels": [
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "fill": 2,
+                    "id": 54,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "show": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "span": 6,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "expr": "mysql_global_status_wsrep_flow_control_interval_low * on (instance) group_left mysql_galera_variables_info{wsrep_cluster_name=\"$cluster\"}",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "{{instance}}",
+                            "refId": "A"
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "FC Trigger Low Llimit",
+                    "tooltip": {
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": "0",
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": false
+                        }
+                    ]
+                },
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "fill": 2,
+                    "id": 55,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "show": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "span": 6,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "expr": "mysql_global_status_wsrep_flow_control_interval_high * on (instance) group_left mysql_galera_variables_info{wsrep_cluster_name=\"$cluster\"}",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "{{instance}}",
+                            "refId": "A"
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "FC Trigger High Llimit",
+                    "tooltip": {
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": "0",
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": false
+                        }
+                    ]
+                }
+            ],
+            "repeat": null,
+            "repeatIteration": null,
+            "repeatRowId": null,
+            "showTitle": false,
+            "title": "Dashboard Row",
+            "titleSize": "h6"
+        },
+        {
+            "collapse": false,
+            "height": 250,
+            "panels": [
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "fill": 2,
+                    "id": 56,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "rightSide": true,
+                        "show": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "span": 12,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "expr": "mysql_global_status_wsrep_ist_receive_seqno_start * on (instance) group_left mysql_galera_variables_info{wsrep_cluster_name=\"$cluster\"}",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "{{instance}} first",
+                            "refId": "A"
+                        },
+                        {
+                            "expr": "mysql_global_status_wsrep_ist_receive_seqno_current * on (instance) group_left mysql_galera_variables_info{wsrep_cluster_name=\"$cluster\"}",
+                            "format": "time_series",
+                            "hide": false,
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "{{instance}} current",
+                            "refId": "B"
+                        },
+                        {
+                            "expr": "mysql_global_status_wsrep_ist_receive_seqno_end * on (instance) group_left mysql_galera_variables_info{wsrep_cluster_name=\"$cluster\"}",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "{{instance}} last",
+                            "refId": "C"
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Sequence numbers of transactions",
+                    "tooltip": {
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": "0",
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        }
+                    ]
+                }
+            ],
+            "repeat": null,
+            "repeatIteration": null,
+            "repeatRowId": null,
+            "showTitle": false,
+            "title": "Dashboard Row",
+            "titleSize": "h6"
         }
     ],
-    "schemaVersion": 13,
-    "sharedCrosshair": true,
+    "schemaVersion": 14,
     "style": "dark",
     "tags": [
         "Percona",
@@ -1084,8 +1456,29 @@
                 "type": "interval"
             },
             {
+                "allValue": null,
+                "current": {},
+                "datasource": "Prometheus",
+                "hide": 2,
+                "includeAll": true,
+                "label": "Instance",
+                "multi": true,
+                "name": "instances",
+                "options": [],
+                "query": "label_values(mysql_global_status_wsrep_local_state, instance)",
+                "refresh": 1,
+                "regex": "",
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            },
+            {
                 "allFormat": "glob",
                 "allValue": null,
+                "current": {},
                 "datasource": "Prometheus",
                 "hide": 0,
                 "includeAll": false,
@@ -1093,14 +1486,17 @@
                 "multi": false,
                 "multiFormat": "regex values",
                 "name": "cluster",
-                "query": "label_values(mysql_galera_variables_info, wsrep_cluster_name)",
+                "options": [],
+                "query": "label_values(mysql_galera_variables_info{instance=~\"$instances\"}, wsrep_cluster_name)",
                 "refresh": 1,
                 "refresh_on_load": false,
                 "regex": "",
                 "sort": 1,
                 "tagValuesQuery": null,
+                "tags": [],
                 "tagsQuery": null,
-                "type": "query"
+                "type": "query",
+                "useTags": false
             }
         ]
     },
@@ -1141,5 +1537,5 @@
     },
     "timezone": "browser",
     "title": "PXC/Galera Cluster Overview",
-    "version": 0
+    "version": 1
 }

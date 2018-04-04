@@ -1,0 +1,25 @@
+# see CONTRIBUTING.md
+---
+version: '3'
+services:
+  pmm-data:
+    container_name: pmm-data
+    image: percona/pmm-server:latest
+    volumes:
+      - "/opt/prometheus/data"
+      - "/opt/consul-data"
+      - "/var/lib/mysql"
+      - "/var/lib/grafana"
+  pmm-server:
+    container_name: pmm-server
+    image: percona/pmm-server:latest
+    volumes:
+      - "/opt/prometheus/data"
+      - "/opt/consul-data"
+      - "/var/lib/mysql"
+      - "/var/lib/grafana"
+    ports:
+      - "80:80"
+    restart: always
+    depends_on:
+      - pmm-data

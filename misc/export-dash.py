@@ -8,7 +8,7 @@ import requests
 HOST = 'https://pmmdemo.percona.com/graph'
 API_KEY = '***'
 
-DIR = 'dashboards/'
+DIR = 'pmm-app/src/dashboards/'
 TEMPLATE_VARS = ['host', 'device', 'mountpoint', 'proxysql', 'hostgroup', 'cluster', 'instance', 'replset']
 
 def main():
@@ -43,8 +43,8 @@ def dash_cleanup(a):
         a['templating']['list'][i]['datasource'] = 'Prometheus'
         if 'Amazon RDS' in a['title']:
             a['templating']['list'][i]['datasource'] = 'CloudWatch'
- 
-        if e['name'] in TEMPLATE_VARS: 
+
+        if e['name'] in TEMPLATE_VARS:
             if 'options' in a['templating']['list'][i]:
                 del a['templating']['list'][i]['options']
 

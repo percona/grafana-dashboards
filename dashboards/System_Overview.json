@@ -9,42 +9,96 @@
     "id": null,
     "links": [
         {
+            "icon": "dashboard",
+            "includeVars": false,
+            "keepTime": true,
+            "tags": [
+                "QAN"
+            ],
+            "targetBlank": false,
+            "title": "Query Analytics",
+            "type": "link",
+            "url": "/graph/dashboard/db/_pmm-query-analytics"
+        },
+        {
             "asDropdown": true,
-            "icon": "external link",
             "includeVars": true,
             "keepTime": true,
             "tags": [
                 "OS"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "OS",
             "type": "dashboards"
         },
         {
             "asDropdown": true,
-            "icon": "external link",
-            "includeVars": true,
+            "includeVars": false,
             "keepTime": true,
             "tags": [
                 "MySQL"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "MySQL",
             "type": "dashboards"
         },
         {
             "asDropdown": true,
-            "icon": "external link",
-            "includeVars": true,
+            "includeVars": false,
+            "keepTime": true,
+            "tags": [
+                "MongoDB"
+            ],
+            "targetBlank": false,
+            "title": "MongoDB",
+            "type": "dashboards"
+        },
+        {
+            "asDropdown": true,
+            "includeVars": false,
             "keepTime": true,
             "tags": [
                 "HA"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "HA",
+            "type": "dashboards"
+        },
+        {
+            "asDropdown": true,
+            "includeVars": false,
+            "keepTime": true,
+            "tags": [
+                "Cloud"
+            ],
+            "targetBlank": false,
+            "title": "Cloud",
+            "type": "dashboards"
+        },
+        {
+            "asDropdown": true,
+            "includeVars": false,
+            "keepTime": true,
+            "tags": [
+                "Insight"
+            ],
+            "targetBlank": false,
+            "title": "Insight",
+            "type": "dashboards"
+        },
+        {
+            "asDropdown": true,
+            "includeVars": false,
+            "keepTime": true,
+            "tags": [
+                "PMM"
+            ],
+            "targetBlank": false,
+            "title": "PMM",
             "type": "dashboards"
         }
     ],
+    "refresh": "1m",
     "rows": [
         {
             "collapse": false,
@@ -107,12 +161,15 @@
                         "lineColor": "rgb(31, 120, 193)",
                         "show": false
                     },
+                    "tableColumn": "",
                     "targets": [
                         {
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "node_time{instance=\"$host\"} - node_boot_time{instance=\"$host\"}",
+                            "expr": "(node_time{instance=\"$host\"} - node_boot_time{instance=\"$host\"}) or (time() - node_boot_time{instance=\"$host\"})",
+                            "format": "time_series",
+                            "hide": false,
                             "interval": "5m",
                             "intervalFactor": 1,
                             "legendFormat": "",
@@ -185,9 +242,11 @@
                         "lineColor": "rgb(31, 120, 193)",
                         "show": false
                     },
+                    "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "count(node_cpu{mode=\"user\", instance=\"$host\"})",
+                            "expr": "count(node_cpu{mode=\"user\", instance=\"$host\"}) or count(rdsosmetrics_General_numVCPUs)",
+                            "format": "time_series",
                             "interval": "5m",
                             "intervalFactor": 1,
                             "refId": "A",
@@ -264,6 +323,7 @@
                         "lineColor": "rgb(31, 120, 193)",
                         "show": false
                     },
+                    "tableColumn": "",
                     "targets": [
                         {
                             "expr": "node_memory_MemTotal{instance=\"$host\"}",
@@ -343,6 +403,7 @@
                         "lineColor": "rgb(31, 120, 193)",
                         "show": true
                     },
+                    "tableColumn": "",
                     "targets": [
                         {
                             "calculatedInterval": "10m",
@@ -380,6 +441,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": null,
                     "editable": true,
@@ -414,6 +477,7 @@
                             "color": "#E0752D"
                         }
                     ],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
@@ -445,6 +509,7 @@
                     "transparent": false,
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -471,6 +536,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": null,
                     "editable": true,
@@ -527,6 +594,7 @@
                             "stack": false
                         }
                     ],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": true,
                     "steppedLine": false,
@@ -584,6 +652,7 @@
                     "transparent": false,
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -621,6 +690,7 @@
             "panels": [
                 {
                     "aliasColors": {
+                        "Max Core Utilization": "#bf1b00",
                         "idle": "#806EB7",
                         "iowait": "#E24D42",
                         "nice": "#1F78C1",
@@ -629,11 +699,13 @@
                         "user": "#508642"
                     },
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": null,
                     "editable": true,
                     "error": false,
-                    "fill": 6,
+                    "fill": 5,
                     "grid": {},
                     "height": "",
                     "id": 2,
@@ -653,29 +725,43 @@
                         "values": true
                     },
                     "lines": true,
-                    "linewidth": 2,
+                    "linewidth": 1,
                     "links": [],
                     "nullPointMode": "null",
                     "percentage": false,
                     "pointradius": 5,
                     "points": false,
                     "renderer": "flot",
-                    "seriesOverrides": [],
+                    "seriesOverrides": [
+                        {
+                            "alias": "Max Core Utilization",
+                            "lines": false,
+                            "pointradius": 1,
+                            "points": true,
+                            "stack": false
+                        }
+                    ],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": true,
                     "steppedLine": false,
                     "targets": [
                         {
-                            "calculatedInterval": "2s",
-                            "datasourceErrors": {},
-                            "errors": {},
-                            "expr": "sum(rate(node_cpu{instance=\"$host\", mode!=\"idle\"}[$interval])) by (mode)* 100 / count_scalar(node_cpu{mode=\"user\", instance=\"$host\"}) or sum(irate(node_cpu{instance=\"$host\", mode!=\"idle\"}[5m])) by (mode) * 100 / count_scalar(node_cpu{mode=\"user\", instance=\"$host\"})",
+                            "expr": "clamp_max(((avg by (mode) ( (clamp_max(rate(node_cpu{instance=\"$host\",mode!=\"idle\"}[$interval]),1)) or (clamp_max(irate(node_cpu{instance=\"$host\",mode!=\"idle\"}[5m]),1)) ))*100 or (avg_over_time(node_cpu_average{instance=~\"$host\", mode!=\"total\", mode!=\"idle\"}[$interval]) or avg_over_time(node_cpu_average{instance=~\"$host\", mode!=\"total\", mode!=\"idle\"}[5m]))),100)",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "{{ mode }}",
-                            "metric": "",
-                            "refId": "A",
-                            "step": 300
+                            "refId": "B"
+                        },
+                        {
+                            "expr": "clamp_max(max by () (sum  by (cpu) ( (clamp_max(rate(node_cpu{instance=\"$host\",mode!=\"idle\",mode!=\"iowait\"}[$interval]),1)) or (clamp_max(irate(node_cpu{instance=\"$host\",mode!=\"idle\",mode!=\"iowait\"}[5m]),1)) )),1)",
+                            "format": "time_series",
+                            "hide": true,
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Max Core Utilization",
+                            "refId": "C"
                         }
                     ],
                     "thresholds": [],
@@ -690,6 +776,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -697,25 +784,29 @@
                     },
                     "yaxes": [
                         {
+                            "decimals": 1,
                             "format": "percent",
                             "label": "",
                             "logBase": 1,
-                            "max": 100,
+                            "max": "100",
                             "min": 0,
                             "show": true
                         },
                         {
+                            "decimals": null,
                             "format": "short",
                             "logBase": 1,
                             "max": null,
                             "min": 0,
-                            "show": true
+                            "show": false
                         }
                     ]
                 },
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": null,
                     "editable": true,
@@ -747,6 +838,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": true,
                     "steppedLine": false,
@@ -817,6 +909,7 @@
                     "transparent": false,
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -861,6 +954,8 @@
                         "Normalized CPU Load": "#6ED0E0"
                     },
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 2,
                     "editable": true,
@@ -890,6 +985,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
@@ -898,7 +994,9 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "(avg_over_time(node_procs_running{instance=\"$host\"}[$interval])-1) / count_scalar(node_cpu{mode=\"user\", instance=\"$host\"})",
+                            "expr": "(avg_over_time(node_procs_running{instance=\"$host\"}[$interval])-1) / scalar(count(node_cpu{mode=\"user\", instance=\"$host\"})) or (avg_over_time(node_procs_running{instance=\"$host\"}[5m])-1) / scalar(count(node_cpu{mode=\"user\", instance=\"$host\"}))",
+                            "format": "time_series",
+                            "hide": false,
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Normalized CPU Load",
@@ -911,7 +1009,8 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "avg_over_time(node_procs_blocked{instance=\"$host\"}[$interval])",
+                            "expr": "avg_over_time(node_procs_blocked{instance=\"$host\"}[$interval]) or avg_over_time(node_procs_blocked{instance=\"$host\"}[5m])",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "IO Load ",
@@ -934,6 +1033,7 @@
                     "transparent": false,
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -960,6 +1060,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 2,
                     "editable": true,
@@ -992,6 +1094,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
@@ -1220,6 +1323,7 @@
                     "transparent": false,
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -1258,6 +1362,8 @@
                 {
                     "aliasColors": {},
                     "bars": true,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": null,
                     "editable": true,
@@ -1291,6 +1397,7 @@
                             "color": "#EF843C"
                         }
                     ],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
@@ -1322,6 +1429,7 @@
                     "transparent": false,
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -1348,6 +1456,8 @@
                 {
                     "aliasColors": {},
                     "bars": true,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": null,
                     "editable": true,
@@ -1387,6 +1497,7 @@
                             "color": "#6ED0E0"
                         }
                     ],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": true,
                     "steppedLine": false,
@@ -1431,6 +1542,7 @@
                     "transparent": false,
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -1469,6 +1581,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": null,
                     "editable": true,
@@ -1497,6 +1611,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
@@ -1506,6 +1621,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "rate(node_context_switches{instance=\"$host\"}[$interval]) or irate(node_context_switches{instance=\"$host\"}[5m])",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Context Switches",
@@ -1513,6 +1629,14 @@
                             "refId": "A",
                             "step": 300,
                             "target": ""
+                        },
+                        {
+                            "expr": "(rate(node_context_switches{instance=\"$host\"}[$interval]) or irate(node_context_switches{instance=\"$host\"}[5m])) / scalar(count(node_cpu{mode=\"user\", instance=\"$host\"}))",
+                            "format": "time_series",
+                            "intervalFactor": 1,
+                            "legendFormat": "Context Switches per Virtual CPU",
+                            "refId": "B",
+                            "step": 60
                         }
                     ],
                     "thresholds": [],
@@ -1528,6 +1652,7 @@
                     "transparent": false,
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -1535,7 +1660,7 @@
                     },
                     "yaxes": [
                         {
-                            "format": "none",
+                            "format": "short",
                             "label": "",
                             "logBase": 1,
                             "max": null,
@@ -1543,7 +1668,7 @@
                             "show": true
                         },
                         {
-                            "format": "none",
+                            "format": "short",
                             "logBase": 1,
                             "max": null,
                             "min": 0,
@@ -1554,6 +1679,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": null,
                     "editable": true,
@@ -1587,6 +1714,7 @@
                             "color": "#D683CE"
                         }
                     ],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
@@ -1618,6 +1746,7 @@
                     "transparent": false,
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -1656,6 +1785,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": null,
                     "editable": true,
@@ -1691,6 +1822,7 @@
                             "transform": "negative-Y"
                         }
                     ],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
@@ -1699,7 +1831,8 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "sum(rate(node_network_receive_bytes{instance=\"$host\", device!=\"lo\"}[$interval]) or irate(node_network_receive_bytes{instance=\"$host\", device!=\"lo\"}[5m]))",
+                            "expr": "sum(rate(node_network_receive_bytes{instance=\"$host\", device!=\"lo\"}[$interval])) or sum(irate(node_network_receive_bytes{instance=\"$host\", device!=\"lo\"}[5m])) or sum(max_over_time(rdsosmetrics_network_rx{instance=\"$host\"}[$interval])) or sum(max_over_time(rdsosmetrics_network_rx{instance=\"$host\"}[5m])) ",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Inbound",
@@ -1712,7 +1845,8 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "sum(rate(node_network_transmit_bytes{instance=\"$host\", device!=\"lo\"}[$interval]) or irate(node_network_transmit_bytes{instance=\"$host\", device!=\"lo\"}[5m]))",
+                            "expr": "sum(rate(node_network_transmit_bytes{instance=\"$host\", device!=\"lo\"}[$interval])) or sum(irate(node_network_transmit_bytes{instance=\"$host\", device!=\"lo\"}[5m])) or\nsum(max_over_time(rdsosmetrics_network_tx{instance=\"$host\"}[$interval])) or sum(max_over_time(rdsosmetrics_network_tx{instance=\"$host\"}[5m]))",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Outbound",
@@ -1735,6 +1869,7 @@
                     "transparent": false,
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -1761,6 +1896,8 @@
                 {
                     "aliasColors": {},
                     "bars": true,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": null,
                     "editable": true,
@@ -1791,6 +1928,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": true,
                     "steppedLine": false,
@@ -1799,7 +1937,9 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "sum(increase(node_network_receive_bytes{instance=\"$host\", device!=\"lo\"}[1h]))",
+                            "expr": "sum(increase(node_network_receive_bytes{instance=\"$host\", device!=\"lo\"}[1h])) or sum(increase(rdsosmetrics_network_rx{instance=\"$host\", device!=\"lo\"}[1h]))",
+                            "format": "time_series",
+                            "hide": false,
                             "interval": "1h",
                             "intervalFactor": 1,
                             "legendFormat": "Received",
@@ -1812,7 +1952,9 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "sum(increase(node_network_transmit_bytes{instance=\"$host\", device!=\"lo\"}[1h]))",
+                            "expr": "sum(increase(node_network_transmit_bytes{instance=\"$host\", device!=\"lo\"}[1h])) or sum(increase(rdsosmetrics_network_tx{instance=\"$host\", device!=\"lo\"}[1h]))",
+                            "format": "time_series",
+                            "hide": false,
                             "interval": "1h",
                             "intervalFactor": 1,
                             "legendFormat": "Sent",
@@ -1835,6 +1977,7 @@
                     "transparent": false,
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -1873,6 +2016,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": null,
                     "editable": true,
@@ -1912,6 +2057,7 @@
                             "color": "#AEA2E0"
                         }
                     ],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": true,
                     "steppedLine": false,
@@ -1956,6 +2102,7 @@
                     "transparent": false,
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -1982,6 +2129,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": null,
                     "editable": true,
@@ -2012,6 +2161,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
@@ -2023,7 +2173,7 @@
                             "expr": "rate(node_vmstat_pswpin{instance=\"$host\"}[$interval]) * 4096 or irate(node_vmstat_pswpin{instance=\"$host\"}[5m]) * 4096",
                             "interval": "$interval",
                             "intervalFactor": 1,
-                            "legendFormat": "Swap In",
+                            "legendFormat": "Swap In (Reads)",
                             "metric": "",
                             "refId": "A",
                             "step": 300,
@@ -2036,7 +2186,7 @@
                             "expr": "rate(node_vmstat_pswpout{instance=\"$host\"}[$interval]) * 4096 or irate(node_vmstat_pswpout{instance=\"$host\"}[5m]) * 4096",
                             "interval": "$interval",
                             "intervalFactor": 1,
-                            "legendFormat": "Swap Out",
+                            "legendFormat": "Swap Out (Writes)",
                             "metric": "",
                             "refId": "B",
                             "step": 300,
@@ -2056,6 +2206,7 @@
                     "transparent": false,
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -2094,6 +2245,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": null,
                     "editable": true,
@@ -2124,6 +2277,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
@@ -2133,6 +2287,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "rate(node_vmstat_pgpgin{instance=\"$host\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{instance=\"$host\"}[5m]) * 1024",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Page In",
@@ -2146,6 +2301,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "rate(node_vmstat_pgpgout{instance=\"$host\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{instance=\"$host\"}[5m]) * 1024",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Page Out",
@@ -2168,6 +2324,7 @@
                     "transparent": false,
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -2197,6 +2354,8 @@
                         "Limit": "#1F78C1"
                     },
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": null,
                     "editable": true,
@@ -2227,6 +2386,7 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
@@ -2236,6 +2396,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "node_filefd_maximum{instance=\"$host\"}",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Limit",
@@ -2249,6 +2410,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "node_filefd_allocated{instance=\"$host\"}",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Allocated",
@@ -2271,6 +2433,7 @@
                     "transparent": false,
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -2376,6 +2539,7 @@
             {
                 "allFormat": "glob",
                 "allValue": null,
+                "current": {},
                 "datasource": "Prometheus",
                 "hide": 0,
                 "includeAll": false,
@@ -2383,6 +2547,7 @@
                 "multi": false,
                 "multiFormat": "regex values",
                 "name": "host",
+                "options": [],
                 "query": "label_values(node_load1, instance)",
                 "refresh": 1,
                 "refresh_on_load": false,
@@ -2433,5 +2598,5 @@
     },
     "timezone": "browser",
     "title": "System Overview",
-    "version": 0
+    "version": 4
 }

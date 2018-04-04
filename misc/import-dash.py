@@ -11,7 +11,7 @@ API_KEY = os.getenv('IMPORT_DASH_API_KEY', '***')
 USERNAME = os.getenv('IMPORT_DASH_USERNAME')
 PASSWORD = os.getenv('IMPORT_DASH_PASSWORD')
 
-DIR = 'dashboards/'
+DIR = 'pmm-app/src/dashboards/'
 
 
 def main():
@@ -30,6 +30,16 @@ def main():
         f = open(DIR + file, 'r')
         dash = json.load(f)
         f.close()
+
+        # check for the most common merge error: duplicate row ids
+        ids = set()
+        for row in dash['rows']:
+            for panel in row['panels']:
+                id = panel['id']
+                if id in ids:
+                    print "Duplicate row id %d in %s" % (id, file)
+                    exit(1)
+                ids.add(id)
 
         data = {'dashboard': dash, 'overwrite': True}
         r = requests.post('%s/api/dashboards/db' % (HOST,), json=data, headers=headers, auth=auth)

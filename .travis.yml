@@ -1,23 +1,18 @@
 dist: trusty
 sudo: required
 
-# http://docs.grafana.org/installation/debian/
-# https://docs.travis-ci.com/user/installing-dependencies/
-before_script:
-  - curl https://packagecloud.io/gpg.key | sudo apt-key add -
-  - echo "deb https://packagecloud.io/grafana/stable/debian/ jessie main" | sudo tee -a /etc/apt/sources.list
-  - sudo apt-get update -q
-  - sudo apt-get install -y grafana
-  - sudo service grafana-server start
-  - pip install requests
+services:
+  - docker
 
-env:
-  IMPORT_DASH_HOST: http://127.0.0.1:3000
-  IMPORT_DASH_USERNAME: admin
-  IMPORT_DASH_PASSWORD: admin
+before_script:
+  - docker --version
+  - docker-compose --version
+  - docker-compose up -d
+
+  - sudo pip install --upgrade requests
 
 script:
-  - ./misc/import-dash.py
+  - make test
 
 notifications:
   slack:

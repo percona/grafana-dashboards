@@ -6,7 +6,6 @@ This is a set of Grafana dashboards for database and system monitoring using Pro
  * Cross Server Graphs
  * Disk Performance
  * Disk Space
- * MariaDB
  * MongoDB Cluster Summary
  * MongoDB Overview
  * MongoDB ReplSet
@@ -15,7 +14,7 @@ This is a set of Grafana dashboards for database and system monitoring using Pro
  * MongoDB MMAPv1
  * MySQL InnoDB Metrics
  * MySQL InnoDB Metrics Advanced
- * MySQL MyISAM Metrics
+ * MySQL MyISAM/Aria Metrics
  * MySQL Overview
  * MySQL Performance Schema
  * MySQL Query Response Time
