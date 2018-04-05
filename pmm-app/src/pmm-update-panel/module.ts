@@ -114,7 +114,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
      * Send request to check if update possible and re-init params
      */
     private checkForUpdate($scope, $http): void {
-        const linkRegExp = new RegExp('^\\h{1,}\\.\\d{1,2}\\.\\d{1,4}');
+        const linkRegExp = new RegExp('^\\d{1,}\\.\\d{1,2}\\.\\d{1,4}');
         $scope.isLoaderShown = true;
 
         $http({
