@@ -3,6 +3,8 @@
 import {MetricsPanelCtrl} from 'app/plugins/sdk';
 import AppEvents from 'app/core/app_events';
 
+import config from 'app/core/config';
+
 export class PanelCtrl extends MetricsPanelCtrl {
     /**
      * Urls to define panels templates
