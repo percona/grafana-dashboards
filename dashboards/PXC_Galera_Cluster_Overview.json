@@ -10,7 +10,7 @@
     "links": [
         {
             "icon": "dashboard",
-            "includeVars": false,
+            "includeVars": true,
             "keepTime": true,
             "tags": [
                 "QAN"
@@ -22,7 +22,7 @@
         },
         {
             "asDropdown": true,
-            "includeVars": false,
+            "includeVars": true,
             "keepTime": true,
             "tags": [
                 "OS"
@@ -33,7 +33,7 @@
         },
         {
             "asDropdown": true,
-            "includeVars": false,
+            "includeVars": true,
             "keepTime": true,
             "tags": [
                 "MySQL"
@@ -44,7 +44,7 @@
         },
         {
             "asDropdown": true,
-            "includeVars": false,
+            "includeVars": true,
             "keepTime": true,
             "tags": [
                 "MongoDB"
@@ -66,7 +66,7 @@
         },
         {
             "asDropdown": true,
-            "includeVars": false,
+            "includeVars": true,
             "keepTime": true,
             "tags": [
                 "Cloud"
@@ -77,7 +77,7 @@
         },
         {
             "asDropdown": true,
-            "includeVars": false,
+            "includeVars": true,
             "keepTime": true,
             "tags": [
                 "Insight"
@@ -88,7 +88,7 @@
         },
         {
             "asDropdown": true,
-            "includeVars": false,
+            "includeVars": true,
             "keepTime": true,
             "tags": [
                 "PMM"
@@ -1373,6 +1373,182 @@
                             "max": null,
                             "min": null,
                             "show": true
+                        }
+                    ]
+                }
+            ],
+            "repeat": null,
+            "repeatIteration": null,
+            "repeatRowId": null,
+            "showTitle": false,
+            "title": "Dashboard Row",
+            "titleSize": "h6"
+        },
+        {
+            "collapse": false,
+            "height": 250,
+            "panels": [
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "fill": 0,
+                    "id": 57,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "show": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [],
+                    "minSpan": 6,
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "span": 6,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "expr": "(rate(mysql_global_status_wsrep_replicated_bytes[$interval]) / rate(mysql_global_status_wsrep_replicated[$interval]) or irate(mysql_global_status_wsrep_replicated_bytes[5m]) / irate(mysql_global_status_wsrep_replicated[5m])) * on (instance) group_left mysql_galera_variables_info{wsrep_cluster_name=\"$cluster\"}",
+                            "format": "time_series",
+                            "hide": true,
+                            "intervalFactor": 2,
+                            "legendFormat": "{{instance}}",
+                            "refId": "A"
+                        },
+                        {
+                            "expr": "avg_over_time(mysql_global_status_wsrep_evs_repl_latency{aggregator=\"Average\"}[$interval]) * on (instance) group_left mysql_galera_variables_info{wsrep_cluster_name=\"$cluster\"}",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "{{instance}} - Latency Average",
+                            "refId": "B"
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Average Galera Replication Latency",
+                    "tooltip": {
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "s",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": "0",
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": false
+                        }
+                    ]
+                },
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "fill": 1,
+                    "id": 58,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "show": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": false,
+                    "linewidth": 1,
+                    "links": [],
+                    "minSpan": 6,
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 1,
+                    "points": true,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "span": 6,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "expr": "max_over_time(mysql_global_status_wsrep_evs_repl_latency{aggregator=\"Maximum\"}[$interval]) * on (instance) group_left mysql_galera_variables_info{wsrep_cluster_name=\"$cluster\"}",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "{{instance}} - Latency Maximum",
+                            "refId": "A"
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Maximum  Galera Replication Latency",
+                    "tooltip": {
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "s",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": "0",
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": false
                         }
                     ]
                 }
