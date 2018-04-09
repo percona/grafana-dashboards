@@ -9,7 +9,6 @@ export class PanelCtrl extends MetricsPanelCtrl {
     constructor($scope, $injector, templateSrv, $sce) {
 
         super($scope, $injector);
-
         $scope.qanParams = {
             'var-host': null,
             'from': null,
@@ -36,11 +35,11 @@ export class PanelCtrl extends MetricsPanelCtrl {
     link($scope, elem, $location, $window) {
         const frame = elem.find('iframe');
         const panel = elem.find('div.panel-container');
+        const panelContent = elem.find('div.panel-content');
         const bgcolor = $scope.qanParams.theme === 'light' ? '#ffffff' : '#141414';
         // TODO: investigate this workaround. Inside $window - CtrlPanel
         const location = $window.$injector.get('$location');
         const window = $window.$injector.get('$window');
-
         panel.css({
             'background-color': bgcolor,
             'border': 'none'
@@ -62,6 +61,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
                     const h = frame.contents().find('body').height() || 400;
                     frame.height(`${h + 100}px`);
                     panel.height(`${h + 150}px`);
+                    panelContent.height(`inherit`);
                 }, 100)
             )
         });
