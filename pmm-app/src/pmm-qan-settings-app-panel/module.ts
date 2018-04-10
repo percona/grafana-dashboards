@@ -1,6 +1,6 @@
 /// <reference path="../../headers/common.d.ts" />
 
-import {MetricsPanelCtrl} from 'app/plugins/sdk';
+import { MetricsPanelCtrl } from 'app/plugins/sdk';
 import config from 'app/core/config';
 
 export class PanelCtrl extends MetricsPanelCtrl {
