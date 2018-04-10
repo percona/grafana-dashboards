@@ -138,6 +138,62 @@ def set_unique_ids(dashboard):
 
     return dashboard
 
+def drop_some_internal_elements(dashboard):
+    for element in enumerate(dashboard.copy()):
+        if '__inputs' in element:
+            del dashboard['__inputs']
+        if '__requires' in element:
+            del dashboard['__requires']
+    return dashboard
+
+def set_hide_timepicker(dashboard):
+    """Set Timepicker Hiden."""
+    if 'timepicker' not in dashboard.keys():
+        return dashboard
+
+    if 'hidden' not in dashboard['timepicker'].keys():
+        add_item = {}
+        add_item['hidden'] = False 
+        for row_index, row in enumerate(dashboard['timepicker']):
+            add_item[row] = dashboard['timepicker'][row]
+        dashboard['timepicker'] = add_item
+    prompt = 'Hide Timepicker (conventional: **True**) [%s]: ' % (
+        dashboard['timepicker']['hidden']
+    )
+    user_input = raw_input(prompt)
+    if user_input:
+        if user_input == 'True':
+            dashboard['timepicker']['hidden'] = True
+        else:
+            dashboard['timepicker']['hidden'] = False
+    return dashboard
+
+
+def add_annotation(dashboard):
+    """Add PMM annotation."""
+    tag = "pmm_annotation"
+    prompt = 'Add default PMM annotation (conventional: **Yes**) [%s]: ' % (
+        "No",
+    )
+    user_input = raw_input(prompt)
+    if user_input:
+        if user_input == 'Yes':
+            for annotation in copy.deepcopy(dashboard['annotations']['list']):
+                dashboard['annotations']['list'].remove(annotation)
+            add_item = {
+                'builtIn': 1,
+                'datasource': "-- Grafana --",
+                'enable': True,
+                'hide': False,
+                'iconColor': "#e0752d",
+                'limit': 100,
+                'name': "PMM Annotations",
+                'showIn': 0,
+                'tags': [ tag ],
+                'type': "tags"
+            }
+            dashboard['annotations']['list'].append(add_item)
+    return dashboard
 
 def main():
     """Execute cleanups."""
@@ -145,8 +201,9 @@ def main():
         dashboard = json.loads(dashboard_file.read())
 
     # registered cleanupers.
-    CLEANUPERS = [set_title, set_time, set_timezone, set_default_refresh_intervals, set_refresh,
-                  add_links, set_hide_controls, set_unique_ids]
+    CLEANUPERS = [set_hide_timepicker]
+#    CLEANUPERS = [drop_some_internal_elements, set_title, set_time, set_timezone, set_default_refresh_intervals, set_refresh,
+#                  add_annotation, add_links, set_hide_controls, set_unique_ids]
 
     for func in CLEANUPERS:
         dashboard = func(dashboard)
