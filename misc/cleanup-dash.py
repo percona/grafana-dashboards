@@ -153,8 +153,8 @@ def set_hide_timepicker(dashboard):
 
     if 'hidden' not in dashboard['timepicker'].keys():
         add_item = {}
-        add_item['hidden'] = False 
-        for row_index, row in enumerate(dashboard['timepicker']):
+        add_item['hidden'] = False
+        for row in enumerate(dashboard['timepicker']):
             add_item[row] = dashboard['timepicker'][row]
         dashboard['timepicker'] = add_item
     prompt = 'Hide Timepicker (conventional: **True**) [%s]: ' % (
