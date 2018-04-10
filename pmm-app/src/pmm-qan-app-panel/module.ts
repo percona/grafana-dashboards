@@ -2,12 +2,13 @@
 
 import { MetricsPanelCtrl } from 'app/plugins/sdk';
 import config from 'app/core/config';
+// import $ from 'app/core/jquery_extended';
+
 
 export class PanelCtrl extends MetricsPanelCtrl {
     static template = `<iframe ng-src="{{trustSrc(url)}}" style="width: 100%; height: 400px; border: 0;" scrolling="no" />`;
 
     constructor($scope, $injector, templateSrv, $sce) {
-
         super($scope, $injector);
         $scope.qanParams = {
             'var-host': null,
@@ -32,6 +33,22 @@ export class PanelCtrl extends MetricsPanelCtrl {
         }, true);
     }
 
+    /**
+     * Work around for scrolling through iframe
+     * Grafana perfect scroll is broken for iframe and should be disabled for this case
+     * @param elem - qan app panel HTML element
+     * @returns {void, boolean}
+     */
+    disableGrafanaPerfectScroll(elem): void | boolean {
+        if (!elem || !elem[0]) return false;
+
+        const perfectScrollContainers = (<any>elem[0].ownerDocument.getElementsByClassName('ps'));
+        const rightScrollbarContainers = (<any>elem[0].ownerDocument.getElementsByClassName('ps__thumb-y'));
+
+        [].forEach.call(perfectScrollContainers, container => container.setAttribute('style', 'overflow: auto !important'));
+        [].forEach.call(rightScrollbarContainers, container => container.setAttribute('style', 'display: none !important'));
+    }
+
     link($scope, elem, $location, $window) {
         const frame = elem.find('iframe');
         const panel = elem.find('div.panel-container');
@@ -44,7 +61,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
             'background-color': bgcolor,
             'border': 'none'
         });
-
+        this.disableGrafanaPerfectScroll(elem);
         // init url
         // updated url
         $scope.$watch('qanParams', this.resetUrl.bind(this, $scope), true);

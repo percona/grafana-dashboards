@@ -1,6 +1,6 @@
 /// <reference path="../../headers/common.d.ts" />
 
-import { MetricsPanelCtrl } from 'app/plugins/sdk';
+import {MetricsPanelCtrl} from 'app/plugins/sdk';
 import config from 'app/core/config';
 
 export class PanelCtrl extends MetricsPanelCtrl {
@@ -26,22 +26,41 @@ export class PanelCtrl extends MetricsPanelCtrl {
 		setUrl();
 	}
 
-	link($scope, elem, attrs) {
-		const frame = elem.find('iframe');
-		const panel = elem.find('div.panel-container');
-		const bgcolor = $scope.qanParams.theme === 'light' ? '#ffffff' : '#141414';
-		panel.css({
-			'background-color': bgcolor,
-			'border': 'none'
-		});
-		const setHeight = () => {
-			const h = frame.contents().find('body').height() || 400;
-			frame.height(h + 100 + 'px');
-			panel.height(h + 150 + 'px');
-		};
+    /**
+     * Work around for scrolling through iframe
+     * Grafana perfect scroll is broken for iframe and should be disabled for this case
+     * @param elem - qan app panel HTML element
+     * @returns {void, boolean}
+     */
+    disableGrafanaPerfectScroll(elem): void | boolean {
+        if (!elem || !elem[0]) return false;
 
-		frame[0].onload = (event) => frame.contents().bind(
-			'DOMSubtreeModified', () => setTimeout(setHeight, 100)
-		);
-	}
+        const perfectScrollContainers = (<any>elem[0].ownerDocument.getElementsByClassName('ps'));
+        const rightScrollbarContainers = (<any>elem[0].ownerDocument.getElementsByClassName('ps__thumb-y'));
+
+        [].forEach.call(perfectScrollContainers, container => container.setAttribute('style', 'overflow: auto !important'));
+        [].forEach.call(rightScrollbarContainers, container => container.setAttribute('style', 'display: none !important'));
+    }
+
+	link($scope, elem, attrs) {
+        const frame = elem.find('iframe');
+        const panel = elem.find('div.panel-container');
+        const panelContent = elem.find('div.panel-content');
+        const bgcolor = $scope.qanParams.theme === 'light' ? '#ffffff' : '#141414';
+        panel.css({
+            'background-color': bgcolor,
+            'border': 'none'
+        });
+        this.disableGrafanaPerfectScroll(elem);
+
+        frame.on('load', () => {
+            frame.contents().bind('DOMSubtreeModified', () => setTimeout(() => {
+                    const h = frame.contents().find('body').height() || 400;
+                    frame.height(`${h + 100}px`);
+                    panel.height(`${h + 150}px`);
+                    panelContent.height(`inherit`);
+                }, 100)
+            )
+        })
+    }
 }
