@@ -168,7 +168,6 @@ def set_hide_timepicker(dashboard):
             dashboard['timepicker']['hidden'] = False
     return dashboard
 
-
 def add_annotation(dashboard):
     """Add PMM annotation."""
     tag = "pmm_annotation"
@@ -201,9 +200,8 @@ def main():
         dashboard = json.loads(dashboard_file.read())
 
     # registered cleanupers.
-    CLEANUPERS = [set_hide_timepicker]
-#    CLEANUPERS = [drop_some_internal_elements, set_title, set_time, set_timezone, set_default_refresh_intervals, set_refresh,
-#                  add_annotation, add_links, set_hide_controls, set_unique_ids]
+    CLEANUPERS = [set_hide_timepicker, drop_some_internal_elements, set_title, set_time, set_timezone, set_default_refresh_intervals, set_refresh,
+                  add_annotation, add_links, set_hide_controls, set_unique_ids]
 
     for func in CLEANUPERS:
         dashboard = func(dashboard)
