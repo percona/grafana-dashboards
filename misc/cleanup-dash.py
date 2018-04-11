@@ -146,6 +146,28 @@ def drop_some_internal_elements(dashboard):
             del dashboard['__requires']
     return dashboard
 
+def set_hide_timepicker(dashboard):
+    """Set Timepicker Hiden."""
+    if 'timepicker' not in dashboard.keys():
+        return dashboard
+
+    if 'hidden' not in dashboard['timepicker'].keys():
+        add_item = {}
+        add_item['hidden'] = False
+        for row in enumerate(dashboard['timepicker']):
+            add_item[row] = dashboard['timepicker'][row]
+        dashboard['timepicker'] = add_item
+    prompt = 'Hide Timepicker (conventional: **True**) [%s]: ' % (
+        dashboard['timepicker']['hidden']
+    )
+    user_input = raw_input(prompt)
+    if user_input:
+        if user_input == 'True':
+            dashboard['timepicker']['hidden'] = True
+        else:
+            dashboard['timepicker']['hidden'] = False
+    return dashboard
+
 def add_annotation(dashboard):
     """Add PMM annotation."""
     tag = "pmm_annotation"
@@ -178,7 +200,7 @@ def main():
         dashboard = json.loads(dashboard_file.read())
 
     # registered cleanupers.
-    CLEANUPERS = [drop_some_internal_elements, set_title, set_time, set_timezone, set_default_refresh_intervals, set_refresh,
+    CLEANUPERS = [set_hide_timepicker, drop_some_internal_elements, set_title, set_time, set_timezone, set_default_refresh_intervals, set_refresh,
                   add_annotation, add_links, set_hide_controls, set_unique_ids]
 
     for func in CLEANUPERS:
