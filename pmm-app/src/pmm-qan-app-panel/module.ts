@@ -32,7 +32,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
     }
 
     /**
-     * Work around for scrolling through iframe
+     * Workaround for scrolling through iframe
      * Grafana perfect scroll is broken for iframe and should be disabled for this case
      * @param elem - qan app panel HTML element
      * @returns {void, boolean}
@@ -55,11 +55,26 @@ export class PanelCtrl extends MetricsPanelCtrl {
         // TODO: investigate this workaround. Inside $window - CtrlPanel
         const location = $window.$injector.get('$location');
         const window = $window.$injector.get('$window');
+
         panel.css({
             'background-color': bgcolor,
             'border': 'none'
         });
+
         this.disableGrafanaPerfectScroll(elem);
+
+        $scope.ctrl.calculatePanelHeight = () => {
+            const h = frame.contents().find('body').height() || 400;
+            const documentH = (elem && elem[0]) ? elem[0].ownerDocument.height : h;
+
+            $scope.ctrl.containerHeight = documentH;
+            $scope.ctrl.height = documentH - 100;
+
+            frame.height(`${h + 100}px`);
+            panel.height(`${h + 150}px`);
+
+            panelContent.height(`inherit`);
+        };
         // init url
         // updated url
         $scope.$watch('qanParams', this.resetUrl.bind(this, $scope), true);
@@ -72,13 +87,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
                 this.reloadQuery(window, queryID, type)
             });
 
-            frame.contents().bind('DOMSubtreeModified', () => setTimeout(() => {
-                    const h = frame.contents().find('body').height() || 400;
-                    frame.height(`${h + 100}px`);
-                    panel.height(`${h + 150}px`);
-                    panelContent.height(`inherit`);
-                }, 100)
-            )
+            frame.contents().bind('DOMSubtreeModified', $scope.ctrl.calculatePanelHeight);
         });
     }
 
