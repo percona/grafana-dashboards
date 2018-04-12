@@ -5,26 +5,26 @@ import config from 'app/core/config';
 
 export class PanelCtrl extends MetricsPanelCtrl {
 
-    static template = `
+	static template = `
 		<iframe ng-src="{{ trustSrc(url) }}"
 			style="width: 100%; height: 400px; border: 0;" scrolling="no" />
 	`;
-    base_url = '/qan/sys-summary?var-host=';
+  base_url = '/qan/sys-summary?var-host=';
 
-    constructor($scope, $injector, templateSrv, $sce, $http) {
-        super($scope, $injector);
-        $scope.trustSrc = (src) => $sce.trustAsResourceUrl(src);
-        $scope.qanParams = {
-            'theme': config.bootData.user.lightTheme ? 'light' : 'dark'
-        };
+	constructor($scope, $injector, templateSrv, $sce, $http) {
+		super($scope, $injector);
+		$scope.trustSrc = (src) => $sce.trustAsResourceUrl(src);
+		$scope.qanParams = {
+			'theme': config.bootData.user.lightTheme ? 'light' : 'dark'
+		};
 
-        const setUrl = () => { // translates Grafana's variables into iframe's URL;
-            $scope.url = this.base_url + templateSrv.variables[0].current.value;
-            $scope.url += '&theme=' + $scope.qanParams.theme;
-        };
-        $scope.$root.onAppEvent('template-variable-value-updated', setUrl);
-        setUrl();
-    }
+		const setUrl = () => { // translates Grafana's variables into iframe's URL;
+			$scope.url = this.base_url + templateSrv.variables[0].current.value;
+			$scope.url += '&theme=' + $scope.qanParams.theme;
+		};
+		$scope.$root.onAppEvent('template-variable-value-updated', setUrl);
+		setUrl();
+	}
 
     /**
      * Workaround for scrolling through iframe
@@ -42,9 +42,9 @@ export class PanelCtrl extends MetricsPanelCtrl {
         [].forEach.call(rightScrollbarContainers, container => container.setAttribute('style', 'display: none !important'));
     }
 
-    link($scope, elem) {
-        const frame = elem.find('iframe');
-        const panel = elem.find('div.panel-container');
+	link($scope, elem) {
+		const frame = elem.find('iframe');
+		const panel = elem.find('div.panel-container');
         const panelContent = elem.find('div.panel-content');
         const bgcolor = $scope.qanParams.theme === 'light' ? '#ffffff' : '#141414';
 
