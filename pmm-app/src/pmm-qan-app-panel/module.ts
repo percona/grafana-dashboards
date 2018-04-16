@@ -42,9 +42,11 @@ export class PanelCtrl extends MetricsPanelCtrl {
 
         const perfectScrollContainers = (<any>elem[0].ownerDocument.getElementsByClassName('ps'));
         const rightScrollbarContainers = (<any>elem[0].ownerDocument.getElementsByClassName('ps__thumb-y'));
+        const dropdownMenu = (<any>elem[0].ownerDocument.getElementsByClassName('dropdown-menu'));
 
         [].forEach.call(perfectScrollContainers, container => container.setAttribute('style', 'overflow: auto !important'));
         [].forEach.call(rightScrollbarContainers, container => container.setAttribute('style', 'display: none !important'));
+        [].forEach.call(dropdownMenu, container => container.setAttribute('style', 'z-index: 1001'));
     }
 
     link($scope, elem, $location, $window) {

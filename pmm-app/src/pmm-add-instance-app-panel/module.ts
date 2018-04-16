@@ -26,10 +26,17 @@ export class PanelCtrl extends MetricsPanelCtrl {
 		const frame = elem.find('iframe');
 		const panel = elem.find('div.panel-container');
 		const bgcolor = $scope.qanParams.theme === 'light' ? '#ffffff' : '#141414';
+		const dropdownMenu = (<any>elem[0].ownerDocument.getElementsByClassName('dropdown-menu'));
+
 		panel.css({
 			'background-color': bgcolor,
 			'border': 'none'
 		});
+
+        if (elem || elem[0]) {
+            [].forEach.call(dropdownMenu, container => container.setAttribute('style', 'z-index: 1001'));
+        }
+
 		const setHeight = () => {
 			const h = frame.contents().find('body').height() || 400;
 			frame.height(h + 100 + 'px');
