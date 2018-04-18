@@ -82,6 +82,9 @@ export class PanelCtrl extends MetricsPanelCtrl {
             modalScope.errorMessage = newState.errorMessage;
             modalScope.version = newState.version;
         });
+        modalScope.reloadAfterUpdate = () => {
+          location.reload();
+        };
 
         $scope.isLoaderShown = true;
         AppEvents.emit('show-modal', {
@@ -98,6 +101,10 @@ export class PanelCtrl extends MetricsPanelCtrl {
         });
     }
 
+    /**
+     * Show error message if update is fail
+     * @param message - kind of error message
+     */
     public displayError($scope, message) {
         $scope.isLoaderShown = false;
         $scope.isChecked = true;
