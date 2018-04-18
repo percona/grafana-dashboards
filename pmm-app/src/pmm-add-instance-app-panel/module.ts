@@ -33,9 +33,9 @@ export class PanelCtrl extends MetricsPanelCtrl {
 			'border': 'none'
 		});
 
-        if (elem || elem[0]) {
-            [].forEach.call(dropdownMenu, container => container.setAttribute('style', 'z-index: 1001'));
-        }
+        	if (elem || elem[0]) {
+            		[].forEach.call(dropdownMenu, container => container.setAttribute('style', 'z-index: 1001'));
+        	}
 
 		const setHeight = () => {
 			const h = frame.contents().find('body').height() || 400;
