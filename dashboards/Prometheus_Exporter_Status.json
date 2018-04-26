@@ -5,10 +5,15 @@
                 "builtIn": 1,
                 "datasource": "-- Grafana --",
                 "enable": true,
-                "hide": true,
-                "iconColor": "rgba(0, 211, 255, 1)",
-                "name": "Annotations & Alerts",
-                "type": "dashboard"
+                "hide": false,
+                "iconColor": "#e0752d",
+                "limit": 100,
+                "name": "PMM Annotations",
+                "showIn": 0,
+                "tags": [
+                    "pmm_annotation"
+                ],
+                "type": "tags"
             }
         ]
     },
@@ -37,7 +42,7 @@
             "tags": [
                 "OS"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "OS",
             "type": "dashboards"
         },
@@ -48,7 +53,7 @@
             "tags": [
                 "MySQL"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "MySQL",
             "type": "dashboards"
         },
@@ -59,7 +64,7 @@
             "tags": [
                 "MongoDB"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "MongoDB",
             "type": "dashboards"
         },
@@ -70,7 +75,7 @@
             "tags": [
                 "HA"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "HA",
             "type": "dashboards"
         },
@@ -81,7 +86,7 @@
             "tags": [
                 "Cloud"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "Cloud",
             "type": "dashboards"
         },
@@ -92,7 +97,7 @@
             "tags": [
                 "Insight"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "Insight",
             "type": "dashboards"
         },
@@ -103,11 +108,12 @@
             "tags": [
                 "PMM"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "PMM",
             "type": "dashboards"
         }
     ],
+    "refresh": "1m",
     "rows": [
         {
             "collapse": false,
@@ -443,7 +449,7 @@
                     "dashLength": 10,
                     "dashes": false,
                     "datasource": "Prometheus",
-                    "decimals": 2,
+                    "decimals": 0,
                     "editable": true,
                     "error": false,
                     "fill": 0,
@@ -517,10 +523,11 @@
                     },
                     "yaxes": [
                         {
+                            "decimals": 0,
                             "format": "none",
                             "label": "",
                             "logBase": 1,
-                            "max": null,
+                            "max": "1",
                             "min": 0,
                             "show": true
                         },
@@ -2903,7 +2910,7 @@
                 "multiFormat": "regex values",
                 "name": "host",
                 "options": [],
-                "query": "label_values(node_load1, instance)",
+                "query": "label_values({__name__=~\"node_load1|process_start_time_seconds\"}, instance)",
                 "refresh": 1,
                 "refresh_on_load": false,
                 "regex": "",
@@ -2923,6 +2930,7 @@
     "timepicker": {
         "collapse": false,
         "enable": true,
+        "hidden": false,
         "notice": false,
         "now": true,
         "refresh_intervals": [

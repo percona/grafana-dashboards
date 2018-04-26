@@ -1,6 +1,21 @@
 {
     "annotations": {
-        "list": []
+        "list": [
+            {
+                "builtIn": 1,
+                "datasource": "-- Grafana --",
+                "enable": true,
+                "hide": false,
+                "iconColor": "#e0752d",
+                "limit": 100,
+                "name": "PMM Annotations",
+                "showIn": 0,
+                "tags": [
+                    "pmm_annotation"
+                ],
+                "type": "tags"
+            }
+        ]
     },
     "editable": true,
     "gnetId": null,
@@ -27,7 +42,7 @@
             "tags": [
                 "OS"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "OS",
             "type": "dashboards"
         },
@@ -38,7 +53,7 @@
             "tags": [
                 "MySQL"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "MySQL",
             "type": "dashboards"
         },
@@ -49,7 +64,7 @@
             "tags": [
                 "MongoDB"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "MongoDB",
             "type": "dashboards"
         },
@@ -60,7 +75,7 @@
             "tags": [
                 "HA"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "HA",
             "type": "dashboards"
         },
@@ -71,7 +86,7 @@
             "tags": [
                 "Cloud"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "Cloud",
             "type": "dashboards"
         },
@@ -82,7 +97,7 @@
             "tags": [
                 "Insight"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "Insight",
             "type": "dashboards"
         },
@@ -93,11 +108,12 @@
             "tags": [
                 "PMM"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "PMM",
             "type": "dashboards"
         }
     ],
+    "refresh": "1m",
     "rows": [
         {
             "collapse": false,
@@ -166,7 +182,9 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "node_time{instance=\"$host\"} - node_boot_time{instance=\"$host\"}",
+                            "expr": "(node_time{instance=\"$host\"} - node_boot_time{instance=\"$host\"}) or (time() - node_boot_time{instance=\"$host\"})",
+                            "format": "time_series",
+                            "hide": false,
                             "interval": "5m",
                             "intervalFactor": 1,
                             "legendFormat": "",
@@ -242,7 +260,8 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "count(node_cpu{mode=\"user\", instance=\"$host\"})",
+                            "expr": "count(node_cpu{mode=\"user\", instance=\"$host\"}) or count(rdsosmetrics_General_numVCPUs)",
+                            "format": "time_series",
                             "interval": "5m",
                             "intervalFactor": 1,
                             "refId": "A",
@@ -743,7 +762,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "clamp_max((avg by (mode) ( (clamp_max(rate(node_cpu{instance=\"$host\",mode!=\"idle\"}[$interval]),1)) or (clamp_max(irate(node_cpu{instance=\"$host\",mode!=\"idle\"}[5m]),1)) )),1)",
+                            "expr": "clamp_max(((avg by (mode) ( (clamp_max(rate(node_cpu{instance=\"$host\",mode!=\"idle\"}[$interval]),1)) or (clamp_max(irate(node_cpu{instance=\"$host\",mode!=\"idle\"}[5m]),1)) ))*100 or (avg_over_time(node_cpu_average{instance=~\"$host\", mode!=\"total\", mode!=\"idle\"}[$interval]) or avg_over_time(node_cpu_average{instance=~\"$host\", mode!=\"total\", mode!=\"idle\"}[5m]))),100)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -753,6 +772,7 @@
                         {
                             "expr": "clamp_max(max by () (sum  by (cpu) ( (clamp_max(rate(node_cpu{instance=\"$host\",mode!=\"idle\",mode!=\"iowait\"}[$interval]),1)) or (clamp_max(irate(node_cpu{instance=\"$host\",mode!=\"idle\",mode!=\"iowait\"}[5m]),1)) )),1)",
                             "format": "time_series",
+                            "hide": true,
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Max Core Utilization",
@@ -780,10 +800,10 @@
                     "yaxes": [
                         {
                             "decimals": 1,
-                            "format": "percentunit",
+                            "format": "percent",
                             "label": "",
                             "logBase": 1,
-                            "max": "1",
+                            "max": "100",
                             "min": 0,
                             "show": true
                         },
@@ -793,7 +813,7 @@
                             "logBase": 1,
                             "max": null,
                             "min": 0,
-                            "show": true
+                            "show": false
                         }
                     ]
                 },
@@ -989,7 +1009,9 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "(avg_over_time(node_procs_running{instance=\"$host\"}[$interval])-1) / scalar(count(node_cpu{mode=\"user\", instance=\"$host\"}))",
+                            "expr": "(avg_over_time(node_procs_running{instance=\"$host\"}[$interval])-1) / scalar(count(node_cpu{mode=\"user\", instance=\"$host\"})) or (avg_over_time(node_procs_running{instance=\"$host\"}[5m])-1) / scalar(count(node_cpu{mode=\"user\", instance=\"$host\"}))",
+                            "format": "time_series",
+                            "hide": false,
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Normalized CPU Load",
@@ -1002,7 +1024,8 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "avg_over_time(node_procs_blocked{instance=\"$host\"}[$interval])",
+                            "expr": "avg_over_time(node_procs_blocked{instance=\"$host\"}[$interval]) or avg_over_time(node_procs_blocked{instance=\"$host\"}[5m])",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "IO Load ",
@@ -1823,7 +1846,8 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "sum(rate(node_network_receive_bytes{instance=\"$host\", device!=\"lo\"}[$interval]) or irate(node_network_receive_bytes{instance=\"$host\", device!=\"lo\"}[5m]))",
+                            "expr": "sum(rate(node_network_receive_bytes{instance=\"$host\", device!=\"lo\"}[$interval])) or sum(irate(node_network_receive_bytes{instance=\"$host\", device!=\"lo\"}[5m])) or sum(max_over_time(rdsosmetrics_network_rx{instance=\"$host\"}[$interval])) or sum(max_over_time(rdsosmetrics_network_rx{instance=\"$host\"}[5m])) ",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Inbound",
@@ -1836,7 +1860,8 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "sum(rate(node_network_transmit_bytes{instance=\"$host\", device!=\"lo\"}[$interval]) or irate(node_network_transmit_bytes{instance=\"$host\", device!=\"lo\"}[5m]))",
+                            "expr": "sum(rate(node_network_transmit_bytes{instance=\"$host\", device!=\"lo\"}[$interval])) or sum(irate(node_network_transmit_bytes{instance=\"$host\", device!=\"lo\"}[5m])) or\nsum(max_over_time(rdsosmetrics_network_tx{instance=\"$host\"}[$interval])) or sum(max_over_time(rdsosmetrics_network_tx{instance=\"$host\"}[5m]))",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Outbound",
@@ -1927,7 +1952,9 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "sum(increase(node_network_receive_bytes{instance=\"$host\", device!=\"lo\"}[1h]))",
+                            "expr": "sum(increase(node_network_receive_bytes{instance=\"$host\", device!=\"lo\"}[1h])) or sum(increase(rdsosmetrics_network_rx{instance=\"$host\", device!=\"lo\"}[1h]))",
+                            "format": "time_series",
+                            "hide": false,
                             "interval": "1h",
                             "intervalFactor": 1,
                             "legendFormat": "Received",
@@ -1940,7 +1967,9 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "sum(increase(node_network_transmit_bytes{instance=\"$host\", device!=\"lo\"}[1h]))",
+                            "expr": "sum(increase(node_network_transmit_bytes{instance=\"$host\", device!=\"lo\"}[1h])) or sum(increase(rdsosmetrics_network_tx{instance=\"$host\", device!=\"lo\"}[1h]))",
+                            "format": "time_series",
+                            "hide": false,
                             "interval": "1h",
                             "intervalFactor": 1,
                             "legendFormat": "Sent",
@@ -2273,6 +2302,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "rate(node_vmstat_pgpgin{instance=\"$host\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{instance=\"$host\"}[5m]) * 1024",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Page In",
@@ -2286,6 +2316,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "rate(node_vmstat_pgpgout{instance=\"$host\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{instance=\"$host\"}[5m]) * 1024",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Page Out",
@@ -2380,6 +2411,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "node_filefd_maximum{instance=\"$host\"}",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Limit",
@@ -2393,6 +2425,7 @@
                             "datasourceErrors": {},
                             "errors": {},
                             "expr": "node_filefd_allocated{instance=\"$host\"}",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Allocated",
@@ -2550,6 +2583,7 @@
     "timepicker": {
         "collapse": false,
         "enable": true,
+        "hidden": false,
         "notice": false,
         "now": true,
         "refresh_intervals": [
@@ -2580,5 +2614,5 @@
     },
     "timezone": "browser",
     "title": "System Overview",
-    "version": 2
+    "version": 4
 }

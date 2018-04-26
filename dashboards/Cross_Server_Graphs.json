@@ -1,9 +1,23 @@
 {
     "annotations": {
-        "list": []
+        "list": [
+            {
+                "builtIn": 1,
+                "datasource": "-- Grafana --",
+                "enable": true,
+                "hide": false,
+                "iconColor": "#e0752d",
+                "limit": 100,
+                "name": "PMM Annotations",
+                "showIn": 0,
+                "tags": [
+                    "pmm_annotation"
+                ],
+                "type": "tags"
+            }
+        ]
     },
     "editable": true,
-    "editiable": false,
     "gnetId": null,
     "graphTooltip": 0,
     "hideControls": true,
@@ -28,7 +42,7 @@
             "tags": [
                 "OS"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "OS",
             "type": "dashboards"
         },
@@ -39,7 +53,7 @@
             "tags": [
                 "MySQL"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "MySQL",
             "type": "dashboards"
         },
@@ -50,7 +64,7 @@
             "tags": [
                 "MongoDB"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "MongoDB",
             "type": "dashboards"
         },
@@ -61,7 +75,7 @@
             "tags": [
                 "HA"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "HA",
             "type": "dashboards"
         },
@@ -72,7 +86,7 @@
             "tags": [
                 "Cloud"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "Cloud",
             "type": "dashboards"
         },
@@ -83,7 +97,7 @@
             "tags": [
                 "Insight"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "Insight",
             "type": "dashboards"
         },
@@ -94,12 +108,12 @@
             "tags": [
                 "PMM"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "PMM",
             "type": "dashboards"
         }
     ],
-    "refresh": false,
+    "refresh": "1m",
     "rows": [
         {
             "collapse": false,
@@ -650,7 +664,8 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "sum(rate(node_network_receive_bytes{instance=~\"$host\", device!=\"lo\"}[$interval]) + rate(node_network_transmit_bytes{instance=~\"$host\", device!=\"lo\"}[$interval])) by (instance) or sum(irate(node_network_receive_bytes{instance=~\"$host\", device!=\"lo\"}[5m]) + irate(node_network_transmit_bytes{instance=~\"$host\", device!=\"lo\"}[5m])) by (instance)",
+                            "expr": "sum(rate(node_network_receive_bytes{instance=~\"$host\", device!=\"lo\"}[$interval]) + rate(node_network_transmit_bytes{instance=~\"$host\", device!=\"lo\"}[$interval])) by (instance) or sum(irate(node_network_receive_bytes{instance=~\"$host\", device!=\"lo\"}[5m]) + irate(node_network_transmit_bytes{instance=~\"$host\", device!=\"lo\"}[5m])) by (instance) or\nsum(max_over_time(rdsosmetrics_network_rx{instance=~\"$host\"}[$interval]) + max_over_time(rdsosmetrics_network_tx{instance=~\"$host\"}[$interval])) by (instance) or sum(max_over_time(rdsosmetrics_network_rx{instance=~\"$host\"}[5m]) + max_over_time(rdsosmetrics_network_tx{instance=~\"$host\"}[5m])) by (instance)",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "{{ instance }}",
@@ -895,6 +910,7 @@
     "timepicker": {
         "collapse": false,
         "enable": true,
+        "hidden": false,
         "notice": false,
         "now": true,
         "refresh_intervals": [
@@ -925,5 +941,5 @@
     },
     "timezone": "browser",
     "title": "Cross Server Graphs",
-    "version": 1
+    "version": 2
 }

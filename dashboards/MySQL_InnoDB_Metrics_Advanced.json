@@ -1,8 +1,22 @@
 {
     "annotations": {
-        "list": []
+        "list": [
+            {
+                "builtIn": 1,
+                "datasource": "-- Grafana --",
+                "enable": true,
+                "hide": false,
+                "iconColor": "#e0752d",
+                "limit": 100,
+                "name": "PMM Annotations",
+                "showIn": 0,
+                "tags": [
+                    "pmm_annotation"
+                ],
+                "type": "tags"
+            }
+        ]
     },
-    "editMode": false,
     "editable": true,
     "gnetId": null,
     "graphTooltip": 1,
@@ -28,7 +42,7 @@
             "tags": [
                 "OS"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "OS",
             "type": "dashboards"
         },
@@ -39,7 +53,7 @@
             "tags": [
                 "MySQL"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "MySQL",
             "type": "dashboards"
         },
@@ -50,7 +64,7 @@
             "tags": [
                 "MongoDB"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "MongoDB",
             "type": "dashboards"
         },
@@ -61,7 +75,7 @@
             "tags": [
                 "HA"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "HA",
             "type": "dashboards"
         },
@@ -72,7 +86,7 @@
             "tags": [
                 "Cloud"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "Cloud",
             "type": "dashboards"
         },
@@ -83,7 +97,7 @@
             "tags": [
                 "Insight"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "Insight",
             "type": "dashboards"
         },
@@ -94,11 +108,12 @@
             "tags": [
                 "PMM"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "PMM",
             "type": "dashboards"
         }
     ],
+    "refresh": "1m",
     "rows": [
         {
             "collapse": false,
@@ -1905,7 +1920,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "rate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_btree_total{instance=\"$host\"}[$interval])  or irate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_btree_total{instance=\"$host\"}[5m])",
+                            "expr": "rate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_btree_total{instance=\"$host\"}[$interval])+\nrate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_total{instance=\"$host\"}[$interval]) or\nirate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_btree_total{instance=\"$host\"}[5m])+\nirate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_total{instance=\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1915,7 +1930,7 @@
                             "step": 300
                         },
                         {
-                            "expr": "rate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_total{instance=\"$host\"}[5m])",
+                            "expr": "rate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_total{instance=\"$host\"}[$interval]) or\nirate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_total{instance=\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1924,7 +1939,7 @@
                             "step": 300
                         },
                         {
-                            "expr": "(rate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_total{instance=\"$host\"}[$interval]))/(rate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_total{instance=\"$host\"}[$interval])+rate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_btree_total{instance=\"$host\"}[$interval])) or (irate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_total{instance=\"$host\"}[5m]))/(irate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_total{instance=\"$host\"}[5m])+irate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_btree_total{instance=\"$host\"}[5m]))",
+                            "expr": "(rate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_total{instance=\"$host\"}[$interval]))/\n(rate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_total{instance=\"$host\"}[$interval])+\nrate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_btree_total{instance=\"$host\"}[$interval])) or\n(irate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_total{instance=\"$host\"}[5m]))/\n(irate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_total{instance=\"$host\"}[5m])+\nirate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_btree_total{instance=\"$host\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2442,6 +2457,7 @@
             {
                 "allFormat": "glob",
                 "allValue": null,
+                "current": {},
                 "datasource": "Prometheus",
                 "hide": 0,
                 "includeAll": false,
@@ -2449,6 +2465,7 @@
                 "multi": false,
                 "multiFormat": "regex values",
                 "name": "host",
+                "options": [],
                 "query": "label_values(mysql_up, instance)",
                 "refresh": 1,
                 "refresh_on_load": false,
@@ -2469,6 +2486,7 @@
     "timepicker": {
         "collapse": false,
         "enable": true,
+        "hidden": false,
         "notice": false,
         "now": true,
         "refresh_intervals": [

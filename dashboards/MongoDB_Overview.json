@@ -1,6 +1,21 @@
 {
     "annotations": {
-        "list": []
+        "list": [
+            {
+                "builtIn": 1,
+                "datasource": "-- Grafana --",
+                "enable": true,
+                "hide": false,
+                "iconColor": "#e0752d",
+                "limit": 100,
+                "name": "PMM Annotations",
+                "showIn": 0,
+                "tags": [
+                    "pmm_annotation"
+                ],
+                "type": "tags"
+            }
+        ]
     },
     "editable": true,
     "gnetId": null,
@@ -27,7 +42,7 @@
             "tags": [
                 "OS"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "OS",
             "type": "dashboards"
         },
@@ -38,7 +53,7 @@
             "tags": [
                 "MySQL"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "MySQL",
             "type": "dashboards"
         },
@@ -49,7 +64,7 @@
             "tags": [
                 "MongoDB"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "MongoDB",
             "type": "dashboards"
         },
@@ -60,7 +75,7 @@
             "tags": [
                 "HA"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "HA",
             "type": "dashboards"
         },
@@ -71,7 +86,7 @@
             "tags": [
                 "Cloud"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "Cloud",
             "type": "dashboards"
         },
@@ -82,7 +97,7 @@
             "tags": [
                 "Insight"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "Insight",
             "type": "dashboards"
         },
@@ -93,12 +108,12 @@
             "tags": [
                 "PMM"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "PMM",
             "type": "dashboards"
         }
     ],
-    "refresh": false,
+    "refresh": "1m",
     "rows": [
         {
             "collapse": false,
@@ -107,6 +122,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 1,
                     "description": "Shows how many times a command is executed per second on average during the selected interval.",
@@ -145,12 +162,14 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 12,
                     "stack": false,
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "rate(mongodb_mongod_op_counters_total{instance=\"$host\", type!=\"command\"}[$interval]) or irate(mongodb_mongod_op_counters_total{instance=\"$host\", type!=\"command\"}[5m])",
+                            "expr": "rate(mongodb_mongod_op_counters_total{instance=\"$host\", type!=\"command\"}[$interval]) or \nirate(mongodb_mongod_op_counters_total{instance=\"$host\", type!=\"command\"}[5m]) or \nrate(mongodb_mongos_op_counters_total{instance=\"$host\", type!=\"command\"}[$interval]) or \nirate(mongodb_mongos_op_counters_total{instance=\"$host\", type!=\"command\"}[5m])",
+                            "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -159,7 +178,8 @@
                             "step": 300
                         },
                         {
-                            "expr": "rate(mongodb_mongod_op_counters_repl_total{instance=\"$host\", type!~\"(command|query|getmore)\"}[$interval]) or irate(mongodb_mongod_op_counters_repl_total{instance=\"$host\", type!~\"(command|query|getmore)\"}[5m])",
+                            "expr": "rate(mongodb_mongod_op_counters_repl_total{instance=\"$host\", type!~\"(command|query|getmore)\"}[$interval]) or \nirate(mongodb_mongod_op_counters_repl_total{instance=\"$host\", type!~\"(command|query|getmore)\"}[5m]) or\nrate(mongodb_mongos_op_counters_repl_total{instance=\"$host\", type!~\"(command|query|getmore)\"}[$interval]) or \nirate(mongodb_mongos_op_counters_repl_total{instance=\"$host\", type!~\"(command|query|getmore)\"}[5m])",
+                            "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -168,7 +188,8 @@
                             "step": 300
                         },
                         {
-                            "expr": "rate(mongodb_mongod_metrics_ttl_deleted_documents_total{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_metrics_ttl_deleted_documents_total{instance=\"$host\"}[5m])",
+                            "expr": "rate(mongodb_mongod_metrics_ttl_deleted_documents_total{instance=\"$host\"}[$interval]) or \nirate(mongodb_mongod_metrics_ttl_deleted_documents_total{instance=\"$host\"}[5m]) or\nrate(mongodb_mongos_metrics_ttl_deleted_documents_total{instance=\"$host\"}[$interval]) or \nirate(mongodb_mongos_metrics_ttl_deleted_documents_total{instance=\"$host\"}[5m])",
+                            "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -190,6 +211,7 @@
                     "type": "graph",
                     "x-axis": true,
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -233,6 +255,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": null,
                     "description": "Keep in mind the hard limit on the maximum number of connections set by your distribution.",
@@ -269,12 +293,14 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "mongodb_mongod_connections{instance=\"$host\", state=\"current\"}",
+                            "expr": "mongodb_mongod_connections{instance=\"$host\", state=\"current\"} or\nmongodb_mongos_connections{instance=\"$host\", state=\"current\"}",
+                            "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -296,6 +322,7 @@
                     "type": "graph",
                     "x-axis": true,
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -327,6 +354,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": null,
                     "description": "Helps identify why connections are increasing. Shows active cursors compared to cursors being automatically killed after 10 minutes due to an application not closing the connection.",
@@ -366,12 +395,14 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "mongodb_mongod_metrics_cursor_open{instance=\"$host\"} or mongodb_mongod_cursors{instance=\"$host\"}",
+                            "expr": "mongodb_mongod_metrics_cursor_open{instance=\"$host\"} or\nmongodb_mongod_cursors{instance=\"$host\"} or\nmongodb_mongos_metrics_cursor_open{instance=\"$host\"} or \nmongodb_mongos_cursors{instance=\"$host\"}",
+                            "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -393,6 +424,7 @@
                     "type": "graph",
                     "x-axis": true,
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -436,6 +468,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": null,
                     "description": "When used in combination with 'Command Operations', this graph can help identify write amplification. For example, when one insert or update command actually inserts or updates hundreds, thousands, or even millions of documents.",
@@ -474,12 +508,14 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "rate(mongodb_mongod_metrics_document_total{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_metrics_document_total{instance=\"$host\"}[5m])",
+                            "expr": "rate(mongodb_mongod_metrics_document_total{instance=\"$host\"}[$interval]) or \nirate(mongodb_mongod_metrics_document_total{instance=\"$host\"}[5m])",
+                            "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -501,6 +537,7 @@
                     "type": "graph",
                     "x-axis": true,
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -532,6 +569,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": null,
                     "description": "Any number of queued operations for long periods of time is an indication of possible issues. Find the cause and fix it before requests get stuck in the queue.",
@@ -570,12 +609,14 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
                     "targets": [
                         {
                             "expr": "mongodb_mongod_global_lock_current_queue{instance=\"$host\"}",
+                            "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -597,6 +638,7 @@
                     "type": "graph",
                     "x-axis": true,
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -640,6 +682,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 2,
                     "editable": true,
@@ -674,12 +718,14 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
                     "targets": [
                         {
                             "expr": "sum(increase(mongodb_mongod_metrics_query_executor_total{instance=\"$host\", state=\"scanned_objects\"}[5m]))/sum(increase(mongodb_mongod_metrics_document_total{instance=\"$host\", state=\"returned\"}[5m]))",
+                            "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -689,6 +735,7 @@
                         },
                         {
                             "expr": "sum(increase(mongodb_mongod_metrics_query_executor_total{instance=\"$host\", state=\"scanned\"}[5m]))/sum(increase(mongodb_mongod_metrics_document_total{instance=\"$host\", state=\"returned\"}[5m]))",
+                            "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -710,6 +757,7 @@
                     "type": "graph",
                     "x-axis": true,
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -741,6 +789,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": null,
                     "editable": true,
@@ -771,12 +821,14 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
                     "targets": [
                         {
                             "expr": "rate(mongodb_mongod_metrics_query_executor_total{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_metrics_query_executor_total{instance=\"$host\"}[5m])",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "{{state}}",
@@ -786,6 +838,7 @@
                         },
                         {
                             "expr": "rate(mongodb_mongod_metrics_record_moves_total{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_metrics_record_moves_total{instance=\"$host\"}[5m])",
+                            "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "moved",
@@ -805,6 +858,7 @@
                     },
                     "type": "graph",
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -843,6 +897,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": null,
                     "description": "This is useful for write-heavy workloads to understand how long it takes to verify writes and how many concurrent writes are occurring.",
@@ -877,12 +933,14 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "rate(mongodb_mongod_metrics_get_last_error_wtime_total_milliseconds{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_metrics_get_last_error_wtime_total_milliseconds{instance=\"$host\"}[5m])",
+                            "expr": "rate(mongodb_mongod_metrics_get_last_error_wtime_total_milliseconds{instance=\"$host\"}[$interval]) or \nirate(mongodb_mongod_metrics_get_last_error_wtime_total_milliseconds{instance=\"$host\"}[5m]) or\nrate(mongodb_mongos_metrics_get_last_error_wtime_total_milliseconds{instance=\"$host\"}[$interval]) or \nirate(mongodb_mongos_metrics_get_last_error_wtime_total_milliseconds{instance=\"$host\"}[5m])",
+                            "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -904,6 +962,7 @@
                     "type": "graph",
                     "x-axis": true,
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -935,6 +994,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": null,
                     "description": "This is useful for write-heavy workloads to understand how long it takes to verify writes and how many concurrent writes are occurring.",
@@ -973,12 +1034,14 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "rate(mongodb_mongod_metrics_get_last_error_wtime_num_total{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_metrics_get_last_error_wtime_num_total{instance=\"$host\"}[5m])",
+                            "expr": "rate(mongodb_mongod_metrics_get_last_error_wtime_num_total{instance=\"$host\"}[$interval]) or \nirate(mongodb_mongod_metrics_get_last_error_wtime_num_total{instance=\"$host\"}[5m]) or\nrate(mongodb_mongos_metrics_get_last_error_wtime_num_total{instance=\"$host\"}[$interval]) or \nirate(mongodb_mongos_metrics_get_last_error_wtime_num_total{instance=\"$host\"}[5m])",
+                            "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -987,7 +1050,8 @@
                             "step": 300
                         },
                         {
-                            "expr": "rate(mongodb_mongod_metrics_get_last_error_wtimeouts_total{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_metrics_get_last_error_wtimeouts_total{instance=\"$host\"}[5m])",
+                            "expr": "rate(mongodb_mongod_metrics_get_last_error_wtimeouts_total{instance=\"$host\"}[$interval]) or\nirate(mongodb_mongod_metrics_get_last_error_wtimeouts_total{instance=\"$host\"}[5m]) or\nrate(mongodb_mongos_metrics_get_last_error_wtimeouts_total{instance=\"$host\"}[$interval]) or\nirate(mongodb_mongos_metrics_get_last_error_wtimeouts_total{instance=\"$host\"}[5m])",
+                            "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1009,6 +1073,7 @@
                     "type": "graph",
                     "x-axis": true,
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -1052,6 +1117,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": null,
                     "description": "Asserts are not important by themselves, but you can correlate spikes with other graphs.",
@@ -1091,12 +1158,14 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "rate(mongodb_mongod_asserts_total{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_asserts_total{instance=\"$host\"}[5m])",
+                            "expr": "rate(mongodb_mongod_asserts_total{instance=\"$host\"}[$interval]) or \nirate(mongodb_mongod_asserts_total{instance=\"$host\"}[5m]) or\nrate(mongodb_mongos_asserts_total{instance=\"$host\"}[$interval]) or \nirate(mongodb_mongos_asserts_total{instance=\"$host\"}[5m])",
+                            "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1118,6 +1187,7 @@
                     "type": "graph",
                     "x-axis": true,
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -1149,6 +1219,8 @@
                 {
                     "aliasColors": {},
                     "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": null,
                     "description": "Page faults indicate that requests are processed from disk either because an index is missing or there is not enough memory for the data set. Consider increasing memory or sharding out.",
@@ -1184,12 +1256,14 @@
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
+                    "spaceLength": 10,
                     "span": 6,
                     "stack": false,
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "rate(mongodb_mongod_extra_info_page_faults_total{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_extra_info_page_faults_total{instance=\"$host\"}[5m])",
+                            "expr": "rate(mongodb_mongod_extra_info_page_faults_total{instance=\"$host\"}[$interval]) or \nirate(mongodb_mongod_extra_info_page_faults_total{instance=\"$host\"}[5m]) or\nrate(mongodb_mongos_extra_info_page_faults_total{instance=\"$host\"}[$interval]) or \nirate(mongodb_mongos_extra_info_page_faults_total{instance=\"$host\"}[5m])",
+                            "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1211,6 +1285,7 @@
                     "type": "graph",
                     "x-axis": true,
                     "xaxis": {
+                        "buckets": null,
                         "mode": "time",
                         "name": null,
                         "show": true,
@@ -1321,6 +1396,7 @@
             {
                 "allFormat": "blob",
                 "allValue": null,
+                "current": {},
                 "datasource": "Prometheus",
                 "hide": 0,
                 "includeAll": true,
@@ -1328,6 +1404,7 @@
                 "multi": false,
                 "multiFormat": "glob",
                 "name": "cluster",
+                "options": [],
                 "query": "label_values(cluster)",
                 "refresh": 1,
                 "regex": "",
@@ -1341,6 +1418,7 @@
             {
                 "allFormat": "glob",
                 "allValue": null,
+                "current": {},
                 "datasource": "Prometheus",
                 "hide": 0,
                 "includeAll": false,
@@ -1348,7 +1426,8 @@
                 "multi": false,
                 "multiFormat": "glob",
                 "name": "host",
-                "query": "label_values(mongodb_mongod_connections{cluster=~\"$cluster\"}, instance)",
+                "options": [],
+                "query": "label_values({__name__=~\"mongodb_mongod_connections{cluster=~\\\"$cluster\\\"}|mongodb_up\"}, instance)",
                 "refresh": 1,
                 "regex": "",
                 "sort": 1,
@@ -1365,6 +1444,7 @@
         "to": "now"
     },
     "timepicker": {
+        "hidden": false,
         "now": true,
         "refresh_intervals": [
             "5s",

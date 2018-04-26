@@ -5,10 +5,15 @@
                 "builtIn": 1,
                 "datasource": "-- Grafana --",
                 "enable": true,
-                "hide": true,
-                "iconColor": "rgba(0, 211, 255, 1)",
-                "name": "Annotations & Alerts",
-                "type": "dashboard"
+                "hide": false,
+                "iconColor": "#e0752d",
+                "limit": 100,
+                "name": "PMM Annotations",
+                "showIn": 0,
+                "tags": [
+                    "pmm_annotation"
+                ],
+                "type": "tags"
             }
         ]
     },
@@ -37,7 +42,7 @@
             "tags": [
                 "OS"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "OS",
             "type": "dashboards"
         },
@@ -48,7 +53,7 @@
             "tags": [
                 "MySQL"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "MySQL",
             "type": "dashboards"
         },
@@ -59,7 +64,7 @@
             "tags": [
                 "MongoDB"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "MongoDB",
             "type": "dashboards"
         },
@@ -70,7 +75,7 @@
             "tags": [
                 "HA"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "HA",
             "type": "dashboards"
         },
@@ -81,7 +86,7 @@
             "tags": [
                 "Cloud"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "Cloud",
             "type": "dashboards"
         },
@@ -92,7 +97,7 @@
             "tags": [
                 "Insight"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "Insight",
             "type": "dashboards"
         },
@@ -103,12 +108,12 @@
             "tags": [
                 "PMM"
             ],
-            "targetBlank": true,
+            "targetBlank": false,
             "title": "PMM",
             "type": "dashboards"
         }
     ],
-    "refresh": false,
+    "refresh": "1m",
     "rows": [
         {
             "collapse": false,
@@ -4103,7 +4108,7 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "clamp_max(avg by (instance) (sum by (mode) ( (clamp_max(rate(node_cpu{instance=\"pmm-server\",mode!='idle',mode!=\"iowait\"}[$interval]),1)) or  (clamp_max(irate(node_cpu{instance=\"pmm-server\",mode!='idle',mode!=\"iowait\"}[5m]),1)) )),1) *100",
+                            "expr": "clamp_max(avg by (instance) (sum by () ( (clamp_max(rate(node_cpu{instance=\"pmm-server\",mode!='idle',mode!=\"iowait\"}[$interval]),1)) or  (clamp_max(irate(node_cpu{instance=\"pmm-server\",mode!='idle',mode!=\"iowait\"}[5m]),1)) )),1) *100",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4544,6 +4549,27 @@
             "showTitle": true,
             "title": "System Level Metrics",
             "titleSize": "h6"
+        },
+        {
+            "collapse": false,
+            "height": "100px",
+            "panels": [
+                {
+                    "content": "To simplify problem detection, you can download <a href=\"/managed/logs.zip\">server logs</a>. Please include this file if you are submitting a bug report   ",
+                    "id": 57,
+                    "links": [],
+                    "mode": "html",
+                    "span": 12,
+                    "title": "",
+                    "type": "text"
+                }
+            ],
+            "repeat": null,
+            "repeatIteration": null,
+            "repeatRowId": null,
+            "showTitle": true,
+            "title": "PMM Server Logs",
+            "titleSize": "h6"
         }
     ],
     "schemaVersion": 14,
@@ -4623,6 +4649,7 @@
         "to": "now"
     },
     "timepicker": {
+        "hidden": false,
         "now": true,
         "refresh_intervals": [
             "5s",

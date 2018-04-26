@@ -26,22 +26,57 @@ export class PanelCtrl extends MetricsPanelCtrl {
 		setUrl();
 	}
 
-	link($scope, elem, attrs) {
+	link($scope, elem) {
 		const frame = elem.find('iframe');
 		const panel = elem.find('div.panel-container');
-		const bgcolor = $scope.qanParams.theme === 'light' ? '#ffffff' : '#141414';
-		panel.css({
-			'background-color': bgcolor,
-			'border': 'none'
-		});
-		const setHeight = () => {
-			const h = frame.contents().find('body').height() || 400;
-			frame.height(h + 100 + 'px');
-			panel.height(h + 150 + 'px');
-		};
+        const panelContent = elem.find('div.panel-content');
+        const bgcolor = $scope.qanParams.theme === 'light' ? '#ffffff' : '#141414';
 
-		frame[0].onload = (event) => frame.contents().bind(
-			'DOMSubtreeModified', () => setTimeout(setHeight, 100)
-		);
-	}
+        panel.css({
+            'background-color': bgcolor,
+            'border': 'none'
+        });
+
+        this.disableGrafanaPerfectScroll(elem);
+        this.fixMenuVisibility(elem);
+
+        $scope.ctrl.calculatePanelHeight = () => {
+            const h = frame.contents().find('body').height() || 400;
+            const documentH = (elem && elem[0]) ? elem[0].ownerDocument.height : h;
+
+            $scope.ctrl.containerHeight = documentH;
+            $scope.ctrl.height = documentH - 100;
+
+            frame.height(`${h + 100}px`);
+            panel.height(`${h + 150}px`);
+
+            panelContent.height(`inherit`);
+        };
+
+        frame.on('load', () => frame.contents().bind('DOMSubtreeModified', $scope.ctrl.calculatePanelHeight))
+    }
+
+    /**
+     * Workaround for scrolling through iframe
+     * Grafana perfect scroll is broken for iframe and should be disabled for this case
+     * @param elem - qan app panel HTML element
+     * @returns {void, boolean}
+     */
+    private disableGrafanaPerfectScroll(elem): void | boolean {
+        if (!elem || !elem[0]) return false;
+
+        const perfectScrollContainers = (<any>elem[0].ownerDocument.getElementsByClassName('ps'));
+        const rightScrollbarContainers = (<any>elem[0].ownerDocument.getElementsByClassName('ps__thumb-y'));
+
+        [].forEach.call(perfectScrollContainers, container => container.setAttribute('style', 'overflow: auto !important'));
+        [].forEach.call(rightScrollbarContainers, container => container.setAttribute('style', 'display: none !important'));
+    }
+
+    private fixMenuVisibility(elem): void | boolean {
+        if (!elem || !elem[0]) return false;
+
+        const menu = (<any>elem[0].ownerDocument.getElementsByClassName('dropdown-menu'));
+
+        [].forEach.call(menu, e => e.setAttribute('style', 'z-index: 1001'));
+    }
 }
