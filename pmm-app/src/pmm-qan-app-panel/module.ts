@@ -31,22 +31,6 @@ export class PanelCtrl extends MetricsPanelCtrl {
         }, true);
     }
 
-    /**
-     * Workaround for scrolling through iframe
-     * Grafana perfect scroll is broken for iframe and should be disabled for this case
-     * @param elem - qan app panel HTML element
-     * @returns {void, boolean}
-     */
-    disableGrafanaPerfectScroll(elem): void | boolean {
-        if (!elem || !elem[0]) return false;
-
-        const perfectScrollContainers = (<any>elem[0].ownerDocument.getElementsByClassName('ps'));
-        const rightScrollbarContainers = (<any>elem[0].ownerDocument.getElementsByClassName('ps__thumb-y'));
-
-        [].forEach.call(perfectScrollContainers, container => container.setAttribute('style', 'overflow: auto !important'));
-        [].forEach.call(rightScrollbarContainers, container => container.setAttribute('style', 'display: none !important'));
-    }
-
     link($scope, elem, $location, $window) {
         const frame = elem.find('iframe');
         const panel = elem.find('div.panel-container');
@@ -62,6 +46,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
         });
 
         this.disableGrafanaPerfectScroll(elem);
+        this.fixMenuVisibility(elem);
 
         $scope.ctrl.calculatePanelHeight = () => {
             const h = frame.contents().find('body').height() || 400;
@@ -89,6 +74,30 @@ export class PanelCtrl extends MetricsPanelCtrl {
 
             frame.contents().bind('DOMSubtreeModified', $scope.ctrl.calculatePanelHeight);
         });
+    }
+
+    /**
+     * Workaround for scrolling through iframe
+     * Grafana perfect scroll is broken for iframe and should be disabled for this case
+     * @param elem - qan app panel HTML element
+     * @returns {void, boolean}
+     */
+    private disableGrafanaPerfectScroll(elem): void | boolean {
+        if (!elem || !elem[0]) return false;
+
+        const perfectScrollContainers = (<any>elem[0].ownerDocument.getElementsByClassName('ps'));
+        const rightScrollbarContainers = (<any>elem[0].ownerDocument.getElementsByClassName('ps__thumb-y'));
+
+        [].forEach.call(perfectScrollContainers, container => container.setAttribute('style', 'overflow: auto !important'));
+        [].forEach.call(rightScrollbarContainers, container => container.setAttribute('style', 'display: none !important'));
+    }
+
+    private fixMenuVisibility(elem): void | boolean {
+        if (!elem || !elem[0]) return false;
+
+        const menu = (<any>elem[0].ownerDocument.getElementsByClassName('dropdown-menu'));
+
+        [].forEach.call(menu, e => e.setAttribute('style', 'z-index: 1001'));
     }
 
     private reloadQuery(window, queryID = null, type = null) {
