@@ -1,0 +1,587 @@
+{
+    "annotations": {
+        "list": [
+            {
+                "builtIn": 1,
+                "datasource": "-- Grafana --",
+                "enable": true,
+                "hide": false,
+                "iconColor": "#e0752d",
+                "limit": 100,
+                "name": "PMM Annotations",
+                "showIn": 0,
+                "tags": [
+                    "pmm_annotation"
+                ],
+                "type": "tags"
+            }
+        ]
+    },
+    "editable": true,
+    "gnetId": null,
+    "graphTooltip": 0,
+    "id": null,
+    "iteration": 1525433816894,
+    "links": [
+        {
+            "icon": "dashboard",
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "QAN"
+            ],
+            "targetBlank": false,
+            "title": "Query Analytics",
+            "type": "link",
+            "url": "/graph/dashboard/db/_pmm-query-analytics"
+        },
+        {
+            "asDropdown": true,
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "OS"
+            ],
+            "targetBlank": false,
+            "title": "OS",
+            "type": "dashboards"
+        },
+        {
+            "asDropdown": true,
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "MySQL"
+            ],
+            "targetBlank": false,
+            "title": "MySQL",
+            "type": "dashboards"
+        },
+        {
+            "asDropdown": true,
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "MongoDB"
+            ],
+            "targetBlank": false,
+            "title": "MongoDB",
+            "type": "dashboards"
+        },
+        {
+            "asDropdown": true,
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "HA"
+            ],
+            "targetBlank": false,
+            "title": "HA",
+            "type": "dashboards"
+        },
+        {
+            "asDropdown": true,
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "Cloud"
+            ],
+            "targetBlank": false,
+            "title": "Cloud",
+            "type": "dashboards"
+        },
+        {
+            "asDropdown": true,
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "Insight"
+            ],
+            "targetBlank": false,
+            "title": "Insight",
+            "type": "dashboards"
+        },
+        {
+            "asDropdown": true,
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "PMM"
+            ],
+            "targetBlank": false,
+            "title": "PMM",
+            "type": "dashboards"
+        }
+    ],
+    "panels": [
+        {
+            "collapsed": false,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 0
+            },
+            "id": 255,
+            "panels": [],
+            "repeat": null,
+            "title": "",
+            "type": "row"
+        },
+        {
+            "content": "",
+            "gridPos": {
+                "h": 1,
+                "w": 12,
+                "x": 0,
+                "y": 1
+            },
+            "height": "50px",
+            "id": 12,
+            "links": [],
+            "minSpan": 4,
+            "mode": "markdown",
+            "repeat": "host",
+            "repeatDirection": "h",
+            "title": "$host",
+            "transparent": true,
+            "type": "text"
+        },
+        {
+            "collapsed": false,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 2
+            },
+            "id": 256,
+            "panels": [],
+            "repeat": null,
+            "title": "",
+            "type": "row"
+        },
+        {
+            "content": "<h1><i><font color=#5991A7><b><center>Commands</center></b></font></i></h1>",
+            "gridPos": {
+                "h": 2,
+                "w": 24,
+                "x": 0,
+                "y": 3
+            },
+            "height": "25",
+            "id": 15,
+            "links": [],
+            "mode": "html",
+            "title": "",
+            "transparent": true,
+            "type": "text"
+        },
+        {
+            "collapsed": false,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 5
+            },
+            "id": 258,
+            "panels": [],
+            "repeat": "command",
+            "title": "",
+            "type": "row"
+        },
+        {
+            "aliasColors": {
+                "insert": "#447ebc",
+                "select": "#447ebc"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": null,
+            "fill": 2,
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 0,
+                "y": 6
+            },
+            "id": 1,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "minSpan": 4,
+            "nullPointMode": "null",
+            "percentage": false,
+            "pointradius": 1,
+            "points": false,
+            "renderer": "flot",
+            "repeat": "host",
+            "seriesOverrides": [
+                {
+                    "alias": "/.*/",
+                    "color": "#614d93"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(mysql_global_status_commands_total{command=\"$command\", instance=\"$host\"}[$interval]) or irate(mysql_global_status_commands_total{command=\"$command\", instance=\"$host\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{command}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "$host - $command",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": null,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ]
+        },
+        {
+            "collapsed": false,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 13
+            },
+            "id": 259,
+            "panels": [],
+            "repeat": null,
+            "title": "",
+            "type": "row"
+        },
+        {
+            "content": "<h1><i><font color=#5991A7><b><center>Handlers</center></b></font></i></h1>",
+            "gridPos": {
+                "h": 2,
+                "w": 24,
+                "x": 0,
+                "y": 14
+            },
+            "height": "25",
+            "id": 16,
+            "links": [],
+            "mode": "html",
+            "title": "",
+            "transparent": true,
+            "type": "text"
+        },
+        {
+            "collapsed": false,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 16
+            },
+            "id": 261,
+            "panels": [],
+            "repeat": "handler",
+            "title": "",
+            "type": "row"
+        },
+        {
+            "aliasColors": {
+                "commit": "#614d93"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "fill": 2,
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 0,
+                "y": 17
+            },
+            "id": 9,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "minSpan": 4,
+            "nullPointMode": "null",
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "repeat": "host",
+            "seriesOverrides": [
+                {
+                    "alias": "/.*/",
+                    "color": "#806eb7"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(mysql_global_status_handlers_total{handler=\"$handler\",instance=\"$host\"}[$interval]) or irate(mysql_global_status_handlers_total{handler=\"$handler\",instance=\"$host\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{handler}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "$host - $handler",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 0,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ]
+        }
+    ],
+    "schemaVersion": 16,
+    "style": "dark",
+    "tags": [
+        "Percona",
+        "Insight"
+    ],
+    "templating": {
+        "list": [
+            {
+                "auto": true,
+                "auto_count": 200,
+                "auto_min": "1s",
+                "current": {
+                    "text": "auto",
+                    "value": "$__auto_interval_interval"
+                },
+                "hide": 0,
+                "label": "Interval",
+                "name": "interval",
+                "options": [
+                    {
+                        "selected": true,
+                        "text": "auto",
+                        "value": "$__auto_interval_interval"
+                    },
+                    {
+                        "selected": false,
+                        "text": "1s",
+                        "value": "1s"
+                    },
+                    {
+                        "selected": false,
+                        "text": "5s",
+                        "value": "5s"
+                    },
+                    {
+                        "selected": false,
+                        "text": "1m",
+                        "value": "1m"
+                    },
+                    {
+                        "selected": false,
+                        "text": "5m",
+                        "value": "5m"
+                    },
+                    {
+                        "selected": false,
+                        "text": "1h",
+                        "value": "1h"
+                    },
+                    {
+                        "selected": false,
+                        "text": "6h",
+                        "value": "6h"
+                    },
+                    {
+                        "selected": false,
+                        "text": "1d",
+                        "value": "1d"
+                    }
+                ],
+                "query": "1s,5s,1m,5m,1h,6h,1d",
+                "refresh": 2,
+                "type": "interval"
+            },
+            {
+                "allValue": null,
+                "current": {},
+                "datasource": "Prometheus",
+                "hide": 0,
+                "includeAll": false,
+                "label": "Host",
+                "multi": true,
+                "name": "host",
+                "options": [],
+                "query": "label_values(mysql_up, instance)",
+                "refresh": 1,
+                "regex": "",
+                "sort": 1,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allValue": "",
+                "current": {},
+                "datasource": "Prometheus",
+                "hide": 0,
+                "includeAll": true,
+                "label": "Command",
+                "multi": true,
+                "name": "command",
+                "options": [],
+                "query": "label_values(mysql_global_status_commands_total{instance=~\"$host\"},command)",
+                "refresh": 2,
+                "regex": "",
+                "sort": 1,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allValue": null,
+                "current": {},
+                "datasource": "Prometheus",
+                "hide": 0,
+                "includeAll": true,
+                "label": "Handler",
+                "multi": true,
+                "name": "handler",
+                "options": [],
+                "query": "label_values(mysql_global_status_handlers_total{instance=~\"$host\"},handler)",
+                "refresh": 1,
+                "regex": "",
+                "sort": 1,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            }
+        ]
+    },
+    "time": {
+        "from": "now-12h",
+        "to": "now"
+    },
+    "timepicker": {
+        "hidden": false,
+        "refresh_intervals": [
+            "5s",
+            "10s",
+            "30s",
+            "1m",
+            "5m",
+            "15m",
+            "30m",
+            "1h",
+            "2h",
+            "1d"
+        ],
+        "time_options": [
+            "5m",
+            "15m",
+            "1h",
+            "6h",
+            "12h",
+            "24h",
+            "2d",
+            "7d",
+            "30d"
+        ]
+    },
+    "timezone": "browser",
+    "title": "MySQL Command/Handler Counters Compare",
+    "uid": "000000170",
+    "version": 62
+}
