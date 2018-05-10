@@ -21,7 +21,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1525693692603,
+    "iteration": 1525938530198,
     "links": [
         {
             "icon": "dashboard",
@@ -138,7 +138,7 @@
             "datasource": "Prometheus",
             "fill": 2,
             "gridPos": {
-                "h": 6,
+                "h": 7,
                 "w": 12,
                 "x": 0,
                 "y": 1
@@ -151,6 +151,8 @@
                 "max": true,
                 "min": true,
                 "show": true,
+                "sort": "avg",
+                "sortDesc": true,
                 "total": false,
                 "values": true
             },
@@ -164,8 +166,9 @@
             "renderer": "flot",
             "seriesOverrides": [
                 {
-                    "alias": "Free",
-                    "yaxis": 1
+                    "alias": "Total",
+                    "color": "#bf1b00",
+                    "fill": 0
                 }
             ],
             "spaceLength": 10,
@@ -187,6 +190,14 @@
                     "intervalFactor": 1,
                     "legendFormat": "Used",
                     "refId": "B"
+                },
+                {
+                    "expr": "sum by (node) (node_memory_numa_MemFree{instance=\"$host\"}) + \nsum by (node) (node_memory_numa_MemUsed{instance=\"$host\"})",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Total",
+                    "refId": "C"
                 }
             ],
             "thresholds": [],
@@ -236,7 +247,7 @@
             "datasource": "Prometheus",
             "fill": 2,
             "gridPos": {
-                "h": 6,
+                "h": 7,
                 "w": 12,
                 "x": 12,
                 "y": 1
@@ -249,6 +260,8 @@
                 "max": true,
                 "min": true,
                 "show": true,
+                "sort": "avg",
+                "sortDesc": true,
                 "total": false,
                 "values": true
             },
@@ -337,7 +350,7 @@
                 "h": 6,
                 "w": 24,
                 "x": 0,
-                "y": 7
+                "y": 8
             },
             "id": 9,
             "legend": {
@@ -473,7 +486,7 @@
                 "h": 6,
                 "w": 12,
                 "x": 0,
-                "y": 13
+                "y": 14
             },
             "id": 27,
             "legend": {
@@ -483,6 +496,8 @@
                 "max": true,
                 "min": true,
                 "show": true,
+                "sort": "avg",
+                "sortDesc": true,
                 "total": false,
                 "values": true
             },
@@ -557,7 +572,7 @@
                 "h": 6,
                 "w": 12,
                 "x": 12,
-                "y": 13
+                "y": 14
             },
             "id": 29,
             "legend": {
@@ -567,6 +582,8 @@
                 "max": true,
                 "min": true,
                 "show": true,
+                "sort": "avg",
+                "sortDesc": true,
                 "total": false,
                 "values": true
             },
@@ -648,7 +665,7 @@
                 "h": 6,
                 "w": 12,
                 "x": 0,
-                "y": 19
+                "y": 20
             },
             "id": 16,
             "legend": {
@@ -658,6 +675,8 @@
                 "max": true,
                 "min": true,
                 "show": true,
+                "sort": "avg",
+                "sortDesc": true,
                 "total": false,
                 "values": true
             },
@@ -738,7 +757,7 @@
                 "h": 6,
                 "w": 12,
                 "x": 12,
-                "y": 19
+                "y": 20
             },
             "id": 18,
             "legend": {
@@ -748,6 +767,8 @@
                 "max": true,
                 "min": true,
                 "show": true,
+                "sort": "avg",
+                "sortDesc": true,
                 "total": false,
                 "values": true
             },
@@ -829,7 +850,7 @@
                 "h": 6,
                 "w": 12,
                 "x": 0,
-                "y": 25
+                "y": 26
             },
             "id": 41,
             "legend": {
@@ -840,6 +861,8 @@
                 "min": true,
                 "rightSide": false,
                 "show": true,
+                "sort": "avg",
+                "sortDesc": true,
                 "total": false,
                 "values": true
             },
@@ -929,7 +952,7 @@
                 "h": 6,
                 "w": 12,
                 "x": 12,
-                "y": 25
+                "y": 26
             },
             "id": 37,
             "legend": {
@@ -940,6 +963,8 @@
                 "min": true,
                 "rightSide": false,
                 "show": true,
+                "sort": "avg",
+                "sortDesc": true,
                 "total": false,
                 "values": true
             },
@@ -1029,7 +1054,7 @@
                 "h": 6,
                 "w": 24,
                 "x": 0,
-                "y": 31
+                "y": 32
             },
             "id": 39,
             "legend": {
@@ -1040,6 +1065,8 @@
                 "min": true,
                 "rightSide": true,
                 "show": true,
+                "sort": "avg",
+                "sortDesc": true,
                 "total": false,
                 "values": true
             },
@@ -1118,716 +1145,674 @@
             ]
         },
         {
-            "collapsed": true,
+            "collapsed": false,
             "gridPos": {
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 37
+                "y": 38
             },
             "id": 13,
-            "panels": [
-                {
-                    "aliasColors": {
-                        "Free": "#1f78c1",
-                        "Used": "#962d82"
-                    },
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "datasource": null,
-                    "fill": 2,
-                    "gridPos": {
-                        "h": 6,
-                        "w": 12,
-                        "x": 0,
-                        "y": 38
-                    },
-                    "id": 25,
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "max": true,
-                        "min": true,
-                        "show": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": true,
-                    "linewidth": 2,
-                    "links": [],
-                    "nullPointMode": "null",
-                    "percentage": false,
-                    "pointradius": 5,
-                    "points": false,
-                    "renderer": "flot",
-                    "scopedVars": {
-                        "node": {
-                            "selected": true,
-                            "text": "0",
-                            "value": "0"
-                        }
-                    },
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": false,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "expr": "node_memory_numa_MemFree{instance=\"$host\", node=\"$node\"}",
-                            "format": "time_series",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Free",
-                            "refId": "A"
-                        },
-                        {
-                            "expr": "sum by (node) (node_memory_numa_MemUsed{instance=\"$host\", node=\"$node\"})",
-                            "format": "time_series",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Used",
-                            "refId": "B"
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeShift": null,
-                    "title": "Size of Memory on Node $node",
-                    "tooltip": {
-                        "shared": true,
-                        "sort": 0,
-                        "value_type": "individual"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "format": "decbytes",
-                            "label": null,
-                            "logBase": 1,
-                            "max": null,
-                            "min": null,
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "label": null,
-                            "logBase": 1,
-                            "max": null,
-                            "min": null,
-                            "show": false
-                        }
-                    ]
-                },
-                {
-                    "aliasColors": {
-                        "Free": "#1f78c1",
-                        "Used": "#962d82"
-                    },
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "datasource": null,
-                    "fill": 2,
-                    "gridPos": {
-                        "h": 6,
-                        "w": 12,
-                        "x": 12,
-                        "y": 38
-                    },
-                    "id": 24,
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "max": true,
-                        "min": true,
-                        "show": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": true,
-                    "linewidth": 2,
-                    "links": [],
-                    "nullPointMode": "null",
-                    "percentage": false,
-                    "pointradius": 5,
-                    "points": false,
-                    "renderer": "flot",
-                    "scopedVars": {
-                        "node": {
-                            "selected": true,
-                            "text": "0",
-                            "value": "0"
-                        }
-                    },
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": true,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "expr": "(node_memory_numa_MemFree{instance=\"$host\", node=\"$node\"}) * 100 /\n(node_memory_numa_MemTotal{instance=\"$host\", node=\"$node\"})",
-                            "format": "time_series",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Free",
-                            "refId": "A"
-                        },
-                        {
-                            "expr": "(node_memory_numa_MemUsed{instance=\"$host\", node=\"$node\"}) * 100 /\n(node_memory_numa_MemTotal{instance=\"$host\", node=\"$node\"})",
-                            "format": "time_series",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Used",
-                            "refId": "B"
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeShift": null,
-                    "title": "Memory Usage on Node $node",
-                    "tooltip": {
-                        "shared": true,
-                        "sort": 0,
-                        "value_type": "individual"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "format": "percent",
-                            "label": null,
-                            "logBase": 1,
-                            "max": null,
-                            "min": null,
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "label": null,
-                            "logBase": 1,
-                            "max": null,
-                            "min": null,
-                            "show": false
-                        }
-                    ]
-                },
-                {
-                    "aliasColors": {
-                        "Free (device /dev/xvda1, ext4)": "#82B5D8",
-                        "Used (device /dev/xvda1, ext4)": "#BA43A9"
-                    },
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "datasource": "Prometheus",
-                    "decimals": 2,
-                    "editable": true,
-                    "error": false,
-                    "fill": 0,
-                    "grid": {},
-                    "gridPos": {
-                        "h": 6,
-                        "w": 24,
-                        "x": 0,
-                        "y": 44
-                    },
-                    "id": 14,
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "hideEmpty": false,
-                        "hideZero": false,
-                        "max": true,
-                        "min": true,
-                        "rightSide": true,
-                        "show": true,
-                        "sort": "avg",
-                        "sortDesc": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": true,
-                    "linewidth": 2,
-                    "links": [],
-                    "minSpan": 12,
-                    "nullPointMode": "null",
-                    "percentage": false,
-                    "pointradius": 5,
-                    "points": false,
-                    "renderer": "flot",
-                    "scopedVars": {
-                        "node": {
-                            "selected": true,
-                            "text": "0",
-                            "value": "0"
-                        }
-                    },
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": false,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "calculatedInterval": "2m",
-                            "datasourceErrors": {},
-                            "errors": {},
-                            "expr": "node_memory_numa_Active{instance=\"$host\", node=\"$node\"}",
-                            "format": "time_series",
-                            "hide": false,
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Active",
-                            "metric": "",
-                            "refId": "B",
-                            "step": 300
-                        },
-                        {
-                            "expr": "node_memory_numa_Inactive{instance=\"$host\", node=\"$node\"}",
-                            "format": "time_series",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Inactive",
-                            "refId": "A"
-                        },
-                        {
-                            "expr": "node_memory_numa_Dirty{instance=\"$host\", node=\"$node\"}",
-                            "format": "time_series",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Dirty",
-                            "refId": "C"
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeShift": null,
-                    "title": "Memory Statistics Node $node",
-                    "tooltip": {
-                        "msResolution": false,
-                        "shared": true,
-                        "sort": 0,
-                        "value_type": "individual"
-                    },
-                    "transparent": false,
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "format": "decbytes",
-                            "label": "",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": true
-                        },
-                        {
-                            "format": "bytes",
-                            "logBase": 1,
-                            "max": null,
-                            "min": null,
-                            "show": false
-                        }
-                    ]
-                },
-                {
-                    "aliasColors": {},
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "datasource": null,
-                    "fill": 2,
-                    "gridPos": {
-                        "h": 6,
-                        "w": 12,
-                        "x": 0,
-                        "y": 50
-                    },
-                    "id": 20,
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "max": true,
-                        "min": true,
-                        "show": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": true,
-                    "linewidth": 2,
-                    "links": [],
-                    "nullPointMode": "null",
-                    "percentage": false,
-                    "pointradius": 5,
-                    "points": false,
-                    "renderer": "flot",
-                    "scopedVars": {
-                        "node": {
-                            "selected": true,
-                            "text": "0",
-                            "value": "0"
-                        }
-                    },
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": false,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "expr": "node_memory_numa_Active_anon{instance=\"$host\",node=\"$node\"}",
-                            "format": "time_series",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Active",
-                            "refId": "A"
-                        },
-                        {
-                            "expr": "node_memory_numa_Inactive_anon{instance=\"$host\", node=\"$node\"}",
-                            "format": "time_series",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Inactive",
-                            "refId": "B"
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeShift": null,
-                    "title": "Anonymous Memory on Node $node",
-                    "tooltip": {
-                        "shared": true,
-                        "sort": 0,
-                        "value_type": "individual"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "format": "decbytes",
-                            "label": null,
-                            "logBase": 1,
-                            "max": null,
-                            "min": null,
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "label": null,
-                            "logBase": 1,
-                            "max": null,
-                            "min": null,
-                            "show": false
-                        }
-                    ]
-                },
-                {
-                    "aliasColors": {},
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "datasource": null,
-                    "fill": 2,
-                    "gridPos": {
-                        "h": 6,
-                        "w": 12,
-                        "x": 12,
-                        "y": 50
-                    },
-                    "id": 19,
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "max": true,
-                        "min": true,
-                        "show": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": true,
-                    "linewidth": 2,
-                    "links": [],
-                    "nullPointMode": "null",
-                    "percentage": false,
-                    "pointradius": 5,
-                    "points": false,
-                    "renderer": "flot",
-                    "scopedVars": {
-                        "node": {
-                            "selected": true,
-                            "text": "0",
-                            "value": "0"
-                        }
-                    },
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": false,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "expr": "sum by (node) (node_memory_numa_Active_file{instance=\"$host\", node=\"$node\"})",
-                            "format": "time_series",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Active",
-                            "refId": "A"
-                        },
-                        {
-                            "expr": "sum by (node) (node_memory_numa_Inactive_file{instance=\"$host\", node=\"$node\"})",
-                            "format": "time_series",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Inactive",
-                            "refId": "B"
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeShift": null,
-                    "title": "Pagecache Memory on Node $node",
-                    "tooltip": {
-                        "shared": true,
-                        "sort": 0,
-                        "value_type": "individual"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "format": "decbytes",
-                            "label": null,
-                            "logBase": 1,
-                            "max": null,
-                            "min": null,
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "label": null,
-                            "logBase": 1,
-                            "max": null,
-                            "min": null,
-                            "show": false
-                        }
-                    ]
-                },
-                {
-                    "aliasColors": {},
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "datasource": null,
-                    "description": "Memory allocated on this node while a process was running on it.",
-                    "fill": 2,
-                    "gridPos": {
-                        "h": 6,
-                        "w": 12,
-                        "x": 0,
-                        "y": 56
-                    },
-                    "id": 31,
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "max": true,
-                        "min": true,
-                        "show": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": true,
-                    "linewidth": 2,
-                    "links": [],
-                    "nullPointMode": "null",
-                    "percentage": false,
-                    "pointradius": 5,
-                    "points": false,
-                    "renderer": "flot",
-                    "scopedVars": {
-                        "node": {
-                            "selected": true,
-                            "text": "0",
-                            "value": "0"
-                        }
-                    },
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": false,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "expr": "rate(node_memory_numa_local_node_total{instance=\"$host\",node=\"$node\"}[$interval]) or\nirate(node_memory_numa_local_node_total{instance=\"$host\",node=\"$node\"}[$interval])",
-                            "format": "time_series",
-                            "intervalFactor": 1,
-                            "legendFormat": "Node $node",
-                            "refId": "A"
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeShift": null,
-                    "title": "Local Processes",
-                    "tooltip": {
-                        "shared": true,
-                        "sort": 0,
-                        "value_type": "individual"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "format": "ops",
-                            "label": null,
-                            "logBase": 1,
-                            "max": null,
-                            "min": null,
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "label": null,
-                            "logBase": 1,
-                            "max": null,
-                            "min": null,
-                            "show": false
-                        }
-                    ]
-                },
-                {
-                    "aliasColors": {},
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "datasource": null,
-                    "description": "Memory allocated on this node while a process was running on some other node.",
-                    "fill": 2,
-                    "gridPos": {
-                        "h": 6,
-                        "w": 12,
-                        "x": 12,
-                        "y": 56
-                    },
-                    "id": 33,
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "max": true,
-                        "min": true,
-                        "show": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": true,
-                    "linewidth": 2,
-                    "links": [],
-                    "nullPointMode": "null",
-                    "percentage": false,
-                    "pointradius": 5,
-                    "points": false,
-                    "renderer": "flot",
-                    "scopedVars": {
-                        "node": {
-                            "selected": true,
-                            "text": "0",
-                            "value": "0"
-                        }
-                    },
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": false,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "expr": "rate(node_memory_numa_other_node_total{instance=\"$host\", node=\"$node\"}[$interval]) or\nirate(node_memory_numa_other_node_total{instance=\"$host\", node=\"$node\"}[5m])",
-                            "format": "time_series",
-                            "intervalFactor": 1,
-                            "legendFormat": "Node $node",
-                            "refId": "A"
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeShift": null,
-                    "title": "Remote Processes",
-                    "tooltip": {
-                        "shared": true,
-                        "sort": 0,
-                        "value_type": "individual"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "format": "ops",
-                            "label": null,
-                            "logBase": 1,
-                            "max": null,
-                            "min": null,
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "label": null,
-                            "logBase": 1,
-                            "max": null,
-                            "min": null,
-                            "show": false
-                        }
-                    ]
-                }
-            ],
+            "panels": [],
             "repeat": "node",
             "title": "Node $node",
             "type": "row"
+        },
+        {
+            "aliasColors": {
+                "Free": "#1f78c1",
+                "Used": "#962d82"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "fill": 2,
+            "gridPos": {
+                "h": 6,
+                "w": 12,
+                "x": 0,
+                "y": 39
+            },
+            "id": 25,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "null",
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "node_memory_numa_MemFree{instance=\"$host\", node=\"$node\"}",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Free",
+                    "refId": "A"
+                },
+                {
+                    "expr": "sum by (node) (node_memory_numa_MemUsed{instance=\"$host\", node=\"$node\"})",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Used",
+                    "refId": "B"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Size of Memory on Node $node",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "decbytes",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ]
+        },
+        {
+            "aliasColors": {
+                "Free": "#1f78c1",
+                "Used": "#962d82"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "fill": 2,
+            "gridPos": {
+                "h": 6,
+                "w": 12,
+                "x": 12,
+                "y": 39
+            },
+            "id": 24,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "null",
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": true,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "(node_memory_numa_MemFree{instance=\"$host\", node=\"$node\"}) * 100 /\n(node_memory_numa_MemTotal{instance=\"$host\", node=\"$node\"})",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Free",
+                    "refId": "A"
+                },
+                {
+                    "expr": "(node_memory_numa_MemUsed{instance=\"$host\", node=\"$node\"}) * 100 /\n(node_memory_numa_MemTotal{instance=\"$host\", node=\"$node\"})",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Used",
+                    "refId": "B"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Memory Usage on Node $node",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "percent",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ]
+        },
+        {
+            "aliasColors": {
+                "Free (device /dev/xvda1, ext4)": "#82B5D8",
+                "Used (device /dev/xvda1, ext4)": "#BA43A9"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 2,
+            "editable": true,
+            "error": false,
+            "fill": 0,
+            "grid": {},
+            "gridPos": {
+                "h": 6,
+                "w": 24,
+                "x": 0,
+                "y": 45
+            },
+            "id": 14,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "hideEmpty": false,
+                "hideZero": false,
+                "max": true,
+                "min": true,
+                "rightSide": true,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "minSpan": 12,
+            "nullPointMode": "null",
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "node_memory_numa_Active{instance=\"$host\", node=\"$node\"}",
+                    "format": "time_series",
+                    "hide": false,
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Active",
+                    "metric": "",
+                    "refId": "B",
+                    "step": 300
+                },
+                {
+                    "expr": "node_memory_numa_Inactive{instance=\"$host\", node=\"$node\"}",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Inactive",
+                    "refId": "A"
+                },
+                {
+                    "expr": "node_memory_numa_Dirty{instance=\"$host\", node=\"$node\"}",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Dirty",
+                    "refId": "C"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Memory Statistics Node $node",
+            "tooltip": {
+                "msResolution": false,
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "transparent": false,
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "decbytes",
+                    "label": "",
+                    "logBase": 1,
+                    "max": null,
+                    "min": 0,
+                    "show": true
+                },
+                {
+                    "format": "bytes",
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ]
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "fill": 2,
+            "gridPos": {
+                "h": 6,
+                "w": 12,
+                "x": 0,
+                "y": 51
+            },
+            "id": 20,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "null",
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "node_memory_numa_Active_anon{instance=\"$host\",node=\"$node\"}",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Active",
+                    "refId": "A"
+                },
+                {
+                    "expr": "node_memory_numa_Inactive_anon{instance=\"$host\", node=\"$node\"}",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Inactive",
+                    "refId": "B"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Anonymous Memory on Node $node",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "decbytes",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ]
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "fill": 2,
+            "gridPos": {
+                "h": 6,
+                "w": 12,
+                "x": 12,
+                "y": 51
+            },
+            "id": 19,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "null",
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "sum by (node) (node_memory_numa_Active_file{instance=\"$host\", node=\"$node\"})",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Active",
+                    "refId": "A"
+                },
+                {
+                    "expr": "sum by (node) (node_memory_numa_Inactive_file{instance=\"$host\", node=\"$node\"})",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Inactive",
+                    "refId": "B"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Pagecache Memory on Node $node",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "decbytes",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ]
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "description": "Memory allocated on this node while a process was running on it.",
+            "fill": 2,
+            "gridPos": {
+                "h": 6,
+                "w": 12,
+                "x": 0,
+                "y": 57
+            },
+            "id": 31,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "null",
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(node_memory_numa_local_node_total{instance=\"$host\",node=\"$node\"}[$interval]) or\nirate(node_memory_numa_local_node_total{instance=\"$host\",node=\"$node\"}[$interval])",
+                    "format": "time_series",
+                    "intervalFactor": 1,
+                    "legendFormat": "Node $node",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Local Processes on Node $node",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "ops",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ]
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "description": "Memory allocated on this node while a process was running on some other node.",
+            "fill": 2,
+            "gridPos": {
+                "h": 6,
+                "w": 12,
+                "x": 12,
+                "y": 57
+            },
+            "id": 33,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "null",
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(node_memory_numa_other_node_total{instance=\"$host\", node=\"$node\"}[$interval]) or\nirate(node_memory_numa_other_node_total{instance=\"$host\", node=\"$node\"}[5m])",
+                    "format": "time_series",
+                    "intervalFactor": 1,
+                    "legendFormat": "Node $node",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Remote Processes",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "ops",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ]
         }
     ],
     "refresh": "1m",
@@ -2009,5 +1994,5 @@
     "timezone": "browser",
     "title": "Overview NUMA metrics",
     "uid": "8gx8yeMik",
-    "version": 18
+    "version": 2
 }
