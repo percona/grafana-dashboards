@@ -21,7 +21,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1525938530198,
+    "iteration": 1526295121094,
     "links": [
         {
             "icon": "dashboard",
@@ -161,20 +161,39 @@
             "links": [],
             "nullPointMode": "null",
             "percentage": false,
-            "pointradius": 5,
+            "pointradius": 1,
             "points": false,
             "renderer": "flot",
             "seriesOverrides": [
                 {
                     "alias": "Total",
                     "color": "#bf1b00",
-                    "fill": 0
+                    "fill": 0,
+                    "points": true,
+                    "stack": false,
+                    "zindex": 3
+                },
+                {
+                    "alias": "Free",
+                    "zindex": -1
+                },
+                {
+                    "alias": "Used",
+                    "zindex": -2
                 }
             ],
             "spaceLength": 10,
-            "stack": false,
+            "stack": true,
             "steppedLine": false,
             "targets": [
+                {
+                    "expr": "sum by (node) (node_memory_numa_MemTotal{instance=\"$host\"})",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Total",
+                    "refId": "C"
+                },
                 {
                     "expr": "sum by (node) (node_memory_numa_MemFree{instance=\"$host\"})",
                     "format": "time_series",
@@ -190,20 +209,12 @@
                     "intervalFactor": 1,
                     "legendFormat": "Used",
                     "refId": "B"
-                },
-                {
-                    "expr": "sum by (node) (node_memory_numa_MemFree{instance=\"$host\"}) + \nsum by (node) (node_memory_numa_MemUsed{instance=\"$host\"})",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Total",
-                    "refId": "C"
                 }
             ],
             "thresholds": [],
             "timeFrom": null,
             "timeShift": null,
-            "title": "Size of  Memory",
+            "title": "Memory Usage",
             "tooltip": {
                 "shared": true,
                 "sort": 0,
@@ -223,7 +234,7 @@
                     "label": null,
                     "logBase": 1,
                     "max": null,
-                    "min": null,
+                    "min": "0",
                     "show": true
                 },
                 {
@@ -289,6 +300,7 @@
                 {
                     "expr": "sum by (node) (node_memory_numa_MemUsed{instance=\"$host\"}) * 100 /\nsum by (node) (node_memory_numa_MemTotal{instance=\"$host\"})",
                     "format": "time_series",
+                    "hide": true,
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Used",
@@ -298,7 +310,7 @@
             "thresholds": [],
             "timeFrom": null,
             "timeShift": null,
-            "title": "Memory Usage",
+            "title": "Free Memory Percent",
             "tooltip": {
                 "shared": true,
                 "sort": 0,
@@ -318,7 +330,7 @@
                     "label": null,
                     "logBase": 1,
                     "max": null,
-                    "min": null,
+                    "min": "0",
                     "show": true
                 },
                 {
@@ -386,7 +398,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "sum by (node) (node_memory_numa_Active{instance=\"$host\"})",
+                    "expr": "sum(node_memory_numa_Active{instance=\"$host\"})",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -397,7 +409,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "sum by (node) (node_memory_numa_Inactive{instance=\"$host\"})",
+                    "expr": "sum(node_memory_numa_Inactive{instance=\"$host\"})",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -405,7 +417,7 @@
                     "refId": "A"
                 },
                 {
-                    "expr": "sum by (node) (node_memory_numa_Dirty{instance=\"$host\"})",
+                    "expr": "sum(node_memory_numa_Dirty{instance=\"$host\"})",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -413,7 +425,7 @@
                     "refId": "C"
                 },
                 {
-                    "expr": "sum by (node) (node_memory_numa_Bounce{instance=\"$host\"})",
+                    "expr": "sum(node_memory_numa_Bounce{instance=\"$host\"})",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -421,7 +433,7 @@
                     "refId": "D"
                 },
                 {
-                    "expr": "sum by (node) (node_memory_numa_Mapped{instance=\"$host\"})",
+                    "expr": "sum(node_memory_numa_Mapped{instance=\"$host\"})",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -429,7 +441,7 @@
                     "refId": "E"
                 },
                 {
-                    "expr": "sum by (node) (node_memory_numa_KernelStack{instance=\"$host\"})",
+                    "expr": "sum(node_memory_numa_KernelStack{instance=\"$host\"})",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -440,7 +452,7 @@
             "thresholds": [],
             "timeFrom": null,
             "timeShift": null,
-            "title": "Memory Statistics",
+            "title": "NUMA Memory Usage Types",
             "tooltip": {
                 "msResolution": false,
                 "shared": true,
@@ -509,9 +521,16 @@
             "pointradius": 5,
             "points": false,
             "renderer": "flot",
-            "seriesOverrides": [],
+            "seriesOverrides": [
+                {
+                    "alias": "Total",
+                    "color": "#bf1b00",
+                    "fill": 0,
+                    "stack": false
+                }
+            ],
             "spaceLength": 10,
-            "stack": false,
+            "stack": true,
             "steppedLine": false,
             "targets": [
                 {
@@ -522,12 +541,20 @@
                     "intervalFactor": 1,
                     "legendFormat": "Node $node",
                     "refId": "A"
+                },
+                {
+                    "expr": "sum(rate(node_memory_numa_numa_hit_total{instance=\"$host\"}[$interval])) or\nsum(irate(node_memory_numa_numa_hit_total{instance=\"$host\"}[5m]))",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Total",
+                    "refId": "B"
                 }
             ],
             "thresholds": [],
             "timeFrom": null,
             "timeShift": null,
-            "title": "Memory Hit",
+            "title": "NUMA Allocation Hits",
             "tooltip": {
                 "shared": true,
                 "sort": 0,
@@ -567,7 +594,7 @@
             "dashes": false,
             "datasource": "Prometheus",
             "description": "**Memory missed** is allocated on a node despite the process preferring some different node.\n\n**Memory foreign** is intended for a node, but actually allocated on some different node.",
-            "fill": 1,
+            "fill": 2,
             "gridPos": {
                 "h": 6,
                 "w": 12,
@@ -581,6 +608,7 @@
                 "current": false,
                 "max": true,
                 "min": true,
+                "rightSide": false,
                 "show": true,
                 "sort": "avg",
                 "sortDesc": true,
@@ -588,14 +616,37 @@
                 "values": true
             },
             "lines": true,
-            "linewidth": 1,
+            "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
             "percentage": false,
             "pointradius": 5,
             "points": false,
             "renderer": "flot",
-            "seriesOverrides": [],
+            "seriesOverrides": [
+                {
+                    "alias": "Missed ratio Node 0",
+                    "pointradius": 1,
+                    "points": true,
+                    "yaxis": 2
+                },
+                {
+                    "alias": "Foreign ratio Node 0",
+                    "pointradius": 1,
+                    "points": true,
+                    "yaxis": 2
+                },
+                {
+                    "alias": "Total Missed",
+                    "color": "#bf1b00"
+                },
+                {
+                    "alias": "Total Missed Ratio",
+                    "pointradius": 1,
+                    "points": true,
+                    "yaxis": 2
+                }
+            ],
             "spaceLength": 10,
             "stack": false,
             "steppedLine": false,
@@ -609,18 +660,52 @@
                     "refId": "A"
                 },
                 {
+                    "expr": "rate(node_memory_numa_numa_miss_total{instance=\"$host\"}[$interval]) or\nirate(node_memory_numa_numa_miss_total{instance=\"$host\"}[5m]) * 100 /\n(rate(node_memory_numa_numa_hit_total{instance=\"$host\"}[$interval]) or\nirate(node_memory_numa_numa_hit_total{instance=\"$host\"}[5m]) + \nrate(node_memory_numa_numa_miss_total{instance=\"$host\"}[$interval]) or\nirate(node_memory_numa_numa_miss_total{instance=\"$host\"}[5m]))",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Missed ratio Node $node",
+                    "refId": "C"
+                },
+                {
+                    "expr": "sum(rate(node_memory_numa_numa_miss_total{instance=\"$host\"}[$interval])) or\nsum(irate(node_memory_numa_numa_miss_total{instance=\"$host\"}[5m]))",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Total Missed",
+                    "refId": "E"
+                },
+                {
                     "expr": "rate(node_memory_numa_numa_foreign_total{instance=\"$host\"}[$interval]) or\nirate(node_memory_numa_numa_foreign_total{instance=\"$host\"}[5m])",
                     "format": "time_series",
+                    "hide": true,
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Foreign Node $node",
                     "refId": "B"
+                },
+                {
+                    "expr": "rate(node_memory_numa_numa_foreign_total{instance=\"$host\"}[$interval]) or\nirate(node_memory_numa_numa_foreign_total{instance=\"$host\"}[5m]) * 100 /\n(rate(node_memory_numa_numa_hit_total{instance=\"$host\"}[$interval]) or\nirate(node_memory_numa_numa_hit_total{instance=\"$host\"}[5m]) + \nrate(node_memory_numa_numa_foreign_total{instance=\"$host\"}[$interval]) or\nirate(node_memory_numa_numa_foreign_total{instance=\"$host\"}[5m]))",
+                    "format": "time_series",
+                    "hide": true,
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Foreign ratio Node $node",
+                    "refId": "D"
+                },
+                {
+                    "expr": "sum(rate(node_memory_numa_numa_miss_total{instance=\"$host\"}[$interval])) or\nsum(irate(node_memory_numa_numa_miss_total{instance=\"$host\"}[5m])) * 100 /\nsum((rate(node_memory_numa_numa_hit_total{instance=\"$host\"}[$interval])) or\nsum(irate(node_memory_numa_numa_hit_total{instance=\"$host\"}[5m])) + \nsum(rate(node_memory_numa_numa_miss_total{instance=\"$host\"}[$interval])) or\nsum(irate(node_memory_numa_numa_miss_total{instance=\"$host\"}[5m])))",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Total Missed Ratio",
+                    "refId": "F"
                 }
             ],
             "thresholds": [],
             "timeFrom": null,
             "timeShift": null,
-            "title": "Memory Missed / Foreign",
+            "title": "NUMA Allocation Missed",
             "tooltip": {
                 "shared": true,
                 "sort": 0,
@@ -644,12 +729,12 @@
                     "show": true
                 },
                 {
-                    "format": "short",
+                    "format": "percent",
                     "label": null,
                     "logBase": 1,
                     "max": null,
-                    "min": null,
-                    "show": false
+                    "min": "0",
+                    "show": true
                 }
             ]
         },
@@ -690,11 +775,11 @@
             "renderer": "flot",
             "seriesOverrides": [],
             "spaceLength": 10,
-            "stack": false,
+            "stack": true,
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "sum by (node) (node_memory_numa_Active_anon{instance=\"$host\"})",
+                    "expr": "sum(avg_over_time(node_memory_numa_Active_anon{instance=\"$host\"}[$interval]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -702,7 +787,7 @@
                     "refId": "A"
                 },
                 {
-                    "expr": "sum by (node) (node_memory_numa_Inactive_anon{instance=\"$host\"})",
+                    "expr": "sum(avg_over_time(node_memory_numa_Inactive_anon{instance=\"$host\"}[$interval]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -713,7 +798,7 @@
             "thresholds": [],
             "timeFrom": null,
             "timeShift": null,
-            "title": "Anonymous Memory Total",
+            "title": "Anonymous Memory",
             "tooltip": {
                 "shared": true,
                 "sort": 0,
@@ -752,6 +837,7 @@
             "dashLength": 10,
             "dashes": false,
             "datasource": "Prometheus",
+            "description": "**Active(file)** Pagecache memory that has been used more recently and usually not reclaimed until needed\n\n**Inactive(file)** Pagecache memory that can be reclaimed without huge performance impact",
             "fill": 2,
             "gridPos": {
                 "h": 6,
@@ -782,11 +868,11 @@
             "renderer": "flot",
             "seriesOverrides": [],
             "spaceLength": 10,
-            "stack": false,
+            "stack": true,
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "sum by (node) (node_memory_numa_Active_file{instance=\"$host\"})",
+                    "expr": "sum(avg_over_time(node_memory_numa_Active_file{instance=\"$host\"}[$interval]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -794,7 +880,7 @@
                     "refId": "A"
                 },
                 {
-                    "expr": "sum by (node) (node_memory_numa_Inactive_file{instance=\"$host\"})",
+                    "expr": "sum(avg_over_time(node_memory_numa_Inactive_file{instance=\"$host\"}[$interval]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -805,7 +891,7 @@
             "thresholds": [],
             "timeFrom": null,
             "timeShift": null,
-            "title": "Pagecache Memory Total",
+            "title": "NUMA File (PageCache)",
             "tooltip": {
                 "shared": true,
                 "sort": 0,
@@ -825,7 +911,7 @@
                     "label": null,
                     "logBase": 1,
                     "max": null,
-                    "min": null,
+                    "min": "0",
                     "show": true
                 },
                 {
@@ -927,7 +1013,7 @@
                     "label": null,
                     "logBase": 1,
                     "max": null,
-                    "min": null,
+                    "min": "0",
                     "show": true
                 },
                 {
@@ -1048,22 +1134,21 @@
             "dashLength": 10,
             "dashes": false,
             "datasource": "Prometheus",
-            "description": "**Slab** allocation is a memory management mechanism intended for the efficient memory allocation of kernel objects.\n\n**SReclaimable** The part of the Slab that might be reclaimed (such as caches).\n\n**SUnreclaim** The part of the Slab that can't be reclaimed under memory pressure",
+            "description": "Memory allocated on a node while a process was running on it.",
             "fill": 2,
             "gridPos": {
                 "h": 6,
-                "w": 24,
+                "w": 12,
                 "x": 0,
                 "y": 32
             },
-            "id": 39,
+            "id": 46,
             "legend": {
                 "alignAsTable": true,
                 "avg": true,
                 "current": false,
                 "max": true,
                 "min": true,
-                "rightSide": true,
                 "show": true,
                 "sort": "avg",
                 "sortDesc": true,
@@ -1078,13 +1163,246 @@
             "pointradius": 5,
             "points": false,
             "renderer": "flot",
-            "seriesOverrides": [],
+            "seriesOverrides": [
+                {
+                    "alias": "Total",
+                    "color": "#bf1b00",
+                    "fill": 0,
+                    "stack": false
+                },
+                {
+                    "alias": "Total local processes rate",
+                    "lines": false,
+                    "points": true,
+                    "yaxis": 2
+                }
+            ],
+            "spaceLength": 10,
+            "stack": true,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(node_memory_numa_local_node_total{instance=\"$host\"}[$interval]) or\nirate(node_memory_numa_local_node_total{instance=\"$host\"}[$interval])",
+                    "format": "time_series",
+                    "hide": false,
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Node $node",
+                    "refId": "A"
+                },
+                {
+                    "expr": "sum(rate(node_memory_numa_local_node_total{instance=\"$host\"}[$interval])) or\nsum(irate(node_memory_numa_local_node_total{instance=\"$host\"}[$interval]))",
+                    "format": "time_series",
+                    "hide": false,
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Total",
+                    "refId": "B"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Local Processes",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "ops",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "decimals": null,
+                    "format": "percent",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                }
+            ]
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "description": "Memory allocated on a node while a process was running on some other node.",
+            "fill": 2,
+            "gridPos": {
+                "h": 6,
+                "w": 12,
+                "x": 12,
+                "y": 32
+            },
+            "id": 47,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "null",
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [
+                {
+                    "alias": "Total",
+                    "color": "#bf1b00",
+                    "fill": 0,
+                    "stack": false
+                },
+                {
+                    "alias": "Total remote processes rate",
+                    "lines": false,
+                    "points": true,
+                    "yaxis": 2
+                }
+            ],
             "spaceLength": 10,
             "stack": false,
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "sum by (node) (node_memory_numa_Slab{instance=\"$host\"})",
+                    "expr": "rate(node_memory_numa_other_node_total{instance=\"$host\", node=\"$node\"}[$interval]) or\nirate(node_memory_numa_other_node_total{instance=\"$host\", node=\"$node\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Node $node",
+                    "refId": "A"
+                },
+                {
+                    "expr": "sum(rate(node_memory_numa_other_node_total{instance=\"$host\", node=\"$node\"}[$interval])) or\nsum(irate(node_memory_numa_other_node_total{instance=\"$host\", node=\"$node\"}[5m]))",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Total",
+                    "refId": "B"
+                },
+                {
+                    "expr": "sum(rate(node_memory_numa_other_node_total{instance=\"$host\", node=\"$node\"}[$interval])) or\nsum(irate(node_memory_numa_other_node_total{instance=\"$host\", node=\"$node\"}[5m])) * 100 /\n(sum(rate(node_memory_numa_other_node_total{instance=\"$host\", node=\"$node\"}[$interval])) or\nsum(irate(node_memory_numa_other_node_total{instance=\"$host\", node=\"$node\"}[5m])) + \nsum(rate(node_memory_numa_local_node_total{instance=\"$host\"}[$interval])) or\nsum(irate(node_memory_numa_local_node_total{instance=\"$host\"}[$interval])))",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Total remote processes rate",
+                    "refId": "C"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Remote Processes",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "ops",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "percent",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                }
+            ]
+        },
+        {
+            "aliasColors": {
+                "Total": "#bf1b00"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "description": "**Slab** allocation is a memory management mechanism intended for the efficient memory allocation of kernel objects.\n\n**SReclaimable** The part of the Slab that might be reclaimed (such as caches).\n\n**SUnreclaim** The part of the Slab that can't be reclaimed under memory pressure",
+            "fill": 2,
+            "gridPos": {
+                "h": 6,
+                "w": 12,
+                "x": 0,
+                "y": 38
+            },
+            "id": 39,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "rightSide": false,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "null",
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [
+                {
+                    "alias": "Total",
+                    "color": "#bf1b00",
+                    "points": true,
+                    "stack": false
+                }
+            ],
+            "spaceLength": 10,
+            "stack": true,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "sum(avg_over_time(node_memory_numa_Slab{instance=\"$host\"}[$interval]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1092,7 +1410,7 @@
                     "refId": "A"
                 },
                 {
-                    "expr": "sum by (node) (node_memory_numa_SReclaimable{instance=\"$host\"})",
+                    "expr": "sum(avg_over_time(node_memory_numa_SReclaimable{instance=\"$host\"}[$interval]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1100,7 +1418,7 @@
                     "refId": "B"
                 },
                 {
-                    "expr": "sum by (node) (node_memory_numa_SUnreclaim{instance=\"$host\"})",
+                    "expr": "sum(avg_over_time(node_memory_numa_SUnreclaim{instance=\"$host\"}[$interval]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1150,7 +1468,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 38
+                "y": 44
             },
             "id": 13,
             "panels": [],
@@ -1172,7 +1490,7 @@
                 "h": 6,
                 "w": 12,
                 "x": 0,
-                "y": 39
+                "y": 45
             },
             "id": 25,
             "legend": {
@@ -1182,6 +1500,8 @@
                 "max": true,
                 "min": true,
                 "show": true,
+                "sort": "avg",
+                "sortDesc": true,
                 "total": false,
                 "values": true
             },
@@ -1193,13 +1513,29 @@
             "pointradius": 5,
             "points": false,
             "renderer": "flot",
-            "seriesOverrides": [],
+            "seriesOverrides": [
+                {
+                    "alias": "Total",
+                    "color": "#bf1b00",
+                    "fill": 0,
+                    "points": true,
+                    "stack": false
+                }
+            ],
             "spaceLength": 10,
-            "stack": false,
+            "stack": true,
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "node_memory_numa_MemFree{instance=\"$host\", node=\"$node\"}",
+                    "expr": "avg_over_time(node_memory_numa_MemTotal{instance=\"$host\", node=\"$node\"}[$interval])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Total",
+                    "refId": "C"
+                },
+                {
+                    "expr": "avg_over_time(node_memory_numa_MemFree{instance=\"$host\", node=\"$node\"}[$interval])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1207,7 +1543,7 @@
                     "refId": "A"
                 },
                 {
-                    "expr": "sum by (node) (node_memory_numa_MemUsed{instance=\"$host\", node=\"$node\"})",
+                    "expr": "avg_over_time(node_memory_numa_MemUsed{instance=\"$host\", node=\"$node\"}[$interval])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1218,7 +1554,7 @@
             "thresholds": [],
             "timeFrom": null,
             "timeShift": null,
-            "title": "Size of Memory on Node $node",
+            "title": "Node $node - Memory Usage",
             "tooltip": {
                 "shared": true,
                 "sort": 0,
@@ -1238,7 +1574,7 @@
                     "label": null,
                     "logBase": 1,
                     "max": null,
-                    "min": null,
+                    "min": "0",
                     "show": true
                 },
                 {
@@ -1265,7 +1601,7 @@
                 "h": 6,
                 "w": 12,
                 "x": 12,
-                "y": 39
+                "y": 45
             },
             "id": 24,
             "legend": {
@@ -1275,6 +1611,8 @@
                 "max": true,
                 "min": true,
                 "show": true,
+                "sort": "avg",
+                "sortDesc": true,
                 "total": false,
                 "values": true
             },
@@ -1302,6 +1640,7 @@
                 {
                     "expr": "(node_memory_numa_MemUsed{instance=\"$host\", node=\"$node\"}) * 100 /\n(node_memory_numa_MemTotal{instance=\"$host\", node=\"$node\"})",
                     "format": "time_series",
+                    "hide": true,
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Used",
@@ -1311,7 +1650,7 @@
             "thresholds": [],
             "timeFrom": null,
             "timeShift": null,
-            "title": "Memory Usage on Node $node",
+            "title": "Node $node - Free Memory Percent",
             "tooltip": {
                 "shared": true,
                 "sort": 0,
@@ -1354,6 +1693,7 @@
             "dashes": false,
             "datasource": "Prometheus",
             "decimals": 2,
+            "description": "**Dirty** Memory waiting to be written back to disk\n\n**Bounce** Memory used for block device bounce buffers\n\n**Mapped** Files which have been mmaped, such as libraries\n\n**KernelStack** The memory the kernel stack uses. This is not reclaimable.",
             "editable": true,
             "error": false,
             "fill": 0,
@@ -1362,9 +1702,9 @@
                 "h": 6,
                 "w": 24,
                 "x": 0,
-                "y": 45
+                "y": 51
             },
-            "id": 14,
+            "id": 44,
             "legend": {
                 "alignAsTable": true,
                 "avg": true,
@@ -1398,7 +1738,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "node_memory_numa_Active{instance=\"$host\", node=\"$node\"}",
+                    "expr": "avg_over_time(node_memory_numa_Active{instance=\"$host\"}[$interval])",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -1409,7 +1749,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "node_memory_numa_Inactive{instance=\"$host\", node=\"$node\"}",
+                    "expr": "avg_over_time(node_memory_numa_Inactive{instance=\"$host\"}[$interval])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1417,18 +1757,42 @@
                     "refId": "A"
                 },
                 {
-                    "expr": "node_memory_numa_Dirty{instance=\"$host\", node=\"$node\"}",
+                    "expr": "avg_over_time(node_memory_numa_Dirty{instance=\"$host\"}[$interval])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Dirty",
                     "refId": "C"
+                },
+                {
+                    "expr": "avg_over_time(node_memory_numa_Bounce{instance=\"$host\"}[$interval])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Bounce",
+                    "refId": "D"
+                },
+                {
+                    "expr": "avg_over_time(node_memory_numa_Mapped{instance=\"$host\"}[$interval])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Mapped",
+                    "refId": "E"
+                },
+                {
+                    "expr": "avg_over_time(node_memory_numa_KernelStack{instance=\"$host\"}[$interval])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "KernelStack",
+                    "refId": "F"
                 }
             ],
             "thresholds": [],
             "timeFrom": null,
             "timeShift": null,
-            "title": "Memory Statistics Node $node",
+            "title": "Node $node - NUMA Memory Usage Types",
             "tooltip": {
                 "msResolution": false,
                 "shared": true,
@@ -1468,12 +1832,207 @@
             "dashLength": 10,
             "dashes": false,
             "datasource": "Prometheus",
+            "description": "Memory successfully allocated on this node as intended.",
             "fill": 2,
             "gridPos": {
                 "h": 6,
                 "w": 12,
                 "x": 0,
-                "y": 51
+                "y": 57
+            },
+            "id": 42,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "null",
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [
+                {
+                    "alias": "Total",
+                    "color": "#bf1b00",
+                    "fill": 0,
+                    "stack": false
+                }
+            ],
+            "spaceLength": 10,
+            "stack": true,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(node_memory_numa_numa_hit_total{instance=\"$host\", node=\"$node\"}[$interval]) or\nirate(node_memory_numa_numa_hit_total{instance=\"$host\", node=\"$node\"}[5m])",
+                    "format": "time_series",
+                    "hide": false,
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Hit Total",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Node $node - NUMA Allocation Hits",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "ops",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ]
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "description": "**Memory missed** is allocated on a node despite the process preferring some different node.\n\n**Memory foreign** is intended for a node, but actually allocated on some different node.",
+            "fill": 2,
+            "gridPos": {
+                "h": 6,
+                "w": 12,
+                "x": 12,
+                "y": 57
+            },
+            "id": 43,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "rightSide": false,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "null",
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [
+                {
+                    "alias": "Missed ratio",
+                    "pointradius": 1,
+                    "points": true,
+                    "yaxis": 2
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(node_memory_numa_numa_miss_total{instance=\"$host\", node=\"$node\"}[$interval]) or\nirate(node_memory_numa_numa_miss_total{instance=\"$host\", node=\"$node\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Missed",
+                    "refId": "A"
+                },
+                {
+                    "expr": "rate(node_memory_numa_numa_miss_total{instance=\"$host\", node=\"$node\"}[$interval]) or\nirate(node_memory_numa_numa_miss_total{instance=\"$host\", node=\"$node\"}[5m]) * 100 /\n(rate(node_memory_numa_numa_hit_total{instance=\"$host\", node=\"$node\"}[$interval]) or\nirate(node_memory_numa_numa_hit_total{instance=\"$host\", node=\"$node\"}[5m]) + \nrate(node_memory_numa_numa_miss_total{instance=\"$host\", node=\"$node\"}[$interval]) or\nirate(node_memory_numa_numa_miss_total{instance=\"$host\", node=\"$node\"}[5m]))",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Missed ratio",
+                    "refId": "C"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Node $node - NUMA Allocation Missed/Foreign",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "ops",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "percent",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                }
+            ]
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "description": "**Active** Anonymous memory that has been used more recently and usually not swapped out\n\n**Inactive** Anonymous memory that has not been used recently and can be swapped out",
+            "fill": 2,
+            "gridPos": {
+                "h": 6,
+                "w": 12,
+                "x": 0,
+                "y": 63
             },
             "id": 20,
             "legend": {
@@ -1498,11 +2057,11 @@
             "renderer": "flot",
             "seriesOverrides": [],
             "spaceLength": 10,
-            "stack": false,
+            "stack": true,
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "node_memory_numa_Active_anon{instance=\"$host\",node=\"$node\"}",
+                    "expr": "avg_over_time(node_memory_numa_Active_anon{instance=\"$host\",node=\"$node\"}[$interval])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1510,7 +2069,7 @@
                     "refId": "A"
                 },
                 {
-                    "expr": "node_memory_numa_Inactive_anon{instance=\"$host\", node=\"$node\"}",
+                    "expr": "avg_over_time(node_memory_numa_Inactive_anon{instance=\"$host\", node=\"$node\"}[$interval])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1521,7 +2080,7 @@
             "thresholds": [],
             "timeFrom": null,
             "timeShift": null,
-            "title": "Anonymous Memory on Node $node",
+            "title": "Node $node - Anonymous Memory",
             "tooltip": {
                 "shared": true,
                 "sort": 0,
@@ -1560,12 +2119,13 @@
             "dashLength": 10,
             "dashes": false,
             "datasource": "Prometheus",
+            "description": "**Active(file)** Pagecache memory that has been used more recently and usually not reclaimed until needed\n\n**Inactive(file)** Pagecache memory that can be reclaimed without huge performance impact",
             "fill": 2,
             "gridPos": {
                 "h": 6,
                 "w": 12,
                 "x": 12,
-                "y": 51
+                "y": 63
             },
             "id": 19,
             "legend": {
@@ -1594,7 +2154,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "sum by (node) (node_memory_numa_Active_file{instance=\"$host\", node=\"$node\"})",
+                    "expr": "avg_over_time(node_memory_numa_Active_file{instance=\"$host\", node=\"$node\"}[$interval])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1602,7 +2162,7 @@
                     "refId": "A"
                 },
                 {
-                    "expr": "sum by (node) (node_memory_numa_Inactive_file{instance=\"$host\", node=\"$node\"})",
+                    "expr": "avg_over_time(node_memory_numa_Inactive_file{instance=\"$host\", node=\"$node\"}[$interval])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1613,7 +2173,7 @@
             "thresholds": [],
             "timeFrom": null,
             "timeShift": null,
-            "title": "Pagecache Memory on Node $node",
+            "title": "Node $node - NUMA File (PageCache)",
             "tooltip": {
                 "shared": true,
                 "sort": 0,
@@ -1652,13 +2212,217 @@
             "dashLength": 10,
             "dashes": false,
             "datasource": "Prometheus",
+            "description": "**Shmem** Total used shared memory (shared between several processes, thus including RAM disks, SYS-V-IPC and BSD like SHMEM)",
+            "fill": 2,
+            "gridPos": {
+                "h": 6,
+                "w": 12,
+                "x": 0,
+                "y": 69
+            },
+            "id": 48,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "rightSide": false,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "null",
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "sum by (node) (node_memory_numa_Shmem{instance=\"$host\", node=\"$node\"})",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Total",
+                    "refId": "A"
+                },
+                {
+                    "expr": "sum by (node) (node_memory_numa_ShmemHugePages{instance=\"$host\", node=\"$node\"})",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "HugePages",
+                    "refId": "B"
+                },
+                {
+                    "expr": "sum by (node) (node_memory_numa_ShmemPmdMapped{instance=\"$host\", node=\"$node\"})",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "PmdMapped",
+                    "refId": "C"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Node $node - Shared Memory",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "bytes",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ]
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "description": "**Total** Number of hugepages being allocated by the kernel (Defined with vm.nr_hugepages)\n\n**Free** The number of hugepages not being allocated by a process\n\n**Surp**  The number of hugepages in the pool above the value in vm.nr_hugepages. The maximum number of surplus hugepages is controlled by vm.nr_overcommit_hugepages.",
+            "fill": 2,
+            "gridPos": {
+                "h": 6,
+                "w": 12,
+                "x": 12,
+                "y": 69
+            },
+            "id": 49,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "rightSide": false,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "null",
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "sum by (node) (node_memory_numa_HugePages_Total{instance=\"$host\", node=\"$node\"})",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Total",
+                    "refId": "A"
+                },
+                {
+                    "expr": "sum by (node) (node_memory_numa_HugePages_Free{instance=\"$host\", node=\"$node\"})",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Free",
+                    "refId": "B"
+                },
+                {
+                    "expr": "sum by (node) (node_memory_numa_HugePages_Surp{instance=\"$host\", node=\"$node\"})",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Surplus",
+                    "refId": "C"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Node $node - HugePages Statistic",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ]
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
             "description": "Memory allocated on this node while a process was running on it.",
             "fill": 2,
             "gridPos": {
                 "h": 6,
                 "w": 12,
                 "x": 0,
-                "y": 57
+                "y": 75
             },
             "id": 31,
             "legend": {
@@ -1689,6 +2453,7 @@
                 {
                     "expr": "rate(node_memory_numa_local_node_total{instance=\"$host\",node=\"$node\"}[$interval]) or\nirate(node_memory_numa_local_node_total{instance=\"$host\",node=\"$node\"}[$interval])",
                     "format": "time_series",
+                    "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Node $node",
                     "refId": "A"
@@ -1697,7 +2462,7 @@
             "thresholds": [],
             "timeFrom": null,
             "timeShift": null,
-            "title": "Local Processes on Node $node",
+            "title": "Node $node - Local Processes",
             "tooltip": {
                 "shared": true,
                 "sort": 0,
@@ -1742,7 +2507,7 @@
                 "h": 6,
                 "w": 12,
                 "x": 12,
-                "y": 57
+                "y": 75
             },
             "id": 33,
             "legend": {
@@ -1773,6 +2538,7 @@
                 {
                     "expr": "rate(node_memory_numa_other_node_total{instance=\"$host\", node=\"$node\"}[$interval]) or\nirate(node_memory_numa_other_node_total{instance=\"$host\", node=\"$node\"}[5m])",
                     "format": "time_series",
+                    "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Node $node",
                     "refId": "A"
@@ -1781,7 +2547,7 @@
             "thresholds": [],
             "timeFrom": null,
             "timeShift": null,
-            "title": "Remote Processes",
+            "title": "Node $node - Remote Processes",
             "tooltip": {
                 "shared": true,
                 "sort": 0,
@@ -1798,6 +2564,117 @@
             "yaxes": [
                 {
                     "format": "ops",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ]
+        },
+        {
+            "aliasColors": {
+                "Total": "#bf1b00"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "description": "**Slab** allocation is a memory management mechanism intended for the efficient memory allocation of kernel objects.\n\n**SReclaimable** The part of the Slab that might be reclaimed (such as caches).\n\n**SUnreclaim** The part of the Slab that can't be reclaimed under memory pressure",
+            "fill": 2,
+            "gridPos": {
+                "h": 6,
+                "w": 12,
+                "x": 0,
+                "y": 81
+            },
+            "id": 45,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "rightSide": false,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "null",
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [
+                {
+                    "alias": "Total",
+                    "color": "#bf1b00",
+                    "points": true,
+                    "stack": false
+                }
+            ],
+            "spaceLength": 10,
+            "stack": true,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "avg_over_time(node_memory_numa_Slab{instance=\"$host\", node=\"$node\"}[$interval])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Total",
+                    "refId": "A"
+                },
+                {
+                    "expr": "avg_over_time(node_memory_numa_SReclaimable{instance=\"$host\", node=\"$node\"}[$interval])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Reclaimable",
+                    "refId": "B"
+                },
+                {
+                    "expr": "avg_over_time(node_memory_numa_SUnreclaim{instance=\"$host\", node=\"$node\"}[$interval])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Unreclaim",
+                    "refId": "C"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Node $node - Slab Memory",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "bytes",
                     "label": null,
                     "logBase": 1,
                     "max": null,
@@ -1994,5 +2871,5 @@
     "timezone": "browser",
     "title": "Overview NUMA metrics",
     "uid": "8gx8yeMik",
-    "version": 2
+    "version": 20
 }
