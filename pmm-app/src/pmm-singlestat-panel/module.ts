@@ -6,7 +6,7 @@ import TimeSeries from 'app/core/time_series2';
 import { MetricsPanelCtrl, PanelCtrl } from 'app/plugins/sdk';
 import kbn from 'app/core/utils/kbn';
 
-class SingleStatCtrl extends MetricsPanelCtrl {
+class PMMSingleStatCtrl extends MetricsPanelCtrl {
   static templateUrl = 'pmm-singlestat-panel/module.html';
 
   dataType = 'timeseries';
@@ -95,8 +95,8 @@ class SingleStatCtrl extends MetricsPanelCtrl {
 
   onInitEditMode() {
     this.fontSizes = ['20%', '30%', '50%', '70%', '80%', '100%', '110%', '120%', '150%', '170%', '200%'];
-    this.addEditorTab('Options', 'public/app/plugins/panel/singlestat/editor.html', 2);
-    this.addEditorTab('Value Mappings', 'public/app/plugins/panel/singlestat/mappings.html', 3);
+    this.addEditorTab('Options', 'public/plugins/pmm-singlestat-panel/editor.html', 2);
+    this.addEditorTab('Value Mappings', 'public/plugins/pmm-singlestat-panel/mappings.html', 3);
     this.unitFormats = kbn.getUnitFormats();
   }
 
@@ -404,7 +404,7 @@ class SingleStatCtrl extends MetricsPanelCtrl {
     var templateSrv = this.templateSrv;
     var data, linkInfo;
     var $panelContainer = elem.find('.panel-container');
-    elem = elem.find('.singlestat-panel');
+    elem = elem.find('.pmm-singlestat-panel');
 
     function applyColoringThresholds(value, valueString) {
       if (!panel.colorValue) {
@@ -755,4 +755,4 @@ function getColorForValue(data, value) {
   return _.first(data.colorMap);
 }
 
-export { SingleStatCtrl, SingleStatCtrl as PanelCtrl, getColorForValue };
+export { PMMSingleStatCtrl, PMMSingleStatCtrl as PanelCtrl, getColorForValue };
