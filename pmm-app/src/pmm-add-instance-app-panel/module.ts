@@ -25,9 +25,9 @@ export class PanelCtrl extends MetricsPanelCtrl {
     link($scope, elem) {
         const frame = elem.find('iframe');
         const panel = elem.find('div.panel-container');
-        const bgcolor = $scope.qanParams.theme === 'light' ? '#ffffff' : '#141414';
+
         panel.css({
-            'background-color': bgcolor,
+            'background-color': 'transparent',
             'border': 'none'
         });
 
