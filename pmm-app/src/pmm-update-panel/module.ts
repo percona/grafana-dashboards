@@ -37,7 +37,8 @@ export class PanelCtrl extends MetricsPanelCtrl {
      */
     static ERRORS = {
         UPDATE: 'Error during update',
-        NOTHING_TO_UPDATE: 'Nothing to update'
+        NOTHING_TO_UPDATE: 'Nothing to update',
+        INCORRECT_SERVER_RESPONSE: 'Incorrect server response'
     };
 
     /**
@@ -54,6 +55,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
         $scope.logLocation = '';
         $scope.version = '';
         $scope.nextVersion = '';
+        $scope.linkVersion = '';
         $scope.errorMessage = '';
 
         $scope.checkForUpdate = this.checkForUpdate.bind(this, $scope, $http);
@@ -80,6 +82,9 @@ export class PanelCtrl extends MetricsPanelCtrl {
             modalScope.errorMessage = newState.errorMessage;
             modalScope.version = newState.version;
         });
+        modalScope.reloadAfterUpdate = () => {
+          location.reload();
+        };
 
         $scope.isLoaderShown = true;
         AppEvents.emit('show-modal', {
@@ -97,9 +102,26 @@ export class PanelCtrl extends MetricsPanelCtrl {
     }
 
     /**
+     * Show error message if update is fail
+     * @param message - kind of error message
+     */
+    public displayError($scope, message) {
+        $scope.isLoaderShown = false;
+        $scope.isChecked = true;
+        $scope.errorMessage = message;
+        setTimeout(() => {
+            $scope.isChecked = false;
+            $scope.errorMessage = '';
+            $scope.$apply();
+        }, 5000);
+        $scope.shouldBeUpdated = false;
+    }
+
+    /**
      * Send request to check if update possible and re-init params
      */
     private checkForUpdate($scope, $http): void {
+        const linkRegExp = new RegExp('^\\d{1,}\\.\\d{1,2}\\.\\d{1,4}');
         $scope.isLoaderShown = true;
 
         $http({
@@ -111,18 +133,14 @@ export class PanelCtrl extends MetricsPanelCtrl {
             $scope.isChecked = true;
             $scope.nextVersion = res.data.to;
             $scope.version = res.data.from;
-        }).catch(() => {
-            $scope.isLoaderShown = false;
-            $scope.isChecked = true;
-            $scope.errorMessage = PanelCtrl.ERRORS.NOTHING_TO_UPDATE;
-            // TODO: Error handler should be clarified
-            setTimeout(() => {
-                $scope.isChecked = false;
-                $scope.errorMessage = '';
-                $scope.$apply();
-            }, 5000);
+            if ($scope.linkVersion = $scope.nextVersion.match(linkRegExp)) {
+                $scope.linkVersion = $scope.nextVersion.match(linkRegExp)[0];
+            } else {
+                this.displayError($scope, PanelCtrl.ERRORS.INCORRECT_SERVER_RESPONSE);
+            }
 
-            $scope.shouldBeUpdated = false;
+        }).catch(() => {
+            this.displayError($scope, PanelCtrl.ERRORS.NOTHING_TO_UPDATE);
         });
     }
 
