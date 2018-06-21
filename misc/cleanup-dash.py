@@ -121,20 +121,19 @@ def set_hide_controls(dashboard):
 def set_unique_ids(dashboard):
     """To avoid the most common merge error: duplicate row ids."""
     ids = set()
-    for row_index, row in enumerate(dashboard['rows']):
-        for panel_index, panel in enumerate(row['panels']):
-            id_ = panel['id']
-            if id_ in ids:
-                id_ = 1
-                while id_ in ids:
-                    id_ += 1
+    for panel_index, panel in enumerate(dashboard['panels']):
+        id_ = panel['id']
+        if id_ in ids:
+            id_ = 1
+            while id_ in ids:
+                id_ += 1
 
-                print('ID #%s was not unique - changed to #%s' % (
-                    panel['id'], id_
-                ))
-                dashboard['rows'][row_index]['panels'][panel_index]['id'] = id_
+            print('ID #%s was not unique - changed to #%s' % (
+                panel['id'], id_
+            ))
+            dashboard['panels'][panel_index]['id'] = id_
 
-            ids.add(id_)
+        ids.add(id_)
 
     return dashboard
 
@@ -144,6 +143,24 @@ def drop_some_internal_elements(dashboard):
             del dashboard['__inputs']
         if '__requires' in element:
             del dashboard['__requires']
+        if 'panels' in element:
+            for panel_index, panel in enumerate(dashboard['panels']):
+                if 'datasource' in panel:
+                    if panel['datasource'] == "${DS_PROMETHEUS}":
+                        dashboard['panels'][panel_index]['datasource'] = 'Prometheus'
+                    if panel['datasource'] == "${DS_CLOUDWATCH}":
+                        dashboard['panels'][panel_index]['datasource'] = 'CloudWatch'
+                    if panel['datasource'] == "${DS_QAN-API}":
+                        dashboard['panels'][panel_index]['datasource'] = 'QAN-API'
+        if 'templating' in element:
+            for panel_index, panel in enumerate(dashboard['templating']['list']):
+                    if panel['datasource'] == "${DS_PROMETHEUS}":
+                        dashboard['templating']['list'][panel_index]['datasource'] = 'Prometheus'
+                    if panel['datasource'] == "${DS_CLOUDWATCH}":
+                        dashboard['templating']['list'][panel_index]['datasource'] = 'CloudWatch'
+                    if panel['datasource'] == "${DS_QAN-API}":
+                        dashboard['templating']['list'][panel_index]['datasource'] = 'QAN-API'
+
     return dashboard
 
 def set_hide_timepicker(dashboard):
@@ -194,14 +211,57 @@ def add_annotation(dashboard):
             dashboard['annotations']['list'].append(add_item)
     return dashboard
 
+def add_copyrights_links(dashboard):
+    """Add Copyrights Links footer."""
+    tag = "pmm_annotation"
+    prompt = 'Add Copyrights Links - "Obligate for pmmdemo" (conventional: **No**) [%s]: ' % (
+        "No",
+    )
+    user_input = raw_input(prompt)
+    if user_input:
+        if user_input == 'Yes':
+            add_item = {
+                'collapsed': False,
+                'gridPos': {
+                    'h': 1,
+                    'w': 24,
+                    'x': 0,
+                    'y': 99
+                },
+                'id': 9998,
+                'panels': [],
+                'title': "Copyrights & Legal",
+                'type': "row"
+            }
+            dashboard['panels'].append(add_item)
+            add_item = {
+                'content': "<center >\n  <p>MySQL and InnoDB are trademarks of Oracle Corp. Proudly running Percona Server. Copyright (c) 2006-2018 Percona LLC.</p>\n  <div style=\"text-align:center;\">\n    <a href=\"https://percona.com/terms-use\" style=\"display: inline;\">Terms of Use</a> | \n    <a href=\"https://percona.com/privacy-policy\" style=\"display: inline;\">Privacy</a> | \n    <a href=\"https://percona.com/copyright-policy\" style=\"display: inline;\">Copyright</a> | \n    <a href=\"https://percona.com/legal\" style=\"display: inline;\">Legal</a>\n  </div>\n</center>\n<hr>\n<link rel=\"stylesheet\" type=\"text/css\" href=\"//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css\" />\n<script src=\"//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js\"></script>\n<script>\nfunction bbb(){\n  \n  setTimeout(function (){ \n  window.cookieconsent.initialise({\n    \"palette\": {\n      \"popup\": {\n        \"background\": \"#eb6c44\",\n        \"text\": \"#ffffff\"\n      },\n      \"button\": {\n        \"background\": \"#f5d948\"\n      }\n    },\n    \"theme\": \"classic\",\n    \"content\": {\n      \"message\": \"This site uses cookies and other tracking technologies to assist with navigation, analyze your use of our products and services, assist with promotional and marketing efforts, allow you to give feedback, and provide content from third parties. If you do not want to accept cookies, adjust your browser settings to deny cookies or exit this site.\",\n      \"dismiss\": \"Allow cookies\",\n      \"link\": \"Cookie Policy\",\n      \"href\": \"https://www.percona.com/cookie-policy\"\n    }\n  })},3000)};\n  \n  \n  window.addEventListener(\"load\",bbb());\n\n\n\n</script>",
+                'gridPos': {
+                  'h': 3,
+                  'w': 24,
+                  'x': 0,
+                  'y': 99
+                },
+                'id': 9999,
+                'links': [],
+                'mode': "html",
+                'title': "",
+                'transparent': True,
+                'type': "text"
+            }
+            dashboard['panels'].append(add_item)
+
+    return dashboard
+
+
 def main():
     """Execute cleanups."""
     with open(sys.argv[1], 'r') as dashboard_file:
         dashboard = json.loads(dashboard_file.read())
 
     # registered cleanupers.
-    CLEANUPERS = [set_hide_timepicker, drop_some_internal_elements, set_title, set_time, set_timezone, set_default_refresh_intervals, set_refresh,
-                  add_annotation, add_links, set_hide_controls, set_unique_ids]
+    CLEANUPERS = [set_title, set_hide_timepicker, drop_some_internal_elements, set_time, set_timezone, set_default_refresh_intervals, set_refresh,
+                  add_annotation, add_links, add_copyrights_links, set_unique_ids]
 
     for func in CLEANUPERS:
         dashboard = func(dashboard)
