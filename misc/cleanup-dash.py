@@ -213,7 +213,6 @@ def add_annotation(dashboard):
 
 def add_copyrights_links(dashboard):
     """Add Copyrights Links footer."""
-    tag = "pmm_annotation"
     prompt = 'Add Copyrights Links - "Obligate for pmmdemo" (conventional: **No**) [%s]: ' % (
         "No",
     )
