@@ -14,6 +14,7 @@ This is a set of Grafana dashboards for database and system monitoring using Pro
  * MongoDB MMAPv1
  * MySQL InnoDB Metrics
  * MySQL InnoDB Metrics Advanced
+ * MySQL InnoDB Compression
  * MySQL MyISAM/Aria Metrics
  * MySQL Overview
  * MySQL Performance Schema
@@ -22,6 +23,7 @@ This is a set of Grafana dashboards for database and system monitoring using Pro
  * MySQL Table Statistics
  * MySQL TokuDB Graphs
  * MySQL User Statistics
+ * MySQL Command Handler Counters Compare
  * PXC/Galera Cluster Overview
  * PXC/Galera Graphs
  * Prometheus
