@@ -154,6 +154,8 @@ def drop_some_internal_elements(dashboard):
                         dashboard['panels'][panel_index]['datasource'] = 'QAN-API'
         if 'templating' in element:
             for panel_index, panel in enumerate(dashboard['templating']['list']):
+                    if 'datasource' not in panel.keys():
+                        return dashboard
                     if panel['datasource'] == "${DS_PROMETHEUS}":
                         dashboard['templating']['list'][panel_index]['datasource'] = 'Prometheus'
                     if panel['datasource'] == "${DS_CLOUDWATCH}":
@@ -213,6 +215,7 @@ def add_annotation(dashboard):
 
 def add_copyrights_links(dashboard):
     """Add Copyrights Links footer."""
+
     prompt = 'Add Copyrights Links - "Obligate for pmmdemo" (conventional: **No**) [%s]: ' % (
         "No",
     )
