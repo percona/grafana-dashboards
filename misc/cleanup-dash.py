@@ -154,14 +154,13 @@ def drop_some_internal_elements(dashboard):
                         dashboard['panels'][panel_index]['datasource'] = 'QAN-API'
         if 'templating' in element:
             for panel_index, panel in enumerate(dashboard['templating']['list']):
-                    if 'datasource' not in panel.keys():
-                        return dashboard
-                    if panel['datasource'] == "${DS_PROMETHEUS}":
-                        dashboard['templating']['list'][panel_index]['datasource'] = 'Prometheus'
-                    if panel['datasource'] == "${DS_CLOUDWATCH}":
-                        dashboard['templating']['list'][panel_index]['datasource'] = 'CloudWatch'
-                    if panel['datasource'] == "${DS_QAN-API}":
-                        dashboard['templating']['list'][panel_index]['datasource'] = 'QAN-API'
+                    if 'datasource' in panel.keys():
+                        if panel['datasource'] == "${DS_PROMETHEUS}":
+                            dashboard['templating']['list'][panel_index]['datasource'] = 'Prometheus'
+                        if panel['datasource'] == "${DS_CLOUDWATCH}":
+                            dashboard['templating']['list'][panel_index]['datasource'] = 'CloudWatch'
+                        if panel['datasource'] == "${DS_QAN-API}":
+                            dashboard['templating']['list'][panel_index]['datasource'] = 'QAN-API'
 
     return dashboard
 
