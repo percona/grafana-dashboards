@@ -21,11 +21,11 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1529322492684,
+    "iteration": 1530023976445,
     "links": [
         {
             "icon": "dashboard",
-            "includeVars": true,
+            "includeVars": false,
             "keepTime": true,
             "tags": [
                 "QAN"
@@ -37,7 +37,7 @@
         },
         {
             "asDropdown": true,
-            "includeVars": true,
+            "includeVars": false,
             "keepTime": true,
             "tags": [
                 "OS"
@@ -59,7 +59,7 @@
         },
         {
             "asDropdown": true,
-            "includeVars": true,
+            "includeVars": false,
             "keepTime": true,
             "tags": [
                 "MongoDB"
@@ -70,7 +70,7 @@
         },
         {
             "asDropdown": true,
-            "includeVars": true,
+            "includeVars": false,
             "keepTime": true,
             "tags": [
                 "HA"
@@ -81,7 +81,7 @@
         },
         {
             "asDropdown": true,
-            "includeVars": true,
+            "includeVars": false,
             "keepTime": true,
             "tags": [
                 "Cloud"
@@ -92,7 +92,7 @@
         },
         {
             "asDropdown": true,
-            "includeVars": true,
+            "includeVars": false,
             "keepTime": true,
             "tags": [
                 "Insight"
@@ -103,7 +103,7 @@
         },
         {
             "asDropdown": true,
-            "includeVars": true,
+            "includeVars": false,
             "keepTime": true,
             "tags": [
                 "PMM"
@@ -234,6 +234,7 @@
             "targets": [
                 {
                     "expr": "topk(10, sum(mysql_info_schema_table_size{instance=\"$host\", component!=\"data_free\"}) by (schema, table)) > 0",
+                    "format": "table",
                     "interval": "5m",
                     "intervalFactor": 1,
                     "legendFormat": "{{ schema }}.{{ table }}",
@@ -243,8 +244,267 @@
             ],
             "timeFrom": "5m",
             "title": "Largest Tables by Size",
-            "transform": "timeseries_aggregations",
+            "transform": "table",
             "type": "table"
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "fill": 2,
+            "gridPos": {
+                "h": 8,
+                "w": 24,
+                "x": 0,
+                "y": 8
+            },
+            "id": 64,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "rightSide": true,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "null",
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": true,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "topk(10,sort_desc(sum(mysql_info_schema_table_size{instance=\"$host\",component=~\".*length\",table=~\"$table\"}) by (schema, table)))",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Table: {{ schema }}.{{ table }}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Top Tables by Size",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "decbytes",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                }
+            ]
+        },
+        {
+            "aliasColors": {},
+            "bars": true,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 2,
+            "fill": 2,
+            "gridPos": {
+                "h": 8,
+                "w": 24,
+                "x": 0,
+                "y": 16
+            },
+            "id": 65,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "rightSide": true,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": false,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "null",
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": true,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "(sum(rate(mysql_info_schema_table_size{instance=\"$host\",component=~\".*length\",table=~\"$table\"}[$interval])) by (schema, table) or\nsum(irate(mysql_info_schema_table_size{instance=\"$host\",component=~\".*length\",table=~\"$table\"}[5m])) by (schema, table)) > 0",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Table: {{ schema }}.{{ table }}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Table Growth",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "bytes",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                }
+            ]
+        },
+        {
+            "aliasColors": {},
+            "bars": true,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 2,
+            "fill": 2,
+            "gridPos": {
+                "h": 8,
+                "w": 24,
+                "x": 0,
+                "y": 24
+            },
+            "hideTimeOverride": false,
+            "id": 62,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "rightSide": true,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": false,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "null",
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": true,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "(sum(rate(mysql_info_schema_table_size{instance=\"$host\",component=~\".*length\",table=~\"$table\"}[$interval])) by (schema, table) or \nsum(irate(mysql_info_schema_table_size{instance=\"$host\",component=~\".*length\",table=~\"$table\"}[5m])) by (schema, table)) > 0 ",
+                    "format": "time_series",
+                    "interval": "1d",
+                    "intervalFactor": 1,
+                    "legendFormat": "Table: {{ schema }}.{{ table }}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": "31d",
+            "timeShift": null,
+            "title": "Monthly Table Growth",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": null,
+                    "format": "bytes",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ]
         },
         {
             "collapsed": false,
@@ -252,7 +512,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 8
+                "y": 32
             },
             "id": 56,
             "panels": [],
@@ -277,7 +537,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 0,
-                "y": 9
+                "y": 33
             },
             "id": 54,
             "legend": {
@@ -363,11 +623,7 @@
                     "min": 0,
                     "show": true
                 }
-            ],
-            "yaxis": {
-                "align": false,
-                "alignLevel": null
-            }
+            ]
         },
         {
             "columns": [
@@ -384,7 +640,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 12,
-                "y": 9
+                "y": 33
             },
             "height": "",
             "hideTimeOverride": true,
@@ -434,7 +690,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 16
+                "y": 40
             },
             "id": 57,
             "panels": [],
@@ -451,7 +707,7 @@
                 "h": 3,
                 "w": 24,
                 "x": 0,
-                "y": 17
+                "y": 41
             },
             "height": "50px",
             "id": 44,
@@ -468,7 +724,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 20
+                "y": 44
             },
             "id": 58,
             "panels": [],
@@ -491,7 +747,7 @@
                 "h": 7,
                 "w": 24,
                 "x": 0,
-                "y": 21
+                "y": 45
             },
             "id": 48,
             "legend": {
@@ -567,11 +823,7 @@
                     "min": 0,
                     "show": true
                 }
-            ],
-            "yaxis": {
-                "align": false,
-                "alignLevel": null
-            }
+            ]
         },
         {
             "collapsed": false,
@@ -579,7 +831,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 28
+                "y": 52
             },
             "id": 59,
             "panels": [],
@@ -602,7 +854,7 @@
                 "h": 7,
                 "w": 24,
                 "x": 0,
-                "y": 29
+                "y": 53
             },
             "id": 42,
             "legend": {
@@ -679,11 +931,7 @@
                     "min": 0,
                     "show": true
                 }
-            ],
-            "yaxis": {
-                "align": false,
-                "alignLevel": null
-            }
+            ]
         },
         {
             "collapsed": false,
@@ -691,7 +939,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 36
+                "y": 60
             },
             "id": 60,
             "panels": [],
@@ -714,7 +962,7 @@
                 "h": 7,
                 "w": 24,
                 "x": 0,
-                "y": 37
+                "y": 61
             },
             "height": "",
             "hideTimeOverride": true,
@@ -856,6 +1104,26 @@
                 "tagsQuery": null,
                 "type": "query",
                 "useTags": false
+            },
+            {
+                "allValue": null,
+                "current": {},
+                "datasource": "Prometheus",
+                "hide": 0,
+                "includeAll": true,
+                "label": "Table",
+                "multi": true,
+                "name": "table",
+                "options": [],
+                "query": "label_values(mysql_info_schema_table_size,table)",
+                "refresh": 1,
+                "regex": "",
+                "sort": 1,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
             }
         ]
     },
@@ -897,6 +1165,6 @@
     },
     "timezone": "browser",
     "title": "MySQL Table Statistics",
-    "uid": "CiMg9oiik",
-    "version": 1
+    "uid": "5dfQRkDik",
+    "version": 4
 }
