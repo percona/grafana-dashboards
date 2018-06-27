@@ -111,3 +111,8 @@ declare module 'app/core/app_events' {
         constructor(options);
     }
 }
+
+declare module 'moment' {
+    let moment: any;
+    export default moment;
+}

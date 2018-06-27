@@ -2,6 +2,7 @@
 
 import {MetricsPanelCtrl} from 'app/plugins/sdk';
 import AppEvents from 'app/core/app_events';
+import moment from 'moment';
 
 import config from 'app/core/config';
 
@@ -57,6 +58,10 @@ export class PanelCtrl extends MetricsPanelCtrl {
         $scope.nextVersion = '';
         $scope.linkVersion = '';
         $scope.errorMessage = '';
+        $scope.isUpToDate = false;
+        $scope.ifDisabledUpdates = true;
+        $scope.lastCheckDate = localStorage.getItem('lastCheck');
+        $scope.currentVersion = localStorage.getItem('currentVersion');
 
         $scope.checkForUpdate = this.checkForUpdate.bind(this, $scope, $http);
         $scope.update = this.update.bind(this, $scope, $http);
@@ -64,7 +69,6 @@ export class PanelCtrl extends MetricsPanelCtrl {
         $scope.showReleaseNotes = this.showReleaseNotes.bind(this, $scope);
         $scope.getCurrentVersion = this.getCurrentVersion.bind(this, $scope, $http);
         $scope.getCurrentVersion($scope, $http);
-
     }
 
     /**
@@ -80,11 +84,14 @@ export class PanelCtrl extends MetricsPanelCtrl {
             modalScope.isOutputShown = newState.isOutputShown;
             modalScope.shouldBeUpdated = newState.shouldBeUpdated;
             modalScope.errorMessage = newState.errorMessage;
+            modalScope.isUpToDate = newState.isUpToDate;
             modalScope.version = newState.version;
+            console.log('modalScope - ', modalScope);
         });
         modalScope.reloadAfterUpdate = () => {
-          location.reload();
+            location.reload();
         };
+
 
         $scope.isLoaderShown = true;
         AppEvents.emit('show-modal', {
@@ -132,7 +139,8 @@ export class PanelCtrl extends MetricsPanelCtrl {
             $scope.shouldBeUpdated = true;
             $scope.isChecked = true;
             $scope.nextVersion = res.data.to;
-            $scope.version = res.data.from;
+            // $scope.version = res.data.from;
+            this.getCurrentTime($scope);
             if ($scope.linkVersion = $scope.nextVersion.match(linkRegExp)) {
                 $scope.linkVersion = $scope.nextVersion.match(linkRegExp)[0];
             } else {
@@ -141,7 +149,15 @@ export class PanelCtrl extends MetricsPanelCtrl {
 
         }).catch(() => {
             this.displayError($scope, PanelCtrl.ERRORS.NOTHING_TO_UPDATE);
+            this.getCurrentTime($scope);
+            $scope.isUpToDate = true;
         });
+    }
+
+    public getCurrentTime($scope) {
+        const date = moment().format('MMMM DD, H:mm');
+        localStorage.setItem('lastCheck', `${date}`);
+        $scope.lastCheckDate = localStorage.getItem('lastCheck');
     }
 
     /**
@@ -153,6 +169,10 @@ export class PanelCtrl extends MetricsPanelCtrl {
             url: PanelCtrl.API.GET_CURRENT_VERSION,
         }).then((res) => {
             $scope.version = res.data.title;
+            localStorage.setItem('currentVersion', $scope.version);
+            $scope.currentVersion = localStorage.getItem('currentVersion');
+            console.log('$scope.version - ', $scope.version);
+
         }).catch(() => {
             //TODO: add error handler
         });
@@ -169,12 +189,13 @@ export class PanelCtrl extends MetricsPanelCtrl {
             url: $scope.logLocation,
         }).then(response => {
             $scope.output = response.data.detail;
-
             if (response.data.title === PanelCtrl.PROCESS_STATUSES.IN_PROGRESS) window.setTimeout(this.getLog.bind(this, $scope, $http), 1000);
 
             if (response.data.title === PanelCtrl.PROCESS_STATUSES.DONE) {
                 this.reset($scope);
                 $scope.version = $scope.errorMessage ? $scope.version : $scope.nextVersion;
+                localStorage.setItem('currentVersion', $scope.version);
+                $scope.currentVersion = localStorage.getItem('currentVersion');
                 $scope.isUpdated = true;
             }
             if (response.data.title === PanelCtrl.PROCESS_STATUSES.FAILED) {
