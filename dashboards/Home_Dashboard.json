@@ -6,9 +6,14 @@
                 "datasource": "-- Grafana --",
                 "enable": true,
                 "hide": true,
-                "iconColor": "rgba(0, 211, 255, 1)",
-                "name": "Annotations & Alerts",
-                "type": "dashboard"
+                "iconColor": "#e0752d",
+                "limit": 100,
+                "name": "PMM Annotations",
+                "showIn": 0,
+                "tags": [
+                    "pmm_annotation"
+                ],
+                "type": "tags"
             }
         ]
     },
@@ -16,7 +21,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1529322146489,
+    "iteration": 1530093922722,
     "links": [
         {
             "icon": "dashboard",
@@ -509,12 +514,29 @@
                     "errors": {},
                     "expr": "avg by () ((sum by (instance,cpu) ( (clamp_max(rate(node_cpu{instance=~\"$host\",mode!='idle',mode!=\"iowait\"}[$interval]),1)) or  (clamp_max(irate(node_cpu{instance=~\"$host\",mode!='idle',mode!=\"iowait\"}[5m]),1)) ))*100 or (avg_over_time(node_cpu_average{instance=~\"$host\", mode=\"total\"}[$interval]) or avg_over_time(node_cpu_average{instance=~\"$host\", mode=\"total\"}[5m])))",
                     "format": "time_series",
+                    "hide": true,
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "",
                     "metric": "node_mem",
                     "refId": "A",
                     "step": 300
+                },
+                {
+                    "expr": "avg by () (rate(node_cpu_active_average{instance=~\"$host\"}[$interval]) or irate(node_cpu_active_average{instance=~\"$host\"}[5m]))",
+                    "format": "time_series",
+                    "hide": false,
+                    "intervalFactor": 1,
+                    "legendFormat": "",
+                    "refId": "B"
+                },
+                {
+                    "expr": "avg(node_cpu_load_avarage_percent{instance=~\"$host\"})",
+                    "format": "time_series",
+                    "hide": true,
+                    "intervalFactor": 1,
+                    "legendFormat": "",
+                    "refId": "C"
                 }
             ],
             "thresholds": "70,90",
@@ -595,12 +617,20 @@
                     "errors": {},
                     "expr": "avg by () ((node_memory_MemAvailable{instance=~\"$host\"} or (node_memory_MemFree{instance=~\"$host\"} + node_memory_Buffers{instance=~\"$host\"} + node_memory_Cached{instance=~\"$host\"})) / node_memory_MemTotal{instance=~\"$host\"}) * 100",
                     "format": "time_series",
+                    "hide": true,
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "",
                     "metric": "node_mem",
                     "refId": "A",
                     "step": 300
+                },
+                {
+                    "expr": "avg by () (node_memory_available_percent{instance=~\"$host\"})",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "refId": "B"
                 }
             ],
             "thresholds": "10,20",
@@ -1541,12 +1571,31 @@
                     "errors": {},
                     "expr": "clamp_max(avg by (instance) \n(sum by (cpu) ( (clamp_max(rate(node_cpu{instance=~\"$host\",mode!='idle',mode!=\"iowait\"}[$interval]),1)) or\n(clamp_max(irate(node_cpu{instance=~\"$host\",mode!='idle',mode!=\"iowait\"}[5m]),1)) )),1) *100 or\n(avg_over_time(node_cpu_average{instance=~\"$host\", mode=\"total\"}[$interval]) or\navg_over_time(node_cpu_average{instance=~\"$host\", mode=\"total\"}[5m]))",
                     "format": "time_series",
+                    "hide": true,
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "",
                     "metric": "node_mem",
                     "refId": "A",
                     "step": 300
+                },
+                {
+                    "expr": "avg by (instance) (rate(node_cpu_active_average{instance=~\"$host\"}[$interval]) or\nirate(node_cpu_active_average{instance=~\"$host\"}[5m]))",
+                    "format": "time_series",
+                    "hide": false,
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "",
+                    "refId": "B"
+                },
+                {
+                    "expr": "node_cpu_average_load_percent{instance=\"$host\"}",
+                    "format": "time_series",
+                    "hide": true,
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "",
+                    "refId": "C"
                 }
             ],
             "thresholds": "70,90",
@@ -1633,12 +1682,20 @@
                     "errors": {},
                     "expr": "(node_memory_MemAvailable{instance=~\"$host\"} or \n(node_memory_MemFree{instance=~\"$host\"} + node_memory_Buffers{instance=~\"$host\"} + node_memory_Cached{instance=~\"$host\"})) / \nnode_memory_MemTotal{instance=~\"$host\"} * 100",
                     "format": "time_series",
+                    "hide": true,
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "",
                     "metric": "node_mem",
                     "refId": "A",
                     "step": 300
+                },
+                {
+                    "expr": "node_memory_available_percent{instance=~\"$host\"}",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "refId": "B"
                 }
             ],
             "thresholds": "10,20",
@@ -2595,5 +2652,5 @@
     "timezone": "browser",
     "title": "Home Dashboard",
     "uid": "Fxvd1timk",
-    "version": 1
+    "version": 2
 }
