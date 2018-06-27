@@ -21,7 +21,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1530093922722,
+    "iteration": 1530108970262,
     "links": [
         {
             "icon": "dashboard",
@@ -523,9 +523,10 @@
                     "step": 300
                 },
                 {
-                    "expr": "avg by () (rate(node_cpu_active_average{instance=~\"$host\"}[$interval]) or irate(node_cpu_active_average{instance=~\"$host\"}[5m]))",
+                    "expr": "avg by () (rate(node_cpu_active_average_percent{instance=~\"$host\"}[$interval]) or irate(node_cpu_active_average_percent{instance=~\"$host\"}[5m]))",
                     "format": "time_series",
                     "hide": false,
+                    "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "",
                     "refId": "B"
@@ -534,6 +535,7 @@
                     "expr": "avg(node_cpu_load_avarage_percent{instance=~\"$host\"})",
                     "format": "time_series",
                     "hide": true,
+                    "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "",
                     "refId": "C"
@@ -628,6 +630,7 @@
                 {
                     "expr": "avg by () (node_memory_available_percent{instance=~\"$host\"})",
                     "format": "time_series",
+                    "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "refId": "B"
@@ -1580,7 +1583,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "avg by (instance) (rate(node_cpu_active_average{instance=~\"$host\"}[$interval]) or\nirate(node_cpu_active_average{instance=~\"$host\"}[5m]))",
+                    "expr": "avg by (instance) (rate(node_cpu_active_average_percent{instance=~\"$host\"}[$interval]) or\nirate(node_cpu_active_average_percent{instance=~\"$host\"}[5m]))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -1589,7 +1592,7 @@
                     "refId": "B"
                 },
                 {
-                    "expr": "node_cpu_average_load_percent{instance=\"$host\"}",
+                    "expr": "node_cpu_load_avarage_percent{instance=\"$host\"}",
                     "format": "time_series",
                     "hide": true,
                     "interval": "$interval",
@@ -2532,8 +2535,8 @@
                 "auto_count": 200,
                 "auto_min": "1s",
                 "current": {
-                    "text": "auto",
-                    "value": "$__auto_interval_interval"
+                    "text": "1m",
+                    "value": "1m"
                 },
                 "datasource": "Prometheus",
                 "hide": 0,
@@ -2544,7 +2547,7 @@
                 "name": "interval",
                 "options": [
                     {
-                        "selected": true,
+                        "selected": false,
                         "text": "auto",
                         "value": "$__auto_interval_interval"
                     },
@@ -2559,7 +2562,7 @@
                         "value": "5s"
                     },
                     {
-                        "selected": false,
+                        "selected": true,
                         "text": "1m",
                         "value": "1m"
                     },
@@ -2652,5 +2655,5 @@
     "timezone": "browser",
     "title": "Home Dashboard",
     "uid": "Fxvd1timk",
-    "version": 2
+    "version": 3
 }
