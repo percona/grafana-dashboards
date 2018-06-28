@@ -1,24 +1,8 @@
 <style>
-    /*#pmm-update-widget .btn-block {*/
-    /*width: 100%;*/
-    /*}*/
-
-    /*#pmm-update-widget .text-primary {*/
-    /*color: #00729b;*/
-    /*cursor: pointer;*/
-    /*}*/
-
-    /*#pmm-update-widget .text-primary:hover {*/
-    /*color: #005f81;*/
-    /*}*/
 
     #pmm-update-widget p {
         margin-bottom: 0;
     }
-
-    /*#pmm-update-widget > * {*/
-        /*margin-bottom: 10px;*/
-    /*}*/
 
     #pmm-update-widget .check-update-button {
         position: relative;
@@ -46,10 +30,6 @@
         background: transparent;
     }
 
-    header {
-        /*margin-bottom: 10px;*/
-    }
-
     section.state {
         height: 65px;
         /*margin-bottom: 10px;*/
@@ -63,7 +43,6 @@
     }
 
     section.available-version {
-        /*margin-bottom: 5px;*/
         margin-top: 5px;
         display: flex;
         justify-content: flex-start;
@@ -85,15 +64,14 @@
     <header>
         <h2 class="update-title">Updates</h2>
         <p class="current-version">Current version:
-            <span>{{currentVersion}}</span>
+            <span>{{currentVersion}} <em>{{currentReleaseDate}}</em></span>
             <span ng-if="!currentVersion">{{version}}</span>
-            <!--<i class="fa fa-spinner fa-spin" ng-if="!version"></i>-->
         </p>
     </header>
     <section class="available-version" ng-if="shouldBeUpdated">
         <p>Available version:&nbsp;</p>
         <div class="version-wrapper">
-            <p>{{nextVersion}}</p>
+            <p>{{nextVersion}} <em>{{newReleaseDate}}</em></p>
             <a href="https://www.percona.com/doc/percona-monitoring-and-management/release-notes/{{linkVersion}}.html"
                class="text-primary" target="_blank">What's new?</a>
         </div>
@@ -107,13 +85,13 @@
     </section>
     <button class="btn btn-secondary btn-block update-button"
             ng-if="shouldBeUpdated"
-            ng-disabled="ifDisabledUpdates"
-            ng-click="update()">
-        <span ng-if="shouldBeUpdated && !ifDisabledUpdates">
+            ng-click="update()"
+            ng-disabled="disableUpdate">
+        <span ng-if="shouldBeUpdated && !disableUpdate">
             <i class="fa fa-download"></i>
             Update to {{nextVersion}}
         </span>
-        <span ng-if="ifDisabledUpdates">Updates are disabled</span>
+        <span ng-if="disableUpdate">Updates are disabled</span>
     </button>
     <footer>
         <p>Last check: {{lastCheckDate}}</p>

@@ -22,13 +22,18 @@ declare module 'app/plugins/sdk' {
         dataList: any;
         events: any;
         editorTabs: Array<any>;
+
         addEditorTab(a: string, b: string, c: number);
+
         pluginId: any;
         editorTabIndex: number;
+
         updateTimeRange();
+
         display_fn: any;
         params_fn: any;
         panel: any;
+
         constructor($scope: any, $injector: any);
     }
 
@@ -53,31 +58,57 @@ declare module 'app/plugins/sdk' {
         containerHeight: any;
         events: any;
         timing: any;
+
         init();
+
         renderingCompleted();
+
         refresh();
+
         publishAppEvent(evtName, evt);
+
         changeView(fullscreen, edit);
+
         viewPanel();
+
         editPanel();
+
         exitFullscreen();
+
         initEditMode();
+
         changeTab(newIndex);
+
         addEditorTab(title, directiveFn, index?);
+
         getMenu();
+
         getExtendedMenu();
+
         otherPanelInFullscreenMode();
+
         calculatePanelHeight();
+
         render(payload?);
+
         duplicate();
+
         updateColumnSpan(span);
+
         removePanel();
+
         editPanelJson();
+
         replacePanel(newPanel, oldPanel);
+
         sharePanel();
+
         getInfoMode();
+
         getInfoContent(options);
+
         openInspector();
+
         constructor($scope: any, $injector: any);
     }
 }
@@ -98,8 +129,10 @@ declare module 'app/core/config' {
         disableLoginForm: boolean;
         defaultDatasource: string;
         alertingEnabled: boolean;
+
         constructor(options);
     }
+
     const config: Settings
     export default config;
 }
@@ -115,4 +148,9 @@ declare module 'app/core/app_events' {
 declare module 'moment' {
     let moment: any;
     export default moment;
+}
+
+declare module 'jquery' {
+    var jquery: any;
+    export default jquery
 }
