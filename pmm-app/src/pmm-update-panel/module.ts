@@ -146,6 +146,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
     private checkForUpdate($scope, $http): void {
         const linkRegExp = new RegExp('^\\d{1,}\\.\\d{1,2}\\.\\d{1,4}');
         $scope.isLoaderShown = true;
+        $('#refresh').addClass('fa-spin');
 
         $http({
             method: 'GET',
@@ -163,11 +164,12 @@ export class PanelCtrl extends MetricsPanelCtrl {
             } else {
                 this.displayError($scope, PanelCtrl.ERRORS.INCORRECT_SERVER_RESPONSE);
             }
-
+            $('#refresh').removeClass('fa-spin');
         }).catch(() => {
             this.displayError($scope, PanelCtrl.ERRORS.NOTHING_TO_UPDATE);
             this.getCurrentTime($scope);
             $scope.isUpToDate = true;
+            $('#refresh').removeClass('fa-spin');
         });
     }
 
