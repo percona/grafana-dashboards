@@ -21,7 +21,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1525866790269,
+    "iteration": 1530720545883,
     "links": [
         {
             "icon": "dashboard",
@@ -654,7 +654,7 @@
             "valueName": "current"
         },
         {
-            "collapsed": false,
+            "collapsed": true,
             "gridPos": {
                 "h": 1,
                 "w": 24,
@@ -662,466 +662,467 @@
                 "y": 5
             },
             "id": 59,
-            "panels": [],
+            "panels": [
+                {
+                    "aliasColors": {
+                        "CPU Cores Total": "#BF1B00",
+                        "Recommended Limit": "#cca300"
+                    },
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": 2,
+                    "editable": true,
+                    "error": false,
+                    "fill": 0,
+                    "grid": {},
+                    "gridPos": {
+                        "h": 7,
+                        "w": 12,
+                        "x": 0,
+                        "y": 6
+                    },
+                    "height": "250",
+                    "id": 3,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [
+                        {
+                            "alias": "CPU",
+                            "color": "#E24D42"
+                        },
+                        {
+                            "alias": "CPU Cores Used",
+                            "fill": 1
+                        }
+                    ],
+                    "spaceLength": 10,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "expr": "rate(process_cpu_seconds_total{job=\"prometheus\"}[$interval]) or irate(process_cpu_seconds_total{job=\"prometheus\"}[5m])",
+                            "format": "time_series",
+                            "hide": false,
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "CPU Cores Used",
+                            "metric": "",
+                            "refId": "A",
+                            "step": 60
+                        },
+                        {
+                            "expr": "count(node_cpu{mode=\"user\", instance=\"pmm-server\"})",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "CPU Cores Total",
+                            "refId": "B",
+                            "step": 40
+                        },
+                        {
+                            "expr": "count(node_cpu{mode=\"user\", instance=\"pmm-server\"})*0.75",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Recommended Limit",
+                            "refId": "C"
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Prometheus Process CPU Usage",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "cumulative"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "decimals": null,
+                            "format": "none",
+                            "label": "",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "label": "",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        }
+                    ]
+                },
+                {
+                    "aliasColors": {
+                        "Resident Memory": "#629E51",
+                        "Total System Memory": "#890F02"
+                    },
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": 2,
+                    "editable": true,
+                    "error": false,
+                    "fill": 0,
+                    "grid": {},
+                    "gridPos": {
+                        "h": 7,
+                        "w": 12,
+                        "x": 12,
+                        "y": 6
+                    },
+                    "height": "250",
+                    "id": 5,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "rightSide": false,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [
+                        {
+                            "alias": "Memory",
+                            "color": "#EF843C"
+                        },
+                        {
+                            "alias": "Resident Memory",
+                            "fill": 1
+                        }
+                    ],
+                    "spaceLength": 10,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "expr": "process_resident_memory_bytes{job=\"prometheus\"}",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Resident Memory",
+                            "metric": "",
+                            "refId": "A",
+                            "step": 60
+                        },
+                        {
+                            "expr": "process_virtual_memory_bytes{job=\"prometheus\"}",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Virtual Memory",
+                            "refId": "B",
+                            "step": 60
+                        },
+                        {
+                            "expr": "go_memstats_alloc_bytes{job=\"prometheus\"}+go_memstats_stack_inuse_bytes{job=\"prometheus\"}",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Go Memory Allocated and In Use",
+                            "refId": "C",
+                            "step": 60
+                        },
+                        {
+                            "expr": "prometheus_local_storage_target_heap_size_bytes{job=\"prometheus\"}",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 2,
+                            "legendFormat": "Configured Target Storage Heap Size",
+                            "refId": "D",
+                            "step": 120
+                        },
+                        {
+                            "expr": "node_memory_MemTotal{instance=\"pmm-server\"}",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Total System Memory",
+                            "refId": "E",
+                            "step": 60
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Prometheus Process  Memory Usage",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "cumulative"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "bytes",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        }
+                    ]
+                },
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": null,
+                    "decimals": 2,
+                    "fill": 5,
+                    "gridPos": {
+                        "h": 7,
+                        "w": 12,
+                        "x": 0,
+                        "y": 13
+                    },
+                    "id": 68,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [
+                        {
+                            "alias": "Total Disk Space",
+                            "color": "#bf1b00",
+                            "fill": 0
+                        }
+                    ],
+                    "spaceLength": 10,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "expr": "(node_filesystem_size{instance=\"pmm-server\",mountpoint=\"/srv\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"} or \nnode_filesystem_size{instance=\"pmm-server\",mountpoint=\"/\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"} ) - \n(node_filesystem_free{instance=\"pmm-server\",mountpoint=\"/srv\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"} or \nnode_filesystem_free{instance=\"pmm-server\",mountpoint=\"/\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"})",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Used Disk Space",
+                            "refId": "A"
+                        },
+                        {
+                            "expr": "node_filesystem_free{instance=\"pmm-server\", mountpoint=\"/srv\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"} or \nnode_filesystem_free{instance=\"pmm-server\", mountpoint=\"/\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Free Disk Space",
+                            "refId": "B"
+                        },
+                        {
+                            "expr": "node_filesystem_size{instance=\"pmm-server\",mountpoint=\"/srv\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"} or \nnode_filesystem_size{instance=\"pmm-server\",mountpoint=\"/\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Total Disk Space",
+                            "refId": "C"
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Disk Space Utilization",
+                    "tooltip": {
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "decbytes",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": "0",
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": false
+                        }
+                    ]
+                },
+                {
+                    "aliasColors": {
+                        "Time Left on /": "#447ebc"
+                    },
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": null,
+                    "fill": 0,
+                    "gridPos": {
+                        "h": 7,
+                        "w": 12,
+                        "x": 12,
+                        "y": 13
+                    },
+                    "id": 70,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 3,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "expr": "node_filesystem_free{instance=\"pmm-server\",mountpoint=\"/srv\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}/\nclamp_min((node_filesystem_free{instance=\"pmm-server\",mountpoint=\"/srv\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"} - \npredict_linear(node_filesystem_free{instance=\"pmm-server\", mountpoint=\"/srv\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[1h], 1 * 3600)),0)\nor\nnode_filesystem_free{instance=\"pmm-server\",mountpoint=\"/\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}/\nclamp_min((node_filesystem_free{instance=\"pmm-server\",mountpoint=\"/\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"} - \npredict_linear(node_filesystem_free{instance=\"pmm-server\", mountpoint=\"/\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[1h], 1 * 3600)),0)",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Time Left on {{mountpoint}}",
+                            "refId": "A"
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Time before run out of space",
+                    "tooltip": {
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "decimals": null,
+                            "format": "h",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": "0",
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        }
+                    ]
+                }
+            ],
             "repeat": null,
             "title": "Resources",
             "type": "row"
-        },
-        {
-            "aliasColors": {
-                "CPU Cores Total": "#BF1B00",
-                "Recommended Limit": "#cca300"
-            },
-            "bars": false,
-            "dashLength": 10,
-            "dashes": false,
-            "datasource": "Prometheus",
-            "decimals": 2,
-            "editable": true,
-            "error": false,
-            "fill": 0,
-            "grid": {},
-            "gridPos": {
-                "h": 7,
-                "w": 12,
-                "x": 0,
-                "y": 6
-            },
-            "height": "250",
-            "id": 3,
-            "legend": {
-                "alignAsTable": true,
-                "avg": true,
-                "current": false,
-                "max": true,
-                "min": true,
-                "show": true,
-                "sort": "avg",
-                "sortDesc": true,
-                "total": false,
-                "values": true
-            },
-            "lines": true,
-            "linewidth": 2,
-            "links": [],
-            "nullPointMode": "null",
-            "percentage": false,
-            "pointradius": 5,
-            "points": false,
-            "renderer": "flot",
-            "seriesOverrides": [
-                {
-                    "alias": "CPU",
-                    "color": "#E24D42"
-                },
-                {
-                    "alias": "CPU Cores Used",
-                    "fill": 1
-                }
-            ],
-            "spaceLength": 10,
-            "stack": false,
-            "steppedLine": false,
-            "targets": [
-                {
-                    "expr": "rate(process_cpu_seconds_total{job=\"prometheus\"}[$interval]) or irate(process_cpu_seconds_total{job=\"prometheus\"}[5m])",
-                    "format": "time_series",
-                    "hide": false,
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "CPU Cores Used",
-                    "metric": "",
-                    "refId": "A",
-                    "step": 60
-                },
-                {
-                    "expr": "count(node_cpu{mode=\"user\", instance=\"pmm-server\"})",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "CPU Cores Total",
-                    "refId": "B",
-                    "step": 40
-                },
-                {
-                    "expr": "count(node_cpu{mode=\"user\", instance=\"pmm-server\"})*0.75",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Recommended Limit",
-                    "refId": "C"
-                }
-            ],
-            "thresholds": [],
-            "timeFrom": null,
-            "timeShift": null,
-            "title": "Prometheus Process CPU Usage",
-            "tooltip": {
-                "msResolution": false,
-                "shared": true,
-                "sort": 0,
-                "value_type": "cumulative"
-            },
-            "type": "graph",
-            "xaxis": {
-                "buckets": null,
-                "mode": "time",
-                "name": null,
-                "show": true,
-                "values": []
-            },
-            "yaxes": [
-                {
-                    "decimals": null,
-                    "format": "none",
-                    "label": "",
-                    "logBase": 1,
-                    "max": null,
-                    "min": 0,
-                    "show": true
-                },
-                {
-                    "format": "short",
-                    "label": "",
-                    "logBase": 1,
-                    "max": null,
-                    "min": 0,
-                    "show": true
-                }
-            ]
-        },
-        {
-            "aliasColors": {
-                "Resident Memory": "#629E51",
-                "Total System Memory": "#890F02"
-            },
-            "bars": false,
-            "dashLength": 10,
-            "dashes": false,
-            "datasource": "Prometheus",
-            "decimals": 2,
-            "editable": true,
-            "error": false,
-            "fill": 0,
-            "grid": {},
-            "gridPos": {
-                "h": 7,
-                "w": 12,
-                "x": 12,
-                "y": 6
-            },
-            "height": "250",
-            "id": 5,
-            "legend": {
-                "alignAsTable": true,
-                "avg": true,
-                "current": false,
-                "max": true,
-                "min": true,
-                "rightSide": false,
-                "show": true,
-                "sort": "avg",
-                "sortDesc": true,
-                "total": false,
-                "values": true
-            },
-            "lines": true,
-            "linewidth": 2,
-            "links": [],
-            "nullPointMode": "null",
-            "percentage": false,
-            "pointradius": 5,
-            "points": false,
-            "renderer": "flot",
-            "seriesOverrides": [
-                {
-                    "alias": "Memory",
-                    "color": "#EF843C"
-                },
-                {
-                    "alias": "Resident Memory",
-                    "fill": 1
-                }
-            ],
-            "spaceLength": 10,
-            "stack": false,
-            "steppedLine": false,
-            "targets": [
-                {
-                    "expr": "process_resident_memory_bytes{job=\"prometheus\"}",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Resident Memory",
-                    "metric": "",
-                    "refId": "A",
-                    "step": 60
-                },
-                {
-                    "expr": "process_virtual_memory_bytes{job=\"prometheus\"}",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Virtual Memory",
-                    "refId": "B",
-                    "step": 60
-                },
-                {
-                    "expr": "go_memstats_alloc_bytes{job=\"prometheus\"}+go_memstats_stack_inuse_bytes{job=\"prometheus\"}",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Go Memory Allocated and In Use",
-                    "refId": "C",
-                    "step": 60
-                },
-                {
-                    "expr": "prometheus_local_storage_target_heap_size_bytes{job=\"prometheus\"}",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 2,
-                    "legendFormat": "Configured Target Storage Heap Size",
-                    "refId": "D",
-                    "step": 120
-                },
-                {
-                    "expr": "node_memory_MemTotal{instance=\"pmm-server\"}",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Total System Memory",
-                    "refId": "E",
-                    "step": 60
-                }
-            ],
-            "thresholds": [],
-            "timeFrom": null,
-            "timeShift": null,
-            "title": "Prometheus Process  Memory Usage",
-            "tooltip": {
-                "msResolution": false,
-                "shared": true,
-                "sort": 0,
-                "value_type": "cumulative"
-            },
-            "type": "graph",
-            "xaxis": {
-                "buckets": null,
-                "mode": "time",
-                "name": null,
-                "show": true,
-                "values": []
-            },
-            "yaxes": [
-                {
-                    "format": "bytes",
-                    "logBase": 1,
-                    "max": null,
-                    "min": 0,
-                    "show": true
-                },
-                {
-                    "format": "short",
-                    "logBase": 1,
-                    "max": null,
-                    "min": 0,
-                    "show": true
-                }
-            ]
-        },
-        {
-            "aliasColors": {},
-            "bars": false,
-            "dashLength": 10,
-            "dashes": false,
-            "datasource": "Prometheus",
-            "decimals": 2,
-            "fill": 5,
-            "gridPos": {
-                "h": 7,
-                "w": 12,
-                "x": 0,
-                "y": 13
-            },
-            "id": 68,
-            "legend": {
-                "alignAsTable": true,
-                "avg": true,
-                "current": false,
-                "max": true,
-                "min": true,
-                "show": true,
-                "sort": "avg",
-                "sortDesc": true,
-                "total": false,
-                "values": true
-            },
-            "lines": true,
-            "linewidth": 2,
-            "links": [],
-            "nullPointMode": "null",
-            "percentage": false,
-            "pointradius": 5,
-            "points": false,
-            "renderer": "flot",
-            "seriesOverrides": [
-                {
-                    "alias": "Total Disk Space",
-                    "color": "#bf1b00",
-                    "fill": 0
-                }
-            ],
-            "spaceLength": 10,
-            "stack": false,
-            "steppedLine": false,
-            "targets": [
-                {
-                    "expr": "(node_filesystem_size{instance=\"pmm-server\",mountpoint=\"/srv\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"} or \nnode_filesystem_size{instance=\"pmm-server\",mountpoint=\"/\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"} ) - \n(node_filesystem_free{instance=\"pmm-server\",mountpoint=\"/srv\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"} or \nnode_filesystem_free{instance=\"pmm-server\",mountpoint=\"/\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"})",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Used Disk Space",
-                    "refId": "A"
-                },
-                {
-                    "expr": "node_filesystem_free{instance=\"pmm-server\", mountpoint=\"/srv\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"} or \nnode_filesystem_free{instance=\"pmm-server\", mountpoint=\"/\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Free Disk Space",
-                    "refId": "B"
-                },
-                {
-                    "expr": "node_filesystem_size{instance=\"pmm-server\",mountpoint=\"/srv\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"} or \nnode_filesystem_size{instance=\"pmm-server\",mountpoint=\"/\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Total Disk Space",
-                    "refId": "C"
-                }
-            ],
-            "thresholds": [],
-            "timeFrom": null,
-            "timeShift": null,
-            "title": "Disk Space Utilization",
-            "tooltip": {
-                "shared": true,
-                "sort": 0,
-                "value_type": "individual"
-            },
-            "type": "graph",
-            "xaxis": {
-                "buckets": null,
-                "mode": "time",
-                "name": null,
-                "show": true,
-                "values": []
-            },
-            "yaxes": [
-                {
-                    "format": "decbytes",
-                    "label": null,
-                    "logBase": 1,
-                    "max": null,
-                    "min": "0",
-                    "show": true
-                },
-                {
-                    "format": "short",
-                    "label": null,
-                    "logBase": 1,
-                    "max": null,
-                    "min": null,
-                    "show": false
-                }
-            ]
-        },
-        {
-            "aliasColors": {
-                "Time Left on /": "#447ebc"
-            },
-            "bars": false,
-            "dashLength": 10,
-            "dashes": false,
-            "datasource": "Prometheus",
-            "fill": 0,
-            "gridPos": {
-                "h": 7,
-                "w": 12,
-                "x": 12,
-                "y": 13
-            },
-            "id": 70,
-            "legend": {
-                "alignAsTable": true,
-                "avg": true,
-                "current": false,
-                "max": true,
-                "min": true,
-                "show": true,
-                "sort": "avg",
-                "sortDesc": true,
-                "total": false,
-                "values": true
-            },
-            "lines": true,
-            "linewidth": 3,
-            "links": [],
-            "nullPointMode": "null",
-            "percentage": false,
-            "pointradius": 5,
-            "points": false,
-            "renderer": "flot",
-            "seriesOverrides": [],
-            "spaceLength": 10,
-            "stack": false,
-            "steppedLine": false,
-            "targets": [
-                {
-                    "expr": "node_filesystem_free{instance=\"pmm-server\",mountpoint=\"/srv\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}/\nclamp_min((node_filesystem_free{instance=\"pmm-server\",mountpoint=\"/srv\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"} - \npredict_linear(node_filesystem_free{instance=\"pmm-server\", mountpoint=\"/srv\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[1h], 1 * 3600)),0)\nor\nnode_filesystem_free{instance=\"pmm-server\",mountpoint=\"/\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}/\nclamp_min((node_filesystem_free{instance=\"pmm-server\",mountpoint=\"/\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"} - \npredict_linear(node_filesystem_free{instance=\"pmm-server\", mountpoint=\"/\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[1h], 1 * 3600)),0)",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Time Left on {{mountpoint}}",
-                    "refId": "A"
-                }
-            ],
-            "thresholds": [],
-            "timeFrom": null,
-            "timeShift": null,
-            "title": "Time before run out of space",
-            "tooltip": {
-                "shared": true,
-                "sort": 0,
-                "value_type": "individual"
-            },
-            "type": "graph",
-            "xaxis": {
-                "buckets": null,
-                "mode": "time",
-                "name": null,
-                "show": true,
-                "values": []
-            },
-            "yaxes": [
-                {
-                    "decimals": null,
-                    "format": "h",
-                    "label": null,
-                    "logBase": 1,
-                    "max": null,
-                    "min": "0",
-                    "show": true
-                },
-                {
-                    "format": "short",
-                    "label": null,
-                    "logBase": 1,
-                    "max": null,
-                    "min": null,
-                    "show": true
-                }
-            ]
         },
         {
             "collapsed": true,
@@ -1129,7 +1130,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 20
+                "y": 6
             },
             "id": 60,
             "panels": [
@@ -2101,7 +2102,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 21
+                "y": 7
             },
             "id": 61,
             "panels": [
@@ -3331,7 +3332,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 22
+                "y": 8
             },
             "id": 62,
             "panels": [
@@ -3775,7 +3776,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 23
+                "y": 9
             },
             "id": 63,
             "panels": [
@@ -4354,7 +4355,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 24
+                "y": 10
             },
             "id": 64,
             "panels": [
@@ -4457,7 +4458,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 25
+                "y": 11
             },
             "id": 65,
             "panels": [
@@ -5010,7 +5011,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 26
+                "y": 12
             },
             "id": 66,
             "panels": [],
@@ -5024,7 +5025,7 @@
                 "h": 3,
                 "w": 24,
                 "x": 0,
-                "y": 27
+                "y": 13
             },
             "id": 57,
             "links": [],
@@ -5140,5 +5141,5 @@
     "timezone": "browser",
     "title": "Prometheus",
     "uid": "aeVSMnnmk",
-    "version": 5
+    "version": 6
 }
