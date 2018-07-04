@@ -156,7 +156,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
             $scope.shouldBeUpdated = true;
             $scope.isChecked = true;
             $scope.nextVersion = res.data.version || '';
-            $scope.nextReleaseDate = res.data.release_date || '';
+            $scope.newReleaseDate = res.data.release_date || '';
             $scope.disableUpdate = res.data.disable_update;
             this.getCurrentTime($scope);
             if ($scope.linkVersion = $scope.nextVersion.match(linkRegExp)) {
