@@ -66,7 +66,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
         $scope.shouldBeUpdated = localStorage.getItem('shouldBeUpdated') || '';
         $scope.nextVersion = localStorage.getItem('nextVersion') || '';
         $scope.newReleaseDate = localStorage.getItem('newReleaseDate') || '';
-        $scope.disableUpdate = localStorage.getItem('disableUpdate') ;
+        $scope.disableUpdate = localStorage.getItem('disableUpdate');
 
         $scope.checkForUpdate = this.checkForUpdate.bind(this, $scope, $http);
         $scope.update = this.update.bind(this, $scope, $http);
@@ -76,10 +76,14 @@ export class PanelCtrl extends MetricsPanelCtrl {
         $scope.getCurrentVersion($scope, $http);
         const body = document.querySelector('body');
         const timeDiff = Date.now() - Number(localStorage.getItem('lastCheck'));
+        const escKeyCode = 'Escape';
         body.addEventListener('click', (event) => {
             if ($(event.target).hasClass('modal-backdrop') && $scope.canBeReloaded) location.reload();
         });
-        if (timeDiff >= 1000*60*60) {
+        body.addEventListener('keydown', (event) => {
+          (event.key === escKeyCode && $scope.canBeReloaded) ? location.reload() : event.stopPropagation();
+        });
+        if (timeDiff >= 1000 * 60 * 60) {
             this.checkForUpdate($scope, $http);
         }
     }
