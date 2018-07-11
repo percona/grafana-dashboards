@@ -35,13 +35,12 @@ export class PanelCtrl extends MetricsPanelCtrl {
         const frame = elem.find('iframe');
         const panel = elem.find('div.panel-container');
         const panelContent = elem.find('div.panel-content');
-        const bgcolor = $scope.qanParams.theme === 'light' ? '#ffffff' : '#141414';
         // TODO: investigate this workaround. Inside $window - CtrlPanel
         const location = $window.$injector.get('$location');
         const window = $window.$injector.get('$window');
 
         panel.css({
-            'background-color': bgcolor,
+            'background-color': 'transparent',
             'border': 'none'
         });
 
