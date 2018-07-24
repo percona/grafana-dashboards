@@ -162,8 +162,87 @@
             "mappingType": 1,
             "mappingTypes": [
                 {
-                    "name": "value to text",
-                    "value": 1
+                    "cacheTimeout": null,
+                    "colorBackground": false,
+                    "colorValue": true,
+                    "colors": [
+                        "rgba(50, 172, 45, 0.97)",
+                        "rgba(237, 129, 40, 0.89)",
+                        "rgba(245, 54, 54, 0.9)"
+                    ],
+                    "datasource": "Prometheus",
+                    "decimals": 1,
+                    "editable": true,
+                    "error": false,
+                    "format": "percent",
+                    "gauge": {
+                        "maxValue": 100,
+                        "minValue": 0,
+                        "show": false,
+                        "thresholdLabels": false,
+                        "thresholdMarkers": true
+                    },
+                    "height": "125px",
+                    "id": 1019,
+                    "interval": "$interval",
+                    "links": [],
+                    "mappingType": 1,
+                    "mappingTypes": [
+                        {
+                            "name": "value to text",
+                            "value": 1
+                        },
+                        {
+                            "name": "range to text",
+                            "value": 2
+                        }
+                    ],
+                    "maxDataPoints": 100,
+                    "nullPointMode": "connected",
+                    "nullText": null,
+                    "postfix": "",
+                    "postfixFontSize": "80%",
+                    "prefix": "",
+                    "prefixFontSize": "80%",
+                    "rangeMaps": [
+                        {
+                            "from": "null",
+                            "text": "N/A",
+                            "to": "null"
+                        }
+                    ],
+                    "span": 3,
+                    "sparkline": {
+                        "fillColor": "rgba(31, 118, 189, 0.18)",
+                        "full": false,
+                        "lineColor": "rgb(31, 120, 193)",
+                        "maxValue": 100,
+                        "minValue": 0,
+                        "show": true
+                    },
+                    "tableColumn": "",
+                    "targets": [
+                        {
+                            "calculatedInterval": "10m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "avg((sum(rate(process_cpu_seconds_total{job!=\"prometheus\",job!=\"grafana\",instance=~\"$host\"}[$interval])) by (instance) or sum(irate(process_cpu_seconds_total{job!=\"prometheus\",instance=~\"$host\"}[5m])) by (instance)) / count(node_cpu{mode=\"user\",instance=~\"$host\"}) by (instance)) by ()*100",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "",
+                            "metric": "",
+                            "refId": "A",
+                            "step": 300
+                        }
+                    ],
+                    "thresholds": "5,10",
+                    "title": "Avg CPU Usage per Host",
+                    "transparent": false,
+                    "type": "pmm-singlestat-panel",
+                    "valueFontSize": "80%",
+                    "valueMaps": [],
+                    "valueName": "current"
                 },
                 {
                     "name": "range to text",
@@ -980,67 +1059,74 @@
                     "expr": "((sum(rate(process_cpu_seconds_total{instance=\"$host\",job!=\"prometheus\",job!=\"grafana\"}[$interval])) by (instance) \nor sum(irate(process_cpu_seconds_total{instance=\"$host\",job!=\"prometheus\",job!=\"grafana\"}[5m])) by (instance)) \n/ count(node_cpu{instance=\"$host\",mode=\"user\"}) by (instance)*100) or \nsum by () ((max_over_time(node_cpu_average{instance=~\"$host\", mode=\"total\"}[$interval]) or max_over_time(node_cpu_average{instance=~\"$host\", mode=\"total\"}[5m])))",
                     "format": "time_series",
                     "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "",
-                    "metric": "node_mem",
-                    "refId": "A",
-                    "step": 300
-                }
-            ],
-            "thresholds": "5,10",
-            "title": "CPU  Used",
-            "transparent": false,
-            "type": "singlestat",
-            "valueFontSize": "80%",
-            "valueMaps": [],
-            "valueName": "current"
-        },
-        {
-            "cacheTimeout": null,
-            "colorBackground": false,
-            "colorValue": true,
-            "colors": [
-                "rgba(50, 172, 45, 0.97)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(245, 54, 54, 0.9)"
-            ],
-            "datasource": "Prometheus",
-            "decimals": 0,
-            "editable": true,
-            "error": false,
-            "format": "decbytes",
-            "gauge": {
-                "maxValue": 100,
-                "minValue": 0,
-                "show": false,
-                "thresholdLabels": false,
-                "thresholdMarkers": true
-            },
-            "gridPos": {
-                "h": 3,
-                "w": 4,
-                "x": 8,
-                "y": 25
-            },
-            "height": "50",
-            "id": 9,
-            "interval": "$interval",
-            "links": [
-                {
-                    "dashUri": "db/prometheus-exporter-status",
-                    "dashboard": "Prometheus Exporter Status",
-                    "includeVars": true,
-                    "keepTime": true,
-                    "targetBlank": true,
-                    "title": "Prometheus Exporter Status",
-                    "type": "dashboard"
-                }
-            ],
-            "mappingType": 1,
-            "mappingTypes": [
-                {
-                    "name": "value to text",
-                    "value": 1
+                    "links": [
+                        {
+                            "dashUri": "db/prometheus-exporter-status",
+                            "dashboard": "Prometheus Exporter Status",
+                            "includeVars": true,
+                            "keepTime": true,
+                            "targetBlank": true,
+                            "title": "Prometheus Exporter Status",
+                            "type": "dashboard"
+                        }
+                    ],
+                    "mappingType": 1,
+                    "mappingTypes": [
+                        {
+                            "name": "value to text",
+                            "value": 1
+                        },
+                        {
+                            "name": "range to text",
+                            "value": 2
+                        }
+                    ],
+                    "maxDataPoints": 100,
+                    "nullPointMode": "connected",
+                    "nullText": null,
+                    "postfix": "",
+                    "postfixFontSize": "80%",
+                    "prefix": "",
+                    "prefixFontSize": "80%",
+                    "rangeMaps": [
+                        {
+                            "from": "null",
+                            "text": "N/A",
+                            "to": "null"
+                        }
+                    ],
+                    "span": 2,
+                    "sparkline": {
+                        "fillColor": "rgba(31, 118, 189, 0.18)",
+                        "full": false,
+                        "lineColor": "rgb(31, 120, 193)",
+                        "maxValue": 100,
+                        "minValue": 0,
+                        "show": true
+                    },
+                    "tableColumn": "",
+                    "targets": [
+                        {
+                            "calculatedInterval": "10m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "((sum(rate(process_cpu_seconds_total{instance=\"$host\",job!=\"prometheus\",job!=\"grafana\"}[$interval])) by (instance) \nor sum(irate(process_cpu_seconds_total{instance=\"$host\",job!=\"prometheus\",job!=\"grafana\"}[5m])) by (instance)) \n/ count(node_cpu{instance=\"$host\",mode=\"user\"}) by (instance)*100) or \nsum by () ((max_over_time(node_cpu_average{instance=~\"$host\", mode=\"total\"}[$interval]) or max_over_time(node_cpu_average{instance=~\"$host\", mode=\"total\"}[5m])))",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "",
+                            "metric": "node_mem",
+                            "refId": "A",
+                            "step": 300
+                        }
+                    ],
+                    "thresholds": "5,10",
+                    "title": "CPU  Used",
+                    "transparent": false,
+                    "type": "pmm-singlestat-panel",
+                    "valueFontSize": "80%",
+                    "valueMaps": [],
+                    "valueName": "current"
                 },
                 {
                     "name": "range to text",
