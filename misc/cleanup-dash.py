@@ -146,20 +146,20 @@ def drop_some_internal_elements(dashboard):
         if 'panels' in element:
             for panel_index, panel in enumerate(dashboard['panels']):
                 if 'datasource' in panel:
-                    if panel['datasource'] == "${DS_PROMETHEUS}":
+                    if panel['datasource'] == '${DS_PROMETHEUS}':
                         dashboard['panels'][panel_index]['datasource'] = 'Prometheus'
-                    if panel['datasource'] == "${DS_CLOUDWATCH}":
+                    if panel['datasource'] == '${DS_CLOUDWATCH}':
                         dashboard['panels'][panel_index]['datasource'] = 'CloudWatch'
-                    if panel['datasource'] == "${DS_QAN-API}":
+                    if panel['datasource'] == '${DS_QAN-API}':
                         dashboard['panels'][panel_index]['datasource'] = 'QAN-API'
         if 'templating' in element:
             for panel_index, panel in enumerate(dashboard['templating']['list']):
                     if 'datasource' in panel.keys():
-                        if panel['datasource'] == "${DS_PROMETHEUS}":
+                        if panel['datasource'] == '${DS_PROMETHEUS}':
                             dashboard['templating']['list'][panel_index]['datasource'] = 'Prometheus'
-                        if panel['datasource'] == "${DS_CLOUDWATCH}":
+                        if panel['datasource'] == '${DS_CLOUDWATCH}':
                             dashboard['templating']['list'][panel_index]['datasource'] = 'CloudWatch'
-                        if panel['datasource'] == "${DS_QAN-API}":
+                        if panel['datasource'] == '${DS_QAN-API}':
                             dashboard['templating']['list'][panel_index]['datasource'] = 'QAN-API'
 
     return dashboard
@@ -231,12 +231,12 @@ def add_copyrights_links(dashboard):
                 },
                 'id': 9998,
                 'panels': [],
-                'title': "Copyrights & Legal",
-                'type': "row"
+                'title': 'Copyrights & Legal',
+                'type': 'row'
             }
             dashboard['panels'].append(add_item)
             add_item = {
-                'content': "<center >\n  <p>MySQL and InnoDB are trademarks of Oracle Corp. Proudly running Percona Server. Copyright (c) 2006-2018 Percona LLC.</p>\n  <div style=\"text-align:center;\">\n    <a href=\"https://percona.com/terms-use\" style=\"display: inline;\">Terms of Use</a> | \n    <a href=\"https://percona.com/privacy-policy\" style=\"display: inline;\">Privacy</a> | \n    <a href=\"https://percona.com/copyright-policy\" style=\"display: inline;\">Copyright</a> | \n    <a href=\"https://percona.com/legal\" style=\"display: inline;\">Legal</a>\n  </div>\n</center>\n<hr>\n<link rel=\"stylesheet\" type=\"text/css\" href=\"//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css\" />\n<script src=\"//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js\"></script>\n<script>\nfunction bbb(){\n  \n  setTimeout(function (){ \n  window.cookieconsent.initialise({\n    \"palette\": {\n      \"popup\": {\n        \"background\": \"#eb6c44\",\n        \"text\": \"#ffffff\"\n      },\n      \"button\": {\n        \"background\": \"#f5d948\"\n      }\n    },\n    \"theme\": \"classic\",\n    \"content\": {\n      \"message\": \"This site uses cookies and other tracking technologies to assist with navigation, analyze your use of our products and services, assist with promotional and marketing efforts, allow you to give feedback, and provide content from third parties. If you do not want to accept cookies, adjust your browser settings to deny cookies or exit this site.\",\n      \"dismiss\": \"Allow cookies\",\n      \"link\": \"Cookie Policy\",\n      \"href\": \"https://www.percona.com/cookie-policy\"\n    }\n  })},3000)};\n  \n  \n  window.addEventListener(\"load\",bbb());\n\n\n\n</script>",
+                'content': "<center>\n  <p>MySQL and InnoDB are trademarks of Oracle Corp. Proudly running Percona Server. Copyright (c) 2006-2018 Percona LLC.</p>\n  <div style='text-align:center;'>\n    <a href='https://percona.com/terms-use' style='display: inline;'>Terms of Use</a> | \n    <a href='https://percona.com/privacy-policy' style='display: inline;'>Privacy</a> | \n    <a href='https://percona.com/copyright-policy' style='display: inline;'>Copyright</a> | \n    <a href='https://percona.com/legal' style='display: inline;'>Legal</a>\n  </div>\n</center>\n<hr>\n<link rel='stylesheet' type='text/css' href='//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css' />\n<script src='//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js'></script>\n<script>\nfunction bbb(){\n  \n  setTimeout(function (){ \n  window.cookieconsent.initialise({\n    'palette': {\n      'popup': {\n        'background': '#eb6c44',\n        'text': '#ffffff'\n      },\n      'button': {\n        'background': '#f5d948'\n      }\n    },\n    'theme': 'classic',\n    'content': {\n      'message': 'This site uses cookies and other tracking technologies to assist with navigation, analyze your use of our products and services, assist with promotional and marketing efforts, allow you to give feedback, and provide content from third parties. If you do not want to accept cookies, adjust your browser settings to deny cookies or exit this site.',\n      'dismiss': 'Allow cookies',\n      'link': 'Cookie Policy',\n      'href': 'https://www.percona.com/cookie-policy'\n    }\n  })},3000)};\n  \n  \n  window.addEventListener('load',bbb());\n\n\n\n</script>",
                 'gridPos': {
                   'h': 3,
                   'w': 24,
@@ -245,10 +245,10 @@ def add_copyrights_links(dashboard):
                 },
                 'id': 9999,
                 'links': [],
-                'mode': "html",
-                'title': "",
+                'mode': 'html',
+                'title': '',
                 'transparent': True,
-                'type': "text"
+                'type': 'text'
             }
             dashboard['panels'].append(add_item)
 
