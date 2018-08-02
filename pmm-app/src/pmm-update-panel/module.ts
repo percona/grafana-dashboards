@@ -56,7 +56,6 @@ export class PanelCtrl extends MetricsPanelCtrl {
 
         $scope.logLocation = '';
         $scope.version = '';
-        $scope.linkVersion = '';
         $scope.errorMessage = '';
         $scope.isUpToDate = false;
         $scope.canBeReloaded = false;
@@ -67,6 +66,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
         $scope.nextVersion = localStorage.getItem('nextVersion') || '';
         $scope.newReleaseDate = localStorage.getItem('newReleaseDate') || '';
         $scope.disableUpdate = localStorage.getItem('disableUpdate');
+        $scope.linkVersion = localStorage.getItem('linkVersion') || '';
 
         $scope.checkForUpdate = this.checkForUpdate.bind(this, $scope, $http);
         $scope.update = this.update.bind(this, $scope, $http);
@@ -169,6 +169,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
             this.getCurrentTime($scope);
             if ($scope.linkVersion = $scope.nextVersion.match(linkRegExp)) {
                 $scope.linkVersion = $scope.nextVersion.match(linkRegExp)[0];
+                localStorage.setItem('linkVersion', $scope.linkVersion);
             } else {
                 this.displayError($scope, PanelCtrl.ERRORS.INCORRECT_SERVER_RESPONSE);
             }
