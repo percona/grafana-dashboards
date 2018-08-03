@@ -21,7 +21,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1529322232233,
+    "iteration": 1533320097783,
     "links": [
         {
             "icon": "dashboard",
@@ -117,10 +117,10 @@
         {
             "cacheTimeout": null,
             "colorBackground": false,
-            "colorValue": false,
+            "colorValue": true,
             "colors": [
                 "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
+                "#1f78c1",
                 "rgba(50, 172, 45, 0.97)"
             ],
             "datasource": "Prometheus",
@@ -133,8 +133,8 @@
                 "thresholdMarkers": true
             },
             "gridPos": {
-                "h": 3,
-                "w": 24,
+                "h": 2,
+                "w": 12,
                 "x": 0,
                 "y": 0
             },
@@ -199,6 +199,90 @@
             "valueName": "avg"
         },
         {
+            "cacheTimeout": null,
+            "colorBackground": false,
+            "colorValue": true,
+            "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "#1f78c1",
+                "rgba(50, 172, 45, 0.97)"
+            ],
+            "datasource": "Prometheus",
+            "format": "s",
+            "gauge": {
+                "maxValue": 100,
+                "minValue": 0,
+                "show": false,
+                "thresholdLabels": false,
+                "thresholdMarkers": true
+            },
+            "gridPos": {
+                "h": 2,
+                "w": 12,
+                "x": 12,
+                "y": 0
+            },
+            "height": "50px",
+            "id": 9,
+            "interval": null,
+            "links": [],
+            "mappingType": 1,
+            "mappingTypes": [
+                {
+                    "name": "value to text",
+                    "value": 1
+                },
+                {
+                    "name": "range to text",
+                    "value": 2
+                }
+            ],
+            "maxDataPoints": 100,
+            "nullPointMode": "connected",
+            "nullText": null,
+            "postfix": "",
+            "postfixFontSize": "50%",
+            "prefix": "",
+            "prefixFontSize": "50%",
+            "rangeMaps": [
+                {
+                    "from": "null",
+                    "text": "N/A",
+                    "to": "null"
+                }
+            ],
+            "sparkline": {
+                "fillColor": "rgba(31, 118, 189, 0.18)",
+                "full": false,
+                "lineColor": "rgb(31, 120, 193)",
+                "show": false
+            },
+            "tableColumn": "Value",
+            "targets": [
+                {
+                    "expr": "avg(1800/count_over_time($metric{instance=~\"$host\"}[30m]))",
+                    "format": "table",
+                    "intervalFactor": 2,
+                    "legendFormat": "$metric",
+                    "refId": "A",
+                    "step": 60
+                }
+            ],
+            "thresholds": "",
+            "title": "Metric Resolution",
+            "transparent": true,
+            "type": "singlestat",
+            "valueFontSize": "80%",
+            "valueMaps": [
+                {
+                    "op": "=",
+                    "text": "N/A",
+                    "value": "null"
+                }
+            ],
+            "valueName": "avg"
+        },
+        {
             "aliasColors": {},
             "bars": false,
             "dashLength": 10,
@@ -214,7 +298,7 @@
                 "h": 7,
                 "w": 24,
                 "x": 0,
-                "y": 3
+                "y": 2
             },
             "height": "",
             "id": 6,
@@ -225,8 +309,10 @@
                 "hideEmpty": false,
                 "max": true,
                 "min": true,
-                "rightSide": true,
+                "rightSide": false,
                 "show": true,
+                "sort": "avg",
+                "sortDesc": true,
                 "total": false,
                 "values": true
             },
@@ -323,7 +409,7 @@
                 "h": 7,
                 "w": 24,
                 "x": 0,
-                "y": 10
+                "y": 9
             },
             "id": 4,
             "legend": {
@@ -333,10 +419,10 @@
                 "hideEmpty": false,
                 "max": true,
                 "min": true,
-                "rightSide": true,
+                "rightSide": false,
                 "show": true,
-                "sort": null,
-                "sortDesc": null,
+                "sort": "avg",
+                "sortDesc": true,
                 "total": false,
                 "values": true
             },
@@ -407,6 +493,94 @@
             }
         },
         {
+            "aliasColors": {},
+            "bars": true,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 2,
+            "description": "Shows  Number of Samples Per Second Stored for Given Interval in the Time Series",
+            "fill": 1,
+            "gridPos": {
+                "h": 7,
+                "w": 24,
+                "x": 0,
+                "y": 16
+            },
+            "id": 11,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": true,
+                "max": true,
+                "min": true,
+                "rightSide": false,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": false,
+            "linewidth": 1,
+            "links": [],
+            "nullPointMode": "null",
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": true,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "count_over_time($metric{instance=~\"$host\"}[$interval])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Metric Rates",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "transparent": false,
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": null,
+                    "format": "ops",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ]
+        },
+        {
             "columns": [],
             "datasource": "Prometheus",
             "fontSize": "100%",
@@ -414,7 +588,7 @@
                 "h": 7,
                 "w": 24,
                 "x": 0,
-                "y": 17
+                "y": 23
             },
             "id": 8,
             "links": [],
@@ -566,7 +740,7 @@
                 "multiFormat": "pipe",
                 "name": "host",
                 "options": [],
-                "query": "label_values({__name__=\"up\"}, instance)",
+                "query": "label_values($metric, instance)",
                 "refresh": 1,
                 "regex": "",
                 "sort": 1,
@@ -616,6 +790,6 @@
     },
     "timezone": "browser",
     "title": "Advanced Data Exploration",
-    "uid": "1oz9QMHmk",
-    "version": 1
+    "uid": "af3SHZ5ik",
+    "version": 2
 }
