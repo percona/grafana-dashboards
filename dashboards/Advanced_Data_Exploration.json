@@ -21,7 +21,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1533313206547,
+    "iteration": 1533315086572,
     "links": [
         {
             "icon": "dashboard",
@@ -378,11 +378,7 @@
                     "min": 0,
                     "show": false
                 }
-            ],
-            "yaxis": {
-                "align": false,
-                "alignLevel": null
-            }
+            ]
         },
         {
             "aliasColors": {},
@@ -478,11 +474,7 @@
                     "min": 0,
                     "show": false
                 }
-            ],
-            "yaxis": {
-                "align": false,
-                "alignLevel": null
-            }
+            ]
         },
         {
             "aliasColors": {},
@@ -531,10 +523,11 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "count_over_time($metric{instance=~\"$host\"}[60s])",
+                    "expr": "count_over_time($metric{instance=~\"$host\"}[$interval])",
                     "format": "time_series",
-                    "interval": "1m",
+                    "interval": "$interval",
                     "intervalFactor": 1,
+                    "legendFormat": "",
                     "refId": "B"
                 }
             ],
@@ -558,7 +551,7 @@
             },
             "yaxes": [
                 {
-                    "format": "opm",
+                    "format": "ops",
                     "logBase": 1,
                     "max": null,
                     "min": "0",
@@ -571,11 +564,7 @@
                     "min": 0,
                     "show": false
                 }
-            ],
-            "yaxis": {
-                "align": false,
-                "alignLevel": null
-            }
+            ]
         },
         {
             "columns": [],
@@ -753,7 +742,7 @@
                 "multiFormat": "pipe",
                 "name": "host",
                 "options": [],
-                "query": "label_values({__name__=\"up\"}, instance)",
+                "query": "label_values($metric, instance)",
                 "refresh": 1,
                 "regex": "",
                 "sort": 1,
