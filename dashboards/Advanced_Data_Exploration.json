@@ -21,7 +21,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1533315086572,
+    "iteration": 1533320097783,
     "links": [
         {
             "icon": "dashboard",
@@ -124,7 +124,6 @@
                 "rgba(50, 172, 45, 0.97)"
             ],
             "datasource": "Prometheus",
-            "decimals": null,
             "format": "none",
             "gauge": {
                 "maxValue": 100,
@@ -134,7 +133,7 @@
                 "thresholdMarkers": true
             },
             "gridPos": {
-                "h": 3,
+                "h": 2,
                 "w": 12,
                 "x": 0,
                 "y": 0
@@ -179,7 +178,6 @@
                 {
                     "expr": "$metric",
                     "format": "table",
-                    "hide": false,
                     "intervalFactor": 2,
                     "legendFormat": "$metric",
                     "refId": "A",
@@ -187,7 +185,7 @@
                 }
             ],
             "thresholds": "",
-            "title": "Metric name",
+            "title": "Metric Name",
             "transparent": true,
             "type": "singlestat",
             "valueFontSize": "50%",
@@ -205,12 +203,11 @@
             "colorBackground": false,
             "colorValue": true,
             "colors": [
-                "#299c46",
+                "rgba(245, 54, 54, 0.9)",
                 "#1f78c1",
-                "#d44a3a"
+                "rgba(50, 172, 45, 0.97)"
             ],
             "datasource": "Prometheus",
-            "decimals": 0,
             "format": "s",
             "gauge": {
                 "maxValue": 100,
@@ -220,12 +217,13 @@
                 "thresholdMarkers": true
             },
             "gridPos": {
-                "h": 3,
+                "h": 2,
                 "w": 12,
                 "x": 12,
                 "y": 0
             },
-            "id": 10,
+            "height": "50px",
+            "id": 9,
             "interval": null,
             "links": [],
             "mappingType": 1,
@@ -259,13 +257,15 @@
                 "lineColor": "rgb(31, 120, 193)",
                 "show": false
             },
-            "tableColumn": "",
+            "tableColumn": "Value",
             "targets": [
                 {
                     "expr": "avg(1800/count_over_time($metric{instance=~\"$host\"}[30m]))",
-                    "format": "time_series",
+                    "format": "table",
                     "intervalFactor": 2,
-                    "refId": "A"
+                    "legendFormat": "$metric",
+                    "refId": "A",
+                    "step": 60
                 }
             ],
             "thresholds": "",
@@ -280,7 +280,7 @@
                     "value": "null"
                 }
             ],
-            "valueName": "current"
+            "valueName": "avg"
         },
         {
             "aliasColors": {},
@@ -292,13 +292,13 @@
             "description": "A gauge is a metric that represents a single numerical value that can arbitrarily go up and down.\n\nGauges are typically used for measured values like temperatures or current memory usage, but also \"counts\" that can go up and down, like the number of running goroutines.",
             "editable": true,
             "error": false,
-            "fill": 0,
+            "fill": 1,
             "grid": {},
             "gridPos": {
                 "h": 7,
                 "w": 24,
                 "x": 0,
-                "y": 3
+                "y": 2
             },
             "height": "",
             "id": 6,
@@ -311,11 +311,13 @@
                 "min": true,
                 "rightSide": false,
                 "show": true,
+                "sort": "avg",
+                "sortDesc": true,
                 "total": false,
                 "values": true
             },
             "lines": true,
-            "linewidth": 1,
+            "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
             "percentage": false,
@@ -333,7 +335,6 @@
                     "errors": {},
                     "expr": "$metric{instance=~\"$host\"}",
                     "format": "time_series",
-                    "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "",
@@ -343,7 +344,15 @@
                     "target": ""
                 }
             ],
-            "thresholds": [],
+            "thresholds": [
+                {
+                    "colorMode": "custom",
+                    "line": true,
+                    "lineColor": "rgb(241, 34, 15)",
+                    "op": "gt",
+                    "value": 15
+                }
+            ],
             "timeFrom": null,
             "timeShift": null,
             "title": "View Actual Metric Values (Gauge)",
@@ -376,9 +385,13 @@
                     "logBase": 1,
                     "max": null,
                     "min": 0,
-                    "show": false
+                    "show": true
                 }
-            ]
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
         },
         {
             "aliasColors": {},
@@ -390,13 +403,13 @@
             "description": "A counter is a cumulative metric that represents a single numerical value that only ever goes up. A counter is typically used to count requests served, tasks completed, errors occurred, etc. Counters should not be used to expose current counts of items whose number can also go down, e.g. the number of currently running goroutines. Use gauges for this use case.",
             "editable": true,
             "error": false,
-            "fill": 0,
+            "fill": 1,
             "grid": {},
             "gridPos": {
                 "h": 7,
                 "w": 24,
                 "x": 0,
-                "y": 10
+                "y": 9
             },
             "id": 4,
             "legend": {
@@ -408,13 +421,13 @@
                 "min": true,
                 "rightSide": false,
                 "show": true,
-                "sort": null,
-                "sortDesc": null,
+                "sort": "avg",
+                "sortDesc": true,
                 "total": false,
                 "values": true
             },
             "lines": true,
-            "linewidth": 1,
+            "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
             "percentage": false,
@@ -432,7 +445,6 @@
                     "errors": {},
                     "expr": "rate($metric{instance=~\"$host\"}[$interval]) or irate($metric{instance=~\"$host\"}[5m])",
                     "format": "time_series",
-                    "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "",
@@ -472,9 +484,13 @@
                     "logBase": 1,
                     "max": null,
                     "min": 0,
-                    "show": false
+                    "show": true
                 }
-            ]
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
         },
         {
             "aliasColors": {},
@@ -484,28 +500,24 @@
             "datasource": "Prometheus",
             "decimals": 2,
             "description": "Shows  Number of Samples Per Second Stored for Given Interval in the Time Series",
-            "editable": true,
-            "error": false,
-            "fill": 0,
-            "grid": {},
+            "fill": 1,
             "gridPos": {
                 "h": 7,
                 "w": 24,
                 "x": 0,
-                "y": 17
+                "y": 16
             },
-            "id": 9,
+            "id": 11,
             "legend": {
                 "alignAsTable": true,
                 "avg": true,
                 "current": true,
-                "hideEmpty": false,
                 "max": true,
                 "min": true,
                 "rightSide": false,
                 "show": true,
-                "sort": null,
-                "sortDesc": null,
+                "sort": "avg",
+                "sortDesc": true,
                 "total": false,
                 "values": true
             },
@@ -514,7 +526,7 @@
             "links": [],
             "nullPointMode": "null",
             "percentage": false,
-            "pointradius": 1,
+            "pointradius": 5,
             "points": false,
             "renderer": "flot",
             "seriesOverrides": [],
@@ -527,8 +539,7 @@
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
-                    "legendFormat": "",
-                    "refId": "B"
+                    "refId": "A"
                 }
             ],
             "thresholds": [],
@@ -536,11 +547,11 @@
             "timeShift": null,
             "title": "Metric Rates",
             "tooltip": {
-                "msResolution": false,
                 "shared": true,
                 "sort": 0,
                 "value_type": "individual"
             },
+            "transparent": false,
             "type": "graph",
             "xaxis": {
                 "buckets": null,
@@ -551,7 +562,9 @@
             },
             "yaxes": [
                 {
+                    "decimals": null,
                     "format": "ops",
+                    "label": null,
                     "logBase": 1,
                     "max": null,
                     "min": "0",
@@ -559,9 +572,10 @@
                 },
                 {
                     "format": "short",
+                    "label": null,
                     "logBase": 1,
                     "max": null,
-                    "min": 0,
+                    "min": null,
                     "show": false
                 }
             ]
@@ -574,7 +588,7 @@
                 "h": 7,
                 "w": 24,
                 "x": 0,
-                "y": 24
+                "y": 23
             },
             "id": 8,
             "links": [],
@@ -600,21 +614,6 @@
                         "rgba(237, 129, 40, 0.89)",
                         "rgba(50, 172, 45, 0.97)"
                     ],
-                    "dateFormat": "YYYY-MM-DD HH:mm:ss",
-                    "decimals": 2,
-                    "pattern": "Value",
-                    "thresholds": [],
-                    "type": "number",
-                    "unit": "none"
-                },
-                {
-                    "alias": "",
-                    "colorMode": null,
-                    "colors": [
-                        "rgba(245, 54, 54, 0.9)",
-                        "rgba(237, 129, 40, 0.89)",
-                        "rgba(50, 172, 45, 0.97)"
-                    ],
                     "decimals": 2,
                     "pattern": "/.*/",
                     "thresholds": [],
@@ -626,8 +625,7 @@
                 {
                     "expr": "$metric{instance=~\"$host\"}",
                     "format": "table",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
+                    "intervalFactor": 2,
                     "refId": "A",
                     "step": 4
                 }
@@ -792,6 +790,6 @@
     },
     "timezone": "browser",
     "title": "Advanced Data Exploration",
-    "uid": "1oz9QMHmk",
-    "version": 1
+    "uid": "af3SHZ5ik",
+    "version": 2
 }
