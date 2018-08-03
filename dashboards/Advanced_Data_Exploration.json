@@ -21,11 +21,11 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1525288360963,
+    "iteration": 1533313206547,
     "links": [
         {
             "icon": "dashboard",
-            "includeVars": true,
+            "includeVars": false,
             "keepTime": true,
             "tags": [
                 "QAN"
@@ -37,7 +37,7 @@
         },
         {
             "asDropdown": true,
-            "includeVars": true,
+            "includeVars": false,
             "keepTime": true,
             "tags": [
                 "OS"
@@ -48,7 +48,7 @@
         },
         {
             "asDropdown": true,
-            "includeVars": true,
+            "includeVars": false,
             "keepTime": true,
             "tags": [
                 "MySQL"
@@ -59,7 +59,7 @@
         },
         {
             "asDropdown": true,
-            "includeVars": true,
+            "includeVars": false,
             "keepTime": true,
             "tags": [
                 "MongoDB"
@@ -70,7 +70,7 @@
         },
         {
             "asDropdown": true,
-            "includeVars": true,
+            "includeVars": false,
             "keepTime": true,
             "tags": [
                 "HA"
@@ -81,7 +81,7 @@
         },
         {
             "asDropdown": true,
-            "includeVars": true,
+            "includeVars": false,
             "keepTime": true,
             "tags": [
                 "Cloud"
@@ -103,7 +103,7 @@
         },
         {
             "asDropdown": true,
-            "includeVars": true,
+            "includeVars": false,
             "keepTime": true,
             "tags": [
                 "PMM"
@@ -262,7 +262,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "avg(3600/count_over_time($metric{instance=~\"$host\"}[1h]))",
+                    "expr": "avg(1800/count_over_time($metric{instance=~\"$host\"}[30m]))",
                     "format": "time_series",
                     "intervalFactor": 2,
                     "refId": "A"
@@ -378,7 +378,11 @@
                     "min": 0,
                     "show": false
                 }
-            ]
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
         },
         {
             "aliasColors": {},
@@ -474,7 +478,11 @@
                     "min": 0,
                     "show": false
                 }
-            ]
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
         },
         {
             "aliasColors": {},
@@ -523,18 +531,11 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "calculatedInterval": "2m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "count_over_time($metric{instance=~\"$host\"}[$interval])/($__interval_ms/1000)",
+                    "expr": "count_over_time($metric{instance=~\"$host\"}[60s])",
                     "format": "time_series",
-                    "hide": false,
-                    "interval": "$interval",
+                    "interval": "1m",
                     "intervalFactor": 1,
-                    "legendFormat": "{{instance}}",
-                    "metric": "",
-                    "refId": "A",
-                    "step": 20
+                    "refId": "B"
                 }
             ],
             "thresholds": [],
@@ -557,7 +558,7 @@
             },
             "yaxes": [
                 {
-                    "format": "ops",
+                    "format": "opm",
                     "logBase": 1,
                     "max": null,
                     "min": "0",
@@ -570,7 +571,11 @@
                     "min": 0,
                     "show": false
                 }
-            ]
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
         },
         {
             "columns": [],
@@ -679,8 +684,8 @@
                 "auto_count": 200,
                 "auto_min": "1s",
                 "current": {
-                    "text": "5m",
-                    "value": "5m"
+                    "text": "auto",
+                    "value": "$__auto_interval_interval"
                 },
                 "datasource": "Prometheus",
                 "hide": 0,
@@ -691,7 +696,7 @@
                 "name": "interval",
                 "options": [
                     {
-                        "selected": false,
+                        "selected": true,
                         "text": "auto",
                         "value": "$__auto_interval_interval"
                     },
@@ -711,7 +716,7 @@
                         "value": "1m"
                     },
                     {
-                        "selected": true,
+                        "selected": false,
                         "text": "5m",
                         "value": "5m"
                     },
@@ -767,7 +772,7 @@
     "timepicker": {
         "collapse": false,
         "enable": true,
-        "hidden": true,
+        "hidden": false,
         "notice": false,
         "now": true,
         "refresh_intervals": [
@@ -798,6 +803,6 @@
     },
     "timezone": "browser",
     "title": "Advanced Data Exploration",
-    "uid": "000000214",
-    "version": 0
+    "uid": "1oz9QMHmk",
+    "version": 1
 }
