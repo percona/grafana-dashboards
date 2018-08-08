@@ -178,6 +178,9 @@ export class PanelCtrl extends MetricsPanelCtrl {
             this.displayError($scope, PanelCtrl.ERRORS.NOTHING_TO_UPDATE);
             this.getCurrentTime($scope);
             $scope.isUpToDate = true;
+            localStorage.setItem('shouldBeUpdated', '');
+            localStorage.setItem('nextVersion', '');
+            localStorage.setItem('linkVersion', '');
             $('#refresh').removeClass('fa-spin');
         });
     }
