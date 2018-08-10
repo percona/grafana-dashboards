@@ -22,7 +22,7 @@
     "gnetId": 3300,
     "graphTooltip": 0,
     "id": null,
-    "iteration": 1533823331429,
+    "iteration": 1533910987479,
     "links": [
         {
             "icon": "dashboard",
@@ -130,7 +130,9 @@
             "type": "text"
         },
         {
-            "aliasColors": {},
+            "aliasColors": {
+                "Total ": "#bf1b00"
+            },
             "bars": false,
             "dashLength": 10,
             "dashes": false,
@@ -165,51 +167,39 @@
             "pointradius": 5,
             "points": false,
             "renderer": "flot",
-            "seriesOverrides": [],
+            "seriesOverrides": [
+                {
+                    "alias": "Total",
+                    "color": "#bf1b00",
+                    "fill": 0
+                }
+            ],
             "spaceLength": 10,
             "stack": false,
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "sum(pg_stat_activity_count{instance=\"$host\"}) by (instance)",
+                    "expr": "sum(max_over_time(pg_stat_activity_count{instance=\"$host\",datname=~\"$db\",datname!~\"template.*|postgres\"}[$interval]) or\nmax_over_time(pg_stat_activity_count{instance=\"$host\",datname=~\"$db\",datname!~\"template.*|postgres\"}[5m])) by (state)",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
-                    "legendFormat": "Total sessions",
+                    "legendFormat": "{{state}}",
+                    "refId": "A"
+                },
+                {
+                    "expr": "sum(max_over_time(pg_stat_activity_count{instance=\"$host\",datname=~\"$db\",datname!~\"template.*|postgres\"}[$interval]) or\nmax_over_time(pg_stat_activity_count{instance=\"$host\",datname=~\"$db\",datname!~\"template.*|postgres\"}[5m]))",
+                    "format": "time_series",
+                    "hide": false,
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Total",
                     "metric": "pg",
-                    "refId": "B",
-                    "step": 2
-                },
-                {
-                    "expr": "sum(pg_stat_activity_count{instance=\"$host\",state=\"active\"})  by (instance)",
-                    "format": "time_series",
-                    "hide": false,
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Active sessions",
-                    "refId": "D",
-                    "step": 2
-                },
-                {
-                    "expr": "sum(pg_stat_activity_count{instance=\"$host\",state=\"idle in transaction\"})  by (instance)",
-                    "format": "time_series",
-                    "hide": false,
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Idle in transaction sessions",
                     "refId": "C",
                     "step": 2
                 }
             ],
-            "thresholds": [
-                {
-                    "colorMode": "critical",
-                    "fill": true,
-                    "line": true,
-                    "op": "gt"
-                }
-            ],
+            "thresholds": [],
             "timeFrom": null,
             "timeShift": null,
             "title": "PostgreSQL Connections",
@@ -285,7 +275,13 @@
             "pointradius": 5,
             "points": false,
             "renderer": "flot",
-            "seriesOverrides": [],
+            "seriesOverrides": [
+                {
+                    "alias": "Maximum connections",
+                    "color": "#bf1b00",
+                    "fill": 0
+                }
+            ],
             "spaceLength": 10,
             "stack": false,
             "steppedLine": false,
@@ -297,12 +293,20 @@
                     "intervalFactor": 1,
                     "legendFormat": "{{datname}}",
                     "refId": "A"
+                },
+                {
+                    "expr": "max_over_time(pg_settings_max_connections[$interval]) or \nmax_over_time(pg_settings_max_connections[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Maximum connections",
+                    "refId": "B"
                 }
             ],
             "thresholds": [],
             "timeFrom": null,
             "timeShift": null,
-            "title": "Active Connections by DB",
+            "title": "Active Connections",
             "tooltip": {
                 "shared": true,
                 "sort": 0,
@@ -1745,7 +1749,7 @@
     "style": "dark",
     "tags": [
         "Percona",
-        "Postgres"
+        "HA"
     ],
     "templating": {
         "list": [
@@ -1901,5 +1905,5 @@
     "timezone": "browser",
     "title": "PostgreSQL Overview",
     "uid": "IvhES05ik",
-    "version": 4
+    "version": 1
 }
