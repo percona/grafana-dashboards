@@ -69,10 +69,12 @@ export class PanelCtrl extends MetricsPanelCtrl {
         frame.on('load', () => {
             frame.contents().bind('click', event => {
                 const [queryID, type] = this.retrieveIFrameURLParams(event.currentTarget.URL);
+                $scope.ctrl.calculatePanelHeight();
                 return queryID === 'null' || queryID === null || this.reloadQuery(window, queryID, type);
             });
 
             frame.contents().bind('DOMSubtreeModified', $scope.ctrl.calculatePanelHeight);
+
         });
     }
 
