@@ -59,7 +59,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
         $scope.errorMessage = '';
         $scope.isUpToDate = false;
         $scope.canBeReloaded = false;
-        $scope.lastCheckDate = localStorage.getItem('lastCheck') ? `${moment(Number(localStorage.getItem('lastCheck'))).format('MMMM DD, H:mm')}` : '';
+        $scope.lastCheckDate = localStorage.getItem('lastCheck') ? moment(Number(localStorage.getItem('lastCheck'))).format('MMMM DD, H:mm') : '';
         $scope.currentVersion = localStorage.getItem('currentVersion') || '';
         $scope.currentReleaseDate = localStorage.getItem('currentReleaseDate') || '';
         $scope.shouldBeUpdated = localStorage.getItem('shouldBeUpdated') || '';
@@ -172,12 +172,16 @@ export class PanelCtrl extends MetricsPanelCtrl {
                 localStorage.setItem('linkVersion', $scope.linkVersion);
             } else {
                 this.displayError($scope, PanelCtrl.ERRORS.INCORRECT_SERVER_RESPONSE);
+                $('#refresh').removeClass('fa-spin');
             }
             $('#refresh').removeClass('fa-spin');
         }).catch(() => {
             this.displayError($scope, PanelCtrl.ERRORS.NOTHING_TO_UPDATE);
             this.getCurrentTime($scope);
             $scope.isUpToDate = true;
+            localStorage.setItem('shouldBeUpdated', '');
+            localStorage.setItem('nextVersion', '');
+            localStorage.setItem('linkVersion', '');
             $('#refresh').removeClass('fa-spin');
         });
     }
@@ -205,7 +209,9 @@ export class PanelCtrl extends MetricsPanelCtrl {
             localStorage.setItem('currentReleaseDate', $scope.currentReleaseDate);
             $scope.currentVersion = localStorage.getItem('currentVersion');
             $scope.currentReleaseDate = localStorage.getItem('currentReleaseDate');
+            $('#refresh').removeClass('fa-spin');
         }).catch(() => {
+            $('#refresh').removeClass('fa-spin');
             //TODO: add error handler
         });
     }

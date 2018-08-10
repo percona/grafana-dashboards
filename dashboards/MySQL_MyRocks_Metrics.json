@@ -21,7 +21,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1529322433663,
+    "iteration": 1529868036283,
     "links": [
         {
             "icon": "dashboard",
@@ -1169,7 +1169,7 @@
             },
             "yaxes": [
                 {
-                    "format": "short",
+                    "format": "ops",
                     "label": "",
                     "logBase": 1,
                     "max": null,
@@ -1196,19 +1196,14 @@
             "dashLength": 10,
             "dashes": false,
             "datasource": "Prometheus",
-            "decimals": 0,
-            "editable": true,
-            "error": false,
             "fill": 2,
-            "grid": {},
             "gridPos": {
                 "h": 7,
                 "w": 12,
                 "x": 12,
                 "y": 28
             },
-            "height": "250px",
-            "id": 11,
+            "id": 23,
             "legend": {
                 "alignAsTable": true,
                 "avg": true,
@@ -1216,8 +1211,8 @@
                 "max": true,
                 "min": true,
                 "show": true,
-                "sort": null,
-                "sortDesc": null,
+                "sort": "avg",
+                "sortDesc": true,
                 "total": false,
                 "values": true
             },
@@ -1229,52 +1224,37 @@
             "pointradius": 5,
             "points": false,
             "renderer": "flot",
-            "seriesOverrides": [
-                {
-                    "alias": "MyRocks Hit L0/l1",
-                    "fill": 0
-                }
-            ],
+            "seriesOverrides": [],
             "spaceLength": 10,
             "stack": false,
             "steppedLine": false,
             "targets": [
                 {
-                    "calculatedInterval": "2m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "rate(mysql_global_status_rocksdb_get_hit_l0{instance=\"$host\"}[$interval]) or irate(mysql_global_status_rocksdb_get_hit_l0{instance=\"$host\"}[5m]) ",
+                    "expr": "max_over_time(mysql_global_status_rocksdb_memtable_total[$interval]) or\nmax_over_time(mysql_global_status_rocksdb_memtable_total[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
-                    "legendFormat": "l0",
-                    "metric": "",
-                    "refId": "A",
-                    "step": 10
+                    "legendFormat": "Total",
+                    "refId": "A"
                 },
                 {
-                    "calculatedInterval": "2m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "rate(mysql_global_status_rocksdb_get_hit_l1{instance=\"$host\"}[$interval]) or irate(mysql_global_status_rocksdb_get_hit_l1{instance=\"$host\"}[5m])",
+                    "expr": "max_over_time(mysql_global_status_rocksdb_memtable_unflushed[$interval]) or\nmax_over_time(mysql_global_status_rocksdb_memtable_unflushed[5m])",
                     "format": "time_series",
+                    "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
-                    "legendFormat": "l1",
-                    "metric": "",
-                    "refId": "B",
-                    "step": 10
+                    "legendFormat": "Unflushed",
+                    "refId": "B"
                 }
             ],
             "thresholds": [],
             "timeFrom": null,
             "timeShift": null,
-            "title": "MyRocks Cache l0/l1",
+            "title": "Memtable Size",
             "tooltip": {
-                "msResolution": false,
                 "shared": true,
                 "sort": 0,
-                "value_type": "cumulative"
+                "value_type": "individual"
             },
             "type": "graph",
             "xaxis": {
@@ -1286,20 +1266,21 @@
             },
             "yaxes": [
                 {
-                    "format": "short",
-                    "label": "",
+                    "decimals": 2,
+                    "format": "bytes",
+                    "label": null,
                     "logBase": 1,
                     "max": null,
-                    "min": 0,
+                    "min": "0",
                     "show": true
                 },
                 {
                     "format": "short",
-                    "label": "",
+                    "label": null,
                     "logBase": 1,
                     "max": null,
-                    "min": 0,
-                    "show": true
+                    "min": null,
+                    "show": false
                 }
             ],
             "yaxis": {
@@ -1455,7 +1436,7 @@
                 "y": 35
             },
             "height": "250px",
-            "id": 13,
+            "id": 11,
             "legend": {
                 "alignAsTable": true,
                 "avg": true,
@@ -1478,7 +1459,7 @@
             "renderer": "flot",
             "seriesOverrides": [
                 {
-                    "alias": "MyRocks R/W",
+                    "alias": "MyRocks Hit L0/l1",
                     "fill": 0
                 }
             ],
@@ -1490,11 +1471,11 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(mysql_global_status_rocksdb_bytes_read{instance=\"$host\"}[$interval]) or irate(mysql_global_status_rocksdb_bytes_read{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_global_status_rocksdb_get_hit_l0{instance=\"$host\"}[$interval]) or irate(mysql_global_status_rocksdb_get_hit_l0{instance=\"$host\"}[5m]) ",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
-                    "legendFormat": "Read",
+                    "legendFormat": "L0",
                     "metric": "",
                     "refId": "A",
                     "step": 10
@@ -1503,11 +1484,11 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(mysql_global_status_rocksdb_bytes_written{instance=\"$host\"}[$interval]) or irate(mysql_global_status_rocksdb_bytes_written{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_global_status_rocksdb_get_hit_l1{instance=\"$host\"}[$interval]) or irate(mysql_global_status_rocksdb_get_hit_l1{instance=\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
-                    "legendFormat": "Write",
+                    "legendFormat": "L1",
                     "metric": "",
                     "refId": "B",
                     "step": 10
@@ -1516,7 +1497,7 @@
             "thresholds": [],
             "timeFrom": null,
             "timeShift": null,
-            "title": "MyRocks R/W",
+            "title": "MyRocks Cache L0/L1",
             "tooltip": {
                 "msResolution": false,
                 "shared": true,
@@ -1742,17 +1723,16 @@
                 "y": 42
             },
             "height": "250px",
-            "id": 19,
+            "id": 13,
             "legend": {
                 "alignAsTable": true,
                 "avg": true,
                 "current": false,
                 "max": true,
                 "min": true,
-                "rightSide": false,
                 "show": true,
-                "sort": "avg",
-                "sortDesc": true,
+                "sort": null,
+                "sortDesc": null,
                 "total": false,
                 "values": true
             },
@@ -1766,8 +1746,12 @@
             "renderer": "flot",
             "seriesOverrides": [
                 {
-                    "alias": "MyRocks Write ops",
+                    "alias": "MyRocks R/W",
                     "fill": 0
+                },
+                {
+                    "alias": "Write",
+                    "transform": "negative-Y"
                 }
             ],
             "spaceLength": 10,
@@ -1778,11 +1762,11 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(mysql_global_status_rocksdb_write_self{instance=\"$host\"}[$interval]) or irate(mysql_global_status_rocksdb_write_self{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_global_status_rocksdb_bytes_read{instance=\"$host\"}[$interval]) or irate(mysql_global_status_rocksdb_bytes_read{instance=\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
-                    "legendFormat": "Self",
+                    "legendFormat": "Read",
                     "metric": "",
                     "refId": "A",
                     "step": 10
@@ -1791,46 +1775,20 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(mysql_global_status_rocksdb_write_other{instance=\"$host\"}[$interval]) or irate(mysql_global_status_rocksdb_write_other{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_global_status_rocksdb_bytes_written{instance=\"$host\"}[$interval]) or irate(mysql_global_status_rocksdb_bytes_written{instance=\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
-                    "legendFormat": "Other",
+                    "legendFormat": "Write",
                     "metric": "",
                     "refId": "B",
-                    "step": 10
-                },
-                {
-                    "calculatedInterval": "2m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "rate(mysql_global_status_rocksdb_write_timeout{instance=\"$host\"}[$interval]) or irate(mysql_global_status_rocksdb_write_timeout{instance=\"$host\"}[5m]) ",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Timeout",
-                    "metric": "",
-                    "refId": "C",
-                    "step": 10
-                },
-                {
-                    "calculatedInterval": "2m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "rate(mysql_global_status_rocksdb_write_wal{instance=\"$host\"}[$interval]) or irate(mysql_global_status_rocksdb_write_wal{instance=\"$host\"}[5m]) ",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "WAL",
-                    "metric": "",
-                    "refId": "D",
                     "step": 10
                 }
             ],
             "thresholds": [],
             "timeFrom": null,
             "timeShift": null,
-            "title": "MyRocks Write ops",
+            "title": "MyRocks R/W",
             "tooltip": {
                 "msResolution": false,
                 "shared": true,
@@ -1848,10 +1806,10 @@
             "yaxes": [
                 {
                     "format": "short",
-                    "label": "",
+                    "label": "(- write / + read)",
                     "logBase": 1,
                     "max": null,
-                    "min": 0,
+                    "min": null,
                     "show": true
                 },
                 {
@@ -1989,13 +1947,12 @@
                 "x": 12,
                 "y": 49
             },
-            "id": 16,
+            "height": "250px",
+            "id": 19,
             "legend": {
                 "alignAsTable": true,
                 "avg": true,
                 "current": false,
-                "hideEmpty": true,
-                "hideZero": true,
                 "max": true,
                 "min": true,
                 "rightSide": false,
@@ -2015,35 +1972,76 @@
             "renderer": "flot",
             "seriesOverrides": [
                 {
-                    "alias": "System Memory",
-                    "fill": 0,
-                    "stack": false
+                    "alias": "MyRocks Write ops",
+                    "fill": 0
                 }
             ],
             "spaceLength": 10,
-            "stack": true,
+            "stack": false,
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(mysql_global_status_rocksdb_number_reseeks_iteration{instance=\"$host\"}[$interval]) or irate(mysql_global_status_rocksdb_number_reseeks_iteration{instance=\"$host\"}[5m])",
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "rate(mysql_global_status_rocksdb_write_self{instance=\"$host\"}[$interval]) or irate(mysql_global_status_rocksdb_write_self{instance=\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
-                    "legendFormat": "Reseeks",
+                    "legendFormat": "Self",
                     "metric": "",
                     "refId": "A",
+                    "step": 10
+                },
+                {
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "rate(mysql_global_status_rocksdb_write_other{instance=\"$host\"}[$interval]) or irate(mysql_global_status_rocksdb_write_other{instance=\"$host\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Other",
+                    "metric": "",
+                    "refId": "B",
+                    "step": 10
+                },
+                {
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "rate(mysql_global_status_rocksdb_write_timeout{instance=\"$host\"}[$interval]) or irate(mysql_global_status_rocksdb_write_timeout{instance=\"$host\"}[5m]) ",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Timeout",
+                    "metric": "",
+                    "refId": "C",
+                    "step": 10
+                },
+                {
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "rate(mysql_global_status_rocksdb_write_wal{instance=\"$host\"}[$interval]) or irate(mysql_global_status_rocksdb_write_wal{instance=\"$host\"}[5m]) ",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "WAL",
+                    "metric": "",
+                    "refId": "D",
                     "step": 10
                 }
             ],
             "thresholds": [],
             "timeFrom": null,
             "timeShift": null,
-            "title": "MyRocks Number Reseeks in Iterations",
+            "title": "MyRocks Write ops",
             "tooltip": {
                 "msResolution": false,
                 "shared": true,
                 "sort": 0,
-                "value_type": "individual"
+                "value_type": "cumulative"
             },
             "type": "graph",
             "xaxis": {
@@ -2055,7 +2053,7 @@
             },
             "yaxes": [
                 {
-                    "format": "none",
+                    "format": "short",
                     "label": "",
                     "logBase": 1,
                     "max": null,
@@ -2064,10 +2062,10 @@
                 },
                 {
                     "format": "short",
-                    "label": null,
+                    "label": "",
                     "logBase": 1,
                     "max": null,
-                    "min": null,
+                    "min": 0,
                     "show": true
                 }
             ],
@@ -2210,6 +2208,264 @@
                 "x": 12,
                 "y": 56
             },
+            "id": 16,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "hideEmpty": true,
+                "hideZero": true,
+                "max": true,
+                "min": true,
+                "rightSide": false,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "null",
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [
+                {
+                    "alias": "System Memory",
+                    "fill": 0,
+                    "stack": false
+                }
+            ],
+            "spaceLength": 10,
+            "stack": true,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(mysql_global_status_rocksdb_number_reseeks_iteration{instance=\"$host\"}[$interval]) or irate(mysql_global_status_rocksdb_number_reseeks_iteration{instance=\"$host\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Reseeks",
+                    "metric": "",
+                    "refId": "A",
+                    "step": 10
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "MyRocks Number Reseeks in Iterations",
+            "tooltip": {
+                "msResolution": false,
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "none",
+                    "label": "",
+                    "logBase": 1,
+                    "max": null,
+                    "min": 0,
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "fill": 2,
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 0,
+                "y": 63
+            },
+            "id": 21,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "rightSide": false,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "null",
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(mysql_global_status_rocksdb_rows_inserted{instance=\"$host\"}[$interval]) or \nirate(mysql_global_status_rocksdb_rows_inserted{instance=\"$host\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Rows Inserted",
+                    "refId": "A"
+                },
+                {
+                    "expr": "rate(mysql_global_status_rocksdb_rows_updated{instance=\"$host\"}[$interval]) or \nirate(mysql_global_status_rocksdb_rows_updated{instance=\"$host\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Rows Updated",
+                    "refId": "B"
+                },
+                {
+                    "expr": "rate(mysql_global_status_rocksdb_rows_deleted{instance=\"$host\"}[$interval]) or \nirate(mysql_global_status_rocksdb_rows_deleted{instance=\"$host\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Rows Deleted",
+                    "refId": "C"
+                },
+                {
+                    "expr": "rate(mysql_global_status_rocksdb_rows_read{instance=\"$host\"}[$interval]) or \nirate(mysql_global_status_rocksdb_rows_read{instance=\"$host\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Rows Read",
+                    "refId": "D"
+                },
+                {
+                    "expr": "rate(mysql_global_status_rocksdb_rows_expired{instance=\"$host\"}[$interval]) or \nirate(mysql_global_status_rocksdb_rows_expired{instance=\"$host\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Rows Expired",
+                    "refId": "E"
+                },
+                {
+                    "expr": "rate(mysql_global_status_rocksdb_system_rows_deleted{instance=\"$host\"}[$interval]) or \nirate(mysql_global_status_rocksdb_system_rows_deleted{instance=\"$host\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "System Rows Deleted",
+                    "refId": "F"
+                },
+                {
+                    "expr": "rate(mysql_global_status_rocksdb_system_rows_inserted{instance=\"$host\"}[$interval]) or \nirate(mysql_global_status_rocksdb_system_rows_inserted{instance=\"$host\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "System Rows Inserted",
+                    "refId": "G"
+                },
+                {
+                    "expr": "rate(mysql_global_status_rocksdb_system_rows_read{instance=\"$host\"}[$interval]) or \nirate(mysql_global_status_rocksdb_system_rows_read{instance=\"$host\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "System Rows Read",
+                    "refId": "H"
+                },
+                {
+                    "expr": "rate(mysql_global_status_rocksdb_system_rows_updated{instance=\"$host\"}[$interval]) or \nirate(mysql_global_status_rocksdb_system_rows_updated{instance=\"$host\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "System Rows Updated",
+                    "refId": "I"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "RocksDB Row Operations",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 0,
+                    "format": "ops",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "editable": true,
+            "error": false,
+            "fill": 2,
+            "grid": {},
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 12,
+                "y": 63
+            },
             "height": "250px",
             "id": 18,
             "legend": {
@@ -2219,8 +2475,8 @@
                 "max": true,
                 "min": true,
                 "show": true,
-                "sort": null,
-                "sortDesc": null,
+                "sort": "avg",
+                "sortDesc": true,
                 "total": false,
                 "values": true
             },
@@ -2315,6 +2571,244 @@
                     "logBase": 1,
                     "max": null,
                     "min": 0,
+                    "show": true
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "fill": 2,
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 0,
+                "y": 70
+            },
+            "id": 25,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "rightSide": false,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "null",
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "max_over_time(mysql_global_status_rocksdb_stall_total_stops[$interval]) or\nmax_over_time(mysql_global_status_rocksdb_stall_total_stops[5m])",
+                    "format": "time_series",
+                    "hide": false,
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Total Stops",
+                    "refId": "A"
+                },
+                {
+                    "expr": "max_over_time(mysql_global_status_rocksdb_stall_total_slowdowns[$interval]) or \nmax_over_time(mysql_global_status_rocksdb_stall_total_slowdowns[5m])",
+                    "format": "time_series",
+                    "hide": false,
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Total Slowdowns",
+                    "refId": "B"
+                },
+                {
+                    "expr": "max_over_time(mysql_global_status_rocksdb_stall_micros[$interval]) or \nmax_over_time(mysql_global_status_rocksdb_stall_micros[5m])",
+                    "format": "time_series",
+                    "hide": false,
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Micros",
+                    "refId": "C"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "RocksDB Stalls",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 0,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "fill": 1,
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 12,
+                "y": 70
+            },
+            "id": 27,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "rightSide": false,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 1,
+            "links": [],
+            "nullPointMode": "null",
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(mysql_global_status_rocksdb_stall_l0_file_count_limit_slowdowns[$interval]) or\nirate(mysql_global_status_rocksdb_stall_l0_file_count_limit_slowdowns[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "L0 File count limit slowdowns",
+                    "refId": "A"
+                },
+                {
+                    "expr": "rate(mysql_global_status_rocksdb_stall_l0_file_count_limit_stops[$interval]) or\nirate(mysql_global_status_rocksdb_stall_l0_file_count_limit_stops[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "L0 File count limit stops",
+                    "refId": "B"
+                },
+                {
+                    "expr": "rate(mysql_global_status_rocksdb_stall_locked_l0_file_count_limit_slowdowns[$interval]) or\nirate(mysql_global_status_rocksdb_stall_locked_l0_file_count_limit_slowdowns[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Locked L0 File count limit slowdowns",
+                    "refId": "C"
+                },
+                {
+                    "expr": "rate(mysql_global_status_rocksdb_stall_locked_l0_file_count_limit_stops[$interval]) or\nirate(mysql_global_status_rocksdb_stall_locked_l0_file_count_limit_stops[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Locked L0 File count limit stops",
+                    "refId": "D"
+                },
+                {
+                    "expr": "rate(mysql_global_status_rocksdb_stall_memtable_limit_slowdowns[$interval]) or\nirate(mysql_global_status_rocksdb_stall_memtable_limit_slowdowns[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Memtable limit slowdowns",
+                    "refId": "E"
+                },
+                {
+                    "expr": "rate(mysql_global_status_rocksdb_stall_memtable_limit_stops[$interval]) or\nirate(mysql_global_status_rocksdb_stall_memtable_limit_stops[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Memtable limit stops",
+                    "refId": "F"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "RocksDB Stops/Slowdowns",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "ops",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
                     "show": true
                 }
             ],
@@ -2459,5 +2953,5 @@
     "timezone": "browser",
     "title": "MySQL MyRocks Metrics",
     "uid": "G1z9wGNmk",
-    "version": 1
+    "version": 3
 }

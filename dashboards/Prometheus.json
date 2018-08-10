@@ -21,7 +21,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1532517278501,
+    "iteration": 1533651039697,
     "links": [
         {
             "icon": "dashboard",
@@ -2454,7 +2454,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "(sum(prometheus_target_interval_length_seconds{instance=\"prometheus\",interval=\"1s\",job=\"prometheus\",quantile=\"0.99\"}) by () - sum(prometheus_target_interval_length_seconds{instance=\"prometheus\",interval=\"1s\",job=\"prometheus\",quantile=\"0.01\"}) by ())/1",
+                            "expr": "(sum(prometheus_target_interval_length_seconds{instance=\"pmm-server\",interval=\"1s\",job=\"prometheus\",quantile=\"0.99\"}) by () - sum(prometheus_target_interval_length_seconds{instance=\"pmm-server\",interval=\"1s\",job=\"prometheus\",quantile=\"0.01\"}) by ())/1",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2464,7 +2464,7 @@
                             "step": 60
                         },
                         {
-                            "expr": "(sum(prometheus_target_interval_length_seconds{instance=\"prometheus\",interval=\"5s\",job=\"prometheus\",quantile=\"0.99\"}) by () - sum(prometheus_target_interval_length_seconds{instance=\"prometheus\",interval=\"5s\",job=\"prometheus\",quantile=\"0.01\"}) by ())/5",
+                            "expr": "(sum(prometheus_target_interval_length_seconds{instance=\"pmm-server\",interval=\"5s\",job=\"prometheus\",quantile=\"0.99\"}) by () - sum(prometheus_target_interval_length_seconds{instance=\"pmm-server\",interval=\"5s\",job=\"prometheus\",quantile=\"0.01\"}) by ())/5",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2472,7 +2472,7 @@
                             "refId": "B"
                         },
                         {
-                            "expr": "(sum(prometheus_target_interval_length_seconds{instance=\"prometheus\",interval=\"1m0s\",job=\"prometheus\",quantile=\"0.99\"}) by () - sum(prometheus_target_interval_length_seconds{instance=\"prometheus\",interval=\"1m0s\",job=\"prometheus\",quantile=\"0.01\"}) by ())/60",
+                            "expr": "(sum(prometheus_target_interval_length_seconds{instance=\"pmm-server\",interval=\"1m0s\",job=\"prometheus\",quantile=\"0.99\"}) by () - sum(prometheus_target_interval_length_seconds{instance=\"pmm-server\",interval=\"1m0s\",job=\"prometheus\",quantile=\"0.01\"}) by ())/60",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3512,7 +3512,7 @@
                         "h": 3,
                         "w": 4,
                         "x": 0,
-                        "y": 75
+                        "y": 12
                     },
                     "height": "50",
                     "id": 46,
@@ -3556,7 +3556,8 @@
                     ],
                     "sparkline": {
                         "fillColor": "rgba(31, 118, 189, 0.18)",
-                        "full": true,
+                        "full": false,
+                        "isFullHeight": false,
                         "lineColor": "rgb(31, 120, 193)",
                         "maxValue": 100,
                         "minValue": 0,
@@ -3568,7 +3569,7 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "clamp_max(avg by (instance) (sum by (mode) ( (clamp_max(rate(node_cpu{instance=\"pmm-server\",mode!='idle',mode!=\"iowait\"}[$interval]),1)) or  (clamp_max(irate(node_cpu{instance=\"pmm-server\",mode!='idle',mode!=\"iowait\"}[5m]),1)) )),1) *100",
+                            "expr": "clamp_max(sum by () ((rate(node_cpu{instance=\"pmm-server\",mode!=\"idle\",mode!=\"iowait\"}[$interval])) or (irate(node_cpu{instance=\"pmm-server\",mode!=\"idle\",mode!=\"iowait\"}[5m]))) / count(node_cpu{mode=\"user\",instance=~\"pmm-server\"}),1) *100",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3611,7 +3612,7 @@
                         "h": 3,
                         "w": 4,
                         "x": 4,
-                        "y": 75
+                        "y": 12
                     },
                     "height": "50",
                     "id": 47,
@@ -3699,7 +3700,7 @@
                         "h": 3,
                         "w": 4,
                         "x": 8,
-                        "y": 75
+                        "y": 12
                     },
                     "height": "50",
                     "id": 48,
@@ -3796,7 +3797,7 @@
                         "h": 3,
                         "w": 4,
                         "x": 12,
-                        "y": 75
+                        "y": 12
                     },
                     "height": "50",
                     "id": 49,
@@ -3882,7 +3883,7 @@
                         "h": 3,
                         "w": 4,
                         "x": 16,
-                        "y": 75
+                        "y": 12
                     },
                     "height": "50",
                     "id": 50,
@@ -3968,7 +3969,7 @@
                         "h": 3,
                         "w": 4,
                         "x": 20,
-                        "y": 75
+                        "y": 12
                     },
                     "height": "50",
                     "id": 51,
