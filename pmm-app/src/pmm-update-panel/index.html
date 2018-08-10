@@ -1,59 +1,100 @@
 <style>
-    #pmm-update-widget .btn-block {
+
+    #pmm-update-widget p {
+        margin-bottom: 0;
+    }
+
+    #pmm-update-widget .check-update-button {
+        position: relative;
+        border-radius: 50%;
+        height: 20px;
+        width: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: transparent;
+        border: none;
+        color: #27b4e7;
+    }
+
+    #pmm-update-widget .update-button {
         width: 100%;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        background: #292929 none;
+        box-sizing: border-box;
     }
 
-    #pmm-update-widget .text-primary {
-        color: #00729b;
-        cursor: pointer;
+    #pmm-update-widget .update-button:disabled {
+        border: 2px solid #292929;
+        background: transparent;
     }
 
-    #pmm-update-widget .text-primary:hover {
-        color: #005f81;
+    section.state {
+        height: 65px;
+        /*margin-bottom: 10px;*/
+        margin: 10px 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        box-sizing: border-box;
+        border: 2px solid #292929;
     }
+
+    section.available-version {
+        margin-top: 5px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: flex-start;
+    }
+
+    section.available-version .version-wrapper a {
+        color: #27b4e7;
+    }
+
+    footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
 </style>
 <div id="pmm-update-widget">
-    <div class="row">
-        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-right">
-            Current version:
+    <header>
+        <h2 class="update-title">Updates</h2>
+        <p class="current-version">Current version:
+            <span>{{currentVersion}} <em>{{currentReleaseDate}}</em></span>
+            <span ng-if="!currentVersion">{{version}}</span>
+        </p>
+    </header>
+    <section class="available-version" ng-if="shouldBeUpdated">
+        <p>Available version:&nbsp;</p>
+        <div class="version-wrapper">
+            <p>{{nextVersion}} <em>{{newReleaseDate}}</em></p>
+            <a href="https://www.percona.com/doc/percona-monitoring-and-management/release-notes/{{linkVersion}}.html"
+               class="text-primary" target="_blank">What's new?</a>
         </div>
-        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-            <i class="fa fa-spinner fa-spin" ng-if="!version"></i>
-            {{version}}
+    </section>
+    <section class="state" ng-if="!shouldBeUpdated">
+        <div class="state-inner" ng-if="!isUpToDate">
+            <p class="text-center">No updates are available</p>
+            <p class="text-center">PMM checks for updates once a day</p>
         </div>
-    </div>
-    <div class="row" ng-if="shouldBeUpdated">
-        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 text-right">
-            Available version:
-        </div>
-        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-            <strong>{{nextVersion}}</strong>
-        </div>
-    </div>
-    <div class="row" ng-if="shouldBeUpdated">
-        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 offset-xs-6 offset-sm-6 offset-md-6 offset-lg-6 offset-xl-6">
-            <a href="https://www.percona.com/doc/percona-monitoring-and-management/release-notes/{{linkVersion}}.html" class="text-primary" target="_blank">What's new?</a>
-        </div>
-    </div>
-    <div class="row" style="height: 2em;">
-        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 offset-xs-6 offset-sm-6 offset-md-6 offset-lg-6 offset-xl-6">
-            <em class="text-error">{{errorMessage}}</em>
-        </div>
-    </div>
-    <div class="row btn-holder" ng-show="!shouldBeUpdated">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-            <button class="btn btn-inverse btn-block"
-                    ng-disabled="!version"
-                    ng-click="checkForUpdate()">Check for updates manually
-                <i class="fa fa-spinner fa-spin" ng-if="isLoaderShown"></i>
-            </button>
-        </div>
-    </div>
-    <div class="row btn-holder" ng-if="shouldBeUpdated">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-            <button class="btn btn-secondary btn-block" ng-click="update()"><i class="fa fa-download"></i> Update to
-                {{nextVersion}}
-            </button>
-        </div>
-    </div>
+        <p class="text-center" ng-if="isUpToDate">You are up to date</p>
+    </section>
+    <button class="btn btn-secondary btn-block update-button"
+            ng-if="shouldBeUpdated"
+            ng-click="update()"
+            ng-disabled="disableUpdate">
+        <span ng-if="shouldBeUpdated && !disableUpdate">
+            <i class="fa fa-download"></i>
+            Update to {{nextVersion}}
+        </span>
+        <span ng-if="disableUpdate">Updates are disabled</span>
+    </button>
+    <footer>
+        <p>Last check: {{lastCheckDate}}</p>
+        <button ng-click="checkForUpdate()" class="check-update-button"><i class="fa fa-spin fa-refresh" id="refresh"></i></button>
+    </footer>
 </div>
