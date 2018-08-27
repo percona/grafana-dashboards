@@ -21,7 +21,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1529322261358,
+    "iteration": 1535381370089,
     "links": [
         {
             "icon": "dashboard",
@@ -459,18 +459,19 @@
             "sparkline": {
                 "fillColor": "rgba(31, 118, 189, 0.18)",
                 "full": false,
+                "lineColor": "rgb(31, 120, 193)",
                 "maxValue": 100,
                 "minValue": 0,
-                "lineColor": "rgb(31, 120, 193)",
                 "show": true
             },
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "clamp_max(sum by () ((avg by (mode) ( (clamp_max(rate(node_cpu{instance=\"$host\",mode!=\"idle\",mode!=\"iowait\"}[$interval]),1)) or (clamp_max(irate(node_cpu{instance=\"$host\",cpu=\"$cpu\",mode!=\"idle\",mode!=\"iowait\"}[5m]),1)) )) *100 or (max_over_time(node_cpu_average{instance=~\"$host\", mode=\"total\"}[$interval]) or max_over_time(node_cpu_average{instance=~\"$host\", mode=\"total\"}[5m]))),100)",
+                    "expr": "clamp_max(sum by () ((avg by (mode) ( \n(clamp_max(rate(node_cpu{instance=\"$host\",mode!=\"idle\",mode!=\"iowait\"}[$interval]),1)) or \n(clamp_max(irate(node_cpu{instance=\"$host\",mode!=\"idle\",mode!=\"iowait\"}[5m]),1)) )) *100 or \nsum by () (\navg_over_time(node_cpu_average{instance=\"$host\",mode!=\"total\",mode!=\"idle\"}[$interval]) or \navg_over_time(node_cpu_average{instance=\"$host\",mode!=\"total\",mode!=\"idle\"}[5m])) unless\n(avg_over_time(node_cpu_average{instance=\"$host\",mode=\"total\",job=\"rds-basic\"}[$interval]) or \navg_over_time(node_cpu_average{instance=\"$host\",mode=\"total\",job=\"rds-basic\"}[5m]))\n),100)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
+                    "legendFormat": "",
                     "refId": "A"
                 }
             ],
@@ -542,9 +543,9 @@
             "sparkline": {
                 "fillColor": "rgba(31, 118, 189, 0.18)",
                 "full": false,
+                "lineColor": "rgb(31, 120, 193)",
                 "maxValue": 100,
                 "minValue": 0,
-                "lineColor": "rgb(31, 120, 193)",
                 "show": true
             },
             "tableColumn": "",
@@ -625,9 +626,9 @@
             "sparkline": {
                 "fillColor": "rgba(31, 118, 189, 0.18)",
                 "full": false,
+                "lineColor": "rgb(31, 120, 193)",
                 "maxValue": 100,
                 "minValue": 0,
-                "lineColor": "rgb(31, 120, 193)",
                 "show": true
             },
             "tableColumn": "",
@@ -708,9 +709,9 @@
             "sparkline": {
                 "fillColor": "rgba(31, 118, 189, 0.18)",
                 "full": false,
+                "lineColor": "rgb(31, 120, 193)",
                 "maxValue": 100,
                 "minValue": 0,
-                "lineColor": "rgb(31, 120, 193)",
                 "show": true
             },
             "tableColumn": "",
@@ -791,9 +792,9 @@
             "sparkline": {
                 "fillColor": "rgba(31, 118, 189, 0.18)",
                 "full": false,
+                "lineColor": "rgb(31, 120, 193)",
                 "maxValue": 100,
                 "minValue": 0,
-                "lineColor": "rgb(31, 120, 193)",
                 "show": true
             },
             "tableColumn": "",
@@ -874,9 +875,9 @@
             "sparkline": {
                 "fillColor": "rgba(31, 118, 189, 0.18)",
                 "full": false,
+                "lineColor": "rgb(31, 120, 193)",
                 "maxValue": 100,
                 "minValue": 0,
-                "lineColor": "rgb(31, 120, 193)",
                 "show": true
             },
             "tableColumn": "",
@@ -1000,19 +1001,20 @@
             "sparkline": {
                 "fillColor": "rgba(31, 118, 189, 0.18)",
                 "full": false,
+                "lineColor": "rgb(31, 120, 193)",
                 "maxValue": 100,
                 "minValue": 0,
-                "lineColor": "rgb(31, 120, 193)",
                 "show": true
             },
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "clamp_max((sum by () ((avg by (mode) ( (clamp_max(rate(node_cpu{instance=\"$host\",mode!=\"idle\",mode!=\"iowait\"}[$interval]),1)) or (clamp_max(irate(node_cpu{instance=\"$host\",cpu=\"$cpu\",mode!=\"idle\",mode!=\"iowait\"}[5m]),1)) )) *100) or (max_over_time(node_cpu_average{instance=\"$host\",mode=\"total\"}[$interval]) or max_over_time(node_cpu_average{instance=\"$host\",mode=\"total\"}[5m]))),100)",
+                    "expr": "clamp_max(\nsum by (cpu) (\n(avg by (mode) ( (clamp_max(rate(node_cpu{instance=\"$host\",cpu=\"$cpu\",mode!=\"idle\",mode!=\"iowait\"}[$interval]),1)) or \n(clamp_max(irate(node_cpu{instance=\"$host\",cpu=\"$cpu\",mode!=\"idle\",mode!=\"iowait\"}[5m]),1)) )) *100) or \nsum by () (\navg_over_time(node_cpu_average{instance=\"$host\",mode!=\"total\",mode!=\"idle\"}[$interval]) or \navg_over_time(node_cpu_average{instance=\"$host\",mode!=\"total\",mode!=\"idle\"}[5m])) unless\n(avg_over_time(node_cpu_average{instance=\"$host\",mode=\"total\",job=\"rds-basic\"}[$interval]) or \navg_over_time(node_cpu_average{instance=\"$host\",mode=\"total\",job=\"rds-basic\"}[5m]))\n,100)",
                     "format": "time_series",
                     "instant": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
+                    "legendFormat": "",
                     "refId": "A"
                 }
             ],
@@ -1084,9 +1086,9 @@
             "sparkline": {
                 "fillColor": "rgba(31, 118, 189, 0.18)",
                 "full": false,
+                "lineColor": "rgb(31, 120, 193)",
                 "maxValue": 100,
                 "minValue": 0,
-                "lineColor": "rgb(31, 120, 193)",
                 "show": true
             },
             "tableColumn": "",
@@ -1167,9 +1169,9 @@
             "sparkline": {
                 "fillColor": "rgba(31, 118, 189, 0.18)",
                 "full": false,
+                "lineColor": "rgb(31, 120, 193)",
                 "maxValue": 100,
                 "minValue": 0,
-                "lineColor": "rgb(31, 120, 193)",
                 "show": true
             },
             "tableColumn": "",
@@ -1250,9 +1252,9 @@
             "sparkline": {
                 "fillColor": "rgba(31, 118, 189, 0.18)",
                 "full": false,
+                "lineColor": "rgb(31, 120, 193)",
                 "maxValue": 100,
                 "minValue": 0,
-                "lineColor": "rgb(31, 120, 193)",
                 "show": true
             },
             "tableColumn": "",
@@ -1333,9 +1335,9 @@
             "sparkline": {
                 "fillColor": "rgba(31, 118, 189, 0.18)",
                 "full": false,
+                "lineColor": "rgb(31, 120, 193)",
                 "maxValue": 100,
                 "minValue": 0,
-                "lineColor": "rgb(31, 120, 193)",
                 "show": true
             },
             "tableColumn": "",
@@ -1416,9 +1418,9 @@
             "sparkline": {
                 "fillColor": "rgba(31, 118, 189, 0.18)",
                 "full": false,
+                "lineColor": "rgb(31, 120, 193)",
                 "maxValue": 100,
                 "minValue": 0,
-                "lineColor": "rgb(31, 120, 193)",
                 "show": true
             },
             "tableColumn": "",
