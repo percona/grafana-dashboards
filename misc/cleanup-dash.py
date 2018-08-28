@@ -38,12 +38,22 @@ def set_timezone(dashboard):
     dashboard['timezone'] = raw_input(prompt) or dashboard['timezone']
     return dashboard
 
+
+def set_shared_crosshear(dashboard):
+    """Enabled Shared Crosshear."""
+    if 'graphTooltip' not in dashboard.keys():
+        return dashboard
+    dashboard['graphTooltip'] = 1
+    return dashboard
+
+
 def set_default_refresh_intervals(dashboard):
     """Set Dashboard refresh intervals."""
     if 'timepicker' not in dashboard.keys():
         return dashboard
     dashboard['timepicker']['refresh_intervals'] = refresh_intervals 
     return dashboard
+
 
 def set_refresh(dashboard):
     """Set Dashboard refresh."""
@@ -67,6 +77,7 @@ def set_refresh(dashboard):
                     print "Provided interval isn't enabled"
         else:
             return dashboard
+
 
 def add_links(dashboard):
     """Add default set of consistent linking to dashboard."""
@@ -105,8 +116,11 @@ def add_links(dashboard):
                 dashboard['links'].append(add_item)
     return dashboard
 
+
 def set_hide_controls(dashboard):
     """Set Dashboard Hide Controls."""
+    if 'hideControls' not in dashboard.keys():
+        return dashboard
     prompt = 'Hide Controls (conventional: **True**) [%s]: ' % (
         dashboard['hideControls'],
     )
@@ -117,6 +131,7 @@ def set_hide_controls(dashboard):
         else:
             dashboard['hideControls'] = False
     return dashboard
+
 
 def set_unique_ids(dashboard):
     """To avoid the most common merge error: duplicate row ids."""
@@ -136,6 +151,7 @@ def set_unique_ids(dashboard):
         ids.add(id_)
 
     return dashboard
+
 
 def drop_some_internal_elements(dashboard):
     for element in enumerate(dashboard.copy()):
@@ -164,6 +180,7 @@ def drop_some_internal_elements(dashboard):
 
     return dashboard
 
+
 def set_hide_timepicker(dashboard):
     """Set Timepicker Hiden."""
     if 'timepicker' not in dashboard.keys():
@@ -185,6 +202,7 @@ def set_hide_timepicker(dashboard):
         else:
             dashboard['timepicker']['hidden'] = False
     return dashboard
+
 
 def add_annotation(dashboard):
     """Add PMM annotation."""
@@ -211,6 +229,7 @@ def add_annotation(dashboard):
             }
             dashboard['annotations']['list'].append(add_item)
     return dashboard
+
 
 def add_copyrights_links(dashboard):
     """Add Copyrights Links footer."""
@@ -262,7 +281,7 @@ def main():
 
     # registered cleanupers.
     CLEANUPERS = [set_title, set_hide_timepicker, drop_some_internal_elements, set_time, set_timezone, set_default_refresh_intervals, set_refresh,
-                  add_annotation, add_links, add_copyrights_links, set_unique_ids]
+                  add_annotation, add_links, add_copyrights_links, set_shared_crosshear, set_unique_ids]
 
     for func in CLEANUPERS:
         dashboard = func(dashboard)

@@ -56,17 +56,17 @@ export class PanelCtrl extends MetricsPanelCtrl {
 
         $scope.logLocation = '';
         $scope.version = '';
-        $scope.linkVersion = '';
         $scope.errorMessage = '';
         $scope.isUpToDate = false;
         $scope.canBeReloaded = false;
-        $scope.lastCheckDate = localStorage.getItem('lastCheck') ? `${moment(Number(localStorage.getItem('lastCheck'))).format('MMMM DD, H:mm')}` : '';
+        $scope.lastCheckDate = localStorage.getItem('lastCheck') ? moment(Number(localStorage.getItem('lastCheck'))).format('MMMM DD, H:mm') : '';
         $scope.currentVersion = localStorage.getItem('currentVersion') || '';
         $scope.currentReleaseDate = localStorage.getItem('currentReleaseDate') || '';
         $scope.shouldBeUpdated = localStorage.getItem('shouldBeUpdated') || '';
         $scope.nextVersion = localStorage.getItem('nextVersion') || '';
         $scope.newReleaseDate = localStorage.getItem('newReleaseDate') || '';
         $scope.disableUpdate = localStorage.getItem('disableUpdate');
+        $scope.linkVersion = localStorage.getItem('linkVersion') || '';
 
         $scope.checkForUpdate = this.checkForUpdate.bind(this, $scope, $http);
         $scope.update = this.update.bind(this, $scope, $http);
@@ -169,14 +169,19 @@ export class PanelCtrl extends MetricsPanelCtrl {
             this.getCurrentTime($scope);
             if ($scope.linkVersion = $scope.nextVersion.match(linkRegExp)) {
                 $scope.linkVersion = $scope.nextVersion.match(linkRegExp)[0];
+                localStorage.setItem('linkVersion', $scope.linkVersion);
             } else {
                 this.displayError($scope, PanelCtrl.ERRORS.INCORRECT_SERVER_RESPONSE);
+                $('#refresh').removeClass('fa-spin');
             }
             $('#refresh').removeClass('fa-spin');
         }).catch(() => {
             this.displayError($scope, PanelCtrl.ERRORS.NOTHING_TO_UPDATE);
             this.getCurrentTime($scope);
             $scope.isUpToDate = true;
+            localStorage.setItem('shouldBeUpdated', '');
+            localStorage.setItem('nextVersion', '');
+            localStorage.setItem('linkVersion', '');
             $('#refresh').removeClass('fa-spin');
         });
     }
@@ -204,7 +209,9 @@ export class PanelCtrl extends MetricsPanelCtrl {
             localStorage.setItem('currentReleaseDate', $scope.currentReleaseDate);
             $scope.currentVersion = localStorage.getItem('currentVersion');
             $scope.currentReleaseDate = localStorage.getItem('currentReleaseDate');
+            $('#refresh').removeClass('fa-spin');
         }).catch(() => {
+            $('#refresh').removeClass('fa-spin');
             //TODO: add error handler
         });
     }
