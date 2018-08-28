@@ -57,7 +57,8 @@ export class PanelCtrl extends MetricsPanelCtrl {
             frame.height(`${h + 100}px`);
             panel.height(`${h + 150}px`);
 
-            panelContent.height(`inherit`);
+	    panelContent.height(`inherit`);
+	    panelContent[0].style.padding = '0 0 10px';
         };
         // init url
         // updated url
@@ -68,10 +69,12 @@ export class PanelCtrl extends MetricsPanelCtrl {
         frame.on('load', () => {
             frame.contents().bind('click', event => {
                 const [queryID, type] = this.retrieveIFrameURLParams(event.currentTarget.URL);
-                this.reloadQuery(window, queryID, type)
+                $scope.ctrl.calculatePanelHeight();
+                return queryID === 'null' || queryID === null || this.reloadQuery(window, queryID, type);
             });
 
             frame.contents().bind('DOMSubtreeModified', $scope.ctrl.calculatePanelHeight);
+
         });
     }
 

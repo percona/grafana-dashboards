@@ -52,7 +52,11 @@ export class PanelCtrl extends MetricsPanelCtrl {
             panelContent.height(`inherit`);
         };
 
-        frame.on('load', () => frame.contents().bind('DOMSubtreeModified', $scope.ctrl.calculatePanelHeight))
+        frame.on('load', () => {
+            $scope.ctrl.calculatePanelHeight();
+            frame.contents().bind('click', $scope.ctrl.calculatePanelHeight);
+            frame.contents().bind('DOMSubtreeModified', $scope.ctrl.calculatePanelHeight);
+        });
     }
 
     /**
