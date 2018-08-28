@@ -1,7 +1,8 @@
 /// <reference path="../../headers/common.d.ts" />
 
-import { MetricsPanelCtrl } from 'app/plugins/sdk';
+import {MetricsPanelCtrl} from 'app/plugins/sdk';
 import config from 'app/core/config';
+import $ from 'jquery';
 
 export class PanelCtrl extends MetricsPanelCtrl {
     static template = `<iframe ng-src="{{trustSrc(url)}}" style="width: 100%; height: 400px; border: 0;" scrolling="no" />`;
@@ -11,6 +12,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
         $scope.qanParams = {
             'var-host': null,
             'from': null,
+            'search': '',
             'queryID': null,
             'type': null,
             'to': null,
@@ -57,24 +59,29 @@ export class PanelCtrl extends MetricsPanelCtrl {
             frame.height(`${h + 100}px`);
             panel.height(`${h + 150}px`);
 
-	    panelContent.height(`inherit`);
-	    panelContent[0].style.padding = '0 0 10px';
+            panelContent.height(`inherit`);
+            panelContent[0].style.padding = '0 0 10px';
         };
         // init url
         // updated url
         $scope.$watch('qanParams', this.resetUrl.bind(this, $scope), true);
 
-        [$scope.qanParams.queryID, $scope.qanParams.type] = this.retrieveDashboardURLParams(location.absUrl());
+        [$scope.qanParams.queryID, $scope.qanParams.type, $scope.qanParams.search] = this.retrieveDashboardURLParams(location.absUrl());
 
         frame.on('load', () => {
             frame.contents().bind('click', event => {
-                const [queryID, type] = this.retrieveIFrameURLParams(event.currentTarget.URL);
+                const [queryID, type, search] = this.retrieveIFrameURLParams(event.currentTarget.URL);
                 $scope.ctrl.calculatePanelHeight();
-                return queryID === 'null' || queryID === null || this.reloadQuery(window, queryID, type);
+                return queryID === 'null' || queryID === null || this.reloadQuery(window, queryID, type, search);
             });
-
+            frame.contents().bind('keyup', event => {
+                if ($(event.target).is('#search-input') && event.keyCode === 13) {
+                    const [queryID, type, search] = this.retrieveIFrameURLParams(event.currentTarget.URL);
+                    $scope.ctrl.calculatePanelHeight();
+                    return this.reloadQuery(window, queryID, type, search);
+                }
+            });
             frame.contents().bind('DOMSubtreeModified', $scope.ctrl.calculatePanelHeight);
-
         });
     }
 
@@ -102,25 +109,43 @@ export class PanelCtrl extends MetricsPanelCtrl {
         [].forEach.call(menu, e => e.setAttribute('style', 'z-index: 1001'));
     }
 
-    private reloadQuery(window, queryID = null, type = null) {
-        const url = `${window.location.href.split('&queryID')[0]}&${this.encodeData({queryID, type})}`;
-
-        history.pushState({}, null, url);
+    private reloadQuery(window, queryID = null, type = null, search = '') {
+        if (queryID && search === '') {
+            const url = `${window.location.href.split('&queryID')[0]}&${this.encodeData({queryID, type})}`;
+            history.pushState({}, null, url);
+        } else if (queryID === null || queryID === 'null' && search) {
+            const url = `${window.location.href.split('&search')[0]}&${this.encodeData({search})}`;
+            history.pushState({}, null, url);
+            const countOfQueryId = $(window.location.href.split('&queryID')).length - 1;
+            if(countOfQueryId > 0) {
+                const url = `${window.location.href.split('&queryID')[0]}&${this.encodeData({search})}`;
+                history.pushState({}, null, url);
+            }
+        } else if (queryID && search) {
+            const url = `${window.location.href.split('&queryID')[0]}&${this.encodeData({queryID, type, search})}`;
+            history.pushState({}, null, url);
+            const countOfSearch = $(window.location.href.split('&search')).length - 1;
+            if (countOfSearch > 1) {
+                const url = `${window.location.href.split('&search')[0]}&${this.encodeData({queryID, type, search})}`;
+                history.pushState({}, null, url);
+            }
+        }
     }
 
     private retrieveDashboardURLParams(url): Array<string> {
         const currentURL = new URL(url);
 
-        return [currentURL.searchParams.get('queryID'), currentURL.searchParams.get('type')];
+        return [currentURL.searchParams.get('queryID'), currentURL.searchParams.get('type'), currentURL.searchParams.get('search')];
     }
 
     private retrieveIFrameURLParams(url): Array<string> {
         const currentURL = new URL(url);
         const id = currentURL.searchParams.get('queryID');
+        const search = currentURL.searchParams.get('search');
         const urlArr = url.split('/');
         const type = urlArr[urlArr.length - 1].split('?')[0];
 
-        return [id, type];
+        return [id, type, search];
     }
 
     private encodeData(data: Object): string {
