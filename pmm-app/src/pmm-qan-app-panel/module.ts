@@ -110,26 +110,37 @@ export class PanelCtrl extends MetricsPanelCtrl {
     }
 
     private reloadQuery(window, queryID = null, type = null, search = '') {
-        if (queryID && search === '') {
-            const url = `${window.location.href.split('&queryID')[0]}&${this.encodeData({queryID, type})}`;
-            history.pushState({}, null, url);
-        } else if (queryID === null || queryID === 'null' && search) {
-            const url = `${window.location.href.split('&search')[0]}&${this.encodeData({search})}`;
-            history.pushState({}, null, url);
-            const countOfQueryId = $(window.location.href.split('&queryID')).length - 1;
-            if(countOfQueryId > 0) {
-                const url = `${window.location.href.split('&queryID')[0]}&${this.encodeData({search})}`;
-                history.pushState({}, null, url);
-            }
-        } else if (queryID && search) {
-            const url = `${window.location.href.split('&queryID')[0]}&${this.encodeData({queryID, type, search})}`;
-            history.pushState({}, null, url);
-            const countOfSearch = $(window.location.href.split('&search')).length - 1;
-            if (countOfSearch > 1) {
-                const url = `${window.location.href.split('&search')[0]}&${this.encodeData({queryID, type, search})}`;
-                history.pushState({}, null, url);
-            }
-        }
+        const isIDInUrl = queryID && (!search || search === 'null');
+        const isSearchInUrl = search && (search !== null) && (!queryID || queryID === 'null');
+        const isBothInUrl = queryID && search;
+
+        const conditions = [
+            {
+                getStr: () => '&queryID',
+                params: {queryID, type},
+                getCondition: () => isIDInUrl
+            },
+            {
+                getStr: () => (window.location.href.match(/&queryID/g) || []).length ? '&queryID' : '&search',
+                params: {search},
+                getCondition: () => isSearchInUrl
+            },
+            {
+                getStr: () => '&queryID',
+                params: {queryID, type, search},
+                getCondition: () => isBothInUrl
+            },
+            {
+                getStr: () => '&search',
+                params: {queryID, type, search},
+                getCondition: () => isBothInUrl && ((window.location.href.match(/&search/g) || []).length > 1)
+            },
+        ];
+
+        conditions.map(item => {
+            if (!item.getCondition()) return;
+            history.pushState({}, null, `${window.location.href.split(item.getStr())[0]}&${this.encodeData(item.params)}`);
+        })
     }
 
     private retrieveDashboardURLParams(url): Array<string> {
