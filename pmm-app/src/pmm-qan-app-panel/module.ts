@@ -111,37 +111,37 @@ export class PanelCtrl extends MetricsPanelCtrl {
 
     private reloadQuery(window, queryID = null, type = null, search = '') {
         const isQueryId = queryID && queryID !== 'null';
-        const isOnlyIDInUrl = isQueryId && (search === null || search === 'null');
-        const isOnlySearchInUrl = search && !isQueryId;
-        const isBothInUrl = isQueryId && search;
+        const isOnlyIDInUrl = isQueryId && !($('iframe').contents().find('#search-input')[0].value.length);
+        const isOnlySearchInUrl = search && !isQueryId && !isOnlyIDInUrl;
+        const isBothInUrl = isQueryId && search && ($('iframe').contents().find('#search-input')[0].value.length);
 
         const conditions = [
             {
                 getStr: () => '&queryID',
                 params: {queryID, type},
-                getCondition: () => isOnlyIDInUrl
+                getCondition: () => isOnlyIDInUrl,
             },
             {
                 getStr: () => (window.location.href.match(/&queryID/g) || []).length ? '&queryID' : '&search',
                 params: {search},
-                getCondition: () => isOnlySearchInUrl
+                getCondition: () => isOnlySearchInUrl,
             },
             {
                 getStr: () => '&queryID',
                 params: {queryID, type, search},
-                getCondition: () => isBothInUrl
+                getCondition: () => isBothInUrl,
             },
             {
                 getStr: () => '&search',
                 params: {queryID, type, search},
-                getCondition: () => isBothInUrl && ((window.location.href.match(/&search/g) || []).length > 1)
+                getCondition: () => isBothInUrl && ((window.location.href.match(/&search/g) || []).length > 1),
             },
         ];
 
         conditions.map(item => {
             if (!item.getCondition()) return;
             history.pushState({}, null, `${window.location.href.split(item.getStr())[0]}&${this.encodeData(item.params)}`);
-        })
+        });
     }
 
     private retrieveDashboardURLParams(url): Array<string> {
