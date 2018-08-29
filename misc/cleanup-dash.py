@@ -87,7 +87,7 @@ def add_links(dashboard):
     user_input = raw_input(prompt)
     if user_input:
         if user_input == 'Yes':
-            setOfLinks = ['QAN', 'OS', 'MySQL', 'MongoDB', 'HA', 'Cloud', 'Insight', 'PMM']
+            setOfLinks = ['QAN', 'OS', 'MySQL', 'MongoDB', 'PostgreSQL', 'HA', 'Cloud', 'Insight', 'PMM']
             for link in copy.deepcopy(dashboard['links']):
                 dashboard['links'].remove(link)
 
