@@ -78,7 +78,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
                 if ($(event.target).is('#search-input') && event.keyCode === 13) {
                     const [queryID, type, search] = this.retrieveIFrameURLParams(event.currentTarget.URL);
                     $scope.ctrl.calculatePanelHeight();
-                    return this.reloadQuery(window, queryID, type, search);
+                    return search === null || this.reloadQuery(window, queryID, type, search);
                 }
             });
             frame.contents().bind('DOMSubtreeModified', $scope.ctrl.calculatePanelHeight);
@@ -110,20 +110,21 @@ export class PanelCtrl extends MetricsPanelCtrl {
     }
 
     private reloadQuery(window, queryID = null, type = null, search = '') {
-        const isIDInUrl = queryID && (!search || search === 'null');
-        const isSearchInUrl = search && (search !== null) && (!queryID || queryID === 'null');
-        const isBothInUrl = queryID && search;
+        const isQueryId = queryID && queryID !== 'null';
+        const isOnlyIDInUrl = isQueryId && (search === null || search === 'null');
+        const isOnlySearchInUrl = search && !isQueryId;
+        const isBothInUrl = isQueryId && search;
 
         const conditions = [
             {
                 getStr: () => '&queryID',
                 params: {queryID, type},
-                getCondition: () => isIDInUrl
+                getCondition: () => isOnlyIDInUrl
             },
             {
                 getStr: () => (window.location.href.match(/&queryID/g) || []).length ? '&queryID' : '&search',
                 params: {search},
-                getCondition: () => isSearchInUrl
+                getCondition: () => isOnlySearchInUrl
             },
             {
                 getStr: () => '&queryID',
