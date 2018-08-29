@@ -35,13 +35,12 @@ export class PanelCtrl extends MetricsPanelCtrl {
         const frame = elem.find('iframe');
         const panel = elem.find('div.panel-container');
         const panelContent = elem.find('div.panel-content');
-        const bgcolor = $scope.qanParams.theme === 'light' ? '#ffffff' : '#141414';
         // TODO: investigate this workaround. Inside $window - CtrlPanel
         const location = $window.$injector.get('$location');
         const window = $window.$injector.get('$window');
 
         panel.css({
-            'background-color': bgcolor,
+            'background-color': 'transparent',
             'border': 'none'
         });
 
@@ -58,7 +57,8 @@ export class PanelCtrl extends MetricsPanelCtrl {
             frame.height(`${h + 100}px`);
             panel.height(`${h + 150}px`);
 
-            panelContent.height(`inherit`);
+	    panelContent.height(`inherit`);
+	    panelContent[0].style.padding = '0 0 10px';
         };
         // init url
         // updated url
@@ -69,10 +69,12 @@ export class PanelCtrl extends MetricsPanelCtrl {
         frame.on('load', () => {
             frame.contents().bind('click', event => {
                 const [queryID, type] = this.retrieveIFrameURLParams(event.currentTarget.URL);
-                return (queryID === 'null') || this.reloadQuery(window, queryID, type);
+                $scope.ctrl.calculatePanelHeight();
+                return queryID === 'null' || queryID === null || this.reloadQuery(window, queryID, type);
             });
 
             frame.contents().bind('DOMSubtreeModified', $scope.ctrl.calculatePanelHeight);
+
         });
     }
 
