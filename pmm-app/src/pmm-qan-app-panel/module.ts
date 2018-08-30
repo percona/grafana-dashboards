@@ -70,17 +70,24 @@ export class PanelCtrl extends MetricsPanelCtrl {
 
         frame.on('load', () => {
             frame.contents().bind('click', event => {
-                const [queryID, type, search] = this.retrieveIFrameURLParams(event.currentTarget.URL);
+                let [queryID, type, search] = this.retrieveIFrameURLParams(event.currentTarget.URL);
+                if ($(event.target).is('.fa-search') && ($('iframe').contents().find('#search-input')[0].value.length || $('iframe').contents().find('#search-input')[0].value === '')) {
+                    search =  $('iframe').contents().find('#search-input')[0].value;
+                    queryID = 'null';
+                    $scope.ctrl.calculatePanelHeight();
+                    return this.reloadQuery(window, queryID, type, search);
+                }
                 $scope.ctrl.calculatePanelHeight();
                 return queryID === 'null' || queryID === null || this.reloadQuery(window, queryID, type, search);
             });
             frame.contents().bind('keyup', event => {
-                if ($(event.target).is('#search-input') && event.keyCode === 13) {
+                if (($(event.target).is('#search-input') && event.keyCode === 13)) {
                     const [queryID, type, search] = this.retrieveIFrameURLParams(event.currentTarget.URL);
                     $scope.ctrl.calculatePanelHeight();
                     return this.reloadQuery(window, queryID, type, search);
                 }
             });
+
             frame.contents().bind('DOMSubtreeModified', $scope.ctrl.calculatePanelHeight);
         });
     }
@@ -114,7 +121,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
         const isOnlyIDInUrl = isQueryId && !($('iframe').contents().find('#search-input')[0].value.length);
         const isOnlySearchInUrl = search && !isQueryId && !isOnlyIDInUrl;
         const isBothInUrl = isQueryId && search && ($('iframe').contents().find('#search-input')[0].value.length);
-        const isBothNull = queryID === null && search === null;
+        const isBothNull = (queryID === null || queryID === 'null') && (search === null || search === '');
 
         const conditions = [
             {
