@@ -78,7 +78,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
                 if ($(event.target).is('#search-input') && event.keyCode === 13) {
                     const [queryID, type, search] = this.retrieveIFrameURLParams(event.currentTarget.URL);
                     $scope.ctrl.calculatePanelHeight();
-                    return search === null || this.reloadQuery(window, queryID, type, search);
+                    return this.reloadQuery(window, queryID, type, search);
                 }
             });
             frame.contents().bind('DOMSubtreeModified', $scope.ctrl.calculatePanelHeight);
@@ -114,6 +114,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
         const isOnlyIDInUrl = isQueryId && !($('iframe').contents().find('#search-input')[0].value.length);
         const isOnlySearchInUrl = search && !isQueryId && !isOnlyIDInUrl;
         const isBothInUrl = isQueryId && search && ($('iframe').contents().find('#search-input')[0].value.length);
+        const isBothNull = queryID === null && search === null;
 
         const conditions = [
             {
@@ -142,6 +143,11 @@ export class PanelCtrl extends MetricsPanelCtrl {
             if (!item.getCondition()) return;
             history.pushState({}, null, `${window.location.href.split(item.getStr())[0]}&${this.encodeData(item.params)}`);
         });
+
+        if(isBothNull) {
+            history.pushState({}, null, `${window.location.href.split('&search')[0]}`);
+            history.pushState({}, null, `${window.location.href.split('&queryID')[0]}`);
+        }
     }
 
     private retrieveDashboardURLParams(url): Array<string> {
