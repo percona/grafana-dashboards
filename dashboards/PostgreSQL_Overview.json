@@ -22,7 +22,7 @@
     "gnetId": 3300,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1534870379089,
+    "iteration": 1538039097211,
     "links": [
         {
             "icon": "dashboard",
@@ -150,6 +150,7 @@
                 "#299c46"
             ],
             "datasource": "Prometheus",
+            "description": "Reports whether PMM Server can connect to the PostgreSQL instance.",
             "format": "none",
             "gauge": {
                 "maxValue": 100,
@@ -162,7 +163,7 @@
                 "h": 2,
                 "w": 2,
                 "x": 0,
-                "y": 3
+                "y": 2
             },
             "id": 63,
             "interval": null,
@@ -234,11 +235,12 @@
         },
         {
             "content": "<h1><b><font color=#e68a00><center>$version</center></font></b></h1>",
+            "description": "The version of the PostgreSQL instance.",
             "gridPos": {
                 "h": 2,
                 "w": 2,
                 "x": 2,
-                "y": 3
+                "y": 2
             },
             "id": 65,
             "links": [],
@@ -257,7 +259,7 @@
             ],
             "datasource": "Prometheus",
             "decimals": 0,
-            "description": "This parameter is mostly dedicated to PostgreSQL query planner because query planner is responsible to execute a query by choosing a better optimized execution path.\nThe query planner also requires some space to perform their work so this parameter helps the query planner.",
+            "description": "The maximum number of client connections allowed.  Change this value with care as there are some memory resources that are allocated on a per-client basis, so setting max_connections higher will generally increase overall PostgreSQL memory usage.",
             "format": "short",
             "gauge": {
                 "maxValue": 100,
@@ -270,11 +272,18 @@
                 "h": 2,
                 "w": 3,
                 "x": 4,
-                "y": 3
+                "y": 2
             },
             "id": 86,
             "interval": null,
-            "links": [],
+            "links": [
+                {
+                    "targetBlank": true,
+                    "title": "GUC-MAX-CONNECTIONS",
+                    "type": "absolute",
+                    "url": "https://www.postgresql.org/docs/current/static/runtime-config-connection.html#GUC-MAX-CONNECTIONS"
+                }
+            ],
             "mappingType": 1,
             "mappingTypes": [
                 {
@@ -341,7 +350,7 @@
             ],
             "datasource": "Prometheus",
             "decimals": 2,
-            "description": "Instead of big shared memory pool, PostgreSQL has a separate process for each database connection. PostgreSQL uses this dedicated memory area for caching purpose, so its provide lots of performance gain in your system.\n\nIf we have more loads, we can set large values for shared_buffers.\nGenerally, we should set shared_buffers values up to 1/4 part of the main memory.",
+            "description": "Defines the amount of memory the database server uses for shared memory buffers.  Default is 128MB.  Guidance on tuning is 25% of RAM, but generally doesn't exceed 40%.",
             "format": "bytes",
             "gauge": {
                 "maxValue": 100,
@@ -354,11 +363,18 @@
                 "h": 2,
                 "w": 4,
                 "x": 7,
-                "y": 3
+                "y": 2
             },
             "id": 67,
             "interval": null,
-            "links": [],
+            "links": [
+                {
+                    "targetBlank": true,
+                    "title": "GUC-SHARED-BUFFERS",
+                    "type": "absolute",
+                    "url": "https://www.postgresql.org/docs/current/static/runtime-config-resource.html#GUC-SHARED-BUFFERS"
+                }
+            ],
             "mappingType": 1,
             "mappingTypes": [
                 {
@@ -424,7 +440,7 @@
             ],
             "datasource": "Prometheus",
             "decimals": 2,
-            "description": "This parameter defines, how much space is required for caching to write-ahead log entries. This is really very small size value but it is required to change in heavily loaded servers.",
+            "description": "The setting wal_buffers defines how much memory is used for caching the write-ahead log entries. Generally this value is small (3% of shared_buffers value), but it may need to be modified for heavily loaded servers.",
             "format": "bytes",
             "gauge": {
                 "maxValue": 100,
@@ -437,11 +453,23 @@
                 "h": 2,
                 "w": 4,
                 "x": 11,
-                "y": 3
+                "y": 2
             },
             "id": 68,
             "interval": null,
-            "links": [],
+            "links": [
+                {
+                    "title": "GUC-WAL-BUFFERS",
+                    "type": "absolute",
+                    "url": "https://www.postgresql.org/docs/current/static/runtime-config-wal.html#GUC-WAL-BUFFERS"
+                },
+                {
+                    "targetBlank": true,
+                    "title": "GUC-SHARED-BUFFERS",
+                    "type": "absolute",
+                    "url": "https://www.postgresql.org/docs/current/static/runtime-config-resource.html#GUC-SHARED-BUFFERS"
+                }
+            ],
             "mappingType": 1,
             "mappingTypes": [
                 {
@@ -507,6 +535,7 @@
             ],
             "datasource": "Prometheus",
             "decimals": 2,
+            "description": "The parameter work_mem defines the amount of memory assigned for internal sort operations and hash tables before writing to temporary disk files.  The default is 4MB.",
             "format": "bytes",
             "gauge": {
                 "maxValue": 100,
@@ -519,11 +548,19 @@
                 "h": 2,
                 "w": 4,
                 "x": 15,
-                "y": 3
+                "y": 2
             },
             "id": 69,
             "interval": null,
-            "links": [],
+            "links": [
+                {
+                    "dashboard": "https://www.postgresql.org/docs/current/static/runtime-config-resource.html#GUC-WORK-MEM",
+                    "targetBlank": true,
+                    "title": "GUC-WORK-MEM",
+                    "type": "absolute",
+                    "url": "https://www.postgresql.org/docs/current/static/runtime-config-resource.html#GUC-WORK-MEM"
+                }
+            ],
             "mappingType": 1,
             "mappingTypes": [
                 {
@@ -566,7 +603,7 @@
                 }
             ],
             "thresholds": "",
-            "title": "Memory Size for each Query",
+            "title": "Memory Size for each Sort",
             "type": "singlestat",
             "valueFontSize": "80%",
             "valueMaps": [
@@ -589,7 +626,7 @@
             ],
             "datasource": "Prometheus",
             "decimals": 2,
-            "description": "This parameter is mostly dedicated to PostgreSQL query planner because query planner is responsible to execute a query by choosing a better optimized execution path.\nThe query planner also requires some space to perform their work so this parameter helps the query planner.",
+            "description": "PostgreSQL's effective_cache_size variable tunes how much RAM you expect to be available for disk caching.  Generally adding Linux free+cached will give you a good idea.  This value is used by the query planner whether plans will fit in memory, and when defined too low, can lead to some plans rejecting certain indexes.",
             "format": "bytes",
             "gauge": {
                 "maxValue": 100,
@@ -602,11 +639,18 @@
                 "h": 2,
                 "w": 3,
                 "x": 19,
-                "y": 3
+                "y": 2
             },
             "id": 70,
             "interval": null,
-            "links": [],
+            "links": [
+                {
+                    "targetBlank": true,
+                    "title": "GUC-EFFECTIVE-CACHE-SIZE",
+                    "type": "absolute",
+                    "url": "https://www.postgresql.org/docs/current/static/runtime-config-query.html#GUC-EFFECTIVE-CACHE-SIZE"
+                }
+            ],
             "mappingType": 1,
             "mappingTypes": [
                 {
@@ -672,6 +716,7 @@
                 "#299c46"
             ],
             "datasource": "Prometheus",
+            "description": "Whether autovacuum process is enabled or not.  Generally the solution is to vacuum more often, not less.",
             "format": "none",
             "gauge": {
                 "maxValue": 100,
@@ -684,11 +729,18 @@
                 "h": 2,
                 "w": 2,
                 "x": 22,
-                "y": 3
+                "y": 2
             },
             "id": 85,
             "interval": null,
-            "links": [],
+            "links": [
+                {
+                    "targetBlank": true,
+                    "title": "AUTOVACUUM",
+                    "type": "absolute",
+                    "url": "https://www.postgresql.org/docs/current/static/routine-vacuuming.html#AUTOVACUUM"
+                }
+            ],
             "mappingType": 1,
             "mappingTypes": [
                 {
@@ -759,7 +811,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 5
+                "y": 4
             },
             "id": 74,
             "panels": [],
@@ -780,7 +832,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 6
+                "y": 5
             },
             "id": 23,
             "legend": {
@@ -891,7 +943,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 6
+                "y": 5
             },
             "id": 34,
             "legend": {
@@ -990,7 +1042,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 14
+                "y": 13
             },
             "id": 76,
             "panels": [],
@@ -1008,7 +1060,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 15
+                "y": 14
             },
             "id": 36,
             "legend": {
@@ -1129,7 +1181,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 15
+                "y": 14
             },
             "id": 24,
             "legend": {
@@ -1230,7 +1282,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 23
+                "y": 22
             },
             "id": 25,
             "legend": {
@@ -1335,7 +1387,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 31
+                "y": 30
             },
             "id": 78,
             "panels": [],
@@ -1354,7 +1406,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 32
+                "y": 31
             },
             "id": 26,
             "legend": {
@@ -1455,7 +1507,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 32
+                "y": 31
             },
             "id": 18,
             "legend": {
@@ -1540,7 +1592,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 40
+                "y": 39
             },
             "id": 80,
             "panels": [],
@@ -1559,7 +1611,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 41
+                "y": 40
             },
             "id": 48,
             "legend": {
@@ -1649,7 +1701,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 41
+                "y": 40
             },
             "id": 49,
             "legend": {
@@ -1749,7 +1801,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 49
+                "y": 48
             },
             "id": 82,
             "panels": [],
@@ -1771,7 +1823,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 50
+                "y": 49
             },
             "id": 3,
             "legend": {
@@ -1962,7 +2014,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 50
+                "y": 49
             },
             "id": 61,
             "legend": {
@@ -2092,7 +2144,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 58
+                "y": 57
             },
             "id": 84,
             "panels": [],
@@ -2111,7 +2163,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 59
+                "y": 58
             },
             "id": 50,
             "legend": {
@@ -2218,7 +2270,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 59
+                "y": 58
             },
             "id": 2,
             "legend": {
@@ -2561,7 +2613,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 67
+                "y": 66
             },
             "id": 72,
             "panels": [],
@@ -2581,7 +2633,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 68
+                "y": 67
             },
             "id": 28,
             "legend": {
@@ -2716,7 +2768,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 68
+                "y": 67
             },
             "id": 14,
             "legend": {
@@ -2807,7 +2859,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 76
+                "y": 75
             },
             "id": 22,
             "legend": {
@@ -2906,7 +2958,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 84
+                "y": 83
             },
             "id": 60,
             "panels": [
@@ -2934,7 +2986,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 85
+                "y": 84
             },
             "id": 88,
             "panels": [
