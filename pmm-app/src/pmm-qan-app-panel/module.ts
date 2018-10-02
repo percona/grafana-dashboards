@@ -2,6 +2,7 @@
 
 import { MetricsPanelCtrl } from 'app/plugins/sdk';
 import config from 'app/core/config';
+import AppEvents from "app/core/app_events";
 
 export class PanelCtrl extends MetricsPanelCtrl {
     static template = `<iframe ng-src="{{trustSrc(url)}}" style="width: 100%; height: 400px; border: 0;" scrolling="no" />`;
@@ -38,7 +39,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
         // TODO: investigate this workaround. Inside $window - CtrlPanel
         const location = $window.$injector.get('$location');
         const window = $window.$injector.get('$window');
-
+        window.document.addEventListener('showSuccessNotification', () => { AppEvents.emit('alert-success', ['Content has been copied to clipboard']); }, false);
         panel.css({
             'background-color': 'transparent',
             'border': 'none'
