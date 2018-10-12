@@ -162,8 +162,15 @@ export class PanelCtrl extends MetricsPanelCtrl {
             $scope.nextVersion = res.data.version || '';
             $scope.newReleaseDate = res.data.release_date || '';
             $scope.disableUpdate = res.data.disable_update || '';
-            // $scope.shouldBeUpdated = +$scope.nextVersion.split('.').join("") > +$scope.currentVersion.split('.').join("");
-            if(+$scope.nextVersion.split('.').join("") > +$scope.currentVersion.split('.').join("")) {
+
+            const [currentMajor, currentMinor, currentBugfix] = $scope.currentVersion.split('.');
+            const [nextMajor, nextMinor, nextBugfix] = $scope.nextVersion.split('.');
+
+            const isMajor = nextMajor > currentMajor;
+            const isMinor = nextMinor > currentMinor && (nextMajor === currentMajor);
+            const isBugfix = nextBugfix > currentBugfix && isMinor && (nextMinor === currentMinor);
+
+            if (isMajor || isMinor || isBugfix) {
                 $scope.shouldBeUpdated = true;
             } else {
                 $scope.shouldBeUpdated = '';
