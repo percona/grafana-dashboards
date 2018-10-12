@@ -77,7 +77,6 @@ export class PanelCtrl extends MetricsPanelCtrl {
         const body = document.querySelector('body');
         const timeDiff = Date.now() - Number(localStorage.getItem('lastCheck'));
         const escKeyCode = 'Escape';
-        const isCurrentMoreThanNext = +$scope.currentVersion.split('.').join("") > +$scope.nextVersion.split('.').join("");
         body.addEventListener('click', (event) => {
             if ($(event.target).hasClass('modal-backdrop') && $scope.canBeReloaded) location.reload();
         });
