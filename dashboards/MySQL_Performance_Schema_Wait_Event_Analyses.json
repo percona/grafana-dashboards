@@ -21,7 +21,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1529322296775,
+    "iteration": 1533217364087,
     "links": [
         {
             "icon": "dashboard",
@@ -126,10 +126,21 @@
     ],
     "panels": [
         {
-            "aliasColors": {
-                "Free (device /dev/xvda1, ext4)": "#82B5D8",
-                "Used (device /dev/xvda1, ext4)": "#BA43A9"
+            "content": "<h1><i><font color=#5991A7><b><center>Data for </font><font color=#e68a00>$host</font> <font color=#5991A7> with</font> </font><font color=#e68a00>$interval</font> <font color=#5991A7>resolution</center></b></font></i></h1>",
+            "gridPos": {
+                "h": 2,
+                "w": 24,
+                "x": 0,
+                "y": 0
             },
+            "id": 24,
+            "links": [],
+            "mode": "html",
+            "title": "",
+            "type": "text"
+        },
+        {
+            "aliasColors": {},
             "bars": false,
             "dashLength": 10,
             "dashes": false,
@@ -137,21 +148,21 @@
             "decimals": 2,
             "editable": true,
             "error": false,
-            "fill": 0,
+            "fill": 1,
             "grid": {},
             "gridPos": {
                 "h": 7,
                 "w": 24,
                 "x": 0,
-                "y": 0
+                "y": 2
             },
-            "id": 9,
+            "id": 27,
             "legend": {
                 "alignAsTable": true,
                 "avg": true,
                 "current": false,
-                "hideEmpty": false,
-                "hideZero": false,
+                "hideEmpty": true,
+                "hideZero": true,
                 "max": true,
                 "min": true,
                 "rightSide": true,
@@ -161,45 +172,40 @@
                 "total": false,
                 "values": true
             },
-            "lines": true,
+            "lines": false,
             "linewidth": 2,
             "links": [],
-            "minSpan": 12,
-            "nullPointMode": "null",
+            "nullPointMode": "null as zero",
             "percentage": false,
-            "pointradius": 5,
-            "points": false,
+            "pointradius": 1,
+            "points": true,
             "renderer": "flot",
             "seriesOverrides": [],
             "spaceLength": 10,
             "stack": false,
-            "steppedLine": false,
+            "steppedLine": true,
             "targets": [
                 {
-                    "calculatedInterval": "2m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "1 - node_filesystem_free{instance=\"$host\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"} / node_filesystem_size{instance=\"$host\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}",
+                    "expr": "rate(mysql_perf_schema_events_waits_total{instance=\"$host\",event_name=~\"$event\"}[$interval]) or irate(mysql_perf_schema_events_waits_total{instance=\"$host\",instance=\"$host\",event_name=~\"$event\"}[5m])",
+                    "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
-                    "legendFormat": "{{ mountpoint }}",
-                    "metric": "",
-                    "refId": "B",
+                    "legendFormat": "{{event_name}} ",
+                    "refId": "A",
                     "step": 300
                 }
             ],
             "thresholds": [],
             "timeFrom": null,
             "timeShift": null,
-            "title": "Mountpoint Usage",
+            "title": "Count - Performance Schema Waits",
             "tooltip": {
                 "msResolution": false,
                 "shared": true,
                 "sort": 0,
                 "value_type": "individual"
             },
-            "transparent": false,
             "type": "graph",
             "xaxis": {
                 "buckets": null,
@@ -210,18 +216,17 @@
             },
             "yaxes": [
                 {
-                    "format": "percentunit",
-                    "label": "",
+                    "format": "ops",
                     "logBase": 1,
-                    "max": 1,
+                    "max": null,
                     "min": 0,
                     "show": true
                 },
                 {
-                    "format": "bytes",
+                    "format": "short",
                     "logBase": 1,
                     "max": null,
-                    "min": null,
+                    "min": 0,
                     "show": true
                 }
             ],
@@ -231,30 +236,7 @@
             }
         },
         {
-            "content": "`Disk Space` -  Amount of disk space used and available on various mount points.  Running out of disk space on OS volume,  database volume or volume used for temporary space can cause downtime.   Some storage may also have reduced performance when small amount of space is available.\n",
-            "datasource": "Prometheus",
-            "editable": true,
-            "error": false,
-            "gridPos": {
-                "h": 3,
-                "w": 24,
-                "x": 0,
-                "y": 7
-            },
-            "height": "50px",
-            "id": 7,
-            "links": [],
-            "mode": "markdown",
-            "style": {},
-            "title": "",
-            "transparent": true,
-            "type": "text"
-        },
-        {
-            "aliasColors": {
-                "Free (device /dev/xvda1, ext4)": "#82B5D8",
-                "Used (device /dev/xvda1, ext4)": "#BA43A9"
-            },
+            "aliasColors": {},
             "bars": false,
             "dashLength": 10,
             "dashes": false,
@@ -262,89 +244,64 @@
             "decimals": 2,
             "editable": true,
             "error": false,
-            "fill": 6,
+            "fill": 1,
             "grid": {},
             "gridPos": {
                 "h": 7,
-                "w": 12,
+                "w": 24,
                 "x": 0,
-                "y": 10
+                "y": 9
             },
-            "id": 4,
+            "id": 26,
             "legend": {
                 "alignAsTable": true,
                 "avg": true,
                 "current": false,
-                "hideEmpty": false,
+                "hideEmpty": true,
+                "hideZero": true,
                 "max": true,
                 "min": true,
-                "rightSide": false,
+                "rightSide": true,
                 "show": true,
+                "sort": "avg",
+                "sortDesc": true,
                 "total": false,
                 "values": true
             },
-            "lines": true,
+            "lines": false,
             "linewidth": 2,
             "links": [],
-            "minSpan": 12,
-            "nullPointMode": "null",
+            "nullPointMode": "null as zero",
             "percentage": false,
-            "pointradius": 5,
-            "points": false,
+            "pointradius": 1,
+            "points": true,
             "renderer": "flot",
-            "repeat": "mountpoint",
-            "seriesOverrides": [
-                {
-                    "alias": "/Used/",
-                    "color": "#99440A"
-                },
-                {
-                    "alias": "/Free/",
-                    "color": "#EF843C"
-                }
-            ],
+            "seriesOverrides": [],
             "spaceLength": 10,
-            "stack": true,
-            "steppedLine": false,
+            "stack": false,
+            "steppedLine": true,
             "targets": [
                 {
-                    "calculatedInterval": "2m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "node_filesystem_size{instance=\"$host\",mountpoint=\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"} - node_filesystem_free{instance=\"$host\",mountpoint=\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}",
+                    "expr": "rate(mysql_perf_schema_events_waits_seconds_total{instance=\"$host\",event_name=~\"$event\"}[$interval]) or irate(mysql_perf_schema_events_waits_seconds_total{instance=\"$host\",instance=\"$host\",event_name=~\"$event\"}[5m])",
+                    "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
-                    "legendFormat": "Used (device {{ device }}, {{ fstype }})",
-                    "metric": "",
-                    "refId": "B",
-                    "step": 300
-                },
-                {
-                    "calculatedInterval": "2m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "node_filesystem_free{instance=\"$host\", mountpoint=\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Free (device {{ device }}, {{ fstype }})",
-                    "metric": "",
+                    "legendFormat": "{{event_name}} ",
                     "refId": "A",
-                    "step": 300,
-                    "target": ""
+                    "step": 300
                 }
             ],
             "thresholds": [],
             "timeFrom": null,
             "timeShift": null,
-            "title": "Mountpoint $mountpoint",
+            "title": "Load - Performance Schema Waits",
             "tooltip": {
                 "msResolution": false,
                 "shared": true,
                 "sort": 0,
                 "value_type": "individual"
             },
-            "transparent": false,
             "type": "graph",
             "xaxis": {
                 "buckets": null,
@@ -355,18 +312,121 @@
             },
             "yaxes": [
                 {
-                    "format": "bytes",
-                    "label": "",
+                    "format": "short",
                     "logBase": 1,
                     "max": null,
                     "min": 0,
                     "show": true
                 },
                 {
-                    "format": "bytes",
+                    "format": "short",
                     "logBase": 1,
                     "max": null,
-                    "min": null,
+                    "min": 0,
+                    "show": true
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 2,
+            "editable": true,
+            "error": false,
+            "fill": 1,
+            "grid": {},
+            "gridPos": {
+                "h": 7,
+                "w": 24,
+                "x": 0,
+                "y": 16
+            },
+            "id": 28,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "hideEmpty": true,
+                "hideZero": true,
+                "max": true,
+                "min": true,
+                "rightSide": true,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": false,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "null as zero",
+            "percentage": false,
+            "pointradius": 1,
+            "points": true,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": true,
+            "targets": [
+                {
+                    "expr": "rate(mysql_perf_schema_events_waits_seconds_total{instance=\"$host\",event_name=~\"$event\"}[$interval])/rate(mysql_perf_schema_events_waits_total{instance=\"$host\",event_name=~\"$event\"}[$interval]) or irate(mysql_perf_schema_events_waits_seconds_total{instance=\"$host\",instance=\"$host\",event_name=~\"$event\"}[5m])/irate(mysql_perf_schema_events_waits_total{instance=\"$host\",instance=\"$host\",event_name=~\"$event\"}[5m])",
+                    "format": "time_series",
+                    "hide": false,
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{event_name}} ",
+                    "refId": "A",
+                    "step": 300
+                },
+                {
+                    "expr": "rate(mysql_perf_schema_events_waits_total{instance=\"$host\",event_name=~\"$event\"}[$interval]) or irate(mysql_perf_schema_events_waits_total{instance=\"$host\",instance=\"$host\",event_name=~\"$event\"}[5m])",
+                    "format": "time_series",
+                    "hide": true,
+                    "intervalFactor": 1,
+                    "legendFormat": "",
+                    "refId": "B"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Avg Wait Time - Performance Schema Waits",
+            "tooltip": {
+                "msResolution": false,
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "s",
+                    "logBase": 1,
+                    "max": null,
+                    "min": 0,
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "logBase": 1,
+                    "max": null,
+                    "min": 0,
                     "show": true
                 }
             ],
@@ -380,7 +440,7 @@
     "schemaVersion": 16,
     "style": "dark",
     "tags": [
-        "OS",
+        "MySQL",
         "Percona"
     ],
     "templating": {
@@ -456,41 +516,37 @@
                 "includeAll": false,
                 "label": "Host",
                 "multi": false,
-                "multiFormat": "regex values",
+                "multiFormat": "glob",
                 "name": "host",
                 "options": [],
-                "query": "label_values(node_filesystem_avail, instance)",
+                "query": "label_values(mysql_global_variables_performance_schema, instance)",
                 "refresh": 1,
                 "refresh_on_load": false,
                 "regex": "",
                 "sort": 1,
-                "tagValuesQuery": "instance",
+                "tagValuesQuery": null,
                 "tags": [],
-                "tagsQuery": "up",
+                "tagsQuery": null,
                 "type": "query",
                 "useTags": false
             },
             {
-                "allFormat": "wildcard",
                 "allValue": null,
                 "current": {},
                 "datasource": "Prometheus",
-                "hide": 2,
-                "hideLabel": false,
-                "includeAll": true,
-                "label": "Mountpoint",
-                "multi": false,
-                "multiFormat": "regex values",
-                "name": "mountpoint",
+                "hide": 0,
+                "includeAll": false,
+                "label": "Event",
+                "multi": true,
+                "name": "event",
                 "options": [],
-                "query": "label_values(node_filesystem_avail{instance=\"$host\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}, mountpoint)",
+                "query": "label_values(mysql_perf_schema_events_waits_seconds_total{instance=\"$host\"}, event_name)",
                 "refresh": 1,
-                "refresh_on_load": false,
                 "regex": "",
                 "sort": 1,
-                "tagValuesQuery": "instance",
+                "tagValuesQuery": "",
                 "tags": [],
-                "tagsQuery": "up",
+                "tagsQuery": "",
                 "type": "query",
                 "useTags": false
             }
@@ -501,10 +557,7 @@
         "to": "now"
     },
     "timepicker": {
-        "collapse": false,
-        "enable": true,
         "hidden": false,
-        "notice": false,
         "now": true,
         "refresh_intervals": [
             "5s",
@@ -518,7 +571,6 @@
             "2h",
             "1d"
         ],
-        "status": "Stable",
         "time_options": [
             "5m",
             "15m",
@@ -529,11 +581,10 @@
             "2d",
             "7d",
             "30d"
-        ],
-        "type": "timepicker"
+        ]
     },
     "timezone": "browser",
-    "title": "Disk Space",
-    "uid": "80k9wMHmk",
-    "version": 1
+    "title": "MySQL Performance Schema Wait Event Analyses",
+    "uid": "fl8HVgcmk",
+    "version": 2
 }

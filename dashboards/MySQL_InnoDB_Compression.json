@@ -11,7 +11,7 @@
                 "name": "PMM Annotations",
                 "showIn": 0,
                 "tags": [
-                    "pmm_annotation"
+                    "pmm-annotation"
                 ],
                 "type": "tags"
             }
@@ -21,7 +21,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1529322481841,
+    "iteration": 1529490337546,
     "links": [
         {
             "icon": "dashboard",
@@ -126,35 +126,47 @@
     ],
     "panels": [
         {
-            "cacheTimeout": null,
-            "colorBackground": true,
-            "colorValue": false,
-            "colors": [
-                "rgba(161, 18, 18, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(36, 112, 33, 0.97)"
-            ],
-            "datasource": "Prometheus",
-            "decimals": 0,
-            "editable": true,
-            "error": false,
-            "format": "short",
-            "gauge": {
-                "maxValue": 100,
-                "minValue": 0,
-                "show": false,
-                "thresholdLabels": false,
-                "thresholdMarkers": true
-            },
+            "collapsed": false,
             "gridPos": {
-                "h": 3,
-                "w": 6,
+                "h": 1,
+                "w": 24,
                 "x": 0,
                 "y": 0
             },
+            "id": 76,
+            "panels": [],
+            "repeat": null,
+            "title": "Compression level and failure rate threshold",
+            "type": "row"
+        },
+        {
+            "cacheTimeout": null,
+            "colorBackground": false,
+            "colorValue": false,
+            "colors": [
+                "#447ebc",
+                "#447ebc",
+                "#447ebc"
+            ],
+            "datasource": "Prometheus",
+            "description": "The level of zlib compression to use for InnoDB compressed tables and indexes.",
+            "format": "none",
+            "gauge": {
+                "maxValue": 10,
+                "minValue": 0,
+                "show": false,
+                "thresholdLabels": true,
+                "thresholdMarkers": true
+            },
+            "gridPos": {
+                "h": 4,
+                "w": 6,
+                "x": 0,
+                "y": 1
+            },
             "height": "125px",
-            "id": 26,
-            "interval": "$interval",
+            "id": 51,
+            "interval": null,
             "links": [],
             "mappingType": 1,
             "mappingTypes": [
@@ -168,12 +180,13 @@
                 }
             ],
             "maxDataPoints": 100,
+            "minSpan": 6,
             "nullPointMode": "connected",
             "nullText": null,
             "postfix": "",
             "postfixFontSize": "50%",
             "prefix": "",
-            "prefixFontSize": "80%",
+            "prefixFontSize": "50%",
             "rangeMaps": [
                 {
                     "from": "null",
@@ -190,67 +203,54 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "calculatedInterval": "10m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "mysql_slave_status_slave_io_running{instance=\"$host\"}",
-                    "interval": "5m",
+                    "expr": "mysql_global_variables_innodb_compression_level{instance=\"$host\"}",
+                    "format": "time_series",
+                    "hide": false,
                     "intervalFactor": 1,
-                    "legendFormat": "",
-                    "metric": "",
-                    "refId": "A",
-                    "step": 300
+                    "refId": "A"
                 }
             ],
-            "thresholds": "0.5,1",
-            "title": "IO Thread Running",
-            "transparent": false,
+            "thresholds": "",
+            "title": "InnoDB Compression level",
             "type": "singlestat",
             "valueFontSize": "80%",
             "valueMaps": [
                 {
                     "op": "=",
-                    "text": "Yes",
-                    "value": "1"
-                },
-                {
-                    "op": "=",
-                    "text": "No",
-                    "value": "0"
+                    "text": "N/A",
+                    "value": "null"
                 }
             ],
             "valueName": "current"
         },
         {
             "cacheTimeout": null,
-            "colorBackground": true,
+            "colorBackground": false,
             "colorValue": false,
             "colors": [
-                "rgba(161, 18, 18, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(36, 112, 33, 0.97)"
+                "#1f78c1",
+                "#1f78c1",
+                "#1f78c1"
             ],
             "datasource": "Prometheus",
-            "decimals": 0,
-            "editable": true,
-            "error": false,
-            "format": "short",
+            "description": "The compression failure rate threshold for a table",
+            "format": "percent",
             "gauge": {
                 "maxValue": 100,
                 "minValue": 0,
                 "show": false,
-                "thresholdLabels": false,
+                "thresholdLabels": true,
                 "thresholdMarkers": true
             },
             "gridPos": {
-                "h": 3,
+                "h": 4,
                 "w": 6,
                 "x": 6,
-                "y": 0
+                "y": 1
             },
             "height": "125px",
-            "id": 17,
-            "interval": "$interval",
+            "id": 57,
+            "interval": null,
             "links": [],
             "mappingType": 1,
             "mappingTypes": [
@@ -264,12 +264,13 @@
                 }
             ],
             "maxDataPoints": 100,
+            "minSpan": 6,
             "nullPointMode": "connected",
             "nullText": null,
             "postfix": "",
             "postfixFontSize": "50%",
             "prefix": "",
-            "prefixFontSize": "80%",
+            "prefixFontSize": "50%",
             "rangeMaps": [
                 {
                     "from": "null",
@@ -286,32 +287,31 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "calculatedInterval": "10m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "mysql_slave_status_slave_sql_running{instance=\"$host\"}",
-                    "interval": "5m",
+                    "expr": "mysql_global_variables_innodb_compression_failure_threshold_pct{instance=\"$host\"}",
+                    "format": "time_series",
+                    "interval": "$interval",
                     "intervalFactor": 1,
-                    "legendFormat": "",
-                    "metric": "",
-                    "refId": "A",
-                    "step": 300
+                    "refId": "A"
                 }
             ],
-            "thresholds": "0.5,1",
-            "title": "SQL Thread Running",
-            "transparent": false,
+            "thresholds": "",
+            "title": "InnoDB Compression Failure Threshold",
             "type": "singlestat",
             "valueFontSize": "80%",
             "valueMaps": [
                 {
                     "op": "=",
-                    "text": "Yes",
+                    "text": "N/A",
+                    "value": "null"
+                },
+                {
+                    "op": "=",
+                    "text": "Enabled",
                     "value": "1"
                 },
                 {
                     "op": "=",
-                    "text": "No",
+                    "text": "Disabled",
                     "value": "0"
                 }
             ],
@@ -320,16 +320,98 @@
         {
             "cacheTimeout": null,
             "colorBackground": false,
-            "colorValue": true,
+            "colorValue": false,
             "colors": [
-                "rgba(50, 172, 45, 0.97)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(245, 54, 54, 0.9)"
+                "#447ebc",
+                "#447ebc",
+                "#447ebc"
             ],
             "datasource": "Prometheus",
-            "decimals": 0,
-            "editable": true,
-            "error": false,
+            "description": "The maximum percentage that can be reserved as free space within each compressed page, allowing room to reorganize the data and modification log within the page when a compressed table or index is updated and the data might be recompressed.",
+            "format": "percent",
+            "gauge": {
+                "maxValue": 75,
+                "minValue": 0,
+                "show": false,
+                "thresholdLabels": true,
+                "thresholdMarkers": true
+            },
+            "gridPos": {
+                "h": 4,
+                "w": 6,
+                "x": 12,
+                "y": 1
+            },
+            "height": "125px",
+            "id": 52,
+            "interval": null,
+            "links": [],
+            "mappingType": 1,
+            "mappingTypes": [
+                {
+                    "name": "value to text",
+                    "value": 1
+                },
+                {
+                    "name": "range to text",
+                    "value": 2
+                }
+            ],
+            "maxDataPoints": 100,
+            "minSpan": 6,
+            "nullPointMode": "connected",
+            "nullText": null,
+            "postfix": "",
+            "postfixFontSize": "50%",
+            "prefix": "",
+            "prefixFontSize": "50%",
+            "rangeMaps": [
+                {
+                    "from": "null",
+                    "text": "N/A",
+                    "to": "null"
+                }
+            ],
+            "sparkline": {
+                "fillColor": "rgba(31, 118, 189, 0.18)",
+                "full": false,
+                "lineColor": "rgb(31, 120, 193)",
+                "show": false
+            },
+            "tableColumn": "",
+            "targets": [
+                {
+                    "expr": "mysql_global_variables_innodb_compression_pad_pct_max{instance=\"$host\"}",
+                    "format": "time_series",
+                    "hide": false,
+                    "intervalFactor": 2,
+                    "refId": "A"
+                }
+            ],
+            "thresholds": "",
+            "title": "Compression Failure Rate Threshold",
+            "type": "singlestat",
+            "valueFontSize": "80%",
+            "valueMaps": [
+                {
+                    "op": "=",
+                    "text": "N/A",
+                    "value": "null"
+                }
+            ],
+            "valueName": "current"
+        },
+        {
+            "cacheTimeout": null,
+            "colorBackground": false,
+            "colorValue": false,
+            "colors": [
+                "#299c46",
+                "rgba(237, 129, 40, 0.89)",
+                "#d44a3a"
+            ],
+            "datasource": "Prometheus",
+            "description": "Specifies whether images of re-compressed pages are written to the redo log. Re-compression may occur when changes are made to compressed data.",
             "format": "none",
             "gauge": {
                 "maxValue": 100,
@@ -339,105 +421,14 @@
                 "thresholdMarkers": true
             },
             "gridPos": {
-                "h": 3,
-                "w": 6,
-                "x": 12,
-                "y": 0
-            },
-            "height": "125px",
-            "id": 39,
-            "interval": "$interval",
-            "links": [],
-            "mappingType": 1,
-            "mappingTypes": [
-                {
-                    "name": "value to text",
-                    "value": 1
-                },
-                {
-                    "name": "range to text",
-                    "value": 2
-                }
-            ],
-            "maxDataPoints": 100,
-            "nullPointMode": "connected",
-            "nullText": null,
-            "postfix": "",
-            "postfixFontSize": "50%",
-            "prefix": "",
-            "prefixFontSize": "80%",
-            "rangeMaps": [
-                {
-                    "from": "null",
-                    "text": "N/A",
-                    "to": "null"
-                }
-            ],
-            "sparkline": {
-                "fillColor": "rgba(31, 118, 189, 0.18)",
-                "full": false,
-                "lineColor": "rgb(31, 120, 193)",
-                "show": false
-            },
-            "tableColumn": "",
-            "targets": [
-                {
-                    "calculatedInterval": "10m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "mysql_slave_status_last_errno{instance=\"$host\"}",
-                    "interval": "5m",
-                    "intervalFactor": 1,
-                    "legendFormat": "",
-                    "metric": "",
-                    "refId": "A",
-                    "step": 300
-                }
-            ],
-            "thresholds": "0.5,1",
-            "title": "Replication Error No",
-            "transparent": false,
-            "type": "singlestat",
-            "valueFontSize": "80%",
-            "valueMaps": [
-                {
-                    "op": "=",
-                    "text": "N/A",
-                    "value": "0"
-                }
-            ],
-            "valueName": "current"
-        },
-        {
-            "cacheTimeout": null,
-            "colorBackground": false,
-            "colorValue": false,
-            "colors": [
-                "rgba(50, 172, 45, 0.97)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(245, 54, 54, 0.9)"
-            ],
-            "datasource": "Prometheus",
-            "decimals": 0,
-            "editable": true,
-            "error": false,
-            "format": "short",
-            "gauge": {
-                "maxValue": 100,
-                "minValue": 0,
-                "show": false,
-                "thresholdLabels": false,
-                "thresholdMarkers": true
-            },
-            "gridPos": {
-                "h": 3,
+                "h": 4,
                 "w": 6,
                 "x": 18,
-                "y": 0
+                "y": 1
             },
             "height": "125px",
-            "id": 27,
-            "interval": "$interval",
+            "id": 69,
+            "interval": null,
             "links": [],
             "mappingType": 1,
             "mappingTypes": [
@@ -451,12 +442,13 @@
                 }
             ],
             "maxDataPoints": 100,
+            "minSpan": 6,
             "nullPointMode": "connected",
             "nullText": null,
             "postfix": "",
             "postfixFontSize": "50%",
             "prefix": "",
-            "prefixFontSize": "80%",
+            "prefixFontSize": "50%",
             "rangeMaps": [
                 {
                     "from": "null",
@@ -473,21 +465,15 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "calculatedInterval": "10m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "mysql_global_variables_read_only{instance=\"$host\"}",
-                    "interval": "5m",
+                    "expr": "mysql_global_variables_innodb_log_compressed_pages{instance=\"$host\"}",
+                    "format": "time_series",
+                    "interval": "$interval",
                     "intervalFactor": 1,
-                    "legendFormat": "",
-                    "metric": "",
-                    "refId": "A",
-                    "step": 300
+                    "refId": "A"
                 }
             ],
-            "thresholds": "0.5,1",
-            "title": "Read Only",
-            "transparent": false,
+            "thresholds": "",
+            "title": "Write Pages to The Redo Log",
             "type": "singlestat",
             "valueFontSize": "80%",
             "valueMaps": [
@@ -502,15 +488,33 @@
                     "value": "0"
                 }
             ],
-            "valueName": "current"
+            "valueName": "avg"
         },
         {
-            "aliasColors": {},
+            "collapsed": false,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 5
+            },
+            "id": 77,
+            "panels": [],
+            "repeat": null,
+            "title": "Statistic of compression operations",
+            "type": "row"
+        },
+        {
+            "aliasColors": {
+                "Max Checkpoint Age": "#BF1B00",
+                "Uncheckpointed Bytes": "#E0752D"
+            },
             "bars": false,
             "dashLength": 10,
             "dashes": false,
             "datasource": "Prometheus",
-            "decimals": 0,
+            "decimals": 2,
+            "description": "Number of compression operations attempted. Pages are compressed whenever an empty page is created or the space for the uncompressed modification log runs out.",
             "editable": true,
             "error": false,
             "fill": 2,
@@ -519,34 +523,32 @@
                 "h": 7,
                 "w": 12,
                 "x": 0,
-                "y": 3
+                "y": 6
             },
-            "id": 16,
+            "id": 19,
             "legend": {
                 "alignAsTable": true,
                 "avg": true,
                 "current": false,
                 "max": true,
                 "min": true,
-                "rightSide": true,
+                "rightSide": false,
                 "show": true,
+                "sort": "avg",
+                "sortDesc": true,
                 "total": false,
                 "values": true
             },
             "lines": true,
             "linewidth": 2,
             "links": [],
+            "minSpan": 12,
             "nullPointMode": "null",
             "percentage": false,
             "pointradius": 5,
             "points": false,
             "renderer": "flot",
-            "seriesOverrides": [
-                {
-                    "alias": "Lag",
-                    "color": "#E24D42"
-                }
-            ],
+            "seriesOverrides": [],
             "spaceLength": 10,
             "stack": false,
             "steppedLine": false,
@@ -555,10 +557,12 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "mysql_slave_status_seconds_behind_master{instance=\"$host\"}",
+                    "expr": "rate(mysql_info_schema_innodb_cmp_compress_ops_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_cmp_compress_ops_total{instance=\"$host\"}[5m])",
+                    "format": "time_series",
+                    "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
-                    "legendFormat": "Lag",
+                    "legendFormat": "{{ page_size }}",
                     "metric": "",
                     "refId": "A",
                     "step": 300
@@ -567,7 +571,7 @@
             "thresholds": [],
             "timeFrom": null,
             "timeShift": null,
-            "title": "MySQL Replication Delay",
+            "title": "Compress Attempts",
             "tooltip": {
                 "msResolution": false,
                 "shared": true,
@@ -584,14 +588,14 @@
             },
             "yaxes": [
                 {
-                    "format": "short",
+                    "format": "ops",
                     "logBase": 1,
                     "max": null,
                     "min": 0,
                     "show": true
                 },
                 {
-                    "format": "short",
+                    "format": "bytes",
                     "logBase": 1,
                     "max": null,
                     "min": 0,
@@ -609,28 +613,37 @@
             "dashLength": 10,
             "dashes": false,
             "datasource": "Prometheus",
-            "description": "Requires pt-heartbeat\nThis graph requires mysqld_exporter with -collect.heartbeat=true and a pt-heartbeat daemon running on MySQL masters",
+            "decimals": 2,
+            "description": "Number of uncompression operations performed. Compressed InnoDB pages are uncompressed whenever compression fails, or the first time a compressed page is accessed in the buffer pool and the uncompressed page does not exist.",
+            "editable": true,
+            "error": false,
             "fill": 2,
+            "grid": {},
             "gridPos": {
                 "h": 7,
                 "w": 12,
                 "x": 12,
-                "y": 3
+                "y": 6
             },
-            "id": 41,
+            "id": 20,
             "legend": {
                 "alignAsTable": true,
                 "avg": true,
                 "current": false,
+                "hideZero": false,
                 "max": true,
                 "min": true,
+                "rightSide": false,
                 "show": true,
+                "sort": "avg",
+                "sortDesc": true,
                 "total": false,
                 "values": true
             },
             "lines": true,
             "linewidth": 2,
             "links": [],
+            "minSpan": 12,
             "nullPointMode": "null",
             "percentage": false,
             "pointradius": 5,
@@ -638,8 +651,8 @@
             "renderer": "flot",
             "seriesOverrides": [
                 {
-                    "alias": "Lag",
-                    "color": "#bf1b00"
+                    "alias": "InnoDB Transactions",
+                    "yaxis": 2
                 }
             ],
             "spaceLength": 10,
@@ -647,18 +660,233 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "max_over_time(mysql_heartbeat_now_timestamp_seconds{instance=\"$host\"}[$interval]) - \nmax_over_time(mysql_heartbeat_stored_timestamp_seconds{instance=\"$host\"}[$interval]) or \nmax_over_time(mysql_heartbeat_now_timestamp_seconds{instance=\"$host\"}[5m]) - \nmax_over_time(mysql_heartbeat_stored_timestamp_seconds{instance=\"$host\"}[5m])",
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "rate(mysql_info_schema_innodb_cmp_uncompress_ops_total{instance=\"$host\"}[$interval]) or \nirate(mysql_info_schema_innodb_cmp_uncompress_ops_total{instance=\"$host\"}[5m])",
                     "format": "time_series",
+                    "hide": false,
+                    "instant": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
-                    "legendFormat": "Lag for server-id={{server_id}}",
-                    "refId": "A"
+                    "legendFormat": "{{ page_size }}",
+                    "metric": "",
+                    "refId": "A",
+                    "step": 300
                 }
             ],
             "thresholds": [],
             "timeFrom": null,
             "timeShift": null,
-            "title": "MySQL Heartbeat Replication Delay",
+            "title": "Uncompressed Attempts",
+            "tooltip": {
+                "msResolution": false,
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "ops",
+                    "logBase": 1,
+                    "max": null,
+                    "min": 0,
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "logBase": 1,
+                    "max": null,
+                    "min": 0,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 2,
+            "editable": true,
+            "error": false,
+            "fill": 2,
+            "grid": {},
+            "gridPos": {
+                "h": 7,
+                "w": 24,
+                "x": 0,
+                "y": 13
+            },
+            "id": 23,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "rightSide": true,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "minSpan": 24,
+            "nullPointMode": "null",
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "sum_over_time(mysql_info_schema_innodb_cmp_compress_ops_ok_total{instance=\"$host\"}[$interval])/\nsum_over_time(mysql_info_schema_innodb_cmp_compress_ops_total{instance=\"$host\"}[$interval]) or \nsum_over_time(mysql_info_schema_innodb_cmp_compress_ops_ok_total{instance=\"$host\"}[5m])/\nsum_over_time(mysql_info_schema_innodb_cmp_compress_ops_total{instance=\"$host\"}[5m])",
+                    "format": "time_series",
+                    "hide": false,
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{ page_size }}",
+                    "metric": "",
+                    "refId": "A",
+                    "step": 300
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Compression Success Ratio",
+            "tooltip": {
+                "msResolution": false,
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": null,
+                    "format": "percentunit",
+                    "logBase": 1,
+                    "max": null,
+                    "min": 0,
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "logBase": 1,
+                    "max": null,
+                    "min": 0,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "collapsed": false,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 20
+            },
+            "id": 78,
+            "panels": [],
+            "repeat": null,
+            "title": "CPU Core Usage",
+            "type": "row"
+        },
+        {
+            "aliasColors": {},
+            "bars": true,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 2,
+            "fill": 2,
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 0,
+                "y": 21
+            },
+            "id": 58,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "rightSide": false,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": false,
+            "linewidth": 2,
+            "links": [],
+            "minSpan": 12,
+            "nullPointMode": "null",
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [
+                {
+                    "alias": "/.*/",
+                    "color": "#1f78c1"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": true,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "(sum(rate(mysql_info_schema_innodb_cmp_compress_time_seconds_total{instance=~\"$host\"}[$interval])) by (instance) or\nsum(irate(mysql_info_schema_innodb_cmp_compress_time_seconds_total{instance=~\"$host\"}[5m])) by (instance)) /\ncount(node_cpu{mode=\"user\", instance=~\"$host\"}) by (instance) *100",
+                    "format": "time_series",
+                    "hide": false,
+                    "interval": "1h",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{instance}}",
+                    "refId": "C"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": "24h",
+            "timeShift": null,
+            "title": "CPU Core Usage for Compression",
             "tooltip": {
                 "shared": true,
                 "sort": 0,
@@ -674,11 +902,210 @@
             },
             "yaxes": [
                 {
+                    "decimals": 0,
+                    "format": "percent",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                },
+                {
                     "format": "short",
                     "label": null,
                     "logBase": 1,
                     "max": null,
-                    "min": "0",
+                    "min": null,
+                    "show": true
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {},
+            "bars": true,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 2,
+            "fill": 2,
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 12,
+                "y": 21
+            },
+            "id": 59,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "rightSide": false,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": false,
+            "linewidth": 2,
+            "links": [],
+            "minSpan": 12,
+            "nullPointMode": "null",
+            "percentage": false,
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [
+                {
+                    "alias": "/.*/",
+                    "color": "#1f78c1"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": true,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "(sum(rate(mysql_info_schema_innodb_cmp_uncompress_time_seconds_total{instance=~\"$host\"}[$interval])) by (instance) or\nsum(irate(mysql_info_schema_innodb_cmp_uncompress_time_seconds_total{instance=~\"$host\"}[5m])) by (instance)) /\ncount(node_cpu{mode=\"user\", instance=~\"$host\"}) by (instance) * 100",
+                    "format": "time_series",
+                    "interval": "1h",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{instance}}",
+                    "refId": "B"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": "24h",
+            "timeShift": null,
+            "title": "CPU Core Usage for Uncompression",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 0,
+                    "format": "percent",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "collapsed": false,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 28
+            },
+            "id": 79,
+            "panels": [],
+            "repeat": null,
+            "title": "Buffer Pool Total",
+            "type": "row"
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "fill": 1,
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 0,
+                "y": 29
+            },
+            "id": 74,
+            "legend": {
+                "alignAsTable": true,
+                "avg": false,
+                "current": true,
+                "max": true,
+                "min": false,
+                "rightSide": false,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 1,
+            "links": [],
+            "nullPointMode": "null",
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "sum by(page_size) (mysql_info_schema_innodb_cmpmem_pages_used_total{instance=\"$host\"})",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{page_size}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Total Used Pages",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": null,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
                     "show": true
                 },
                 {
@@ -701,264 +1128,54 @@
             "dashLength": 10,
             "dashes": false,
             "datasource": "Prometheus",
-            "decimals": null,
-            "editable": true,
-            "error": false,
-            "fill": 2,
-            "grid": {},
-            "gridPos": {
-                "h": 7,
-                "w": 12,
-                "x": 0,
-                "y": 10
-            },
-            "id": 33,
-            "legend": {
-                "alignAsTable": true,
-                "avg": true,
-                "current": false,
-                "max": true,
-                "min": true,
-                "rightSide": false,
-                "show": true,
-                "total": false,
-                "values": true
-            },
-            "lines": true,
-            "linewidth": 2,
-            "links": [],
-            "nullPointMode": "null",
-            "percentage": false,
-            "pointradius": 5,
-            "points": false,
-            "renderer": "flot",
-            "seriesOverrides": [
-                {
-                    "alias": "Size",
-                    "color": "#1F78C1"
-                }
-            ],
-            "spaceLength": 10,
-            "stack": false,
-            "steppedLine": false,
-            "targets": [
-                {
-                    "calculatedInterval": "2m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "mysql_binlog_size_bytes{instance=\"$host\"}",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Size",
-                    "metric": "",
-                    "refId": "A",
-                    "step": 300
-                }
-            ],
-            "thresholds": [],
-            "timeFrom": null,
-            "timeShift": null,
-            "title": "Binlogs Size",
-            "tooltip": {
-                "msResolution": false,
-                "shared": true,
-                "sort": 0,
-                "value_type": "individual"
-            },
-            "type": "graph",
-            "xaxis": {
-                "buckets": null,
-                "mode": "time",
-                "name": null,
-                "show": true,
-                "values": []
-            },
-            "yaxes": [
-                {
-                    "format": "bytes",
-                    "logBase": 1,
-                    "max": null,
-                    "min": 0,
-                    "show": true
-                },
-                {
-                    "format": "bytes",
-                    "logBase": 1,
-                    "max": null,
-                    "min": 0,
-                    "show": true
-                }
-            ],
-            "yaxis": {
-                "align": false,
-                "alignLevel": null
-            }
-        },
-        {
-            "aliasColors": {},
-            "bars": true,
-            "dashLength": 10,
-            "dashes": false,
-            "datasource": "Prometheus",
-            "decimals": 2,
-            "editable": true,
-            "error": false,
-            "fill": 2,
-            "grid": {},
-            "gridPos": {
-                "h": 7,
-                "w": 12,
-                "x": 12,
-                "y": 10
-            },
-            "id": 35,
-            "legend": {
-                "alignAsTable": false,
-                "avg": false,
-                "current": false,
-                "max": false,
-                "min": false,
-                "rightSide": false,
-                "show": false,
-                "total": false,
-                "values": false
-            },
-            "lines": false,
-            "linewidth": 2,
-            "links": [],
-            "nullPointMode": "null",
-            "percentage": false,
-            "pointradius": 5,
-            "points": false,
-            "renderer": "flot",
-            "seriesOverrides": [
-                {
-                    "alias": "Size",
-                    "color": "#1F78C1"
-                }
-            ],
-            "spaceLength": 10,
-            "stack": false,
-            "steppedLine": false,
-            "targets": [
-                {
-                    "calculatedInterval": "2m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "increase(mysql_binlog_size_bytes{instance=\"$host\"}[1h])",
-                    "interval": "1h",
-                    "intervalFactor": 1,
-                    "legendFormat": "Size",
-                    "metric": "",
-                    "refId": "A",
-                    "step": 3600
-                }
-            ],
-            "thresholds": [],
-            "timeFrom": "24h",
-            "timeShift": null,
-            "title": "Binlog Data Written Hourly",
-            "tooltip": {
-                "msResolution": false,
-                "shared": true,
-                "sort": 0,
-                "value_type": "individual"
-            },
-            "type": "graph",
-            "xaxis": {
-                "buckets": null,
-                "mode": "time",
-                "name": null,
-                "show": true,
-                "values": []
-            },
-            "yaxes": [
-                {
-                    "format": "bytes",
-                    "logBase": 1,
-                    "max": null,
-                    "min": 0,
-                    "show": true
-                },
-                {
-                    "format": "bytes",
-                    "logBase": 1,
-                    "max": null,
-                    "min": 0,
-                    "show": true
-                }
-            ],
-            "yaxis": {
-                "align": false,
-                "alignLevel": null
-            }
-        },
-        {
-            "aliasColors": {},
-            "bars": false,
-            "dashLength": 10,
-            "dashes": false,
-            "datasource": "Prometheus",
             "decimals": 0,
-            "editable": true,
-            "error": false,
-            "fill": 2,
-            "grid": {},
+            "fill": 1,
             "gridPos": {
                 "h": 7,
                 "w": 12,
-                "x": 0,
-                "y": 17
+                "x": 12,
+                "y": 29
             },
-            "id": 34,
+            "id": 75,
             "legend": {
                 "alignAsTable": true,
                 "avg": true,
                 "current": false,
                 "max": true,
                 "min": true,
-                "rightSide": false,
                 "show": true,
                 "total": false,
                 "values": true
             },
             "lines": true,
-            "linewidth": 2,
+            "linewidth": 1,
             "links": [],
+            "minSpan": 12,
             "nullPointMode": "null",
             "percentage": false,
             "pointradius": 5,
             "points": false,
             "renderer": "flot",
-            "seriesOverrides": [
-                {
-                    "alias": "Count",
-                    "color": "#E0752D"
-                }
-            ],
+            "seriesOverrides": [],
             "spaceLength": 10,
             "stack": false,
             "steppedLine": false,
             "targets": [
                 {
-                    "calculatedInterval": "2m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "mysql_binlog_files{instance=\"$host\"}",
+                    "expr": "sum by(page_size) (mysql_info_schema_innodb_cmpmem_pages_free_total{instance=\"$host\"})",
+                    "format": "time_series",
+                    "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
-                    "legendFormat": "Count",
-                    "metric": "",
-                    "refId": "A",
-                    "step": 300
+                    "legendFormat": "{{page_size}}",
+                    "refId": "A"
                 }
             ],
             "thresholds": [],
             "timeFrom": null,
             "timeShift": null,
-            "title": "Binlogs Count",
+            "title": "Total Free Pages",
             "tooltip": {
-                "msResolution": false,
                 "shared": true,
                 "sort": 0,
                 "value_type": "individual"
@@ -973,18 +1190,21 @@
             },
             "yaxes": [
                 {
-                    "format": "none",
+                    "decimals": 0,
+                    "format": "short",
+                    "label": null,
                     "logBase": 1,
                     "max": null,
-                    "min": 0,
+                    "min": null,
                     "show": true
                 },
                 {
-                    "format": "none",
+                    "format": "short",
+                    "label": null,
                     "logBase": 1,
                     "max": null,
-                    "min": 0,
-                    "show": true
+                    "min": null,
+                    "show": false
                 }
             ],
             "yaxis": {
@@ -993,309 +1213,210 @@
             }
         },
         {
-            "aliasColors": {},
-            "bars": true,
-            "dashLength": 10,
-            "dashes": false,
-            "datasource": "Prometheus",
-            "decimals": 0,
-            "editable": true,
-            "error": false,
-            "fill": 2,
-            "grid": {},
+            "collapsed": true,
             "gridPos": {
-                "h": 7,
-                "w": 12,
-                "x": 12,
-                "y": 17
-            },
-            "id": 36,
-            "legend": {
-                "alignAsTable": false,
-                "avg": false,
-                "current": false,
-                "max": false,
-                "min": false,
-                "rightSide": false,
-                "show": false,
-                "total": false,
-                "values": false
-            },
-            "lines": false,
-            "linewidth": 2,
-            "links": [],
-            "nullPointMode": "null",
-            "percentage": false,
-            "pointradius": 5,
-            "points": false,
-            "renderer": "flot",
-            "seriesOverrides": [
-                {
-                    "alias": "Count",
-                    "color": "#E0752D"
-                }
-            ],
-            "spaceLength": 10,
-            "stack": false,
-            "steppedLine": false,
-            "targets": [
-                {
-                    "calculatedInterval": "2m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "increase(mysql_binlog_file_number{instance=\"$host\"}[1h])",
-                    "interval": "1h",
-                    "intervalFactor": 1,
-                    "legendFormat": "Count",
-                    "metric": "",
-                    "refId": "A",
-                    "step": 3600
-                }
-            ],
-            "thresholds": [],
-            "timeFrom": "24h",
-            "timeShift": null,
-            "title": "Binlogs Created Hourly",
-            "tooltip": {
-                "msResolution": false,
-                "shared": true,
-                "sort": 0,
-                "value_type": "individual"
-            },
-            "type": "graph",
-            "xaxis": {
-                "buckets": null,
-                "mode": "time",
-                "name": null,
-                "show": true,
-                "values": []
-            },
-            "yaxes": [
-                {
-                    "format": "none",
-                    "logBase": 1,
-                    "max": null,
-                    "min": 0,
-                    "show": true
-                },
-                {
-                    "format": "none",
-                    "logBase": 1,
-                    "max": null,
-                    "min": 0,
-                    "show": true
-                }
-            ],
-            "yaxis": {
-                "align": false,
-                "alignLevel": null
-            }
-        },
-        {
-            "aliasColors": {},
-            "bars": false,
-            "dashLength": 10,
-            "dashes": false,
-            "datasource": "Prometheus",
-            "decimals": null,
-            "editable": true,
-            "error": false,
-            "fill": 2,
-            "grid": {},
-            "gridPos": {
-                "h": 7,
-                "w": 12,
+                "h": 1,
+                "w": 24,
                 "x": 0,
-                "y": 24
+                "y": 36
             },
-            "id": 37,
-            "legend": {
-                "alignAsTable": true,
-                "avg": true,
-                "current": false,
-                "max": true,
-                "min": true,
-                "rightSide": false,
-                "show": true,
-                "total": false,
-                "values": true
-            },
-            "lines": true,
-            "linewidth": 2,
-            "links": [],
-            "nullPointMode": "null",
-            "percentage": false,
-            "pointradius": 5,
-            "points": false,
-            "renderer": "flot",
-            "seriesOverrides": [
+            "id": 80,
+            "panels": [
                 {
-                    "alias": "Size",
-                    "color": "#BA43A9"
-                }
-            ],
-            "spaceLength": 10,
-            "stack": false,
-            "steppedLine": false,
-            "targets": [
-                {
-                    "calculatedInterval": "2m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "mysql_slave_status_relay_log_space{instance=\"$host\"}",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Size",
-                    "metric": "",
-                    "refId": "A",
-                    "step": 300
-                }
-            ],
-            "thresholds": [],
-            "timeFrom": null,
-            "timeShift": null,
-            "title": "Relay Log Space",
-            "tooltip": {
-                "msResolution": false,
-                "shared": true,
-                "sort": 0,
-                "value_type": "individual"
-            },
-            "type": "graph",
-            "xaxis": {
-                "buckets": null,
-                "mode": "time",
-                "name": null,
-                "show": true,
-                "values": []
-            },
-            "yaxes": [
-                {
-                    "format": "bytes",
-                    "logBase": 1,
-                    "max": null,
-                    "min": 0,
-                    "show": true
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": 0,
+                    "fill": 2,
+                    "gridPos": {
+                        "h": 7,
+                        "w": 12,
+                        "x": 0,
+                        "y": 37
+                    },
+                    "id": 60,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "show": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [],
+                    "minSpan": 12,
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "repeat": null,
+                    "scopedVars": {
+                        "buffer": {
+                            "selected": false,
+                            "text": "0",
+                            "value": "0"
+                        }
+                    },
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "expr": "mysql_info_schema_innodb_cmpmem_pages_used_total{instance=\"$host\",buffer=~\"$buffer\"}",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "{{page_size}}",
+                            "refId": "A"
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Used Pages (Buffer Pull $buffer)",
+                    "tooltip": {
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": false
+                        }
+                    ]
                 },
                 {
-                    "format": "bytes",
-                    "logBase": 1,
-                    "max": null,
-                    "min": 0,
-                    "show": true
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": 0,
+                    "fill": 2,
+                    "gridPos": {
+                        "h": 7,
+                        "w": 12,
+                        "x": 12,
+                        "y": 37
+                    },
+                    "id": 62,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "show": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [],
+                    "minSpan": 12,
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "scopedVars": {
+                        "buffer": {
+                            "selected": false,
+                            "text": "0",
+                            "value": "0"
+                        }
+                    },
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "expr": "mysql_info_schema_innodb_cmpmem_pages_free_total{instance=\"$host\",buffer=\"$buffer\"}",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "{{page_size}}",
+                            "refId": "A"
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Pages Free (Buffer Pull $buffer)",
+                    "tooltip": {
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": false
+                        }
+                    ]
                 }
             ],
-            "yaxis": {
-                "align": false,
-                "alignLevel": null
-            }
-        },
-        {
-            "aliasColors": {},
-            "bars": true,
-            "dashLength": 10,
-            "dashes": false,
-            "datasource": "Prometheus",
-            "decimals": 2,
-            "editable": true,
-            "error": false,
-            "fill": 2,
-            "grid": {},
-            "gridPos": {
-                "h": 7,
-                "w": 12,
-                "x": 12,
-                "y": 24
-            },
-            "id": 38,
-            "legend": {
-                "alignAsTable": true,
-                "avg": true,
-                "current": false,
-                "max": true,
-                "min": true,
-                "rightSide": false,
-                "show": false,
-                "total": false,
-                "values": true
-            },
-            "lines": false,
-            "linewidth": 2,
-            "links": [],
-            "nullPointMode": "null",
-            "percentage": false,
-            "pointradius": 5,
-            "points": false,
-            "renderer": "flot",
-            "seriesOverrides": [
-                {
-                    "alias": "Size",
-                    "color": "#BA43A9"
-                }
-            ],
-            "spaceLength": 10,
-            "stack": false,
-            "steppedLine": false,
-            "targets": [
-                {
-                    "calculatedInterval": "2m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "increase(mysql_slave_status_relay_log_space{instance=\"$host\"}[1h])",
-                    "interval": "1h",
-                    "intervalFactor": 1,
-                    "legendFormat": "Size",
-                    "metric": "",
-                    "refId": "A",
-                    "step": 3600
-                }
-            ],
-            "thresholds": [],
-            "timeFrom": "24h",
-            "timeShift": null,
-            "title": "Relay Log Written Hourly",
-            "tooltip": {
-                "msResolution": false,
-                "shared": true,
-                "sort": 0,
-                "value_type": "individual"
-            },
-            "type": "graph",
-            "xaxis": {
-                "buckets": null,
-                "mode": "time",
-                "name": null,
-                "show": true,
-                "values": []
-            },
-            "yaxes": [
-                {
-                    "format": "bytes",
-                    "logBase": 1,
-                    "max": null,
-                    "min": 0,
-                    "show": true
-                },
-                {
-                    "format": "bytes",
-                    "logBase": 1,
-                    "max": null,
-                    "min": 0,
-                    "show": true
-                }
-            ],
-            "yaxis": {
-                "align": false,
-                "alignLevel": null
-            }
+            "repeat": "buffer",
+            "title": "Buffer Pool  $buffer",
+            "type": "row"
         }
     ],
-    "refresh": "1m",
+    "refresh": "5m",
     "schemaVersion": 16,
     "style": "dark",
     "tags": [
-        "Percona",
-        "MySQL"
+        "MySQL",
+        "Percona"
     ],
     "templating": {
         "list": [
@@ -1373,7 +1494,7 @@
                 "multiFormat": "regex values",
                 "name": "host",
                 "options": [],
-                "query": "label_values({__name__=~\"(mysql_binlog_files|mysql_slave_status_seconds_behind_master)\"}, instance)",
+                "query": "label_values(mysql_up, instance)",
                 "refresh": 1,
                 "refresh_on_load": false,
                 "regex": "",
@@ -1381,6 +1502,26 @@
                 "tagValuesQuery": null,
                 "tags": [],
                 "tagsQuery": null,
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allValue": "blank = All",
+                "current": {},
+                "datasource": "Prometheus",
+                "hide": 2,
+                "includeAll": true,
+                "label": null,
+                "multi": true,
+                "name": "buffer",
+                "options": [],
+                "query": "label_values(mysql_info_schema_innodb_cmpmem_pages_used_total,buffer)",
+                "refresh": 1,
+                "regex": "/./",
+                "sort": 1,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
                 "type": "query",
                 "useTags": false
             }
@@ -1423,7 +1564,7 @@
         "type": "timepicker"
     },
     "timezone": "browser",
-    "title": "MySQL Replication",
-    "uid": "_9zrwMHmk",
-    "version": 1
+    "title": "MySQL InnoDB Compression",
+    "uid": "CnOxqWGmz",
+    "version": 4
 }

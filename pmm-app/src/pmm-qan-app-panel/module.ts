@@ -2,14 +2,13 @@
 
 import { MetricsPanelCtrl } from 'app/plugins/sdk';
 import config from 'app/core/config';
+import AppEvents from "app/core/app_events";
 
 export class PanelCtrl extends MetricsPanelCtrl {
     static template = `<iframe ng-src="{{trustSrc(url)}}" style="width: 100%; height: 400px; border: 0;" scrolling="no" />`;
 
     constructor($scope, $injector, templateSrv, $sce) {
-
         super($scope, $injector);
-
         $scope.qanParams = {
             'var-host': null,
             'from': null,
@@ -36,16 +35,32 @@ export class PanelCtrl extends MetricsPanelCtrl {
     link($scope, elem, $location, $window) {
         const frame = elem.find('iframe');
         const panel = elem.find('div.panel-container');
-        const bgcolor = $scope.qanParams.theme === 'light' ? '#ffffff' : '#141414';
+        const panelContent = elem.find('div.panel-content');
         // TODO: investigate this workaround. Inside $window - CtrlPanel
         const location = $window.$injector.get('$location');
         const window = $window.$injector.get('$window');
-
+        window.document.addEventListener('showSuccessNotification', () => { AppEvents.emit('alert-success', ['Content has been copied to clipboard']); }, false);
         panel.css({
-            'background-color': bgcolor,
+            'background-color': 'transparent',
             'border': 'none'
         });
 
+        this.disableGrafanaPerfectScroll(elem);
+        this.fixMenuVisibility(elem);
+
+        $scope.ctrl.calculatePanelHeight = () => {
+            const h = frame.contents().find('body').height() || 400;
+            const documentH = (elem && elem[0]) ? elem[0].ownerDocument.height : h;
+
+            $scope.ctrl.containerHeight = documentH;
+            $scope.ctrl.height = documentH - 100;
+
+            frame.height(`${h + 100}px`);
+            panel.height(`${h + 150}px`);
+
+	    panelContent.height(`inherit`);
+	    panelContent[0].style.padding = '0 0 10px';
+        };
         // init url
         // updated url
         $scope.$watch('qanParams', this.resetUrl.bind(this, $scope), true);
@@ -55,16 +70,37 @@ export class PanelCtrl extends MetricsPanelCtrl {
         frame.on('load', () => {
             frame.contents().bind('click', event => {
                 const [queryID, type] = this.retrieveIFrameURLParams(event.currentTarget.URL);
-                this.reloadQuery(window, queryID, type)
+                $scope.ctrl.calculatePanelHeight();
+                return queryID === 'null' || queryID === null || this.reloadQuery(window, queryID, type);
             });
 
-            frame.contents().bind('DOMSubtreeModified', () => setTimeout(() => {
-                    const h = frame.contents().find('body').height() || 400;
-                    frame.height(`${h + 100}px`);
-                    panel.height(`${h + 150}px`);
-                }, 100)
-            )
+            frame.contents().bind('DOMSubtreeModified', $scope.ctrl.calculatePanelHeight);
+
         });
+    }
+
+    /**
+     * Workaround for scrolling through iframe
+     * Grafana perfect scroll is broken for iframe and should be disabled for this case
+     * @param elem - qan app panel HTML element
+     * @returns {void, boolean}
+     */
+    private disableGrafanaPerfectScroll(elem): void | boolean {
+        if (!elem || !elem[0]) return false;
+
+        const perfectScrollContainers = (<any>elem[0].ownerDocument.getElementsByClassName('ps'));
+        const rightScrollbarContainers = (<any>elem[0].ownerDocument.getElementsByClassName('ps__thumb-y'));
+
+        [].forEach.call(perfectScrollContainers, container => container.setAttribute('style', 'overflow: auto !important'));
+        [].forEach.call(rightScrollbarContainers, container => container.setAttribute('style', 'display: none !important'));
+    }
+
+    private fixMenuVisibility(elem): void | boolean {
+        if (!elem || !elem[0]) return false;
+
+        const menu = (<any>elem[0].ownerDocument.getElementsByClassName('dropdown-menu'));
+
+        [].forEach.call(menu, e => e.setAttribute('style', 'z-index: 1001'));
     }
 
     private reloadQuery(window, queryID = null, type = null) {
