@@ -16,7 +16,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1535386548398,
+    "iteration": 1537773639907,
     "links": [
         {
             "icon": "dashboard",
@@ -217,7 +217,7 @@
             "decimals": 0,
             "editable": true,
             "error": false,
-            "format": "short",
+            "format": "none",
             "gauge": {
                 "maxValue": 100,
                 "minValue": 0,
@@ -274,6 +274,7 @@
                     "instant": true,
                     "interval": "5m",
                     "intervalFactor": 1,
+                    "legendFormat": "",
                     "refId": "A",
                     "step": 300
                 }
@@ -302,10 +303,10 @@
                 "rgba(50, 172, 45, 0.97)"
             ],
             "datasource": "Prometheus",
-            "decimals": null,
+            "decimals": 0,
             "editable": true,
             "error": false,
-            "format": "short",
+            "format": "none",
             "gauge": {
                 "maxValue": 100,
                 "minValue": 0,
@@ -1159,7 +1160,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "count(node_cpu{instance=~\"$host\",mode=\"user\"} or rdsosmetrics_General_numVCPUs{instance=~\"$host\"})",
+                    "expr": "(count(node_cpu{instance=~\"$host\",mode=~\"user\"}) or (1-absent(node_cpu{instance=~\"$host\",mode=~\"user\"}))) + sum(rdsosmetrics_General_numVCPUs{instance=~\"$host\"} or up * 0)",
                     "format": "time_series",
                     "instant": true,
                     "interval": "$interval",
@@ -2209,7 +2210,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "count(node_cpu{mode=\"user\", instance=~\"$host\"}) or count(rdsosmetrics_General_numVCPUs{instance=~\"$host\"})",
+                    "expr": "(count(node_cpu{instance=~\"$host\",mode=~\"user\"}) or (1-absent(node_cpu{instance=~\"$host\",mode=~\"user\"}))) + sum(rdsosmetrics_General_numVCPUs{instance=~\"$host\"} or up * 0)",
                     "format": "time_series",
                     "instant": true,
                     "interval": "5m",
