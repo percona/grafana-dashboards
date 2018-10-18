@@ -157,22 +157,31 @@ export class PanelCtrl extends MetricsPanelCtrl {
             url: PanelCtrl.API.CHECK_FOR_UPDATE,
         }).then((res) => {
             $scope.isLoaderShown = false;
-            $scope.shouldBeUpdated = true;
             $scope.isChecked = true;
             $scope.nextVersion = res.data.version || '';
             $scope.newReleaseDate = res.data.release_date || '';
             $scope.disableUpdate = res.data.disable_update || '';
-            localStorage.setItem('nextVersion', $scope.nextVersion);
-            localStorage.setItem('newReleaseDate', $scope.newReleaseDate);
-            localStorage.setItem('disableUpdate', $scope.disableUpdate);
-            localStorage.setItem('shouldBeUpdated', $scope.shouldBeUpdated);
+
+            const [currentMajor, currentMinor, currentBugfix] = $scope.currentVersion.split('.');
+            const [nextMajor, nextMinor, nextBugfix] = $scope.nextVersion.split('.');
+
+            const isMajor = nextMajor > currentMajor;
+            const isMinor = nextMinor > currentMinor && (nextMajor === currentMajor);
+            const isBugfix = nextBugfix > currentBugfix && isMinor && (nextMinor === currentMinor);
+
+            if (isMajor || isMinor || isBugfix) {
+                $scope.shouldBeUpdated = true;
+            } else {
+                $scope.shouldBeUpdated = '';
+                $scope.isUpToDate = true;
+            }
+            this.resetNextVersionData();
             this.getCurrentTime($scope);
             if ($scope.linkVersion = $scope.nextVersion.match(linkRegExp)) {
                 $scope.linkVersion = $scope.nextVersion.match(linkRegExp)[0];
                 localStorage.setItem('linkVersion', $scope.linkVersion);
             } else {
                 this.displayError($scope, PanelCtrl.ERRORS.INCORRECT_SERVER_RESPONSE);
-                $('#refresh').removeClass('fa-spin');
             }
             $('#refresh').removeClass('fa-spin');
         }).catch(() => {
@@ -237,10 +246,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
                 $scope.currentVersion = localStorage.getItem('currentVersion');
                 $scope.isUpdated = true;
                 $scope.canBeReloaded = true;
-                localStorage.setItem('disableUpdate', '');
-                localStorage.setItem('shouldBeUpdated', '');
-                localStorage.setItem('nextVersion', '');
-                localStorage.setItem('newReleaseDate', '');
+                this.resetNextVersionData();
             }
             if (response.data.title === PanelCtrl.PROCESS_STATUSES.FAILED) {
                 $scope.isLoaderShown = false;
@@ -251,10 +257,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
             }
         }).catch(() => {
             this.reset($scope);
-            localStorage.setItem('disableUpdate', '');
-            localStorage.setItem('shouldBeUpdated', '');
-            localStorage.setItem('nextVersion', '');
-            localStorage.setItem('newReleaseDate', '');
+            this.resetNextVersionData();
         });
     }
 
@@ -263,6 +266,13 @@ export class PanelCtrl extends MetricsPanelCtrl {
      */
     private showReleaseNotes($scope) {
         // TODO: will be implemented after API release
+    }
+
+    private resetNextVersionData() {
+        localStorage.setItem('disableUpdate', '');
+        localStorage.setItem('shouldBeUpdated', '');
+        localStorage.setItem('nextVersion', '');
+        localStorage.setItem('newReleaseDate', '');
     }
 
     /**
