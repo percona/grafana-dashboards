@@ -78,7 +78,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
                     $scope.ctrl.calculatePanelHeight();
                     return this.reloadQuery(window, queryID, type, search);
                 }
-                $scope.ctrl.calculatePanelHeight();
+                setTimeout(() => $scope.ctrl.calculatePanelHeight(), 10);
                 return queryID === 'null' || queryID === null || this.reloadQuery(window, queryID, type, search);
             });
             frame.contents().bind('keyup', event => {
@@ -89,7 +89,8 @@ export class PanelCtrl extends MetricsPanelCtrl {
                 }
             });
 
-            frame.contents().bind('DOMSubtreeModified', $scope.ctrl.calculatePanelHeight);
+            frame.contents().bind('DOMSubtreeModified', () => setTimeout(() => $scope.ctrl.calculatePanelHeight(), 10));
+
         });
     }
 

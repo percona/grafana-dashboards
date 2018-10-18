@@ -59,7 +59,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
         $scope.errorMessage = '';
         $scope.isUpToDate = false;
         $scope.canBeReloaded = false;
-        $scope.lastCheckDate = localStorage.getItem('lastCheck') ? moment(Number(localStorage.getItem('lastCheck'))).format('MMMM DD, H:mm') : '';
+        $scope.lastCheckDate = localStorage.getItem('lastCheck') ? moment(Number(localStorage.getItem('lastCheck'))).locale('en').format('MMMM DD, H:mm') : '';
         $scope.currentVersion = localStorage.getItem('currentVersion') || '';
         $scope.currentReleaseDate = localStorage.getItem('currentReleaseDate') || '';
         $scope.shouldBeUpdated = localStorage.getItem('shouldBeUpdated') || '';
@@ -201,7 +201,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
      */
     public getCurrentTime($scope) {
         localStorage.setItem('lastCheck', Date.now().toString());
-        $scope.lastCheckDate = moment(Number(localStorage.getItem('lastCheck'))).format('MMMM DD, H:mm');
+        $scope.lastCheckDate = moment(Number(localStorage.getItem('lastCheck'))).locale('en').format('MMMM DD, H:mm');
     }
 
     /**
