@@ -16,7 +16,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1539626511978,
+    "iteration": 1539939060517,
     "links": [
         {
             "icon": "dashboard",
@@ -1020,7 +1020,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "sum by () (max_over_time(mysql_global_status_threads_connected{instance=~\"$host\"}[$interval]) or \nmax_over_time(mongodb_mongod_connections{instance=~\"$host\",state=\"current\"}[$interval]) or\nmax_over_time(pg_stat_database_numbackends{instance=~\"$host\",datname=\"postgres\"}[$interval]))",
+                    "expr": "sum by () (max_over_time(mysql_global_status_threads_connected{instance=~\"$host\"}[$interval]) or \nmax_over_time(mongodb_mongod_connections{instance=~\"$host\",state=\"current\"}[$interval]) or\nsum by (instance) (max_over_time(pg_stat_database_numbackends{instance=~\"$host\"}[$interval])))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1190,7 +1190,7 @@
             "tableColumn": "",
             "targets": [
                 {
-		    "expr": "(count(node_cpu{instance=~\"$host\",mode=~\"user\"}) or (1-absent(node_cpu{instance=~\"$host\",mode=~\"user\"}))) + sum(rdsosmetrics_General_numVCPUs{instance=~\"$host\"} or up * 0)",
+                    "expr": "(count(node_cpu{instance=~\"$host\",mode=~\"user\"}) or (1-absent(node_cpu{instance=~\"$host\",mode=~\"user\"}))) + sum(rdsosmetrics_General_numVCPUs{instance=~\"$host\"} or up * 0)",
                     "format": "time_series",
                     "instant": true,
                     "interval": "$interval",
@@ -1457,7 +1457,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "avg(mysql_global_status_uptime{instance=~\"$host\"} or \nmongodb_mongod_instance_uptime_seconds {instance=~\"$host\"} or \n(time() - process_start_time_seconds{instance=~\"$host\",job=\"postgresql\"}))",
+                    "expr": "avg(mysql_global_status_uptime{instance=~\"$host\"} or \nmongodb_mongod_instance_uptime_seconds {instance=~\"$host\"} or \n(time() - process_start_time_seconds{instance=~\"$host\",job=~\"postgresql\"}))",
                     "format": "time_series",
                     "instant": false,
                     "interval": "5m",
@@ -2089,7 +2089,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "(max_over_time(mysql_global_status_threads_connected{instance=~\"$host\"}[$interval]) or \nmax_over_time(mysql_global_status_threads_connected{instance=~\"$host\"}[5m])) or\n(max_over_time(mongodb_mongod_connections{instance=~\"$host\", state=\"current\"}[$interval]) or\nmax_over_time(mongodb_mongod_connections{instance=~\"$host\", state=\"current\"}[5m])) or\n(max_over_time(pg_stat_database_numbackends{instance=~\"$host\",datname=\"postgres\"}[$interval]) or \nmax_over_time(pg_stat_database_numbackends{instance=~\"$host\",datname=\"postgres\"}[5m]))",
+                    "expr": "(max_over_time(mysql_global_status_threads_connected{instance=~\"$host\"}[$interval]) or \nmax_over_time(mysql_global_status_threads_connected{instance=~\"$host\"}[5m])) or\n(max_over_time(mongodb_mongod_connections{instance=~\"$host\", state=\"current\"}[$interval]) or\nmax_over_time(mongodb_mongod_connections{instance=~\"$host\", state=\"current\"}[5m])) or\n(sum by (instance) (max_over_time(pg_stat_database_numbackends{instance=~\"$host\"}[$interval])) or \nsum by (instance) (max_over_time(pg_stat_database_numbackends{instance=~\"$host\"}[5m])))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2270,7 +2270,7 @@
             "tableColumn": "",
             "targets": [
                 {
-		    "expr": "(count(node_cpu{instance=~\"$host\",mode=~\"user\"}) or (1-absent(node_cpu{instance=~\"$host\",mode=~\"user\"}))) + sum(rdsosmetrics_General_numVCPUs{instance=~\"$host\"} or up * 0)",
+                    "expr": "(count(node_cpu{instance=~\"$host\",mode=~\"user\"}) or (1-absent(node_cpu{instance=~\"$host\",mode=~\"user\"}))) + \nsum(rdsosmetrics_General_numVCPUs{instance=~\"$host\"} or up * 0)",
                     "format": "time_series",
                     "instant": true,
                     "interval": "5m",
@@ -2289,6 +2289,11 @@
                     "op": "=",
                     "text": "N/A",
                     "value": "null"
+                },
+                {
+                    "op": "=",
+                    "text": "N/A",
+                    "value": "0"
                 }
             ],
             "valueName": "current"
@@ -2539,7 +2544,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "mysql_global_status_uptime{instance=~\"$host\"} or mongodb_mongod_instance_uptime_seconds {instance=~\"$host\"} or (time() - process_start_time_seconds{instance=~\"$host\",job=\"postgresql\"})",
+                    "expr": "mysql_global_status_uptime{instance=~\"$host\"} or \nmongodb_mongod_instance_uptime_seconds {instance=~\"$host\"} or \n(time() - process_start_time_seconds{instance=~\"$host\",job=~\"postgresql\"})",
                     "format": "time_series",
                     "interval": "5m",
                     "intervalFactor": 1,
