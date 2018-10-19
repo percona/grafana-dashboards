@@ -302,7 +302,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "count(node_cpu{mode=\"user\", instance=\"$host\"}) or count(rdsosmetrics_General_numVCPUs)",
+                    "expr": "(count(node_cpu{instance=~\"$host\",mode=~\"user\"}) or (1-absent(node_cpu{instance=~\"$host\",mode=~\"user\"}))) + sum(rdsosmetrics_General_numVCPUs{instance=~\"$host\"} or up * 0)",
                     "format": "time_series",
                     "interval": "5m",
                     "intervalFactor": 1,

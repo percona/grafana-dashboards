@@ -2,6 +2,7 @@
 
 import { MetricsPanelCtrl } from 'app/plugins/sdk';
 import config from 'app/core/config';
+import $ from 'jquery';
 import AppEvents from "app/core/app_events";
 
 export class PanelCtrl extends MetricsPanelCtrl {
@@ -12,6 +13,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
         $scope.qanParams = {
             'var-host': null,
             'from': null,
+            'search': '',
             'queryID': null,
             'type': null,
             'to': null,
@@ -58,23 +60,36 @@ export class PanelCtrl extends MetricsPanelCtrl {
             frame.height(`${h + 100}px`);
             panel.height(`${h + 150}px`);
 
-	    panelContent.height(`inherit`);
-	    panelContent[0].style.padding = '0 0 10px';
+            panelContent.height(`inherit`);
+            panelContent[0].style.padding = '0 0 10px';
         };
         // init url
         // updated url
         $scope.$watch('qanParams', this.resetUrl.bind(this, $scope), true);
 
-        [$scope.qanParams.queryID, $scope.qanParams.type] = this.retrieveDashboardURLParams(location.absUrl());
+        [$scope.qanParams.queryID, $scope.qanParams.type, $scope.qanParams.search] = this.retrieveDashboardURLParams(location.absUrl());
 
         frame.on('load', () => {
             frame.contents().bind('click', event => {
-                const [queryID, type] = this.retrieveIFrameURLParams(event.currentTarget.URL);
-                $scope.ctrl.calculatePanelHeight();
-                return queryID === 'null' || queryID === null || this.reloadQuery(window, queryID, type);
+                let [queryID, type, search] = this.retrieveIFrameURLParams(event.currentTarget.URL);
+                if ($(event.target).is('.fa-search') && ($('iframe').contents().find('#search-input')[0].value.length || $('iframe').contents().find('#search-input')[0].value === '')) {
+                    search =  $('iframe').contents().find('#search-input')[0].value;
+                    queryID = 'null';
+                    $scope.ctrl.calculatePanelHeight();
+                    return this.reloadQuery(window, queryID, type, search);
+                }
+                setTimeout(() => $scope.ctrl.calculatePanelHeight(), 10);
+                return queryID === 'null' || queryID === null || this.reloadQuery(window, queryID, type, search);
+            });
+            frame.contents().bind('keyup', event => {
+                if (($(event.target).is('#search-input') && event.keyCode === 13)) {
+                    const [queryID, type, search] = this.retrieveIFrameURLParams(event.currentTarget.URL);
+                    $scope.ctrl.calculatePanelHeight();
+                    return this.reloadQuery(window, queryID, type, search);
+                }
             });
 
-            frame.contents().bind('DOMSubtreeModified', $scope.ctrl.calculatePanelHeight);
+            frame.contents().bind('DOMSubtreeModified', () => setTimeout(() => $scope.ctrl.calculatePanelHeight(), 10));
 
         });
     }
@@ -103,25 +118,61 @@ export class PanelCtrl extends MetricsPanelCtrl {
         [].forEach.call(menu, e => e.setAttribute('style', 'z-index: 1001'));
     }
 
-    private reloadQuery(window, queryID = null, type = null) {
-        const url = `${window.location.href.split('&queryID')[0]}&${this.encodeData({queryID, type})}`;
+    private reloadQuery(window, queryID = null, type = null, search = '') {
+        const isQueryId = queryID && queryID !== 'null';
+        const isOnlyIDInUrl = isQueryId && !($('iframe').contents().find('#search-input')[0].value.length);
+        const isOnlySearchInUrl = search && !isQueryId && !isOnlyIDInUrl;
+        const isBothInUrl = isQueryId && search && ($('iframe').contents().find('#search-input')[0].value.length);
+        const isBothNull = (queryID === null || queryID === 'null') && (search === null || search === '');
 
-        history.pushState({}, null, url);
+        const conditions = [
+            {
+                getStr: () => '&queryID',
+                params: {queryID, type},
+                getCondition: () => isOnlyIDInUrl,
+            },
+            {
+                getStr: () => (window.location.href.match(/&queryID/g) || []).length ? '&queryID' : '&search',
+                params: {search},
+                getCondition: () => isOnlySearchInUrl,
+            },
+            {
+                getStr: () => '&queryID',
+                params: {queryID, type, search},
+                getCondition: () => isBothInUrl,
+            },
+            {
+                getStr: () => '&search',
+                params: {queryID, type, search},
+                getCondition: () => isBothInUrl && ((window.location.href.match(/&search/g) || []).length > 1),
+            },
+        ];
+
+        conditions.map(item => {
+            if (!item.getCondition()) return;
+            history.pushState({}, null, `${window.location.href.split(item.getStr())[0]}&${this.encodeData(item.params)}`);
+        });
+
+        if(isBothNull) {
+            history.pushState({}, null, `${window.location.href.split('&search')[0]}`);
+            history.pushState({}, null, `${window.location.href.split('&queryID')[0]}`);
+        }
     }
 
     private retrieveDashboardURLParams(url): Array<string> {
         const currentURL = new URL(url);
 
-        return [currentURL.searchParams.get('queryID'), currentURL.searchParams.get('type')];
+        return [currentURL.searchParams.get('queryID'), currentURL.searchParams.get('type'), currentURL.searchParams.get('search')];
     }
 
     private retrieveIFrameURLParams(url): Array<string> {
         const currentURL = new URL(url);
         const id = currentURL.searchParams.get('queryID');
+        const search = currentURL.searchParams.get('search');
         const urlArr = url.split('/');
         const type = urlArr[urlArr.length - 1].split('?')[0];
 
-        return [id, type];
+        return [id, type, search];
     }
 
     private encodeData(data: Object): string {
