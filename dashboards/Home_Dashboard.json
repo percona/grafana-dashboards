@@ -16,7 +16,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1535386548398,
+    "iteration": 1539948612168,
     "links": [
         {
             "icon": "dashboard",
@@ -61,6 +61,17 @@
             ],
             "targetBlank": false,
             "title": "MongoDB",
+            "type": "dashboards"
+        },
+        {
+            "asDropdown": true,
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "PostgreSQL"
+            ],
+            "targetBlank": false,
+            "title": "PostgreSQL",
             "type": "dashboards"
         },
         {
@@ -206,7 +217,7 @@
             "decimals": 0,
             "editable": true,
             "error": false,
-            "format": "short",
+            "format": "none",
             "gauge": {
                 "maxValue": 100,
                 "minValue": 0,
@@ -263,6 +274,7 @@
                     "instant": true,
                     "interval": "5m",
                     "intervalFactor": 1,
+                    "legendFormat": "",
                     "refId": "A",
                     "step": 300
                 }
@@ -291,10 +303,10 @@
                 "rgba(50, 172, 45, 0.97)"
             ],
             "datasource": "Prometheus",
-            "decimals": null,
+            "decimals": 0,
             "editable": true,
             "error": false,
-            "format": "short",
+            "format": "none",
             "gauge": {
                 "maxValue": 100,
                 "minValue": 0,
@@ -349,7 +361,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "count(mysql_global_status_uptime{} or mongodb_mongod_instance_uptime_seconds {})",
+                    "expr": "count(mysql_global_status_uptime{} or mongodb_mongod_instance_uptime_seconds {} or pg_up{})",
                     "format": "time_series",
                     "instant": true,
                     "interval": "5m",
@@ -524,7 +536,13 @@
             "transparent": false,
             "type": "pmm-singlestat-panel",
             "valueFontSize": "80%",
-            "valueMaps": [],
+            "valueMaps": [
+                {
+                    "op": "=",
+                    "text": "N/A",
+                    "value": "null"
+                }
+            ],
             "valueName": "current"
         },
         {
@@ -612,7 +630,13 @@
             "transparent": false,
             "type": "pmm-singlestat-panel",
             "valueFontSize": "80%",
-            "valueMaps": [],
+            "valueMaps": [
+                {
+                    "op": "=",
+                    "text": "N/A",
+                    "value": "null"
+                }
+            ],
             "valueName": "current"
         },
         {
@@ -710,7 +734,13 @@
             "transparent": false,
             "type": "singlestat",
             "valueFontSize": "30%",
-            "valueMaps": [],
+            "valueMaps": [
+                {
+                    "op": "=",
+                    "text": "N/A",
+                    "value": "null"
+                }
+            ],
             "valueName": "current"
         },
         {
@@ -798,7 +828,13 @@
             "transparent": false,
             "type": "singlestat",
             "valueFontSize": "30%",
-            "valueMaps": [],
+            "valueMaps": [
+                {
+                    "op": "=",
+                    "text": "N/A",
+                    "value": "null"
+                }
+            ],
             "valueName": "current"
         },
         {
@@ -886,7 +922,13 @@
             "transparent": false,
             "type": "singlestat",
             "valueFontSize": "30%",
-            "valueMaps": [],
+            "valueMaps": [
+                {
+                    "op": "=",
+                    "text": "N/A",
+                    "value": "null"
+                }
+            ],
             "valueName": "current"
         },
         {
@@ -978,7 +1020,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "sum by () (max_over_time(mysql_global_status_threads_connected{instance=~\"$host\"}[$interval]) or max_over_time(mongodb_mongod_connections{instance=~\"$host\",state=\"current\"}[$interval]))",
+                    "expr": "sum by () (max_over_time(mysql_global_status_threads_connected{instance=~\"$host\"}[$interval]) or \nmax_over_time(mongodb_mongod_connections{instance=~\"$host\",state=\"current\"}[$interval]) or\nsum by (instance) (max_over_time(pg_stat_database_numbackends{instance=~\"$host\"}[$interval])))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1066,7 +1108,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "sum by () (rate(mysql_global_status_queries{instance=~\"$host\"}[$interval]) or irate(mysql_global_status_queries{instance=~\"$host\"}[5m])) or (sum(rate(mongodb_mongod_op_counters_total{instance=~\"$host\",type!=\"command\"}[$interval])) or sum(irate(mongodb_mongod_op_counters_total{instance=~\"$host\",type!=\"command\"}[5m])))",
+                    "expr": "sum by () (\n(rate(mysql_global_status_queries{instance=~\"$host\"}[$interval]) or \nirate(mysql_global_status_queries{instance=~\"$host\"}[5m])) or \n(sum(rate(mongodb_mongod_op_counters_total{instance=~\"$host\",type!=\"command\"}[$interval])) or \nsum(irate(mongodb_mongod_op_counters_total{instance=~\"$host\",type!=\"command\"}[5m]))) or\n(sum(rate(pg_stat_database_xact_commit{instance=~\"$host\"}[$interval]) + rate(pg_stat_database_xact_rollback{instance=~\"$host\"}[$interval])) or\nsum(irate(pg_stat_database_xact_commit{instance=~\"$host\"}[5m]) + irate(pg_stat_database_xact_rollback{instance=~\"$host\"}[5m])))\n)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1148,7 +1190,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "count(node_cpu{instance=~\"$host\",mode=\"user\"} or rdsosmetrics_General_numVCPUs{instance=~\"$host\"})",
+                    "expr": "(count(node_cpu{instance=~\"$host\",mode=~\"user\"}) or (1-absent(node_cpu{instance=~\"$host\",mode=~\"user\"}))) + sum(rdsosmetrics_General_numVCPUs{instance=~\"$host\"} or up * 0)",
                     "format": "time_series",
                     "instant": true,
                     "interval": "$interval",
@@ -1415,7 +1457,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "avg(mysql_global_status_uptime{instance=~\"$host\"} or mongodb_mongod_instance_uptime_seconds {instance=~\"$host\"})",
+                    "expr": "avg(mysql_global_status_uptime{instance=~\"$host\"} or \nmongodb_mongod_instance_uptime_seconds {instance=~\"$host\"} or \n(time() - process_start_time_seconds{instance=~\"$host\",job=~\"postgresql\"}))",
                     "format": "time_series",
                     "instant": false,
                     "interval": "5m",
@@ -1432,7 +1474,7 @@
             "type": "singlestat",
             "valueFontSize": "30%",
             "valueMaps": [],
-            "valueName": "avg"
+            "valueName": "current"
         },
         {
             "collapsed": false,
@@ -1767,7 +1809,13 @@
             "transparent": false,
             "type": "singlestat",
             "valueFontSize": "30%",
-            "valueMaps": [],
+            "valueMaps": [
+                {
+                    "op": "=",
+                    "text": "N/A",
+                    "value": "null"
+                }
+            ],
             "valueName": "current"
         },
         {
@@ -1853,7 +1901,13 @@
             "transparent": false,
             "type": "singlestat",
             "valueFontSize": "30%",
-            "valueMaps": [],
+            "valueMaps": [
+                {
+                    "op": "=",
+                    "text": "N/A",
+                    "value": "null"
+                }
+            ],
             "valueName": "current"
         },
         {
@@ -1939,7 +1993,13 @@
             "transparent": false,
             "type": "singlestat",
             "valueFontSize": "30%",
-            "valueMaps": [],
+            "valueMaps": [
+                {
+                    "op": "=",
+                    "text": "N/A",
+                    "value": "null"
+                }
+            ],
             "valueName": "current"
         },
         {
@@ -2029,7 +2089,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "(max_over_time(mysql_global_status_threads_connected{instance=~\"$host\"}[$interval]) or \nmax_over_time(mysql_global_status_threads_connected{instance=~\"$host\"}[5m])) or\n(max_over_time(mongodb_mongod_connections{instance=~\"$host\", state=\"current\"}[$interval]) or\nmax_over_time(mongodb_mongod_connections{instance=~\"$host\", state=\"current\"}[5m]))",
+                    "expr": "sum((max_over_time(mysql_global_status_threads_connected{instance=~\"$host\"}[$interval]) or \nmax_over_time(mysql_global_status_threads_connected{instance=~\"$host\"}[5m])) or\n(max_over_time(mongodb_mongod_connections{instance=~\"$host\", state=\"current\"}[$interval]) or\nmax_over_time(mongodb_mongod_connections{instance=~\"$host\", state=\"current\"}[5m])) or\n(sum by (instance) (max_over_time(pg_stat_database_numbackends{instance=~\"$host\"}[$interval])) or \nsum by (instance) (max_over_time(pg_stat_database_numbackends{instance=~\"$host\"}[5m]))))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2044,7 +2104,13 @@
             "transparent": false,
             "type": "singlestat",
             "valueFontSize": "30%",
-            "valueMaps": [],
+            "valueMaps": [
+                {
+                    "op": "=",
+                    "text": "N/A",
+                    "value": "null"
+                }
+            ],
             "valueName": "current"
         },
         {
@@ -2115,7 +2181,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "(rate(mysql_global_status_queries{instance=~\"$host\"}[$interval]) or \nirate(mysql_global_status_queries{instance=~\"$host\"}[5m])) or \n(sum(rate(mongodb_mongod_op_counters_total{instance=~\"$host\", type!=\"command\"}[$interval])) or \nsum(irate(mongodb_mongod_op_counters_total{instance=~\"$host\", type!=\"command\"}[5m])))",
+                    "expr": "sum((rate(mysql_global_status_queries{instance=~\"$host\"}[$interval]) or \nirate(mysql_global_status_queries{instance=~\"$host\"}[5m])) or \n(sum(rate(mongodb_mongod_op_counters_total{instance=~\"$host\", type!=\"command\"}[$interval])) or \nsum(irate(mongodb_mongod_op_counters_total{instance=~\"$host\", type!=\"command\"}[5m]))) or\n(sum(rate(pg_stat_database_xact_commit{instance=~\"$host\"}[$interval]) + rate(pg_stat_database_xact_rollback{instance=~\"$host\"}[$interval])) or\nsum(irate(pg_stat_database_xact_commit{instance=~\"$host\"}[5m]) + irate(pg_stat_database_xact_rollback{instance=~\"$host\"}[5m]))))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2130,7 +2196,13 @@
             "transparent": false,
             "type": "singlestat",
             "valueFontSize": "30%",
-            "valueMaps": [],
+            "valueMaps": [
+                {
+                    "op": "=",
+                    "text": "N/A",
+                    "value": "null"
+                }
+            ],
             "valueName": "current"
         },
         {
@@ -2198,7 +2270,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "count(node_cpu{mode=\"user\", instance=~\"$host\"}) or count(rdsosmetrics_General_numVCPUs{instance=~\"$host\"})",
+                    "expr": "(count(node_cpu{instance=~\"$host\",mode=~\"user\"}) or (1-absent(node_cpu{instance=~\"$host\",mode=~\"user\"}))) + \nsum(rdsosmetrics_General_numVCPUs{instance=~\"$host\"} or up * 0)",
                     "format": "time_series",
                     "instant": true,
                     "interval": "5m",
@@ -2217,6 +2289,11 @@
                     "op": "=",
                     "text": "N/A",
                     "value": "null"
+                },
+                {
+                    "op": "=",
+                    "text": "N/A",
+                    "value": "0"
                 }
             ],
             "valueName": "current"
@@ -2353,7 +2430,7 @@
             "nullPointMode": "connected",
             "nullText": null,
             "postfix": "s",
-            "postfixFontSize": "30%",
+            "postfixFontSize": "20%",
             "prefix": "",
             "prefixFontSize": "20%",
             "rangeMaps": [
@@ -2390,7 +2467,13 @@
             "transparent": false,
             "type": "singlestat",
             "valueFontSize": "30%",
-            "valueMaps": [],
+            "valueMaps": [
+                {
+                    "op": "=",
+                    "text": "N/A",
+                    "value": "null"
+                }
+            ],
             "valueName": "current"
         },
         {
@@ -2439,7 +2522,7 @@
             "nullPointMode": "connected",
             "nullText": null,
             "postfix": "s",
-            "postfixFontSize": "30%",
+            "postfixFontSize": "20%",
             "prefix": "",
             "prefixFontSize": "20%",
             "rangeMaps": [
@@ -2461,7 +2544,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "mysql_global_status_uptime{instance=~\"$host\"} or mongodb_mongod_instance_uptime_seconds {instance=~\"$host\"}",
+                    "expr": "topk(1,(mysql_global_status_uptime{instance=~\"$host\"} or \nmongodb_mongod_instance_uptime_seconds {instance=~\"$host\"} or \n(time() - process_start_time_seconds{instance=~\"$host\",job=~\"postgresql\"})))",
                     "format": "time_series",
                     "interval": "5m",
                     "intervalFactor": 1,
@@ -2476,7 +2559,13 @@
             "transparent": false,
             "type": "singlestat",
             "valueFontSize": "30%",
-            "valueMaps": [],
+            "valueMaps": [
+                {
+                    "op": "=",
+                    "text": "N/A",
+                    "value": "null"
+                }
+            ],
             "valueName": "current"
         }
     ],

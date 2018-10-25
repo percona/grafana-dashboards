@@ -30,10 +30,9 @@ export class PanelCtrl extends MetricsPanelCtrl {
 		const frame = elem.find('iframe');
 		const panel = elem.find('div.panel-container');
         const panelContent = elem.find('div.panel-content');
-        const bgcolor = $scope.qanParams.theme === 'light' ? '#ffffff' : '#141414';
 
         panel.css({
-            'background-color': bgcolor,
+            'background-color': 'transparent',
             'border': 'none'
         });
 
@@ -55,8 +54,8 @@ export class PanelCtrl extends MetricsPanelCtrl {
 
         frame.on('load', () => {
             $scope.ctrl.calculatePanelHeight();
-            frame.contents().bind('click', $scope.ctrl.calculatePanelHeight);
-            frame.contents().bind('DOMSubtreeModified', $scope.ctrl.calculatePanelHeight);
+            frame.contents().bind('click', () => setTimeout(() => $scope.ctrl.calculatePanelHeight(), 10));
+            frame.contents().bind('DOMSubtreeModified', () => setTimeout(() => $scope.ctrl.calculatePanelHeight(), 10));
         });
     }
 

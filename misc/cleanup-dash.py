@@ -87,7 +87,7 @@ def add_links(dashboard):
     user_input = raw_input(prompt)
     if user_input:
         if user_input == 'Yes':
-            setOfLinks = ['QAN', 'OS', 'MySQL', 'MongoDB', 'HA', 'Cloud', 'Insight', 'PMM']
+            setOfLinks = ['QAN', 'OS', 'MySQL', 'MongoDB', 'PostgreSQL', 'HA', 'Cloud', 'Insight', 'PMM']
             for link in copy.deepcopy(dashboard['links']):
                 dashboard['links'].remove(link)
 
@@ -228,6 +228,19 @@ def add_annotation(dashboard):
                 'type': "tags"
             }
             dashboard['annotations']['list'].append(add_item)
+            add_item = {
+                "builtIn": 1,
+                "datasource": "-- Grafana --",
+                "enable": True,
+                "hide": True,
+                "iconColor": "#6ed0e0",
+                "limit": 100,
+                "name": "Annotations & Alerts",
+                "showIn": 0,
+                "tags": [],
+                "type": "dashboard"
+            }
+            dashboard['annotations']['list'].append(add_item) 
     return dashboard
 
 
