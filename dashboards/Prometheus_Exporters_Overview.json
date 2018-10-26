@@ -14,6 +14,18 @@
                     "pmm_annotation"
                 ],
                 "type": "tags"
+            },
+            {
+                "builtIn": 1,
+                "datasource": "-- Grafana --",
+                "enable": true,
+                "hide": true,
+                "iconColor": "#6ed0e0",
+                "limit": 100,
+                "name": "Annotations & Alerts",
+                "showIn": 0,
+                "tags": [],
+                "type": "dashboard"
             }
         ]
     },
@@ -1344,7 +1356,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "count(node_cpu{mode=\"user\", instance=\"$host\"}) or count(rdsosmetrics_General_numVCPUs)",
+                    "expr": "(count(node_cpu{instance=~\"$host\",mode=~\"user\"}) or (1-absent(node_cpu{instance=~\"$host\",mode=~\"user\"}))) + sum(rdsosmetrics_General_numVCPUs{instance=~\"$host\"} or up * 0)",
                     "format": "time_series",
                     "instant": true,
                     "interval": "$interval",
