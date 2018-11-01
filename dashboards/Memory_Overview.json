@@ -33,7 +33,7 @@
     "gnetId": 1860,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1541061584464,
+    "iteration": 1541101041700,
     "links": [
         {
             "icon": "dashboard",
@@ -248,7 +248,7 @@
                     "step": 240
                 },
                 {
-                    "expr": "(max_over_time(node_memory_MemTotal{instance=~\"$host\"}[$interval]) or max_over_time(node_memory_MemTotal{instance=~\"$host\"}[5m])) - \n(max_over_time(node_memory_MemFree{instance=~\"$host\"}[$interval]) or max_over_time(node_memory_MemFree{instance=~\"$host\"}[5m])) - \n(max_over_time(node_memory_Cached{instance=~\"$host\"}[$interval]) or max_over_time(node_memory_Cached{instance=~\"$host\"}[5m])) - \n(max_over_time(node_memory_Buffers{instance=~\"$host\"}[$interval]) or max_over_time(node_memory_Buffers{instance=~\"$host\"}[5m]))",
+                    "expr": "max(node_memory_MemTotal{instance=\"$host\"}) without(job) - \n(max(node_memory_MemFree{instance=\"$host\"}) without(job) + \nmax(node_memory_Buffers{instance=\"$host\"}) without(job) + \n(max(node_memory_Cached{instance=\"$host\",job=~\"rds-enhanced|linux\"}) without (job) or \nmax(node_memory_Cached{instance=\"$host\",job=\"rds-basic\"}) without (job)))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -258,7 +258,7 @@
                     "step": 240
                 },
                 {
-                    "expr": "max_over_time(node_memory_Cached{instance=~\"$host\"}[$interval]) or max_over_time(node_memory_Cached{instance=~\"$host\"}[5m])",
+                    "expr": "max(node_memory_Cached{instance=~\"$host\",job=~\"rds-enhanced|linux\"}) without (job) or \nmax(node_memory_Cached{instance=~\"$host\",job=~\"rds-basic\"}) without (job)",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -4551,5 +4551,5 @@
     "timezone": "browser",
     "title": "Memory Overview",
     "uid": "gJqbbm-ik",
-    "version": 5
+    "version": 1
 }
