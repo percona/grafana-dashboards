@@ -33,7 +33,7 @@
     "gnetId": 1860,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1541101041700,
+    "iteration": 1541409919326,
     "links": [
         {
             "icon": "dashboard",
@@ -618,7 +618,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "node_memory_Active_anon{instance=~\"$host\"}",
+                            "expr": "max_over_time(node_memory_Active_anon{instance=~\"$host\"}[$interval]) or max_over_time(node_memory_Active_anon{instance=~\"$host\"}[5m])",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -628,7 +628,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "node_memory_Inactive_anon{instance=~\"$host\"}",
+                            "expr": "max_over_time(node_memory_Inactive_anon{instance=~\"$host\"}[$interval]) or max_over_time(node_memory_Inactive_anon{instance=~\"$host\"}[5m])",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -741,7 +741,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "node_memory_Inactive_file{instance=~\"$host\"}",
+                            "expr": "max_over_time(node_memory_Inactive_file{instance=~\"$host\"}[$interval]) or max_over_time(node_memory_Inactive_file{instance=~\"$host\"}[5m])",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -751,7 +751,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "node_memory_Active_file{instance=~\"$host\"}",
+                            "expr": "max_over_time(node_memory_Active_file{instance=~\"$host\"}[$interval]) or max_over_time(node_memory_Active_file{instance=~\"$host\"}[5m])",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -765,6 +765,283 @@
                     "timeFrom": null,
                     "timeShift": null,
                     "title": "File Cache Memory Size",
+                    "tooltip": {
+                        "shared": true,
+                        "sort": 2,
+                        "value_type": "cumulative"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "bytes",
+                            "label": "",
+                            "logBase": 1,
+                            "max": null,
+                            "min": "0",
+                            "show": true
+                        },
+                        {
+                            "format": "bytes",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": "0",
+                            "show": true
+                        }
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
+                },
+                {
+                    "aliasColors": {
+                        "Apps": "#629E51",
+                        "Buffers": "#614D93",
+                        "Cache": "#6D1F62",
+                        "Cached": "#511749",
+                        "Committed": "#508642",
+                        "Free": "#0A437C",
+                        "Harware Corrupted - Amount of RAM that the kernel identified as corrupted / not working": "#CFFAFF",
+                        "Inactive": "#584477",
+                        "PageTables": "#0A50A1",
+                        "Page_Tables": "#0A50A1",
+                        "RAM_Free": "#E0F9D7",
+                        "Slab": "#806EB7",
+                        "Slab_Cache": "#E0752D",
+                        "Swap": "#BF1B00",
+                        "Swap_Cache": "#C15C17",
+                        "Swap_Free": "#2F575E",
+                        "Unused": "#EAB839"
+                    },
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": 2,
+                    "description": "",
+                    "fill": 2,
+                    "gridPos": {
+                        "h": 8,
+                        "w": 12,
+                        "x": 12,
+                        "y": 20
+                    },
+                    "id": 255,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "rightSide": false,
+                        "show": true,
+                        "sideWidth": 350,
+                        "sort": "avg",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [],
+                    "minSpan": 4,
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [
+                        {
+                            "alias": "Total",
+                            "color": "#bf1b00",
+                            "legend": false,
+                            "lines": false
+                        }
+                    ],
+                    "spaceLength": 10,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "expr": "rate(node_vmstat_pswpin{instance=\"$host\"}[$interval]) * 4096 or irate(node_vmstat_pswpin{instance=\"$host\"}[5m]) * 4096",
+                            "format": "time_series",
+                            "hide": false,
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Swap In (Reads)",
+                            "refId": "A",
+                            "step": 240
+                        },
+                        {
+                            "expr": "rate(node_vmstat_pswpout{instance=\"$host\"}[$interval]) * 4096 or irate(node_vmstat_pswpout{instance=\"$host\"}[5m]) * 4096",
+                            "format": "time_series",
+                            "hide": false,
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Swap Out (Writes)",
+                            "refId": "B",
+                            "step": 240
+                        },
+                        {
+                            "expr": "(rate(node_vmstat_pswpin{instance=\"$host\"}[$interval]) * 4096 or \nirate(node_vmstat_pswpin{instance=\"$host\"}[5m]) * 4096) + \n(rate(node_vmstat_pswpout{instance=\"$host\"}[$interval]) * 4096 or \nirate(node_vmstat_pswpout{instance=\"$host\"}[5m]) * 4096)",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Total",
+                            "refId": "C"
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Swap Activity",
+                    "tooltip": {
+                        "shared": true,
+                        "sort": 2,
+                        "value_type": "cumulative"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "decimals": 2,
+                            "format": "Bps",
+                            "label": "Swap out (-) / Swap in (+)",
+                            "logBase": 1,
+                            "max": null,
+                            "min": "0",
+                            "show": true
+                        },
+                        {
+                            "format": "bytes",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": "0",
+                            "show": false
+                        }
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
+                },
+                {
+                    "aliasColors": {
+                        "Apps": "#629E51",
+                        "Buffers": "#614D93",
+                        "Cache": "#6D1F62",
+                        "Cached": "#511749",
+                        "Committed": "#508642",
+                        "Free": "#0A437C",
+                        "Harware Corrupted - Amount of RAM that the kernel identified as corrupted / not working": "#CFFAFF",
+                        "Inactive": "#584477",
+                        "PageTables": "#0A50A1",
+                        "Page_Tables": "#0A50A1",
+                        "RAM_Free": "#E0F9D7",
+                        "Slab": "#806EB7",
+                        "Slab_Cache": "#E0752D",
+                        "Swap": "#BF1B00",
+                        "Swap_Cache": "#C15C17",
+                        "Swap_Free": "#2F575E",
+                        "Unused": "#EAB839"
+                    },
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": 2,
+                    "description": "",
+                    "fill": 2,
+                    "gridPos": {
+                        "h": 8,
+                        "w": 12,
+                        "x": 0,
+                        "y": 28
+                    },
+                    "id": 254,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "rightSide": false,
+                        "show": true,
+                        "sideWidth": 350,
+                        "sort": "avg",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [],
+                    "minSpan": 4,
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [
+                        {
+                            "alias": "Total",
+                            "color": "#bf1b00",
+                            "legend": false,
+                            "lines": false
+                        }
+                    ],
+                    "spaceLength": 10,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "expr": "max_over_time(node_memory_SwapTotal{instance=\"$host\"}[$interval]) - max_over_time(node_memory_SwapFree{instance=\"$host\"}[$interval]) or\nmax_over_time(node_memory_SwapTotal{instance=\"$host\"}[5m]) - max_over_time(node_memory_SwapFree{instance=\"$host\"}[5m])",
+                            "format": "time_series",
+                            "hide": false,
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Used",
+                            "refId": "A",
+                            "step": 240
+                        },
+                        {
+                            "expr": "max_over_time(node_memory_SwapFree{instance=\"$host\"}[$interval]) or max_over_time(node_memory_SwapFree{instance=\"$host\"}[5m])",
+                            "format": "time_series",
+                            "hide": false,
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Free",
+                            "refId": "B",
+                            "step": 240
+                        },
+                        {
+                            "expr": "max_over_time(node_memory_SwapTotal{instance=\"$host\"}[$interval]) or max_over_time(node_memory_SwapTotal{instance=\"$host\"}[5m])",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Total",
+                            "refId": "C"
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Swap Space",
                     "tooltip": {
                         "shared": true,
                         "sort": 2,
@@ -2578,7 +2855,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 14
+                        "y": 70
                     },
                     "id": 186,
                     "legend": {
@@ -2687,7 +2964,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 14
+                        "y": 70
                     },
                     "id": 248,
                     "legend": {
@@ -2799,7 +3076,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 22
+                        "y": 78
                     },
                     "id": 228,
                     "legend": {
@@ -2928,7 +3205,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 22
+                        "y": 78
                     },
                     "id": 185,
                     "legend": {
@@ -3066,7 +3343,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 30
+                        "y": 86
                     },
                     "id": 214,
                     "legend": {
@@ -3191,7 +3468,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 30
+                        "y": 86
                     },
                     "id": 245,
                     "legend": {
@@ -3350,7 +3627,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 38
+                        "y": 94
                     },
                     "id": 209,
                     "legend": {
@@ -3461,7 +3738,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 38
+                        "y": 94
                     },
                     "id": 218,
                     "legend": {
@@ -3573,7 +3850,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 46
+                        "y": 102
                     },
                     "id": 204,
                     "legend": {
@@ -3718,7 +3995,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 46
+                        "y": 102
                     },
                     "id": 246,
                     "legend": {
@@ -3830,7 +4107,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 54
+                        "y": 110
                     },
                     "id": 212,
                     "legend": {
@@ -3942,7 +4219,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 54
+                        "y": 110
                     },
                     "id": 188,
                     "legend": {
@@ -4093,7 +4370,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 15
+                        "y": 71
                     },
                     "id": 201,
                     "legend": {
@@ -4211,7 +4488,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 15
+                        "y": 71
                     },
                     "id": 252,
                     "legend": {
@@ -4323,7 +4600,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 23
+                        "y": 79
                     },
                     "id": 253,
                     "legend": {
