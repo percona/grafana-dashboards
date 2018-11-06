@@ -2,6 +2,8 @@
 
 import { MetricsPanelCtrl } from 'app/plugins/sdk';
 import config from 'app/core/config';
+import $ from 'jquery';
+import AppEvents from "app/core/app_events";
 
 export class PanelCtrl extends MetricsPanelCtrl {
 
@@ -31,7 +33,9 @@ export class PanelCtrl extends MetricsPanelCtrl {
         const frame = elem.find('iframe');
         const panel = elem.find('div.panel-container');
         const panelContent = elem.find('div.panel-content');
+        // const window = $window.$injector.get('$window');
 
+        window.document.addEventListener('showSuccessNotification', () => { AppEvents.emit('alert-success', ['Settings has been applied']); }, false);
         panel.css({
             'background-color': 'transparent',
             'border': 'none'
@@ -51,6 +55,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
             panel.height(`${h + 150}px`);
 
             panelContent.height(`inherit`);
+            panelContent[0].style.padding = '0 0 10px';
         };
 
         frame.on('load', () => {
