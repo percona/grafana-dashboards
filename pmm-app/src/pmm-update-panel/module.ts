@@ -165,17 +165,20 @@ export class PanelCtrl extends MetricsPanelCtrl {
             const [currentMajor, currentMinor, currentBugfix] = $scope.currentVersion.split('.');
             const [nextMajor, nextMinor, nextBugfix] = $scope.nextVersion.split('.');
 
-            const isMajor = nextMajor > currentMajor;
-            const isMinor = nextMinor > currentMinor && (nextMajor === currentMajor);
-            const isBugfix = nextBugfix > currentBugfix && isMinor && (nextMinor === currentMinor);
+            const isMajor = +nextMajor > +currentMajor;
+            const isMinor = (+nextMinor > +currentMinor) && (+nextMajor === +currentMajor);
+            const isBugfix = (+nextBugfix > +currentBugfix && (+nextMajor === +currentMajor)) && (+nextMinor === +currentMinor);
 
             if (isMajor || isMinor || isBugfix) {
                 $scope.shouldBeUpdated = true;
+                localStorage.setItem('shouldBeUpdated', 'true');
+                localStorage.setItem('nextVersion', '1.16.1');
             } else {
                 $scope.shouldBeUpdated = '';
                 $scope.isUpToDate = true;
+                localStorage.setItem('shouldBeUpdated', '');
+                localStorage.setItem('nextVersion', '');
             }
-            this.resetNextVersionData();
             this.getCurrentTime($scope);
             if ($scope.linkVersion = $scope.nextVersion.match(linkRegExp)) {
                 $scope.linkVersion = $scope.nextVersion.match(linkRegExp)[0];
@@ -187,10 +190,8 @@ export class PanelCtrl extends MetricsPanelCtrl {
         }).catch(() => {
             this.displayError($scope, PanelCtrl.ERRORS.NOTHING_TO_UPDATE);
             this.getCurrentTime($scope);
+            this.resetNextVersionData();
             $scope.isUpToDate = true;
-            localStorage.setItem('shouldBeUpdated', '');
-            localStorage.setItem('nextVersion', '');
-            localStorage.setItem('linkVersion', '');
             $('#refresh').removeClass('fa-spin');
         });
     }
