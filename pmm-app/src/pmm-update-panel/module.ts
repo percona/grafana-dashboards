@@ -172,7 +172,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
             if (isMajor || isMinor || isBugfix) {
                 $scope.shouldBeUpdated = true;
                 localStorage.setItem('shouldBeUpdated', 'true');
-                localStorage.setItem('nextVersion', '1.16.1');
+                localStorage.setItem('nextVersion', $scope.nextVersion);
             } else {
                 $scope.shouldBeUpdated = '';
                 $scope.isUpToDate = true;
