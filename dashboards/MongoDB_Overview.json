@@ -33,7 +33,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1529322343680,
+    "iteration": 1541583773344,
     "links": [
         {
             "icon": "dashboard",
@@ -302,6 +302,8 @@
                 "min": true,
                 "rightSide": false,
                 "show": true,
+                "sort": "avg",
+                "sortDesc": true,
                 "total": false,
                 "values": true
             },
@@ -739,6 +741,8 @@
                 "max": true,
                 "min": true,
                 "show": true,
+                "sort": "avg",
+                "sortDesc": true,
                 "total": false,
                 "values": true
             },
@@ -756,7 +760,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "sum(increase(mongodb_mongod_metrics_query_executor_total{instance=\"$host\", state=\"scanned_objects\"}[5m]))/sum(increase(mongodb_mongod_metrics_document_total{instance=\"$host\", state=\"returned\"}[5m]))",
+                    "expr": "sum(rate(mongodb_mongod_metrics_document_total{instance=\"$host\", state=\"returned\"}[$interval]))/\nsum(rate(mongodb_mongod_metrics_query_executor_total{instance=\"$host\", state=\"scanned_objects\"}[$interval])) \nor\nsum(irate(mongodb_mongod_metrics_document_total{instance=\"$host\", state=\"returned\"}[5m]))/\nsum(irate(mongodb_mongod_metrics_query_executor_total{instance=\"$host\", state=\"scanned_objects\"}[5m]))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -766,7 +770,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "sum(increase(mongodb_mongod_metrics_query_executor_total{instance=\"$host\", state=\"scanned\"}[5m]))/sum(increase(mongodb_mongod_metrics_document_total{instance=\"$host\", state=\"returned\"}[5m]))",
+                    "expr": "(sum(rate(mongodb_mongod_metrics_query_executor_total{instance=\"$host\", state=\"scanned\"}[$interval]))/\nsum(rate(mongodb_mongod_metrics_query_executor_total{instance=\"$host\", state=\"scanned_objects\"}[$interval])) \nor\nsum(irate(mongodb_mongod_metrics_query_executor_total{instance=\"$host\", state=\"scanned\"}[5m]))/\nsum(irate(mongodb_mongod_metrics_query_executor_total{instance=\"$host\", state=\"scanned_objects\"}[5m])))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -814,7 +818,7 @@
                     "logBase": 1,
                     "max": null,
                     "min": null,
-                    "show": true
+                    "show": false
                 }
             ],
             "yaxis": {
@@ -960,6 +964,8 @@
                 "max": true,
                 "min": true,
                 "show": true,
+                "sort": "avg",
+                "sortDesc": true,
                 "total": false,
                 "values": true
             },
@@ -1298,6 +1304,8 @@
                 "max": true,
                 "min": true,
                 "show": true,
+                "sort": "avg",
+                "sortDesc": true,
                 "total": false,
                 "values": true
             },
