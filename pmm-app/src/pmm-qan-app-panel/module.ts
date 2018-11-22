@@ -70,6 +70,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
         [$scope.qanParams.queryID, $scope.qanParams.type, $scope.qanParams.search] = this.retrieveDashboardURLParams(location.absUrl());
 
         frame.on('load', () => {
+            $scope.ctrl.calculatePanelHeight();
             frame.contents().bind('click', event => {
                 let [queryID, type, search] = this.retrieveIFrameURLParams(event.currentTarget.URL);
                 if ($(event.target).is('.fa-search') && ($('iframe').contents().find('#search-input')[0].value.length || $('iframe').contents().find('#search-input')[0].value === '')) {
