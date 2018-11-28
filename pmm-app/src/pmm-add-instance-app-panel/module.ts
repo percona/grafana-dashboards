@@ -47,9 +47,11 @@ export class PanelCtrl extends MetricsPanelCtrl {
         this.disableGrafanaPerfectScroll(elem);
         this.fixMenuVisibility(elem);
 
-        frame[0].onload = () => frame.contents().bind(
-            'DOMSubtreeModified', () => setTimeout($scope.ctrl.calculatePanelHeight, 100)
-        );
+        frame.on('load', () => {
+            $scope.ctrl.calculatePanelHeight();
+            frame.contents().bind('click', () => setTimeout(() => $scope.ctrl.calculatePanelHeight(), 10));
+            frame.contents().bind('DOMSubtreeModified', () => setTimeout(() => $scope.ctrl.calculatePanelHeight(), 10));
+        });
     }
 
     /**
