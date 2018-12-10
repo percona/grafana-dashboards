@@ -14,6 +14,18 @@
                     "pmm_annotation"
                 ],
                 "type": "tags"
+            },
+            {
+                "builtIn": 1,
+                "datasource": "-- Grafana --",
+                "enable": true,
+                "hide": true,
+                "iconColor": "#6ed0e0",
+                "limit": 100,
+                "name": "Annotations & Alerts",
+                "showIn": 0,
+                "tags": [],
+                "type": "dashboard"
             }
         ]
     },
@@ -567,6 +579,7 @@
             "dashLength": 10,
             "dashes": false,
             "datasource": "Prometheus",
+            "description": "This graph is similar to InnoDB buffer pool reads/writes. `aria-pagecache-buffer-size` is the main cache for the Aria storage engine. If you see high reads/writes (physical IO), i.e. reads are close to read requests and/or writes are close to write requests you may need to increase the `aria-pagecache-buffer-size` (may need to decrease other buffers: `key_buffer_size`, `innodb_buffer_pool_size`, etc.)",
             "decimals": 2,
             "editable": true,
             "error": false,
@@ -701,6 +714,7 @@
         {
             "content": "The Aria Storage Engine ships only with MariaDB so you should expect to see empty Aria graphs if you are running Percona Server for MySQL, MySQL Community, or MySQL Enterprise.",
             "datasource": "Prometheus",
+            "description": "The Aria storage is specific to MariaDB Server. Aria has most of the same variables that MyISAM has, but with an Aria prefix. If you use Aria instead of MyISAM, then you should make key-buffer-size smaller and aria-pagecache-buffer-size bigger.",
             "gridPos": {
                 "h": 7,
                 "w": 6,
@@ -709,7 +723,14 @@
             },
             "height": "250px",
             "id": 27,
-            "links": [],
+            "links": [
+                {
+                    "targetBlank": true,
+                    "title": "Optimize Aria: MariaDB Documentation",
+                    "type": "absolute",
+                    "url": "https://mariadb.com/kb/en/the-mariadb-library/optimize-aria/"
+                }
+            ],
             "mode": "markdown",
             "title": "Aria Storage Engine",
             "type": "text"
@@ -720,7 +741,7 @@
             "dashLength": 10,
             "dashes": false,
             "datasource": "Prometheus",
-            "description": "The number of Aria log fsyncs.",
+            "description": "This is similar to InnoDB log file syncs. If you see lots of log syncs and want to relax the durability settings you can change `aria_checkpoint_interval` (in seconds) from 30 (default) to a higher number. It is good to look at the disk IO dashboard as well.",
             "fill": 1,
             "gridPos": {
                 "h": 7,
@@ -741,7 +762,14 @@
             },
             "lines": true,
             "linewidth": 1,
-            "links": [],
+            "links": [
+                {
+                    "targetBlank": true,
+                    "title": "Aria System Variables: MariaDB Documentation",
+                    "type": "absolute",
+                    "url": "https://mariadb.com/kb/en/library/aria-system-variables/"
+                }
+            ],
             "nullPointMode": "null",
             "percentage": false,
             "pointradius": 5,
@@ -808,6 +836,7 @@
             "dashLength": 10,
             "dashes": false,
             "datasource": "Prometheus",
+            "description": "This graph shows the utilization for the Aria pagecache. This is similar to InnDB buffer pool graph. If you see all blocks are used you may consider increasing `aria-pagecache-buffer-size` (may need to decrease other buffers: `key_buffer_size`, `innodb_buffer_pool_size`, etc.)",
             "decimals": 0,
             "editable": true,
             "error": false,

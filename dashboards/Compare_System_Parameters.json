@@ -14,15 +14,27 @@
                     "pmm_annotation"
                 ],
                 "type": "tags"
+            },
+            {
+                "builtIn": 1,
+                "datasource": "-- Grafana --",
+                "enable": true,
+                "hide": true,
+                "iconColor": "#6ed0e0",
+                "limit": 100,
+                "name": "Annotations & Alerts",
+                "showIn": 0,
+                "tags": [],
+                "type": "dashboard"
             }
         ]
     },
     "description": "Dashboard to view multiple servers",
     "editable": true,
     "gnetId": 405,
-    "graphTooltip": 0,
+    "graphTooltip": 1,
     "id": null,
-    "iteration": 1535971085972,
+    "iteration": 1541099257460,
     "links": [
         {
             "icon": "dashboard",
@@ -1546,7 +1558,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "node_memory_MemTotal{instance=\"$host\"} - (node_memory_MemFree{instance=\"$host\"} + node_memory_Buffers{instance=\"$host\"} + node_memory_Cached{instance=\"$host\"})",
+                    "expr": "max(node_memory_MemTotal{instance=\"$host\"}) without(job) - \n(max(node_memory_MemFree{instance=\"$host\"}) without(job) + \nmax(node_memory_Buffers{instance=\"$host\"}) without(job) + \n(max(node_memory_Cached{instance=\"$host\",job=~\"rds-enhanced|linux\"}) without (job) or \nmax(node_memory_Cached{instance=\"$host\",job=\"rds-basic\"}) without (job)))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1570,7 +1582,7 @@
                     "refId": "C"
                 },
                 {
-                    "expr": "node_memory_Cached{instance=\"$host\"}",
+                    "expr": "max(node_memory_Cached{instance=~\"$host\",job=~\"rds-enhanced|linux\"}) without (job) or \nmax(node_memory_Cached{instance=~\"$host\",job=~\"rds-basic\"}) without (job)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
