@@ -33,7 +33,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1536929488290,
+    "iteration": 1543236293556,
     "links": [
         {
             "icon": "dashboard",
@@ -138,7 +138,7 @@
     ],
     "panels": [
         {
-            "content": "<h1><i><font color=#5991A7><b><center>Data for </font><font color=#e68a00>$host</font> <font color=#5991A7> with</font> </font><font color=#e68a00>$interval</font> <font color=#5991A7>resolution</center></b></font></i></h1>",
+            "content": "<h1><i><font color=#5991A7><b><center>Data for </font><font color=#e68a00>$pmmhost</font> <font color=#5991A7> with</font> </font><font color=#e68a00>$interval</font> <font color=#5991A7>resolution</center></b></font></i></h1>",
             "gridPos": {
                 "h": 2,
                 "w": 24,
@@ -1399,11 +1399,12 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "rate(prometheus_tsdb_compaction_chunk_range_sum[6h])/rate(prometheus_tsdb_compaction_chunk_range_count[6h])",
+                            "expr": "rate(prometheus_tsdb_compaction_chunk_range_seconds_sum[6h])/rate(prometheus_tsdb_compaction_chunk_range_seconds_count[6h])",
                             "format": "time_series",
                             "hide": false,
-                            "interval": "",
+                            "interval": "$interval",
                             "intervalFactor": 1,
+                            "legendFormat": "",
                             "refId": "A"
                         }
                     ],
@@ -1564,10 +1565,11 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "rate(prometheus_tsdb_compaction_chunk_size_sum[6h])/rate(prometheus_tsdb_compaction_chunk_size_count[6h])",
+                            "expr": "rate(prometheus_tsdb_compaction_chunk_size_bytes_sum[6h])/rate(prometheus_tsdb_compaction_chunk_size_bytes_count[6h])",
                             "format": "time_series",
+                            "interval": "$interval",
                             "intervalFactor": 2,
-                            "legendFormat": "series",
+                            "legendFormat": "Series",
                             "refId": "A"
                         }
                     ],
@@ -1647,9 +1649,10 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "(rate(prometheus_tsdb_compaction_chunk_size_sum[6h])/rate(prometheus_tsdb_compaction_chunk_size_count[6h]))/(rate(prometheus_tsdb_compaction_chunk_samples_sum[6h])/rate(prometheus_tsdb_compaction_chunk_samples_count[6h]))",
+                            "expr": "(rate(prometheus_tsdb_compaction_chunk_size_bytes_sum[6h])/rate(prometheus_tsdb_compaction_chunk_size_bytes_count[6h]))/\n(rate(prometheus_tsdb_compaction_chunk_samples_sum[6h])/rate(prometheus_tsdb_compaction_chunk_samples_count[6h]))",
                             "format": "time_series",
-                            "intervalFactor": 2,
+                            "interval": "$interval",
+                            "intervalFactor": 1,
                             "legendFormat": "series",
                             "refId": "A"
                         }
@@ -1730,8 +1733,9 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "rate(prometheus_tsdb_compaction_chunk_size_sum[6h])/rate(prometheus_tsdb_compaction_chunk_size_count[6h])*(max_over_time(prometheus_tsdb_head_chunks[$interval]) or prometheus_tsdb_head_chunks)",
+                            "expr": "rate(prometheus_tsdb_compaction_chunk_size_bytes_sum[6h])/\nrate(prometheus_tsdb_compaction_chunk_size_bytes_count[6h])*\n(max_over_time(prometheus_tsdb_head_chunks[$interval]) or max_over_time(prometheus_tsdb_head_chunks[5m]))",
                             "format": "time_series",
+                            "interval": "$interval",
                             "intervalFactor": 2,
                             "legendFormat": "series",
                             "refId": "A"
@@ -4265,13 +4269,13 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": null,
+                    "datasource": "Prometheus",
                     "fill": 2,
                     "gridPos": {
                         "h": 7,
                         "w": 24,
                         "x": 0,
-                        "y": 35
+                        "y": 10
                     },
                     "id": 90,
                     "legend": {
@@ -4355,14 +4359,14 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": null,
+                    "datasource": "Prometheus",
                     "decimals": 2,
                     "fill": 2,
                     "gridPos": {
                         "h": 7,
                         "w": 24,
                         "x": 0,
-                        "y": 42
+                        "y": 17
                     },
                     "id": 91,
                     "legend": {
@@ -4471,7 +4475,7 @@
                         "h": 11,
                         "w": 12,
                         "x": 0,
-                        "y": 74
+                        "y": 11
                     },
                     "height": "420px",
                     "hideTimeOverride": true,
@@ -4515,7 +4519,7 @@
                         "h": 11,
                         "w": 12,
                         "x": 12,
-                        "y": 74
+                        "y": 11
                     },
                     "height": "420px",
                     "hideTimeOverride": true,
@@ -4584,7 +4588,7 @@
                         "h": 3,
                         "w": 4,
                         "x": 0,
-                        "y": 75
+                        "y": 12
                     },
                     "height": "50",
                     "id": 46,
@@ -4629,8 +4633,9 @@
                     "sparkline": {
                         "fillColor": "rgba(31, 118, 189, 0.18)",
                         "full": true,
+                        "isFullHeight": false,
                         "lineColor": "rgb(31, 120, 193)",
-                        "maxValue": 100,
+                        "maxValue": 0,
                         "minValue": 0,
                         "show": true
                     },
@@ -4683,7 +4688,7 @@
                         "h": 3,
                         "w": 4,
                         "x": 4,
-                        "y": 75
+                        "y": 12
                     },
                     "height": "50",
                     "id": 47,
@@ -4771,7 +4776,7 @@
                         "h": 3,
                         "w": 4,
                         "x": 8,
-                        "y": 75
+                        "y": 12
                     },
                     "height": "50",
                     "id": 48,
@@ -4868,7 +4873,7 @@
                         "h": 3,
                         "w": 4,
                         "x": 12,
-                        "y": 75
+                        "y": 12
                     },
                     "height": "50",
                     "id": 49,
@@ -4954,7 +4959,7 @@
                         "h": 3,
                         "w": 4,
                         "x": 16,
-                        "y": 75
+                        "y": 12
                     },
                     "height": "50",
                     "id": 50,
@@ -5040,7 +5045,7 @@
                         "h": 3,
                         "w": 4,
                         "x": 20,
-                        "y": 75
+                        "y": 12
                     },
                     "height": "50",
                     "id": 51,
@@ -5151,7 +5156,6 @@
                 "auto_count": 200,
                 "auto_min": "1s",
                 "current": {
-                    "selected": true,
                     "text": "auto",
                     "value": "$__auto_interval_interval"
                 },
@@ -5206,6 +5210,7 @@
                 ],
                 "query": "1s,5s,1m,5m,1h,6h,1d",
                 "refresh": 2,
+                "skipUrlSync": false,
                 "type": "interval"
             },
             {
@@ -5219,7 +5224,7 @@
                 "includeAll": false,
                 "label": null,
                 "multi": false,
-                "name": "host",
+                "name": "pmmhost",
                 "options": [
                     {
                         "selected": true,
@@ -5228,6 +5233,7 @@
                     }
                 ],
                 "query": "pmm-server",
+                "skipUrlSync": false,
                 "type": "custom"
             }
         ]
