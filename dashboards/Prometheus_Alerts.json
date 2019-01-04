@@ -16,7 +16,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1546600963562,
+    "iteration": 1546606272999,
     "links": [
         {
             "icon": "dashboard",
@@ -214,7 +214,7 @@
                     "value": "null"
                 }
             ],
-            "valueName": "avg"
+            "valueName": "current"
         },
         {
             "cacheTimeout": null,
@@ -278,7 +278,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "sum(ALERTS{alertstate=\"firing\",severity=\"warning\"} > 0) OR on() vector(0)",
+                    "expr": "sum(ALERTS{severity=\"warning\"} > 0) OR on() vector(0)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -297,7 +297,7 @@
                     "value": "null"
                 }
             ],
-            "valueName": "avg"
+            "valueName": "current"
         },
         {
             "cacheTimeout": null,
@@ -380,7 +380,7 @@
                     "value": "null"
                 }
             ],
-            "valueName": "avg"
+            "valueName": "current"
         },
         {
             "cacheTimeout": null,
@@ -463,14 +463,14 @@
                     "value": "null"
                 }
             ],
-            "valueName": "avg"
+            "valueName": "current"
         },
         {
             "columns": [],
             "datasource": "Prometheus",
             "fontSize": "100%",
             "gridPos": {
-                "h": 9,
+                "h": 7,
                 "w": 24,
                 "x": 0,
                 "y": 3
@@ -526,6 +526,7 @@
                 {
                     "expr": "ALERTS{alertstate='firing',instance=~\"$host\"} > 0",
                     "format": "table",
+                    "instant": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "",
@@ -537,11 +538,83 @@
             "type": "table"
         },
         {
+            "columns": [],
+            "datasource": "Prometheus",
+            "fontSize": "100%",
+            "gridPos": {
+                "h": 7,
+                "w": 24,
+                "x": 0,
+                "y": 10
+            },
+            "id": 1399,
+            "links": [],
+            "pageSize": null,
+            "scroll": true,
+            "showHeader": true,
+            "sort": {
+                "col": 0,
+                "desc": true
+            },
+            "styles": [
+                {
+                    "alias": "Time",
+                    "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                    "pattern": "/(__name__|alertstate|job|type|Value)/",
+                    "type": "hidden"
+                },
+                {
+                    "alias": "",
+                    "colorMode": null,
+                    "colors": [
+                        "rgba(245, 54, 54, 0.9)",
+                        "rgba(237, 129, 40, 0.89)",
+                        "rgba(50, 172, 45, 0.97)"
+                    ],
+                    "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                    "decimals": 2,
+                    "mappingType": 1,
+                    "pattern": "Time",
+                    "thresholds": [],
+                    "type": "date",
+                    "unit": "short"
+                },
+                {
+                    "alias": "",
+                    "colorMode": null,
+                    "colors": [
+                        "rgba(245, 54, 54, 0.9)",
+                        "rgba(237, 129, 40, 0.89)",
+                        "rgba(50, 172, 45, 0.97)"
+                    ],
+                    "decimals": 2,
+                    "pattern": "/.*/",
+                    "thresholds": [],
+                    "type": "number",
+                    "unit": "short"
+                }
+            ],
+            "targets": [
+                {
+                    "expr": "ALERTS{alertstate='pending',instance=~\"$host\"} > 0",
+                    "format": "table",
+                    "instant": false,
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "",
+                    "refId": "A"
+                }
+            ],
+            "title": "Pending",
+            "transform": "table",
+            "type": "table"
+        },
+        {
             "gridPos": {
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 12
+                "y": 17
             },
             "id": 1361,
             "panels": [],
@@ -571,7 +644,7 @@
                 "h": 2,
                 "w": 6,
                 "x": 0,
-                "y": 13
+                "y": 18
             },
             "id": 1359,
             "interval": null,
@@ -674,7 +747,7 @@
                 "h": 2,
                 "w": 6,
                 "x": 6,
-                "y": 13
+                "y": 18
             },
             "id": 1364,
             "interval": null,
@@ -772,7 +845,7 @@
                 "h": 2,
                 "w": 6,
                 "x": 12,
-                "y": 13
+                "y": 18
             },
             "id": 1365,
             "interval": null,
@@ -870,7 +943,7 @@
                 "h": 2,
                 "w": 6,
                 "x": 18,
-                "y": 13
+                "y": 18
             },
             "id": 1372,
             "interval": null,
@@ -1083,5 +1156,5 @@
     "timezone": "browser",
     "title": "Prometheus Alerts",
     "uid": "G5jXf_siz",
-    "version": 7
+    "version": 3
 }
