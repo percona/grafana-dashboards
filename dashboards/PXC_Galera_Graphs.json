@@ -33,7 +33,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1529322577024,
+    "iteration": 1541519179147,
     "links": [
         {
             "icon": "dashboard",
@@ -1456,7 +1456,15 @@
             "pointradius": 5,
             "points": false,
             "renderer": "flot",
-            "seriesOverrides": [],
+            "seriesOverrides": [
+                {
+                    "alias": "Time (Instant)",
+                    "color": "#447ebc",
+                    "lines": false,
+                    "pointradius": 1,
+                    "points": true
+                }
+            ],
             "spaceLength": 10,
             "stack": false,
             "steppedLine": false,
@@ -1465,13 +1473,22 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "mysql_galera_gcache_size_bytes{instance=\"$host\"}/(rate(mysql_global_status_wsrep_replicated_bytes{instance=\"$host\"}[5m])+rate(mysql_global_status_wsrep_received_bytes{instance=\"$host\"}[5m])) * 300",
-                    "interval": "5m",
+                    "expr": "mysql_galera_gcache_size_bytes{instance=\"$host\"} /\n(rate(mysql_global_status_wsrep_replicated_bytes{instance=\"$host\"}[1h])+rate(mysql_global_status_wsrep_received_bytes{instance=\"$host\"}[1h]))",
+                    "format": "time_series",
+                    "interval": "1h",
                     "intervalFactor": 1,
-                    "legendFormat": "Time (5m avg)",
+                    "legendFormat": "Time (1h avg)",
                     "metric": "",
                     "refId": "A",
                     "step": 300
+                },
+                {
+                    "expr": "mysql_galera_gcache_size_bytes{instance=\"$host\"} /\n((rate(mysql_global_status_wsrep_replicated_bytes{instance=\"$host\"}[$interval]) or irate(mysql_global_status_wsrep_replicated_bytes{instance=\"$host\"}[5m])) + \n(rate(mysql_global_status_wsrep_received_bytes{instance=\"$host\"}[$interval]) or irate(mysql_global_status_wsrep_received_bytes{instance=\"$host\"}[5m])))",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Time (Instant)",
+                    "refId": "B"
                 }
             ],
             "thresholds": [],
