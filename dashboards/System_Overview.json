@@ -33,7 +33,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1532511133908,
+    "iteration": 1541103089786,
     "links": [
         {
             "icon": "dashboard",
@@ -1478,7 +1478,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "node_memory_Cached{instance=\"$host\"}",
+                    "expr": "max(node_memory_Cached{instance=~\"$host\",job=~\"rds-enhanced|linux\"}) without (job) or \nmax(node_memory_Cached{instance=~\"$host\",job=~\"rds-basic\"}) without (job)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1616,7 +1616,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "node_memory_MemTotal{instance=\"$host\"}+node_memory_SwapTotal{instance=\"$host\"}",
+                    "expr": "node_memory_MemTotal{instance=\"$host\"} + node_memory_SwapTotal{instance=\"$host\"}",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -1631,7 +1631,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "(node_memory_MemAvailable{instance=\"$host\"} or (node_memory_MemFree{instance=\"$host\"}) + node_memory_Buffers{instance=\"$host\"} + node_memory_Cached{instance=\"$host\"}) + node_memory_SwapFree{instance=\"$host\"}",
+                    "expr": "(node_memory_MemAvailable{instance=\"$host\"} or \n(node_memory_MemFree{instance=\"$host\"} + node_memory_Buffers{instance=\"$host\"} + node_memory_Cached{instance=\"$host\"})) + \nnode_memory_SwapFree{instance=\"$host\"}",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1642,7 +1642,7 @@
                     "target": ""
                 },
                 {
-                    "expr": "node_memory_MemTotal{instance=\"$host\"}+node_memory_SwapTotal{instance=\"$host\"} - ((node_memory_MemAvailable{instance=\"$host\"} or (node_memory_MemFree{instance=\"$host\"}) + node_memory_Buffers{instance=\"$host\"} + node_memory_Cached{instance=\"$host\"}) + node_memory_SwapFree{instance=\"$host\"})",
+                    "expr": "node_memory_MemTotal{instance=\"$host\"} + node_memory_SwapTotal{instance=\"$host\"} - \n((node_memory_MemAvailable{instance=\"$host\"} or \n(node_memory_MemFree{instance=\"$host\"} + node_memory_Buffers{instance=\"$host\"} + node_memory_Cached{instance=\"$host\"})) + \nnode_memory_SwapFree{instance=\"$host\"})",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
