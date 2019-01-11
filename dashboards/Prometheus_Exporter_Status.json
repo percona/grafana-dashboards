@@ -32,8 +32,8 @@
     "editable": true,
     "gnetId": null,
     "graphTooltip": 1,
-    "id": null,
-    "iteration": 1547223121538,
+    "id": 18,
+    "iteration": 1547221828103,
     "links": [
         {
             "icon": "dashboard",
@@ -173,7 +173,7 @@
                 "thresholdMarkers": true
             },
             "gridPos": {
-                "h": 4,
+                "h": 2,
                 "w": 6,
                 "x": 0,
                 "y": 1
@@ -338,7 +338,7 @@
                 "thresholdMarkers": true
             },
             "gridPos": {
-                "h": 4,
+                "h": 2,
                 "w": 6,
                 "x": 6,
                 "y": 1
@@ -424,7 +424,7 @@
                 "thresholdMarkers": true
             },
             "gridPos": {
-                "h": 4,
+                "h": 2,
                 "w": 6,
                 "x": 12,
                 "y": 1
@@ -510,7 +510,7 @@
                 "thresholdMarkers": true
             },
             "gridPos": {
-                "h": 4,
+                "h": 2,
                 "w": 6,
                 "x": 18,
                 "y": 1
@@ -589,7 +589,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 5
+                "y": 3
             },
             "id": 18,
             "legend": {
@@ -695,7 +695,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 5
+                "y": 3
             },
             "id": 37,
             "legend": {
@@ -739,7 +739,7 @@
                     "calculatedInterval": "10s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "avg_over_time(node_scrape_collector_duration_seconds{instance=\"$host\"}[$interval]) or avg_over_time(node_scrape_collector_duration_seconds{instance=\"$host\"}[5m])",
+                    "expr": "avg_over_time(node_scrape_collector_duration_seconds{instance=\"$host\"}[$interval]) or \navg_over_time(node_scrape_collector_duration_seconds{instance=\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -779,6 +779,7 @@
             },
             "yaxes": [
                 {
+                    "decimals": null,
                     "format": "s",
                     "label": "",
                     "logBase": 2,
@@ -805,7 +806,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 13
+                "y": 11
             },
             "id": 65,
             "panels": [
@@ -829,10 +830,10 @@
                         "thresholdMarkers": true
                     },
                     "gridPos": {
-                        "h": 4,
+                        "h": 2,
                         "w": 6,
                         "x": 0,
-                        "y": 14
+                        "y": 12
                     },
                     "height": "125px",
                     "id": 62,
@@ -910,10 +911,10 @@
                         "thresholdMarkers": true
                     },
                     "gridPos": {
-                        "h": 4,
+                        "h": 2,
                         "w": 6,
                         "x": 6,
-                        "y": 14
+                        "y": 12
                     },
                     "height": "125px",
                     "id": 61,
@@ -987,10 +988,10 @@
                         "thresholdMarkers": true
                     },
                     "gridPos": {
-                        "h": 4,
+                        "h": 2,
                         "w": 6,
                         "x": 12,
-                        "y": 14
+                        "y": 12
                     },
                     "height": "125px",
                     "id": 60,
@@ -1064,10 +1065,10 @@
                         "thresholdMarkers": true
                     },
                     "gridPos": {
-                        "h": 4,
+                        "h": 2,
                         "w": 6,
                         "x": 18,
-                        "y": 14
+                        "y": 12
                     },
                     "height": "125px",
                     "id": 59,
@@ -1136,7 +1137,7 @@
                         "h": 7,
                         "w": 12,
                         "x": 0,
-                        "y": 18
+                        "y": 14
                     },
                     "id": 6,
                     "legend": {
@@ -1165,6 +1166,11 @@
                         {
                             "alias": "Load 1m",
                             "color": "#E0752D"
+                        },
+                        {
+                            "alias": "Total Load",
+                            "color": "#bf1b00",
+                            "linewidth": 2
                         }
                     ],
                     "spaceLength": 10,
@@ -1175,7 +1181,7 @@
                             "calculatedInterval": "10s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "avg_over_time(mysql_exporter_collector_duration_seconds{instance=\"$host\"}[$interval]) or avg_over_time(mysql_exporter_collector_duration_seconds{instance=\"$host\"}[5m])",
+                            "expr": "avg_over_time(mysql_exporter_collector_duration_seconds{instance=\"$host\"}[$interval]) or \navg_over_time(mysql_exporter_collector_duration_seconds{instance=\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1184,6 +1190,14 @@
                             "refId": "A",
                             "step": 300,
                             "target": ""
+                        },
+                        {
+                            "expr": "sum(avg_over_time(mysql_exporter_collector_duration_seconds{instance=\"$host\"}[$interval])) or \nsum(avg_over_time(mysql_exporter_collector_duration_seconds{instance=\"$host\"}[5m]))",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Total Load",
+                            "refId": "B"
                         }
                     ],
                     "thresholds": [],
@@ -1207,11 +1221,12 @@
                     },
                     "yaxes": [
                         {
+                            "decimals": null,
                             "format": "s",
                             "label": "",
-                            "logBase": 1,
+                            "logBase": 2,
                             "max": null,
-                            "min": 0,
+                            "min": null,
                             "show": true
                         },
                         {
@@ -1246,7 +1261,7 @@
                         "h": 7,
                         "w": 12,
                         "x": 12,
-                        "y": 18
+                        "y": 14
                     },
                     "id": 38,
                     "legend": {
@@ -1372,7 +1387,7 @@
                         "h": 7,
                         "w": 12,
                         "x": 0,
-                        "y": 25
+                        "y": 21
                     },
                     "id": 39,
                     "legend": {
@@ -1384,6 +1399,7 @@
                         "min": true,
                         "rightSide": false,
                         "show": true,
+                        "sort": "avg",
                         "sortDesc": true,
                         "total": false,
                         "values": true
@@ -1400,6 +1416,12 @@
                         {
                             "alias": "Load 1m",
                             "color": "#E0752D"
+                        },
+                        {
+                            "alias": "Total",
+                            "color": "#bf1b00",
+                            "legend": false,
+                            "linewidth": 2
                         }
                     ],
                     "spaceLength": 10,
@@ -1435,6 +1457,14 @@
                             "intervalFactor": 1,
                             "legendFormat": "Low Resolution",
                             "refId": "C"
+                        },
+                        {
+                            "expr": "(rate(mysql_exporter_hr_scrapes_total{instance=\"$host\"}[$interval]) or irate(mysql_exporter_hr_scrapes_total{instance=\"$host\"}[5m])) + \n(rate(mysql_exporter_mr_scrapes_total{instance=\"$host\"}[$interval]) or irate(mysql_exporter_mr_scrapes_total{instance=\"$host\"}[5m])) + \n(rate(mysql_exporter_lr_scrapes_total{instance=\"$host\"}[$interval]) or irate(mysql_exporter_lr_scrapes_total{instance=\"$host\"}[5m]))",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Total",
+                            "refId": "D"
                         }
                     ],
                     "thresholds": [],
@@ -1497,7 +1527,7 @@
                         "h": 7,
                         "w": 12,
                         "x": 12,
-                        "y": 25
+                        "y": 21
                     },
                     "id": 40,
                     "legend": {
@@ -1598,7 +1628,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 14
+                "y": 12
             },
             "id": 66,
             "panels": [
@@ -1624,10 +1654,10 @@
                         "thresholdMarkers": true
                     },
                     "gridPos": {
-                        "h": 4,
+                        "h": 2,
                         "w": 6,
                         "x": 0,
-                        "y": 18
+                        "y": 13
                     },
                     "height": "125px",
                     "id": 42,
@@ -1712,10 +1742,10 @@
                         "thresholdMarkers": true
                     },
                     "gridPos": {
-                        "h": 4,
+                        "h": 2,
                         "w": 6,
                         "x": 6,
-                        "y": 18
+                        "y": 13
                     },
                     "height": "125px",
                     "id": 43,
@@ -1798,10 +1828,10 @@
                         "thresholdMarkers": true
                     },
                     "gridPos": {
-                        "h": 4,
+                        "h": 2,
                         "w": 6,
                         "x": 12,
-                        "y": 18
+                        "y": 13
                     },
                     "height": "125px",
                     "id": 44,
@@ -1884,10 +1914,10 @@
                         "thresholdMarkers": true
                     },
                     "gridPos": {
-                        "h": 4,
+                        "h": 2,
                         "w": 6,
                         "x": 18,
-                        "y": 18
+                        "y": 13
                     },
                     "height": "125px",
                     "id": 45,
@@ -1963,7 +1993,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 22
+                        "y": 15
                     },
                     "id": 46,
                     "legend": {
@@ -2048,7 +2078,11 @@
                             "min": 0,
                             "show": false
                         }
-                    ]
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
                 },
                 {
                     "aliasColors": {
@@ -2070,7 +2104,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 22
+                        "y": 15
                     },
                     "id": 47,
                     "legend": {
@@ -2155,7 +2189,11 @@
                             "min": 0,
                             "show": false
                         }
-                    ]
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
                 },
                 {
                     "aliasColors": {
@@ -2176,7 +2214,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 26
+                        "y": 23
                     },
                     "id": 48,
                     "legend": {
@@ -2260,7 +2298,11 @@
                             "min": 0,
                             "show": false
                         }
-                    ]
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
                 },
                 {
                     "aliasColors": {},
@@ -2274,7 +2316,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 26
+                        "y": 23
                     },
                     "id": 63,
                     "legend": {
@@ -2343,7 +2385,11 @@
                             "min": null,
                             "show": false
                         }
-                    ]
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
                 }
             ],
             "repeat": null,
@@ -2356,7 +2402,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 15
+                "y": 13
             },
             "id": 67,
             "panels": [
@@ -2382,10 +2428,10 @@
                         "thresholdMarkers": true
                     },
                     "gridPos": {
-                        "h": 4,
+                        "h": 2,
                         "w": 6,
                         "x": 0,
-                        "y": 27
+                        "y": 14
                     },
                     "height": "125px",
                     "id": 41,
@@ -2470,10 +2516,10 @@
                         "thresholdMarkers": true
                     },
                     "gridPos": {
-                        "h": 4,
+                        "h": 2,
                         "w": 6,
                         "x": 6,
-                        "y": 27
+                        "y": 14
                     },
                     "height": "125px",
                     "id": 49,
@@ -2556,10 +2602,10 @@
                         "thresholdMarkers": true
                     },
                     "gridPos": {
-                        "h": 4,
+                        "h": 2,
                         "w": 6,
                         "x": 12,
-                        "y": 27
+                        "y": 14
                     },
                     "height": "125px",
                     "id": 50,
@@ -2642,10 +2688,10 @@
                         "thresholdMarkers": true
                     },
                     "gridPos": {
-                        "h": 4,
+                        "h": 2,
                         "w": 6,
                         "x": 18,
-                        "y": 27
+                        "y": 14
                     },
                     "height": "125px",
                     "id": 51,
@@ -2721,7 +2767,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 31
+                        "y": 16
                     },
                     "id": 52,
                     "legend": {
@@ -2806,7 +2852,11 @@
                             "min": 0,
                             "show": false
                         }
-                    ]
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
                 },
                 {
                     "aliasColors": {
@@ -2829,7 +2879,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 31
+                        "y": 16
                     },
                     "id": 53,
                     "legend": {
@@ -2914,7 +2964,11 @@
                             "min": 0,
                             "show": false
                         }
-                    ]
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
                 },
                 {
                     "aliasColors": {
@@ -2936,7 +2990,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 35
+                        "y": 24
                     },
                     "id": 54,
                     "legend": {
@@ -3020,7 +3074,11 @@
                             "min": 0,
                             "show": false
                         }
-                    ]
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
                 },
                 {
                     "aliasColors": {
@@ -3041,7 +3099,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 35
+                        "y": 24
                     },
                     "id": 55,
                     "legend": {
@@ -3125,7 +3183,11 @@
                             "min": 0,
                             "show": false
                         }
-                    ]
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
                 }
             ],
             "repeat": null,
@@ -3138,7 +3200,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 16
+                "y": 14
             },
             "id": 69,
             "panels": [
@@ -3164,10 +3226,10 @@
                         "thresholdMarkers": true
                     },
                     "gridPos": {
-                        "h": 4,
+                        "h": 2,
                         "w": 6,
                         "x": 0,
-                        "y": 17
+                        "y": 15
                     },
                     "height": "125px",
                     "id": 70,
@@ -3329,10 +3391,10 @@
                         "thresholdMarkers": true
                     },
                     "gridPos": {
-                        "h": 4,
+                        "h": 2,
                         "w": 6,
                         "x": 6,
-                        "y": 17
+                        "y": 15
                     },
                     "height": "125px",
                     "id": 71,
@@ -3415,10 +3477,10 @@
                         "thresholdMarkers": true
                     },
                     "gridPos": {
-                        "h": 4,
+                        "h": 2,
                         "w": 6,
                         "x": 12,
-                        "y": 17
+                        "y": 15
                     },
                     "height": "125px",
                     "id": 72,
@@ -3501,10 +3563,10 @@
                         "thresholdMarkers": true
                     },
                     "gridPos": {
-                        "h": 4,
+                        "h": 2,
                         "w": 6,
                         "x": 18,
-                        "y": 17
+                        "y": 15
                     },
                     "height": "125px",
                     "id": 73,
@@ -3580,7 +3642,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 21
+                        "y": 17
                     },
                     "id": 74,
                     "legend": {
@@ -3691,7 +3753,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 21
+                        "y": 17
                     },
                     "id": 76,
                     "legend": {
