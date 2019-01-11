@@ -33,7 +33,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": 18,
-    "iteration": 1547203612735,
+    "iteration": 1547221828093,
     "links": [
         {
             "icon": "dashboard",
@@ -740,7 +740,7 @@
                     "calculatedInterval": "10s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "avg_over_time(node_scrape_collector_duration_seconds{instance=\"$host\"}[$interval]) or avg_over_time(node_scrape_collector_duration_seconds{instance=\"$host\"}[5m])",
+                    "expr": "avg_over_time(node_scrape_collector_duration_seconds{instance=\"$host\"}[$interval]) or \navg_over_time(node_scrape_collector_duration_seconds{instance=\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -751,7 +751,7 @@
                     "target": ""
                 },
                 {
-                    "expr": "sum(sum_over_time(node_scrape_collector_duration_seconds{instance=\"$host\"}[$interval]))/$__interval_ms*1000 or \nsum(sum_over_time(node_scrape_collector_duration_seconds{instance=\"$host\"}[5m]))/300",
+                    "expr": "sum(avg_over_time(node_scrape_collector_duration_seconds{instance=\"$host\"}[$interval])) or \nsum(avg_over_time(node_scrape_collector_duration_seconds{instance=\"$host\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -3895,9 +3895,9 @@
                 "allFormat": "glob",
                 "allValue": null,
                 "current": {
-                    "selected": false,
-                    "text": "",
-                    "value": ""
+                    "tags": [],
+                    "text": "pmm-server",
+                    "value": "pmm-server"
                 },
                 "datasource": "Prometheus",
                 "definition": "",
