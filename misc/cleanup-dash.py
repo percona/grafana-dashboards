@@ -155,12 +155,27 @@ def set_unique_ids(dashboard):
     return dashboard
 
 
+def set_dashboard_id_to_null(dashboard):
+    """To remove any dashboard id. New one is set by grafana."""
+    for element in enumerate(dashboard.copy()):
+        if 'id' in element:
+            dashboard['id'] = None
+
+    return dashboard
+
+
 def drop_some_internal_elements(dashboard):
     for element in enumerate(dashboard.copy()):
         if '__inputs' in element:
             del dashboard['__inputs']
         if '__requires' in element:
             del dashboard['__requires']
+
+    return dashboard
+
+
+def fix_datasource(dashboard):
+    for element in enumerate(dashboard.copy()):
         if 'panels' in element:
             for panel_index, panel in enumerate(dashboard['panels']):
                 if 'datasource' in panel:
@@ -170,6 +185,25 @@ def drop_some_internal_elements(dashboard):
                         dashboard['panels'][panel_index]['datasource'] = 'CloudWatch'
                     if panel['datasource'] == '${DS_QAN-API}':
                         dashboard['panels'][panel_index]['datasource'] = 'QAN-API'
+                if 'panels' in panel:
+                        for panelIn_index, panelIn in enumerate(dashboard['panels'][panel_index]['panels']):
+                            if (len(dashboard['panels'][panel_index]['panels']) > 0):
+                                if dashboard['panels'][panel_index]['panels'][panelIn_index]['datasource'] == '${DS_PROMETHEUS}':
+                                    dashboard['panels'][panel_index]['panels'][panelIn_index]['datasource'] = 'Prometheus'
+                                if dashboard['panels'][panel_index]['panels'][panelIn_index]['datasource'] == '${DS_CLOUDWATCH}':
+                                    dashboard['panels'][panel_index]['panels'][panelIn_index]['datasource'] = 'CloudWatch'
+                                if dashboard['panels'][panel_index]['panels'][panelIn_index]['datasource'] == '${DS_QAN-API}':
+                                    dashboard['panels'][panel_index]['panels'][panelIn_index]['datasource'] = 'QAN-API'
+                if 'mappingTypes' in panel:
+                        for mappingTypes_index, mappingTypes in enumerate(dashboard['panels'][panel_index]['mappingTypes']):
+                            if 'datasource' in mappingTypes:
+                                if dashboard['panels'][panel_index]['mappingTypes'][mappingTypes_index]['datasource'] == '${DS_PROMETHEUS}':
+                                    dashboard['panels'][panel_index]['mappingTypes'][mappingTypes_index]['datasource'] = 'Prometheus'
+                                if dashboard['panels'][panel_index]['mappingTypes'][mappingTypes_index]['datasource'] == '${DS_CLOUDWATCH}':
+                                    dashboard['panels'][panel_index]['mappingTypes'][mappingTypes_index]['datasource'] = 'CloudWatch'
+                                if dashboard['panels'][panel_index]['mappingTypes'][mappingTypes_index]['datasource'] == '${DS_QAN-API}':
+                                    dashboard['panels'][panel_index]['mappingTypes'][mappingTypes_index]['datasource'] = 'QAN-API'
+
         if 'templating' in element:
             for panel_index, panel in enumerate(dashboard['templating']['list']):
                     if 'datasource' in panel.keys():
@@ -296,7 +330,7 @@ def main():
 
     # registered cleanupers.
     CLEANUPERS = [set_title, set_hide_timepicker, drop_some_internal_elements, set_time, set_timezone, set_default_refresh_intervals, set_refresh,
-                  add_annotation, add_links, add_copyrights_links, set_shared_crosshear, set_unique_ids]
+                  fix_datasource, add_annotation, add_links, add_copyrights_links, set_shared_crosshear, set_unique_ids]
 
     for func in CLEANUPERS:
         dashboard = func(dashboard)
