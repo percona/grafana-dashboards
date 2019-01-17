@@ -33,7 +33,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1529322472185,
+    "iteration": 1547661039083,
     "links": [
         {
             "icon": "dashboard",
@@ -145,10 +145,9 @@
                 "x": 0,
                 "y": 0
             },
-            "id": 11,
+            "id": 25,
             "panels": [],
-            "repeat": null,
-            "title": "Average Query Response Time",
+            "title": "Query Execution Summary",
             "type": "row"
         },
         {
@@ -158,7 +157,7 @@
             "dashes": false,
             "datasource": "Prometheus",
             "decimals": 2,
-            "description": "Average query response time is calculated as the total execution time of queries divided by the number of queries.",
+            "description": "",
             "editable": true,
             "error": false,
             "fill": 2,
@@ -177,8 +176,10 @@
                 "hideZero": false,
                 "max": true,
                 "min": true,
-                "rightSide": true,
+                "rightSide": false,
                 "show": true,
+                "sort": "avg",
+                "sortDesc": true,
                 "total": false,
                 "values": true
             },
@@ -197,7 +198,12 @@
             "pointradius": 5,
             "points": false,
             "renderer": "flot",
-            "seriesOverrides": [],
+            "seriesOverrides": [
+                {
+                    "alias": "Questions",
+                    "yaxis": 2
+                }
+            ],
             "spaceLength": 10,
             "stack": false,
             "steppedLine": false,
@@ -206,7 +212,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(mysql_info_schema_query_response_time_seconds_sum{instance=\"$host\"}[$interval]) / rate(mysql_info_schema_query_response_time_seconds_count{instance=\"$host\"}[$interval]) * 1000 or irate(mysql_info_schema_query_response_time_seconds_sum{instance=\"$host\"}[5m]) / irate(mysql_info_schema_query_response_time_seconds_count{instance=\"$host\"}[5m]) * 1000",
+                    "expr": "rate(mysql_info_schema_query_response_time_seconds_sum{instance=\"$host\"}[$interval]) / \nrate(mysql_info_schema_query_response_time_seconds_count{instance=\"$host\"}[$interval]) * 1000 or \nirate(mysql_info_schema_query_response_time_seconds_sum{instance=\"$host\"}[5m]) / \nirate(mysql_info_schema_query_response_time_seconds_count{instance=\"$host\"}[5m]) * 1000",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -215,12 +221,20 @@
                     "metric": "",
                     "refId": "B",
                     "step": 300
+                },
+                {
+                    "expr": "rate(mysql_global_status_questions{instance=\"$host\"}[$interval]) or irate(mysql_global_status_questions{instance=\"$host\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Questions",
+                    "refId": "A"
                 }
             ],
             "thresholds": [],
             "timeFrom": null,
             "timeShift": null,
-            "title": "Average Query Response Time",
+            "title": "Query Execution Summary",
             "tooltip": {
                 "msResolution": false,
                 "shared": true,
@@ -257,27 +271,13 @@
             }
         },
         {
-            "collapsed": false,
-            "gridPos": {
-                "h": 1,
-                "w": 24,
-                "x": 0,
-                "y": 8
-            },
-            "id": 12,
-            "panels": [],
-            "repeat": null,
-            "title": "Query Response Time Distribution",
-            "type": "row"
-        },
-        {
             "aliasColors": {},
             "bars": false,
             "dashLength": 10,
             "dashes": false,
             "datasource": "Prometheus",
             "decimals": 2,
-            "description": "Shows how many fast, neutral, and slow queries are executed per second.",
+            "description": "**MySQL Active Threads**\n\nThreads Connected is the number of open connections, while Threads Running is the number of threads not sleeping.",
             "editable": true,
             "error": false,
             "fill": 2,
@@ -286,36 +286,24 @@
                 "h": 7,
                 "w": 24,
                 "x": 0,
-                "y": 9
+                "y": 8
             },
-            "height": "",
-            "hideTimeOverride": false,
-            "id": 7,
+            "id": 26,
             "legend": {
                 "alignAsTable": true,
                 "avg": true,
-                "current": false,
-                "hideEmpty": false,
-                "hideZero": false,
+                "current": true,
                 "max": true,
                 "min": true,
-                "rightSide": true,
+                "rightSide": false,
                 "show": true,
-                "sort": null,
-                "sortDesc": null,
+                "sortDesc": true,
                 "total": false,
                 "values": true
             },
             "lines": true,
             "linewidth": 2,
-            "links": [
-                {
-                    "targetBlank": true,
-                    "title": "More information about Query Response Time plugin in Percona Server",
-                    "type": "absolute",
-                    "url": "https://www.percona.com/doc/percona-server/5.7/diagnostics/response_time_distribution.html#QUERY_RESPONSE_TIME"
-                }
-            ],
+            "links": [],
             "nullPointMode": "null",
             "percentage": false,
             "pointradius": 5,
@@ -323,15 +311,18 @@
             "renderer": "flot",
             "seriesOverrides": [
                 {
-                    "alias": "Queries >10s",
-                    "color": "#E24D42"
+                    "alias": "Peak Threads Running",
+                    "color": "#E24D42",
+                    "lines": false,
+                    "pointradius": 1,
+                    "points": true
                 },
                 {
-                    "alias": "Queries 1s - 10s",
-                    "color": "#EF843C"
+                    "alias": "Peak Threads Connected",
+                    "color": "#1F78C1"
                 },
                 {
-                    "alias": "Queries 100ms - 1s",
+                    "alias": "Avg Threads Running",
                     "color": "#EAB839"
                 }
             ],
@@ -340,71 +331,220 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "(rate(mysql_info_schema_query_response_time_seconds_bucket{instance=\"$host\",le='1'}[$interval]) - on (instance) rate(mysql_info_schema_query_response_time_seconds_bucket{instance=\"$host\",le='0.1'}[$interval])) or (irate(mysql_info_schema_query_response_time_seconds_bucket{instance=\"$host\",le='1'}[5m]) - on (instance) irate(mysql_info_schema_query_response_time_seconds_bucket{instance=\"$host\",le='0.1'}[5m]))",
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "max_over_time(mysql_global_status_threads_connected{instance=\"$host\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_connected{instance=\"$host\"}[5m])",
+                    "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
-                    "legendFormat": "Queries 100ms - 1s",
+                    "legendFormat": "Peak Threads Connected",
                     "metric": "",
                     "refId": "A",
-                    "step": 300
+                    "step": 20
                 },
                 {
-                    "expr": "(rate(mysql_info_schema_query_response_time_seconds_bucket{instance=\"$host\",le='10'}[$interval])  - on (instance) rate(mysql_info_schema_query_response_time_seconds_bucket{instance=\"$host\",le='1'}[$interval])) or (irate(mysql_info_schema_query_response_time_seconds_bucket{instance=\"$host\",le='10'}[5m])  - on (instance) irate(mysql_info_schema_query_response_time_seconds_bucket{instance=\"$host\",le='1'}[5m]))",
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "max_over_time(mysql_global_status_threads_running{instance=\"$host\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_running{instance=\"$host\"}[5m])",
+                    "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
-                    "legendFormat": "Queries 1s - 10s",
+                    "legendFormat": "Peak Threads Running",
+                    "metric": "",
                     "refId": "B",
-                    "step": 300
+                    "step": 20
                 },
                 {
-                    "expr": "(rate(mysql_info_schema_query_response_time_seconds_bucket{instance=\"$host\",le='100000'}[$interval])  - on (instance) rate(mysql_info_schema_query_response_time_seconds_bucket{instance=\"$host\",le='10'}[$interval])) or (irate(mysql_info_schema_query_response_time_seconds_bucket{instance=\"$host\",le='100000'}[5m])  - on (instance) irate(mysql_info_schema_query_response_time_seconds_bucket{instance=\"$host\",le='10'}[5m]))",
+                    "expr": "avg_over_time(mysql_global_status_threads_running{instance=\"$host\"}[$interval]) or \navg_over_time(mysql_global_status_threads_running{instance=\"$host\"}[5m])",
+                    "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
-                    "legendFormat": "Queries >10s",
+                    "legendFormat": "Avg Threads Running",
                     "refId": "C",
-                    "step": 300
+                    "step": 20
                 }
             ],
             "thresholds": [],
             "timeFrom": null,
             "timeShift": null,
-            "title": "Query Response Time Distribution",
+            "title": "MySQL Client Thread Activity",
             "tooltip": {
                 "msResolution": false,
                 "shared": true,
                 "sort": 0,
                 "value_type": "individual"
             },
-            "transparent": false,
             "type": "graph",
             "xaxis": {
                 "buckets": null,
                 "mode": "time",
                 "name": null,
                 "show": true,
-                "values": []
+                "values": [
+                    "total"
+                ]
             },
             "yaxes": [
                 {
-                    "format": "ops",
+                    "format": "short",
+                    "label": "Threads",
                     "logBase": 1,
                     "max": null,
                     "min": 0,
                     "show": true
                 },
                 {
-                    "format": "ops",
+                    "format": "short",
+                    "label": "",
                     "logBase": 1,
                     "max": null,
                     "min": 0,
-                    "show": true
+                    "show": false
                 }
             ],
             "yaxis": {
                 "align": false,
                 "alignLevel": null
             }
+        },
+        {
+            "collapsed": false,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 15
+            },
+            "id": 12,
+            "panels": [],
+            "repeat": null,
+            "title": "Query Response Time Distribution (All Queries)",
+            "type": "row"
+        },
+        {
+            "cards": {
+                "cardPadding": null,
+                "cardRound": null
+            },
+            "color": {
+                "cardColor": "#b4ff00",
+                "colorScale": "sqrt",
+                "colorScheme": "interpolateSpectral",
+                "exponent": 0.5,
+                "mode": "spectrum"
+            },
+            "dataFormat": "tsbuckets",
+            "datasource": "Prometheus",
+            "gridPos": {
+                "h": 7,
+                "w": 24,
+                "x": 0,
+                "y": 16
+            },
+            "heatmap": {},
+            "highlightCards": true,
+            "id": 21,
+            "legend": {
+                "show": true
+            },
+            "links": [],
+            "targets": [
+                {
+                    "expr": "(rate(mysql_info_schema_query_response_time_microseconds_total_bucket{instance=\"$host\"}[$interval]) or \nirate(mysql_info_schema_query_response_time_microseconds_total_bucket{instance=\"$host\"}[5m]))/1000000",
+                    "format": "heatmap",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{le}}",
+                    "refId": "A"
+                }
+            ],
+            "title": "Query Load by Response Average Time",
+            "tooltip": {
+                "show": true,
+                "showHistogram": false
+            },
+            "type": "heatmap",
+            "xAxis": {
+                "show": true
+            },
+            "xBucketNumber": null,
+            "xBucketSize": null,
+            "yAxis": {
+                "decimals": 1,
+                "format": "s",
+                "logBase": 1,
+                "max": null,
+                "min": "0",
+                "show": true,
+                "splitFactor": null
+            },
+            "yBucketBound": "auto",
+            "yBucketNumber": null,
+            "yBucketSize": null
+        },
+        {
+            "cards": {
+                "cardPadding": null,
+                "cardRound": null
+            },
+            "color": {
+                "cardColor": "#b4ff00",
+                "colorScale": "sqrt",
+                "colorScheme": "interpolateSpectral",
+                "exponent": 0.5,
+                "mode": "spectrum"
+            },
+            "dataFormat": "tsbuckets",
+            "datasource": "Prometheus",
+            "gridPos": {
+                "h": 7,
+                "w": 24,
+                "x": 0,
+                "y": 23
+            },
+            "heatmap": {},
+            "highlightCards": true,
+            "id": 23,
+            "legend": {
+                "show": true
+            },
+            "links": [],
+            "targets": [
+                {
+                    "expr": "rate(mysql_info_schema_query_response_time_seconds_bucket{instance=\"$host\"}[$interval]) or\nirate(mysql_info_schema_query_response_time_seconds_bucket{instance=\"$host\"}[5m])",
+                    "format": "heatmap",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{le}}",
+                    "refId": "A"
+                }
+            ],
+            "title": "Query Rate by Response Time",
+            "tooltip": {
+                "show": true,
+                "showHistogram": false
+            },
+            "type": "heatmap",
+            "xAxis": {
+                "show": true
+            },
+            "xBucketNumber": null,
+            "xBucketSize": null,
+            "yAxis": {
+                "decimals": 1,
+                "format": "s",
+                "logBase": 1,
+                "max": null,
+                "min": null,
+                "show": true,
+                "splitFactor": null
+            },
+            "yBucketBound": "auto",
+            "yBucketNumber": null,
+            "yBucketSize": null
         },
         {
             "content": "These graphs are available only for [Percona Server](https://www.percona.com/doc/percona-server/5.6/diagnostics/response_time_distribution.html) and [MariaDB](https://mariadb.com/kb/en/mariadb/query_response_time-plugin/). It requires query response time plugin installed and `query_response_time_stats ` variable turned on.\n\nRead/write split below is available only for Percona Server 5.6/5.7.",
@@ -415,7 +555,7 @@
                 "h": 3,
                 "w": 24,
                 "x": 0,
-                "y": 16
+                "y": 30
             },
             "height": "50px",
             "id": 5,
@@ -427,424 +567,970 @@
             "type": "text"
         },
         {
-            "collapsed": false,
+            "collapsed": true,
             "gridPos": {
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 19
+                "y": 33
             },
             "id": 13,
-            "panels": [],
+            "panels": [
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": 2,
+                    "description": "Compare read and write query response time.",
+                    "editable": true,
+                    "error": false,
+                    "fill": 2,
+                    "grid": {},
+                    "gridPos": {
+                        "h": 7,
+                        "w": 24,
+                        "x": 0,
+                        "y": 34
+                    },
+                    "id": 8,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "hideZero": false,
+                        "max": true,
+                        "min": true,
+                        "rightSide": true,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [
+                        {
+                            "targetBlank": true,
+                            "title": "More information about Query Response Time plugin in Percona Server",
+                            "type": "absolute",
+                            "url": "https://www.percona.com/doc/percona-server/5.7/diagnostics/response_time_distribution.html#logging-the-queries-in-separate-read-and-write-tables"
+                        }
+                    ],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "rate(mysql_info_schema_read_query_response_time_seconds_sum{instance=\"$host\"}[$interval]) / rate(mysql_info_schema_read_query_response_time_seconds_count{instance=\"$host\"}[$interval]) * 1000 or irate(mysql_info_schema_read_query_response_time_seconds_sum{instance=\"$host\"}[5m]) / irate(mysql_info_schema_read_query_response_time_seconds_count{instance=\"$host\"}[5m]) * 1000",
+                            "format": "time_series",
+                            "hide": false,
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Read Query Time",
+                            "metric": "",
+                            "refId": "B",
+                            "step": 300
+                        },
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "rate(mysql_info_schema_write_query_response_time_seconds_sum{instance=\"$host\"}[$interval]) / rate(mysql_info_schema_write_query_response_time_seconds_count{instance=\"$host\"}[$interval]) * 1000 or irate(mysql_info_schema_write_query_response_time_seconds_sum{instance=\"$host\"}[5m]) / irate(mysql_info_schema_write_query_response_time_seconds_count{instance=\"$host\"}[5m]) * 1000",
+                            "format": "time_series",
+                            "hide": false,
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Write Query Time",
+                            "metric": "",
+                            "refId": "A",
+                            "step": 300
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Average Query Response Time",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "cumulative"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "ms",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        }
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
+                }
+            ],
             "repeat": null,
             "title": "Read/Write Split",
             "type": "row"
         },
         {
-            "aliasColors": {},
-            "bars": false,
-            "dashLength": 10,
-            "dashes": false,
-            "datasource": "Prometheus",
-            "decimals": 2,
-            "description": "Compare read and write query response time.",
-            "editable": true,
-            "error": false,
-            "fill": 2,
-            "grid": {},
-            "gridPos": {
-                "h": 7,
-                "w": 24,
-                "x": 0,
-                "y": 20
-            },
-            "id": 8,
-            "legend": {
-                "alignAsTable": true,
-                "avg": true,
-                "current": false,
-                "hideZero": false,
-                "max": true,
-                "min": true,
-                "rightSide": true,
-                "show": true,
-                "total": false,
-                "values": true
-            },
-            "lines": true,
-            "linewidth": 2,
-            "links": [
-                {
-                    "targetBlank": true,
-                    "title": "More information about Query Response Time plugin in Percona Server",
-                    "type": "absolute",
-                    "url": "https://www.percona.com/doc/percona-server/5.7/diagnostics/response_time_distribution.html#logging-the-queries-in-separate-read-and-write-tables"
-                }
-            ],
-            "nullPointMode": "null",
-            "percentage": false,
-            "pointradius": 5,
-            "points": false,
-            "renderer": "flot",
-            "seriesOverrides": [],
-            "spaceLength": 10,
-            "stack": false,
-            "steppedLine": false,
-            "targets": [
-                {
-                    "calculatedInterval": "2m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "rate(mysql_info_schema_read_query_response_time_seconds_sum{instance=\"$host\"}[$interval]) / rate(mysql_info_schema_read_query_response_time_seconds_count{instance=\"$host\"}[$interval]) * 1000 or irate(mysql_info_schema_read_query_response_time_seconds_sum{instance=\"$host\"}[5m]) / irate(mysql_info_schema_read_query_response_time_seconds_count{instance=\"$host\"}[5m]) * 1000",
-                    "hide": false,
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Read Query Time",
-                    "metric": "",
-                    "refId": "B",
-                    "step": 300
-                },
-                {
-                    "calculatedInterval": "2m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "rate(mysql_info_schema_write_query_response_time_seconds_sum{instance=\"$host\"}[$interval]) / rate(mysql_info_schema_write_query_response_time_seconds_count{instance=\"$host\"}[$interval]) * 1000 or irate(mysql_info_schema_write_query_response_time_seconds_sum{instance=\"$host\"}[5m]) / irate(mysql_info_schema_write_query_response_time_seconds_count{instance=\"$host\"}[5m]) * 1000",
-                    "hide": false,
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Write Query Time",
-                    "metric": "",
-                    "refId": "A",
-                    "step": 300
-                }
-            ],
-            "thresholds": [],
-            "timeFrom": null,
-            "timeShift": null,
-            "title": "Average Query Response Time",
-            "tooltip": {
-                "msResolution": false,
-                "shared": true,
-                "sort": 0,
-                "value_type": "cumulative"
-            },
-            "type": "graph",
-            "xaxis": {
-                "buckets": null,
-                "mode": "time",
-                "name": null,
-                "show": true,
-                "values": []
-            },
-            "yaxes": [
-                {
-                    "format": "ms",
-                    "logBase": 1,
-                    "max": null,
-                    "min": 0,
-                    "show": true
-                },
-                {
-                    "format": "short",
-                    "logBase": 1,
-                    "max": null,
-                    "min": 0,
-                    "show": true
-                }
-            ],
-            "yaxis": {
-                "align": false,
-                "alignLevel": null
-            }
-        },
-        {
-            "collapsed": false,
+            "collapsed": true,
             "gridPos": {
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 27
+                "y": 34
             },
-            "id": 14,
-            "panels": [],
-            "repeat": null,
-            "title": "Query Response Time Distribution",
+            "id": 28,
+            "panels": [
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": 2,
+                    "description": "Shows how many fast, neutral, and slow read queries are executed per second.",
+                    "editable": true,
+                    "error": false,
+                    "fill": 2,
+                    "grid": {},
+                    "gridPos": {
+                        "h": 7,
+                        "w": 12,
+                        "x": 0,
+                        "y": 35
+                    },
+                    "height": "",
+                    "hideTimeOverride": false,
+                    "id": 9,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "hideEmpty": false,
+                        "hideZero": false,
+                        "max": true,
+                        "min": true,
+                        "rightSide": false,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [
+                        {
+                            "targetBlank": true,
+                            "title": "More information about Query Response Time plugin in Percona Server",
+                            "type": "absolute",
+                            "url": "https://www.percona.com/doc/percona-server/5.7/diagnostics/response_time_distribution.html#QUERY_RESPONSE_TIME_READ"
+                        }
+                    ],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [
+                        {
+                            "alias": "Queries >10s",
+                            "color": "#E24D42"
+                        },
+                        {
+                            "alias": "Queries 1s - 10s",
+                            "color": "#EF843C"
+                        },
+                        {
+                            "alias": "Queries 100ms - 1s",
+                            "color": "#EAB839"
+                        }
+                    ],
+                    "spaceLength": 10,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "expr": "(rate(mysql_info_schema_read_query_response_time_seconds_bucket{instance=\"$host\",le='1'}[$interval]) - \non (instance) rate(mysql_info_schema_read_query_response_time_seconds_bucket{instance=\"$host\",le='0.1'}[$interval])) or \n(irate(mysql_info_schema_read_query_response_time_seconds_bucket{instance=\"$host\",le='1'}[5m]) - \non (instance) irate(mysql_info_schema_read_query_response_time_seconds_bucket{instance=\"$host\",le='0.1'}[5m]))",
+                            "format": "time_series",
+                            "hide": false,
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Queries 100ms - 1s",
+                            "metric": "",
+                            "refId": "A",
+                            "step": 300
+                        },
+                        {
+                            "expr": "(rate(mysql_info_schema_read_query_response_time_seconds_bucket{instance=\"$host\",le='10'}[$interval])  - \non (instance) rate(mysql_info_schema_read_query_response_time_seconds_bucket{instance=\"$host\",le='1'}[$interval])) or \n(irate(mysql_info_schema_read_query_response_time_seconds_bucket{instance=\"$host\",le='10'}[5m])  - \non (instance) irate(mysql_info_schema_read_query_response_time_seconds_bucket{instance=\"$host\",le='1'}[5m]))",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Queries 1s - 10s",
+                            "refId": "B",
+                            "step": 300
+                        },
+                        {
+                            "expr": "(rate(mysql_info_schema_read_query_response_time_seconds_bucket{instance=\"$host\",le='100000'}[$interval])  - \non (instance) rate(mysql_info_schema_read_query_response_time_seconds_bucket{instance=\"$host\",le='10'}[$interval])) or \n(irate(mysql_info_schema_read_query_response_time_seconds_bucket{instance=\"$host\",le='100000'}[5m])  - \non (instance) irate(mysql_info_schema_read_query_response_time_seconds_bucket{instance=\"$host\",le='10'}[5m]))",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Queries >10s",
+                            "refId": "C",
+                            "step": 300
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Read Queries Response Time Distribution",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "transparent": false,
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "ops",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        },
+                        {
+                            "format": "ops",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        }
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
+                },
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": 2,
+                    "description": "Shows execution time for fast, neutral, and slow read queries.",
+                    "editable": true,
+                    "error": false,
+                    "fill": 2,
+                    "grid": {},
+                    "gridPos": {
+                        "h": 7,
+                        "w": 12,
+                        "x": 12,
+                        "y": 35
+                    },
+                    "height": "",
+                    "hideTimeOverride": false,
+                    "id": 15,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "hideEmpty": false,
+                        "hideZero": false,
+                        "max": true,
+                        "min": true,
+                        "rightSide": false,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [
+                        {
+                            "targetBlank": true,
+                            "title": "More information about Query Response Time plugin in Percona Server",
+                            "type": "absolute",
+                            "url": "https://www.percona.com/doc/percona-server/5.7/diagnostics/response_time_distribution.html#QUERY_RESPONSE_TIME_READ"
+                        }
+                    ],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [
+                        {
+                            "alias": "Queries >10s",
+                            "color": "#E24D42"
+                        },
+                        {
+                            "alias": "Queries 1s - 10s",
+                            "color": "#EF843C"
+                        },
+                        {
+                            "alias": "Queries 100ms - 1s",
+                            "color": "#EAB839"
+                        }
+                    ],
+                    "spaceLength": 10,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "expr": "(rate(mysql_info_schema_read_query_response_time_microseconds_total_bucket{instance=\"$host\",le='1'}[$interval]) - \non (instance) rate(mysql_info_schema_read_query_response_time_microseconds_total_bucket{instance=\"$host\",le='0.1'}[$interval])) >= 0 or \n(irate(mysql_info_schema_read_query_response_time_microseconds_total_bucket{instance=\"$host\",le='1'}[5m]) - \non (instance) irate(mysql_info_schema_read_query_response_time_microseconds_total_bucket{instance=\"$host\",le='0.1'}[5m])) >= 0",
+                            "format": "time_series",
+                            "hide": false,
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Queries 100ms - 1s",
+                            "metric": "",
+                            "refId": "A",
+                            "step": 300
+                        },
+                        {
+                            "expr": "(rate(mysql_info_schema_read_query_response_time_microseconds_total_bucket{instance=\"$host\",le='10'}[$interval])  - \non (instance) rate(mysql_info_schema_read_query_response_time_microseconds_total_bucket{instance=\"$host\",le='1'}[$interval])) >= 0 or \n(irate(mysql_info_schema_read_query_response_time_microseconds_total_bucket{instance=\"$host\",le='10'}[5m])  - \non (instance) irate(mysql_info_schema_read_query_response_time_microseconds_total_bucket{instance=\"$host\",le='1'}[5m])) >= 0",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Queries 1s - 10s",
+                            "refId": "B",
+                            "step": 300
+                        },
+                        {
+                            "expr": "(rate(mysql_info_schema_read_query_response_time_microseconds_total_bucket{instance=\"$host\",le='100000'}[$interval])  - \non (instance) rate(mysql_info_schema_read_query_response_time_microseconds_total_bucket{instance=\"$host\",le='10'}[$interval])) >= 0 or \n(irate(mysql_info_schema_read_query_response_time_microseconds_total_bucket{instance=\"$host\",le='100000'}[5m])  - \non (instance) irate(mysql_info_schema_read_query_response_time_microseconds_total_bucket{instance=\"$host\",le='10'}[5m])) >= 0",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Queries >10s",
+                            "refId": "C",
+                            "step": 300
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Read Queries Execution Time",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "transparent": false,
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "decimals": null,
+                            "format": "\u00b5s",
+                            "logBase": 2,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        },
+                        {
+                            "format": "ops",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": false
+                        }
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
+                },
+                {
+                    "cards": {
+                        "cardPadding": null,
+                        "cardRound": null
+                    },
+                    "color": {
+                        "cardColor": "#b4ff00",
+                        "colorScale": "sqrt",
+                        "colorScheme": "interpolateSpectral",
+                        "exponent": 0.5,
+                        "mode": "spectrum"
+                    },
+                    "dataFormat": "tsbuckets",
+                    "datasource": "Prometheus",
+                    "gridPos": {
+                        "h": 7,
+                        "w": 24,
+                        "x": 0,
+                        "y": 42
+                    },
+                    "heatmap": {},
+                    "highlightCards": true,
+                    "id": 31,
+                    "legend": {
+                        "show": true
+                    },
+                    "links": [],
+                    "targets": [
+                        {
+                            "expr": "(rate(mysql_info_schema_read_query_response_time_microseconds_total_bucket{instance=\"$host\"}[$interval]) or \nirate(mysql_info_schema_read_query_response_time_microseconds_total_bucket{instance=\"$host\"}[5m]))/1000000",
+                            "format": "heatmap",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "{{le}}",
+                            "refId": "A"
+                        }
+                    ],
+                    "title": "Read Query Load by Response Average Time",
+                    "tooltip": {
+                        "show": true,
+                        "showHistogram": false
+                    },
+                    "type": "heatmap",
+                    "xAxis": {
+                        "show": true
+                    },
+                    "xBucketNumber": null,
+                    "xBucketSize": null,
+                    "yAxis": {
+                        "decimals": 1,
+                        "format": "s",
+                        "logBase": 1,
+                        "max": null,
+                        "min": "0",
+                        "show": true,
+                        "splitFactor": null
+                    },
+                    "yBucketBound": "auto",
+                    "yBucketNumber": null,
+                    "yBucketSize": null
+                },
+                {
+                    "cards": {
+                        "cardPadding": null,
+                        "cardRound": null
+                    },
+                    "color": {
+                        "cardColor": "#b4ff00",
+                        "colorScale": "sqrt",
+                        "colorScheme": "interpolateSpectral",
+                        "exponent": 0.5,
+                        "mode": "spectrum"
+                    },
+                    "dataFormat": "tsbuckets",
+                    "datasource": "Prometheus",
+                    "gridPos": {
+                        "h": 7,
+                        "w": 24,
+                        "x": 0,
+                        "y": 49
+                    },
+                    "heatmap": {},
+                    "highlightCards": true,
+                    "id": 32,
+                    "legend": {
+                        "show": true
+                    },
+                    "links": [],
+                    "targets": [
+                        {
+                            "expr": "rate(mysql_info_schema_read_query_response_time_seconds_bucket{instance=\"$host\"}[$interval]) or\nirate(mysql_info_schema_read_query_response_time_seconds_bucket{instance=\"$host\"}[5m])",
+                            "format": "heatmap",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "{{le}}",
+                            "refId": "A"
+                        }
+                    ],
+                    "title": "Read Query Rate by Response Time",
+                    "tooltip": {
+                        "show": true,
+                        "showHistogram": false
+                    },
+                    "type": "heatmap",
+                    "xAxis": {
+                        "show": true
+                    },
+                    "xBucketNumber": null,
+                    "xBucketSize": null,
+                    "yAxis": {
+                        "decimals": 1,
+                        "format": "s",
+                        "logBase": 1,
+                        "max": null,
+                        "min": null,
+                        "show": true,
+                        "splitFactor": null
+                    },
+                    "yBucketBound": "auto",
+                    "yBucketNumber": null,
+                    "yBucketSize": null
+                }
+            ],
+            "title": "Query Response Time Distribution (Read Queries)",
             "type": "row"
         },
         {
-            "aliasColors": {},
-            "bars": false,
-            "dashLength": 10,
-            "dashes": false,
-            "datasource": "Prometheus",
-            "decimals": 2,
-            "description": "Shows how many fast, neutral, and slow read queries are executed per second.",
-            "editable": true,
-            "error": false,
-            "fill": 2,
-            "grid": {},
+            "collapsed": true,
             "gridPos": {
-                "h": 7,
-                "w": 12,
+                "h": 1,
+                "w": 24,
                 "x": 0,
-                "y": 28
+                "y": 35
             },
-            "height": "",
-            "hideTimeOverride": false,
-            "id": 9,
-            "legend": {
-                "alignAsTable": true,
-                "avg": true,
-                "current": false,
-                "hideEmpty": false,
-                "hideZero": false,
-                "max": true,
-                "min": true,
-                "rightSide": false,
-                "show": true,
-                "sort": null,
-                "sortDesc": null,
-                "total": false,
-                "values": true
-            },
-            "lines": true,
-            "linewidth": 2,
-            "links": [
+            "id": 30,
+            "panels": [
                 {
-                    "targetBlank": true,
-                    "title": "More information about Query Response Time plugin in Percona Server",
-                    "type": "absolute",
-                    "url": "https://www.percona.com/doc/percona-server/5.7/diagnostics/response_time_distribution.html#QUERY_RESPONSE_TIME_READ"
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": 2,
+                    "description": "Shows how many fast, neutral, and slow write queries are executed per second.",
+                    "editable": true,
+                    "error": false,
+                    "fill": 2,
+                    "grid": {},
+                    "gridPos": {
+                        "h": 7,
+                        "w": 12,
+                        "x": 0,
+                        "y": 36
+                    },
+                    "height": "",
+                    "hideTimeOverride": false,
+                    "id": 10,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "hideEmpty": false,
+                        "hideZero": false,
+                        "max": true,
+                        "min": true,
+                        "rightSide": false,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [
+                        {
+                            "targetBlank": true,
+                            "title": "More information about Query Response Time plugin in Percona Server",
+                            "type": "absolute",
+                            "url": "https://www.percona.com/doc/percona-server/5.7/diagnostics/response_time_distribution.html#QUERY_RESPONSE_TIME_WRITE"
+                        }
+                    ],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [
+                        {
+                            "alias": "Queries >10s",
+                            "color": "#E24D42"
+                        },
+                        {
+                            "alias": "Queries 1s - 10s",
+                            "color": "#EF843C"
+                        },
+                        {
+                            "alias": "Queries 100ms - 1s",
+                            "color": "#EAB839"
+                        }
+                    ],
+                    "spaceLength": 10,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "expr": "(rate(mysql_info_schema_write_query_response_time_seconds_bucket{instance=\"$host\",le='1'}[$interval]) - on (instance) rate(mysql_info_schema_write_query_response_time_seconds_bucket{instance=\"$host\",le='0.1'}[$interval])) or (irate(mysql_info_schema_write_query_response_time_seconds_bucket{instance=\"$host\",le='1'}[5m]) - on (instance) irate(mysql_info_schema_write_query_response_time_seconds_bucket{instance=\"$host\",le='0.1'}[5m]))",
+                            "format": "time_series",
+                            "hide": false,
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Queries 100ms - 1s",
+                            "metric": "",
+                            "refId": "A",
+                            "step": 300
+                        },
+                        {
+                            "expr": "(rate(mysql_info_schema_write_query_response_time_seconds_bucket{instance=\"$host\",le='10'}[$interval])  - on (instance) rate(mysql_info_schema_write_query_response_time_seconds_bucket{instance=\"$host\",le='1'}[$interval])) or (irate(mysql_info_schema_write_query_response_time_seconds_bucket{instance=\"$host\",le='10'}[5m])  - on (instance) irate(mysql_info_schema_write_query_response_time_seconds_bucket{instance=\"$host\",le='1'}[5m]))",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Queries 1s - 10s",
+                            "refId": "B",
+                            "step": 300
+                        },
+                        {
+                            "expr": "(rate(mysql_info_schema_write_query_response_time_seconds_bucket{instance=\"$host\",le='100000'}[$interval])  - on (instance) rate(mysql_info_schema_write_query_response_time_seconds_bucket{instance=\"$host\",le='10'}[$interval])) or (irate(mysql_info_schema_write_query_response_time_seconds_bucket{instance=\"$host\",le='100000'}[5m])  - on (instance) irate(mysql_info_schema_write_query_response_time_seconds_bucket{instance=\"$host\",le='10'}[5m]))",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Queries >10s",
+                            "refId": "C",
+                            "step": 300
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Write Queries Response Time Distribution",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "transparent": false,
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "ops",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        },
+                        {
+                            "format": "ops",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        }
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
+                },
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": 2,
+                    "description": "Shows execution time for fast, neutral, and slow write queries.",
+                    "editable": true,
+                    "error": false,
+                    "fill": 2,
+                    "grid": {},
+                    "gridPos": {
+                        "h": 7,
+                        "w": 12,
+                        "x": 12,
+                        "y": 36
+                    },
+                    "height": "",
+                    "hideTimeOverride": false,
+                    "id": 16,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "hideEmpty": false,
+                        "hideZero": false,
+                        "max": true,
+                        "min": true,
+                        "rightSide": false,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [
+                        {
+                            "targetBlank": true,
+                            "title": "More information about Query Response Time plugin in Percona Server",
+                            "type": "absolute",
+                            "url": "https://www.percona.com/doc/percona-server/5.7/diagnostics/response_time_distribution.html#QUERY_RESPONSE_TIME_WRITE"
+                        }
+                    ],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [
+                        {
+                            "alias": "Queries >10s",
+                            "color": "#E24D42"
+                        },
+                        {
+                            "alias": "Queries 1s - 10s",
+                            "color": "#EF843C"
+                        },
+                        {
+                            "alias": "Queries 100ms - 1s",
+                            "color": "#EAB839"
+                        }
+                    ],
+                    "spaceLength": 10,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "expr": "(rate(mysql_info_schema_write_query_response_time_microseconds_total_bucket{instance=\"$host\",le='1'}[$interval]) - \non (instance) rate(mysql_info_schema_write_query_response_time_microseconds_total_bucket{instance=\"$host\",le='0.1'}[$interval])) >= 0 or \n(irate(mysql_info_schema_write_query_response_time_microseconds_total_bucket{instance=\"$host\",le='1'}[5m]) - \non (instance) irate(mysql_info_schema_write_query_response_time_microseconds_total_bucket{instance=\"$host\",le='0.1'}[5m])) >= 0",
+                            "format": "time_series",
+                            "hide": false,
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Queries 100ms - 1s",
+                            "metric": "",
+                            "refId": "A",
+                            "step": 300
+                        },
+                        {
+                            "expr": "(rate(mysql_info_schema_write_query_response_time_microseconds_total_bucket{instance=\"$host\",le='10'}[$interval])  - \non (instance) rate(mysql_info_schema_write_query_response_time_microseconds_total_bucket{instance=\"$host\",le='1'}[$interval])) >= 0 or \n(irate(mysql_info_schema_write_query_response_time_microseconds_total_bucket{instance=\"$host\",le='10'}[5m])  - \non (instance) irate(mysql_info_schema_write_query_response_time_microseconds_total_bucket{instance=\"$host\",le='1'}[5m])) >= 0",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Queries 1s - 10s",
+                            "refId": "B",
+                            "step": 300
+                        },
+                        {
+                            "expr": "(rate(mysql_info_schema_write_query_response_time_microseconds_total_bucket{instance=\"$host\",le='100000'}[$interval])  - \non (instance) rate(mysql_info_schema_write_query_response_time_microseconds_total_bucket{instance=\"$host\",le='10'}[$interval])) >= 0 or \n(irate(mysql_info_schema_write_query_response_time_microseconds_total_bucket{instance=\"$host\",le='100000'}[5m])  - \non (instance) irate(mysql_info_schema_write_query_response_time_microseconds_total_bucket{instance=\"$host\",le='10'}[5m])) >= 0",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Queries >10s",
+                            "refId": "C",
+                            "step": 300
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Write Queries Execution Time",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "transparent": false,
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "decimals": null,
+                            "format": "\u00b5s",
+                            "logBase": 2,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        },
+                        {
+                            "format": "ops",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": false
+                        }
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
+                },
+                {
+                    "cards": {
+                        "cardPadding": null,
+                        "cardRound": null
+                    },
+                    "color": {
+                        "cardColor": "#b4ff00",
+                        "colorScale": "sqrt",
+                        "colorScheme": "interpolateSpectral",
+                        "exponent": 0.5,
+                        "mode": "spectrum"
+                    },
+                    "dataFormat": "tsbuckets",
+                    "datasource": "Prometheus",
+                    "gridPos": {
+                        "h": 7,
+                        "w": 24,
+                        "x": 0,
+                        "y": 43
+                    },
+                    "heatmap": {},
+                    "highlightCards": true,
+                    "id": 33,
+                    "legend": {
+                        "show": true
+                    },
+                    "links": [],
+                    "targets": [
+                        {
+                            "expr": "(rate(mysql_info_schema_write_query_response_time_microseconds_total_bucket{instance=\"$host\"}[$interval]) or \nirate(mysql_info_schema_write_query_response_time_microseconds_total_bucket{instance=\"$host\"}[5m]))/1000000",
+                            "format": "heatmap",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "{{le}}",
+                            "refId": "A"
+                        }
+                    ],
+                    "title": "Write Query Load by Response Average Time",
+                    "tooltip": {
+                        "show": true,
+                        "showHistogram": false
+                    },
+                    "type": "heatmap",
+                    "xAxis": {
+                        "show": true
+                    },
+                    "xBucketNumber": null,
+                    "xBucketSize": null,
+                    "yAxis": {
+                        "decimals": 1,
+                        "format": "s",
+                        "logBase": 1,
+                        "max": null,
+                        "min": "0",
+                        "show": true,
+                        "splitFactor": null
+                    },
+                    "yBucketBound": "auto",
+                    "yBucketNumber": null,
+                    "yBucketSize": null
+                },
+                {
+                    "cards": {
+                        "cardPadding": null,
+                        "cardRound": null
+                    },
+                    "color": {
+                        "cardColor": "#b4ff00",
+                        "colorScale": "sqrt",
+                        "colorScheme": "interpolateSpectral",
+                        "exponent": 0.5,
+                        "mode": "spectrum"
+                    },
+                    "dataFormat": "tsbuckets",
+                    "datasource": "Prometheus",
+                    "gridPos": {
+                        "h": 7,
+                        "w": 24,
+                        "x": 0,
+                        "y": 50
+                    },
+                    "heatmap": {},
+                    "highlightCards": true,
+                    "id": 34,
+                    "legend": {
+                        "show": true
+                    },
+                    "links": [],
+                    "targets": [
+                        {
+                            "expr": "rate(mysql_info_schema_write_query_response_time_seconds_bucket{instance=\"$host\"}[$interval]) or\nirate(mysql_info_schema_write_query_response_time_seconds_bucket{instance=\"$host\"}[5m])",
+                            "format": "heatmap",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "{{le}}",
+                            "refId": "A"
+                        }
+                    ],
+                    "title": "Write Query Rate by Response Time",
+                    "tooltip": {
+                        "show": true,
+                        "showHistogram": false
+                    },
+                    "type": "heatmap",
+                    "xAxis": {
+                        "show": true
+                    },
+                    "xBucketNumber": null,
+                    "xBucketSize": null,
+                    "yAxis": {
+                        "decimals": 1,
+                        "format": "s",
+                        "logBase": 1,
+                        "max": null,
+                        "min": null,
+                        "show": true,
+                        "splitFactor": null
+                    },
+                    "yBucketBound": "auto",
+                    "yBucketNumber": null,
+                    "yBucketSize": null
                 }
             ],
-            "nullPointMode": "null",
-            "percentage": false,
-            "pointradius": 5,
-            "points": false,
-            "renderer": "flot",
-            "seriesOverrides": [
-                {
-                    "alias": "Queries >10s",
-                    "color": "#E24D42"
-                },
-                {
-                    "alias": "Queries 1s - 10s",
-                    "color": "#EF843C"
-                },
-                {
-                    "alias": "Queries 100ms - 1s",
-                    "color": "#EAB839"
-                }
-            ],
-            "spaceLength": 10,
-            "stack": false,
-            "steppedLine": false,
-            "targets": [
-                {
-                    "expr": "(rate(mysql_info_schema_read_query_response_time_seconds_bucket{instance=\"$host\",le='1'}[$interval]) - on (instance) rate(mysql_info_schema_read_query_response_time_seconds_bucket{instance=\"$host\",le='0.1'}[$interval])) or (irate(mysql_info_schema_read_query_response_time_seconds_bucket{instance=\"$host\",le='1'}[5m]) - on (instance) irate(mysql_info_schema_read_query_response_time_seconds_bucket{instance=\"$host\",le='0.1'}[5m]))",
-                    "format": "time_series",
-                    "hide": false,
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Queries 100ms - 1s",
-                    "metric": "",
-                    "refId": "A",
-                    "step": 300
-                },
-                {
-                    "expr": "(rate(mysql_info_schema_read_query_response_time_seconds_bucket{instance=\"$host\",le='10'}[$interval])  - on (instance) rate(mysql_info_schema_read_query_response_time_seconds_bucket{instance=\"$host\",le='1'}[$interval])) or (irate(mysql_info_schema_read_query_response_time_seconds_bucket{instance=\"$host\",le='10'}[5m])  - on (instance) irate(mysql_info_schema_read_query_response_time_seconds_bucket{instance=\"$host\",le='1'}[5m]))",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Queries 1s - 10s",
-                    "refId": "B",
-                    "step": 300
-                },
-                {
-                    "expr": "(rate(mysql_info_schema_read_query_response_time_seconds_bucket{instance=\"$host\",le='100000'}[$interval])  - on (instance) rate(mysql_info_schema_read_query_response_time_seconds_bucket{instance=\"$host\",le='10'}[$interval])) or (irate(mysql_info_schema_read_query_response_time_seconds_bucket{instance=\"$host\",le='100000'}[5m])  - on (instance) irate(mysql_info_schema_read_query_response_time_seconds_bucket{instance=\"$host\",le='10'}[5m]))",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Queries >10s",
-                    "refId": "C",
-                    "step": 300
-                }
-            ],
-            "thresholds": [],
-            "timeFrom": null,
-            "timeShift": null,
-            "title": "Read Query Response Time Distribution",
-            "tooltip": {
-                "msResolution": false,
-                "shared": true,
-                "sort": 0,
-                "value_type": "individual"
-            },
-            "transparent": false,
-            "type": "graph",
-            "xaxis": {
-                "buckets": null,
-                "mode": "time",
-                "name": null,
-                "show": true,
-                "values": []
-            },
-            "yaxes": [
-                {
-                    "format": "ops",
-                    "logBase": 1,
-                    "max": null,
-                    "min": 0,
-                    "show": true
-                },
-                {
-                    "format": "ops",
-                    "logBase": 1,
-                    "max": null,
-                    "min": 0,
-                    "show": true
-                }
-            ],
-            "yaxis": {
-                "align": false,
-                "alignLevel": null
-            }
-        },
-        {
-            "aliasColors": {},
-            "bars": false,
-            "dashLength": 10,
-            "dashes": false,
-            "datasource": "Prometheus",
-            "decimals": 2,
-            "description": "Shows how many fast, neutral, and slow write queries are executed per second.",
-            "editable": true,
-            "error": false,
-            "fill": 2,
-            "grid": {},
-            "gridPos": {
-                "h": 7,
-                "w": 12,
-                "x": 12,
-                "y": 28
-            },
-            "height": "",
-            "hideTimeOverride": false,
-            "id": 10,
-            "legend": {
-                "alignAsTable": true,
-                "avg": true,
-                "current": false,
-                "hideEmpty": false,
-                "hideZero": false,
-                "max": true,
-                "min": true,
-                "rightSide": false,
-                "show": true,
-                "sort": null,
-                "sortDesc": null,
-                "total": false,
-                "values": true
-            },
-            "lines": true,
-            "linewidth": 2,
-            "links": [
-                {
-                    "targetBlank": true,
-                    "title": "More information about Query Response Time plugin in Percona Server",
-                    "type": "absolute",
-                    "url": "https://www.percona.com/doc/percona-server/5.7/diagnostics/response_time_distribution.html#QUERY_RESPONSE_TIME_WRITE"
-                }
-            ],
-            "nullPointMode": "null",
-            "percentage": false,
-            "pointradius": 5,
-            "points": false,
-            "renderer": "flot",
-            "seriesOverrides": [
-                {
-                    "alias": "Queries >10s",
-                    "color": "#E24D42"
-                },
-                {
-                    "alias": "Queries 1s - 10s",
-                    "color": "#EF843C"
-                },
-                {
-                    "alias": "Queries 100ms - 1s",
-                    "color": "#EAB839"
-                }
-            ],
-            "spaceLength": 10,
-            "stack": false,
-            "steppedLine": false,
-            "targets": [
-                {
-                    "expr": "(rate(mysql_info_schema_write_query_response_time_seconds_bucket{instance=\"$host\",le='1'}[$interval]) - on (instance) rate(mysql_info_schema_write_query_response_time_seconds_bucket{instance=\"$host\",le='0.1'}[$interval])) or (irate(mysql_info_schema_write_query_response_time_seconds_bucket{instance=\"$host\",le='1'}[5m]) - on (instance) irate(mysql_info_schema_write_query_response_time_seconds_bucket{instance=\"$host\",le='0.1'}[5m]))",
-                    "hide": false,
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Queries 100ms - 1s",
-                    "metric": "",
-                    "refId": "A",
-                    "step": 300
-                },
-                {
-                    "expr": "(rate(mysql_info_schema_write_query_response_time_seconds_bucket{instance=\"$host\",le='10'}[$interval])  - on (instance) rate(mysql_info_schema_write_query_response_time_seconds_bucket{instance=\"$host\",le='1'}[$interval])) or (irate(mysql_info_schema_write_query_response_time_seconds_bucket{instance=\"$host\",le='10'}[5m])  - on (instance) irate(mysql_info_schema_write_query_response_time_seconds_bucket{instance=\"$host\",le='1'}[5m]))",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Queries 1s - 10s",
-                    "refId": "B",
-                    "step": 300
-                },
-                {
-                    "expr": "(rate(mysql_info_schema_write_query_response_time_seconds_bucket{instance=\"$host\",le='100000'}[$interval])  - on (instance) rate(mysql_info_schema_write_query_response_time_seconds_bucket{instance=\"$host\",le='10'}[$interval])) or (irate(mysql_info_schema_write_query_response_time_seconds_bucket{instance=\"$host\",le='100000'}[5m])  - on (instance) irate(mysql_info_schema_write_query_response_time_seconds_bucket{instance=\"$host\",le='10'}[5m]))",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Queries >10s",
-                    "refId": "C",
-                    "step": 300
-                }
-            ],
-            "thresholds": [],
-            "timeFrom": null,
-            "timeShift": null,
-            "title": "Write Query Response Time Distribution",
-            "tooltip": {
-                "msResolution": false,
-                "shared": true,
-                "sort": 0,
-                "value_type": "individual"
-            },
-            "transparent": false,
-            "type": "graph",
-            "xaxis": {
-                "buckets": null,
-                "mode": "time",
-                "name": null,
-                "show": true,
-                "values": []
-            },
-            "yaxes": [
-                {
-                    "format": "ops",
-                    "logBase": 1,
-                    "max": null,
-                    "min": 0,
-                    "show": true
-                },
-                {
-                    "format": "ops",
-                    "logBase": 1,
-                    "max": null,
-                    "min": 0,
-                    "show": true
-                }
-            ],
-            "yaxis": {
-                "align": false,
-                "alignLevel": null
-            }
+            "title": "Query Response Time Distribution (Write Queries)",
+            "type": "row"
         }
     ],
     "refresh": "1m",
