@@ -33,7 +33,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1529322481841,
+    "iteration": 1543481523325,
     "links": [
         {
             "icon": "dashboard",
@@ -160,12 +160,13 @@
                 "thresholdMarkers": true
             },
             "gridPos": {
-                "h": 4,
+                "h": 3,
                 "w": 6,
                 "x": 0,
                 "y": 0
             },
             "height": "125px",
+            "hideTimeOverride": false,
             "id": 26,
             "interval": "$interval",
             "links": [
@@ -225,8 +226,9 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "mysql_slave_status_slave_io_running{instance=\"$host\"}",
-                    "interval": "5m",
+                    "expr": "min(min_over_time(mysql_slave_status_slave_io_running{instance=\"$host\"}[$interval]) or min_over_time(mysql_slave_status_slave_io_running{instance=\"$host\"}[5m]))",
+                    "format": "time_series",
+                    "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "",
                     "metric": "",
@@ -235,6 +237,7 @@
                 }
             ],
             "thresholds": "0.5,1",
+            "timeFrom": null,
             "title": "IO Thread Running",
             "transparent": false,
             "type": "singlestat",
@@ -276,7 +279,7 @@
                 "thresholdMarkers": true
             },
             "gridPos": {
-                "h": 4,
+                "h": 3,
                 "w": 6,
                 "x": 6,
                 "y": 0
@@ -341,8 +344,9 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "mysql_slave_status_slave_sql_running{instance=\"$host\"}",
-                    "interval": "5m",
+                    "expr": "min(min_over_time(mysql_slave_status_slave_sql_running{instance=\"$host\"}[$interval]) or min_over_time(mysql_slave_status_slave_sql_running{instance=\"$host\"}[5m]))",
+                    "format": "time_series",
+                    "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "",
                     "metric": "",
@@ -392,7 +396,7 @@
                 "thresholdMarkers": true
             },
             "gridPos": {
-                "h": 4,
+                "h": 3,
                 "w": 6,
                 "x": 12,
                 "y": 0
@@ -445,7 +449,10 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "mysql_slave_status_last_errno{instance=\"$host\"}",
+                    "expr": "max(max_over_time(mysql_slave_status_last_errno{instance=\"$host\"}[$interval]) or max_over_time(mysql_slave_status_last_errno{instance=\"$host\"}[5m]))",
+                    "format": "time_series",
+                    "hide": false,
+                    "instant": true,
                     "interval": "5m",
                     "intervalFactor": 1,
                     "legendFormat": "",
@@ -491,7 +498,7 @@
                 "thresholdMarkers": true
             },
             "gridPos": {
-                "h": 4,
+                "h": 3,
                 "w": 6,
                 "x": 18,
                 "y": 0
@@ -544,7 +551,8 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "mysql_global_variables_read_only{instance=\"$host\"}",
+                    "expr": "min(min_over_time(mysql_global_variables_read_only{instance=\"$host\"}[$interval]) or min_over_time(mysql_global_variables_read_only{instance=\"$host\"}[5m]))",
+                    "format": "time_series",
                     "interval": "5m",
                     "intervalFactor": 1,
                     "legendFormat": "",
@@ -588,7 +596,7 @@
                 "h": 7,
                 "w": 24,
                 "x": 0,
-                "y": 4
+                "y": 3
             },
             "id": 16,
             "legend": {
@@ -643,7 +651,8 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "mysql_slave_status_seconds_behind_master{instance=\"$host\"}",
+                    "expr": "max_over_time(mysql_slave_status_seconds_behind_master{instance=\"$host\"}[$interval]) or max_over_time(mysql_slave_status_seconds_behind_master{instance=\"$host\"}[5m])",
+                    "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Lag",
@@ -707,7 +716,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 0,
-                "y": 11
+                "y": 10
             },
             "id": 33,
             "legend": {
@@ -756,7 +765,8 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "mysql_binlog_size_bytes{instance=\"$host\"}",
+                    "expr": "max_over_time(mysql_binlog_size_bytes{instance=\"$host\"}[$interval]) or max_over_time(mysql_binlog_size_bytes{instance=\"$host\"}[5m])",
+                    "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Size",
@@ -820,7 +830,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 12,
-                "y": 11
+                "y": 10
             },
             "id": 35,
             "legend": {
@@ -857,6 +867,7 @@
                     "datasourceErrors": {},
                     "errors": {},
                     "expr": "increase(mysql_binlog_size_bytes{instance=\"$host\"}[1h])",
+                    "format": "time_series",
                     "interval": "1h",
                     "intervalFactor": 1,
                     "legendFormat": "Size",
@@ -920,7 +931,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 0,
-                "y": 18
+                "y": 17
             },
             "id": 34,
             "legend": {
@@ -969,7 +980,8 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "mysql_binlog_files{instance=\"$host\"}",
+                    "expr": "max_over_time(mysql_binlog_files{instance=\"$host\"}[$interval]) or max_over_time(mysql_binlog_files{instance=\"$host\"}[5m])",
+                    "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Count",
@@ -1033,7 +1045,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 12,
-                "y": 18
+                "y": 17
             },
             "id": 36,
             "legend": {
@@ -1070,6 +1082,7 @@
                     "datasourceErrors": {},
                     "errors": {},
                     "expr": "increase(mysql_binlog_file_number{instance=\"$host\"}[1h])",
+                    "format": "time_series",
                     "interval": "1h",
                     "intervalFactor": 1,
                     "legendFormat": "Count",
@@ -1098,6 +1111,7 @@
             },
             "yaxes": [
                 {
+                    "decimals": 0,
                     "format": "none",
                     "logBase": 1,
                     "max": null,
@@ -1133,7 +1147,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 0,
-                "y": 25
+                "y": 24
             },
             "id": 37,
             "legend": {
@@ -1176,7 +1190,8 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "mysql_slave_status_relay_log_space{instance=\"$host\"}",
+                    "expr": "max_over_time(mysql_slave_status_relay_log_space{instance=\"$host\"}[$interval]) or max_over_time(mysql_slave_status_relay_log_space{instance=\"$host\"}[5m])",
+                    "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Size",
@@ -1240,7 +1255,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 12,
-                "y": 25
+                "y": 24
             },
             "id": 38,
             "legend": {
@@ -1277,6 +1292,7 @@
                     "datasourceErrors": {},
                     "errors": {},
                     "expr": "increase(mysql_slave_status_relay_log_space{instance=\"$host\"}[1h])",
+                    "format": "time_series",
                     "interval": "1h",
                     "intervalFactor": 1,
                     "legendFormat": "Size",
