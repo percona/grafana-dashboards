@@ -10,5 +10,5 @@ get detailed metrics for them.
 
 
 #### Screenshots
-![PMM Query Analytics](/graph/public/plugins/pmm-app/img/pmm.qan.1.png "PMM Query Analytics")
+![PMM Query Analytics](/graph/public/plugins/new-pmm-app/img/pmm.qan.1.png "PMM Query Analytics")
 
