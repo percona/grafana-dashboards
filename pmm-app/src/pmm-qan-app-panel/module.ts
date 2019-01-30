@@ -2,7 +2,6 @@
 
 import {MetricsPanelCtrl} from 'app/plugins/sdk';
 import config from 'app/core/config';
-import $ from 'jquery';
 import AppEvents from "app/core/app_events";
 
 export class PanelCtrl extends MetricsPanelCtrl {
@@ -11,15 +10,15 @@ export class PanelCtrl extends MetricsPanelCtrl {
     constructor($scope, $injector, templateSrv, $sce) {
         super($scope, $injector);
         $scope.qanParams = {
-            'var-host': '',
-            search: '',
-            queryID: '',
-            type: '',
-            filters: '',
-            from: '',
-            to: '',
-            tz: config.bootData.user.timezone,
-            theme: config.bootData.user.lightTheme ? 'light' : 'dark',
+            'var-host': null,
+            'from': '',
+            'search': '',
+            'queryID': '',
+            'type': '',
+            'to': '',
+            'tz': config.bootData.user.timezone,
+            'theme': config.bootData.user.lightTheme ? 'light' : 'dark',
+            'filters': '',
         };
         $scope.trustSrc = (src) => $sce.trustAsResourceUrl(src);
 
@@ -83,7 +82,6 @@ export class PanelCtrl extends MetricsPanelCtrl {
             }, false);
 
             frame.contents().bind('DOMSubtreeModified', () => setTimeout(() => $scope.ctrl.calculatePanelHeight(), 10));
-
         });
     }
 
@@ -121,25 +119,23 @@ export class PanelCtrl extends MetricsPanelCtrl {
         };
         Object.keys(urlParams).forEach(param => url += urlParams[param]);
         history.pushState({}, null, url);
-
     }
 
     private retrieveDashboardURLParams(url): Array<string> {
         const currentURL = new URL(url);
+        const id = currentURL.searchParams.get('queryID') ? currentURL.searchParams.get('queryID') : '';
+        const search = currentURL.searchParams.get('search') ? currentURL.searchParams.get('search') : '';
+        const filters = currentURL.searchParams.get('filters') ? currentURL.searchParams.get('filters') : '';
+        const type = currentURL.searchParams.get('type') ? currentURL.searchParams.get('type') : '';
 
-        return [
-            currentURL.searchParams.get('queryID'),
-            currentURL.searchParams.get('type'),
-            currentURL.searchParams.get('search'),
-            currentURL.searchParams.get('filters')
-        ];
+        return [id, type, search, filters];
     }
 
     private retrieveIFrameURLParams(url): Array<string> {
         const currentURL = new URL(url);
-        const id = currentURL.searchParams.get('queryID');
-        const search = currentURL.searchParams.get('search');
-        const filters = currentURL.searchParams.get('filters');
+        const id = currentURL.searchParams.get('queryID') ? currentURL.searchParams.get('queryID') : '';
+        const search = currentURL.searchParams.get('search') ? currentURL.searchParams.get('search') : '';
+        const filters = currentURL.searchParams.get('filters') ? currentURL.searchParams.get('filters') : '';
         const urlArr = url.split('/');
         const type = urlArr[urlArr.length - 1].split('?')[0];
 
@@ -147,8 +143,11 @@ export class PanelCtrl extends MetricsPanelCtrl {
     }
 
     private encodeData(data: Object): string {
-        return Object.keys(data)
-            .map(key => data.hasOwnProperty(key) ? `${encodeURIComponent(key)}=${encodeURIComponent(data[key])}` : null).join('&');
+        return Object.keys(data).map(key => {
+            if (data.hasOwnProperty(key) && data[key]) {
+                return `${encodeURIComponent(key)}=${encodeURIComponent(data[key])}`
+            }
+        }).filter(param => param).join('&')
     }
 
     // translates Grafana's variables into iframe's URL;
