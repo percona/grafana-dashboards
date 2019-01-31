@@ -1,4 +1,8 @@
 <style>
+    #pmm-update-widget {
+        position: relative;
+        height: inherit;
+    }
 
     #pmm-update-widget p {
         margin-bottom: 0;
@@ -54,9 +58,12 @@
     }
 
     footer {
+        position: absolute;
+        bottom: 0;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        width: 100%;
     }
 
 </style>
@@ -68,7 +75,7 @@
             <span ng-if="!currentVersion">{{version}}</span>
         </p>
     </header>
-    <section class="available-version" ng-if="shouldBeUpdated">
+    <section class="available-version" ng-if="shouldBeUpdated || isNoWebUpdate">
         <p>Available version:&nbsp;</p>
         <div class="version-wrapper">
             <p>{{nextVersion}} <em>{{newReleaseDate}}</em></p>
@@ -76,7 +83,7 @@
                class="text-primary" target="_blank">What's new?</a>
         </div>
     </section>
-    <section class="state" ng-if="!shouldBeUpdated">
+    <section class="state" ng-if="!shouldBeUpdated && !isNoWebUpdate">
         <div class="state-inner" ng-if="!isUpToDate">
             <p class="text-center">No updates are available</p>
             <p class="text-center">PMM checks for updates once a day</p>
@@ -84,7 +91,7 @@
         <p class="text-center" ng-if="isUpToDate">You are up to date</p>
     </section>
     <button class="btn btn-secondary btn-block update-button"
-            ng-if="shouldBeUpdated"
+            ng-if="shouldBeUpdated && !isNoWebUpdate"
             ng-click="update()"
             ng-disabled="disableUpdate">
         <span ng-if="shouldBeUpdated && !disableUpdate">
@@ -93,6 +100,7 @@
         </span>
         <span ng-if="disableUpdate">Updates are disabled</span>
     </button>
+    <span ng-if="isNoWebUpdate">WARNING_TEXT</span>
     <footer>
         <p>Last check: {{lastCheckDate}}</p>
         <button ng-click="checkForUpdate()" class="check-update-button"><i class="fa fa-spin fa-refresh" id="refresh"></i></button>
