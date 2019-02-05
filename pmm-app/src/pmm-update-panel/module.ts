@@ -65,8 +65,9 @@ export class PanelCtrl extends MetricsPanelCtrl {
         $scope.shouldBeUpdated = localStorage.getItem('shouldBeUpdated') || '';
         $scope.nextVersion = localStorage.getItem('nextVersion') || '';
         $scope.newReleaseDate = localStorage.getItem('newReleaseDate') || '';
-        $scope.disableUpdate = localStorage.getItem('disableUpdate');
+        $scope.disableUpdate = localStorage.getItem('disableUpdate') || '';
         $scope.linkVersion = localStorage.getItem('linkVersion') || '';
+        $scope.isNoWebUpdate = localStorage.getItem('isNoWebUpdate') || '';
 
         $scope.checkForUpdate = this.checkForUpdate.bind(this, $scope, $http);
         $scope.update = this.update.bind(this, $scope, $http);
@@ -81,7 +82,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
             if ($(event.target).hasClass('modal-backdrop') && $scope.canBeReloaded) location.reload();
         });
         body.addEventListener('keydown', (event) => {
-          (event.key === escKeyCode && $scope.canBeReloaded) ? location.reload() : event.stopPropagation();
+            (event.key === escKeyCode && $scope.canBeReloaded) ? location.reload() : event.stopPropagation();
         });
         if (timeDiff >= 1000 * 60 * 60) {
             this.checkForUpdate($scope, $http);
@@ -141,7 +142,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
             $scope.errorMessage = '';
             $scope.$apply();
         }, 5000);
-        $scope.shouldBeUpdated = false;
+        $scope.shouldBeUpdated = '';
     }
 
     /**
@@ -149,8 +150,9 @@ export class PanelCtrl extends MetricsPanelCtrl {
      */
     private checkForUpdate($scope, $http): void {
         const linkRegExp = new RegExp('^\\d{1,}\\.\\d{1,2}\\.\\d{1,4}');
+        const refreshButton = $('#refresh');
         $scope.isLoaderShown = true;
-        $('#refresh').addClass('fa-spin');
+        refreshButton.addClass('fa-spin');
 
         $http({
             method: 'GET',
@@ -161,6 +163,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
             $scope.nextVersion = res.data.version || '';
             $scope.newReleaseDate = res.data.release_date || '';
             $scope.disableUpdate = res.data.disable_update || '';
+            const cropLinkVersion = $scope.nextVersion.match(linkRegExp);
 
             const [currentMajor, currentMinor, currentBugfix] = $scope.currentVersion.split('.');
             const [nextMajor, nextMinor, nextBugfix] = $scope.nextVersion.split('.');
@@ -169,31 +172,30 @@ export class PanelCtrl extends MetricsPanelCtrl {
             const isMinor = (+nextMinor > +currentMinor) && (+nextMajor === +currentMajor);
             const isBugfix = (+nextBugfix > +currentBugfix && (+nextMajor === +currentMajor)) && (+nextMinor === +currentMinor);
 
-            if (isMajor || isMinor || isBugfix) {
+            if (isMajor) {
+                $scope.isNoWebUpdate = true;
+            } else if (isMinor || isBugfix) {
+                $scope.isNoWebUpdate = '';
                 $scope.shouldBeUpdated = true;
-                localStorage.setItem('shouldBeUpdated', 'true');
-                localStorage.setItem('nextVersion', $scope.nextVersion);
             } else {
+                $scope.isNoWebUpdate = '';
                 $scope.shouldBeUpdated = '';
                 $scope.isUpToDate = true;
-                localStorage.setItem('shouldBeUpdated', '');
-                localStorage.setItem('nextVersion', '');
             }
             this.getCurrentTime($scope);
-            if ($scope.linkVersion = $scope.nextVersion.match(linkRegExp)) {
-                $scope.linkVersion = $scope.nextVersion.match(linkRegExp)[0];
-                localStorage.setItem('linkVersion', $scope.linkVersion);
+            if (cropLinkVersion) {
+                $scope.linkVersion = cropLinkVersion[0];
             } else {
                 this.displayError($scope, PanelCtrl.ERRORS.INCORRECT_SERVER_RESPONSE);
             }
-            $('#refresh').removeClass('fa-spin');
+            this.setNextVersionData($scope);
         }).catch(() => {
             this.displayError($scope, PanelCtrl.ERRORS.NOTHING_TO_UPDATE);
             this.getCurrentTime($scope);
-            this.resetNextVersionData();
+            this.setNextVersionData();
             $scope.isUpToDate = true;
-            $('#refresh').removeClass('fa-spin');
         });
+        refreshButton.removeClass('fa-spin');
     }
 
     /**
@@ -247,7 +249,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
                 $scope.currentVersion = localStorage.getItem('currentVersion');
                 $scope.isUpdated = true;
                 $scope.canBeReloaded = true;
-                this.resetNextVersionData();
+                this.setNextVersionData();
             }
             if (response.data.title === PanelCtrl.PROCESS_STATUSES.FAILED) {
                 $scope.isLoaderShown = false;
@@ -258,7 +260,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
             }
         }).catch(() => {
             this.reset($scope);
-            this.resetNextVersionData();
+            this.setNextVersionData();
         });
     }
 
@@ -269,11 +271,13 @@ export class PanelCtrl extends MetricsPanelCtrl {
         // TODO: will be implemented after API release
     }
 
-    private resetNextVersionData() {
-        localStorage.setItem('disableUpdate', '');
-        localStorage.setItem('shouldBeUpdated', '');
-        localStorage.setItem('nextVersion', '');
-        localStorage.setItem('newReleaseDate', '');
+    private setNextVersionData($scope: any = false) {
+        localStorage.setItem('shouldBeUpdated', !$scope ? '' : $scope.shouldBeUpdated);
+        localStorage.setItem('nextVersion', !$scope ? '' : $scope.nextVersion);
+        localStorage.setItem('newReleaseDate', !$scope ? '' : $scope.newReleaseDate);
+        localStorage.setItem('linkVersion', !$scope ? '' : $scope.linkVersion);
+        localStorage.setItem('isNoWebUpdate', !$scope ? '' : $scope.isNoWebUpdate);
+        localStorage.setItem('disableUpdate', !$scope ? '' : $scope.disableUpdate);
     }
 
     /**
@@ -285,6 +289,6 @@ export class PanelCtrl extends MetricsPanelCtrl {
         $scope.isChecked = false;
         $scope.isUpdated = false;
         $scope.isOutputShown = true;
-        $scope.shouldBeUpdated = false;
+        $scope.shouldBeUpdated = '';
     }
 }
