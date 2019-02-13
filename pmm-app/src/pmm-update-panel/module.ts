@@ -154,15 +154,18 @@ export class PanelCtrl extends MetricsPanelCtrl {
         $scope.isLoaderShown = true;
         refreshButton.addClass('fa-spin');
 
-        $http({
-            method: 'GET',
-            url: PanelCtrl.API.CHECK_FOR_UPDATE,
-        }).then((res) => {
+        // $http({
+        //     method: 'GET',
+        //     url: PanelCtrl.API.CHECK_FOR_UPDATE,
+        // }).then((res) => {
             $scope.isLoaderShown = false;
             $scope.isChecked = true;
-            $scope.nextVersion = res.data.version || '';
-            $scope.newReleaseDate = res.data.release_date || '';
-            $scope.disableUpdate = res.data.disable_update || '';
+            // $scope.nextVersion = res.data.version || '';
+            // $scope.newReleaseDate = res.data.release_date || '';
+            // $scope.disableUpdate = res.data.disable_update || '';
+        $scope.nextVersion = '2.0.0';
+        $scope.newReleaseDate = '';
+        $scope.disableUpdate = '';
             const cropLinkVersion = $scope.nextVersion.match(linkRegExp);
 
             const [currentMajor, currentMinor, currentBugfix] = $scope.currentVersion.split('.');
@@ -189,12 +192,12 @@ export class PanelCtrl extends MetricsPanelCtrl {
                 this.displayError($scope, PanelCtrl.ERRORS.INCORRECT_SERVER_RESPONSE);
             }
             this.setNextVersionData($scope);
-        }).catch(() => {
-            this.displayError($scope, PanelCtrl.ERRORS.NOTHING_TO_UPDATE);
-            this.getCurrentTime($scope);
-            this.setNextVersionData();
-            $scope.isUpToDate = true;
-        });
+        // }).catch(() => {
+        //     this.displayError($scope, PanelCtrl.ERRORS.NOTHING_TO_UPDATE);
+        //     this.getCurrentTime($scope);
+        //     this.setNextVersionData();
+        //     $scope.isUpToDate = true;
+        // });
         refreshButton.removeClass('fa-spin');
     }
 
