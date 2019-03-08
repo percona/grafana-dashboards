@@ -170,6 +170,9 @@ def drop_some_internal_elements(dashboard):
             del dashboard['__inputs']
         if '__requires' in element:
             del dashboard['__requires']
+        for list_index, listelement in enumerate(dashboard['templating']['list']):
+            if 'current' in listelement:
+                listelement['current'] = {}
 
     return dashboard
 
@@ -330,7 +333,7 @@ def main():
 
     # registered cleanupers.
     CLEANUPERS = [set_title, set_hide_timepicker, drop_some_internal_elements, set_time, set_timezone, set_default_refresh_intervals, set_refresh,
-                  fix_datasource, add_annotation, add_links, add_copyrights_links, set_shared_crosshear, set_unique_ids]
+                  fix_datasource, add_annotation, add_links, add_copyrights_links, set_shared_crosshear, set_unique_ids, set_dashboard_id_to_null]
 
     for func in CLEANUPERS:
         dashboard = func(dashboard)
