@@ -170,9 +170,9 @@ def drop_some_internal_elements(dashboard):
             del dashboard['__inputs']
         if '__requires' in element:
             del dashboard['__requires']
-        for list_index, listelement in enumerate(dashboard['templating']['list']):
+        for index, listelement in enumerate(dashboard['templating']['list']):
             if 'current' in listelement:
-                listelement['current'] = {}
+                dashboard['templating']['list'][index]['current'] = {}
 
     return dashboard
 
