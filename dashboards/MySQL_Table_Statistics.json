@@ -33,7 +33,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1529322492684,
+    "iteration": 1552406841553,
     "links": [
         {
             "icon": "dashboard",
@@ -197,7 +197,7 @@
             ],
             "targets": [
                 {
-                    "expr": "topk(10, sum(mysql_info_schema_table_rows{instance=\"$host\"}) by (schema, table)) > 0",
+                    "expr": "topk(10, sum(mysql_info_schema_table_rows{service_name=\"$service\"}) by (schema, table)) > 0",
                     "interval": "5m",
                     "intervalFactor": 1,
                     "legendFormat": "{{ schema }}.{{ table }}",
@@ -256,7 +256,7 @@
             ],
             "targets": [
                 {
-                    "expr": "topk(10, sum(mysql_info_schema_table_size{instance=\"$host\", component!=\"data_free\"}) by (schema, table)) > 0",
+                    "expr": "topk(10, sum(mysql_info_schema_table_size{service_name=\"$service\", component!=\"data_free\"}) by (schema, table)) > 0",
                     "interval": "5m",
                     "intervalFactor": 1,
                     "legendFormat": "{{ schema }}.{{ table }}",
@@ -319,6 +319,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -332,7 +333,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "sum(mysql_info_schema_table_size{instance=\"$host\", component!=\"data_free\"})",
+                    "expr": "sum(mysql_info_schema_table_size{service_name=\"$service\", component!=\"data_free\"})",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Data + Index Size",
@@ -344,7 +345,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "sum(mysql_info_schema_table_size{instance=\"$host\", component=\"data_free\"})",
+                    "expr": "sum(mysql_info_schema_table_size{service_name=\"$service\", component=\"data_free\"})",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Freeable Size",
@@ -355,6 +356,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Total Database Size",
             "tooltip": {
@@ -438,7 +440,7 @@
             ],
             "targets": [
                 {
-                    "expr": "topk(5, sum(mysql_info_schema_table_size{instance=\"$host\", component=\"data_free\"}) by (schema, table)) > 0",
+                    "expr": "topk(5, sum(mysql_info_schema_table_size{service_name=\"$service\", component=\"data_free\"}) by (schema, table)) > 0",
                     "interval": "5m",
                     "intervalFactor": 1,
                     "legendFormat": "{{ schema }}.{{ table }}",
@@ -535,6 +537,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -548,7 +551,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "topk(5, rate(mysql_info_schema_table_statistics_rows_read_total{instance=\"$host\"}[$interval])>0) or topk(5, irate(mysql_info_schema_table_statistics_rows_read_total{instance=\"$host\"}[5m])>0)",
+                    "expr": "topk(5, rate(mysql_info_schema_table_statistics_rows_read_total{service_name=\"$service\"}[$interval])>0) or topk(5, irate(mysql_info_schema_table_statistics_rows_read_total{service_name=\"$service\"}[5m])>0)",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "{{ schema }}.{{ table }}",
@@ -559,6 +562,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Top Tables by Rows Read",
             "tooltip": {
@@ -647,6 +651,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -660,7 +665,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "topk(5, rate(mysql_info_schema_table_statistics_rows_changed_total{instance=\"$host\"}[$interval])>0) or topk(5, irate(mysql_info_schema_table_statistics_rows_changed_total{instance=\"$host\"}[5m])>0)",
+                    "expr": "topk(5, rate(mysql_info_schema_table_statistics_rows_changed_total{service_name=\"$service\"}[$interval])>0) or topk(5, irate(mysql_info_schema_table_statistics_rows_changed_total{service_name=\"$service\"}[5m])>0)",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "{{ schema }}.{{ table }}",
@@ -671,6 +676,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Top Tables by Rows Changed",
             "tooltip": {
@@ -752,6 +758,54 @@
             },
             "styles": [
                 {
+                    "alias": "",
+                    "colorMode": null,
+                    "colors": [
+                        "rgba(245, 54, 54, 0.9)",
+                        "rgba(237, 129, 40, 0.89)",
+                        "rgba(50, 172, 45, 0.97)"
+                    ],
+                    "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                    "decimals": 2,
+                    "mappingType": 1,
+                    "pattern": "/.*_id/",
+                    "thresholds": [],
+                    "type": "hidden",
+                    "unit": "short"
+                },
+                {
+                    "alias": "",
+                    "colorMode": null,
+                    "colors": [
+                        "rgba(245, 54, 54, 0.9)",
+                        "rgba(237, 129, 40, 0.89)",
+                        "rgba(50, 172, 45, 0.97)"
+                    ],
+                    "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                    "decimals": 2,
+                    "mappingType": 1,
+                    "pattern": "job",
+                    "thresholds": [],
+                    "type": "hidden",
+                    "unit": "short"
+                },
+                {
+                    "alias": "",
+                    "colorMode": null,
+                    "colors": [
+                        "rgba(245, 54, 54, 0.9)",
+                        "rgba(237, 129, 40, 0.89)",
+                        "rgba(50, 172, 45, 0.97)"
+                    ],
+                    "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                    "decimals": 2,
+                    "mappingType": 1,
+                    "pattern": "instance",
+                    "thresholds": [],
+                    "type": "hidden",
+                    "unit": "short"
+                },
+                {
                     "colorMode": null,
                     "colors": [
                         "rgba(50, 172, 45, 0.97)",
@@ -771,7 +825,7 @@
             ],
             "targets": [
                 {
-                    "expr": "topk(10, mysql_info_schema_auto_increment_column{instance=\"$host\"} / mysql_info_schema_auto_increment_column_max{instance=\"$host\"})",
+                    "expr": "topk(10, mysql_info_schema_auto_increment_column{service_name=\"$service\"} / mysql_info_schema_auto_increment_column_max{service_name=\"$service\"})",
                     "format": "table",
                     "interval": "5m",
                     "intervalFactor": 1,
@@ -787,7 +841,7 @@
         }
     ],
     "refresh": "1m",
-    "schemaVersion": 16,
+    "schemaVersion": 18,
     "style": "dark",
     "tags": [
         "MySQL",
@@ -800,10 +854,7 @@
                 "auto": true,
                 "auto_count": 200,
                 "auto_min": "1s",
-                "current": {
-                    "text": "auto",
-                    "value": "$__auto_interval_interval"
-                },
+                "current": {},
                 "datasource": "Prometheus",
                 "hide": 0,
                 "includeAll": false,
@@ -855,6 +906,7 @@
                 ],
                 "query": "1s,5s,1m,5m,1h,6h,1d",
                 "refresh": 2,
+                "skipUrlSync": false,
                 "type": "interval"
             },
             {
@@ -862,6 +914,7 @@
                 "allValue": null,
                 "current": {},
                 "datasource": "Prometheus",
+                "definition": "label_values(mysql_up, node_name)",
                 "hide": 0,
                 "includeAll": false,
                 "label": "Host",
@@ -869,14 +922,37 @@
                 "multiFormat": "regex values",
                 "name": "host",
                 "options": [],
-                "query": "label_values(mysql_up, instance)",
+                "query": "label_values(mysql_up, node_name)",
                 "refresh": 1,
                 "refresh_on_load": false,
                 "regex": "",
+                "skipUrlSync": false,
                 "sort": 1,
                 "tagValuesQuery": null,
                 "tags": [],
                 "tagsQuery": null,
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allValue": null,
+                "current": {},
+                "datasource": "Prometheus",
+                "definition": "label_values(mysql_up{node_name=~\"$host\"}, service_name)",
+                "hide": 0,
+                "includeAll": false,
+                "label": "Service",
+                "multi": false,
+                "name": "service",
+                "options": [],
+                "query": "label_values(mysql_up{node_name=~\"$host\"}, service_name)",
+                "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
                 "type": "query",
                 "useTags": false
             }
@@ -921,5 +997,5 @@
     "timezone": "browser",
     "title": "MySQL Table Statistics",
     "uid": "CiMg9oiik",
-    "version": 1
+    "version": 3
 }

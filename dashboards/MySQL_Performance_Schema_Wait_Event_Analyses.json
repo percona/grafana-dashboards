@@ -33,7 +33,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1533217364087,
+    "iteration": 1552406186667,
     "links": [
         {
             "icon": "dashboard",
@@ -188,6 +188,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null as zero",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 1,
             "points": true,
@@ -198,7 +199,7 @@
             "steppedLine": true,
             "targets": [
                 {
-                    "expr": "rate(mysql_perf_schema_events_waits_total{instance=\"$host\",event_name=~\"$event\"}[$interval]) or irate(mysql_perf_schema_events_waits_total{instance=\"$host\",instance=\"$host\",event_name=~\"$event\"}[5m])",
+                    "expr": "rate(mysql_perf_schema_events_waits_total{service_name=\"$service\",event_name=~\"$event\"}[$interval]) or irate(mysql_perf_schema_events_waits_total{service_name=\"$service\",service_name=\"$service\",event_name=~\"$event\"}[5m])",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -210,6 +211,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Count - Performance Schema Waits",
             "tooltip": {
@@ -284,6 +286,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null as zero",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 1,
             "points": true,
@@ -294,7 +297,7 @@
             "steppedLine": true,
             "targets": [
                 {
-                    "expr": "rate(mysql_perf_schema_events_waits_seconds_total{instance=\"$host\",event_name=~\"$event\"}[$interval]) or irate(mysql_perf_schema_events_waits_seconds_total{instance=\"$host\",instance=\"$host\",event_name=~\"$event\"}[5m])",
+                    "expr": "rate(mysql_perf_schema_events_waits_seconds_total{service_name=\"$service\",event_name=~\"$event\"}[$interval]) or irate(mysql_perf_schema_events_waits_seconds_total{service_name=\"$service\",service_name=\"$service\",event_name=~\"$event\"}[5m])",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -306,6 +309,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Load - Performance Schema Waits",
             "tooltip": {
@@ -380,6 +384,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null as zero",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 1,
             "points": true,
@@ -390,7 +395,7 @@
             "steppedLine": true,
             "targets": [
                 {
-                    "expr": "rate(mysql_perf_schema_events_waits_seconds_total{instance=\"$host\",event_name=~\"$event\"}[$interval])/rate(mysql_perf_schema_events_waits_total{instance=\"$host\",event_name=~\"$event\"}[$interval]) or irate(mysql_perf_schema_events_waits_seconds_total{instance=\"$host\",instance=\"$host\",event_name=~\"$event\"}[5m])/irate(mysql_perf_schema_events_waits_total{instance=\"$host\",instance=\"$host\",event_name=~\"$event\"}[5m])",
+                    "expr": "rate(mysql_perf_schema_events_waits_seconds_total{service_name=\"$service\",event_name=~\"$event\"}[$interval])/rate(mysql_perf_schema_events_waits_total{service_name=\"$service\",event_name=~\"$event\"}[$interval]) or irate(mysql_perf_schema_events_waits_seconds_total{service_name=\"$service\",service_name=\"$service\",event_name=~\"$event\"}[5m])/irate(mysql_perf_schema_events_waits_total{service_name=\"$service\",service_name=\"$service\",event_name=~\"$event\"}[5m])",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -400,7 +405,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mysql_perf_schema_events_waits_total{instance=\"$host\",event_name=~\"$event\"}[$interval]) or irate(mysql_perf_schema_events_waits_total{instance=\"$host\",instance=\"$host\",event_name=~\"$event\"}[5m])",
+                    "expr": "rate(mysql_perf_schema_events_waits_total{service_name=\"$service\",event_name=~\"$event\"}[$interval]) or irate(mysql_perf_schema_events_waits_total{service_name=\"$service\",service_name=\"$service\",event_name=~\"$event\"}[5m])",
                     "format": "time_series",
                     "hide": true,
                     "intervalFactor": 1,
@@ -410,6 +415,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Avg Wait Time - Performance Schema Waits",
             "tooltip": {
@@ -449,7 +455,7 @@
         }
     ],
     "refresh": "1m",
-    "schemaVersion": 16,
+    "schemaVersion": 18,
     "style": "dark",
     "tags": [
         "MySQL",
@@ -462,10 +468,7 @@
                 "auto": true,
                 "auto_count": 200,
                 "auto_min": "1s",
-                "current": {
-                    "text": "auto",
-                    "value": "$__auto_interval_interval"
-                },
+                "current": {},
                 "datasource": "Prometheus",
                 "hide": 0,
                 "includeAll": false,
@@ -517,6 +520,7 @@
                 ],
                 "query": "1s,5s,1m,5m,1h,6h,1d",
                 "refresh": 2,
+                "skipUrlSync": false,
                 "type": "interval"
             },
             {
@@ -524,6 +528,7 @@
                 "allValue": null,
                 "current": {},
                 "datasource": "Prometheus",
+                "definition": "label_values(mysql_global_variables_performance_schema, node_name)",
                 "hide": 0,
                 "includeAll": false,
                 "label": "Host",
@@ -531,10 +536,11 @@
                 "multiFormat": "glob",
                 "name": "host",
                 "options": [],
-                "query": "label_values(mysql_global_variables_performance_schema, instance)",
+                "query": "label_values(mysql_global_variables_performance_schema, node_name)",
                 "refresh": 1,
                 "refresh_on_load": false,
                 "regex": "",
+                "skipUrlSync": false,
                 "sort": 1,
                 "tagValuesQuery": null,
                 "tags": [],
@@ -546,15 +552,39 @@
                 "allValue": null,
                 "current": {},
                 "datasource": "Prometheus",
+                "definition": "label_values(mysql_global_variables_performance_schema{node_name=~\"$host\"}, service_name)",
+                "hide": 0,
+                "includeAll": false,
+                "label": "Service",
+                "multi": false,
+                "name": "service",
+                "options": [],
+                "query": "label_values(mysql_global_variables_performance_schema{node_name=~\"$host\"}, service_name)",
+                "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allValue": null,
+                "current": {},
+                "datasource": "Prometheus",
+                "definition": "",
                 "hide": 0,
                 "includeAll": false,
                 "label": "Event",
                 "multi": true,
                 "name": "event",
                 "options": [],
-                "query": "label_values(mysql_perf_schema_events_waits_seconds_total{instance=\"$host\"}, event_name)",
+                "query": "label_values(mysql_perf_schema_events_waits_seconds_total{service_name=\"$service\"}, event_name)",
                 "refresh": 1,
                 "regex": "",
+                "skipUrlSync": false,
                 "sort": 1,
                 "tagValuesQuery": "",
                 "tags": [],
@@ -598,5 +628,5 @@
     "timezone": "browser",
     "title": "MySQL Performance Schema Wait Event Analyses",
     "uid": "fl8HVgcmk",
-    "version": 2
+    "version": 3
 }

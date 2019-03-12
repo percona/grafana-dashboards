@@ -33,7 +33,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1533051723834,
+    "iteration": 1552404459950,
     "links": [
         {
             "icon": "dashboard",
@@ -180,6 +180,7 @@
             "linewidth": 1,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 1,
             "points": true,
@@ -198,7 +199,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_insert_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_insert_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_insert_total{service_name=\"$service\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_insert_total{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -208,7 +209,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_delete_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_delete_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_delete_total{service_name=\"$service\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_delete_total{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -218,7 +219,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_delete_mark_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_delete_mark_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_delete_mark_total{service_name=\"$service\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_delete_mark_total{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -227,7 +228,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_total{service_name=\"$service\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_total{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -236,7 +237,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "(rate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_insert_total{instance=\"$host\"}[$interval])+rate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_delete_total{instance=\"$host\"}[$interval])+rate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_delete_mark_total{instance=\"$host\"}[$interval]))/rate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_total{instance=\"$host\"}[$interval]) or (irate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_insert_total{instance=\"$host\"}[5m])+irate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_delete_total{instance=\"$host\"}[5m])+irate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_delete_mark_total{instance=\"$host\"}[5m]))/irate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_total{instance=\"$host\"}[5m])",
+                    "expr": "(rate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_insert_total{service_name=\"$service\"}[$interval])+rate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_delete_total{service_name=\"$service\"}[$interval])+rate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_delete_mark_total{service_name=\"$service\"}[$interval]))/rate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_total{service_name=\"$service\"}[$interval]) or (irate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_insert_total{service_name=\"$service\"}[5m])+irate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_delete_total{service_name=\"$service\"}[5m])+irate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_delete_mark_total{service_name=\"$service\"}[5m]))/irate(mysql_info_schema_innodb_metrics_change_buffer_ibuf_merges_total{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -247,6 +248,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Change Buffer Performance",
             "tooltip": {
@@ -335,6 +337,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 1,
             "points": false,
@@ -348,7 +351,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "mysql_info_schema_innodb_metrics_recovery_log_lsn_current{instance=\"$host\"}*0 + on (instance) mysql_global_variables_innodb_log_buffer_size{instance=\"$host\"}",
+                    "expr": "mysql_info_schema_innodb_metrics_recovery_log_lsn_current{service_name=\"$service\"}*0 + on (instance) mysql_global_variables_innodb_log_buffer_size{service_name=\"$service\"}",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -358,7 +361,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "mysql_info_schema_innodb_metrics_recovery_log_lsn_current{instance=\"$host\"} - mysql_info_schema_innodb_metrics_recovery_log_lsn_last_flush{instance=\"$host\"}",
+                    "expr": "mysql_info_schema_innodb_metrics_recovery_log_lsn_current{service_name=\"$service\"} - mysql_info_schema_innodb_metrics_recovery_log_lsn_last_flush{service_name=\"$service\"}",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -370,6 +373,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "InnoDB Log Buffer Performance",
             "tooltip": {
@@ -460,6 +464,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 1,
             "points": false,
@@ -478,7 +483,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(mysql_info_schema_innodb_metrics_index_index_page_merge_attempts_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_index_index_page_merge_attempts_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_info_schema_innodb_metrics_index_index_page_merge_attempts_total{service_name=\"$service\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_index_index_page_merge_attempts_total{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -488,7 +493,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mysql_info_schema_innodb_metrics_index_index_page_merge_successful_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_index_index_page_merge_successful_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_info_schema_innodb_metrics_index_index_page_merge_successful_total{service_name=\"$service\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_index_index_page_merge_successful_total{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -498,7 +503,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mysql_info_schema_innodb_metrics_index_index_page_splits_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_index_index_page_splits_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_info_schema_innodb_metrics_index_index_page_splits_total{service_name=\"$service\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_index_index_page_splits_total{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -508,7 +513,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "(rate(mysql_info_schema_innodb_metrics_index_index_page_merge_successful_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_index_index_page_merge_successful_total{instance=\"$host\"}[5m])) / (rate(mysql_info_schema_innodb_metrics_index_index_page_merge_attempts_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_index_index_page_merge_attempts_total{instance=\"$host\"}[5m])) * 100",
+                    "expr": "(rate(mysql_info_schema_innodb_metrics_index_index_page_merge_successful_total{service_name=\"$service\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_index_index_page_merge_successful_total{service_name=\"$service\"}[5m])) / (rate(mysql_info_schema_innodb_metrics_index_index_page_merge_attempts_total{service_name=\"$service\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_index_index_page_merge_attempts_total{service_name=\"$service\"}[5m])) * 100",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -520,6 +525,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "InnoDB Page Splits",
             "tooltip": {
@@ -610,6 +616,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 1,
             "points": false,
@@ -629,7 +636,7 @@
             "steppedLine": true,
             "targets": [
                 {
-                    "expr": "rate(mysql_info_schema_innodb_metrics_index_index_page_reorg_attempts_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_index_index_page_reorg_attempts_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_info_schema_innodb_metrics_index_index_page_reorg_attempts_total{service_name=\"$service\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_index_index_page_reorg_attempts_total{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -638,7 +645,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mysql_info_schema_innodb_metrics_index_index_page_reorg_successful_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_index_index_page_reorg_successful_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_info_schema_innodb_metrics_index_index_page_reorg_successful_total{service_name=\"$service\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_index_index_page_reorg_successful_total{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -647,7 +654,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "(rate(mysql_info_schema_innodb_metrics_index_index_page_reorg_successful_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_index_index_page_reorg_successful_total{instance=\"$host\"}[5m])) / (rate(mysql_info_schema_innodb_metrics_index_index_page_reorg_attempts_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_index_index_page_reorg_attempts_total{instance=\"$host\"}[5m])) * 100",
+                    "expr": "(rate(mysql_info_schema_innodb_metrics_index_index_page_reorg_successful_total{service_name=\"$service\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_index_index_page_reorg_successful_total{service_name=\"$service\"}[5m])) / (rate(mysql_info_schema_innodb_metrics_index_index_page_reorg_attempts_total{service_name=\"$service\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_index_index_page_reorg_attempts_total{service_name=\"$service\"}[5m])) * 100",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -658,6 +665,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "InnoDB Page Reorgs",
             "tooltip": {
@@ -746,6 +754,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 1,
             "points": false,
@@ -759,7 +768,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(mysql_info_schema_innodb_metrics_purge_purge_upd_exist_or_extern_records_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_purge_purge_upd_exist_or_extern_records_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_info_schema_innodb_metrics_purge_purge_upd_exist_or_extern_records_total{service_name=\"$service\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_purge_purge_upd_exist_or_extern_records_total{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -769,7 +778,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mysql_info_schema_innodb_metrics_purge_purge_del_mark_records_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_purge_purge_del_mark_records_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_info_schema_innodb_metrics_purge_purge_del_mark_records_total{service_name=\"$service\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_purge_purge_del_mark_records_total{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -779,7 +788,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mysql_info_schema_innodb_metrics_purge_purge_undo_log_pages_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_purge_purge_undo_log_pages_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_info_schema_innodb_metrics_purge_purge_undo_log_pages_total{service_name=\"$service\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_purge_purge_undo_log_pages_total{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -790,6 +799,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "InnoDB Purge Performance",
             "tooltip": {
@@ -878,6 +888,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 1,
             "points": false,
@@ -891,7 +902,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(mysql_info_schema_innodb_metrics_lock_lock_rec_lock_created_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_lock_lock_rec_lock_created_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_info_schema_innodb_metrics_lock_lock_rec_lock_created_total{service_name=\"$service\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_lock_lock_rec_lock_created_total{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -901,7 +912,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mysql_info_schema_innodb_metrics_lock_lock_rec_lock_removed_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_lock_lock_rec_lock_removed_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_info_schema_innodb_metrics_lock_lock_rec_lock_removed_total{service_name=\"$service\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_lock_lock_rec_lock_removed_total{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -911,7 +922,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mysql_info_schema_innodb_metrics_lock_lock_rec_lock_requests_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_lock_lock_rec_lock_requests_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_info_schema_innodb_metrics_lock_lock_rec_lock_requests_total{service_name=\"$service\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_lock_lock_rec_lock_requests_total{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -922,6 +933,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "InnoDB Locking",
             "tooltip": {
@@ -1010,6 +1022,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 1,
             "points": false,
@@ -1023,7 +1036,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(mysql_info_schema_innodb_metrics_server_innodb_log_flush_usec_total{instance=\"$host\"}[$interval])/1000000 or irate(mysql_info_schema_innodb_metrics_server_innodb_log_flush_usec_total{instance=\"$host\"}[5m])/1000000",
+                    "expr": "rate(mysql_info_schema_innodb_metrics_server_innodb_log_flush_usec_total{service_name=\"$service\"}[$interval])/1000000 or irate(mysql_info_schema_innodb_metrics_server_innodb_log_flush_usec_total{service_name=\"$service\"}[5m])/1000000",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1033,7 +1046,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mysql_info_schema_innodb_metrics_server_innodb_ibuf_merge_usec_total{instance=\"$host\"}[$interval])/1000000 or irate(mysql_info_schema_innodb_metrics_server_innodb_ibuf_merge_usec_total{instance=\"$host\"}[5m])/1000000",
+                    "expr": "rate(mysql_info_schema_innodb_metrics_server_innodb_ibuf_merge_usec_total{service_name=\"$service\"}[$interval])/1000000 or irate(mysql_info_schema_innodb_metrics_server_innodb_ibuf_merge_usec_total{service_name=\"$service\"}[5m])/1000000",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1042,7 +1055,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mysql_info_schema_innodb_metrics_server_innodb_checkpoint_usec_total{instance=\"$host\"}[$interval])/1000000 or irate(mysql_info_schema_innodb_metrics_server_innodb_checkpoint_usec_total{instance=\"$host\"}[5m])/1000000",
+                    "expr": "rate(mysql_info_schema_innodb_metrics_server_innodb_checkpoint_usec_total{service_name=\"$service\"}[$interval])/1000000 or irate(mysql_info_schema_innodb_metrics_server_innodb_checkpoint_usec_total{service_name=\"$service\"}[5m])/1000000",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1053,6 +1066,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "InnoDB Main Thread Utilization",
             "tooltip": {
@@ -1141,6 +1155,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 1,
             "points": false,
@@ -1154,7 +1169,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(mysql_info_schema_innodb_metrics_transaction_trx_rw_commits_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_transaction_trx_rw_commits_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_info_schema_innodb_metrics_transaction_trx_rw_commits_total{service_name=\"$service\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_transaction_trx_rw_commits_total{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1164,7 +1179,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mysql_info_schema_innodb_metrics_transaction_trx_rollbacks_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_transaction_trx_rollbacks_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_info_schema_innodb_metrics_transaction_trx_rollbacks_total{service_name=\"$service\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_transaction_trx_rollbacks_total{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1173,7 +1188,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mysql_info_schema_innodb_metrics_transaction_trx_ro_commits_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_transaction_trx_ro_commits_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_info_schema_innodb_metrics_transaction_trx_ro_commits_total{service_name=\"$service\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_transaction_trx_ro_commits_total{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1182,7 +1197,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mysql_info_schema_innodb_metrics_transaction_trx_nl_ro_commits_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_transaction_trx_nl_ro_commits_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_info_schema_innodb_metrics_transaction_trx_nl_ro_commits_total{service_name=\"$service\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_transaction_trx_nl_ro_commits_total{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1191,7 +1206,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mysql_info_schema_innodb_metrics_transaction_trx_commits_insert_update_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_transaction_trx_commits_insert_update_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_info_schema_innodb_metrics_transaction_trx_commits_insert_update_total{service_name=\"$service\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_transaction_trx_commits_insert_update_total{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1200,7 +1215,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mysql_global_status_innodb_max_trx_id{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_max_trx_id{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_global_status_innodb_max_trx_id{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_innodb_max_trx_id{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1211,6 +1226,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "InnoDB Transactions Information",
             "tooltip": {
@@ -1299,6 +1315,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 1,
             "points": false,
@@ -1312,7 +1329,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "mysql_info_schema_innodb_metrics_transaction_trx_rseg_current_size{instance=\"$host\"}*mysql_global_status_innodb_page_size{instance=\"$host\"}",
+                    "expr": "mysql_info_schema_innodb_metrics_transaction_trx_rseg_current_size{service_name=\"$service\"}*mysql_global_status_innodb_page_size{service_name=\"$service\"}",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1324,6 +1341,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "InnoDB Undo Space Usage",
             "tooltip": {
@@ -1414,6 +1432,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 1,
             "points": false,
@@ -1427,7 +1446,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(mysql_info_schema_innodb_metrics_server_innodb_activity_count_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_server_innodb_activity_count_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_info_schema_innodb_metrics_server_innodb_activity_count_total{service_name=\"$service\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_server_innodb_activity_count_total{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1439,6 +1458,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "InnoDB Activity",
             "tooltip": {
@@ -1529,6 +1549,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 1,
             "points": false,
@@ -1542,7 +1563,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(mysql_info_schema_innodb_metrics_server_innodb_rwlock_s_os_waits_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_server_innodb_rwlock_s_os_waits_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_info_schema_innodb_metrics_server_innodb_rwlock_s_os_waits_total{service_name=\"$service\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_server_innodb_rwlock_s_os_waits_total{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1552,7 +1573,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mysql_info_schema_innodb_metrics_server_innodb_rwlock_sx_os_waits_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_server_innodb_rwlock_sx_os_waits_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_info_schema_innodb_metrics_server_innodb_rwlock_sx_os_waits_total{service_name=\"$service\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_server_innodb_rwlock_sx_os_waits_total{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1561,7 +1582,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mysql_info_schema_innodb_metrics_server_innodb_rwlock_x_os_waits_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_server_innodb_rwlock_x_os_waits_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_info_schema_innodb_metrics_server_innodb_rwlock_x_os_waits_total{service_name=\"$service\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_server_innodb_rwlock_x_os_waits_total{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1572,6 +1593,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "InnoDB Contention - OS Waits",
             "tooltip": {
@@ -1662,6 +1684,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 1,
             "points": false,
@@ -1675,7 +1698,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(mysql_info_schema_innodb_metrics_server_innodb_rwlock_s_spin_rounds_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_server_innodb_rwlock_s_spin_rounds_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_info_schema_innodb_metrics_server_innodb_rwlock_s_spin_rounds_total{service_name=\"$service\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_server_innodb_rwlock_s_spin_rounds_total{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1685,7 +1708,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mysql_info_schema_innodb_metrics_server_innodb_rwlock_sx_spin_rounds_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_server_innodb_rwlock_sx_spin_rounds_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_info_schema_innodb_metrics_server_innodb_rwlock_sx_spin_rounds_total{service_name=\"$service\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_server_innodb_rwlock_sx_spin_rounds_total{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1694,7 +1717,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mysql_info_schema_innodb_metrics_server_innodb_rwlock_x_spin_rounds_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_server_innodb_rwlock_x_spin_rounds_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_info_schema_innodb_metrics_server_innodb_rwlock_x_spin_rounds_total{service_name=\"$service\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_server_innodb_rwlock_x_spin_rounds_total{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1705,6 +1728,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "InnoDB Contention - Spin Rounds",
             "tooltip": {
@@ -1795,6 +1819,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 1,
             "points": true,
@@ -1808,7 +1833,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(mysql_info_schema_innodb_metrics_transaction_trx_rw_commits_total{instance=\"$host\"}[$interval])/rate(mysql_global_status_innodb_log_writes{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_transaction_trx_rw_commits_total{instance=\"$host\"}[5m])/irate(mysql_global_status_innodb_log_writes{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_info_schema_innodb_metrics_transaction_trx_rw_commits_total{service_name=\"$service\"}[$interval])/rate(mysql_global_status_innodb_log_writes{service_name=\"$service\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_transaction_trx_rw_commits_total{service_name=\"$service\"}[5m])/irate(mysql_global_status_innodb_log_writes{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1820,6 +1845,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "InnoDB Group Commit Batch Size",
             "tooltip": {
@@ -1915,6 +1941,7 @@
                 }
             ],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 1,
             "points": false,
@@ -1928,7 +1955,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "mysql_info_schema_innodb_metrics_purge_purge_dml_delay_usec{instance=\"$host\"}",
+                    "expr": "mysql_info_schema_innodb_metrics_purge_purge_dml_delay_usec{service_name=\"$service\"}",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1938,7 +1965,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "mysql_global_variables_innodb_max_purge_lag_delay{instance=\"$host\"}",
+                    "expr": "mysql_global_variables_innodb_max_purge_lag_delay{service_name=\"$service\"}",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1949,6 +1976,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "InnoDB Purge Throttling",
             "tooltip": {
@@ -2039,6 +2067,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 1,
             "points": false,
@@ -2057,7 +2086,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_btree_total{instance=\"$host\"}[$interval])+\nrate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_total{instance=\"$host\"}[$interval]) or\nirate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_btree_total{instance=\"$host\"}[5m])+\nirate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_btree_total{service_name=\"$service\"}[$interval])+\nrate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_total{service_name=\"$service\"}[$interval]) or\nirate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_btree_total{service_name=\"$service\"}[5m])+\nirate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_total{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2067,7 +2096,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_total{instance=\"$host\"}[$interval]) or\nirate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_total{service_name=\"$service\"}[$interval]) or\nirate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_total{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2076,7 +2105,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "1 - (rate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_total{instance=\"$host\"}[$interval]))/\n(rate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_total{instance=\"$host\"}[$interval])+\nrate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_btree_total{instance=\"$host\"}[$interval])) or\n1 - (irate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_total{instance=\"$host\"}[5m]))/\n(irate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_total{instance=\"$host\"}[5m])+\nirate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_btree_total{instance=\"$host\"}[5m]))",
+                    "expr": "1 - (rate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_total{service_name=\"$service\"}[$interval]))/\n(rate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_total{service_name=\"$service\"}[$interval])+\nrate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_btree_total{service_name=\"$service\"}[$interval])) or\n1 - (irate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_total{service_name=\"$service\"}[5m]))/\n(irate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_total{service_name=\"$service\"}[5m])+\nirate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_searches_btree_total{service_name=\"$service\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2087,6 +2116,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "InnoDB AHI Usage",
             "tooltip": {
@@ -2177,6 +2207,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 1,
             "points": false,
@@ -2190,7 +2221,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_pages_added_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_pages_added_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_pages_added_total{service_name=\"$service\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_pages_added_total{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2200,7 +2231,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_pages_removed_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_pages_removed_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_pages_removed_total{service_name=\"$service\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_pages_removed_total{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2209,7 +2240,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate( mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_rows_added_total{instance=\"$host\"}[$interval]) or irate( mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_rows_added_total{instance=\"$host\"}[5m])",
+                    "expr": "rate( mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_rows_added_total{service_name=\"$service\"}[$interval]) or irate( mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_rows_added_total{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2218,7 +2249,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_rows_removed_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_rows_removed_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_rows_removed_total{service_name=\"$service\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_rows_removed_total{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2227,7 +2258,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_rows_updated_total{instance=\"$host\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_rows_updated_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_rows_updated_total{service_name=\"$service\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_adaptive_hash_index_adaptive_hash_rows_updated_total{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2238,6 +2269,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "InnoDB AHI Maintenance",
             "tooltip": {
@@ -2319,6 +2351,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -2337,7 +2370,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "mysql_global_status_innodb_onlineddl_pct_progress{instance=\"$host\"}/100",
+                    "expr": "mysql_global_status_innodb_onlineddl_pct_progress{service_name=\"$service\"}/100",
                     "format": "time_series",
                     "hide": false,
                     "interval": "",
@@ -2351,7 +2384,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(mysql_global_status_innodb_onlineddl_rowlog_pct_used{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_onlineddl_rowlog_pct_used{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_global_status_innodb_onlineddl_rowlog_pct_used{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_innodb_onlineddl_rowlog_pct_used{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2364,7 +2397,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(mysql_global_status_innodb_onlineddl_rowlog_rows{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_onlineddl_rowlog_rows{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_global_status_innodb_onlineddl_rowlog_rows{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_innodb_onlineddl_rowlog_rows{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2376,6 +2409,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "InnoDB Online DDL",
             "tooltip": {
@@ -2384,7 +2418,6 @@
                 "sort": 0,
                 "value_type": "individual"
             },
-            "transparent": false,
             "type": "graph",
             "xaxis": {
                 "buckets": null,
@@ -2451,6 +2484,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -2464,7 +2498,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(mysql_global_status_innodb_defragment_count{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_defragment_count{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_global_status_innodb_defragment_count{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_innodb_defragment_count{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2477,7 +2511,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(mysql_global_status_innodb_defragment_compression_failures{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_defragment_compression_failures{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_global_status_innodb_defragment_compression_failures{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_innodb_defragment_compression_failures{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2490,7 +2524,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(mysql_global_status_innodb_defragment_failures{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_defragment_failures{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_global_status_innodb_defragment_failures{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_innodb_defragment_failures{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2502,6 +2536,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "InnoDB Defragmentation",
             "tooltip": {
@@ -2541,7 +2576,7 @@
         }
     ],
     "refresh": "1m",
-    "schemaVersion": 16,
+    "schemaVersion": 18,
     "style": "dark",
     "tags": [
         "MySQL",
@@ -2554,10 +2589,7 @@
                 "auto": true,
                 "auto_count": 200,
                 "auto_min": "1s",
-                "current": {
-                    "text": "auto",
-                    "value": "$__auto_interval_interval"
-                },
+                "current": {},
                 "datasource": "Prometheus",
                 "hide": 0,
                 "includeAll": false,
@@ -2609,6 +2641,7 @@
                 ],
                 "query": "1s,5s,1m,5m,1h,6h,1d",
                 "refresh": 2,
+                "skipUrlSync": false,
                 "type": "interval"
             },
             {
@@ -2616,6 +2649,7 @@
                 "allValue": null,
                 "current": {},
                 "datasource": "Prometheus",
+                "definition": "label_values(mysql_up, node_name)",
                 "hide": 0,
                 "includeAll": false,
                 "label": "Host",
@@ -2623,14 +2657,37 @@
                 "multiFormat": "regex values",
                 "name": "host",
                 "options": [],
-                "query": "label_values(mysql_up, instance)",
+                "query": "label_values(mysql_up, node_name)",
                 "refresh": 1,
                 "refresh_on_load": false,
                 "regex": "",
+                "skipUrlSync": false,
                 "sort": 1,
                 "tagValuesQuery": null,
                 "tags": [],
                 "tagsQuery": null,
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allValue": null,
+                "current": {},
+                "datasource": "Prometheus",
+                "definition": "label_values(mysql_up{node_name=~\"$host\"}, service_name)",
+                "hide": 0,
+                "includeAll": false,
+                "label": "Service",
+                "multi": false,
+                "name": "service",
+                "options": [],
+                "query": "label_values(mysql_up{node_name=~\"$host\"}, service_name)",
+                "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
                 "type": "query",
                 "useTags": false
             }
@@ -2675,5 +2732,5 @@
     "timezone": "browser",
     "title": "MySQL InnoDB Metrics Advanced",
     "uid": "ibkrwGHmz",
-    "version": 1
+    "version": 4
 }
