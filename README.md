@@ -79,7 +79,7 @@ Here is the minimal set of options for the exporters:
  * mysqld_exporter: `-collect.binlog_size=true -collect.info_schema.processlist=true`
  * mongodb_exporter: the defaults are fine.
 
-#### Edit Grafana config
+#### Edit Grafana config (only for Grafana 4.x or below)
 
 Enable JSON dashboards by uncommenting those lines in `grafana.ini`:
 
@@ -91,8 +91,23 @@ If you wish you may import the individual dashboards via UI and ignore this and 
 
 #### Install dashboards
 
+First, download the code via git:
     git clone https://github.com/percona/grafana-dashboards.git
+
+If you are using Grafana 4.x or below, do the following steps:
     cp -r grafana-dashboards/dashboards /var/lib/grafana/
+
+If you are using Grafana 5.x or above, create mysqld_export.yml as the following content under /var/lib/grafana/conf/provisioning/dashboards
+
+    apiVersion: 1
+
+    providers:
+      - name: 'mysqld_exporter'
+         orgId: 1
+         folder: ''
+         type: file
+         options:
+           path: <you git repro path>/grafana-dashboards/dashboards
 
 #### Restart Grafana
 
