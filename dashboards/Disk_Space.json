@@ -14,13 +14,26 @@
                     "pmm_annotation"
                 ],
                 "type": "tags"
+            },
+            {
+                "builtIn": 1,
+                "datasource": "-- Grafana --",
+                "enable": true,
+                "hide": true,
+                "iconColor": "#6ed0e0",
+                "limit": 100,
+                "name": "Annotations & Alerts",
+                "showIn": 0,
+                "tags": [],
+                "type": "dashboard"
             }
         ]
     },
     "editable": true,
     "gnetId": null,
-    "hideControls": true,
+    "graphTooltip": 1,
     "id": null,
+    "iteration": 1529322296775,
     "links": [
         {
             "icon": "dashboard",
@@ -72,6 +85,17 @@
             "includeVars": true,
             "keepTime": true,
             "tags": [
+                "PostgreSQL"
+            ],
+            "targetBlank": false,
+            "title": "PostgreSQL",
+            "type": "dashboards"
+        },
+        {
+            "asDropdown": true,
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
                 "HA"
             ],
             "targetBlank": false,
@@ -112,382 +136,262 @@
             "type": "dashboards"
         }
     ],
-    "refresh": "1m",
-    "rows": [
+    "panels": [
         {
-            "collapse": false,
-            "height": "250px",
-            "panels": [
+            "aliasColors": {
+                "Free (device /dev/xvda1, ext4)": "#82B5D8",
+                "Used (device /dev/xvda1, ext4)": "#BA43A9"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "description": "Shows the percentage of disk space utilization for every mountpoint defined on the system. Having some of the mountpoints close to 100% space utilization is not good because of the risk to have a “disk full” error that can block one of the services or even cause a crash of the entire system.\n\nIn case when the mountpoint is close to 100% consider to remove unused files or to expand the space allocated to the mountpoint.", 
+            "decimals": 2,
+            "editable": true,
+            "error": false,
+            "fill": 0,
+            "grid": {},
+            "gridPos": {
+                "h": 7,
+                "w": 24,
+                "x": 0,
+                "y": 0
+            },
+            "id": 9,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "hideEmpty": false,
+                "hideZero": false,
+                "max": true,
+                "min": true,
+                "rightSide": true,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "minSpan": 12,
+            "nullPointMode": "null",
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
                 {
-                    "aliasColors": {
-                        "Free (device /dev/xvda1, ext4)": "#82B5D8",
-                        "Used (device /dev/xvda1, ext4)": "#BA43A9"
-                    },
-                    "bars": false,
-                    "datasource": "Prometheus",
-                    "decimals": 2,
-                    "editable": true,
-                    "error": false,
-                    "fill": 0,
-                    "grid": {},
-                    "id": 9,
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "hideEmpty": false,
-                        "hideZero": false,
-                        "max": true,
-                        "min": true,
-                        "rightSide": true,
-                        "show": true,
-                        "sort": "avg",
-                        "sortDesc": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": true,
-                    "linewidth": 2,
-                    "links": [],
-                    "minSpan": 6,
-                    "nullPointMode": "null",
-                    "percentage": false,
-                    "pointradius": 5,
-                    "points": false,
-                    "renderer": "flot",
-                    "seriesOverrides": [],
-                    "span": 12,
-                    "stack": false,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "calculatedInterval": "2m",
-                            "datasourceErrors": {},
-                            "errors": {},
-                            "expr": "1 - node_filesystem_free{instance=\"$host\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"} / node_filesystem_size{instance=\"$host\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}",
-                            "hide": false,
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "{{ mountpoint }}",
-                            "metric": "",
-                            "refId": "B",
-                            "step": 300
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeShift": null,
-                    "title": "Mountpoint Usage",
-                    "tooltip": {
-                        "msResolution": false,
-                        "shared": true,
-                        "sort": 0,
-                        "value_type": "individual"
-                    },
-                    "transparent": false,
-                    "type": "graph",
-                    "xaxis": {
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "format": "percentunit",
-                            "label": "",
-                            "logBase": 1,
-                            "max": 1,
-                            "min": 0,
-                            "show": true
-                        },
-                        {
-                            "format": "bytes",
-                            "logBase": 1,
-                            "max": null,
-                            "min": null,
-                            "show": true
-                        }
-                    ]
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "1 - node_filesystem_free{instance=\"$host\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"} / node_filesystem_size{instance=\"$host\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}",
+                    "hide": false,
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{ mountpoint }}",
+                    "metric": "",
+                    "refId": "B",
+                    "step": 300
                 }
             ],
-            "repeat": null,
-            "repeatIteration": null,
-            "repeatRowId": null,
-            "showTitle": false,
-            "title": "New row",
-            "titleSize": "h6"
+            "thresholds": [],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Mountpoint Usage",
+            "tooltip": {
+                "msResolution": false,
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "transparent": false,
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "percentunit",
+                    "label": "",
+                    "logBase": 1,
+                    "max": 1,
+                    "min": 0,
+                    "show": true
+                },
+                {
+                    "format": "bytes",
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
         },
         {
-            "collapse": false,
-            "height": "250px",
-            "panels": [
+            "content": "`Disk Space` -  Amount of disk space used and available on various mount points.  Running out of disk space on OS volume,  database volume or volume used for temporary space can cause downtime.   Some storage may also have reduced performance when small amount of space is available.\n",
+            "datasource": "Prometheus",
+            "editable": true,
+            "error": false,
+            "gridPos": {
+                "h": 3,
+                "w": 24,
+                "x": 0,
+                "y": 7
+            },
+            "height": "50px",
+            "id": 7,
+            "links": [],
+            "mode": "markdown",
+            "style": {},
+            "title": "",
+            "transparent": true,
+            "type": "text"
+        },
+        {
+            "aliasColors": {
+                "Free (device /dev/xvda1, ext4)": "#82B5D8",
+                "Used (device /dev/xvda1, ext4)": "#BA43A9"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "description": "Shows information about the disk space usage of the specified mountpoint.\n\n**Used** is the amount of space used.\n\n**Free** is the amount of space not in use.\n\n**Used+Free** is the total disk space allocated to the mountpoint.\n\nHaving *Free* close to 0 B is not good because of the risk to have a “disk full” error that can block one of the services or even cause a crash of the entire system.\n\nIn case Free is close to 0 B consider to remove unused files or to expand the space allocated to the mountpoint.",  
+            "decimals": 2,
+            "editable": true,
+            "error": false,
+            "fill": 6,
+            "grid": {},
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 0,
+                "y": 10
+            },
+            "id": 4,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "hideEmpty": false,
+                "max": true,
+                "min": true,
+                "rightSide": false,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "minSpan": 12,
+            "nullPointMode": "null",
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "repeat": "mountpoint",
+            "seriesOverrides": [
                 {
-                    "content": "`Disk Space` -  Amount of disk space used and available on various mount points.  Running out of disk space on OS volume,  database volume or volume used for temporary space can cause downtime.   Some storage may also have reduced performance when small amount of space is available.\n",
-                    "datasource": "Prometheus",
-                    "editable": true,
-                    "error": false,
-                    "height": "50px",
-                    "id": 7,
-                    "links": [],
-                    "mode": "markdown",
-                    "span": 12,
-                    "style": {},
-                    "title": "",
-                    "transparent": true,
-                    "type": "text"
+                    "alias": "/Used/",
+                    "color": "#99440A"
                 },
                 {
-                    "aliasColors": {
-                        "Free (device /dev/xvda1, ext4)": "#82B5D8",
-                        "Used (device /dev/xvda1, ext4)": "#BA43A9"
-                    },
-                    "bars": false,
-                    "datasource": "Prometheus",
-                    "decimals": 2,
-                    "editable": true,
-                    "error": false,
-                    "fill": 6,
-                    "grid": {},
-                    "id": 4,
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "hideEmpty": false,
-                        "max": true,
-                        "min": true,
-                        "rightSide": false,
-                        "show": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": true,
-                    "linewidth": 2,
-                    "links": [],
-                    "minSpan": 6,
-                    "nullPointMode": "null",
-                    "percentage": false,
-                    "pointradius": 5,
-                    "points": false,
-                    "renderer": "flot",
-                    "repeat": "mountpoint",
-                    "scopedVars": {
-                        "mountpoint": {
-                            "selected": false,
-                            "text": "/boot",
-                            "value": "/boot"
-                        }
-                    },
-                    "seriesOverrides": [
-                        {
-                            "alias": "/Used/",
-                            "color": "#99440A"
-                        },
-                        {
-                            "alias": "/Free/",
-                            "color": "#EF843C"
-                        }
-                    ],
-                    "span": 6,
-                    "stack": true,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "calculatedInterval": "2m",
-                            "datasourceErrors": {},
-                            "errors": {},
-                            "expr": "node_filesystem_size{instance=\"$host\",mountpoint=\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"} - node_filesystem_free{instance=\"$host\",mountpoint=\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}",
-                            "hide": false,
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Used (device {{ device }}, {{ fstype }})",
-                            "metric": "",
-                            "refId": "B",
-                            "step": 300
-                        },
-                        {
-                            "calculatedInterval": "2m",
-                            "datasourceErrors": {},
-                            "errors": {},
-                            "expr": "node_filesystem_free{instance=\"$host\", mountpoint=\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Free (device {{ device }}, {{ fstype }})",
-                            "metric": "",
-                            "refId": "A",
-                            "step": 300,
-                            "target": ""
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeShift": null,
-                    "title": "Mountpoint $mountpoint",
-                    "tooltip": {
-                        "msResolution": false,
-                        "shared": true,
-                        "sort": 0,
-                        "value_type": "individual"
-                    },
-                    "transparent": false,
-                    "type": "graph",
-                    "xaxis": {
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "format": "bytes",
-                            "label": "",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": true
-                        },
-                        {
-                            "format": "bytes",
-                            "logBase": 1,
-                            "max": null,
-                            "min": null,
-                            "show": true
-                        }
-                    ]
-                },
-                {
-                    "aliasColors": {
-                        "Free (device /dev/xvda1, ext4)": "#82B5D8",
-                        "Used (device /dev/xvda1, ext4)": "#BA43A9"
-                    },
-                    "bars": false,
-                    "datasource": "Prometheus",
-                    "decimals": 2,
-                    "editable": true,
-                    "error": false,
-                    "fill": 6,
-                    "grid": {},
-                    "id": 8,
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "hideEmpty": false,
-                        "max": true,
-                        "min": true,
-                        "rightSide": false,
-                        "show": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": true,
-                    "linewidth": 2,
-                    "links": [],
-                    "minSpan": 6,
-                    "nullPointMode": "null",
-                    "percentage": false,
-                    "pointradius": 5,
-                    "points": false,
-                    "renderer": "flot",
-                    "repeat": null,
-                    "repeatIteration": 1480943686527,
-                    "repeatPanelId": 4,
-                    "scopedVars": {
-                        "mountpoint": {
-                            "selected": false,
-                            "text": "/",
-                            "value": "/"
-                        }
-                    },
-                    "seriesOverrides": [
-                        {
-                            "alias": "/Used/",
-                            "color": "#99440A"
-                        },
-                        {
-                            "alias": "/Free/",
-                            "color": "#EF843C"
-                        }
-                    ],
-                    "span": 6,
-                    "stack": true,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "calculatedInterval": "2m",
-                            "datasourceErrors": {},
-                            "errors": {},
-                            "expr": "node_filesystem_size{instance=\"$host\",mountpoint=\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"} - node_filesystem_free{instance=\"$host\",mountpoint=\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}",
-                            "hide": false,
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Used (device {{ device }}, {{ fstype }})",
-                            "metric": "",
-                            "refId": "B",
-                            "step": 300
-                        },
-                        {
-                            "calculatedInterval": "2m",
-                            "datasourceErrors": {},
-                            "errors": {},
-                            "expr": "node_filesystem_free{instance=\"$host\", mountpoint=\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Free (device {{ device }}, {{ fstype }})",
-                            "metric": "",
-                            "refId": "A",
-                            "step": 300,
-                            "target": ""
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeShift": null,
-                    "title": "Mountpoint $mountpoint",
-                    "tooltip": {
-                        "msResolution": false,
-                        "shared": true,
-                        "sort": 0,
-                        "value_type": "individual"
-                    },
-                    "transparent": false,
-                    "type": "graph",
-                    "xaxis": {
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "format": "bytes",
-                            "label": "",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": true
-                        },
-                        {
-                            "format": "bytes",
-                            "logBase": 1,
-                            "max": null,
-                            "min": null,
-                            "show": true
-                        }
-                    ]
+                    "alias": "/Free/",
+                    "color": "#EF843C"
                 }
             ],
-            "repeat": null,
-            "repeatIteration": null,
-            "repeatRowId": null,
-            "showTitle": false,
-            "title": "Disk Space",
-            "titleSize": "h6"
+            "spaceLength": 10,
+            "stack": true,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "node_filesystem_size{instance=\"$host\",mountpoint=\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"} - node_filesystem_free{instance=\"$host\",mountpoint=\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}",
+                    "hide": false,
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Used (device {{ device }}, {{ fstype }})",
+                    "metric": "",
+                    "refId": "B",
+                    "step": 300
+                },
+                {
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "node_filesystem_free{instance=\"$host\", mountpoint=\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Free (device {{ device }}, {{ fstype }})",
+                    "metric": "",
+                    "refId": "A",
+                    "step": 300,
+                    "target": ""
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Mountpoint $mountpoint",
+            "tooltip": {
+                "msResolution": false,
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "transparent": false,
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "bytes",
+                    "label": "",
+                    "logBase": 1,
+                    "max": null,
+                    "min": 0,
+                    "show": true
+                },
+                {
+                    "format": "bytes",
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
         }
     ],
-    "schemaVersion": 13,
-    "sharedCrosshair": true,
+    "refresh": "1m",
+    "schemaVersion": 16,
     "style": "dark",
     "tags": [
         "OS",
@@ -502,7 +406,7 @@
                 "auto_min": "1s",
                 "current": {
                     "text": "auto",
-                    "value": "$__auto_interval"
+                    "value": "$__auto_interval_interval"
                 },
                 "datasource": "Prometheus",
                 "hide": 0,
@@ -515,7 +419,7 @@
                     {
                         "selected": true,
                         "text": "auto",
-                        "value": "$__auto_interval"
+                        "value": "$__auto_interval_interval"
                     },
                     {
                         "selected": false,
@@ -560,6 +464,7 @@
             {
                 "allFormat": "glob",
                 "allValue": null,
+                "current": {},
                 "datasource": "Prometheus",
                 "hide": 0,
                 "includeAll": false,
@@ -567,12 +472,14 @@
                 "multi": false,
                 "multiFormat": "regex values",
                 "name": "host",
+                "options": [],
                 "query": "label_values(node_filesystem_avail, instance)",
                 "refresh": 1,
                 "refresh_on_load": false,
                 "regex": "",
                 "sort": 1,
                 "tagValuesQuery": "instance",
+                "tags": [],
                 "tagsQuery": "up",
                 "type": "query",
                 "useTags": false
@@ -580,6 +487,7 @@
             {
                 "allFormat": "wildcard",
                 "allValue": null,
+                "current": {},
                 "datasource": "Prometheus",
                 "hide": 2,
                 "hideLabel": false,
@@ -588,12 +496,14 @@
                 "multi": false,
                 "multiFormat": "regex values",
                 "name": "mountpoint",
+                "options": [],
                 "query": "label_values(node_filesystem_avail{instance=\"$host\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}, mountpoint)",
                 "refresh": 1,
                 "refresh_on_load": false,
                 "regex": "",
                 "sort": 1,
                 "tagValuesQuery": "instance",
+                "tags": [],
                 "tagsQuery": "up",
                 "type": "query",
                 "useTags": false
@@ -638,5 +548,6 @@
     },
     "timezone": "browser",
     "title": "Disk Space",
-    "version": 0
+    "uid": "80k9wMHmk",
+    "version": 1
 }

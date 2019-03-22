@@ -1,4 +1,4 @@
-## Grafana dashboards for MySQL and MongoDB monitoring using Prometheus [![Build Status](https://travis-ci.org/percona/grafana-dashboards.svg?branch=master)](https://travis-ci.org/percona/grafana-dashboards)
+## Grafana dashboards for MySQL and MongoDB monitoring using Prometheus [![Build Status](https://travis-ci.org/percona/grafana-dashboards.svg?branch=master)](https://travis-ci.org/percona/grafana-dashboards)[![CLA assistant](https://cla-assistant.percona.com/readme/badge/percona/grafana-dashboards)](https://cla-assistant.percona.com/percona/grafana-dashboards)
 
 This is a set of Grafana dashboards for database and system monitoring using Prometheus datasource.
 
@@ -12,8 +12,10 @@ This is a set of Grafana dashboards for database and system monitoring using Pro
  * MongoDB RocksDB
  * MongoDB WiredTiger
  * MongoDB MMAPv1
+ * MongoDB InMemory
  * MySQL InnoDB Metrics
  * MySQL InnoDB Metrics Advanced
+ * MySQL InnoDB Compression
  * MySQL MyISAM/Aria Metrics
  * MySQL Overview
  * MySQL Performance Schema
@@ -22,6 +24,7 @@ This is a set of Grafana dashboards for database and system monitoring using Pro
  * MySQL Table Statistics
  * MySQL TokuDB Graphs
  * MySQL User Statistics
+ * MySQL Command Handler Counters Compare
  * PXC/Galera Cluster Overview
  * PXC/Galera Graphs
  * Prometheus
@@ -148,3 +151,4 @@ As a general rule of thumb, please try to create bug reports that are:
 - *Specific.* Include as much detail as possible: which version, what environment, etc.
 - *Unique.* Do not duplicate existing tickets.
 - *Scoped to a Single Bug.* One bug per report.
+

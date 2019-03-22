@@ -14,6 +14,18 @@
                     "pmm_annotation"
                 ],
                 "type": "tags"
+            },
+            {
+                "builtIn": 1,
+                "datasource": "-- Grafana --",
+                "enable": true,
+                "hide": true,
+                "iconColor": "#6ed0e0",
+                "limit": 100,
+                "name": "Annotations & Alerts",
+                "showIn": 0,
+                "tags": [],
+                "type": "dashboard"
             }
         ]
     },
@@ -21,7 +33,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1523012375108,
+    "iteration": 1533641976718,
     "links": [
         {
             "icon": "dashboard",
@@ -66,6 +78,17 @@
             ],
             "targetBlank": false,
             "title": "MongoDB",
+            "type": "dashboards"
+        },
+        {
+            "asDropdown": true,
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "PostgreSQL"
+            ],
+            "targetBlank": false,
+            "title": "PostgreSQL",
             "type": "dashboards"
         },
         {
@@ -186,7 +209,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "mysql_global_status_innodb_checkpoint_age{instance=\"$host\"}",
+                    "expr": "max_over_time(mysql_global_status_innodb_checkpoint_age{instance=\"$host\"}[$interval]) or \nmax_over_time(mysql_global_status_innodb_checkpoint_age{instance=\"$host\"}[5m]) or\nmax_over_time(mysql_info_schema_innodb_metrics_recovery_log_lsn_checkpoint_age_total{instance=\"$host\"}[$interval]) or\nmax_over_time(mysql_info_schema_innodb_metrics_recovery_log_lsn_checkpoint_age_total{instance=\"$host\"}[5m]) or\nmax_over_time(mysql_info_schema_innodb_metrics_log_log_lsn_checkpoint_age{instance=\"$host\"}[$interval]) or\nmax_over_time(mysql_info_schema_innodb_metrics_log_log_lsn_checkpoint_age{instance=\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -199,7 +222,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "mysql_global_status_innodb_checkpoint_max_age{instance=\"$host\"}",
+                    "expr": "max_over_time(mysql_global_status_innodb_checkpoint_max_age{instance=\"$host\"}[$interval]) or\nmax_over_time(mysql_global_status_innodb_checkpoint_max_age{instance=\"$host\"}[5m]) or\nmax_over_time(mysql_info_schema_innodb_metrics_recovery_log_max_modified_age_async{instance=\"$host\"}[$interval]) or\nmax_over_time(mysql_info_schema_innodb_metrics_recovery_log_max_modified_age_async{instance=\"$host\"}[5m]) or\nmax_over_time(mysql_info_schema_innodb_metrics_log_log_max_modified_age_async{instance=\"$host\"}[$interval]) or\nmax_over_time(mysql_info_schema_innodb_metrics_log_log_max_modified_age_async{instance=\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -229,6 +252,7 @@
             },
             "yaxes": [
                 {
+                    "decimals": 2,
                     "format": "bytes",
                     "logBase": 1,
                     "max": null,
@@ -236,13 +260,18 @@
                     "show": true
                 },
                 {
+                    "decimals": null,
                     "format": "bytes",
                     "logBase": 1,
                     "max": null,
                     "min": 0,
-                    "show": true
+                    "show": false
                 }
-            ]
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
         },
         {
             "aliasColors": {},
@@ -308,6 +337,7 @@
                     "errors": {},
                     "expr": "rate(mysql_global_status_innodb_max_trx_id{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_max_trx_id{instance=\"$host\"}[5m])",
                     "format": "time_series",
+                    "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "InnoDB Transactions",
@@ -319,7 +349,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "max_over_time(mysql_global_status_innodb_history_list_length{instance=\"$host\"}[$interval]) or max_over_time(mysql_info_schema_innodb_metrics_transaction_trx_rseg_history_len{instance=\"$host\"}[$interval])",
+                    "expr": "(max_over_time(mysql_global_status_innodb_history_list_length{instance=\"$host\"}[$interval]) or \nmax_over_time(mysql_global_status_innodb_history_list_length{instance=\"$host\"}[5m])) or \n(max_over_time(mysql_info_schema_innodb_metrics_transaction_trx_rseg_history_len{instance=\"$host\"}[$interval]) or \nmax_over_time(mysql_info_schema_innodb_metrics_transaction_trx_rseg_history_len{instance=\"$host\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -362,7 +392,11 @@
                     "min": 0,
                     "show": true
                 }
-            ]
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
         },
         {
             "collapsed": false,
@@ -470,7 +504,11 @@
                     "min": 0,
                     "show": true
                 }
-            ]
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
         },
         {
             "aliasColors": {
@@ -613,7 +651,11 @@
                     "min": 0,
                     "show": true
                 }
-            ]
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
         },
         {
             "collapsed": false,
@@ -643,7 +685,7 @@
             "grid": {},
             "gridPos": {
                 "h": 7,
-                "w": 8,
+                "w": 12,
                 "x": 0,
                 "y": 17
             },
@@ -760,7 +802,11 @@
                     "min": 0,
                     "show": true
                 }
-            ]
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
         },
         {
             "aliasColors": {},
@@ -776,8 +822,8 @@
             "grid": {},
             "gridPos": {
                 "h": 7,
-                "w": 8,
-                "x": 8,
+                "w": 12,
+                "x": 12,
                 "y": 17
             },
             "id": 37,
@@ -880,7 +926,7 @@
             "yaxes": [
                 {
                     "format": "bytes",
-                    "logBase": 1,
+                    "logBase": 2,
                     "max": null,
                     "min": 0,
                     "show": true
@@ -890,9 +936,13 @@
                     "logBase": 1,
                     "max": null,
                     "min": 0,
-                    "show": true
+                    "show": false
                 }
-            ]
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
         },
         {
             "aliasColors": {
@@ -910,9 +960,9 @@
             "grid": {},
             "gridPos": {
                 "h": 7,
-                "w": 8,
-                "x": 16,
-                "y": 17
+                "w": 12,
+                "x": 0,
+                "y": 24
             },
             "id": 50,
             "legend": {
@@ -1020,7 +1070,11 @@
                     "min": 0,
                     "show": true
                 }
-            ]
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
         },
         {
             "collapsed": false,
@@ -1028,7 +1082,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 24
+                "y": 31
             },
             "id": 54,
             "panels": [],
@@ -1052,7 +1106,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 0,
-                "y": 25
+                "y": 32
             },
             "id": 47,
             "legend": {
@@ -1135,7 +1189,11 @@
                     "min": 0,
                     "show": true
                 }
-            ]
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
         },
         {
             "aliasColors": {},
@@ -1149,7 +1207,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 12,
-                "y": 25
+                "y": 32
             },
             "id": 48,
             "legend": {
@@ -1258,7 +1316,11 @@
                     "min": null,
                     "show": false
                 }
-            ]
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
         },
         {
             "collapsed": false,
@@ -1266,7 +1328,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 32
+                "y": 39
             },
             "id": 55,
             "panels": [],
@@ -1289,7 +1351,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 0,
-                "y": 33
+                "y": 40
             },
             "id": 42,
             "legend": {
@@ -1376,7 +1438,11 @@
                     "min": 0,
                     "show": true
                 }
-            ]
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
         },
         {
             "aliasColors": {},
@@ -1393,7 +1459,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 12,
-                "y": 33
+                "y": 40
             },
             "id": 3,
             "legend": {
@@ -1468,7 +1534,11 @@
                     "min": 0,
                     "show": true
                 }
-            ]
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
         },
         {
             "collapsed": false,
@@ -1476,7 +1546,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 40
+                "y": 47
             },
             "id": 56,
             "panels": [],
@@ -1497,9 +1567,9 @@
             "grid": {},
             "gridPos": {
                 "h": 7,
-                "w": 8,
+                "w": 12,
                 "x": 0,
-                "y": 41
+                "y": 48
             },
             "id": 21,
             "legend": {
@@ -1598,7 +1668,11 @@
                     "min": 0,
                     "show": true
                 }
-            ]
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
         },
         {
             "aliasColors": {},
@@ -1613,9 +1687,9 @@
             "grid": {},
             "gridPos": {
                 "h": 7,
-                "w": 8,
-                "x": 8,
-                "y": 41
+                "w": 12,
+                "x": 12,
+                "y": 48
             },
             "id": 41,
             "legend": {
@@ -1719,7 +1793,11 @@
                     "min": 0,
                     "show": true
                 }
-            ]
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
         },
         {
             "aliasColors": {
@@ -1739,9 +1817,9 @@
             "grid": {},
             "gridPos": {
                 "h": 7,
-                "w": 8,
-                "x": 16,
-                "y": 41
+                "w": 12,
+                "x": 0,
+                "y": 55
             },
             "id": 49,
             "legend": {
@@ -1867,7 +1945,11 @@
                     "min": 0,
                     "show": true
                 }
-            ]
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
         },
         {
             "collapsed": false,
@@ -1875,7 +1957,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 48
+                "y": 62
             },
             "id": 57,
             "panels": [],
@@ -1900,7 +1982,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 0,
-                "y": 49
+                "y": 63
             },
             "id": 39,
             "legend": {
@@ -1987,7 +2069,11 @@
                     "min": 0,
                     "show": true
                 }
-            ]
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
         },
         {
             "aliasColors": {},
@@ -2004,7 +2090,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 12,
-                "y": 49
+                "y": 63
             },
             "id": 40,
             "legend": {
@@ -2117,7 +2203,11 @@
                     "min": 0,
                     "show": true
                 }
-            ]
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
         }
     ],
     "refresh": "1m",
@@ -2255,5 +2345,5 @@
     "timezone": "browser",
     "title": "MySQL InnoDB Metrics",
     "uid": "giGgrTimz",
-    "version": 2
+    "version": 1
 }

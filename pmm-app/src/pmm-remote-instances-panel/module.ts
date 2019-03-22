@@ -1,44 +1,36 @@
 /// <reference path="../../headers/common.d.ts" />
 
-import { MetricsPanelCtrl } from 'app/plugins/sdk';
+import {MetricsPanelCtrl} from 'app/plugins/sdk';
 import config from 'app/core/config';
+import $ from "jquery";
 
 export class PanelCtrl extends MetricsPanelCtrl {
 
-	static template = `
+    static template = `
 		<iframe ng-src="{{ trustSrc(url) }}"
 			style="width: 100%; height: 400px; border: 0;" scrolling="no" />
 	`;
-  base_url = '/qan/settings?var-host=';
 
-	constructor($scope, $injector, templateSrv, $sce, $http) {
-		super($scope, $injector);
-		$scope.trustSrc = (src) => $sce.trustAsResourceUrl(src);
-		$scope.qanParams = {
-			'theme': config.bootData.user.lightTheme ? 'light' : 'dark'
-		};
+    base_url = '/qan/pmm-list';
 
-		const setUrl = () => {
-		    // translates Grafana's variables into iframe's URL;
-			$scope.url = this.base_url + templateSrv.variables[0].current.value;
-			$scope.url += '&theme=' + $scope.qanParams.theme;
-		};
-		$scope.$root.onAppEvent('template-variable-value-updated', setUrl);
-		setUrl();
-	}
+    constructor($scope, $injector, templateSrv, $sce, $http) {
+        super($scope, $injector);
+        $scope.trustSrc = (src) => $sce.trustAsResourceUrl(src);
+        $scope.qanParams = {
+            'theme': config.bootData.user.lightTheme ? 'light' : 'dark'
+        };
 
-	link($scope, elem) {
+        $scope.url = this.base_url + '?theme=' + $scope.qanParams.theme;
+    }
+
+    link($scope, elem) {
         const frame = elem.find('iframe');
         const panel = elem.find('div.panel-container');
         const panelContent = elem.find('div.panel-content');
-
         panel.css({
             'background-color': 'transparent',
             'border': 'none'
         });
-
-        this.disableGrafanaPerfectScroll(elem);
-        this.fixMenuVisibility(elem);
 
         $scope.ctrl.calculatePanelHeight = () => {
             const h = frame.contents().find('body').height() || 400;
@@ -53,9 +45,11 @@ export class PanelCtrl extends MetricsPanelCtrl {
             panelContent.height(`inherit`);
         };
 
+        this.disableGrafanaPerfectScroll(elem);
+        this.fixMenuVisibility(elem);
+
         frame.on('load', () => {
             $scope.ctrl.calculatePanelHeight();
-            frame.contents().bind('click', () => setTimeout(() => $scope.ctrl.calculatePanelHeight(), 10));
             frame.contents().bind('DOMSubtreeModified', () => setTimeout(() => $scope.ctrl.calculatePanelHeight(), 10));
         });
     }

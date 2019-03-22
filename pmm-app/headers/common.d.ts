@@ -1,5 +1,5 @@
 declare module 'app/plugins/sdk' {
-    export class MetricsPanelCtrl {
+    export class MetricsPanelCtrl extends PanelCtrl {
         scope: any;
         loading: boolean;
         datasource: any;
@@ -78,6 +78,7 @@ declare module 'app/plugins/sdk' {
         getInfoMode();
         getInfoContent(options);
         openInspector();
+        render(payload?);
         constructor($scope: any, $injector: any);
     }
 }
@@ -110,4 +111,46 @@ declare module 'app/core/app_events' {
 
         constructor(options);
     }
+}
+
+declare module 'app/features/panellinks/link_srv' {
+    export default class LinkSrv {
+        getLinkUrl(link);
+        addParamsToUrl(url, params);
+        appendToQueryString(url, stringToAppend);
+        getAnchorInfo(link);
+        getPanelLinkAnchorInfo(link, scopedVars);
+    }
+}
+
+declare module 'app/core/time_series2' {
+    export default class TimeSeries {
+        datapoints: any;
+        alias: string;
+        valueFormater: any;
+        flotpairs: any;
+        getFlotPairs(fillStyle);
+
+        constructor(opts)
+    }
+}
+
+declare module 'lodash' {
+    var lodash: any;
+    export default lodash;
+}
+
+declare module 'moment' {
+    var moment: any;
+    export default moment;
+}
+
+declare module 'jquery' {
+    var jquery: any;
+    export default jquery;
+}
+
+declare module 'app/core/utils/kbn' {
+    var kbn: any;
+    export default kbn;
 }

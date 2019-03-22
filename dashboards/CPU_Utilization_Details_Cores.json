@@ -14,14 +14,26 @@
                     "pmm_annotation"
                 ],
                 "type": "tags"
+            },
+            {
+                "builtIn": 1,
+                "datasource": "-- Grafana --",
+                "enable": true,
+                "hide": true,
+                "iconColor": "#6ed0e0",
+                "limit": 100,
+                "name": "Annotations & Alerts",
+                "showIn": 0,
+                "tags": [],
+                "type": "dashboard"
             }
         ]
     },
     "editable": true,
     "gnetId": null,
-    "graphTooltip": 0,
+    "graphTooltip": 1,
     "id": null,
-    "iteration": 1523012055845,
+    "iteration": 1535381370089,
     "links": [
         {
             "icon": "dashboard",
@@ -66,6 +78,17 @@
             ],
             "targetBlank": false,
             "title": "MongoDB",
+            "type": "dashboards"
+        },
+        {
+            "asDropdown": true,
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "PostgreSQL"
+            ],
+            "targetBlank": false,
+            "title": "PostgreSQL",
             "type": "dashboards"
         },
         {
@@ -250,7 +273,11 @@
                     "min": 0,
                     "show": true
                 }
-            ]
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
         },
         {
             "aliasColors": {
@@ -380,7 +407,11 @@
                     "min": 0,
                     "show": true
                 }
-            ]
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
         },
         {
             "collapsed": false,
@@ -452,21 +483,24 @@
                 "fillColor": "rgba(31, 118, 189, 0.18)",
                 "full": false,
                 "lineColor": "rgb(31, 120, 193)",
+                "maxValue": 100,
+                "minValue": 0,
                 "show": true
             },
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "clamp_max(sum by () ((avg by (mode) ( (clamp_max(rate(node_cpu{instance=\"$host\",mode!=\"idle\",mode!=\"iowait\"}[$interval]),1)) or (clamp_max(irate(node_cpu{instance=\"$host\",cpu=\"$cpu\",mode!=\"idle\",mode!=\"iowait\"}[5m]),1)) )) *100 or (max_over_time(node_cpu_average{instance=~\"$host\", mode=\"total\"}[$interval]) or max_over_time(node_cpu_average{instance=~\"$host\", mode=\"total\"}[5m]))),100)",
+                    "expr": "clamp_max(sum by () ((avg by (mode) ( \n(clamp_max(rate(node_cpu{instance=\"$host\",mode!=\"idle\",mode!=\"iowait\"}[$interval]),1)) or \n(clamp_max(irate(node_cpu{instance=\"$host\",mode!=\"idle\",mode!=\"iowait\"}[5m]),1)) )) *100 or \nsum by () (\navg_over_time(node_cpu_average{instance=\"$host\",mode!=\"total\",mode!=\"idle\"}[$interval]) or \navg_over_time(node_cpu_average{instance=\"$host\",mode!=\"total\",mode!=\"idle\"}[5m])) unless\n(avg_over_time(node_cpu_average{instance=\"$host\",mode=\"total\",job=\"rds-basic\"}[$interval]) or \navg_over_time(node_cpu_average{instance=\"$host\",mode=\"total\",job=\"rds-basic\"}[5m]))\n),100)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
+                    "legendFormat": "",
                     "refId": "A"
                 }
             ],
             "thresholds": "70,90",
             "title": "All Cores - total",
-            "type": "singlestat",
+            "type": "pmm-singlestat-panel",
             "valueFontSize": "80%",
             "valueMaps": [
                 {
@@ -533,6 +567,8 @@
                 "fillColor": "rgba(31, 118, 189, 0.18)",
                 "full": false,
                 "lineColor": "rgb(31, 120, 193)",
+                "maxValue": 100,
+                "minValue": 0,
                 "show": true
             },
             "tableColumn": "",
@@ -547,7 +583,7 @@
             ],
             "thresholds": "70,90",
             "title": "All Cores - user",
-            "type": "singlestat",
+            "type": "pmm-singlestat-panel",
             "valueFontSize": "80%",
             "valueMaps": [
                 {
@@ -614,6 +650,8 @@
                 "fillColor": "rgba(31, 118, 189, 0.18)",
                 "full": false,
                 "lineColor": "rgb(31, 120, 193)",
+                "maxValue": 100,
+                "minValue": 0,
                 "show": true
             },
             "tableColumn": "",
@@ -628,7 +666,7 @@
             ],
             "thresholds": "20,30",
             "title": "All Cores - system",
-            "type": "singlestat",
+            "type": "pmm-singlestat-panel",
             "valueFontSize": "80%",
             "valueMaps": [
                 {
@@ -695,6 +733,8 @@
                 "fillColor": "rgba(31, 118, 189, 0.18)",
                 "full": false,
                 "lineColor": "rgb(31, 120, 193)",
+                "maxValue": 100,
+                "minValue": 0,
                 "show": true
             },
             "tableColumn": "",
@@ -709,7 +749,7 @@
             ],
             "thresholds": "20,50",
             "title": "All Cores - iowait",
-            "type": "singlestat",
+            "type": "pmm-singlestat-panel",
             "valueFontSize": "80%",
             "valueMaps": [
                 {
@@ -776,6 +816,8 @@
                 "fillColor": "rgba(31, 118, 189, 0.18)",
                 "full": false,
                 "lineColor": "rgb(31, 120, 193)",
+                "maxValue": 100,
+                "minValue": 0,
                 "show": true
             },
             "tableColumn": "",
@@ -790,7 +832,7 @@
             ],
             "thresholds": "10,30",
             "title": "All Cores - steal",
-            "type": "singlestat",
+            "type": "pmm-singlestat-panel",
             "valueFontSize": "80%",
             "valueMaps": [
                 {
@@ -857,6 +899,8 @@
                 "fillColor": "rgba(31, 118, 189, 0.18)",
                 "full": false,
                 "lineColor": "rgb(31, 120, 193)",
+                "maxValue": 100,
+                "minValue": 0,
                 "show": true
             },
             "tableColumn": "",
@@ -871,7 +915,7 @@
             ],
             "thresholds": "10,20",
             "title": "All Cores - other",
-            "type": "singlestat",
+            "type": "pmm-singlestat-panel",
             "valueFontSize": "80%",
             "valueMaps": [
                 {
@@ -981,22 +1025,25 @@
                 "fillColor": "rgba(31, 118, 189, 0.18)",
                 "full": false,
                 "lineColor": "rgb(31, 120, 193)",
+                "maxValue": 100,
+                "minValue": 0,
                 "show": true
             },
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "clamp_max((sum by () ((avg by (mode) ( (clamp_max(rate(node_cpu{instance=\"$host\",mode!=\"idle\",mode!=\"iowait\"}[$interval]),1)) or (clamp_max(irate(node_cpu{instance=\"$host\",cpu=\"$cpu\",mode!=\"idle\",mode!=\"iowait\"}[5m]),1)) )) *100) or (max_over_time(node_cpu_average{instance=\"$host\",mode=\"total\"}[$interval]) or max_over_time(node_cpu_average{instance=\"$host\",mode=\"total\"}[5m]))),100)",
+                    "expr": "clamp_max(\nsum by (cpu) (\n(avg by (mode) ( (clamp_max(rate(node_cpu{instance=\"$host\",cpu=\"$cpu\",mode!=\"idle\",mode!=\"iowait\"}[$interval]),1)) or \n(clamp_max(irate(node_cpu{instance=\"$host\",cpu=\"$cpu\",mode!=\"idle\",mode!=\"iowait\"}[5m]),1)) )) *100) or \nsum by () (\navg_over_time(node_cpu_average{instance=\"$host\",mode!=\"total\",mode!=\"idle\"}[$interval]) or \navg_over_time(node_cpu_average{instance=\"$host\",mode!=\"total\",mode!=\"idle\"}[5m])) unless\n(avg_over_time(node_cpu_average{instance=\"$host\",mode=\"total\",job=\"rds-basic\"}[$interval]) or \navg_over_time(node_cpu_average{instance=\"$host\",mode=\"total\",job=\"rds-basic\"}[5m]))\n,100)",
                     "format": "time_series",
                     "instant": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
+                    "legendFormat": "",
                     "refId": "A"
                 }
             ],
             "thresholds": "70,90",
             "title": "$cpu - total",
-            "type": "singlestat",
+            "type": "pmm-singlestat-panel",
             "valueFontSize": "80%",
             "valueMaps": [
                 {
@@ -1063,6 +1110,8 @@
                 "fillColor": "rgba(31, 118, 189, 0.18)",
                 "full": false,
                 "lineColor": "rgb(31, 120, 193)",
+                "maxValue": 100,
+                "minValue": 0,
                 "show": true
             },
             "tableColumn": "",
@@ -1077,7 +1126,7 @@
             ],
             "thresholds": "70,90",
             "title": "$cpu - user",
-            "type": "singlestat",
+            "type": "pmm-singlestat-panel",
             "valueFontSize": "80%",
             "valueMaps": [
                 {
@@ -1144,6 +1193,8 @@
                 "fillColor": "rgba(31, 118, 189, 0.18)",
                 "full": false,
                 "lineColor": "rgb(31, 120, 193)",
+                "maxValue": 100,
+                "minValue": 0,
                 "show": true
             },
             "tableColumn": "",
@@ -1158,7 +1209,7 @@
             ],
             "thresholds": "20,30",
             "title": "$cpu - system",
-            "type": "singlestat",
+            "type": "pmm-singlestat-panel",
             "valueFontSize": "80%",
             "valueMaps": [
                 {
@@ -1225,6 +1276,8 @@
                 "fillColor": "rgba(31, 118, 189, 0.18)",
                 "full": false,
                 "lineColor": "rgb(31, 120, 193)",
+                "maxValue": 100,
+                "minValue": 0,
                 "show": true
             },
             "tableColumn": "",
@@ -1239,7 +1292,7 @@
             ],
             "thresholds": "20,50",
             "title": "$cpu - iowait",
-            "type": "singlestat",
+            "type": "pmm-singlestat-panel",
             "valueFontSize": "80%",
             "valueMaps": [
                 {
@@ -1306,6 +1359,8 @@
                 "fillColor": "rgba(31, 118, 189, 0.18)",
                 "full": false,
                 "lineColor": "rgb(31, 120, 193)",
+                "maxValue": 100,
+                "minValue": 0,
                 "show": true
             },
             "tableColumn": "",
@@ -1320,7 +1375,7 @@
             ],
             "thresholds": "10,30",
             "title": "$cpu - steal",
-            "type": "singlestat",
+            "type": "pmm-singlestat-panel",
             "valueFontSize": "80%",
             "valueMaps": [
                 {
@@ -1387,6 +1442,8 @@
                 "fillColor": "rgba(31, 118, 189, 0.18)",
                 "full": false,
                 "lineColor": "rgb(31, 120, 193)",
+                "maxValue": 100,
+                "minValue": 0,
                 "show": true
             },
             "tableColumn": "",
@@ -1401,7 +1458,7 @@
             ],
             "thresholds": "10,20",
             "title": "$cpu - other",
-            "type": "singlestat",
+            "type": "pmm-singlestat-panel",
             "valueFontSize": "80%",
             "valueMaps": [
                 {
@@ -1568,5 +1625,5 @@
     "timezone": "browser",
     "title": "CPU Utilization Details (Cores)",
     "uid": "hCWR9oimz",
-    "version": 2
+    "version": 1
 }
