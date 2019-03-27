@@ -33,7 +33,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1533912399556,
+    "iteration": 1553677064429,
     "links": [
         {
             "icon": "dashboard",
@@ -310,7 +310,6 @@
             ],
             "thresholds": "5,10",
             "title": "CPU Usage",
-            "transparent": false,
             "type": "singlestat",
             "valueFontSize": "80%",
             "valueMaps": [],
@@ -396,7 +395,6 @@
             ],
             "thresholds": "50000000,100000000",
             "title": "Memory Usage",
-            "transparent": false,
             "type": "singlestat",
             "valueFontSize": "80%",
             "valueMaps": [],
@@ -482,7 +480,6 @@
             ],
             "thresholds": "512,800",
             "title": "File Descriptors Used",
-            "transparent": false,
             "type": "singlestat",
             "valueFontSize": "80%",
             "valueMaps": [],
@@ -569,7 +566,6 @@
             ],
             "thresholds": "300,3600",
             "title": "Exporter Uptime",
-            "transparent": false,
             "type": "singlestat",
             "valueFontSize": "80%",
             "valueMaps": [],
@@ -610,6 +606,7 @@
             "linewidth": 1,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -641,6 +638,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Collector Scrape Successful",
             "tooltip": {
@@ -649,7 +647,6 @@
                 "sort": 0,
                 "value_type": "individual"
             },
-            "transparent": false,
             "type": "graph",
             "xaxis": {
                 "buckets": null,
@@ -717,14 +714,16 @@
             "linewidth": 1,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
             "renderer": "flot",
             "seriesOverrides": [
                 {
-                    "alias": "Load 1m",
-                    "color": "#E0752D"
+                    "alias": "Total Load",
+                    "color": "#C4162A",
+                    "linewidth": 2
                 }
             ],
             "spaceLength": 10,
@@ -744,19 +743,27 @@
                     "refId": "A",
                     "step": 300,
                     "target": ""
+                },
+                {
+                    "expr": "sum(avg_over_time(node_scrape_collector_duration_seconds{instance=\"$host\"}[$interval])) or \nsum(avg_over_time(node_scrape_collector_duration_seconds{instance=\"$host\"}[5m]))",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Total Load",
+                    "refId": "B"
                 }
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
-            "title": "Collector Execution Time",
+            "title": "Collector Execution Time  (Log Scale)",
             "tooltip": {
                 "msResolution": false,
                 "shared": true,
                 "sort": 0,
                 "value_type": "individual"
             },
-            "transparent": false,
             "type": "graph",
             "xaxis": {
                 "buckets": null,
@@ -767,11 +774,12 @@
             },
             "yaxes": [
                 {
+                    "decimals": null,
                     "format": "s",
                     "label": "",
-                    "logBase": 1,
+                    "logBase": 2,
                     "max": null,
-                    "min": 0,
+                    "min": null,
                     "show": true
                 },
                 {
@@ -1150,6 +1158,7 @@
             "linewidth": 1,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -1181,6 +1190,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Collector Execution Time",
             "tooltip": {
@@ -1189,7 +1199,6 @@
                 "sort": 0,
                 "value_type": "individual"
             },
-            "transparent": false,
             "type": "graph",
             "xaxis": {
                 "buckets": null,
@@ -1260,6 +1269,7 @@
             "linewidth": 1,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -1307,6 +1317,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "MySQLd Exporter Errors",
             "tooltip": {
@@ -1315,7 +1326,6 @@
                 "sort": 0,
                 "value_type": "individual"
             },
-            "transparent": false,
             "type": "graph",
             "xaxis": {
                 "buckets": null,
@@ -1385,6 +1395,7 @@
             "linewidth": 1,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -1432,6 +1443,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Rate of  Scrapes",
             "tooltip": {
@@ -1440,7 +1452,6 @@
                 "sort": 0,
                 "value_type": "individual"
             },
-            "transparent": false,
             "type": "graph",
             "xaxis": {
                 "buckets": null,
@@ -1510,6 +1521,7 @@
             "linewidth": 1,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -1541,6 +1553,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "MySQL up",
             "tooltip": {
@@ -1549,7 +1562,6 @@
                 "sort": 0,
                 "value_type": "individual"
             },
-            "transparent": false,
             "type": "graph",
             "xaxis": {
                 "buckets": null,
@@ -3294,7 +3306,6 @@
             ],
             "thresholds": "5,10",
             "title": "CPU Usage",
-            "transparent": false,
             "type": "singlestat",
             "valueFontSize": "80%",
             "valueMaps": [],
@@ -3380,7 +3391,6 @@
             ],
             "thresholds": "50000000,100000000",
             "title": "Memory Usage",
-            "transparent": false,
             "type": "singlestat",
             "valueFontSize": "80%",
             "valueMaps": [],
@@ -3466,7 +3476,6 @@
             ],
             "thresholds": "512,800",
             "title": "File Descriptors Used",
-            "transparent": false,
             "type": "singlestat",
             "valueFontSize": "80%",
             "valueMaps": [],
@@ -3553,7 +3562,6 @@
             ],
             "thresholds": "300,3600",
             "title": "Exporter Uptime",
-            "transparent": false,
             "type": "singlestat",
             "valueFontSize": "80%",
             "valueMaps": [],
@@ -3594,6 +3602,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -3633,6 +3642,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Rate of  Scrapes",
             "tooltip": {
@@ -3641,7 +3651,6 @@
                 "sort": 0,
                 "value_type": "individual"
             },
-            "transparent": false,
             "type": "graph",
             "xaxis": {
                 "buckets": null,
@@ -3701,6 +3710,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -3721,6 +3731,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Scrape Durations",
             "tooltip": {
@@ -3761,7 +3772,7 @@
         }
     ],
     "refresh": "1m",
-    "schemaVersion": 16,
+    "schemaVersion": 18,
     "style": "dark",
     "tags": [
         "Insight",
@@ -3774,10 +3785,7 @@
                 "auto": true,
                 "auto_count": 200,
                 "auto_min": "1s",
-                "current": {
-                    "text": "auto",
-                    "value": "$__auto_interval_interval"
-                },
+                "current": {},
                 "datasource": "Prometheus",
                 "hide": 0,
                 "includeAll": false,
@@ -3829,6 +3837,7 @@
                 ],
                 "query": "1s,5s,1m,5m,1h,6h,1d",
                 "refresh": 2,
+                "skipUrlSync": false,
                 "type": "interval"
             },
             {
@@ -3836,6 +3845,7 @@
                 "allValue": null,
                 "current": {},
                 "datasource": "Prometheus",
+                "definition": "",
                 "hide": 0,
                 "includeAll": false,
                 "label": "Host",
@@ -3847,6 +3857,7 @@
                 "refresh": 1,
                 "refresh_on_load": false,
                 "regex": "",
+                "skipUrlSync": false,
                 "sort": 1,
                 "tagValuesQuery": "instance",
                 "tags": [],
