@@ -33,7 +33,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1552406631710,
+    "iteration": 1553784660353,
     "links": [
         {
             "icon": "dashboard",
@@ -139,6 +139,90 @@
     "panels": [
         {
             "cacheTimeout": null,
+            "colorBackground": false,
+            "colorValue": false,
+            "colors": [
+                "#299c46",
+                "rgba(237, 129, 40, 0.89)",
+                "#d44a3a"
+            ],
+            "datasource": "Prometheus",
+            "format": "none",
+            "gauge": {
+                "maxValue": 100,
+                "minValue": 0,
+                "show": false,
+                "thresholdLabels": false,
+                "thresholdMarkers": true
+            },
+            "gridPos": {
+                "h": 3,
+                "w": 8,
+                "x": 0,
+                "y": 0
+            },
+            "id": 41,
+            "interval": null,
+            "links": [],
+            "mappingType": 1,
+            "mappingTypes": [
+                {
+                    "name": "value to text",
+                    "value": 1
+                },
+                {
+                    "name": "range to text",
+                    "value": 2
+                }
+            ],
+            "maxDataPoints": 100,
+            "nullPointMode": "connected",
+            "nullText": null,
+            "postfix": "",
+            "postfixFontSize": "50%",
+            "prefix": "",
+            "prefixFontSize": "50%",
+            "rangeMaps": [
+                {
+                    "from": "null",
+                    "text": "N/A",
+                    "to": "null"
+                }
+            ],
+            "sparkline": {
+                "fillColor": "rgba(31, 118, 189, 0.18)",
+                "full": false,
+                "lineColor": "rgb(31, 120, 193)",
+                "show": false
+            },
+            "tableColumn": "node_name",
+            "targets": [
+                {
+                    "expr": "mysql_up{service_name=~\"$service\"}",
+                    "format": "table",
+                    "interval": "",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{node_name}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": "",
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Host",
+            "type": "singlestat",
+            "valueFontSize": "80%",
+            "valueMaps": [
+                {
+                    "op": "=",
+                    "text": "N/A",
+                    "value": "null"
+                }
+            ],
+            "valueName": "avg"
+        },
+        {
+            "cacheTimeout": null,
             "colorBackground": true,
             "colorValue": false,
             "colors": [
@@ -158,6 +242,12 @@
                 "show": false,
                 "thresholdLabels": false,
                 "thresholdMarkers": true
+            },
+            "gridPos": {
+                "h": 3,
+                "w": 4,
+                "x": 8,
+                "y": 0
             },
             "height": "125px",
             "hideTimeOverride": false,
@@ -273,8 +363,8 @@
             },
             "gridPos": {
                 "h": 3,
-                "w": 6,
-                "x": 6,
+                "w": 4,
+                "x": 12,
                 "y": 0
             },
             "height": "125px",
@@ -389,8 +479,8 @@
             },
             "gridPos": {
                 "h": 3,
-                "w": 6,
-                "x": 12,
+                "w": 4,
+                "x": 16,
                 "y": 0
             },
             "height": "125px",
@@ -490,8 +580,8 @@
             },
             "gridPos": {
                 "h": 3,
-                "w": 6,
-                "x": 18,
+                "w": 4,
+                "x": 20,
                 "y": 0
             },
             "height": "125px",
@@ -1415,19 +1505,63 @@
                 "type": "interval"
             },
             {
+                "allValue": null,
+                "current": {},
+                "datasource": "Prometheus",
+                "definition": "label_values(mysql_up, replication_set)",
+                "hide": 0,
+                "includeAll": false,
+                "label": "Replication Set",
+                "multi": false,
+                "name": "replication_set",
+                "options": [],
+                "query": "label_values(mysql_up, replication_set)",
+                "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allValue": null,
+                "current": {},
+                "datasource": "Prometheus",
+                "definition": "label_values(mysql_up{replication_set=~\"$replication_set\"}, service_name)",
+                "hide": 0,
+                "includeAll": false,
+                "label": "Service",
+                "multi": false,
+                "name": "service",
+                "options": [],
+                "query": "label_values(mysql_up{replication_set=~\"$replication_set\"}, service_name)",
+                "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            },
+            {
                 "allFormat": "glob",
                 "allValue": null,
                 "current": {},
                 "datasource": "Prometheus",
-                "definition": "label_values({__name__=~\"(mysql_binlog_files|mysql_slave_status_seconds_behind_master)\"}, node_name)",
-                "hide": 0,
+                "definition": "label_values(mysql_binlog_files{service_name=\"$service\"}, node_name)",
+                "hide": 2,
                 "includeAll": false,
                 "label": "Host",
                 "multi": false,
                 "multiFormat": "regex values",
                 "name": "host",
                 "options": [],
-                "query": "label_values({__name__=~\"(mysql_binlog_files|mysql_slave_status_seconds_behind_master)\"}, node_name)",
+                "query": "label_values(mysql_binlog_files{service_name=\"$service\"}, node_name)",
                 "refresh": 1,
                 "refresh_on_load": false,
                 "regex": "",
@@ -1436,28 +1570,6 @@
                 "tagValuesQuery": null,
                 "tags": [],
                 "tagsQuery": null,
-                "type": "query",
-                "useTags": false
-            },
-            {
-                "allValue": null,
-                "current": {},
-                "datasource": "Prometheus",
-                "definition": "label_values(mysql_up{node_name=~\"$host\"}, service_name)",
-                "hide": 0,
-                "includeAll": false,
-                "label": "Service",
-                "multi": false,
-                "name": "service",
-                "options": [],
-                "query": "label_values(mysql_up{node_name=~\"$host\"}, service_name)",
-                "refresh": 1,
-                "regex": "",
-                "skipUrlSync": false,
-                "sort": 0,
-                "tagValuesQuery": "",
-                "tags": [],
-                "tagsQuery": "",
                 "type": "query",
                 "useTags": false
             }
