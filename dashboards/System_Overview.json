@@ -33,7 +33,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1541103089786,
+    "iteration": 1553887307310,
     "links": [
         {
             "icon": "dashboard",
@@ -220,7 +220,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "(node_time_seconds{instance=\"$host\"} - node_boot_time_seconds{instance=\"$host\"}) or (time() - node_boot_time_seconds{instance=\"$host\"})",
+                    "expr": "(node_time_seconds{node_name=~\"$host\"} - node_boot_time_seconds{node_name=~\"$host\"}) or (time() - node_boot_time_seconds{node_name=~\"$host\"})",
                     "format": "time_series",
                     "hide": false,
                     "interval": "5m",
@@ -233,7 +233,6 @@
             ],
             "thresholds": "300,3600",
             "title": "System Uptime",
-            "transparent": false,
             "type": "singlestat",
             "valueFontSize": "50%",
             "valueMaps": [],
@@ -303,7 +302,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "(count(node_cpu_seconds_total{instance=~\"$host\",mode=~\"user\"}) or (1-absent(node_cpu_seconds_total{instance=~\"$host\",mode=~\"user\"}))) + sum(rdsosmetrics_General_numVCPUs{instance=~\"$host\"} or up * 0)",
+                    "expr": "(count(node_cpu_seconds_total{node_name=~\"$host\",mode=~\"user\"}) or (1-absent(node_cpu_seconds_total{node_name=~\"$host\",mode=~\"user\"}))) + sum(rdsosmetrics_General_numVCPUs{node_name=~\"$host\"} or up * 0)",
                     "format": "time_series",
                     "interval": "5m",
                     "intervalFactor": 1,
@@ -388,7 +387,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "avg_over_time(node_load1{instance=\"$host\"}[$interval]) or avg_over_time(node_load1{instance=\"$host\"}[5m])",
+                    "expr": "avg_over_time(node_load1{node_name=~\"$host\"}[$interval]) or avg_over_time(node_load1{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -473,7 +472,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "node_memory_MemTotal_bytes{instance=\"$host\"}",
+                    "expr": "node_memory_MemTotal_bytes{node_name=~\"$host\"}",
                     "format": "time_series",
                     "interval": "5m",
                     "intervalFactor": 1,
@@ -558,7 +557,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "(node_memory_MemAvailable_bytes{instance=\"$host\"} or (node_memory_MemFree_bytes{instance=\"$host\"} + node_memory_Buffers_bytes{instance=\"$host\"} + node_memory_Cached_bytes{instance=\"$host\"})) / node_memory_MemTotal_bytes{instance=\"$host\"} * 100",
+                    "expr": "(node_memory_MemAvailable_bytes{node_name=~\"$host\"} or (node_memory_MemFree_bytes{node_name=~\"$host\"} + node_memory_Buffers_bytes{node_name=~\"$host\"} + node_memory_Cached_bytes{node_name=~\"$host\"})) / node_memory_MemTotal_bytes{node_name=~\"$host\"} * 100",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -644,7 +643,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "node_memory_MemTotal_bytes{instance=\"$host\"}+node_memory_SwapTotal_bytes{instance=\"$host\"}",
+                    "expr": "node_memory_MemTotal_bytes{node_name=~\"$host\"}+node_memory_SwapTotal_bytes{node_name=~\"$host\"}",
                     "format": "time_series",
                     "interval": "5m",
                     "intervalFactor": 1,
@@ -741,7 +740,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "sum(avg(node_filesystem_size_bytes{instance=\"$host\",fstype=~\"(ext.|xfs|vfat)\"}) without (mountpoint)) without (device,fstype)",
+                    "expr": "sum(avg(node_filesystem_size_bytes{node_name=~\"$host\",fstype=~\"(ext.|xfs|vfat)\"}) without (mountpoint)) without (device,fstype)",
                     "format": "time_series",
                     "interval": "5m",
                     "intervalFactor": 1,
@@ -826,7 +825,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "min(node_filesystem_free_bytes{instance=\"$host\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay\"}/node_filesystem_size_bytes{instance=\"$host\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay\"})*100",
+                    "expr": "min(node_filesystem_free_bytes{node_name=~\"$host\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay\"}/node_filesystem_size_bytes{node_name=~\"$host\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay\"})*100",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -905,6 +904,7 @@
             "linewidth": 1,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -923,7 +923,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "clamp_max(((avg by (mode) ( (clamp_max(rate(node_cpu_seconds_total{instance=\"$host\",mode!=\"idle\"}[$interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{instance=\"$host\",mode!=\"idle\"}[5m]),1)) ))*100 or (avg_over_time(node_cpu_average{instance=~\"$host\", mode!=\"total\", mode!=\"idle\"}[$interval]) or avg_over_time(node_cpu_average{instance=~\"$host\", mode!=\"total\", mode!=\"idle\"}[5m]))),100)",
+                    "expr": "clamp_max(((avg by (mode) ( (clamp_max(rate(node_cpu_seconds_total{node_name=~\"$host\",mode!=\"idle\"}[$interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{node_name=~\"$host\",mode!=\"idle\"}[5m]),1)) ))*100 or (avg_over_time(node_cpu_average{node_name=~\"$host\", mode!=\"total\", mode!=\"idle\"}[$interval]) or avg_over_time(node_cpu_average{node_name=~\"$host\", mode!=\"total\", mode!=\"idle\"}[5m]))),100)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -931,7 +931,7 @@
                     "refId": "B"
                 },
                 {
-                    "expr": "clamp_max(max by () (sum  by (cpu) ( (clamp_max(rate(node_cpu_seconds_total{instance=\"$host\",mode!=\"idle\",mode!=\"iowait\"}[$interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{instance=\"$host\",mode!=\"idle\",mode!=\"iowait\"}[5m]),1)) )),1)",
+                    "expr": "clamp_max(max by () (sum  by (cpu) ( (clamp_max(rate(node_cpu_seconds_total{node_name=~\"$host\",mode!=\"idle\",mode!=\"iowait\"}[$interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{node_name=~\"$host\",mode!=\"idle\",mode!=\"iowait\"}[5m]),1)) )),1)",
                     "format": "time_series",
                     "hide": true,
                     "interval": "$interval",
@@ -942,6 +942,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "CPU Usage",
             "tooltip": {
@@ -1026,6 +1027,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -1047,7 +1049,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "(avg_over_time(node_procs_running{instance=\"$host\"}[$interval])-1) / scalar(count(node_cpu_seconds_total{mode=\"user\", instance=\"$host\"})) or (avg_over_time(node_procs_running{instance=\"$host\"}[5m])-1) / scalar(count(node_cpu_seconds_total{mode=\"user\", instance=\"$host\"}))",
+                    "expr": "(avg_over_time(node_procs_running{node_name=~\"$host\"}[$interval])-1) / scalar(count(node_cpu_seconds_total{mode=\"user\", node_name=~\"$host\"})) or (avg_over_time(node_procs_running{node_name=~\"$host\"}[5m])-1) / scalar(count(node_cpu_seconds_total{mode=\"user\", node_name=~\"$host\"}))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -1062,7 +1064,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "clamp_max(max by () (sum  by (cpu) ( (clamp_max(rate(node_cpu_seconds_total{instance=\"$host\",mode!=\"idle\",mode!=\"iowait\"}[$interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{instance=\"$host\",mode!=\"idle\",mode!=\"iowait\"}[5m]),1)) )),1)",
+                    "expr": "clamp_max(max by () (sum  by (cpu) ( (clamp_max(rate(node_cpu_seconds_total{node_name=~\"$host\",mode!=\"idle\",mode!=\"iowait\"}[$interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{node_name=~\"$host\",mode!=\"idle\",mode!=\"iowait\"}[5m]),1)) )),1)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1075,6 +1077,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "CPU Saturation and Max Core Usage",
             "tooltip": {
@@ -1083,7 +1086,6 @@
                 "sort": 0,
                 "value_type": "individual"
             },
-            "transparent": false,
             "type": "graph",
             "xaxis": {
                 "buckets": null,
@@ -1150,6 +1152,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -1168,7 +1171,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(node_context_switches_total{instance=\"$host\"}[$interval]) or irate(node_context_switches_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(node_context_switches_total{node_name=~\"$host\"}[$interval]) or irate(node_context_switches_total{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1179,7 +1182,7 @@
                     "target": ""
                 },
                 {
-                    "expr": "(rate(node_context_switches_total{instance=\"$host\"}[$interval]) or irate(node_context_switches_total{instance=\"$host\"}[5m])) / scalar(count(node_cpu_seconds_total{mode=\"user\", instance=\"$host\"}))",
+                    "expr": "(rate(node_context_switches_total{node_name=~\"$host\"}[$interval]) or irate(node_context_switches_total{node_name=~\"$host\"}[5m])) / scalar(count(node_cpu_seconds_total{mode=\"user\", node_name=~\"$host\"}))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1188,7 +1191,7 @@
                     "step": 60
                 },
                 {
-                    "expr": "rate(node_intr_total{instance=\"$host\"}[$interval]) or irate(node_intr_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(node_intr_total{node_name=~\"$host\"}[$interval]) or irate(node_intr_total{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1198,6 +1201,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Interrupts and Context Switches",
             "tooltip": {
@@ -1206,7 +1210,6 @@
                 "sort": 0,
                 "value_type": "individual"
             },
-            "transparent": false,
             "type": "graph",
             "xaxis": {
                 "buckets": null,
@@ -1279,6 +1282,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -1301,7 +1305,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "(avg_over_time(node_procs_running{instance=\"$host\"}[$interval]) - 1) or (avg_over_time(node_procs_running{instance=\"$host\"}[5m]) -1)",
+                    "expr": "(avg_over_time(node_procs_running{node_name=~\"$host\"}[$interval]) - 1) or (avg_over_time(node_procs_running{node_name=~\"$host\"}[5m]) -1)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1312,7 +1316,7 @@
                     "target": ""
                 },
                 {
-                    "expr": "avg_over_time(node_procs_blocked{instance=\"$host\"}[$interval]) or avg_over_time(node_procs_blocked{instance=\"$host\"}[5m])",
+                    "expr": "avg_over_time(node_procs_blocked{node_name=~\"$host\"}[$interval]) or avg_over_time(node_procs_blocked{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1320,7 +1324,7 @@
                     "refId": "B"
                 },
                 {
-                    "expr": "rate(node_forks_total{instance=\"$host\"}[$interval]) or irate(node_forks_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(node_forks_total{node_name=~\"$host\"}[$interval]) or irate(node_forks_total{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1330,6 +1334,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Processes",
             "tooltip": {
@@ -1338,7 +1343,6 @@
                 "sort": 0,
                 "value_type": "individual"
             },
-            "transparent": false,
             "type": "graph",
             "xaxis": {
                 "buckets": null,
@@ -1424,6 +1428,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -1440,7 +1445,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "node_memory_MemTotal_bytes{instance=\"$host\"}",
+                    "expr": "node_memory_MemTotal_bytes{node_name=~\"$host\"}",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1451,7 +1456,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "node_memory_MemFree_bytes{instance=\"$host\"}",
+                    "expr": "node_memory_MemFree_bytes{node_name=~\"$host\"}",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1465,7 +1470,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "node_memory_Buffers_bytes{instance=\"$host\"}",
+                    "expr": "node_memory_Buffers_bytes{node_name=~\"$host\"}",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1479,7 +1484,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "max(node_memory_Cached_bytes{instance=~\"$host\",job=~\"rds-enhanced|linux\"}) without (job) or \nmax(node_memory_Cached_bytes{instance=~\"$host\",job=~\"rds-basic\"}) without (job)",
+                    "expr": "max(node_memory_Cached_bytes{node_name=~\"$host\",job=~\"rds-enhanced|linux\"}) without (job) or \nmax(node_memory_Cached_bytes{node_name=~\"$host\",job=~\"rds-basic\"}) without (job)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1493,7 +1498,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "node_memory_MemTotal_bytes{instance=\"$host\"} - (node_memory_MemFree_bytes{instance=\"$host\"} + node_memory_Buffers_bytes{instance=\"$host\"} + node_memory_Cached_bytes{instance=\"$host\"})",
+                    "expr": "node_memory_MemTotal_bytes{node_name=~\"$host\"} - (node_memory_MemFree_bytes{node_name=~\"$host\"} + node_memory_Buffers_bytes{node_name=~\"$host\"} + node_memory_Cached_bytes{node_name=~\"$host\"})",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1506,6 +1511,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Memory Utilization",
             "tooltip": {
@@ -1514,7 +1520,6 @@
                 "sort": 0,
                 "value_type": "individual"
             },
-            "transparent": false,
             "type": "graph",
             "xaxis": {
                 "buckets": null,
@@ -1598,6 +1603,7 @@
                 }
             ],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -1617,7 +1623,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "node_memory_MemTotal_bytes{instance=\"$host\"} + node_memory_SwapTotal_bytes{instance=\"$host\"}",
+                    "expr": "node_memory_MemTotal_bytes{node_name=~\"$host\"} + node_memory_SwapTotal_bytes{node_name=~\"$host\"}",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -1632,7 +1638,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "(node_memory_MemAvailable_bytes{instance=\"$host\"} or \n(node_memory_MemFree_bytes{instance=\"$host\"} + node_memory_Buffers_bytes{instance=\"$host\"} + node_memory_Cached_bytes{instance=\"$host\"})) + \nnode_memory_SwapFree_bytes{instance=\"$host\"}",
+                    "expr": "(node_memory_MemAvailable_bytes{node_name=~\"$host\"} or \n(node_memory_MemFree_bytes{node_name=~\"$host\"} + node_memory_Buffers_bytes{node_name=~\"$host\"} + node_memory_Cached_bytes{node_name=~\"$host\"})) + \nnode_memory_SwapFree_bytes{node_name=~\"$host\"}",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1643,7 +1649,7 @@
                     "target": ""
                 },
                 {
-                    "expr": "node_memory_MemTotal_bytes{instance=\"$host\"} + node_memory_SwapTotal_bytes{instance=\"$host\"} - \n((node_memory_MemAvailable_bytes{instance=\"$host\"} or \n(node_memory_MemFree_bytes{instance=\"$host\"} + node_memory_Buffers_bytes{instance=\"$host\"} + node_memory_Cached_bytes{instance=\"$host\"})) + \nnode_memory_SwapFree_bytes{instance=\"$host\"})",
+                    "expr": "node_memory_MemTotal_bytes{node_name=~\"$host\"} + node_memory_SwapTotal_bytes{node_name=~\"$host\"} - \n((node_memory_MemAvailable_bytes{node_name=~\"$host\"} or \n(node_memory_MemFree_bytes{node_name=~\"$host\"} + node_memory_Buffers_bytes{node_name=~\"$host\"} + node_memory_Cached_bytes{node_name=~\"$host\"})) + \nnode_memory_SwapFree_bytes{node_name=~\"$host\"})",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1653,6 +1659,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Virtual Memory Utilization",
             "tooltip": {
@@ -1661,7 +1668,6 @@
                 "sort": 0,
                 "value_type": "individual"
             },
-            "transparent": false,
             "type": "graph",
             "xaxis": {
                 "buckets": null,
@@ -1732,6 +1738,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -1751,7 +1758,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "node_memory_SwapTotal_bytes{instance=\"$host\"} - node_memory_SwapFree_bytes{instance=\"$host\"}",
+                    "expr": "node_memory_SwapTotal_bytes{node_name=~\"$host\"} - node_memory_SwapFree_bytes{node_name=~\"$host\"}",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1765,7 +1772,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "node_memory_SwapFree_bytes{instance=\"$host\"}",
+                    "expr": "node_memory_SwapFree_bytes{node_name=~\"$host\"}",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1776,7 +1783,7 @@
                     "target": ""
                 },
                 {
-                    "expr": "node_memory_SwapTotal_bytes{instance=\"$host\"}",
+                    "expr": "node_memory_SwapTotal_bytes{node_name=~\"$host\"}",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1786,6 +1793,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Swap Space",
             "tooltip": {
@@ -1794,7 +1802,6 @@
                 "sort": 0,
                 "value_type": "individual"
             },
-            "transparent": false,
             "type": "graph",
             "xaxis": {
                 "buckets": null,
@@ -1865,6 +1872,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -1888,7 +1896,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(node_vmstat_pswpin{instance=\"$host\"}[$interval]) * 4096 or irate(node_vmstat_pswpin{instance=\"$host\"}[5m]) * 4096",
+                    "expr": "rate(node_vmstat_pswpin{node_name=~\"$host\"}[$interval]) * 4096 or irate(node_vmstat_pswpin{node_name=~\"$host\"}[5m]) * 4096",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1902,7 +1910,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(node_vmstat_pswpout{instance=\"$host\"}[$interval]) * 4096 or irate(node_vmstat_pswpout{instance=\"$host\"}[5m]) * 4096",
+                    "expr": "rate(node_vmstat_pswpout{node_name=~\"$host\"}[$interval]) * 4096 or irate(node_vmstat_pswpout{node_name=~\"$host\"}[5m]) * 4096",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1913,7 +1921,7 @@
                     "target": ""
                 },
                 {
-                    "expr": "(rate(node_vmstat_pswpin{instance=\"$host\"}[$interval]) * 4096 or irate(node_vmstat_pswpin{instance=\"$host\"}[5m]) * 4096) + (rate(node_vmstat_pswpout{instance=\"$host\"}[$interval]) * 4096 or irate(node_vmstat_pswpout{instance=\"$host\"}[5m]) * 4096)",
+                    "expr": "(rate(node_vmstat_pswpin{node_name=~\"$host\"}[$interval]) * 4096 or irate(node_vmstat_pswpin{node_name=~\"$host\"}[5m]) * 4096) + (rate(node_vmstat_pswpout{node_name=~\"$host\"}[$interval]) * 4096 or irate(node_vmstat_pswpout{node_name=~\"$host\"}[5m]) * 4096)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1923,6 +1931,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Swap Activity",
             "tooltip": {
@@ -1931,7 +1940,6 @@
                 "sort": 0,
                 "value_type": "individual"
             },
-            "transparent": false,
             "type": "graph",
             "xaxis": {
                 "buckets": null,
@@ -2023,6 +2031,7 @@
                 }
             ],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -2046,7 +2055,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(node_vmstat_pgpgin{instance=\"$host\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{instance=\"$host\"}[5m]) * 1024",
+                    "expr": "rate(node_vmstat_pgpgin{node_name=~\"$host\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=~\"$host\"}[5m]) * 1024",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2060,7 +2069,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "(rate(node_vmstat_pgpgout{instance=\"$host\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{instance=\"$host\"}[5m]) * 1024)",
+                    "expr": "(rate(node_vmstat_pgpgout{node_name=~\"$host\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=~\"$host\"}[5m]) * 1024)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2071,7 +2080,7 @@
                     "target": ""
                 },
                 {
-                    "expr": "(rate(node_vmstat_pgpgin{instance=\"$host\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{instance=\"$host\"}[5m]) * 1024 ) + (rate(node_vmstat_pgpgout{instance=\"$host\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{instance=\"$host\"}[5m]) * 1024)",
+                    "expr": "(rate(node_vmstat_pgpgin{node_name=~\"$host\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=~\"$host\"}[5m]) * 1024 ) + (rate(node_vmstat_pgpgout{node_name=~\"$host\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=~\"$host\"}[5m]) * 1024)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2081,6 +2090,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "I/O Activity",
             "tooltip": {
@@ -2089,7 +2099,6 @@
                 "sort": 0,
                 "value_type": "individual"
             },
-            "transparent": false,
             "type": "graph",
             "xaxis": {
                 "buckets": null,
@@ -2159,6 +2168,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -2177,7 +2187,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "node_filefd_maximum{instance=\"$host\"}",
+                    "expr": "node_filefd_maximum{node_name=~\"$host\"}",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2191,7 +2201,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "node_filefd_allocated{instance=\"$host\"}",
+                    "expr": "node_filefd_allocated{node_name=~\"$host\"}",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2204,6 +2214,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Global File Descriptors Usage",
             "tooltip": {
@@ -2212,7 +2223,6 @@
                 "sort": 0,
                 "value_type": "individual"
             },
-            "transparent": false,
             "type": "graph",
             "xaxis": {
                 "buckets": null,
@@ -2280,6 +2290,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 1,
             "points": true,
@@ -2305,7 +2316,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "(sum(rate(node_disk_read_time_seconds_total{instance=\"$host\"}[$interval])) / sum(rate(node_disk_reads_completed_total{instance=\"$host\"}[$interval]))) or (sum(irate(node_disk_read_time_seconds_total{instance=\"$host\"}[5m])) / sum(irate(node_disk_reads_completed_total{instance=\"$host\"}[5m])))\nor avg_over_time(aws_rds_read_latency_average{instance=\"$host\"}[$interval])/1000 or avg_over_time(aws_rds_read_latency_average{instance=\"$host\"}[5m])/1000",
+                    "expr": "(sum(rate(node_disk_read_time_seconds_total{node_name=~\"$host\"}[$interval])) / sum(rate(node_disk_reads_completed_total{node_name=~\"$host\"}[$interval]))) or (sum(irate(node_disk_read_time_seconds_total{node_name=~\"$host\"}[5m])) / sum(irate(node_disk_reads_completed_total{node_name=~\"$host\"}[5m])))\nor avg_over_time(aws_rds_read_latency_average{node_name=~\"$host\"}[$interval])/1000 or avg_over_time(aws_rds_read_latency_average{node_name=~\"$host\"}[5m])/1000",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2313,7 +2324,7 @@
                     "refId": "A"
                 },
                 {
-                    "expr": "(sum(rate(node_disk_write_time_seconds_total{instance=\"$host\"}[$interval])) / sum(rate(node_disk_writes_completed_total{instance=\"$host\"}[$interval]))) or (sum(irate(node_disk_write_time_seconds_total{instance=\"$host\"}[5m])) / sum(irate(node_disk_writes_completed_total{instance=\"$host\"}[5m])))\nor (avg_over_time(aws_rds_write_latency_average{instance=\"$host\"}[$interval])/1000 or avg_over_time(aws_rds_write_latency_average{instance=\"$host\"}[5m])/1000)",
+                    "expr": "(sum(rate(node_disk_write_time_seconds_total{node_name=~\"$host\"}[$interval])) / sum(rate(node_disk_writes_completed_total{node_name=~\"$host\"}[$interval]))) or (sum(irate(node_disk_write_time_seconds_total{node_name=~\"$host\"}[5m])) / sum(irate(node_disk_writes_completed_total{node_name=~\"$host\"}[5m])))\nor (avg_over_time(aws_rds_write_latency_average{node_name=~\"$host\"}[$interval])/1000 or avg_over_time(aws_rds_write_latency_average{node_name=~\"$host\"}[5m])/1000)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2321,7 +2332,7 @@
                     "refId": "B"
                 },
                 {
-                    "expr": "(sum(rate(node_disk_read_time_seconds_total{instance=\"$host\"}[1h])) / sum(rate(node_disk_reads_completed_total{instance=\"$host\"}[1h])))\nor avg_over_time(aws_rds_read_latency_average{instance=\"$host\"}[1h])/1000 or avg_over_time(aws_rds_read_latency_average{instance=\"$host\"}[1h])/1000 ",
+                    "expr": "(sum(rate(node_disk_read_time_seconds_total{node_name=~\"$host\"}[1h])) / sum(rate(node_disk_reads_completed_total{node_name=~\"$host\"}[1h])))\nor avg_over_time(aws_rds_read_latency_average{node_name=~\"$host\"}[1h])/1000 or avg_over_time(aws_rds_read_latency_average{node_name=~\"$host\"}[1h])/1000 ",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2329,7 +2340,7 @@
                     "refId": "C"
                 },
                 {
-                    "expr": "(sum(rate(node_disk_write_time_seconds_total{instance=\"$host\"}[1h])) / sum(rate(node_disk_writes_completed_total{instance=\"$host\"}[1h]))) \nor (avg_over_time(aws_rds_write_latency_average{instance=\"$host\"}[$interval])/1000 or avg_over_time(aws_rds_write_latency_average{instance=\"$host\"}[1h])/1000)",
+                    "expr": "(sum(rate(node_disk_write_time_seconds_total{node_name=~\"$host\"}[1h])) / sum(rate(node_disk_writes_completed_total{node_name=~\"$host\"}[1h]))) \nor (avg_over_time(aws_rds_write_latency_average{node_name=~\"$host\"}[$interval])/1000 or avg_over_time(aws_rds_write_latency_average{node_name=~\"$host\"}[1h])/1000)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2339,6 +2350,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Disk IO Latency",
             "tooltip": {
@@ -2428,6 +2440,7 @@
                 }
             ],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 1,
             "points": false,
@@ -2451,7 +2464,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "sum(rate(node_disk_read_time_seconds_total{instance=\"$host\"}[$interval])) or sum(irate(node_disk_read_time_seconds_total{instance=\"$host\"}[5m]))",
+                    "expr": "sum(rate(node_disk_read_time_seconds_total{node_name=~\"$host\"}[$interval])) or sum(irate(node_disk_read_time_seconds_total{node_name=~\"$host\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2465,7 +2478,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "sum(rate(node_disk_write_time_seconds_total{instance=\"$host\"}[$interval])) or sum(irate(node_disk_write_time_seconds_total{instance=\"$host\"}[5m]))",
+                    "expr": "sum(rate(node_disk_write_time_seconds_total{node_name=~\"$host\"}[$interval])) or sum(irate(node_disk_write_time_seconds_total{node_name=~\"$host\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2476,7 +2489,7 @@
                     "target": ""
                 },
                 {
-                    "expr": "(sum(rate(node_disk_read_time_seconds_total{instance=\"$host\"}[$interval])) or sum(irate(node_disk_read_time_seconds_total{instance=\"$host\"}[5m]))) + (sum(rate(node_disk_write_time_seconds_total{instance=\"$host\"}[$interval])) or sum(irate(node_disk_write_time_seconds_total{instance=\"$host\"}[5m])))",
+                    "expr": "(sum(rate(node_disk_read_time_seconds_total{node_name=~\"$host\"}[$interval])) or sum(irate(node_disk_read_time_seconds_total{node_name=~\"$host\"}[5m]))) + (sum(rate(node_disk_write_time_seconds_total{node_name=~\"$host\"}[$interval])) or sum(irate(node_disk_write_time_seconds_total{node_name=~\"$host\"}[5m])))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2486,6 +2499,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Disk IO Load",
             "tooltip": {
@@ -2494,7 +2508,6 @@
                 "sort": 0,
                 "value_type": "individual"
             },
-            "transparent": false,
             "type": "graph",
             "xaxis": {
                 "buckets": null,
@@ -2575,6 +2588,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -2593,7 +2607,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "sum(rate(node_network_receive_bytes_total{instance=\"$host\", device!=\"lo\"}[$interval])) or sum(irate(node_network_receive_bytes_total{instance=\"$host\", device!=\"lo\"}[5m])) or sum(max_over_time(rdsosmetrics_network_rx{instance=\"$host\"}[$interval])) or sum(max_over_time(rdsosmetrics_network_rx{instance=\"$host\"}[5m])) ",
+                    "expr": "sum(rate(node_network_receive_bytes_total{node_name=~\"$host\", device!=\"lo\"}[$interval])) or sum(irate(node_network_receive_bytes_total{node_name=~\"$host\", device!=\"lo\"}[5m])) or sum(max_over_time(rdsosmetrics_network_rx{node_name=~\"$host\"}[$interval])) or sum(max_over_time(rdsosmetrics_network_rx{node_name=~\"$host\"}[5m])) ",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2607,7 +2621,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "sum(rate(node_network_transmit_bytes_total{instance=\"$host\", device!=\"lo\"}[$interval])) or sum(irate(node_network_transmit_bytes_total{instance=\"$host\", device!=\"lo\"}[5m])) or\nsum(max_over_time(rdsosmetrics_network_tx{instance=\"$host\"}[$interval])) or sum(max_over_time(rdsosmetrics_network_tx{instance=\"$host\"}[5m]))",
+                    "expr": "sum(rate(node_network_transmit_bytes_total{node_name=~\"$host\", device!=\"lo\"}[$interval])) or sum(irate(node_network_transmit_bytes_total{node_name=~\"$host\", device!=\"lo\"}[5m])) or\nsum(max_over_time(rdsosmetrics_network_tx{node_name=~\"$host\"}[$interval])) or sum(max_over_time(rdsosmetrics_network_tx{node_name=~\"$host\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2620,6 +2634,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Network Traffic",
             "tooltip": {
@@ -2628,7 +2643,6 @@
                 "sort": 0,
                 "value_type": "individual"
             },
-            "transparent": false,
             "type": "graph",
             "xaxis": {
                 "buckets": null,
@@ -2697,6 +2711,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -2716,7 +2731,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "sum(increase(node_network_receive_bytes_total{instance=\"$host\", device!=\"lo\"}[1h])) or sum(increase(rdsosmetrics_network_rx{instance=\"$host\", device!=\"lo\"}[1h]))",
+                    "expr": "sum(increase(node_network_receive_bytes_total{node_name=~\"$host\", device!=\"lo\"}[1h])) or sum(increase(rdsosmetrics_network_rx{node_name=~\"$host\", device!=\"lo\"}[1h]))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "1h",
@@ -2731,7 +2746,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "sum(increase(node_network_transmit_bytes_total{instance=\"$host\", device!=\"lo\"}[1h])) or sum(increase(rdsosmetrics_network_tx{instance=\"$host\", device!=\"lo\"}[1h]))",
+                    "expr": "sum(increase(node_network_transmit_bytes_total{node_name=~\"$host\", device!=\"lo\"}[1h])) or sum(increase(rdsosmetrics_network_tx{node_name=~\"$host\", device!=\"lo\"}[1h]))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "1h",
@@ -2743,7 +2758,7 @@
                     "target": ""
                 },
                 {
-                    "expr": "(sum(increase(node_network_receive_bytes_total{instance=\"$host\", device!=\"lo\"}[1h]))+sum(increase(node_network_transmit_bytes_total{instance=\"$host\", device!=\"lo\"}[1h])))  or (sum(increase(rdsosmetrics_network_rx{instance=\"$host\", device!=\"lo\"}[1h]))+sum(increase(rdsosmetrics_network_tx{instance=\"$host\", device!=\"lo\"}[1h])))",
+                    "expr": "(sum(increase(node_network_receive_bytes_total{node_name=~\"$host\", device!=\"lo\"}[1h]))+sum(increase(node_network_transmit_bytes_total{node_name=~\"$host\", device!=\"lo\"}[1h])))  or (sum(increase(rdsosmetrics_network_rx{node_name=~\"$host\", device!=\"lo\"}[1h]))+sum(increase(rdsosmetrics_network_tx{node_name=~\"$host\", device!=\"lo\"}[1h])))",
                     "format": "time_series",
                     "interval": "1h",
                     "intervalFactor": 1,
@@ -2753,6 +2768,7 @@
             ],
             "thresholds": [],
             "timeFrom": "24h",
+            "timeRegions": [],
             "timeShift": null,
             "title": "Network Utilization Hourly",
             "tooltip": {
@@ -2761,7 +2777,6 @@
                 "sort": 0,
                 "value_type": "individual"
             },
-            "transparent": false,
             "type": "graph",
             "xaxis": {
                 "buckets": null,
@@ -2834,6 +2849,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 1,
             "points": true,
@@ -2847,7 +2863,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "sum(rate(node_network_receive_errs_total{instance=~\"$host\", device!=\"lo\"}[$interval])) or \nsum(irate(node_network_receive_errs_total{instance=~\"$host\", device!=\"lo\"}[5m]))",
+                    "expr": "sum(rate(node_network_receive_errs_total{node_name=~\"$host\", device!=\"lo\"}[$interval])) or \nsum(irate(node_network_receive_errs_total{node_name=~\"$host\", device!=\"lo\"}[5m]))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -2859,7 +2875,7 @@
                     "target": ""
                 },
                 {
-                    "expr": "sum(rate(node_network_transmit_errs_total{instance=~\"$host\", device!=\"lo\"}[$interval])) or\nsum(irate(node_network_transmit_errs_total{instance=~\"$host\", device!=\"lo\"}[5m]))",
+                    "expr": "sum(rate(node_network_transmit_errs_total{node_name=~\"$host\", device!=\"lo\"}[$interval])) or\nsum(irate(node_network_transmit_errs_total{node_name=~\"$host\", device!=\"lo\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2867,7 +2883,7 @@
                     "refId": "B"
                 },
                 {
-                    "expr": "sum(rate(node_network_receive_drop_total{instance=~\"$host\", device!=\"lo\"}[$interval])) or\nsum(irate(node_network_receive_drop_total{instance=~\"$host\", device!=\"lo\"}[5m]))",
+                    "expr": "sum(rate(node_network_receive_drop_total{node_name=~\"$host\", device!=\"lo\"}[$interval])) or\nsum(irate(node_network_receive_drop_total{node_name=~\"$host\", device!=\"lo\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2875,7 +2891,7 @@
                     "refId": "C"
                 },
                 {
-                    "expr": "sum(rate(node_network_transmit_drop_total{instance=~\"$host\", device!=\"lo\"}[$interval])) or \nsum(irate(node_network_transmit_drop_total{instance=~\"$host\", device!=\"lo\"}[5m]))",
+                    "expr": "sum(rate(node_network_transmit_drop_total{node_name=~\"$host\", device!=\"lo\"}[$interval])) or \nsum(irate(node_network_transmit_drop_total{node_name=~\"$host\", device!=\"lo\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2885,6 +2901,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Local Network Errors",
             "tooltip": {
@@ -2893,7 +2910,6 @@
                 "sort": 0,
                 "value_type": "individual"
             },
-            "transparent": false,
             "type": "graph",
             "xaxis": {
                 "buckets": null,
@@ -2962,6 +2978,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -2987,7 +3004,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(node_netstat_Tcp_RetransSegs{instance=\"$host\"}[$interval]) or irate(node_netstat_Tcp_RetransSegs{instance=\"$host\"}[5m])",
+                    "expr": "rate(node_netstat_Tcp_RetransSegs{node_name=~\"$host\"}[$interval]) or irate(node_netstat_Tcp_RetransSegs{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -2999,7 +3016,7 @@
                     "target": ""
                 },
                 {
-                    "expr": "rate(node_netstat_Tcp_RetransSegs{instance=\"$host\"}[$interval])/rate(node_netstat_Tcp_OutSegs{instance=\"$host\"}[$interval]) or irate(node_netstat_Tcp_RetransSegs{instance=\"$host\"}[5m])/irate(node_netstat_Tcp_OutSegsSegs{instance=\"$host\"}[5m])",
+                    "expr": "rate(node_netstat_Tcp_RetransSegs{node_name=~\"$host\"}[$interval])/rate(node_netstat_Tcp_OutSegs{node_name=~\"$host\"}[$interval]) or irate(node_netstat_Tcp_RetransSegs{node_name=~\"$host\"}[5m])/irate(node_netstat_Tcp_OutSegsSegs{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -3010,6 +3027,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "TCP Retransmission",
             "tooltip": {
@@ -3018,7 +3036,6 @@
                 "sort": 0,
                 "value_type": "individual"
             },
-            "transparent": false,
             "type": "graph",
             "xaxis": {
                 "buckets": null,
@@ -3053,7 +3070,7 @@
         }
     ],
     "refresh": "1m",
-    "schemaVersion": 16,
+    "schemaVersion": 18,
     "style": "dark",
     "tags": [
         "OS",
@@ -3066,10 +3083,7 @@
                 "auto": true,
                 "auto_count": 200,
                 "auto_min": "1s",
-                "current": {
-                    "text": "auto",
-                    "value": "$__auto_interval_interval"
-                },
+                "current": {},
                 "datasource": "Prometheus",
                 "hide": 0,
                 "includeAll": false,
@@ -3121,6 +3135,7 @@
                 ],
                 "query": "1s,5s,1m,5m,1h,6h,1d",
                 "refresh": 2,
+                "skipUrlSync": false,
                 "type": "interval"
             },
             {
@@ -3128,6 +3143,57 @@
                 "allValue": null,
                 "current": {},
                 "datasource": "Prometheus",
+                "definition": "label_values(node_load1, region)",
+                "hide": 0,
+                "includeAll": true,
+                "label": "Region",
+                "multi": true,
+                "multiFormat": "regex values",
+                "name": "region",
+                "options": [],
+                "query": "label_values(node_load1, region)",
+                "refresh": 1,
+                "refresh_on_load": false,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 1,
+                "tagValuesQuery": "instance",
+                "tags": [],
+                "tagsQuery": "up",
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allFormat": "glob",
+                "allValue": null,
+                "current": {},
+                "datasource": "Prometheus",
+                "definition": "label_values(node_load1{region=~\"$region\"}, node_type)",
+                "hide": 0,
+                "includeAll": true,
+                "label": "Type",
+                "multi": true,
+                "multiFormat": "regex values",
+                "name": "node_type",
+                "options": [],
+                "query": "label_values(node_load1{region=~\"$region\"}, node_type)",
+                "refresh": 1,
+                "refresh_on_load": false,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 1,
+                "tagValuesQuery": "instance",
+                "tags": [],
+                "tagsQuery": "up",
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allFormat": "glob",
+                "allValue": null,
+                "current": {},
+                "datasource": "Prometheus",
+                "definition": "label_values(node_load1{region=~\"$region\",node_type=~\"$node_type\"}, node_name)",
                 "hide": 0,
                 "includeAll": false,
                 "label": "Host",
@@ -3135,10 +3201,11 @@
                 "multiFormat": "regex values",
                 "name": "host",
                 "options": [],
-                "query": "label_values(node_load1, instance)",
+                "query": "label_values(node_load1{region=~\"$region\",node_type=~\"$node_type\"}, node_name)",
                 "refresh": 1,
                 "refresh_on_load": false,
                 "regex": "",
+                "skipUrlSync": false,
                 "sort": 1,
                 "tagValuesQuery": "instance",
                 "tags": [],

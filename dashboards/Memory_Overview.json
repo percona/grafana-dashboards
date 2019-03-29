@@ -33,7 +33,7 @@
     "gnetId": 1860,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1547730913757,
+    "iteration": 1553886109618,
     "links": [
         {
             "icon": "dashboard",
@@ -218,8 +218,9 @@
             "lines": true,
             "linewidth": 2,
             "links": [],
-            "minSpan": 4,
+            "maxPerRow": 6,
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -238,7 +239,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "max_over_time(node_memory_MemTotal{instance=~\"$host\"}[$interval]) or\nmax_over_time(node_memory_MemTotal{instance=~\"$host\"}[5m])",
+                    "expr": "max_over_time(node_memory_MemTotal_bytes{node_name=~\"$host\"}[$interval]) or\nmax_over_time(node_memory_MemTotal_bytes{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -248,7 +249,7 @@
                     "step": 240
                 },
                 {
-                    "expr": "max(node_memory_MemTotal{instance=\"$host\"}) without(job) - \n(max(node_memory_MemFree{instance=\"$host\"}) without(job) + \nmax(node_memory_Buffers{instance=\"$host\"}) without(job) + \n(max(node_memory_Cached{instance=\"$host\",job=~\"rds-enhanced|linux\"}) without (job) or \nmax(node_memory_Cached{instance=\"$host\",job=\"rds-basic\"}) without (job)))",
+                    "expr": "max(node_memory_MemTotal_bytes{node_name=~\"$host\"}) without(job) - \n(max(node_memory_MemFree_bytes{node_name=~\"$host\"}) without(job) + \nmax(node_memory_Buffers_bytes{node_name=~\"$host\"}) without(job) + \n(max(node_memory_Cached_bytes{node_name=~\"$host\",job=~\"rds-enhanced|linux\"}) without (job) or \nmax(node_memory_Cached_bytes{node_name=~\"$host\",job=\"rds-basic\"}) without (job)))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -258,7 +259,7 @@
                     "step": 240
                 },
                 {
-                    "expr": "max(node_memory_Cached{instance=~\"$host\",job=~\"rds-enhanced|linux\"}) without (job) or \nmax(node_memory_Cached{instance=~\"$host\",job=~\"rds-basic\"}) without (job)",
+                    "expr": "max(node_memory_Cached_bytes{node_name=~\"$host\",job=~\"rds-enhanced|linux\"}) without (job) or \nmax(node_memory_Cached_bytes{node_name=~\"$host\",job=~\"rds-basic\"}) without (job)",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -268,7 +269,7 @@
                     "step": 240
                 },
                 {
-                    "expr": "max_over_time(node_memory_MemFree{instance=~\"$host\"}[$interval]) or max_over_time(node_memory_MemFree{instance=~\"$host\"}[5m])",
+                    "expr": "max_over_time(node_memory_MemFree_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_MemFree_bytes{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "hide": false,
                     "intervalFactor": 1,
@@ -277,7 +278,7 @@
                     "step": 240
                 },
                 {
-                    "expr": "(max_over_time(node_memory_SwapTotal{instance=~\"$host\"}[$interval]) or max_over_time(node_memory_SwapTotal{instance=~\"$host\"}[5m])) - \n(max_over_time(node_memory_SwapFree{instance=~\"$host\"}[$interval]) or max_over_time(node_memory_SwapFree{instance=~\"$host\"}[5m]))",
+                    "expr": "(max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$host\"}[5m])) - \n(max_over_time(node_memory_SwapFree_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_SwapFree_bytes{node_name=~\"$host\"}[5m]))",
                     "format": "time_series",
                     "hide": true,
                     "interval": "$interval",
@@ -287,7 +288,7 @@
                     "step": 240
                 },
                 {
-                    "expr": "max_over_time(node_memory_Buffers{instance=~\"$host\"}[$interval]) or max_over_time(node_memory_Buffers{instance=~\"$host\"}[5m])",
+                    "expr": "max_over_time(node_memory_Buffers_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_Buffers_bytes{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -297,6 +298,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Memory Usage",
             "tooltip": {
@@ -365,6 +367,7 @@
             "linewidth": 1,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -375,7 +378,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "(max_over_time(node_memory_MemFree{instance=\"$host\"}[$interval]) or max_over_time(node_memory_MemFree{instance=\"$host\"}[5m])) * 100 /\n(max_over_time(node_memory_MemTotal{instance=\"$host\"}[$interval]) or max_over_time(node_memory_MemTotal{instance=\"$host\"}[$interval]))",
+                    "expr": "(max_over_time(node_memory_MemFree_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_MemFree_bytes{node_name=~\"$host\"}[5m])) * 100 /\n(max_over_time(node_memory_MemTotal_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_MemTotal_bytes{node_name=~\"$host\"}[$interval]))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -386,6 +389,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Free Memory Percent",
             "tooltip": {
@@ -485,7 +489,7 @@
                     "lines": true,
                     "linewidth": 2,
                     "links": [],
-                    "minSpan": 12,
+                    "maxPerRow": 2,
                     "nullPointMode": "null",
                     "percentage": false,
                     "pointradius": 5,
@@ -497,7 +501,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "max_over_time(node_memory_Inactive{instance=~\"$host\"}[$interval]) or\nmax_over_time(node_memory_Inactive{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_memory_Inactive_bytes{node_name=~\"$host\"}[$interval]) or\nmax_over_time(node_memory_Inactive_bytes{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -506,7 +510,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "max_over_time(node_memory_Active{instance=~\"$host\"}[$interval]) or\nmax_over_time(node_memory_Active{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_memory_Active_bytes{node_name=~\"$host\"}[$interval]) or\nmax_over_time(node_memory_Active_bytes{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -606,7 +610,7 @@
                     "lines": true,
                     "linewidth": 2,
                     "links": [],
-                    "minSpan": 4,
+                    "maxPerRow": 6,
                     "nullPointMode": "null",
                     "percentage": false,
                     "pointradius": 5,
@@ -618,7 +622,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "max_over_time(node_memory_Active_anon{instance=~\"$host\"}[$interval]) or max_over_time(node_memory_Active_anon{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_memory_Active_anon_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_Active_anon_bytes{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -628,7 +632,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "max_over_time(node_memory_Inactive_anon{instance=~\"$host\"}[$interval]) or max_over_time(node_memory_Inactive_anon{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_memory_Inactive_anon_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_Inactive_anon_bytes{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -729,7 +733,7 @@
                     "lines": true,
                     "linewidth": 2,
                     "links": [],
-                    "minSpan": 4,
+                    "maxPerRow": 6,
                     "nullPointMode": "null",
                     "percentage": false,
                     "pointradius": 5,
@@ -741,7 +745,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "max_over_time(node_memory_Inactive_file{instance=~\"$host\"}[$interval]) or max_over_time(node_memory_Inactive_file{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_memory_Inactive_file_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_Inactive_file_bytes{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -751,7 +755,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "max_over_time(node_memory_Active_file{instance=~\"$host\"}[$interval]) or max_over_time(node_memory_Active_file{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_memory_Active_file_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_Active_file_bytes{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -852,7 +856,7 @@
                     "lines": true,
                     "linewidth": 2,
                     "links": [],
-                    "minSpan": 4,
+                    "maxPerRow": 6,
                     "nullPointMode": "null",
                     "percentage": false,
                     "pointradius": 5,
@@ -875,7 +879,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "rate(node_vmstat_pswpin{instance=\"$host\"}[$interval]) * 4096 or irate(node_vmstat_pswpin{instance=\"$host\"}[5m]) * 4096",
+                            "expr": "rate(node_vmstat_pswpin{node_name=~\"$host\"}[$interval]) * 4096 or irate(node_vmstat_pswpin{node_name=~\"$host\"}[5m]) * 4096",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -885,7 +889,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "rate(node_vmstat_pswpout{instance=\"$host\"}[$interval]) * 4096 or irate(node_vmstat_pswpout{instance=\"$host\"}[5m]) * 4096",
+                            "expr": "rate(node_vmstat_pswpout{node_name=~\"$host\"}[$interval]) * 4096 or irate(node_vmstat_pswpout{node_name=~\"$host\"}[5m]) * 4096",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -895,7 +899,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "(rate(node_vmstat_pswpin{instance=\"$host\"}[$interval]) * 4096 or \nirate(node_vmstat_pswpin{instance=\"$host\"}[5m]) * 4096) + \n(rate(node_vmstat_pswpout{instance=\"$host\"}[$interval]) * 4096 or \nirate(node_vmstat_pswpout{instance=\"$host\"}[5m]) * 4096)",
+                            "expr": "(rate(node_vmstat_pswpin{node_name=~\"$host\"}[$interval]) * 4096 or \nirate(node_vmstat_pswpin{node_name=~\"$host\"}[5m]) * 4096) + \n(rate(node_vmstat_pswpout{node_name=~\"$host\"}[$interval]) * 4096 or \nirate(node_vmstat_pswpout{node_name=~\"$host\"}[5m]) * 4096)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -995,7 +999,7 @@
                     "lines": true,
                     "linewidth": 2,
                     "links": [],
-                    "minSpan": 4,
+                    "maxPerRow": 6,
                     "nullPointMode": "null",
                     "percentage": false,
                     "pointradius": 5,
@@ -1014,7 +1018,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "max_over_time(node_memory_SwapTotal{instance=\"$host\"}[$interval]) - max_over_time(node_memory_SwapFree{instance=\"$host\"}[$interval]) or\nmax_over_time(node_memory_SwapTotal{instance=\"$host\"}[5m]) - max_over_time(node_memory_SwapFree{instance=\"$host\"}[5m])",
+                            "expr": "max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$host\"}[$interval]) - max_over_time(node_memory_SwapFree_bytes{node_name=~\"$host\"}[$interval]) or\nmax_over_time(node_memory_SwapTotal_bytes{node_name=~\"$host\"}[5m]) - max_over_time(node_memory_SwapFree_bytes{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -1024,7 +1028,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "max_over_time(node_memory_SwapFree{instance=\"$host\"}[$interval]) or max_over_time(node_memory_SwapFree{instance=\"$host\"}[5m])",
+                            "expr": "max_over_time(node_memory_SwapFree_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_SwapFree_bytes{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -1034,7 +1038,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "max_over_time(node_memory_SwapTotal{instance=\"$host\"}[$interval]) or max_over_time(node_memory_SwapTotal{instance=\"$host\"}[5m])",
+                            "expr": "max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1149,7 +1153,7 @@
                     "lines": true,
                     "linewidth": 2,
                     "links": [],
-                    "minSpan": 4,
+                    "maxPerRow": 6,
                     "nullPointMode": "null",
                     "percentage": false,
                     "pointradius": 5,
@@ -1166,7 +1170,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "max_over_time(node_memory_PageTables{instance=~\"$host\"}[$interval]) or max_over_time(node_memory_PageTables{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_memory_PageTables_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_PageTables_bytes{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -1176,7 +1180,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "max_over_time(node_memory_SwapCached{instance=~\"$host\"}[$interval]) or max_over_time(node_memory_SwapCached{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_memory_SwapCached_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_SwapCached_bytes{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1185,7 +1189,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "max_over_time(node_memory_Slab{instance=~\"$host\"}[$interval]) or max_over_time(node_memory_Slab{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_memory_Slab_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_Slab_bytes{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -1195,7 +1199,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "max_over_time(node_memory_SwapTotal{instance=~\"$host\"}[$interval]) - max_over_time(node_memory_SwapFree{instance=~\"$host\"}[$interval])",
+                            "expr": "max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$host\"}[$interval]) - max_over_time(node_memory_SwapFree_bytes{node_name=~\"$host\"}[$interval])",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -1205,7 +1209,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "max_over_time(node_memory_HardwareCorrupted{instance=~\"$host\"}[$interval]) or max_over_time(node_memory_HardwareCorrupted{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_memory_HardwareCorrupted_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_HardwareCorrupted_bytes{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -1215,7 +1219,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "max_over_time(node_memory_Mapped{instance=\"$host\"}[$interval]) or max_over_time(node_memory_Mapped{instance=\"$host\"}[5m])",
+                            "expr": "max_over_time(node_memory_Mapped_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_Mapped_bytes{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1223,7 +1227,7 @@
                             "refId": "A"
                         },
                         {
-                            "expr": "max_over_time(node_memory_Dirty{instance=~\"$host\"}[$interval]) or max_over_time(node_memory_Dirty{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_memory_Dirty_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_Dirty_bytes{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1231,7 +1235,7 @@
                             "refId": "B"
                         },
                         {
-                            "expr": "max_over_time(node_memory_Writeback{instance=~\"$host\"}[$interval]) or max_over_time(node_memory_Writeback{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_memory_Writeback_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_Writeback_bytes{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1239,7 +1243,7 @@
                             "refId": "C"
                         },
                         {
-                            "expr": "max_over_time(node_memory_Shmem{instance=~\"$host\"}[$interval]) or max_over_time(node_memory_Shmem{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_memory_Shmem_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_Shmem_bytes{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1247,7 +1251,7 @@
                             "refId": "D"
                         },
                         {
-                            "expr": "max_over_time(node_memory_AnonPages{instance=~\"$host\"}[$interval]) or max_over_time(node_memory_AnonPages{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_memory_AnonPages_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_AnonPages_bytes{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1255,7 +1259,7 @@
                             "refId": "H"
                         },
                         {
-                            "expr": "max_over_time(node_memory_WritebackTmp{instance=~\"$host\"}[$interval]) or max_over_time(node_memory_WritebackTmp{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_memory_Writeback_bytesTmp_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_Writeback_bytesTmp_bytes{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1356,7 +1360,7 @@
                     "lines": true,
                     "linewidth": 2,
                     "links": [],
-                    "minSpan": 4,
+                    "maxPerRow": 6,
                     "nullPointMode": "null",
                     "percentage": false,
                     "pointradius": 5,
@@ -1368,7 +1372,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "node_memory_VmallocChunk{instance=~\"$host\"}",
+                            "expr": "node_memory_VmallocChunk_bytes{node_name=~\"$host\"}",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -1378,7 +1382,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "node_memory_VmallocTotal{instance=~\"$host\"}",
+                            "expr": "node_memory_VmallocTotal_bytes{node_name=~\"$host\"}",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -1388,7 +1392,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "node_memory_VmallocUsed{instance=~\"$host\"}",
+                            "expr": "node_memory_VmallocUsed_bytes{node_name=~\"$host\"}",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -1490,7 +1494,7 @@
                     "lines": true,
                     "linewidth": 2,
                     "links": [],
-                    "minSpan": 4,
+                    "maxPerRow": 6,
                     "nullPointMode": "null",
                     "percentage": false,
                     "pointradius": 5,
@@ -1502,7 +1506,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "max_over_time(node_memory_Shmem{instance=~\"$host\"}[$interval]) or max_over_time(node_memory_Shmem{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_memory_Shmem_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_Shmem_bytes{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1511,7 +1515,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "max_over_time(node_memory_ShmemHugePages{instance=~\"$host\"}[$interval]) or max_over_time(node_memory_ShmemHugePages{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_memory_Shmem_bytesHugePages{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_Shmem_bytesHugePages{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1519,7 +1523,7 @@
                             "refId": "A"
                         },
                         {
-                            "expr": "max_over_time(node_memory_ShmemPmdMapped{instance=~\"$host\"}[$interval]) or max_over_time(node_memory_ShmemPmdMapped{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_memory_Shmem_bytesPmdMapped{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_Shmem_bytesPmdMapped{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1618,7 +1622,7 @@
                     "lines": true,
                     "linewidth": 2,
                     "links": [],
-                    "minSpan": 12,
+                    "maxPerRow": 2,
                     "nullPointMode": "null",
                     "percentage": false,
                     "pointradius": 5,
@@ -1630,7 +1634,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "max_over_time(node_memory_KernelStack{instance=~\"$host\"}[$interval]) or max_over_time(node_memory_KernelStack{instance=~\"$host\"}[5m]) ",
+                            "expr": "max_over_time(node_memory_KernelStack_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_KernelStack_bytes{node_name=~\"$host\"}[5m]) ",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1730,7 +1734,7 @@
                     "lines": true,
                     "linewidth": 2,
                     "links": [],
-                    "minSpan": 4,
+                    "maxPerRow": 6,
                     "nullPointMode": "null",
                     "percentage": false,
                     "pointradius": 5,
@@ -1751,7 +1755,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "max_over_time(node_memory_Committed_AS{instance=~\"$host\"}[$interval]) or\nmax_over_time(node_memory_Committed_AS{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_memory_Committed_AS_bytes{node_name=~\"$host\"}[$interval]) or\nmax_over_time(node_memory_Committed_AS_bytes{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1760,7 +1764,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "max_over_time(node_memory_CommitLimit{instance=~\"$host\"}[$interval]) or\nmax_over_time(node_memory_CommitLimit{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_memory_CommitLimit_bytes{node_name=~\"$host\"}[$interval]) or\nmax_over_time(node_memory_CommitLimit_bytes{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1861,7 +1865,7 @@
                     "lines": true,
                     "linewidth": 2,
                     "links": [],
-                    "minSpan": 4,
+                    "maxPerRow": 6,
                     "nullPointMode": "null",
                     "percentage": false,
                     "pointradius": 5,
@@ -1878,7 +1882,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "max_over_time(node_memory_AnonHugePages{instance=~\"$host\"}[$interval]) or max_over_time(node_memory_AnonHugePages{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_memory_AnonHugePages_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_AnonHugePages_bytes{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1887,7 +1891,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "max_over_time(node_memory_AnonPages{instance=~\"$host\"}[$interval]) or max_over_time(node_memory_AnonPages{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_memory_AnonPages_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_AnonPages_bytes{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1987,7 +1991,7 @@
                     "lines": true,
                     "linewidth": 2,
                     "links": [],
-                    "minSpan": 4,
+                    "maxPerRow": 6,
                     "nullPointMode": "null",
                     "percentage": false,
                     "pointradius": 5,
@@ -2007,7 +2011,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "max_over_time(node_memory_Slab{instance=~\"$host\"}[$interval]) or max_over_time(node_memory_Slab{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_memory_Slab_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_Slab_bytes{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2016,7 +2020,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "max_over_time(node_memory_SReclaimable{instance=~\"$host\"}[$interval]) or max_over_time(node_memory_SReclaimable{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_memory_SReclaimable_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_SReclaimable_bytes{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2024,7 +2028,7 @@
                             "refId": "B"
                         },
                         {
-                            "expr": "max_over_time(node_memory_SUnreclaim{instance=~\"$host\"}[$interval]) or max_over_time(node_memory_SUnreclaim{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_memory_SUnreclaim_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_SUnreclaim_bytes{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2125,7 +2129,7 @@
                     "lines": true,
                     "linewidth": 2,
                     "links": [],
-                    "minSpan": 4,
+                    "maxPerRow": 6,
                     "nullPointMode": "null",
                     "percentage": false,
                     "pointradius": 5,
@@ -2137,7 +2141,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "max_over_time(node_memory_DirectMap1G{instance=~\"$host\"}[$interval]) or max_over_time(node_memory_DirectMap1G{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_memory_DirectMap1G_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_DirectMap1G_bytes{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2146,7 +2150,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "max_over_time(node_memory_DirectMap2M{instance=~\"$host\"}[$interval]) or max_over_time(node_memory_DirectMap2M{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_memory_DirectMap2M_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_DirectMap2M_bytes{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2155,7 +2159,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "max_over_time(node_memory_DirectMap4k{instance=~\"$host\"}[$interval]) or max_over_time(node_memory_DirectMap4k{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_memory_DirectMap4k_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_DirectMap4k_bytes{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2255,7 +2259,7 @@
                     "lines": true,
                     "linewidth": 2,
                     "links": [],
-                    "minSpan": 4,
+                    "maxPerRow": 6,
                     "nullPointMode": "null",
                     "percentage": false,
                     "pointradius": 5,
@@ -2267,7 +2271,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "max_over_time(node_memory_Bounce{instance=~\"$host\"}[$interval]) or max_over_time(node_memory_Bounce{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_memory_Bounce_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_Bounce_bytes{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2369,7 +2373,7 @@
                     "lines": true,
                     "linewidth": 1,
                     "links": [],
-                    "minSpan": 4,
+                    "maxPerRow": 6,
                     "nullPointMode": "null",
                     "percentage": false,
                     "pointradius": 5,
@@ -2381,7 +2385,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "max_over_time(node_memory_NFS_Unstable{instance=~\"$host\"}[$interval]) or max_over_time(node_memory_NFS_Unstable{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_memory_NFS_Unstable_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_NFS_Unstable_bytes{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2481,7 +2485,7 @@
                     "lines": true,
                     "linewidth": 2,
                     "links": [],
-                    "minSpan": 4,
+                    "maxPerRow": 6,
                     "nullPointMode": "null",
                     "percentage": false,
                     "pointradius": 5,
@@ -2493,7 +2497,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "max_over_time(node_memory_Unevictable{instance=~\"$host\"}[$interval]) or max_over_time(node_memory_Unevictable{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_memory_Unevictable_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_Unevictable_bytes{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2502,7 +2506,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "max_over_time(node_memory_Mlocked{instance=~\"$host\"}[$interval]) or max_over_time(node_memory_Mlocked{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_memory_Mlocked_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_Mlocked_bytes{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2603,7 +2607,7 @@
                     "lines": true,
                     "linewidth": 1,
                     "links": [],
-                    "minSpan": 12,
+                    "maxPerRow": 2,
                     "nullPointMode": "null",
                     "percentage": false,
                     "pointradius": 5,
@@ -2615,7 +2619,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "max_over_time(node_memory_HugePages_Total{instance=~\"$host\"}[$interval]) or max_over_time(node_memory_HugePages_Total{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_memory_HugePages_Total_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_HugePages_Total_bytes{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2624,7 +2628,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "max_over_time(node_memory_Hugepagesize{instance=~\"$host\"}[$interval]) or max_over_time(node_memory_Hugepagesize{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_memory_Hugepagesize_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_Hugepagesize_bytes{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2725,7 +2729,7 @@
                     "lines": true,
                     "linewidth": 1,
                     "links": [],
-                    "minSpan": 4,
+                    "maxPerRow": 6,
                     "nullPointMode": "null",
                     "percentage": false,
                     "pointradius": 5,
@@ -2737,7 +2741,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "max_over_time(node_memory_HugePages_Free{instance=~\"$host\"}[$interval]) or max_over_time(node_memory_HugePages_Free{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_memory_HugePages_Free_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_HugePages_Free_bytes{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2746,7 +2750,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "max_over_time(node_memory_HugePages_Rsvd{instance=~\"$host\"}[$interval]) or max_over_time(node_memory_HugePages_Rsvd{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_memory_HugePages_Rsvd_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_HugePages_Rsvd_bytes{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2755,7 +2759,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "max_over_time(node_memory_HugePages_Surp{instance=~\"$host\"}[$interval]) or max_over_time(node_memory_HugePages_Surp{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_memory_HugePages_Surp_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_HugePages_Surp_bytes{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -2765,7 +2769,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "max_over_time(node_memory_HugePages_Total{instance=~\"$host\"}[$interval]) or max_over_time(node_memory_HugePages_Total{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_memory_HugePages_Total_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_HugePages_Total_bytes{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2879,7 +2883,7 @@
                     "lines": true,
                     "linewidth": 2,
                     "links": [],
-                    "minSpan": 4,
+                    "maxPerRow": 6,
                     "nullPointMode": "null",
                     "percentage": false,
                     "pointradius": 5,
@@ -2891,7 +2895,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "node_vmstat_nr_free_pages{instance=~\"$host\"}",
+                            "expr": "node_vmstat_nr_free_pages{node_name=~\"$host\"}",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2900,7 +2904,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "rate(node_vmstat_pgactivate{instance=~\"$host\"}[$interval])",
+                            "expr": "rate(node_vmstat_pgactivate{node_name=~\"$host\"}[$interval])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2908,7 +2912,7 @@
                             "refId": "A"
                         },
                         {
-                            "expr": "rate(node_vmstat_pgdeactivate{instance=~\"$host\"}[$interval])",
+                            "expr": "rate(node_vmstat_pgdeactivate{node_name=~\"$host\"}[$interval])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2994,7 +2998,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "rate(node_vmstat_pgpgin{instance=\"$host\"}[$interval])",
+                            "expr": "rate(node_vmstat_pgpgin{node_name=~\"$host\"}[$interval])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3002,7 +3006,7 @@
                             "refId": "A"
                         },
                         {
-                            "expr": "rate(node_vmstat_pgpgout{instance=\"$host\"}[$interval])",
+                            "expr": "rate(node_vmstat_pgpgout{node_name=~\"$host\"}[$interval])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3100,7 +3104,7 @@
                     "lines": true,
                     "linewidth": 2,
                     "links": [],
-                    "minSpan": 4,
+                    "maxPerRow": 6,
                     "nullPointMode": "null",
                     "percentage": false,
                     "pointradius": 5,
@@ -3112,7 +3116,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "max_over_time(node_vmstat_nr_active_file{instance=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_active_file{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_vmstat_nr_active_file{node_name=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_active_file{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3121,7 +3125,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "max_over_time(node_vmstat_nr_inactive_file{instance=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_inactive_file{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_vmstat_nr_inactive_file{node_name=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_inactive_file{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3130,7 +3134,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "max_over_time(node_vmstat_nr_isolated_file{instance=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_isolated_file{instance=~\"$host\"}[$interval])",
+                            "expr": "max_over_time(node_vmstat_nr_isolated_file{node_name=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_isolated_file{node_name=~\"$host\"}[$interval])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3229,7 +3233,7 @@
                     "lines": true,
                     "linewidth": 2,
                     "links": [],
-                    "minSpan": 4,
+                    "maxPerRow": 6,
                     "nullPointMode": "null",
                     "percentage": false,
                     "pointradius": 5,
@@ -3241,7 +3245,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "max_over_time(node_vmstat_nr_active_anon{instance=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_active_anon{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_vmstat_nr_active_anon{node_name=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_active_anon{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3250,7 +3254,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "max_over_time(node_vmstat_nr_inactive_anon{instance=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_inactive_anon{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_vmstat_nr_inactive_anon{node_name=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_inactive_anon{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -3260,7 +3264,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "max_over_time(node_vmstat_nr_isolated_anon{instance=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_isolated_anon{instance=~\"$host\"}[$interval])",
+                            "expr": "max_over_time(node_vmstat_nr_isolated_anon{node_name=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_isolated_anon{node_name=~\"$host\"}[$interval])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3268,7 +3272,7 @@
                             "refId": "A"
                         },
                         {
-                            "expr": "max_over_time(node_vmstat_nr_anon_transparent_hugepages{instance=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_anon_transparent_hugepages{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_vmstat_nr_anon_transparent_hugepages{node_name=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_anon_transparent_hugepages{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3365,7 +3369,7 @@
                     "lines": true,
                     "linewidth": 2,
                     "links": [],
-                    "minSpan": 4,
+                    "maxPerRow": 6,
                     "nullPointMode": "null",
                     "percentage": false,
                     "pointradius": 5,
@@ -3377,7 +3381,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "max_over_time(node_vmstat_nr_shmem{instance=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_shmem{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_vmstat_nr_shmem{node_name=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_shmem{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3386,7 +3390,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "max_over_time(node_vmstat_nr_shmem_hugepages{instance=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_shmem_hugepages{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_vmstat_nr_shmem_hugepages{node_name=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_shmem_hugepages{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3394,7 +3398,7 @@
                             "refId": "B"
                         },
                         {
-                            "expr": "max_over_time(node_vmstat_nr_shmem_pmdmapped{instance=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_shmem_pmdmapped{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_vmstat_nr_shmem_pmdmapped{node_name=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_shmem_pmdmapped{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3492,7 +3496,7 @@
                     "lines": true,
                     "linewidth": 2,
                     "links": [],
-                    "minSpan": 4,
+                    "maxPerRow": 6,
                     "nullPointMode": "null",
                     "percentage": false,
                     "pointradius": 5,
@@ -3510,7 +3514,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "max_over_time(node_vmstat_nr_dirty{instance=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_dirty{instance=~\"$host\"}[5m ])",
+                            "expr": "max_over_time(node_vmstat_nr_dirty{node_name=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_dirty{node_name=~\"$host\"}[5m ])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3519,7 +3523,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "max_over_time(node_vmstat_nr_dirty_threshold{instance=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_dirty_threshold{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_vmstat_nr_dirty_threshold{node_name=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_dirty_threshold{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3527,7 +3531,7 @@
                             "refId": "B"
                         },
                         {
-                            "expr": "max_over_time(node_vmstat_nr_dirty_background_threshold{instance=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_dirty_background_threshold{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_vmstat_nr_dirty_background_threshold{node_name=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_dirty_background_threshold{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3535,7 +3539,7 @@
                             "refId": "D"
                         },
                         {
-                            "expr": "max_over_time(node_vmstat_nr_writeback{instance=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_writeback{instance=~\"$host\"}[5m ])",
+                            "expr": "max_over_time(node_vmstat_nr_writeback{node_name=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_writeback{node_name=~\"$host\"}[5m ])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3544,7 +3548,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "max_over_time(node_vmstat_nr_unstable{instance=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_unstable{instance=~\"$host\"}[5m ])",
+                            "expr": "max_over_time(node_vmstat_nr_unstable{node_name=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_unstable{node_name=~\"$host\"}[5m ])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3552,7 +3556,7 @@
                             "refId": "E"
                         },
                         {
-                            "expr": "max_over_time(node_vmstat_nr_writeback_temp{instance=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_writeback_temp{instance=~\"$host\"}[5m ])",
+                            "expr": "max_over_time(node_vmstat_nr_writeback_temp{node_name=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_writeback_temp{node_name=~\"$host\"}[5m ])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3651,7 +3655,7 @@
                     "lines": true,
                     "linewidth": 2,
                     "links": [],
-                    "minSpan": 4,
+                    "maxPerRow": 6,
                     "nullPointMode": "null",
                     "percentage": false,
                     "pointradius": 5,
@@ -3663,7 +3667,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "max_over_time(node_vmstat_nr_page_table_pages{instance=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_page_table_pages{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_vmstat_nr_page_table_pages{node_name=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_page_table_pages{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3762,7 +3766,7 @@
                     "lines": true,
                     "linewidth": 2,
                     "links": [],
-                    "minSpan": 4,
+                    "maxPerRow": 6,
                     "nullPointMode": "null",
                     "percentage": false,
                     "pointradius": 5,
@@ -3774,7 +3778,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "max_over_time(node_vmstat_nr_bounce{instance=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_bounce{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_vmstat_nr_bounce{node_name=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_bounce{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -3874,7 +3878,7 @@
                     "lines": true,
                     "linewidth": 2,
                     "links": [],
-                    "minSpan": 4,
+                    "maxPerRow": 6,
                     "nullPointMode": "null",
                     "percentage": false,
                     "pointradius": 5,
@@ -3886,7 +3890,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "max_over_time(node_vmstat_nr_free_cma{instance=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_free_cma{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_vmstat_nr_free_cma{node_name=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_free_cma{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3895,7 +3899,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "max_over_time(node_vmstat_nr_vmscan_write{instance=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_vmscan_write{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_vmstat_nr_vmscan_write{node_name=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_vmscan_write{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3904,7 +3908,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "max_over_time(node_vmstat_nr_vmscan_immediate_reclaim{instance=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_vmscan_immediate_reclaim{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_vmstat_nr_vmscan_immediate_reclaim{node_name=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_vmscan_immediate_reclaim{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3913,7 +3917,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "max_over_time(node_vmstat_nr_unevictable{instance=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_unevictable{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_vmstat_nr_unevictable{node_name=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_unevictable{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3921,7 +3925,7 @@
                             "refId": "A"
                         },
                         {
-                            "expr": "max_over_time(node_vmstat_nr_mlock{instance=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_mlock{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_vmstat_nr_mlock{node_name=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_mlock{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4019,7 +4023,7 @@
                     "lines": true,
                     "linewidth": 2,
                     "links": [],
-                    "minSpan": 4,
+                    "maxPerRow": 6,
                     "nullPointMode": "null",
                     "percentage": false,
                     "pointradius": 5,
@@ -4031,7 +4035,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "max_over_time(node_vmstat_nr_mapped{instance=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_mapped{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_vmstat_nr_mapped{node_name=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_mapped{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -4131,7 +4135,7 @@
                     "lines": true,
                     "linewidth": 2,
                     "links": [],
-                    "minSpan": 4,
+                    "maxPerRow": 6,
                     "nullPointMode": "null",
                     "percentage": false,
                     "pointradius": 5,
@@ -4143,7 +4147,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "max_over_time(node_vmstat_nr_kernel_stack{instance=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_kernel_stack{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_vmstat_nr_kernel_stack{node_name=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_kernel_stack{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4243,7 +4247,7 @@
                     "lines": true,
                     "linewidth": 2,
                     "links": [],
-                    "minSpan": 4,
+                    "maxPerRow": 6,
                     "nullPointMode": "null",
                     "percentage": false,
                     "pointradius": 5,
@@ -4255,7 +4259,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "max_over_time(node_vmstat_nr_slab_reclaimable{instance=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_slab_reclaimable{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_vmstat_nr_slab_reclaimable{node_name=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_slab_reclaimable{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4264,7 +4268,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "max_over_time(node_vmstat_nr_slab_unreclaimable{instance=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_slab_unreclaimable{instance=~\"$host\"}[5m])",
+                            "expr": "max_over_time(node_vmstat_nr_slab_unreclaimable{node_name=~\"$host\"}[$interval]) or max_over_time(node_vmstat_nr_slab_unreclaimable{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4273,7 +4277,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "rate(node_vmstat_slabs_scanned{instance=~\"$host\"}[$interval]) or irate(node_vmstat_slabs_scanned{instance=~\"$host\"}[5m])",
+                            "expr": "rate(node_vmstat_slabs_scanned{node_name=~\"$host\"}[$interval]) or irate(node_vmstat_slabs_scanned{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4281,7 +4285,7 @@
                             "refId": "B"
                         },
                         {
-                            "expr": "rate(node_vmstat_drop_slab{instance=~\"$host\"}[$interval]) or irate(node_vmstat_drop_slab{instance=~\"$host\"}[5m])",
+                            "expr": "rate(node_vmstat_drop_slab{node_name=~\"$host\"}[$interval]) or irate(node_vmstat_drop_slab{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4394,7 +4398,7 @@
                     "lines": true,
                     "linewidth": 2,
                     "links": [],
-                    "minSpan": 4,
+                    "maxPerRow": 6,
                     "nullPointMode": "null",
                     "percentage": false,
                     "pointradius": 5,
@@ -4406,7 +4410,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "rate(node_vmstat_pgalloc_dma{instance=~\"$host\"}[$interval]) or irate(node_vmstat_pgalloc_dma{instance=~\"$host\"}[5m])",
+                            "expr": "rate(node_vmstat_pgalloc_dma{node_name=~\"$host\"}[$interval]) or irate(node_vmstat_pgalloc_dma{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4415,7 +4419,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "rate(node_vmstat_pgalloc_dma32{instance=~\"$host\"}[$interval]) or irate(node_vmstat_pgalloc_dma32{instance=~\"$host\"}[5m])",
+                            "expr": "rate(node_vmstat_pgalloc_dma32{node_name=~\"$host\"}[$interval]) or irate(node_vmstat_pgalloc_dma32{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4424,7 +4428,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "rate(node_vmstat_pgalloc_normal{instance=~\"$host\"}[$interval]) or irate(node_vmstat_pgalloc_normal{instance=~\"$host\"}[5m])",
+                            "expr": "rate(node_vmstat_pgalloc_normal{node_name=~\"$host\"}[$interval]) or irate(node_vmstat_pgalloc_normal{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4433,7 +4437,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "rate(node_vmstat_pgalloc_movable{instance=~\"$host\"}[$interval]) or irate(node_vmstat_pgalloc_movable{instance=~\"$host\"}[5m])",
+                            "expr": "rate(node_vmstat_pgalloc_movable{node_name=~\"$host\"}[$interval]) or irate(node_vmstat_pgalloc_movable{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4531,7 +4535,7 @@
                     "lines": true,
                     "linewidth": 2,
                     "links": [],
-                    "minSpan": 4,
+                    "maxPerRow": 6,
                     "nullPointMode": "null",
                     "percentage": false,
                     "pointradius": 5,
@@ -4543,7 +4547,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "rate(node_vmstat_pgrefill_dma{instance=~\"$host\"}[$interval]) or irate(node_vmstat_pgrefill_dma{instance=~\"$host\"}[5m])",
+                            "expr": "rate(node_vmstat_pgrefill_dma{node_name=~\"$host\"}[$interval]) or irate(node_vmstat_pgrefill_dma{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4552,7 +4556,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "rate(node_vmstat_pgrefill_dma32{instance=~\"$host\"}[$interval]) or irate(node_vmstat_pgrefill_dma32{instance=~\"$host\"}[5m])",
+                            "expr": "rate(node_vmstat_pgrefill_dma32{node_name=~\"$host\"}[$interval]) or irate(node_vmstat_pgrefill_dma32{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4561,7 +4565,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "rate(node_vmstat_pgrefill_normal{instance=~\"$host\"}[$interval]) or irate(node_vmstat_pgrefill_normal{instance=~\"$host\"}[5m])",
+                            "expr": "rate(node_vmstat_pgrefill_normal{node_name=~\"$host\"}[$interval]) or irate(node_vmstat_pgrefill_normal{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4570,7 +4574,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "rate(node_vmstat_pgrefill_movable{instance=~\"$host\"}[$interval]) or irate(node_vmstat_pgrefill_movable{instance=~\"$host\"}[5m])",
+                            "expr": "rate(node_vmstat_pgrefill_movable{node_name=~\"$host\"}[$interval]) or irate(node_vmstat_pgrefill_movable{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4668,7 +4672,7 @@
                     "lines": true,
                     "linewidth": 2,
                     "links": [],
-                    "minSpan": 4,
+                    "maxPerRow": 6,
                     "nullPointMode": "null",
                     "percentage": false,
                     "pointradius": 5,
@@ -4680,7 +4684,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "rate(node_vmstat_pgscan_direct_dma{instance=~\"$host\"}[$interval]) or irate(node_vmstat_pgscan_direct_dma{instance=~\"$host\"}[5m])",
+                            "expr": "rate(node_vmstat_pgscan_direct_dma{node_name=~\"$host\"}[$interval]) or irate(node_vmstat_pgscan_direct_dma{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4689,7 +4693,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "rate(node_vmstat_pgscan_direct_dma32{instance=~\"$host\"}[$interval]) or irate(node_vmstat_pgscan_direct_dma32{instance=~\"$host\"}[5m])",
+                            "expr": "rate(node_vmstat_pgscan_direct_dma32{node_name=~\"$host\"}[$interval]) or irate(node_vmstat_pgscan_direct_dma32{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4698,7 +4702,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "rate(node_vmstat_pgscan_direct_normal{instance=~\"$host\"}[$interval]) or irate(node_vmstat_pgscan_direct_normal{instance=~\"$host\"}[5m])",
+                            "expr": "rate(node_vmstat_pgscan_direct_normal{node_name=~\"$host\"}[$interval]) or irate(node_vmstat_pgscan_direct_normal{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4707,7 +4711,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "rate(node_vmstat_pgscan_direct_movable{instance=~\"$host\"}[$interval]) or irate(node_vmstat_pgscan_direct_movable{instance=~\"$host\"}[5m])",
+                            "expr": "rate(node_vmstat_pgscan_direct_movable{node_name=~\"$host\"}[$interval]) or irate(node_vmstat_pgscan_direct_movable{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4805,7 +4809,7 @@
                     "lines": true,
                     "linewidth": 2,
                     "links": [],
-                    "minSpan": 4,
+                    "maxPerRow": 6,
                     "nullPointMode": "null",
                     "percentage": false,
                     "pointradius": 5,
@@ -4817,7 +4821,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "rate(node_vmstat_pgscan_kswapd_dma{instance=~\"$host\"}[$interval]) or irate(node_vmstat_pgscan_kswapd_dma{instance=~\"$host\"}[5m])",
+                            "expr": "rate(node_vmstat_pgscan_kswapd_dma{node_name=~\"$host\"}[$interval]) or irate(node_vmstat_pgscan_kswapd_dma{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4826,7 +4830,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "rate(node_vmstat_pgscan_kswapd_dma32{instance=~\"$host\"}[$interval]) or irate(node_vmstat_pgscan_kswapd_dma32{instance=~\"$host\"}[5m])",
+                            "expr": "rate(node_vmstat_pgscan_kswapd_dma32{node_name=~\"$host\"}[$interval]) or irate(node_vmstat_pgscan_kswapd_dma32{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4835,7 +4839,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "rate(node_vmstat_pgscan_kswapd_normal{instance=~\"$host\"}[$interval]) or irate(node_vmstat_pgscan_kswapd_normal{instance=~\"$host\"}[5m])",
+                            "expr": "rate(node_vmstat_pgscan_kswapd_normal{node_name=~\"$host\"}[$interval]) or irate(node_vmstat_pgscan_kswapd_normal{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4844,7 +4848,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "rate(node_vmstat_pgscan_kswapd_movable{instance=~\"$host\"}[$interval]) or irate(node_vmstat_pgscan_kswapd_movable{instance=~\"$host\"}[5m])",
+                            "expr": "rate(node_vmstat_pgscan_kswapd_movable{node_name=~\"$host\"}[$interval]) or irate(node_vmstat_pgscan_kswapd_movable{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4932,7 +4936,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "rate(node_vmstat_pgsteal_direct_dma{instance=~\"$host\"}[$interval]) or irate(node_vmstat_pgsteal_direct_dma{instance=~\"$host\"}[5m])",
+                            "expr": "rate(node_vmstat_pgsteal_direct_dma{node_name=~\"$host\"}[$interval]) or irate(node_vmstat_pgsteal_direct_dma{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4940,7 +4944,7 @@
                             "refId": "A"
                         },
                         {
-                            "expr": "rate(node_vmstat_pgsteal_direct_dma32{instance=~\"$host\"}[$interval]) or irate(node_vmstat_pgsteal_direct_dma32{instance=~\"$host\"}[5m])",
+                            "expr": "rate(node_vmstat_pgsteal_direct_dma32{node_name=~\"$host\"}[$interval]) or irate(node_vmstat_pgsteal_direct_dma32{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4948,7 +4952,7 @@
                             "refId": "B"
                         },
                         {
-                            "expr": "rate(node_vmstat_pgsteal_direct_normal{instance=~\"$host\"}[$interval]) or irate(node_vmstat_pgsteal_direct_normal{instance=~\"$host\"}[5m])",
+                            "expr": "rate(node_vmstat_pgsteal_direct_normal{node_name=~\"$host\"}[$interval]) or irate(node_vmstat_pgsteal_direct_normal{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4956,7 +4960,7 @@
                             "refId": "C"
                         },
                         {
-                            "expr": "rate(node_vmstat_pgsteal_direct_movable{instance=~\"$host\"}[$interval]) or irate(node_vmstat_pgsteal_direct_movable{instance=~\"$host\"}[5m])",
+                            "expr": "rate(node_vmstat_pgsteal_direct_movable{node_name=~\"$host\"}[$interval]) or irate(node_vmstat_pgsteal_direct_movable{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -5054,7 +5058,7 @@
                     "lines": true,
                     "linewidth": 2,
                     "links": [],
-                    "minSpan": 4,
+                    "maxPerRow": 6,
                     "nullPointMode": "null",
                     "percentage": false,
                     "pointradius": 5,
@@ -5066,7 +5070,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "rate(node_vmstat_pgsteal_kswapd_dma{instance=~\"$host\"}[$interval]) or irate(node_vmstat_pgsteal_kswapd_dma{instance=~\"$host\"}[5m])",
+                            "expr": "rate(node_vmstat_pgsteal_kswapd_dma{node_name=~\"$host\"}[$interval]) or irate(node_vmstat_pgsteal_kswapd_dma{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -5075,7 +5079,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "rate(node_vmstat_pgsteal_kswapd_dma32{instance=~\"$host\"}[$interval]) or irate(node_vmstat_pgsteal_kswapd_dma32{instance=~\"$host\"}[5m])",
+                            "expr": "rate(node_vmstat_pgsteal_kswapd_dma32{node_name=~\"$host\"}[$interval]) or irate(node_vmstat_pgsteal_kswapd_dma32{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -5084,7 +5088,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "rate(node_vmstat_pgsteal_kswapd_normal{instance=~\"$host\"}[$interval]) or irate(node_vmstat_pgsteal_kswapd_normal{instance=~\"$host\"}[5m])",
+                            "expr": "rate(node_vmstat_pgsteal_kswapd_normal{node_name=~\"$host\"}[$interval]) or irate(node_vmstat_pgsteal_kswapd_normal{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -5093,7 +5097,7 @@
                             "step": 240
                         },
                         {
-                            "expr": "rate(node_vmstat_pgsteal_kswapd_movable{instance=~\"$host\"}[$interval]) or irate(node_vmstat_pgsteal_kswapd_movable{instance=~\"$host\"}[5m])",
+                            "expr": "rate(node_vmstat_pgsteal_kswapd_movable{node_name=~\"$host\"}[$interval]) or irate(node_vmstat_pgsteal_kswapd_movable{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -5147,7 +5151,7 @@
         }
     ],
     "refresh": "1m",
-    "schemaVersion": 16,
+    "schemaVersion": 18,
     "style": "dark",
     "tags": [
         "Percona",
@@ -5159,10 +5163,7 @@
                 "auto": true,
                 "auto_count": 200,
                 "auto_min": "1s",
-                "current": {
-                    "text": "auto",
-                    "value": "$__auto_interval_interval"
-                },
+                "current": {},
                 "hide": 0,
                 "label": "Interval",
                 "name": "interval",
@@ -5210,21 +5211,68 @@
                 ],
                 "query": "1s,5s,1m,5m,1h,6h,1d",
                 "refresh": 2,
+                "skipUrlSync": false,
                 "type": "interval"
             },
             {
                 "allValue": null,
                 "current": {},
                 "datasource": "Prometheus",
+                "definition": "label_values(region)",
+                "hide": 0,
+                "includeAll": true,
+                "label": "Region",
+                "multi": true,
+                "name": "region",
+                "options": [],
+                "query": "label_values(region)",
+                "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allValue": null,
+                "current": {},
+                "datasource": "Prometheus",
+                "definition": "label_values(node_boot_time_seconds{region=~\"$region\"}, node_type)",
+                "hide": 0,
+                "includeAll": true,
+                "label": "Type",
+                "multi": true,
+                "name": "node_type",
+                "options": [],
+                "query": "label_values(node_boot_time_seconds{region=~\"$region\"}, node_type)",
+                "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allValue": null,
+                "current": {},
+                "datasource": "Prometheus",
+                "definition": "label_values(node_boot_time_seconds{region=~\"$region\",node_type=~\"$node_type\"}, node_name)",
                 "hide": 0,
                 "includeAll": false,
                 "label": "Host",
                 "multi": false,
                 "name": "host",
                 "options": [],
-                "query": "label_values(instance)",
+                "query": "label_values(node_boot_time_seconds{region=~\"$region\",node_type=~\"$node_type\"}, node_name)",
                 "refresh": 1,
                 "regex": "",
+                "skipUrlSync": false,
                 "sort": 0,
                 "tagValuesQuery": "",
                 "tags": [],

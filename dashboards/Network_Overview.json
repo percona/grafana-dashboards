@@ -34,7 +34,7 @@
     "gnetId": 1856,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1530722439724,
+    "iteration": 1553886652179,
     "links": [
         {
             "icon": "dashboard",
@@ -212,7 +212,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "sum(rate(node_network_receive_bytes_total{device!=\"lo\",instance=\"$host\"}[1h]))",
+                    "expr": "sum(rate(node_network_receive_bytes_total{device!=\"lo\",node_name=~\"$host\"}[1h]))",
                     "format": "time_series",
                     "intervalFactor": 1,
                     "legendFormat": "",
@@ -293,7 +293,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "sum(rate(node_network_transmit_bytes_total{device!=\"lo\",instance=\"$host\"}[1h]))",
+                    "expr": "sum(rate(node_network_transmit_bytes_total{device!=\"lo\",node_name=~\"$host\"}[1h]))",
                     "format": "time_series",
                     "intervalFactor": 1,
                     "refId": "A"
@@ -373,7 +373,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "sum(increase(node_network_receive_errs_total{instance=~\"$host\", device!=\"lo\"}[1h])) +\nsum(increase(node_network_transmit_errs_total{instance=~\"$host\", device!=\"lo\"}[1h])) +\nsum(increase(node_network_receive_drop_total{instance=~\"$host\", device!=\"lo\"}[1h])) +\nsum(increase(node_network_transmit_drop_total{instance=~\"$host\", device!=\"lo\"}[1h]))",
+                    "expr": "sum(increase(node_network_receive_errs_total{node_name=~\"$host\", device!=\"lo\"}[1h])) +\nsum(increase(node_network_transmit_errs_total{node_name=~\"$host\", device!=\"lo\"}[1h])) +\nsum(increase(node_network_receive_drop_total{node_name=~\"$host\", device!=\"lo\"}[1h])) +\nsum(increase(node_network_transmit_drop_total{node_name=~\"$host\", device!=\"lo\"}[1h]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -455,7 +455,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "rate(node_netstat_Tcp_RetransSegs{instance=~\"$host\"}[1h]) * 100 / (rate(node_netstat_Tcp_OutSegs{instance=~\"$host\"}[1h]) + rate(node_netstat_Tcp_InSegs{instance=~\"$host\"}[1h]))",
+                    "expr": "rate(node_netstat_Tcp_RetransSegs{node_name=~\"$host\"}[1h]) * 100 / (rate(node_netstat_Tcp_OutSegs{node_name=~\"$host\"}[1h]) + rate(node_netstat_Tcp_InSegs{node_name=~\"$host\"}[1h]))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -523,8 +523,8 @@
             "lines": true,
             "linewidth": 2,
             "links": [],
-            "minSpan": null,
             "nullPointMode": "connected",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -541,7 +541,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "sum(rate(node_network_receive_bytes_total{instance=\"$host\", device!=\"lo\"}[$interval])) or \nsum(irate(node_network_receive_bytes_total{instance=\"$host\", device!=\"lo\"}[5m])) or \nsum(max_over_time(rdsosmetrics_network_rx{instance=\"$host\"}[$interval])) or \nsum(max_over_time(rdsosmetrics_network_rx{instance=\"$host\"}[5m])) ",
+                    "expr": "sum(rate(node_network_receive_bytes_total{node_name=~\"$host\", device!=\"lo\"}[$interval])) or \nsum(irate(node_network_receive_bytes_total{node_name=~\"$host\", device!=\"lo\"}[5m])) or \nsum(max_over_time(rdsosmetrics_network_rx{node_name=~\"$host\"}[$interval])) or \nsum(max_over_time(rdsosmetrics_network_rx{node_name=~\"$host\"}[5m])) ",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -549,7 +549,7 @@
                     "refId": "C"
                 },
                 {
-                    "expr": "sum(rate(node_network_transmit_bytes_total{instance=\"$host\", device!=\"lo\"}[$interval])) or \nsum(irate(node_network_transmit_bytes_total{instance=\"$host\", device!=\"lo\"}[5m])) or\nsum(max_over_time(rdsosmetrics_network_tx{instance=\"$host\"}[$interval])) or \nsum(max_over_time(rdsosmetrics_network_tx{instance=\"$host\"}[5m]))",
+                    "expr": "sum(rate(node_network_transmit_bytes_total{node_name=~\"$host\", device!=\"lo\"}[$interval])) or \nsum(irate(node_network_transmit_bytes_total{node_name=~\"$host\", device!=\"lo\"}[5m])) or\nsum(max_over_time(rdsosmetrics_network_tx{node_name=~\"$host\"}[$interval])) or \nsum(max_over_time(rdsosmetrics_network_tx{node_name=~\"$host\"}[5m]))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -560,6 +560,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Network Traffic",
             "tooltip": {
@@ -592,7 +593,11 @@
                     "min": null,
                     "show": true
                 }
-            ]
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
         },
         {
             "aliasColors": {},
@@ -626,8 +631,8 @@
             "lines": false,
             "linewidth": 2,
             "links": [],
-            "minSpan": null,
             "nullPointMode": "connected",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -639,7 +644,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "sum(increase(node_network_receive_bytes_total{instance=\"$host\", device!=\"lo\"}[1h]))",
+                    "expr": "sum(increase(node_network_receive_bytes_total{node_name=~\"$host\", device!=\"lo\"}[1h]))",
                     "format": "time_series",
                     "interval": "1h",
                     "intervalFactor": 1,
@@ -650,7 +655,7 @@
                     "target": ""
                 },
                 {
-                    "expr": "sum(increase(node_network_transmit_bytes_total{instance=\"$host\", device!=\"lo\"}[1h]))",
+                    "expr": "sum(increase(node_network_transmit_bytes_total{node_name=~\"$host\", device!=\"lo\"}[1h]))",
                     "format": "time_series",
                     "interval": "1h",
                     "intervalFactor": 1,
@@ -662,6 +667,7 @@
             ],
             "thresholds": [],
             "timeFrom": "24h",
+            "timeRegions": [],
             "timeShift": null,
             "title": "Network Utilization Hourly",
             "tooltip": {
@@ -693,7 +699,11 @@
                     "min": null,
                     "show": false
                 }
-            ]
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
         },
         {
             "collapsed": false,
@@ -739,8 +749,9 @@
             "lines": true,
             "linewidth": 2,
             "links": [],
-            "minSpan": 24,
+            "maxPerRow": 1,
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -756,7 +767,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(node_network_receive_packets_total{instance=~\"$host\", device!=\"lo\"}[$interval]) or \nirate(node_network_receive_packets_total{instance=~\"$host\", device!=\"lo\"}[5m])",
+                    "expr": "rate(node_network_receive_packets_total{node_name=~\"$host\", device!=\"lo\"}[$interval]) or \nirate(node_network_receive_packets_total{node_name=~\"$host\", device!=\"lo\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -764,7 +775,7 @@
                     "refId": "A"
                 },
                 {
-                    "expr": "rate(node_network_transmit_packets{instance=~\"$host\", device!=\"lo\"}[$interval]) or \nirate(node_network_transmit_packets{instance=~\"$host\", device!=\"lo\"}[5m])",
+                    "expr": "rate(node_network_transmit_packets{node_name=~\"$host\", device!=\"lo\"}[$interval]) or \nirate(node_network_transmit_packets{node_name=~\"$host\", device!=\"lo\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -774,6 +785,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Network Traffic by Packets",
             "tooltip": {
@@ -806,7 +818,11 @@
                     "min": null,
                     "show": false
                 }
-            ]
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
         },
         {
             "aliasColors": {},
@@ -838,8 +854,9 @@
             "lines": true,
             "linewidth": 2,
             "links": [],
-            "minSpan": 12,
+            "maxPerRow": 2,
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -850,7 +867,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(node_network_receive_errs_total{instance=~\"$host\", device!=\"lo\"}[$interval]) or \nirate(node_network_receive_errs_total{instance=~\"$host\", device!=\"lo\"}[5m])",
+                    "expr": "rate(node_network_receive_errs_total{node_name=~\"$host\", device!=\"lo\"}[$interval]) or \nirate(node_network_receive_errs_total{node_name=~\"$host\", device!=\"lo\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -858,7 +875,7 @@
                     "refId": "A"
                 },
                 {
-                    "expr": "rate(node_network_transmit_errs_total{instance=~\"$host\", device!=\"lo\"}[$interval]) or\nirate(node_network_transmit_errs_total{instance=~\"$host\", device!=\"lo\"}[5m])",
+                    "expr": "rate(node_network_transmit_errs_total{node_name=~\"$host\", device!=\"lo\"}[$interval]) or\nirate(node_network_transmit_errs_total{node_name=~\"$host\", device!=\"lo\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -868,6 +885,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Network Traffic Errors",
             "tooltip": {
@@ -900,7 +918,11 @@
                     "min": null,
                     "show": false
                 }
-            ]
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
         },
         {
             "aliasColors": {},
@@ -932,8 +954,9 @@
             "lines": true,
             "linewidth": 1,
             "links": [],
-            "minSpan": 12,
+            "maxPerRow": 2,
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -944,7 +967,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(node_network_receive_drop_total{instance=~\"$host\", device!=\"lo\"}[$interval]) or\nirate(node_network_receive_drop_total{instance=~\"$host\", device!=\"lo\"}[5m])",
+                    "expr": "rate(node_network_receive_drop_total{node_name=~\"$host\", device!=\"lo\"}[$interval]) or\nirate(node_network_receive_drop_total{node_name=~\"$host\", device!=\"lo\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -952,7 +975,7 @@
                     "refId": "A"
                 },
                 {
-                    "expr": "rate(node_network_transmit_drop_total{instance=~\"$host\", device!=\"lo\"}[$interval]) or \nirate(node_network_transmit_drop_total{instance=~\"$host\", device!=\"lo\"}[5m])",
+                    "expr": "rate(node_network_transmit_drop_total{node_name=~\"$host\", device!=\"lo\"}[$interval]) or \nirate(node_network_transmit_drop_total{node_name=~\"$host\", device!=\"lo\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -962,6 +985,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Network Traffic Drop",
             "tooltip": {
@@ -994,7 +1018,11 @@
                     "min": null,
                     "show": false
                 }
-            ]
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
         },
         {
             "aliasColors": {},
@@ -1026,8 +1054,9 @@
             "lines": true,
             "linewidth": 2,
             "links": [],
-            "minSpan": 24,
+            "maxPerRow": 1,
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -1038,7 +1067,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(node_network_receive_multicast_total{instance=~\"$host\", device!=\"lo\"}[$interval]) or\nirate(node_network_receive_multicast_total{instance=~\"$host\", device!=\"lo\"}[5m])",
+                    "expr": "rate(node_network_receive_multicast_total{node_name=~\"$host\", device!=\"lo\"}[$interval]) or\nirate(node_network_receive_multicast_total{node_name=~\"$host\", device!=\"lo\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1046,7 +1075,7 @@
                     "refId": "A"
                 },
                 {
-                    "expr": "rate(node_network_transmit_multicast_total{instance=~\"$host\", device!=\"lo\"}[$interval]) or\nirate(node_network_transmit_multicast_total{instance=~\"$host\", device!=\"lo\"}[5m])",
+                    "expr": "rate(node_network_transmit_multicast_total{node_name=~\"$host\", device!=\"lo\"}[$interval]) or\nirate(node_network_transmit_multicast_total{node_name=~\"$host\", device!=\"lo\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1056,6 +1085,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Network Traffic Multicast",
             "tooltip": {
@@ -1088,7 +1118,11 @@
                     "min": null,
                     "show": false
                 }
-            ]
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
         },
         {
             "collapsed": false,
@@ -1166,7 +1200,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "node_netstat_Tcp_RtoAlgorithm{instance=~\"$host\"}",
+                    "expr": "node_netstat_Tcp_RtoAlgorithm{node_name=~\"$host\"}",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1248,7 +1282,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "min_over_time(node_netstat_Tcp_RtoMin{instance=~\"$host\"}[$interval])",
+                    "expr": "min_over_time(node_netstat_Tcp_RtoMin{node_name=~\"$host\"}[$interval])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1309,7 +1343,7 @@
                 }
             ],
             "maxDataPoints": 100,
-            "minSpan": 8,
+            "maxPerRow": 3,
             "nullPointMode": "connected",
             "nullText": null,
             "postfix": "",
@@ -1332,7 +1366,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "max_over_time(node_netstat_Tcp_RtoMax{instance=~\"$host\"}[$interval])",
+                    "expr": "max_over_time(node_netstat_Tcp_RtoMax{node_name=~\"$host\"}[$interval])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1385,8 +1419,9 @@
             "lines": true,
             "linewidth": 2,
             "links": [],
-            "minSpan": 24,
+            "maxPerRow": 1,
             "nullPointMode": "connected",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -1398,7 +1433,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "max_over_time(node_netstat_Tcp_CurrEstab{instance=~\"$host\"}[$interval]) or\nmax_over_time(node_netstat_Tcp_CurrEstab{instance=~\"$host\"}[5m])",
+                    "expr": "max_over_time(node_netstat_Tcp_CurrEstab{node_name=~\"$host\"}[$interval]) or\nmax_over_time(node_netstat_Tcp_CurrEstab{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1409,7 +1444,7 @@
                     "target": ""
                 },
                 {
-                    "expr": "max_over_time(node_netstat_Tcp_ActiveOpens{instance=~\"$host\"}[$interval]) or\nmax_over_time(node_netstat_Tcp_ActiveOpens{instance=~\"$host\"}[5m])",
+                    "expr": "max_over_time(node_netstat_Tcp_ActiveOpens{node_name=~\"$host\"}[$interval]) or\nmax_over_time(node_netstat_Tcp_ActiveOpens{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1419,7 +1454,7 @@
                     "step": 40
                 },
                 {
-                    "expr": "max_over_time(node_netstat_Tcp_PassiveOpens{instance=~\"$host\"}[$interval]) or\nmax_over_time(node_netstat_Tcp_PassiveOpens{instance=~\"$host\"}[5m])",
+                    "expr": "max_over_time(node_netstat_Tcp_PassiveOpens{node_name=~\"$host\"}[$interval]) or\nmax_over_time(node_netstat_Tcp_PassiveOpens{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1429,7 +1464,7 @@
                     "step": 40
                 },
                 {
-                    "expr": "max_over_time(node_netstat_Tcp_EstabResets{instance=~\"$host\"}[$interval]) or\nmax_over_time(node_netstat_Tcp_EstabResets{instance=~\"$host\"}[5m])",
+                    "expr": "max_over_time(node_netstat_Tcp_EstabResets{node_name=~\"$host\"}[$interval]) or\nmax_over_time(node_netstat_Tcp_EstabResets{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1439,7 +1474,7 @@
                     "step": 40
                 },
                 {
-                    "expr": "max_over_time(node_netstat_Tcp_AttemptFails{instance=~\"$host\"}[$interval]) or\nmax_over_time(node_netstat_Tcp_AttemptFails{instance=~\"$host\"}[5m])",
+                    "expr": "max_over_time(node_netstat_Tcp_AttemptFails{node_name=~\"$host\"}[$interval]) or\nmax_over_time(node_netstat_Tcp_AttemptFails{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1449,7 +1484,7 @@
                     "step": 40
                 },
                 {
-                    "expr": "max_over_time(node_netstat_Tcp_RetransSegs{instance=~\"$host\"}[$interval]) or\nmax_over_time(node_netstat_Tcp_RetransSegs{instance=~\"$host\"}[5m])",
+                    "expr": "max_over_time(node_netstat_Tcp_RetransSegs{node_name=~\"$host\"}[$interval]) or\nmax_over_time(node_netstat_Tcp_RetransSegs{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1461,6 +1496,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Netstat: TCP",
             "tooltip": {
@@ -1492,7 +1528,11 @@
                     "min": null,
                     "show": true
                 }
-            ]
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
         },
         {
             "aliasColors": {},
@@ -1524,8 +1564,9 @@
             "lines": true,
             "linewidth": 2,
             "links": [],
-            "minSpan": 24,
+            "maxPerRow": 1,
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -1541,7 +1582,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(node_netstat_Tcp_InCsumErrors{instance=~\"$host\"}[$interval]) or irate(node_netstat_Tcp_InCsumErrors{instance=~\"$host\"}[5m])",
+                    "expr": "rate(node_netstat_Tcp_InCsumErrors{node_name=~\"$host\"}[$interval]) or irate(node_netstat_Tcp_InCsumErrors{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1549,7 +1590,7 @@
                     "refId": "A"
                 },
                 {
-                    "expr": "rate(node_netstat_Tcp_InErrs{instance=~\"$host\"}[$interval]) or irate(node_netstat_Tcp_InErrs{instance=~\"$host\"}[5m])",
+                    "expr": "rate(node_netstat_Tcp_InErrs{node_name=~\"$host\"}[$interval]) or irate(node_netstat_Tcp_InErrs{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1557,7 +1598,7 @@
                     "refId": "B"
                 },
                 {
-                    "expr": "rate(node_netstat_Tcp_InSegs{instance=~\"$host\"}[$interval]) or irate(node_netstat_Tcp_InSegs{instance=~\"$host\"}[5m])",
+                    "expr": "rate(node_netstat_Tcp_InSegs{node_name=~\"$host\"}[$interval]) or irate(node_netstat_Tcp_InSegs{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1565,7 +1606,7 @@
                     "refId": "C"
                 },
                 {
-                    "expr": "rate(node_netstat_Tcp_OutRsts{instance=~\"$host\"}[$interval]) or irate(node_netstat_Tcp_OutRsts{instance=~\"$host\"}[5m])",
+                    "expr": "rate(node_netstat_Tcp_OutRsts{node_name=~\"$host\"}[$interval]) or irate(node_netstat_Tcp_OutRsts{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1573,7 +1614,7 @@
                     "refId": "D"
                 },
                 {
-                    "expr": "rate(node_netstat_Tcp_OutSegs{instance=~\"$host\"}[$interval]) or irate(node_netstat_Tcp_OutSegs{instance=~\"$host\"}[5m])",
+                    "expr": "rate(node_netstat_Tcp_OutSegs{node_name=~\"$host\"}[$interval]) or irate(node_netstat_Tcp_OutSegs{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1581,7 +1622,7 @@
                     "refId": "E"
                 },
                 {
-                    "expr": "rate(node_netstat_Tcp_RetransSegs{instance=~\"$host\"}[$interval]) or irate(node_netstat_Tcp_RetransSegs{instance=~\"$host\"}[5m])",
+                    "expr": "rate(node_netstat_Tcp_RetransSegs{node_name=~\"$host\"}[$interval]) or irate(node_netstat_Tcp_RetransSegs{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1591,6 +1632,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "TCP Segments",
             "tooltip": {
@@ -1623,7 +1665,11 @@
                     "min": null,
                     "show": false
                 }
-            ]
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
         },
         {
             "collapsed": false,
@@ -1672,8 +1718,9 @@
             "lines": true,
             "linewidth": 2,
             "links": [],
-            "minSpan": 24,
+            "maxPerRow": 1,
             "nullPointMode": "connected",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -1694,7 +1741,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "sum(rate(node_netstat_Udp_InDatagrams{instance=~\"$host\"}[$interval]) or irate(node_netstat_Udp_InDatagrams{instance=~\"$host\"}[5m]))",
+                    "expr": "sum(rate(node_netstat_Udp_InDatagrams{node_name=~\"$host\"}[$interval]) or irate(node_netstat_Udp_InDatagrams{node_name=~\"$host\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1705,7 +1752,7 @@
                     "target": ""
                 },
                 {
-                    "expr": "sum(rate(node_netstat_Udp_InErrors{instance=~\"$host\"}[$interval]) or irate(node_netstat_Udp_InErrors{instance=~\"$host\"}[5m]))",
+                    "expr": "sum(rate(node_netstat_Udp_InErrors{node_name=~\"$host\"}[$interval]) or irate(node_netstat_Udp_InErrors{node_name=~\"$host\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1715,7 +1762,7 @@
                     "step": 40
                 },
                 {
-                    "expr": "sum(rate(node_netstat_Udp_OutDatagrams{instance=~\"$host\"}[$interval]) or irate(node_netstat_Udp_OutDatagrams{instance=~\"$host\"}[5m]))",
+                    "expr": "sum(rate(node_netstat_Udp_OutDatagrams{node_name=~\"$host\"}[$interval]) or irate(node_netstat_Udp_OutDatagrams{node_name=~\"$host\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1725,7 +1772,7 @@
                     "step": 40
                 },
                 {
-                    "expr": "sum(rate(node_netstat_Udp_NoPorts{instance=~\"$host\"}[$interval]) or irate(node_netstat_Udp_NoPorts{instance=~\"$host\"}[5m]))",
+                    "expr": "sum(rate(node_netstat_Udp_NoPorts{node_name=~\"$host\"}[$interval]) or irate(node_netstat_Udp_NoPorts{node_name=~\"$host\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1735,7 +1782,7 @@
                     "step": 40
                 },
                 {
-                    "expr": "sum(rate(node_netstat_Udp_InCsumErrors{instance=~\"$host\"}[$interval]) or irate(node_netstat_Udp_InCsumErrors{instance=~\"$host\"}[5m]))",
+                    "expr": "sum(rate(node_netstat_Udp_InCsumErrors{node_name=~\"$host\"}[$interval]) or irate(node_netstat_Udp_InCsumErrors{node_name=~\"$host\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1745,7 +1792,7 @@
                     "step": 40
                 },
                 {
-                    "expr": "sum(rate(node_netstat_Udp_RcvbufErrors{instance=~\"$host\"}[$interval]) or irate(node_netstat_Udp_RcvbufErrors{instance=~\"$host\"}[5m]))",
+                    "expr": "sum(rate(node_netstat_Udp_RcvbufErrors{node_name=~\"$host\"}[$interval]) or irate(node_netstat_Udp_RcvbufErrors{node_name=~\"$host\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1755,7 +1802,7 @@
                     "step": 40
                 },
                 {
-                    "expr": "sum(rate(node_netstat_Udp_SndbufErrors{instance=~\"$node\"}[$interval]) or irate(node_netstat_Udp_SndbufErrors{instance=~\"$host\"}[5m]))",
+                    "expr": "sum(rate(node_netstat_Udp_SndbufErrors{node_name=~\"$node\"}[$interval]) or irate(node_netstat_Udp_SndbufErrors{node_name=~\"$host\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1767,6 +1814,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Netstat: UDP",
             "tooltip": {
@@ -1799,7 +1847,11 @@
                     "min": null,
                     "show": true
                 }
-            ]
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
         },
         {
             "aliasColors": {},
@@ -1833,6 +1885,7 @@
             "linewidth": 1,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -1848,7 +1901,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(node_netstat_UdpLite_InDatagrams{instance=~\"$host\"}[$interval]) or\nirate(node_netstat_UdpLite_InDatagrams{instance=~\"$host\"}[5m])",
+                    "expr": "rate(node_netstat_UdpLite_InDatagrams{node_name=~\"$host\"}[$interval]) or\nirate(node_netstat_UdpLite_InDatagrams{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1856,7 +1909,7 @@
                     "refId": "A"
                 },
                 {
-                    "expr": "rate(node_netstat_UdpLite_OutDatagrams{instance=~\"$host\"}[$interval]) or\nirate(node_netstat_UdpLite_OutDatagrams{instance=~\"$host\"}[5m])",
+                    "expr": "rate(node_netstat_UdpLite_OutDatagrams{node_name=~\"$host\"}[$interval]) or\nirate(node_netstat_UdpLite_OutDatagrams{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1864,7 +1917,7 @@
                     "refId": "B"
                 },
                 {
-                    "expr": "rate(node_netstat_UdpLite_InCsumErrors{instance=~\"$host\"}[$interval]) or\nirate(node_netstat_UdpLite_InCsumErrors{instance=~\"$host\"}[5m])",
+                    "expr": "rate(node_netstat_UdpLite_InCsumErrors{node_name=~\"$host\"}[$interval]) or\nirate(node_netstat_UdpLite_InCsumErrors{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1872,7 +1925,7 @@
                     "refId": "C"
                 },
                 {
-                    "expr": "rate(node_netstat_UdpLite_InErrors{instance=~\"$host\"}[$interval]) or\nirate(node_netstat_UdpLite_InErrors{instance=~\"$host\"}[5m])",
+                    "expr": "rate(node_netstat_UdpLite_InErrors{node_name=~\"$host\"}[$interval]) or\nirate(node_netstat_UdpLite_InErrors{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1880,7 +1933,7 @@
                     "refId": "D"
                 },
                 {
-                    "expr": "rate(node_netstat_UdpLite_RcvbufErrors{instance=~\"$host\"}[$interval]) or\nirate(node_netstat_UdpLite_RcvbufErrors{instance=~\"$host\"}[5m])",
+                    "expr": "rate(node_netstat_UdpLite_RcvbufErrors{node_name=~\"$host\"}[$interval]) or\nirate(node_netstat_UdpLite_RcvbufErrors{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1888,7 +1941,7 @@
                     "refId": "E"
                 },
                 {
-                    "expr": "rate(node_netstat_UdpLite_SndbufErrors{instance=~\"$host\"}[$interval]) or\nirate(node_netstat_UdpLite_SndbufErrors{instance=~\"$host\"}[5m])",
+                    "expr": "rate(node_netstat_UdpLite_SndbufErrors{node_name=~\"$host\"}[$interval]) or\nirate(node_netstat_UdpLite_SndbufErrors{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1896,7 +1949,7 @@
                     "refId": "F"
                 },
                 {
-                    "expr": "rate(node_netstat_UdpLite_NoPorts{instance=~\"$host\"}[$interval]) or\nirate(node_netstat_UdpLite_NoPorts{instance=~\"$host\"}[5m])",
+                    "expr": "rate(node_netstat_UdpLite_NoPorts{node_name=~\"$host\"}[$interval]) or\nirate(node_netstat_UdpLite_NoPorts{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1906,6 +1959,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "UDP Lite",
             "tooltip": {
@@ -1938,7 +1992,11 @@
                     "min": null,
                     "show": false
                 }
-            ]
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
         },
         {
             "collapsed": false,
@@ -1986,8 +2044,9 @@
             "lines": false,
             "linewidth": 2,
             "links": [],
-            "minSpan": 24,
+            "maxPerRow": 1,
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -2003,7 +2062,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(node_netstat_Icmp_InErrors{instance=~\"$host\"}[$interval]) \nor irate(node_netstat_Icmp_InErrors{instance=~\"$host\"}[5m])",
+                    "expr": "rate(node_netstat_Icmp_InErrors{node_name=~\"$host\"}[$interval]) \nor irate(node_netstat_Icmp_InErrors{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2011,7 +2070,7 @@
                     "refId": "A"
                 },
                 {
-                    "expr": "rate(node_netstat_Icmp_OutErrors{instance=~\"$host\"}[$interval]) or\nirate(node_netstat_Icmp_OutErrors{instance=~\"$host\"}[5m])",
+                    "expr": "rate(node_netstat_Icmp_OutErrors{node_name=~\"$host\"}[$interval]) or\nirate(node_netstat_Icmp_OutErrors{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2019,7 +2078,7 @@
                     "refId": "B"
                 },
                 {
-                    "expr": "rate(node_netstat_Icmp_InDestUnreachs{instance=~\"$host\"}[$interval]) or\nirate(node_netstat_Icmp_InDestUnreachs{instance=~\"$host\"}[5m])",
+                    "expr": "rate(node_netstat_Icmp_InDestUnreachs{node_name=~\"$host\"}[$interval]) or\nirate(node_netstat_Icmp_InDestUnreachs{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2027,7 +2086,7 @@
                     "refId": "C"
                 },
                 {
-                    "expr": "rate(node_netstat_Icmp_OutDestUnreachs{instance=~\"$host\"}[$interval]) or\nirate(node_netstat_Icmp_OutDestUnreachs{instance=~\"$host\"}[5m])",
+                    "expr": "rate(node_netstat_Icmp_OutDestUnreachs{node_name=~\"$host\"}[$interval]) or\nirate(node_netstat_Icmp_OutDestUnreachs{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2035,7 +2094,7 @@
                     "refId": "D"
                 },
                 {
-                    "expr": "rate(node_netstat_IcmpMsg_InType3{instance=~\"$host\"}[$interval]) or\nirate(node_netstat_IcmpMsg_InType3{instance=~\"$host\"}[5m])",
+                    "expr": "rate(node_netstat_IcmpMsg_InType3{node_name=~\"$host\"}[$interval]) or\nirate(node_netstat_IcmpMsg_InType3{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2043,7 +2102,7 @@
                     "refId": "E"
                 },
                 {
-                    "expr": "irate(node_netstat_IcmpMsg_OutType3{instance=~\"$host\"}[$interval]) or\nirate(node_netstat_IcmpMsg_OutType3{instance=~\"$host\"}[5m])",
+                    "expr": "irate(node_netstat_IcmpMsg_OutType3{node_name=~\"$host\"}[$interval]) or\nirate(node_netstat_IcmpMsg_OutType3{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2051,7 +2110,7 @@
                     "refId": "F"
                 },
                 {
-                    "expr": "rate(node_netstat_Icmp_InCsumErrors{instance=~\"$host\"}[$interval]) or\nirate(node_netstat_Icmp_InCsumErrors{instance=~\"$host\"}[5m])",
+                    "expr": "rate(node_netstat_Icmp_InCsumErrors{node_name=~\"$host\"}[$interval]) or\nirate(node_netstat_Icmp_InCsumErrors{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2059,7 +2118,7 @@
                     "refId": "G"
                 },
                 {
-                    "expr": "rate(node_netstat_Icmp_InTimeExcds{instance=~\"$host\"}[$interval]) or\nirate(node_netstat_Icmp_InTimeExcds{instance=~\"$host\"}[5m])",
+                    "expr": "rate(node_netstat_Icmp_InTimeExcds{node_name=~\"$host\"}[$interval]) or\nirate(node_netstat_Icmp_InTimeExcds{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2069,6 +2128,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "ICMP Errors",
             "tooltip": {
@@ -2101,7 +2161,11 @@
                     "min": null,
                     "show": false
                 }
-            ]
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
         },
         {
             "aliasColors": {},
@@ -2135,8 +2199,9 @@
             "lines": false,
             "linewidth": 1,
             "links": [],
-            "minSpan": 24,
+            "maxPerRow": 1,
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -2152,7 +2217,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(node_netstat_Icmp_InMsgs{instance=~\"$host\"}[$interval]) or\nirate(node_netstat_Icmp_InMsgs{instance=~\"$host\"}[5m])",
+                    "expr": "rate(node_netstat_Icmp_InMsgs{node_name=~\"$host\"}[$interval]) or\nirate(node_netstat_Icmp_InMsgs{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2160,7 +2225,7 @@
                     "refId": "A"
                 },
                 {
-                    "expr": "rate(node_netstat_Icmp_InRedirects{instance=~\"$host\"}[$interval]) or\nirate(node_netstat_Icmp_InRedirects{instance=~\"$host\"}[5m])",
+                    "expr": "rate(node_netstat_Icmp_InRedirects{node_name=~\"$host\"}[$interval]) or\nirate(node_netstat_Icmp_InRedirects{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2168,7 +2233,7 @@
                     "refId": "B"
                 },
                 {
-                    "expr": "rate(node_netstat_Icmp_OutMsgs{instance=~\"$host\"}[$interval]) or\nirate(node_netstat_Icmp_OutMsgs{instance=~\"$host\"}[5m])",
+                    "expr": "rate(node_netstat_Icmp_OutMsgs{node_name=~\"$host\"}[$interval]) or\nirate(node_netstat_Icmp_OutMsgs{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2176,7 +2241,7 @@
                     "refId": "C"
                 },
                 {
-                    "expr": "rate(node_netstat_Icmp_OutRedirects{instance=~\"$host\"}[$interval]) or\nirate(node_netstat_Icmp_OutRedirects{instance=~\"$host\"}[5m])",
+                    "expr": "rate(node_netstat_Icmp_OutRedirects{node_name=~\"$host\"}[$interval]) or\nirate(node_netstat_Icmp_OutRedirects{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2186,6 +2251,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Messages / Redirects",
             "tooltip": {
@@ -2218,7 +2284,11 @@
                     "min": null,
                     "show": false
                 }
-            ]
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
         },
         {
             "aliasColors": {},
@@ -2252,8 +2322,9 @@
             "lines": false,
             "linewidth": 1,
             "links": [],
-            "minSpan": 12,
+            "maxPerRow": 2,
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -2269,7 +2340,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(node_netstat_Icmp_InEchoReps{instance=~\"$host\"}[$interval]) or\nirate(node_netstat_Icmp_InEchoReps{instance=~\"$host\"}[5m])",
+                    "expr": "rate(node_netstat_Icmp_InEchoReps{node_name=~\"$host\"}[$interval]) or\nirate(node_netstat_Icmp_InEchoReps{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2277,7 +2348,7 @@
                     "refId": "A"
                 },
                 {
-                    "expr": "rate(node_netstat_Icmp_InEchos{instance=~\"$host\"}[$interval]) or\nirate(node_netstat_Icmp_InEchos{instance=~\"$host\"}[5m])",
+                    "expr": "rate(node_netstat_Icmp_InEchos{node_name=~\"$host\"}[$interval]) or\nirate(node_netstat_Icmp_InEchos{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2285,7 +2356,7 @@
                     "refId": "B"
                 },
                 {
-                    "expr": "rate(node_netstat_Icmp_OutEchoReps{instance=~\"$host\"}[$interval]) or\nirate(node_netstat_Icmp_OutEchoReps{instance=~\"$host\"}[5m])",
+                    "expr": "rate(node_netstat_Icmp_OutEchoReps{node_name=~\"$host\"}[$interval]) or\nirate(node_netstat_Icmp_OutEchoReps{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2293,7 +2364,7 @@
                     "refId": "C"
                 },
                 {
-                    "expr": "rate(node_netstat_Icmp_OutEchos{instance=~\"$host\"}[$interval]) or\nirate(node_netstat_Icmp_OutEchos{instance=~\"$host\"}[5m])",
+                    "expr": "rate(node_netstat_Icmp_OutEchos{node_name=~\"$host\"}[$interval]) or\nirate(node_netstat_Icmp_OutEchos{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2303,6 +2374,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Echos",
             "tooltip": {
@@ -2335,7 +2407,11 @@
                     "min": null,
                     "show": false
                 }
-            ]
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
         },
         {
             "aliasColors": {},
@@ -2370,8 +2446,9 @@
             "lines": false,
             "linewidth": 1,
             "links": [],
-            "minSpan": 12,
+            "maxPerRow": 2,
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -2387,7 +2464,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(node_netstat_Icmp_InAddrMaskReps{instance=~\"$host\"}[$interval]) or\nirate(node_netstat_Icmp_InAddrMaskReps{instance=~\"$host\"}[5m])",
+                    "expr": "rate(node_netstat_Icmp_InAddrMaskReps{node_name=~\"$host\"}[$interval]) or\nirate(node_netstat_Icmp_InAddrMaskReps{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2395,7 +2472,7 @@
                     "refId": "A"
                 },
                 {
-                    "expr": "rate(node_netstat_Icmp_InAddrMasks{instance=~\"$host\"}[$interval]) or\nirate(node_netstat_Icmp_InAddrMasks{instance=~\"$host\"}[5m])",
+                    "expr": "rate(node_netstat_Icmp_InAddrMasks{node_name=~\"$host\"}[$interval]) or\nirate(node_netstat_Icmp_InAddrMasks{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2403,7 +2480,7 @@
                     "refId": "B"
                 },
                 {
-                    "expr": "rate(node_netstat_Icmp_OutAddrMaskReps{instance=~\"$host\"}[$interval]) or\nirate(node_netstat_Icmp_OutAddrMaskReps{instance=~\"$host\"}[5m])",
+                    "expr": "rate(node_netstat_Icmp_OutAddrMaskReps{node_name=~\"$host\"}[$interval]) or\nirate(node_netstat_Icmp_OutAddrMaskReps{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2411,7 +2488,7 @@
                     "refId": "C"
                 },
                 {
-                    "expr": "rate(node_netstat_Icmp_OutAddrMasks{instance=~\"$host\"}[5m]) or\nirate(node_netstat_Icmp_OutAddrMasks{instance=~\"$host\"}[5m])",
+                    "expr": "rate(node_netstat_Icmp_OutAddrMasks{node_name=~\"$host\"}[5m]) or\nirate(node_netstat_Icmp_OutAddrMasks{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2419,7 +2496,7 @@
                     "refId": "D"
                 },
                 {
-                    "expr": "rate(node_netstat_Icmp_InTimestampReps{instance=~\"$host\"}[$interval]) or\nirate(node_netstat_Icmp_InTimestampReps{instance=~\"$host\"}[5m])",
+                    "expr": "rate(node_netstat_Icmp_InTimestampReps{node_name=~\"$host\"}[$interval]) or\nirate(node_netstat_Icmp_InTimestampReps{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2427,7 +2504,7 @@
                     "refId": "E"
                 },
                 {
-                    "expr": "rate(node_netstat_Icmp_InTimestamps{instance=~\"$host\"}[$interval]) or\nirate(node_netstat_Icmp_InTimestamps{instance=~\"$host\"}[5m])",
+                    "expr": "rate(node_netstat_Icmp_InTimestamps{node_name=~\"$host\"}[$interval]) or\nirate(node_netstat_Icmp_InTimestamps{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2435,7 +2512,7 @@
                     "refId": "F"
                 },
                 {
-                    "expr": "rate(node_netstat_Icmp_OutTimestampReps{instance=~\"$host\"}[$interval]) or\nirate(node_netstat_Icmp_OutTimestampReps{instance=~\"$host\"}[5m])",
+                    "expr": "rate(node_netstat_Icmp_OutTimestampReps{node_name=~\"$host\"}[$interval]) or\nirate(node_netstat_Icmp_OutTimestampReps{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2443,7 +2520,7 @@
                     "refId": "G"
                 },
                 {
-                    "expr": "rate(node_netstat_Icmp_OutTimestamps{instance=~\"$host\"}[$interval]) or\nirate(node_netstat_Icmp_OutTimestamps{instance=~\"$host\"}[5m])",
+                    "expr": "rate(node_netstat_Icmp_OutTimestamps{node_name=~\"$host\"}[$interval]) or\nirate(node_netstat_Icmp_OutTimestamps{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2453,6 +2530,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Timestamps / Mask Requests",
             "tooltip": {
@@ -2485,11 +2563,15 @@
                     "min": null,
                     "show": false
                 }
-            ]
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
         }
     ],
     "refresh": "1m",
-    "schemaVersion": 16,
+    "schemaVersion": 18,
     "style": "dark",
     "tags": [
         "Percona",
@@ -2501,10 +2583,7 @@
                 "auto": true,
                 "auto_count": 200,
                 "auto_min": "1s",
-                "current": {
-                    "text": "auto",
-                    "value": "$__auto_interval_interval"
-                },
+                "current": {},
                 "hide": 0,
                 "label": "Interval",
                 "name": "interval",
@@ -2552,21 +2631,24 @@
                 ],
                 "query": "1s,5s,1m,5m,1h,6h,1d",
                 "refresh": 2,
+                "skipUrlSync": false,
                 "type": "interval"
             },
             {
                 "allValue": null,
                 "current": {},
                 "datasource": "Prometheus",
+                "definition": "label_values(node_boot_time_seconds, region)",
                 "hide": 0,
-                "includeAll": false,
-                "label": "Host",
-                "multi": false,
-                "name": "host",
+                "includeAll": true,
+                "label": "Region",
+                "multi": true,
+                "name": "region",
                 "options": [],
-                "query": "label_values(node_boot_time_seconds, instance)",
+                "query": "label_values(node_boot_time_seconds, region)",
                 "refresh": 1,
                 "regex": "",
+                "skipUrlSync": false,
                 "sort": 1,
                 "tagValuesQuery": "",
                 "tags": [],
@@ -2578,15 +2660,61 @@
                 "allValue": null,
                 "current": {},
                 "datasource": "Prometheus",
+                "definition": "label_values(node_boot_time_seconds{region=~\"$region\"}, node_type)",
+                "hide": 0,
+                "includeAll": true,
+                "label": "Type",
+                "multi": true,
+                "name": "node_type",
+                "options": [],
+                "query": "label_values(node_boot_time_seconds{region=~\"$region\"}, node_type)",
+                "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 1,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allValue": null,
+                "current": {},
+                "datasource": "Prometheus",
+                "definition": "label_values(node_boot_time_seconds{region=~\"$region\",node_type=~\"$node_type\"}, node_name)",
+                "hide": 0,
+                "includeAll": false,
+                "label": "Host",
+                "multi": false,
+                "name": "host",
+                "options": [],
+                "query": "label_values(node_boot_time_seconds{region=~\"$region\",node_type=~\"$node_type\"}, node_name)",
+                "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 1,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allValue": null,
+                "current": {},
+                "datasource": "Prometheus",
+                "definition": "",
                 "hide": 2,
                 "includeAll": true,
                 "label": "Device",
                 "multi": true,
                 "name": "device",
                 "options": [],
-                "query": "label_values(node_network_receive_packets_total{instance=\"$host\"},device)",
+                "query": "label_values(node_network_receive_packets_total{node_name=~\"$host\"},device)",
                 "refresh": 1,
                 "regex": "",
+                "skipUrlSync": false,
                 "sort": 1,
                 "tagValuesQuery": "",
                 "tags": [],
