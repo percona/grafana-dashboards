@@ -173,6 +173,10 @@ def drop_some_internal_elements(dashboard):
         for index, listelement in enumerate(dashboard['templating']['list']):
             if 'current' in listelement:
                 dashboard['templating']['list'][index]['current'] = {}
+        if 'panels' in element:
+            for panel_index, panel in enumerate(dashboard['panels']):
+                if 'scopedVars' in panel:
+                    del dashboard['panels'][panel_index]['scopedVars']
 
     return dashboard
 
