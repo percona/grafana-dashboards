@@ -5,7 +5,7 @@
                 "builtIn": 1,
                 "datasource": "-- Grafana --",
                 "enable": true,
-                "hide": false,
+                "hide": true,
                 "iconColor": "#e0752d",
                 "limit": 100,
                 "name": "PMM Annotations",
@@ -131,254 +131,6 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 0
-            },
-            "id": 9,
-            "panels": [],
-            "title": "$host Activity",
-            "type": "row"
-        },
-        {
-            "aliasColors": {},
-            "bars": false,
-            "dashLength": 10,
-            "dashes": false,
-            "datasource": "Prometheus",
-            "decimals": 2,
-            "fill": 0,
-            "gridPos": {
-                "h": 4,
-                "w": 24,
-                "x": 0,
-                "y": 1
-            },
-            "id": 11,
-            "legend": {
-                "alignAsTable": true,
-                "avg": true,
-                "current": false,
-                "max": true,
-                "min": true,
-                "rightSide": true,
-                "show": true,
-                "sort": "avg",
-                "sortDesc": true,
-                "total": false,
-                "values": true
-            },
-            "lines": true,
-            "linewidth": 1,
-            "links": [],
-            "nullPointMode": "null",
-            "percentage": false,
-            "pointradius": 5,
-            "points": false,
-            "renderer": "flot",
-            "seriesOverrides": [
-                {
-                    "alias": "CPU Utilization",
-                    "yaxis": 2
-                }
-            ],
-            "spaceLength": 10,
-            "stack": false,
-            "steppedLine": false,
-            "targets": [
-                {
-                    "expr": "clamp_max(sum by () ((avg by (mode) ( (clamp_max(rate(node_cpu_seconds_total{instance=\"$host\",mode!=\"idle\",mode!=\"iowait\"}[$interval]),1)) or \n(clamp_max(irate(node_cpu_seconds_total{instance=\"$host\",cpu=\"$cpu\",mode!=\"idle\",mode!=\"iowait\"}[5m]),1)) )) *100 or \n(max_over_time(node_cpu_average{instance=~\"$host\", mode=\"total\"}[$interval]) or \nmax_over_time(node_cpu_average{instance=~\"$host\", mode=\"total\"}[5m]))),100)",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "CPU Utilization",
-                    "refId": "A"
-                },
-                {
-                    "expr": "(rate(node_vmstat_pgpgin{instance=\"$host\"}[$interval])+rate(node_vmstat_pgpgout{instance=\"$host\"}[$interval])) * 1024 or \n(irate(node_vmstat_pgpgin{instance=\"$host\"}[5m]) or irate(node_vmstat_pgpgout{instance=\"$host\"}[5m]))  * 1024",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Disk IO Activity",
-                    "refId": "B"
-                },
-                {
-                    "expr": "(sum(rate(node_network_receive_bytes_total{instance=\"$host\", device!=\"lo\"}[$interval])) or \nsum(irate(node_network_receive_bytes_total{instance=\"$host\", device!=\"lo\"}[5m])) or \nsum(max_over_time(rdsosmetrics_network_rx{instance=\"$host\"}[$interval])) or \nsum(max_over_time(rdsosmetrics_network_rx{instance=\"$host\"}[5m]))) + \n(sum(rate(node_network_transmit_bytes_total{instance=\"$host\", device!=\"lo\"}[$interval])) or \nsum(irate(node_network_transmit_bytes_total{instance=\"$host\", device!=\"lo\"}[5m])) or\nsum(max_over_time(rdsosmetrics_network_tx{instance=\"$host\"}[$interval])) or \nsum(max_over_time(rdsosmetrics_network_tx{instance=\"$host\"}[5m])))",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Network Activity ",
-                    "refId": "C"
-                }
-            ],
-            "thresholds": [],
-            "timeFrom": null,
-            "timeShift": null,
-            "title": "System Activity",
-            "tooltip": {
-                "shared": true,
-                "sort": 0,
-                "value_type": "individual"
-            },
-            "type": "graph",
-            "xaxis": {
-                "buckets": null,
-                "mode": "time",
-                "name": null,
-                "show": true,
-                "values": []
-            },
-            "yaxes": [
-                {
-                    "format": "Bps",
-                    "label": null,
-                    "logBase": 1024,
-                    "max": null,
-                    "min": "0",
-                    "show": true
-                },
-                {
-                    "decimals": null,
-                    "format": "percent",
-                    "label": "CPU Utilization (%)",
-                    "logBase": 1,
-                    "max": null,
-                    "min": "0",
-                    "show": true
-                }
-            ],
-            "yaxis": {
-                "align": false,
-                "alignLevel": null
-            }
-        },
-        {
-            "aliasColors": {},
-            "bars": false,
-            "dashLength": 10,
-            "dashes": false,
-            "datasource": "Prometheus",
-            "decimals": 2,
-            "fill": 0,
-            "gridPos": {
-                "h": 4,
-                "w": 24,
-                "x": 0,
-                "y": 5
-            },
-            "id": 13,
-            "legend": {
-                "alignAsTable": true,
-                "avg": true,
-                "current": false,
-                "max": true,
-                "min": true,
-                "rightSide": true,
-                "show": true,
-                "sort": "avg",
-                "sortDesc": true,
-                "total": false,
-                "values": true
-            },
-            "lines": true,
-            "linewidth": 1,
-            "links": [],
-            "nullPointMode": "null",
-            "percentage": false,
-            "pointradius": 5,
-            "points": false,
-            "renderer": "flot",
-            "seriesOverrides": [
-                {
-                    "alias": "Peak Threads Running",
-                    "color": "#bf1b00",
-                    "lines": false,
-                    "pointradius": 1,
-                    "points": true
-                },
-                {
-                    "alias": "Peak Threads Connected",
-                    "color": "#1f78c1"
-                },
-                {
-                    "alias": "Queries",
-                    "yaxis": 2
-                }
-            ],
-            "spaceLength": 10,
-            "stack": false,
-            "steppedLine": false,
-            "targets": [
-                {
-                    "expr": "(max_over_time(mysql_global_status_threads_connected{instance=~\"$host\"}[$interval]) or \nmax_over_time(mysql_global_status_threads_connected{instance=~\"$host\"}[5m])) or\n(max_over_time(mongodb_mongod_connections{instance=~\"$host\", state=\"current\"}[$interval]) or\nmax_over_time(mongodb_mongod_connections{instance=~\"$host\", state=\"current\"}[5m])) or\n(max_over_time(pg_stat_database_numbackends{instance=~\"$host\",datname=\"postgres\"}[$interval]) or \nmax_over_time(pg_stat_database_numbackends{instance=~\"$host\",datname=\"postgres\"}[5m]))",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Peak Threads Connected",
-                    "refId": "A"
-                },
-                {
-                    "expr": "max_over_time(mysql_global_status_threads_running{instance=\"$host\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_running{instance=\"$host\"}[5m])",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Peak Threads Running",
-                    "refId": "B"
-                },
-                {
-                    "expr": "(rate(mysql_global_status_queries{instance=~\"$host\"}[$interval]) or \nirate(mysql_global_status_queries{instance=~\"$host\"}[5m])) or \n(sum(rate(mongodb_mongod_op_counters_total{instance=~\"$host\", type!=\"command\"}[$interval])) or \nsum(irate(mongodb_mongod_op_counters_total{instance=~\"$host\", type!=\"command\"}[5m]))) or\n(sum(rate(pg_stat_database_xact_commit{instance=~\"$host\"}[$interval]) + rate(pg_stat_database_xact_rollback{instance=~\"$host\"}[$interval])) or\nsum(irate(pg_stat_database_xact_commit{instance=~\"$host\"}[5m]) + irate(pg_stat_database_xact_rollback{instance=~\"$host\"}[5m])))",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Queries",
-                    "refId": "C"
-                }
-            ],
-            "thresholds": [],
-            "timeFrom": null,
-            "timeShift": null,
-            "title": "Database Server Activity",
-            "tooltip": {
-                "shared": true,
-                "sort": 0,
-                "value_type": "individual"
-            },
-            "type": "graph",
-            "xaxis": {
-                "buckets": null,
-                "mode": "time",
-                "name": null,
-                "show": true,
-                "values": []
-            },
-            "yaxes": [
-                {
-                    "decimals": null,
-                    "format": "short",
-                    "label": "Threads",
-                    "logBase": 1,
-                    "max": null,
-                    "min": "0",
-                    "show": true
-                },
-                {
-                    "format": "ops",
-                    "label": "Queries/sec",
-                    "logBase": 1,
-                    "max": null,
-                    "min": "0",
-                    "show": true
-                }
-            ],
-            "yaxis": {
-                "align": false,
-                "alignLevel": null
-            }
-        },
-        {
-            "collapsed": false,
-            "gridPos": {
-                "h": 1,
-                "w": 24,
-                "x": 0,
                 "y": 9
             },
             "id": 7,
@@ -420,14 +172,14 @@
             {
                 "allValue": null,
                 "current": {},
-                "datasource": "QAN-API",
-                "hide": 0,
+                "datasource": "Prometheus",
+                "hide": 2,
                 "includeAll": false,
                 "label": "Host",
                 "multi": false,
                 "name": "host",
                 "options": [],
-                "query": "SELECT `name` FROM `pmm`.`instances` WHERE `subsystem_id` IN (3, 4) AND (`deleted` IS NULL OR `deleted` < '1971-01-01 00:00:01');",
+                "query": "label_values(mysql_up, node_name)",
                 "refresh": 1,
                 "regex": "",
                 "sort": 1,
