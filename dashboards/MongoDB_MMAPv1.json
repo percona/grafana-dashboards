@@ -205,7 +205,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "(sum(increase(mongodb_mongod_locks_time_acquiring_global_microseconds_total{instance=\"$host\",database=\"Database\"}[$interval])) by (instance) / (increase(mongodb_mongod_instance_uptime_seconds{instance=\"$host\"}[$interval])*1000000)) or mongodb_mongod_global_lock_ratio{instance=\"$host\"}",
+                    "expr": "(sum(increase(mongodb_mongod_locks_time_acquiring_global_microseconds_total{service_name=~\"$service\",database=\"Database\"}[$interval])) by (instance) / (increase(mongodb_mongod_instance_uptime_seconds{service_name=~\"$service\"}[$interval])*1000000)) or mongodb_mongod_global_lock_ratio{service_name=~\"$service\"}",
                     "interval": "5m",
                     "intervalFactor": 1,
                     "legendFormat": "",
@@ -290,7 +290,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(mongodb_mongod_locks_time_acquiring_global_microseconds_total{instance=\"$host\",database=\"Global\",type=\"write\"}[$interval]) or irate(mongodb_mongod_locks_time_acquiring_global_microseconds_total{instance=\"$host\",database=\"Global\",type=\"write\"}[5m])",
+                    "expr": "rate(mongodb_mongod_locks_time_acquiring_global_microseconds_total{service_name=~\"$service\",database=\"Global\",type=\"write\"}[$interval]) or irate(mongodb_mongod_locks_time_acquiring_global_microseconds_total{service_name=~\"$service\",database=\"Global\",type=\"write\"}[5m])",
                     "interval": "5m",
                     "intervalFactor": 1,
                     "legendFormat": "",
@@ -372,7 +372,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "node_memory_Cached_bytes{instance=\"$host\"}",
+                    "expr": "node_memory_Cached_bytes{node_name=~\"$host\"}",
                     "interval": "5m",
                     "intervalFactor": 1,
                     "legendFormat": "",
@@ -457,7 +457,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "(node_memory_MemAvailable_bytes{instance=\"$host\"} or (node_memory_MemFree_bytes{instance=\"$host\"} + node_memory_Buffers_bytes{instance=\"$host\"} + node_memory_Cached_bytes{instance=\"$host\"})) / node_memory_MemTotal_bytes{instance=\"$host\"} * 100",
+                    "expr": "(node_memory_MemAvailable_bytes{node_name=~\"$host\"} or (node_memory_MemFree_bytes{node_name=~\"$host\"} + node_memory_Buffers_bytes{node_name=~\"$host\"} + node_memory_Cached_bytes{node_name=~\"$host\"})) / node_memory_MemTotal_bytes{node_name=~\"$host\"} * 100",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -523,7 +523,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(mongodb_mongod_metrics_document_total{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_metrics_document_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mongodb_mongod_metrics_document_total{service_name=~\"$service\"}[$interval]) or irate(mongodb_mongod_metrics_document_total{service_name=~\"$service\"}[5m])",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -532,7 +532,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mongodb_mongod_metrics_ttl_deleted_documents_total{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_metrics_ttl_deleted_documents_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mongodb_mongod_metrics_ttl_deleted_documents_total{service_name=~\"$service\"}[$interval]) or irate(mongodb_mongod_metrics_ttl_deleted_documents_total{service_name=~\"$service\"}[5m])",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -541,7 +541,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mongodb_mongod_op_counters_repl_total{instance=\"$host\", type=\"delete\"}[$interval]) or irate(mongodb_mongod_op_counters_repl_total{instance=\"$host\", type=\"delete\"}[5m])",
+                    "expr": "rate(mongodb_mongod_op_counters_repl_total{service_name=~\"$service\", type=\"delete\"}[$interval]) or irate(mongodb_mongod_op_counters_repl_total{service_name=~\"$service\", type=\"delete\"}[5m])",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -550,7 +550,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mongodb_mongod_op_counters_repl_total{instance=\"$host\", type=\"insert\"}[$interval]) or irate(mongodb_mongod_op_counters_repl_total{instance=\"$host\", type=\"insert\"}[5m])",
+                    "expr": "rate(mongodb_mongod_op_counters_repl_total{service_name=~\"$service\", type=\"insert\"}[$interval]) or irate(mongodb_mongod_op_counters_repl_total{service_name=~\"$service\", type=\"insert\"}[5m])",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -559,7 +559,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mongodb_mongod_op_counters_repl_total{instance=\"$host\", type=\"update\"}[$interval]) or irate(mongodb_mongod_op_counters_repl_total{instance=\"$host\", type=\"update\"}[5m])",
+                    "expr": "rate(mongodb_mongod_op_counters_repl_total{service_name=~\"$service\", type=\"update\"}[$interval]) or irate(mongodb_mongod_op_counters_repl_total{service_name=~\"$service\", type=\"update\"}[5m])",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -655,7 +655,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "(sum(increase(mongodb_mongod_locks_time_locked_global_microseconds_total{instance=\"$host\",database=\"Database\"}[$interval])) by (instance) / (increase(mongodb_mongod_instance_uptime_seconds{instance=\"$host\"}[$interval])*1000000)) or mongodb_mongod_global_lock_ratio{instance=\"$host\"}",
+                    "expr": "(sum(increase(mongodb_mongod_locks_time_locked_global_microseconds_total{service_name=~\"$service\",database=\"Database\"}[$interval])) by (instance) / (increase(mongodb_mongod_instance_uptime_seconds{service_name=~\"$service\"}[$interval])*1000000)) or mongodb_mongod_global_lock_ratio{service_name=~\"$service\"}",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -665,7 +665,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "(sum(increase(mongodb_mongod_locks_time_acquiring_global_microseconds_total{instance=\"$host\",database=\"Database\"}[$interval])) by (instance) / (increase(mongodb_mongod_instance_uptime_seconds{instance=\"$host\"}[$interval])*1000000)) or mongodb_mongod_global_lock_ratio{instance=\"$host\"}",
+                    "expr": "(sum(increase(mongodb_mongod_locks_time_acquiring_global_microseconds_total{service_name=~\"$service\",database=\"Database\"}[$interval])) by (instance) / (increase(mongodb_mongod_instance_uptime_seconds{service_name=~\"$service\"}[$interval])*1000000)) or mongodb_mongod_global_lock_ratio{service_name=~\"$service\"}",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -757,7 +757,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(mongodb_mongod_locks_time_acquiring_global_microseconds_total{instance=\"$host\",database=~\"(Global|Database|MMAPV1Journal)\"}[$interval]) or irate(mongodb_mongod_locks_time_acquiring_global_microseconds_total{instance=\"$host\",database=~\"(Global|Database|MMAPV1Journal)\"}[5m])",
+                    "expr": "rate(mongodb_mongod_locks_time_acquiring_global_microseconds_total{service_name=~\"$service\",database=~\"(Global|Database|MMAPV1Journal)\"}[$interval]) or irate(mongodb_mongod_locks_time_acquiring_global_microseconds_total{service_name=~\"$service\",database=~\"(Global|Database|MMAPV1Journal)\"}[5m])",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -850,7 +850,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(mongodb_mongod_extra_info_page_faults_total{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_extra_info_page_faults_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mongodb_mongod_extra_info_page_faults_total{service_name=~\"$service\"}[$interval]) or irate(mongodb_mongod_extra_info_page_faults_total{service_name=~\"$service\"}[5m])",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -941,7 +941,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(mongodb_mongod_durability_journaled_megabytes{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_durability_journaled_megabytes{instance=\"$host\"}[5m])",
+                    "expr": "rate(mongodb_mongod_durability_journaled_megabytes{service_name=~\"$service\"}[$interval]) or irate(mongodb_mongod_durability_journaled_megabytes{service_name=~\"$service\"}[5m])",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -951,7 +951,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mongodb_mongod_durability_write_to_data_files_megabytes{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_durability_write_to_data_files_megabytes{instance=\"$host\"}[5m])",
+                    "expr": "rate(mongodb_mongod_durability_write_to_data_files_megabytes{service_name=~\"$service\"}[$interval]) or irate(mongodb_mongod_durability_write_to_data_files_megabytes{service_name=~\"$service\"}[5m])",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1044,7 +1044,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(mongodb_mongod_durability_commits{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_durability_commits{instance=\"$host\"}[5m])",
+                    "expr": "rate(mongodb_mongod_durability_commits{service_name=~\"$service\"}[$interval]) or irate(mongodb_mongod_durability_commits{service_name=~\"$service\"}[5m])",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1137,7 +1137,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(mongodb_mongod_durability_time_milliseconds_sum{instance=\"$host\",stage!=\"dt\"}[$interval]) or irate(mongodb_mongod_durability_time_milliseconds_sum{instance=\"$host\",stage!=\"dt\"}[5m])",
+                    "expr": "rate(mongodb_mongod_durability_time_milliseconds_sum{service_name=~\"$service\",stage!=\"dt\"}[$interval]) or irate(mongodb_mongod_durability_time_milliseconds_sum{service_name=~\"$service\",stage!=\"dt\"}[5m])",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1230,7 +1230,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "mongodb_mongod_durability_time_milliseconds{instance=\"$host\",quantile=\"0.99\",stage!=\"dt\"}",
+                    "expr": "mongodb_mongod_durability_time_milliseconds{service_name=~\"$service\",quantile=\"0.99\",stage!=\"dt\"}",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1325,7 +1325,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(mongodb_mongod_background_flushing_average_milliseconds{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_background_flushing_average_milliseconds{instance=\"$host\"}[5m])",
+                    "expr": "rate(mongodb_mongod_background_flushing_average_milliseconds{service_name=~\"$service\"}[$interval]) or irate(mongodb_mongod_background_flushing_average_milliseconds{service_name=~\"$service\"}[5m])",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1418,7 +1418,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "mongodb_mongod_global_lock_current_queue{instance=\"$host\"}",
+                    "expr": "mongodb_mongod_global_lock_current_queue{service_name=~\"$service\"}",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1513,7 +1513,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(mongodb_mongod_op_counters_total{instance=\"$host\", type!=\"command\"}[$interval]) or irate(mongodb_mongod_op_counters_total{instance=\"$host\", type!=\"command\"}[5m])",
+                    "expr": "rate(mongodb_mongod_op_counters_total{service_name=~\"$service\", type!=\"command\"}[$interval]) or irate(mongodb_mongod_op_counters_total{service_name=~\"$service\", type!=\"command\"}[5m])",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "{{type}}",
@@ -1522,7 +1522,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mongodb_mongod_op_counters_repl_total{instance=\"$host\", type!~\"(command|query|getmore)\"}[$interval]) or irate(mongodb_mongod_op_counters_repl_total{instance=\"$host\", type!~\"(command|query|getmore)\"}[5m])",
+                    "expr": "rate(mongodb_mongod_op_counters_repl_total{service_name=~\"$service\", type!~\"(command|query|getmore)\"}[$interval]) or irate(mongodb_mongod_op_counters_repl_total{service_name=~\"$service\", type!~\"(command|query|getmore)\"}[5m])",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "repl_{{type}}",
@@ -1617,7 +1617,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(mongodb_mongod_metrics_query_executor_total{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_metrics_query_executor_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service\"}[$interval]) or irate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service\"}[5m])",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "{{state}}",
@@ -1626,7 +1626,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mongodb_mongod_metrics_record_moves_total{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_metrics_record_moves_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mongodb_mongod_metrics_record_moves_total{service_name=~\"$service\"}[$interval]) or irate(mongodb_mongod_metrics_record_moves_total{service_name=~\"$service\"}[5m])",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "moved",
@@ -1716,7 +1716,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "node_memory_Cached_bytes{instance=\"$host\"}-node_memory_Mapped_bytes{instance=\"$host\"}",
+                    "expr": "node_memory_Cached_bytes{service_name=~\"$service\"}-node_memory_Mapped_bytes{service_name=~\"$service\"}",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1726,7 +1726,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "node_memory_Mapped_bytes{instance=\"$host\"}",
+                    "expr": "node_memory_Mapped_bytes{service_name=~\"$service\"}",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1736,7 +1736,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "node_memory_SwapCached_bytes{instance=\"$host\"}",
+                    "expr": "node_memory_SwapCached_bytes{service_name=~\"$service\"}",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1829,7 +1829,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "node_vmstat_nr_dirty{instance=\"$host\"}",
+                    "expr": "node_vmstat_nr_dirty{service_name=~\"$service\"}",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1839,7 +1839,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "node_vmstat_nr_dirty_background_threshold{instance=\"$host\"}",
+                    "expr": "node_vmstat_nr_dirty_background_threshold{service_name=~\"$service\"}",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1849,7 +1849,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "node_vmstat_nr_dirty_threshold{instance=\"$host\"}",
+                    "expr": "node_vmstat_nr_dirty_threshold{service_name=~\"$service\"}",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2000,15 +2000,39 @@
                 "current": {},
                 "datasource": "Prometheus",
                 "hide": 0,
-                "includeAll": false,
+                "includeAll": true,
                 "label": "Instance",
                 "multi": false,
                 "multiFormat": "glob",
                 "name": "host",
                 "options": [],
-                "query": "label_values(mongodb_mongod_storage_engine{cluster=~\"$cluster\",engine=\"mmapv1\"}, instance)",
+                "query": "label_values(mongodb_mongod_storage_engine{cluster=~\"$cluster\",engine=\"mmapv1\"}, node_name)",
                 "refresh": 1,
                 "regex": "",
+                "sort": 1,
+                "tagValuesQuery": null,
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            },
+	    {
+                "allFormat": "glob",
+                "allValue": null,
+                "current": {},
+                "datasource": "Prometheus",
+                "definition": "",
+                "hide": 0,
+                "includeAll": false,
+                "label": "Service",
+                "multi": false,
+                "multiFormat": "glob",
+                "name": "service",
+                "options": [],
+                "query": "label_values(mongodb_mongod_storage_engine{cluster=~\"$cluster\",node_name=~\"$host\",engine=\"mmapv1\"}, service_name)",
+                "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
                 "sort": 1,
                 "tagValuesQuery": null,
                 "tags": [],
