@@ -197,14 +197,15 @@ def fix_datasource(dashboard):
                     if panel['datasource'] == '${DS_QAN-API}':
                         dashboard['panels'][panel_index]['datasource'] = 'QAN-API'
                 if 'panels' in panel:
-                        for panelIn_index, panelIn in enumerate(dashboard['panels'][panel_index]['panels']):
-                            if (len(dashboard['panels'][panel_index]['panels']) > 0):
-                                if dashboard['panels'][panel_index]['panels'][panelIn_index]['datasource'] == '${DS_PROMETHEUS}':
-                                    dashboard['panels'][panel_index]['panels'][panelIn_index]['datasource'] = 'Prometheus'
-                                if dashboard['panels'][panel_index]['panels'][panelIn_index]['datasource'] == '${DS_CLOUDWATCH}':
-                                    dashboard['panels'][panel_index]['panels'][panelIn_index]['datasource'] = 'CloudWatch'
-                                if dashboard['panels'][panel_index]['panels'][panelIn_index]['datasource'] == '${DS_QAN-API}':
-                                    dashboard['panels'][panel_index]['panels'][panelIn_index]['datasource'] = 'QAN-API'
+                        if (len(dashboard['panels'][panel_index]['panels']) > 0):
+                            for panelIn_index, panelIn in enumerate(dashboard['panels'][panel_index]['panels']):
+                                if 'datasource' in panelIn:
+                                    if dashboard['panels'][panel_index]['panels'][panelIn_index]['datasource'] == '${DS_PROMETHEUS}':
+                                        dashboard['panels'][panel_index]['panels'][panelIn_index]['datasource'] = 'Prometheus'
+                                    if dashboard['panels'][panel_index]['panels'][panelIn_index]['datasource'] == '${DS_CLOUDWATCH}':
+                                        dashboard['panels'][panel_index]['panels'][panelIn_index]['datasource'] = 'CloudWatch'
+                                    if dashboard['panels'][panel_index]['panels'][panelIn_index]['datasource'] == '${DS_QAN-API}':
+                                        dashboard['panels'][panel_index]['panels'][panelIn_index]['datasource'] = 'QAN-API'
                 if 'mappingTypes' in panel:
                         for mappingTypes_index, mappingTypes in enumerate(dashboard['panels'][panel_index]['mappingTypes']):
                             if 'datasource' in mappingTypes:
