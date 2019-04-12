@@ -33,7 +33,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1541512969227,
+    "iteration": 1555063571844,
     "links": [
         {
             "icon": "dashboard",
@@ -199,11 +199,11 @@
                     "calculatedInterval": "10s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "node_load1{instance=~\"$host\"}",
+                    "expr": "node_load1{node_name=~\"$host\"}",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
-                    "legendFormat": "{{ instance }}",
+                    "legendFormat": "{{ node_name }}",
                     "metric": "",
                     "refId": "A",
                     "step": 300,
@@ -220,6 +220,7 @@
                 }
             ],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Load Average",
             "tooltip": {
@@ -228,7 +229,6 @@
                 "sort": 0,
                 "value_type": "individual"
             },
-            "transparent": false,
             "type": "graph",
             "xaxis": {
                 "buckets": null,
@@ -306,10 +306,11 @@
                     "calculatedInterval": "10s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "100 - 100 * (node_memory_MemAvailable_bytes{instance=~\"$host\"} or (node_memory_MemFree_bytes{instance=~\"$host\"} + node_memory_Buffers_bytes{instance=~\"$host\"} + node_memory_Cached_bytes{instance=~\"$host\"})) / (node_memory_MemTotal_bytes{instance=~\"$host\"} + 0.1)",
+                    "expr": "100 - 100 * (node_memory_MemAvailable_bytes{node_name=~\"$host\"} or (node_memory_MemFree_bytes{node_name=~\"$host\"} + \nnode_memory_Buffers_bytes{node_name=~\"$host\"} + node_memory_Cached_bytes{node_name=~\"$host\"})) / (node_memory_MemTotal_bytes{node_name=~\"$host\"} + 0.1)",
+                    "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
-                    "legendFormat": "{{ instance }}",
+                    "legendFormat": "{{ node_name }}",
                     "metric": "",
                     "refId": "A",
                     "step": 300,
@@ -326,6 +327,7 @@
                 }
             ],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Memory Usage",
             "tooltip": {
@@ -334,7 +336,6 @@
                 "sort": 0,
                 "value_type": "individual"
             },
-            "transparent": false,
             "type": "graph",
             "xaxis": {
                 "buckets": null,
@@ -408,10 +409,11 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(mysql_global_status_connections{instance=~\"$host\"}[$interval]) or irate(mysql_global_status_connections{instance=~\"$host\"}[5m])",
+                    "expr": "rate(mysql_global_status_connections{node_name=~\"$host\"}[$interval]) or irate(mysql_global_status_connections{node_name=~\"$host\"}[5m])",
+                    "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
-                    "legendFormat": "{{ instance }}",
+                    "legendFormat": "{{ node_name }}",
                     "metric": "",
                     "refId": "A",
                     "step": 300
@@ -419,6 +421,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "MySQL Connections",
             "tooltip": {
@@ -512,7 +515,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(mysql_global_status_queries{instance=~\"$host\"}[$interval]) or irate(mysql_global_status_queries{instance=~\"$host\"}[5m])",
+                    "expr": "rate(mysql_global_status_queries{node_name=~\"$host\"}[$interval]) or irate(mysql_global_status_queries{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -524,6 +527,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "MySQL Queries",
             "tooltip": {
@@ -580,6 +584,7 @@
                 "y": 14
             },
             "id": 11,
+            "interval": "",
             "legend": {
                 "alignAsTable": true,
                 "avg": true,
@@ -610,11 +615,11 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "(rate(mysql_global_status_bytes_received{instance=~\"$host\"}[$interval]) + rate(mysql_global_status_bytes_sent{instance=~\"$host\"}[$interval])) or (irate(mysql_global_status_bytes_received{instance=~\"$host\"}[5m]) + irate(mysql_global_status_bytes_sent{instance=~\"$host\"}[5m]))",
+                    "expr": "(rate(mysql_global_status_bytes_received{node_name=~\"$host\"}[$interval]) + \nrate(mysql_global_status_bytes_sent{node_name=~\"$host\"}[$interval])) or \n(irate(mysql_global_status_bytes_received{node_name=~\"$host\"}[5m]) + \nirate(mysql_global_status_bytes_sent{node_name=~\"$host\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
-                    "legendFormat": "{{ instance }}",
+                    "legendFormat": "{{ node_name }}",
                     "metric": "",
                     "refId": "A",
                     "step": 300
@@ -622,6 +627,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "MySQL Traffic",
             "tooltip": {
@@ -708,11 +714,11 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "sum(rate(node_network_receive_bytes_total{instance=~\"$host\", device!=\"lo\"}[$interval]) + rate(node_network_transmit_bytes_total{instance=~\"$host\", device!=\"lo\"}[$interval])) by (instance) or sum(irate(node_network_receive_bytes_total{instance=~\"$host\", device!=\"lo\"}[5m]) + irate(node_network_transmit_bytes_total{instance=~\"$host\", device!=\"lo\"}[5m])) by (instance) or\nsum(max_over_time(rdsosmetrics_network_rx{instance=~\"$host\"}[$interval]) + max_over_time(rdsosmetrics_network_tx{instance=~\"$host\"}[$interval])) by (instance) or sum(max_over_time(rdsosmetrics_network_rx{instance=~\"$host\"}[5m]) + max_over_time(rdsosmetrics_network_tx{instance=~\"$host\"}[5m])) by (instance)",
+                    "expr": "sum(rate(node_network_receive_bytes_total{node_name=~\"$host\", device!=\"lo\"}[$interval]) + \nrate(node_network_transmit_bytes_total{node_name=~\"$host\", device!=\"lo\"}[$interval])) by (node_name) or \nsum(irate(node_network_receive_bytes_total{node_name=~\"$host\", device!=\"lo\"}[5m]) + \nirate(node_network_transmit_bytes_total{node_name=~\"$host\", device!=\"lo\"}[5m])) by (node_name) or\nsum(max_over_time(rdsosmetrics_network_rx{node_name=~\"$host\"}[$interval]) + \nmax_over_time(rdsosmetrics_network_tx{node_name=~\"$host\"}[$interval])) by (node_name) or \nsum(max_over_time(rdsosmetrics_network_rx{node_name=~\"$host\"}[5m]) + \nmax_over_time(rdsosmetrics_network_tx{node_name=~\"$host\"}[5m])) by (node_name)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
-                    "legendFormat": "{{ instance }}",
+                    "legendFormat": "{{ node_name }}",
                     "metric": "",
                     "refId": "B",
                     "step": 300,
@@ -721,6 +727,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Network Traffic",
             "tooltip": {
@@ -729,7 +736,6 @@
                 "sort": 0,
                 "value_type": "individual"
             },
-            "transparent": false,
             "type": "graph",
             "xaxis": {
                 "buckets": null,
@@ -926,7 +932,7 @@
                     "mappingType": 1,
                     "pattern": "instance",
                     "thresholds": [],
-                    "type": "number",
+                    "type": "hidden",
                     "unit": "short"
                 },
                 {
@@ -960,11 +966,27 @@
                     "thresholds": [],
                     "type": "number",
                     "unit": "short"
+                },
+                {
+                    "alias": "",
+                    "colorMode": null,
+                    "colors": [
+                        "rgba(245, 54, 54, 0.9)",
+                        "rgba(237, 129, 40, 0.89)",
+                        "rgba(50, 172, 45, 0.97)"
+                    ],
+                    "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                    "decimals": 2,
+                    "mappingType": 1,
+                    "pattern": "/.*_id/",
+                    "thresholds": [],
+                    "type": "hidden",
+                    "unit": "short"
                 }
             ],
             "targets": [
                 {
-                    "expr": "node_uname_info{instance=~\"$host\"}",
+                    "expr": "node_uname_info{node_name=~\"$host\"}",
                     "format": "table",
                     "instant": true,
                     "interval": "5m",
@@ -1095,7 +1117,7 @@
                     "mappingType": 1,
                     "pattern": "instance",
                     "thresholds": [],
-                    "type": "number",
+                    "type": "hidden",
                     "unit": "short"
                 },
                 {
@@ -1129,11 +1151,43 @@
                     "thresholds": [],
                     "type": "number",
                     "unit": "short"
+                },
+                {
+                    "alias": "",
+                    "colorMode": null,
+                    "colors": [
+                        "rgba(245, 54, 54, 0.9)",
+                        "rgba(237, 129, 40, 0.89)",
+                        "rgba(50, 172, 45, 0.97)"
+                    ],
+                    "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                    "decimals": 2,
+                    "mappingType": 1,
+                    "pattern": "/.*_id/",
+                    "thresholds": [],
+                    "type": "hidden",
+                    "unit": "short"
+                },
+                {
+                    "alias": "",
+                    "colorMode": null,
+                    "colors": [
+                        "rgba(245, 54, 54, 0.9)",
+                        "rgba(237, 129, 40, 0.89)",
+                        "rgba(50, 172, 45, 0.97)"
+                    ],
+                    "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                    "decimals": 2,
+                    "mappingType": 1,
+                    "pattern": "/node_.*/",
+                    "thresholds": [],
+                    "type": "hidden",
+                    "unit": "short"
                 }
             ],
             "targets": [
                 {
-                    "expr": "mysql_version_info{instance=~\"$host\"}",
+                    "expr": "mysql_version_info{node_name=~\"$host\"}",
                     "format": "table",
                     "instant": true,
                     "interval": "5m",
@@ -1150,7 +1204,7 @@
         }
     ],
     "refresh": "1m",
-    "schemaVersion": 16,
+    "schemaVersion": 18,
     "style": "dark",
     "tags": [
         "Percona",
@@ -1163,10 +1217,7 @@
                 "auto": true,
                 "auto_count": 200,
                 "auto_min": "1s",
-                "current": {
-                    "text": "auto",
-                    "value": "$__auto_interval_interval"
-                },
+                "current": {},
                 "datasource": "Prometheus",
                 "hide": 0,
                 "includeAll": false,
@@ -1219,13 +1270,59 @@
                 "query": "1s,5s,1m,5m,1h,6h,1d",
                 "refresh": 2,
                 "regex": "",
+                "skipUrlSync": false,
                 "type": "interval"
+            },
+            {
+                "allValue": null,
+                "current": {},
+                "datasource": "Prometheus",
+                "definition": "label_values(node_boot_time_seconds, region)",
+                "hide": 0,
+                "includeAll": true,
+                "label": "Region",
+                "multi": true,
+                "name": "region",
+                "options": [],
+                "query": "label_values(node_boot_time_seconds, region)",
+                "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allValue": null,
+                "current": {},
+                "datasource": "Prometheus",
+                "definition": "label_values(node_boot_time_seconds{region=~\"$region\"}, node_type)",
+                "hide": 0,
+                "includeAll": true,
+                "label": "Type",
+                "multi": true,
+                "name": "node_type",
+                "options": [],
+                "query": "label_values(node_boot_time_seconds{region=~\"$region\"}, node_type)",
+                "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
             },
             {
                 "allFormat": "pipe",
                 "allValue": null,
                 "current": {},
                 "datasource": "Prometheus",
+                "definition": "label_values({__name__=~\"node_load1|mysql_up\",region=~\"$region\",node_type=~\"$node_type\"}, node_name)",
                 "hide": 0,
                 "includeAll": true,
                 "label": "Host",
@@ -1233,9 +1330,10 @@
                 "multiFormat": "pipe",
                 "name": "host",
                 "options": [],
-                "query": "label_values({__name__=~\"node_load1|mysql_up\", job!=\"prometheus\"}, instance)",
+                "query": "label_values({__name__=~\"node_load1|mysql_up\",region=~\"$region\",node_type=~\"$node_type\"}, node_name)",
                 "refresh": 1,
                 "regex": "",
+                "skipUrlSync": false,
                 "sort": 1,
                 "tagValuesQuery": null,
                 "tags": [],
