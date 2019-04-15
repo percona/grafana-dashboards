@@ -33,7 +33,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1555063571844,
+    "iteration": 1555316081225,
     "links": [
         {
             "icon": "dashboard",
@@ -157,16 +157,18 @@
             },
             "id": 6,
             "legend": {
-                "alignAsTable": false,
-                "avg": false,
+                "alignAsTable": true,
+                "avg": true,
                 "current": false,
                 "hideEmpty": false,
-                "max": false,
-                "min": false,
+                "max": true,
+                "min": true,
                 "rightSide": false,
                 "show": true,
+                "sort": "avg",
+                "sortDesc": true,
                 "total": false,
-                "values": false
+                "values": true
             },
             "lines": true,
             "linewidth": 2,
@@ -216,7 +218,8 @@
                     "line": true,
                     "lineColor": "rgb(241, 34, 15)",
                     "op": "gt",
-                    "value": 15
+                    "value": 15,
+                    "yaxis": "left"
                 }
             ],
             "timeFrom": null,
@@ -278,16 +281,18 @@
             },
             "id": 7,
             "legend": {
-                "alignAsTable": false,
-                "avg": false,
+                "alignAsTable": true,
+                "avg": true,
                 "current": false,
                 "hideEmpty": false,
-                "max": false,
-                "min": false,
+                "max": true,
+                "min": true,
                 "rightSide": false,
                 "show": true,
+                "sort": "avg",
+                "sortDesc": true,
                 "total": false,
-                "values": false
+                "values": true
             },
             "lines": true,
             "linewidth": 2,
@@ -323,7 +328,8 @@
                     "line": true,
                     "lineColor": "rgb(248, 8, 48)",
                     "op": "gt",
-                    "value": 95
+                    "value": 95,
+                    "yaxis": "left"
                 }
             ],
             "timeFrom": null,
@@ -358,7 +364,7 @@
                     "logBase": 1,
                     "max": null,
                     "min": 0,
-                    "show": true
+                    "show": false
                 }
             ],
             "yaxis": {
@@ -383,14 +389,18 @@
                 "y": 7
             },
             "id": 3,
+            "interval": "",
             "legend": {
-                "avg": false,
+                "alignAsTable": true,
+                "avg": true,
                 "current": false,
-                "max": false,
-                "min": false,
+                "max": true,
+                "min": true,
                 "show": true,
+                "sort": "avg",
+                "sortDesc": true,
                 "total": false,
-                "values": false
+                "values": true
             },
             "lines": true,
             "linewidth": 2,
@@ -409,11 +419,11 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(mysql_global_status_connections{node_name=~\"$host\"}[$interval]) or irate(mysql_global_status_connections{node_name=~\"$host\"}[5m])",
+                    "expr": "sum(rate(mysql_global_status_connections{service_name=~\"$service\"}[$interval])) by (service_name) or \nsum(irate(mysql_global_status_connections{service_name=~\"$service\"}[5m])) by (service_name)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
-                    "legendFormat": "{{ node_name }}",
+                    "legendFormat": "{{ service_name }}",
                     "metric": "",
                     "refId": "A",
                     "step": 300
@@ -451,7 +461,7 @@
                     "logBase": 1,
                     "max": null,
                     "min": 0,
-                    "show": true
+                    "show": false
                 }
             ],
             "yaxis": {
@@ -469,7 +479,7 @@
             "description": "**MySQL Queries**\n\nBased on the queries reported by MySQL's ``SHOW STATUS`` command, it is the average number of statements executed by the server. This variable includes statements executed within stored programs, unlike the Questions variable. It does not count COM_PING or COM_STATISTICS commands.",
             "editable": true,
             "error": false,
-            "fill": 0,
+            "fill": 2,
             "grid": {},
             "gridPos": {
                 "h": 7,
@@ -478,19 +488,20 @@
                 "y": 7
             },
             "id": 4,
+            "interval": "",
             "legend": {
-                "alignAsTable": false,
-                "avg": false,
+                "alignAsTable": true,
+                "avg": true,
                 "current": false,
                 "hideEmpty": false,
-                "max": false,
-                "min": false,
+                "max": true,
+                "min": true,
                 "rightSide": false,
                 "show": true,
-                "sort": null,
-                "sortDesc": null,
+                "sort": "avg",
+                "sortDesc": true,
                 "total": false,
-                "values": false
+                "values": true
             },
             "lines": true,
             "linewidth": 2,
@@ -515,11 +526,11 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(mysql_global_status_queries{node_name=~\"$host\"}[$interval]) or irate(mysql_global_status_queries{node_name=~\"$host\"}[5m])",
+                    "expr": "sum(rate(mysql_global_status_queries{service_name=~\"$service\"}[$interval])) by (service_name) or \nsum(irate(mysql_global_status_queries{service_name=~\"$service\"}[5m])) by (service_name)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
-                    "legendFormat": "{{ instance }}",
+                    "legendFormat": "{{ service_name }}",
                     "metric": "",
                     "refId": "A",
                     "step": 300
@@ -557,7 +568,7 @@
                     "logBase": 1,
                     "max": null,
                     "min": 0,
-                    "show": true
+                    "show": false
                 }
             ],
             "yaxis": {
@@ -615,11 +626,11 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "(rate(mysql_global_status_bytes_received{node_name=~\"$host\"}[$interval]) + \nrate(mysql_global_status_bytes_sent{node_name=~\"$host\"}[$interval])) or \n(irate(mysql_global_status_bytes_received{node_name=~\"$host\"}[5m]) + \nirate(mysql_global_status_bytes_sent{node_name=~\"$host\"}[5m]))",
+                    "expr": "sum((rate(mysql_global_status_bytes_received{service_name=~\"$service\"}[$interval]) + \nrate(mysql_global_status_bytes_sent{service_name=~\"$service\"}[$interval]))) by (service_name) or \nsum((irate(mysql_global_status_bytes_received{service_name=~\"$service\"}[5m]) + \nirate(mysql_global_status_bytes_sent{service_name=~\"$service\"}[5m]))) by (service_name)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
-                    "legendFormat": "{{ node_name }}",
+                    "legendFormat": "{{ service_name }}",
                     "metric": "",
                     "refId": "A",
                     "step": 300
@@ -657,7 +668,7 @@
                     "logBase": 1,
                     "max": null,
                     "min": 0,
-                    "show": true
+                    "show": false
                 }
             ],
             "yaxis": {
@@ -1338,6 +1349,28 @@
                 "tagValuesQuery": null,
                 "tags": [],
                 "tagsQuery": null,
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allValue": null,
+                "current": {},
+                "datasource": "Prometheus",
+                "definition": "label_values({__name__=~\"postgres_exporter_build_info|mysqld_exporter_build_info|mongodb_exporter_build_info|proxysql_exporter_build_info\",region=~\"$region\",node_type=~\"$node_type\",node_name=~\"$host\"}, service_name)",
+                "hide": 0,
+                "includeAll": true,
+                "label": "Service",
+                "multi": true,
+                "name": "service",
+                "options": [],
+                "query": "label_values({__name__=~\"postgres_exporter_build_info|mysqld_exporter_build_info|mongodb_exporter_build_info|proxysql_exporter_build_info\",region=~\"$region\",node_type=~\"$node_type\",node_name=~\"$host\"}, service_name)",
+                "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
                 "type": "query",
                 "useTags": false
             }
