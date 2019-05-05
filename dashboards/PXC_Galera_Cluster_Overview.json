@@ -33,7 +33,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1529322565700,
+    "iteration": 1541499518682,
     "links": [
         {
             "icon": "dashboard",
@@ -188,7 +188,8 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "min(mysql_global_status_wsrep_cluster_size * on (instance) group_left mysql_galera_variables_info{wsrep_cluster_name=\"$cluster\"})",
+                    "expr": "max((min_over_time(mysql_global_status_wsrep_cluster_size[$interval]) or min_over_time(mysql_global_status_wsrep_cluster_size[5m])) * \non (instance) group_left mysql_galera_variables_info{wsrep_cluster_name=\"$cluster\"})",
+                    "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Size",
@@ -214,7 +215,7 @@
                 "buckets": null,
                 "mode": "time",
                 "name": null,
-                "show": false,
+                "show": true,
                 "values": []
             },
             "yaxes": [

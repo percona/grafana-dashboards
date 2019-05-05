@@ -33,7 +33,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1529322514360,
+    "iteration": 1541576884081,
     "links": [
         {
             "icon": "dashboard",
@@ -280,7 +280,8 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "topk(5, (rate(mysql_info_schema_user_statistics_bytes_sent_total{instance=\"$host\"}[$interval]) + rate(mysql_info_schema_user_statistics_bytes_received_total{instance=\"$host\"}[$interval]))>0) or topk(5, (irate(mysql_info_schema_user_statistics_bytes_sent_total{instance=\"$host\"}[5m]) + irate(mysql_info_schema_user_statistics_bytes_received_total{instance=\"$host\"}[5m]))>0)",
+                    "expr": "topk(5, (rate(mysql_info_schema_user_statistics_bytes_sent_total{instance=\"$host\"}[$interval]) + rate(mysql_info_schema_user_statistics_bytes_received_total{instance=\"$host\"}[$interval]))>0) or \ntopk(5, (irate(mysql_info_schema_user_statistics_bytes_sent_total{instance=\"$host\"}[5m]) + irate(mysql_info_schema_user_statistics_bytes_received_total{instance=\"$host\"}[5m]))>0)",
+                    "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "{{ user }}",
@@ -309,7 +310,8 @@
             },
             "yaxes": [
                 {
-                    "format": "bytes",
+                    "decimals": 2,
+                    "format": "Bps",
                     "logBase": 1,
                     "max": null,
                     "min": 0,
@@ -320,7 +322,7 @@
                     "logBase": 1,
                     "max": null,
                     "min": 0,
-                    "show": true
+                    "show": false
                 }
             ],
             "yaxis": {
@@ -376,6 +378,7 @@
                     "datasourceErrors": {},
                     "errors": {},
                     "expr": "topk(5, rate(mysql_info_schema_user_statistics_rows_fetched_total{instance=\"$host\"}[$interval])>0) or topk(5, irate(mysql_info_schema_user_statistics_rows_fetched_total{instance=\"$host\"}[5m])>0) or topk(5, rate(mysql_info_schema_user_statistics_rows_read_total{instance=\"$host\"}[$interval])>0) or topk(5, irate(mysql_info_schema_user_statistics_rows_read_total{instance=\"$host\"}[5m])>0)",
+                    "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "{{ user }}",
@@ -405,6 +408,7 @@
             "yaxes": [
                 {
                     "format": "short",
+                    "label": "Rows/sec",
                     "logBase": 1,
                     "max": null,
                     "min": 0,
@@ -470,7 +474,8 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "topk(5, rate(mysql_info_schema_user_statistics_rows_updated_total{instance=\"$host\"}[$interval])>0) or topk(5, irate(mysql_info_schema_user_statistics_rows_updated_total{instance=\"$host\"}[5m])>0)",
+                    "expr": "topk(5, rate(mysql_info_schema_user_statistics_rows_updated_total{instance=\"$host\"}[$interval])>0) or \ntopk(5, irate(mysql_info_schema_user_statistics_rows_updated_total{instance=\"$host\"}[5m])>0)",
+                    "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "{{ user }}",
@@ -500,6 +505,7 @@
             "yaxes": [
                 {
                     "format": "short",
+                    "label": "Rows/sec",
                     "logBase": 1,
                     "max": null,
                     "min": 0,
@@ -510,7 +516,7 @@
                     "logBase": 1,
                     "max": null,
                     "min": 0,
-                    "show": true
+                    "show": false
                 }
             ],
             "yaxis": {
@@ -566,6 +572,7 @@
                     "datasourceErrors": {},
                     "errors": {},
                     "expr": "topk(5, rate(mysql_info_schema_user_statistics_busy_seconds_total{instance=\"$host\"}[$interval])>0) or topk(5, irate(mysql_info_schema_user_statistics_busy_seconds_total{instance=\"$host\"}[5m])>0)",
+                    "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "{{ user }}",
@@ -577,7 +584,7 @@
             "thresholds": [],
             "timeFrom": null,
             "timeShift": null,
-            "title": "Top Users by Busy Time",
+            "title": "Top Users by Busy Load",
             "tooltip": {
                 "msResolution": false,
                 "shared": true,
@@ -594,7 +601,7 @@
             },
             "yaxes": [
                 {
-                    "format": "s",
+                    "format": "short",
                     "logBase": 1,
                     "max": null,
                     "min": 0,
@@ -660,7 +667,8 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "topk(5, rate(mysql_info_schema_user_statistics_cpu_time_seconds_total{instance=\"$host\"}[$interval])>0) or topk(5, irate(mysql_info_schema_user_statistics_cpu_time_seconds_total{instance=\"$host\"}[5m])>0)",
+                    "expr": "topk(5, rate(mysql_info_schema_user_statistics_cpu_time_seconds_total{instance=\"$host\"}[$interval])>0) or \ntopk(5, irate(mysql_info_schema_user_statistics_cpu_time_seconds_total{instance=\"$host\"}[5m])>0)",
+                    "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "{{ user }}",
@@ -672,7 +680,7 @@
             "thresholds": [],
             "timeFrom": null,
             "timeShift": null,
-            "title": "Top Users by CPU Time",
+            "title": "Top Users by CPU Load",
             "tooltip": {
                 "msResolution": false,
                 "shared": true,
@@ -689,7 +697,7 @@
             },
             "yaxes": [
                 {
-                    "format": "s",
+                    "format": "short",
                     "logBase": 1,
                     "max": null,
                     "min": 0,
@@ -700,7 +708,7 @@
                     "logBase": 1,
                     "max": null,
                     "min": 0,
-                    "show": true
+                    "show": false
                 }
             ],
             "yaxis": {
