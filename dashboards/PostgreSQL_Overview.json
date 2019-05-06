@@ -34,7 +34,7 @@
     "gnetId": 3300,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1554902940769,
+    "iteration": 1557128776047,
     "links": [
         {
             "icon": "dashboard",
@@ -983,15 +983,16 @@
                 {
                     "alias": "Maximum connections",
                     "color": "#bf1b00",
-                    "fill": 0
+                    "fill": 0,
+                    "stack": false
                 }
             ],
             "spaceLength": 10,
-            "stack": false,
+            "stack": true,
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "max_over_time(pg_stat_database_numbackends{datname=~\"$db\",service_name=~\"$service\"}[$interval]) or \nmax_over_time(pg_stat_database_numbackends{datname=~\"$db\",service_name=~\"$service\"}[5m])",
+                    "expr": "max_over_time(pg_stat_activity_count{instance=\"$host\",datname=~\"$db\",state='active'}[$interval]) or\nmax_over_time(pg_stat_activity_count{instance=\"$host\",datname=~\"$db\",state='active'}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1031,7 +1032,7 @@
                     "decimals": 0,
                     "format": "short",
                     "label": null,
-                    "logBase": 1,
+                    "logBase": 2,
                     "max": null,
                     "min": null,
                     "show": true
