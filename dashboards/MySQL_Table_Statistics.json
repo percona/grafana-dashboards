@@ -33,7 +33,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1552406841553,
+    "iteration": 1557129989487,
     "links": [
         {
             "icon": "dashboard",
@@ -181,6 +181,22 @@
             },
             "styles": [
                 {
+                    "alias": "",
+                    "colorMode": null,
+                    "colors": [
+                        "rgba(245, 54, 54, 0.9)",
+                        "rgba(237, 129, 40, 0.89)",
+                        "rgba(50, 172, 45, 0.97)"
+                    ],
+                    "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                    "decimals": 2,
+                    "mappingType": 1,
+                    "pattern": "Time",
+                    "thresholds": [],
+                    "type": "date",
+                    "unit": "short"
+                },
+                {
                     "colorMode": null,
                     "colors": [
                         "rgba(245, 54, 54, 0.9)",
@@ -197,7 +213,8 @@
             ],
             "targets": [
                 {
-                    "expr": "topk(10, sum(mysql_info_schema_table_rows{service_name=\"$service\"}) by (schema, table)) > 0",
+                    "expr": "topk(10, sum(mysql_info_schema_table_rows{service_name=~\"$service\"}) by (schema, table)) > 0",
+                    "format": "table",
                     "interval": "5m",
                     "intervalFactor": 1,
                     "legendFormat": "{{ schema }}.{{ table }}",
@@ -207,7 +224,7 @@
             ],
             "timeFrom": "5m",
             "title": "Largest Tables by Row Count",
-            "transform": "timeseries_aggregations",
+            "transform": "table",
             "type": "table"
         },
         {
@@ -240,6 +257,22 @@
             },
             "styles": [
                 {
+                    "alias": "",
+                    "colorMode": null,
+                    "colors": [
+                        "rgba(245, 54, 54, 0.9)",
+                        "rgba(237, 129, 40, 0.89)",
+                        "rgba(50, 172, 45, 0.97)"
+                    ],
+                    "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                    "decimals": 2,
+                    "mappingType": 1,
+                    "pattern": "Time",
+                    "thresholds": [],
+                    "type": "date",
+                    "unit": "short"
+                },
+                {
                     "colorMode": null,
                     "colors": [
                         "rgba(245, 54, 54, 0.9)",
@@ -256,7 +289,8 @@
             ],
             "targets": [
                 {
-                    "expr": "topk(10, sum(mysql_info_schema_table_size{service_name=\"$service\", component!=\"data_free\"}) by (schema, table)) > 0",
+                    "expr": "topk(10, sum(mysql_info_schema_table_size{service_name=~\"$service\", component!=\"data_free\"}) by (schema, table)) > 0",
+                    "format": "table",
                     "interval": "5m",
                     "intervalFactor": 1,
                     "legendFormat": "{{ schema }}.{{ table }}",
@@ -266,7 +300,7 @@
             ],
             "timeFrom": "5m",
             "title": "Largest Tables by Size",
-            "transform": "timeseries_aggregations",
+            "transform": "table",
             "type": "table"
         },
         {
@@ -333,7 +367,8 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "sum(mysql_info_schema_table_size{service_name=\"$service\", component!=\"data_free\"})",
+                    "expr": "sum(mysql_info_schema_table_size{service_name=~\"$service\", component!=\"data_free\"})",
+                    "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Data + Index Size",
@@ -345,7 +380,8 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "sum(mysql_info_schema_table_size{service_name=\"$service\", component=\"data_free\"})",
+                    "expr": "sum(mysql_info_schema_table_size{service_name=~\"$service\", component=\"data_free\"})",
+                    "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Freeable Size",
@@ -424,6 +460,22 @@
             },
             "styles": [
                 {
+                    "alias": "",
+                    "colorMode": null,
+                    "colors": [
+                        "rgba(245, 54, 54, 0.9)",
+                        "rgba(237, 129, 40, 0.89)",
+                        "rgba(50, 172, 45, 0.97)"
+                    ],
+                    "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                    "decimals": 2,
+                    "mappingType": 1,
+                    "pattern": "Time",
+                    "thresholds": [],
+                    "type": "date",
+                    "unit": "short"
+                },
+                {
                     "colorMode": null,
                     "colors": [
                         "rgba(245, 54, 54, 0.9)",
@@ -440,7 +492,8 @@
             ],
             "targets": [
                 {
-                    "expr": "topk(5, sum(mysql_info_schema_table_size{service_name=\"$service\", component=\"data_free\"}) by (schema, table)) > 0",
+                    "expr": "topk(5, sum(mysql_info_schema_table_size{service_name=~\"$service\", component=\"data_free\"}) by (schema, table)) > 0",
+                    "format": "table",
                     "interval": "5m",
                     "intervalFactor": 1,
                     "legendFormat": "{{ schema }}.{{ table }}",
@@ -450,7 +503,7 @@
             ],
             "timeFrom": "5m",
             "title": "Most Fragmented Tables by Freeable Size",
-            "transform": "timeseries_aggregations",
+            "transform": "table",
             "type": "table"
         },
         {
@@ -551,7 +604,8 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "topk(5, rate(mysql_info_schema_table_statistics_rows_read_total{service_name=\"$service\"}[$interval])>0) or topk(5, irate(mysql_info_schema_table_statistics_rows_read_total{service_name=\"$service\"}[5m])>0)",
+                    "expr": "topk(5, rate(mysql_info_schema_table_statistics_rows_read_total{service_name=~\"$service\"}[$interval]))or \ntopk(5, irate(mysql_info_schema_table_statistics_rows_read_total{service_name=~\"$service\"}[5m])>0)",
+                    "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "{{ schema }}.{{ table }}",
@@ -632,6 +686,7 @@
                 "y": 29
             },
             "id": 42,
+            "interval": "",
             "legend": {
                 "alignAsTable": true,
                 "avg": true,
@@ -665,7 +720,8 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "topk(5, rate(mysql_info_schema_table_statistics_rows_changed_total{service_name=\"$service\"}[$interval])>0) or topk(5, irate(mysql_info_schema_table_statistics_rows_changed_total{service_name=\"$service\"}[5m])>0)",
+                    "expr": "topk(5, rate(mysql_info_schema_table_statistics_rows_changed_total{service_name=~\"$service\"}[$interval])>0) or topk(5, irate(mysql_info_schema_table_statistics_rows_changed_total{service_name=~\"$service\"}[5m])>0)",
+                    "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "{{ schema }}.{{ table }}",
@@ -753,7 +809,7 @@
             "scroll": false,
             "showHeader": true,
             "sort": {
-                "col": 1,
+                "col": 21,
                 "desc": true
             },
             "styles": [
@@ -768,7 +824,103 @@
                     "dateFormat": "YYYY-MM-DD HH:mm:ss",
                     "decimals": 2,
                     "mappingType": 1,
+                    "pattern": "node_name",
+                    "thresholds": [],
+                    "type": "hidden",
+                    "unit": "short"
+                },
+                {
+                    "alias": "",
+                    "colorMode": null,
+                    "colors": [
+                        "rgba(245, 54, 54, 0.9)",
+                        "rgba(237, 129, 40, 0.89)",
+                        "rgba(50, 172, 45, 0.97)"
+                    ],
+                    "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                    "decimals": 2,
+                    "mappingType": 1,
+                    "pattern": "Time",
+                    "thresholds": [],
+                    "type": "date",
+                    "unit": "short"
+                },
+                {
+                    "alias": "",
+                    "colorMode": null,
+                    "colors": [
+                        "rgba(245, 54, 54, 0.9)",
+                        "rgba(237, 129, 40, 0.89)",
+                        "rgba(50, 172, 45, 0.97)"
+                    ],
+                    "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                    "decimals": 2,
+                    "mappingType": 1,
+                    "pattern": "agent_type",
+                    "thresholds": [],
+                    "type": "hidden",
+                    "unit": "short"
+                },
+                {
+                    "alias": "",
+                    "colorMode": null,
+                    "colors": [
+                        "rgba(245, 54, 54, 0.9)",
+                        "rgba(237, 129, 40, 0.89)",
+                        "rgba(50, 172, 45, 0.97)"
+                    ],
+                    "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                    "decimals": 2,
+                    "mappingType": 1,
+                    "pattern": "az",
+                    "thresholds": [],
+                    "type": "hidden",
+                    "unit": "short"
+                },
+                {
+                    "alias": "",
+                    "colorMode": null,
+                    "colors": [
+                        "rgba(245, 54, 54, 0.9)",
+                        "rgba(237, 129, 40, 0.89)",
+                        "rgba(50, 172, 45, 0.97)"
+                    ],
+                    "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                    "decimals": 2,
+                    "mappingType": 1,
                     "pattern": "/.*_id/",
+                    "thresholds": [],
+                    "type": "hidden",
+                    "unit": "short"
+                },
+                {
+                    "alias": "",
+                    "colorMode": null,
+                    "colors": [
+                        "rgba(245, 54, 54, 0.9)",
+                        "rgba(237, 129, 40, 0.89)",
+                        "rgba(50, 172, 45, 0.97)"
+                    ],
+                    "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                    "decimals": 2,
+                    "mappingType": 1,
+                    "pattern": "custom_label",
+                    "thresholds": [],
+                    "type": "hidden",
+                    "unit": "short"
+                },
+                {
+                    "alias": "",
+                    "colorMode": null,
+                    "colors": [
+                        "rgba(245, 54, 54, 0.9)",
+                        "rgba(237, 129, 40, 0.89)",
+                        "rgba(50, 172, 45, 0.97)"
+                    ],
+                    "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                    "decimals": 2,
+                    "mappingType": 1,
+                    "pattern": "node_model",
                     "thresholds": [],
                     "type": "hidden",
                     "unit": "short"
@@ -806,6 +958,86 @@
                     "unit": "short"
                 },
                 {
+                    "alias": "",
+                    "colorMode": null,
+                    "colors": [
+                        "rgba(245, 54, 54, 0.9)",
+                        "rgba(237, 129, 40, 0.89)",
+                        "rgba(50, 172, 45, 0.97)"
+                    ],
+                    "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                    "decimals": 2,
+                    "mappingType": 1,
+                    "pattern": "region",
+                    "thresholds": [],
+                    "type": "hidden",
+                    "unit": "short"
+                },
+                {
+                    "alias": "",
+                    "colorMode": null,
+                    "colors": [
+                        "rgba(245, 54, 54, 0.9)",
+                        "rgba(237, 129, 40, 0.89)",
+                        "rgba(50, 172, 45, 0.97)"
+                    ],
+                    "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                    "decimals": 2,
+                    "mappingType": 1,
+                    "pattern": "service_type",
+                    "thresholds": [],
+                    "type": "hidden",
+                    "unit": "short"
+                },
+                {
+                    "alias": "",
+                    "colorMode": null,
+                    "colors": [
+                        "rgba(245, 54, 54, 0.9)",
+                        "rgba(237, 129, 40, 0.89)",
+                        "rgba(50, 172, 45, 0.97)"
+                    ],
+                    "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                    "decimals": 2,
+                    "mappingType": 1,
+                    "pattern": "cluster",
+                    "thresholds": [],
+                    "type": "hidden",
+                    "unit": "short"
+                },
+                {
+                    "alias": "",
+                    "colorMode": null,
+                    "colors": [
+                        "rgba(245, 54, 54, 0.9)",
+                        "rgba(237, 129, 40, 0.89)",
+                        "rgba(50, 172, 45, 0.97)"
+                    ],
+                    "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                    "decimals": 2,
+                    "mappingType": 1,
+                    "pattern": "node_type",
+                    "thresholds": [],
+                    "type": "hidden",
+                    "unit": "short"
+                },
+                {
+                    "alias": "",
+                    "colorMode": null,
+                    "colors": [
+                        "rgba(245, 54, 54, 0.9)",
+                        "rgba(237, 129, 40, 0.89)",
+                        "rgba(50, 172, 45, 0.97)"
+                    ],
+                    "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                    "decimals": 2,
+                    "mappingType": 1,
+                    "pattern": "replication_set",
+                    "thresholds": [],
+                    "type": "hidden",
+                    "unit": "short"
+                },
+                {
                     "colorMode": null,
                     "colors": [
                         "rgba(50, 172, 45, 0.97)",
@@ -825,7 +1057,7 @@
             ],
             "targets": [
                 {
-                    "expr": "topk(10, mysql_info_schema_auto_increment_column{service_name=\"$service\"} / mysql_info_schema_auto_increment_column_max{service_name=\"$service\"})",
+                    "expr": "topk(10, mysql_info_schema_auto_increment_column{service_name=~\"$service\"} / mysql_info_schema_auto_increment_column_max{service_name=~\"$service\"})",
                     "format": "table",
                     "interval": "5m",
                     "intervalFactor": 1,
@@ -940,9 +1172,9 @@
                 "datasource": "Prometheus",
                 "definition": "label_values(mysql_up{node_name=~\"$host\"}, service_name)",
                 "hide": 0,
-                "includeAll": false,
+                "includeAll": true,
                 "label": "Service",
-                "multi": false,
+                "multi": true,
                 "name": "service",
                 "options": [],
                 "query": "label_values(mysql_up{node_name=~\"$host\"}, service_name)",
