@@ -154,6 +154,13 @@ def set_unique_ids(dashboard):
 
     return dashboard
 
+def set_dashboard_id_to_null(dashboard):
+    """To remove any dashboard id. New one is set by grafana."""
+    for element in enumerate(dashboard.copy()):
+        if 'id' in element:
+            dashboard['id'] = None
+
+    return dashboard
 
 def drop_some_internal_elements(dashboard):
     for element in enumerate(dashboard.copy()):
@@ -296,7 +303,7 @@ def main():
 
     # registered cleanupers.
     CLEANUPERS = [set_title, set_hide_timepicker, drop_some_internal_elements, set_time, set_timezone, set_default_refresh_intervals, set_refresh,
-                  add_annotation, add_links, add_copyrights_links, set_shared_crosshear, set_unique_ids]
+                  add_annotation, add_links, add_copyrights_links, set_shared_crosshear, set_unique_ids, set_dashboard_id_to_null]
 
     for func in CLEANUPERS:
         dashboard = func(dashboard)
