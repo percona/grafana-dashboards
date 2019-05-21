@@ -1030,7 +1030,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "(mysql_global_variables_innodb_log_files_in_group{service_name=\"$service\"} * mysql_global_variables_innodb_log_file_size{service_name=\"$service\"})/(rate(mysql_global_status_innodb_os_log_written{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_innodb_os_log_written{service_name=\"$service\"}[5m]))",
+                    "expr": "avg by (service_name) (mysql_global_variables_innodb_log_files_in_group{service_name=\"$service\"} * mysql_global_variables_innodb_log_file_size{service_name=\"$service\"})/avg by (service_name) (rate(mysql_global_status_innodb_os_log_written{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_innodb_os_log_written{service_name=\"$service\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1040,7 +1040,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "(mysql_global_variables_innodb_log_buffer_size{service_name=\"$service\"})/(rate(mysql_global_status_innodb_os_log_written{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_innodb_os_log_written{service_name=\"$service\"}[5m]))",
+                    "expr": "avg by (service_name) (mysql_global_variables_innodb_log_buffer_size{service_name=\"$service\"})/avg by (service_name) (rate(mysql_global_status_innodb_os_log_written{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_innodb_os_log_written{service_name=\"$service\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
