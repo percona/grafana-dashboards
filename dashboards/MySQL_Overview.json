@@ -33,7 +33,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1553788248161,
+    "iteration": 1558457950660,
     "links": [
         {
             "icon": "dashboard",
@@ -145,35 +145,6 @@
                 "x": 0,
                 "y": 0
             },
-            "id": 397,
-            "panels": [],
-            "title": "Inventory",
-            "type": "row"
-        },
-        {
-            "content": "<table style=\"width:100%; border: 2px solid grey;\">\n  <tr><td></td><td></td><td></td><td></td></tr>\n  <tr><td><font color=#66ffff> Region </font></td><td><a href=\"/graph/d/qyzrQGHmk/system-overview?var-region=${region}\">${region} (${az})</a></td><td><font color=#66ffff> Environment </font></td><td>${environment}</td></tr>\n  <tr><td><font color=#66ffff> Node Type </font></td><td><a href=\"/graph/d/qyzrQGHmk/system-overview?var-node_type=${node_type}\">${node_type}</a></td><td><font color=#66ffff> Cluster </font></td><td>${cluster}</td></tr>\n  <tr><td><font color=#66ffff> Node Model </font></td><td><a href=\"/graph/d/qyzrQGHmk/system-overview?var-node_model=${node_model}\">${node_model}</a></td><td><font color=#66ffff> Replication Set </font></td><td><a href=\"/graph/d/_9zrwMHmk/mysql-replication?var-replication_set=${replication_set}\">${replication_set}</td></tr>\n  <tr><td> </td><td> </td><td></td><td></td></tr>\n  <tr><td> </td><td> </td><td></td><td></td></tr>\n  <tr><td><font color=#66ffff> Node ID </font></td><th colspan=\"3\">${node_id}</th></tr>\n  <tr><td><font color=#66ffff> Agent ID </font></td><th colspan=\"3\">${agent_id}</th></tr>\n  <tr><td><font color=#66ffff> Service ID </font></td><th colspan=\"3\">${service_id}</th></tr>\n</table>\n\n",
-            "gridPos": {
-                "h": 8,
-                "w": 24,
-                "x": 0,
-                "y": 1
-            },
-            "id": 409,
-            "links": [],
-            "mode": "html",
-            "timeFrom": null,
-            "timeShift": null,
-            "title": "",
-            "type": "text"
-        },
-        {
-            "collapsed": false,
-            "gridPos": {
-                "h": 1,
-                "w": 24,
-                "x": 0,
-                "y": 9
-            },
             "id": 382,
             "panels": [],
             "repeat": null,
@@ -207,7 +178,7 @@
                 "h": 2,
                 "w": 6,
                 "x": 0,
-                "y": 10
+                "y": 1
             },
             "height": "125px",
             "id": 12,
@@ -293,7 +264,7 @@
                 "h": 2,
                 "w": 6,
                 "x": 6,
-                "y": 10
+                "y": 1
             },
             "height": "125px",
             "id": 13,
@@ -387,7 +358,7 @@
                 "h": 2,
                 "w": 6,
                 "x": 12,
-                "y": 10
+                "y": 1
             },
             "height": "125px",
             "id": 51,
@@ -480,7 +451,7 @@
                 "h": 2,
                 "w": 6,
                 "x": 18,
-                "y": 10
+                "y": 1
             },
             "height": "125px",
             "id": 52,
@@ -556,7 +527,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 12
+                "y": 3
             },
             "id": 383,
             "panels": [],
@@ -580,7 +551,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 0,
-                "y": 13
+                "y": 4
             },
             "height": "250px",
             "id": 92,
@@ -626,7 +597,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "max(max_over_time(mysql_global_status_threads_connected{instance=\"$host\"}[$interval])  or mysql_global_status_threads_connected{instance=\"$host\"} )",
+                    "expr": "max(max_over_time(mysql_global_status_threads_connected{service_name=\"$service\"}[$interval]) or \nmax_over_time(mysql_global_status_threads_connected{service_name=\"$service\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -639,8 +610,9 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "mysql_global_status_max_used_connections{service_name=\"$service\"}",
+                    "expr": "max_over_time(mysql_global_status_max_used_connections{service_name=\"$service\"}[$interval]) or \nmax_over_time(mysql_global_status_max_used_connections{service_name=\"$service\"}[5m])",
                     "format": "time_series",
+                    "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Max Used Connections",
@@ -653,8 +625,9 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "mysql_global_variables_max_connections{service_name=\"$service\"}",
+                    "expr": "max_over_time(mysql_global_variables_max_connections{service_name=\"$service\"}[$interval]) or\nmax_over_time(mysql_global_variables_max_connections{service_name=\"$service\"}[5m])",
                     "format": "time_series",
+                    "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Max Connections",
@@ -722,7 +695,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 12,
-                "y": 13
+                "y": 4
             },
             "id": 10,
             "legend": {
@@ -772,7 +745,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "max_over_time(mysql_global_status_threads_connected{instance=\"$host\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_connected{instance=\"$host\"}[5m])",
+                    "expr": "max_over_time(mysql_global_status_threads_connected{service_name=\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_connected{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -855,7 +828,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 20
+                "y": 11
             },
             "id": 384,
             "panels": [],
@@ -879,7 +852,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 0,
-                "y": 21
+                "y": 12
             },
             "id": 53,
             "legend": {
@@ -920,7 +893,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(mysql_global_status_questions{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_questions{service_name=\"$service\"}[5m])",
+                    "expr": "rate(mysql_global_status_questions{service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_questions{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -986,7 +959,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 12,
-                "y": 21
+                "y": 12
             },
             "id": 11,
             "legend": {
@@ -1031,7 +1004,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "mysql_global_variables_thread_cache_size{instance=\"$host\"}",
+                    "expr": "max_over_time(mysql_global_variables_thread_cache_size{service_name=\"$service\"}[$interval]) or\nmax_over_time(mysql_global_variables_thread_cache_size{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1044,7 +1017,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "mysql_global_status_threads_cached{service_name=\"$service\"}",
+                    "expr": "max_over_time(mysql_global_status_threads_cached{service_name=\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_cached{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1113,7 +1086,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 28
+                "y": 19
             },
             "id": 385,
             "panels": [],
@@ -1136,7 +1109,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 0,
-                "y": 29
+                "y": 20
             },
             "id": 22,
             "legend": {
@@ -1262,7 +1235,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 12,
-                "y": 29
+                "y": 20
             },
             "height": "250px",
             "id": 311,
@@ -1298,7 +1271,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(mysql_global_status_select_full_join{instance=\"$host\"}[$interval]) or irate(mysql_global_status_select_full_join{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_global_status_select_full_join{service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_select_full_join{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1311,7 +1284,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(mysql_global_status_select_full_range_join{instance=\"$host\"}[$interval]) or irate(mysql_global_status_select_full_range_join{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_global_status_select_full_range_join{service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_select_full_range_join{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1324,7 +1297,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(mysql_global_status_select_range{instance=\"$host\"}[$interval]) or irate(mysql_global_status_select_range{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_global_status_select_range{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_select_range{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1406,7 +1379,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 36
+                "y": 27
             },
             "id": 386,
             "panels": [],
@@ -1430,14 +1403,14 @@
                 "h": 7,
                 "w": 12,
                 "x": 0,
-                "y": 37
+                "y": 28
             },
             "id": 30,
             "legend": {
                 "alignAsTable": true,
                 "avg": true,
                 "current": false,
-                "hideZero": true,
+                "hideZero": false,
                 "max": true,
                 "min": true,
                 "rightSide": false,
@@ -1465,8 +1438,9 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(mysql_global_status_sort_rows{instance=\"$host\"}[$interval]) or irate(mysql_global_status_sort_rows{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_global_status_sort_rows{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_sort_rows{service_name=\"$service\"}[5m])",
                     "format": "time_series",
+                    "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Sort Rows",
@@ -1478,8 +1452,9 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(mysql_global_status_sort_range{instance=\"$host\"}[$interval]) or irate(mysql_global_status_sort_range{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_global_status_sort_range{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_sort_range{service_name=\"$service\"}[5m])",
                     "format": "time_series",
+                    "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Sort Range",
@@ -1493,6 +1468,7 @@
                     "errors": {},
                     "expr": "rate(mysql_global_status_sort_merge_passes{service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_sort_merge_passes{service_name=\"$service\"}[5m])",
                     "format": "time_series",
+                    "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Sort Merge Passes",
@@ -1570,7 +1546,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 12,
-                "y": 37
+                "y": 28
             },
             "id": 48,
             "legend": {
@@ -1661,7 +1637,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 44
+                "y": 35
             },
             "id": 387,
             "panels": [],
@@ -1685,7 +1661,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 0,
-                "y": 45
+                "y": 36
             },
             "id": 47,
             "legend": {
@@ -1800,7 +1776,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 12,
-                "y": 45
+                "y": 36
             },
             "id": 32,
             "legend": {
@@ -1903,7 +1879,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 52
+                "y": 43
             },
             "id": 388,
             "panels": [],
@@ -1927,7 +1903,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 0,
-                "y": 53
+                "y": 44
             },
             "id": 9,
             "legend": {
@@ -2040,7 +2016,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 12,
-                "y": 53
+                "y": 44
             },
             "height": "250px",
             "id": 381,
@@ -2144,7 +2120,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 60
+                "y": 51
             },
             "id": 389,
             "panels": [],
@@ -2168,7 +2144,7 @@
                 "h": 7,
                 "w": 24,
                 "x": 0,
-                "y": 61
+                "y": 52
             },
             "id": 50,
             "interval": "",
@@ -2214,15 +2190,16 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "node_memory_MemTotal{instance=\"$host\"}",
+                    "expr": "max_over_time(node_memory_MemTotal_bytes{node_name=\"$host\"}[$interval]) or \nmax_over_time(node_memory_MemTotal_bytes{node_name=\"$host\"}[5m])",
                     "format": "time_series",
-                    "intervalFactor": 2,
+                    "interval": "$interval",
+                    "intervalFactor": 1,
                     "legendFormat": "System Memory",
                     "refId": "G",
                     "step": 4
                 },
                 {
-                    "expr": "mysql_global_status_innodb_page_size{instance=\"$host\"} * on (instance) mysql_global_status_buffer_pool_pages{instance=\"$host\",state=\"data\"}",
+                    "expr": "(max_over_time(mysql_global_status_innodb_page_size{service_name=\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_innodb_page_size{service_name=\"$service\"}[5m])) * on (service_name) (max_over_time(mysql_global_status_buffer_pool_pages{service_name=\"$service\",state=\"data\"}[$interval]) or\nmax_over_time(mysql_global_status_buffer_pool_pages{service_name=\"$service\",state=\"data\"}[5m]))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -2232,7 +2209,7 @@
                     "step": 20
                 },
                 {
-                    "expr": "mysql_global_variables_innodb_log_buffer_size{instance=\"$host\"}",
+                    "expr": "max_over_time(mysql_global_variables_innodb_log_buffer_size{service_name=\"$service\"}[$interval]) or \nmax_over_time(mysql_global_variables_innodb_log_buffer_size{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2241,16 +2218,16 @@
                     "step": 20
                 },
                 {
-                    "expr": "mysql_global_variables_innodb_additional_mem_pool_size{instance=\"$host\"}",
+                    "expr": "max_over_time(mysql_global_variables_innodb_additional_mem_pool_size{service_name=\"$service\"}[$interval]) or \nmax_over_time(mysql_global_variables_innodb_additional_mem_pool_size{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
-                    "intervalFactor": 2,
+                    "intervalFactor": 1,
                     "legendFormat": "InnoDB Additional Memory Pool Size",
                     "refId": "H",
                     "step": 40
                 },
                 {
-                    "expr": "mysql_global_status_innodb_mem_dictionary{instance=\"$host\"}",
+                    "expr": "max_over_time(mysql_global_status_innodb_mem_dictionary{service_name=\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_innodb_mem_dictionary{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2259,7 +2236,7 @@
                     "step": 20
                 },
                 {
-                    "expr": "mysql_global_variables_key_buffer_size{instance=\"$host\"}",
+                    "expr": "max_over_time(mysql_global_variables_key_buffer_size{service_name=\"$service\"}[$interval]) or \nmax_over_time(mysql_global_variables_key_buffer_size{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2268,7 +2245,7 @@
                     "step": 20
                 },
                 {
-                    "expr": "mysql_global_variables_query_cache_size{instance=\"$host\"}",
+                    "expr": "max_over_time(mysql_global_variables_query_cache_size{service_name=\"$service\"}[$interval]) or\nmax_over_time(mysql_global_variables_query_cache_size{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2277,7 +2254,7 @@
                     "step": 20
                 },
                 {
-                    "expr": "mysql_global_status_innodb_mem_adaptive_hash{service_name=\"$service\"}",
+                    "expr": "max_over_time(mysql_global_status_innodb_mem_adaptive_hash{service_name=\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_innodb_mem_adaptive_hash{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2286,8 +2263,9 @@
                     "step": 20
                 },
                 {
-                    "expr": "mysql_global_variables_tokudb_cache_size{service_name=\"$service\"}",
+                    "expr": "max_over_time(mysql_global_variables_tokudb_cache_size{service_name=\"$service\"}[$interval]) or\nmax_over_time(mysql_global_variables_tokudb_cache_size{service_name=\"$service\"}[5m])",
                     "format": "time_series",
+                    "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "TokuDB Cache Size",
@@ -2343,7 +2321,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 68
+                "y": 59
             },
             "id": 390,
             "panels": [],
@@ -2367,7 +2345,7 @@
                 "h": 7,
                 "w": 24,
                 "x": 0,
-                "y": 69
+                "y": 60
             },
             "id": 14,
             "legend": {
@@ -2476,7 +2454,7 @@
                 "h": 7,
                 "w": 24,
                 "x": 0,
-                "y": 76
+                "y": 67
             },
             "id": 39,
             "interval": "",
@@ -2584,7 +2562,7 @@
                 "h": 7,
                 "w": 24,
                 "x": 0,
-                "y": 83
+                "y": 74
             },
             "id": 8,
             "legend": {
@@ -2684,7 +2662,7 @@
                 "h": 7,
                 "w": 24,
                 "x": 0,
-                "y": 90
+                "y": 81
             },
             "id": 28,
             "interval": "",
@@ -2785,7 +2763,7 @@
                 "h": 7,
                 "w": 24,
                 "x": 0,
-                "y": 97
+                "y": 88
             },
             "id": 40,
             "legend": {
@@ -2885,7 +2863,7 @@
                 "h": 7,
                 "w": 24,
                 "x": 0,
-                "y": 104
+                "y": 95
             },
             "id": 49,
             "legend": {
@@ -2976,7 +2954,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 111
+                "y": 102
             },
             "id": 391,
             "panels": [],
@@ -3000,7 +2978,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 0,
-                "y": 112
+                "y": 103
             },
             "id": 46,
             "legend": {
@@ -3113,7 +3091,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 12,
-                "y": 112
+                "y": 103
             },
             "height": "",
             "id": 45,
@@ -3256,7 +3234,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 119
+                "y": 110
             },
             "id": 392,
             "panels": [],
@@ -3279,7 +3257,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 0,
-                "y": 120
+                "y": 111
             },
             "id": 43,
             "legend": {
@@ -3378,7 +3356,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 12,
-                "y": 120
+                "y": 111
             },
             "id": 41,
             "legend": {
@@ -3490,7 +3468,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 127
+                "y": 118
             },
             "id": 393,
             "panels": [],
@@ -3514,7 +3492,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 0,
-                "y": 128
+                "y": 119
             },
             "id": 44,
             "legend": {
@@ -3661,7 +3639,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 12,
-                "y": 128
+                "y": 119
             },
             "id": 42,
             "legend": {
@@ -3770,7 +3748,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 135
+                "y": 126
             },
             "id": 394,
             "panels": [],
@@ -3794,7 +3772,7 @@
                 "h": 7,
                 "w": 24,
                 "x": 0,
-                "y": 136
+                "y": 127
             },
             "id": 54,
             "legend": {
@@ -3917,7 +3895,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 143
+                "y": 134
             },
             "id": 395,
             "panels": [
@@ -4088,7 +4066,7 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "max(node_memory_MemTotal_bytes{instance=\"$host\"}) without(job) - \n(max(node_memory_MemFree_bytes{instance=\"$host\"}) without(job) + \nmax(node_memory_Buffers_bytes{instance=\"$host\"}) without(job) + \n(max(node_memory_Cached_bytes{instance=\"$host\",job=~\"rds-enhanced|linux\"}) without (job) or \nmax(node_memory_Cached_bytes{instance=\"$host\",job=\"rds-basic\"}) without (job)))",
+                            "expr": "max(node_memory_MemTotal_bytes{node_name=\"$host\"}) without(job) - \n(max(node_memory_MemFree_bytes{node_name=\"$host\"}) without(job) + \nmax(node_memory_Buffers_bytes{node_name=\"$host\"}) without(job) + \n(max(node_memory_Cached_bytes{node_name=\"$host\",job=~\"rds-enhanced|node_exporter_.*\"}) without (job) or \nmax(node_memory_Cached_bytes{node_name=\"$host\",job=\"rds-basic\"}) without (job)))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4102,8 +4080,9 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "node_memory_MemFree_bytes{instance=\"$host\"}",
+                            "expr": "max_over_time(node_memory_MemFree_bytes{node_name=\"$host\"}[$interval]) or\nmax_over_time(node_memory_MemFree_bytes{node_name=\"$host\"}[5m])",
                             "format": "time_series",
+                            "hide": false,
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Free",
@@ -4118,6 +4097,7 @@
                             "errors": {},
                             "expr": "max_over_time(node_memory_Buffers_bytes{node_name=\"$host\"}[$interval]) or\nmax_over_time(node_memory_Buffers_bytes{node_name=\"$host\"}[5m])",
                             "format": "time_series",
+                            "hide": false,
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Buffers",
@@ -4130,7 +4110,7 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "max(node_memory_Cached_bytes{node_name=\"$host\",job=~\"rds-enhanced|linux\"}) without (job) or \nmax(node_memory_Cached_bytes{node_name=\"$host\",job=~\"rds-basic\"}) without (job)",
+                            "expr": "max(node_memory_Cached_bytes{node_name=\"$host\",job=~\"rds-enhanced|node_exporter_.*\"}) without (job) or \nmax(node_memory_Cached_bytes{node_name=\"$host\",job=~\"rds-basic\"}) without (job)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4259,7 +4239,7 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "clamp_max(((avg by (mode) ( (clamp_max(rate(node_cpu_seconds_total{instance=\"$host\",mode!=\"idle\"}[$interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{instance=\"$host\",mode!=\"idle\"}[5m]),1)) ))*100 or (avg_over_time(node_cpu_average{instance=~\"$host\", mode!=\"total\", mode!=\"idle\"}[$interval]) or avg_over_time(node_cpu_average{instance=~\"$host\", mode!=\"total\", mode!=\"idle\"}[5m]))),100)",
+                            "expr": "clamp_max(((avg by (mode) ( (clamp_max(rate(node_cpu_seconds_total{node_name=\"$host\",mode!=\"idle\"}[$interval]),1)) or \n(clamp_max(irate(node_cpu_seconds_total{node_name=\"$host\",mode!=\"idle\"}[5m]),1)) ))*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$host\", mode!=\"total\", mode!=\"idle\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$host\", mode!=\"total\", mode!=\"idle\"}[5m]))),100)",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
