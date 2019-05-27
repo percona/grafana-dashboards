@@ -33,7 +33,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1558718167188,
+    "iteration": 1558943235604,
     "links": [
         {
             "icon": "dashboard",
@@ -539,9 +539,11 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "avg by () ((node_memory_MemAvailable_bytes{node_name=~\"$host\",region=~\"$region\",node_type=~\"$node_type\"} or \n(node_memory_MemFree_bytes{node_name=~\"$host\",region=~\"$region\",node_type=~\"$node_type\"} + node_memory_Buffers_bytes{node_name=~\"$host\",region=~\"$region\",node_type=~\"$node_type\"} + \nnode_memory_Cached_bytes{node_name=~\"$host\",region=~\"$region\",node_type=~\"$node_type\"})) / node_memory_MemTotal_bytes{node_name=~\"$host\",region=~\"$region\",node_type=~\"$node_type\"}) * 100",
+                    "expr": "clamp_max(avg by () ((node_memory_MemAvailable_bytes{node_name=~\"$host\",region=~\"$region\",node_type=~\"$node_type\"} or \n(node_memory_MemFree_bytes{node_name=~\"$host\",region=~\"$region\",node_type=~\"$node_type\"} + node_memory_Buffers_bytes{node_name=~\"$host\",region=~\"$region\",node_type=~\"$node_type\"} + \nnode_memory_Cached_bytes{node_name=~\"$host\",region=~\"$region\",node_type=~\"$node_type\"})) / node_memory_MemTotal_bytes{node_name=~\"$host\",region=~\"$region\",node_type=~\"$node_type\"}) * 100,100)",
                     "format": "time_series",
+                    "interval": "$interval",
                     "intervalFactor": 1,
+                    "legendFormat": "",
                     "refId": "A"
                 }
             ],
@@ -787,8 +789,9 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "(min(node_filesystem_free_bytes{node_name=~\"$host\",region=~\"$region\",node_type=~\"$node_type\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay\"}/\nnode_filesystem_size_bytes{node_name=~\"$host\",region=~\"$region\",node_type=~\"$node_type\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay\"})*100)",
+                    "expr": "clamp_max((min(node_filesystem_free_bytes{node_name=~\"$host\",region=~\"$region\",node_type=~\"$node_type\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay\"}/\nnode_filesystem_size_bytes{node_name=~\"$host\",region=~\"$region\",node_type=~\"$node_type\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay\"})*100),100)",
                     "format": "time_series",
+                    "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "",
                     "refId": "A"
@@ -1066,7 +1069,7 @@
             ],
             "targets": [
                 {
-                    "expr": "sum by (node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$host\",region=~\"$region\",node_type=~\"$node_type\",mode!=\"idle\",mode!=\"iowait\",mode!=\"steal\"}[$interval]),1)) or \n(clamp_max(irate(node_cpu_seconds_total{node_name=~\"$host\",region=~\"$region\",node_type=~\"$node_type\",mode!=\"idle\",mode!=\"iowait\",mode!=\"steal\"}[5m]),1)) )*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$host\",region=~\"$region\",node_type=~\"$node_type\", mode=\"total\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$host\",region=~\"$region\",node_type=~\"$node_type\", mode=\"total\"}[5m]))",
+                    "expr": "clamp_max(sum by (node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$host\",region=~\"$region\",node_type=~\"$node_type\",mode!=\"idle\",mode!=\"iowait\",mode!=\"steal\"}[$interval]),1)) or \n(irate(node_cpu_seconds_total{node_name=~\"$host\",region=~\"$region\",node_type=~\"$node_type\",mode!=\"idle\",mode!=\"iowait\",mode!=\"steal\"}[5m])) )*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$host\",region=~\"$region\",node_type=~\"$node_type\", mode=\"total\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$host\",region=~\"$region\",node_type=~\"$node_type\", mode=\"total\"}[5m])),100)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1318,7 +1321,7 @@
             ],
             "targets": [
                 {
-                    "expr": "sum by (node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$host\",region=~\"$region\",node_type=~\"$node_type\",mode=\"steal\"}[$interval]),1)) or \n(clamp_max(irate(node_cpu_seconds_total{node_name=~\"$host\",region=~\"$region\",node_type=~\"$node_type\",mode=\"steal\"}[5m]),1)) )*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$host\",region=~\"$region\",node_type=~\"$node_type\", mode=\"steal\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$host\",region=~\"$region\",node_type=~\"$node_type\", mode=\"steal\"}[5m]))",
+                    "expr": "clamp_max(sum by (node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$host\",region=~\"$region\",node_type=~\"$node_type\",mode=\"steal\"}[$interval]),1)) or \n(irate(node_cpu_seconds_total{node_name=~\"$host\",region=~\"$region\",node_type=~\"$node_type\",mode=\"steal\"}[5m])) )*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$host\",region=~\"$region\",node_type=~\"$node_type\", mode=\"steal\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$host\",region=~\"$region\",node_type=~\"$node_type\", mode=\"steal\"}[5m])),100)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1570,7 +1573,7 @@
             ],
             "targets": [
                 {
-                    "expr": "sum by (node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$host\",region=~\"$region\",node_type=~\"$node_type\",mode=\"iowait\"}[$interval]),1)) or \n(clamp_max(irate(node_cpu_seconds_total{node_name=~\"$host\",region=~\"$region\",node_type=~\"$node_type\",mode=\"iowait\"}[5m]),1)) )*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$host\",region=~\"$region\",node_type=~\"$node_type\", mode=\"iowait\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$host\",region=~\"$region\",node_type=~\"$node_type\", mode=\"iowait\"}[5m]))",
+                    "expr": "clamp_max(sum by (node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$host\",region=~\"$region\",node_type=~\"$node_type\",mode=\"iowait\"}[$interval]),1)) or \n(irate(node_cpu_seconds_total{node_name=~\"$host\",region=~\"$region\",node_type=~\"$node_type\",mode=\"iowait\"}[5m])) )*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$host\",region=~\"$region\",node_type=~\"$node_type\", mode=\"iowait\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$host\",region=~\"$region\",node_type=~\"$node_type\", mode=\"iowait\"}[5m])),100)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -3053,7 +3056,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "((max_over_time(node_memory_MemFree_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_MemFree_bytes{node_name=~\"$host\"}[5m])) * 100 /\n(max_over_time(node_memory_MemTotal_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_MemTotal_bytes{node_name=~\"$host\"}[$interval])))",
+                            "expr": "clamp_max(((max_over_time(node_memory_MemFree_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_MemFree_bytes{node_name=~\"$host\"}[5m])) * 100 /\n(max_over_time(node_memory_MemTotal_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_MemTotal_bytes{node_name=~\"$host\"}[$interval]))),100)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3158,7 +3161,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "((node_memory_MemAvailable_bytes{node_name=~\"$host\"} or \n(node_memory_MemFree_bytes{node_name=~\"$host\"} + node_memory_Buffers_bytes{node_name=~\"$host\"} + node_memory_Cached_bytes{node_name=~\"$host\"})) + \nnode_memory_SwapFree_bytes{node_name=~\"$host\"} * 100) / \n(node_memory_MemTotal_bytes{node_name=~\"$host\"} + node_memory_SwapTotal_bytes{node_name=~\"$host\"})",
+                            "expr": "clamp_max(((node_memory_MemAvailable_bytes{node_name=~\"$host\"} or \n(node_memory_MemFree_bytes{node_name=~\"$host\"} + node_memory_Buffers_bytes{node_name=~\"$host\"} + node_memory_Cached_bytes{node_name=~\"$host\"})) + \nnode_memory_SwapFree_bytes{node_name=~\"$host\"} * 100) / \n(node_memory_MemTotal_bytes{node_name=~\"$host\"} + node_memory_SwapTotal_bytes{node_name=~\"$host\"}),100)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3263,7 +3266,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "(node_memory_SwapFree_bytes{node_name=~\"$host\"} * 100) / \n(node_memory_SwapTotal_bytes{node_name=~\"$host\"})",
+                            "expr": "clamp_max(((max_over_time(node_memory_SwapFree_bytes{node_name=~\"$host\"}[$interval]) or \nmax_over_time(node_memory_SwapFree_bytes{node_name=~\"$host\"}[5m])) * 100) / \n(max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$host\"}[$interval]) or \nmax_over_time(node_memory_SwapTotal_bytes{node_name=~\"$host\"}[5m])),100)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4454,7 +4457,7 @@
                     "links": [],
                     "polystat": {
                         "animationSpeed": 2500,
-                        "columnAutoSize": false,
+                        "columnAutoSize": true,
                         "columns": 4,
                         "defaultClickThrough": "",
                         "defaultClickThroughSanitize": true,
@@ -4795,7 +4798,7 @@
                     "links": [],
                     "polystat": {
                         "animationSpeed": 2500,
-                        "columnAutoSize": false,
+                        "columnAutoSize": true,
                         "columns": 4,
                         "defaultClickThrough": "",
                         "defaultClickThroughSanitize": true,
@@ -5144,7 +5147,7 @@
                     "links": [],
                     "polystat": {
                         "animationSpeed": 2500,
-                        "columnAutoSize": false,
+                        "columnAutoSize": true,
                         "columns": 4,
                         "defaultClickThrough": "",
                         "defaultClickThroughSanitize": true,
@@ -5493,7 +5496,7 @@
                     "links": [],
                     "polystat": {
                         "animationSpeed": 2500,
-                        "columnAutoSize": false,
+                        "columnAutoSize": true,
                         "columns": 4,
                         "defaultClickThrough": "",
                         "defaultClickThroughSanitize": true,
@@ -6956,7 +6959,7 @@
                         "h": 6,
                         "w": 8,
                         "x": 0,
-                        "y": 8
+                        "y": 64
                     },
                     "id": 64,
                     "links": [],
@@ -7029,7 +7032,7 @@
                         "h": 6,
                         "w": 6,
                         "x": 8,
-                        "y": 8
+                        "y": 64
                     },
                     "id": 66,
                     "links": [],
@@ -7101,7 +7104,7 @@
                         "h": 6,
                         "w": 10,
                         "x": 14,
-                        "y": 8
+                        "y": 64
                     },
                     "id": 68,
                     "links": [],
