@@ -185,7 +185,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "clamp_max(sum by () ((avg by (mode) ( (clamp_max(rate(node_cpu{instance=\"$host\",mode!=\"idle\",mode!=\"iowait\"}[$interval]),1)) or \n(clamp_max(irate(node_cpu{instance=\"$host\",cpu=\"$cpu\",mode!=\"idle\",mode!=\"iowait\"}[5m]),1)) )) *100 or \n(max_over_time(node_cpu_average{instance=~\"$host\", mode=\"total\"}[$interval]) or \nmax_over_time(node_cpu_average{instance=~\"$host\", mode=\"total\"}[5m]))),100)",
+                    "expr": "clamp_max(sum by () ((avg by (mode) ( (clamp_max(rate(node_cpu{instance=~\"$host\",mode!=\"idle\",mode!=\"iowait\"}[$interval]),1)) or \n(clamp_max(irate(node_cpu{instance=~\"$host\",cpu=\"$cpu\",mode!=\"idle\",mode!=\"iowait\"}[5m]),1)) )) *100 or \n(max_over_time(node_cpu_average{instance=~\"$host\", mode=\"total\"}[$interval]) or \nmax_over_time(node_cpu_average{instance=~\"$host\", mode=\"total\"}[5m]))),100)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -193,7 +193,7 @@
                     "refId": "A"
                 },
                 {
-                    "expr": "(rate(node_vmstat_pgpgin{instance=\"$host\"}[$interval])+rate(node_vmstat_pgpgout{instance=\"$host\"}[$interval])) * 1024 or \n(irate(node_vmstat_pgpgin{instance=\"$host\"}[5m]) or irate(node_vmstat_pgpgout{instance=\"$host\"}[5m]))  * 1024",
+                    "expr": "(rate(node_vmstat_pgpgin{instance=~\"$host\"}[$interval])+rate(node_vmstat_pgpgout{instance=~\"$host\"}[$interval])) * 1024 or \n(irate(node_vmstat_pgpgin{instance=~\"$host\"}[5m]) or irate(node_vmstat_pgpgout{instance=~\"$host\"}[5m]))  * 1024",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -201,7 +201,7 @@
                     "refId": "B"
                 },
                 {
-                    "expr": "(sum(rate(node_network_receive_bytes{instance=\"$host\", device!=\"lo\"}[$interval])) or \nsum(irate(node_network_receive_bytes{instance=\"$host\", device!=\"lo\"}[5m])) or \nsum(max_over_time(rdsosmetrics_network_rx{instance=\"$host\"}[$interval])) or \nsum(max_over_time(rdsosmetrics_network_rx{instance=\"$host\"}[5m]))) + \n(sum(rate(node_network_transmit_bytes{instance=\"$host\", device!=\"lo\"}[$interval])) or \nsum(irate(node_network_transmit_bytes{instance=\"$host\", device!=\"lo\"}[5m])) or\nsum(max_over_time(rdsosmetrics_network_tx{instance=\"$host\"}[$interval])) or \nsum(max_over_time(rdsosmetrics_network_tx{instance=\"$host\"}[5m])))",
+                    "expr": "(sum(rate(node_network_receive_bytes{instance=~\"$host\", device!=\"lo\"}[$interval])) or \nsum(irate(node_network_receive_bytes{instance=~\"$host\", device!=\"lo\"}[5m])) or \nsum(max_over_time(rdsosmetrics_network_rx{instance=~\"$host\"}[$interval])) or \nsum(max_over_time(rdsosmetrics_network_rx{instance=~\"$host\"}[5m]))) + \n(sum(rate(node_network_transmit_bytes{instance=~\"$host\", device!=\"lo\"}[$interval])) or \nsum(irate(node_network_transmit_bytes{instance=~\"$host\", device!=\"lo\"}[5m])) or\nsum(max_over_time(rdsosmetrics_network_tx{instance=~\"$host\"}[$interval])) or \nsum(max_over_time(rdsosmetrics_network_tx{instance=~\"$host\"}[5m])))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -316,7 +316,7 @@
                     "refId": "A"
                 },
                 {
-                    "expr": "max_over_time(mysql_global_status_threads_running{instance=\"$host\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_running{instance=\"$host\"}[5m])",
+                    "expr": "max_over_time(mysql_global_status_threads_running{instance=~\"$host\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_running{instance=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
