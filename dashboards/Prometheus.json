@@ -36,7 +36,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1561730349790,
+    "iteration": 1561987358084,
     "links": [
         {
             "icon": "dashboard",
@@ -2857,14 +2857,33 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "sum(avg_over_time(up[$interval])) by (job) or sum(avg_over_time(up[5m])) by (job)",
+                            "expr": "label_replace(\nsum(avg_over_time(up{service_type=\"mysql\"}[$interval])) by (job,service_name) or \nsum(avg_over_time(up{service_type=\"mysql\"}[5m])) by (job,service_name),\n\"job\", \"$2\", \"job\", \"mysqld_(.*)_(.*)\")",
                             "format": "time_series",
+                            "hide": false,
                             "interval": "$interval",
                             "intervalFactor": 1,
-                            "legendFormat": "{{job}}",
+                            "legendFormat": "{{service_name}} - mysqld_exporter_{{job}}",
                             "metric": "",
                             "refId": "A",
                             "step": 60
+                        },
+                        {
+                            "expr": "label_replace(\n(sum(avg_over_time(up{service_type!=\"mysql\",instance!=\"pmm-server\"}[$interval])) by (job,node_name) or \nsum(avg_over_time(up{service_type!=\"mysql\",instance!=\"pmm-server\"}[5m])) by (job,node_name)),\n\"job\", \"$1\", \"job\", \"(.*)_agent_(.*)\")",
+                            "format": "time_series",
+                            "hide": false,
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "{{node_name}} - {{job}}",
+                            "refId": "B"
+                        },
+                        {
+                            "expr": "sum(avg_over_time(up{instance=\"pmm-server\"}[$interval])) by (job) or sum(avg_over_time(up{instance=\"pmm-server\"}[5m])) by (job)",
+                            "format": "time_series",
+                            "hide": false,
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "PMM Server - {{job}}",
+                            "refId": "C"
                         }
                     ],
                     "thresholds": [],
@@ -2958,14 +2977,33 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "avg(avg_over_time(scrape_duration_seconds[$interval])) by (job,service_name) or avg(avg_over_time(scrape_duration_seconds[5m])) by (job,service_name) ",
+                            "expr": "label_replace( \n(avg(avg_over_time(scrape_duration_seconds{service_type=\"mysql\"}[$interval])) by (job,service_name) or \navg(avg_over_time(scrape_duration_seconds{service_type=\"mysql\"}[5m])) by (job,service_name)), \n\"job\", \"$2\", \"job\", \"mysqld_(.*)_(.*)\")",
                             "format": "time_series",
+                            "hide": false,
                             "interval": "$interval",
                             "intervalFactor": 1,
-                            "legendFormat": "{{job}}",
+                            "legendFormat": "{{service_name}} - mysqld_exporter - {{job}}",
                             "metric": "",
                             "refId": "A",
                             "step": 60
+                        },
+                        {
+                            "expr": "label_replace( \n(avg(avg_over_time(scrape_duration_seconds{service_type!=\"mysql\",instance!=\"pmm-server\"}[$interval])) by (job,node_name) or \navg(avg_over_time(scrape_duration_seconds{service_type!=\"mysql\",instance!=\"pmm-server\"}[5m])) by (job,node_name)), \n\"job\", \"$1\", \"job\", \"(.*)_agent_(.*)\")",
+                            "format": "time_series",
+                            "hide": false,
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "{{node_name}} - {{job}}",
+                            "refId": "B"
+                        },
+                        {
+                            "expr": "avg(avg_over_time(scrape_duration_seconds{instance=\"pmm-server\"}[$interval])) by (job,service_name) or \navg(avg_over_time(scrape_duration_seconds{instance=\"pmm-server\"}[5m])) by (job,service_name)",
+                            "format": "time_series",
+                            "hide": false,
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "PMM Server - {{job}}",
+                            "refId": "C"
                         }
                     ],
                     "thresholds": [],
@@ -3018,7 +3056,7 @@
                     "dashLength": 10,
                     "dashes": false,
                     "datasource": "Prometheus",
-                    "decimals": 2,
+                    "decimals": 0,
                     "editable": true,
                     "error": false,
                     "fill": 0,
@@ -3063,14 +3101,23 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "sum(avg_over_time(up[$interval])) by (instance) or sum(avg_over_time(up[5m])) by (instance)",
+                            "expr": "sum(avg_over_time(up{instance!=\"pmm-server\",node_name!=\"PMM Server\"}[$interval])) by (node_name) or \nsum(avg_over_time(up{instance!=\"pmm-server\",node_name!=\"PMM Server\"}[5m])) by (node_name)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
-                            "legendFormat": "{{instance}}",
+                            "legendFormat": "{{node_name}}",
                             "metric": "",
                             "refId": "A",
                             "step": 60
+                        },
+                        {
+                            "expr": "sum(\nsum(avg_over_time(up{node_name=\"PMM Server\"}[$interval])) by (node_name) or\nsum(avg_over_time(up{instance=\"pmm-server\"}[$interval])) by (instance) or\nsum(avg_over_time(up{node_name=\"PMM Server\"}[5m])) by (node_name) or\nsum(avg_over_time(up{instance=\"pmm-server\"}[5m])) by (instance)\n)",
+                            "format": "time_series",
+                            "hide": false,
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "PMM Server",
+                            "refId": "C"
                         }
                     ],
                     "thresholds": [],
@@ -3094,6 +3141,7 @@
                     },
                     "yaxes": [
                         {
+                            "decimals": 0,
                             "format": "short",
                             "logBase": 1,
                             "max": null,
@@ -3163,14 +3211,24 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "avg(avg_over_time(scrape_duration_seconds[$interval])) by (instance) or avg(avg_over_time(scrape_duration_seconds[5m])) by (instance) ",
+                            "expr": "avg(avg_over_time(scrape_duration_seconds{instance!=\"pmm-server\",node_name!=\"PMM Server\"}[$interval])) by (node_name) or \navg(avg_over_time(scrape_duration_seconds{instance!=\"pmm-server\",node_name!=\"PMM Server\"}[5m])) by (node_name) ",
                             "format": "time_series",
+                            "hide": false,
                             "interval": "$interval",
                             "intervalFactor": 1,
-                            "legendFormat": "{{instance}}",
+                            "legendFormat": "{{node_name}}",
                             "metric": "",
                             "refId": "A",
                             "step": 60
+                        },
+                        {
+                            "expr": "avg(avg_over_time(scrape_duration_seconds{node_name=\"PMM Server\"}[$interval]) or \navg_over_time(scrape_duration_seconds{instance=\"pmm-server\"}[$interval])) or \navg(avg_over_time(scrape_duration_seconds{node_name=\"PMM Server\"}[5m]) or \navg_over_time(scrape_duration_seconds{instance=\"pmm-server\"}[5m]))",
+                            "format": "time_series",
+                            "hide": false,
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "PMM Server",
+                            "refId": "B"
                         }
                     ],
                     "thresholds": [],
@@ -3477,7 +3535,7 @@
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
-                            "legendFormat": "{{instance}}",
+                            "legendFormat": "{{node_name}}",
                             "metric": "",
                             "refId": "A",
                             "step": 60
@@ -3666,6 +3724,7 @@
                         "y": 43
                     },
                     "id": 44,
+                    "interval": "",
                     "legend": {
                         "alignAsTable": true,
                         "avg": true,
@@ -3699,14 +3758,24 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "topk(10,max_over_time(scrape_duration_seconds[$interval]) or max_over_time(scrape_duration_seconds[5m]))",
+                            "expr": "topk(10,label_join((max_over_time(scrape_duration_seconds[$interval]) or max_over_time(scrape_duration_seconds[5m])), \"node_name\", \",\",\"instance\"))",
                             "format": "time_series",
+                            "hide": true,
                             "interval": "$interval",
                             "intervalFactor": 1,
-                            "legendFormat": "{{job}} at {{instance}}",
+                            "legendFormat": "{{job}} at {{node_name}}",
                             "metric": "",
                             "refId": "A",
                             "step": 60
+                        },
+                        {
+                            "expr": "topk(10,(label_join((max_over_time(scrape_duration_seconds{instance=\"pmm-server\"}[$interval]) or \nmax_over_time(scrape_duration_seconds{instance=\"pmm-server\"}[5m])), \"node_name\", \",\",\"instance\") or\nlabel_replace((max_over_time(scrape_duration_seconds{service_type!=\"mysql\",instance!=\"pmm-server\"}[$interval]) or \nmax_over_time(scrape_duration_seconds{service_type!=\"mysql\",instance!=\"pmm-server\"}[5m])),\"job\", \"$1\", \"job\", \"(.*)_agent_(.*)\") or\nlabel_replace((max_over_time(scrape_duration_seconds{service_type=\"mysql\"}[$interval]) or \nmax_over_time(scrape_duration_seconds{service_type=\"mysql\"}[5m])),\"job\", \"mysqld_exporter_$3\", \"job\", \"(.*)_agent_id_(.*)_(.*)\")\n))",
+                            "format": "time_series",
+                            "hide": false,
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "{{job}} at {{node_name}}",
+                            "refId": "B"
                         }
                     ],
                     "thresholds": [],
@@ -3804,14 +3873,23 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "topk(10,max_over_time(scrape_samples_scraped[$interval]) or max_over_time(scrape_duration_seconds[5m]))",
+                            "expr": "topk(10,max_over_time(scrape_samples_scraped[$interval]) or max_over_time(scrape_samples_seconds[5m]))",
                             "format": "time_series",
+                            "hide": true,
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "{{job}} at {{instance}}",
                             "metric": "",
                             "refId": "A",
                             "step": 60
+                        },
+                        {
+                            "expr": "topk(10,(label_join((max_over_time(scrape_samples_scraped{instance=\"pmm-server\"}[$interval]) or \nmax_over_time(scrape_samples_scraped{instance=\"pmm-server\"}[5m])), \"node_name\", \",\",\"instance\") or\nlabel_replace((max_over_time(scrape_samples_scraped{service_type!=\"mysql\",instance!=\"pmm-server\"}[$interval]) or \nmax_over_time(scrape_samples_scraped{service_type!=\"mysql\",instance!=\"pmm-server\"}[5m])),\"job\", \"$1\", \"job\", \"(.*)_agent_(.*)\") or\nlabel_replace((max_over_time(scrape_samples_scraped{service_type=\"mysql\"}[$interval]) or \nmax_over_time(scrape_samples_scraped{service_type=\"mysql\"}[5m])),\"job\", \"mysqld_exporter_$3\", \"job\", \"(.*)_agent_id_(.*)_(.*)\")\n))",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "{{job}} - {{node_name}}",
+                            "refId": "B"
                         }
                     ],
                     "thresholds": [],
@@ -4552,7 +4630,7 @@
                         "h": 11,
                         "w": 12,
                         "x": 0,
-                        "y": 11
+                        "y": 53
                     },
                     "height": "420px",
                     "hideTimeOverride": true,
@@ -4597,7 +4675,7 @@
                         "h": 11,
                         "w": 12,
                         "x": 12,
-                        "y": 11
+                        "y": 53
                     },
                     "height": "420px",
                     "hideTimeOverride": true,
@@ -4608,7 +4686,7 @@
                     "scroll": false,
                     "showHeader": true,
                     "sort": {
-                        "col": 1,
+                        "col": 3,
                         "desc": true
                     },
                     "styles": [
@@ -4631,14 +4709,25 @@
                     ],
                     "targets": [
                         {
-                            "expr": "topk(10, count({__name__=~\".+\"})  by (instance))",
+                            "expr": "topk(10, sum by (node_name) (count({__name__=~\".+\",instance!=\"pmm-server\"})  by (node_name) or \ncount({__name__=~\".+\",instance=\"pmm-server\"})  by (instance)))",
                             "format": "table",
+                            "hide": true,
                             "instant": true,
                             "interval": "5m",
                             "intervalFactor": 2,
                             "legendFormat": "{{ instance }}",
                             "refId": "A",
                             "step": 600
+                        },
+                        {
+                            "expr": "topk(10, sum by (node_name) (count({__name__=~\".+\",instance!=\"pmm-server\"})  by (node_name) or \nlabel_replace(\nlabel_join(count({__name__=~\".+\",instance=\"pmm-server\"})  by (instance,node_name), \"node_name\", \",\",\"instance\"),\n\"node_name\", \"PMM Server\", \"node_name\", \"pmm-server\")\n))",
+                            "format": "table",
+                            "hide": false,
+                            "instant": true,
+                            "interval": "5m",
+                            "intervalFactor": 1,
+                            "legendFormat": "{{instance}}",
+                            "refId": "B"
                         }
                     ],
                     "timeFrom": "5m",
