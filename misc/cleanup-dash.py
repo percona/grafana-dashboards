@@ -89,7 +89,7 @@ def add_links(dashboard):
     user_input = raw_input(prompt)
     if user_input:
         if user_input == 'Yes':
-            setOfLinks = ['QAN', 'OS', 'MySQL', 'MongoDB', 'PostgreSQL', 'HA', 'Cloud', 'Insight', 'PMM']
+            setOfLinks = ['QAN', 'OS', 'MySQL', 'MongoDB', 'PostgreSQL', 'HA', 'Insight', 'PMM']
             for link in copy.deepcopy(dashboard['links']):
                 dashboard['links'].remove(link)
 
@@ -97,13 +97,13 @@ def add_links(dashboard):
                 if tag == 'QAN':
                     add_item = {
                         'icon': 'dashboard',
-                        'includeVars': True if tag in dashboard['tags'] else False,
+                        'includeVars': True,
                         'keepTime': True,
                         'tags': [ tag ],
                         'targetBlank': False,
                         'title': 'Query Analytics',
                         'type': 'link',
-                        'url': '/graph/dashboard/db/_pmm-query-analytics'
+                        'url': '/graph/d/7w6Q3PJmz/pmm-query-analytics'
                     }
                 else:
                     add_item = {
