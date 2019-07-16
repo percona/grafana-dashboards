@@ -97,13 +97,13 @@ def add_links(dashboard):
                 if tag == 'QAN':
                     add_item = {
                         'icon': 'dashboard',
-                        'includeVars': True if tag in dashboard['tags'] else False,
+                        'includeVars': True,
                         'keepTime': True,
                         'tags': [ tag ],
                         'targetBlank': False,
                         'title': 'Query Analytics',
                         'type': 'link',
-                        'url': '/graph/dashboard/db/_pmm-query-analytics'
+                        'url': '/graph/d/7w6Q3PJmz/pmm-query-analytics'
                     }
                 else:
                     add_item = {
