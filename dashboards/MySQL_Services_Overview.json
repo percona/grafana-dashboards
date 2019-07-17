@@ -40,7 +40,7 @@
     "links": [
         {
             "icon": "dashboard",
-            "includeVars": false,
+            "includeVars": true,
             "keepTime": true,
             "tags": [
                 "QAN"
@@ -48,7 +48,7 @@
             "targetBlank": false,
             "title": "Query Analytics",
             "type": "link",
-            "url": "/graph/dashboard/db/_pmm-query-analytics"
+            "url": "/graph/d/7w6Q3PJmz/pmm-query-analytics"
         },
         {
             "asDropdown": true,
@@ -63,7 +63,7 @@
         },
         {
             "asDropdown": true,
-            "includeVars": false,
+            "includeVars": true,
             "keepTime": true,
             "tags": [
                 "MySQL"
@@ -1279,7 +1279,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "(max_over_time(mysql_global_status_max_used_connections{service_name=~\"$service\"}[$interval]) or \nmax_over_time(mysql_global_status_max_used_connections{service_name=~\"$service\"}[5m])) / on (service_name)\nmysql_global_variables_max_connections{service_name=~\"$service\"}",
+                            "expr": "clamp_max(((max_over_time(mysql_global_status_max_used_connections{service_name=~\"$service\"}[$interval]) or \nmax_over_time(mysql_global_status_max_used_connections{service_name=~\"$service\"}[5m])) / on (service_name)\nmysql_global_variables_max_connections{service_name=~\"$service\"}),1)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1510,7 +1510,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "(max_over_time(mysql_global_status_threads_connected{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_connected{service_name=~\"$service\"}[5m])) / on (service_name)\nmysql_global_variables_max_connections{service_name=~\"$service\"}",
+                            "expr": "clamp_max(((max_over_time(mysql_global_status_threads_connected{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_connected{service_name=~\"$service\"}[5m])) / on (service_name)\nmysql_global_variables_max_connections{service_name=~\"$service\"}),1)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1740,7 +1740,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "1 - (max_over_time(mysql_global_status_threads_running{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_running{service_name=~\"$service\"}[5m])) / on (service_name)\n(max_over_time(mysql_global_status_threads_connected{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_connected{service_name=~\"$service\"}[5m]))",
+                            "expr": "clamp_max((1 - (max_over_time(mysql_global_status_threads_running{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_running{service_name=~\"$service\"}[5m])) / on (service_name)\n(max_over_time(mysql_global_status_threads_connected{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_connected{service_name=~\"$service\"}[5m]))),1)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1974,7 +1974,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "(max_over_time(mysql_global_status_threads_cached{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_cached{service_name=~\"$service\"}[5m])) / on (service_name)\n(max_over_time(mysql_global_variables_thread_cache_size{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_variables_thread_cache_size{service_name=~\"$service\"}[5m]))",
+                            "expr": "clamp_max(((max_over_time(mysql_global_status_threads_cached{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_cached{service_name=~\"$service\"}[5m])) / on (service_name)\n(max_over_time(mysql_global_variables_thread_cache_size{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_variables_thread_cache_size{service_name=~\"$service\"}[5m]))),1)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2896,7 +2896,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "(rate(mysql_global_status_questions{service_name=~\"$service\"}[$interval]) or \nirate(mysql_global_status_questions{service_name=~\"$service\"}[5m])) / \n(rate(mysql_global_status_queries{service_name=~\"$service\"}[$interval]) or \nirate(mysql_global_status_queries{service_name=~\"$service\"}[5m])) ",
+                            "expr": "clamp_max((rate(mysql_global_status_questions{service_name=~\"$service\"}[$interval]) or \nirate(mysql_global_status_questions{service_name=~\"$service\"}[5m])) / \n(rate(mysql_global_status_queries{service_name=~\"$service\"}[$interval]) or \nirate(mysql_global_status_queries{service_name=~\"$service\"}[5m])),1)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3137,7 +3137,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "(rate(mysql_global_status_innodb_data_reads{service_name=~\"$service\"}[$interval]) or \nirate(mysql_global_status_innodb_data_reads{service_name=~\"$service\"}[5m])) / \n((rate(mysql_global_status_innodb_data_reads{service_name=~\"$service\"}[$interval]) or \nirate(mysql_global_status_innodb_data_reads{service_name=~\"$service\"}[5m])) +\n(rate(mysql_global_status_innodb_data_writes{service_name=~\"$service\"}[$interval]) or \nirate(mysql_global_status_innodb_data_writes{service_name=~\"$service\"}[5m])) +\n(rate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service\"}[$interval]) or \nirate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service\"}[5m]))\n) ",
+                            "expr": "clamp_max(((rate(mysql_global_status_innodb_data_reads{service_name=~\"$service\"}[$interval]) or \nirate(mysql_global_status_innodb_data_reads{service_name=~\"$service\"}[5m])) / \n((rate(mysql_global_status_innodb_data_reads{service_name=~\"$service\"}[$interval]) or \nirate(mysql_global_status_innodb_data_reads{service_name=~\"$service\"}[5m])) +\n(rate(mysql_global_status_innodb_data_writes{service_name=~\"$service\"}[$interval]) or \nirate(mysql_global_status_innodb_data_writes{service_name=~\"$service\"}[5m])) +\n(rate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service\"}[$interval]) or \nirate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service\"}[5m]))\n)),1)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3363,7 +3363,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "(rate(mysql_global_status_innodb_data_writes{service_name=~\"$service\"}[$interval]) or \nirate(mysql_global_status_innodb_data_writes{service_name=~\"$service\"}[5m])) / \n((rate(mysql_global_status_innodb_data_reads{service_name=~\"$service\"}[$interval]) or \nirate(mysql_global_status_innodb_data_reads{service_name=~\"$service\"}[5m])) +\n(rate(mysql_global_status_innodb_data_writes{service_name=~\"$service\"}[$interval]) or \nirate(mysql_global_status_innodb_data_writes{service_name=~\"$service\"}[5m])) +\n(rate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service\"}[$interval]) or \nirate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service\"}[5m]))\n) ",
+                            "expr": "clamp_max(((rate(mysql_global_status_innodb_data_writes{service_name=~\"$service\"}[$interval]) or \nirate(mysql_global_status_innodb_data_writes{service_name=~\"$service\"}[5m])) / \n((rate(mysql_global_status_innodb_data_reads{service_name=~\"$service\"}[$interval]) or \nirate(mysql_global_status_innodb_data_reads{service_name=~\"$service\"}[5m])) +\n(rate(mysql_global_status_innodb_data_writes{service_name=~\"$service\"}[$interval]) or \nirate(mysql_global_status_innodb_data_writes{service_name=~\"$service\"}[5m])) +\n(rate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service\"}[$interval]) or \nirate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service\"}[5m])))),1)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3597,7 +3597,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "(rate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service\"}[$interval]) or \nirate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service\"}[5m])) / \n((rate(mysql_global_status_innodb_data_reads{service_name=~\"$service\"}[$interval]) or \nirate(mysql_global_status_innodb_data_reads{service_name=~\"$service\"}[5m])) +\n(rate(mysql_global_status_innodb_data_writes{service_name=~\"$service\"}[$interval]) or \nirate(mysql_global_status_innodb_data_writes{service_name=~\"$service\"}[5m])) +\n(rate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service\"}[$interval]) or \nirate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service\"}[5m]))\n) ",
+                            "expr": "clamp_max(((rate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service\"}[$interval]) or \nirate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service\"}[5m])) / \n((rate(mysql_global_status_innodb_data_reads{service_name=~\"$service\"}[$interval]) or \nirate(mysql_global_status_innodb_data_reads{service_name=~\"$service\"}[5m])) +\n(rate(mysql_global_status_innodb_data_writes{service_name=~\"$service\"}[$interval]) or \nirate(mysql_global_status_innodb_data_writes{service_name=~\"$service\"}[5m])) +\n(rate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service\"}[$interval]) or \nirate(mysql_global_status_innodb_data_fsyncs{service_name=~\"$service\"}[5m])))),1)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -6181,7 +6181,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "1 - (max_over_time(mysql_global_status_qcache_free_memory{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_qcache_free_memory{service_name=~\"$service\"}[5m])) / on (service_name)\n(max_over_time(mysql_global_variables_query_cache_size{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_variables_query_cache_size{service_name=~\"$service\"}[5m]))",
+                            "expr": "clamp_max((1 - (max_over_time(mysql_global_status_qcache_free_memory{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_qcache_free_memory{service_name=~\"$service\"}[5m])) / on (service_name)\n(max_over_time(mysql_global_variables_query_cache_size{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_variables_query_cache_size{service_name=~\"$service\"}[5m]))),1)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -6421,7 +6421,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "(rate(mysql_global_status_opened_files{service_name=~\"$service\"}[$interval]) or \nirate(mysql_global_status_opened_files{service_name=~\"$service\"}[5m])) / (max_over_time(mysql_global_status_open_files{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_open_files{service_name=~\"$service\"}[5m]))",
+                            "expr": "clamp_max(((rate(mysql_global_status_opened_files{service_name=~\"$service\"}[$interval]) or \nirate(mysql_global_status_opened_files{service_name=~\"$service\"}[5m])) / (max_over_time(mysql_global_status_open_files{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_open_files{service_name=~\"$service\"}[5m]))),1)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -6646,7 +6646,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "(max_over_time(mysql_global_status_open_files{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_open_files{service_name=~\"$service\"}[5m])) / on (service_name)\n(max_over_time(mysql_global_variables_open_files_limit{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_variables_open_files_limit{service_name=~\"$service\"}[5m]))",
+                            "expr": "clamp_max(((max_over_time(mysql_global_status_open_files{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_open_files{service_name=~\"$service\"}[5m])) / on (service_name)\n(max_over_time(mysql_global_variables_open_files_limit{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_variables_open_files_limit{service_name=~\"$service\"}[5m]))),1)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -7344,7 +7344,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "1 - (rate(mysql_global_status_table_open_cache_hits{service_name=~\"$service\"}[$interval]) or \nirate(mysql_global_status_table_open_cache_hits{service_name=~\"$service\"}[5m]))/\n((rate(mysql_global_status_table_open_cache_hits{service_name=~\"$service\"}[$interval]) or \nirate(mysql_global_status_table_open_cache_hits{service_name=~\"$service\"}[5m]))+\n(rate(mysql_global_status_table_open_cache_misses{service_name=~\"$service\"}[$interval]) or \nirate(mysql_global_status_table_open_cache_misses{service_name=~\"$service\"}[5m])))",
+                            "expr": "clamp_max((1 - (rate(mysql_global_status_table_open_cache_hits{service_name=~\"$service\"}[$interval]) or \nirate(mysql_global_status_table_open_cache_hits{service_name=~\"$service\"}[5m]))/\n((rate(mysql_global_status_table_open_cache_hits{service_name=~\"$service\"}[$interval]) or \nirate(mysql_global_status_table_open_cache_hits{service_name=~\"$service\"}[5m]))+\n(rate(mysql_global_status_table_open_cache_misses{service_name=~\"$service\"}[$interval]) or \nirate(mysql_global_status_table_open_cache_misses{service_name=~\"$service\"}[5m])))),1)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -7823,7 +7823,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "(max_over_time(mysql_global_status_open_table_definitions{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_open_table_definitions{service_name=~\"$service\"}[5m])) / on (service_name)\n(max_over_time(mysql_global_variables_table_definition_cache{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_variables_table_definition_cache{service_name=~\"$service\"}[5m]))",
+                            "expr": "clamp_max(((max_over_time(mysql_global_status_open_table_definitions{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_open_table_definitions{service_name=~\"$service\"}[5m])) / on (service_name)\n(max_over_time(mysql_global_variables_table_definition_cache{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_variables_table_definition_cache{service_name=~\"$service\"}[5m]))),1)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -7846,7 +7846,8 @@
     "schemaVersion": 18,
     "style": "dark",
     "tags": [
-        "Experts"
+        "Percona",
+        "MySQL"
     ],
     "templating": {
         "list": [
