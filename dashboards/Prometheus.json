@@ -36,7 +36,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1561987358084,
+    "iteration": 1563534328600,
     "links": [
         {
             "icon": "dashboard",
@@ -2801,7 +2801,7 @@
                     "dashLength": 10,
                     "dashes": false,
                     "datasource": "Prometheus",
-                    "decimals": 2,
+                    "decimals": 0,
                     "editable": true,
                     "error": false,
                     "fill": 0,
@@ -2813,6 +2813,7 @@
                         "y": 15
                     },
                     "id": 24,
+                    "interval": "",
                     "legend": {
                         "alignAsTable": true,
                         "avg": true,
@@ -2846,23 +2847,23 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "label_replace(\nsum(avg_over_time(up{service_type=\"mysql\"}[$interval])) by (job,service_name) or \nsum(avg_over_time(up{service_type=\"mysql\"}[5m])) by (job,service_name),\n\"job\", \"$2\", \"job\", \"mysqld_(.*)_(.*)\")",
+                            "expr": "sum by (job) (label_replace(\nsum(avg_over_time(up{service_type=\"mysql\"}[$interval])) by (job,service_name) or \nsum(avg_over_time(up{service_type=\"mysql\"}[5m])) by (job,service_name),\n\"job\", \"$2\", \"job\", \"mysqld_(.*)_(.*)\"))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
                             "intervalFactor": 1,
-                            "legendFormat": "{{service_name}} - mysqld_exporter_{{job}}",
+                            "legendFormat": "mysqld_exporter_{{job}}",
                             "metric": "",
                             "refId": "A",
                             "step": 60
                         },
                         {
-                            "expr": "label_replace(\n(sum(avg_over_time(up{service_type!=\"mysql\",instance!=\"pmm-server\"}[$interval])) by (job,node_name) or \nsum(avg_over_time(up{service_type!=\"mysql\",instance!=\"pmm-server\"}[5m])) by (job,node_name)),\n\"job\", \"$1\", \"job\", \"(.*)_agent_(.*)\")",
+                            "expr": "sum by (job) (label_replace(\n(sum(avg_over_time(up{service_type!=\"mysql\",instance!=\"pmm-server\"}[$interval])) by (job,node_name) or \nsum(avg_over_time(up{service_type!=\"mysql\",instance!=\"pmm-server\"}[5m])) by (job,node_name)),\n\"job\", \"$1\", \"job\", \"(.*)_agent_(.*)\"))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
                             "intervalFactor": 1,
-                            "legendFormat": "{{node_name}} - {{job}}",
+                            "legendFormat": "{{job}}",
                             "refId": "B"
                         },
                         {
@@ -2871,7 +2872,7 @@
                             "hide": false,
                             "interval": "$interval",
                             "intervalFactor": 1,
-                            "legendFormat": "PMM Server - {{job}}",
+                            "legendFormat": "{{job}}",
                             "refId": "C"
                         }
                     ],
@@ -2896,6 +2897,7 @@
                     },
                     "yaxes": [
                         {
+                            "decimals": 0,
                             "format": "short",
                             "logBase": 1,
                             "max": null,
@@ -3516,7 +3518,7 @@
                     "renderer": "flot",
                     "seriesOverrides": [],
                     "spaceLength": 10,
-                    "stack": false,
+                    "stack": true,
                     "steppedLine": false,
                     "targets": [
                         {
@@ -3552,7 +3554,7 @@
                     "yaxes": [
                         {
                             "format": "s",
-                            "logBase": 1,
+                            "logBase": 2,
                             "max": null,
                             "min": 0,
                             "show": true
