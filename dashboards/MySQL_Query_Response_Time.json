@@ -8,10 +8,13 @@
                 "hide": false,
                 "iconColor": "#e0752d",
                 "limit": 100,
+                "matchAny": true,
                 "name": "PMM Annotations",
                 "showIn": 0,
                 "tags": [
-                    "pmm_annotation"
+                    "pmm_annotation",
+                    "$host",
+                    "$service"
                 ],
                 "type": "tags"
             },
@@ -29,11 +32,11 @@
             }
         ]
     },
-    "editable": true,
+    "editable": false,
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1529322472185,
+    "iteration": 1552406398482,
     "links": [
         {
             "icon": "dashboard",
@@ -45,7 +48,7 @@
             "targetBlank": false,
             "title": "Query Analytics",
             "type": "link",
-            "url": "/graph/dashboard/db/_pmm-query-analytics"
+            "url": "/graph/d/7w6Q3PJmz/pmm-query-analytics"
         },
         {
             "asDropdown": true,
@@ -107,17 +110,6 @@
             "includeVars": true,
             "keepTime": true,
             "tags": [
-                "Cloud"
-            ],
-            "targetBlank": false,
-            "title": "Cloud",
-            "type": "dashboards"
-        },
-        {
-            "asDropdown": true,
-            "includeVars": true,
-            "keepTime": true,
-            "tags": [
                 "Insight"
             ],
             "targetBlank": false,
@@ -158,7 +150,7 @@
             "dashes": false,
             "datasource": "Prometheus",
             "decimals": 2,
-            "description": "Average query response time is calculated as the total execution time of queries divided by the number of queries.",
+            "description": "The Average Query Response Time graph shows information collected using the Response Time Distribution plugin sourced from [table INFORMATION_SCHEMA. QUERY_RESPONSE_TIME](https://www.percona.com/doc/percona-server/5.7/diagnostics/response_time_distribution.html#QUERY_RESPONSE_TIME). It computes this value across all queries by taking the sum of seconds divided by the count of queries.",
             "editable": true,
             "error": false,
             "fill": 2,
@@ -193,6 +185,7 @@
                 }
             ],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -206,7 +199,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(mysql_info_schema_query_response_time_seconds_sum{instance=\"$host\"}[$interval]) / rate(mysql_info_schema_query_response_time_seconds_count{instance=\"$host\"}[$interval]) * 1000 or irate(mysql_info_schema_query_response_time_seconds_sum{instance=\"$host\"}[5m]) / irate(mysql_info_schema_query_response_time_seconds_count{instance=\"$host\"}[5m]) * 1000",
+                    "expr": "rate(mysql_info_schema_query_response_time_seconds_sum{service_name=\"$service\"}[$interval]) / rate(mysql_info_schema_query_response_time_seconds_count{service_name=\"$service\"}[$interval]) * 1000 or irate(mysql_info_schema_query_response_time_seconds_sum{service_name=\"$service\"}[5m]) / irate(mysql_info_schema_query_response_time_seconds_count{service_name=\"$service\"}[5m]) * 1000",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -219,6 +212,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Average Query Response Time",
             "tooltip": {
@@ -277,7 +271,7 @@
             "dashes": false,
             "datasource": "Prometheus",
             "decimals": 2,
-            "description": "Shows how many fast, neutral, and slow queries are executed per second.",
+            "description": "Query response time counts (operations) are grouped into three buckets:\n\n* 100ms - 1s\n\n* 1s - 10s\n\n* &gt; 10s",
             "editable": true,
             "error": false,
             "fill": 2,
@@ -317,6 +311,7 @@
                 }
             ],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -340,7 +335,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "(rate(mysql_info_schema_query_response_time_seconds_bucket{instance=\"$host\",le='1'}[$interval]) - on (instance) rate(mysql_info_schema_query_response_time_seconds_bucket{instance=\"$host\",le='0.1'}[$interval])) or (irate(mysql_info_schema_query_response_time_seconds_bucket{instance=\"$host\",le='1'}[5m]) - on (instance) irate(mysql_info_schema_query_response_time_seconds_bucket{instance=\"$host\",le='0.1'}[5m]))",
+                    "expr": "(rate(mysql_info_schema_query_response_time_seconds_bucket{service_name=\"$service\",le='1'}[$interval]) - on (instance) rate(mysql_info_schema_query_response_time_seconds_bucket{service_name=\"$service\",le='0.1'}[$interval])) or (irate(mysql_info_schema_query_response_time_seconds_bucket{service_name=\"$service\",le='1'}[5m]) - on (instance) irate(mysql_info_schema_query_response_time_seconds_bucket{service_name=\"$service\",le='0.1'}[5m]))",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -350,7 +345,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "(rate(mysql_info_schema_query_response_time_seconds_bucket{instance=\"$host\",le='10'}[$interval])  - on (instance) rate(mysql_info_schema_query_response_time_seconds_bucket{instance=\"$host\",le='1'}[$interval])) or (irate(mysql_info_schema_query_response_time_seconds_bucket{instance=\"$host\",le='10'}[5m])  - on (instance) irate(mysql_info_schema_query_response_time_seconds_bucket{instance=\"$host\",le='1'}[5m]))",
+                    "expr": "(rate(mysql_info_schema_query_response_time_seconds_bucket{service_name=\"$service\",le='10'}[$interval])  - on (instance) rate(mysql_info_schema_query_response_time_seconds_bucket{service_name=\"$service\",le='1'}[$interval])) or (irate(mysql_info_schema_query_response_time_seconds_bucket{service_name=\"$service\",le='10'}[5m])  - on (instance) irate(mysql_info_schema_query_response_time_seconds_bucket{service_name=\"$service\",le='1'}[5m]))",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Queries 1s - 10s",
@@ -358,7 +353,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "(rate(mysql_info_schema_query_response_time_seconds_bucket{instance=\"$host\",le='100000'}[$interval])  - on (instance) rate(mysql_info_schema_query_response_time_seconds_bucket{instance=\"$host\",le='10'}[$interval])) or (irate(mysql_info_schema_query_response_time_seconds_bucket{instance=\"$host\",le='100000'}[5m])  - on (instance) irate(mysql_info_schema_query_response_time_seconds_bucket{instance=\"$host\",le='10'}[5m]))",
+                    "expr": "(rate(mysql_info_schema_query_response_time_seconds_bucket{service_name=\"$service\",le='100000'}[$interval])  - on (instance) rate(mysql_info_schema_query_response_time_seconds_bucket{service_name=\"$service\",le='10'}[$interval])) or (irate(mysql_info_schema_query_response_time_seconds_bucket{service_name=\"$service\",le='100000'}[5m])  - on (instance) irate(mysql_info_schema_query_response_time_seconds_bucket{service_name=\"$service\",le='10'}[5m]))",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Queries >10s",
@@ -368,6 +363,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Query Response Time Distribution",
             "tooltip": {
@@ -376,7 +372,6 @@
                 "sort": 0,
                 "value_type": "individual"
             },
-            "transparent": false,
             "type": "graph",
             "xaxis": {
                 "buckets": null,
@@ -447,7 +442,7 @@
             "dashes": false,
             "datasource": "Prometheus",
             "decimals": 2,
-            "description": "Compare read and write query response time.",
+            "description": "Available only in [Percona Server for MySQL](https://www.percona.com/doc/percona-server/5.7/diagnostics/response_time_distribution.html#logging-the-queries-in-separate-read-and-write-tables), provides  visibility of the split of [READ](https://www.percona.com/doc/percona-server/5.7/diagnostics/response_time_distribution.html#QUERY_RESPONSE_TIME_READ) vs [WRITE](https://www.percona.com/doc/percona-server/5.7/diagnostics/response_time_distribution.html#QUERY_RESPONSE_TIME_WRITE) query response time.",
             "editable": true,
             "error": false,
             "fill": 2,
@@ -482,6 +477,7 @@
                 }
             ],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -495,7 +491,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(mysql_info_schema_read_query_response_time_seconds_sum{instance=\"$host\"}[$interval]) / rate(mysql_info_schema_read_query_response_time_seconds_count{instance=\"$host\"}[$interval]) * 1000 or irate(mysql_info_schema_read_query_response_time_seconds_sum{instance=\"$host\"}[5m]) / irate(mysql_info_schema_read_query_response_time_seconds_count{instance=\"$host\"}[5m]) * 1000",
+                    "expr": "rate(mysql_info_schema_read_query_response_time_seconds_sum{service_name=\"$service\"}[$interval]) / rate(mysql_info_schema_read_query_response_time_seconds_count{service_name=\"$service\"}[$interval]) * 1000 or irate(mysql_info_schema_read_query_response_time_seconds_sum{service_name=\"$service\"}[5m]) / irate(mysql_info_schema_read_query_response_time_seconds_count{service_name=\"$service\"}[5m]) * 1000",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -508,7 +504,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(mysql_info_schema_write_query_response_time_seconds_sum{instance=\"$host\"}[$interval]) / rate(mysql_info_schema_write_query_response_time_seconds_count{instance=\"$host\"}[$interval]) * 1000 or irate(mysql_info_schema_write_query_response_time_seconds_sum{instance=\"$host\"}[5m]) / irate(mysql_info_schema_write_query_response_time_seconds_count{instance=\"$host\"}[5m]) * 1000",
+                    "expr": "rate(mysql_info_schema_write_query_response_time_seconds_sum{service_name=\"$service\"}[$interval]) / rate(mysql_info_schema_write_query_response_time_seconds_count{service_name=\"$service\"}[$interval]) * 1000 or irate(mysql_info_schema_write_query_response_time_seconds_sum{service_name=\"$service\"}[5m]) / irate(mysql_info_schema_write_query_response_time_seconds_count{service_name=\"$service\"}[5m]) * 1000",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -520,6 +516,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Average Query Response Time",
             "tooltip": {
@@ -578,7 +575,7 @@
             "dashes": false,
             "datasource": "Prometheus",
             "decimals": 2,
-            "description": "Shows how many fast, neutral, and slow read queries are executed per second.",
+            "description": "Available only in Percona Server for MySQL, illustrates READ query response time counts (operations) grouped into three buckets:\n\n* 100ms - 1s\n\n* 1s - 10s\n\n* &gt; 10s",
             "editable": true,
             "error": false,
             "fill": 2,
@@ -618,6 +615,7 @@
                 }
             ],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -641,7 +639,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "(rate(mysql_info_schema_read_query_response_time_seconds_bucket{instance=\"$host\",le='1'}[$interval]) - on (instance) rate(mysql_info_schema_read_query_response_time_seconds_bucket{instance=\"$host\",le='0.1'}[$interval])) or (irate(mysql_info_schema_read_query_response_time_seconds_bucket{instance=\"$host\",le='1'}[5m]) - on (instance) irate(mysql_info_schema_read_query_response_time_seconds_bucket{instance=\"$host\",le='0.1'}[5m]))",
+                    "expr": "(rate(mysql_info_schema_read_query_response_time_seconds_bucket{service_name=\"$service\",le='1'}[$interval]) - on (instance) rate(mysql_info_schema_read_query_response_time_seconds_bucket{service_name=\"$service\",le='0.1'}[$interval])) or (irate(mysql_info_schema_read_query_response_time_seconds_bucket{service_name=\"$service\",le='1'}[5m]) - on (instance) irate(mysql_info_schema_read_query_response_time_seconds_bucket{service_name=\"$service\",le='0.1'}[5m]))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -652,7 +650,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "(rate(mysql_info_schema_read_query_response_time_seconds_bucket{instance=\"$host\",le='10'}[$interval])  - on (instance) rate(mysql_info_schema_read_query_response_time_seconds_bucket{instance=\"$host\",le='1'}[$interval])) or (irate(mysql_info_schema_read_query_response_time_seconds_bucket{instance=\"$host\",le='10'}[5m])  - on (instance) irate(mysql_info_schema_read_query_response_time_seconds_bucket{instance=\"$host\",le='1'}[5m]))",
+                    "expr": "(rate(mysql_info_schema_read_query_response_time_seconds_bucket{service_name=\"$service\",le='10'}[$interval])  - on (instance) rate(mysql_info_schema_read_query_response_time_seconds_bucket{service_name=\"$service\",le='1'}[$interval])) or (irate(mysql_info_schema_read_query_response_time_seconds_bucket{service_name=\"$service\",le='10'}[5m])  - on (instance) irate(mysql_info_schema_read_query_response_time_seconds_bucket{service_name=\"$service\",le='1'}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -661,7 +659,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "(rate(mysql_info_schema_read_query_response_time_seconds_bucket{instance=\"$host\",le='100000'}[$interval])  - on (instance) rate(mysql_info_schema_read_query_response_time_seconds_bucket{instance=\"$host\",le='10'}[$interval])) or (irate(mysql_info_schema_read_query_response_time_seconds_bucket{instance=\"$host\",le='100000'}[5m])  - on (instance) irate(mysql_info_schema_read_query_response_time_seconds_bucket{instance=\"$host\",le='10'}[5m]))",
+                    "expr": "(rate(mysql_info_schema_read_query_response_time_seconds_bucket{service_name=\"$service\",le='100000'}[$interval])  - on (instance) rate(mysql_info_schema_read_query_response_time_seconds_bucket{service_name=\"$service\",le='10'}[$interval])) or (irate(mysql_info_schema_read_query_response_time_seconds_bucket{service_name=\"$service\",le='100000'}[5m])  - on (instance) irate(mysql_info_schema_read_query_response_time_seconds_bucket{service_name=\"$service\",le='10'}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -672,6 +670,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Read Query Response Time Distribution",
             "tooltip": {
@@ -680,7 +679,6 @@
                 "sort": 0,
                 "value_type": "individual"
             },
-            "transparent": false,
             "type": "graph",
             "xaxis": {
                 "buckets": null,
@@ -717,7 +715,7 @@
             "dashes": false,
             "datasource": "Prometheus",
             "decimals": 2,
-            "description": "Shows how many fast, neutral, and slow write queries are executed per second.",
+            "description": "Available only in Percona Server for MySQL, illustrates WRITE query response time counts (operations) grouped into three buckets:\n\n* 100ms - 1s\n\n* 1s - 10s\n\n* &gt; 10s",
             "editable": true,
             "error": false,
             "fill": 2,
@@ -757,6 +755,7 @@
                 }
             ],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -780,7 +779,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "(rate(mysql_info_schema_write_query_response_time_seconds_bucket{instance=\"$host\",le='1'}[$interval]) - on (instance) rate(mysql_info_schema_write_query_response_time_seconds_bucket{instance=\"$host\",le='0.1'}[$interval])) or (irate(mysql_info_schema_write_query_response_time_seconds_bucket{instance=\"$host\",le='1'}[5m]) - on (instance) irate(mysql_info_schema_write_query_response_time_seconds_bucket{instance=\"$host\",le='0.1'}[5m]))",
+                    "expr": "(rate(mysql_info_schema_write_query_response_time_seconds_bucket{service_name=\"$service\",le='1'}[$interval]) - on (instance) rate(mysql_info_schema_write_query_response_time_seconds_bucket{service_name=\"$service\",le='0.1'}[$interval])) or (irate(mysql_info_schema_write_query_response_time_seconds_bucket{service_name=\"$service\",le='1'}[5m]) - on (instance) irate(mysql_info_schema_write_query_response_time_seconds_bucket{service_name=\"$service\",le='0.1'}[5m]))",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -790,7 +789,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "(rate(mysql_info_schema_write_query_response_time_seconds_bucket{instance=\"$host\",le='10'}[$interval])  - on (instance) rate(mysql_info_schema_write_query_response_time_seconds_bucket{instance=\"$host\",le='1'}[$interval])) or (irate(mysql_info_schema_write_query_response_time_seconds_bucket{instance=\"$host\",le='10'}[5m])  - on (instance) irate(mysql_info_schema_write_query_response_time_seconds_bucket{instance=\"$host\",le='1'}[5m]))",
+                    "expr": "(rate(mysql_info_schema_write_query_response_time_seconds_bucket{service_name=\"$service\",le='10'}[$interval])  - on (instance) rate(mysql_info_schema_write_query_response_time_seconds_bucket{service_name=\"$service\",le='1'}[$interval])) or (irate(mysql_info_schema_write_query_response_time_seconds_bucket{service_name=\"$service\",le='10'}[5m])  - on (instance) irate(mysql_info_schema_write_query_response_time_seconds_bucket{service_name=\"$service\",le='1'}[5m]))",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Queries 1s - 10s",
@@ -798,7 +797,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "(rate(mysql_info_schema_write_query_response_time_seconds_bucket{instance=\"$host\",le='100000'}[$interval])  - on (instance) rate(mysql_info_schema_write_query_response_time_seconds_bucket{instance=\"$host\",le='10'}[$interval])) or (irate(mysql_info_schema_write_query_response_time_seconds_bucket{instance=\"$host\",le='100000'}[5m])  - on (instance) irate(mysql_info_schema_write_query_response_time_seconds_bucket{instance=\"$host\",le='10'}[5m]))",
+                    "expr": "(rate(mysql_info_schema_write_query_response_time_seconds_bucket{service_name=\"$service\",le='100000'}[$interval])  - on (instance) rate(mysql_info_schema_write_query_response_time_seconds_bucket{service_name=\"$service\",le='10'}[$interval])) or (irate(mysql_info_schema_write_query_response_time_seconds_bucket{service_name=\"$service\",le='100000'}[5m])  - on (instance) irate(mysql_info_schema_write_query_response_time_seconds_bucket{service_name=\"$service\",le='10'}[5m]))",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Queries >10s",
@@ -808,6 +807,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Write Query Response Time Distribution",
             "tooltip": {
@@ -816,7 +816,6 @@
                 "sort": 0,
                 "value_type": "individual"
             },
-            "transparent": false,
             "type": "graph",
             "xaxis": {
                 "buckets": null,
@@ -848,7 +847,7 @@
         }
     ],
     "refresh": "1m",
-    "schemaVersion": 16,
+    "schemaVersion": 18,
     "style": "dark",
     "tags": [
         "Percona",
@@ -861,10 +860,7 @@
                 "auto": true,
                 "auto_count": 200,
                 "auto_min": "1s",
-                "current": {
-                    "text": "auto",
-                    "value": "$__auto_interval_interval"
-                },
+                "current": {},
                 "datasource": "Prometheus",
                 "hide": 0,
                 "includeAll": false,
@@ -916,6 +912,7 @@
                 ],
                 "query": "1s,5s,1m,5m,1h,6h,1d",
                 "refresh": 2,
+                "skipUrlSync": false,
                 "type": "interval"
             },
             {
@@ -923,6 +920,7 @@
                 "allValue": null,
                 "current": {},
                 "datasource": "Prometheus",
+                "definition": "label_values(mysql_info_schema_query_response_time_seconds_sum, node_name)",
                 "hide": 0,
                 "includeAll": false,
                 "label": "Host",
@@ -930,13 +928,36 @@
                 "multiFormat": "glob",
                 "name": "host",
                 "options": [],
-                "query": "label_values(mysql_info_schema_query_response_time_seconds_sum, instance)",
+                "query": "label_values(mysql_info_schema_query_response_time_seconds_sum, node_name)",
                 "refresh": 1,
                 "regex": "",
+                "skipUrlSync": false,
                 "sort": 1,
                 "tagValuesQuery": null,
                 "tags": [],
                 "tagsQuery": null,
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allValue": null,
+                "current": {},
+                "datasource": "Prometheus",
+                "definition": "label_values(mysql_info_schema_query_response_time_seconds_sum{node_name=~\"$host\"}, service_name)",
+                "hide": 0,
+                "includeAll": false,
+                "label": "Service",
+                "multi": false,
+                "name": "service",
+                "options": [],
+                "query": "label_values(mysql_info_schema_query_response_time_seconds_sum{node_name=~\"$host\"}, service_name)",
+                "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
                 "type": "query",
                 "useTags": false
             }
@@ -981,5 +1002,5 @@
     "timezone": "browser",
     "title": "MySQL Query Response Time",
     "uid": "fsZR9omik",
-    "version": 1
+    "version": 3
 }

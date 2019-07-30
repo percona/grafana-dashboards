@@ -8,10 +8,13 @@
                 "hide": false,
                 "iconColor": "#e0752d",
                 "limit": 100,
+                "matchAny": true,
                 "name": "PMM Annotations",
                 "showIn": 0,
                 "tags": [
-                    "pmm_annotation"
+                    "pmm_annotation",
+                    "$host",
+                    "$service"
                 ],
                 "type": "tags"
             },
@@ -29,11 +32,11 @@
             }
         ]
     },
-    "editable": true,
+    "editable": false,
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1541694224353,
+    "iteration": 1553527716502,
     "links": [
         {
             "icon": "dashboard",
@@ -45,7 +48,7 @@
             "targetBlank": false,
             "title": "Query Analytics",
             "type": "link",
-            "url": "/graph/dashboard/db/_pmm-query-analytics"
+            "url": "/graph/d/7w6Q3PJmz/pmm-query-analytics"
         },
         {
             "asDropdown": true,
@@ -107,17 +110,6 @@
             "includeVars": true,
             "keepTime": true,
             "tags": [
-                "Cloud"
-            ],
-            "targetBlank": false,
-            "title": "Cloud",
-            "type": "dashboards"
-        },
-        {
-            "asDropdown": true,
-            "includeVars": true,
-            "keepTime": true,
-            "tags": [
                 "Insight"
             ],
             "targetBlank": false,
@@ -148,7 +140,7 @@
             ],
             "datasource": "Prometheus",
             "decimals": 0,
-            "description": "Shows the role of the selected member instance (PRIMARY or SECONDARY)",
+            "description": "This shows the role of the selected instance. Normally this should be one of ``PRIMARY``, ``SECONDARY`` and ``ARBITER``, but if the system is newly added it could show ``STARTUP2`` during its initial sync.\n\nRead more about [Replica Set Member States](https://docs.mongodb.com/manual/reference/replica-states/).",
             "editable": true,
             "error": false,
             "format": "none",
@@ -158,12 +150,6 @@
                 "show": false,
                 "thresholdLabels": false,
                 "thresholdMarkers": true
-            },
-            "gridPos": {
-                "h": 3,
-                "w": 6,
-                "x": 0,
-                "y": 0
             },
             "height": "125px",
             "hideTimeOverride": true,
@@ -182,7 +168,6 @@
                 }
             ],
             "maxDataPoints": 100,
-            "minSpan": null,
             "nullPointMode": "null",
             "nullText": null,
             "postfix": "",
@@ -206,7 +191,8 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "mongodb_mongod_replset_my_state{instance=\"$host\"}",
+                    "expr": "mongodb_mongod_replset_my_state{service_name=~\"$service\"}",
+                    "format": "time_series",
                     "interval": "5m",
                     "intervalFactor": 1,
                     "legendFormat": "",
@@ -285,7 +271,7 @@
             ],
             "datasource": "Prometheus",
             "decimals": 0,
-            "description": "Shows the number of members in the replica set",
+            "description": "This shows how many members are configured in the replica set.",
             "editable": true,
             "error": false,
             "format": "none",
@@ -341,7 +327,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "mongodb_mongod_replset_number_of_members{instance=\"$host\"}",
+                    "expr": "mongodb_mongod_replset_number_of_members{service_name=~\"$service\"}",
                     "interval": "5m",
                     "intervalFactor": 1,
                     "legendFormat": "",
@@ -361,7 +347,7 @@
         {
             "cacheTimeout": null,
             "colorBackground": false,
-            "colorPostfix": true,
+            "colorPostfix": false,
             "colorValue": false,
             "colors": [
                 "rgba(245, 54, 54, 0.9)",
@@ -370,7 +356,7 @@
             ],
             "datasource": "Prometheus",
             "decimals": 1,
-            "description": "Shows how long ago the last election occurred",
+            "description": "This shows the time since the last election.",
             "editable": true,
             "error": false,
             "format": "s",
@@ -407,7 +393,7 @@
             "nullPointMode": "null",
             "nullText": null,
             "postfix": "s",
-            "postfixFontSize": "80%",
+            "postfixFontSize": "70%",
             "prefix": "",
             "prefixFontSize": "50%",
             "rangeMaps": [
@@ -426,7 +412,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "time() - mongodb_mongod_replset_member_election_date{instance=\"$host\"}",
+                    "expr": "time() - mongodb_mongod_replset_member_election_date{service_name=~\"$service\"}",
                     "format": "time_series",
                     "interval": "5m",
                     "intervalFactor": 1,
@@ -455,7 +441,7 @@
             ],
             "datasource": "Prometheus",
             "decimals": 1,
-            "description": "Shows the current replication lag for the selected member",
+            "description": "This panel shows how far behind in replication this member is if it is a secondary. This number may be high it the instance is running as a delayed secondary member.",
             "editable": true,
             "error": false,
             "format": "s",
@@ -511,7 +497,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "(max(mongodb_mongod_replset_member_optime_date{state=\"PRIMARY\", set=\"$replset\"}) - min(mongodb_mongod_replset_member_optime_date{state=\"SECONDARY\"} * on (name) group_left mongodb_mongod_replset_my_name{instance=\"$host\"})) or vector(0)",
+                    "expr": "(max(mongodb_mongod_replset_member_optime_date{state=\"PRIMARY\", set=\"$replset\"}) - min(mongodb_mongod_replset_member_optime_date{state=\"SECONDARY\"} * on (name) group_left mongodb_mongod_replset_my_name{service_name=~\"$service\"})) or vector(0)",
                     "interval": "5m",
                     "intervalFactor": 1,
                     "legendFormat": "",
@@ -539,7 +525,7 @@
             ],
             "datasource": "Prometheus",
             "decimals": 0,
-            "description": "Shows the storage engine used on the instance",
+            "description": "This shows which storage engine the instance is configured with.",
             "editable": true,
             "error": false,
             "format": "none",
@@ -573,7 +559,6 @@
                 }
             ],
             "maxDataPoints": 100,
-            "minSpan": null,
             "nullPointMode": "null",
             "nullText": null,
             "postfix": "",
@@ -596,7 +581,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "mongodb_mongod_storage_engine{instance=\"$host\"}",
+                    "expr": "mongodb_mongod_storage_engine{service_name=~\"$service\"}",
                     "interval": "5m",
                     "intervalFactor": 1,
                     "legendFormat": "{{ engine }}",
@@ -620,6 +605,7 @@
             "dashes": false,
             "datasource": "Prometheus",
             "decimals": null,
+            "description": "This shows the number of replicated commands that have been sent from the primary to this instance. This will always be empty on a primary instance.\n\n*NOTE*: A single command (such as a call to `.updateMany()`) on the primary can generate multiple replicated commands on a secondary.",
             "editable": true,
             "error": false,
             "fill": 2,
@@ -652,6 +638,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -662,7 +649,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(mongodb_mongod_op_counters_repl_total{instance=\"$host\", type!~\"(command|getmore|query)\"}[$interval]) or irate(mongodb_mongod_op_counters_repl_total{instance=\"$host\", type!~\"(command|getmore|query)\"}[5m])",
+                    "expr": "rate(mongodb_mongod_op_counters_repl_total{service_name=~\"$service\", type!~\"(command|getmore|query)\"}[$interval]) or irate(mongodb_mongod_op_counters_repl_total{service_name=~\"$service\", type!~\"(command|getmore|query)\"}[5m])",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "{{type}}",
@@ -672,6 +659,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Replication Operations",
             "tooltip": {
@@ -723,7 +711,7 @@
             "dashes": false,
             "datasource": "Prometheus",
             "decimals": null,
-            "description": "Shows the time range in the oplog and the oldest backed up operation.",
+            "description": "This shows how much time the oplog covers. The oplog is a capped (fixed size) collection and the amount of time can grow or shrink as workloads decrease or increase. You want to make sure the oplog is sized big enough to handle the time it takes for maintenance or to sync a secondary member.\n\nLearn more about the [Oplog](https://docs.mongodb.com/manual/core/replica-set-oplog/).",
             "editable": true,
             "error": false,
             "fill": 2,
@@ -756,6 +744,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -766,7 +755,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "time()-mongodb_mongod_replset_oplog_tail_timestamp{instance=\"$host\"}",
+                    "expr": "time()-mongodb_mongod_replset_oplog_tail_timestamp{service_name=~\"$service\"}",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -776,7 +765,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "mongodb_mongod_replset_oplog_head_timestamp{instance=\"$host\"}-mongodb_mongod_replset_oplog_tail_timestamp{instance=\"$host\"}",
+                    "expr": "mongodb_mongod_replset_oplog_head_timestamp{service_name=~\"$service\"}-mongodb_mongod_replset_oplog_tail_timestamp{service_name=~\"$service\"}",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -788,6 +777,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Oplog Recovery Window",
             "tooltip": {
@@ -839,7 +829,7 @@
             "dashes": false,
             "datasource": "Prometheus",
             "decimals": null,
-            "description": "Shows the delay between an operation occurring on the primary and that same operation getting applied on the selected member",
+            "description": "This shows the amount of time that a secondary is behind the primary. A high value could be due the secondary being delayed. If this instance is a normal secondary you will want to check the instance to determine why it is behind and resolve the issue.\n\nLearn more about [Replication Lag](https://docs.mongodb.com/manual/tutorial/troubleshoot-replica-sets/#replica-set-replication-lag).",
             "editable": true,
             "error": false,
             "fill": 2,
@@ -873,6 +863,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -883,7 +874,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "(max(mongodb_mongod_replset_member_optime_date{state=\"PRIMARY\", set=\"$replset\"}) - min(mongodb_mongod_replset_member_optime_date{state=\"SECONDARY\"} * on (name) group_left mongodb_mongod_replset_my_name{instance=\"$host\"})) or vector(0)",
+                    "expr": "(max(mongodb_mongod_replset_member_optime_date{state=\"PRIMARY\", set=\"$replset\"}) - min(mongodb_mongod_replset_member_optime_date{state=\"SECONDARY\"} * on (name) group_left mongodb_mongod_replset_my_name{service_name=~\"$service\"})) or vector(0)",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Lag",
@@ -893,6 +884,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Replication Lag",
             "tooltip": {
@@ -944,7 +936,7 @@
             "dashes": false,
             "datasource": "Prometheus",
             "decimals": null,
-            "description": "Elections happen when a primary becomes unavailable. Look at this graph over longer periods (weeks or months) to determine patterns and correlate elections with other events.",
+            "description": "This shows when elections occur in the replica set. An election happens whenever the primary instance is not accessible to the rest of the members. Looking at this graph over long periods of time can help you to correlate elections to other system events.\n\nLearn more about [Replica set Elections](https://docs.mongodb.com/manual/core/replica-set-elections/).",
             "editable": true,
             "error": false,
             "fill": 2,
@@ -977,6 +969,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -987,7 +980,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "max(changes(mongodb_mongod_replset_member_election_date{instance=\"$host\"}[$interval]))",
+                    "expr": "max(changes(mongodb_mongod_replset_member_election_date{service_name=~\"$service\"}[$interval]))",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Count",
@@ -997,6 +990,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Elections",
             "tooltip": {
@@ -1048,7 +1042,7 @@
             "dashes": false,
             "datasource": "Prometheus",
             "decimals": null,
-            "description": "Shows how long various members were in PRIMARY and SECONDARY roles",
+            "description": "This graph shows all replica set members and the amount of time that each member was in a given state.",
             "editable": true,
             "error": false,
             "fill": 2,
@@ -1084,6 +1078,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -1094,7 +1089,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "mongodb_mongod_replset_member_uptime{instance=\"$host\"}\n* on (name) group_right(state) (max_over_time(mongodb_mongod_replset_my_name[$interval]) or max_over_time(mongodb_mongod_replset_my_name[5m]))",
+                    "expr": "mongodb_mongod_replset_member_uptime{service_name=~\"$service\"}\n* on (name) group_right(state) (max_over_time(mongodb_mongod_replset_my_name[$interval]) or max_over_time(mongodb_mongod_replset_my_name[5m]))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -1107,6 +1102,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Member State Uptime",
             "tooltip": {
@@ -1158,7 +1154,7 @@
             "dashes": false,
             "datasource": "Prometheus",
             "decimals": null,
-            "description": "Shows the heartbeat return times sent by the current member to other members in the replica set.",
+            "description": "This chart shows the heartbeat time between this instance and all other instances in the replica set. If there is no heartbeat returned after 10 seconds the node in considered to be unreachable and would require intervention to determine the cause.",
             "editable": true,
             "error": false,
             "fill": 2,
@@ -1193,6 +1189,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -1203,7 +1200,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "time() - max(mongodb_mongod_replset_member_last_heartbeat{instance=\"$host\"}) by (name) * on (name) group_right mongodb_mongod_replset_my_name",
+                    "expr": "time() - max(mongodb_mongod_replset_member_last_heartbeat{service_name=~\"$service\"}) by (name) * on (name) group_right mongodb_mongod_replset_my_name",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1215,6 +1212,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Max Heartbeat Time",
             "tooltip": {
@@ -1266,7 +1264,7 @@
             "dashes": false,
             "datasource": "Prometheus",
             "decimals": null,
-            "description": "This can show a correlation with the replication lag value",
+            "description": "This shows the number of milliseconds that a round-trip packet required when communication with other members of the replica set. High values could indicate an issue such as network lag and should be looked into.",
             "editable": true,
             "error": false,
             "fill": 2,
@@ -1301,6 +1299,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -1311,7 +1310,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "mongodb_mongod_replset_member_ping_ms{instance=\"$host\"}\n* on (name) group_right(state) (max_over_time(mongodb_mongod_replset_my_name[$interval]) or max_over_time(mongodb_mongod_replset_my_name[5m]))",
+                    "expr": "mongodb_mongod_replset_member_ping_ms{service_name=~\"$service\"}\n* on (name) group_right(state) (max_over_time(mongodb_mongod_replset_my_name[$interval]) or max_over_time(mongodb_mongod_replset_my_name[5m]))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -1323,6 +1322,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Max Member Ping Time",
             "tooltip": {
@@ -1374,6 +1374,7 @@
             "dashes": false,
             "datasource": "Prometheus",
             "decimals": null,
+            "description": "This is the number of milliseconds that the secondary member spends in getting receiving data from the instance it's replicating from.",
             "editable": true,
             "error": false,
             "fill": 2,
@@ -1408,6 +1409,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -1418,7 +1420,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(mongodb_mongod_metrics_repl_network_getmores_total_milliseconds{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_metrics_repl_network_getmores_total_milliseconds{instance=\"$host\"}[5m])",
+                    "expr": "rate(mongodb_mongod_metrics_repl_network_getmores_total_milliseconds{service_name=~\"$service\"}[$interval]) or irate(mongodb_mongod_metrics_repl_network_getmores_total_milliseconds{service_name=~\"$service\"}[5m])",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "{{instance}}",
@@ -1428,6 +1430,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Oplog Getmore Time",
             "tooltip": {
@@ -1479,6 +1482,7 @@
             "dashes": false,
             "datasource": "Prometheus",
             "decimals": null,
+            "description": "This shows the number of operations per second that the secondary member is receiving from its source.",
             "editable": true,
             "error": false,
             "fill": 2,
@@ -1513,6 +1517,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -1523,7 +1528,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(mongodb_mongod_metrics_repl_preload_docs_num_total{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_metrics_repl_preload_docs_num_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mongodb_mongod_metrics_repl_preload_docs_num_total{service_name=~\"$service\"}[$interval]) or irate(mongodb_mongod_metrics_repl_preload_docs_num_total{service_name=~\"$service\"}[5m])",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Document Preload",
@@ -1532,7 +1537,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mongodb_mongod_metrics_repl_preload_indexes_num_total{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_metrics_repl_preload_indexes_num_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mongodb_mongod_metrics_repl_preload_indexes_num_total{service_name=~\"$service\"}[$interval]) or irate(mongodb_mongod_metrics_repl_preload_indexes_num_total{service_name=~\"$service\"}[5m])",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Index Preload",
@@ -1541,7 +1546,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mongodb_mongod_metrics_repl_apply_ops_total{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_metrics_repl_apply_ops_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mongodb_mongod_metrics_repl_apply_ops_total{service_name=~\"$service\"}[$interval]) or irate(mongodb_mongod_metrics_repl_apply_ops_total{service_name=~\"$service\"}[5m])",
                     "intervalFactor": 2,
                     "legendFormat": "Batch Apply",
                     "refId": "C",
@@ -1550,6 +1555,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Oplog Operations",
             "tooltip": {
@@ -1601,6 +1607,7 @@
             "dashes": false,
             "datasource": "Prometheus",
             "decimals": null,
+            "description": "This shows the amount of time it takes a secondary instance to apply data from the oplog.",
             "editable": true,
             "error": false,
             "fill": 2,
@@ -1635,6 +1642,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -1645,7 +1653,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(mongodb_mongod_metrics_repl_preload_docs_total_milliseconds{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_metrics_repl_preload_docs_total_milliseconds{instance=\"$host\"}[5m])",
+                    "expr": "rate(mongodb_mongod_metrics_repl_preload_docs_total_milliseconds{service_name=~\"$service\"}[$interval]) or irate(mongodb_mongod_metrics_repl_preload_docs_total_milliseconds{service_name=~\"$service\"}[5m])",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Document Preload",
@@ -1653,7 +1661,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mongodb_mongod_metrics_repl_preload_indexes_total_milliseconds{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_metrics_repl_preload_indexes_total_milliseconds{instance=\"$host\"}[5m])",
+                    "expr": "rate(mongodb_mongod_metrics_repl_preload_indexes_total_milliseconds{service_name=~\"$service\"}[$interval]) or irate(mongodb_mongod_metrics_repl_preload_indexes_total_milliseconds{service_name=~\"$service\"}[5m])",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Index Preload",
@@ -1662,7 +1670,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mongodb_mongod_metrics_repl_apply_batches_total_milliseconds{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_metrics_repl_apply_batches_total_milliseconds{instance=\"$host\"}[5m])",
+                    "expr": "rate(mongodb_mongod_metrics_repl_apply_batches_total_milliseconds{service_name=~\"$service\"}[$interval]) or irate(mongodb_mongod_metrics_repl_apply_batches_total_milliseconds{service_name=~\"$service\"}[5m])",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Batch Apply",
@@ -1673,6 +1681,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Oplog Processing Time",
             "tooltip": {
@@ -1724,6 +1733,7 @@
             "dashes": false,
             "datasource": "Prometheus",
             "decimals": null,
+            "description": "This shows the number of operations that are in the oplog buffer waiting to be applied on the secondary member.",
             "editable": true,
             "error": false,
             "fill": 2,
@@ -1758,6 +1768,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -1768,7 +1779,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "mongodb_mongod_metrics_repl_buffer_count{instance=\"$host\"}",
+                    "expr": "mongodb_mongod_metrics_repl_buffer_count{service_name=~\"$service\"}",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Current",
@@ -1778,6 +1789,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Oplog Buffered Operations",
             "tooltip": {
@@ -1829,6 +1841,7 @@
             "dashes": false,
             "datasource": "Prometheus",
             "decimals": null,
+            "description": "This shows the maximum size of the oplog buffer and the current amount of data being stored in the buffer. The maximum size is not configurable currently and is set by the `mongod` process.",
             "editable": true,
             "error": false,
             "fill": 2,
@@ -1863,6 +1876,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -1873,7 +1887,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "mongodb_mongod_metrics_repl_buffer_size_bytes{instance=\"$host\"}",
+                    "expr": "mongodb_mongod_metrics_repl_buffer_size_bytes{service_name=~\"$service\"}",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Used",
@@ -1881,7 +1895,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "mongodb_mongod_metrics_repl_buffer_max_size_bytes{instance=\"$host\"}",
+                    "expr": "mongodb_mongod_metrics_repl_buffer_max_size_bytes{service_name=~\"$service\"}",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Max",
@@ -1891,6 +1905,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Oplog Buffer Capacity",
             "tooltip": {
@@ -1950,10 +1965,7 @@
                 "auto": true,
                 "auto_count": 200,
                 "auto_min": "1s",
-                "current": {
-                    "text": "auto",
-                    "value": "$__auto_interval_interval"
-                },
+                "current": {},
                 "datasource": "Prometheus",
                 "hide": 0,
                 "includeAll": false,
@@ -2005,6 +2017,7 @@
                 ],
                 "query": "1s,5s,1m,5m,1h,6h,1d",
                 "refresh": 2,
+                "skipUrlSync": false,
                 "type": "interval"
             },
             {
@@ -2012,6 +2025,7 @@
                 "allValue": null,
                 "current": {},
                 "datasource": "Prometheus",
+                "definition": "",
                 "hide": 0,
                 "includeAll": true,
                 "label": "Cluster",
@@ -2022,6 +2036,7 @@
                 "query": "label_values(cluster)",
                 "refresh": 1,
                 "regex": "",
+                "skipUrlSync": false,
                 "sort": 1,
                 "tagValuesQuery": null,
                 "tags": [],
@@ -2034,6 +2049,7 @@
                 "allValue": null,
                 "current": {},
                 "datasource": "Prometheus",
+                "definition": "",
                 "hide": 0,
                 "includeAll": false,
                 "label": "Replica Set",
@@ -2044,6 +2060,7 @@
                 "query": "label_values(mongodb_mongod_replset_my_state{cluster=~\"$cluster\"}, set)",
                 "refresh": 1,
                 "regex": "",
+                "skipUrlSync": false,
                 "sort": 1,
                 "tagValuesQuery": null,
                 "tags": [],
@@ -2056,16 +2073,42 @@
                 "allValue": null,
                 "current": {},
                 "datasource": "Prometheus",
+                "definition": "",
                 "hide": 0,
-                "includeAll": false,
+                "includeAll": true,
                 "label": "Instance",
                 "multi": false,
                 "multiFormat": "glob",
                 "name": "host",
                 "options": [],
-                "query": "label_values(mongodb_mongod_replset_my_state{cluster=~\"$cluster\", set=\"$replset\"}, instance)",
+                "query": "label_values(mongodb_mongod_replset_my_state{cluster=~\"$cluster\", set=\"$replset\"}, node_name)",
                 "refresh": 1,
                 "regex": "",
+                "skipUrlSync": false,
+                "sort": 1,
+                "tagValuesQuery": null,
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allFormat": "glob",
+                "allValue": null,
+                "current": {},
+                "datasource": "Prometheus",
+                "definition": "",
+                "hide": 0,
+                "includeAll": false,
+                "label": "Service",
+                "multi": false,
+                "multiFormat": "glob",
+                "name": "service",
+                "options": [],
+                "query": "label_values(mongodb_mongod_replset_my_state{cluster=~\"$cluster\",node_name=~\"$host\",set=\"$replset\"}, service_name)",
+                "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
                 "sort": 1,
                 "tagValuesQuery": null,
                 "tags": [],

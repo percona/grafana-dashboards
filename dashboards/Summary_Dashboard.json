@@ -8,10 +8,13 @@
                 "hide": false,
                 "iconColor": "#e0752d",
                 "limit": 100,
+                "matchAny": true,
                 "name": "PMM Annotations",
                 "showIn": 0,
                 "tags": [
-                    "pmm_annotation"
+                    "pmm_annotation",
+                    "$host",
+                    "$service"
                 ],
                 "type": "tags"
             },
@@ -29,11 +32,11 @@
             }
         ]
     },
-    "editable": true,
+    "editable": false,
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1529322588637,
+    "iteration": 1555312399374,
     "links": [
         {
             "icon": "dashboard",
@@ -45,7 +48,7 @@
             "targetBlank": false,
             "title": "Query Analytics",
             "type": "link",
-            "url": "/graph/dashboard/db/_pmm-query-analytics"
+            "url": "/graph/d/7w6Q3PJmz/pmm-query-analytics"
         },
         {
             "asDropdown": true,
@@ -100,17 +103,6 @@
             ],
             "targetBlank": false,
             "title": "HA",
-            "type": "dashboards"
-        },
-        {
-            "asDropdown": true,
-            "includeVars": true,
-            "keepTime": true,
-            "tags": [
-                "Cloud"
-            ],
-            "targetBlank": false,
-            "title": "Cloud",
             "type": "dashboards"
         },
         {
@@ -222,7 +214,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "clamp_max(((avg by (mode) ( (clamp_max(rate(node_cpu{instance=\"$host\",mode!=\"idle\"}[$interval]),1)) or (clamp_max(irate(node_cpu{instance=\"$host\",mode!=\"idle\"}[5m]),1)) ))*100 or (avg_over_time(node_cpu_average{instance=~\"$host\", mode!=\"total\", mode!=\"idle\"}[$interval]) or avg_over_time(node_cpu_average{instance=~\"$host\", mode!=\"total\", mode!=\"idle\"}[5m]))),100)",
+                    "expr": "clamp_max(((avg by (mode) ( (clamp_max(rate(node_cpu_seconds_total{node_name=\"$host\",mode!=\"idle\"}[$interval]),1)) or \n(clamp_max(irate(node_cpu_seconds_total{node_name=\"$host\",mode!=\"idle\"}[5m]),1)) ))*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$host\", mode!=\"total\", mode!=\"idle\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$host\", mode!=\"total\", mode!=\"idle\"}[5m]))),100)",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -231,7 +223,7 @@
                     "refId": "B"
                 },
                 {
-                    "expr": "clamp_max(max by () (sum  by (cpu) ( (clamp_max(rate(node_cpu{instance=\"$host\",mode!=\"idle\",mode!=\"iowait\"}[$interval]),1)) or (clamp_max(irate(node_cpu{instance=\"$host\",mode!=\"idle\",mode!=\"iowait\"}[5m]),1)) )),1)",
+                    "expr": "clamp_max(max by () (sum  by (cpu) ( (clamp_max(rate(node_cpu_seconds_total{node_name=\"$host\",mode!=\"idle\",mode!=\"iowait\"}[$interval]),1)) or \n(clamp_max(irate(node_cpu_seconds_total{node_name=\"$host\",mode!=\"idle\",mode!=\"iowait\"}[5m]),1)) )),1)",
                     "format": "time_series",
                     "hide": true,
                     "interval": "$interval",
@@ -242,6 +234,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "CPU Usage",
             "tooltip": {
@@ -362,7 +355,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "node_procs_running{instance=\"$host\"}",
+                    "expr": "node_procs_running{node_name=\"$host\"}",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -376,7 +369,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "node_procs_blocked{instance=\"$host\"}",
+                    "expr": "node_procs_blocked{node_name=\"$host\"}",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -389,6 +382,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Processes",
             "tooltip": {
@@ -397,7 +391,6 @@
                 "sort": 0,
                 "value_type": "individual"
             },
-            "transparent": false,
             "type": "graph",
             "xaxis": {
                 "buckets": null,
@@ -478,7 +471,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "sum(rate(node_network_receive_bytes{instance=\"$host\", device!=\"lo\"}[$interval])) or sum(irate(node_network_receive_bytes{instance=\"$host\", device!=\"lo\"}[5m])) or sum(max_over_time(rdsosmetrics_network_rx{instance=\"$host\"}[$interval])) or sum(max_over_time(rdsosmetrics_network_rx{instance=\"$host\"}[5m])) ",
+                    "expr": "sum(rate(node_network_receive_bytes_total{node_name=\"$host\", device!=\"lo\"}[$interval])) or \nsum(irate(node_network_receive_bytes_total{node_name=\"$host\", device!=\"lo\"}[5m])) or \nsum(max_over_time(rdsosmetrics_network_rx{node_name=\"$host\"}[$interval])) or \nsum(max_over_time(rdsosmetrics_network_rx{node_name=\"$host\"}[5m])) ",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -492,7 +485,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "sum(rate(node_network_transmit_bytes{instance=\"$host\", device!=\"lo\"}[$interval])) or sum(irate(node_network_transmit_bytes{instance=\"$host\", device!=\"lo\"}[5m])) or\nsum(max_over_time(rdsosmetrics_network_tx{instance=\"$host\"}[$interval])) or sum(max_over_time(rdsosmetrics_network_tx{instance=\"$host\"}[5m]))",
+                    "expr": "sum(rate(node_network_transmit_bytes_total{node_name=\"$host\", device!=\"lo\"}[$interval])) or \nsum(irate(node_network_transmit_bytes_total{node_name=\"$host\", device!=\"lo\"}[5m])) or\nsum(max_over_time(rdsosmetrics_network_tx{node_name=\"$host\"}[$interval])) or \nsum(max_over_time(rdsosmetrics_network_tx{node_name=\"$host\"}[5m]))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -506,6 +499,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Network Traffic",
             "tooltip": {
@@ -514,7 +508,6 @@
                 "sort": 0,
                 "value_type": "individual"
             },
-            "transparent": false,
             "type": "graph",
             "xaxis": {
                 "buckets": null,
@@ -609,7 +602,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(node_vmstat_pgpgin{instance=\"$host\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{instance=\"$host\"}[5m]) * 1024",
+                    "expr": "rate(node_vmstat_pgpgin{node_name=\"$host\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=\"$host\"}[5m]) * 1024",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -623,7 +616,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(node_vmstat_pgpgout{instance=\"$host\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{instance=\"$host\"}[5m]) * 1024",
+                    "expr": "rate(node_vmstat_pgpgout{node_name=\"$host\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=\"$host\"}[5m]) * 1024",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -636,6 +629,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "I/O Activity",
             "tooltip": {
@@ -644,7 +638,6 @@
                 "sort": 0,
                 "value_type": "individual"
             },
-            "transparent": false,
             "type": "graph",
             "xaxis": {
                 "buckets": null,
@@ -724,7 +717,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "(rate(node_disk_read_time_ms{device!~\"dm-.+\", instance=\"$host\"}[$interval]) / rate(node_disk_reads_completed{device!~\"dm-.+\", instance=\"$host\"}[$interval])) or (irate(node_disk_read_time_ms{device!~\"dm-.+\", instance=\"$host\"}[5m]) / irate(node_disk_reads_completed{device!~\"dm-.+\", instance=\"$host\"}[5m])) or avg_over_time(aws_rds_read_latency_average{instance=\"$host\"}[$interval]) or avg_over_time(aws_rds_read_latency_average{instance=\"$host\"}[5m])",
+                    "expr": "(rate(node_disk_read_time_seconds_total{device!~\"dm-.+\", node_name=\"$host\"}[$interval]) / \nrate(node_disk_reads_completed_total{device!~\"dm-.+\", node_name=\"$host\"}[$interval])) or \n(irate(node_disk_read_time_seconds_total{device!~\"dm-.+\", node_name=\"$host\"}[5m]) / \nirate(node_disk_reads_completed_total{device!~\"dm-.+\", node_name=\"$host\"}[5m])) or \navg_over_time(aws_rds_read_latency_average{node_name=\"$host\"}[$interval])/1000 or \navg_over_time(aws_rds_read_latency_average{node_name=\"$host\"}[5m])/1000",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -738,7 +731,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "(rate(node_disk_write_time_ms{device!~\"dm-.+\", instance=\"$host\"}[$interval]) / rate(node_disk_writes_completed{device!~\"dm-.+\", instance=\"$host\"}[$interval])) or (irate(node_disk_write_time_ms{device!~\"dm-.+\", instance=\"$host\"}[5m]) / irate(node_disk_writes_completed{device!~\"dm-.+\", instance=\"$host\"}[5m])) or (avg_over_time(aws_rds_write_latency_average{instance=\"$host\"}[$interval]) or avg_over_time(aws_rds_write_latency_average{instance=\"$host\"}[5m]))",
+                    "expr": "(rate(node_disk_write_time_seconds_total{device!~\"dm-.+\", node_name=\"$host\"}[$interval]) / \nrate(node_disk_writes_completed_total{device!~\"dm-.+\", node_name=\"$host\"}[$interval])) or \n(irate(node_disk_write_time_seconds_total{device!~\"dm-.+\", node_name=\"$host\"}[5m]) / \nirate(node_disk_writes_completed_total{device!~\"dm-.+\", node_name=\"$host\"}[5m])) or \n(avg_over_time(aws_rds_write_latency_average{node_name=\"$host\"}[$interval])/1000 or \navg_over_time(aws_rds_write_latency_average{node_name=\"$host\"}[5m])/1000)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -751,6 +744,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Disk Latency",
             "tooltip": {
@@ -759,7 +753,6 @@
                 "sort": 0,
                 "value_type": "individual"
             },
-            "transparent": false,
             "type": "graph",
             "xaxis": {
                 "buckets": null,
@@ -770,7 +763,7 @@
             },
             "yaxes": [
                 {
-                    "format": "ms",
+                    "format": "s",
                     "label": "",
                     "logBase": 2,
                     "max": null,
@@ -778,7 +771,7 @@
                     "show": true
                 },
                 {
-                    "format": "ms",
+                    "format": "s",
                     "label": "",
                     "logBase": 1,
                     "max": null,
@@ -824,6 +817,7 @@
                 "y": 25
             },
             "id": 35,
+            "interval": "",
             "legend": {
                 "alignAsTable": true,
                 "avg": true,
@@ -852,11 +846,11 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(mysql_global_status_queries{instance=\"$host\"}[$interval]) or irate(mysql_global_status_queries{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_global_status_queries{node_name=\"$host\"}[$interval]) or irate(mysql_global_status_queries{node_name=\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
-                    "legendFormat": "Queries",
+                    "legendFormat": "Queries - {{service_name}}",
                     "metric": "",
                     "refId": "A",
                     "step": 300
@@ -864,6 +858,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "MySQL Queries",
             "tooltip": {
@@ -921,6 +916,7 @@
             },
             "height": "270px",
             "id": 34,
+            "interval": "",
             "legend": {
                 "alignAsTable": true,
                 "avg": true,
@@ -951,11 +947,11 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(mysql_global_status_innodb_row_ops_total{instance=\"$host\"}[$interval]) or irate(mysql_global_status_innodb_row_ops_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_global_status_innodb_row_ops_total{node_name=\"$host\"}[$interval]) or \nirate(mysql_global_status_innodb_row_ops_total{node_name=\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
-                    "legendFormat": "Rows {{ operation }}",
+                    "legendFormat": "Rows {{ operation }} - {{service_name}}",
                     "metric": "",
                     "refId": "A",
                     "step": 300
@@ -963,6 +959,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "InnoDB Row Operations",
             "tooltip": {
@@ -1033,6 +1030,7 @@
                 "y": 33
             },
             "id": 32,
+            "interval": "",
             "legend": {
                 "alignAsTable": true,
                 "avg": true,
@@ -1065,12 +1063,12 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "topk(5, rate(mysql_global_status_commands_total{instance=\"$host\"}[$interval])>0) or topk(5, irate(mysql_global_status_commands_total{instance=\"$host\"}[5m])>0)",
+                    "expr": "topk(5, rate(mysql_global_status_commands_total{node_name=\"$host\"}[$interval])>0) or \ntopk(5, irate(mysql_global_status_commands_total{node_name=\"$host\"}[5m])>0)",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
-                    "legendFormat": "Com_{{ command }}",
+                    "legendFormat": "Com_{{ command }} - {{service_name}}",
                     "metric": "",
                     "refId": "B",
                     "step": 300
@@ -1078,6 +1076,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Top MySQL Commands",
             "tooltip": {
@@ -1179,11 +1178,11 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "topk(5, rate(mysql_global_status_handlers_total{instance=\"$host\"}[$interval])>0) or topk(5, irate(mysql_global_status_handlers_total{instance=\"$host\"}[5m])>0)",
+                    "expr": "topk(5, rate(mysql_global_status_handlers_total{node_name=\"$host\"}[$interval])>0) or \ntopk(5, irate(mysql_global_status_handlers_total{node_name=\"$host\"}[5m])>0)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
-                    "legendFormat": "{{ handler }}",
+                    "legendFormat": "{{ handler }} - {{service_name}}",
                     "metric": "",
                     "refId": "J",
                     "step": 300
@@ -1191,6 +1190,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Top MySQL Handlers",
             "tooltip": {
@@ -1230,7 +1230,7 @@
         }
     ],
     "refresh": "1m",
-    "schemaVersion": 16,
+    "schemaVersion": 18,
     "style": "dark",
     "tags": [
         "Percona",
@@ -1243,10 +1243,7 @@
                 "auto": true,
                 "auto_count": 200,
                 "auto_min": "1s",
-                "current": {
-                    "text": "auto",
-                    "value": "$__auto_interval_interval"
-                },
+                "current": {},
                 "datasource": "Prometheus",
                 "hide": 0,
                 "includeAll": false,
@@ -1298,6 +1295,7 @@
                 ],
                 "query": "1s,5s,1m,5m,1h,6h,1d",
                 "refresh": 2,
+                "skipUrlSync": false,
                 "type": "interval"
             },
             {
@@ -1305,6 +1303,7 @@
                 "allValue": null,
                 "current": {},
                 "datasource": "Prometheus",
+                "definition": "label_values({__name__=~\"node_load1|process_start_time_seconds\"},node_name)",
                 "hide": 0,
                 "includeAll": false,
                 "label": "Host",
@@ -1312,14 +1311,37 @@
                 "multiFormat": "regex values",
                 "name": "host",
                 "options": [],
-                "query": "label_values(instance)",
+                "query": "label_values({__name__=~\"node_load1|process_start_time_seconds\"},node_name)",
                 "refresh": 1,
                 "refresh_on_load": false,
                 "regex": "",
+                "skipUrlSync": false,
                 "sort": 1,
                 "tagValuesQuery": "instance",
                 "tags": [],
                 "tagsQuery": "up",
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allValue": null,
+                "current": {},
+                "datasource": "Prometheus",
+                "definition": "label_values({__name__=~\"postgres_exporter_build_info|mysqld_exporter_build_info|mongodb_exporter_build_info|proxysql_exporter_build_info\",node_name=~\"$host\"}, service_name)",
+                "hide": 0,
+                "includeAll": true,
+                "label": "Service",
+                "multi": true,
+                "name": "service",
+                "options": [],
+                "query": "label_values({__name__=~\"postgres_exporter_build_info|mysqld_exporter_build_info|mongodb_exporter_build_info|proxysql_exporter_build_info\",node_name=~\"$host\"}, service_name)",
+                "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
                 "type": "query",
                 "useTags": false
             }

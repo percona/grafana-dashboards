@@ -8,10 +8,13 @@
                 "hide": false,
                 "iconColor": "#e0752d",
                 "limit": 100,
+                "matchAny": true,
                 "name": "PMM Annotations",
                 "showIn": 0,
                 "tags": [
-                    "pmm_annotation"
+                    "pmm_annotation",
+                    "$host",
+                    "$service"
                 ],
                 "type": "tags"
             },
@@ -29,11 +32,11 @@
             }
         ]
     },
-    "editable": true,
+    "editable": false,
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1541583773344,
+    "iteration": 1553588305920,
     "links": [
         {
             "icon": "dashboard",
@@ -45,7 +48,7 @@
             "targetBlank": false,
             "title": "Query Analytics",
             "type": "link",
-            "url": "/graph/dashboard/db/_pmm-query-analytics"
+            "url": "/graph/d/7w6Q3PJmz/pmm-query-analytics"
         },
         {
             "asDropdown": true,
@@ -107,17 +110,6 @@
             "includeVars": true,
             "keepTime": true,
             "tags": [
-                "Cloud"
-            ],
-            "targetBlank": false,
-            "title": "Cloud",
-            "type": "dashboards"
-        },
-        {
-            "asDropdown": true,
-            "includeVars": true,
-            "keepTime": true,
-            "tags": [
                 "Insight"
             ],
             "targetBlank": false,
@@ -144,7 +136,7 @@
             "dashes": false,
             "datasource": "Prometheus",
             "decimals": 1,
-            "description": "Shows how many times a command is executed per second on average during the selected interval.",
+            "description": "Shows the average number of commands per second that have been run during the selected interval. These commands are broken out by type such as `insert`, `delete`, `update`, etc. On a secondary node, this will show the number of replicated commands.",
             "editable": true,
             "error": false,
             "fill": 2,
@@ -167,7 +159,7 @@
                 "alignAsTable": true,
                 "avg": true,
                 "current": false,
-                "hideZero": true,
+                "hideZero": false,
                 "max": true,
                 "min": true,
                 "rightSide": true,
@@ -181,6 +173,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -191,7 +184,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(mongodb_mongod_op_counters_total{instance=\"$host\", type!=\"command\"}[$interval]) or \nirate(mongodb_mongod_op_counters_total{instance=\"$host\", type!=\"command\"}[5m]) or \nrate(mongodb_mongos_op_counters_total{instance=\"$host\", type!=\"command\"}[$interval]) or \nirate(mongodb_mongos_op_counters_total{instance=\"$host\", type!=\"command\"}[5m])",
+                    "expr": "rate(mongodb_mongod_op_counters_total{service_name=\"$service\", type!=\"command\"}[$interval]) or \nirate(mongodb_mongod_op_counters_total{service_name=\"$service\", type!=\"command\"}[5m]) or \nrate(mongodb_mongos_op_counters_total{service_name=\"$service\", type!=\"command\"}[$interval]) or \nirate(mongodb_mongos_op_counters_total{service_name=\"$service\", type!=\"command\"}[5m])",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -201,7 +194,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mongodb_mongod_op_counters_repl_total{instance=\"$host\", type!~\"(command|query|getmore)\"}[$interval]) or \nirate(mongodb_mongod_op_counters_repl_total{instance=\"$host\", type!~\"(command|query|getmore)\"}[5m]) or\nrate(mongodb_mongos_op_counters_repl_total{instance=\"$host\", type!~\"(command|query|getmore)\"}[$interval]) or \nirate(mongodb_mongos_op_counters_repl_total{instance=\"$host\", type!~\"(command|query|getmore)\"}[5m])",
+                    "expr": "rate(mongodb_mongod_op_counters_repl_total{service_name=\"$service\", type!~\"(command|query|getmore)\"}[$interval]) or \nirate(mongodb_mongod_op_counters_repl_total{service_name=\"$service\", type!~\"(command|query|getmore)\"}[5m]) or\nrate(mongodb_mongos_op_counters_repl_total{service_name=\"$service\", type!~\"(command|query|getmore)\"}[$interval]) or \nirate(mongodb_mongos_op_counters_repl_total{service_name=\"$service\", type!~\"(command|query|getmore)\"}[5m])",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -211,7 +204,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mongodb_mongod_metrics_ttl_deleted_documents_total{instance=\"$host\"}[$interval]) or \nirate(mongodb_mongod_metrics_ttl_deleted_documents_total{instance=\"$host\"}[5m]) or\nrate(mongodb_mongos_metrics_ttl_deleted_documents_total{instance=\"$host\"}[$interval]) or \nirate(mongodb_mongos_metrics_ttl_deleted_documents_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mongodb_mongod_metrics_ttl_deleted_documents_total{service_name=\"$service\"}[$interval]) or \nirate(mongodb_mongod_metrics_ttl_deleted_documents_total{service_name=\"$service\"}[5m]) or\nrate(mongodb_mongos_metrics_ttl_deleted_documents_total{service_name=\"$service\"}[$interval]) or \nirate(mongodb_mongos_metrics_ttl_deleted_documents_total{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -223,6 +216,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Command Operations",
             "tooltip": {
@@ -274,7 +268,7 @@
             "dashes": false,
             "datasource": "Prometheus",
             "decimals": null,
-            "description": "Keep in mind the hard limit on the maximum number of connections set by your distribution.",
+            "description": "This shows the number of active connections on the server. Keep in mind the hard limit on the maximum number of connections set by your distribution.\n\nYou can read more about the [connection numbers](https://docs.mongodb.com/manual/administration/analyzing-mongodb-performance/#number-of-connections).",
             "editable": true,
             "error": false,
             "fill": 2,
@@ -311,6 +305,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -321,7 +316,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "mongodb_mongod_connections{instance=\"$host\", state=\"current\"} or\nmongodb_mongos_connections{instance=\"$host\", state=\"current\"}",
+                    "expr": "mongodb_mongod_connections{service_name=\"$service\", state=\"current\"} or\nmongodb_mongos_connections{service_name=\"$service\", state=\"current\"} or\nmongodb_connections{service_name=\"$service\", state=\"current\"}",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -333,6 +328,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Connections",
             "tooltip": {
@@ -384,7 +380,7 @@
             "dashes": false,
             "datasource": "Prometheus",
             "decimals": null,
-            "description": "Helps identify why connections are increasing. Shows active cursors compared to cursors being automatically killed after 10 minutes due to an application not closing the connection.",
+            "description": "This shows the number of open cursors for each shard in the cluster. A cursor in MongoDB is a pointer to the result of a given query that can be iterated over. By default a cursor times out after 10 minutes.",
             "editable": true,
             "error": false,
             "fill": 2,
@@ -408,7 +404,7 @@
                 "alignAsTable": true,
                 "avg": true,
                 "current": false,
-                "hideZero": true,
+                "hideZero": false,
                 "max": true,
                 "min": true,
                 "rightSide": false,
@@ -422,6 +418,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -432,7 +429,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "mongodb_mongod_metrics_cursor_open{instance=\"$host\"} or\nmongodb_mongod_cursors{instance=\"$host\"} or\nmongodb_mongos_metrics_cursor_open{instance=\"$host\"} or \nmongodb_mongos_cursors{instance=\"$host\"}",
+                    "expr": "mongodb_mongod_metrics_cursor_open{service_name=\"$service\"} or\nmongodb_mongod_cursors{service_name=\"$service\"} or\nmongodb_mongos_metrics_cursor_open{service_name=\"$service\"} or \nmongodb_mongos_cursors{service_name=\"$service\"}",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -444,6 +441,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Cursors",
             "tooltip": {
@@ -495,7 +493,7 @@
             "dashes": false,
             "datasource": "Prometheus",
             "decimals": null,
-            "description": "When used in combination with 'Command Operations', this graph can help identify write amplification. For example, when one insert or update command actually inserts or updates hundreds, thousands, or even millions of documents.",
+            "description": "This panel shows the actual number of documents that were affected on average during the given time period. A single *update* command for example could perform updates on hundreds or thousands of documents. If these counters seem high, you might want to check your statements to make sure they are properly operating against the documents that they should.",
             "editable": true,
             "error": false,
             "fill": 2,
@@ -519,7 +517,7 @@
                 "alignAsTable": true,
                 "avg": true,
                 "current": false,
-                "hideZero": true,
+                "hideZero": false,
                 "max": true,
                 "min": true,
                 "show": true,
@@ -532,6 +530,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -542,7 +541,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(mongodb_mongod_metrics_document_total{instance=\"$host\"}[$interval]) or \nirate(mongodb_mongod_metrics_document_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mongodb_mongod_metrics_document_total{service_name=\"$service\"}[$interval]) or \nirate(mongodb_mongod_metrics_document_total{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -554,6 +553,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Document Operations",
             "tooltip": {
@@ -605,7 +605,7 @@
             "dashes": false,
             "datasource": "Prometheus",
             "decimals": null,
-            "description": "Any number of queued operations for long periods of time is an indication of possible issues. Find the cause and fix it before requests get stuck in the queue.",
+            "description": "This shows the number of read and write operations that are waiting due to for a lock. Consistently small values here should not be of concern, but if the values are consistently high the queries causing long lock times should be tracked down and fixed.",
             "editable": true,
             "error": false,
             "fill": 2,
@@ -642,6 +642,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -652,7 +653,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "mongodb_mongod_global_lock_current_queue{instance=\"$host\"}",
+                    "expr": "mongodb_mongod_global_lock_current_queue{service_name=\"$service\"}",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -664,6 +665,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Queued Operations",
             "tooltip": {
@@ -715,6 +717,7 @@
             "dashes": false,
             "datasource": "Prometheus",
             "decimals": 2,
+            "description": "This panel shows how efficient the queries running against this instance are. If the *INDEX* counter is low while queries are running it means you could be missing indexes that would support your queries. If the *DOCUMENT* counter is high it means that there are a lot of documents being returned per query and you might need to check to make sure your queries are returning only the data they need to.",
             "editable": true,
             "error": false,
             "fill": 2,
@@ -749,7 +752,8 @@
             "lines": true,
             "linewidth": 2,
             "links": [],
-            "nullPointMode": "null",
+            "nullPointMode": "null as zero",
+            "paceLength": 10,
             "percentage": true,
             "pointradius": 5,
             "points": false,
@@ -760,7 +764,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "sum(rate(mongodb_mongod_metrics_document_total{instance=\"$host\", state=\"returned\"}[$interval]))/\nsum(rate(mongodb_mongod_metrics_query_executor_total{instance=\"$host\", state=\"scanned_objects\"}[$interval])) \nor\nsum(irate(mongodb_mongod_metrics_document_total{instance=\"$host\", state=\"returned\"}[5m]))/\nsum(irate(mongodb_mongod_metrics_query_executor_total{instance=\"$host\", state=\"scanned_objects\"}[5m]))",
+                    "expr": "sum(rate(mongodb_mongod_metrics_document_total{service_name=\"$service\", state=\"returned\"}[$interval]))/\nsum(rate(mongodb_mongod_metrics_query_executor_total{service_name=\"$service\", state=\"scanned_objects\"}[$interval])) \nor\nsum(irate(mongodb_mongod_metrics_document_total{service_name=\"$service\", state=\"returned\"}[5m]))/\nsum(irate(mongodb_mongod_metrics_query_executor_total{service_name=\"$service\", state=\"scanned_objects\"}[5m]))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -770,7 +774,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "(sum(rate(mongodb_mongod_metrics_query_executor_total{instance=\"$host\", state=\"scanned\"}[$interval]))/\nsum(rate(mongodb_mongod_metrics_query_executor_total{instance=\"$host\", state=\"scanned_objects\"}[$interval])) \nor\nsum(irate(mongodb_mongod_metrics_query_executor_total{instance=\"$host\", state=\"scanned\"}[5m]))/\nsum(irate(mongodb_mongod_metrics_query_executor_total{instance=\"$host\", state=\"scanned_objects\"}[5m])))",
+                    "expr": "(sum(rate(mongodb_mongod_metrics_query_executor_total{service_name=\"$service\", state=\"scanned\"}[$interval]))/\nsum(rate(mongodb_mongod_metrics_query_executor_total{service_name=\"$service\", state=\"scanned_objects\"}[$interval])) \nor\nsum(irate(mongodb_mongod_metrics_query_executor_total{service_name=\"$service\", state=\"scanned\"}[5m]))/\nsum(irate(mongodb_mongod_metrics_query_executor_total{service_name=\"$service\", state=\"scanned_objects\"}[5m])))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -782,6 +786,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Query Efficiency",
             "tooltip": {
@@ -833,6 +838,7 @@
             "dashes": false,
             "datasource": "Prometheus",
             "decimals": null,
+            "description": "This panel shows the number of objects (both data (scanned_objects) and index (scanned)) as well as the number of documents that were moved to a new location due to the size of the document growing. Moved documents only apply to the MMAPv1 storage engine.",
             "editable": true,
             "error": false,
             "fill": 2,
@@ -848,7 +854,7 @@
                 "alignAsTable": true,
                 "avg": true,
                 "current": false,
-                "hideZero": true,
+                "hideZero": false,
                 "max": true,
                 "min": true,
                 "rightSide": false,
@@ -861,7 +867,8 @@
             "lines": true,
             "linewidth": 2,
             "links": [],
-            "nullPointMode": "null",
+            "nullPointMode": "null as zero",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -872,7 +879,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(mongodb_mongod_metrics_query_executor_total{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_metrics_query_executor_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mongodb_mongod_metrics_query_executor_total{service_name=\"$service\"}[$interval]) or \nirate(mongodb_mongod_metrics_query_executor_total{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -882,7 +889,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mongodb_mongod_metrics_record_moves_total{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_metrics_record_moves_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mongodb_mongod_metrics_record_moves_total{service_name=\"$service\"}[$interval]) or irate(mongodb_mongod_metrics_record_moves_total{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -893,6 +900,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Scanned and Moved Objects",
             "tooltip": {
@@ -938,7 +946,7 @@
             "dashes": false,
             "datasource": "Prometheus",
             "decimals": null,
-            "description": "This is useful for write-heavy workloads to understand how long it takes to verify writes and how many concurrent writes are occurring.",
+            "description": "This is useful for write-heavy workloads to understand how long it takes to verify writes and how many concurrent writes are occurring.\n\nYou can read more about [getLastError](https://docs.mongodb.com/manual/reference/command/getLastError/).",
             "editable": true,
             "error": false,
             "fill": 2,
@@ -973,6 +981,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -983,7 +992,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(mongodb_mongod_metrics_get_last_error_wtime_total_milliseconds{instance=\"$host\"}[$interval]) or \nirate(mongodb_mongod_metrics_get_last_error_wtime_total_milliseconds{instance=\"$host\"}[5m]) or\nrate(mongodb_mongos_metrics_get_last_error_wtime_total_milliseconds{instance=\"$host\"}[$interval]) or \nirate(mongodb_mongos_metrics_get_last_error_wtime_total_milliseconds{instance=\"$host\"}[5m])",
+                    "expr": "rate(mongodb_mongod_metrics_get_last_error_wtime_total_milliseconds{service_name=\"$service\"}[$interval]) or \nirate(mongodb_mongod_metrics_get_last_error_wtime_total_milliseconds{service_name=\"$service\"}[5m]) or\nrate(mongodb_mongos_metrics_get_last_error_wtime_total_milliseconds{service_name=\"$service\"}[$interval]) or \nirate(mongodb_mongos_metrics_get_last_error_wtime_total_milliseconds{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -995,6 +1004,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "getLastError Write Time",
             "tooltip": {
@@ -1046,7 +1056,7 @@
             "dashes": false,
             "datasource": "Prometheus",
             "decimals": null,
-            "description": "This is useful for write-heavy workloads to understand how long it takes to verify writes and how many concurrent writes are occurring.",
+            "description": "This is useful for write-heavy workloads to understand how long it takes to verify writes and how many concurrent writes are occurring.\n\nYou can read more about [getLastError](https://docs.mongodb.com/manual/reference/command/getLastError/).",
             "editable": true,
             "error": false,
             "fill": 2,
@@ -1070,7 +1080,7 @@
                 "alignAsTable": true,
                 "avg": true,
                 "current": false,
-                "hideZero": true,
+                "hideZero": false,
                 "max": true,
                 "min": true,
                 "show": true,
@@ -1083,6 +1093,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -1093,7 +1104,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(mongodb_mongod_metrics_get_last_error_wtime_num_total{instance=\"$host\"}[$interval]) or \nirate(mongodb_mongod_metrics_get_last_error_wtime_num_total{instance=\"$host\"}[5m]) or\nrate(mongodb_mongos_metrics_get_last_error_wtime_num_total{instance=\"$host\"}[$interval]) or \nirate(mongodb_mongos_metrics_get_last_error_wtime_num_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mongodb_mongod_metrics_get_last_error_wtime_num_total{service_name=\"$service\"}[$interval]) or \nirate(mongodb_mongod_metrics_get_last_error_wtime_num_total{service_name=\"$service\"}[5m]) or\nrate(mongodb_mongos_metrics_get_last_error_wtime_num_total{service_name=\"$service\"}[$interval]) or \nirate(mongodb_mongos_metrics_get_last_error_wtime_num_total{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -1103,7 +1114,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mongodb_mongod_metrics_get_last_error_wtimeouts_total{instance=\"$host\"}[$interval]) or\nirate(mongodb_mongod_metrics_get_last_error_wtimeouts_total{instance=\"$host\"}[5m]) or\nrate(mongodb_mongos_metrics_get_last_error_wtimeouts_total{instance=\"$host\"}[$interval]) or\nirate(mongodb_mongos_metrics_get_last_error_wtimeouts_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mongodb_mongod_metrics_get_last_error_wtimeouts_total{service_name=\"$service\"}[$interval]) or\nirate(mongodb_mongod_metrics_get_last_error_wtimeouts_total{service_name=\"$service\"}[5m]) or\nrate(mongodb_mongos_metrics_get_last_error_wtimeouts_total{service_name=\"$service\"}[$interval]) or\nirate(mongodb_mongos_metrics_get_last_error_wtimeouts_total{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -1115,6 +1126,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "getLastError Write Operations",
             "tooltip": {
@@ -1166,7 +1178,7 @@
             "dashes": false,
             "datasource": "Prometheus",
             "decimals": null,
-            "description": "Asserts are not important by themselves, but you can correlate spikes with other graphs.",
+            "description": "This panel shows the number of assert events per second on average over the given time period. In most cases assertions are trivial, but you would want to check your log files if this counter spikes or is consistently high.",
             "editable": true,
             "error": false,
             "fill": 2,
@@ -1190,7 +1202,7 @@
                 "alignAsTable": true,
                 "avg": true,
                 "current": false,
-                "hideZero": true,
+                "hideZero": false,
                 "max": true,
                 "min": true,
                 "rightSide": false,
@@ -1204,6 +1216,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -1214,7 +1227,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(mongodb_mongod_asserts_total{instance=\"$host\"}[$interval]) or \nirate(mongodb_mongod_asserts_total{instance=\"$host\"}[5m]) or\nrate(mongodb_mongos_asserts_total{instance=\"$host\"}[$interval]) or \nirate(mongodb_mongos_asserts_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mongodb_mongod_asserts_total{service_name=\"$service\"}[$interval]) or \nirate(mongodb_mongod_asserts_total{service_name=\"$service\"}[5m]) or\nrate(mongodb_mongos_asserts_total{service_name=\"$service\"}[$interval]) or \nirate(mongodb_mongos_asserts_total{service_name=\"$service\"}[5m]) or\nrate(mongodb_asserts_total{service_name=\"$service\"}[$interval]) or \nirate(mongodb_asserts_total{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -1226,6 +1239,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Assert Events",
             "tooltip": {
@@ -1277,7 +1291,7 @@
             "dashes": false,
             "datasource": "Prometheus",
             "decimals": null,
-            "description": "Page faults indicate that requests are processed from disk either because an index is missing or there is not enough memory for the data set. Consider increasing memory or sharding out.",
+            "description": "Page faults indicate that requests are being processed from disk rather than from memory. This is due to there not being enough memory for the current working set. A low number here isn't generally a concern, but if this counter is consistently high, first check to make sure you have indexes on your collections to support the queries you normally run. If the counter stays high, you should consider increasing the server's memory or look into sharding your database.\n\nYou can read more about [Page Faults](https://docs.mongodb.com/manual/administration/analyzing-mongodb-performance/#page-faults).",
             "editable": true,
             "error": false,
             "fill": 2,
@@ -1313,6 +1327,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -1323,7 +1338,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(mongodb_mongod_extra_info_page_faults_total{instance=\"$host\"}[$interval]) or \nirate(mongodb_mongod_extra_info_page_faults_total{instance=\"$host\"}[5m]) or\nrate(mongodb_mongos_extra_info_page_faults_total{instance=\"$host\"}[$interval]) or \nirate(mongodb_mongos_extra_info_page_faults_total{instance=\"$host\"}[5m])",
+                    "expr": "rate(mongodb_mongod_extra_info_page_faults_total{service_name=\"$service\"}[$interval]) or \nirate(mongodb_mongod_extra_info_page_faults_total{service_name=\"$service\"}[5m]) or\nrate(mongodb_mongos_extra_info_page_faults_total{service_name=\"$service\"}[$interval]) or \nirate(mongodb_mongos_extra_info_page_faults_total{service_name=\"$service\"}[5m]) or\nrate(mongodb_extra_info_page_faults_total{service_name=\"$service\"}[$interval]) or \nirate(mongodb_extra_info_page_faults_total{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -1335,6 +1350,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Page Faults",
             "tooltip": {
@@ -1381,7 +1397,7 @@
         }
     ],
     "refresh": "1m",
-    "schemaVersion": 16,
+    "schemaVersion": 18,
     "style": "dark",
     "tags": [
         "MongoDB",
@@ -1394,10 +1410,7 @@
                 "auto": true,
                 "auto_count": 200,
                 "auto_min": "1s",
-                "current": {
-                    "text": "auto",
-                    "value": "$__auto_interval_interval"
-                },
+                "current": {},
                 "datasource": "Prometheus",
                 "hide": 0,
                 "includeAll": false,
@@ -1449,6 +1462,7 @@
                 ],
                 "query": "1s,5s,1m,5m,1h,6h,1d",
                 "refresh": 2,
+                "skipUrlSync": false,
                 "type": "interval"
             },
             {
@@ -1456,6 +1470,7 @@
                 "allValue": null,
                 "current": {},
                 "datasource": "Prometheus",
+                "definition": "",
                 "hide": 0,
                 "includeAll": true,
                 "label": "Cluster",
@@ -1463,9 +1478,10 @@
                 "multiFormat": "glob",
                 "name": "cluster",
                 "options": [],
-                "query": "label_values(cluster)",
+                "query": "label_values(mongodb_up,cluster)",
                 "refresh": 1,
                 "regex": "",
+                "skipUrlSync": false,
                 "sort": 1,
                 "tagValuesQuery": null,
                 "tags": [],
@@ -1478,16 +1494,42 @@
                 "allValue": null,
                 "current": {},
                 "datasource": "Prometheus",
+                "definition": "",
                 "hide": 0,
-                "includeAll": false,
-                "label": "Instance",
+                "includeAll": true,
+                "label": "Host",
                 "multi": false,
                 "multiFormat": "glob",
                 "name": "host",
                 "options": [],
-                "query": "label_values({__name__=~\"mongodb_mongod_connections{cluster=~\\\"$cluster\\\"}|mongodb_up\"}, instance)",
+                "query": "label_values(mongodb_up{cluster=~\"$cluster\"}, node_name)",
                 "refresh": 1,
                 "regex": "",
+                "skipUrlSync": false,
+                "sort": 1,
+                "tagValuesQuery": null,
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allFormat": "glob",
+                "allValue": null,
+                "current": {},
+                "datasource": "Prometheus",
+                "definition": "",
+                "hide": 0,
+                "includeAll": false,
+                "label": "Service",
+                "multi": false,
+                "multiFormat": "glob",
+                "name": "service",
+                "options": [],
+                "query": "label_values(mongodb_up{cluster=~\"$cluster\",node_name=~\"$host\"}, service_name)",
+                "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
                 "sort": 1,
                 "tagValuesQuery": null,
                 "tags": [],

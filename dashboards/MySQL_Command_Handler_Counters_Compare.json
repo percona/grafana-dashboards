@@ -8,10 +8,13 @@
                 "hide": false,
                 "iconColor": "#e0752d",
                 "limit": 100,
+                "matchAny": true,
                 "name": "PMM Annotations",
                 "showIn": 0,
                 "tags": [
-                    "pmm_annotation"
+                    "pmm_annotation",
+                    "$host",
+                    "$service"
                 ],
                 "type": "tags"
             },
@@ -29,11 +32,11 @@
             }
         ]
     },
-    "editable": true,
+    "editable": false,
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1525433816894,
+    "iteration": 1552402341763,
     "links": [
         {
             "icon": "dashboard",
@@ -45,7 +48,7 @@
             "targetBlank": false,
             "title": "Query Analytics",
             "type": "link",
-            "url": "/graph/dashboard/db/_pmm-query-analytics"
+            "url": "/graph/d/7w6Q3PJmz/pmm-query-analytics"
         },
         {
             "asDropdown": true,
@@ -107,17 +110,6 @@
             "includeVars": true,
             "keepTime": true,
             "tags": [
-                "Cloud"
-            ],
-            "targetBlank": false,
-            "title": "Cloud",
-            "type": "dashboards"
-        },
-        {
-            "asDropdown": true,
-            "includeVars": true,
-            "keepTime": true,
-            "tags": [
                 "Insight"
             ],
             "targetBlank": false,
@@ -162,11 +154,32 @@
             "height": "50px",
             "id": 12,
             "links": [],
-            "minSpan": 4,
-            "mode": "markdown",
-            "repeat": "host",
+            "maxPerRow": 6,
+            "mode": "html",
+            "repeat": "service",
             "repeatDirection": "h",
-            "title": "$host",
+            "title": "$service",
+            "transparent": true,
+            "type": "text"
+        },
+        {
+            "content": "",
+            "gridPos": {
+                "h": 1,
+                "w": 12,
+                "x": 12,
+                "y": 1
+            },
+            "height": "50px",
+            "id": 262,
+            "links": [],
+            "maxPerRow": 6,
+            "mode": "html",
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 12,
+            "title": "$service",
             "transparent": true,
             "type": "text"
         },
@@ -211,7 +224,7 @@
             "id": 258,
             "panels": [],
             "repeat": "command",
-            "title": "$host - $command",
+            "title": "$service- $command",
             "type": "row"
         },
         {
@@ -245,13 +258,15 @@
             "lines": true,
             "linewidth": 2,
             "links": [],
-            "minSpan": 4,
+            "maxPerRow": 6,
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 1,
             "points": false,
             "renderer": "flot",
-            "repeat": "host",
+            "repeat": "service",
+            "repeatDirection": "h",
             "seriesOverrides": [
                 {
                     "alias": "/.*/",
@@ -263,7 +278,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(mysql_global_status_commands_total{command=\"$command\", instance=\"$host\"}[$interval]) or irate(mysql_global_status_commands_total{command=\"$command\", instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_global_status_commands_total{command=\"$command\", service_name=\"$service\"}[$interval]) or irate(mysql_global_status_commands_total{command=\"$command\", service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -273,8 +288,9 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
-            "title": "$host - $command",
+            "title": "$service - $command",
             "tooltip": {
                 "shared": true,
                 "sort": 0,
@@ -306,7 +322,114 @@
                     "min": null,
                     "show": false
                 }
-            ]
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {
+                "insert": "#447ebc",
+                "select": "#447ebc"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": null,
+            "fill": 2,
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 12,
+                "y": 6
+            },
+            "id": 263,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "maxPerRow": 6,
+            "nullPointMode": "null",
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 1,
+            "points": false,
+            "renderer": "flot",
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 1,
+            "seriesOverrides": [
+                {
+                    "alias": "/.*/",
+                    "color": "#614d93"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(mysql_global_status_commands_total{command=\"$command\", service_name=\"$service\"}[$interval]) or irate(mysql_global_status_commands_total{command=\"$command\", service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{command}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "$service - $command",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": null,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
         },
         {
             "collapsed": false,
@@ -349,7 +472,7 @@
             "id": 261,
             "panels": [],
             "repeat": "handler",
-            "title": "$host - $handler",
+            "title": "$service - $handler",
             "type": "row"
         },
         {
@@ -382,13 +505,15 @@
             "lines": true,
             "linewidth": 2,
             "links": [],
-            "minSpan": 4,
+            "maxPerRow": 6,
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
             "renderer": "flot",
-            "repeat": "host",
+            "repeat": "service",
+            "repeatDirection": "h",
             "seriesOverrides": [
                 {
                     "alias": "/.*/",
@@ -400,7 +525,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(mysql_global_status_handlers_total{handler=\"$handler\",instance=\"$host\"}[$interval]) or irate(mysql_global_status_handlers_total{handler=\"$handler\",instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -410,6 +535,109 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "$service - $handler",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 0,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {
+                "commit": "#614d93"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "fill": 2,
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 12,
+                "y": 17
+            },
+            "id": 298,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "maxPerRow": 6,
+            "nullPointMode": "null",
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 9,
+            "seriesOverrides": [
+                {
+                    "alias": "/.*/",
+                    "color": "#806eb7"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{handler}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "$host - $handler",
             "tooltip": {
@@ -443,10 +671,3788 @@
                     "min": null,
                     "show": false
                 }
-            ]
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "collapsed": false,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 24
+            },
+            "id": 264,
+            "panels": [],
+            "repeat": null,
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 261,
+            "title": "$service - $handler",
+            "type": "row"
+        },
+        {
+            "aliasColors": {
+                "commit": "#614d93"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "fill": 2,
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 0,
+                "y": 25
+            },
+            "id": 265,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "maxPerRow": 6,
+            "nullPointMode": "null",
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "repeat": "service",
+            "repeatDirection": "h",
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 9,
+            "repeatedByRow": true,
+            "seriesOverrides": [
+                {
+                    "alias": "/.*/",
+                    "color": "#806eb7"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{handler}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "$host - $handler",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 0,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {
+                "commit": "#614d93"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "fill": 2,
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 12,
+                "y": 25
+            },
+            "id": 299,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "maxPerRow": 6,
+            "nullPointMode": "null",
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 265,
+            "repeatedByRow": true,
+            "seriesOverrides": [
+                {
+                    "alias": "/.*/",
+                    "color": "#806eb7"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{handler}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "$host - $handler",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 0,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "collapsed": false,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 32
+            },
+            "id": 266,
+            "panels": [],
+            "repeat": null,
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 261,
+            "title": "$service - $handler",
+            "type": "row"
+        },
+        {
+            "aliasColors": {
+                "commit": "#614d93"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "fill": 2,
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 0,
+                "y": 33
+            },
+            "id": 267,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "maxPerRow": 6,
+            "nullPointMode": "null",
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "repeat": "service",
+            "repeatDirection": "h",
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 9,
+            "repeatedByRow": true,
+            "seriesOverrides": [
+                {
+                    "alias": "/.*/",
+                    "color": "#806eb7"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{handler}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "$host - $handler",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 0,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {
+                "commit": "#614d93"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "fill": 2,
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 12,
+                "y": 33
+            },
+            "id": 300,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "maxPerRow": 6,
+            "nullPointMode": "null",
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 267,
+            "repeatedByRow": true,
+            "seriesOverrides": [
+                {
+                    "alias": "/.*/",
+                    "color": "#806eb7"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{handler}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "$host - $handler",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 0,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "collapsed": false,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 40
+            },
+            "id": 268,
+            "panels": [],
+            "repeat": null,
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 261,
+            "title": "$service - $handler",
+            "type": "row"
+        },
+        {
+            "aliasColors": {
+                "commit": "#614d93"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "fill": 2,
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 0,
+                "y": 41
+            },
+            "id": 269,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "maxPerRow": 6,
+            "nullPointMode": "null",
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "repeat": "service",
+            "repeatDirection": "h",
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 9,
+            "repeatedByRow": true,
+            "seriesOverrides": [
+                {
+                    "alias": "/.*/",
+                    "color": "#806eb7"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{handler}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "$host - $handler",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 0,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {
+                "commit": "#614d93"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "fill": 2,
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 12,
+                "y": 41
+            },
+            "id": 301,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "maxPerRow": 6,
+            "nullPointMode": "null",
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 269,
+            "repeatedByRow": true,
+            "seriesOverrides": [
+                {
+                    "alias": "/.*/",
+                    "color": "#806eb7"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{handler}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "$host - $handler",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 0,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "collapsed": false,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 48
+            },
+            "id": 270,
+            "panels": [],
+            "repeat": null,
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 261,
+            "title": "$service - $handler",
+            "type": "row"
+        },
+        {
+            "aliasColors": {
+                "commit": "#614d93"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "fill": 2,
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 0,
+                "y": 49
+            },
+            "id": 271,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "maxPerRow": 6,
+            "nullPointMode": "null",
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "repeat": "service",
+            "repeatDirection": "h",
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 9,
+            "repeatedByRow": true,
+            "seriesOverrides": [
+                {
+                    "alias": "/.*/",
+                    "color": "#806eb7"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{handler}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "$host - $handler",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 0,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {
+                "commit": "#614d93"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "fill": 2,
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 12,
+                "y": 49
+            },
+            "id": 302,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "maxPerRow": 6,
+            "nullPointMode": "null",
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 271,
+            "repeatedByRow": true,
+            "seriesOverrides": [
+                {
+                    "alias": "/.*/",
+                    "color": "#806eb7"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{handler}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "$host - $handler",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 0,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "collapsed": false,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 56
+            },
+            "id": 272,
+            "panels": [],
+            "repeat": null,
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 261,
+            "title": "$service - $handler",
+            "type": "row"
+        },
+        {
+            "aliasColors": {
+                "commit": "#614d93"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "fill": 2,
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 0,
+                "y": 57
+            },
+            "id": 273,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "maxPerRow": 6,
+            "nullPointMode": "null",
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "repeat": "service",
+            "repeatDirection": "h",
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 9,
+            "repeatedByRow": true,
+            "seriesOverrides": [
+                {
+                    "alias": "/.*/",
+                    "color": "#806eb7"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{handler}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "$host - $handler",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 0,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {
+                "commit": "#614d93"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "fill": 2,
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 12,
+                "y": 57
+            },
+            "id": 303,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "maxPerRow": 6,
+            "nullPointMode": "null",
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 273,
+            "repeatedByRow": true,
+            "seriesOverrides": [
+                {
+                    "alias": "/.*/",
+                    "color": "#806eb7"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{handler}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "$host - $handler",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 0,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "collapsed": false,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 64
+            },
+            "id": 274,
+            "panels": [],
+            "repeat": null,
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 261,
+            "title": "$service - $handler",
+            "type": "row"
+        },
+        {
+            "aliasColors": {
+                "commit": "#614d93"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "fill": 2,
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 0,
+                "y": 65
+            },
+            "id": 275,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "maxPerRow": 6,
+            "nullPointMode": "null",
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "repeat": "service",
+            "repeatDirection": "h",
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 9,
+            "repeatedByRow": true,
+            "seriesOverrides": [
+                {
+                    "alias": "/.*/",
+                    "color": "#806eb7"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{handler}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "$host - $handler",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 0,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {
+                "commit": "#614d93"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "fill": 2,
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 12,
+                "y": 65
+            },
+            "id": 304,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "maxPerRow": 6,
+            "nullPointMode": "null",
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 275,
+            "repeatedByRow": true,
+            "seriesOverrides": [
+                {
+                    "alias": "/.*/",
+                    "color": "#806eb7"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{handler}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "$host - $handler",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 0,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "collapsed": false,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 72
+            },
+            "id": 276,
+            "panels": [],
+            "repeat": null,
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 261,
+            "title": "$service - $handler",
+            "type": "row"
+        },
+        {
+            "aliasColors": {
+                "commit": "#614d93"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "fill": 2,
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 0,
+                "y": 73
+            },
+            "id": 277,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "maxPerRow": 6,
+            "nullPointMode": "null",
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "repeat": "service",
+            "repeatDirection": "h",
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 9,
+            "repeatedByRow": true,
+            "seriesOverrides": [
+                {
+                    "alias": "/.*/",
+                    "color": "#806eb7"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{handler}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "$host - $handler",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 0,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {
+                "commit": "#614d93"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "fill": 2,
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 12,
+                "y": 73
+            },
+            "id": 305,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "maxPerRow": 6,
+            "nullPointMode": "null",
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 277,
+            "repeatedByRow": true,
+            "seriesOverrides": [
+                {
+                    "alias": "/.*/",
+                    "color": "#806eb7"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{handler}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "$host - $handler",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 0,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "collapsed": false,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 80
+            },
+            "id": 278,
+            "panels": [],
+            "repeat": null,
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 261,
+            "title": "$service - $handler",
+            "type": "row"
+        },
+        {
+            "aliasColors": {
+                "commit": "#614d93"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "fill": 2,
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 0,
+                "y": 81
+            },
+            "id": 279,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "maxPerRow": 6,
+            "nullPointMode": "null",
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "repeat": "service",
+            "repeatDirection": "h",
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 9,
+            "repeatedByRow": true,
+            "seriesOverrides": [
+                {
+                    "alias": "/.*/",
+                    "color": "#806eb7"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{handler}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "$host - $handler",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 0,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {
+                "commit": "#614d93"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "fill": 2,
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 12,
+                "y": 81
+            },
+            "id": 306,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "maxPerRow": 6,
+            "nullPointMode": "null",
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 279,
+            "repeatedByRow": true,
+            "seriesOverrides": [
+                {
+                    "alias": "/.*/",
+                    "color": "#806eb7"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{handler}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "$host - $handler",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 0,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "collapsed": false,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 88
+            },
+            "id": 280,
+            "panels": [],
+            "repeat": null,
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 261,
+            "title": "$service - $handler",
+            "type": "row"
+        },
+        {
+            "aliasColors": {
+                "commit": "#614d93"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "fill": 2,
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 0,
+                "y": 89
+            },
+            "id": 281,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "maxPerRow": 6,
+            "nullPointMode": "null",
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "repeat": "service",
+            "repeatDirection": "h",
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 9,
+            "repeatedByRow": true,
+            "seriesOverrides": [
+                {
+                    "alias": "/.*/",
+                    "color": "#806eb7"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{handler}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "$host - $handler",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 0,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {
+                "commit": "#614d93"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "fill": 2,
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 12,
+                "y": 89
+            },
+            "id": 307,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "maxPerRow": 6,
+            "nullPointMode": "null",
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 281,
+            "repeatedByRow": true,
+            "seriesOverrides": [
+                {
+                    "alias": "/.*/",
+                    "color": "#806eb7"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{handler}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "$host - $handler",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 0,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "collapsed": false,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 96
+            },
+            "id": 282,
+            "panels": [],
+            "repeat": null,
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 261,
+            "title": "$service - $handler",
+            "type": "row"
+        },
+        {
+            "aliasColors": {
+                "commit": "#614d93"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "fill": 2,
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 0,
+                "y": 97
+            },
+            "id": 283,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "maxPerRow": 6,
+            "nullPointMode": "null",
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "repeat": "service",
+            "repeatDirection": "h",
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 9,
+            "repeatedByRow": true,
+            "seriesOverrides": [
+                {
+                    "alias": "/.*/",
+                    "color": "#806eb7"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{handler}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "$host - $handler",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 0,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {
+                "commit": "#614d93"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "fill": 2,
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 12,
+                "y": 97
+            },
+            "id": 308,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "maxPerRow": 6,
+            "nullPointMode": "null",
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 283,
+            "repeatedByRow": true,
+            "seriesOverrides": [
+                {
+                    "alias": "/.*/",
+                    "color": "#806eb7"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{handler}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "$host - $handler",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 0,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "collapsed": false,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 104
+            },
+            "id": 284,
+            "panels": [],
+            "repeat": null,
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 261,
+            "title": "$service - $handler",
+            "type": "row"
+        },
+        {
+            "aliasColors": {
+                "commit": "#614d93"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "fill": 2,
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 0,
+                "y": 105
+            },
+            "id": 285,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "maxPerRow": 6,
+            "nullPointMode": "null",
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "repeat": "service",
+            "repeatDirection": "h",
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 9,
+            "repeatedByRow": true,
+            "seriesOverrides": [
+                {
+                    "alias": "/.*/",
+                    "color": "#806eb7"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{handler}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "$host - $handler",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 0,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {
+                "commit": "#614d93"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "fill": 2,
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 12,
+                "y": 105
+            },
+            "id": 309,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "maxPerRow": 6,
+            "nullPointMode": "null",
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 285,
+            "repeatedByRow": true,
+            "seriesOverrides": [
+                {
+                    "alias": "/.*/",
+                    "color": "#806eb7"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{handler}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "$host - $handler",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 0,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "collapsed": false,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 112
+            },
+            "id": 286,
+            "panels": [],
+            "repeat": null,
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 261,
+            "title": "$service - $handler",
+            "type": "row"
+        },
+        {
+            "aliasColors": {
+                "commit": "#614d93"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "fill": 2,
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 0,
+                "y": 113
+            },
+            "id": 287,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "maxPerRow": 6,
+            "nullPointMode": "null",
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "repeat": "service",
+            "repeatDirection": "h",
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 9,
+            "repeatedByRow": true,
+            "seriesOverrides": [
+                {
+                    "alias": "/.*/",
+                    "color": "#806eb7"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{handler}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "$host - $handler",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 0,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {
+                "commit": "#614d93"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "fill": 2,
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 12,
+                "y": 113
+            },
+            "id": 310,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "maxPerRow": 6,
+            "nullPointMode": "null",
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 287,
+            "repeatedByRow": true,
+            "seriesOverrides": [
+                {
+                    "alias": "/.*/",
+                    "color": "#806eb7"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{handler}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "$host - $handler",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 0,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "collapsed": false,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 120
+            },
+            "id": 288,
+            "panels": [],
+            "repeat": null,
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 261,
+            "title": "$service - $handler",
+            "type": "row"
+        },
+        {
+            "aliasColors": {
+                "commit": "#614d93"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "fill": 2,
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 0,
+                "y": 121
+            },
+            "id": 289,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "maxPerRow": 6,
+            "nullPointMode": "null",
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "repeat": "service",
+            "repeatDirection": "h",
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 9,
+            "repeatedByRow": true,
+            "seriesOverrides": [
+                {
+                    "alias": "/.*/",
+                    "color": "#806eb7"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{handler}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "$host - $handler",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 0,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {
+                "commit": "#614d93"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "fill": 2,
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 12,
+                "y": 121
+            },
+            "id": 311,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "maxPerRow": 6,
+            "nullPointMode": "null",
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 289,
+            "repeatedByRow": true,
+            "seriesOverrides": [
+                {
+                    "alias": "/.*/",
+                    "color": "#806eb7"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{handler}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "$host - $handler",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 0,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "collapsed": false,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 128
+            },
+            "id": 290,
+            "panels": [],
+            "repeat": null,
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 261,
+            "title": "$service - $handler",
+            "type": "row"
+        },
+        {
+            "aliasColors": {
+                "commit": "#614d93"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "fill": 2,
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 0,
+                "y": 129
+            },
+            "id": 291,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "maxPerRow": 6,
+            "nullPointMode": "null",
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "repeat": "service",
+            "repeatDirection": "h",
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 9,
+            "repeatedByRow": true,
+            "seriesOverrides": [
+                {
+                    "alias": "/.*/",
+                    "color": "#806eb7"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{handler}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "$host - $handler",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 0,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {
+                "commit": "#614d93"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "fill": 2,
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 12,
+                "y": 129
+            },
+            "id": 312,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "maxPerRow": 6,
+            "nullPointMode": "null",
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 291,
+            "repeatedByRow": true,
+            "seriesOverrides": [
+                {
+                    "alias": "/.*/",
+                    "color": "#806eb7"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{handler}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "$host - $handler",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 0,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "collapsed": false,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 136
+            },
+            "id": 292,
+            "panels": [],
+            "repeat": null,
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 261,
+            "title": "$service - $handler",
+            "type": "row"
+        },
+        {
+            "aliasColors": {
+                "commit": "#614d93"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "fill": 2,
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 0,
+                "y": 137
+            },
+            "id": 293,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "maxPerRow": 6,
+            "nullPointMode": "null",
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "repeat": "service",
+            "repeatDirection": "h",
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 9,
+            "repeatedByRow": true,
+            "seriesOverrides": [
+                {
+                    "alias": "/.*/",
+                    "color": "#806eb7"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{handler}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "$host - $handler",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 0,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {
+                "commit": "#614d93"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "fill": 2,
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 12,
+                "y": 137
+            },
+            "id": 313,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "maxPerRow": 6,
+            "nullPointMode": "null",
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 293,
+            "repeatedByRow": true,
+            "seriesOverrides": [
+                {
+                    "alias": "/.*/",
+                    "color": "#806eb7"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{handler}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "$host - $handler",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 0,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "collapsed": false,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 144
+            },
+            "id": 294,
+            "panels": [],
+            "repeat": null,
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 261,
+            "title": "$service - $handler",
+            "type": "row"
+        },
+        {
+            "aliasColors": {
+                "commit": "#614d93"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "fill": 2,
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 0,
+                "y": 145
+            },
+            "id": 295,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "maxPerRow": 6,
+            "nullPointMode": "null",
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "repeat": "service",
+            "repeatDirection": "h",
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 9,
+            "repeatedByRow": true,
+            "seriesOverrides": [
+                {
+                    "alias": "/.*/",
+                    "color": "#806eb7"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{handler}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "$host - $handler",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 0,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {
+                "commit": "#614d93"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "fill": 2,
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 12,
+                "y": 145
+            },
+            "id": 314,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "maxPerRow": 6,
+            "nullPointMode": "null",
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 295,
+            "repeatedByRow": true,
+            "seriesOverrides": [
+                {
+                    "alias": "/.*/",
+                    "color": "#806eb7"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{handler}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "$host - $handler",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 0,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "collapsed": false,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 152
+            },
+            "id": 296,
+            "panels": [],
+            "repeat": null,
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 261,
+            "title": "$service - $handler",
+            "type": "row"
+        },
+        {
+            "aliasColors": {
+                "commit": "#614d93"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "fill": 2,
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 0,
+                "y": 153
+            },
+            "id": 297,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "maxPerRow": 6,
+            "nullPointMode": "null",
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "repeat": "service",
+            "repeatDirection": "h",
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 9,
+            "repeatedByRow": true,
+            "seriesOverrides": [
+                {
+                    "alias": "/.*/",
+                    "color": "#806eb7"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{handler}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "$host - $handler",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 0,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {
+                "commit": "#614d93"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "fill": 2,
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 12,
+                "y": 153
+            },
+            "id": 315,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "maxPerRow": 6,
+            "nullPointMode": "null",
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1552402341763,
+            "repeatPanelId": 297,
+            "repeatedByRow": true,
+            "seriesOverrides": [
+                {
+                    "alias": "/.*/",
+                    "color": "#806eb7"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{handler}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "$host - $handler",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 0,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
         }
     ],
-    "schemaVersion": 16,
+    "schemaVersion": 18,
     "style": "dark",
     "tags": [
         "Percona",
@@ -458,10 +4464,7 @@
                 "auto": true,
                 "auto_count": 200,
                 "auto_min": "1s",
-                "current": {
-                    "text": "auto",
-                    "value": "$__auto_interval_interval"
-                },
+                "current": {},
                 "hide": 0,
                 "label": "Interval",
                 "name": "interval",
@@ -509,22 +4512,47 @@
                 ],
                 "query": "1s,5s,1m,5m,1h,6h,1d",
                 "refresh": 2,
+                "skipUrlSync": false,
                 "type": "interval"
             },
             {
                 "allValue": null,
                 "current": {},
                 "datasource": "Prometheus",
+                "definition": "label_values(mysql_up, node_name)",
                 "hide": 0,
                 "includeAll": false,
                 "label": "Host",
                 "multi": true,
                 "name": "host",
                 "options": [],
-                "query": "label_values(mysql_up, instance)",
+                "query": "label_values(mysql_up, node_name)",
                 "refresh": 1,
                 "regex": "",
+                "skipUrlSync": false,
                 "sort": 1,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allValue": null,
+                "current": {},
+                "datasource": "Prometheus",
+                "definition": "label_values(mysql_up{node_name=~\"$host\"}, service_name)",
+                "hide": 0,
+                "includeAll": false,
+                "label": "Service",
+                "multi": true,
+                "name": "service",
+                "options": [],
+                "query": "label_values(mysql_up{node_name=~\"$host\"}, service_name)",
+                "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 0,
                 "tagValuesQuery": "",
                 "tags": [],
                 "tagsQuery": "",
@@ -535,15 +4563,17 @@
                 "allValue": "",
                 "current": {},
                 "datasource": "Prometheus",
+                "definition": "label_values(mysql_global_status_commands_total{service_name=~\"$service\"},command)",
                 "hide": 0,
                 "includeAll": true,
                 "label": "Command",
                 "multi": true,
                 "name": "command",
                 "options": [],
-                "query": "label_values(mysql_global_status_commands_total{instance=~\"$host\"},command)",
+                "query": "label_values(mysql_global_status_commands_total{service_name=~\"$service\"},command)",
                 "refresh": 2,
                 "regex": "",
+                "skipUrlSync": false,
                 "sort": 1,
                 "tagValuesQuery": "",
                 "tags": [],
@@ -555,15 +4585,17 @@
                 "allValue": null,
                 "current": {},
                 "datasource": "Prometheus",
+                "definition": "label_values(mysql_global_status_handlers_total{service_name=~\"$service\"},handler)",
                 "hide": 0,
                 "includeAll": true,
                 "label": "Handler",
                 "multi": true,
                 "name": "handler",
                 "options": [],
-                "query": "label_values(mysql_global_status_handlers_total{instance=~\"$host\"},handler)",
+                "query": "label_values(mysql_global_status_handlers_total{service_name=~\"$service\"},handler)",
                 "refresh": 1,
                 "regex": "",
+                "skipUrlSync": false,
                 "sort": 1,
                 "tagValuesQuery": "",
                 "tags": [],
@@ -606,5 +4638,5 @@
     "timezone": "browser",
     "title": "MySQL Command/Handler Counters Compare",
     "uid": "000000170",
-    "version": 62
+    "version": 3
 }

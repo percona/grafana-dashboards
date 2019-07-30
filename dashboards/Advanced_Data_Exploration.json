@@ -8,10 +8,13 @@
                 "hide": false,
                 "iconColor": "#e0752d",
                 "limit": 100,
+                "matchAny": true,
                 "name": "PMM Annotations",
                 "showIn": 0,
                 "tags": [
-                    "pmm_annotation"
+                    "pmm_annotation",
+                    "$host",
+                    "$service"
                 ],
                 "type": "tags"
             },
@@ -29,11 +32,11 @@
             }
         ]
     },
-    "editable": true,
+    "editable": false,
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1533320097783,
+    "iteration": 1554487736833,
     "links": [
         {
             "icon": "dashboard",
@@ -45,7 +48,7 @@
             "targetBlank": false,
             "title": "Query Analytics",
             "type": "link",
-            "url": "/graph/dashboard/db/_pmm-query-analytics"
+            "url": "/graph/d/7w6Q3PJmz/pmm-query-analytics"
         },
         {
             "asDropdown": true,
@@ -100,17 +103,6 @@
             ],
             "targetBlank": false,
             "title": "HA",
-            "type": "dashboards"
-        },
-        {
-            "asDropdown": true,
-            "includeVars": true,
-            "keepTime": true,
-            "tags": [
-                "Cloud"
-            ],
-            "targetBlank": false,
-            "title": "Cloud",
             "type": "dashboards"
         },
         {
@@ -201,6 +193,7 @@
                 {
                     "expr": "$metric",
                     "format": "table",
+                    "hide": false,
                     "intervalFactor": 2,
                     "legendFormat": "$metric",
                     "refId": "A",
@@ -377,6 +370,7 @@
                 }
             ],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "View Actual Metric Values (Gauge)",
             "tooltip": {
@@ -385,7 +379,6 @@
                 "sort": 0,
                 "value_type": "individual"
             },
-            "transparent": false,
             "type": "graph",
             "xaxis": {
                 "buckets": null,
@@ -466,7 +459,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate($metric{instance=~\"$host\"}[$interval]) or irate($metric{instance=~\"$host\"}[5m])",
+                    "expr": "rate($metric{instance=~\"$host\"}[$interval])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -478,6 +471,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "View Metric Rate of Change (Counter)",
             "tooltip": {
@@ -567,6 +561,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Metric Rates",
             "tooltip": {
@@ -574,7 +569,6 @@
                 "sort": 0,
                 "value_type": "individual"
             },
-            "transparent": false,
             "type": "graph",
             "xaxis": {
                 "buckets": null,
@@ -601,7 +595,11 @@
                     "min": null,
                     "show": false
                 }
-            ]
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
         },
         {
             "columns": [],
@@ -655,12 +653,11 @@
             ],
             "title": "Metric Data Table",
             "transform": "table",
-            "transparent": false,
             "type": "table"
         }
     ],
     "refresh": "1m",
-    "schemaVersion": 16,
+    "schemaVersion": 18,
     "style": "dark",
     "tags": [
         "Percona",
@@ -672,6 +669,7 @@
                 "allValue": null,
                 "current": {},
                 "datasource": "Prometheus",
+                "definition": "",
                 "hide": 0,
                 "includeAll": false,
                 "label": null,
@@ -681,6 +679,7 @@
                 "query": "metrics(.*)",
                 "refresh": 1,
                 "regex": "",
+                "skipUrlSync": false,
                 "sort": 0,
                 "tagValuesQuery": "",
                 "tags": [],
@@ -693,10 +692,7 @@
                 "auto": true,
                 "auto_count": 200,
                 "auto_min": "1s",
-                "current": {
-                    "text": "auto",
-                    "value": "$__auto_interval_interval"
-                },
+                "current": {},
                 "datasource": "Prometheus",
                 "hide": 0,
                 "includeAll": false,
@@ -749,6 +745,7 @@
                 "query": "1s,5s,1m,5m,1h,6h,1d",
                 "refresh": 2,
                 "regex": "",
+                "skipUrlSync": false,
                 "type": "interval"
             },
             {
@@ -756,7 +753,8 @@
                 "allValue": null,
                 "current": {},
                 "datasource": "Prometheus",
-                "hide": 0,
+                "definition": "",
+                "hide": 2,
                 "includeAll": true,
                 "label": "Host",
                 "multi": true,
@@ -766,17 +764,27 @@
                 "query": "label_values($metric, instance)",
                 "refresh": 1,
                 "regex": "",
+                "skipUrlSync": false,
                 "sort": 1,
                 "tagValuesQuery": null,
                 "tags": [],
                 "tagsQuery": null,
                 "type": "query",
                 "useTags": false
+            },
+            {
+                "datasource": "Prometheus",
+                "filters": [],
+                "hide": 0,
+                "label": "Ad-hoc",
+                "name": "adhoc",
+                "skipUrlSync": false,
+                "type": "adhoc"
             }
         ]
     },
     "time": {
-        "from": "now-12h",
+        "from": "now-1h",
         "to": "now"
     },
     "timepicker": {

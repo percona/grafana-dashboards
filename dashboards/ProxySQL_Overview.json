@@ -8,10 +8,13 @@
                 "hide": false,
                 "iconColor": "#e0752d",
                 "limit": 100,
+                "matchAny": true,
                 "name": "PMM Annotations",
                 "showIn": 0,
                 "tags": [
-                    "pmm_annotation"
+                    "pmm_annotation",
+                    "$host",
+                    "$service"
                 ],
                 "type": "tags"
             },
@@ -29,11 +32,11 @@
             }
         ]
     },
-    "editable": true,
+    "editable": false,
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1535456477358,
+    "iteration": 1548157989684,
     "links": [
         {
             "icon": "dashboard",
@@ -45,7 +48,7 @@
             "targetBlank": false,
             "title": "Query Analytics",
             "type": "link",
-            "url": "/graph/dashboard/db/_pmm-query-analytics"
+            "url": "/graph/d/7w6Q3PJmz/pmm-query-analytics"
         },
         {
             "asDropdown": true,
@@ -100,17 +103,6 @@
             ],
             "targetBlank": false,
             "title": "HA",
-            "type": "dashboards"
-        },
-        {
-            "asDropdown": true,
-            "includeVars": true,
-            "keepTime": true,
-            "tags": [
-                "Cloud"
-            ],
-            "targetBlank": false,
-            "title": "Cloud",
             "type": "dashboards"
         },
         {
@@ -202,7 +194,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "scalar(count(proxysql_connection_pool_status{instance=\"$proxysql\", hostgroup=\"$hostgroup\"}))",
+                    "expr": "scalar(count(proxysql_connection_pool_status{node_name=\"$proxysql\", hostgroup=\"$hostgroup\"}))",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Size",
@@ -312,7 +304,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "proxysql_mysql_status_client_connections_connected{instance=\"$proxysql\"}",
+                    "expr": "proxysql_mysql_status_client_connections_connected{node_name=\"$proxysql\"}",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -407,7 +399,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(proxysql_mysql_status_questions{instance=\"$proxysql\"}[$interval]) or irate(proxysql_mysql_status_questions{instance=\"$proxysql\"}[5m])",
+                    "expr": "rate(proxysql_mysql_status_questions{node_name=\"$proxysql\"}[$interval]) or irate(proxysql_mysql_status_questions{node_name=\"$proxysql\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -472,135 +464,135 @@
             "type": "row"
         },
         {
-          "columns": [
-            {
-              "text": "Current",
-              "value": "current"
-            }
-          ],
-          "datasource": "Prometheus",
-          "description": "Status number to state mapping:\n\n1 `ONLINE`\n\n2 `SHUNNED`\n\n3 `OFFLINE_SOFT`\n\n4 `OFFLINE_HARD`\n\nFor status details, see the [description](https://github.com/sysown/proxysql/blob/master/doc/admin_tables.md#mysql_servers).",
-          "editable": true,
-          "error": false,
-          "filterNull": false,
-          "fontSize": "100%",
-          "gridPos": {
-            "h": 7,
-            "w": 24,
-            "x": 0,
-            "y": 14
-          },
-          "hideTimeOverride": true,
-          "id": 57,
-          "links": [],
-          "pageSize": null,
-          "scroll": true,
-          "showHeader": true,
-          "sort": {
-            "col": 3,
-            "desc": false
-          },
-          "styles": [
-            {
-              "alias": "Status",
-              "colorMode": "cell",
-              "colors": [
-                "rgba(50, 172, 45, 0.97)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(245, 54, 54, 0.9)"
-              ],
-              "dateFormat": "YYYY-MM-DD HH:mm:ss",
-              "decimals": 0,
-              "mappingType": 1,
-              "pattern": "Value",
-              "thresholds": [
-                "3",
-                "4"
-              ],
-              "type": "string",
-              "unit": "none",
-              "valueMaps": [
+            "columns": [
                 {
-                  "text": "ONLINE",
-                  "value": "1"
-                },
-                {
-                  "text": "SHUNNED",
-                  "value": "2"
-                },
-                {
-                  "text": "OFFLINE_SOFT",
-                  "value": "3"
-                },
-                {
-                  "text": "OFFLINE_HARD",
-                  "value": "4"
+                    "text": "Current",
+                    "value": "current"
                 }
-              ]
+            ],
+            "datasource": "Prometheus",
+            "description": "Status number to state mapping:\n\n1 `ONLINE`\n\n2 `SHUNNED`\n\n3 `OFFLINE_SOFT`\n\n4 `OFFLINE_HARD`\n\nFor status details, see the [description](https://github.com/sysown/proxysql/blob/master/doc/admin_tables.md#mysql_servers).",
+            "editable": true,
+            "error": false,
+            "filterNull": false,
+            "fontSize": "100%",
+            "gridPos": {
+                "h": 7,
+                "w": 24,
+                "x": 0,
+                "y": 14
             },
-            {
-              "alias": "",
-              "colorMode": null,
-              "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-              ],
-              "dateFormat": "YYYY-MM-DD HH:mm:ss",
-              "decimals": 2,
-              "pattern": "__name__",
-              "thresholds": [],
-              "type": "hidden",
-              "unit": "short"
+            "hideTimeOverride": true,
+            "id": 57,
+            "links": [],
+            "pageSize": null,
+            "scroll": true,
+            "showHeader": true,
+            "sort": {
+                "col": 3,
+                "desc": false
             },
-            {
-              "alias": "",
-              "colorMode": null,
-              "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-              ],
-              "dateFormat": "YYYY-MM-DD HH:mm:ss",
-              "decimals": 2,
-              "pattern": "Time",
-              "thresholds": [],
-              "type": "hidden",
-              "unit": "short"
-            },
-            {
-              "alias": "",
-              "colorMode": null,
-              "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-              ],
-              "dateFormat": "YYYY-MM-DD HH:mm:ss",
-              "decimals": 2,
-              "pattern": "job",
-              "thresholds": [],
-              "type": "hidden",
-              "unit": "short"
-            }
-          ],
-          "targets": [
-            {
-              "expr": "proxysql_connection_pool_status{instance=\"$proxysql\", hostgroup=~\"$hostgroup\"}",
-              "format": "table",
-              "instant": true,
-              "interval": "5m",
-              "intervalFactor": 1,
-              "legendFormat": "{{ endpoint }}",
-              "metric": "",
-              "refId": "A",
-              "step": 600
-            }
-          ],
-          "timeFrom": "5m",
-          "title": "Endpoint Status",
-          "transform": "table",
-          "type": "table"
+            "styles": [
+                {
+                    "alias": "Status",
+                    "colorMode": "cell",
+                    "colors": [
+                        "rgba(50, 172, 45, 0.97)",
+                        "rgba(237, 129, 40, 0.89)",
+                        "rgba(245, 54, 54, 0.9)"
+                    ],
+                    "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                    "decimals": 0,
+                    "mappingType": 1,
+                    "pattern": "Value",
+                    "thresholds": [
+                        "3",
+                        "4"
+                    ],
+                    "type": "string",
+                    "unit": "none",
+                    "valueMaps": [
+                        {
+                            "text": "ONLINE",
+                            "value": "1"
+                        },
+                        {
+                            "text": "SHUNNED",
+                            "value": "2"
+                        },
+                        {
+                            "text": "OFFLINE_SOFT",
+                            "value": "3"
+                        },
+                        {
+                            "text": "OFFLINE_HARD",
+                            "value": "4"
+                        }
+                    ]
+                },
+                {
+                    "alias": "",
+                    "colorMode": null,
+                    "colors": [
+                        "rgba(245, 54, 54, 0.9)",
+                        "rgba(237, 129, 40, 0.89)",
+                        "rgba(50, 172, 45, 0.97)"
+                    ],
+                    "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                    "decimals": 2,
+                    "pattern": "__name__",
+                    "thresholds": [],
+                    "type": "hidden",
+                    "unit": "short"
+                },
+                {
+                    "alias": "",
+                    "colorMode": null,
+                    "colors": [
+                        "rgba(245, 54, 54, 0.9)",
+                        "rgba(237, 129, 40, 0.89)",
+                        "rgba(50, 172, 45, 0.97)"
+                    ],
+                    "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                    "decimals": 2,
+                    "pattern": "Time",
+                    "thresholds": [],
+                    "type": "hidden",
+                    "unit": "short"
+                },
+                {
+                    "alias": "",
+                    "colorMode": null,
+                    "colors": [
+                        "rgba(245, 54, 54, 0.9)",
+                        "rgba(237, 129, 40, 0.89)",
+                        "rgba(50, 172, 45, 0.97)"
+                    ],
+                    "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                    "decimals": 2,
+                    "pattern": "job",
+                    "thresholds": [],
+                    "type": "hidden",
+                    "unit": "short"
+                }
+            ],
+            "targets": [
+                {
+                    "expr": "proxysql_connection_pool_status{node_name=\"$proxysql\", hostgroup=~\"$hostgroup\"}",
+                    "format": "table",
+                    "instant": true,
+                    "interval": "5m",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{ endpoint }}",
+                    "metric": "",
+                    "refId": "A",
+                    "step": 600
+                }
+            ],
+            "timeFrom": "5m",
+            "title": "Endpoint Status",
+            "transform": "table",
+            "type": "table"
         },
         {
             "collapsed": false,
@@ -661,7 +653,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "proxysql_connection_pool_conn_used{instance=\"$proxysql\", hostgroup=~\"$hostgroup\"}",
+                    "expr": "proxysql_connection_pool_conn_used{node_name=\"$proxysql\", hostgroup=~\"$hostgroup\"}",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -756,7 +748,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(proxysql_connection_pool_conn_err{instance=\"$proxysql\", hostgroup=~\"$hostgroup\"}[$interval]) or irate(proxysql_connection_pool_conn_err{instance=\"$proxysql\", hostgroup=~\"$hostgroup\"}[5m])",
+                    "expr": "rate(proxysql_connection_pool_conn_err{node_name=\"$proxysql\", hostgroup=~\"$hostgroup\"}[$interval]) or irate(proxysql_connection_pool_conn_err{node_name=\"$proxysql\", hostgroup=~\"$hostgroup\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -807,12 +799,110 @@
             }
         },
         {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "editable": true,
+            "error": false,
+            "fill": 2,
+            "grid": {},
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 0,
+                "y": 29
+            },
+            "id": 76,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "null",
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": true,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "max_over_time(proxysql_processlist_client_connection_list[$interval]) or max_over_time(proxysql_processlist_client_connection_list[5m]) ",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{ client_host }}",
+                    "metric": "",
+                    "refId": "A",
+                    "step": 60
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Active Frontend Connections",
+            "tooltip": {
+                "msResolution": false,
+                "shared": true,
+                "sort": 0,
+                "value_type": "cumulative"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 0,
+                    "format": "short",
+                    "label": "",
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "logBase": 1,
+                    "max": null,
+                    "min": 0,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
             "collapsed": false,
             "gridPos": {
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 29
+                "y": 36
             },
             "id": 71,
             "panels": [],
@@ -835,7 +925,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 0,
-                "y": 30
+                "y": 37
             },
             "id": 2,
             "legend": {
@@ -865,7 +955,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(proxysql_connection_pool_queries{instance=\"$proxysql\", hostgroup=~\"$hostgroup\"}[$interval]) or irate(proxysql_connection_pool_queries{instance=\"$proxysql\", hostgroup=~\"$hostgroup\"}[5m])",
+                    "expr": "rate(proxysql_connection_pool_queries{node_name=\"$proxysql\", hostgroup=~\"$hostgroup\"}[$interval]) or irate(proxysql_connection_pool_queries{node_name=\"$proxysql\", hostgroup=~\"$hostgroup\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -926,7 +1016,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 12,
-                "y": 30
+                "y": 37
             },
             "id": 59,
             "legend": {
@@ -949,7 +1039,7 @@
             "renderer": "flot",
             "seriesOverrides": [
                 {
-                    "alias": "QP_efficency_query",
+                    "alias": "QP_efficiency_query",
                     "yaxis": 2
                 },
                 {
@@ -962,17 +1052,17 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "(rate(proxysql_mysql_status_query_processor_time_nsec{instance=\"$proxysql\"}[$interval]) or irate(proxysql_mysql_status_query_processor_time_nsec{instance=\"$proxysql\"}[5m]))/(rate(proxysql_mysql_status_questions{instance=\"$proxysql\"}[$interval]) or irate(proxysql_mysql_status_questions{instance=\"$proxysql\"}[5m]))",
+                    "expr": "(rate(proxysql_mysql_status_query_processor_time_nsec{node_name=\"$proxysql\"}[$interval]) or irate(proxysql_mysql_status_query_processor_time_nsec{node_name=\"$proxysql\"}[5m]))/(rate(proxysql_mysql_status_questions{node_name=\"$proxysql\"}[$interval]) or irate(proxysql_mysql_status_questions{node_name=\"$proxysql\"}[5m]))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "",
                     "intervalFactor": 1,
-                    "legendFormat": "QP_efficency_query",
+                    "legendFormat": "QP_efficiency_query",
                     "refId": "A",
                     "step": 10
                 },
                 {
-                    "expr": "(rate(proxysql_mysql_status_query_processor_time_nsec{instance=\"$proxysql\"}[$interval]) or irate(proxysql_mysql_status_query_processor_time_nsec{instance=\"$proxysql\"}[5m]))",
+                    "expr": "(rate(proxysql_mysql_status_query_processor_time_nsec{node_name=\"$proxysql\"}[$interval]) or irate(proxysql_mysql_status_query_processor_time_nsec{node_name=\"$proxysql\"}[5m]))",
                     "format": "time_series",
                     "hide": true,
                     "intervalFactor": 1,
@@ -981,7 +1071,7 @@
                     "step": 1
                 },
                 {
-                    "expr": "(rate(proxysql_mysql_status_questions{instance=\"$proxysql\"}[$interval]) or irate(proxysql_mysql_status_questions{instance=\"$proxysql\"}[5m]))",
+                    "expr": "(rate(proxysql_mysql_status_questions{node_name=\"$proxysql\"}[$interval]) or irate(proxysql_mysql_status_questions{node_name=\"$proxysql\"}[5m]))",
                     "format": "time_series",
                     "intervalFactor": 1,
                     "legendFormat": "Questions",
@@ -1035,7 +1125,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 37
+                "y": 44
             },
             "id": 72,
             "panels": [],
@@ -1058,7 +1148,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 0,
-                "y": 38
+                "y": 45
             },
             "id": 60,
             "legend": {
@@ -1088,7 +1178,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "proxysql_connection_pool_conn_free{instance=\"$proxysql\", hostgroup=~\"$hostgroup\"}",
+                    "expr": "proxysql_connection_pool_conn_free{node_name=\"$proxysql\", hostgroup=~\"$hostgroup\"}",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1153,7 +1243,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 12,
-                "y": 38
+                "y": 45
             },
             "id": 50,
             "legend": {
@@ -1183,7 +1273,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "proxysql_connection_pool_latency_us{instance=\"$proxysql\", hostgroup=~\"$hostgroup\"}",
+                    "expr": "proxysql_connection_pool_latency_us{node_name=\"$proxysql\", hostgroup=~\"$hostgroup\"}",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1238,7 +1328,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 45
+                "y": 52
             },
             "id": 73,
             "panels": [],
@@ -1257,7 +1347,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 0,
-                "y": 46
+                "y": 53
             },
             "id": 62,
             "legend": {
@@ -1289,7 +1379,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "proxysql_mysql_status_query_cache_memory_bytes{instance=\"$proxysql\"}",
+                    "expr": "proxysql_mysql_status_query_cache_memory_bytes{node_name=\"$proxysql\"}",
                     "format": "time_series",
                     "hide": false,
                     "interval": "",
@@ -1299,7 +1389,7 @@
                     "step": 10
                 },
                 {
-                    "expr": "proxysql_mysql_status_query_cache_memory_bytes{instance=\"$proxysql\"}/proxysql_mysql_status_query_cache_entries{instance=\"$proxysql\"}",
+                    "expr": "proxysql_mysql_status_query_cache_memory_bytes{node_name=\"$proxysql\"}/proxysql_mysql_status_query_cache_entries{node_name=\"$proxysql\"}",
                     "format": "time_series",
                     "intervalFactor": 1,
                     "legendFormat": "Bytes for cached query avg",
@@ -1362,7 +1452,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 12,
-                "y": 46
+                "y": 53
             },
             "id": 53,
             "legend": {
@@ -1397,21 +1487,21 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "((rate(proxysql_mysql_status_query_cache_count_get_ok{instance=\"$proxysql\"}[$interval]) + rate(proxysql_mysql_status_query_cache_count_get_ok{instance=\"$proxysql\"}[$interval])) or (irate(proxysql_mysql_status_query_cache_count_get_ok{instance=\"$proxysql\"}[5m]) + irate(proxysql_mysql_status_query_cache_count_get_ok{instance=\"$proxysql\"}[5m]))/(rate(proxysql_mysql_status_query_cache_count_get{instance=\"$proxysql\"}[$interval]) + rate(proxysql_mysql_status_query_cache_count_get{instance=\"$proxysql\"}[$interval])) or (irate(proxysql_mysql_status_query_cache_count_get{instance=\"$proxysql\"}[5m]) + irate(proxysql_mysql_status_query_cache_count_get{instance=\"$proxysql\"}[5m])))        ",
+                    "expr": "((rate(proxysql_mysql_status_query_cache_count_get_ok{node_name=\"$proxysql\"}[$interval]) + rate(proxysql_mysql_status_query_cache_count_get_ok{node_name=\"$proxysql\"}[$interval])) or (irate(proxysql_mysql_status_query_cache_count_get_ok{node_name=\"$proxysql\"}[5m]) + irate(proxysql_mysql_status_query_cache_count_get_ok{node_name=\"$proxysql\"}[5m]))/(rate(proxysql_mysql_status_query_cache_count_get{node_name=\"$proxysql\"}[$interval]) + rate(proxysql_mysql_status_query_cache_count_get{node_name=\"$proxysql\"}[$interval])) or (irate(proxysql_mysql_status_query_cache_count_get{node_name=\"$proxysql\"}[5m]) + irate(proxysql_mysql_status_query_cache_count_get{node_name=\"$proxysql\"}[5m])))        ",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
-                    "legendFormat": "Query Cache GET efficency",
+                    "legendFormat": "Query Cache GET efficiency",
                     "metric": "",
                     "refId": "A",
                     "step": 60
                 },
                 {
-                    "expr": "((rate(proxysql_mysql_status_query_cache_bytes_out{instance=\"$proxysql\"}[$interval]) + rate(proxysql_mysql_status_query_cache_bytes_out{instance=\"$proxysql\"}[$interval])) or (irate(proxysql_mysql_status_query_cache_bytes_out{instance=\"$proxysql\"}[5m]) + irate(proxysql_mysql_status_query_cache_bytes_out{instance=\"$proxysql\"}[5m]))/(rate(proxysql_mysql_status_query_cache_bytes_in{instance=\"$proxysql\"}[$interval]) + rate(proxysql_mysql_status_query_cache_bytes_in{instance=\"$proxysql\"}[$interval])) or (irate(proxysql_mysql_status_query_cache_bytes_in{instance=\"$proxysql\"}[5m]) + irate(proxysql_mysql_status_query_cache_bytes_in{instance=\"$proxysql\"}[5m])))        ",
+                    "expr": "((rate(proxysql_mysql_status_query_cache_bytes_out{node_name=\"$proxysql\"}[$interval]) + rate(proxysql_mysql_status_query_cache_bytes_out{node_name=\"$proxysql\"}[$interval])) or (irate(proxysql_mysql_status_query_cache_bytes_out{node_name=\"$proxysql\"}[5m]) + irate(proxysql_mysql_status_query_cache_bytes_out{node_name=\"$proxysql\"}[5m]))/(rate(proxysql_mysql_status_query_cache_bytes_in{node_name=\"$proxysql\"}[$interval]) + rate(proxysql_mysql_status_query_cache_bytes_in{node_name=\"$proxysql\"}[$interval])) or (irate(proxysql_mysql_status_query_cache_bytes_in{node_name=\"$proxysql\"}[5m]) + irate(proxysql_mysql_status_query_cache_bytes_in{node_name=\"$proxysql\"}[5m])))        ",
                     "format": "time_series",
                     "interval": "",
                     "intervalFactor": 2,
-                    "legendFormat": "Insert VS read efficency (high is good)",
+                    "legendFormat": "Insert VS read efficiency (high is good)",
                     "refId": "B",
                     "step": 20
                 }
@@ -1462,12 +1552,12 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 53
+                "y": 60
             },
             "id": 74,
             "panels": [],
             "repeat": null,
-            "title": "Network Traffic and Mirroring efficency",
+            "title": "Network Traffic and Mirroring efficiency",
             "type": "row"
         },
         {
@@ -1485,7 +1575,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 0,
-                "y": 54
+                "y": 61
             },
             "id": 65,
             "legend": {
@@ -1515,7 +1605,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "(rate(proxysql_connection_pool_bytes_data_recv{instance=\"$proxysql\", hostgroup=~\"$hostgroup\"}[$interval]) + rate(proxysql_connection_pool_bytes_data_sent{instance=\"$proxysql\", hostgroup=~\"$hostgroup\"}[$interval])) or (irate(proxysql_connection_pool_bytes_data_recv{instance=\"$proxysql\", hostgroup=~\"$hostgroup\"}[5m]) + irate(proxysql_connection_pool_bytes_data_sent{instance=\"$proxysql\", hostgroup=~\"$hostgroup\"}[5m]))",
+                    "expr": "(rate(proxysql_connection_pool_bytes_data_recv{node_name=\"$proxysql\", hostgroup=~\"$hostgroup\"}[$interval]) + rate(proxysql_connection_pool_bytes_data_sent{node_name=\"$proxysql\", hostgroup=~\"$hostgroup\"}[$interval])) or (irate(proxysql_connection_pool_bytes_data_recv{node_name=\"$proxysql\", hostgroup=~\"$hostgroup\"}[5m]) + irate(proxysql_connection_pool_bytes_data_sent{node_name=\"$proxysql\", hostgroup=~\"$hostgroup\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1576,7 +1666,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 12,
-                "y": 54
+                "y": 61
             },
             "id": 61,
             "legend": {
@@ -1608,7 +1698,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "proxysql_mysql_status_mirror_concurrency{instance=\"$proxysql\"}",
+                    "expr": "proxysql_mysql_status_mirror_concurrency{node_name=\"$proxysql\"}",
                     "format": "time_series",
                     "hide": false,
                     "interval": "",
@@ -1618,10 +1708,10 @@
                     "step": 10
                 },
                 {
-                    "expr": "proxysql_mysql_status_mirror_queue_length{instance=\"$proxysql\"}",
+                    "expr": "proxysql_mysql_status_mirror_queue_length{node_name=\"$proxysql\"}",
                     "format": "time_series",
                     "intervalFactor": 1,
-                    "legendFormat": "Mirror queue lenght (queries)",
+                    "legendFormat": "Mirror queue length (queries)",
                     "refId": "B",
                     "step": 20
                 }
@@ -1629,7 +1719,7 @@
             "thresholds": [],
             "timeFrom": null,
             "timeShift": null,
-            "title": "Mirroring efficency",
+            "title": "Mirroring efficiency",
             "tooltip": {
                 "shared": true,
                 "sort": 0,
@@ -1672,7 +1762,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 61
+                "y": 68
             },
             "id": 75,
             "panels": [],
@@ -1691,7 +1781,7 @@
                 "h": 7,
                 "w": 24,
                 "x": 0,
-                "y": 62
+                "y": 69
             },
             "id": 66,
             "legend": {
@@ -1718,7 +1808,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "proxysql_mysql_status_query_cache_memory_bytes{instance=\"$proxysql\"}",
+                    "expr": "proxysql_mysql_status_query_cache_memory_bytes{node_name=\"$proxysql\"}",
                     "format": "time_series",
                     "intervalFactor": 2,
                     "legendFormat": "Query Cache",
@@ -1726,7 +1816,7 @@
                     "step": 20
                 },
                 {
-                    "expr": "proxysql_mysql_status_sqlite3_memory_bytes{instance=\"$proxysql\"}",
+                    "expr": "proxysql_mysql_status_sqlite3_memory_bytes{node_name=\"$proxysql\"}",
                     "format": "time_series",
                     "intervalFactor": 2,
                     "legendFormat": "SQLite",
@@ -1734,7 +1824,7 @@
                     "step": 20
                 },
                 {
-                    "expr": "proxysql_mysql_status_connpool_memory_bytes{instance=\"$proxysql\"}",
+                    "expr": "proxysql_mysql_status_connpool_memory_bytes{node_name=\"$proxysql\"}",
                     "format": "time_series",
                     "intervalFactor": 2,
                     "legendFormat": "Connection Pool",
@@ -1798,10 +1888,7 @@
                 "auto": true,
                 "auto_count": 200,
                 "auto_min": "1s",
-                "current": {
-                    "text": "auto",
-                    "value": "$__auto_interval_interval"
-                },
+                "current": {},
                 "datasource": "Prometheus",
                 "hide": 0,
                 "includeAll": false,
@@ -1867,7 +1954,7 @@
                 "multiFormat": "regex values",
                 "name": "proxysql",
                 "options": [],
-                "query": "label_values(proxysql_mysql_status_active_transactions, instance)",
+                "query": "label_values(proxysql_mysql_status_active_transactions, node_name)",
                 "refresh": 1,
                 "refresh_on_load": false,
                 "regex": "",
@@ -1890,7 +1977,7 @@
                 "multiFormat": "regex values",
                 "name": "hostgroup",
                 "options": [],
-                "query": "label_values(proxysql_connection_pool_status{instance=\"$proxysql\"}, hostgroup)",
+                "query": "label_values(proxysql_connection_pool_status{node_name=\"$proxysql\"}, hostgroup)",
                 "refresh": 1,
                 "refresh_on_load": false,
                 "regex": "",

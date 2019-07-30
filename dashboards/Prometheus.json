@@ -8,10 +8,13 @@
                 "hide": false,
                 "iconColor": "#e0752d",
                 "limit": 100,
+                "matchAny": true,
                 "name": "PMM Annotations",
                 "showIn": 0,
                 "tags": [
-                    "pmm_annotation"
+                    "pmm_annotation",
+                    "$host",
+                    "$service"
                 ],
                 "type": "tags"
             },
@@ -29,11 +32,11 @@
             }
         ]
     },
-    "editable": true,
+    "editable": false,
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1543236293556,
+    "iteration": 1563534328600,
     "links": [
         {
             "icon": "dashboard",
@@ -45,7 +48,7 @@
             "targetBlank": false,
             "title": "Query Analytics",
             "type": "link",
-            "url": "/graph/dashboard/db/_pmm-query-analytics"
+            "url": "/graph/d/7w6Q3PJmz/pmm-query-analytics"
         },
         {
             "asDropdown": true,
@@ -107,17 +110,6 @@
             "includeVars": true,
             "keepTime": true,
             "tags": [
-                "Cloud"
-            ],
-            "targetBlank": false,
-            "title": "Cloud",
-            "type": "dashboards"
-        },
-        {
-            "asDropdown": true,
-            "includeVars": true,
-            "keepTime": true,
-            "tags": [
                 "Insight"
             ],
             "targetBlank": false,
@@ -138,7 +130,7 @@
     ],
     "panels": [
         {
-            "content": "<h1><i><font color=#5991A7><b><center>Data for </font><font color=#e68a00>$pmmhost</font> <font color=#5991A7> with</font> </font><font color=#e68a00>$interval</font> <font color=#5991A7>resolution</center></b></font></i></h1>",
+            "content": "<h1><i><font color=#5991A7><b><center>Data for </font><font color=#e68a00>PMM Server</font> <font color=#5991A7> with</font> </font><font color=#e68a00>$interval</font> <font color=#5991A7>resolution</center></b></font></i></h1>",
             "gridPos": {
                 "h": 2,
                 "w": 24,
@@ -148,6 +140,7 @@
             "id": 97,
             "links": [],
             "mode": "html",
+            "options": {},
             "title": "",
             "type": "text"
         },
@@ -207,6 +200,7 @@
             "maxDataPoints": 100,
             "nullPointMode": "connected",
             "nullText": null,
+            "options": {},
             "postfix": "",
             "postfixFontSize": "50%",
             "prefix": "",
@@ -229,7 +223,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "(sum(rate(process_cpu_seconds_total{job=\"prometheus\"}[$interval])) by () or sum(irate(process_cpu_seconds_total{job=\"prometheus\"}[5m])) by ()) / count(node_cpu{mode=\"user\", instance=\"pmm-server\"})*100",
+                    "expr": "(sum(rate(process_cpu_seconds_total{job=\"prometheus\"}[$interval])) by () or sum(irate(process_cpu_seconds_total{job=\"prometheus\"}[5m])) by ()) / count(node_cpu_seconds_total{mode=\"user\", node_name=\"PMM Server\"})*100",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -240,7 +234,7 @@
             "thresholds": "60,80",
             "title": "CPU Usage",
             "type": "pmm-singlestat-panel",
-            "valueFontSize": "80%",
+            "valueFontSize": "150%",
             "valueMaps": [
                 {
                     "op": "=",
@@ -292,6 +286,7 @@
             "maxDataPoints": 100,
             "nullPointMode": "connected",
             "nullText": null,
+            "options": {},
             "postfix": "",
             "postfixFontSize": "50%",
             "prefix": "",
@@ -314,7 +309,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "100*sum(go_memstats_alloc_bytes{job=\"prometheus\"}+go_memstats_stack_inuse_bytes{job=\"prometheus\"}) by () / \nsum(node_memory_MemTotal{instance=\"pmm-server\"}) by ()",
+                    "expr": "100*sum(go_memstats_alloc_bytes{job=\"prometheus\"}+go_memstats_stack_inuse_bytes{job=\"prometheus\"}) by () / \nsum(node_memory_MemTotal_bytes{node_name=\"PMM Server\"}) by ()",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -324,7 +319,7 @@
             "thresholds": "30,60",
             "title": "Memory Usage",
             "type": "pmm-singlestat-panel",
-            "valueFontSize": "80%",
+            "valueFontSize": "150%",
             "valueMaps": [
                 {
                     "op": "=",
@@ -380,6 +375,7 @@
             "maxDataPoints": 100,
             "nullPointMode": "connected",
             "nullText": null,
+            "options": {},
             "postfix": "",
             "postfixFontSize": "50%",
             "prefix": "",
@@ -412,7 +408,7 @@
             "timeFrom": null,
             "title": "Scrapes Performed",
             "type": "singlestat",
-            "valueFontSize": "80%",
+            "valueFontSize": "50%",
             "valueMaps": [
                 {
                     "op": "=",
@@ -466,6 +462,7 @@
             "maxDataPoints": 100,
             "nullPointMode": "connected",
             "nullText": null,
+            "options": {},
             "postfix": "",
             "postfixFontSize": "50%",
             "prefix": "",
@@ -496,7 +493,7 @@
             "thresholds": "0.7,0.8",
             "title": "Samples Ingested",
             "type": "singlestat",
-            "valueFontSize": "80%",
+            "valueFontSize": "50%",
             "valueMaps": [
                 {
                     "op": "=",
@@ -549,6 +546,7 @@
             "maxDataPoints": 100,
             "nullPointMode": "connected",
             "nullText": null,
+            "options": {},
             "postfix": "",
             "postfixFontSize": "50%",
             "prefix": "",
@@ -579,7 +577,7 @@
             "thresholds": "",
             "title": "Active Data blocks",
             "type": "singlestat",
-            "valueFontSize": "80%",
+            "valueFontSize": "50%",
             "valueMaps": [
                 {
                     "op": "=",
@@ -632,6 +630,7 @@
             "maxDataPoints": 100,
             "nullPointMode": "connected",
             "nullText": null,
+            "options": {},
             "postfix": "",
             "postfixFontSize": "50%",
             "prefix": "",
@@ -662,7 +661,7 @@
             "thresholds": "",
             "title": "Active Series",
             "type": "singlestat",
-            "valueFontSize": "80%",
+            "valueFontSize": "50%",
             "valueMaps": [
                 {
                     "op": "=",
@@ -675,7 +674,7 @@
         {
             "cacheTimeout": null,
             "colorBackground": false,
-            "colorPostfix": true,
+            "colorPostfix": false,
             "colorValue": false,
             "colors": [
                 "#d44a3a",
@@ -716,6 +715,7 @@
             "maxDataPoints": 100,
             "nullPointMode": "connected",
             "nullText": null,
+            "options": {},
             "postfix": "s",
             "postfixFontSize": "50%",
             "prefix": "",
@@ -799,6 +799,7 @@
             "maxDataPoints": 100,
             "nullPointMode": "connected",
             "nullText": null,
+            "options": {},
             "postfix": "",
             "postfixFontSize": "50%",
             "prefix": "",
@@ -821,7 +822,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "(sum(rate(prometheus_tsdb_head_samples_appended_total[15m])) by () *10800*3) / ((sum(node_memory_MemTotal{instance=\"pmm-server\"}) by ()-419430400)*0.35)*100",
+                    "expr": "(sum(rate(prometheus_tsdb_head_samples_appended_total[15m])) by () *10800*3) / ((sum(node_memory_MemTotal_bytes{node_name=\"PMM Server\"}) by ()-419430400)*0.35)*100",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -831,7 +832,7 @@
             "thresholds": "60,80",
             "title": "Capacity Usage",
             "type": "pmm-singlestat-panel",
-            "valueFontSize": "80%",
+            "valueFontSize": "150%",
             "valueMaps": [
                 {
                     "op": "=",
@@ -887,6 +888,7 @@
                     "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null",
+                    "options": {},
                     "percentage": false,
                     "pointradius": 5,
                     "points": false,
@@ -917,7 +919,7 @@
                             "step": 60
                         },
                         {
-                            "expr": "count(node_cpu{mode=\"user\", instance=\"pmm-server\"})",
+                            "expr": "count(node_cpu_seconds_total{mode=\"user\", node_name=\"PMM Server\"})",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -926,7 +928,7 @@
                             "step": 40
                         },
                         {
-                            "expr": "count(node_cpu{mode=\"user\", instance=\"pmm-server\"})*0.75",
+                            "expr": "count(node_cpu_seconds_total{mode=\"user\", node_name=\"PMM Server\"})*0.75",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -936,6 +938,7 @@
                     ],
                     "thresholds": [],
                     "timeFrom": null,
+                    "timeRegions": [],
                     "timeShift": null,
                     "title": "Prometheus Process CPU Usage",
                     "tooltip": {
@@ -1014,6 +1017,7 @@
                     "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null",
+                    "options": {},
                     "percentage": false,
                     "pointradius": 5,
                     "points": false,
@@ -1064,7 +1068,7 @@
                             "step": 60
                         },
                         {
-                            "expr": "node_memory_MemTotal{instance=\"pmm-server\"}",
+                            "expr": "node_memory_MemTotal_bytes{node_name=\"PMM Server\"}",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -1076,6 +1080,7 @@
                     ],
                     "thresholds": [],
                     "timeFrom": null,
+                    "timeRegions": [],
                     "timeShift": null,
                     "title": "Prometheus Process  Memory Usage",
                     "tooltip": {
@@ -1147,6 +1152,7 @@
                     "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null",
+                    "options": {},
                     "percentage": false,
                     "pointradius": 5,
                     "points": false,
@@ -1164,7 +1170,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "(node_filesystem_size{instance=\"pmm-server\",mountpoint=\"/srv\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"} or \nnode_filesystem_size{instance=\"pmm-server\",mountpoint=\"/\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"} ) - \n(node_filesystem_free{instance=\"pmm-server\",mountpoint=\"/srv\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"} or \nnode_filesystem_free{instance=\"pmm-server\",mountpoint=\"/\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"})",
+                            "expr": "(node_filesystem_size_bytes{node_name=\"PMM Server\",mountpoint=\"/srv\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"} or \nnode_filesystem_size_bytes{node_name=\"PMM Server\",mountpoint=\"/\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"} ) - \n(node_filesystem_free_bytes{node_name=\"PMM Server\",mountpoint=\"/srv\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"} or \nnode_filesystem_free_bytes{node_name=\"PMM Server\",mountpoint=\"/\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"})",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1172,7 +1178,7 @@
                             "refId": "A"
                         },
                         {
-                            "expr": "node_filesystem_free{instance=\"pmm-server\", mountpoint=\"/srv\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"} or \nnode_filesystem_free{instance=\"pmm-server\", mountpoint=\"/\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}",
+                            "expr": "node_filesystem_free_bytes{node_name=\"PMM Server\", mountpoint=\"/srv\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"} or \nnode_filesystem_free_bytes{node_name=\"PMM Server\", mountpoint=\"/\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -1181,7 +1187,7 @@
                             "refId": "B"
                         },
                         {
-                            "expr": "node_filesystem_size{instance=\"pmm-server\",mountpoint=\"/srv\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"} or \nnode_filesystem_size{instance=\"pmm-server\",mountpoint=\"/\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}",
+                            "expr": "node_filesystem_size_bytes{node_name=\"PMM Server\",mountpoint=\"/srv\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"} or \nnode_filesystem_size_bytes{node_name=\"PMM Server\",mountpoint=\"/\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -1192,6 +1198,7 @@
                     ],
                     "thresholds": [],
                     "timeFrom": null,
+                    "timeRegions": [],
                     "timeShift": null,
                     "title": "Disk Space Utilization",
                     "tooltip": {
@@ -1263,6 +1270,7 @@
                     "linewidth": 3,
                     "links": [],
                     "nullPointMode": "null",
+                    "options": {},
                     "percentage": false,
                     "pointradius": 5,
                     "points": false,
@@ -1273,7 +1281,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "node_filesystem_free{instance=\"pmm-server\",mountpoint=\"/srv\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}/\nclamp_min((node_filesystem_free{instance=\"pmm-server\",mountpoint=\"/srv\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"} - \npredict_linear(node_filesystem_free{instance=\"pmm-server\", mountpoint=\"/srv\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[1h], 1 * 3600)),0)\nor\nnode_filesystem_free{instance=\"pmm-server\",mountpoint=\"/\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}/\nclamp_min((node_filesystem_free{instance=\"pmm-server\",mountpoint=\"/\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"} - \npredict_linear(node_filesystem_free{instance=\"pmm-server\", mountpoint=\"/\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[1h], 1 * 3600)),0)",
+                            "expr": "node_filesystem_free_bytes{node_name=\"PMM Server\",mountpoint=\"/srv\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}/\nclamp_min((node_filesystem_free_bytes{node_name=\"PMM Server\",mountpoint=\"/srv\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"} - \npredict_linear(node_filesystem_free_bytes{node_name=\"PMM Server\", mountpoint=\"/srv\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[1h], 1 * 3600)),0)\nor\nnode_filesystem_free_bytes{node_name=\"PMM Server\",mountpoint=\"/\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}/\nclamp_min((node_filesystem_free_bytes{node_name=\"PMM Server\",mountpoint=\"/\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"} - \npredict_linear(node_filesystem_free_bytes{node_name=\"PMM Server\", mountpoint=\"/\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[1h], 1 * 3600)),0)",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -1284,6 +1292,7 @@
                     ],
                     "thresholds": [],
                     "timeFrom": null,
+                    "timeRegions": [],
                     "timeShift": null,
                     "title": "Time before run out of space",
                     "tooltip": {
@@ -1340,7 +1349,7 @@
                 {
                     "cacheTimeout": null,
                     "colorBackground": false,
-                    "colorPostfix": true,
+                    "colorPostfix": false,
                     "colorValue": false,
                     "colors": [
                         "#d44a3a",
@@ -1381,6 +1390,7 @@
                     "maxDataPoints": 100,
                     "nullPointMode": "connected",
                     "nullText": null,
+                    "options": {},
                     "postfix": "s",
                     "postfixFontSize": "50%",
                     "prefix": "",
@@ -1465,6 +1475,7 @@
                     "maxDataPoints": 100,
                     "nullPointMode": "connected",
                     "nullText": null,
+                    "options": {},
                     "postfix": "",
                     "postfixFontSize": "50%",
                     "prefix": "",
@@ -1495,7 +1506,7 @@
                     "thresholds": "",
                     "title": "Samples Per Chunk",
                     "type": "singlestat",
-                    "valueFontSize": "80%",
+                    "valueFontSize": "50%",
                     "valueMaps": [
                         {
                             "op": "=",
@@ -1547,6 +1558,7 @@
                     "maxDataPoints": 100,
                     "nullPointMode": "connected",
                     "nullText": null,
+                    "options": {},
                     "postfix": "",
                     "postfixFontSize": "50%",
                     "prefix": "",
@@ -1578,7 +1590,7 @@
                     "thresholds": "",
                     "title": "Avg Chunk Size",
                     "type": "singlestat",
-                    "valueFontSize": "80%",
+                    "valueFontSize": "50%",
                     "valueMaps": [
                         {
                             "op": "=",
@@ -1631,6 +1643,7 @@
                     "maxDataPoints": 100,
                     "nullPointMode": "connected",
                     "nullText": null,
+                    "options": {},
                     "postfix": "",
                     "postfixFontSize": "50%",
                     "prefix": "",
@@ -1662,7 +1675,7 @@
                     "thresholds": "",
                     "title": "Bytes/Sample",
                     "type": "singlestat",
-                    "valueFontSize": "80%",
+                    "valueFontSize": "50%",
                     "valueMaps": [
                         {
                             "op": "=",
@@ -1715,6 +1728,7 @@
                     "maxDataPoints": 100,
                     "nullPointMode": "connected",
                     "nullText": null,
+                    "options": {},
                     "postfix": "",
                     "postfixFontSize": "50%",
                     "prefix": "",
@@ -1746,7 +1760,7 @@
                     "thresholds": "",
                     "title": "Head Block Size",
                     "type": "singlestat",
-                    "valueFontSize": "80%",
+                    "valueFontSize": "50%",
                     "valueMaps": [
                         {
                             "op": "=",
@@ -1799,6 +1813,7 @@
                     "maxDataPoints": 100,
                     "nullPointMode": "connected",
                     "nullText": null,
+                    "options": {},
                     "postfix": "",
                     "postfixFontSize": "50%",
                     "prefix": "",
@@ -1830,7 +1845,7 @@
                     "thresholds": "300,3600",
                     "title": "Avg Compaction Time",
                     "type": "singlestat",
-                    "valueFontSize": "80%",
+                    "valueFontSize": "50%",
                     "valueMaps": [
                         {
                             "op": "=",
@@ -1883,6 +1898,7 @@
                     "maxDataPoints": 100,
                     "nullPointMode": "connected",
                     "nullText": null,
+                    "options": {},
                     "postfix": "",
                     "postfixFontSize": "50%",
                     "prefix": "",
@@ -1914,7 +1930,7 @@
                     "thresholds": "300,3600",
                     "title": "WAL Fsync Time",
                     "type": "singlestat",
-                    "valueFontSize": "80%",
+                    "valueFontSize": "50%",
                     "valueMaps": [
                         {
                             "op": "=",
@@ -1967,6 +1983,7 @@
                     "maxDataPoints": 100,
                     "nullPointMode": "connected",
                     "nullText": null,
+                    "options": {},
                     "postfix": "",
                     "postfixFontSize": "50%",
                     "prefix": "",
@@ -1998,7 +2015,7 @@
                     "thresholds": "300,3600",
                     "title": "Head GC Latency",
                     "type": "singlestat",
-                    "valueFontSize": "80%",
+                    "valueFontSize": "50%",
                     "valueMaps": [
                         {
                             "op": "=",
@@ -2037,6 +2054,7 @@
                     "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null",
+                    "options": {},
                     "percentage": false,
                     "pointradius": 2,
                     "points": false,
@@ -2058,6 +2076,7 @@
                     ],
                     "thresholds": [],
                     "timeFrom": null,
+                    "timeRegions": [],
                     "timeShift": null,
                     "title": "Active Data Blocks",
                     "tooltip": {
@@ -2127,6 +2146,7 @@
                     "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null",
+                    "options": {},
                     "percentage": false,
                     "pointradius": 2,
                     "points": false,
@@ -2172,6 +2192,7 @@
                     ],
                     "thresholds": [],
                     "timeFrom": null,
+                    "timeRegions": [],
                     "timeShift": null,
                     "title": "Head Block",
                     "tooltip": {
@@ -2242,6 +2263,7 @@
                     "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null as zero",
+                    "options": {},
                     "percentage": false,
                     "pointradius": 2,
                     "points": false,
@@ -2270,6 +2292,7 @@
                     ],
                     "thresholds": [],
                     "timeFrom": null,
+                    "timeRegions": [],
                     "timeShift": null,
                     "title": "Chunk Activity",
                     "tooltip": {
@@ -2341,6 +2364,7 @@
                     "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null",
+                    "options": {},
                     "percentage": false,
                     "pointradius": 5,
                     "points": false,
@@ -2371,6 +2395,7 @@
                     ],
                     "thresholds": [],
                     "timeFrom": null,
+                    "timeRegions": [],
                     "timeShift": null,
                     "title": "Reload block data from disk",
                     "tooltip": {
@@ -2444,6 +2469,7 @@
                     "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null",
+                    "options": {},
                     "percentage": false,
                     "pointradius": 2,
                     "points": true,
@@ -2474,6 +2500,7 @@
                     ],
                     "thresholds": [],
                     "timeFrom": null,
+                    "timeRegions": [],
                     "timeShift": null,
                     "title": "Compactions",
                     "tooltip": {
@@ -2562,6 +2589,7 @@
                     "linewidth": 1,
                     "links": [],
                     "nullPointMode": "null",
+                    "options": {},
                     "percentage": false,
                     "pointradius": 5,
                     "points": false,
@@ -2598,6 +2626,7 @@
                     ],
                     "thresholds": [],
                     "timeFrom": null,
+                    "timeRegions": [],
                     "timeShift": null,
                     "title": "Ingestion",
                     "tooltip": {
@@ -2673,6 +2702,7 @@
                     "linewidth": 1,
                     "links": [],
                     "nullPointMode": "null",
+                    "options": {},
                     "percentage": false,
                     "pointradius": 2,
                     "points": false,
@@ -2723,6 +2753,7 @@
                     ],
                     "thresholds": [],
                     "timeFrom": null,
+                    "timeRegions": [],
                     "timeShift": null,
                     "title": "Prometheus Targets",
                     "tooltip": {
@@ -2770,7 +2801,7 @@
                     "dashLength": 10,
                     "dashes": false,
                     "datasource": "Prometheus",
-                    "decimals": 2,
+                    "decimals": 0,
                     "editable": true,
                     "error": false,
                     "fill": 0,
@@ -2782,6 +2813,7 @@
                         "y": 15
                     },
                     "id": 24,
+                    "interval": "",
                     "legend": {
                         "alignAsTable": true,
                         "avg": true,
@@ -2799,6 +2831,7 @@
                     "linewidth": 1,
                     "links": [],
                     "nullPointMode": "null",
+                    "options": {},
                     "percentage": false,
                     "pointradius": 1,
                     "points": false,
@@ -2814,18 +2847,38 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "sum(avg_over_time(up[$interval])) by (job) or sum(avg_over_time(up[5m])) by (job)",
+                            "expr": "sum by (job) (label_replace(\nsum(avg_over_time(up{service_type=\"mysql\"}[$interval])) by (job,service_name) or \nsum(avg_over_time(up{service_type=\"mysql\"}[5m])) by (job,service_name),\n\"job\", \"$2\", \"job\", \"mysqld_(.*)_(.*)\"))",
                             "format": "time_series",
+                            "hide": false,
                             "interval": "$interval",
                             "intervalFactor": 1,
-                            "legendFormat": "{{job}}",
+                            "legendFormat": "mysqld_exporter_{{job}}",
                             "metric": "",
                             "refId": "A",
                             "step": 60
+                        },
+                        {
+                            "expr": "sum by (job) (label_replace(\n(sum(avg_over_time(up{service_type!=\"mysql\",instance!=\"pmm-server\"}[$interval])) by (job,node_name) or \nsum(avg_over_time(up{service_type!=\"mysql\",instance!=\"pmm-server\"}[5m])) by (job,node_name)),\n\"job\", \"$1\", \"job\", \"(.*)_agent_(.*)\"))",
+                            "format": "time_series",
+                            "hide": false,
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "{{job}}",
+                            "refId": "B"
+                        },
+                        {
+                            "expr": "sum(avg_over_time(up{instance=\"pmm-server\"}[$interval])) by (job) or sum(avg_over_time(up{instance=\"pmm-server\"}[5m])) by (job)",
+                            "format": "time_series",
+                            "hide": false,
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "{{job}}",
+                            "refId": "C"
                         }
                     ],
                     "thresholds": [],
                     "timeFrom": null,
+                    "timeRegions": [],
                     "timeShift": null,
                     "title": "Scraped Target by Job",
                     "tooltip": {
@@ -2844,6 +2897,7 @@
                     },
                     "yaxes": [
                         {
+                            "decimals": 0,
                             "format": "short",
                             "logBase": 1,
                             "max": null,
@@ -2885,6 +2939,7 @@
                         "y": 15
                     },
                     "id": 42,
+                    "interval": "",
                     "legend": {
                         "alignAsTable": true,
                         "avg": true,
@@ -2902,6 +2957,7 @@
                     "linewidth": 1,
                     "links": [],
                     "nullPointMode": "null",
+                    "options": {},
                     "percentage": false,
                     "pointradius": 1,
                     "points": false,
@@ -2912,18 +2968,38 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "avg(avg_over_time(scrape_duration_seconds[$interval])) by (job) or avg(avg_over_time(scrape_duration_seconds[5m])) by (job) ",
+                            "expr": "label_replace( \n(avg(avg_over_time(scrape_duration_seconds{service_type=\"mysql\"}[$interval])) by (job,service_name) or \navg(avg_over_time(scrape_duration_seconds{service_type=\"mysql\"}[5m])) by (job,service_name)), \n\"job\", \"$2\", \"job\", \"mysqld_(.*)_(.*)\")",
                             "format": "time_series",
+                            "hide": false,
                             "interval": "$interval",
                             "intervalFactor": 1,
-                            "legendFormat": "{{job}}",
+                            "legendFormat": "{{service_name}} - mysqld_exporter - {{job}}",
                             "metric": "",
                             "refId": "A",
                             "step": 60
+                        },
+                        {
+                            "expr": "label_replace( \n(avg(avg_over_time(scrape_duration_seconds{service_type!=\"mysql\",instance!=\"pmm-server\"}[$interval])) by (job,node_name) or \navg(avg_over_time(scrape_duration_seconds{service_type!=\"mysql\",instance!=\"pmm-server\"}[5m])) by (job,node_name)), \n\"job\", \"$1\", \"job\", \"(.*)_agent_(.*)\")",
+                            "format": "time_series",
+                            "hide": false,
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "{{node_name}} - {{job}}",
+                            "refId": "B"
+                        },
+                        {
+                            "expr": "avg(avg_over_time(scrape_duration_seconds{instance=\"pmm-server\"}[$interval])) by (job,service_name) or \navg(avg_over_time(scrape_duration_seconds{instance=\"pmm-server\"}[5m])) by (job,service_name)",
+                            "format": "time_series",
+                            "hide": false,
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "PMM Server - {{job}}",
+                            "refId": "C"
                         }
                     ],
                     "thresholds": [],
                     "timeFrom": null,
+                    "timeRegions": [],
                     "timeShift": null,
                     "title": "Scrape Time by Job",
                     "tooltip": {
@@ -2971,7 +3047,7 @@
                     "dashLength": 10,
                     "dashes": false,
                     "datasource": "Prometheus",
-                    "decimals": 2,
+                    "decimals": 0,
                     "editable": true,
                     "error": false,
                     "fill": 0,
@@ -3000,6 +3076,7 @@
                     "linewidth": 1,
                     "links": [],
                     "nullPointMode": "null",
+                    "options": {},
                     "percentage": false,
                     "pointradius": 1,
                     "points": false,
@@ -3015,18 +3092,28 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "sum(avg_over_time(up[$interval])) by (instance) or sum(avg_over_time(up[5m])) by (instance)",
+                            "expr": "sum(avg_over_time(up{instance!=\"pmm-server\",node_name!=\"PMM Server\"}[$interval])) by (node_name) or \nsum(avg_over_time(up{instance!=\"pmm-server\",node_name!=\"PMM Server\"}[5m])) by (node_name)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
-                            "legendFormat": "{{instance}}",
+                            "legendFormat": "{{node_name}}",
                             "metric": "",
                             "refId": "A",
                             "step": 60
+                        },
+                        {
+                            "expr": "sum(\nsum(avg_over_time(up{node_name=\"PMM Server\"}[$interval])) by (node_name) or\nsum(avg_over_time(up{instance=\"pmm-server\"}[$interval])) by (instance) or\nsum(avg_over_time(up{node_name=\"PMM Server\"}[5m])) by (node_name) or\nsum(avg_over_time(up{instance=\"pmm-server\"}[5m])) by (instance)\n)",
+                            "format": "time_series",
+                            "hide": false,
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "PMM Server",
+                            "refId": "C"
                         }
                     ],
                     "thresholds": [],
                     "timeFrom": null,
+                    "timeRegions": [],
                     "timeShift": null,
                     "title": "Scraped Target by Instance",
                     "tooltip": {
@@ -3045,6 +3132,7 @@
                     },
                     "yaxes": [
                         {
+                            "decimals": 0,
                             "format": "short",
                             "logBase": 1,
                             "max": null,
@@ -3103,6 +3191,7 @@
                     "linewidth": 1,
                     "links": [],
                     "nullPointMode": "null",
+                    "options": {},
                     "percentage": false,
                     "pointradius": 1,
                     "points": false,
@@ -3113,18 +3202,29 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "avg(avg_over_time(scrape_duration_seconds[$interval])) by (instance) or avg(avg_over_time(scrape_duration_seconds[5m])) by (instance) ",
+                            "expr": "avg(avg_over_time(scrape_duration_seconds{instance!=\"pmm-server\",node_name!=\"PMM Server\"}[$interval])) by (node_name) or \navg(avg_over_time(scrape_duration_seconds{instance!=\"pmm-server\",node_name!=\"PMM Server\"}[5m])) by (node_name) ",
                             "format": "time_series",
+                            "hide": false,
                             "interval": "$interval",
                             "intervalFactor": 1,
-                            "legendFormat": "{{instance}}",
+                            "legendFormat": "{{node_name}}",
                             "metric": "",
                             "refId": "A",
                             "step": 60
+                        },
+                        {
+                            "expr": "avg(avg_over_time(scrape_duration_seconds{node_name=\"PMM Server\"}[$interval]) or \navg_over_time(scrape_duration_seconds{instance=\"pmm-server\"}[$interval])) or \navg(avg_over_time(scrape_duration_seconds{node_name=\"PMM Server\"}[5m]) or \navg_over_time(scrape_duration_seconds{instance=\"pmm-server\"}[5m]))",
+                            "format": "time_series",
+                            "hide": false,
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "PMM Server",
+                            "refId": "B"
                         }
                     ],
                     "thresholds": [],
                     "timeFrom": null,
+                    "timeRegions": [],
                     "timeShift": null,
                     "title": "Scrape Time by Instance",
                     "tooltip": {
@@ -3201,6 +3301,7 @@
                     "linewidth": 1,
                     "links": [],
                     "nullPointMode": "null",
+                    "options": {},
                     "percentage": false,
                     "pointradius": 1,
                     "points": false,
@@ -3228,6 +3329,7 @@
                     ],
                     "thresholds": [],
                     "timeFrom": null,
+                    "timeRegions": [],
                     "timeShift": null,
                     "title": "Scrapes by Target Frequency",
                     "tooltip": {
@@ -3304,6 +3406,7 @@
                     "linewidth": 1,
                     "links": [],
                     "nullPointMode": "null",
+                    "options": {},
                     "percentage": false,
                     "pointradius": 1,
                     "points": true,
@@ -3331,6 +3434,7 @@
                     ],
                     "thresholds": [],
                     "timeFrom": null,
+                    "timeRegions": [],
                     "timeShift": null,
                     "title": "Scrape Frequency Versus Target",
                     "tooltip": {
@@ -3407,21 +3511,22 @@
                     "linewidth": 1,
                     "links": [],
                     "nullPointMode": "null",
+                    "options": {},
                     "percentage": false,
                     "pointradius": 1,
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
                     "spaceLength": 10,
-                    "stack": false,
+                    "stack": true,
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "time() - node_time",
+                            "expr": "time() - node_time_seconds",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
-                            "legendFormat": "{{instance}}",
+                            "legendFormat": "{{node_name}}",
                             "metric": "",
                             "refId": "A",
                             "step": 60
@@ -3429,6 +3534,7 @@
                     ],
                     "thresholds": [],
                     "timeFrom": null,
+                    "timeRegions": [],
                     "timeShift": null,
                     "title": "Scraping Time Drift",
                     "tooltip": {
@@ -3448,7 +3554,7 @@
                     "yaxes": [
                         {
                             "format": "s",
-                            "logBase": 1,
+                            "logBase": 2,
                             "max": null,
                             "min": 0,
                             "show": true
@@ -3505,6 +3611,7 @@
                     "linewidth": 1,
                     "links": [],
                     "nullPointMode": "null",
+                    "options": {},
                     "percentage": false,
                     "pointradius": 1,
                     "points": false,
@@ -3520,7 +3627,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "(sum(prometheus_target_interval_length_seconds{instance=\"pmm-server\",interval=\"1s\",job=\"prometheus\",quantile=\"0.99\"}) by () - sum(prometheus_target_interval_length_seconds{instance=\"pmm-server\",interval=\"1s\",job=\"prometheus\",quantile=\"0.01\"}) by ())/1",
+                            "expr": "(sum(prometheus_target_interval_length_seconds{instance=\"pmm-server\",interval=\"1s\",job=\"prometheus\",quantile=\"0.99\"}) by () - \nsum(prometheus_target_interval_length_seconds{instance=\"pmm-server\",interval=\"1s\",job=\"prometheus\",quantile=\"0.01\"}) by ())/1",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3530,7 +3637,7 @@
                             "step": 60
                         },
                         {
-                            "expr": "(sum(prometheus_target_interval_length_seconds{instance=\"pmm-server\",interval=\"5s\",job=\"prometheus\",quantile=\"0.99\"}) by () - sum(prometheus_target_interval_length_seconds{instance=\"pmm-server\",interval=\"5s\",job=\"prometheus\",quantile=\"0.01\"}) by ())/5",
+                            "expr": "(sum(prometheus_target_interval_length_seconds{instance=\"pmm-server\",interval=\"5s\",job=\"prometheus\",quantile=\"0.99\"}) by () - \nsum(prometheus_target_interval_length_seconds{instance=\"pmm-server\",interval=\"5s\",job=\"prometheus\",quantile=\"0.01\"}) by ())/5",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3538,7 +3645,7 @@
                             "refId": "B"
                         },
                         {
-                            "expr": "(sum(prometheus_target_interval_length_seconds{instance=\"pmm-server\",interval=\"1m0s\",job=\"prometheus\",quantile=\"0.99\"}) by () - sum(prometheus_target_interval_length_seconds{instance=\"pmm-server\",interval=\"1m0s\",job=\"prometheus\",quantile=\"0.01\"}) by ())/60",
+                            "expr": "(sum(prometheus_target_interval_length_seconds{instance=\"pmm-server\",interval=\"1m0s\",job=\"prometheus\",quantile=\"0.99\"}) by () - \nsum(prometheus_target_interval_length_seconds{instance=\"pmm-server\",interval=\"1m0s\",job=\"prometheus\",quantile=\"0.01\"}) by ())/60",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3548,6 +3655,7 @@
                     ],
                     "thresholds": [],
                     "timeFrom": null,
+                    "timeRegions": [],
                     "timeShift": null,
                     "title": "Prometheus Scrape Interval Variance",
                     "tooltip": {
@@ -3607,6 +3715,7 @@
                         "y": 43
                     },
                     "id": 44,
+                    "interval": "",
                     "legend": {
                         "alignAsTable": true,
                         "avg": true,
@@ -3624,6 +3733,7 @@
                     "linewidth": 1,
                     "links": [],
                     "nullPointMode": "null",
+                    "options": {},
                     "percentage": false,
                     "pointradius": 1,
                     "points": true,
@@ -3639,18 +3749,29 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "topk(10,max_over_time(scrape_duration_seconds[$interval]) or max_over_time(scrape_duration_seconds[5m]))",
+                            "expr": "topk(10,label_join((max_over_time(scrape_duration_seconds[$interval]) or max_over_time(scrape_duration_seconds[5m])), \"node_name\", \",\",\"instance\"))",
                             "format": "time_series",
+                            "hide": true,
                             "interval": "$interval",
                             "intervalFactor": 1,
-                            "legendFormat": "{{job}} at {{instance}}",
+                            "legendFormat": "{{job}} at {{node_name}}",
                             "metric": "",
                             "refId": "A",
                             "step": 60
+                        },
+                        {
+                            "expr": "topk(10,(label_join((max_over_time(scrape_duration_seconds{instance=\"pmm-server\"}[$interval]) or \nmax_over_time(scrape_duration_seconds{instance=\"pmm-server\"}[5m])), \"node_name\", \",\",\"instance\") or\nlabel_replace((max_over_time(scrape_duration_seconds{service_type!=\"mysql\",instance!=\"pmm-server\"}[$interval]) or \nmax_over_time(scrape_duration_seconds{service_type!=\"mysql\",instance!=\"pmm-server\"}[5m])),\"job\", \"$1\", \"job\", \"(.*)_agent_(.*)\") or\nlabel_replace((max_over_time(scrape_duration_seconds{service_type=\"mysql\"}[$interval]) or \nmax_over_time(scrape_duration_seconds{service_type=\"mysql\"}[5m])),\"job\", \"mysqld_exporter_$3\", \"job\", \"(.*)_agent_id_(.*)_(.*)\")\n))",
+                            "format": "time_series",
+                            "hide": false,
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "{{job}} at {{node_name}}",
+                            "refId": "B"
                         }
                     ],
                     "thresholds": [],
                     "timeFrom": null,
+                    "timeRegions": [],
                     "timeShift": null,
                     "title": "Slowest Jobs",
                     "tooltip": {
@@ -3727,6 +3848,7 @@
                     "linewidth": 1,
                     "links": [],
                     "nullPointMode": "null",
+                    "options": {},
                     "percentage": false,
                     "pointradius": 1,
                     "points": true,
@@ -3742,18 +3864,28 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "topk(10,max_over_time(scrape_samples_scraped[$interval]) or max_over_time(scrape_duration_seconds[5m]))",
+                            "expr": "topk(10,max_over_time(scrape_samples_scraped[$interval]) or max_over_time(scrape_samples_seconds[5m]))",
                             "format": "time_series",
+                            "hide": true,
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "{{job}} at {{instance}}",
                             "metric": "",
                             "refId": "A",
                             "step": 60
+                        },
+                        {
+                            "expr": "topk(10,(label_join((max_over_time(scrape_samples_scraped{instance=\"pmm-server\"}[$interval]) or \nmax_over_time(scrape_samples_scraped{instance=\"pmm-server\"}[5m])), \"node_name\", \",\",\"instance\") or\nlabel_replace((max_over_time(scrape_samples_scraped{service_type!=\"mysql\",instance!=\"pmm-server\"}[$interval]) or \nmax_over_time(scrape_samples_scraped{service_type!=\"mysql\",instance!=\"pmm-server\"}[5m])),\"job\", \"$1\", \"job\", \"(.*)_agent_(.*)\") or\nlabel_replace((max_over_time(scrape_samples_scraped{service_type=\"mysql\"}[$interval]) or \nmax_over_time(scrape_samples_scraped{service_type=\"mysql\"}[5m])),\"job\", \"mysqld_exporter_$3\", \"job\", \"(.*)_agent_id_(.*)_(.*)\")\n))",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "{{job}} - {{node_name}}",
+                            "refId": "B"
                         }
                     ],
                     "thresholds": [],
                     "timeFrom": null,
+                    "timeRegions": [],
                     "timeShift": null,
                     "title": "Largest Samples Jobs",
                     "tooltip": {
@@ -3847,6 +3979,7 @@
                     "linewidth": 1,
                     "links": [],
                     "nullPointMode": "null",
+                    "options": {},
                     "percentage": false,
                     "pointradius": 1,
                     "points": false,
@@ -3893,6 +4026,7 @@
                     ],
                     "thresholds": [],
                     "timeFrom": null,
+                    "timeRegions": [],
                     "timeShift": null,
                     "title": "Prometheus Queries",
                     "tooltip": {
@@ -3971,6 +4105,7 @@
                     "linewidth": 1,
                     "links": [],
                     "nullPointMode": "null",
+                    "options": {},
                     "percentage": false,
                     "pointradius": 1,
                     "points": false,
@@ -4000,6 +4135,7 @@
                     ],
                     "thresholds": [],
                     "timeFrom": null,
+                    "timeRegions": [],
                     "timeShift": null,
                     "title": "Prometheus Query Execution",
                     "tooltip": {
@@ -4078,6 +4214,7 @@
                     "linewidth": 1,
                     "links": [],
                     "nullPointMode": "null",
+                    "options": {},
                     "percentage": false,
                     "pointradius": 1,
                     "points": false,
@@ -4107,6 +4244,7 @@
                     ],
                     "thresholds": [],
                     "timeFrom": null,
+                    "timeRegions": [],
                     "timeShift": null,
                     "title": "Prometheus Query Execution Latency",
                     "tooltip": {
@@ -4185,6 +4323,7 @@
                     "linewidth": 1,
                     "links": [],
                     "nullPointMode": "null",
+                    "options": {},
                     "percentage": false,
                     "pointradius": 1,
                     "points": false,
@@ -4214,6 +4353,7 @@
                     ],
                     "thresholds": [],
                     "timeFrom": null,
+                    "timeRegions": [],
                     "timeShift": null,
                     "title": "Prometheus Query Execution Load",
                     "tooltip": {
@@ -4297,6 +4437,7 @@
                     "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null",
+                    "options": {},
                     "percentage": false,
                     "pointradius": 5,
                     "points": false,
@@ -4317,6 +4458,7 @@
                     ],
                     "thresholds": [],
                     "timeFrom": null,
+                    "timeRegions": [],
                     "timeShift": null,
                     "title": "HTTP Requests duration by Handler",
                     "tooltip": {
@@ -4388,6 +4530,7 @@
                     "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null",
+                    "options": {},
                     "percentage": false,
                     "pointradius": 5,
                     "points": false,
@@ -4408,6 +4551,7 @@
                     ],
                     "thresholds": [],
                     "timeFrom": null,
+                    "timeRegions": [],
                     "timeShift": null,
                     "title": "HTTP Response Average Size by Handler",
                     "tooltip": {
@@ -4477,12 +4621,13 @@
                         "h": 11,
                         "w": 12,
                         "x": 0,
-                        "y": 11
+                        "y": 53
                     },
                     "height": "420px",
                     "hideTimeOverride": true,
                     "id": 13,
                     "links": [],
+                    "options": {},
                     "pageSize": null,
                     "scroll": false,
                     "showHeader": true,
@@ -4521,33 +4666,64 @@
                         "h": 11,
                         "w": 12,
                         "x": 12,
-                        "y": 11
+                        "y": 53
                     },
                     "height": "420px",
                     "hideTimeOverride": true,
                     "id": 14,
                     "links": [],
+                    "options": {},
                     "pageSize": null,
                     "scroll": false,
                     "showHeader": true,
                     "sort": {
-                        "col": 1,
+                        "col": 3,
                         "desc": true
                     },
-                    "styles": [],
+                    "styles": [
+                        {
+                            "alias": "",
+                            "colorMode": null,
+                            "colors": [
+                                "rgba(245, 54, 54, 0.9)",
+                                "rgba(237, 129, 40, 0.89)",
+                                "rgba(50, 172, 45, 0.97)"
+                            ],
+                            "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                            "decimals": 2,
+                            "mappingType": 1,
+                            "pattern": "Time",
+                            "thresholds": [],
+                            "type": "hidden",
+                            "unit": "short"
+                        }
+                    ],
                     "targets": [
                         {
-                            "expr": "topk(10, count({__name__=~\".+\"})  by (instance))",
+                            "expr": "topk(10, sum by (node_name) (count({__name__=~\".+\",instance!=\"pmm-server\"})  by (node_name) or \ncount({__name__=~\".+\",instance=\"pmm-server\"})  by (instance)))",
+                            "format": "table",
+                            "hide": true,
+                            "instant": true,
                             "interval": "5m",
                             "intervalFactor": 2,
                             "legendFormat": "{{ instance }}",
                             "refId": "A",
                             "step": 600
+                        },
+                        {
+                            "expr": "topk(10, sum by (node_name) (count({__name__=~\".+\",instance!=\"pmm-server\"})  by (node_name) or \nlabel_replace(\nlabel_join(count({__name__=~\".+\",instance=\"pmm-server\"})  by (instance,node_name), \"node_name\", \",\",\"instance\"),\n\"node_name\", \"PMM Server\", \"node_name\", \"pmm-server\")\n))",
+                            "format": "table",
+                            "hide": false,
+                            "instant": true,
+                            "interval": "5m",
+                            "intervalFactor": 1,
+                            "legendFormat": "{{instance}}",
+                            "refId": "B"
                         }
                     ],
                     "timeFrom": "5m",
                     "title": "Top 10 hosts by time series count",
-                    "transform": "timeseries_aggregations",
+                    "transform": "table",
                     "type": "table"
                 }
             ],
@@ -4621,6 +4797,7 @@
                     "maxDataPoints": 100,
                     "nullPointMode": "connected",
                     "nullText": null,
+                    "options": {},
                     "postfix": "",
                     "postfixFontSize": "80%",
                     "prefix": "",
@@ -4647,7 +4824,7 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "clamp_max(avg by (instance) (sum by (mode) ( (clamp_max(rate(node_cpu{instance=\"pmm-server\",mode!='idle',mode!=\"iowait\"}[$interval]),1)) or  (clamp_max(irate(node_cpu{instance=\"pmm-server\",mode!='idle',mode!=\"iowait\"}[5m]),1)) )),1) *100",
+                            "expr": "clamp_max(avg by (instance) (sum by (mode) ( (clamp_max(rate(node_cpu_seconds_total{node_name=\"PMM Server\",mode!='idle',mode!=\"iowait\"}[$interval]),1)) or  (clamp_max(irate(node_cpu_seconds_total{node_name=\"PMM Server\",mode!='idle',mode!=\"iowait\"}[5m]),1)) )),1) *100",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4659,9 +4836,8 @@
                     ],
                     "thresholds": "70,90",
                     "title": "CPU Busy",
-                    "transparent": false,
                     "type": "pmm-singlestat-panel",
-                    "valueFontSize": "80%",
+                    "valueFontSize": "150%",
                     "valueMaps": [],
                     "valueName": "current"
                 },
@@ -4710,6 +4886,7 @@
                     "maxDataPoints": 100,
                     "nullPointMode": "connected",
                     "nullText": null,
+                    "options": {},
                     "postfix": "",
                     "postfixFontSize": "50%",
                     "prefix": "",
@@ -4735,7 +4912,7 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "(node_memory_MemAvailable{instance=\"pmm-server\"} or (node_memory_MemFree{instance=\"pmm-server\"} + node_memory_Buffers{instance=\"pmm-server\"} + node_memory_Cached{instance=\"pmm-server\"})) / node_memory_MemTotal{instance=\"pmm-server\"} * 100",
+                            "expr": "(node_memory_MemAvailable_bytes{node_name=\"PMM Server\"} or (node_memory_MemFree_bytes{node_name=\"PMM Server\"} + node_memory_Buffers_bytes{node_name=\"PMM Server\"} + node_memory_Cached_bytes{node_name=\"PMM Server\"})) / node_memory_MemTotal_bytes{node_name=\"PMM Server\"} * 100",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4747,9 +4924,8 @@
                     ],
                     "thresholds": "10,20",
                     "title": "Mem Avail",
-                    "transparent": false,
                     "type": "pmm-singlestat-panel",
-                    "valueFontSize": "80%",
+                    "valueFontSize": "150%",
                     "valueMaps": [],
                     "valueName": "current"
                 },
@@ -4809,6 +4985,7 @@
                     "maxDataPoints": 100,
                     "nullPointMode": "connected",
                     "nullText": null,
+                    "options": {},
                     "postfix": "",
                     "postfixFontSize": "30%",
                     "prefix": "",
@@ -4832,7 +5009,7 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "rate(node_vmstat_pgpgin{instance=\"pmm-server\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{instance=\"pmm-server\"}[5m]) * 1024",
+                            "expr": "rate(node_vmstat_pgpgin{node_name=\"PMM Server\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=\"PMM Server\"}[5m]) * 1024",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4844,9 +5021,8 @@
                     ],
                     "thresholds": "10000000,100000000",
                     "title": "Disk Reads",
-                    "transparent": false,
                     "type": "singlestat",
-                    "valueFontSize": "30%",
+                    "valueFontSize": "50%",
                     "valueMaps": [],
                     "valueName": "current"
                 },
@@ -4895,6 +5071,7 @@
                     "maxDataPoints": 100,
                     "nullPointMode": "connected",
                     "nullText": null,
+                    "options": {},
                     "postfix": "",
                     "postfixFontSize": "30%",
                     "prefix": "",
@@ -4918,7 +5095,7 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "rate(node_vmstat_pgpgout{instance=\"pmm-server\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{instance=\"pmm-server\"}[5m]) * 1024",
+                            "expr": "rate(node_vmstat_pgpgout{node_name=\"PMM Server\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=\"PMM Server\"}[5m]) * 1024",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4930,9 +5107,8 @@
                     ],
                     "thresholds": "10000000,100000000",
                     "title": "Disk Writes",
-                    "transparent": false,
                     "type": "singlestat",
-                    "valueFontSize": "30%",
+                    "valueFontSize": "50%",
                     "valueMaps": [],
                     "valueName": "current"
                 },
@@ -4981,6 +5157,7 @@
                     "maxDataPoints": 100,
                     "nullPointMode": "connected",
                     "nullText": null,
+                    "options": {},
                     "postfix": "",
                     "postfixFontSize": "30%",
                     "prefix": "",
@@ -5004,7 +5181,7 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "(sum(rate(node_network_receive_bytes{instance=\"pmm-server\", device!=\"lo\"}[$interval]) or irate(node_network_receive_bytes{instance=\"pmm-server\", device!=\"lo\"}[5m]))) + (sum(rate(node_network_transmit_bytes{instance=\"pmm-server\", device!=\"lo\"}[$interval]) or irate(node_network_transmit_bytes{instance=\"pmm-server\", device!=\"lo\"}[5m])))",
+                            "expr": "(sum(rate(node_network_receive_bytes_total{node_name=\"PMM Server\", device!=\"lo\"}[$interval]) or irate(node_network_receive_bytes_total{node_name=\"PMM Server\", device!=\"lo\"}[5m]))) + (sum(rate(node_network_transmit_bytes_total{node_name=\"PMM Server\", device!=\"lo\"}[$interval]) or irate(node_network_transmit_bytes_total{node_name=\"PMM Server\", device!=\"lo\"}[5m])))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -5016,9 +5193,8 @@
                     ],
                     "thresholds": "",
                     "title": "Network IO",
-                    "transparent": false,
                     "type": "singlestat",
-                    "valueFontSize": "30%",
+                    "valueFontSize": "50%",
                     "valueMaps": [],
                     "valueName": "current"
                 },
@@ -5068,8 +5244,9 @@
                     "maxDataPoints": 100,
                     "nullPointMode": "connected",
                     "nullText": null,
+                    "options": {},
                     "postfix": "s",
-                    "postfixFontSize": "30%",
+                    "postfixFontSize": "50%",
                     "prefix": "",
                     "prefixFontSize": "20%",
                     "rangeMaps": [
@@ -5091,7 +5268,7 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "node_time{instance=\"pmm-server\"} - node_boot_time{instance=\"pmm-server\"}",
+                            "expr": "node_time_seconds{node_name=\"PMM Server\"} - node_boot_time_seconds{node_name=\"PMM Server\"}",
                             "format": "time_series",
                             "interval": "5m",
                             "intervalFactor": 1,
@@ -5103,9 +5280,8 @@
                     ],
                     "thresholds": "300,3600",
                     "title": "Sys Uptime",
-                    "transparent": false,
                     "type": "singlestat",
-                    "valueFontSize": "30%",
+                    "valueFontSize": "50%",
                     "valueMaps": [],
                     "valueName": "current"
                 }
@@ -5125,9 +5301,9 @@
             "id": 82,
             "panels": [
                 {
-                    "content": "To simplify problem detection, you can download <a href=\"/managed/logs.zip\">server logs</a>. Please include this file if you are submitting a bug report   ",
+                    "content": "<br><br>To simplify problem detection, you can download <a href=\"/managed/logs.zip\">server logs</a>. Please include this file if you are submitting a bug report   ",
                     "gridPos": {
-                        "h": 2,
+                        "h": 3,
                         "w": 24,
                         "x": 0,
                         "y": 13
@@ -5135,6 +5311,7 @@
                     "id": 84,
                     "links": [],
                     "mode": "html",
+                    "options": {},
                     "title": "",
                     "type": "text"
                 }
@@ -5145,7 +5322,7 @@
         }
     ],
     "refresh": "1m",
-    "schemaVersion": 16,
+    "schemaVersion": 18,
     "style": "dark",
     "tags": [
         "Insight",
@@ -5158,10 +5335,7 @@
                 "auto": true,
                 "auto_count": 200,
                 "auto_min": "1s",
-                "current": {
-                    "text": "auto",
-                    "value": "$__auto_interval_interval"
-                },
+                "current": {},
                 "datasource": "Prometheus",
                 "hide": 0,
                 "includeAll": false,
@@ -5218,11 +5392,7 @@
             },
             {
                 "allValue": null,
-                "current": {
-                    "selected": true,
-                    "text": "pmm-server",
-                    "value": "pmm-server"
-                },
+                "current": {},
                 "hide": 2,
                 "includeAll": false,
                 "label": null,

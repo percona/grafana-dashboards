@@ -8,10 +8,13 @@
                 "hide": false,
                 "iconColor": "#e0752d",
                 "limit": 100,
+                "matchAny": true,
                 "name": "PMM Annotations",
                 "showIn": 0,
                 "tags": [
-                    "pmm_annotation"
+                    "pmm_annotation",
+                    "$host",
+                    "$service"
                 ],
                 "type": "tags"
             },
@@ -29,11 +32,11 @@
             }
         ]
     },
-    "editable": true,
+    "editable": false,
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1533912399556,
+    "iteration": 1555317238529,
     "links": [
         {
             "icon": "dashboard",
@@ -45,7 +48,7 @@
             "targetBlank": false,
             "title": "Query Analytics",
             "type": "link",
-            "url": "/graph/dashboard/db/_pmm-query-analytics"
+            "url": "/graph/d/7w6Q3PJmz/pmm-query-analytics"
         },
         {
             "asDropdown": true,
@@ -100,17 +103,6 @@
             ],
             "targetBlank": false,
             "title": "HA",
-            "type": "dashboards"
-        },
-        {
-            "asDropdown": true,
-            "includeVars": true,
-            "keepTime": true,
-            "tags": [
-                "Cloud"
-            ],
-            "targetBlank": false,
-            "title": "Cloud",
             "type": "dashboards"
         },
         {
@@ -249,7 +241,7 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "(sum(rate(process_cpu_seconds_total{instance=\"$host\",job=\"linux\"}[$interval])) by () or sum(irate(process_cpu_seconds_total{instance=\"$host\",job=\"linux\"}[5m])) by ()) / count(node_cpu{mode=\"user\", instance=\"$host\"})*100",
+                            "expr": "(sum(rate(process_cpu_seconds_total{instance=\"$host\",job=\"linux\"}[$interval])) by () or sum(irate(process_cpu_seconds_total{instance=\"$host\",job=\"linux\"}[5m])) by ()) / count(node_cpu_seconds_total{mode=\"user\", instance=\"$host\"})*100",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -298,7 +290,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "(sum(rate(process_cpu_seconds_total{instance=\"$host\",job=\"linux\"}[$interval])) by () or sum(irate(process_cpu_seconds_total{instance=\"$host\",job=\"linux\"}[5m])) by ()) / count(node_cpu{mode=\"user\", instance=\"$host\"})*100",
+                    "expr": "(sum(rate(process_cpu_seconds_total{node_name=~\"$host\",job=~\"node_exporter_.*\"}[$interval])) by () or \nsum(irate(process_cpu_seconds_total{node_name=~\"$host\",job=~\"node_exporter_.*\"}[5m])) by ()) / \ncount(node_cpu_seconds_total{mode=\"user\", node_name=~\"$host\"})*100",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -310,7 +302,6 @@
             ],
             "thresholds": "5,10",
             "title": "CPU Usage",
-            "transparent": false,
             "type": "singlestat",
             "valueFontSize": "80%",
             "valueMaps": [],
@@ -384,7 +375,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "process_resident_memory_bytes{instance=\"$host\",job=\"linux\"}",
+                    "expr": "process_resident_memory_bytes{node_name=\"$host\",job=~\"node_exporter_.*\"}",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -396,7 +387,6 @@
             ],
             "thresholds": "50000000,100000000",
             "title": "Memory Usage",
-            "transparent": false,
             "type": "singlestat",
             "valueFontSize": "80%",
             "valueMaps": [],
@@ -470,7 +460,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "process_open_fds{instance=\"$host\",job=\"linux\"}",
+                    "expr": "process_open_fds{node_name=\"$host\",job=~\"node_exporter_.*\"}",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -482,7 +472,6 @@
             ],
             "thresholds": "512,800",
             "title": "File Descriptors Used",
-            "transparent": false,
             "type": "singlestat",
             "valueFontSize": "80%",
             "valueMaps": [],
@@ -557,7 +546,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "time() - process_start_time_seconds{instance=\"$host\",job=\"linux\"}",
+                    "expr": "time() - process_start_time_seconds{node_name=\"$host\",job=~\"node_exporter_.*\"}",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -569,7 +558,6 @@
             ],
             "thresholds": "300,3600",
             "title": "Exporter Uptime",
-            "transparent": false,
             "type": "singlestat",
             "valueFontSize": "80%",
             "valueMaps": [],
@@ -610,6 +598,7 @@
             "linewidth": 1,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -628,7 +617,7 @@
                     "calculatedInterval": "10s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "min_over_time(node_scrape_collector_success{instance=\"$host\"}[$interval]) or min_over_time(node_scrape_collector_success{instance=\"$host\"}[5m])",
+                    "expr": "min_over_time(node_scrape_collector_success{node_name=~\"$host\"}[$interval]) or \nmin_over_time(node_scrape_collector_success{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -641,6 +630,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Collector Scrape Successful",
             "tooltip": {
@@ -649,7 +639,6 @@
                 "sort": 0,
                 "value_type": "individual"
             },
-            "transparent": false,
             "type": "graph",
             "xaxis": {
                 "buckets": null,
@@ -717,14 +706,16 @@
             "linewidth": 1,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
             "renderer": "flot",
             "seriesOverrides": [
                 {
-                    "alias": "Load 1m",
-                    "color": "#E0752D"
+                    "alias": "Total Load",
+                    "color": "#C4162A",
+                    "linewidth": 2
                 }
             ],
             "spaceLength": 10,
@@ -735,7 +726,7 @@
                     "calculatedInterval": "10s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "avg_over_time(node_scrape_collector_duration_seconds{instance=\"$host\"}[$interval]) or avg_over_time(node_scrape_collector_duration_seconds{instance=\"$host\"}[5m])",
+                    "expr": "avg_over_time(node_scrape_collector_duration_seconds{node_name=\"$host\"}[$interval]) or \navg_over_time(node_scrape_collector_duration_seconds{node_name=\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -744,19 +735,27 @@
                     "refId": "A",
                     "step": 300,
                     "target": ""
+                },
+                {
+                    "expr": "sum(avg_over_time(node_scrape_collector_duration_seconds{node_name=\"$host\"}[$interval])) or \nsum(avg_over_time(node_scrape_collector_duration_seconds{node_name=\"$host\"}[5m]))",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Total Load",
+                    "refId": "B"
                 }
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
-            "title": "Collector Execution Time",
+            "title": "Collector Execution Time  (Log Scale)",
             "tooltip": {
                 "msResolution": false,
                 "shared": true,
                 "sort": 0,
                 "value_type": "individual"
             },
-            "transparent": false,
             "type": "graph",
             "xaxis": {
                 "buckets": null,
@@ -767,804 +766,12 @@
             },
             "yaxes": [
                 {
+                    "decimals": null,
                     "format": "s",
                     "label": "",
-                    "logBase": 1,
+                    "logBase": 2,
                     "max": null,
-                    "min": 0,
-                    "show": true
-                },
-                {
-                    "format": "none",
-                    "logBase": 1,
-                    "max": null,
-                    "min": 0,
-                    "show": false
-                }
-            ],
-            "yaxis": {
-                "align": false,
-                "alignLevel": null
-            }
-        },
-        {
-            "collapsed": false,
-            "gridPos": {
-                "h": 1,
-                "w": 24,
-                "x": 0,
-                "y": 13
-            },
-            "id": 65,
-            "panels": [],
-            "repeat": null,
-            "title": "MySQLd Exporter",
-            "type": "row"
-        },
-        {
-            "cacheTimeout": null,
-            "colorBackground": false,
-            "colorValue": true,
-            "colors": [
-                "#299c46",
-                "rgba(237, 129, 40, 0.89)",
-                "#d44a3a"
-            ],
-            "datasource": "Prometheus",
-            "decimals": 1,
-            "format": "percent",
-            "gauge": {
-                "maxValue": 100,
-                "minValue": 0,
-                "show": false,
-                "thresholdLabels": false,
-                "thresholdMarkers": true
-            },
-            "gridPos": {
-                "h": 4,
-                "w": 6,
-                "x": 0,
-                "y": 14
-            },
-            "height": "125px",
-            "id": 62,
-            "interval": null,
-            "links": [],
-            "mappingType": 1,
-            "mappingTypes": [
-                {
-                    "name": "value to text",
-                    "value": 1
-                },
-                {
-                    "name": "range to text",
-                    "value": 2
-                }
-            ],
-            "maxDataPoints": 100,
-            "nullPointMode": "connected",
-            "nullText": null,
-            "postfix": "",
-            "postfixFontSize": "50%",
-            "prefix": "",
-            "prefixFontSize": "50%",
-            "rangeMaps": [
-                {
-                    "from": "null",
-                    "text": "N/A",
-                    "to": "null"
-                }
-            ],
-            "sparkline": {
-                "fillColor": "rgba(31, 118, 189, 0.18)",
-                "full": false,
-                "lineColor": "rgb(31, 120, 193)",
-                "maxValue": 100,
-                "minValue": 0,
-                "show": true
-            },
-            "tableColumn": "",
-            "targets": [
-                {
-                    "expr": "(sum(rate(process_cpu_seconds_total{instance=\"$host\",job=\"mysql\"}[$interval])) by () or sum(irate(process_cpu_seconds_total{instance=\"$host\",job=\"mysql\"}[5m])) by ()) / count(node_cpu{mode=\"user\", instance=\"$host\"})*100",
-                    "format": "time_series",
-                    "hide": false,
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "",
-                    "refId": "A"
-                }
-            ],
-            "thresholds": "5,10",
-            "title": "CPU Usage",
-            "type": "pmm-singlestat-panel",
-            "valueFontSize": "80%",
-            "valueMaps": [],
-            "valueName": "current"
-        },
-        {
-            "cacheTimeout": null,
-            "colorBackground": false,
-            "colorValue": true,
-            "colors": [
-                "#299c46",
-                "rgba(237, 129, 40, 0.89)",
-                "#d44a3a"
-            ],
-            "datasource": "Prometheus",
-            "decimals": 0,
-            "format": "bytes",
-            "gauge": {
-                "maxValue": 100,
-                "minValue": 0,
-                "show": false,
-                "thresholdLabels": false,
-                "thresholdMarkers": true
-            },
-            "gridPos": {
-                "h": 4,
-                "w": 6,
-                "x": 6,
-                "y": 14
-            },
-            "height": "125px",
-            "id": 61,
-            "interval": null,
-            "links": [],
-            "mappingType": 1,
-            "mappingTypes": [
-                {
-                    "name": "value to text",
-                    "value": 1
-                },
-                {
-                    "name": "range to text",
-                    "value": 2
-                }
-            ],
-            "maxDataPoints": 100,
-            "nullPointMode": "connected",
-            "nullText": null,
-            "postfix": "",
-            "postfixFontSize": "50%",
-            "prefix": "",
-            "prefixFontSize": "80%",
-            "rangeMaps": [
-                {
-                    "from": "null",
-                    "text": "N/A",
-                    "to": "null"
-                }
-            ],
-            "sparkline": {
-                "fillColor": "rgba(31, 118, 189, 0.18)",
-                "full": false,
-                "lineColor": "rgb(31, 120, 193)",
-                "show": true
-            },
-            "tableColumn": "",
-            "targets": [
-                {
-                    "expr": "process_resident_memory_bytes{instance=\"$host\",job=\"mysql\"}",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "refId": "A"
-                }
-            ],
-            "thresholds": "50000000,100000000",
-            "title": "Memory Usage",
-            "type": "singlestat",
-            "valueFontSize": "80%",
-            "valueMaps": [],
-            "valueName": "current"
-        },
-        {
-            "cacheTimeout": null,
-            "colorBackground": false,
-            "colorValue": true,
-            "colors": [
-                "#299c46",
-                "rgba(237, 129, 40, 0.89)",
-                "#d44a3a"
-            ],
-            "datasource": "Prometheus",
-            "decimals": 0,
-            "format": "short",
-            "gauge": {
-                "maxValue": 100,
-                "minValue": 0,
-                "show": false,
-                "thresholdLabels": false,
-                "thresholdMarkers": true
-            },
-            "gridPos": {
-                "h": 4,
-                "w": 6,
-                "x": 12,
-                "y": 14
-            },
-            "height": "125px",
-            "id": 60,
-            "interval": null,
-            "links": [],
-            "mappingType": 1,
-            "mappingTypes": [
-                {
-                    "name": "value to text",
-                    "value": 1
-                },
-                {
-                    "name": "range to text",
-                    "value": 2
-                }
-            ],
-            "maxDataPoints": 100,
-            "nullPointMode": "connected",
-            "nullText": null,
-            "postfix": "",
-            "postfixFontSize": "50%",
-            "prefix": "",
-            "prefixFontSize": "80%",
-            "rangeMaps": [
-                {
-                    "from": "null",
-                    "text": "N/A",
-                    "to": "null"
-                }
-            ],
-            "sparkline": {
-                "fillColor": "rgba(31, 118, 189, 0.18)",
-                "full": false,
-                "lineColor": "rgb(31, 120, 193)",
-                "show": true
-            },
-            "tableColumn": "",
-            "targets": [
-                {
-                    "expr": "process_open_fds{instance=\"$host\",job=\"mysql\"}",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "refId": "A"
-                }
-            ],
-            "thresholds": "512,800",
-            "title": "File Descriptors Used",
-            "type": "singlestat",
-            "valueFontSize": "80%",
-            "valueMaps": [],
-            "valueName": "current"
-        },
-        {
-            "cacheTimeout": null,
-            "colorBackground": false,
-            "colorPostfix": true,
-            "colorValue": true,
-            "colors": [
-                "#d44a3a",
-                "rgba(237, 129, 40, 0.89)",
-                "#299c46"
-            ],
-            "datasource": "Prometheus",
-            "decimals": 1,
-            "format": "s",
-            "gauge": {
-                "maxValue": 100,
-                "minValue": 0,
-                "show": false,
-                "thresholdLabels": false,
-                "thresholdMarkers": true
-            },
-            "gridPos": {
-                "h": 4,
-                "w": 6,
-                "x": 18,
-                "y": 14
-            },
-            "height": "125px",
-            "id": 59,
-            "interval": null,
-            "links": [],
-            "mappingType": 1,
-            "mappingTypes": [
-                {
-                    "name": "value to text",
-                    "value": 1
-                },
-                {
-                    "name": "range to text",
-                    "value": 2
-                }
-            ],
-            "maxDataPoints": 100,
-            "nullPointMode": "connected",
-            "nullText": null,
-            "postfix": "s",
-            "postfixFontSize": "80%",
-            "prefix": "",
-            "prefixFontSize": "80%",
-            "rangeMaps": [
-                {
-                    "from": "null",
-                    "text": "N/A",
-                    "to": "null"
-                }
-            ],
-            "sparkline": {
-                "fillColor": "rgba(31, 118, 189, 0.18)",
-                "full": false,
-                "lineColor": "rgb(31, 120, 193)",
-                "show": false
-            },
-            "tableColumn": "",
-            "targets": [
-                {
-                    "expr": "time() - process_start_time_seconds{instance=\"$host\",job=\"mysql\"}",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "refId": "A"
-                }
-            ],
-            "thresholds": "300,3600",
-            "title": "Exporter Uptime",
-            "type": "singlestat",
-            "valueFontSize": "80%",
-            "valueMaps": [],
-            "valueName": "current"
-        },
-        {
-            "aliasColors": {},
-            "bars": false,
-            "dashLength": 10,
-            "dashes": false,
-            "datasource": "Prometheus",
-            "decimals": null,
-            "editable": true,
-            "error": false,
-            "fill": 0,
-            "grid": {},
-            "gridPos": {
-                "h": 7,
-                "w": 12,
-                "x": 0,
-                "y": 18
-            },
-            "id": 6,
-            "legend": {
-                "alignAsTable": true,
-                "avg": true,
-                "current": false,
-                "hideEmpty": false,
-                "max": true,
-                "min": true,
-                "rightSide": false,
-                "show": true,
-                "sort": "avg",
-                "sortDesc": true,
-                "total": false,
-                "values": true
-            },
-            "lines": true,
-            "linewidth": 1,
-            "links": [],
-            "nullPointMode": "null",
-            "percentage": false,
-            "pointradius": 5,
-            "points": false,
-            "renderer": "flot",
-            "seriesOverrides": [
-                {
-                    "alias": "Load 1m",
-                    "color": "#E0752D"
-                }
-            ],
-            "spaceLength": 10,
-            "stack": false,
-            "steppedLine": false,
-            "targets": [
-                {
-                    "calculatedInterval": "10s",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "avg_over_time(mysql_exporter_collector_duration_seconds{instance=\"$host\"}[$interval]) or avg_over_time(mysql_exporter_collector_duration_seconds{instance=\"$host\"}[5m])",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "{{collector}}",
-                    "metric": "",
-                    "refId": "A",
-                    "step": 300,
-                    "target": ""
-                }
-            ],
-            "thresholds": [],
-            "timeFrom": null,
-            "timeShift": null,
-            "title": "Collector Execution Time",
-            "tooltip": {
-                "msResolution": false,
-                "shared": true,
-                "sort": 0,
-                "value_type": "individual"
-            },
-            "transparent": false,
-            "type": "graph",
-            "xaxis": {
-                "buckets": null,
-                "mode": "time",
-                "name": null,
-                "show": true,
-                "values": []
-            },
-            "yaxes": [
-                {
-                    "format": "s",
-                    "label": "",
-                    "logBase": 1,
-                    "max": null,
-                    "min": 0,
-                    "show": true
-                },
-                {
-                    "format": "none",
-                    "logBase": 1,
-                    "max": null,
-                    "min": 0,
-                    "show": false
-                }
-            ],
-            "yaxis": {
-                "align": false,
-                "alignLevel": null
-            }
-        },
-        {
-            "aliasColors": {
-                "High Resolution": "#58140c",
-                "Low Resolution": "#e24d42",
-                "Medium Resolution": "#bf1b00"
-            },
-            "bars": false,
-            "dashLength": 10,
-            "dashes": false,
-            "datasource": "Prometheus",
-            "decimals": null,
-            "editable": true,
-            "error": false,
-            "fill": 0,
-            "grid": {},
-            "gridPos": {
-                "h": 7,
-                "w": 12,
-                "x": 12,
-                "y": 18
-            },
-            "id": 38,
-            "legend": {
-                "alignAsTable": true,
-                "avg": true,
-                "current": false,
-                "hideEmpty": false,
-                "max": true,
-                "min": true,
-                "rightSide": false,
-                "show": true,
-                "sort": "avg",
-                "sortDesc": true,
-                "total": false,
-                "values": true
-            },
-            "lines": true,
-            "linewidth": 1,
-            "links": [],
-            "nullPointMode": "null",
-            "percentage": false,
-            "pointradius": 5,
-            "points": false,
-            "renderer": "flot",
-            "seriesOverrides": [
-                {
-                    "alias": "Load 1m",
-                    "color": "#E0752D"
-                }
-            ],
-            "spaceLength": 10,
-            "stack": false,
-            "steppedLine": false,
-            "targets": [
-                {
-                    "calculatedInterval": "10s",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "max_over_time(mysql_exporter_hr_last_scrape_error{instance=\"$host\"}[$interval]) or max_over_time(mysql_exporter_hr_last_scrape_error{instance=\"$host\"}[5m])",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "High Resolution",
-                    "metric": "",
-                    "refId": "A",
-                    "step": 300,
-                    "target": ""
-                },
-                {
-                    "expr": "max_over_time(mysql_exporter_mr_last_scrape_error{instance=\"$host\"}[$interval]) or max_over_time(mysql_exporter_mr_last_scrape_error{instance=\"$host\"}[5m])",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Medium Resolution",
-                    "refId": "B"
-                },
-                {
-                    "expr": "max_over_time(mysql_exporter_lr_last_scrape_error{instance=\"$host\"}[$interval]) or max_over_time(mysql_exporter_lr_last_scrape_error{instance=\"$host\"}[5m])",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Low Resolution",
-                    "refId": "C"
-                }
-            ],
-            "thresholds": [],
-            "timeFrom": null,
-            "timeShift": null,
-            "title": "MySQLd Exporter Errors",
-            "tooltip": {
-                "msResolution": false,
-                "shared": true,
-                "sort": 0,
-                "value_type": "individual"
-            },
-            "transparent": false,
-            "type": "graph",
-            "xaxis": {
-                "buckets": null,
-                "mode": "time",
-                "name": null,
-                "show": true,
-                "values": []
-            },
-            "yaxes": [
-                {
-                    "format": "short",
-                    "label": "",
-                    "logBase": 1,
-                    "max": null,
-                    "min": 0,
-                    "show": true
-                },
-                {
-                    "format": "none",
-                    "logBase": 1,
-                    "max": null,
-                    "min": 0,
-                    "show": false
-                }
-            ],
-            "yaxis": {
-                "align": false,
-                "alignLevel": null
-            }
-        },
-        {
-            "aliasColors": {
-                "High Resolution": "#64b0c8",
-                "Low Resolution": "#705da0",
-                "Medium Resolution": "#1f78c1"
-            },
-            "bars": false,
-            "dashLength": 10,
-            "dashes": false,
-            "datasource": "Prometheus",
-            "decimals": null,
-            "editable": true,
-            "error": false,
-            "fill": 0,
-            "grid": {},
-            "gridPos": {
-                "h": 7,
-                "w": 12,
-                "x": 0,
-                "y": 25
-            },
-            "id": 39,
-            "legend": {
-                "alignAsTable": true,
-                "avg": true,
-                "current": false,
-                "hideEmpty": false,
-                "max": true,
-                "min": true,
-                "rightSide": false,
-                "show": true,
-                "sortDesc": true,
-                "total": false,
-                "values": true
-            },
-            "lines": true,
-            "linewidth": 1,
-            "links": [],
-            "nullPointMode": "null",
-            "percentage": false,
-            "pointradius": 5,
-            "points": false,
-            "renderer": "flot",
-            "seriesOverrides": [
-                {
-                    "alias": "Load 1m",
-                    "color": "#E0752D"
-                }
-            ],
-            "spaceLength": 10,
-            "stack": false,
-            "steppedLine": false,
-            "targets": [
-                {
-                    "calculatedInterval": "10s",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "rate(mysql_exporter_hr_scrapes_total{instance=\"$host\"}[$interval]) or irate(mysql_exporter_hr_scrapes_total{instance=\"$host\"}[5m])",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "High Resolution",
-                    "metric": "",
-                    "refId": "A",
-                    "step": 300,
-                    "target": ""
-                },
-                {
-                    "expr": "rate(mysql_exporter_mr_scrapes_total{instance=\"$host\"}[$interval]) or irate(mysql_exporter_mr_scrapes_total{instance=\"$host\"}[5m])",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Medium Resolution",
-                    "refId": "B"
-                },
-                {
-                    "expr": "rate(mysql_exporter_lr_scrapes_total{instance=\"$host\"}[$interval]) or irate(mysql_exporter_lr_scrapes_total{instance=\"$host\"}[5m])",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Low Resolution",
-                    "refId": "C"
-                }
-            ],
-            "thresholds": [],
-            "timeFrom": null,
-            "timeShift": null,
-            "title": "Rate of  Scrapes",
-            "tooltip": {
-                "msResolution": false,
-                "shared": true,
-                "sort": 0,
-                "value_type": "individual"
-            },
-            "transparent": false,
-            "type": "graph",
-            "xaxis": {
-                "buckets": null,
-                "mode": "time",
-                "name": null,
-                "show": true,
-                "values": []
-            },
-            "yaxes": [
-                {
-                    "format": "ops",
-                    "label": "",
-                    "logBase": 1,
-                    "max": null,
-                    "min": 0,
-                    "show": true
-                },
-                {
-                    "format": "none",
-                    "logBase": 1,
-                    "max": null,
-                    "min": 0,
-                    "show": false
-                }
-            ],
-            "yaxis": {
-                "align": false,
-                "alignLevel": null
-            }
-        },
-        {
-            "aliasColors": {
-                "High Resolution": "#64b0c8",
-                "Low Resolution": "#705da0",
-                "Medium Resolution": "#1f78c1"
-            },
-            "bars": false,
-            "dashLength": 10,
-            "dashes": false,
-            "datasource": "Prometheus",
-            "decimals": 2,
-            "editable": true,
-            "error": false,
-            "fill": 0,
-            "grid": {},
-            "gridPos": {
-                "h": 7,
-                "w": 12,
-                "x": 12,
-                "y": 25
-            },
-            "id": 40,
-            "legend": {
-                "alignAsTable": true,
-                "avg": true,
-                "current": false,
-                "hideEmpty": false,
-                "max": true,
-                "min": true,
-                "rightSide": false,
-                "show": true,
-                "sortDesc": true,
-                "total": false,
-                "values": true
-            },
-            "lines": true,
-            "linewidth": 1,
-            "links": [],
-            "nullPointMode": "null",
-            "percentage": false,
-            "pointradius": 5,
-            "points": false,
-            "renderer": "flot",
-            "seriesOverrides": [
-                {
-                    "alias": "Load 1m",
-                    "color": "#E0752D"
-                }
-            ],
-            "spaceLength": 10,
-            "stack": false,
-            "steppedLine": false,
-            "targets": [
-                {
-                    "calculatedInterval": "10s",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "min_over_time(mysql_up{instance=\"$host\"}[$interval]) or min_over_time(mysql_up{instance=\"$host\"}[5m])",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "MySQL Up",
-                    "metric": "",
-                    "refId": "A",
-                    "step": 300,
-                    "target": ""
-                }
-            ],
-            "thresholds": [],
-            "timeFrom": null,
-            "timeShift": null,
-            "title": "MySQL up",
-            "tooltip": {
-                "msResolution": false,
-                "shared": true,
-                "sort": 0,
-                "value_type": "individual"
-            },
-            "transparent": false,
-            "type": "graph",
-            "xaxis": {
-                "buckets": null,
-                "mode": "time",
-                "name": null,
-                "show": true,
-                "values": []
-            },
-            "yaxes": [
-                {
-                    "format": "short",
-                    "label": "",
-                    "logBase": 1,
-                    "max": null,
-                    "min": 0,
+                    "min": null,
                     "show": true
                 },
                 {
@@ -1586,7 +793,809 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 32
+                "y": 13
+            },
+            "id": 65,
+            "panels": [
+                {
+                    "cacheTimeout": null,
+                    "colorBackground": false,
+                    "colorValue": true,
+                    "colors": [
+                        "#299c46",
+                        "rgba(237, 129, 40, 0.89)",
+                        "#d44a3a"
+                    ],
+                    "datasource": "Prometheus",
+                    "decimals": 1,
+                    "format": "percent",
+                    "gauge": {
+                        "maxValue": 100,
+                        "minValue": 0,
+                        "show": false,
+                        "thresholdLabels": false,
+                        "thresholdMarkers": true
+                    },
+                    "gridPos": {
+                        "h": 4,
+                        "w": 6,
+                        "x": 0,
+                        "y": 14
+                    },
+                    "height": "125px",
+                    "id": 62,
+                    "interval": null,
+                    "links": [],
+                    "mappingType": 1,
+                    "mappingTypes": [
+                        {
+                            "name": "value to text",
+                            "value": 1
+                        },
+                        {
+                            "name": "range to text",
+                            "value": 2
+                        }
+                    ],
+                    "maxDataPoints": 100,
+                    "nullPointMode": "connected",
+                    "nullText": null,
+                    "postfix": "",
+                    "postfixFontSize": "50%",
+                    "prefix": "",
+                    "prefixFontSize": "50%",
+                    "rangeMaps": [
+                        {
+                            "from": "null",
+                            "text": "N/A",
+                            "to": "null"
+                        }
+                    ],
+                    "sparkline": {
+                        "fillColor": "rgba(31, 118, 189, 0.18)",
+                        "full": false,
+                        "lineColor": "rgb(31, 120, 193)",
+                        "maxValue": 100,
+                        "minValue": 0,
+                        "show": true
+                    },
+                    "tableColumn": "",
+                    "targets": [
+                        {
+                            "expr": "(sum(rate(process_cpu_seconds_total{node_name=\"$host\",service_name=~\"$service\",job=~\"mysqld_exporter.*\"}[$interval])) by () or \nsum(irate(process_cpu_seconds_total{node_name=\"$host\",service_name=~\"$service\",job=~\"mysqld_exporter.*\"}[5m])) by ()) / \ncount(node_cpu_seconds_total{mode=\"user\",node_name=\"$host\"})*100",
+                            "format": "time_series",
+                            "hide": false,
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "",
+                            "refId": "A"
+                        }
+                    ],
+                    "thresholds": "5,10",
+                    "title": "CPU Usage",
+                    "type": "pmm-singlestat-panel",
+                    "valueFontSize": "80%",
+                    "valueMaps": [],
+                    "valueName": "current"
+                },
+                {
+                    "cacheTimeout": null,
+                    "colorBackground": false,
+                    "colorValue": true,
+                    "colors": [
+                        "#299c46",
+                        "rgba(237, 129, 40, 0.89)",
+                        "#d44a3a"
+                    ],
+                    "datasource": "Prometheus",
+                    "decimals": 0,
+                    "format": "bytes",
+                    "gauge": {
+                        "maxValue": 100,
+                        "minValue": 0,
+                        "show": false,
+                        "thresholdLabels": false,
+                        "thresholdMarkers": true
+                    },
+                    "gridPos": {
+                        "h": 4,
+                        "w": 6,
+                        "x": 6,
+                        "y": 14
+                    },
+                    "height": "125px",
+                    "id": 61,
+                    "interval": null,
+                    "links": [],
+                    "mappingType": 1,
+                    "mappingTypes": [
+                        {
+                            "name": "value to text",
+                            "value": 1
+                        },
+                        {
+                            "name": "range to text",
+                            "value": 2
+                        }
+                    ],
+                    "maxDataPoints": 100,
+                    "nullPointMode": "connected",
+                    "nullText": null,
+                    "postfix": "",
+                    "postfixFontSize": "50%",
+                    "prefix": "",
+                    "prefixFontSize": "80%",
+                    "rangeMaps": [
+                        {
+                            "from": "null",
+                            "text": "N/A",
+                            "to": "null"
+                        }
+                    ],
+                    "sparkline": {
+                        "fillColor": "rgba(31, 118, 189, 0.18)",
+                        "full": false,
+                        "lineColor": "rgb(31, 120, 193)",
+                        "show": true
+                    },
+                    "tableColumn": "",
+                    "targets": [
+                        {
+                            "expr": "sum(process_resident_memory_bytes{node_name=\"$host\",service_name=~\"$service\",job=~\"mysqld_exporter.*\"})",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "",
+                            "refId": "A"
+                        }
+                    ],
+                    "thresholds": "50000000,100000000",
+                    "title": "Memory Usage",
+                    "type": "singlestat",
+                    "valueFontSize": "80%",
+                    "valueMaps": [],
+                    "valueName": "current"
+                },
+                {
+                    "cacheTimeout": null,
+                    "colorBackground": false,
+                    "colorValue": true,
+                    "colors": [
+                        "#299c46",
+                        "rgba(237, 129, 40, 0.89)",
+                        "#d44a3a"
+                    ],
+                    "datasource": "Prometheus",
+                    "decimals": 0,
+                    "format": "short",
+                    "gauge": {
+                        "maxValue": 100,
+                        "minValue": 0,
+                        "show": false,
+                        "thresholdLabels": false,
+                        "thresholdMarkers": true
+                    },
+                    "gridPos": {
+                        "h": 4,
+                        "w": 6,
+                        "x": 12,
+                        "y": 14
+                    },
+                    "height": "125px",
+                    "id": 60,
+                    "interval": null,
+                    "links": [],
+                    "mappingType": 1,
+                    "mappingTypes": [
+                        {
+                            "name": "value to text",
+                            "value": 1
+                        },
+                        {
+                            "name": "range to text",
+                            "value": 2
+                        }
+                    ],
+                    "maxDataPoints": 100,
+                    "nullPointMode": "connected",
+                    "nullText": null,
+                    "postfix": "",
+                    "postfixFontSize": "50%",
+                    "prefix": "",
+                    "prefixFontSize": "80%",
+                    "rangeMaps": [
+                        {
+                            "from": "null",
+                            "text": "N/A",
+                            "to": "null"
+                        }
+                    ],
+                    "sparkline": {
+                        "fillColor": "rgba(31, 118, 189, 0.18)",
+                        "full": false,
+                        "lineColor": "rgb(31, 120, 193)",
+                        "show": true
+                    },
+                    "tableColumn": "",
+                    "targets": [
+                        {
+                            "expr": "sum(process_open_fds{node_name=\"$host\",service_name=~\"$service\",job=~\"mysqld_exporter.*\"})",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "",
+                            "refId": "A"
+                        }
+                    ],
+                    "thresholds": "512,800",
+                    "title": "File Descriptors Used",
+                    "type": "singlestat",
+                    "valueFontSize": "80%",
+                    "valueMaps": [],
+                    "valueName": "current"
+                },
+                {
+                    "cacheTimeout": null,
+                    "colorBackground": false,
+                    "colorPostfix": true,
+                    "colorValue": true,
+                    "colors": [
+                        "#d44a3a",
+                        "rgba(237, 129, 40, 0.89)",
+                        "#299c46"
+                    ],
+                    "datasource": "Prometheus",
+                    "decimals": 1,
+                    "format": "s",
+                    "gauge": {
+                        "maxValue": 100,
+                        "minValue": 0,
+                        "show": false,
+                        "thresholdLabels": false,
+                        "thresholdMarkers": true
+                    },
+                    "gridPos": {
+                        "h": 4,
+                        "w": 6,
+                        "x": 18,
+                        "y": 14
+                    },
+                    "height": "125px",
+                    "id": 59,
+                    "interval": null,
+                    "links": [],
+                    "mappingType": 1,
+                    "mappingTypes": [
+                        {
+                            "name": "value to text",
+                            "value": 1
+                        },
+                        {
+                            "name": "range to text",
+                            "value": 2
+                        }
+                    ],
+                    "maxDataPoints": 100,
+                    "nullPointMode": "connected",
+                    "nullText": null,
+                    "postfix": "s",
+                    "postfixFontSize": "80%",
+                    "prefix": "",
+                    "prefixFontSize": "80%",
+                    "rangeMaps": [
+                        {
+                            "from": "null",
+                            "text": "N/A",
+                            "to": "null"
+                        }
+                    ],
+                    "sparkline": {
+                        "fillColor": "rgba(31, 118, 189, 0.18)",
+                        "full": false,
+                        "lineColor": "rgb(31, 120, 193)",
+                        "show": false
+                    },
+                    "tableColumn": "",
+                    "targets": [
+                        {
+                            "expr": "time() - avg(process_start_time_seconds{node_name=\"$host\",service_name=~\"$service\",job=~\"mysqld_exporter.*\"})",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "",
+                            "refId": "A"
+                        }
+                    ],
+                    "thresholds": "300,3600",
+                    "title": "Exporter Uptime",
+                    "type": "singlestat",
+                    "valueFontSize": "80%",
+                    "valueMaps": [],
+                    "valueName": "current"
+                },
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": null,
+                    "editable": true,
+                    "error": false,
+                    "fill": 0,
+                    "grid": {},
+                    "gridPos": {
+                        "h": 7,
+                        "w": 12,
+                        "x": 0,
+                        "y": 18
+                    },
+                    "id": 6,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "hideEmpty": false,
+                        "max": true,
+                        "min": true,
+                        "rightSide": false,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 1,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "paceLength": 10,
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [
+                        {
+                            "alias": "Load 1m",
+                            "color": "#E0752D"
+                        }
+                    ],
+                    "spaceLength": 10,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "calculatedInterval": "10s",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "avg_over_time(mysql_exporter_collector_duration_seconds{node_name=\"$host\",service_name=~\"$service\"}[$interval]) or \navg_over_time(mysql_exporter_collector_duration_seconds{node_name=\"$host\",service_name=~\"$service\"}[5m])",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "{{collector}} - {{service_name}}",
+                            "metric": "",
+                            "refId": "A",
+                            "step": 300,
+                            "target": ""
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeRegions": [],
+                    "timeShift": null,
+                    "title": "Collector Execution Time",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "s",
+                            "label": "",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        },
+                        {
+                            "format": "none",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": false
+                        }
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
+                },
+                {
+                    "aliasColors": {
+                        "High Resolution": "#58140c",
+                        "Low Resolution": "#e24d42",
+                        "Medium Resolution": "#bf1b00"
+                    },
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": null,
+                    "editable": true,
+                    "error": false,
+                    "fill": 0,
+                    "grid": {},
+                    "gridPos": {
+                        "h": 7,
+                        "w": 12,
+                        "x": 12,
+                        "y": 18
+                    },
+                    "id": 38,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "hideEmpty": false,
+                        "max": true,
+                        "min": true,
+                        "rightSide": false,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 1,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "paceLength": 10,
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [
+                        {
+                            "alias": "Load 1m",
+                            "color": "#E0752D"
+                        }
+                    ],
+                    "spaceLength": 10,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "calculatedInterval": "10s",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "max_over_time(mysql_exporter_hr_last_scrape_error{node_name=\"$host\",service_name=~\"$service\"}[$interval]) or \nmax_over_time(mysql_exporter_hr_last_scrape_error{node_name=\"$host\",service_name=~\"$service\"}[5m])",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "High Resolution - {{service_name}}",
+                            "metric": "",
+                            "refId": "A",
+                            "step": 300,
+                            "target": ""
+                        },
+                        {
+                            "expr": "max_over_time(mysql_exporter_mr_last_scrape_error{node_name=\"$host\",service_name=~\"$service\"}[$interval]) or \nmax_over_time(mysql_exporter_mr_last_scrape_error{node_name=\"$host\",service_name=~\"$service\"}[5m])",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Medium Resolution {{service_name}}",
+                            "refId": "B"
+                        },
+                        {
+                            "expr": "max_over_time(mysql_exporter_lr_last_scrape_error{node_name=\"$host\",service_name=~\"$service\"}[$interval]) or \nmax_over_time(mysql_exporter_lr_last_scrape_error{node_name=\"$host\",service_name=~\"$service\"}[5m])",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Low Resolution - {{service_name}}",
+                            "refId": "C"
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeRegions": [],
+                    "timeShift": null,
+                    "title": "MySQL Exporter Errors",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "short",
+                            "label": "",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        },
+                        {
+                            "format": "none",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": false
+                        }
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
+                },
+                {
+                    "aliasColors": {
+                        "High Resolution": "#64b0c8",
+                        "Low Resolution": "#705da0",
+                        "Medium Resolution": "#1f78c1"
+                    },
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": null,
+                    "editable": true,
+                    "error": false,
+                    "fill": 0,
+                    "grid": {},
+                    "gridPos": {
+                        "h": 7,
+                        "w": 12,
+                        "x": 0,
+                        "y": 25
+                    },
+                    "id": 39,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "hideEmpty": false,
+                        "max": true,
+                        "min": true,
+                        "rightSide": false,
+                        "show": true,
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 1,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "paceLength": 10,
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [
+                        {
+                            "alias": "Load 1m",
+                            "color": "#E0752D"
+                        }
+                    ],
+                    "spaceLength": 10,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "calculatedInterval": "10s",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "rate(mysql_exporter_hr_scrapes_total{node_name=\"$host\",service_name=~\"$service\"}[$interval]) or \nirate(mysql_exporter_hr_scrapes_total{node_name=\"$host\",service_name=~\"$service\"}[5m])",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "High Resolution - {{service_name}}",
+                            "metric": "",
+                            "refId": "A",
+                            "step": 300,
+                            "target": ""
+                        },
+                        {
+                            "expr": "rate(mysql_exporter_mr_scrapes_total{node_name=\"$host\",service_name=~\"$service\"}[$interval]) or \nirate(mysql_exporter_mr_scrapes_total{node_name=\"$host\",service_name=~\"$service\"}[5m])",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Medium Resolution - {{service_name}}",
+                            "refId": "B"
+                        },
+                        {
+                            "expr": "rate(mysql_exporter_lr_scrapes_total{node_name=\"$host\",service_name=~\"$service\"}[$interval]) or \nirate(mysql_exporter_lr_scrapes_total{node_name=\"$host\",service_name=~\"$service\"}[5m])",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Low Resolution - {{service_name}}",
+                            "refId": "C"
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeRegions": [],
+                    "timeShift": null,
+                    "title": "Rate of  Scrapes",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "ops",
+                            "label": "",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        },
+                        {
+                            "format": "none",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": false
+                        }
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
+                },
+                {
+                    "aliasColors": {
+                        "High Resolution": "#64b0c8",
+                        "Low Resolution": "#705da0",
+                        "Medium Resolution": "#1f78c1"
+                    },
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": 2,
+                    "editable": true,
+                    "error": false,
+                    "fill": 0,
+                    "grid": {},
+                    "gridPos": {
+                        "h": 7,
+                        "w": 12,
+                        "x": 12,
+                        "y": 25
+                    },
+                    "id": 40,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "hideEmpty": false,
+                        "max": true,
+                        "min": true,
+                        "rightSide": false,
+                        "show": true,
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 1,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "paceLength": 10,
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [
+                        {
+                            "alias": "Load 1m",
+                            "color": "#E0752D"
+                        }
+                    ],
+                    "spaceLength": 10,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "calculatedInterval": "10s",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "min_over_time(mysql_up{node_name=\"$host\",service_name=~\"$service\",job=~\"mysqld_exporter_.*_hr\"}[$interval]) or \nmin_over_time(mysql_up{node_name=\"$host\",service_name=~\"$service\",job=~\"mysqld_exporter_.*_hr\"}[5m])",
+                            "format": "time_series",
+                            "instant": false,
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "MySQL Up - {{service_name}}",
+                            "metric": "",
+                            "refId": "A",
+                            "step": 300,
+                            "target": ""
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeRegions": [],
+                    "timeShift": null,
+                    "title": "MySQL up",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "short",
+                            "label": "",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        },
+                        {
+                            "format": "none",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": false
+                        }
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
+                }
+            ],
+            "repeat": null,
+            "title": "MySQL Exporter",
+            "type": "row"
+        },
+        {
+            "collapsed": true,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 14
             },
             "id": 66,
             "panels": [
@@ -1615,7 +1624,7 @@
                         "h": 4,
                         "w": 6,
                         "x": 0,
-                        "y": 18
+                        "y": 33
                     },
                     "height": "125px",
                     "id": 42,
@@ -1660,7 +1669,7 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "(sum(rate(process_cpu_seconds_total{instance=\"$host\",job=\"mongodb\"}[$interval])) by () or sum(irate(process_cpu_seconds_total{instance=\"$host\",job=\"mongodb\"}[5m])) by ()) / count(node_cpu{mode=\"user\", instance=\"$host\"})*100",
+                            "expr": "(sum(rate(process_cpu_seconds_total{node_name=\"$host\",service_name=~\"$service\",job=~\"mongodb.*\"}[$interval])) by () or \nsum(irate(process_cpu_seconds_total{node_name=\"$host\",service_name=~\"$service\",job=~\"mongodb.*\"}[5m])) by ()) / \ncount(node_cpu_seconds_total{mode=\"user\",node_name=\"$host\"})*100",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1672,7 +1681,6 @@
                     ],
                     "thresholds": "5,10",
                     "title": "CPU Usage",
-                    "transparent": false,
                     "type": "pmm-singlestat-panel",
                     "valueFontSize": "80%",
                     "valueMaps": [],
@@ -1703,7 +1711,7 @@
                         "h": 4,
                         "w": 6,
                         "x": 6,
-                        "y": 18
+                        "y": 33
                     },
                     "height": "125px",
                     "id": 43,
@@ -1746,7 +1754,7 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "process_resident_memory_bytes{instance=\"$host\",job=\"mongodb\"}",
+                            "expr": "sum(process_resident_memory_bytes{node_name=\"$host\",service_name=~\"$service\",job=~\"mongodb.*\"})",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1758,7 +1766,6 @@
                     ],
                     "thresholds": "50000000,100000000",
                     "title": "Memory Usage",
-                    "transparent": false,
                     "type": "singlestat",
                     "valueFontSize": "80%",
                     "valueMaps": [],
@@ -1789,7 +1796,7 @@
                         "h": 4,
                         "w": 6,
                         "x": 12,
-                        "y": 18
+                        "y": 33
                     },
                     "height": "125px",
                     "id": 44,
@@ -1832,7 +1839,7 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "process_open_fds{instance=\"$host\",job=\"mongodb\"}",
+                            "expr": "sum(process_open_fds{node_name=\"$host\",service_name=\"~$service\",job=~\"mongodb.*\"})",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1844,7 +1851,6 @@
                     ],
                     "thresholds": "512,800",
                     "title": "File Descriptors Used",
-                    "transparent": false,
                     "type": "singlestat",
                     "valueFontSize": "80%",
                     "valueMaps": [],
@@ -1876,7 +1882,7 @@
                         "h": 4,
                         "w": 6,
                         "x": 18,
-                        "y": 18
+                        "y": 33
                     },
                     "height": "125px",
                     "id": 45,
@@ -1919,7 +1925,7 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "time() - process_start_time_seconds{instance=\"$host\",job=\"mongodb\"}",
+                            "expr": "time() - avg(process_start_time_seconds{node_name=\"$host\",service_name=~\"$service\",job=~\"mongodb.*\"})",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1931,7 +1937,6 @@
                     ],
                     "thresholds": "300,3600",
                     "title": "Exporter Uptime",
-                    "transparent": false,
                     "type": "singlestat",
                     "valueFontSize": "80%",
                     "valueMaps": [],
@@ -1952,9 +1957,10 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 22
+                        "y": 37
                     },
                     "id": 46,
+                    "interval": "",
                     "legend": {
                         "alignAsTable": true,
                         "avg": true,
@@ -1991,11 +1997,11 @@
                             "calculatedInterval": "10s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "avg_over_time(mongodb_exporter_last_scrape_duration_seconds{instance=\"$host\"}[$interval]) or avg_over_time(mongodb_exporter_last_scrape_duration_seconds{instance=\"$host\"}[5m])",
+                            "expr": "avg_over_time(mongodb_exporter_last_scrape_duration_seconds{node_name=\"$host\",service_name=~\"$service\",job=~\"mongodb.*\"}[$interval]) or\navg_over_time(mongodb_exporter_last_scrape_duration_seconds{node_name=\"$host\",service_name=~\"$service\",job=~\"mongodb.*\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
-                            "legendFormat": "Avg Scrape Time",
+                            "legendFormat": "Avg Scrape Time - {{service_name}}",
                             "metric": "",
                             "refId": "A",
                             "step": 300,
@@ -2004,6 +2010,7 @@
                     ],
                     "thresholds": [],
                     "timeFrom": null,
+                    "timeRegions": [],
                     "timeShift": null,
                     "title": "MongoDB Scrape Performance",
                     "tooltip": {
@@ -2012,7 +2019,6 @@
                         "sort": 0,
                         "value_type": "individual"
                     },
-                    "transparent": false,
                     "type": "graph",
                     "xaxis": {
                         "buckets": null,
@@ -2037,7 +2043,11 @@
                             "min": 0,
                             "show": false
                         }
-                    ]
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
                 },
                 {
                     "aliasColors": {
@@ -2059,7 +2069,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 22
+                        "y": 37
                     },
                     "id": 47,
                     "legend": {
@@ -2098,11 +2108,11 @@
                             "calculatedInterval": "10s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "max_over_time(mongodb_exporter_last_scrape_error{instance=\"$host\"}[$interval]) or max_over_time(mongodb_exporter_last_scrape_error{instance=\"$host\"}[5m])",
+                            "expr": "max_over_time(mongodb_exporter_last_scrape_error{node_name=\"$host\",service_name=~\"$service\",job=~\"mongodb.*\"}[$interval]) or \nmax_over_time(mongodb_exporter_last_scrape_error{node_name=\"$host\",service_name=~\"$service\",job=~\"mongodb.*\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
-                            "legendFormat": "MongoDB Exporter Errors",
+                            "legendFormat": "MongoDB Exporter Errors  - {{service_name}}",
                             "metric": "",
                             "refId": "A",
                             "step": 300,
@@ -2111,6 +2121,7 @@
                     ],
                     "thresholds": [],
                     "timeFrom": null,
+                    "timeRegions": [],
                     "timeShift": null,
                     "title": "MongoDB Exporter Errors",
                     "tooltip": {
@@ -2119,7 +2130,6 @@
                         "sort": 0,
                         "value_type": "individual"
                     },
-                    "transparent": false,
                     "type": "graph",
                     "xaxis": {
                         "buckets": null,
@@ -2144,7 +2154,11 @@
                             "min": 0,
                             "show": false
                         }
-                    ]
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
                 },
                 {
                     "aliasColors": {
@@ -2165,7 +2179,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 26
+                        "y": 45
                     },
                     "id": 48,
                     "legend": {
@@ -2203,11 +2217,11 @@
                             "calculatedInterval": "10s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "rate(mongodb_exporter_scrapes_total{instance=\"$host\"}[$interval]) or irate(mongodb_exporter_scrapes_total{instance=\"$host\"}[5m])",
+                            "expr": "rate(mongodb_exporter_scrapes_total{node_name=\"$host\",service_name=~\"$service\",job=~\"mongodb.*\"}[$interval]) or \nirate(mongodb_exporter_scrapes_total{node_name=\"$host\",service_name=~\"$service\",job=~\"mongodb.*\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
-                            "legendFormat": "Scrapes Rate",
+                            "legendFormat": "Scrapes Rate  - {{service_name}}",
                             "metric": "",
                             "refId": "A",
                             "step": 300,
@@ -2216,6 +2230,7 @@
                     ],
                     "thresholds": [],
                     "timeFrom": null,
+                    "timeRegions": [],
                     "timeShift": null,
                     "title": "Rate of  Scrapes",
                     "tooltip": {
@@ -2224,7 +2239,6 @@
                         "sort": 0,
                         "value_type": "individual"
                     },
-                    "transparent": false,
                     "type": "graph",
                     "xaxis": {
                         "buckets": null,
@@ -2249,7 +2263,11 @@
                             "min": 0,
                             "show": false
                         }
-                    ]
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
                 },
                 {
                     "aliasColors": {},
@@ -2263,7 +2281,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 26
+                        "y": 45
                     },
                     "id": 63,
                     "legend": {
@@ -2290,7 +2308,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "min_over_time(mongodb_up{instance=\"$host\"}[$interval]) or min_over_time(mongodb_up{instance=\"$host\"}[5m])",
+                            "expr": "min_over_time(mongodb_up{node_name=\"$host\",service_name=\"$service\",job=~\"mongodb.*\"}[$interval]) or \nmin_over_time(mongodb_up{node_name=\"$host\",service_name=\"$service\",job=~\"mongodb.*\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2300,6 +2318,7 @@
                     ],
                     "thresholds": [],
                     "timeFrom": null,
+                    "timeRegions": [],
                     "timeShift": null,
                     "title": "MongoDB up",
                     "tooltip": {
@@ -2332,7 +2351,11 @@
                             "min": null,
                             "show": false
                         }
-                    ]
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
                 }
             ],
             "repeat": null,
@@ -2345,7 +2368,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 33
+                "y": 15
             },
             "id": 67,
             "panels": [
@@ -2374,7 +2397,7 @@
                         "h": 4,
                         "w": 6,
                         "x": 0,
-                        "y": 27
+                        "y": 34
                     },
                     "height": "125px",
                     "id": 41,
@@ -2419,7 +2442,7 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "(sum(rate(process_cpu_seconds_total{instance=\"$host\",job=\"proxysql\"}[$interval])) by () or sum(irate(process_cpu_seconds_total{instance=\"$host\",job=\"proxysql\"}[5m])) by ()) / count(node_cpu{mode=\"user\", instance=\"$host\"})*100",
+                            "expr": "(sum(rate(process_cpu_seconds_total{node_name=\"$host\",service_name=~\"$service\",job=~\"proxysql.*\"}[$interval])) by () or \nsum(irate(process_cpu_seconds_total{node_name=\"$host\",service_name=~\"$service\",job=~\"proxysql.*\"}[5m])) by ()) / \ncount(node_cpu_seconds_total{mode=\"user\",node_name=\"$host\"})*100",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2431,7 +2454,6 @@
                     ],
                     "thresholds": "5,10",
                     "title": "CPU Usage",
-                    "transparent": false,
                     "type": "pmm-singlestat-panel",
                     "valueFontSize": "80%",
                     "valueMaps": [],
@@ -2462,7 +2484,7 @@
                         "h": 4,
                         "w": 6,
                         "x": 6,
-                        "y": 27
+                        "y": 34
                     },
                     "height": "125px",
                     "id": 49,
@@ -2505,7 +2527,7 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "process_resident_memory_bytes{instance=\"$host\",job=\"proxysql\"}",
+                            "expr": "sum(process_resident_memory_bytes{node_name=\"$host\",service_name=~\"$service\",job=~\"proxysql.*\"})",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2517,7 +2539,6 @@
                     ],
                     "thresholds": "50000000,100000000",
                     "title": "Memory Usage",
-                    "transparent": false,
                     "type": "singlestat",
                     "valueFontSize": "80%",
                     "valueMaps": [],
@@ -2548,7 +2569,7 @@
                         "h": 4,
                         "w": 6,
                         "x": 12,
-                        "y": 27
+                        "y": 34
                     },
                     "height": "125px",
                     "id": 50,
@@ -2591,7 +2612,7 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "process_open_fds{instance=\"$host\",job=\"proxysql\"}",
+                            "expr": "sum(process_open_fds{node_name=\"$host\",service_name=~\"$service\",job=~\"proxysql.*\"})",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2603,7 +2624,6 @@
                     ],
                     "thresholds": "512,800",
                     "title": "File Descriptors Used",
-                    "transparent": false,
                     "type": "singlestat",
                     "valueFontSize": "80%",
                     "valueMaps": [],
@@ -2635,7 +2655,7 @@
                         "h": 4,
                         "w": 6,
                         "x": 18,
-                        "y": 27
+                        "y": 34
                     },
                     "height": "125px",
                     "id": 51,
@@ -2678,7 +2698,7 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "time() - process_start_time_seconds{instance=\"$host\",job=\"proxysql\"}",
+                            "expr": "time() - avg(process_start_time_seconds{node_name=\"$host\",service_name=~\"$service\",job=~\"proxysql.*\"})",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2690,7 +2710,6 @@
                     ],
                     "thresholds": "300,3600",
                     "title": "Exporter Uptime",
-                    "transparent": false,
                     "type": "singlestat",
                     "valueFontSize": "80%",
                     "valueMaps": [],
@@ -2711,7 +2730,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 31
+                        "y": 38
                     },
                     "id": 52,
                     "legend": {
@@ -2750,11 +2769,11 @@
                             "calculatedInterval": "10s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "avg_over_time(proxysql_exporter_last_scrape_duration_seconds{instance=\"$host\"}[$interval]) or avg_over_time(proxysql_exporter_last_scrape_duration_seconds{instance=\"$host\"}[5m])",
+                            "expr": "avg_over_time(proxysql_exporter_last_scrape_duration_seconds{node_name=\"$host\",service_name=~\"$service\",job=~\"proxysql.*\"}[$interval]) or \navg_over_time(proxysql_exporter_last_scrape_duration_seconds{node_name=\"$host\",service_name=~\"$service\",job=~\"proxysql.*\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
-                            "legendFormat": "Avg Scrape Time",
+                            "legendFormat": "Avg Scrape Time  - {{service_name}}",
                             "metric": "",
                             "refId": "A",
                             "step": 300,
@@ -2763,6 +2782,7 @@
                     ],
                     "thresholds": [],
                     "timeFrom": null,
+                    "timeRegions": [],
                     "timeShift": null,
                     "title": "ProxySQL Scrape Performance",
                     "tooltip": {
@@ -2771,7 +2791,6 @@
                         "sort": 0,
                         "value_type": "individual"
                     },
-                    "transparent": false,
                     "type": "graph",
                     "xaxis": {
                         "buckets": null,
@@ -2796,7 +2815,11 @@
                             "min": 0,
                             "show": false
                         }
-                    ]
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
                 },
                 {
                     "aliasColors": {
@@ -2819,9 +2842,10 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 31
+                        "y": 38
                     },
                     "id": 53,
+                    "interval": "",
                     "legend": {
                         "alignAsTable": true,
                         "avg": true,
@@ -2858,11 +2882,11 @@
                             "calculatedInterval": "10s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "max_over_time(proxysql_exporter_last_scrape_error{instance=\"$host\"}[$interval]) or max_over_time(proxysql_exporter_last_scrape_error{instance=\"$host\"}[5m])",
+                            "expr": "max_over_time(proxysql_exporter_last_scrape_error{node_name=\"$host\",service_name=~\"$service\",job=~\"proxysql.*\"}[$interval]) or \nmax_over_time(proxysql_exporter_last_scrape_error{node_name=\"$host\",service_name=~\"$service\",job=~\"proxysql.*\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
-                            "legendFormat": "ProxySQL Exporter Errors",
+                            "legendFormat": "ProxySQL Exporter Errors  - {{service_name}}",
                             "metric": "",
                             "refId": "A",
                             "step": 300,
@@ -2871,6 +2895,7 @@
                     ],
                     "thresholds": [],
                     "timeFrom": null,
+                    "timeRegions": [],
                     "timeShift": null,
                     "title": "ProxySQL Exporter Errors",
                     "tooltip": {
@@ -2879,7 +2904,6 @@
                         "sort": 0,
                         "value_type": "individual"
                     },
-                    "transparent": false,
                     "type": "graph",
                     "xaxis": {
                         "buckets": null,
@@ -2904,7 +2928,11 @@
                             "min": 0,
                             "show": false
                         }
-                    ]
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
                 },
                 {
                     "aliasColors": {
@@ -2926,9 +2954,10 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 35
+                        "y": 46
                     },
                     "id": 54,
+                    "interval": "",
                     "legend": {
                         "alignAsTable": true,
                         "avg": true,
@@ -2964,11 +2993,11 @@
                             "calculatedInterval": "10s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "rate(proxysql_exporter_scrapes_total{instance=\"$host\"}[$interval]) or irate(proxysql_exporter_scrapes_total{instance=\"$host\"}[5m])",
+                            "expr": "rate(proxysql_exporter_scrapes_total{node_name=\"$host\",service_name=~\"$service\",job=~\"proxysql.*\"}[$interval]) or \nirate(proxysql_exporter_scrapes_total{node_name=\"$host\",service_name=~\"$service\",job=~\"proxysql.*\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
-                            "legendFormat": "Scrapes Rate",
+                            "legendFormat": "Scrapes Rate - {{service_name}}",
                             "metric": "",
                             "refId": "A",
                             "step": 300,
@@ -2977,6 +3006,7 @@
                     ],
                     "thresholds": [],
                     "timeFrom": null,
+                    "timeRegions": [],
                     "timeShift": null,
                     "title": "Rate of  Scrapes",
                     "tooltip": {
@@ -2985,7 +3015,6 @@
                         "sort": 0,
                         "value_type": "individual"
                     },
-                    "transparent": false,
                     "type": "graph",
                     "xaxis": {
                         "buckets": null,
@@ -3010,7 +3039,11 @@
                             "min": 0,
                             "show": false
                         }
-                    ]
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
                 },
                 {
                     "aliasColors": {
@@ -3031,9 +3064,10 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 35
+                        "y": 46
                     },
                     "id": 55,
+                    "interval": "",
                     "legend": {
                         "alignAsTable": true,
                         "avg": true,
@@ -3069,11 +3103,11 @@
                             "calculatedInterval": "10s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "min_over_time(proxysql_up{instance=\"$host\"}[$interval]) or min_over_time(proxysql_up{instance=\"$host\"}[5m])",
+                            "expr": "min_over_time(proxysql_up{node_name=\"$host\",service_name=~\"$service\",job=~\"proxysql.*\"}[$interval]) or \nmin_over_time(proxysql_up{node_name=\"$host\",service_name=~\"$service\",job=~\"proxysql.*\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
-                            "legendFormat": "ProxySQL Up",
+                            "legendFormat": "ProxySQL Up  - {{service_name}}",
                             "metric": "",
                             "refId": "A",
                             "step": 300,
@@ -3082,6 +3116,7 @@
                     ],
                     "thresholds": [],
                     "timeFrom": null,
+                    "timeRegions": [],
                     "timeShift": null,
                     "title": "ProxySQL up",
                     "tooltip": {
@@ -3090,7 +3125,6 @@
                         "sort": 0,
                         "value_type": "individual"
                     },
-                    "transparent": false,
                     "type": "graph",
                     "xaxis": {
                         "buckets": null,
@@ -3115,7 +3149,11 @@
                             "min": 0,
                             "show": false
                         }
-                    ]
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
                 }
             ],
             "repeat": null,
@@ -3123,51 +3161,15 @@
             "type": "row"
         },
         {
-            "collapsed": false,
+            "collapsed": true,
             "gridPos": {
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 34
+                "y": 16
             },
             "id": 69,
-            "panels": [],
-            "title": "PostgreSQL Exporter",
-            "type": "row"
-        },
-        {
-            "cacheTimeout": null,
-            "colorBackground": false,
-            "colorValue": true,
-            "colors": [
-                "rgba(50, 172, 45, 0.97)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(245, 54, 54, 0.9)"
-            ],
-            "datasource": "Prometheus",
-            "decimals": 1,
-            "editable": true,
-            "error": false,
-            "format": "percent",
-            "gauge": {
-                "maxValue": 100,
-                "minValue": 0,
-                "show": false,
-                "thresholdLabels": false,
-                "thresholdMarkers": true
-            },
-            "gridPos": {
-                "h": 4,
-                "w": 6,
-                "x": 0,
-                "y": 35
-            },
-            "height": "125px",
-            "id": 70,
-            "interval": "$interval",
-            "links": [],
-            "mappingType": 1,
-            "mappingTypes": [
+            "panels": [
                 {
                     "cacheTimeout": null,
                     "colorBackground": false,
@@ -3189,15 +3191,100 @@
                         "thresholdLabels": false,
                         "thresholdMarkers": true
                     },
+                    "gridPos": {
+                        "h": 4,
+                        "w": 6,
+                        "x": 0,
+                        "y": 35
+                    },
                     "height": "125px",
-                    "id": 19,
+                    "id": 70,
                     "interval": "$interval",
                     "links": [],
                     "mappingType": 1,
                     "mappingTypes": [
                         {
-                            "name": "value to text",
-                            "value": 1
+                            "cacheTimeout": null,
+                            "colorBackground": false,
+                            "colorValue": true,
+                            "colors": [
+                                "rgba(50, 172, 45, 0.97)",
+                                "rgba(237, 129, 40, 0.89)",
+                                "rgba(245, 54, 54, 0.9)"
+                            ],
+                            "datasource": "Prometheus",
+                            "decimals": 1,
+                            "editable": true,
+                            "error": false,
+                            "format": "percent",
+                            "gauge": {
+                                "maxValue": 100,
+                                "minValue": 0,
+                                "show": false,
+                                "thresholdLabels": false,
+                                "thresholdMarkers": true
+                            },
+                            "height": "125px",
+                            "id": 19,
+                            "interval": "$interval",
+                            "links": [],
+                            "mappingType": 1,
+                            "mappingTypes": [
+                                {
+                                    "name": "value to text",
+                                    "value": 1
+                                },
+                                {
+                                    "name": "range to text",
+                                    "value": 2
+                                }
+                            ],
+                            "maxDataPoints": 100,
+                            "nullPointMode": "connected",
+                            "nullText": null,
+                            "postfix": "",
+                            "postfixFontSize": "80%",
+                            "prefix": "",
+                            "prefixFontSize": "80%",
+                            "rangeMaps": [
+                                {
+                                    "from": "null",
+                                    "text": "N/A",
+                                    "to": "null"
+                                }
+                            ],
+                            "span": 3,
+                            "sparkline": {
+                                "fillColor": "rgba(31, 118, 189, 0.18)",
+                                "full": false,
+                                "lineColor": "rgb(31, 120, 193)",
+                                "maxValue": 100,
+                                "minValue": 0,
+                                "show": true
+                            },
+                            "tableColumn": "",
+                            "targets": [
+                                {
+                                    "calculatedInterval": "10m",
+                                    "datasourceErrors": {},
+                                    "errors": {},
+                                    "expr": "(sum(rate(process_cpu_seconds_total{instance=\"$host\",job=\"linux\"}[$interval])) by () or sum(irate(process_cpu_seconds_total{instance=\"$host\",job=\"linux\"}[5m])) by ()) / count(node_cpu_seconds_total{mode=\"user\", instance=\"$host\"})*100",
+                                    "format": "time_series",
+                                    "interval": "$interval",
+                                    "intervalFactor": 1,
+                                    "legendFormat": "",
+                                    "metric": "",
+                                    "refId": "A",
+                                    "step": 300
+                                }
+                            ],
+                            "thresholds": "5,10",
+                            "title": "CPU Usage",
+                            "transparent": false,
+                            "type": "pmm-singlestat-panel",
+                            "valueFontSize": "80%",
+                            "valueMaps": [],
+                            "valueName": "current"
                         },
                         {
                             "name": "range to text",
@@ -3218,13 +3305,10 @@
                             "to": "null"
                         }
                     ],
-                    "span": 3,
                     "sparkline": {
                         "fillColor": "rgba(31, 118, 189, 0.18)",
                         "full": false,
                         "lineColor": "rgb(31, 120, 193)",
-                        "maxValue": 100,
-                        "minValue": 0,
                         "show": true
                     },
                     "tableColumn": "",
@@ -3233,7 +3317,7 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "(sum(rate(process_cpu_seconds_total{instance=\"$host\",job=\"linux\"}[$interval])) by () or sum(irate(process_cpu_seconds_total{instance=\"$host\",job=\"linux\"}[5m])) by ()) / count(node_cpu{mode=\"user\", instance=\"$host\"})*100",
+                            "expr": "(sum(rate(process_cpu_seconds_total{node_name=\"$host\",service_name=~\"$service\",job=~\"postgres.*\"}[$interval])) by () or \nsum(irate(process_cpu_seconds_total{node_name=\"$host\",service_name=~\"$service\",job=~\"postgres.*\"}[5m])) by ()) / \ncount(node_cpu_seconds_total{mode=\"user\",node_name=\"$host\"})*100",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3245,523 +3329,479 @@
                     ],
                     "thresholds": "5,10",
                     "title": "CPU Usage",
-                    "transparent": false,
-                    "type": "pmm-singlestat-panel",
+                    "type": "singlestat",
                     "valueFontSize": "80%",
                     "valueMaps": [],
                     "valueName": "current"
                 },
                 {
-                    "name": "range to text",
-                    "value": 2
-                }
-            ],
-            "maxDataPoints": 100,
-            "nullPointMode": "connected",
-            "nullText": null,
-            "postfix": "",
-            "postfixFontSize": "80%",
-            "prefix": "",
-            "prefixFontSize": "80%",
-            "rangeMaps": [
-                {
-                    "from": "null",
-                    "text": "N/A",
-                    "to": "null"
-                }
-            ],
-            "sparkline": {
-                "fillColor": "rgba(31, 118, 189, 0.18)",
-                "full": false,
-                "lineColor": "rgb(31, 120, 193)",
-                "show": true
-            },
-            "tableColumn": "",
-            "targets": [
-                {
-                    "calculatedInterval": "10m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "(sum(rate(process_cpu_seconds_total{instance=\"$host\",job=\"postgresql\"}[$interval])) by () or \nsum(irate(process_cpu_seconds_total{instance=\"$host\",job=\"postgresql\"}[5m])) by ()) / \ncount(node_cpu{mode=\"user\", instance=\"$host\"})*100",
-                    "format": "time_series",
+                    "cacheTimeout": null,
+                    "colorBackground": false,
+                    "colorValue": true,
+                    "colors": [
+                        "rgba(50, 172, 45, 0.97)",
+                        "rgba(237, 129, 40, 0.89)",
+                        "rgba(245, 54, 54, 0.9)"
+                    ],
+                    "datasource": "Prometheus",
+                    "decimals": 0,
+                    "editable": true,
+                    "error": false,
+                    "format": "bytes",
+                    "gauge": {
+                        "maxValue": 100,
+                        "minValue": 0,
+                        "show": false,
+                        "thresholdLabels": false,
+                        "thresholdMarkers": true
+                    },
+                    "gridPos": {
+                        "h": 4,
+                        "w": 6,
+                        "x": 6,
+                        "y": 35
+                    },
+                    "height": "125px",
+                    "id": 71,
                     "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "",
-                    "metric": "",
-                    "refId": "A",
-                    "step": 300
-                }
-            ],
-            "thresholds": "5,10",
-            "title": "CPU Usage",
-            "transparent": false,
-            "type": "singlestat",
-            "valueFontSize": "80%",
-            "valueMaps": [],
-            "valueName": "current"
-        },
-        {
-            "cacheTimeout": null,
-            "colorBackground": false,
-            "colorValue": true,
-            "colors": [
-                "rgba(50, 172, 45, 0.97)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(245, 54, 54, 0.9)"
-            ],
-            "datasource": "Prometheus",
-            "decimals": 0,
-            "editable": true,
-            "error": false,
-            "format": "bytes",
-            "gauge": {
-                "maxValue": 100,
-                "minValue": 0,
-                "show": false,
-                "thresholdLabels": false,
-                "thresholdMarkers": true
-            },
-            "gridPos": {
-                "h": 4,
-                "w": 6,
-                "x": 6,
-                "y": 35
-            },
-            "height": "125px",
-            "id": 71,
-            "interval": "$interval",
-            "links": [],
-            "mappingType": 1,
-            "mappingTypes": [
-                {
-                    "name": "value to text",
-                    "value": 1
+                    "links": [],
+                    "mappingType": 1,
+                    "mappingTypes": [
+                        {
+                            "name": "value to text",
+                            "value": 1
+                        },
+                        {
+                            "name": "range to text",
+                            "value": 2
+                        }
+                    ],
+                    "maxDataPoints": 100,
+                    "nullPointMode": "connected",
+                    "nullText": null,
+                    "postfix": "",
+                    "postfixFontSize": "50%",
+                    "prefix": "",
+                    "prefixFontSize": "80%",
+                    "rangeMaps": [
+                        {
+                            "from": "null",
+                            "text": "N/A",
+                            "to": "null"
+                        }
+                    ],
+                    "sparkline": {
+                        "fillColor": "rgba(31, 118, 189, 0.18)",
+                        "full": false,
+                        "lineColor": "rgb(31, 120, 193)",
+                        "show": true
+                    },
+                    "tableColumn": "",
+                    "targets": [
+                        {
+                            "calculatedInterval": "10m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "sum(process_resident_memory_bytes{node_name=\"$host\",service_name=~\"$service\",job=~\"postgres.*\"})",
+                            "format": "time_series",
+                            "instant": false,
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "",
+                            "metric": "node_mem",
+                            "refId": "A",
+                            "step": 300
+                        }
+                    ],
+                    "thresholds": "50000000,100000000",
+                    "title": "Memory Usage",
+                    "type": "singlestat",
+                    "valueFontSize": "80%",
+                    "valueMaps": [],
+                    "valueName": "current"
                 },
                 {
-                    "name": "range to text",
-                    "value": 2
-                }
-            ],
-            "maxDataPoints": 100,
-            "nullPointMode": "connected",
-            "nullText": null,
-            "postfix": "",
-            "postfixFontSize": "50%",
-            "prefix": "",
-            "prefixFontSize": "80%",
-            "rangeMaps": [
-                {
-                    "from": "null",
-                    "text": "N/A",
-                    "to": "null"
-                }
-            ],
-            "sparkline": {
-                "fillColor": "rgba(31, 118, 189, 0.18)",
-                "full": false,
-                "lineColor": "rgb(31, 120, 193)",
-                "show": true
-            },
-            "tableColumn": "",
-            "targets": [
-                {
-                    "calculatedInterval": "10m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "process_resident_memory_bytes{instance=\"$host\",job=\"postgresql\"}",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "",
-                    "metric": "node_mem",
-                    "refId": "A",
-                    "step": 300
-                }
-            ],
-            "thresholds": "50000000,100000000",
-            "title": "Memory Usage",
-            "transparent": false,
-            "type": "singlestat",
-            "valueFontSize": "80%",
-            "valueMaps": [],
-            "valueName": "current"
-        },
-        {
-            "cacheTimeout": null,
-            "colorBackground": false,
-            "colorValue": true,
-            "colors": [
-                "rgba(50, 172, 45, 0.97)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(245, 54, 54, 0.9)"
-            ],
-            "datasource": "Prometheus",
-            "decimals": 0,
-            "editable": true,
-            "error": false,
-            "format": "short",
-            "gauge": {
-                "maxValue": 100,
-                "minValue": 0,
-                "show": false,
-                "thresholdLabels": false,
-                "thresholdMarkers": true
-            },
-            "gridPos": {
-                "h": 4,
-                "w": 6,
-                "x": 12,
-                "y": 35
-            },
-            "height": "125px",
-            "id": 72,
-            "interval": "$interval",
-            "links": [],
-            "mappingType": 1,
-            "mappingTypes": [
-                {
-                    "name": "value to text",
-                    "value": 1
-                },
-                {
-                    "name": "range to text",
-                    "value": 2
-                }
-            ],
-            "maxDataPoints": 100,
-            "nullPointMode": "connected",
-            "nullText": null,
-            "postfix": "",
-            "postfixFontSize": "50%",
-            "prefix": "",
-            "prefixFontSize": "80%",
-            "rangeMaps": [
-                {
-                    "from": "null",
-                    "text": "N/A",
-                    "to": "null"
-                }
-            ],
-            "sparkline": {
-                "fillColor": "rgba(31, 118, 189, 0.18)",
-                "full": false,
-                "lineColor": "rgb(31, 120, 193)",
-                "show": true
-            },
-            "tableColumn": "",
-            "targets": [
-                {
-                    "calculatedInterval": "10m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "process_open_fds{instance=\"$host\",job=\"postgresql\"}",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "",
-                    "metric": "node_mem",
-                    "refId": "A",
-                    "step": 300
-                }
-            ],
-            "thresholds": "512,800",
-            "title": "File Descriptors Used",
-            "transparent": false,
-            "type": "singlestat",
-            "valueFontSize": "80%",
-            "valueMaps": [],
-            "valueName": "current"
-        },
-        {
-            "cacheTimeout": null,
-            "colorBackground": false,
-            "colorPostfix": true,
-            "colorValue": true,
-            "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-            ],
-            "datasource": "Prometheus",
-            "decimals": 1,
-            "editable": true,
-            "error": false,
-            "format": "s",
-            "gauge": {
-                "maxValue": 100,
-                "minValue": 0,
-                "show": false,
-                "thresholdLabels": false,
-                "thresholdMarkers": true
-            },
-            "gridPos": {
-                "h": 4,
-                "w": 6,
-                "x": 18,
-                "y": 35
-            },
-            "height": "125px",
-            "id": 73,
-            "interval": "$interval",
-            "links": [],
-            "mappingType": 1,
-            "mappingTypes": [
-                {
-                    "name": "value to text",
-                    "value": 1
-                },
-                {
-                    "name": "range to text",
-                    "value": 2
-                }
-            ],
-            "maxDataPoints": 100,
-            "nullPointMode": "connected",
-            "nullText": null,
-            "postfix": "s",
-            "postfixFontSize": "80%",
-            "prefix": "",
-            "prefixFontSize": "80%",
-            "rangeMaps": [
-                {
-                    "from": "null",
-                    "text": "N/A",
-                    "to": "null"
-                }
-            ],
-            "sparkline": {
-                "fillColor": "rgba(31, 118, 189, 0.18)",
-                "full": false,
-                "lineColor": "rgb(31, 120, 193)",
-                "show": false
-            },
-            "tableColumn": "",
-            "targets": [
-                {
-                    "calculatedInterval": "10m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "time() - process_start_time_seconds{instance=\"$host\",job=\"postgresql\"}",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "",
-                    "metric": "",
-                    "refId": "A",
-                    "step": 300
-                }
-            ],
-            "thresholds": "300,3600",
-            "title": "Exporter Uptime",
-            "transparent": false,
-            "type": "singlestat",
-            "valueFontSize": "80%",
-            "valueMaps": [],
-            "valueName": "current"
-        },
-        {
-            "aliasColors": {},
-            "bars": false,
-            "dashLength": 10,
-            "dashes": false,
-            "datasource": "Prometheus",
-            "decimals": 2,
-            "editable": true,
-            "error": false,
-            "fill": 2,
-            "grid": {},
-            "gridPos": {
-                "h": 8,
-                "w": 12,
-                "x": 0,
-                "y": 39
-            },
-            "id": 74,
-            "legend": {
-                "alignAsTable": true,
-                "avg": true,
-                "current": false,
-                "hideEmpty": false,
-                "max": true,
-                "min": true,
-                "rightSide": false,
-                "show": true,
-                "sortDesc": true,
-                "total": false,
-                "values": true
-            },
-            "lines": true,
-            "linewidth": 2,
-            "links": [],
-            "nullPointMode": "null",
-            "percentage": false,
-            "pointradius": 5,
-            "points": false,
-            "renderer": "flot",
-            "seriesOverrides": [
-                {
-                    "alias": "Load 1m",
-                    "color": "#E0752D"
-                }
-            ],
-            "spaceLength": 10,
-            "stack": false,
-            "steppedLine": false,
-            "targets": [
-                {
-                    "calculatedInterval": "10s",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "rate(pg_exporter_scrapes_total{instance=\"$host\"}[$interval]) or \nirate(pg_exporter_scrapes_total{instance=\"$host\"}[5m])",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Total",
-                    "metric": "",
-                    "refId": "A",
-                    "step": 300,
-                    "target": ""
-                },
-                {
-                    "expr": "max_over_time(pg_exporter_last_scrape_error{instance=\"$host\"}[$interval]) or\nmax_over_time(pg_exporter_last_scrape_error{instance=\"$host\"}[5m])",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Failed",
-                    "refId": "B"
-                }
-            ],
-            "thresholds": [],
-            "timeFrom": null,
-            "timeShift": null,
-            "title": "Rate of  Scrapes",
-            "tooltip": {
-                "msResolution": false,
-                "shared": true,
-                "sort": 0,
-                "value_type": "individual"
-            },
-            "transparent": false,
-            "type": "graph",
-            "xaxis": {
-                "buckets": null,
-                "mode": "time",
-                "name": null,
-                "show": true,
-                "values": []
-            },
-            "yaxes": [
-                {
-                    "decimals": null,
-                    "format": "ops",
-                    "label": "",
-                    "logBase": 1,
-                    "max": null,
-                    "min": 0,
-                    "show": true
-                },
-                {
-                    "format": "none",
-                    "logBase": 1,
-                    "max": null,
-                    "min": 0,
-                    "show": false
-                }
-            ],
-            "yaxis": {
-                "align": false,
-                "alignLevel": null
-            }
-        },
-        {
-            "aliasColors": {},
-            "bars": false,
-            "dashLength": 10,
-            "dashes": false,
-            "datasource": "Prometheus",
-            "decimals": 2,
-            "fill": 2,
-            "gridPos": {
-                "h": 8,
-                "w": 12,
-                "x": 12,
-                "y": 39
-            },
-            "id": 76,
-            "legend": {
-                "avg": false,
-                "current": false,
-                "max": false,
-                "min": false,
-                "show": true,
-                "total": false,
-                "values": false
-            },
-            "lines": true,
-            "linewidth": 2,
-            "links": [],
-            "nullPointMode": "null",
-            "percentage": false,
-            "pointradius": 5,
-            "points": false,
-            "renderer": "flot",
-            "seriesOverrides": [],
-            "spaceLength": 10,
-            "stack": false,
-            "steppedLine": false,
-            "targets": [
-                {
-                    "expr": "sum_over_time(pg_exporter_last_scrape_duration_seconds{instance=\"$host\"}[$interval]) or\nsum_over_time(pg_exporter_last_scrape_duration_seconds{instance=\"$host\"}[5m])",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Duration",
-                    "refId": "A"
-                }
-            ],
-            "thresholds": [],
-            "timeFrom": null,
-            "timeShift": null,
-            "title": "Scrape Durations",
-            "tooltip": {
-                "shared": true,
-                "sort": 0,
-                "value_type": "individual"
-            },
-            "type": "graph",
-            "xaxis": {
-                "buckets": null,
-                "mode": "time",
-                "name": null,
-                "show": true,
-                "values": []
-            },
-            "yaxes": [
-                {
-                    "format": "s",
-                    "label": null,
-                    "logBase": 1,
-                    "max": null,
-                    "min": "0",
-                    "show": true
-                },
-                {
+                    "cacheTimeout": null,
+                    "colorBackground": false,
+                    "colorValue": true,
+                    "colors": [
+                        "rgba(50, 172, 45, 0.97)",
+                        "rgba(237, 129, 40, 0.89)",
+                        "rgba(245, 54, 54, 0.9)"
+                    ],
+                    "datasource": "Prometheus",
+                    "decimals": 0,
+                    "editable": true,
+                    "error": false,
                     "format": "short",
-                    "label": null,
-                    "logBase": 1,
-                    "max": null,
-                    "min": null,
-                    "show": false
+                    "gauge": {
+                        "maxValue": 100,
+                        "minValue": 0,
+                        "show": false,
+                        "thresholdLabels": false,
+                        "thresholdMarkers": true
+                    },
+                    "gridPos": {
+                        "h": 4,
+                        "w": 6,
+                        "x": 12,
+                        "y": 35
+                    },
+                    "height": "125px",
+                    "id": 72,
+                    "interval": "$interval",
+                    "links": [],
+                    "mappingType": 1,
+                    "mappingTypes": [
+                        {
+                            "name": "value to text",
+                            "value": 1
+                        },
+                        {
+                            "name": "range to text",
+                            "value": 2
+                        }
+                    ],
+                    "maxDataPoints": 100,
+                    "nullPointMode": "connected",
+                    "nullText": null,
+                    "postfix": "",
+                    "postfixFontSize": "50%",
+                    "prefix": "",
+                    "prefixFontSize": "80%",
+                    "rangeMaps": [
+                        {
+                            "from": "null",
+                            "text": "N/A",
+                            "to": "null"
+                        }
+                    ],
+                    "sparkline": {
+                        "fillColor": "rgba(31, 118, 189, 0.18)",
+                        "full": false,
+                        "lineColor": "rgb(31, 120, 193)",
+                        "show": true
+                    },
+                    "tableColumn": "",
+                    "targets": [
+                        {
+                            "calculatedInterval": "10m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "sum(process_open_fds{node_name=\"$host\",service_name=~\"$service\",job=~\"postgres.*\"})",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "",
+                            "metric": "node_mem",
+                            "refId": "A",
+                            "step": 300
+                        }
+                    ],
+                    "thresholds": "512,800",
+                    "title": "File Descriptors Used",
+                    "type": "singlestat",
+                    "valueFontSize": "80%",
+                    "valueMaps": [],
+                    "valueName": "current"
+                },
+                {
+                    "cacheTimeout": null,
+                    "colorBackground": false,
+                    "colorPostfix": true,
+                    "colorValue": true,
+                    "colors": [
+                        "rgba(245, 54, 54, 0.9)",
+                        "rgba(237, 129, 40, 0.89)",
+                        "rgba(50, 172, 45, 0.97)"
+                    ],
+                    "datasource": "Prometheus",
+                    "decimals": 1,
+                    "editable": true,
+                    "error": false,
+                    "format": "s",
+                    "gauge": {
+                        "maxValue": 100,
+                        "minValue": 0,
+                        "show": false,
+                        "thresholdLabels": false,
+                        "thresholdMarkers": true
+                    },
+                    "gridPos": {
+                        "h": 4,
+                        "w": 6,
+                        "x": 18,
+                        "y": 35
+                    },
+                    "height": "125px",
+                    "id": 73,
+                    "interval": "$interval",
+                    "links": [],
+                    "mappingType": 1,
+                    "mappingTypes": [
+                        {
+                            "name": "value to text",
+                            "value": 1
+                        },
+                        {
+                            "name": "range to text",
+                            "value": 2
+                        }
+                    ],
+                    "maxDataPoints": 100,
+                    "nullPointMode": "connected",
+                    "nullText": null,
+                    "postfix": "s",
+                    "postfixFontSize": "80%",
+                    "prefix": "",
+                    "prefixFontSize": "80%",
+                    "rangeMaps": [
+                        {
+                            "from": "null",
+                            "text": "N/A",
+                            "to": "null"
+                        }
+                    ],
+                    "sparkline": {
+                        "fillColor": "rgba(31, 118, 189, 0.18)",
+                        "full": false,
+                        "lineColor": "rgb(31, 120, 193)",
+                        "show": false
+                    },
+                    "tableColumn": "",
+                    "targets": [
+                        {
+                            "calculatedInterval": "10m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "time() - avg(process_start_time_seconds{node_name=\"$host\",service_name=~\"$service\",job=~\"postgres.*\"})",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "",
+                            "metric": "",
+                            "refId": "A",
+                            "step": 300
+                        }
+                    ],
+                    "thresholds": "300,3600",
+                    "title": "Exporter Uptime",
+                    "type": "singlestat",
+                    "valueFontSize": "80%",
+                    "valueMaps": [],
+                    "valueName": "current"
+                },
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": 2,
+                    "editable": true,
+                    "error": false,
+                    "fill": 2,
+                    "grid": {},
+                    "gridPos": {
+                        "h": 8,
+                        "w": 12,
+                        "x": 0,
+                        "y": 39
+                    },
+                    "id": 74,
+                    "interval": "",
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "hideEmpty": false,
+                        "max": true,
+                        "min": true,
+                        "rightSide": false,
+                        "show": true,
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "paceLength": 10,
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [
+                        {
+                            "alias": "Load 1m",
+                            "color": "#E0752D"
+                        }
+                    ],
+                    "spaceLength": 10,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "calculatedInterval": "10s",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "rate(pg_exporter_scrapes_total{node_name=\"$host\",service_name=~\"$service\",job=~\"postgres.*\"}[$interval]) or \nirate(pg_exporter_scrapes_total{node_name=\"$host\",service_name=~\"$service\",job=~\"postgres.*\"}[5m])",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Total  - {{service_name}}",
+                            "metric": "",
+                            "refId": "A",
+                            "step": 300,
+                            "target": ""
+                        },
+                        {
+                            "expr": "max_over_time(pg_exporter_last_scrape_error{node_name=\"$host\",service_name=~\"$service\",job=~\"postgres.*\"}[$interval]) or\nmax_over_time(pg_exporter_last_scrape_error{node_name=\"$host\",service_name=~\"$service\",job=~\"postgres.*\"}[5m])",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Failed  - {{service_name}}",
+                            "refId": "B"
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeRegions": [],
+                    "timeShift": null,
+                    "title": "Rate of  Scrapes",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "decimals": null,
+                            "format": "ops",
+                            "label": "",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        },
+                        {
+                            "format": "none",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": false
+                        }
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
+                },
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": 2,
+                    "fill": 2,
+                    "gridPos": {
+                        "h": 8,
+                        "w": 12,
+                        "x": 12,
+                        "y": 39
+                    },
+                    "id": 76,
+                    "legend": {
+                        "avg": false,
+                        "current": false,
+                        "max": false,
+                        "min": false,
+                        "show": true,
+                        "total": false,
+                        "values": false
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "paceLength": 10,
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "expr": "sum_over_time(pg_exporter_last_scrape_duration_seconds{node_name=\"$host\",service_name=~\"$service\",job=~\"postgres.*\"}[$interval]) or\nsum_over_time(pg_exporter_last_scrape_duration_seconds{node_name=\"$host\",service_name=~\"$service\",job=~\"postgres.*\"}[5m])",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Duration  - {{service_name}}",
+                            "refId": "A"
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeRegions": [],
+                    "timeShift": null,
+                    "title": "Scrape Durations",
+                    "tooltip": {
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "s",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": "0",
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": false
+                        }
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
                 }
             ],
-            "yaxis": {
-                "align": false,
-                "alignLevel": null
-            }
+            "title": "PostgreSQL Exporter",
+            "type": "row"
         }
     ],
     "refresh": "1m",
-    "schemaVersion": 16,
+    "schemaVersion": 18,
     "style": "dark",
     "tags": [
         "Insight",
@@ -3774,10 +3814,7 @@
                 "auto": true,
                 "auto_count": 200,
                 "auto_min": "1s",
-                "current": {
-                    "text": "auto",
-                    "value": "$__auto_interval_interval"
-                },
+                "current": {},
                 "datasource": "Prometheus",
                 "hide": 0,
                 "includeAll": false,
@@ -3829,6 +3866,7 @@
                 ],
                 "query": "1s,5s,1m,5m,1h,6h,1d",
                 "refresh": 2,
+                "skipUrlSync": false,
                 "type": "interval"
             },
             {
@@ -3836,6 +3874,7 @@
                 "allValue": null,
                 "current": {},
                 "datasource": "Prometheus",
+                "definition": "label_values({__name__=~\"node_load1|process_start_time_seconds\"}, node_name)",
                 "hide": 0,
                 "includeAll": false,
                 "label": "Host",
@@ -3843,10 +3882,36 @@
                 "multiFormat": "regex values",
                 "name": "host",
                 "options": [],
-                "query": "label_values({__name__=~\"node_load1|process_start_time_seconds\"}, instance)",
+                "query": "label_values({__name__=~\"node_load1|process_start_time_seconds\"}, node_name)",
                 "refresh": 1,
                 "refresh_on_load": false,
                 "regex": "",
+                "skipUrlSync": false,
+                "sort": 1,
+                "tagValuesQuery": "instance",
+                "tags": [],
+                "tagsQuery": "up",
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allFormat": "glob",
+                "allValue": null,
+                "current": {},
+                "datasource": "Prometheus",
+                "definition": "label_values({__name__=~\"node_load1|process_start_time_seconds\", node_name=\"$host\"}, service_name)",
+                "hide": 0,
+                "includeAll": true,
+                "label": "Service",
+                "multi": true,
+                "multiFormat": "regex values",
+                "name": "service",
+                "options": [],
+                "query": "label_values({__name__=~\"node_load1|process_start_time_seconds\", node_name=\"$host\"}, service_name)",
+                "refresh": 1,
+                "refresh_on_load": false,
+                "regex": "",
+                "skipUrlSync": false,
                 "sort": 1,
                 "tagValuesQuery": "instance",
                 "tags": [],
@@ -3895,5 +3960,5 @@
     "timezone": "browser",
     "title": "Prometheus Exporter Status",
     "uid": "o2zrwGNmz",
-    "version": 1
+    "version": 5
 }

@@ -8,10 +8,13 @@
                 "hide": false,
                 "iconColor": "#e0752d",
                 "limit": 100,
+                "matchAny": true,
                 "name": "PMM Annotations",
                 "showIn": 0,
                 "tags": [
-                    "pmm_annotation"
+                    "pmm_annotation",
+                    "$host",
+                    "$service"
                 ],
                 "type": "tags"
             },
@@ -29,11 +32,11 @@
             }
         ]
     },
-    "editable": true,
+    "editable": false,
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1529322391210,
+    "iteration": 1552407765727,
     "links": [
         {
             "icon": "dashboard",
@@ -45,7 +48,7 @@
             "targetBlank": false,
             "title": "Query Analytics",
             "type": "link",
-            "url": "/graph/dashboard/db/_pmm-query-analytics"
+            "url": "/graph/d/7w6Q3PJmz/pmm-query-analytics"
         },
         {
             "asDropdown": true,
@@ -100,17 +103,6 @@
             ],
             "targetBlank": false,
             "title": "HA",
-            "type": "dashboards"
-        },
-        {
-            "asDropdown": true,
-            "includeVars": true,
-            "keepTime": true,
-            "tags": [
-                "Cloud"
-            ],
-            "targetBlank": false,
-            "title": "Cloud",
             "type": "dashboards"
         },
         {
@@ -177,6 +169,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -212,7 +205,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(mysql_global_status_auroradb_commits{instance=\"$host\"}[$interval]) or irate(mysql_global_status_auroradb_commits{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_global_status_auroradb_commits{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_auroradb_commits{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -225,7 +218,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(mysql_global_status_auroradb_commit_latency{instance=\"$host\"}[$interval])/rate(mysql_global_status_auroradb_commits{instance=\"$host\"}[$interval]) or irate(mysql_global_status_auroradb_commit_latency{instance=\"$host\"}[5m])/irate(mysql_global_status_auroradb_commits{instance=\"$host\"}[5m])",
+                    "expr": "rate(mysql_global_status_auroradb_commit_latency{service_name=\"$service\"}[$interval])/rate(mysql_global_status_auroradb_commits{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_auroradb_commit_latency{service_name=\"$service\"}[5m])/irate(mysql_global_status_auroradb_commits{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -237,6 +230,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Amazon Aurora Transaction Commits",
             "tooltip": {
@@ -317,6 +311,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -335,7 +330,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(mysql_global_status_auroradb_commit_latency{instance=\"$host\"}[$interval])/1000000 or irate(mysql_global_status_auroradb_commit_latency{instance=\"$host\"}[5m])/1000000",
+                    "expr": "rate(mysql_global_status_auroradb_commit_latency{service_name=\"$service\"}[$interval])/1000000 or irate(mysql_global_status_auroradb_commit_latency{service_name=\"$service\"}[5m])/1000000",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -345,7 +340,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mysql_global_status_auroradb_ddl_stmt_duration{instance=\"$host\"}[$interval])/1000000 or irate(mysql_global_status_auroradb_ddl_stmt_duration{instance=\"$host\"}[5m])/1000000",
+                    "expr": "rate(mysql_global_status_auroradb_ddl_stmt_duration{service_name=\"$service\"}[$interval])/1000000 or irate(mysql_global_status_auroradb_ddl_stmt_duration{service_name=\"$service\"}[5m])/1000000",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -353,7 +348,7 @@
                     "refId": "A"
                 },
                 {
-                    "expr": "rate(mysql_global_status_auroradb_select_stmt_duration{instance=\"$host\"}[$interval])/1000000 or irate(mysql_global_status_auroradb_select_stmt_duration{instance=\"$host\"}[5m])/1000000",
+                    "expr": "rate(mysql_global_status_auroradb_select_stmt_duration{service_name=\"$service\"}[$interval])/1000000 or irate(mysql_global_status_auroradb_select_stmt_duration{service_name=\"$service\"}[5m])/1000000",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -361,7 +356,7 @@
                     "refId": "B"
                 },
                 {
-                    "expr": "rate(mysql_global_status_auroradb_insert_stmt_duration{instance=\"$host\"}[$interval])/1000000 or irate(mysql_global_status_auroradb_insert_stmt_duration{instance=\"$host\"}[5m])/1000000",
+                    "expr": "rate(mysql_global_status_auroradb_insert_stmt_duration{service_name=\"$service\"}[$interval])/1000000 or irate(mysql_global_status_auroradb_insert_stmt_duration{service_name=\"$service\"}[5m])/1000000",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -369,7 +364,7 @@
                     "refId": "D"
                 },
                 {
-                    "expr": "rate(mysql_global_status_auroradb_update_stmt_duration{instance=\"$host\"}[$interval])/1000000 or irate(mysql_global_status_auroradb_update_stmt_duration{instance=\"$host\"}[5m])/1000000",
+                    "expr": "rate(mysql_global_status_auroradb_update_stmt_duration{service_name=\"$service\"}[$interval])/1000000 or irate(mysql_global_status_auroradb_update_stmt_duration{service_name=\"$service\"}[5m])/1000000",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -377,7 +372,7 @@
                     "refId": "E"
                 },
                 {
-                    "expr": "rate(mysql_global_status_auroradb_delete_stmt_duration{instance=\"$host\"}[$interval])/1000000 or irate(mysql_global_status_auroradb_delete_stmt_duration{instance=\"$host\"}[5m])/1000000",
+                    "expr": "rate(mysql_global_status_auroradb_delete_stmt_duration{service_name=\"$service\"}[$interval])/1000000 or irate(mysql_global_status_auroradb_delete_stmt_duration{service_name=\"$service\"}[5m])/1000000",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -387,6 +382,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Amazon Aurora Load",
             "tooltip": {
@@ -460,6 +456,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -487,7 +484,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "mysql_global_status_aurora_lockmgr_memory_used{instance=\"$host\"}",
+                    "expr": "mysql_global_status_aurora_lockmgr_memory_used{service_name=\"$service\"}",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -500,7 +497,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "mysql_global_status_aurora_dict_sys_mem_size{instance=\"$host\"}",
+                    "expr": "mysql_global_status_aurora_dict_sys_mem_size{service_name=\"$service\"}",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -512,6 +509,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Aurora Memory Used",
             "tooltip": {
@@ -596,6 +594,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -611,7 +610,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "(rate(mysql_global_status_auroradb_ddl_stmt_duration{instance=\"$host\"}[$interval])/ (sum(rate(mysql_global_status_commands_total{instance=\"$host\",command=~'alter_table|create_index|drop_index|drop_table'}[$interval])) without(command)))",
+                    "expr": "(rate(mysql_global_status_auroradb_ddl_stmt_duration{service_name=\"$service\"}[$interval])/ (sum(rate(mysql_global_status_commands_total{service_name=\"$service\",command=~'alter_table|create_index|drop_index|drop_table'}[$interval])) without(command)))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -620,7 +619,7 @@
                     "refId": "A"
                 },
                 {
-                    "expr": "(rate(mysql_global_status_auroradb_select_stmt_duration{instance=\"$host\"}[$interval])/ (sum(rate(mysql_global_status_commands_total{instance=\"$host\",command='select'}[$interval])) without(command))+rate(mysql_global_status_qcache_hits{instance=\"$host\"}[$interval]))",
+                    "expr": "(rate(mysql_global_status_auroradb_select_stmt_duration{service_name=\"$service\"}[$interval])/ (sum(rate(mysql_global_status_commands_total{service_name=\"$service\",command='select'}[$interval])) without(command))+rate(mysql_global_status_qcache_hits{service_name=\"$service\"}[$interval]))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -629,7 +628,7 @@
                     "refId": "B"
                 },
                 {
-                    "expr": "(rate(mysql_global_status_auroradb_insert_stmt_duration{instance=\"$host\"}[$interval])/ (sum(rate(mysql_global_status_commands_total{instance=\"$host\",command=~'insert|insert_select'}[$interval])) without(command)))",
+                    "expr": "(rate(mysql_global_status_auroradb_insert_stmt_duration{service_name=\"$service\"}[$interval])/ (sum(rate(mysql_global_status_commands_total{service_name=\"$service\",command=~'insert|insert_select'}[$interval])) without(command)))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -638,7 +637,7 @@
                     "refId": "D"
                 },
                 {
-                    "expr": "(rate(mysql_global_status_auroradb_update_stmt_duration{instance=\"$host\"}[$interval])/ (sum(rate(mysql_global_status_commands_total{instance=\"$host\",command=~'update|update_multi'}[$interval])) without(command)))",
+                    "expr": "(rate(mysql_global_status_auroradb_update_stmt_duration{service_name=\"$service\"}[$interval])/ (sum(rate(mysql_global_status_commands_total{service_name=\"$service\",command=~'update|update_multi'}[$interval])) without(command)))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -647,7 +646,7 @@
                     "refId": "E"
                 },
                 {
-                    "expr": "(rate(mysql_global_status_auroradb_delete_stmt_duration{instance=\"$host\"}[$interval])/ (sum(rate(mysql_global_status_commands_total{instance=\"$host\",command=~'delete|delete_multi'}[$interval])) without(command)))",
+                    "expr": "(rate(mysql_global_status_auroradb_delete_stmt_duration{service_name=\"$service\"}[$interval])/ (sum(rate(mysql_global_status_commands_total{service_name=\"$service\",command=~'delete|delete_multi'}[$interval])) without(command)))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -658,6 +657,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Amazon Aurora Statement Latency",
             "tooltip": {
@@ -713,7 +713,7 @@
             "dashes": false,
             "datasource": "Prometheus",
             "decimals": 2,
-            "description": "Amazon Aurora MySQL allows a number of commands which are not available in standard MySQL. This graph shows usage of such commands.  Regular \u201cunit_test\u201d calls can be seen in default Amazon Aurora install,  the rest will depend on your workload.\n\n* `show_volume_status`: The number of executions per second of the command SHOW VOLUME STATUS. The SHOW VOLUME STATUS query returns two server status variables, Disks and Nodes. These variables represent the total number of logical blocks of data and storage nodes, respectively, for the DB cluster volume.\n\n* `awslambda`: The number of AWS Lambda calls per second. AWS Lambda is an event-drive, server-less computing platform provided by AWS. It is a compute service that run codes in response to an event. You can run any kind of code from Aurora invoking Lambda from a stored procedure or a trigger.\n\n* `alter_system`: The number of executions per second of the special query ALTER SYSTEM, that is a special query to simulate an instance crash, a disk failure, a disk congestion or a replica failure. It’s a useful query for testing the system.",
+            "description": "Amazon Aurora MySQL allows a number of commands which are not available in standard MySQL. This graph shows usage of such commands.  Regular \u201cunit_test\u201d calls can be seen in default Amazon Aurora install,  the rest will depend on your workload.\n\n* `show_volume_status`: The number of executions per second of the command SHOW VOLUME STATUS. The SHOW VOLUME STATUS query returns two server status variables, Disks and Nodes. These variables represent the total number of logical blocks of data and storage nodes, respectively, for the DB cluster volume.\n\n* `awslambda`: The number of AWS Lambda calls per second. AWS Lambda is an event-drive, server-less computing platform provided by AWS. It is a compute service that run codes in response to an event. You can run any kind of code from Aurora invoking Lambda from a stored procedure or a trigger.\n\n* `alter_system`: The number of executions per second of the special query ALTER SYSTEM, that is a special query to simulate an instance crash, a disk failure, a disk congestion or a replica failure. It\u2019s a useful query for testing the system.",
             "editable": true,
             "error": false,
             "fill": 1,
@@ -742,6 +742,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -757,7 +758,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(mysql_global_status_commands_total{instance=\"$host\",command=~'awslambda|alter_system|unit_test|show_volume_status'}[$interval])",
+                    "expr": "rate(mysql_global_status_commands_total{service_name=\"$service\",command=~'awslambda|alter_system|unit_test|show_volume_status'}[$interval])",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -768,6 +769,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Amazon Aurora Special Command Counters",
             "tooltip": {
@@ -856,6 +858,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -871,7 +874,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(mysql_global_status_auroradb_thread_deadlocks{instance=\"$host\"}[$interval])",
+                    "expr": "rate(mysql_global_status_auroradb_thread_deadlocks{service_name=\"$service\"}[$interval])",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -880,7 +883,7 @@
                     "refId": "A"
                 },
                 {
-                    "expr": "rate(mysql_global_status_aurora_missing_history_on_replica_incidents{instance=\"$host\"}[$interval])",
+                    "expr": "rate(mysql_global_status_aurora_missing_history_on_replica_incidents{service_name=\"$service\"}[$interval])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -888,7 +891,7 @@
                     "refId": "B"
                 },
                 {
-                    "expr": "rate(mysql_global_status_aurora_reserved_mem_exceeded_incidents{instance=\"$host\"}[$interval])",
+                    "expr": "rate(mysql_global_status_aurora_reserved_mem_exceeded_incidents{service_name=\"$service\"}[$interval])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -898,6 +901,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Amazon Aurora Problems",
             "tooltip": {
@@ -938,7 +942,7 @@
         }
     ],
     "refresh": "1m",
-    "schemaVersion": 16,
+    "schemaVersion": 18,
     "style": "dark",
     "tags": [
         "Percona",
@@ -951,10 +955,7 @@
                 "auto": true,
                 "auto_count": 200,
                 "auto_min": "1s",
-                "current": {
-                    "text": "auto",
-                    "value": "$__auto_interval_interval"
-                },
+                "current": {},
                 "datasource": "Prometheus",
                 "hide": 0,
                 "includeAll": false,
@@ -1006,6 +1007,7 @@
                 ],
                 "query": "1s,5s,1m,5m,1h,6h,1d",
                 "refresh": 2,
+                "skipUrlSync": false,
                 "type": "interval"
             },
             {
@@ -1013,6 +1015,7 @@
                 "allValue": null,
                 "current": {},
                 "datasource": "Prometheus",
+                "definition": "label_values(mysql_global_variables_aurora_lab_mode, node_name)",
                 "hide": 0,
                 "includeAll": false,
                 "label": "Host",
@@ -1020,14 +1023,37 @@
                 "multiFormat": "regex values",
                 "name": "host",
                 "options": [],
-                "query": "label_values(mysql_global_variables_aurora_lab_mode, instance)",
+                "query": "label_values(mysql_global_variables_aurora_lab_mode, node_name)",
                 "refresh": 1,
                 "refresh_on_load": false,
                 "regex": "",
+                "skipUrlSync": false,
                 "sort": 1,
                 "tagValuesQuery": null,
                 "tags": [],
                 "tagsQuery": null,
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allValue": null,
+                "current": {},
+                "datasource": "Prometheus",
+                "definition": "label_values(mysql_global_variables_aurora_lab_mode{node_name=~\"$host\"}, service_name)",
+                "hide": 0,
+                "includeAll": false,
+                "label": "Service",
+                "multi": false,
+                "name": "service",
+                "options": [],
+                "query": "label_values(mysql_global_variables_aurora_lab_mode{node_name=~\"$host\"}, service_name)",
+                "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
                 "type": "query",
                 "useTags": false
             }
@@ -1072,5 +1098,5 @@
     "timezone": "browser",
     "title": "MySQL Amazon Aurora Metrics",
     "uid": "SokrwMHmz",
-    "version": 1
+    "version": 3
 }

@@ -8,10 +8,13 @@
                 "hide": false,
                 "iconColor": "#e0752d",
                 "limit": 100,
+                "matchAny": true,
                 "name": "PMM Annotations",
                 "showIn": 0,
                 "tags": [
-                    "pmm_annotation"
+                    "pmm_annotation",
+                    "$host",
+                    "$service"
                 ],
                 "type": "tags"
             },
@@ -33,7 +36,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1529322461069,
+    "iteration": 1552405861443,
     "links": [
         {
             "icon": "dashboard",
@@ -45,7 +48,7 @@
             "targetBlank": false,
             "title": "Query Analytics",
             "type": "link",
-            "url": "/graph/dashboard/db/_pmm-query-analytics"
+            "url": "/graph/d/7w6Q3PJmz/pmm-query-analytics"
         },
         {
             "asDropdown": true,
@@ -100,17 +103,6 @@
             ],
             "targetBlank": false,
             "title": "HA",
-            "type": "dashboards"
-        },
-        {
-            "asDropdown": true,
-            "includeVars": true,
-            "keepTime": true,
-            "tags": [
-                "Cloud"
-            ],
-            "targetBlank": false,
-            "title": "Cloud",
             "type": "dashboards"
         },
         {
@@ -174,17 +166,18 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null as zero",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
             "renderer": "flot",
             "seriesOverrides": [],
             "spaceLength": 10,
-            "stack": true,
+            "stack": false,
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "topk(10, rate(mysql_perf_schema_file_events_total{instance=\"$host\"}[$interval])>0) or topk(10, irate(mysql_perf_schema_file_events_total{instance=\"$host\"}[5m])>0)",
+                    "expr": "topk(10, rate(mysql_perf_schema_file_events_total{service_name=\"$service\"}[$interval])>0) or topk(10, irate(mysql_perf_schema_file_events_total{service_name=\"$service\"}[5m])>0)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -195,6 +188,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Performance Schema File IO (Events)",
             "tooltip": {
@@ -213,10 +207,11 @@
             },
             "yaxes": [
                 {
+                    "decimals": 2,
                     "format": "short",
-                    "logBase": 1,
+                    "logBase": 2,
                     "max": null,
-                    "min": 0,
+                    "min": null,
                     "show": true
                 },
                 {
@@ -224,7 +219,7 @@
                     "logBase": 1,
                     "max": null,
                     "min": 0,
-                    "show": true
+                    "show": false
                 }
             ],
             "yaxis": {
@@ -269,6 +264,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null as zero",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -279,7 +275,8 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "topk(10, rate(mysql_perf_schema_file_events_seconds_total{instance=\"$host\"}[$interval])>0) or topk(10, irate(mysql_perf_schema_file_events_seconds_total{instance=\"$host\"}[5m])>0)",
+                    "expr": "topk(10, rate(mysql_perf_schema_file_events_seconds_total{service_name=\"$service\"}[$interval])>0) or topk(10, irate(mysql_perf_schema_file_events_seconds_total{service_name=\"$service\"}[5m])>0)",
+                    "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "{{event_name}} {{mode}}",
@@ -289,6 +286,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Performance Schema File IO (Load)",
             "tooltip": {
@@ -307,10 +305,11 @@
             },
             "yaxes": [
                 {
+                    "decimals": null,
                     "format": "short",
                     "logBase": 1,
                     "max": null,
-                    "min": 0,
+                    "min": null,
                     "show": true
                 },
                 {
@@ -318,7 +317,7 @@
                     "logBase": 1,
                     "max": null,
                     "min": 0,
-                    "show": true
+                    "show": false
                 }
             ],
             "yaxis": {
@@ -363,17 +362,19 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null as zero",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
             "renderer": "flot",
             "seriesOverrides": [],
             "spaceLength": 10,
-            "stack": true,
+            "stack": false,
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "topk(10, rate(mysql_perf_schema_file_events_bytes_total{instance=\"$host\"}[$interval])>0) or topk(10, irate(mysql_perf_schema_file_events_bytes_total{instance=\"$host\"}[5m])>0)",
+                    "expr": "topk(10, rate(mysql_perf_schema_file_events_bytes_total{service_name=\"$service\"}[$interval])>0) or \ntopk(10, irate(mysql_perf_schema_file_events_bytes_total{service_name=\"$service\"}[5m])>0)",
+                    "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "{{event_name}} {{mode}}",
@@ -383,6 +384,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Performance Schema File IO (Bytes)",
             "tooltip": {
@@ -402,7 +404,7 @@
             "yaxes": [
                 {
                     "format": "Bps",
-                    "logBase": 1,
+                    "logBase": 2,
                     "max": null,
                     "min": 0,
                     "show": true
@@ -457,6 +459,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null as zero",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -467,7 +470,8 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "topk(5, rate(mysql_perf_schema_events_waits_total{instance=\"$host\"}[$interval])>0) or topk(5, irate(mysql_perf_schema_events_waits_total{instance=\"$host\"}[5m])>0)",
+                    "expr": "topk(5, rate(mysql_perf_schema_events_waits_total{service_name=\"$service\"}[$interval])>0) or topk(5, irate(mysql_perf_schema_events_waits_total{service_name=\"$service\"}[5m])>0)",
+                    "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "{{event_name}} ",
@@ -477,6 +481,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Performance Schema Waits (Events)",
             "tooltip": {
@@ -551,6 +556,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null as zero",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -561,7 +567,8 @@
             "steppedLine": true,
             "targets": [
                 {
-                    "expr": "topk(5, rate(mysql_perf_schema_events_waits_seconds_total{instance=\"$host\",event_name!='idle',event_name!='wait/io/table/sql/handler'}[$interval])>0) or topk(5, irate(mysql_perf_schema_events_waits_seconds_total{instance=\"$host\",event_name!='idle',event_name!='wait/io/table/sql/handler'}[5m])>0)",
+                    "expr": "topk(5, rate(mysql_perf_schema_events_waits_seconds_total{service_name=\"$service\",event_name!='idle',event_name!='wait/io/table/sql/handler'}[$interval])>0) or topk(5, irate(mysql_perf_schema_events_waits_seconds_total{service_name=\"$service\",event_name!='idle',event_name!='wait/io/table/sql/handler'}[5m])>0)",
+                    "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -572,6 +579,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Performance Schema Waits (Load)",
             "tooltip": {
@@ -591,9 +599,9 @@
             "yaxes": [
                 {
                     "format": "short",
-                    "logBase": 1,
+                    "logBase": 2,
                     "max": null,
-                    "min": 0,
+                    "min": null,
                     "show": true
                 },
                 {
@@ -601,7 +609,7 @@
                     "logBase": 1,
                     "max": null,
                     "min": 0,
-                    "show": true
+                    "show": false
                 }
             ],
             "yaxis": {
@@ -646,6 +654,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null as zero",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -656,7 +665,7 @@
             "steppedLine": true,
             "targets": [
                 {
-                    "expr": "topk(5, rate(mysql_perf_schema_index_io_waits_seconds_total{instance=\"$host\"}[$interval])>0) or topk(5, irate(mysql_perf_schema_index_io_waits_seconds_total{instance=\"$host\"}[5m])>0)",
+                    "expr": "topk(5, rate(mysql_perf_schema_index_io_waits_seconds_total{service_name=\"$service\"}[$interval])>0) or topk(5, irate(mysql_perf_schema_index_io_waits_seconds_total{service_name=\"$service\"}[5m])>0)",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -667,6 +676,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Index Access Operations (Load)",
             "tooltip": {
@@ -741,6 +751,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null as zero",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -751,7 +762,7 @@
             "steppedLine": true,
             "targets": [
                 {
-                    "expr": "topk(5, rate(mysql_perf_schema_table_io_waits_seconds_total{instance=\"$host\"}[$interval])>0) or topk(5, irate(mysql_perf_schema_table_io_waits_seconds_total{instance=\"$host\"}[5m])>0)",
+                    "expr": "topk(5, rate(mysql_perf_schema_table_io_waits_seconds_total{service_name=\"$service\"}[$interval])>0) or topk(5, irate(mysql_perf_schema_table_io_waits_seconds_total{service_name=\"$service\"}[5m])>0)",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -763,6 +774,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Table Access Operations (Load)",
             "tooltip": {
@@ -830,6 +842,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null as zero",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -840,7 +853,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "topk(10, rate(mysql_perf_schema_sql_lock_waits_total{instance=\"$host\"}[$interval])) or topk(10, irate(mysql_perf_schema_sql_lock_waits_total{instance=\"$host\"}[5m]))",
+                    "expr": "topk(10, rate(mysql_perf_schema_sql_lock_waits_total{service_name=\"$service\"}[$interval])) or topk(10, irate(mysql_perf_schema_sql_lock_waits_total{service_name=\"$service\"}[5m]))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -849,7 +862,7 @@
                     "refId": "A"
                 },
                 {
-                    "expr": "topk(10, rate(mysql_perf_schema_external_lock_waits_total{instance=\"$host\"}[$interval])>0) or topk(10, irate(mysql_perf_schema_external_lock_waits_total{instance=\"$host\"}[5m])>0)",
+                    "expr": "topk(10, rate(mysql_perf_schema_external_lock_waits_total{service_name=\"$service\"}[$interval])>0) or topk(10, irate(mysql_perf_schema_external_lock_waits_total{service_name=\"$service\"}[5m])>0)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -859,6 +872,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Performance Schema SQL & External Locks (Events)",
             "tooltip": {
@@ -927,6 +941,7 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null as zero",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -937,7 +952,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "topk(10, rate(mysql_perf_schema_external_lock_waits_seconds_total{instance=\"$host\"}[$interval])>0) or topk(10, irate(mysql_perf_schema_external_lock_waits_seconds_total{instance=\"$host\"}[5m])>0)",
+                    "expr": "topk(10, rate(mysql_perf_schema_external_lock_waits_seconds_total{service_name=\"$service\"}[$interval])>0) or topk(10, irate(mysql_perf_schema_external_lock_waits_seconds_total{service_name=\"$service\"}[5m])>0)",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -946,7 +961,7 @@
                     "refId": "A"
                 },
                 {
-                    "expr": "topk(10, rate(mysql_perf_schema_sql_lock_waits_seconds_total{instance=\"$host\"}[$interval])>0) or topk(10, irate(mysql_perf_schema_sql_lock_waits_seconds_total{instance=\"$host\"}[5m])>0)",
+                    "expr": "topk(10, rate(mysql_perf_schema_sql_lock_waits_seconds_total{service_name=\"$service\"}[$interval])>0) or topk(10, irate(mysql_perf_schema_sql_lock_waits_seconds_total{service_name=\"$service\"}[5m])>0)",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -957,6 +972,7 @@
             ],
             "thresholds": [],
             "timeFrom": null,
+            "timeRegions": [],
             "timeShift": null,
             "title": "Performance Schema SQL and External Locks (Seconds)",
             "tooltip": {
@@ -997,7 +1013,7 @@
         }
     ],
     "refresh": "1m",
-    "schemaVersion": 16,
+    "schemaVersion": 18,
     "style": "dark",
     "tags": [
         "MySQL",
@@ -1010,10 +1026,7 @@
                 "auto": true,
                 "auto_count": 200,
                 "auto_min": "1s",
-                "current": {
-                    "text": "auto",
-                    "value": "$__auto_interval_interval"
-                },
+                "current": {},
                 "datasource": "Prometheus",
                 "hide": 0,
                 "includeAll": false,
@@ -1065,6 +1078,7 @@
                 ],
                 "query": "1s,5s,1m,5m,1h,6h,1d",
                 "refresh": 2,
+                "skipUrlSync": false,
                 "type": "interval"
             },
             {
@@ -1072,6 +1086,7 @@
                 "allValue": null,
                 "current": {},
                 "datasource": "Prometheus",
+                "definition": "label_values(mysql_global_variables_performance_schema, node_name)",
                 "hide": 0,
                 "includeAll": false,
                 "label": "Host",
@@ -1079,14 +1094,37 @@
                 "multiFormat": "regex values",
                 "name": "host",
                 "options": [],
-                "query": "label_values(mysql_global_variables_performance_schema, instance)",
+                "query": "label_values(mysql_global_variables_performance_schema, node_name)",
                 "refresh": 1,
                 "refresh_on_load": false,
                 "regex": "",
+                "skipUrlSync": false,
                 "sort": 1,
                 "tagValuesQuery": null,
                 "tags": [],
                 "tagsQuery": null,
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allValue": null,
+                "current": {},
+                "datasource": "Prometheus",
+                "definition": "label_values(mysql_global_variables_performance_schema{node_name=~\"$host\"}, service_name)",
+                "hide": 0,
+                "includeAll": false,
+                "label": "Service",
+                "multi": false,
+                "name": "service",
+                "options": [],
+                "query": "label_values(mysql_global_variables_performance_schema{node_name=~\"$host\"}, service_name)",
+                "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
                 "type": "query",
                 "useTags": false
             }
@@ -1131,5 +1169,5 @@
     "timezone": "browser",
     "title": "MySQL Performance Schema",
     "uid": "BLk9wGNmz",
-    "version": 1
+    "version": 3
 }

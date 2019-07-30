@@ -7,9 +7,11 @@ etc."""
 import sys
 import json
 import copy
+import datetime
 
 __version__ = '1.0.0'
 refresh_intervals = ['5s','10s','30s','1m','5m','15m','30m','1h','2h','1d']
+year = str(datetime.date.today())[:4]
 
 def set_title(dashboard):
     """Set Dashboard Title."""
@@ -87,7 +89,7 @@ def add_links(dashboard):
     user_input = raw_input(prompt)
     if user_input:
         if user_input == 'Yes':
-            setOfLinks = ['QAN', 'OS', 'MySQL', 'MongoDB', 'PostgreSQL', 'HA', 'Cloud', 'Insight', 'PMM']
+            setOfLinks = ['QAN', 'OS', 'MySQL', 'MongoDB', 'PostgreSQL', 'HA', 'Insight', 'PMM']
             for link in copy.deepcopy(dashboard['links']):
                 dashboard['links'].remove(link)
 
@@ -95,13 +97,13 @@ def add_links(dashboard):
                 if tag == 'QAN':
                     add_item = {
                         'icon': 'dashboard',
-                        'includeVars': True if tag in dashboard['tags'] else False,
+                        'includeVars': True,
                         'keepTime': True,
                         'tags': [ tag ],
                         'targetBlank': False,
                         'title': 'Query Analytics',
                         'type': 'link',
-                        'url': '/graph/dashboard/db/_pmm-query-analytics'
+                        'url': '/graph/d/7w6Q3PJmz/pmm-query-analytics'
                     }
                 else:
                     add_item = {
@@ -168,6 +170,17 @@ def drop_some_internal_elements(dashboard):
             del dashboard['__inputs']
         if '__requires' in element:
             del dashboard['__requires']
+        for index, listelement in enumerate(dashboard['templating']['list']):
+            if 'current' in listelement:
+                dashboard['templating']['list'][index]['current'] = {}
+        if 'panels' in element:
+            for panel_index, panel in enumerate(dashboard['panels']):
+                if 'scopedVars' in panel:
+                    del dashboard['panels'][panel_index]['scopedVars']
+                if 'panels' in panel:
+                    for panelIn_index, panelIn in enumerate(dashboard['panels'][panel_index]['panels']):
+                        if 'scopedVars' in panelIn:
+                            del dashboard['panels'][panel_index]['panels'][panelIn_index]['scopedVars']
 
     return dashboard
 
@@ -184,14 +197,15 @@ def fix_datasource(dashboard):
                     if panel['datasource'] == '${DS_QAN-API}':
                         dashboard['panels'][panel_index]['datasource'] = 'QAN-API'
                 if 'panels' in panel:
-                        for panelIn_index, panelIn in enumerate(dashboard['panels'][panel_index]['panels']):
-                            if (len(dashboard['panels'][panel_index]['panels']) > 0):
-                                if dashboard['panels'][panel_index]['panels'][panelIn_index]['datasource'] == '${DS_PROMETHEUS}':
-                                    dashboard['panels'][panel_index]['panels'][panelIn_index]['datasource'] = 'Prometheus'
-                                if dashboard['panels'][panel_index]['panels'][panelIn_index]['datasource'] == '${DS_CLOUDWATCH}':
-                                    dashboard['panels'][panel_index]['panels'][panelIn_index]['datasource'] = 'CloudWatch'
-                                if dashboard['panels'][panel_index]['panels'][panelIn_index]['datasource'] == '${DS_QAN-API}':
-                                    dashboard['panels'][panel_index]['panels'][panelIn_index]['datasource'] = 'QAN-API'
+                        if (len(dashboard['panels'][panel_index]['panels']) > 0):
+                            for panelIn_index, panelIn in enumerate(dashboard['panels'][panel_index]['panels']):
+                                if 'datasource' in panelIn:
+                                    if dashboard['panels'][panel_index]['panels'][panelIn_index]['datasource'] == '${DS_PROMETHEUS}':
+                                        dashboard['panels'][panel_index]['panels'][panelIn_index]['datasource'] = 'Prometheus'
+                                    if dashboard['panels'][panel_index]['panels'][panelIn_index]['datasource'] == '${DS_CLOUDWATCH}':
+                                        dashboard['panels'][panel_index]['panels'][panelIn_index]['datasource'] = 'CloudWatch'
+                                    if dashboard['panels'][panel_index]['panels'][panelIn_index]['datasource'] == '${DS_QAN-API}':
+                                        dashboard['panels'][panel_index]['panels'][panelIn_index]['datasource'] = 'QAN-API'
                 if 'mappingTypes' in panel:
                         for mappingTypes_index, mappingTypes in enumerate(dashboard['panels'][panel_index]['mappingTypes']):
                             if 'datasource' in mappingTypes:
@@ -302,7 +316,7 @@ def add_copyrights_links(dashboard):
             }
             dashboard['panels'].append(add_item)
             add_item = {
-                'content': "<center>\n  <p>MySQL and InnoDB are trademarks of Oracle Corp. Proudly running Percona Server. Copyright (c) 2006-2018 Percona LLC.</p>\n  <div style='text-align:center;'>\n    <a href='https://percona.com/terms-use' style='display: inline;'>Terms of Use</a> | \n    <a href='https://percona.com/privacy-policy' style='display: inline;'>Privacy</a> | \n    <a href='https://percona.com/copyright-policy' style='display: inline;'>Copyright</a> | \n    <a href='https://percona.com/legal' style='display: inline;'>Legal</a>\n  </div>\n</center>\n<hr>\n<link rel='stylesheet' type='text/css' href='//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css' />\n<script src='//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js'></script>\n<script>\nfunction bbb(){\n  \n  setTimeout(function (){ \n  window.cookieconsent.initialise({\n    'palette': {\n      'popup': {\n        'background': '#eb6c44',\n        'text': '#ffffff'\n      },\n      'button': {\n        'background': '#f5d948'\n      }\n    },\n    'theme': 'classic',\n    'content': {\n      'message': 'This site uses cookies and other tracking technologies to assist with navigation, analyze your use of our products and services, assist with promotional and marketing efforts, allow you to give feedback, and provide content from third parties. If you do not want to accept cookies, adjust your browser settings to deny cookies or exit this site.',\n      'dismiss': 'Allow cookies',\n      'link': 'Cookie Policy',\n      'href': 'https://www.percona.com/cookie-policy'\n    }\n  })},3000)};\n  \n  \n  window.addEventListener('load',bbb());\n\n\n\n</script>",
+                'content': "<center>\n  <p>MySQL and InnoDB are trademarks of Oracle Corp. Proudly running Percona Server. Copyright (c) 2006-"+year+" Percona LLC.</p>\n  <div style='text-align:center;'>\n    <a href='https://percona.com/terms-use' style='display: inline;'>Terms of Use</a> | \n    <a href='https://percona.com/privacy-policy' style='display: inline;'>Privacy</a> | \n    <a href='https://percona.com/copyright-policy' style='display: inline;'>Copyright</a> | \n    <a href='https://percona.com/legal' style='display: inline;'>Legal</a>\n  </div>\n</center>\n<hr>\n<link rel='stylesheet' type='text/css' href='//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css' />\n<script src='//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js'></script>\n<script>\nfunction bbb(){\n  \n  setTimeout(function (){ \n  window.cookieconsent.initialise({\n    'palette': {\n      'popup': {\n        'background': '#eb6c44',\n        'text': '#ffffff'\n      },\n      'button': {\n        'background': '#f5d948'\n      }\n    },\n    'theme': 'classic',\n    'content': {\n      'message': 'This site uses cookies and other tracking technologies to assist with navigation, analyze your use of our products and services, assist with promotional and marketing efforts, allow you to give feedback, and provide content from third parties. If you do not want to accept cookies, adjust your browser settings to deny cookies or exit this site.',\n      'dismiss': 'Allow cookies',\n      'link': 'Cookie Policy',\n      'href': 'https://www.percona.com/cookie-policy'\n    }\n  })},3000)};\n  \n  \n  window.addEventListener('load',bbb());\n\n\n\n</script>",
                 'gridPos': {
                   'h': 3,
                   'w': 24,
@@ -328,7 +342,7 @@ def main():
 
     # registered cleanupers.
     CLEANUPERS = [set_title, set_hide_timepicker, drop_some_internal_elements, set_time, set_timezone, set_default_refresh_intervals, set_refresh,
-                  fix_datasource, add_annotation, add_links, add_copyrights_links, set_shared_crosshear, set_unique_ids]
+                  fix_datasource, add_annotation, add_links, add_copyrights_links, set_shared_crosshear, set_unique_ids, set_dashboard_id_to_null]
 
     for func in CLEANUPERS:
         dashboard = func(dashboard)
