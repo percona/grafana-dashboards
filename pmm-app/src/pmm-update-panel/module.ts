@@ -151,14 +151,6 @@ export class PanelCtrl extends MetricsPanelCtrl {
             method: 'POST',
             url: PanelCtrl.API.CHECK_FOR_UPDATE,
         }).then((res) => {
-            res.data = {
-                latest_news_url: "https://www.google.com/",
-                latest_timestamp: "2019-07-31T08:30:22.011Z",
-                latest_version: "string",
-                update_available: true,
-                version: "string"
-            };
-
             $scope.isLoaderShown = false;
             $scope.isChecked = true;
             $scope.nextVersion = res.data.latest_version || '';
@@ -168,11 +160,12 @@ export class PanelCtrl extends MetricsPanelCtrl {
             $scope.isUpToDate = !$scope.isUpdateAvailable && $scope.isChecked;
             this.getCurrentTime($scope);
             localStorage.setItem('isUpdateAvailable', $scope.isUpdateAvailable);
+            refreshButton.removeClass('fa-spin');
         }).catch(() => {
             this.displayError($scope, PanelCtrl.ERRORS.NOTHING_TO_UPDATE);
             this.getCurrentTime($scope);
+            refreshButton.removeClass('fa-spin');
         });
-        refreshButton.removeClass('fa-spin');
     }
 
     /**
