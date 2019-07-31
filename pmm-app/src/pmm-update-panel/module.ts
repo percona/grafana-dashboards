@@ -155,7 +155,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
             $scope.isChecked = true;
             $scope.nextVersion = res.data.latest_version || '';
             $scope.newReleaseDate = moment(Number( res.data.latest_timestamp)).locale('en').format('MMMM DD, H:mm') || '';
-            $scope.isUpdateAvailable = res.data.update_available || '';
+            $scope.isUpdateAvailable = res.data.update_available || false;
             $scope.newsLink = res.data.latest_news_url || '';
             $scope.isUpToDate = !$scope.isUpdateAvailable && $scope.isChecked;
             this.getCurrentTime($scope);
