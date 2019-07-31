@@ -20,8 +20,8 @@ export class PanelCtrl extends MetricsPanelCtrl {
      * Urls to define API endpoints
      */
     static API = {
-        GET_CURRENT_VERSION: '/configurator/v2/version',
-        CHECK_FOR_UPDATE: '/configurator/v2/check-update',
+        GET_CURRENT_VERSION: '/v1/version',
+        CHECK_FOR_UPDATE: '/v1/Updates/Check',
         UPDATE: '/configurator/v1/updates'
     };
 
@@ -53,21 +53,16 @@ export class PanelCtrl extends MetricsPanelCtrl {
 
         // Re-init all scope params
         this.reset($scope);
+        const lastCheck = localStorage.getItem('lastCheck');
 
         $scope.logLocation = '';
         $scope.version = '';
         $scope.errorMessage = '';
         $scope.isUpToDate = false;
         $scope.canBeReloaded = false;
-        $scope.lastCheckDate = localStorage.getItem('lastCheck') ? moment(Number(localStorage.getItem('lastCheck'))).locale('en').format('MMMM DD, H:mm') : '';
-        $scope.currentVersion = localStorage.getItem('currentVersion') || '';
-        $scope.currentReleaseDate = localStorage.getItem('currentReleaseDate') || '';
-        $scope.shouldBeUpdated = localStorage.getItem('shouldBeUpdated') || '';
-        $scope.nextVersion = localStorage.getItem('nextVersion') || '';
-        $scope.newReleaseDate = localStorage.getItem('newReleaseDate') || '';
-        $scope.disableUpdate = localStorage.getItem('disableUpdate') || '';
-        $scope.linkVersion = localStorage.getItem('linkVersion') || '';
-        $scope.isNoWebUpdate = localStorage.getItem('isNoWebUpdate') || '';
+        $scope.lastCheckDate = lastCheck ? moment(Number(lastCheck)).locale('en').format('MMMM DD, H:mm') : '';
+        $scope.isUpdateAvailable = false;
+        $scope.newsLink = '';
 
         $scope.checkForUpdate = this.checkForUpdate.bind(this, $scope, $http);
         $scope.update = this.update.bind(this, $scope, $http);
@@ -106,7 +101,6 @@ export class PanelCtrl extends MetricsPanelCtrl {
             modalScope.version = newState.version;
             modalScope.currentReleaseDate = newState.currentReleaseDate;
             modalScope.newReleaseDate = newState.newReleaseDate;
-            modalScope.disableUpdate = newState.disableUpdate;
             modalScope.canBeReloaded = newState.canBeReloaded;
         });
         modalScope.reloadAfterUpdate = () => {
@@ -149,53 +143,28 @@ export class PanelCtrl extends MetricsPanelCtrl {
      * Send request to check if update possible and re-init params
      */
     private checkForUpdate($scope, $http): void {
-        const linkRegExp = new RegExp('^\\d{1,}\\.\\d{1,2}\\.\\d{1,4}');
         const refreshButton = $('#refresh');
         $scope.isLoaderShown = true;
         refreshButton.addClass('fa-spin');
 
         $http({
-            method: 'GET',
+            method: 'POST',
             url: PanelCtrl.API.CHECK_FOR_UPDATE,
         }).then((res) => {
             $scope.isLoaderShown = false;
             $scope.isChecked = true;
-            $scope.nextVersion = res.data.version || '';
-            $scope.newReleaseDate = res.data.release_date || '';
-            $scope.disableUpdate = res.data.disable_update || '';
-            const cropLinkVersion = $scope.nextVersion.match(linkRegExp);
-
-            const [currentMajor, currentMinor, currentBugfix] = $scope.currentVersion.split('.');
-            const [nextMajor, nextMinor, nextBugfix] = $scope.nextVersion.split('.');
-
-            const isMajor = +nextMajor > +currentMajor;
-            const isMinor = (+nextMinor > +currentMinor) && (+nextMajor === +currentMajor);
-            const isBugfix = (+nextBugfix > +currentBugfix && (+nextMajor === +currentMajor)) && (+nextMinor === +currentMinor);
-
-            if (isMajor) {
-                $scope.isNoWebUpdate = true;
-            } else if (isMinor || isBugfix) {
-                $scope.isNoWebUpdate = '';
-                $scope.shouldBeUpdated = true;
-            } else {
-                $scope.isNoWebUpdate = '';
-                $scope.shouldBeUpdated = '';
-                $scope.isUpToDate = true;
-            }
+            $scope.nextVersion = res.data.latest_version || '';
+            $scope.newReleaseDate = moment(Number( res.data.latest_timestamp)).locale('en').format('MMMM DD, H:mm') || '';
+            $scope.isUpdateAvailable = res.data.update_available || false;
+            $scope.newsLink = res.data.latest_news_url || '';
+            $scope.isUpToDate = !$scope.isUpdateAvailable && $scope.isChecked;
             this.getCurrentTime($scope);
-            if (cropLinkVersion) {
-                $scope.linkVersion = cropLinkVersion[0];
-            } else {
-                this.displayError($scope, PanelCtrl.ERRORS.INCORRECT_SERVER_RESPONSE);
-            }
-            this.setNextVersionData($scope);
+            refreshButton.removeClass('fa-spin');
         }).catch(() => {
             this.displayError($scope, PanelCtrl.ERRORS.NOTHING_TO_UPDATE);
             this.getCurrentTime($scope);
-            this.setNextVersionData();
-            $scope.isUpToDate = true;
+            refreshButton.removeClass('fa-spin');
         });
-        refreshButton.removeClass('fa-spin');
     }
 
     /**
@@ -215,12 +184,9 @@ export class PanelCtrl extends MetricsPanelCtrl {
             method: 'GET',
             url: PanelCtrl.API.GET_CURRENT_VERSION,
         }).then((res) => {
-            $scope.version = res.data.version;
-            $scope.currentReleaseDate = res.data.release_date || '';
-            localStorage.setItem('currentVersion', $scope.version);
-            localStorage.setItem('currentReleaseDate', $scope.currentReleaseDate);
-            $scope.currentVersion = localStorage.getItem('currentVersion');
-            $scope.currentReleaseDate = localStorage.getItem('currentReleaseDate');
+            const data = res.data.managed;
+            $scope.version = data.version || '';
+            $scope.currentReleaseDate = data.timestamp ? moment(data.timestamp).locale('en').format('MMMM DD, H:mm') : '';
             $('#refresh').removeClass('fa-spin');
         }).catch(() => {
             $('#refresh').removeClass('fa-spin');
@@ -244,23 +210,20 @@ export class PanelCtrl extends MetricsPanelCtrl {
             if (response.data.title === PanelCtrl.PROCESS_STATUSES.DONE) {
                 this.reset($scope);
                 $scope.version = $scope.errorMessage ? $scope.version : $scope.nextVersion;
-                $scope.currentReleaseDate = $scope.errorMessage ? $scope.currentReleaseDate : $scope.nextReleaseDate;
-                localStorage.setItem('currentVersion', $scope.version);
-                $scope.currentVersion = localStorage.getItem('currentVersion');
+                $scope.currentReleaseDate = $scope.errorMessage ? $scope.currentReleaseDate : $scope.newReleaseDate;
                 $scope.isUpdated = true;
                 $scope.canBeReloaded = true;
-                this.setNextVersionData();
+                // this.setNextVersionData();
             }
             if (response.data.title === PanelCtrl.PROCESS_STATUSES.FAILED) {
                 $scope.isLoaderShown = false;
                 $scope.isChecked = true;
-                $scope.shouldBeUpdated = true;
+                $scope.isUpdateAvailable = true;
                 $scope.canBeReloaded = true;
                 $scope.errorMessage = PanelCtrl.ERRORS.UPDATE;
             }
         }).catch(() => {
             this.reset($scope);
-            this.setNextVersionData();
         });
     }
 
@@ -269,15 +232,6 @@ export class PanelCtrl extends MetricsPanelCtrl {
      */
     private showReleaseNotes($scope) {
         // TODO: will be implemented after API release
-    }
-
-    private setNextVersionData($scope: any = false) {
-        localStorage.setItem('shouldBeUpdated', !$scope ? '' : $scope.shouldBeUpdated);
-        localStorage.setItem('nextVersion', !$scope ? '' : $scope.nextVersion);
-        localStorage.setItem('newReleaseDate', !$scope ? '' : $scope.newReleaseDate);
-        localStorage.setItem('linkVersion', !$scope ? '' : $scope.linkVersion);
-        localStorage.setItem('isNoWebUpdate', !$scope ? '' : $scope.isNoWebUpdate);
-        localStorage.setItem('disableUpdate', !$scope ? '' : $scope.disableUpdate);
     }
 
     /**
