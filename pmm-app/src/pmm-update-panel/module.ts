@@ -61,7 +61,6 @@ export class PanelCtrl extends MetricsPanelCtrl {
         $scope.isUpToDate = false;
         $scope.canBeReloaded = false;
         $scope.lastCheckDate = lastCheck ? moment(Number(lastCheck)).locale('en').format('MMMM DD, H:mm') : '';
-        // $scope.isUpdateAvailable = localStorage.getItem('isUpdateAvailable') || '';
         $scope.isUpdateAvailable = false;
         $scope.newsLink = '';
 
@@ -160,7 +159,6 @@ export class PanelCtrl extends MetricsPanelCtrl {
             $scope.newsLink = res.data.latest_news_url || '';
             $scope.isUpToDate = !$scope.isUpdateAvailable && $scope.isChecked;
             this.getCurrentTime($scope);
-            // localStorage.setItem('isUpdateAvailable', $scope.isUpdateAvailable);
             refreshButton.removeClass('fa-spin');
         }).catch(() => {
             this.displayError($scope, PanelCtrl.ERRORS.NOTHING_TO_UPDATE);
@@ -226,7 +224,6 @@ export class PanelCtrl extends MetricsPanelCtrl {
             }
         }).catch(() => {
             this.reset($scope);
-            // this.setNextVersionData();
         });
     }
 
@@ -235,10 +232,6 @@ export class PanelCtrl extends MetricsPanelCtrl {
      */
     private showReleaseNotes($scope) {
         // TODO: will be implemented after API release
-    }
-
-    private setNextVersionData($scope: any = false) {
-        // localStorage.setItem('isUpdateAvailable', !$scope ? '' : $scope.isUpdateAvailable);
     }
 
     /**
