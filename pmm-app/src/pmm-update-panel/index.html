@@ -87,19 +87,19 @@
     <header>
         <h2 class="update-title">Updates</h2>
         <p class="current-version">Current version:
-            <span>{{currentVersion}} <em>{{currentReleaseDate}}</em></span>
-            <span ng-if="!currentVersion">{{version}}</span>
+            <span>{{version}} <em>{{currentReleaseDate}}</em></span>
+<!--            <span ng-if="!currentVersion">{{version}}</span>-->
         </p>
     </header>
-    <section class="available-version" ng-if="shouldBeUpdated || isNoWebUpdate">
+    <section class="available-version" ng-if="isUpdateAvailable">
         <p>Available version:&nbsp;</p>
         <div class="version-wrapper">
             <p>{{nextVersion}} <em>{{newReleaseDate}}</em></p>
-            <a href="https://www.percona.com/doc/percona-monitoring-and-management/release-notes/{{linkVersion}}.html"
+            <a href="{{newsLink}}"
                class="text-primary pmm-link" target="_blank">What's new?</a>
         </div>
     </section>
-    <section class="state" ng-if="!shouldBeUpdated && !isNoWebUpdate">
+    <section class="state" ng-if="!isUpdateAvailable">
         <div class="state-inner" ng-if="!isUpToDate">
             <p class="text-center">No updates are available</p>
             <p class="text-center">PMM checks for updates once a day</p>
@@ -107,19 +107,14 @@
         <p class="text-center" ng-if="isUpToDate">You are up to date</p>
     </section>
     <button class="btn btn-secondary btn-block update-button"
-            ng-if="shouldBeUpdated && !isNoWebUpdate"
+            ng-if="isUpdateAvailable"
             ng-click="update()"
             ng-disabled="disableUpdate">
-        <span ng-if="shouldBeUpdated && !disableUpdate">
+        <span>
             <i class="fa fa-download"></i>
             Update to {{nextVersion}}
         </span>
-        <span ng-if="disableUpdate">Updates are disabled</span>
     </button>
-    <span ng-if="isNoWebUpdate" class="no-update-text">
-        Your version of PMM cannot be upgraded to latest release.
-        <a href="http://percona.com/doc/percona-monitoring-and-management/upgrading-to-pmm2.html" class="text-primary pmm-link" target="_blank">Please see Upgrading to PMM2 for instructions.</a>
-    </span>
     <footer>
         <p>Last check: {{lastCheckDate}}</p>
         <button ng-click="checkForUpdate()" class="check-update-button"><i class="fa fa-spin fa-refresh" id="refresh"></i></button>

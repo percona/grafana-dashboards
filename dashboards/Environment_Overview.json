@@ -36,7 +36,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1561648834569,
+    "iteration": 1564498593903,
     "links": [
         {
             "icon": "dashboard",
@@ -579,6 +579,7 @@
                 "rgba(237, 129, 40, 0.89)",
                 "#299c46"
             ],
+            "decimals": 2,
             "description": "",
             "format": "bytes",
             "gauge": {
@@ -663,6 +664,7 @@
                 "rgba(237, 129, 40, 0.89)",
                 "#299c46"
             ],
+            "decimals": 2,
             "description": "",
             "format": "bytes",
             "gauge": {
@@ -747,6 +749,7 @@
                 "rgba(237, 129, 40, 0.89)",
                 "#299c46"
             ],
+            "decimals": 2,
             "description": "",
             "format": "bytes",
             "gauge": {
@@ -1246,7 +1249,7 @@
                             "enabled": true,
                             "label": "OVERRIDE 2",
                             "metricName": "/MongoDB - .*/",
-                            "operatorName": "avg",
+                            "operatorName": "current",
                             "prefix": "MongoDB -",
                             "sanitizeURLEnabled": true,
                             "scaledDecimals": null,
@@ -1272,7 +1275,7 @@
                             "enabled": true,
                             "label": "OVERRIDE 3",
                             "metricName": "/PostgreSQL - .*/",
-                            "operatorName": "avg",
+                            "operatorName": "current",
                             "prefix": "PostgreSQL -",
                             "sanitizeURLEnabled": true,
                             "scaledDecimals": null,
@@ -1343,6 +1346,7 @@
                 "rgba(237, 129, 40, 0.89)",
                 "#d44a3a"
             ],
+            "decimals": 2,
             "format": "percent",
             "gauge": {
                 "maxValue": 100,
@@ -1511,6 +1515,7 @@
                 "rgba(237, 129, 40, 0.89)",
                 "#d44a3a"
             ],
+            "decimals": 2,
             "format": "percent",
             "gauge": {
                 "maxValue": 100,
@@ -4121,7 +4126,7 @@
                     "type": "grafana-polystat-panel"
                 }
             ],
-            "title": "CPU details",
+            "title": "CPU Details",
             "type": "row"
         },
         {
@@ -4146,6 +4151,7 @@
                 "rgba(237, 129, 40, 0.89)",
                 "#299c46"
             ],
+            "decimals": 2,
             "format": "percent",
             "gauge": {
                 "maxValue": 100,
@@ -4315,6 +4321,7 @@
                 "rgba(237, 129, 40, 0.89)",
                 "#299c46"
             ],
+            "decimals": 2,
             "format": "bytes",
             "gauge": {
                 "maxValue": 100,
@@ -4399,6 +4406,7 @@
                 "rgba(237, 129, 40, 0.89)",
                 "#299c46"
             ],
+            "decimals": 2,
             "format": "percent",
             "gauge": {
                 "maxValue": 100,
@@ -4483,7 +4491,8 @@
                 "rgba(237, 129, 40, 0.89)",
                 "#299c46"
             ],
-            "format": "bytes",
+            "decimals": 2,
+            "format": "Bps",
             "gauge": {
                 "maxValue": 100,
                 "minValue": 0,
@@ -4567,6 +4576,7 @@
                 "rgba(237, 129, 40, 0.89)",
                 "#299c46"
             ],
+            "decimals": 2,
             "format": "bytes",
             "gauge": {
                 "maxValue": 100,
@@ -6002,7 +6012,7 @@
                     }
                 }
             ],
-            "title": "Memory & Swap details",
+            "title": "Memory & Swap Details",
             "type": "row"
         },
         {
@@ -6027,6 +6037,7 @@
                 "rgba(237, 129, 40, 0.89)",
                 "#299c46"
             ],
+            "decimals": 2,
             "description": "",
             "format": "percent",
             "gauge": {
@@ -6510,7 +6521,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "max((rate(node_vmstat_pgpgin{node_name=~\"$host\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=~\"$host\"}[5m]) * 1024 ) + (rate(node_vmstat_pgpgout{node_name=~\"$host\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=~\"$host\"}[5m]) * 1024))",
+                    "expr": "max((rate(node_vmstat_pgpgin{node_name=~\"$host\"}[$interval]) * 1024 or \nirate(node_vmstat_pgpgin{node_name=~\"$host\"}[5m]) * 1024 ) + (rate(node_vmstat_pgpgout{node_name=~\"$host\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=~\"$host\"}[5m]) * 1024))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -7943,7 +7954,7 @@
                     "type": "grafana-polystat-panel"
                 }
             ],
-            "title": "Disk details",
+            "title": "Disk Details",
             "type": "row"
         },
         {
@@ -8140,8 +8151,9 @@
                 "rgba(237, 129, 40, 0.89)",
                 "#d44a3a"
             ],
+            "decimals": 2,
             "description": "",
-            "format": "short",
+            "format": "ops",
             "gauge": {
                 "maxValue": 100,
                 "minValue": 0,
@@ -8225,8 +8237,9 @@
                 "rgba(237, 129, 40, 0.89)",
                 "#d44a3a"
             ],
+            "decimals": 2,
             "description": "",
-            "format": "short",
+            "format": "ops",
             "gauge": {
                 "maxValue": 100,
                 "minValue": 0,
@@ -8287,8 +8300,10 @@
                     "refId": "A"
                 },
                 {
-                    "expr": "max(sum by (node_name) (increase(node_network_receive_drop_total{node_name=~\"$host\", device!=\"lo\"}[$interval]) + \nincrease(node_network_transmit_drop_total{node_name=~\"$host\", device!=\"lo\"}[$interval])))",
+                    "expr": "max(sum by (node_name) (increase(node_network_receive_drop_total{node_name=~\"$host\", device!=\"lo\"}[$interval]) + \nincrease(node_network_transmit_drop_total{node_name=~\"$host\", device!=\"lo\"}[5m])))",
                     "format": "time_series",
+                    "hide": false,
+                    "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "",
                     "refId": "B"
@@ -8319,7 +8334,7 @@
                 "#d44a3a"
             ],
             "description": "",
-            "format": "short",
+            "format": "ops",
             "gauge": {
                 "maxValue": 100,
                 "minValue": 0,
@@ -8403,6 +8418,7 @@
                 "rgba(237, 129, 40, 0.89)",
                 "#d44a3a"
             ],
+            "decimals": 2,
             "description": "",
             "format": "percent",
             "gauge": {
@@ -9663,7 +9679,7 @@
                     "type": "grafana-polystat-panel"
                 }
             ],
-            "title": "Network details",
+            "title": "Network Details",
             "type": "row"
         }
     ],
@@ -9672,7 +9688,8 @@
     "style": "dark",
     "tags": [
         "OS",
-        "Percona"
+        "Percona",
+        "Services"
     ],
     "templating": {
         "list": [
