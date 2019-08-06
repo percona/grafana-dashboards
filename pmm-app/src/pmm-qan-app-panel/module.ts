@@ -21,6 +21,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
             'filters': '',
             'main_metric': '',
             'columns': '',
+            'order_by': '',
         };
         $scope.trustSrc = (src) => $sce.trustAsResourceUrl(src);
 
@@ -67,7 +68,6 @@ export class PanelCtrl extends MetricsPanelCtrl {
         // init url
         // updated url
         $scope.$watch('qanParams', this.resetUrl.bind(this, $scope), true);
-
         [
             $scope.qanParams.queryID,
             $scope.qanParams.type,
@@ -75,14 +75,15 @@ export class PanelCtrl extends MetricsPanelCtrl {
             $scope.qanParams.filters,
             $scope.qanParams.main_metric,
             $scope.qanParams.columns,
+            $scope.qanParams.order_by,
         ] = this.retrieveDashboardURLParams(location.absUrl());
 
         frame.on('load', () => {
             setTimeout(() => $scope.ctrl.calculatePanelHeight(), 10);
 
             frame.contents().bind('updateUrl', (event) => {
-                let [queryID, type, search, filters, main_metric, columns] = this.retrieveIFrameURLParams(event.currentTarget.URL);
-                this.reloadQuery(window, queryID, type, search, filters, main_metric, columns);
+                let [queryID, type, search, filters, main_metric, columns, order_by] = this.retrieveIFrameURLParams(event.currentTarget.URL);
+                this.reloadQuery(window, queryID, type, search, filters, main_metric, columns, order_by);
                 setTimeout(() => $scope.ctrl.calculatePanelHeight(), 10);
             });
 
@@ -118,7 +119,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
         [].forEach.call(menu, e => e.setAttribute('style', 'z-index: 1001'));
     }
 
-    private reloadQuery(window, queryID = '', type = '', search = '', filters = '', main_metric = '', columns = '') {
+    private reloadQuery(window, queryID = '', type = '', search = '', filters = '', main_metric = '', columns = '', order_by = '') {
         let url = window.location.href.split('&')[0];
         const urlParams = {
             queryID: queryID ? `&queryID=${queryID}` : '',
@@ -127,6 +128,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
             filters: filters ? `&filters=${filters}` : '',
             main_metric: main_metric ? `&main_metric=${main_metric}` : '',
             columns: columns.length ? `&columns=${columns}` : '',
+            order_by: order_by.length ? `&order_by=${order_by}` : '',
         };
         Object.keys(urlParams).forEach(param => url += urlParams[param]);
         history.pushState({}, null, url);
@@ -139,9 +141,10 @@ export class PanelCtrl extends MetricsPanelCtrl {
         const filters = currentURL.searchParams.get('filters') ? currentURL.searchParams.get('filters') : '';
         const main_metric = currentURL.searchParams.get('main_metric') ? currentURL.searchParams.get('main_metric') : '';
         const columns = currentURL.searchParams.get('columns') ? currentURL.searchParams.get('columns') : '';
+        const order_by = currentURL.searchParams.get('order_by') ? currentURL.searchParams.get('order_by') : '';
         const type = currentURL.searchParams.get('type') ? currentURL.searchParams.get('type') : '';
 
-        return [id, type, search, filters, main_metric, columns];
+        return [id, type, search, filters, main_metric, columns, order_by];
     }
 
     private retrieveIFrameURLParams(url): Array<string> {
@@ -151,10 +154,11 @@ export class PanelCtrl extends MetricsPanelCtrl {
         const filters = currentURL.searchParams.get('filters') ? currentURL.searchParams.get('filters') : '';
         const main_metric = currentURL.searchParams.get('main_metric') ? currentURL.searchParams.get('main_metric') : '';
         const columns = currentURL.searchParams.get('columns') ? currentURL.searchParams.get('columns') : '';
+        const order_by = currentURL.searchParams.get('order_by') ? currentURL.searchParams.get('order_by') : '';
         const urlArr = url.split('/');
         const type = urlArr[urlArr.length - 1].split('?')[0];
 
-        return [id, type, search, filters, main_metric, columns];
+        return [id, type, search, filters, main_metric, columns, order_by];
     }
 
     private encodeData(data: Object): string {
