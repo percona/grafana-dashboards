@@ -19,6 +19,8 @@ export class PanelCtrl extends MetricsPanelCtrl {
             'tz': config.bootData.user.timezone,
             'theme': config.bootData.user.lightTheme ? 'light' : 'dark',
             'filters': '',
+            'main_metric': '',
+            'columns': '',
         };
         $scope.trustSrc = (src) => $sce.trustAsResourceUrl(src);
 
@@ -66,14 +68,21 @@ export class PanelCtrl extends MetricsPanelCtrl {
         // updated url
         $scope.$watch('qanParams', this.resetUrl.bind(this, $scope), true);
 
-        [$scope.qanParams.queryID, $scope.qanParams.type, $scope.qanParams.search, $scope.qanParams.filters] = this.retrieveDashboardURLParams(location.absUrl());
+        [
+            $scope.qanParams.queryID,
+            $scope.qanParams.type,
+            $scope.qanParams.search,
+            $scope.qanParams.filters,
+            $scope.qanParams.main_metric,
+            $scope.qanParams.columns,
+        ] = this.retrieveDashboardURLParams(location.absUrl());
 
         frame.on('load', () => {
             setTimeout(() => $scope.ctrl.calculatePanelHeight(), 10);
 
             frame.contents().bind('updateUrl', (event) => {
-                let [queryID, type, search, filters] = this.retrieveIFrameURLParams(event.currentTarget.URL);
-                this.reloadQuery(window, queryID, type, search, filters);
+                let [queryID, type, search, filters, main_metric, columns] = this.retrieveIFrameURLParams(event.currentTarget.URL);
+                this.reloadQuery(window, queryID, type, search, filters, main_metric, columns);
                 setTimeout(() => $scope.ctrl.calculatePanelHeight(), 10);
             });
 
@@ -109,13 +118,15 @@ export class PanelCtrl extends MetricsPanelCtrl {
         [].forEach.call(menu, e => e.setAttribute('style', 'z-index: 1001'));
     }
 
-    private reloadQuery(window, queryID = '', type = '', search = '', filters = '') {
+    private reloadQuery(window, queryID = '', type = '', search = '', filters = '', main_metric = '', columns = '') {
         let url = window.location.href.split('&')[0];
         const urlParams = {
             queryID: queryID ? `&queryID=${queryID}` : '',
             type: type && queryID ? `&type=${type}` : '',
             search: search ? `&search=${search}` : '',
             filters: filters ? `&filters=${filters}` : '',
+            main_metric: main_metric ? `&main_metric=${main_metric}` : '',
+            columns: columns.length ? `&columns=${columns}` : '',
         };
         Object.keys(urlParams).forEach(param => url += urlParams[param]);
         history.pushState({}, null, url);
@@ -126,9 +137,11 @@ export class PanelCtrl extends MetricsPanelCtrl {
         const id = currentURL.searchParams.get('queryID') ? currentURL.searchParams.get('queryID') : '';
         const search = currentURL.searchParams.get('search') ? currentURL.searchParams.get('search') : '';
         const filters = currentURL.searchParams.get('filters') ? currentURL.searchParams.get('filters') : '';
+        const main_metric = currentURL.searchParams.get('main_metric') ? currentURL.searchParams.get('main_metric') : '';
+        const columns = currentURL.searchParams.get('columns') ? currentURL.searchParams.get('columns') : '';
         const type = currentURL.searchParams.get('type') ? currentURL.searchParams.get('type') : '';
 
-        return [id, type, search, filters];
+        return [id, type, search, filters, main_metric, columns];
     }
 
     private retrieveIFrameURLParams(url): Array<string> {
@@ -136,10 +149,12 @@ export class PanelCtrl extends MetricsPanelCtrl {
         const id = currentURL.searchParams.get('queryID') ? currentURL.searchParams.get('queryID') : '';
         const search = currentURL.searchParams.get('search') ? currentURL.searchParams.get('search') : '';
         const filters = currentURL.searchParams.get('filters') ? currentURL.searchParams.get('filters') : '';
+        const main_metric = currentURL.searchParams.get('main_metric') ? currentURL.searchParams.get('main_metric') : '';
+        const columns = currentURL.searchParams.get('columns') ? currentURL.searchParams.get('columns') : '';
         const urlArr = url.split('/');
         const type = urlArr[urlArr.length - 1].split('?')[0];
 
-        return [id, type, search, filters];
+        return [id, type, search, filters, main_metric, columns];
     }
 
     private encodeData(data: Object): string {
