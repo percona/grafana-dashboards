@@ -36,7 +36,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1563534328600,
+    "iteration": 1565191584091,
     "links": [
         {
             "icon": "dashboard",
@@ -2858,7 +2858,7 @@
                             "step": 60
                         },
                         {
-                            "expr": "sum by (job) (label_replace(\n(sum(avg_over_time(up{service_type!=\"mysql\",instance!=\"pmm-server\"}[$interval])) by (job,node_name) or \nsum(avg_over_time(up{service_type!=\"mysql\",instance!=\"pmm-server\"}[5m])) by (job,node_name)),\n\"job\", \"$1\", \"job\", \"(.*)_agent_(.*)\"))",
+                            "expr": "sum by (job) (label_replace(\n(sum(avg_over_time(up{service_type!=\"mysql\",instance!=\"pmm-server\"}[$interval])) by (job,service_name,node_name) or \nsum(avg_over_time(up{service_type!=\"mysql\",instance!=\"pmm-server\"}[5m])) by (job,service_name,node_name)),\n\"job\", \"$1\", \"job\", \"(.*)_agent_(.*)\"))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -2979,7 +2979,7 @@
                             "step": 60
                         },
                         {
-                            "expr": "label_replace( \n(avg(avg_over_time(scrape_duration_seconds{service_type!=\"mysql\",instance!=\"pmm-server\"}[$interval])) by (job,node_name) or \navg(avg_over_time(scrape_duration_seconds{service_type!=\"mysql\",instance!=\"pmm-server\"}[5m])) by (job,node_name)), \n\"job\", \"$1\", \"job\", \"(.*)_agent_(.*)\")",
+                            "expr": "label_replace( \n(avg(avg_over_time(scrape_duration_seconds{service_type!=\"mysql\",instance!=\"pmm-server\"}[$interval])) by (job,node_name,service_name) or \navg(avg_over_time(scrape_duration_seconds{service_type!=\"mysql\",instance!=\"pmm-server\"}[5m])) by (job,node_name,service_name)), \n\"job\", \"$1\", \"job\", \"(.*)_agent_(.*)\")",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
