@@ -22,7 +22,8 @@ export class PanelCtrl extends MetricsPanelCtrl {
             'main_metric': '',
             'columns': '',
             'order_by': '',
-            'details_by': '',
+            'filter_by': '',
+            'active_details_tab': '',
         };
         $scope.trustSrc = (src) => $sce.trustAsResourceUrl(src);
 
@@ -77,16 +78,17 @@ export class PanelCtrl extends MetricsPanelCtrl {
             $scope.qanParams.main_metric,
             $scope.qanParams.columns,
             $scope.qanParams.order_by,
-            $scope.qanParams.details_by,
+            $scope.qanParams.filter_by,
+            $scope.qanParams.active_details_tab,
         ] = this.retrieveDashboardURLParams(location.absUrl());
 
         frame.on('load', () => {
             setTimeout(() => $scope.ctrl.calculatePanelHeight(), 10);
 
             frame.contents().bind('updateUrl', (event) => {
-                let [queryID, type, search, filters, main_metric, columns, order_by, details_by] =
+                let [queryID, type, search, filters, main_metric, columns, order_by, filter_by, active_details_tab] =
                     this.retrieveIFrameURLParams(event.currentTarget.URL);
-                this.reloadQuery(window, queryID, type, search, filters, main_metric, columns, order_by, details_by);
+                this.reloadQuery(window, queryID, type, search, filters, main_metric, columns, order_by, filter_by, active_details_tab);
                 setTimeout(() => $scope.ctrl.calculatePanelHeight(), 10);
             });
 
@@ -130,7 +132,8 @@ export class PanelCtrl extends MetricsPanelCtrl {
                         main_metric = '',
                         columns = '',
                         order_by = '',
-                        details_by = ''
+                        filter_by = '',
+                        active_details_tab = '',
     ) {
         let url = window.location.href.split('&')[0];
         const urlParams = {
@@ -141,7 +144,8 @@ export class PanelCtrl extends MetricsPanelCtrl {
             main_metric: main_metric ? `&main_metric=${main_metric}` : '',
             columns: columns ? `&columns=${columns}` : '',
             order_by: order_by ? `&order_by=${order_by}` : '',
-            details_by: details_by ? `&details_by=${details_by}` : '',
+            filter_by: filter_by ? `&filter_by=${filter_by}` : '',
+            active_details_tab: active_details_tab ? `&active_details_tab=${active_details_tab}` : '',
         };
         Object.keys(urlParams).forEach(param => url += urlParams[param]);
         history.pushState({}, null, url);
@@ -155,10 +159,11 @@ export class PanelCtrl extends MetricsPanelCtrl {
         const main_metric = currentURL.searchParams.get('main_metric') ? currentURL.searchParams.get('main_metric') : '';
         const columns = currentURL.searchParams.get('columns') ? currentURL.searchParams.get('columns') : '';
         const order_by = currentURL.searchParams.get('order_by') ? currentURL.searchParams.get('order_by') : '';
-        const details_by = currentURL.searchParams.get('details_by') ? currentURL.searchParams.get('details_by') : '';
+        const filter_by = currentURL.searchParams.get('filter_by') ? currentURL.searchParams.get('filter_by') : '';
+        const active_details_tab = currentURL.searchParams.get('active_details_tab') ? currentURL.searchParams.get('active_details_tab') : '';
         const type = currentURL.searchParams.get('type') ? currentURL.searchParams.get('type') : '';
 
-        return [id, type, search, filters, main_metric, columns, order_by, details_by];
+        return [id, type, search, filters, main_metric, columns, order_by, filter_by, active_details_tab];
     }
 
     private retrieveIFrameURLParams(url): Array<string> {
@@ -169,11 +174,12 @@ export class PanelCtrl extends MetricsPanelCtrl {
         const main_metric = currentURL.searchParams.get('main_metric') ? currentURL.searchParams.get('main_metric') : '';
         const columns = currentURL.searchParams.get('columns') ? currentURL.searchParams.get('columns') : '';
         const order_by = currentURL.searchParams.get('order_by') ? currentURL.searchParams.get('order_by') : '';
-        const details_by = currentURL.searchParams.get('details_by') ? currentURL.searchParams.get('details_by') : '';
+        const filter_by = currentURL.searchParams.get('filter_by') ? currentURL.searchParams.get('filter_by') : '';
+        const active_details_tab = currentURL.searchParams.get('active_details_tab') ? currentURL.searchParams.get('active_details_tab') : '';
         const urlArr = url.split('/');
         const type = urlArr[urlArr.length - 1].split('?')[0];
 
-        return [id, type, search, filters, main_metric, columns, order_by, details_by];
+        return [id, type, search, filters, main_metric, columns, order_by, filter_by, active_details_tab];
     }
 
     private encodeData(data: Object): string {
