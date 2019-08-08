@@ -127,8 +127,8 @@ export class PanelCtrl extends MetricsPanelCtrl {
             search: search ? `&search=${search}` : '',
             filters: filters ? `&filters=${filters}` : '',
             main_metric: main_metric ? `&main_metric=${main_metric}` : '',
-            columns: columns.length ? `&columns=${columns}` : '',
-            order_by: order_by.length ? `&order_by=${order_by}` : '',
+            columns: columns ? `&columns=${columns}` : '',
+            order_by: order_by ? `&order_by=${order_by}` : '',
         };
         Object.keys(urlParams).forEach(param => url += urlParams[param]);
         history.pushState({}, null, url);
