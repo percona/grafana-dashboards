@@ -53,18 +53,27 @@ export class PanelCtrl extends MetricsPanelCtrl {
 
         // Re-init all scope params
         this.reset($scope);
-
         $scope.logLocation = '';
+
         $scope.version = '';
+        $scope.fullVersion = '';
+        $scope.versionCashed = '';
+
+        $scope.nextVersion = '';
+        $scope.nextFullVersion = '';
+        $scope.nextVersionCashed = '';
         $scope.errorMessage = '';
         $scope.canBeReloaded = false;
         $scope.isUpdateAvailable = false;
         $scope.isDefaultView = true;
         $scope.newsLink = '';
         $scope.lastCheck = '';
+        $scope.keydownCode = '';
 
         $scope.checkForUpdate = this.checkForUpdate.bind(this, $scope, $http);
         $scope.update = this.update.bind(this, $scope, $http);
+        $scope.displayFullCurrentVersion = this.displayFullCurrentVersion.bind(this, $scope);
+        $scope.displayFullAvailableVersion = this.displayFullAvailableVersion.bind(this, $scope);
         $scope.getLog = this.getLog.bind(this, $scope, $http);
         $scope.getCurrentVersion = this.getCurrentVersion.bind(this, $scope, $http);
         $scope.getCurrentVersion($scope, $http);
@@ -74,6 +83,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
             if ($(event.target).hasClass('modal-backdrop') && $scope.canBeReloaded) location.reload();
         });
         body.addEventListener('keydown', (event) => {
+            $scope.keydownCode = event.code;
             (event.key === escKeyCode && $scope.canBeReloaded) ? location.reload() : event.stopPropagation();
         });
     }
@@ -137,13 +147,10 @@ export class PanelCtrl extends MetricsPanelCtrl {
             url: PanelCtrl.API.GET_CURRENT_VERSION,
             params: {force: false}
         }).then((res) => {
-            res.data.latest_news_url = 'https://wwww.google.com';
-            res.data.update_available = true;
             const data = res.data;
-            console.log('data get-current - ', data);
-
             $scope.lastCheckDate = data.last_check ? moment(data.last_check).locale('en').format('MMMM DD, H:mm') : '';
             $scope.version = data.installed.version || '';
+            $scope.fullVersion = data.installed.full_version || '';
             $scope.currentReleaseDate = data.installed.timestamp ? moment(data.installed.timestamp).locale('en').format('MMMM DD, H:mm') : '';
             $scope.isUpdateAvailable = data.update_available || false;
 
@@ -171,11 +178,10 @@ export class PanelCtrl extends MetricsPanelCtrl {
             url: PanelCtrl.API.CHECK_FOR_UPDATE,
             params: {force: true}
         }).then((res) => {
-            res.data.latest_news_url = 'https://wwww.google.com';
-            res.data.update_available = true;
             const data = res.data;
-            $scope.lastCheckDate = data.last_check ? moment(data.last_check).locale('en').format('MMMM DD, H:mm') : '';
             $scope.nextVersion = data.latest.version || '';
+            $scope.nextFullVersion = data.latest.full_version || '';
+            $scope.lastCheckDate = data.last_check ? moment(data.last_check).locale('en').format('MMMM DD, H:mm') : '';
             $scope.newReleaseDate = data.latest.timestamp ? moment(data.latest.timestamp).locale('en').format('MMMM DD, H:mm') : '';
             $scope.newsLink = data.latest_news_url || '';
             $scope.isUpdateAvailable = data.update_available || false;
@@ -216,6 +222,30 @@ export class PanelCtrl extends MetricsPanelCtrl {
         }).catch(() => {
             this.reset($scope);
         });
+    }
+
+    displayFullCurrentVersion($scope) {
+        if ($scope.keydownCode === 'AltLeft') {
+            if ($scope.version !== $scope.fullVersion) {
+                $scope.versionCashed = $scope.version;
+                $scope.version = $scope.fullVersion;
+            } else {
+                $scope.version = $scope.versionCashed;
+            }
+            $scope.keydownCode = '';
+        }
+    }
+
+    displayFullAvailableVersion($scope) {
+        if ($scope.keydownCode === 'AltLeft') {
+            if ($scope.nextVersion !== $scope.nextFullVersion) {
+                $scope.nextVersionCashed = $scope.nextVersion;
+                $scope.nextVersion = $scope.nextFullVersion;
+            } else {
+                $scope.nextVersion = $scope.nextVersionCashed;
+            }
+            $scope.keydownCode = '';
+        }
     }
 
     /**
