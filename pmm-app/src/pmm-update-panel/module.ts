@@ -57,9 +57,9 @@ export class PanelCtrl extends MetricsPanelCtrl {
         $scope.logLocation = '';
         $scope.version = '';
         $scope.errorMessage = '';
-        $scope.isUpToDate = false;
         $scope.canBeReloaded = false;
         $scope.isUpdateAvailable = false;
+        $scope.isDefaultView = true;
         $scope.newsLink = '';
 
         $scope.checkForUpdate = this.checkForUpdate.bind(this, $scope, $http);
@@ -86,12 +86,9 @@ export class PanelCtrl extends MetricsPanelCtrl {
             modalScope.output = newState.output;
             modalScope.isChecked = newState.isChecked;
             modalScope.isUpdated = newState.isUpdated;
-            modalScope.isUpToDate = newState.isUpToDate;
             modalScope.isUpdateAvailable = newState.isUpdateAvailable;
-            modalScope.isDisplayNewVersion = newState.isDisplayNewVersion;
-            modalScope.isNextVersionCheck = newState.isNextVersionCheck;
+            modalScope.isDefaultView = newState.isDefaultView;
             modalScope.errorMessage = newState.errorMessage;
-            modalScope.isUpToDate = newState.isUpToDate;
             modalScope.version = newState.version;
             modalScope.currentReleaseDate = newState.currentReleaseDate;
             modalScope.newReleaseDate = newState.newReleaseDate;
@@ -131,6 +128,36 @@ export class PanelCtrl extends MetricsPanelCtrl {
     }
 
     /**
+     * Send request to get current version
+     */
+    private getCurrentVersion($scope, $http): void {
+        $http({
+            method: 'POST',
+            url: PanelCtrl.API.GET_CURRENT_VERSION,
+            params: {force: false}
+        }).then((res) => {
+            res.data.latest_news_url = 'https://wwww.google.com';
+            res.data.update_available = true;
+            const data = res.data;
+            console.log('data get-current - ', data);
+
+            $scope.version = data.installed.version || '';
+            $scope.currentReleaseDate = data.installed.timestamp ? moment(data.timestamp).locale('en').format('MMMM DD, H:mm') : '';
+            $scope.isUpdateAvailable = data.update_available || false;
+
+            if ($scope.isUpdateAvailable) {
+                this.checkForUpdate.call(this, $scope, $http);
+            } else {
+                $('#refresh').removeClass('fa-spin');
+            }
+            $scope.isDefaultView = false;
+        }).catch(() => {
+            $('#refresh').removeClass('fa-spin');
+            //TODO: add error handler
+        });
+    }
+
+    /**
      * Send request to check if update possible and re-init params
      */
     private checkForUpdate($scope, $http): void {
@@ -142,46 +169,20 @@ export class PanelCtrl extends MetricsPanelCtrl {
             url: PanelCtrl.API.CHECK_FOR_UPDATE,
             params: {force: true}
         }).then((res) => {
+            res.data.latest_news_url = 'https://wwww.google.com';
+            res.data.update_available = true;
             const data = res.data;
-            console.log('data - ', data);
+            console.log('data check-update - ', data);
 
-            $scope.isNextVersionCheck = true;
-            $scope.isUpdateAvailable = data.update_available || false;
-            $scope.nextVersion = data.latest_version || '';
-            $scope.newReleaseDate = moment(data.latest_timestamp).locale('en').format('MMMM DD, H:mm') || '';
+            $scope.nextVersion = data.latest.version || '';
+            $scope.newReleaseDate = data.latest.timestamp ? moment(data.latest.timestamp).locale('en').format('MMMM DD, H:mm') : '';
             $scope.newsLink = data.latest_news_url || '';
-
-            $scope.isDisplayNewVersion = $scope.isUpdateAvailable && $scope.isNextVersionCheck;
-            $scope.isUpToDate = !$scope.isUpdateAvailable;
-
+            $scope.isUpdateAvailable = data.update_available || false;
+            $scope.isDefaultView = false;
             refreshButton.removeClass('fa-spin');
         }).catch(() => {
             this.displayError($scope, PanelCtrl.ERRORS.NOTHING_TO_UPDATE);
             refreshButton.removeClass('fa-spin');
-        });
-    }
-
-    /**
-     * Send request to get current version
-     */
-    private getCurrentVersion($scope, $http): void {
-        $http({
-            method: 'POST',
-            url: PanelCtrl.API.GET_CURRENT_VERSION,
-            params: {force: false}
-        }).then((res) => {
-            const data = res.data;
-            console.log('data - ', data);
-
-            $scope.isNextVersionCheck = false;
-            $scope.version = data.version || '';
-            $scope.currentReleaseDate = data.timestamp ? moment(data.timestamp).locale('en').format('MMMM DD, H:mm') : '';
-            $scope.isUpdateAvailable = data.update_available || false;
-            $scope.isUpToDate = !$scope.isUpdateAvailable;
-            $('#refresh').removeClass('fa-spin');
-        }).catch(() => {
-            $('#refresh').removeClass('fa-spin');
-            //TODO: add error handler
         });
     }
 
@@ -223,9 +224,6 @@ export class PanelCtrl extends MetricsPanelCtrl {
         $scope.output = '';
         $scope.isChecked = false;
         $scope.isUpdated = false;
-        $scope.isUpToDate = false;
         $scope.isUpdateAvailable = false;
-        $scope.isDisplayNewVersion = false;
-        $scope.isNextVersionCheck = false;
     }
 }

@@ -39,6 +39,10 @@
         background: transparent;
     }
 
+    #available_version {
+        display: flex;
+    }
+
     section.state {
         height: 65px;
         /*margin-bottom: 10px;*/
@@ -91,29 +95,31 @@
 <div id="pmm-update-widget">
     <header>
         <h2 class="update-title">Updates</h2>
-        <p class="version">Current version:
+        <p class="version" id="current_version">Current version:
             <span>{{version}} <em>{{currentReleaseDate}}</em></span>
         </p>
     </header>
-    <section class="state" ng-if="!isDisplayNewVersion && !isUpToDate">
+    <section class="state" ng-if="isDefaultView">
         <div class="state-inner">
-            <p class="text-center">Updates are available</p>
-            <p class="text-center">Please click check update button</p>
+            <p class="text-center">No updates are available</p>
+            <p class="text-center">PMM checks for updates once a day</p>
         </div>
     </section>
-    <section class="state" ng-if="isUpToDate">
+    <section class="state" ng-if="!isUpdateAvailable && !isDefaultView">
         <p class="text-center">You are up to date</p>
     </section>
-    <section class="available-version" ng-if="isDisplayNewVersion">
-        <p>Available version:&nbsp;</p>
-        <div class="version">
-            <p>{{nextVersion}} <em>{{newReleaseDate}}</em></p>
-            <a href="{{newsLink}}"
-               class="text-primary pmm-link" target="_blank">What's new?</a>
+    <section class="available-version" ng-if="isUpdateAvailable && !isDefaultView">
+        <div id="available_version">
+            <p>Available version:&nbsp;</p>
+            <div class="version">
+                <p>{{nextVersion}} <em>{{newReleaseDate}}</em></p>
+                <a href="{{newsLink}}"
+                   class="text-primary pmm-link" target="_blank">What's new?</a>
+            </div>
         </div>
     </section>
     <button class="btn btn-secondary btn-block update-button"
-            ng-if="isDisplayNewVersion && !isUpToDate"
+            ng-if="isUpdateAvailable"
             ng-click="update()"
             ng-disabled="disableUpdate">
         <span>
