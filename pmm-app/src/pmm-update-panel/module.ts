@@ -61,6 +61,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
         $scope.isUpdateAvailable = false;
         $scope.isDefaultView = true;
         $scope.newsLink = '';
+        $scope.lastCheck = '';
 
         $scope.checkForUpdate = this.checkForUpdate.bind(this, $scope, $http);
         $scope.update = this.update.bind(this, $scope, $http);
@@ -141,8 +142,9 @@ export class PanelCtrl extends MetricsPanelCtrl {
             const data = res.data;
             console.log('data get-current - ', data);
 
+            $scope.lastCheckDate = data.last_check ? moment(data.last_check).locale('en').format('MMMM DD, H:mm') : '';
             $scope.version = data.installed.version || '';
-            $scope.currentReleaseDate = data.installed.timestamp ? moment(data.timestamp).locale('en').format('MMMM DD, H:mm') : '';
+            $scope.currentReleaseDate = data.installed.timestamp ? moment(data.installed.timestamp).locale('en').format('MMMM DD, H:mm') : '';
             $scope.isUpdateAvailable = data.update_available || false;
 
             if ($scope.isUpdateAvailable) {
@@ -172,8 +174,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
             res.data.latest_news_url = 'https://wwww.google.com';
             res.data.update_available = true;
             const data = res.data;
-            console.log('data check-update - ', data);
-
+            $scope.lastCheckDate = data.last_check ? moment(data.last_check).locale('en').format('MMMM DD, H:mm') : '';
             $scope.nextVersion = data.latest.version || '';
             $scope.newReleaseDate = data.latest.timestamp ? moment(data.latest.timestamp).locale('en').format('MMMM DD, H:mm') : '';
             $scope.newsLink = data.latest_news_url || '';
