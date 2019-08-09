@@ -20,7 +20,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
      * Urls to define API endpoints
      */
     static API = {
-        GET_CURRENT_VERSION: '/v1/version',
+        GET_CURRENT_VERSION: '/v1/Updates/Check',
         CHECK_FOR_UPDATE: '/v1/Updates/Check',
         UPDATE: '/configurator/v1/updates'
     };
@@ -140,8 +140,10 @@ export class PanelCtrl extends MetricsPanelCtrl {
         $http({
             method: 'POST',
             url: PanelCtrl.API.CHECK_FOR_UPDATE,
+            params: {force: true}
         }).then((res) => {
             const data = res.data;
+            console.log('data - ', data);
 
             $scope.isNextVersionCheck = true;
             $scope.isUpdateAvailable = data.update_available || false;
@@ -164,12 +166,12 @@ export class PanelCtrl extends MetricsPanelCtrl {
      */
     private getCurrentVersion($scope, $http): void {
         $http({
-            method: 'GET',
+            method: 'POST',
             url: PanelCtrl.API.GET_CURRENT_VERSION,
+            params: {force: false}
         }).then((res) => {
             const data = res.data;
-
-            data.update_available = false;
+            console.log('data - ', data);
 
             $scope.isNextVersionCheck = false;
             $scope.version = data.version || '';
