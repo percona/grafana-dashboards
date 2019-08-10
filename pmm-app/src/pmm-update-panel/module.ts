@@ -20,7 +20,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
      * Urls to define API endpoints
      */
     static API = {
-        GET_CURRENT_VERSION: '/v1/version',
+        GET_CURRENT_VERSION: '/v1/Updates/Check',
         CHECK_FOR_UPDATE: '/v1/Updates/Check',
         UPDATE: '/configurator/v1/updates'
     };
@@ -53,35 +53,39 @@ export class PanelCtrl extends MetricsPanelCtrl {
 
         // Re-init all scope params
         this.reset($scope);
-        const lastCheck = localStorage.getItem('lastCheck');
-
         $scope.logLocation = '';
+
         $scope.version = '';
+        $scope.fullVersion = '';
+        $scope.versionCashed = '';
+
+        $scope.nextVersion = '';
+        $scope.nextFullVersion = '';
+        $scope.nextVersionCashed = '';
         $scope.errorMessage = '';
-        $scope.isUpToDate = false;
         $scope.canBeReloaded = false;
-        $scope.lastCheckDate = lastCheck ? moment(Number(lastCheck)).locale('en').format('MMMM DD, H:mm') : '';
         $scope.isUpdateAvailable = false;
+        $scope.isDefaultView = true;
         $scope.newsLink = '';
+        $scope.lastCheck = '';
+        $scope.keydownCode = '';
 
         $scope.checkForUpdate = this.checkForUpdate.bind(this, $scope, $http);
         $scope.update = this.update.bind(this, $scope, $http);
+        $scope.displayFullCurrentVersion = this.displayFullCurrentVersion.bind(this, $scope);
+        $scope.displayFullAvailableVersion = this.displayFullAvailableVersion.bind(this, $scope);
         $scope.getLog = this.getLog.bind(this, $scope, $http);
-        $scope.showReleaseNotes = this.showReleaseNotes.bind(this, $scope);
         $scope.getCurrentVersion = this.getCurrentVersion.bind(this, $scope, $http);
         $scope.getCurrentVersion($scope, $http);
         const body = document.querySelector('body');
-        const timeDiff = Date.now() - Number(localStorage.getItem('lastCheck'));
         const escKeyCode = 'Escape';
         body.addEventListener('click', (event) => {
             if ($(event.target).hasClass('modal-backdrop') && $scope.canBeReloaded) location.reload();
         });
         body.addEventListener('keydown', (event) => {
+            $scope.keydownCode = event.code;
             (event.key === escKeyCode && $scope.canBeReloaded) ? location.reload() : event.stopPropagation();
         });
-        if (timeDiff >= 1000 * 60 * 60) {
-            this.checkForUpdate($scope, $http);
-        }
     }
 
     /**
@@ -91,13 +95,11 @@ export class PanelCtrl extends MetricsPanelCtrl {
         const modalScope = $scope.$new(true);
         $scope.$watch(newState => {
             modalScope.output = newState.output;
-            modalScope.isLoaderShown = newState.isLoaderShown;
             modalScope.isChecked = newState.isChecked;
             modalScope.isUpdated = newState.isUpdated;
-            modalScope.isOutputShown = newState.isOutputShown;
-            modalScope.shouldBeUpdated = newState.shouldBeUpdated;
+            modalScope.isUpdateAvailable = newState.isUpdateAvailable;
+            modalScope.isDefaultView = newState.isDefaultView;
             modalScope.errorMessage = newState.errorMessage;
-            modalScope.isUpToDate = newState.isUpToDate;
             modalScope.version = newState.version;
             modalScope.currentReleaseDate = newState.currentReleaseDate;
             modalScope.newReleaseDate = newState.newReleaseDate;
@@ -107,7 +109,6 @@ export class PanelCtrl extends MetricsPanelCtrl {
             location.reload();
         };
 
-        $scope.isLoaderShown = true;
         AppEvents.emit('show-modal', {
             src: PanelCtrl.TEMPLATES.MODAL,
             scope: modalScope,
@@ -128,7 +129,6 @@ export class PanelCtrl extends MetricsPanelCtrl {
      * @param message - kind of error message
      */
     public displayError($scope, message) {
-        $scope.isLoaderShown = false;
         $scope.isChecked = true;
         $scope.errorMessage = message;
         setTimeout(() => {
@@ -136,44 +136,6 @@ export class PanelCtrl extends MetricsPanelCtrl {
             $scope.errorMessage = '';
             $scope.$apply();
         }, 5000);
-        $scope.shouldBeUpdated = '';
-    }
-
-    /**
-     * Send request to check if update possible and re-init params
-     */
-    private checkForUpdate($scope, $http): void {
-        const refreshButton = $('#refresh');
-        $scope.isLoaderShown = true;
-        refreshButton.addClass('fa-spin');
-
-        $http({
-            method: 'POST',
-            url: PanelCtrl.API.CHECK_FOR_UPDATE,
-        }).then((res) => {
-            $scope.isLoaderShown = false;
-            $scope.isChecked = true;
-            $scope.nextVersion = res.data.latest_version || '';
-            $scope.newReleaseDate = moment(Number( res.data.latest_timestamp)).locale('en').format('MMMM DD, H:mm') || '';
-            $scope.isUpdateAvailable = res.data.update_available || false;
-            $scope.newsLink = res.data.latest_news_url || '';
-            $scope.isUpToDate = !$scope.isUpdateAvailable && $scope.isChecked;
-            this.getCurrentTime($scope);
-            refreshButton.removeClass('fa-spin');
-        }).catch(() => {
-            this.displayError($scope, PanelCtrl.ERRORS.NOTHING_TO_UPDATE);
-            this.getCurrentTime($scope);
-            refreshButton.removeClass('fa-spin');
-        });
-    }
-
-    /**
-     * Save current time to local storage
-     * @param $scope
-     */
-    public getCurrentTime($scope) {
-        localStorage.setItem('lastCheck', Date.now().toString());
-        $scope.lastCheckDate = moment(Number(localStorage.getItem('lastCheck'))).locale('en').format('MMMM DD, H:mm');
     }
 
     /**
@@ -181,16 +143,53 @@ export class PanelCtrl extends MetricsPanelCtrl {
      */
     private getCurrentVersion($scope, $http): void {
         $http({
-            method: 'GET',
+            method: 'POST',
             url: PanelCtrl.API.GET_CURRENT_VERSION,
+            params: {force: false}
         }).then((res) => {
-            const data = res.data.managed;
-            $scope.version = data.version || '';
-            $scope.currentReleaseDate = data.timestamp ? moment(data.timestamp).locale('en').format('MMMM DD, H:mm') : '';
-            $('#refresh').removeClass('fa-spin');
+            const data = res.data;
+            $scope.lastCheckDate = data.last_check ? moment(data.last_check).locale('en').format('MMMM DD, H:mm') : '';
+            $scope.version = data.installed.version || '';
+            $scope.fullVersion = data.installed.full_version || '';
+            $scope.currentReleaseDate = data.installed.timestamp ? moment(data.installed.timestamp).locale('en').format('MMMM DD, H:mm') : '';
+            $scope.isUpdateAvailable = data.update_available || false;
+
+            if ($scope.isUpdateAvailable) {
+                this.checkForUpdate.call(this, $scope, $http);
+            } else {
+                $('#refresh').removeClass('fa-spin');
+            }
+            $scope.isDefaultView = false;
         }).catch(() => {
             $('#refresh').removeClass('fa-spin');
             //TODO: add error handler
+        });
+    }
+
+    /**
+     * Send request to check if update possible and re-init params
+     */
+    private checkForUpdate($scope, $http): void {
+        const refreshButton = $('#refresh');
+        refreshButton.addClass('fa-spin');
+
+        $http({
+            method: 'POST',
+            url: PanelCtrl.API.CHECK_FOR_UPDATE,
+            params: {force: true}
+        }).then((res) => {
+            const data = res.data;
+            $scope.nextVersion = data.latest.version || '';
+            $scope.nextFullVersion = data.latest.full_version || '';
+            $scope.lastCheckDate = data.last_check ? moment(data.last_check).locale('en').format('MMMM DD, H:mm') : '';
+            $scope.newReleaseDate = data.latest.timestamp ? moment(data.latest.timestamp).locale('en').format('MMMM DD, H:mm') : '';
+            $scope.newsLink = data.latest_news_url || '';
+            $scope.isUpdateAvailable = data.update_available || false;
+            $scope.isDefaultView = false;
+            refreshButton.removeClass('fa-spin');
+        }).catch(() => {
+            this.displayError($scope, PanelCtrl.ERRORS.NOTHING_TO_UPDATE);
+            refreshButton.removeClass('fa-spin');
         });
     }
 
@@ -213,10 +212,8 @@ export class PanelCtrl extends MetricsPanelCtrl {
                 $scope.currentReleaseDate = $scope.errorMessage ? $scope.currentReleaseDate : $scope.newReleaseDate;
                 $scope.isUpdated = true;
                 $scope.canBeReloaded = true;
-                // this.setNextVersionData();
             }
             if (response.data.title === PanelCtrl.PROCESS_STATUSES.FAILED) {
-                $scope.isLoaderShown = false;
                 $scope.isChecked = true;
                 $scope.isUpdateAvailable = true;
                 $scope.canBeReloaded = true;
@@ -227,11 +224,28 @@ export class PanelCtrl extends MetricsPanelCtrl {
         });
     }
 
-    /**
-     * Send request to get info about new version
-     */
-    private showReleaseNotes($scope) {
-        // TODO: will be implemented after API release
+    displayFullCurrentVersion($scope) {
+        if ($scope.keydownCode === 'AltLeft') {
+            if ($scope.version !== $scope.fullVersion) {
+                $scope.versionCashed = $scope.version;
+                $scope.version = $scope.fullVersion;
+            } else {
+                $scope.version = $scope.versionCashed;
+            }
+            $scope.keydownCode = '';
+        }
+    }
+
+    displayFullAvailableVersion($scope) {
+        if ($scope.keydownCode === 'AltLeft') {
+            if ($scope.nextVersion !== $scope.nextFullVersion) {
+                $scope.nextVersionCashed = $scope.nextVersion;
+                $scope.nextVersion = $scope.nextFullVersion;
+            } else {
+                $scope.nextVersion = $scope.nextVersionCashed;
+            }
+            $scope.keydownCode = '';
+        }
     }
 
     /**
@@ -239,10 +253,8 @@ export class PanelCtrl extends MetricsPanelCtrl {
      */
     private reset($scope): void {
         $scope.output = '';
-        $scope.isLoaderShown = false;
         $scope.isChecked = false;
         $scope.isUpdated = false;
-        $scope.isOutputShown = true;
-        $scope.shouldBeUpdated = '';
+        $scope.isUpdateAvailable = false;
     }
 }
