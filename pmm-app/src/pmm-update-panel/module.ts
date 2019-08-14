@@ -145,7 +145,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
         $http({
             method: 'POST',
             url: PanelCtrl.API.GET_CURRENT_VERSION,
-            params: {force: false}
+            data: {force: false}
         }).then((res) => {
             const data = res.data;
             $scope.lastCheckDate = data.last_check ? moment(data.last_check).locale('en').format('MMMM DD, H:mm') : '';
@@ -176,7 +176,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
         $http({
             method: 'POST',
             url: PanelCtrl.API.CHECK_FOR_UPDATE,
-            params: {force: true}
+            data: {force: true}
         }).then((res) => {
             const data = res.data;
             $scope.nextVersion = data.latest.version || '';
