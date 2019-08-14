@@ -151,7 +151,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
             $scope.lastCheckDate = data.last_check ? moment(data.last_check).locale('en').format('MMMM DD, H:mm') : '';
             $scope.version = data.installed.version || '';
             $scope.fullVersion = data.installed.full_version || '';
-            $scope.currentReleaseDate = data.installed.timestamp ? moment(data.installed.timestamp).locale('en').format('MMMM DD, H:mm') : '';
+            $scope.currentReleaseDate = data.installed.timestamp ? moment.utc(data.installed.timestamp).locale('en').format('MMMM DD') : '';
             $scope.isUpdateAvailable = data.update_available || false;
 
             if ($scope.isUpdateAvailable) {
@@ -182,7 +182,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
             $scope.nextVersion = data.latest.version || '';
             $scope.nextFullVersion = data.latest.full_version || '';
             $scope.lastCheckDate = data.last_check ? moment(data.last_check).locale('en').format('MMMM DD, H:mm') : '';
-            $scope.newReleaseDate = data.latest.timestamp ? moment(data.latest.timestamp).locale('en').format('MMMM DD, H:mm') : '';
+            $scope.newReleaseDate = data.latest.timestamp ? moment.utc(data.latest.timestamp).locale('en').format('MMMM DD') : '';
             $scope.newsLink = data.latest_news_url || '';
             $scope.isUpdateAvailable = data.update_available || false;
             $scope.isDefaultView = false;
