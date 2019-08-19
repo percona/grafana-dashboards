@@ -36,7 +36,7 @@
     "gnetId": 3300,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1565686591987,
+    "iteration": 1566234576047,
     "links": [
         {
             "icon": "doc",
@@ -231,7 +231,7 @@
             ],
             "datasource": "Prometheus",
             "decimals": 0,
-            "description": "The maximum number of client connections allowed.  Change this value with care as there are some memory resources that are allocated on a per-client basis, so setting max_connections higher will generally increase overall PostgreSQL memory usage.",
+            "description": "",
             "format": "short",
             "gauge": {
                 "maxValue": 100,
@@ -289,7 +289,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "sum(max_over_time(pg_stat_activity_count{service_name=~\"$service\",datname=~\"$db\"}[$interval]) or\nmax_over_time(pg_stat_activity_count{service_name=~\"$service\",datname=~\"$db\"}[5m]))",
+                    "expr": "sum(max_over_time(pg_stat_activity_count{service_name=~\"$service\",datname=~\"$db\",state=\"active\"}[$interval]) or\nmax_over_time(pg_stat_activity_count{service_name=~\"$service\",datname=~\"$db\",state=\"active\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -298,7 +298,7 @@
                 }
             ],
             "thresholds": "",
-            "title": "Total Connections",
+            "title": "Max Active Connections",
             "type": "singlestat",
             "valueFontSize": "80%",
             "valueMaps": [
@@ -308,7 +308,7 @@
                     "value": "null"
                 }
             ],
-            "valueName": "current"
+            "valueName": "max"
         },
         {
             "cacheTimeout": null,
@@ -734,7 +734,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "topk(5,(sum by (service_name) (max_over_time(pg_stat_activity_count{service_name=~\"$service\",datname=~\"$db\"}[$interval]) or\nmax_over_time(pg_stat_activity_count{service_name=~\"$service\",datname=~\"$db\"}[5m]))))",
+                            "expr": "topk(5,(sum by (service_name) (max_over_time(pg_stat_activity_count{service_name=~\"$service\",state=~\"idle|active\"}[$interval]) or\nmax_over_time(pg_stat_activity_count{service_name=~\"$service\",state=~\"idle|active\"}[5m]))))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -745,7 +745,7 @@
                             "step": 2
                         },
                         {
-                            "expr": "avg(sum by (service_name) (max_over_time(pg_stat_activity_count{service_name=~\"$service\",datname=~\"$db\"}[$interval]) or\nmax_over_time(pg_stat_activity_count{service_name=~\"$service\",datname=~\"$db\"}[5m])))",
+                            "expr": "avg(sum by (service_name) (max_over_time(pg_stat_activity_count{service_name=~\"$service\",state=~\"idle|active\"}[$interval]) or\nmax_over_time(pg_stat_activity_count{service_name=~\"$service\",state=~\"idle|active\"}[5m])))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -857,7 +857,7 @@
                                 "#bf1b00",
                                 "#ffffff"
                             ],
-                            "decimals": "",
+                            "decimals": 2,
                             "enabled": true,
                             "label": "OVERRIDE 1",
                             "metricName": "/.*/",
@@ -866,39 +866,20 @@
                             "sanitizeURLEnabled": true,
                             "scaledDecimals": null,
                             "suffix": "",
-                            "thresholds": [
-                                {
-                                    "color": "#299c46",
-                                    "state": 0,
-                                    "value": 20
-                                },
-                                {
-                                    "color": "#e5ac0e",
-                                    "state": 1,
-                                    "value": 50
-                                },
-                                {
-                                    "color": "#bf1b00",
-                                    "state": 2,
-                                    "value": 100
-                                }
-                            ],
-                            "unitFormat": "short"
+                            "thresholds": [],
+                            "unitFormat": "percentunit"
                         }
                     ],
                     "targets": [
                         {
-                            "expr": "sum by (service_name) (max_over_time(pg_stat_activity_count{service_name=~\"$service\",datname=~\"$db\"}[$interval]) or\nmax_over_time(pg_stat_activity_count{service_name=~\"$service\",datname=~\"$db\"}[5m]))",
-                            "format": "time_series",
+                            "expr": "sum by (service_name) (max_over_time(pg_stat_activity_count{service_name=~\"$service\",state=~'idle'}[$interval]) or \nmax_over_time(pg_stat_activity_count{service_name=~\"$service\",state='idle'}[5m])) / on (service_name)\n(max_over_time(pg_settings_max_connections{service_name=~\"$service\"}[$interval]) or \nmax_over_time(pg_settings_max_connections{service_name=~\"$service\"}[5m]))",
                             "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "{{service_name}}",
-                            "refId": "A"
+                            "refId": "B"
                         }
                     ],
                     "timeFrom": null,
                     "timeShift": null,
-                    "title": "Total Connections",
+                    "title": "Idle Connections",
                     "type": "grafana-polystat-panel"
                 },
                 {
@@ -957,7 +938,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "topk(5,(sum by (service_name) (max_over_time(pg_stat_activity_count{service_name=~\"$service\",datname=~\"$db\",datname!~\"template.*|postgres\",state='active'}[$interval]) or\nmax_over_time(pg_stat_activity_count{service_name=~\"$service\",datname=~\"$db\",datname!~\"template.*|postgres\",state='active'}[5m]))))",
+                            "expr": "topk(5,(sum by (service_name) (max_over_time(pg_stat_activity_count{service_name=~\"$service\",datname!~\"template.*|postgres\",state='active'}[$interval]) or\nmax_over_time(pg_stat_activity_count{service_name=~\"$service\",datname!~\"template.*|postgres\",state='active'}[5m]))))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -965,7 +946,7 @@
                             "refId": "A"
                         },
                         {
-                            "expr": "avg(sum by (service_name) (max_over_time(pg_stat_activity_count{service_name=~\"$service\",datname=~\"$db\",datname!~\"template.*|postgres\",state='active'}[$interval]) or\nmax_over_time(pg_stat_activity_count{service_name=~\"$service\",datname=~\"$db\",datname!~\"template.*|postgres\",state='active'}[5m])))",
+                            "expr": "avg(sum by (service_name) (max_over_time(pg_stat_activity_count{service_name=~\"$service\",datname!~\"template.*|postgres\",state='active'}[$interval]) or\nmax_over_time(pg_stat_activity_count{service_name=~\"$service\",datname!~\"template.*|postgres\",state='active'}[5m])))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1077,7 +1058,7 @@
                                 "#bf1b00",
                                 "#ffffff"
                             ],
-                            "decimals": "",
+                            "decimals": 2,
                             "enabled": true,
                             "label": "OVERRIDE 1",
                             "metricName": "/.*/",
@@ -1090,25 +1071,25 @@
                                 {
                                     "color": "#299c46",
                                     "state": 0,
-                                    "value": 20
+                                    "value": 0.1
                                 },
                                 {
                                     "color": "#e5ac0e",
                                     "state": 1,
-                                    "value": 50
+                                    "value": 0.5
                                 },
                                 {
                                     "color": "#bf1b00",
                                     "state": 2,
-                                    "value": 100
+                                    "value": 0.9
                                 }
                             ],
-                            "unitFormat": "short"
+                            "unitFormat": "percentunit"
                         }
                     ],
                     "targets": [
                         {
-                            "expr": "sum by (service_name) (max_over_time(pg_stat_activity_count{service_name=~\"$service\",datname=~\"$db\",datname!~\"template.*|postgres\",state='active'}[$interval]) or\nmax_over_time(pg_stat_activity_count{service_name=~\"$service\",datname=~\"$db\",datname!~\"template.*|postgres\",state='active'}[5m]))",
+                            "expr": "sum by (service_name) (max_over_time(pg_stat_activity_count{service_name=~\"$service\",state='active'}[$interval]) or max_over_time(pg_stat_activity_count{service_name=~\"$service\",state='active'}[5m])) / on (service_name)(max_over_time(pg_settings_max_connections{service_name=~\"$service\"}[$interval]) or max_over_time(pg_settings_max_connections{service_name=~\"$service\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2494,6 +2475,7 @@
                     "datasource": "Prometheus",
                     "decimals": 2,
                     "fill": 2,
+                    "fillGradient": 0,
                     "gridPos": {
                         "h": 8,
                         "w": 12,
@@ -2517,7 +2499,9 @@
                     "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "percentage": false,
                     "pointradius": 1,
                     "points": true,
@@ -2693,6 +2677,7 @@
                     "datasource": "Prometheus",
                     "decimals": 2,
                     "fill": 2,
+                    "fillGradient": 0,
                     "gridPos": {
                         "h": 8,
                         "w": 12,
@@ -2716,7 +2701,9 @@
                     "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "percentage": false,
                     "pointradius": 1,
                     "points": true,
@@ -4256,11 +4243,12 @@
                     "datasource": "Prometheus",
                     "decimals": 0,
                     "fill": 1,
+                    "fillGradient": 0,
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 14
+                        "y": 17
                     },
                     "id": 48,
                     "legend": {
@@ -4279,7 +4267,9 @@
                     "linewidth": 1,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "percentage": false,
                     "pointradius": 1,
                     "points": true,
@@ -4367,7 +4357,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 14
+                        "y": 17
                     },
                     "id": 160,
                     "links": [],
@@ -4455,11 +4445,12 @@
                     "datasource": "Prometheus",
                     "decimals": 2,
                     "fill": 1,
+                    "fillGradient": 0,
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 22
+                        "y": 25
                     },
                     "id": 49,
                     "legend": {
@@ -4478,7 +4469,9 @@
                     "linewidth": 1,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "percentage": false,
                     "pointradius": 1,
                     "points": true,
@@ -4567,7 +4560,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 22
+                        "y": 25
                     },
                     "id": 161,
                     "links": [],
@@ -6230,11 +6223,12 @@
                     "decimals": 2,
                     "description": "Based on pg_stat_database_conflicts view",
                     "fill": 2,
+                    "fillGradient": 0,
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 20
+                        "y": 23
                     },
                     "id": 28,
                     "legend": {
@@ -6253,7 +6247,9 @@
                     "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "percentage": false,
                     "pointradius": 1,
                     "points": true,
@@ -6343,7 +6339,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 20
+                        "y": 23
                     },
                     "id": 168,
                     "links": [],
