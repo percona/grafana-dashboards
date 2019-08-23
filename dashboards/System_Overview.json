@@ -36,7 +36,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1566202782133,
+    "iteration": 1566555166995,
     "links": [
         {
             "icon": "doc",
@@ -1422,7 +1422,7 @@
             "decimals": 2,
             "editable": true,
             "error": false,
-            "fill": 10,
+            "fill": 6,
             "fillGradient": 0,
             "grid": {},
             "gridPos": {
@@ -1462,7 +1462,9 @@
             "seriesOverrides": [
                 {
                     "alias": "Total",
+                    "color": "#C4162A",
                     "fill": 0,
+                    "points": true,
                     "stack": false
                 }
             ],
@@ -1510,22 +1512,9 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "max(node_memory_Cached_bytes{node_name=~\"$host\",job=~\"rds-enhanced|linux\"}) without (job) or \nmax(node_memory_Cached_bytes{node_name=~\"$host\",job=~\"rds-basic\"}) without (job)",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Cached",
-                    "metric": "",
-                    "refId": "E",
-                    "step": 300,
-                    "target": ""
-                },
-                {
-                    "calculatedInterval": "2s",
-                    "datasourceErrors": {},
-                    "errors": {},
                     "expr": "node_memory_MemTotal_bytes{node_name=~\"$host\"} - (node_memory_MemFree_bytes{node_name=~\"$host\"} + node_memory_Buffers_bytes{node_name=~\"$host\"} + node_memory_Cached_bytes{node_name=~\"$host\"})",
                     "format": "time_series",
+                    "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Used",
@@ -1533,6 +1522,12 @@
                     "refId": "A",
                     "step": 300,
                     "target": ""
+                },
+                {
+                    "expr": "max(node_memory_Cached_bytes{node_name=~\"$host\",job=~\"rds-enhanced|rds-basic|node.*\"}) without (job)",
+                    "interval": "$interval",
+                    "legendFormat": "Cache",
+                    "refId": "F"
                 }
             ],
             "thresholds": [],
