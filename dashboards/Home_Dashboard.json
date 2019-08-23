@@ -16,7 +16,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1566412023858,
+    "iteration": 1566489883557,
     "links": [
         {
             "icon": "doc",
@@ -335,7 +335,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "count(mysql_global_status_uptime{service_name=~\"$service\",node_name=~\"$host\"} or \nmongodb_up {service_name=~\"$service\",node_name=~\"$host\"} or \npg_up{service_name=~\"$service\",node_name=~\"$host\"} or \npostgresql_up{service_name=~\"$service\",node_name=~\"$host\"})",
+                    "expr": "count(mysql_global_status_uptime{node_name=~\"$host\"} or \nmongodb_up {node_name=~\"$host\"} or \npg_up{node_name=~\"$host\"} or \npostgresql_up{node_name=~\"$host\"})",
                     "format": "time_series",
                     "instant": true,
                     "interval": "5m",
@@ -995,7 +995,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "sum by () (max_over_time(mysql_global_status_threads_connected{service_name=~\"$service\"}[$interval]) or \nmax_over_time(mongodb_connections{service_name=~\"$service\",state=\"current\"}[$interval]) or\nsum by (node_name) (max_over_time(pg_stat_database_numbackends{service_name=~\"$service\"}[$interval])))",
+                    "expr": "sum by () (max_over_time(mysql_global_status_threads_connected{node_name=~\"$host\"}[$interval]) or \nmax_over_time(mongodb_connections{node_name=~\"$host\",state=\"current\"}[$interval]) or\nsum by (node_name) (max_over_time(pg_stat_database_numbackends{node_name=~\"$host\"}[$interval])))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1105,7 +1105,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "sum by () (\n(rate(mysql_global_status_queries{service_name=~\"$service\"}[$interval]) or \nirate(mysql_global_status_queries{service_name=~\"$service\"}[5m])) or \n(sum(rate(mongodb_mongod_op_counters_total{service_name=~\"$service\",type!=\"command\"}[$interval])) or \nsum(irate(mongodb_mongod_op_counters_total{service_name=~\"$service\",type!=\"command\"}[5m]))) or\n(sum(rate(pg_stat_database_xact_commit{service_name=~\"$service\"}[$interval]) + rate(pg_stat_database_xact_rollback{service_name=~\"$service\"}[$interval])) or\nsum(irate(pg_stat_database_xact_commit{service_name=~\"$service\"}[5m]) + irate(pg_stat_database_xact_rollback{service_name=~\"$service\"}[5m])))\n)",
+                    "expr": "sum by () (\n(rate(mysql_global_status_queries{node_name=~\"$host\"}[$interval]) or \nirate(mysql_global_status_queries{node_name=~\"$host\"}[5m])) or \n(sum(rate(mongodb_mongod_op_counters_total{node_name=~\"$host\",type!=\"command\"}[$interval])) or \nsum(irate(mongodb_mongod_op_counters_total{node_name=~\"$host\",type!=\"command\"}[5m]))) or\n(sum(rate(pg_stat_database_xact_commit{node_name=~\"$host\"}[$interval]) + \nrate(pg_stat_database_xact_rollback{node_name=~\"$host\"}[$interval])) or\nsum(irate(pg_stat_database_xact_commit{node_name=~\"$host\"}[5m]) + \nirate(pg_stat_database_xact_rollback{node_name=~\"$host\"}[5m])))\n)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1476,7 +1476,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "avg(mysql_global_status_uptime{service_name=~\"$service\"} or \nmongodb_instance_uptime_seconds {service_name=~\"$service\"} or \n(time() - process_start_time_seconds{service_name=~\"$service\",job=~\"postgres_exporter.*\"}))",
+                    "expr": "avg(mysql_global_status_uptime{node_name=~\"$host\"} or \nmongodb_instance_uptime_seconds {node_name=~\"$host\"} or \n(time() - process_start_time_seconds{node_name=~\"$host\",job=~\"postgres_exporter.*\"}))",
                     "format": "time_series",
                     "instant": false,
                     "interval": "5m",
@@ -2117,7 +2117,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "sum by (node_name) (max_over_time(mysql_global_status_threads_connected{service_name=~\"$service\",node_name=~\"$host\"}[$interval]) or \nmax_over_time(mongodb_connections{service_name=~\"$service\",node_name=~\"$host\",state=\"current\"}[$interval]) or\nsum by (node_name) (max_over_time(pg_stat_database_numbackends{service_name=~\"$service\",node_name=~\"$host\"}[$interval])))",
+                    "expr": "sum by (node_name) (max_over_time(mysql_global_status_threads_connected{node_name=~\"$host\"}[$interval]) or \nmax_over_time(mongodb_connections{node_name=~\"$host\",state=\"current\"}[$interval]) or\nsum by (node_name) (max_over_time(pg_stat_database_numbackends{node_name=~\"$host\"}[$interval])))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2225,7 +2225,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "sum by (node_name) (\n(rate(mysql_global_status_queries{service_name=~\"$service\",node_name=~\"$host\"}[$interval]) or \nirate(mysql_global_status_queries{service_name=~\"$service\",node_name=~\"$host\"}[5m])) or \n(sum by (node_name) (rate(mongodb_mongod_op_counters_total{service_name=~\"$service\",node_name=~\"$host\",type!=\"command\"}[$interval])) or \nsum by (node_name) (irate(mongodb_mongod_op_counters_total{service_name=~\"$service\",node_name=~\"$host\",type!=\"command\"}[5m]))) or\n(sum by (node_name) (rate(pg_stat_database_xact_commit{service_name=~\"$service\",node_name=~\"$host\"}[$interval]) + rate(pg_stat_database_xact_rollback{service_name=~\"$service\",node_name=~\"$host\"}[$interval])) or\nsum by (node_name) (irate(pg_stat_database_xact_commit{service_name=~\"$service\",node_name=~\"$host\"}[5m]) + irate(pg_stat_database_xact_rollback{service_name=~\"$service\",node_name=~\"$host\"}[5m])))\n)",
+                    "expr": "sum by (node_name) (\n(rate(mysql_global_status_queries{node_name=~\"$host\"}[$interval]) or \nirate(mysql_global_status_queries{node_name=~\"$host\"}[5m])) or \n(sum by (node_name) (rate(mongodb_mongod_op_counters_total{node_name=~\"$host\",type!=\"command\"}[$interval])) or \nsum by (node_name) (irate(mongodb_mongod_op_counters_total{node_name=~\"$host\",type!=\"command\"}[5m]))) or\n(sum by (node_name) (rate(pg_stat_database_xact_commit{node_name=~\"$host\"}[$interval]) + \nrate(pg_stat_database_xact_rollback{node_name=~\"$host\"}[$interval])) or\nsum by (node_name) (irate(pg_stat_database_xact_commit{node_name=~\"$host\"}[5m]) + \nirate(pg_stat_database_xact_rollback{node_name=~\"$host\"}[5m])))\n)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2603,7 +2603,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "avg by (node_name) (mysql_global_status_uptime{service_name=~\"$service\",node_name=~\"$host\"} or \nmongodb_instance_uptime_seconds {service_name=~\"$service\",node_name=~\"$host\"} or \n(time() - process_start_time_seconds{service_name=~\"$service\",node_name=~\"$host\",job=~\"postgres_exporter.*\"}))",
+                    "expr": "avg by (node_name) (mysql_global_status_uptime{node_name=~\"$host\"} or \nmongodb_instance_uptime_seconds {node_name=~\"$host\"} or \n(time() - process_start_time_seconds{node_name=~\"$host\",job=~\"postgres_exporter.*\"}))",
                     "format": "time_series",
                     "interval": "5m",
                     "intervalFactor": 1,
@@ -2637,7 +2637,7 @@
             "id": 1344,
             "panels": [],
             "repeat": null,
-            "repeatIteration": 1566412023858,
+            "repeatIteration": 1566489883557,
             "repeatPanelId": 1343,
             "title": "",
             "type": "row"
@@ -2662,7 +2662,7 @@
             "maxPerRow": 12,
             "mode": "markdown",
             "options": {},
-            "repeatIteration": 1566412023858,
+            "repeatIteration": 1566489883557,
             "repeatPanelId": 162,
             "repeatedByRow": true,
             "title": "",
@@ -2732,7 +2732,7 @@
                     "to": "null"
                 }
             ],
-            "repeatIteration": 1566412023858,
+            "repeatIteration": 1566489883557,
             "repeatPanelId": 163,
             "repeatedByRow": true,
             "sparkline": {
@@ -2805,6 +2805,7 @@
             "interval": "$interval",
             "links": [
                 {
+                    "targetBlank": true,
                     "title": "Memory Overview - $host",
                     "url": "/graph/d/gJqbbm-ik/memory-overview?$__url_time_range&var-host=$host"
                 }
@@ -2835,7 +2836,7 @@
                     "to": "null"
                 }
             ],
-            "repeatIteration": 1566412023858,
+            "repeatIteration": 1566489883557,
             "repeatPanelId": 9,
             "repeatedByRow": true,
             "sparkline": {
@@ -2938,7 +2939,7 @@
                     "to": "null"
                 }
             ],
-            "repeatIteration": 1566412023858,
+            "repeatIteration": 1566489883557,
             "repeatPanelId": 314,
             "repeatedByRow": true,
             "sparkline": {
@@ -3008,6 +3009,7 @@
             "interval": "$interval",
             "links": [
                 {
+                    "targetBlank": true,
                     "title": "Disk Performance - $host",
                     "url": "/graph/d/oxkrQMNmz/disk-performance?$__url_time_range&var-host=$host"
                 }
@@ -3038,7 +3040,7 @@
                     "to": "null"
                 }
             ],
-            "repeatIteration": 1566412023858,
+            "repeatIteration": 1566489883557,
             "repeatPanelId": 490,
             "repeatedByRow": true,
             "sparkline": {
@@ -3138,7 +3140,7 @@
                     "to": "null"
                 }
             ],
-            "repeatIteration": 1566412023858,
+            "repeatIteration": 1566489883557,
             "repeatPanelId": 491,
             "repeatedByRow": true,
             "sparkline": {
@@ -3249,7 +3251,7 @@
                     "to": "null"
                 }
             ],
-            "repeatIteration": 1566412023858,
+            "repeatIteration": 1566489883557,
             "repeatPanelId": 492,
             "repeatedByRow": true,
             "sparkline": {
@@ -3264,7 +3266,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "sum by (node_name) (max_over_time(mysql_global_status_threads_connected{service_name=~\"$service\",node_name=~\"$host\"}[$interval]) or \nmax_over_time(mongodb_connections{service_name=~\"$service\",node_name=~\"$host\",state=\"current\"}[$interval]) or\nsum by (node_name) (max_over_time(pg_stat_database_numbackends{service_name=~\"$service\",node_name=~\"$host\"}[$interval])))",
+                    "expr": "sum by (node_name) (max_over_time(mysql_global_status_threads_connected{node_name=~\"$host\"}[$interval]) or \nmax_over_time(mongodb_connections{node_name=~\"$host\",state=\"current\"}[$interval]) or\nsum by (node_name) (max_over_time(pg_stat_database_numbackends{node_name=~\"$host\"}[$interval])))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -3319,14 +3321,17 @@
             "interval": "$interval",
             "links": [
                 {
+                    "targetBlank": true,
                     "title": "MySQL Overview - $host",
                     "url": "/graph/d/MQWgroiiz/mysql-overview?$__url_time_range&var-host=$host"
                 },
                 {
+                    "targetBlank": true,
                     "title": "MongoDB Overview - $host",
                     "url": "/graph/d/6Lk9wMHik/mongodb-overview?$__url_time_range&var-host=$host"
                 },
                 {
+                    "targetBlank": true,
                     "title": "PostgreSQL Overview - $host",
                     "url": "/graph/d/IvhES05ik/postgresql-overview?$__url_time_range&var-host=$host"
                 }
@@ -3357,7 +3362,7 @@
                     "to": "null"
                 }
             ],
-            "repeatIteration": 1566412023858,
+            "repeatIteration": 1566489883557,
             "repeatPanelId": 743,
             "repeatedByRow": true,
             "sparkline": {
@@ -3372,7 +3377,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "sum by (node_name) (\n(rate(mysql_global_status_queries{service_name=~\"$service\",node_name=~\"$host\"}[$interval]) or \nirate(mysql_global_status_queries{service_name=~\"$service\",node_name=~\"$host\"}[5m])) or \n(sum by (node_name) (rate(mongodb_mongod_op_counters_total{service_name=~\"$service\",node_name=~\"$host\",type!=\"command\"}[$interval])) or \nsum by (node_name) (irate(mongodb_mongod_op_counters_total{service_name=~\"$service\",node_name=~\"$host\",type!=\"command\"}[5m]))) or\n(sum by (node_name) (rate(pg_stat_database_xact_commit{service_name=~\"$service\",node_name=~\"$host\"}[$interval]) + rate(pg_stat_database_xact_rollback{service_name=~\"$service\",node_name=~\"$host\"}[$interval])) or\nsum by (node_name) (irate(pg_stat_database_xact_commit{service_name=~\"$service\",node_name=~\"$host\"}[5m]) + irate(pg_stat_database_xact_rollback{service_name=~\"$service\",node_name=~\"$host\"}[5m])))\n)",
+                    "expr": "sum by (node_name) (\n(rate(mysql_global_status_queries{node_name=~\"$host\"}[$interval]) or \nirate(mysql_global_status_queries{node_name=~\"$host\"}[5m])) or \n(sum by (node_name) (rate(mongodb_mongod_op_counters_total{node_name=~\"$host\",type!=\"command\"}[$interval])) or \nsum by (node_name) (irate(mongodb_mongod_op_counters_total{node_name=~\"$host\",type!=\"command\"}[5m]))) or\n(sum by (node_name) (rate(pg_stat_database_xact_commit{node_name=~\"$host\"}[$interval]) + \nrate(pg_stat_database_xact_rollback{node_name=~\"$host\"}[$interval])) or\nsum by (node_name) (irate(pg_stat_database_xact_commit{node_name=~\"$host\"}[5m]) + \nirate(pg_stat_database_xact_rollback{node_name=~\"$host\"}[5m])))\n)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -3457,7 +3462,7 @@
                     "to": "null"
                 }
             ],
-            "repeatIteration": 1566412023858,
+            "repeatIteration": 1566489883557,
             "repeatPanelId": 25,
             "repeatedByRow": true,
             "sparkline": {
@@ -3559,7 +3564,7 @@
                     "to": "null"
                 }
             ],
-            "repeatIteration": 1566412023858,
+            "repeatIteration": 1566489883557,
             "repeatPanelId": 26,
             "repeatedByRow": true,
             "sparkline": {
@@ -3651,7 +3656,7 @@
                     "to": "null"
                 }
             ],
-            "repeatIteration": 1566412023858,
+            "repeatIteration": 1566489883557,
             "repeatPanelId": 19,
             "repeatedByRow": true,
             "sparkline": {
@@ -3747,7 +3752,7 @@
                     "to": "null"
                 }
             ],
-            "repeatIteration": 1566412023858,
+            "repeatIteration": 1566489883557,
             "repeatPanelId": 1297,
             "repeatedByRow": true,
             "sparkline": {
@@ -3762,7 +3767,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "avg by (node_name) (mysql_global_status_uptime{service_name=~\"$service\",node_name=~\"$host\"} or \nmongodb_instance_uptime_seconds {service_name=~\"$service\",node_name=~\"$host\"} or \n(time() - process_start_time_seconds{service_name=~\"$service\",node_name=~\"$host\",job=~\"postgres_exporter.*\"}))",
+                    "expr": "avg by (node_name) (mysql_global_status_uptime{node_name=~\"$host\"} or \nmongodb_instance_uptime_seconds {node_name=~\"$host\"} or \n(time() - process_start_time_seconds{node_name=~\"$host\",job=~\"postgres_exporter.*\"}))",
                     "format": "time_series",
                     "interval": "5m",
                     "intervalFactor": 1,
@@ -3855,11 +3860,33 @@
                 "type": "interval"
             },
             {
+                "allValue": null,
+                "current": {},
+                "datasource": "Prometheus",
+                "definition": "label_values(node_boot_time_seconds, environment)",
+                "hide": 0,
+                "includeAll": true,
+                "label": "Environment",
+                "multi": true,
+                "name": "environment",
+                "options": [],
+                "query": "label_values(node_boot_time_seconds, environment)",
+                "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            },
+            {
                 "allFormat": "glob",
                 "allValue": null,
                 "current": {},
                 "datasource": "Prometheus",
-                "definition": "label_values(node_boot_time_seconds, node_name)",
+                "definition": "label_values(node_boot_time_seconds{environment=~\"$environment\"}, node_name)",
                 "hide": 0,
                 "includeAll": true,
                 "label": "Host",
@@ -3867,7 +3894,7 @@
                 "multiFormat": "regex values",
                 "name": "host",
                 "options": [],
-                "query": "label_values(node_boot_time_seconds, node_name)",
+                "query": "label_values(node_boot_time_seconds{environment=~\"$environment\"}, node_name)",
                 "refresh": 1,
                 "refresh_on_load": false,
                 "regex": "",
@@ -3885,7 +3912,7 @@
                 "current": {},
                 "datasource": "Prometheus",
                 "definition": "label_values({__name__=~\"postgres_exporter_build_info|mysqld_exporter_build_info|mongodb_exporter_build_info|proxysql_exporter_build_info\",node_name=~\"$host\"}, service_name)",
-                "hide": 0,
+                "hide": 2,
                 "includeAll": true,
                 "label": "Service",
                 "multi": true,
