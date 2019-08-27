@@ -36,7 +36,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1566582221390,
+    "iteration": 1566823652206,
     "links": [
         {
             "icon": "doc",
@@ -847,12 +847,244 @@
             "valueName": "current"
         },
         {
+            "columns": [],
+            "description": "",
+            "fontSize": "100%",
+            "gridPos": {
+                "h": 6,
+                "w": 12,
+                "x": 0,
+                "y": 7
+            },
+            "id": 1001,
+            "options": {},
+            "pageSize": null,
+            "scroll": true,
+            "showHeader": true,
+            "sort": {
+                "col": 0,
+                "desc": true
+            },
+            "styles": [
+                {
+                    "alias": "Time",
+                    "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                    "pattern": "Time",
+                    "type": "hidden"
+                },
+                {
+                    "alias": "Type",
+                    "colorMode": null,
+                    "colors": [
+                        "rgba(245, 54, 54, 0.9)",
+                        "rgba(237, 129, 40, 0.89)",
+                        "rgba(50, 172, 45, 0.97)"
+                    ],
+                    "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                    "decimals": 2,
+                    "mappingType": 1,
+                    "pattern": "service_type",
+                    "thresholds": [],
+                    "type": "string",
+                    "unit": "short"
+                },
+                {
+                    "alias": "Amount",
+                    "colorMode": null,
+                    "colors": [
+                        "rgba(245, 54, 54, 0.9)",
+                        "rgba(237, 129, 40, 0.89)",
+                        "rgba(50, 172, 45, 0.97)"
+                    ],
+                    "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                    "decimals": 0,
+                    "mappingType": 1,
+                    "pattern": "Value",
+                    "thresholds": [],
+                    "type": "number",
+                    "unit": "short"
+                }
+            ],
+            "targets": [
+                {
+                    "expr": "count by (service_type) (sum by (service_name,service_type) (max_over_time(mysql_global_status_threads_connected{node_name=~\"$host\"}[$interval]) or sum by (service_name,service_type) (max_over_time(mongodb_connections{node_name=~\"$host\",state=\"current\"}[$interval])) or sum by (service_name,service_type) (max_over_time(pg_stat_database_numbackends{node_name=~\"$host\"}[$interval]))))",
+                    "format": "table",
+                    "instant": true,
+                    "interval": "$interval",
+                    "legendFormat": "",
+                    "refId": "A"
+                }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "Service Types",
+            "transform": "table",
+            "type": "table"
+        },
+        {
+            "colors": [
+                "#299c46",
+                "rgba(237, 129, 40, 0.89)",
+                "#d44a3a"
+            ],
+            "gridPos": {
+                "h": 6,
+                "w": 12,
+                "x": 12,
+                "y": 7
+            },
+            "id": 1003,
+            "options": {},
+            "polystat": {
+                "animationSpeed": 2500,
+                "columnAutoSize": true,
+                "columns": "",
+                "defaultClickThrough": "",
+                "defaultClickThroughSanitize": false,
+                "displayLimit": 100,
+                "fontAutoScale": true,
+                "fontSize": 12,
+                "fontType": "Roboto",
+                "globalDecimals": 2,
+                "globalDisplayMode": "all",
+                "globalDisplayTextTriggeredEmpty": "OK",
+                "globalOperatorName": "current",
+                "globalUnitFormat": "short",
+                "gradientEnabled": true,
+                "hexagonSortByDirection": "asc",
+                "hexagonSortByField": "name",
+                "maxMetrics": 0,
+                "polygonBorderColor": "black",
+                "polygonBorderSize": 2,
+                "polygonGlobalFillColor": "#0a50a1",
+                "radius": "",
+                "radiusAutoSize": true,
+                "rowAutoSize": true,
+                "rows": "",
+                "shape": "hexagon_pointed_top",
+                "tooltipDisplayMode": "all",
+                "tooltipDisplayTextTriggeredEmpty": "OK",
+                "tooltipFontSize": 12,
+                "tooltipFontType": "Roboto",
+                "tooltipPrimarySortDirection": "desc",
+                "tooltipPrimarySortField": "thresholdLevel",
+                "tooltipSecondarySortDirection": "desc",
+                "tooltipSecondarySortField": "value",
+                "tooltipTimestampEnabled": true
+            },
+            "savedComposites": [],
+            "savedOverrides": [
+                {
+                    "clickThrough": "/graph/d/MQWgroiiz/mysql-overview?var-host=$host",
+                    "colors": [
+                        "#299c46",
+                        "#e5ac0e",
+                        "#bf1b00",
+                        "#ffffff"
+                    ],
+                    "decimals": 0,
+                    "enabled": true,
+                    "label": "OVERRIDE 1",
+                    "metricName": "/MySQL -.*/",
+                    "operatorName": "current",
+                    "prefix": "",
+                    "sanitizeURLEnabled": true,
+                    "scaledDecimals": null,
+                    "suffix": "",
+                    "thresholds": [
+                        {
+                            "color": "#1F60C4",
+                            "state": 0,
+                            "value": 0
+                        }
+                    ],
+                    "unitFormat": "short"
+                },
+                {
+                    "clickThrough": "/graph/d/6Lk9wMHik/mongodb-overview?var-host=$host",
+                    "colors": [
+                        "#299c46",
+                        "#e5ac0e",
+                        "#bf1b00",
+                        "#ffffff"
+                    ],
+                    "decimals": 0,
+                    "enabled": true,
+                    "label": "OVERRIDE 2",
+                    "metricName": "/MongoDB -.*/",
+                    "operatorName": "current",
+                    "prefix": "",
+                    "sanitizeURLEnabled": true,
+                    "scaledDecimals": null,
+                    "suffix": "",
+                    "thresholds": [
+                        {
+                            "color": "#8F3BB8",
+                            "state": 0,
+                            "value": 0
+                        }
+                    ],
+                    "unitFormat": "short"
+                },
+                {
+                    "clickThrough": "/graph/d/IvhES05ik/postgresql-overview?var-host=$host",
+                    "colors": [
+                        "#299c46",
+                        "#e5ac0e",
+                        "#bf1b00",
+                        "#ffffff"
+                    ],
+                    "decimals": 0,
+                    "enabled": true,
+                    "label": "OVERRIDE 3",
+                    "metricName": "/PostgreSQL - .*/",
+                    "operatorName": "current",
+                    "prefix": "",
+                    "sanitizeURLEnabled": true,
+                    "scaledDecimals": null,
+                    "suffix": "",
+                    "thresholds": [
+                        {
+                            "color": "#CA95E5",
+                            "state": 0,
+                            "value": 0
+                        }
+                    ],
+                    "unitFormat": "short"
+                }
+            ],
+            "targets": [
+                {
+                    "expr": "sum by (service_name) (max_over_time(mysql_global_status_threads_connected{node_name=~\"$host\"}[$interval]))",
+                    "interval": "$interval",
+                    "legendFormat": "MySQL - {{service_name}}",
+                    "refId": "A"
+                },
+                {
+                    "expr": "sum by (service_name) (max_over_time(mongodb_connections{node_name=~\"$host\",state=\"current\"}[$interval]))",
+                    "interval": "$interval",
+                    "legendFormat": "MongoDB - {{service_name}}",
+                    "refId": "B"
+                },
+                {
+                    "expr": "sum by (service_name) (max_over_time(pg_stat_database_numbackends{node_name=~\"$host\"}[$interval]))",
+                    "interval": "$interval",
+                    "legendFormat": "PostgreSQL - {{service_name}}",
+                    "refId": "C"
+                }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "DB Service Connections",
+            "type": "grafana-polystat-panel"
+        },
+        {
             "collapsed": false,
             "gridPos": {
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 7
+                "y": 13
             },
             "id": 49,
             "panels": [],
@@ -883,7 +1115,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 8
+                "y": 14
             },
             "height": "",
             "id": 2,
@@ -1016,7 +1248,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 8
+                "y": 14
             },
             "id": 33,
             "legend": {
@@ -1145,7 +1377,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 0,
-                "y": 16
+                "y": 22
             },
             "id": 27,
             "legend": {
@@ -1279,7 +1511,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 12,
-                "y": 16
+                "y": 22
             },
             "id": 43,
             "legend": {
@@ -1400,7 +1632,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 23
+                "y": 29
             },
             "id": 47,
             "panels": [],
@@ -1428,7 +1660,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 0,
-                "y": 24
+                "y": 30
             },
             "height": "",
             "id": 29,
@@ -1590,7 +1822,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 12,
-                "y": 24
+                "y": 30
             },
             "height": "",
             "id": 6,
@@ -1736,7 +1968,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 0,
-                "y": 31
+                "y": 37
             },
             "id": 23,
             "legend": {
@@ -1874,7 +2106,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 12,
-                "y": 31
+                "y": 37
             },
             "id": 30,
             "legend": {
@@ -2002,7 +2234,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 38
+                "y": 44
             },
             "id": 45,
             "panels": [],
@@ -2027,7 +2259,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 0,
-                "y": 39
+                "y": 45
             },
             "id": 31,
             "legend": {
@@ -2174,7 +2406,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 12,
-                "y": 39
+                "y": 45
             },
             "id": 32,
             "legend": {
@@ -2300,7 +2532,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 0,
-                "y": 46
+                "y": 52
             },
             "id": 61,
             "legend": {
@@ -2443,7 +2675,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 12,
-                "y": 46
+                "y": 52
             },
             "id": 51,
             "legend": {
@@ -2579,7 +2811,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 53
+                "y": 59
             },
             "id": 42,
             "panels": [],
@@ -2602,7 +2834,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 0,
-                "y": 54
+                "y": 60
             },
             "id": 21,
             "legend": {
@@ -2729,7 +2961,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 12,
-                "y": 54
+                "y": 60
             },
             "id": 22,
             "legend": {
@@ -2871,7 +3103,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 0,
-                "y": 61
+                "y": 67
             },
             "id": 52,
             "legend": {
@@ -3004,7 +3236,7 @@
                 "h": 7,
                 "w": 12,
                 "x": 12,
-                "y": 61
+                "y": 67
             },
             "id": 53,
             "legend": {
@@ -3216,7 +3448,7 @@
         ]
     },
     "time": {
-        "from": "now-12h",
+        "from": "now-1h",
         "to": "now"
     },
     "timepicker": {
