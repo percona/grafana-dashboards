@@ -96,7 +96,7 @@ def add_links(dashboard):
             ha_pattern = re.compile(r'^.*_HA$')
             ha_tags  = [s for s in dashboard['tags'] if ha_pattern.match(s)]
             service_tag = "None";
-            if len(compare_tags) > 0: 
+            if len(compare_tags) > 0:
                 match_compare = re.match("(MySQL|PostgreSQL|MongoDB|OS)", compare_tags[0]);
                 if match_compare:
                     print "Compare dashboard is detected for the service %s" % match_compare.group(0);
