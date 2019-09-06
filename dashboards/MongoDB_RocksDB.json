@@ -36,7 +36,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1566760805611,
+    "iteration": 1567772456811,
     "links": [
         {
             "icon": "doc",
@@ -111,7 +111,7 @@
     "panels": [
         {
             "gridPos": {
-                "h": 3,
+                "h": 2,
                 "w": 24,
                 "x": 0,
                 "y": 0
@@ -135,13 +135,15 @@
             "type": "digiapulssi-breadcrumb-panel"
         },
         {
+            "collapsed": false,
             "gridPos": {
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 3
+                "y": 2
             },
-            "id": 1003,
+            "id": 1011,
+            "panels": [],
             "title": "",
             "type": "row"
         },
@@ -170,7 +172,7 @@
                 "h": 4,
                 "w": 6,
                 "x": 0,
-                "y": 4
+                "y": 3
             },
             "hideTimeOverride": true,
             "id": 62,
@@ -258,7 +260,7 @@
                 "h": 4,
                 "w": 6,
                 "x": 6,
-                "y": 4
+                "y": 3
             },
             "hideTimeOverride": true,
             "id": 63,
@@ -345,7 +347,7 @@
                 "h": 4,
                 "w": 6,
                 "x": 12,
-                "y": 4
+                "y": 3
             },
             "hideTimeOverride": true,
             "id": 79,
@@ -430,7 +432,7 @@
                 "h": 4,
                 "w": 6,
                 "x": 18,
-                "y": 4
+                "y": 3
             },
             "id": 90,
             "interval": null,
@@ -491,6 +493,19 @@
                 }
             ],
             "valueName": "current"
+        },
+        {
+            "collapsed": false,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 7
+            },
+            "id": 1015,
+            "panels": [],
+            "title": "",
+            "type": "row"
         },
         {
             "aliasColors": {},
@@ -1858,20 +1873,16 @@
             "bars": false,
             "dashLength": 10,
             "dashes": false,
-            "datasource": "Prometheus",
-            "decimals": null,
-            "editable": true,
-            "error": false,
+            "decimals": 2,
             "fill": 2,
             "fillGradient": 0,
-            "grid": {},
             "gridPos": {
                 "h": 7,
                 "w": 12,
                 "x": 12,
                 "y": 50
             },
-            "id": 46,
+            "id": 1017,
             "legend": {
                 "alignAsTable": true,
                 "avg": true,
@@ -1887,45 +1898,32 @@
             },
             "lines": true,
             "linewidth": 2,
-            "links": [],
             "nullPointMode": "null",
             "options": {
                 "dataLinks": []
             },
             "percentage": false,
-            "pointradius": 5,
+            "pointradius": 2,
             "points": false,
             "renderer": "flot",
-            "seriesOverrides": [
-                {
-                    "alias": "seconds",
-                    "fill": 1,
-                    "linewidth": 1,
-                    "points": true,
-                    "yaxis": 2
-                }
-            ],
+            "seriesOverrides": [],
             "spaceLength": 10,
-            "stack": true,
+            "stack": false,
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(mongodb_mongod_rocksdb_compaction_bytes_per_second{service_name=~\"$service\", level=~\"$level\", type=~\"write.*\"}[$interval]) or irate(mongodb_mongod_rocksdb_compaction_bytes_per_second{service_name=~\"$service\", level=~\"$level\", type=~\"write.*\"}[5m])",
-                    "hide": false,
+                    "expr": "mongodb_mongod_rocksdb_size_bytes{service_name=~\"$service\", level=~\"$level\"}",
                     "interval": "$interval",
-                    "intervalFactor": 1,
                     "legendFormat": "{{level}}",
-                    "refId": "B",
-                    "step": 300
+                    "refId": "A"
                 }
             ],
             "thresholds": [],
             "timeFrom": null,
             "timeRegions": [],
             "timeShift": null,
-            "title": "RocksDB Compaction Write Rate",
+            "title": "New row",
             "tooltip": {
-                "msResolution": false,
                 "shared": true,
                 "sort": 0,
                 "value_type": "individual"
@@ -1940,19 +1938,21 @@
             },
             "yaxes": [
                 {
-                    "format": "Bps",
-                    "label": "",
+                    "decimals": 2,
+                    "format": "bytes",
+                    "label": null,
                     "logBase": 1,
                     "max": null,
-                    "min": 0,
+                    "min": "0",
                     "show": true
                 },
                 {
-                    "format": "s",
+                    "format": "short",
+                    "label": null,
                     "logBase": 1,
                     "max": null,
-                    "min": 0,
-                    "show": true
+                    "min": null,
+                    "show": false
                 }
             ],
             "yaxis": {
@@ -2083,12 +2083,11 @@
                 "x": 12,
                 "y": 57
             },
-            "id": 78,
+            "id": 46,
             "legend": {
                 "alignAsTable": true,
                 "avg": true,
                 "current": false,
-                "hideZero": false,
                 "max": true,
                 "min": true,
                 "rightSide": false,
@@ -2109,19 +2108,26 @@
             "pointradius": 5,
             "points": false,
             "renderer": "flot",
-            "seriesOverrides": [],
+            "seriesOverrides": [
+                {
+                    "alias": "seconds",
+                    "fill": 1,
+                    "linewidth": 1,
+                    "points": true,
+                    "yaxis": 2
+                }
+            ],
             "spaceLength": 10,
-            "stack": false,
+            "stack": true,
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "mongodb_mongod_rocksdb_compaction_file_threads{service_name=~\"$service\", level=~\"$level\"}",
+                    "expr": "rate(mongodb_mongod_rocksdb_compaction_bytes_per_second{service_name=~\"$service\", level=~\"$level\", type=~\"write.*\"}[$interval]) or irate(mongodb_mongod_rocksdb_compaction_bytes_per_second{service_name=~\"$service\", level=~\"$level\", type=~\"write.*\"}[5m])",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "{{level}}",
-                    "metric": "mongodb_mongod_rocksdb_compaction_file_threads",
-                    "refId": "A",
+                    "refId": "B",
                     "step": 300
                 }
             ],
@@ -2129,12 +2135,12 @@
             "timeFrom": null,
             "timeRegions": [],
             "timeShift": null,
-            "title": "RocksDB Compaction Threads",
+            "title": "RocksDB Compaction Write Rate",
             "tooltip": {
                 "msResolution": false,
                 "shared": true,
                 "sort": 0,
-                "value_type": "cumulative"
+                "value_type": "individual"
             },
             "type": "graph",
             "xaxis": {
@@ -2146,7 +2152,7 @@
             },
             "yaxes": [
                 {
-                    "format": "none",
+                    "format": "Bps",
                     "label": "",
                     "logBase": 1,
                     "max": null,
@@ -2154,11 +2160,10 @@
                     "show": true
                 },
                 {
-                    "format": "none",
-                    "label": "",
+                    "format": "s",
                     "logBase": 1,
                     "max": null,
-                    "min": null,
+                    "min": 0,
                     "show": true
                 }
             ],
@@ -2275,7 +2280,7 @@
             "dashLength": 10,
             "dashes": false,
             "datasource": "Prometheus",
-            "decimals": 2,
+            "decimals": null,
             "editable": true,
             "error": false,
             "fill": 2,
@@ -2287,7 +2292,7 @@
                 "x": 12,
                 "y": 64
             },
-            "id": 1007,
+            "id": 78,
             "legend": {
                 "alignAsTable": true,
                 "avg": true,
@@ -2319,12 +2324,12 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "mongodb_mongod_rocksdb_size_bytes{service_name=~\"$service\", level=~\"$level\"}",
+                    "expr": "mongodb_mongod_rocksdb_compaction_file_threads{service_name=~\"$service\", level=~\"$level\"}",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "{{level}}",
-                    "metric": "mongodb_mongod_rocksdb_files",
+                    "metric": "mongodb_mongod_rocksdb_compaction_file_threads",
                     "refId": "A",
                     "step": 300
                 }
@@ -2333,7 +2338,7 @@
             "timeFrom": null,
             "timeRegions": [],
             "timeShift": null,
-            "title": "New row",
+            "title": "RocksDB Compaction Threads",
             "tooltip": {
                 "msResolution": false,
                 "shared": true,
@@ -2350,8 +2355,7 @@
             },
             "yaxes": [
                 {
-                    "decimals": 2,
-                    "format": "bytes",
+                    "format": "none",
                     "label": "",
                     "logBase": 1,
                     "max": null,
@@ -3400,6 +3404,525 @@
                 "align": false,
                 "alignLevel": null
             }
+        },
+        {
+            "collapsed": true,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 106
+            },
+            "id": 1,
+            "panels": [
+                {
+                    "cacheTimeout": null,
+                    "content": "<h4><b><font color=#e68a00><center><a href=\"/graph/d/qyzrQGHmk/system-overview?var-host=$host\" target=\"_blank\">$host</a></center></font></b></h4>\n\n\n",
+                    "gridPos": {
+                        "h": 2,
+                        "w": 6,
+                        "x": 0,
+                        "y": 107
+                    },
+                    "id": 1003,
+                    "links": [],
+                    "mode": "html",
+                    "options": {},
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Host",
+                    "type": "text"
+                },
+                {
+                    "cacheTimeout": null,
+                    "colorBackground": false,
+                    "colorPostfix": true,
+                    "colorValue": true,
+                    "colors": [
+                        "#d44a3a",
+                        "rgba(237, 129, 40, 0.89)",
+                        "#299c46"
+                    ],
+                    "decimals": 2,
+                    "format": "s",
+                    "gauge": {
+                        "maxValue": 100,
+                        "minValue": 0,
+                        "show": false,
+                        "thresholdLabels": false,
+                        "thresholdMarkers": true
+                    },
+                    "gridPos": {
+                        "h": 2,
+                        "w": 6,
+                        "x": 6,
+                        "y": 107
+                    },
+                    "id": 1001,
+                    "interval": null,
+                    "links": [],
+                    "mappingType": 1,
+                    "mappingTypes": [
+                        {
+                            "name": "value to text",
+                            "value": 1
+                        },
+                        {
+                            "name": "range to text",
+                            "value": 2
+                        }
+                    ],
+                    "maxDataPoints": 100,
+                    "nullPointMode": "connected",
+                    "nullText": null,
+                    "options": {},
+                    "postfix": "s",
+                    "postfixFontSize": "50%",
+                    "prefix": "",
+                    "prefixFontSize": "50%",
+                    "rangeMaps": [
+                        {
+                            "from": "null",
+                            "text": "N/A",
+                            "to": "null"
+                        }
+                    ],
+                    "sparkline": {
+                        "fillColor": "rgba(31, 118, 189, 0.18)",
+                        "full": false,
+                        "lineColor": "rgb(31, 120, 193)",
+                        "show": true,
+                        "ymax": null,
+                        "ymin": null
+                    },
+                    "tableColumn": "",
+                    "targets": [
+                        {
+                            "expr": "mongodb_instance_uptime_seconds{service_name=~\"$service\"}",
+                            "interval": "$interval",
+                            "refId": "A"
+                        }
+                    ],
+                    "thresholds": "300,3600",
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "MongoDB Uptime",
+                    "type": "singlestat",
+                    "valueFontSize": "50%",
+                    "valueMaps": [
+                        {
+                            "op": "=",
+                            "text": "N/A",
+                            "value": "null"
+                        }
+                    ],
+                    "valueName": "current"
+                },
+                {
+                    "cacheTimeout": null,
+                    "colorBackground": false,
+                    "colorValue": false,
+                    "colors": [
+                        "#299c46",
+                        "rgba(237, 129, 40, 0.89)",
+                        "#d44a3a"
+                    ],
+                    "decimals": 2,
+                    "description": "",
+                    "format": "ops",
+                    "gauge": {
+                        "maxValue": 100,
+                        "minValue": 0,
+                        "show": false,
+                        "thresholdLabels": false,
+                        "thresholdMarkers": true
+                    },
+                    "gridPos": {
+                        "h": 2,
+                        "w": 6,
+                        "x": 12,
+                        "y": 107
+                    },
+                    "id": 1005,
+                    "interval": null,
+                    "links": [],
+                    "mappingType": 1,
+                    "mappingTypes": [
+                        {
+                            "name": "value to text",
+                            "value": 1
+                        },
+                        {
+                            "name": "range to text",
+                            "value": 2
+                        }
+                    ],
+                    "maxDataPoints": 100,
+                    "nullPointMode": "connected",
+                    "nullText": null,
+                    "options": {},
+                    "postfix": "",
+                    "postfixFontSize": "50%",
+                    "prefix": "",
+                    "prefixFontSize": "50%",
+                    "rangeMaps": [
+                        {
+                            "from": "null",
+                            "text": "N/A",
+                            "to": "null"
+                        }
+                    ],
+                    "sparkline": {
+                        "fillColor": "rgba(31, 118, 189, 0.18)",
+                        "full": false,
+                        "lineColor": "rgb(31, 120, 193)",
+                        "show": true,
+                        "ymax": null,
+                        "ymin": null
+                    },
+                    "tableColumn": "",
+                    "targets": [
+                        {
+                            "expr": "sum(rate(mongodb_mongod_op_counters_total{service_name=~\"$service\",type!=\"command\"}[$interval]) or irate(mongodb_mongod_op_counters_total{service_name=~\"$service\",type!=\"command\"}[5m]) or rate(mongodb_op_counters_total{service_name=~\"$service\",type!=\"command\"}[$interval]) or irate(mongodb_op_counters_total{service_name=~\"$service\",type!=\"command\"}[5m]))",
+                            "interval": "$interval",
+                            "refId": "A"
+                        }
+                    ],
+                    "thresholds": "",
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "QPS",
+                    "type": "singlestat",
+                    "valueFontSize": "50%",
+                    "valueMaps": [
+                        {
+                            "op": "=",
+                            "text": "N/A",
+                            "value": "null"
+                        }
+                    ],
+                    "valueName": "current"
+                },
+                {
+                    "cacheTimeout": null,
+                    "colorBackground": false,
+                    "colorValue": false,
+                    "colors": [
+                        "#299c46",
+                        "rgba(237, 129, 40, 0.89)",
+                        "#d44a3a"
+                    ],
+                    "decimals": 2,
+                    "format": "\u00b5s",
+                    "gauge": {
+                        "maxValue": 100,
+                        "minValue": 0,
+                        "show": false,
+                        "thresholdLabels": false,
+                        "thresholdMarkers": true
+                    },
+                    "gridPos": {
+                        "h": 2,
+                        "w": 6,
+                        "x": 18,
+                        "y": 107
+                    },
+                    "id": 1007,
+                    "interval": null,
+                    "links": [],
+                    "mappingType": 1,
+                    "mappingTypes": [
+                        {
+                            "name": "value to text",
+                            "value": 1
+                        },
+                        {
+                            "name": "range to text",
+                            "value": 2
+                        }
+                    ],
+                    "maxDataPoints": 100,
+                    "nullPointMode": "connected",
+                    "nullText": null,
+                    "options": {},
+                    "postfix": "",
+                    "postfixFontSize": "50%",
+                    "prefix": "",
+                    "prefixFontSize": "50%",
+                    "rangeMaps": [
+                        {
+                            "from": "null",
+                            "text": "N/A",
+                            "to": "null"
+                        }
+                    ],
+                    "sparkline": {
+                        "fillColor": "rgba(31, 118, 189, 0.18)",
+                        "full": false,
+                        "lineColor": "rgb(31, 120, 193)",
+                        "show": true,
+                        "ymax": null,
+                        "ymin": null
+                    },
+                    "tableColumn": "",
+                    "targets": [
+                        {
+                            "expr": "rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service\",type=\"command\"}[$interval]) / rate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service\",type=\"command\"}[$interval]) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service\",type=\"command\"}[5m]) / irate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service\",type=\"command\"}[5m])",
+                            "interval": "$interval",
+                            "refId": "A"
+                        }
+                    ],
+                    "thresholds": "",
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Latency",
+                    "type": "singlestat",
+                    "valueFontSize": "50%",
+                    "valueMaps": [
+                        {
+                            "op": "=",
+                            "text": "N/A",
+                            "value": "null"
+                        }
+                    ],
+                    "valueName": "current"
+                },
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": null,
+                    "description": "This shows the number of active connections on the server. Keep in mind the hard limit on the maximum number of connections set by your distribution.\n\nYou can read more about the [connection numbers](https://docs.mongodb.com/manual/administration/analyzing-mongodb-performance/#number-of-connections).",
+                    "editable": true,
+                    "error": false,
+                    "fill": 2,
+                    "fillGradient": 0,
+                    "grid": {
+                        "leftLogBase": 1,
+                        "leftMax": null,
+                        "leftMin": 0,
+                        "rightLogBase": 1,
+                        "rightMax": null,
+                        "rightMin": null
+                    },
+                    "gridPos": {
+                        "h": 7,
+                        "w": 12,
+                        "x": 0,
+                        "y": 109
+                    },
+                    "height": "250px",
+                    "id": 1012,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "rightSide": false,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "options": {
+                        "dataLinks": []
+                    },
+                    "paceLength": 10,
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "expr": "mongodb_mongod_connections{service_name=\"$service\", state=\"current\"} or\nmongodb_mongos_connections{service_name=\"$service\", state=\"current\"} or\nmongodb_connections{service_name=\"$service\", state=\"current\"}",
+                            "format": "time_series",
+                            "hide": false,
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Connections",
+                            "refId": "J",
+                            "step": 300
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeRegions": [],
+                    "timeShift": null,
+                    "title": "Connections",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "cumulative"
+                    },
+                    "type": "graph",
+                    "x-axis": true,
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "y-axis": true,
+                    "y_formats": [
+                        "short",
+                        "short"
+                    ],
+                    "yaxes": [
+                        {
+                            "format": "short",
+                            "label": "",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        }
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
+                },
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": null,
+                    "description": "This shows the number of open cursors for each shard in the cluster. A cursor in MongoDB is a pointer to the result of a given query that can be iterated over. By default a cursor times out after 10 minutes.",
+                    "editable": true,
+                    "error": false,
+                    "fill": 2,
+                    "fillGradient": 0,
+                    "grid": {
+                        "leftLogBase": 1,
+                        "leftMax": null,
+                        "leftMin": 0,
+                        "rightLogBase": 1,
+                        "rightMax": null,
+                        "rightMin": null
+                    },
+                    "gridPos": {
+                        "h": 7,
+                        "w": 12,
+                        "x": 12,
+                        "y": 109
+                    },
+                    "height": "250px",
+                    "id": 1013,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "hideZero": false,
+                        "max": true,
+                        "min": true,
+                        "rightSide": false,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "options": {
+                        "dataLinks": []
+                    },
+                    "paceLength": 10,
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "expr": "mongodb_mongod_metrics_cursor_open{service_name=\"$service\"} or\nmongodb_mongod_cursors{service_name=\"$service\"} or\nmongodb_mongos_metrics_cursor_open{service_name=\"$service\"} or \nmongodb_mongos_cursors{service_name=\"$service\"}",
+                            "format": "time_series",
+                            "hide": false,
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "{{state}}",
+                            "refId": "J",
+                            "step": 300
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeRegions": [],
+                    "timeShift": null,
+                    "title": "Cursors",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "cumulative"
+                    },
+                    "type": "graph",
+                    "x-axis": true,
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "y-axis": true,
+                    "y_formats": [
+                        "short",
+                        "short"
+                    ],
+                    "yaxes": [
+                        {
+                            "format": "short",
+                            "label": "",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        }
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
+                }
+            ],
+            "title": "MongoDB Summary",
+            "type": "row"
         }
     ],
     "refresh": "1m",
