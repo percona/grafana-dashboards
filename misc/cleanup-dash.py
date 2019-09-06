@@ -8,6 +8,8 @@ import sys
 import json
 import copy
 import datetime
+import re
+import pprint
 
 __version__ = '1.0.0'
 refresh_intervals = ['5s','10s','30s','1m','5m','15m','30m','1h','2h','1d']
@@ -89,7 +91,23 @@ def add_links(dashboard):
     user_input = raw_input(prompt)
     if user_input:
         if user_input == 'Yes':
-            setOfLinks = ['QAN', 'OS', 'MySQL', 'MongoDB', 'PostgreSQL', 'HA', 'Insight', 'PMM']
+            compare_pattern = re.compile(r'^.*_Compare$')
+            compare_tags  = [s for s in dashboard['tags'] if compare_pattern.match(s)]
+            ha_pattern = re.compile(r'^.*_HA$')
+            ha_tags  = [s for s in dashboard['tags'] if ha_pattern.match(s)]
+            service_tag = "None";
+            if len(compare_tags) > 0: 
+                match_compare = re.match("(MySQL|PostgreSQL|MongoDB|OS)", compare_tags[0]);
+                if match_compare:
+                    print "Compare dashboard is detected for the service %s" % match_compare.group(0);
+                    service_tag = match_compare.group(0);
+            if len(ha_tags) > 0:
+                match_ha = re.match("(MySQL|PostgreSQL|MongoDB)", ha_tags[0]);
+                if match_ha:
+                    print "HA dashboard is detected for the service %s" % match_ha.group(0);
+                    service_tag = match_ha.group(0);
+            setOfLinks = ['Home', 'QAN', 'Compare', 'OS', 'MySQL', 'MongoDB', 'PostgreSQL', 'MySQL_HA', 'MongoDB_HA', 'Services', 'PMM']
+
             for link in copy.deepcopy(dashboard['links']):
                 dashboard['links'].remove(link)
 
@@ -105,17 +123,108 @@ def add_links(dashboard):
                         'type': 'link',
                         'url': '/graph/d/7w6Q3PJmz/pmm-query-analytics'
                     }
-                else:
+                    dashboard['links'].append(add_item)
+                elif tag == 'Home' and (tag not in dashboard['tags']):
                     add_item = {
-                        'asDropdown': True,
-                        'includeVars': True if tag in dashboard['tags'] else False,
+                        'icon': 'doc',
+                        'includeVars': True,
                         'keepTime': True,
                         'tags': [ tag ],
                         'targetBlank': False,
-                        'title': tag,
-                        'type': 'dashboards'
+                        'title': 'Home',
+                        'type': 'link',
+                        'url': '/graph/d/Fxvd1timk/home-dashboard'
                     }
-                dashboard['links'].append(add_item)
+                    dashboard['links'].append(add_item)
+                elif tag == 'Compare' and (tag not in dashboard['tags']):
+                    if 'OS' in dashboard['tags']:
+                        add_item = {
+                            'icon': 'bolt',
+                            'includeVars': True,
+                            'keepTime': True,
+                            'tags': [ tag ],
+                            'targetBlank': False,
+                            'title': 'Compare',
+                            'type': 'link',
+                            'url': '/graph/d/000000205/compare-system-parameters'
+                        }
+                        dashboard['links'].append(add_item)
+                    elif 'MySQL' in dashboard['tags']:
+                        add_item = {
+                            'icon': 'bolt',
+                            'includeVars': True,
+                            'keepTime': True,
+                            'tags': [ tag ],
+                            'targetBlank': False,
+                            'title': 'Compare',
+                            'type': 'link',
+                            'url': '/graph/d/KQdFKEGWz/mysql-services-compare'
+                        }
+                        dashboard['links'].append(add_item)
+                    elif 'MongoDB' in dashboard['tags']:
+                        add_item = {
+                            'icon': 'bolt',
+                            'includeVars': True,
+                            'keepTime': True,
+                            'tags': [ tag ],
+                            'targetBlank': False,
+                            'title': 'Compare',
+                            'type': 'link',
+                            'url': '/graph/d/OUYqEyOWk/mongodb-services-compare'
+                        }
+                        dashboard['links'].append(add_item)
+                    elif 'PostgreSQL' in dashboard['tags']:
+                        add_item = {
+                            'icon': 'bolt',
+                            'includeVars': True,
+                            'keepTime': True,
+                            'tags': [ tag ],
+                            'targetBlank': False,
+                            'title': 'Compare',
+                            'type': 'link',
+                            'url': '/graph/d/6XE3QvKWz/postgresql-services-compare'
+                        }
+                        dashboard['links'].append(add_item)
+                else:
+                    if (tag in dashboard['tags'] or tag in ['Services','PMM',service_tag]) and tag not in ['Compare','Home','MySQL_HA','MongoDB_HA']:
+                        add_item = {
+                            'asDropdown': True,
+                            'includeVars': True,
+                            'keepTime': True,
+                            'tags': [ tag ],
+                            'targetBlank': False,
+                            'title': tag,
+                            'type': 'dashboards'
+                        }
+                        dashboard['links'].append(add_item)
+                    else:
+                        if (tag == 'MySQL_HA' and ('MySQL' in dashboard['tags'] or service_tag == 'MySQL')) or (tag == 'MongoDB_HA' and ('MongoDB' in dashboard['tags'] or service_tag == 'MongoDB')):
+                            add_item = {
+                                'asDropdown': True,
+                                'includeVars': True,
+                                'keepTime': True,
+                                'tags': [ tag ],
+                                'targetBlank': False,
+                                'title': 'HA',
+                                'type': 'dashboards'
+                            }
+                            dashboard['links'].append(add_item)
+    return dashboard
+
+
+def set_editable(dashboard):
+    """Set Editable Dashboard."""
+    if 'editable' not in dashboard.keys():
+        return dashboard
+    prompt = 'Editable (conventional: **False**) [%s]: ' % (
+        dashboard['editable'],
+    )
+    user_input = raw_input(prompt)
+    if user_input:
+        if user_input == 'True':
+            dashboard['editable'] = True
+        else:
+            dashboard['editable'] = False
     return dashboard
 
 
@@ -272,7 +381,7 @@ def add_annotation(dashboard):
                 'limit': 100,
                 'name': "PMM Annotations",
                 'showIn': 0,
-                'tags': [ tag ],
+                'tags': [ tag, '$host', '$service'],
                 'type': "tags"
             }
             dashboard['annotations']['list'].append(add_item)
@@ -341,7 +450,7 @@ def main():
         dashboard = json.loads(dashboard_file.read())
 
     # registered cleanupers.
-    CLEANUPERS = [set_title, set_hide_timepicker, drop_some_internal_elements, set_time, set_timezone, set_default_refresh_intervals, set_refresh,
+    CLEANUPERS = [set_title, set_editable, set_hide_timepicker, drop_some_internal_elements, set_time, set_timezone, set_default_refresh_intervals, set_refresh,
                   fix_datasource, add_annotation, add_links, add_copyrights_links, set_shared_crosshear, set_unique_ids, set_dashboard_id_to_null]
 
     for func in CLEANUPERS:
