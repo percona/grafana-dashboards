@@ -1,0 +1,4483 @@
+{
+    "annotations": {
+        "list": [
+            {
+                "builtIn": 1,
+                "datasource": "-- Grafana --",
+                "enable": true,
+                "hide": false,
+                "iconColor": "#e0752d",
+                "limit": 100,
+                "matchAny": true,
+                "name": "PMM Annotations",
+                "showIn": 0,
+                "tags": [
+                    "pmm_annotation",
+                    "$host",
+                    "$service"
+                ],
+                "type": "tags"
+            },
+            {
+                "builtIn": 1,
+                "datasource": "-- Grafana --",
+                "enable": true,
+                "hide": true,
+                "iconColor": "#6ed0e0",
+                "limit": 100,
+                "name": "Annotations & Alerts",
+                "showIn": 0,
+                "tags": [],
+                "type": "dashboard"
+            }
+        ]
+    },
+    "editable": false,
+    "gnetId": null,
+    "graphTooltip": 1,
+    "id": null,
+    "iteration": 1567694464352,
+    "links": [
+        {
+            "icon": "doc",
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "Home"
+            ],
+            "targetBlank": false,
+            "title": "Home",
+            "type": "link",
+            "url": "/graph/d/Fxvd1timk/home-dashboard"
+        },
+        {
+            "icon": "dashboard",
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "QAN"
+            ],
+            "targetBlank": false,
+            "title": "Query Analytics",
+            "type": "link",
+            "url": "/graph/d/7w6Q3PJmz/pmm-query-analytics"
+        },
+        {
+            "icon": "bolt",
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "Compare"
+            ],
+            "targetBlank": false,
+            "title": "Compare",
+            "type": "link",
+            "url": "/graph/d/KQdFKEGWz/mysql-services-compare"
+        },
+        {
+            "asDropdown": true,
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "MySQL"
+            ],
+            "targetBlank": false,
+            "title": "MySQL",
+            "type": "dashboards"
+        },
+        {
+            "asDropdown": true,
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "MySQL_HA"
+            ],
+            "targetBlank": false,
+            "title": "HA",
+            "type": "dashboards"
+        },
+        {
+            "asDropdown": true,
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "Services"
+            ],
+            "targetBlank": false,
+            "title": "Services",
+            "type": "dashboards"
+        },
+        {
+            "asDropdown": true,
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "PMM"
+            ],
+            "targetBlank": false,
+            "title": "PMM",
+            "type": "dashboards"
+        }
+    ],
+    "panels": [
+        {
+            "gridPos": {
+                "h": 3,
+                "w": 24,
+                "x": 0,
+                "y": 0
+            },
+            "id": 999,
+            "isRootDashboard": false,
+            "links": [],
+            "options": {},
+            "targets": [
+                {
+                    "expr": "",
+                    "format": "time_series",
+                    "intervalFactor": 1,
+                    "refId": "A"
+                }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": " ",
+            "transparent": true,
+            "type": "digiapulssi-breadcrumb-panel"
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "editable": true,
+            "error": false,
+            "fill": 2,
+            "fillGradient": 0,
+            "grid": {},
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 0,
+                "y": 3
+            },
+            "height": "250px",
+            "id": 1,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "null",
+            "options": {
+                "dataLinks": []
+            },
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [
+                {
+                    "alias": "RocksDB Cache",
+                    "fill": 0
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "rate(mysql_global_status_rocksdb_block_cache_hit{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_rocksdb_block_cache_hit{service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Hit",
+                    "metric": "",
+                    "refId": "B",
+                    "step": 10
+                },
+                {
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "rate(mysql_global_status_rocksdb_block_cache_miss{service_name=\"$service\"}[$interval]) or  irate(mysql_global_status_rocksdb_block_cache_miss{service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Miss",
+                    "metric": "",
+                    "refId": "A",
+                    "step": 10
+                },
+                {
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "rate(mysql_global_status_rocksdb_block_cache_add{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_rocksdb_block_cache_add{service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Added",
+                    "metric": "",
+                    "refId": "C",
+                    "step": 10
+                },
+                {
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "rate(mysql_global_status_rocksdb_block_cache_add_failures{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_rocksdb_block_cache_add_failures{service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Added Failures",
+                    "metric": "",
+                    "refId": "D",
+                    "step": 10
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "MyRocks  Cache",
+            "tooltip": {
+                "msResolution": false,
+                "shared": true,
+                "sort": 0,
+                "value_type": "cumulative"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "short",
+                    "label": "",
+                    "logBase": 1,
+                    "max": null,
+                    "min": 0,
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": "",
+                    "logBase": 1,
+                    "max": null,
+                    "min": 0,
+                    "show": true
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "editable": true,
+            "error": false,
+            "fill": 2,
+            "fillGradient": 0,
+            "grid": {},
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 12,
+                "y": 3
+            },
+            "id": 7,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "hideEmpty": true,
+                "hideZero": true,
+                "max": true,
+                "min": true,
+                "rightSide": false,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "null",
+            "options": {
+                "dataLinks": []
+            },
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [
+                {
+                    "alias": "System Memory",
+                    "fill": 0,
+                    "stack": false
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(mysql_global_status_rocksdb_block_cache_bytes_read{service_name=\"$service\"}[$interval])  or irate(mysql_global_status_rocksdb_block_cache_bytes_read{service_name=\"$service\"}[5m]) ",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Reads",
+                    "metric": "",
+                    "refId": "A",
+                    "step": 10
+                },
+                {
+                    "expr": "rate(mysql_global_status_rocksdb_block_cache_bytes_write{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_rocksdb_block_cache_bytes_write{service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Writes",
+                    "metric": "",
+                    "refId": "B",
+                    "step": 10
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "MyRocks Cache Data Bytes R/W",
+            "tooltip": {
+                "msResolution": false,
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "bytes",
+                    "label": "",
+                    "logBase": 1,
+                    "max": null,
+                    "min": 0,
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "editable": true,
+            "error": false,
+            "fill": 2,
+            "fillGradient": 0,
+            "grid": {},
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 0,
+                "y": 10
+            },
+            "height": "250px",
+            "id": 3,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "null",
+            "options": {
+                "dataLinks": []
+            },
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [
+                {
+                    "alias": "RocksDB Cache Index",
+                    "fill": 0
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "rate(mysql_global_status_rocksdb_block_cache_index_hit{service_name=\"$service\"}[$interval])  or irate(mysql_global_status_rocksdb_block_cache_index_hit{service_name=\"$service\"}[5m]) ",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Hit",
+                    "metric": "",
+                    "refId": "A",
+                    "step": 10
+                },
+                {
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "rate(mysql_global_status_rocksdb_block_cache_index_miss{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_rocksdb_block_cache_index_miss{service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Miss",
+                    "metric": "",
+                    "refId": "C",
+                    "step": 10
+                },
+                {
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "rate(mysql_global_status_rocksdb_block_cache_index_add{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_rocksdb_block_cache_index_add{service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Added",
+                    "metric": "",
+                    "refId": "B",
+                    "step": 10
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "MyRocks Cache Index Hit Rate",
+            "tooltip": {
+                "msResolution": false,
+                "shared": true,
+                "sort": 0,
+                "value_type": "cumulative"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "short",
+                    "label": "",
+                    "logBase": 1,
+                    "max": null,
+                    "min": 0,
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": "",
+                    "logBase": 1,
+                    "max": null,
+                    "min": 0,
+                    "show": true
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "editable": true,
+            "error": false,
+            "fill": 2,
+            "fillGradient": 0,
+            "grid": {},
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 12,
+                "y": 10
+            },
+            "height": "250px",
+            "id": 4,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "null",
+            "options": {
+                "dataLinks": []
+            },
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [
+                {
+                    "alias": "MyRocks Cache Index Bytes",
+                    "fill": 0
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "rate(mysql_global_status_rocksdb_block_cache_index_bytes_insert{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_rocksdb_block_cache_index_bytes_insert{service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Inserted",
+                    "metric": "",
+                    "refId": "A",
+                    "step": 10
+                },
+                {
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "rate(mysql_global_status_rocksdb_block_cache_index_bytes_evict{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_rocksdb_block_cache_index_bytes_evict{service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Evicted",
+                    "metric": "",
+                    "refId": "B",
+                    "step": 10
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "MyRocks Cache Index",
+            "tooltip": {
+                "msResolution": false,
+                "shared": true,
+                "sort": 0,
+                "value_type": "cumulative"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "bytes",
+                    "label": "",
+                    "logBase": 1,
+                    "max": null,
+                    "min": 0,
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": "",
+                    "logBase": 1,
+                    "max": null,
+                    "min": 0,
+                    "show": true
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "editable": true,
+            "error": false,
+            "fill": 2,
+            "fillGradient": 0,
+            "grid": {},
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 0,
+                "y": 17
+            },
+            "height": "250px",
+            "id": 5,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "null",
+            "options": {
+                "dataLinks": []
+            },
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [
+                {
+                    "alias": "MyRocks Cache Filter",
+                    "fill": 0
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "rate(mysql_global_status_rocksdb_block_cache_filter_hit{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_rocksdb_block_cache_filter_hit{service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Hit",
+                    "metric": "",
+                    "refId": "A",
+                    "step": 10
+                },
+                {
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "rate(mysql_global_status_rocksdb_block_cache_filter_miss{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_rocksdb_block_cache_filter_miss{service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Miss",
+                    "metric": "",
+                    "refId": "B",
+                    "step": 10
+                },
+                {
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "rate(mysql_global_status_rocksdb_block_cache_filter_add{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_rocksdb_block_cache_filter_add{service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Added",
+                    "metric": "",
+                    "refId": "C",
+                    "step": 10
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "MyRocks Cache Filter Hit Rate",
+            "tooltip": {
+                "msResolution": false,
+                "shared": true,
+                "sort": 0,
+                "value_type": "cumulative"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "short",
+                    "label": "",
+                    "logBase": 1,
+                    "max": null,
+                    "min": 0,
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": "",
+                    "logBase": 1,
+                    "max": null,
+                    "min": 0,
+                    "show": true
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "editable": true,
+            "error": false,
+            "fill": 2,
+            "fillGradient": 0,
+            "grid": {},
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 12,
+                "y": 17
+            },
+            "height": "250px",
+            "id": 6,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "null",
+            "options": {
+                "dataLinks": []
+            },
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [
+                {
+                    "alias": "MyRocks Cache Filter Bytes",
+                    "fill": 0
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "rate(mysql_global_status_rocksdb_block_cache_filter_bytes_insert{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_rocksdb_block_cache_filter_bytes_insert{service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Inserted",
+                    "metric": "",
+                    "refId": "A",
+                    "step": 10
+                },
+                {
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "rate(mysql_global_status_rocksdb_block_cache_filter_bytes_evict{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_rocksdb_block_cache_filter_bytes_evict{service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Evicted",
+                    "metric": "",
+                    "refId": "B",
+                    "step": 10
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "MyRocks Cache Filter",
+            "tooltip": {
+                "msResolution": false,
+                "shared": true,
+                "sort": 0,
+                "value_type": "cumulative"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "short",
+                    "label": "",
+                    "logBase": 1,
+                    "max": null,
+                    "min": 0,
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": "",
+                    "logBase": 1,
+                    "max": null,
+                    "min": 0,
+                    "show": true
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "editable": true,
+            "error": false,
+            "fill": 2,
+            "fillGradient": 0,
+            "grid": {},
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 0,
+                "y": 24
+            },
+            "id": 8,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "hideEmpty": true,
+                "hideZero": true,
+                "max": true,
+                "min": true,
+                "rightSide": false,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "null",
+            "options": {
+                "dataLinks": []
+            },
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [
+                {
+                    "alias": "System Memory",
+                    "fill": 0,
+                    "stack": false
+                }
+            ],
+            "spaceLength": 10,
+            "stack": true,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(mysql_global_status_rocksdb_block_cache_data_bytes_insert{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_rocksdb_block_cache_data_bytes_insert{service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Bytes",
+                    "metric": "",
+                    "refId": "A",
+                    "step": 10
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "MyRocks Cache Data Bytes Inserted",
+            "tooltip": {
+                "msResolution": false,
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "bytes",
+                    "label": "",
+                    "logBase": 1,
+                    "max": null,
+                    "min": 0,
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "editable": true,
+            "error": false,
+            "fill": 2,
+            "fillGradient": 0,
+            "grid": {},
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 12,
+                "y": 24
+            },
+            "id": 9,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "hideEmpty": false,
+                "hideZero": false,
+                "max": true,
+                "min": true,
+                "rightSide": false,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "null",
+            "options": {
+                "dataLinks": []
+            },
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [
+                {
+                    "alias": "System Memory",
+                    "fill": 0,
+                    "stack": false
+                }
+            ],
+            "spaceLength": 10,
+            "stack": true,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(mysql_global_status_rocksdb_bloom_filter_useful{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_rocksdb_bloom_filter_useful{service_name=\"$service\"}[5m]) ",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Useful",
+                    "metric": "",
+                    "refId": "A",
+                    "step": 10
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "MyRocks Bloom Filter",
+            "tooltip": {
+                "msResolution": false,
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "bytes",
+                    "label": "",
+                    "logBase": 1,
+                    "max": null,
+                    "min": 0,
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "editable": true,
+            "error": false,
+            "fill": 2,
+            "fillGradient": 0,
+            "grid": {},
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 0,
+                "y": 31
+            },
+            "height": "250px",
+            "id": 10,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "null",
+            "options": {
+                "dataLinks": []
+            },
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [
+                {
+                    "alias": "MyRocks Memtable",
+                    "fill": 0
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "rate(mysql_global_status_rocksdb_memtable_hit{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_rocksdb_memtable_hit{service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Hit",
+                    "metric": "",
+                    "refId": "B",
+                    "step": 10
+                },
+                {
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "rate(mysql_global_status_rocksdb_memtable_miss{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_rocksdb_memtable_miss{service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Miss",
+                    "metric": "",
+                    "refId": "A",
+                    "step": 10
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "MyRocks Memtable",
+            "tooltip": {
+                "msResolution": false,
+                "shared": true,
+                "sort": 0,
+                "value_type": "cumulative"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "ops",
+                    "label": "",
+                    "logBase": 1,
+                    "max": null,
+                    "min": 0,
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": "",
+                    "logBase": 1,
+                    "max": null,
+                    "min": 0,
+                    "show": true
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "fill": 2,
+            "fillGradient": 0,
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 12,
+                "y": 31
+            },
+            "id": 23,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "null",
+            "options": {
+                "dataLinks": []
+            },
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "max_over_time(mysql_global_status_rocksdb_memtable_total[$interval]) or\nmax_over_time(mysql_global_status_rocksdb_memtable_total[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Total",
+                    "refId": "A"
+                },
+                {
+                    "expr": "max_over_time(mysql_global_status_rocksdb_memtable_unflushed[$interval]) or\nmax_over_time(mysql_global_status_rocksdb_memtable_unflushed[5m])",
+                    "format": "time_series",
+                    "hide": false,
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Unflushed",
+                    "refId": "B"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "Memtable Size",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 2,
+                    "format": "bytes",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "editable": true,
+            "error": false,
+            "fill": 2,
+            "fillGradient": 0,
+            "grid": {},
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 0,
+                "y": 38
+            },
+            "height": "250px",
+            "id": 12,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "null",
+            "options": {
+                "dataLinks": []
+            },
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [
+                {
+                    "alias": "MyRocks Number of Keys",
+                    "fill": 0
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "rate(mysql_global_status_rocksdb_number_keys_read{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_rocksdb_number_keys_read{service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Read",
+                    "metric": "",
+                    "refId": "A",
+                    "step": 10
+                },
+                {
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "rate(mysql_global_status_rocksdb_number_keys_written{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_rocksdb_number_keys_written{service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Write",
+                    "metric": "",
+                    "refId": "B",
+                    "step": 10
+                },
+                {
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "rate(mysql_global_status_rocksdb_number_keys_updated{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_rocksdb_number_keys_updated{service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Updated",
+                    "metric": "",
+                    "refId": "C",
+                    "step": 10
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "MyRocks Number Of Keys",
+            "tooltip": {
+                "msResolution": false,
+                "shared": true,
+                "sort": 0,
+                "value_type": "cumulative"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "short",
+                    "label": "",
+                    "logBase": 1,
+                    "max": null,
+                    "min": 0,
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": "",
+                    "logBase": 1,
+                    "max": null,
+                    "min": 0,
+                    "show": true
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "editable": true,
+            "error": false,
+            "fill": 2,
+            "fillGradient": 0,
+            "grid": {},
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 12,
+                "y": 38
+            },
+            "height": "250px",
+            "id": 11,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "sort": null,
+                "sortDesc": null,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "null",
+            "options": {
+                "dataLinks": []
+            },
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [
+                {
+                    "alias": "MyRocks Hit L0/l1",
+                    "fill": 0
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "rate(mysql_global_status_rocksdb_get_hit_l0{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_rocksdb_get_hit_l0{service_name=\"$service\"}[5m]) ",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "L0",
+                    "metric": "",
+                    "refId": "A",
+                    "step": 10
+                },
+                {
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "rate(mysql_global_status_rocksdb_get_hit_l1{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_rocksdb_get_hit_l1{service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "L1",
+                    "metric": "",
+                    "refId": "B",
+                    "step": 10
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "MyRocks Cache L0/L1",
+            "tooltip": {
+                "msResolution": false,
+                "shared": true,
+                "sort": 0,
+                "value_type": "cumulative"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "short",
+                    "label": "",
+                    "logBase": 1,
+                    "max": null,
+                    "min": 0,
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": "",
+                    "logBase": 1,
+                    "max": null,
+                    "min": 0,
+                    "show": true
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "editable": true,
+            "error": false,
+            "fill": 2,
+            "fillGradient": 0,
+            "grid": {},
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 0,
+                "y": 45
+            },
+            "height": "250px",
+            "id": 14,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "rightSide": false,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "null",
+            "options": {
+                "dataLinks": []
+            },
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [
+                {
+                    "alias": "MyRocks Number of DB ops",
+                    "fill": 0
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "rate(mysql_global_status_rocksdb_number_db_seek{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_rocksdb_number_db_seek{service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Seek",
+                    "metric": "",
+                    "refId": "A",
+                    "step": 10
+                },
+                {
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "rate(mysql_global_status_rocksdb_number_db_seek_found{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_rocksdb_number_db_seek_found{service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Seek Found",
+                    "metric": "",
+                    "refId": "B",
+                    "step": 10
+                },
+                {
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "rate(mysql_global_status_rocksdb_number_db_next{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_rocksdb_number_db_next{service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Next",
+                    "metric": "",
+                    "refId": "C",
+                    "step": 10
+                },
+                {
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "rate(mysql_global_status_rocksdb_number_db_next_found{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_rocksdb_number_db_next_found{service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Next Found",
+                    "metric": "",
+                    "refId": "D",
+                    "step": 10
+                },
+                {
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "rate(mysql_global_status_rocksdb_number_db_prev{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_rocksdb_number_db_prev{service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Prev",
+                    "metric": "",
+                    "refId": "E",
+                    "step": 10
+                },
+                {
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "rate(mysql_global_status_rocksdb_number_db_prev_found{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_rocksdb_number_db_prev_found{service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Prev Found",
+                    "metric": "",
+                    "refId": "F",
+                    "step": 10
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "MyRocks Number of DB ops",
+            "tooltip": {
+                "msResolution": false,
+                "shared": true,
+                "sort": 0,
+                "value_type": "cumulative"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "short",
+                    "label": "",
+                    "logBase": 1,
+                    "max": null,
+                    "min": 0,
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": "",
+                    "logBase": 1,
+                    "max": null,
+                    "min": 0,
+                    "show": true
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "editable": true,
+            "error": false,
+            "fill": 2,
+            "fillGradient": 0,
+            "grid": {},
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 12,
+                "y": 45
+            },
+            "height": "250px",
+            "id": 13,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "sort": null,
+                "sortDesc": null,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "null",
+            "options": {
+                "dataLinks": []
+            },
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [
+                {
+                    "alias": "MyRocks R/W",
+                    "fill": 0
+                },
+                {
+                    "alias": "Write",
+                    "transform": "negative-Y"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "rate(mysql_global_status_rocksdb_bytes_read{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_rocksdb_bytes_read{service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Read",
+                    "metric": "",
+                    "refId": "A",
+                    "step": 10
+                },
+                {
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "rate(mysql_global_status_rocksdb_bytes_written{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_rocksdb_bytes_written{service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Write",
+                    "metric": "",
+                    "refId": "B",
+                    "step": 10
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "MyRocks R/W",
+            "tooltip": {
+                "msResolution": false,
+                "shared": true,
+                "sort": 0,
+                "value_type": "cumulative"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "short",
+                    "label": "(- write / + read)",
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": "",
+                    "logBase": 1,
+                    "max": null,
+                    "min": 0,
+                    "show": true
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "editable": true,
+            "error": false,
+            "fill": 2,
+            "fillGradient": 0,
+            "grid": {},
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 0,
+                "y": 52
+            },
+            "id": 15,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "hideEmpty": true,
+                "hideZero": true,
+                "max": true,
+                "min": true,
+                "rightSide": false,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "null",
+            "options": {
+                "dataLinks": []
+            },
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [
+                {
+                    "alias": "System Memory",
+                    "fill": 0,
+                    "stack": false
+                }
+            ],
+            "spaceLength": 10,
+            "stack": true,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(mysql_global_status_rocksdb_iter_bytes_read{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_rocksdb_iter_bytes_read{service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Reads",
+                    "metric": "",
+                    "refId": "A",
+                    "step": 10
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "MyRocks Bytes Read by Iterations",
+            "tooltip": {
+                "msResolution": false,
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "bytes",
+                    "label": "",
+                    "logBase": 1,
+                    "max": null,
+                    "min": 0,
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "editable": true,
+            "error": false,
+            "fill": 2,
+            "fillGradient": 0,
+            "grid": {},
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 12,
+                "y": 52
+            },
+            "height": "250px",
+            "id": 19,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "rightSide": false,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "null",
+            "options": {
+                "dataLinks": []
+            },
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [
+                {
+                    "alias": "MyRocks Write ops",
+                    "fill": 0
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "rate(mysql_global_status_rocksdb_write_self{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_rocksdb_write_self{service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Self",
+                    "metric": "",
+                    "refId": "A",
+                    "step": 10
+                },
+                {
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "rate(mysql_global_status_rocksdb_write_other{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_rocksdb_write_other{service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Other",
+                    "metric": "",
+                    "refId": "B",
+                    "step": 10
+                },
+                {
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "rate(mysql_global_status_rocksdb_write_timeout{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_rocksdb_write_timeout{service_name=\"$service\"}[5m]) ",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Timeout",
+                    "metric": "",
+                    "refId": "C",
+                    "step": 10
+                },
+                {
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "rate(mysql_global_status_rocksdb_write_wal{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_rocksdb_write_wal{service_name=\"$service\"}[5m]) ",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "WAL",
+                    "metric": "",
+                    "refId": "D",
+                    "step": 10
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "MyRocks Write ops",
+            "tooltip": {
+                "msResolution": false,
+                "shared": true,
+                "sort": 0,
+                "value_type": "cumulative"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "short",
+                    "label": "",
+                    "logBase": 1,
+                    "max": null,
+                    "min": 0,
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": "",
+                    "logBase": 1,
+                    "max": null,
+                    "min": 0,
+                    "show": true
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "editable": true,
+            "error": false,
+            "fill": 2,
+            "fillGradient": 0,
+            "grid": {},
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 0,
+                "y": 59
+            },
+            "height": "250px",
+            "id": 17,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "null",
+            "options": {
+                "dataLinks": []
+            },
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [
+                {
+                    "alias": "MyRocks WAL",
+                    "fill": 0
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "rate(mysql_global_status_rocksdb_wal_synced{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_rocksdb_wal_synced{service_name=\"$service\"}[5m]) ",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Syncs",
+                    "metric": "",
+                    "refId": "A",
+                    "step": 10
+                },
+                {
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "rate(mysql_global_status_rocksdb_wal_bytes{service_name=\"$service\"}[$interval])  or irate(mysql_global_status_rocksdb_wal_bytes{service_name=\"$service\"}[5m]) ",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Bytes",
+                    "metric": "",
+                    "refId": "B",
+                    "step": 10
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "MyRocks WAL",
+            "tooltip": {
+                "msResolution": false,
+                "shared": true,
+                "sort": 0,
+                "value_type": "cumulative"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "short",
+                    "label": "",
+                    "logBase": 1,
+                    "max": null,
+                    "min": 0,
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": "",
+                    "logBase": 1,
+                    "max": null,
+                    "min": 0,
+                    "show": true
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "editable": true,
+            "error": false,
+            "fill": 2,
+            "fillGradient": 0,
+            "grid": {},
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 12,
+                "y": 59
+            },
+            "id": 16,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "hideEmpty": true,
+                "hideZero": true,
+                "max": true,
+                "min": true,
+                "rightSide": false,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "null",
+            "options": {
+                "dataLinks": []
+            },
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [
+                {
+                    "alias": "System Memory",
+                    "fill": 0,
+                    "stack": false
+                }
+            ],
+            "spaceLength": 10,
+            "stack": true,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(mysql_global_status_rocksdb_number_reseeks_iteration{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_rocksdb_number_reseeks_iteration{service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Reseeks",
+                    "metric": "",
+                    "refId": "A",
+                    "step": 10
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "MyRocks Number Reseeks in Iterations",
+            "tooltip": {
+                "msResolution": false,
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "none",
+                    "label": "",
+                    "logBase": 1,
+                    "max": null,
+                    "min": 0,
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "fill": 2,
+            "fillGradient": 0,
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 0,
+                "y": 66
+            },
+            "id": 21,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "rightSide": false,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "null",
+            "options": {
+                "dataLinks": []
+            },
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(mysql_global_status_rocksdb_rows_inserted{service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_rocksdb_rows_inserted{service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Rows Inserted",
+                    "refId": "A"
+                },
+                {
+                    "expr": "rate(mysql_global_status_rocksdb_rows_updated{service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_rocksdb_rows_updated{service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Rows Updated",
+                    "refId": "B"
+                },
+                {
+                    "expr": "rate(mysql_global_status_rocksdb_rows_deleted{service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_rocksdb_rows_deleted{service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Rows Deleted",
+                    "refId": "C"
+                },
+                {
+                    "expr": "rate(mysql_global_status_rocksdb_rows_read{service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_rocksdb_rows_read{service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Rows Read",
+                    "refId": "D"
+                },
+                {
+                    "expr": "rate(mysql_global_status_rocksdb_rows_expired{service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_rocksdb_rows_expired{service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Rows Expired",
+                    "refId": "E"
+                },
+                {
+                    "expr": "rate(mysql_global_status_rocksdb_system_rows_deleted{service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_rocksdb_system_rows_deleted{service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "System Rows Deleted",
+                    "refId": "F"
+                },
+                {
+                    "expr": "rate(mysql_global_status_rocksdb_system_rows_inserted{service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_rocksdb_system_rows_inserted{service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "System Rows Inserted",
+                    "refId": "G"
+                },
+                {
+                    "expr": "rate(mysql_global_status_rocksdb_system_rows_read{service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_rocksdb_system_rows_read{service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "System Rows Read",
+                    "refId": "H"
+                },
+                {
+                    "expr": "rate(mysql_global_status_rocksdb_system_rows_updated{service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_rocksdb_system_rows_updated{service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "System Rows Updated",
+                    "refId": "I"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "RocksDB Row Operations",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 0,
+                    "format": "ops",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "editable": true,
+            "error": false,
+            "fill": 2,
+            "fillGradient": 0,
+            "grid": {},
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 12,
+                "y": 66
+            },
+            "height": "250px",
+            "id": 18,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "null",
+            "options": {
+                "dataLinks": []
+            },
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [
+                {
+                    "alias": "File Operations",
+                    "fill": 0
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "rate(mysql_global_status_rocksdb_no_file_opens{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_rocksdb_no_file_opens{service_name=\"$service\"}[5m]) ",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Open",
+                    "metric": "",
+                    "refId": "A",
+                    "step": 10
+                },
+                {
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "rate(mysql_global_status_rocksdb_no_file_closes{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_rocksdb_no_file_closes{service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Closes",
+                    "metric": "",
+                    "refId": "B",
+                    "step": 10
+                },
+                {
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "rate(mysql_global_status_rocksdb_no_file_errors{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_rocksdb_no_file_errors{service_name=\"$service\"}[5m]) ",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Errors",
+                    "metric": "",
+                    "refId": "C",
+                    "step": 10
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "MyRocks File Operations",
+            "tooltip": {
+                "msResolution": false,
+                "shared": true,
+                "sort": 0,
+                "value_type": "cumulative"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "short",
+                    "label": "",
+                    "logBase": 1,
+                    "max": null,
+                    "min": 0,
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": "",
+                    "logBase": 1,
+                    "max": null,
+                    "min": 0,
+                    "show": true
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "fill": 2,
+            "fillGradient": 0,
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 0,
+                "y": 73
+            },
+            "id": 25,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "rightSide": false,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "null",
+            "options": {
+                "dataLinks": []
+            },
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "max_over_time(mysql_global_status_rocksdb_stall_total_stops[$interval]) or\nmax_over_time(mysql_global_status_rocksdb_stall_total_stops[5m])",
+                    "format": "time_series",
+                    "hide": false,
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Total Stops",
+                    "refId": "A"
+                },
+                {
+                    "expr": "max_over_time(mysql_global_status_rocksdb_stall_total_slowdowns[$interval]) or \nmax_over_time(mysql_global_status_rocksdb_stall_total_slowdowns[5m])",
+                    "format": "time_series",
+                    "hide": false,
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Total Slowdowns",
+                    "refId": "B"
+                },
+                {
+                    "expr": "max_over_time(mysql_global_status_rocksdb_stall_micros[$interval]) or \nmax_over_time(mysql_global_status_rocksdb_stall_micros[5m])",
+                    "format": "time_series",
+                    "hide": false,
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Micros",
+                    "refId": "C"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "RocksDB Stalls",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 0,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+                "h": 7,
+                "w": 12,
+                "x": 12,
+                "y": 73
+            },
+            "id": 27,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "rightSide": false,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 1,
+            "links": [],
+            "nullPointMode": "null",
+            "options": {
+                "dataLinks": []
+            },
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(mysql_global_status_rocksdb_stall_l0_file_count_limit_slowdowns[$interval]) or\nirate(mysql_global_status_rocksdb_stall_l0_file_count_limit_slowdowns[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "L0 File count limit slowdowns",
+                    "refId": "A"
+                },
+                {
+                    "expr": "rate(mysql_global_status_rocksdb_stall_l0_file_count_limit_stops[$interval]) or\nirate(mysql_global_status_rocksdb_stall_l0_file_count_limit_stops[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "L0 File count limit stops",
+                    "refId": "B"
+                },
+                {
+                    "expr": "rate(mysql_global_status_rocksdb_stall_locked_l0_file_count_limit_slowdowns[$interval]) or\nirate(mysql_global_status_rocksdb_stall_locked_l0_file_count_limit_slowdowns[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Locked L0 File count limit slowdowns",
+                    "refId": "C"
+                },
+                {
+                    "expr": "rate(mysql_global_status_rocksdb_stall_locked_l0_file_count_limit_stops[$interval]) or\nirate(mysql_global_status_rocksdb_stall_locked_l0_file_count_limit_stops[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Locked L0 File count limit stops",
+                    "refId": "D"
+                },
+                {
+                    "expr": "rate(mysql_global_status_rocksdb_stall_memtable_limit_slowdowns[$interval]) or\nirate(mysql_global_status_rocksdb_stall_memtable_limit_slowdowns[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Memtable limit slowdowns",
+                    "refId": "E"
+                },
+                {
+                    "expr": "rate(mysql_global_status_rocksdb_stall_memtable_limit_stops[$interval]) or\nirate(mysql_global_status_rocksdb_stall_memtable_limit_stops[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Memtable limit stops",
+                    "refId": "F"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "RocksDB Stops/Slowdowns",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "ops",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "collapsed": true,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 80
+            },
+            "id": 293,
+            "panels": [
+                {
+                    "cacheTimeout": null,
+                    "colorBackground": false,
+                    "colorPostfix": true,
+                    "colorValue": true,
+                    "colors": [
+                        "rgba(245, 54, 54, 0.9)",
+                        "rgba(237, 129, 40, 0.89)",
+                        "rgba(50, 172, 45, 0.97)"
+                    ],
+                    "datasource": "Prometheus",
+                    "decimals": 2,
+                    "description": "**MySQL Uptime**\n\nThe amount of time since the last restart of the MySQL server process.",
+                    "editable": true,
+                    "error": false,
+                    "format": "s",
+                    "gauge": {
+                        "maxValue": 100,
+                        "minValue": 0,
+                        "show": false,
+                        "thresholdLabels": false,
+                        "thresholdMarkers": true
+                    },
+                    "gridPos": {
+                        "h": 2,
+                        "w": 3,
+                        "x": 0,
+                        "y": 81
+                    },
+                    "height": "125px",
+                    "id": 295,
+                    "interval": "",
+                    "links": [],
+                    "mappingType": 1,
+                    "mappingTypes": [
+                        {
+                            "name": "value to text",
+                            "value": 1
+                        },
+                        {
+                            "name": "range to text",
+                            "value": 2
+                        }
+                    ],
+                    "maxDataPoints": 100,
+                    "nullPointMode": "connected",
+                    "nullText": null,
+                    "options": {},
+                    "postfix": "s",
+                    "postfixFontSize": "50%",
+                    "prefix": "",
+                    "prefixFontSize": "50%",
+                    "rangeMaps": [
+                        {
+                            "from": "null",
+                            "text": "N/A",
+                            "to": "null"
+                        }
+                    ],
+                    "sparkline": {
+                        "fillColor": "rgba(31, 118, 189, 0.18)",
+                        "full": false,
+                        "lineColor": "rgb(31, 120, 193)",
+                        "show": false
+                    },
+                    "tableColumn": "",
+                    "targets": [
+                        {
+                            "calculatedInterval": "10m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "mysql_global_status_uptime{service_name=\"$service\"}",
+                            "format": "time_series",
+                            "interval": "5m",
+                            "intervalFactor": 1,
+                            "legendFormat": "",
+                            "metric": "",
+                            "refId": "A",
+                            "step": 300
+                        }
+                    ],
+                    "thresholds": "300,3600",
+                    "title": "MySQL Uptime",
+                    "type": "singlestat",
+                    "valueFontSize": "50%",
+                    "valueMaps": [],
+                    "valueName": "current"
+                },
+                {
+                    "content": "<h3><b><font color=#e68a00><center>$version</center></font></b></h3>\n\n\n",
+                    "gridPos": {
+                        "h": 2,
+                        "w": 3,
+                        "x": 3,
+                        "y": 81
+                    },
+                    "id": 297,
+                    "links": [],
+                    "mode": "html",
+                    "options": {},
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Version",
+                    "type": "text"
+                },
+                {
+                    "cacheTimeout": null,
+                    "colorBackground": false,
+                    "colorValue": false,
+                    "colors": [
+                        "rgba(245, 54, 54, 0.9)",
+                        "rgba(237, 129, 40, 0.89)",
+                        "rgba(50, 172, 45, 0.97)"
+                    ],
+                    "datasource": "Prometheus",
+                    "decimals": 2,
+                    "description": "**Current QPS**\n\nBased on the queries reported by MySQL's ``SHOW STATUS`` command, it is the number of statements executed by the server within the last second. This variable includes statements executed within stored programs, unlike the Questions variable. It does not count \n``COM_PING`` or ``COM_STATISTICS`` commands.",
+                    "editable": true,
+                    "error": false,
+                    "format": "short",
+                    "gauge": {
+                        "maxValue": 100,
+                        "minValue": 0,
+                        "show": false,
+                        "thresholdLabels": false,
+                        "thresholdMarkers": true
+                    },
+                    "gridPos": {
+                        "h": 2,
+                        "w": 3,
+                        "x": 6,
+                        "y": 81
+                    },
+                    "height": "125px",
+                    "id": 299,
+                    "interval": "$interval",
+                    "links": [
+                        {
+                            "targetBlank": true,
+                            "title": "MySQL Server Status Variables",
+                            "url": "https://dev.mysql.com/doc/refman/5.7/en/server-status-variables.html#statvar_Queries"
+                        }
+                    ],
+                    "mappingType": 1,
+                    "mappingTypes": [
+                        {
+                            "name": "value to text",
+                            "value": 1
+                        },
+                        {
+                            "name": "range to text",
+                            "value": 2
+                        }
+                    ],
+                    "maxDataPoints": 100,
+                    "nullPointMode": "connected",
+                    "nullText": null,
+                    "options": {},
+                    "postfix": "",
+                    "postfixFontSize": "50%",
+                    "prefix": "",
+                    "prefixFontSize": "50%",
+                    "rangeMaps": [
+                        {
+                            "from": "null",
+                            "text": "N/A",
+                            "to": "null"
+                        }
+                    ],
+                    "sparkline": {
+                        "fillColor": "rgba(31, 118, 189, 0.18)",
+                        "full": false,
+                        "lineColor": "rgb(31, 120, 193)",
+                        "show": true
+                    },
+                    "tableColumn": "",
+                    "targets": [
+                        {
+                            "calculatedInterval": "10m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "rate(mysql_global_status_queries{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_queries{service_name=\"$service\"}[5m])",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "",
+                            "metric": "",
+                            "refId": "A",
+                            "step": 20
+                        }
+                    ],
+                    "thresholds": "35,75",
+                    "timeFrom": null,
+                    "title": "Current QPS",
+                    "type": "singlestat",
+                    "valueFontSize": "50%",
+                    "valueMaps": [],
+                    "valueName": "current"
+                },
+                {
+                    "cacheTimeout": null,
+                    "colorBackground": false,
+                    "colorValue": true,
+                    "colors": [
+                        "#299c46",
+                        "rgba(237, 129, 40, 0.89)",
+                        "#d44a3a"
+                    ],
+                    "datasource": "Prometheus",
+                    "decimals": 2,
+                    "description": "",
+                    "format": "percentunit",
+                    "gauge": {
+                        "maxValue": 100,
+                        "minValue": 0,
+                        "show": false,
+                        "thresholdLabels": false,
+                        "thresholdMarkers": true
+                    },
+                    "gridPos": {
+                        "h": 2,
+                        "w": 3,
+                        "x": 9,
+                        "y": 81
+                    },
+                    "id": 316,
+                    "interval": null,
+                    "links": [],
+                    "mappingType": 1,
+                    "mappingTypes": [
+                        {
+                            "name": "value to text",
+                            "value": 1
+                        },
+                        {
+                            "name": "range to text",
+                            "value": 2
+                        }
+                    ],
+                    "maxDataPoints": 100,
+                    "nullPointMode": "connected",
+                    "nullText": null,
+                    "options": {},
+                    "postfix": "",
+                    "postfixFontSize": "50%",
+                    "prefix": "",
+                    "prefixFontSize": "50%",
+                    "rangeMaps": [
+                        {
+                            "from": "null",
+                            "text": "N/A",
+                            "to": "null"
+                        }
+                    ],
+                    "sparkline": {
+                        "fillColor": "rgba(31, 118, 189, 0.18)",
+                        "full": false,
+                        "lineColor": "rgb(31, 120, 193)",
+                        "show": true,
+                        "ymax": null,
+                        "ymin": null
+                    },
+                    "tableColumn": "",
+                    "targets": [
+                        {
+                            "calculatedInterval": "10m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "(sum(max_over_time(mysql_global_status_open_files{service_name=\"$service\"}[$interval])) or sum(max_over_time(mysql_global_status_open_files{service_name=\"$service\"}[5m]))) / (sum\r(max_over_time(mysql_global_variables_open_files_limit{service_name=\"$service\"}[$interval])) or sum(max_over_time(mysql_global_variables_open_files_limit{service_name=\"$service\"}[5m]))\r)",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "",
+                            "metric": "",
+                            "refId": "A",
+                            "step": 300
+                        }
+                    ],
+                    "thresholds": "0.50,0.80",
+                    "title": "File Handlers Used",
+                    "type": "singlestat",
+                    "valueFontSize": "50%",
+                    "valueMaps": [
+                        {
+                            "op": "=",
+                            "text": "N/A",
+                            "value": "null"
+                        }
+                    ],
+                    "valueName": "max"
+                },
+                {
+                    "cacheTimeout": null,
+                    "colorBackground": false,
+                    "colorValue": true,
+                    "colors": [
+                        "#299c46",
+                        "rgba(237, 129, 40, 0.89)",
+                        "#d44a3a"
+                    ],
+                    "datasource": "Prometheus",
+                    "decimals": 2,
+                    "description": "",
+                    "format": "percentunit",
+                    "gauge": {
+                        "maxValue": 100,
+                        "minValue": 0,
+                        "show": false,
+                        "thresholdLabels": false,
+                        "thresholdMarkers": true
+                    },
+                    "gridPos": {
+                        "h": 2,
+                        "w": 3,
+                        "x": 12,
+                        "y": 81
+                    },
+                    "id": 317,
+                    "interval": null,
+                    "links": [],
+                    "mappingType": 1,
+                    "mappingTypes": [
+                        {
+                            "name": "value to text",
+                            "value": 1
+                        },
+                        {
+                            "name": "range to text",
+                            "value": 2
+                        }
+                    ],
+                    "maxDataPoints": 100,
+                    "nullPointMode": "connected",
+                    "nullText": null,
+                    "options": {},
+                    "postfix": "",
+                    "postfixFontSize": "50%",
+                    "prefix": "",
+                    "prefixFontSize": "50%",
+                    "rangeMaps": [
+                        {
+                            "from": "null",
+                            "text": "N/A",
+                            "to": "null"
+                        }
+                    ],
+                    "sparkline": {
+                        "fillColor": "rgba(31, 118, 189, 0.18)",
+                        "full": false,
+                        "lineColor": "rgb(31, 120, 193)",
+                        "show": true,
+                        "ymax": null,
+                        "ymin": null
+                    },
+                    "tableColumn": "",
+                    "targets": [
+                        {
+                            "calculatedInterval": "10m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "1-((rate(mysql_global_status_table_open_cache_hits{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_table_open_cache_hits{service_name=\"$service\"}[5m]))/((rate(mysql_global_status_table_open_cache_hits{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_table_open_cache_hits{service_name=\"$service\"}[5m]))+(rate(mysql_global_status_table_open_cache_misses{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_table_open_cache_misses{service_name=\"$service\"}[5m]))))",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "",
+                            "metric": "",
+                            "refId": "A",
+                            "step": 300
+                        }
+                    ],
+                    "thresholds": "0.10,0.30",
+                    "title": "Table Open Cache Miss Ratio",
+                    "type": "singlestat",
+                    "valueFontSize": "50%",
+                    "valueMaps": [
+                        {
+                            "op": "=",
+                            "text": "N/A",
+                            "value": "null"
+                        }
+                    ],
+                    "valueName": "avg"
+                },
+                {
+                    "cacheTimeout": null,
+                    "colorBackground": false,
+                    "colorValue": false,
+                    "colors": [
+                        "#299c46",
+                        "rgba(237, 129, 40, 0.89)",
+                        "#d44a3a"
+                    ],
+                    "datasource": "Prometheus",
+                    "decimals": 2,
+                    "description": "",
+                    "format": "short",
+                    "gauge": {
+                        "maxValue": 100,
+                        "minValue": 0,
+                        "show": false,
+                        "thresholdLabels": false,
+                        "thresholdMarkers": true
+                    },
+                    "gridPos": {
+                        "h": 2,
+                        "w": 3,
+                        "x": 15,
+                        "y": 81
+                    },
+                    "id": 318,
+                    "interval": null,
+                    "links": [],
+                    "mappingType": 1,
+                    "mappingTypes": [
+                        {
+                            "name": "value to text",
+                            "value": 1
+                        },
+                        {
+                            "name": "range to text",
+                            "value": 2
+                        }
+                    ],
+                    "maxDataPoints": 100,
+                    "nullPointMode": "connected",
+                    "nullText": null,
+                    "options": {},
+                    "postfix": "",
+                    "postfixFontSize": "50%",
+                    "prefix": "",
+                    "prefixFontSize": "50%",
+                    "rangeMaps": [
+                        {
+                            "from": "null",
+                            "text": "N/A",
+                            "to": "null"
+                        }
+                    ],
+                    "sparkline": {
+                        "fillColor": "rgba(31, 118, 189, 0.18)",
+                        "full": false,
+                        "lineColor": "rgb(31, 120, 193)",
+                        "show": true,
+                        "ymax": null,
+                        "ymin": null
+                    },
+                    "tableColumn": "",
+                    "targets": [
+                        {
+                            "calculatedInterval": "10m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "mysql_global_variables_table_open_cache{service_name=\"$service\"} ",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "",
+                            "metric": "",
+                            "refId": "A",
+                            "step": 300
+                        }
+                    ],
+                    "thresholds": "",
+                    "title": "Table Open Cache Size",
+                    "type": "singlestat",
+                    "valueFontSize": "50%",
+                    "valueMaps": [
+                        {
+                            "op": "=",
+                            "text": "N/A",
+                            "value": "null"
+                        }
+                    ],
+                    "valueName": "current"
+                },
+                {
+                    "cacheTimeout": null,
+                    "colorBackground": false,
+                    "colorValue": false,
+                    "colors": [
+                        "#299c46",
+                        "rgba(237, 129, 40, 0.89)",
+                        "#d44a3a"
+                    ],
+                    "datasource": "Prometheus",
+                    "decimals": 2,
+                    "description": "",
+                    "format": "short",
+                    "gauge": {
+                        "maxValue": 100,
+                        "minValue": 0,
+                        "show": false,
+                        "thresholdLabels": false,
+                        "thresholdMarkers": true
+                    },
+                    "gridPos": {
+                        "h": 2,
+                        "w": 3,
+                        "x": 18,
+                        "y": 81
+                    },
+                    "id": 319,
+                    "interval": null,
+                    "links": [],
+                    "mappingType": 1,
+                    "mappingTypes": [
+                        {
+                            "name": "value to text",
+                            "value": 1
+                        },
+                        {
+                            "name": "range to text",
+                            "value": 2
+                        }
+                    ],
+                    "maxDataPoints": 100,
+                    "nullPointMode": "connected",
+                    "nullText": null,
+                    "options": {},
+                    "postfix": "",
+                    "postfixFontSize": "50%",
+                    "prefix": "",
+                    "prefixFontSize": "50%",
+                    "rangeMaps": [
+                        {
+                            "from": "null",
+                            "text": "N/A",
+                            "to": "null"
+                        }
+                    ],
+                    "sparkline": {
+                        "fillColor": "rgba(31, 118, 189, 0.18)",
+                        "full": false,
+                        "lineColor": "rgb(31, 120, 193)",
+                        "show": true,
+                        "ymax": null,
+                        "ymin": null
+                    },
+                    "tableColumn": "",
+                    "targets": [
+                        {
+                            "calculatedInterval": "10m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "mysql_global_variables_table_definition_cache{service_name=\"$service\"} ",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "",
+                            "metric": "",
+                            "refId": "A",
+                            "step": 300
+                        }
+                    ],
+                    "thresholds": "",
+                    "title": "Table Definition Cache Size",
+                    "type": "singlestat",
+                    "valueFontSize": "50%",
+                    "valueMaps": [
+                        {
+                            "op": "=",
+                            "text": "N/A",
+                            "value": "null"
+                        }
+                    ],
+                    "valueName": "current"
+                },
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": 0,
+                    "description": "**Max Connections** \n\nMax Connections is the maximum permitted number of simultaneous client connections. By default, this is 151. Increasing this value increases the number of file descriptors that mysqld requires. If the required number of descriptors are not available, the server reduces the value of Max Connections.\n\nmysqld actually permits Max Connections + 1 clients to connect. The extra connection is reserved for use by accounts that have the SUPER privilege, such as root.\n\nMax Used Connections is the maximum number of connections that have been in use simultaneously since the server started.\n\nConnections is the number of connection attempts (successful or not) to the MySQL server.",
+                    "editable": true,
+                    "error": false,
+                    "fill": 2,
+                    "fillGradient": 0,
+                    "grid": {},
+                    "gridPos": {
+                        "h": 7,
+                        "w": 12,
+                        "x": 0,
+                        "y": 83
+                    },
+                    "height": "250px",
+                    "id": 301,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [
+                        {
+                            "targetBlank": true,
+                            "title": "MySQL Server System Variables",
+                            "url": "https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_max_connections"
+                        }
+                    ],
+                    "nullPointMode": "null",
+                    "options": {
+                        "dataLinks": []
+                    },
+                    "paceLength": 10,
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [
+                        {
+                            "alias": "Max Connections",
+                            "color": "#C4162A",
+                            "fill": 0
+                        }
+                    ],
+                    "spaceLength": 10,
+                    "stack": false,
+                    "steppedLine": true,
+                    "targets": [
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "max(max_over_time(mysql_global_status_threads_connected{service_name=\"$service\"}[$interval]) or \nmax_over_time(mysql_global_status_threads_connected{service_name=\"$service\"}[5m]))",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Connections",
+                            "metric": "",
+                            "refId": "A",
+                            "step": 20
+                        },
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "max_over_time(mysql_global_status_max_used_connections{service_name=\"$service\"}[$interval]) or \nmax_over_time(mysql_global_status_max_used_connections{service_name=\"$service\"}[5m])",
+                            "format": "time_series",
+                            "hide": false,
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Max Used Connections",
+                            "metric": "",
+                            "refId": "C",
+                            "step": 20,
+                            "target": ""
+                        },
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "max_over_time(mysql_global_variables_max_connections{service_name=\"$service\"}[$interval]) or\nmax_over_time(mysql_global_variables_max_connections{service_name=\"$service\"}[5m])",
+                            "format": "time_series",
+                            "hide": false,
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Max Connections",
+                            "metric": "",
+                            "refId": "B",
+                            "step": 20,
+                            "target": ""
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeRegions": [],
+                    "timeShift": null,
+                    "title": "MySQL Connections",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "cumulative"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "short",
+                            "label": "",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "label": "",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        }
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
+                },
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": 2,
+                    "description": "**MySQL Active Threads**\n\nThreads Connected is the number of open connections, while Threads Running is the number of threads not sleeping.",
+                    "editable": true,
+                    "error": false,
+                    "fill": 2,
+                    "fillGradient": 0,
+                    "grid": {},
+                    "gridPos": {
+                        "h": 7,
+                        "w": 12,
+                        "x": 12,
+                        "y": 83
+                    },
+                    "id": 303,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "rightSide": false,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "options": {
+                        "dataLinks": []
+                    },
+                    "paceLength": 10,
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [
+                        {
+                            "alias": "Peak Threads Running",
+                            "color": "#E24D42",
+                            "lines": false,
+                            "pointradius": 1,
+                            "points": true
+                        },
+                        {
+                            "alias": "Peak Threads Connected",
+                            "color": "#1F78C1"
+                        },
+                        {
+                            "alias": "Avg Threads Running",
+                            "color": "#EAB839"
+                        }
+                    ],
+                    "spaceLength": 10,
+                    "stack": false,
+                    "steppedLine": true,
+                    "targets": [
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "max_over_time(mysql_global_status_threads_connected{service_name=\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_connected{service_name=\"$service\"}[5m])",
+                            "format": "time_series",
+                            "hide": false,
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Peak Threads Connected",
+                            "metric": "",
+                            "refId": "A",
+                            "step": 20
+                        },
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "max_over_time(mysql_global_status_threads_running{service_name=\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_running{service_name=\"$service\"}[5m])",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Peak Threads Running",
+                            "metric": "",
+                            "refId": "B",
+                            "step": 20
+                        },
+                        {
+                            "expr": "avg_over_time(mysql_global_status_threads_running{service_name=\"$service\"}[$interval]) or \navg_over_time(mysql_global_status_threads_running{service_name=\"$service\"}[5m])",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Avg Threads Running",
+                            "refId": "C",
+                            "step": 20
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeRegions": [],
+                    "timeShift": null,
+                    "title": "MySQL Client Thread Activity",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": [
+                            "total"
+                        ]
+                    },
+                    "yaxes": [
+                        {
+                            "format": "short",
+                            "label": "Threads",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "label": "",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": false
+                        }
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
+                },
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": 2,
+                    "description": "**MySQL Handlers**\n\nHandler statistics are internal statistics on how MySQL is selecting, updating, inserting, and modifying rows, tables, and indexes.\n\nThis is in fact the layer between the Storage Engine and MySQL.\n\n* `read_rnd_next` is incremented when the server performs a full table scan and this is a counter you don't really want to see with a high value.\n* `read_key` is incremented when a read is done with an index.\n* `read_next` is incremented when the storage engine is asked to 'read the next index entry'. A high value means a lot of index scans are being done.",
+                    "editable": true,
+                    "error": false,
+                    "fill": 6,
+                    "fillGradient": 0,
+                    "grid": {},
+                    "gridPos": {
+                        "h": 8,
+                        "w": 12,
+                        "x": 0,
+                        "y": 90
+                    },
+                    "id": 309,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "hideZero": true,
+                        "max": true,
+                        "min": false,
+                        "rightSide": false,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "options": {
+                        "dataLinks": []
+                    },
+                    "paceLength": 10,
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "stack": true,
+                    "steppedLine": true,
+                    "targets": [
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "rate(mysql_global_status_handlers_total{service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_handlers_total{service_name=\"$service\"}[5m])",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "{{ handler }}",
+                            "metric": "",
+                            "refId": "J",
+                            "step": 20
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeRegions": [],
+                    "timeShift": null,
+                    "title": "MySQL Handlers",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "ops",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        }
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
+                },
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": 2,
+                    "description": "**Top Command Counters**\n\nThe Com_{{xxx}} statement counter variables indicate the number of times each xxx statement has been executed. There is one status variable for each type of statement. For example, Com_delete and Com_update count [``DELETE``](https://dev.mysql.com/doc/refman/5.7/en/delete.html) and [``UPDATE``](https://dev.mysql.com/doc/refman/5.7/en/update.html) statements, respectively. Com_delete_multi and Com_update_multi are similar but apply to [``DELETE``](https://dev.mysql.com/doc/refman/5.7/en/delete.html) and [``UPDATE``](https://dev.mysql.com/doc/refman/5.7/en/update.html) statements that use multiple-table syntax.",
+                    "editable": true,
+                    "error": false,
+                    "fill": 6,
+                    "fillGradient": 0,
+                    "grid": {},
+                    "gridPos": {
+                        "h": 8,
+                        "w": 12,
+                        "x": 12,
+                        "y": 90
+                    },
+                    "id": 307,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "hideEmpty": false,
+                        "hideZero": false,
+                        "max": true,
+                        "min": false,
+                        "rightSide": false,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [
+                        {
+                            "title": "Server Status Variables (Com_xxx)",
+                            "url": "https://dev.mysql.com/doc/refman/5.7/en/server-status-variables.html#statvar_Com_xxx"
+                        }
+                    ],
+                    "nullPointMode": "null as zero",
+                    "options": {
+                        "dataLinks": []
+                    },
+                    "paceLength": 10,
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "stack": true,
+                    "steppedLine": true,
+                    "targets": [
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "topk(10, rate(mysql_global_status_commands_total{service_name=\"$service\"}[$interval])>0) or \nirate(mysql_global_status_commands_total{service_name=\"$service\"}[5m])>0",
+                            "format": "time_series",
+                            "hide": false,
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Com_{{ command }}",
+                            "metric": "",
+                            "refId": "B",
+                            "step": 20
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeRegions": [],
+                    "timeShift": null,
+                    "title": "Top Command Counters",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "short",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        }
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
+                },
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": 2,
+                    "editable": true,
+                    "error": false,
+                    "fill": 6,
+                    "fillGradient": 0,
+                    "grid": {},
+                    "gridPos": {
+                        "h": 8,
+                        "w": 12,
+                        "x": 0,
+                        "y": 98
+                    },
+                    "id": 311,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "hideZero": true,
+                        "max": true,
+                        "min": false,
+                        "rightSide": false,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [],
+                    "nullPointMode": "null as zero",
+                    "options": {
+                        "dataLinks": []
+                    },
+                    "paceLength": 10,
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "stack": true,
+                    "steppedLine": true,
+                    "targets": [
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "max_over_time(mysql_info_schema_threads{service_name=\"$service\"}[$interval]) or\nmax_over_time(mysql_info_schema_threads{service_name=\"$service\"}[5m])",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "{{ state }}",
+                            "metric": "",
+                            "refId": "A",
+                            "step": 20
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeRegions": [],
+                    "timeShift": null,
+                    "title": "Process States",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "short",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        }
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
+                },
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": 2,
+                    "description": "**MySQL Network Traffic**\n\nHere we can see how much network traffic is generated by MySQL. Outbound is network traffic sent from MySQL and Inbound is network traffic MySQL has received.",
+                    "editable": true,
+                    "error": false,
+                    "fill": 2,
+                    "fillGradient": 0,
+                    "grid": {},
+                    "gridPos": {
+                        "h": 8,
+                        "w": 12,
+                        "x": 12,
+                        "y": 98
+                    },
+                    "id": 305,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "rightSide": false,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "options": {
+                        "dataLinks": []
+                    },
+                    "paceLength": 10,
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [
+                        {
+                            "alias": "Outbound",
+                            "transform": "negative-Y"
+                        }
+                    ],
+                    "spaceLength": 10,
+                    "stack": false,
+                    "steppedLine": true,
+                    "targets": [
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "rate(mysql_global_status_bytes_received{service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_bytes_received{service_name=\"$service\"}[5m])",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Inbound",
+                            "metric": "",
+                            "refId": "A",
+                            "step": 20
+                        },
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "rate(mysql_global_status_bytes_sent{service_name=\"$service\"}[$interval]) or \nirate(mysql_global_status_bytes_sent{service_name=\"$service\"}[5m])",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Outbound",
+                            "metric": "",
+                            "refId": "B",
+                            "step": 20
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeRegions": [],
+                    "timeShift": null,
+                    "title": "MySQL Network Traffic",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "Bps",
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        },
+                        {
+                            "format": "none",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        }
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
+                }
+            ],
+            "title": "MySQL Summary",
+            "type": "row"
+        }
+    ],
+    "refresh": "1m",
+    "schemaVersion": 19,
+    "style": "dark",
+    "tags": [
+        "Percona",
+        "MySQL"
+    ],
+    "templating": {
+        "list": [
+            {
+                "allFormat": "glob",
+                "auto": true,
+                "auto_count": 200,
+                "auto_min": "1s",
+                "current": {},
+                "datasource": "Prometheus",
+                "hide": 0,
+                "includeAll": false,
+                "label": "Interval",
+                "multi": false,
+                "multiFormat": "glob",
+                "name": "interval",
+                "options": [
+                    {
+                        "selected": true,
+                        "text": "auto",
+                        "value": "$__auto_interval_interval"
+                    },
+                    {
+                        "selected": false,
+                        "text": "1s",
+                        "value": "1s"
+                    },
+                    {
+                        "selected": false,
+                        "text": "5s",
+                        "value": "5s"
+                    },
+                    {
+                        "selected": false,
+                        "text": "1m",
+                        "value": "1m"
+                    },
+                    {
+                        "selected": false,
+                        "text": "5m",
+                        "value": "5m"
+                    },
+                    {
+                        "selected": false,
+                        "text": "1h",
+                        "value": "1h"
+                    },
+                    {
+                        "selected": false,
+                        "text": "6h",
+                        "value": "6h"
+                    },
+                    {
+                        "selected": false,
+                        "text": "1d",
+                        "value": "1d"
+                    }
+                ],
+                "query": "1s,5s,1m,5m,1h,6h,1d",
+                "refresh": 2,
+                "skipUrlSync": false,
+                "type": "interval"
+            },
+            {
+                "allFormat": "glob",
+                "allValue": null,
+                "current": {},
+                "datasource": "Prometheus",
+                "definition": "label_values(mysql_global_variables_rocksdb_block_cache_size, node_name)",
+                "hide": 0,
+                "includeAll": false,
+                "label": "Node Name",
+                "multi": false,
+                "multiFormat": "regex values",
+                "name": "host",
+                "options": [],
+                "query": "label_values(mysql_global_variables_rocksdb_block_cache_size, node_name)",
+                "refresh": 1,
+                "refresh_on_load": false,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 1,
+                "tagValuesQuery": null,
+                "tags": [],
+                "tagsQuery": null,
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allValue": null,
+                "current": {},
+                "datasource": "Prometheus",
+                "definition": "label_values(mysql_global_variables_rocksdb_block_cache_size{node_name=~\"$host\"}, service_name)",
+                "hide": 0,
+                "includeAll": false,
+                "label": "Service Name",
+                "multi": false,
+                "name": "service",
+                "options": [],
+                "query": "label_values(mysql_global_variables_rocksdb_block_cache_size{node_name=~\"$host\"}, service_name)",
+                "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allValue": null,
+                "current": {},
+                "datasource": "Prometheus",
+                "definition": "label_values(mysql_version_info{service_name=~\"$service\"},version)",
+                "hide": 2,
+                "includeAll": false,
+                "label": "Version",
+                "multi": false,
+                "name": "version",
+                "options": [],
+                "query": "label_values(mysql_version_info{service_name=~\"$service\"},version)",
+                "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            }
+        ]
+    },
+    "time": {
+        "from": "now-12h",
+        "to": "now"
+    },
+    "timepicker": {
+        "collapse": false,
+        "enable": true,
+        "hidden": false,
+        "notice": false,
+        "now": true,
+        "refresh_intervals": [
+            "5s",
+            "10s",
+            "30s",
+            "1m",
+            "5m",
+            "15m",
+            "30m",
+            "1h",
+            "2h",
+            "1d"
+        ],
+        "status": "Stable",
+        "time_options": [
+            "5m",
+            "15m",
+            "1h",
+            "6h",
+            "12h",
+            "24h",
+            "2d",
+            "7d",
+            "30d"
+        ],
+        "type": "timepicker"
+    },
+    "timezone": "browser",
+    "title": "MySQL MyRocks Details",
+    "uid": "mysql-myrocks",
+    "version": 1
+}
