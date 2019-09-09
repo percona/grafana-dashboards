@@ -12,10 +12,10 @@ export class PanelCtrl extends MetricsPanelCtrl {
         $scope.qanParams = {
             'var-host': null,
             'from': '',
+            'to': '',
             'search': '',
             'queryID': '',
             'type': '',
-            'to': '',
             'tz': config.bootData.user.timezone,
             'theme': config.bootData.user.lightTheme ? 'light' : 'dark',
             'filters': '',
@@ -33,9 +33,8 @@ export class PanelCtrl extends MetricsPanelCtrl {
 
         $scope.$watch('ctrl.range', newValue => {
             if (!newValue) return;
-
-            $scope.qanParams.from = newValue.from.valueOf();
-            $scope.qanParams.to = newValue.to.valueOf();
+            $scope.qanParams.from = newValue.raw.from;
+            $scope.qanParams.to = newValue.raw.to;
         }, true);
     }
 
@@ -86,9 +85,8 @@ export class PanelCtrl extends MetricsPanelCtrl {
             setTimeout(() => $scope.ctrl.calculatePanelHeight(), 10);
 
             frame.contents().bind('updateUrl', (event) => {
-                let [queryID, type, search, filters, main_metric, columns, order_by, filter_by, active_details_tab] =
-                    this.retrieveIFrameURLParams(event.currentTarget.URL);
-                this.reloadQuery(window, queryID, type, search, filters, main_metric, columns, order_by, filter_by, active_details_tab);
+                let [type, params] = this.retrieveIFrameURLParams(event.currentTarget.URL);
+                this.reloadQuery(window, type, params);
                 setTimeout(() => $scope.ctrl.calculatePanelHeight(), 10);
             });
 
@@ -125,29 +123,18 @@ export class PanelCtrl extends MetricsPanelCtrl {
     }
 
     private reloadQuery(window,
-                        queryID = '',
                         type = '',
-                        search = '',
-                        filters = '',
-                        main_metric = '',
-                        columns = '',
-                        order_by = '',
-                        filter_by = '',
-                        active_details_tab = '',
+                        urlParams?: {},
     ) {
-        let url = window.location.href.split('&')[0];
-        const urlParams = {
-            queryID: queryID ? `&queryID=${queryID}` : '',
-            type: type && queryID ? `&type=${type}` : '',
-            search: search ? `&search=${search}` : '',
-            filters: filters ? `&filters=${filters}` : '',
-            main_metric: main_metric ? `&main_metric=${main_metric}` : '',
-            columns: columns ? `&columns=${columns}` : '',
-            order_by: order_by ? `&order_by=${order_by}` : '',
-            filter_by: filter_by ? `&filter_by=${filter_by}` : '',
-            active_details_tab: active_details_tab ? `&active_details_tab=${active_details_tab}` : '',
-        };
-        Object.keys(urlParams).forEach(param => url += urlParams[param]);
+        let host = window.location.href.split('?')[0];
+        let existedParams = this.getJsonFromUrl(window.location);
+        Object.keys(urlParams).forEach(param => existedParams[param] = urlParams[param]);
+
+        if (type && urlParams["queryID"]) {
+            existedParams['type'] = type;
+        }
+        let queryParams = Object.keys(existedParams).map(param => `${param}=${existedParams[param] || ''}`).join('&');
+        let url = `${host}?${queryParams}`;
         history.pushState({}, null, url);
     }
 
@@ -166,20 +153,23 @@ export class PanelCtrl extends MetricsPanelCtrl {
         return [id, type, search, filters, main_metric, columns, order_by, filter_by, active_details_tab];
     }
 
-    private retrieveIFrameURLParams(url): Array<string> {
+    private retrieveIFrameURLParams(url) {
         const currentURL = new URL(url);
-        const id = currentURL.searchParams.get('queryID') ? currentURL.searchParams.get('queryID') : '';
-        const search = currentURL.searchParams.get('search') ? currentURL.searchParams.get('search') : '';
-        const filters = currentURL.searchParams.get('filters') ? currentURL.searchParams.get('filters') : '';
-        const main_metric = currentURL.searchParams.get('main_metric') ? currentURL.searchParams.get('main_metric') : '';
-        const columns = currentURL.searchParams.get('columns') ? currentURL.searchParams.get('columns') : '';
-        const order_by = currentURL.searchParams.get('order_by') ? currentURL.searchParams.get('order_by') : '';
-        const filter_by = currentURL.searchParams.get('filter_by') ? currentURL.searchParams.get('filter_by') : '';
-        const active_details_tab = currentURL.searchParams.get('active_details_tab') ? currentURL.searchParams.get('active_details_tab') : '';
+        const params = this.getJsonFromUrl(currentURL);
         const urlArr = url.split('/');
         const type = urlArr[urlArr.length - 1].split('?')[0];
 
-        return [id, type, search, filters, main_metric, columns, order_by, filter_by, active_details_tab];
+        return [type, params];
+    }
+
+    private getJsonFromUrl(url: URL) {
+        const query = url.search.substr(1);
+        const result = {};
+        query.split('&').forEach(function(part) {
+            const item = part.split('=');
+            result[item[0]] = decodeURIComponent(item[1]);
+        });
+        return result;
     }
 
     private encodeData(data: Object): string {
