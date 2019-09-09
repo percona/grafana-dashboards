@@ -35,6 +35,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
             if (!newValue) return;
             $scope.qanParams.from = newValue.raw.from;
             $scope.qanParams.to = newValue.raw.to;
+            this.resetUrl($scope)
         }, true);
     }
 
@@ -68,7 +69,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
         };
         // init url
         // updated url
-        $scope.$watch('qanParams', this.resetUrl.bind(this, $scope), true);
+        // $scope.$watch('qanParams', this.resetUrl.bind(this, $scope), true);
         [
             $scope.qanParams.queryID,
             $scope.qanParams.type,
@@ -86,7 +87,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
 
             frame.contents().bind('updateUrl', (event) => {
                 let [type, params] = this.retrieveIFrameURLParams(event.currentTarget.URL);
-                this.reloadQuery(window, type, params);
+                this.reloadQuery(window, $scope, type, params);
                 setTimeout(() => $scope.ctrl.calculatePanelHeight(), 10);
             });
 
@@ -123,6 +124,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
     }
 
     private reloadQuery(window,
+                        $scope,
                         type = '',
                         urlParams?: {},
     ) {
@@ -136,6 +138,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
         let queryParams = Object.keys(existedParams).map(param => `${param}=${existedParams[param] || ''}`).join('&');
         let url = `${host}?${queryParams}`;
         history.pushState({}, null, url);
+        Object.keys(existedParams).forEach(param => $scope.qanParams[param] = existedParams[param]);
     }
 
     private retrieveDashboardURLParams(url): Array<string> {
