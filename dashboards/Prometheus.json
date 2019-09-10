@@ -36,7 +36,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1566976223413,
+    "iteration": 1568128850216,
     "links": [
         {
             "icon": "doc",
@@ -2579,12 +2579,13 @@
                     "editable": true,
                     "error": false,
                     "fill": 0,
+                    "fillGradient": 0,
                     "grid": {},
                     "gridPos": {
                         "h": 7,
                         "w": 12,
                         "x": 0,
-                        "y": 8
+                        "y": 11
                     },
                     "id": 2,
                     "legend": {
@@ -2601,7 +2602,9 @@
                     "linewidth": 1,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "percentage": false,
                     "pointradius": 5,
                     "points": false,
@@ -2691,12 +2694,13 @@
                     "editable": true,
                     "error": false,
                     "fill": 0,
+                    "fillGradient": 0,
                     "grid": {},
                     "gridPos": {
                         "h": 7,
                         "w": 12,
                         "x": 12,
-                        "y": 8
+                        "y": 11
                     },
                     "id": 12,
                     "legend": {
@@ -2714,7 +2718,9 @@
                     "linewidth": 1,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "percentage": false,
                     "pointradius": 2,
                     "points": false,
@@ -2817,12 +2823,13 @@
                     "editable": true,
                     "error": false,
                     "fill": 0,
+                    "fillGradient": 0,
                     "grid": {},
                     "gridPos": {
                         "h": 7,
                         "w": 12,
                         "x": 0,
-                        "y": 15
+                        "y": 18
                     },
                     "id": 24,
                     "interval": "",
@@ -2843,7 +2850,9 @@
                     "linewidth": 1,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "percentage": false,
                     "pointradius": 1,
                     "points": false,
@@ -2870,13 +2879,30 @@
                             "step": 60
                         },
                         {
-                            "expr": "sum by (job) (label_replace(\n(sum(avg_over_time(up{service_type!=\"mysql\",instance!=\"pmm-server\"}[$interval])) by (job,service_name,node_name) or \nsum(avg_over_time(up{service_type!=\"mysql\",instance!=\"pmm-server\"}[5m])) by (job,service_name,node_name)),\n\"job\", \"$1\", \"job\", \"(.*)_agent_(.*)\"))",
-                            "format": "time_series",
+                            "expr": "sum by (job) (label_replace(sum(avg_over_time(up{service_type=\"mongodb\"}[$interval])) by (job,service_name) or sum(avg_over_time(up{service_type=\"mongodb\"}[5m])) by (job,service_name),\"job\", \"$2\", \"job\", \"mongodb_(.*)_(.*)\"))",
                             "hide": false,
                             "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "{{job}}",
-                            "refId": "B"
+                            "legendFormat": "mongodb_exporter_{{job}}",
+                            "refId": "E"
+                        },
+                        {
+                            "expr": "sum by (job) (label_replace(sum(avg_over_time(up{service_type=\"postgresql\"}[$interval])) by (job,service_name) or sum(avg_over_time(up{service_type=\"postgresql\"}[5m])) by (job,service_name),\"job\", \"$2\", \"job\", \"postgres_(.*)_(.*)\"))",
+                            "hide": false,
+                            "interval": "$interval",
+                            "legendFormat": "postgresql_exporter_{{job}}",
+                            "refId": "D"
+                        },
+                        {
+                            "expr": "sum by (job) (label_replace(sum(avg_over_time(up{service_type=\"proxysql\"}[$interval])) by (job,service_name) or sum(avg_over_time(up{service_type=\"proxysql\"}[5m])) by (job,service_name),\"job\", \"$2\", \"job\", \"proxysql_(.*)_(.*)\"))",
+                            "interval": "$interval",
+                            "legendFormat": "proxysql_exporter_{{job}}",
+                            "refId": "F"
+                        },
+                        {
+                            "expr": "sum by (job) (label_replace(sum(avg_over_time(up{service_type=\"rds\"}[$interval])) by (job,service_name) or sum(avg_over_time(up{service_type=\"rds\"}[5m])) by (job,service_name),\"job\", \"$2\", \"job\", \"proxysql_(.*)_(.*)\"))",
+                            "interval": "$interval",
+                            "legendFormat": "rds_exporter_{{job}}",
+                            "refId": "G"
                         },
                         {
                             "expr": "sum(avg_over_time(up{instance=\"pmm-server\"}[$interval])) by (job) or sum(avg_over_time(up{instance=\"pmm-server\"}[5m])) by (job)",
@@ -2943,12 +2969,13 @@
                     "editable": true,
                     "error": false,
                     "fill": 0,
+                    "fillGradient": 0,
                     "grid": {},
                     "gridPos": {
                         "h": 7,
                         "w": 12,
                         "x": 12,
-                        "y": 15
+                        "y": 18
                     },
                     "id": 42,
                     "interval": "",
@@ -2969,7 +2996,9 @@
                     "linewidth": 1,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "percentage": false,
                     "pointradius": 1,
                     "points": false,
@@ -2991,13 +3020,40 @@
                             "step": 60
                         },
                         {
-                            "expr": "label_replace( \n(avg(avg_over_time(scrape_duration_seconds{service_type!=\"mysql\",instance!=\"pmm-server\"}[$interval])) by (job,node_name,service_name) or \navg(avg_over_time(scrape_duration_seconds{service_type!=\"mysql\",instance!=\"pmm-server\"}[5m])) by (job,node_name,service_name)), \n\"job\", \"$1\", \"job\", \"(.*)_agent_(.*)\")",
+                            "expr": "label_replace( (avg(avg_over_time(scrape_duration_seconds{service_type=\"rds\"}[$interval])) by (job,service_name) or avg(avg_over_time(scrape_duration_seconds{service_type=\"rds\"}[5m])) by (job,service_name)), \"job\", \"$2\", \"job\", \"rds_(.*)_(.*)\")",
+                            "interval": "$interval",
+                            "legendFormat": "{{service_name}} - rds_exporter - {{job}}",
+                            "refId": "G"
+                        },
+                        {
+                            "expr": "label_replace( (avg(avg_over_time(scrape_duration_seconds{service_type=\"proxysql\"}[$interval])) by (job,service_name) or avg(avg_over_time(scrape_duration_seconds{service_type=\"proxysql\"}[5m])) by (job,service_name)), \"job\", \"$2\", \"job\", \"proxysql_(.*)_(.*)\")",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
                             "intervalFactor": 1,
-                            "legendFormat": "{{node_name}} - {{job}}",
+                            "legendFormat": "{{service_name}} - proxysql_exporter - {{job}}",
                             "refId": "B"
+                        },
+                        {
+                            "expr": "label_replace( (avg(avg_over_time(scrape_duration_seconds{service_type=\"postgresql\"}[$interval])) by (job,service_name) or avg(avg_over_time(scrape_duration_seconds{service_type=\"postgresql\"}[5m])) by (job,service_name)), \"job\", \"$2\", \"job\", \"postgres_(.*)_(.*)\")",
+                            "hide": false,
+                            "interval": "$interval",
+                            "legendFormat": "{{service_name}} - postgres_exporter - {{job}}",
+                            "refId": "D"
+                        },
+                        {
+                            "expr": "label_replace( (avg(avg_over_time(scrape_duration_seconds{service_type=\"mongodb\"}[$interval])) by (job,service_name) or avg(avg_over_time(scrape_duration_seconds{service_type=\"mongodb\"}[5m])) by (job,service_name)), \"job\", \"$2\", \"job\", \"mongodb_(.*)_(.*)\")",
+                            "hide": false,
+                            "interval": "$interval",
+                            "legendFormat": "{{service_name}} - mongodb_exporter - {{job}}",
+                            "refId": "E"
+                        },
+                        {
+                            "expr": "label_replace( (avg(avg_over_time(scrape_duration_seconds{agent_type=\"node_exporter\",instance!=\"pmm-server\"}[$interval])) by (job,node_name) or avg(avg_over_time(scrape_duration_seconds{agent_type=\"node_exporter\",instance!=\"pmm-server\"}[5m])) by (job,node_name)), \"job\", \"$2\", \"job\", \"node_(.*)_(.*)\")",
+                            "hide": false,
+                            "interval": "$interval",
+                            "legendFormat": "{{node_name}} - node_exporter - {{job}}",
+                            "refId": "F"
                         },
                         {
                             "expr": "avg(avg_over_time(scrape_duration_seconds{instance=\"pmm-server\"}[$interval])) by (job,service_name) or \navg(avg_over_time(scrape_duration_seconds{instance=\"pmm-server\"}[5m])) by (job,service_name)",
@@ -3063,12 +3119,13 @@
                     "editable": true,
                     "error": false,
                     "fill": 0,
+                    "fillGradient": 0,
                     "grid": {},
                     "gridPos": {
                         "h": 7,
                         "w": 12,
                         "x": 0,
-                        "y": 22
+                        "y": 25
                     },
                     "id": 25,
                     "legend": {
@@ -3088,7 +3145,9 @@
                     "linewidth": 1,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "percentage": false,
                     "pointradius": 1,
                     "points": false,
@@ -3178,12 +3237,13 @@
                     "editable": true,
                     "error": false,
                     "fill": 0,
+                    "fillGradient": 0,
                     "grid": {},
                     "gridPos": {
                         "h": 7,
                         "w": 12,
                         "x": 12,
-                        "y": 22
+                        "y": 25
                     },
                     "id": 43,
                     "legend": {
@@ -3203,7 +3263,9 @@
                     "linewidth": 1,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "percentage": false,
                     "pointradius": 1,
                     "points": false,
@@ -3288,12 +3350,13 @@
                     "editable": true,
                     "error": false,
                     "fill": 0,
+                    "fillGradient": 0,
                     "grid": {},
                     "gridPos": {
                         "h": 7,
                         "w": 12,
                         "x": 0,
-                        "y": 29
+                        "y": 32
                     },
                     "id": 26,
                     "legend": {
@@ -3313,7 +3376,9 @@
                     "linewidth": 1,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "percentage": false,
                     "pointradius": 1,
                     "points": false,
@@ -3393,12 +3458,13 @@
                     "editable": true,
                     "error": false,
                     "fill": 0,
+                    "fillGradient": 0,
                     "grid": {},
                     "gridPos": {
                         "h": 7,
                         "w": 12,
                         "x": 12,
-                        "y": 29
+                        "y": 32
                     },
                     "id": 27,
                     "legend": {
@@ -3418,7 +3484,9 @@
                     "linewidth": 1,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "percentage": false,
                     "pointradius": 1,
                     "points": true,
@@ -3498,12 +3566,13 @@
                     "editable": true,
                     "error": false,
                     "fill": 0,
+                    "fillGradient": 0,
                     "grid": {},
                     "gridPos": {
                         "h": 7,
                         "w": 12,
                         "x": 0,
-                        "y": 36
+                        "y": 39
                     },
                     "id": 41,
                     "legend": {
@@ -3523,7 +3592,9 @@
                     "linewidth": 1,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "percentage": false,
                     "pointradius": 1,
                     "points": false,
@@ -3598,12 +3669,13 @@
                     "editable": true,
                     "error": false,
                     "fill": 0,
+                    "fillGradient": 0,
                     "grid": {},
                     "gridPos": {
                         "h": 7,
                         "w": 12,
                         "x": 12,
-                        "y": 36
+                        "y": 39
                     },
                     "id": 40,
                     "legend": {
@@ -3623,7 +3695,9 @@
                     "linewidth": 1,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "percentage": false,
                     "pointradius": 1,
                     "points": false,
@@ -3719,12 +3793,13 @@
                     "editable": true,
                     "error": false,
                     "fill": 0,
+                    "fillGradient": 0,
                     "grid": {},
                     "gridPos": {
                         "h": 7,
                         "w": 12,
                         "x": 0,
-                        "y": 43
+                        "y": 46
                     },
                     "id": 44,
                     "interval": "",
@@ -3745,7 +3820,9 @@
                     "linewidth": 1,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "percentage": false,
                     "pointradius": 1,
                     "points": true,
@@ -3772,7 +3849,7 @@
                             "step": 60
                         },
                         {
-                            "expr": "topk(10,(label_join((max_over_time(scrape_duration_seconds{instance=\"pmm-server\"}[$interval]) or \nmax_over_time(scrape_duration_seconds{instance=\"pmm-server\"}[5m])), \"node_name\", \",\",\"instance\") or\nlabel_replace((max_over_time(scrape_duration_seconds{service_type!=\"mysql\",instance!=\"pmm-server\"}[$interval]) or \nmax_over_time(scrape_duration_seconds{service_type!=\"mysql\",instance!=\"pmm-server\"}[5m])),\"job\", \"$1\", \"job\", \"(.*)_agent_(.*)\") or\nlabel_replace((max_over_time(scrape_duration_seconds{service_type=\"mysql\"}[$interval]) or \nmax_over_time(scrape_duration_seconds{service_type=\"mysql\"}[5m])),\"job\", \"mysqld_exporter_$3\", \"job\", \"(.*)_agent_id_(.*)_(.*)\")\n))",
+                            "expr": "topk(10,(\nlabel_join((max_over_time(scrape_duration_seconds{instance=\"pmm-server\"}[$interval]) or \nmax_over_time(scrape_duration_seconds{instance=\"pmm-server\"}[5m])), \"node_name\", \",\",\"instance\") or\nlabel_replace((max_over_time(scrape_duration_seconds{service_type=\"mysql\"}[$interval]) or \nmax_over_time(scrape_duration_seconds{service_type=\"mysql\"}[5m])),\"job\", \"mysqld_exporter_$3\", \"job\", \"(.*)_agent_id_(.*)_(.*)\") or\nlabel_replace((max_over_time(scrape_duration_seconds{service_type=\"postgresql\"}[$interval]) or \nmax_over_time(scrape_duration_seconds{service_type=\"postgresql\"}[5m])),\"job\", \"postgres_exporter_$3\", \"job\", \"(.*)_agent_id_(.*)_(.*)\") or\nlabel_replace((max_over_time(scrape_duration_seconds{service_type=\"mongodb\"}[$interval]) or max_over_time(scrape_duration_seconds{service_type=\"mongodb\"}[5m])),\"job\", \"mongodb_exporter_$3\", \"job\", \"(.*)_agent_id_(.*)_(.*)\") or\nlabel_replace((max_over_time(scrape_duration_seconds{service_type=\"proxysql\"}[$interval]) or max_over_time(scrape_duration_seconds{service_type=\"proxysql\"}[5m])),\"job\", \"proxysql_exporter_$3\", \"job\", \"(.*)_agent_id_(.*)_(.*)\") or\nlabel_replace((max_over_time(scrape_duration_seconds{service_type=\"rds\"}[$interval]) or \nmax_over_time(scrape_duration_seconds{service_type=\"rds\"}[5m])),\"job\", \"rds_exporter_$3\", \"job\", \"(.*)_agent_id_(.*)_(.*)\")\n))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -3835,14 +3912,16 @@
                     "editable": true,
                     "error": false,
                     "fill": 0,
+                    "fillGradient": 0,
                     "grid": {},
                     "gridPos": {
                         "h": 7,
                         "w": 12,
                         "x": 12,
-                        "y": 43
+                        "y": 46
                     },
                     "id": 45,
+                    "interval": "",
                     "legend": {
                         "alignAsTable": true,
                         "avg": true,
@@ -3860,7 +3939,9 @@
                     "linewidth": 1,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "percentage": false,
                     "pointradius": 1,
                     "points": true,
@@ -3887,11 +3968,11 @@
                             "step": 60
                         },
                         {
-                            "expr": "topk(10,(label_join((max_over_time(scrape_samples_scraped{instance=\"pmm-server\"}[$interval]) or \nmax_over_time(scrape_samples_scraped{instance=\"pmm-server\"}[5m])), \"node_name\", \",\",\"instance\") or\nlabel_replace((max_over_time(scrape_samples_scraped{service_type!=\"mysql\",instance!=\"pmm-server\"}[$interval]) or \nmax_over_time(scrape_samples_scraped{service_type!=\"mysql\",instance!=\"pmm-server\"}[5m])),\"job\", \"$1\", \"job\", \"(.*)_agent_(.*)\") or\nlabel_replace((max_over_time(scrape_samples_scraped{service_type=\"mysql\"}[$interval]) or \nmax_over_time(scrape_samples_scraped{service_type=\"mysql\"}[5m])),\"job\", \"mysqld_exporter_$3\", \"job\", \"(.*)_agent_id_(.*)_(.*)\")\n))",
+                            "expr": "topk(10,(label_join((max_over_time(scrape_samples_scraped{instance=\"pmm-server\"}[$interval]) or \nmax_over_time(scrape_samples_scraped{instance=\"pmm-server\"}[5m])), \"node_name\", \",\",\"instance\") or\nlabel_replace((max_over_time(scrape_samples_scraped{service_type=\"mysql\"}[$interval]) or \nmax_over_time(scrape_samples_scraped{service_type=\"mysql\"}[5m])),\"job\", \"mysqld_exporter_$3\", \"job\", \"(.*)_agent_id_(.*)_(.*)\") or\nlabel_replace((max_over_time(scrape_samples_scraped{service_type=\"mongodb\"}[$interval]) or \nmax_over_time(scrape_samples_scraped{service_type=\"mongodb\"}[5m])),\"job\", \"mongodb_exporter_$3\", \"job\", \"(.*)_agent_id_(.*)_(.*)\") or\nlabel_replace((max_over_time(scrape_samples_scraped{service_type=\"postgresql\"}[$interval]) or \nmax_over_time(scrape_samples_scraped{service_type=\"postgresql\"}[5m])),\"job\", \"postgresql_exporter_$3\", \"job\", \"(.*)_agent_id_(.*)_(.*)\") or\nlabel_replace((max_over_time(scrape_samples_scraped{service_type=\"proxysql\"}[$interval]) or max_over_time(scrape_samples_scraped{service_type=\"proxysql\"}[5m])),\"job\", \"proxysql_exporter_$3\", \"job\", \"(.*)_agent_id_(.*)_(.*)\") or\nlabel_replace((max_over_time(scrape_samples_scraped{service_type=\"rds\"}[$interval]) or \nmax_over_time(scrape_samples_scraped{service_type=\"rds\"}[5m])),\"job\", \"rds_exporter_$3\", \"job\", \"(.*)_agent_id_(.*)_(.*)\")\n))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
-                            "legendFormat": "{{job}} - {{node_name}}",
+                            "legendFormat": "{{job}} - {{service_name}}",
                             "refId": "B"
                         }
                     ],
@@ -4425,11 +4506,12 @@
                     "dashes": false,
                     "datasource": "Prometheus",
                     "fill": 2,
+                    "fillGradient": 0,
                     "gridPos": {
                         "h": 7,
                         "w": 24,
                         "x": 0,
-                        "y": 10
+                        "y": 13
                     },
                     "id": 90,
                     "legend": {
@@ -4449,7 +4531,9 @@
                     "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "percentage": false,
                     "pointradius": 5,
                     "points": false,
@@ -4460,7 +4544,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "rate(prometheus_http_request_duration_seconds_sum[$interval]) or irate(prometheus_http_request_duration_seconds_sum[$interval])\n",
+                            "expr": "rate(prometheus_http_request_duration_seconds_sum[$interval]) or \nirate(prometheus_http_request_duration_seconds_sum[5m])\n",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4518,11 +4602,12 @@
                     "datasource": "Prometheus",
                     "decimals": 2,
                     "fill": 2,
+                    "fillGradient": 0,
                     "gridPos": {
                         "h": 7,
                         "w": 24,
                         "x": 0,
-                        "y": 17
+                        "y": 20
                     },
                     "id": 91,
                     "legend": {
@@ -4542,7 +4627,9 @@
                     "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "percentage": false,
                     "pointradius": 5,
                     "points": false,
