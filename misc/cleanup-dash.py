@@ -120,7 +120,7 @@ def add_links(dashboard):
                         'targetBlank': False,
                         'title': 'Query Analytics',
                         'type': 'link',
-                        'url': '/graph/d/7w6Q3PJmz/pmm-query-analytics'
+                        'url': '/graph/d/pmm-qan/pmm-query-analytics'
                     }
                     dashboard['links'].append(add_item)
                 elif tag == 'Home' and (tag not in dashboard['tags']):
@@ -132,7 +132,7 @@ def add_links(dashboard):
                         'targetBlank': False,
                         'title': 'Home',
                         'type': 'link',
-                        'url': '/graph/d/Fxvd1timk/home-dashboard'
+                        'url': '/graph/d/pmm-home/home-dashboard'
                     }
                     dashboard['links'].append(add_item)
                 elif tag == 'Compare' and (tag not in dashboard['tags']):
@@ -145,7 +145,7 @@ def add_links(dashboard):
                             'targetBlank': False,
                             'title': 'Compare',
                             'type': 'link',
-                            'url': '/graph/d/000000205/compare-system-parameters'
+                            'url': '/graph/d/node-instance-compare/nodes-compare'
                         }
                         dashboard['links'].append(add_item)
                     elif 'MySQL' in dashboard['tags']:
@@ -157,7 +157,7 @@ def add_links(dashboard):
                             'targetBlank': False,
                             'title': 'Compare',
                             'type': 'link',
-                            'url': '/graph/d/KQdFKEGWz/mysql-services-compare'
+                            'url': '/graph/d/mysql-instance-compare/mysql-instances-compare'
                         }
                         dashboard['links'].append(add_item)
                     elif 'MongoDB' in dashboard['tags']:
@@ -169,7 +169,7 @@ def add_links(dashboard):
                             'targetBlank': False,
                             'title': 'Compare',
                             'type': 'link',
-                            'url': '/graph/d/OUYqEyOWk/mongodb-services-compare'
+                            'url': '/graph/d/mongodb-instance-compare/mongodb-instances-compare'
                         }
                         dashboard['links'].append(add_item)
                     elif 'PostgreSQL' in dashboard['tags']:
@@ -181,7 +181,7 @@ def add_links(dashboard):
                             'targetBlank': False,
                             'title': 'Compare',
                             'type': 'link',
-                            'url': '/graph/d/6XE3QvKWz/postgresql-services-compare'
+                            'url': '/graph/d/postgresql-instance-compare/postgresql-instances-compare'
                         }
                         dashboard['links'].append(add_item)
                 else:
