@@ -22,6 +22,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
             'main_metric': '',
             'columns': '',
             'order_by': '',
+            'group_by': '',
             'filter_by': '',
             'active_details_tab': '',
         };
@@ -78,6 +79,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
             $scope.qanParams.main_metric,
             $scope.qanParams.columns,
             $scope.qanParams.order_by,
+            $scope.qanParams.group_by,
             $scope.qanParams.filter_by,
             $scope.qanParams.active_details_tab,
         ] = this.retrieveDashboardURLParams(location.absUrl());
@@ -149,11 +151,12 @@ export class PanelCtrl extends MetricsPanelCtrl {
         const main_metric = currentURL.searchParams.get('main_metric') ? currentURL.searchParams.get('main_metric') : '';
         const columns = currentURL.searchParams.get('columns') ? currentURL.searchParams.get('columns') : '';
         const order_by = currentURL.searchParams.get('order_by') ? currentURL.searchParams.get('order_by') : '';
+        const group_by = currentURL.searchParams.get('group_by') ? currentURL.searchParams.get('group_by') : '';
         const filter_by = currentURL.searchParams.get('filter_by') ? currentURL.searchParams.get('filter_by') : '';
         const active_details_tab = currentURL.searchParams.get('active_details_tab') ? currentURL.searchParams.get('active_details_tab') : '';
         const type = currentURL.searchParams.get('type') ? currentURL.searchParams.get('type') : '';
 
-        return [id, type, search, filters, main_metric, columns, order_by, filter_by, active_details_tab];
+        return [id, type, search, filters, main_metric, columns, order_by, group_by, filter_by, active_details_tab];
     }
 
     private retrieveIFrameURLParams(url) {
