@@ -1,24 +1,30 @@
 /// <reference path="../../headers/common.d.ts" />
 
-import { MetricsPanelCtrl } from 'app/plugins/sdk';
+import {MetricsPanelCtrl} from 'app/plugins/sdk';
 import config from 'app/core/config';
-import $ from 'jquery';
 import AppEvents from "app/core/app_events";
 
 export class PanelCtrl extends MetricsPanelCtrl {
-    static template = `<iframe ng-src="{{trustSrc(url)}}" style="width: 100%; height: 400px; border: 0;" scrolling="no" />`;
+    static template = `<iframe ng-src="{{trustSrc(url)}}" id="iframe-qan" style="width: 100%; height: 400px; border: 0;" scrolling="no" />`;
 
     constructor($scope, $injector, templateSrv, $sce) {
         super($scope, $injector);
         $scope.qanParams = {
             'var-host': null,
-            'from': null,
+            'from': '',
+            'to': '',
             'search': '',
-            'queryID': null,
-            'type': null,
-            'to': null,
+            'queryID': '',
+            'type': '',
             'tz': config.bootData.user.timezone,
-            'theme': config.bootData.user.lightTheme ? 'light' : 'dark'
+            'theme': config.bootData.user.lightTheme ? 'light' : 'dark',
+            'filters': '',
+            'main_metric': '',
+            'columns': '',
+            'order_by': '',
+            'group_by': '',
+            'filter_by': '',
+            'active_details_tab': '',
         };
         $scope.trustSrc = (src) => $sce.trustAsResourceUrl(src);
 
@@ -28,9 +34,9 @@ export class PanelCtrl extends MetricsPanelCtrl {
 
         $scope.$watch('ctrl.range', newValue => {
             if (!newValue) return;
-
-            $scope.qanParams.from = newValue.from.valueOf();
-            $scope.qanParams.to = newValue.to.valueOf();
+            $scope.qanParams.from = newValue.raw.from;
+            $scope.qanParams.to = newValue.raw.to;
+            this.resetUrl($scope)
         }, true);
     }
 
@@ -41,7 +47,6 @@ export class PanelCtrl extends MetricsPanelCtrl {
         // TODO: investigate this workaround. Inside $window - CtrlPanel
         const location = $window.$injector.get('$location');
         const window = $window.$injector.get('$window');
-        window.document.addEventListener('showSuccessNotification', () => { AppEvents.emit('alert-success', ['Content has been copied to clipboard']); }, false);
         panel.css({
             'background-color': 'transparent',
             'border': 'none'
@@ -65,33 +70,34 @@ export class PanelCtrl extends MetricsPanelCtrl {
         };
         // init url
         // updated url
-        $scope.$watch('qanParams', this.resetUrl.bind(this, $scope), true);
-
-        [$scope.qanParams.queryID, $scope.qanParams.type, $scope.qanParams.search] = this.retrieveDashboardURLParams(location.absUrl());
+        // $scope.$watch('qanParams', this.resetUrl.bind(this, $scope), true);
+        [
+            $scope.qanParams.queryID,
+            $scope.qanParams.type,
+            $scope.qanParams.search,
+            $scope.qanParams.filters,
+            $scope.qanParams.main_metric,
+            $scope.qanParams.columns,
+            $scope.qanParams.order_by,
+            $scope.qanParams.group_by,
+            $scope.qanParams.filter_by,
+            $scope.qanParams.active_details_tab,
+        ] = this.retrieveDashboardURLParams(location.absUrl());
 
         frame.on('load', () => {
-            $scope.ctrl.calculatePanelHeight();
-            frame.contents().bind('click', event => {
-                let [queryID, type, search] = this.retrieveIFrameURLParams(event.currentTarget.URL);
-                if ($(event.target).is('.fa-search') && ($('iframe').contents().find('#search-input')[0].value.length || $('iframe').contents().find('#search-input')[0].value === '')) {
-                    search =  $('iframe').contents().find('#search-input')[0].value;
-                    queryID = 'null';
-                    $scope.ctrl.calculatePanelHeight();
-                    return this.reloadQuery(window, queryID, type, search);
-                }
+            setTimeout(() => $scope.ctrl.calculatePanelHeight(), 10);
+
+            frame.contents().bind('updateUrl', (event) => {
+                let [type, params] = this.retrieveIFrameURLParams(event.currentTarget.URL);
+                this.reloadQuery(window, $scope, type, params);
                 setTimeout(() => $scope.ctrl.calculatePanelHeight(), 10);
-                return queryID === 'null' || queryID === null || this.reloadQuery(window, queryID, type, search);
             });
-            frame.contents().bind('keyup', event => {
-                if (($(event.target).is('#search-input') && event.keyCode === 13)) {
-                    const [queryID, type, search] = this.retrieveIFrameURLParams(event.currentTarget.URL);
-                    $scope.ctrl.calculatePanelHeight();
-                    return this.reloadQuery(window, queryID, type, search);
-                }
-            });
+
+            frame.contents().bind('showSuccessNotification', () => {
+                AppEvents.emit('alert-success', ['Content has been copied to clipboard']);
+            }, false);
 
             frame.contents().bind('DOMSubtreeModified', () => setTimeout(() => $scope.ctrl.calculatePanelHeight(), 10));
-
         });
     }
 
@@ -119,67 +125,65 @@ export class PanelCtrl extends MetricsPanelCtrl {
         [].forEach.call(menu, e => e.setAttribute('style', 'z-index: 1001'));
     }
 
-    private reloadQuery(window, queryID = null, type = null, search = '') {
-        const isQueryId = queryID && queryID !== 'null';
-        const isOnlyIDInUrl = isQueryId && !($('iframe').contents().find('#search-input')[0].value.length);
-        const isOnlySearchInUrl = search && !isQueryId && !isOnlyIDInUrl;
-        const isBothInUrl = isQueryId && search && ($('iframe').contents().find('#search-input')[0].value.length);
-        const isBothNull = (queryID === null || queryID === 'null') && (search === null || search === '');
+    private reloadQuery(window,
+                        $scope,
+                        type = '',
+                        urlParams?: {},
+    ) {
+        let host = window.location.href.split('?')[0];
+        let existedParams = this.getJsonFromUrl(window.location);
+        Object.keys(urlParams).forEach(param => existedParams[param] = urlParams[param]);
 
-        const conditions = [
-            {
-                getStr: () => '&queryID',
-                params: {queryID, type},
-                getCondition: () => isOnlyIDInUrl,
-            },
-            {
-                getStr: () => (window.location.href.match(/&queryID/g) || []).length ? '&queryID' : '&search',
-                params: {search},
-                getCondition: () => isOnlySearchInUrl,
-            },
-            {
-                getStr: () => '&queryID',
-                params: {queryID, type, search},
-                getCondition: () => isBothInUrl,
-            },
-            {
-                getStr: () => '&search',
-                params: {queryID, type, search},
-                getCondition: () => isBothInUrl && ((window.location.href.match(/&search/g) || []).length > 1),
-            },
-        ];
-
-        conditions.map(item => {
-            if (!item.getCondition()) return;
-            history.pushState({}, null, `${window.location.href.split(item.getStr())[0]}&${this.encodeData(item.params)}`);
-        });
-
-        if(isBothNull) {
-            history.pushState({}, null, `${window.location.href.split('&search')[0]}`);
-            history.pushState({}, null, `${window.location.href.split('&queryID')[0]}`);
+        if (type && urlParams["queryID"]) {
+            existedParams['type'] = type;
         }
+        let queryParams = Object.keys(existedParams).map(param => `${param}=${existedParams[param] || ''}`).join('&');
+        let url = `${host}?${queryParams}`;
+        history.pushState({}, null, url);
+        Object.keys(existedParams).forEach(param => $scope.qanParams[param] = existedParams[param]);
     }
 
     private retrieveDashboardURLParams(url): Array<string> {
         const currentURL = new URL(url);
+        const id = currentURL.searchParams.get('queryID') ? currentURL.searchParams.get('queryID') : '';
+        const search = currentURL.searchParams.get('search') ? currentURL.searchParams.get('search') : '';
+        const filters = currentURL.searchParams.get('filters') ? currentURL.searchParams.get('filters') : '';
+        const main_metric = currentURL.searchParams.get('main_metric') ? currentURL.searchParams.get('main_metric') : '';
+        const columns = currentURL.searchParams.get('columns') ? currentURL.searchParams.get('columns') : '';
+        const order_by = currentURL.searchParams.get('order_by') ? currentURL.searchParams.get('order_by') : '';
+        const group_by = currentURL.searchParams.get('group_by') ? currentURL.searchParams.get('group_by') : '';
+        const filter_by = currentURL.searchParams.get('filter_by') ? currentURL.searchParams.get('filter_by') : '';
+        const active_details_tab = currentURL.searchParams.get('active_details_tab') ? currentURL.searchParams.get('active_details_tab') : '';
+        const type = currentURL.searchParams.get('type') ? currentURL.searchParams.get('type') : '';
 
-        return [currentURL.searchParams.get('queryID'), currentURL.searchParams.get('type'), currentURL.searchParams.get('search')];
+        return [id, type, search, filters, main_metric, columns, order_by, group_by, filter_by, active_details_tab];
     }
 
-    private retrieveIFrameURLParams(url): Array<string> {
+    private retrieveIFrameURLParams(url) {
         const currentURL = new URL(url);
-        const id = currentURL.searchParams.get('queryID');
-        const search = currentURL.searchParams.get('search');
+        const params = this.getJsonFromUrl(currentURL);
         const urlArr = url.split('/');
         const type = urlArr[urlArr.length - 1].split('?')[0];
 
-        return [id, type, search];
+        return [type, params];
+    }
+
+    private getJsonFromUrl(url: URL) {
+        const query = url.search.substr(1);
+        const result = {};
+        query.split('&').forEach(function(part) {
+            const item = part.split('=');
+            result[item[0]] = decodeURIComponent(item[1]);
+        });
+        return result;
     }
 
     private encodeData(data: Object): string {
-        return Object.keys(data)
-            .map(key => data.hasOwnProperty(key) ? `${encodeURIComponent(key)}=${encodeURIComponent(data[key])}` : null)
-            .join('&');
+        return Object.keys(data).map(key => {
+            if (data.hasOwnProperty(key) && data[key]) {
+                return `${encodeURIComponent(key)}=${encodeURIComponent(data[key])}`
+            }
+        }).filter(param => param).join('&')
     }
 
     // translates Grafana's variables into iframe's URL;
@@ -190,7 +194,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
     private resetUrl($scope) {
         let data = this.encodeData($scope.qanParams);
 
-        if ($scope.qanParams.type && $scope.qanParams.queryID) $scope.url = `/qan/profile/report/${$scope.qanParams.type}?${data}`;
-        else $scope.url = `/qan/profile/?${data}`;
+        $scope.url = $scope.qanParams.type && $scope.qanParams.queryID ?
+            `/qan/profile/report/${$scope.qanParams.type}?${data}` : `/qan/profile/?${data}`;
     }
 }
