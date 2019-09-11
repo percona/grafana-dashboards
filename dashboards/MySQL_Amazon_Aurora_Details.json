@@ -36,7 +36,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1555315940376,
+    "iteration": 1552407765727,
     "links": [
         {
             "icon": "doc",
@@ -61,6 +61,40 @@
             "title": "Query Analytics",
             "type": "link",
             "url": "/graph/d/pmm-qan/pmm-query-analytics"
+        },
+        {
+            "icon": "bolt",
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "Compare"
+            ],
+            "targetBlank": false,
+            "title": "Compare",
+            "type": "link",
+            "url": "/graph/d/mysql-instance-compare/mysql-instances-compare"
+        },
+        {
+            "asDropdown": true,
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "MySQL"
+            ],
+            "targetBlank": false,
+            "title": "MySQL",
+            "type": "dashboards"
+        },
+        {
+            "asDropdown": true,
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "MySQL_HA"
+            ],
+            "targetBlank": false,
+            "title": "HA",
+            "type": "dashboards"
         },
         {
             "asDropdown": true,
@@ -112,48 +146,35 @@
             "type": "digiapulssi-breadcrumb-panel"
         },
         {
-            "collapsed": false,
+            "aliasColors": {
+                "Amazon Aurora Commit avg Latency": "#962d82",
+                "Number of Amazon Aurora Commits ": "#0a50a1",
+                "Write Transactions": "#e24d42"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 2,
+            "description": "This graph shows the number of Commits which Amazon Aurora engine performed as well as average commit latency. Graph Latency does not always correlate with the number of performed commits and can be quite high in certain situations.\n\n* **Number of Amazon Aurora Commits**: The average number of commit operations per second.\n\n* **Amazon Aurora Commit avg Latency**: The average amount of latency for commit operations",
+            "editable": true,
+            "error": false,
+            "fill": 2,
+            "grid": {},
             "gridPos": {
-                "h": 1,
-                "w": 24,
+                "h": 8,
+                "w": 12,
                 "x": 0,
                 "y": 0
             },
-            "id": 39,
-            "panels": [],
-            "repeat": null,
-            "title": "System Stats",
-            "type": "row"
-        },
-        {
-            "aliasColors": {},
-            "bars": false,
-            "dashLength": 10,
-            "dashes": false,
-            "datasource": "Prometheus",
-            "decimals": null,
-            "description": "Compares the percentage of CPU usage for the current selected range versus the previous day and the previous week for the same time range. This graph is useful to demonstrate how the CPU usage has changed over time by visually overlaying time periods.",
-            "editable": true,
-            "error": false,
-            "fill": 2,
-            "grid": {},
-            "gridPos": {
-                "h": 7,
-                "w": 24,
-                "x": 0,
-                "y": 1
-            },
-            "height": "",
-            "id": 2,
+            "id": 3,
             "legend": {
                 "alignAsTable": true,
                 "avg": true,
                 "current": false,
-                "hideEmpty": false,
-                "hideZero": true,
                 "max": true,
                 "min": true,
-                "rightSide": true,
+                "rightSide": false,
                 "show": true,
                 "sort": "avg",
                 "sortDesc": true,
@@ -164,55 +185,62 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
             "renderer": "flot",
-            "seriesOverrides": [],
+            "seriesOverrides": [
+                {
+                    "alias": "Key Reads",
+                    "fill": 0
+                },
+                {
+                    "alias": "Key Writes",
+                    "fill": 0,
+                    "transform": "negative-Y"
+                },
+                {
+                    "alias": "Key Write Requests",
+                    "transform": "negative-Y"
+                },
+                {
+                    "alias": "Avg Write Transactions Latency",
+                    "yaxis": 2
+                },
+                {
+                    "alias": "Amazon Aurora Commit avg Latency",
+                    "yaxis": 2
+                }
+            ],
             "spaceLength": 10,
             "stack": false,
             "steppedLine": false,
             "targets": [
                 {
-                    "calculatedInterval": "2s",
+                    "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "avg by (node_name) ((sum by (mode) (\n(clamp_max(rate(node_cpu_seconds_total{node_name=\"$host\",mode!=\"idle\"}[$interval]),1)) or \n(clamp_max(irate(node_cpu_seconds_total{node_name=\"$host\",mode!=\"idle\"}[5m]),1)) ))*100 \nor (sum by (mode) (\nclamp_max(((max_over_time(node_cpu_average{node_name=\"$host\", mode!=\"idle\"}[$interval]) or \nmax_over_time(node_cpu_average{node_name=\"$host\", mode!=\"idle\"}[5m]))),100))))",
+                    "expr": "rate(mysql_global_status_auroradb_commits{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_auroradb_commits{service_name=\"$service\"}[5m])",
                     "format": "time_series",
-                    "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
-                    "legendFormat": "Busy State",
+                    "legendFormat": "Number of Amazon Aurora Commits ",
+                    "metric": "",
+                    "refId": "D",
+                    "step": 300
+                },
+                {
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "rate(mysql_global_status_auroradb_commit_latency{service_name=\"$service\"}[$interval])/rate(mysql_global_status_auroradb_commits{service_name=\"$service\"}[$interval]) or irate(mysql_global_status_auroradb_commit_latency{service_name=\"$service\"}[5m])/irate(mysql_global_status_auroradb_commits{service_name=\"$service\"}[5m])",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Amazon Aurora Commit avg Latency",
                     "metric": "",
                     "refId": "A",
-                    "step": 300
-                },
-                {
-                    "calculatedInterval": "2s",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "avg by (node_name) ((sum by (mode) (\n(clamp_max(rate(node_cpu_seconds_total{node_name=\"$host\",mode!=\"idle\"}[$interval] offset 1d),1)) or \n(clamp_max(irate(node_cpu_seconds_total{node_name=\"$host\",mode!=\"idle\"}[5m] offset 1d),1)) ))*100 \nor (sum by (mode) (\nclamp_max(((max_over_time(node_cpu_average{node_name=\"$host\", mode!=\"idle\"}[$interval] offset 1d) or \nmax_over_time(node_cpu_average{node_name=\"$host\", mode!=\"idle\"}[5m] offset 1d))),100))))",
-                    "format": "time_series",
-                    "hide": false,
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Busy State 1d ago",
-                    "metric": "",
-                    "refId": "B",
-                    "step": 300
-                },
-                {
-                    "calculatedInterval": "2s",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "avg by (node_name) ((sum by (mode) (\n(clamp_max(rate(node_cpu_seconds_total{node_name=\"$host\",mode!=\"idle\"}[$interval] offset 1w),1)) or \n(clamp_max(irate(node_cpu_seconds_total{node_name=\"$host\",mode!=\"idle\"}[5m] offset 1w),1)) ))*100 \nor (sum by (mode) (\nclamp_max(((max_over_time(node_cpu_average{node_name=\"$host\", mode!=\"idle\"}[$interval] offset 1w) or \nmax_over_time(node_cpu_average{node_name=\"$host\", mode!=\"idle\"}[5m] offset 1w))),100))))",
-                    "format": "time_series",
-                    "hide": false,
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Busy State 1w ago",
-                    "metric": "",
-                    "refId": "C",
                     "step": 300
                 }
             ],
@@ -220,7 +248,7 @@
             "timeFrom": null,
             "timeRegions": [],
             "timeShift": null,
-            "title": "CPU Usage",
+            "title": "Amazon Aurora Transaction Commits",
             "tooltip": {
                 "msResolution": false,
                 "shared": true,
@@ -237,8 +265,159 @@
             },
             "yaxes": [
                 {
-                    "format": "percent",
-                    "label": "",
+                    "format": "ops",
+                    "logBase": 1,
+                    "max": null,
+                    "min": 0,
+                    "show": true
+                },
+                {
+                    "format": "\u00b5s",
+                    "logBase": 1,
+                    "max": null,
+                    "min": 0,
+                    "show": true
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {
+                "DDL Load": "#962d82",
+                "DELETE load": "#eab839",
+                "INSERT load": "#0a437c",
+                "SELECT load ": "#629e51",
+                "UPDATE load": "#ea6460",
+                "Write Transaction Commit Load": "#bf1b00"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 2,
+            "description": "This graph shows us what statements contribute most load on the system as well as what load corresponds to Amazon Aurora transaction commit.\n\n* **Write Transaction Commit Load**: Load in Average Active Sessions per second for COMMIT operations\n\n* **UPDATE load**: Load in Average Active Sessions per second for UPDATE queries\n\n* **SELECT load**: Load in Average Active Sessions per second for SELECT queries\n\n* **DELETE load**: Load in Average Active Sessions per second for DELETE queries\n\n* **INSERT load**: Load in Average Active Sessions per second for INSERT queries\n\nAn *active session* is a connection that has submitted work to the database engine and is waiting for a response from it. For example, if you submit an SQL query to the database engine, the database session is active while the database engine is processing that query.",
+            "editable": true,
+            "error": false,
+            "fill": 2,
+            "grid": {},
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 12,
+                "y": 0
+            },
+            "id": 21,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "rightSide": false,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "null",
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [
+                {
+                    "alias": "Key Blocks Not Flushed",
+                    "fill": 0
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "rate(mysql_global_status_auroradb_commit_latency{service_name=\"$service\"}[$interval])/1000000 or irate(mysql_global_status_auroradb_commit_latency{service_name=\"$service\"}[5m])/1000000",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Write Transaction Commit Load",
+                    "metric": "",
+                    "refId": "C",
+                    "step": 300
+                },
+                {
+                    "expr": "rate(mysql_global_status_auroradb_ddl_stmt_duration{service_name=\"$service\"}[$interval])/1000000 or irate(mysql_global_status_auroradb_ddl_stmt_duration{service_name=\"$service\"}[5m])/1000000",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "DDL Load",
+                    "refId": "A"
+                },
+                {
+                    "expr": "rate(mysql_global_status_auroradb_select_stmt_duration{service_name=\"$service\"}[$interval])/1000000 or irate(mysql_global_status_auroradb_select_stmt_duration{service_name=\"$service\"}[5m])/1000000",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "SELECT load ",
+                    "refId": "B"
+                },
+                {
+                    "expr": "rate(mysql_global_status_auroradb_insert_stmt_duration{service_name=\"$service\"}[$interval])/1000000 or irate(mysql_global_status_auroradb_insert_stmt_duration{service_name=\"$service\"}[5m])/1000000",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "INSERT load",
+                    "refId": "D"
+                },
+                {
+                    "expr": "rate(mysql_global_status_auroradb_update_stmt_duration{service_name=\"$service\"}[$interval])/1000000 or irate(mysql_global_status_auroradb_update_stmt_duration{service_name=\"$service\"}[5m])/1000000",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "UPDATE load",
+                    "refId": "E"
+                },
+                {
+                    "expr": "rate(mysql_global_status_auroradb_delete_stmt_duration{service_name=\"$service\"}[$interval])/1000000 or irate(mysql_global_status_auroradb_delete_stmt_duration{service_name=\"$service\"}[5m])/1000000",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "DELETE load",
+                    "refId": "F"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "Amazon Aurora Load",
+            "tooltip": {
+                "msResolution": false,
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "short",
                     "logBase": 1,
                     "max": null,
                     "min": 0,
@@ -263,24 +442,23 @@
             "dashLength": 10,
             "dashes": false,
             "datasource": "Prometheus",
-            "decimals": null,
-            "description": "Shows the comparison of I/O Read Activity in terms of bytes read for the current selected range versus the previous day and the previous week for the same time range. This graph is useful to demonstrate how I/O Read Activity has changed over time by visually overlaying time periods. ",
+            "decimals": 2,
+            "description": "This graph shows how much memory is used by Amazon Aurora lock manager as well as amount of memory used by Amazon Aurora to store Data Dictionary.\n\n* **Aurora Lock Manager Memory**: the amount of memory used by the Lock Manager, the module responsible for handling row lock requests for concurrent transactions.\n\n* **Aurora Dictionary Memory**: the amount of memory used by the Dictionary, the space that contains metadata used to keep track of database objects, such as tables and indexes.",
             "editable": true,
             "error": false,
             "fill": 2,
             "grid": {},
             "gridPos": {
-                "h": 7,
+                "h": 9,
                 "w": 12,
                 "x": 0,
                 "y": 8
             },
-            "id": 37,
+            "id": 22,
             "legend": {
                 "alignAsTable": true,
                 "avg": true,
                 "current": false,
-                "hideEmpty": false,
                 "max": true,
                 "min": true,
                 "rightSide": false,
@@ -294,63 +472,62 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
             "renderer": "flot",
-            "seriesOverrides": [],
+            "seriesOverrides": [
+                {
+                    "alias": "Key Reads",
+                    "fill": 0
+                },
+                {
+                    "alias": "Key Writes",
+                    "fill": 0,
+                    "transform": "negative-Y"
+                },
+                {
+                    "alias": "Key Write Requests",
+                    "transform": "negative-Y"
+                }
+            ],
             "spaceLength": 10,
             "stack": false,
             "steppedLine": false,
             "targets": [
                 {
-                    "calculatedInterval": "2s",
+                    "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(node_vmstat_pgpgin{node_name=\"$host\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=\"$host\"}[5m]) * 1024",
+                    "expr": "mysql_global_status_aurora_lockmgr_memory_used{service_name=\"$service\"}",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
-                    "legendFormat": "Page In",
+                    "legendFormat": "Aurora Lock Manager Memory",
+                    "metric": "",
+                    "refId": "D",
+                    "step": 300
+                },
+                {
+                    "calculatedInterval": "2m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "mysql_global_status_aurora_dict_sys_mem_size{service_name=\"$service\"}",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Aurora Dictionary Memory ",
                     "metric": "",
                     "refId": "A",
-                    "step": 300,
-                    "target": ""
-                },
-                {
-                    "calculatedInterval": "2s",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "rate(node_vmstat_pgpgin{node_name=\"$host\"}[$interval] offset 1d) * 1024 or irate(node_vmstat_pgpgin{node_name=\"$host\"}[5m] offset 1d) * 1024",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Page In 1d ago",
-                    "metric": "",
-                    "refId": "B",
-                    "step": 300,
-                    "target": ""
-                },
-                {
-                    "calculatedInterval": "2s",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "rate(node_vmstat_pgpgin{node_name=\"$host\"}[$interval] offset 1w) * 1024 or irate(node_vmstat_pgpgin{node_name=\"$host\"}[5m] offset 1w) * 1024",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Page In 1w ago",
-                    "metric": "",
-                    "refId": "C",
-                    "step": 300,
-                    "target": ""
+                    "step": 300
                 }
             ],
             "thresholds": [],
             "timeFrom": null,
             "timeRegions": [],
             "timeShift": null,
-            "title": "I/O Read Activity",
+            "title": "Aurora Memory Used",
             "tooltip": {
                 "msResolution": false,
                 "shared": true,
@@ -366,20 +543,19 @@
                 "values": []
             },
             "yaxes": [
-                {
-                    "format": "Bps",
-                    "label": "",
-                    "logBase": 1,
-                    "max": null,
-                    "min": 0,
-                    "show": true
-                },
                 {
                     "format": "bytes",
                     "logBase": 1,
                     "max": null,
                     "min": 0,
                     "show": true
+                },
+                {
+                    "format": "short",
+                    "logBase": 1,
+                    "max": null,
+                    "min": 0,
+                    "show": true
                 }
             ],
             "yaxis": {
@@ -388,168 +564,35 @@
             }
         },
         {
-            "aliasColors": {},
+            "aliasColors": {
+                "DDL Latency": "#962d82",
+                "DDL Load": "#962d82",
+                "DELETE Latency": "#e5ac0e",
+                "DELETE load": "#eab839",
+                "INSERT Latency": "#0a437c",
+                "INSERT load": "#0a437c",
+                "SELECT Latency": "#508642",
+                "SELECT load ": "#629e51",
+                "UPDATE load": "#ea6460",
+                "Write Transaction Commit Load": "#bf1b00"
+            },
             "bars": false,
             "dashLength": 10,
             "dashes": false,
             "datasource": "Prometheus",
-            "decimals": null,
-            "description": "Shows the comparison of I/O Write Activity in terms of bytes written for the current selected range versus the previous day and the previous week for the same time range. This graph is useful to demonstrate how I/O Write Activity has changed over time by visually overlaying time periods.",
+            "decimals": 2,
+            "description": "This graph shows average latency for the most important types of statements. Latency spikes are often indicative of the instance overload.\n\n* **DDL Latency:** Average time to execute DDL queries\n\n* **DELETE Latency**: Average time to execute DELETE queries\n\n* **UPDATE Latency**: Average time to execute UPDATE queries\n\n* **SELECT Latency**: Average time to execute SELECT queries\n\n* **INSERT Latency**: Average time to execute INSERT queries",
             "editable": true,
             "error": false,
-            "fill": 2,
+            "fill": 1,
             "grid": {},
             "gridPos": {
-                "h": 7,
+                "h": 9,
                 "w": 12,
                 "x": 12,
                 "y": 8
             },
-            "id": 38,
-            "legend": {
-                "alignAsTable": true,
-                "avg": true,
-                "current": false,
-                "hideEmpty": false,
-                "max": true,
-                "min": true,
-                "rightSide": false,
-                "show": true,
-                "sort": "avg",
-                "sortDesc": true,
-                "total": false,
-                "values": true
-            },
-            "lines": true,
-            "linewidth": 2,
-            "links": [],
-            "nullPointMode": "null",
-            "percentage": false,
-            "pointradius": 5,
-            "points": false,
-            "renderer": "flot",
-            "seriesOverrides": [],
-            "spaceLength": 10,
-            "stack": false,
-            "steppedLine": false,
-            "targets": [
-                {
-                    "calculatedInterval": "2s",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "rate(node_vmstat_pgpgout{node_name=\"$host\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=\"$host\"}[5m]) * 1024",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Page Out",
-                    "metric": "",
-                    "refId": "B",
-                    "step": 300,
-                    "target": ""
-                },
-                {
-                    "calculatedInterval": "2s",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "rate(node_vmstat_pgpgout{node_name=\"$host\"}[$interval] offset 1d) * 1024 or irate(node_vmstat_pgpgout{node_name=\"$host\"}[5m] offset 1d) * 1024",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Page Out 1d ago",
-                    "metric": "",
-                    "refId": "A",
-                    "step": 300,
-                    "target": ""
-                },
-                {
-                    "calculatedInterval": "2s",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "rate(node_vmstat_pgpgout{node_name=\"$host\"}[$interval] offset 1w) * 1024 or irate(node_vmstat_pgpgout{node_name=\"$host\"}[5m] offset 1w) * 1024",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Page Out 1w ago",
-                    "metric": "",
-                    "refId": "C",
-                    "step": 300,
-                    "target": ""
-                }
-            ],
-            "thresholds": [],
-            "timeFrom": null,
-            "timeRegions": [],
-            "timeShift": null,
-            "title": "I/O Write Activity",
-            "tooltip": {
-                "msResolution": false,
-                "shared": true,
-                "sort": 0,
-                "value_type": "individual"
-            },
-            "type": "graph",
-            "xaxis": {
-                "buckets": null,
-                "mode": "time",
-                "name": null,
-                "show": true,
-                "values": []
-            },
-            "yaxes": [
-                {
-                    "format": "Bps",
-                    "label": "",
-                    "logBase": 1,
-                    "max": null,
-                    "min": 0,
-                    "show": true
-                },
-                {
-                    "format": "bytes",
-                    "logBase": 1,
-                    "max": null,
-                    "min": 0,
-                    "show": true
-                }
-            ],
-            "yaxis": {
-                "align": false,
-                "alignLevel": null
-            }
-        },
-        {
-            "collapsed": false,
-            "gridPos": {
-                "h": 1,
-                "w": 24,
-                "x": 0,
-                "y": 15
-            },
-            "id": 40,
-            "panels": [],
-            "repeat": null,
-            "title": "MySQL Stats",
-            "type": "row"
-        },
-        {
-            "aliasColors": {},
-            "bars": false,
-            "dashLength": 10,
-            "dashes": false,
-            "datasource": "Prometheus",
-            "decimals": null,
-            "description": "Shows the comparison of the MySQL Questions for the current selected range versus the previous day and the previous week for the same time range. This graph is useful to demonstrate how MySQL Questions has changed over time by visually overlaying time periods.",
-            "editable": true,
-            "error": false,
-            "fill": 2,
-            "grid": {},
-            "gridPos": {
-                "h": 7,
-                "w": 24,
-                "x": 0,
-                "y": 16
-            },
-            "id": 35,
+            "id": 24,
             "legend": {
                 "alignAsTable": true,
                 "avg": true,
@@ -567,60 +610,72 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
             "renderer": "flot",
-            "seriesOverrides": [],
+            "seriesOverrides": [
+                {
+                    "alias": "Key Blocks Not Flushed",
+                    "fill": 0
+                }
+            ],
             "spaceLength": 10,
             "stack": false,
             "steppedLine": false,
             "targets": [
                 {
-                    "calculatedInterval": "2m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "rate(mysql_global_status_questions{service_name=~\"$service\"}[$interval]) or irate(mysql_global_status_questions{service_name=~\"$service\"}[5m])",
+                    "expr": "(rate(mysql_global_status_auroradb_ddl_stmt_duration{service_name=\"$service\"}[$interval])/ (sum(rate(mysql_global_status_commands_total{service_name=\"$service\",command=~'alter_table|create_index|drop_index|drop_table'}[$interval])) without(command)))",
                     "format": "time_series",
+                    "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
-                    "legendFormat": "Questions - {{service_name}}",
-                    "metric": "",
-                    "refId": "A",
-                    "step": 300
+                    "legendFormat": "DDL Latency",
+                    "refId": "A"
                 },
                 {
-                    "calculatedInterval": "2m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "rate(mysql_global_status_questions{service_name=~\"$service\"}[$interval] offset 1d) or \nirate(mysql_global_status_questions{servoce_name=~\"$service\"}[5m] offset 1d)",
+                    "expr": "(rate(mysql_global_status_auroradb_select_stmt_duration{service_name=\"$service\"}[$interval])/ (sum(rate(mysql_global_status_commands_total{service_name=\"$service\",command='select'}[$interval])) without(command))+rate(mysql_global_status_qcache_hits{service_name=\"$service\"}[$interval]))",
                     "format": "time_series",
+                    "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
-                    "legendFormat": "Questions 1d ago - {{service_name}}",
-                    "metric": "",
-                    "refId": "B",
-                    "step": 300
+                    "legendFormat": "SELECT Latency",
+                    "refId": "B"
                 },
                 {
-                    "calculatedInterval": "2m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "rate(mysql_global_status_questions{service_name=~\"$service\"}[$interval] offset 1w) or \nirate(mysql_global_status_questions{service_name=~\"$service\"}[5m] offset 1w)",
+                    "expr": "(rate(mysql_global_status_auroradb_insert_stmt_duration{service_name=\"$service\"}[$interval])/ (sum(rate(mysql_global_status_commands_total{service_name=\"$service\",command=~'insert|insert_select'}[$interval])) without(command)))",
                     "format": "time_series",
+                    "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
-                    "legendFormat": "Questions 1w ago - {{service_name}}",
-                    "metric": "",
-                    "refId": "C",
-                    "step": 300
+                    "legendFormat": "INSERT Latency",
+                    "refId": "D"
+                },
+                {
+                    "expr": "(rate(mysql_global_status_auroradb_update_stmt_duration{service_name=\"$service\"}[$interval])/ (sum(rate(mysql_global_status_commands_total{service_name=\"$service\",command=~'update|update_multi'}[$interval])) without(command)))",
+                    "format": "time_series",
+                    "hide": false,
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "UPDATE Latency",
+                    "refId": "E"
+                },
+                {
+                    "expr": "(rate(mysql_global_status_auroradb_delete_stmt_duration{service_name=\"$service\"}[$interval])/ (sum(rate(mysql_global_status_commands_total{service_name=\"$service\",command=~'delete|delete_multi'}[$interval])) without(command)))",
+                    "format": "time_series",
+                    "hide": false,
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "DELETE Latency",
+                    "refId": "F"
                 }
             ],
             "thresholds": [],
             "timeFrom": null,
             "timeRegions": [],
             "timeShift": null,
-            "title": "MySQL Questions",
+            "title": "Amazon Aurora Statement Latency",
             "tooltip": {
                 "msResolution": false,
                 "shared": true,
@@ -637,7 +692,7 @@
             },
             "yaxes": [
                 {
-                    "format": "short",
+                    "format": "\u00b5s",
                     "logBase": 1,
                     "max": null,
                     "min": 0,
@@ -657,24 +712,35 @@
             }
         },
         {
-            "aliasColors": {},
+            "aliasColors": {
+                "DDL Latency": "#962d82",
+                "DDL Load": "#962d82",
+                "DELETE Latency": "#e5ac0e",
+                "DELETE load": "#eab839",
+                "INSERT Latency": "#0a437c",
+                "INSERT load": "#0a437c",
+                "SELECT Latency": "#508642",
+                "SELECT load ": "#629e51",
+                "UPDATE load": "#ea6460",
+                "Write Transaction Commit Load": "#bf1b00"
+            },
             "bars": false,
             "dashLength": 10,
             "dashes": false,
             "datasource": "Prometheus",
-            "decimals": null,
-            "description": "Shows the comparison of the InnoDB Rows Read for the current selected range versus the previous day and the previous week for the same time range. This graph is useful to demonstrate how InnoDB Rows Read has changed over time by visually overlaying time periods.",
+            "decimals": 2,
+            "description": "Amazon Aurora MySQL allows a number of commands which are not available in standard MySQL. This graph shows usage of such commands.  Regular \u201cunit_test\u201d calls can be seen in default Amazon Aurora install,  the rest will depend on your workload.\n\n* `show_volume_status`: The number of executions per second of the command SHOW VOLUME STATUS. The SHOW VOLUME STATUS query returns two server status variables, Disks and Nodes. These variables represent the total number of logical blocks of data and storage nodes, respectively, for the DB cluster volume.\n\n* `awslambda`: The number of AWS Lambda calls per second. AWS Lambda is an event-drive, server-less computing platform provided by AWS. It is a compute service that run codes in response to an event. You can run any kind of code from Aurora invoking Lambda from a stored procedure or a trigger.\n\n* `alter_system`: The number of executions per second of the special query ALTER SYSTEM, that is a special query to simulate an instance crash, a disk failure, a disk congestion or a replica failure. It\u2019s a useful query for testing the system.",
             "editable": true,
             "error": false,
-            "fill": 2,
+            "fill": 1,
             "grid": {},
             "gridPos": {
                 "h": 7,
                 "w": 12,
                 "x": 0,
-                "y": 23
+                "y": 17
             },
-            "id": 34,
+            "id": 25,
             "legend": {
                 "alignAsTable": true,
                 "avg": true,
@@ -692,60 +758,36 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
             "renderer": "flot",
-            "seriesOverrides": [],
+            "seriesOverrides": [
+                {
+                    "alias": "Key Blocks Not Flushed",
+                    "fill": 0
+                }
+            ],
             "spaceLength": 10,
             "stack": false,
             "steppedLine": false,
             "targets": [
                 {
-                    "calculatedInterval": "2m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "rate(mysql_global_status_innodb_row_ops_total{service_name=~\"$service\", operation=\"read\"}[$interval]) or \nirate(mysql_global_status_innodb_row_ops_total{service_name=~\"$service\", operation=\"read\"}[5m])",
+                    "expr": "rate(mysql_global_status_commands_total{service_name=\"$service\",command=~'awslambda|alter_system|unit_test|show_volume_status'}[$interval])",
                     "format": "time_series",
+                    "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
-                    "legendFormat": "Rows {{ operation }} - {{service_name}}",
-                    "metric": "",
-                    "refId": "A",
-                    "step": 300
-                },
-                {
-                    "calculatedInterval": "2m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "rate(mysql_global_status_innodb_row_ops_total{service_name=~\"$service\", operation=\"read\"}[$interval] offset 1d) or \nirate(mysql_global_status_innodb_row_ops_total{service_name=~\"$service\", operation=\"read\"}[5m] offset 1d)",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Rows {{ operation }} 1d ago - {{service_name}}",
-                    "metric": "",
-                    "refId": "B",
-                    "step": 300
-                },
-                {
-                    "calculatedInterval": "2m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "rate(mysql_global_status_innodb_row_ops_total{service_name=~\"$service\", operation=\"read\"}[$interval] offset 1w) or \nirate(mysql_global_status_innodb_row_ops_total{service_name=~\"$host\", operation=\"read\"}[5m] offset 1w)",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Rows {{ operation }} 1w ago - {{service_name}}",
-                    "metric": "",
-                    "refId": "C",
-                    "step": 300
+                    "legendFormat": "{{command}}",
+                    "refId": "A"
                 }
             ],
             "thresholds": [],
             "timeFrom": null,
             "timeRegions": [],
             "timeShift": null,
-            "title": "InnoDB Rows Read",
+            "title": "Amazon Aurora Special Command Counters",
             "tooltip": {
                 "msResolution": false,
                 "shared": true,
@@ -762,7 +804,8 @@
             },
             "yaxes": [
                 {
-                    "format": "short",
+                    "decimals": null,
+                    "format": "ops",
                     "logBase": 1,
                     "max": null,
                     "min": 0,
@@ -782,24 +825,38 @@
             }
         },
         {
-            "aliasColors": {},
+            "aliasColors": {
+                "DDL Latency": "#962d82",
+                "DDL Load": "#962d82",
+                "DELETE Latency": "#e5ac0e",
+                "DELETE load": "#eab839",
+                "INSERT Latency": "#0a437c",
+                "INSERT load": "#0a437c",
+                "Missing History on Replica Incidents": "#e0752d",
+                "Reserved Mem Exceeded Incidents": "#bf1b00",
+                "SELECT Latency": "#508642",
+                "SELECT load ": "#629e51",
+                "Thread Deadlocks": "#ea6460",
+                "UPDATE load": "#ea6460",
+                "Write Transaction Commit Load": "#bf1b00"
+            },
             "bars": false,
             "dashLength": 10,
             "dashes": false,
             "datasource": "Prometheus",
-            "decimals": null,
-            "description": "Shows the comparison of innoDB Rows Changed for the current selected range versus the previous day and the previous week for the same time range. This graph is useful to demonstrate how the InnoDB Rows Changed has fluctuated over time by visually overlaying time periods.",
+            "decimals": 2,
+            "description": "This graph shows different kinds of Internal Amazon Aurora MySQL Problems which general should be zero in normal operation.\n\nAnything non-zero is worth examining in greater depth.",
             "editable": true,
             "error": false,
-            "fill": 2,
+            "fill": 1,
             "grid": {},
             "gridPos": {
                 "h": 7,
                 "w": 12,
                 "x": 12,
-                "y": 23
+                "y": 17
             },
-            "id": 36,
+            "id": 26,
             "legend": {
                 "alignAsTable": true,
                 "avg": true,
@@ -817,60 +874,52 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
+            "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
             "points": false,
             "renderer": "flot",
-            "seriesOverrides": [],
+            "seriesOverrides": [
+                {
+                    "alias": "Key Blocks Not Flushed",
+                    "fill": 0
+                }
+            ],
             "spaceLength": 10,
             "stack": false,
             "steppedLine": false,
             "targets": [
                 {
-                    "calculatedInterval": "2m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "sum(rate(mysql_global_status_innodb_row_ops_total{service_name=~\"$service\", operation!=\"read\"}[$interval])) by (service_name) or \nsum(irate(mysql_global_status_innodb_row_ops_total{servce_name=~\"$service\", operation!=\"read\"}[5m])) by (service_name)",
+                    "expr": "rate(mysql_global_status_auroradb_thread_deadlocks{service_name=\"$service\"}[$interval])",
                     "format": "time_series",
+                    "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
-                    "legendFormat": "Rows inserted+updated+deleted - {{service_name}}",
-                    "metric": "",
-                    "refId": "A",
-                    "step": 300
+                    "legendFormat": "Thread Deadlocks",
+                    "refId": "A"
                 },
                 {
-                    "calculatedInterval": "2m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "sum(rate(mysql_global_status_innodb_row_ops_total{service_name=~\"$service\", operation!=\"read\"}[$interval] offset 1d)) by (service_name) or \nsum(irate(mysql_global_status_innodb_row_ops_total{service_name=~\"$service\", operation!=\"read\"}[5m] offset 1d)) by (service_name)",
+                    "expr": "rate(mysql_global_status_aurora_missing_history_on_replica_incidents{service_name=\"$service\"}[$interval])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
-                    "legendFormat": "Rows inserted+updated+deleted 1d ago - {{service_name}}",
-                    "metric": "",
-                    "refId": "B",
-                    "step": 300
+                    "legendFormat": "Missing History on Replica Incidents",
+                    "refId": "B"
                 },
                 {
-                    "calculatedInterval": "2m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "sum(rate(mysql_global_status_innodb_row_ops_total{service_name=~\"$service_name\", operation!=\"read\"}[$interval] offset 1w)) by (service_name) or \nsum(irate(mysql_global_status_innodb_row_ops_total{service_name=\"$service_name\", operation!=\"read\"}[5m] offset 1w)) by (service_name)",
+                    "expr": "rate(mysql_global_status_aurora_reserved_mem_exceeded_incidents{service_name=\"$service\"}[$interval])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
-                    "legendFormat": "Rows inserted+updated+deleted 1w ago - {{service_name}}",
-                    "metric": "",
-                    "refId": "C",
-                    "step": 300
+                    "legendFormat": "Reserved Mem Exceeded Incidents",
+                    "refId": "C"
                 }
             ],
             "thresholds": [],
             "timeFrom": null,
             "timeRegions": [],
             "timeShift": null,
-            "title": "InnoDB Rows Changed",
+            "title": "Amazon Aurora Problems",
             "tooltip": {
                 "msResolution": false,
                 "shared": true,
@@ -887,7 +936,8 @@
             },
             "yaxes": [
                 {
-                    "format": "short",
+                    "decimals": null,
+                    "format": "ops",
                     "logBase": 1,
                     "max": null,
                     "min": 0,
@@ -912,7 +962,7 @@
     "style": "dark",
     "tags": [
         "Percona",
-        "PMM"
+        "MySQL"
     ],
     "templating": {
         "list": [
@@ -981,7 +1031,7 @@
                 "allValue": null,
                 "current": {},
                 "datasource": "Prometheus",
-                "definition": "label_values({__name__=~\"node_load1|process_start_time_seconds\"},node_name)",
+                "definition": "label_values(mysql_global_variables_aurora_lab_mode, node_name)",
                 "hide": 0,
                 "includeAll": false,
                 "label": "Node Name",
@@ -989,15 +1039,15 @@
                 "multiFormat": "regex values",
                 "name": "host",
                 "options": [],
-                "query": "label_values({__name__=~\"node_load1|process_start_time_seconds\"},node_name)",
+                "query": "label_values(mysql_global_variables_aurora_lab_mode, node_name)",
                 "refresh": 1,
                 "refresh_on_load": false,
                 "regex": "",
                 "skipUrlSync": false,
                 "sort": 1,
-                "tagValuesQuery": "instance",
+                "tagValuesQuery": null,
                 "tags": [],
-                "tagsQuery": "up",
+                "tagsQuery": null,
                 "type": "query",
                 "useTags": false
             },
@@ -1005,14 +1055,14 @@
                 "allValue": null,
                 "current": {},
                 "datasource": "Prometheus",
-                "definition": "label_values({__name__=~\"postgres_exporter_build_info|mysqld_exporter_build_info|mongodb_exporter_build_info|proxysql_exporter_build_info\",node_name=~\"$host\"}, service_name)",
+                "definition": "label_values(mysql_global_variables_aurora_lab_mode{node_name=~\"$host\"}, service_name)",
                 "hide": 0,
-                "includeAll": true,
+                "includeAll": false,
                 "label": "Service Name",
-                "multi": true,
+                "multi": false,
                 "name": "service",
                 "options": [],
-                "query": "label_values({__name__=~\"postgres_exporter_build_info|mysqld_exporter_build_info|mongodb_exporter_build_info|proxysql_exporter_build_info\",node_name=~\"$host\"}, service_name)",
+                "query": "label_values(mysql_global_variables_aurora_lab_mode{node_name=~\"$host\"}, service_name)",
                 "refresh": 1,
                 "regex": "",
                 "skipUrlSync": false,
@@ -1062,7 +1112,7 @@
         "type": "timepicker"
     },
     "timezone": "browser",
-    "title": "Trends Dashboard",
-    "uid": "wjZRrTiiz",
+    "title": "MySQL Amazon Aurora Details",
+    "uid": "mysql-amazonaurora",
     "version": 1
 }

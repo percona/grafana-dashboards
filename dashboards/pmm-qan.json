@@ -8,7 +8,6 @@
                 "hide": true,
                 "iconColor": "#e0752d",
                 "limit": 100,
-                "matchAny": true,
                 "name": "PMM Annotations",
                 "showIn": 0,
                 "tags": [
@@ -17,6 +16,18 @@
                     "$service"
                 ],
                 "type": "tags"
+            },
+            {
+                "builtIn": 1,
+                "datasource": "-- Grafana --",
+                "enable": true,
+                "hide": true,
+                "iconColor": "#6ed0e0",
+                "limit": 100,
+                "name": "Annotations & Alerts",
+                "showIn": 0,
+                "tags": [],
+                "type": "dashboard"
             }
         ]
     },
@@ -24,8 +35,20 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1539869043503,
+    "iteration": 1564580386256,
     "links": [
+        {
+            "icon": "doc",
+            "includeVars": true,
+            "keepTime": true,
+            "tags": [
+                "Home"
+            ],
+            "targetBlank": false,
+            "title": "Home",
+            "type": "link",
+            "url": "/graph/d/pmm-home/home-dashboard"
+        },
         {
             "icon": "dashboard",
             "includeVars": true,
@@ -36,72 +59,17 @@
             "targetBlank": false,
             "title": "Query Analytics",
             "type": "link",
-            "url": "/graph/d/7w6Q3PJmz/pmm-query-analytics"
+            "url": "/graph/d/pmm-qan/pmm-query-analytics"
         },
         {
             "asDropdown": true,
-            "includeVars": true,
+            "includeVars": false,
             "keepTime": true,
             "tags": [
-                "OS"
+                "Services"
             ],
             "targetBlank": false,
-            "title": "OS",
-            "type": "dashboards"
-        },
-        {
-            "asDropdown": true,
-            "includeVars": true,
-            "keepTime": true,
-            "tags": [
-                "MySQL"
-            ],
-            "targetBlank": false,
-            "title": "MySQL",
-            "type": "dashboards"
-        },
-        {
-            "asDropdown": true,
-            "includeVars": true,
-            "keepTime": true,
-            "tags": [
-                "MongoDB"
-            ],
-            "targetBlank": false,
-            "title": "MongoDB",
-            "type": "dashboards"
-        },
-        {
-            "asDropdown": true,
-            "includeVars": true,
-            "keepTime": true,
-            "tags": [
-                "PostgreSQL"
-            ],
-            "targetBlank": false,
-            "title": "PostgreSQL",
-            "type": "dashboards"
-        },
-        {
-            "asDropdown": true,
-            "includeVars": true,
-            "keepTime": true,
-            "tags": [
-                "HA"
-            ],
-            "targetBlank": false,
-            "title": "HA",
-            "type": "dashboards"
-        },
-        {
-            "asDropdown": true,
-            "includeVars": true,
-            "keepTime": true,
-            "tags": [
-                "Insight"
-            ],
-            "targetBlank": false,
-            "title": "Insight",
+            "title": "Services",
             "type": "dashboards"
         },
         {
@@ -118,12 +86,37 @@
     ],
     "panels": [
         {
+            "gridPos": {
+                "h": 3,
+                "w": 24,
+                "x": 0,
+                "y": 0
+            },
+            "id": 999,
+            "isRootDashboard": false,
+            "links": [],
+            "options": {},
+            "targets": [
+                {
+                    "expr": "",
+                    "format": "time_series",
+                    "intervalFactor": 1,
+                    "refId": "A"
+                }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": " ",
+            "transparent": true,
+            "type": "digiapulssi-breadcrumb-panel"
+        },
+        {
             "collapsed": false,
             "gridPos": {
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 9
+                "y": 0
             },
             "id": 7,
             "panels": [],
@@ -136,10 +129,11 @@
                 "h": 11,
                 "w": 24,
                 "x": 0,
-                "y": 10
+                "y": 1
             },
             "id": 1,
             "links": [],
+            "options": {},
             "targets": [
                 {
                     "expr": "",
@@ -153,7 +147,7 @@
         }
     ],
     "refresh": false,
-    "schemaVersion": 16,
+    "schemaVersion": 18,
     "style": "dark",
     "tags": [
         "QAN",
@@ -161,26 +155,6 @@
     ],
     "templating": {
         "list": [
-            {
-                "allValue": null,
-                "current": {},
-                "datasource": "Prometheus",
-                "hide": 2,
-                "includeAll": false,
-                "label": "Host",
-                "multi": false,
-                "name": "host",
-                "options": [],
-                "query": "label_values(mysql_up, node_name)",
-                "refresh": 0,
-                "regex": "",
-                "sort": 1,
-                "tagValuesQuery": "",
-                "tags": [],
-                "tagsQuery": "",
-                "type": "query",
-                "useTags": false
-            },
             {
                 "auto": true,
                 "auto_count": 200,
@@ -233,7 +207,140 @@
                 ],
                 "query": "1s,5s,1m,5m,1h,6h,1d",
                 "refresh": 0,
+                "skipUrlSync": false,
                 "type": "interval"
+            },
+            {
+                "allValue": null,
+                "current": {},
+                "datasource": "Prometheus",
+                "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
+                "hide": 2,
+                "includeAll": true,
+                "label": "Environment",
+                "multi": true,
+                "name": "environment",
+                "options": [],
+                "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
+                "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allValue": null,
+                "current": {},
+                "datasource": "Prometheus",
+                "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, cluster)",
+                "hide": 2,
+                "includeAll": true,
+                "label": "Cluster",
+                "multi": true,
+                "name": "cluster",
+                "options": [],
+                "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, cluster)",
+                "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allValue": null,
+                "current": {},
+                "datasource": "Prometheus",
+                "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, region)",
+                "hide": 2,
+                "includeAll": true,
+                "label": "Region",
+                "multi": true,
+                "name": "region",
+                "options": [],
+                "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, region)",
+                "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allValue": null,
+                "current": {},
+                "datasource": "Prometheus",
+                "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, replication_set)",
+                "hide": 2,
+                "includeAll": true,
+                "label": "Replication Set",
+                "multi": true,
+                "name": "replication_set",
+                "options": [],
+                "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, replication_set)",
+                "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allValue": null,
+                "current": {},
+                "datasource": "Prometheus",
+                "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\",region=~\"$region\",environment=~\"$environment\",cluster=~\"$cluster\",replication_set=~\"$replication_set\"}, node_name)",
+                "hide": 2,
+                "includeAll": true,
+                "label": "Node Name",
+                "multi": true,
+                "name": "host",
+                "options": [],
+                "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\",region=~\"$region\",environment=~\"$environment\",cluster=~\"$cluster\",replication_set=~\"$replication_set\"}, node_name)",
+                "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 1,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allValue": null,
+                "current": {},
+                "datasource": "Prometheus",
+                "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\",node_name=~\"$host\"}, service_name)",
+                "hide": 2,
+                "includeAll": true,
+                "label": "Service Name",
+                "multi": true,
+                "name": "service",
+                "options": [],
+                "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\",node_name=~\"$host\"}, service_name)",
+                "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
             }
         ]
     },
@@ -268,7 +375,7 @@
         ]
     },
     "timezone": "browser",
-    "title": "_PMM Query Analytics",
-    "uid": "7w6Q3PJmz",
-    "version": 2
+    "title": "PMM Query Analytics",
+    "uid": "pmm-qan",
+    "version": 1
 }

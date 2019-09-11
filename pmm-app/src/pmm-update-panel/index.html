@@ -2,23 +2,28 @@
     #pmm-update-widget {
         position: relative;
         height: inherit;
+        padding-top: 5px;
     }
 
     #pmm-update-widget p {
         margin-bottom: 0;
     }
 
+    #pmm-update-widget .version {
+        font-size: 14px;
+        margin-bottom: 7px;
+    }
+
     #pmm-update-widget .check-update-button {
         position: relative;
-        border-radius: 50%;
-        height: 20px;
-        width: 20px;
         display: flex;
-        justify-content: center;
         align-items: center;
+        margin-left: auto;
+        font-size: 16px;
+        color: #27b4e7;
+        border-radius: 50%;
         background-color: transparent;
         border: none;
-        color: #27b4e7;
     }
 
     #pmm-update-widget .update-button {
@@ -32,6 +37,10 @@
     #pmm-update-widget .update-button:disabled {
         border: 2px solid #292929;
         background: transparent;
+    }
+
+    #available_version {
+        display: flex;
     }
 
     section.state {
@@ -86,26 +95,30 @@
 <div id="pmm-update-widget">
     <header>
         <h2 class="update-title">Updates</h2>
-        <p class="current-version">Current version:
+        <p class="version" id="current_version" ng-click="displayFullCurrentVersion($scope)">Current version:
             <span>{{version}} <em>{{currentReleaseDate}}</em></span>
-<!--            <span ng-if="!currentVersion">{{version}}</span>-->
         </p>
     </header>
-    <section class="available-version" ng-if="isUpdateAvailable">
-        <p>Available version:&nbsp;</p>
-        <div class="version-wrapper">
-            <p>{{nextVersion}} <em>{{newReleaseDate}}</em></p>
-            <a href="{{newsLink}}"
-               class="text-primary pmm-link" target="_blank">What's new?</a>
-        </div>
-    </section>
-    <section class="state" ng-if="!isUpdateAvailable">
-        <div class="state-inner" ng-if="!isUpToDate">
+    <section class="state" ng-if="isDefaultView">
+        <div class="state-inner">
             <p class="text-center">No updates are available</p>
             <p class="text-center">PMM checks for updates once a day</p>
         </div>
-        <p class="text-center" ng-if="isUpToDate">You are up to date</p>
     </section>
+    <section class="state" ng-if="!isUpdateAvailable && !isDefaultView">
+        <p class="text-center">You are up to date</p>
+    </section>
+    <section class="available-version" ng-if="isUpdateAvailable && !isDefaultView">
+        <div id="available_version" ng-click="displayFullAvailableVersion($scope)">
+            <p>Available version:&nbsp;</p>
+            <div class="version">
+                <p>{{nextVersion}} <em>{{newReleaseDate}}</em></p>
+                <a href="{{newsLink}}"
+                   class="text-primary pmm-link" target="_blank">What's new?</a>
+            </div>
+        </div>
+    </section>
+    <!-- TODO: Uncomment this button what update work stable.
     <button class="btn btn-secondary btn-block update-button"
             ng-if="isUpdateAvailable"
             ng-click="update()"
@@ -115,8 +128,11 @@
             Update to {{nextVersion}}
         </span>
     </button>
+    -->
     <footer>
         <p>Last check: {{lastCheckDate}}</p>
-        <button ng-click="checkForUpdate()" class="check-update-button"><i class="fa fa-spin fa-refresh" id="refresh"></i></button>
+        <button ng-click="checkForUpdate()" class="check-update-button">
+            <i class="fa fa-spin fa-refresh" id="refresh"></i>
+        </button>
     </footer>
 </div>
