@@ -105,13 +105,13 @@ def add_links(dashboard):
                 if match_ha:
                     print "HA dashboard is detected for the service %s" % match_ha.group(0);
                     service_tag = match_ha.group(0);
-            setOfLinks = ['Home', 'QAN', 'Compare', 'OS', 'MySQL', 'MongoDB', 'PostgreSQL', 'MySQL_HA', 'MongoDB_HA', 'Services', 'PMM']
+            setOfLinks = ['Home', 'Query Analytics', 'Compare', 'OS', 'MySQL', 'MongoDB', 'PostgreSQL', 'MySQL_HA', 'MongoDB_HA', 'Services', 'PMM']
 
             for link in copy.deepcopy(dashboard['links']):
                 dashboard['links'].remove(link)
 
             for tag in setOfLinks:
-                if tag == 'QAN':
+                if tag == 'Query Analytics':
                     add_item = {
                         'icon': 'dashboard',
                         'includeVars': True,
