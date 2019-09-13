@@ -227,7 +227,8 @@ export class PanelCtrl extends MetricsPanelCtrl {
              const data = response.data;
              $scope.isUpdated = 'done' in data ? data.done : false;
              $scope.updateLogOffset = 'log_offset' in data ? data.log_offset : 0;
-             $scope.output += '\n' + data.log_lines.join('\n');
+             $scope.output += data.log_lines.join('\n') + '\n';
+             $scope.updateCntErrors = 0;
              window.setTimeout(this.getLog.bind(this, $scope, $http), 500);
         }).catch((err) => {
              $scope.updateCntErrors++;
