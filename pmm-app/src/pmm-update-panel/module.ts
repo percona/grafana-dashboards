@@ -22,7 +22,8 @@ export class PanelCtrl extends MetricsPanelCtrl {
     static API = {
         GET_CURRENT_VERSION: '/v1/Updates/Check',
         CHECK_FOR_UPDATE: '/v1/Updates/Check',
-        UPDATE: '/configurator/v1/updates'
+        UPDATE_START: '/v1/Updates/Start',
+        UPDATE_STATUS: '/v1/Updates/Status'
     };
 
     /**
@@ -70,6 +71,11 @@ export class PanelCtrl extends MetricsPanelCtrl {
         $scope.lastCheck = '';
         $scope.keydownCode = '';
 
+        $scope.updateAuthToken = '';
+        $scope.updateLogOffset = 0;
+        $scope.updateCntErrors = 0;
+        $scope.updateFailed = false;
+
         $scope.checkForUpdate = this.checkForUpdate.bind(this, $scope, $http);
         $scope.update = this.update.bind(this, $scope, $http);
         $scope.displayFullCurrentVersion = this.displayFullCurrentVersion.bind(this, $scope);
@@ -104,6 +110,8 @@ export class PanelCtrl extends MetricsPanelCtrl {
             modalScope.currentReleaseDate = newState.currentReleaseDate;
             modalScope.newReleaseDate = newState.newReleaseDate;
             modalScope.canBeReloaded = newState.canBeReloaded;
+            modalScope.updateCntErrors = newState.updateCntErrors
+            modalScope.errorMessage = newState.errorMessage
         });
         modalScope.reloadAfterUpdate = () => {
             location.reload();
@@ -115,12 +123,17 @@ export class PanelCtrl extends MetricsPanelCtrl {
             backdrop: 'static',
             keyboard: false
         });
+
         $http({
             method: 'POST',
-            url: PanelCtrl.API.UPDATE,
+            url:  PanelCtrl.API.UPDATE_START,
         }).then(response => {
-            $scope.logLocation = response.headers('Location');
+            let data = response.data;
+            $scope.updateAuthToken = data.auth_token;
+            $scope.updateLogOffset = 'log_offset' in data ? data.log_offset : 0;
             $scope.getLog($scope, $http);
+        }).catch((err) => {
+            console.log('Update error:', err);
         });
     }
 
@@ -197,30 +210,30 @@ export class PanelCtrl extends MetricsPanelCtrl {
      * Send request for get info about update status
      */
     private getLog($scope, $http): void {
-        if (!$scope.logLocation.length) return;
-
+        if ($scope.updateCntErrors > 600) {
+            console.log('error: ', $scope.errorMessage, $scope.updateCntErrors);
+            $scope.updateFailed = true;
+            return;
+        }
+        if ($scope.isUpdated) {
+            $scope.canBeReloaded = true;
+            return;
+        }
         $http({
-            method: 'GET',
-            url: $scope.logLocation,
+            method: 'POST',
+            url:  PanelCtrl.API.UPDATE_STATUS,
+            data: {'auth_token': $scope.updateAuthToken, 'log_offset': $scope.updateLogOffset}
         }).then(response => {
-            $scope.output = response.data.detail;
-            if (response.data.title === PanelCtrl.PROCESS_STATUSES.IN_PROGRESS) window.setTimeout(this.getLog.bind(this, $scope, $http), 1000);
-
-            if (response.data.title === PanelCtrl.PROCESS_STATUSES.DONE) {
-                this.reset($scope);
-                $scope.version = $scope.errorMessage ? $scope.version : $scope.nextVersion;
-                $scope.currentReleaseDate = $scope.errorMessage ? $scope.currentReleaseDate : $scope.newReleaseDate;
-                $scope.isUpdated = true;
-                $scope.canBeReloaded = true;
-            }
-            if (response.data.title === PanelCtrl.PROCESS_STATUSES.FAILED) {
-                $scope.isChecked = true;
-                $scope.isUpdateAvailable = true;
-                $scope.canBeReloaded = true;
-                $scope.errorMessage = PanelCtrl.ERRORS.UPDATE;
-            }
-        }).catch(() => {
-            this.reset($scope);
+             const data = response.data;
+             $scope.isUpdated = 'done' in data ? data.done : false;
+             $scope.updateLogOffset = 'log_offset' in data ? data.log_offset : 0;
+             $scope.output += '\n' + data.log_lines.join('\n');
+             window.setTimeout(this.getLog.bind(this, $scope, $http), 500);
+        }).catch((err) => {
+             $scope.updateCntErrors++;
+             $scope.errorMessage = err.message;
+             console.log('error: ', err, $scope.errorMessage, $scope.updateCntErrors);
+             window.setTimeout(this.getLog.bind(this, $scope, $http), 500);
         });
     }
 
