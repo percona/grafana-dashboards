@@ -65,6 +65,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
         $scope.nextVersionCashed = '';
         $scope.errorMessage = '';
         $scope.canBeReloaded = false;
+        $scope.isOutputShown = true;
         $scope.isUpdateAvailable = false;
         $scope.isDefaultView = true;
         $scope.newsLink = '';
@@ -86,11 +87,11 @@ export class PanelCtrl extends MetricsPanelCtrl {
         const body = document.querySelector('body');
         const escKeyCode = 'Escape';
         body.addEventListener('click', (event) => {
-            if ($(event.target).hasClass('modal-backdrop') && $scope.canBeReloaded) location.reload();
+            if ($(event.target).hasClass('modal-backdrop') && $scope.canBeReloaded) location.reload(true);
         });
         body.addEventListener('keydown', (event) => {
             $scope.keydownCode = event.code;
-            (event.key === escKeyCode && $scope.canBeReloaded) ? location.reload() : event.stopPropagation();
+            (event.key === escKeyCode && $scope.canBeReloaded) ? location.reload(true) : event.stopPropagation();
         });
     }
 
@@ -99,6 +100,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
      */
     private update($scope, $http): void {
         const modalScope = $scope.$new(true);
+        modalScope.isOutputShown = true;
         $scope.$watch(newState => {
             modalScope.output = newState.output;
             modalScope.isChecked = newState.isChecked;
@@ -106,15 +108,22 @@ export class PanelCtrl extends MetricsPanelCtrl {
             modalScope.isUpdateAvailable = newState.isUpdateAvailable;
             modalScope.isDefaultView = newState.isDefaultView;
             modalScope.errorMessage = newState.errorMessage;
-            modalScope.version = newState.version;
+            modalScope.version = newState.nextVersion;
             modalScope.currentReleaseDate = newState.currentReleaseDate;
             modalScope.newReleaseDate = newState.newReleaseDate;
             modalScope.canBeReloaded = newState.canBeReloaded;
             modalScope.updateCntErrors = newState.updateCntErrors
             modalScope.errorMessage = newState.errorMessage
         });
+
         modalScope.reloadAfterUpdate = () => {
-            location.reload();
+            location.reload(true);
+        };
+
+        modalScope.init = (elem) => {
+            const element = document.getElementById("pre-scrollable");
+            // scroll update status to the end.
+            setInterval(() => element.scrollIntoView(false), 500);
         };
 
         AppEvents.emit('show-modal', {
@@ -161,18 +170,17 @@ export class PanelCtrl extends MetricsPanelCtrl {
             data: {force: false}
         }).then((res) => {
             const data = res.data;
+            $scope.nextVersion = data.latest.version || '';
+            $scope.nextFullVersion = data.latest.full_version || '';
             $scope.lastCheckDate = data.last_check ? moment(data.last_check).locale('en').format('MMMM DD, H:mm') : '';
             $scope.version = data.installed.version || '';
             $scope.fullVersion = data.installed.full_version || '';
             $scope.currentReleaseDate = data.installed.timestamp ? moment.utc(data.installed.timestamp).locale('en').format('MMMM DD') : '';
+            $scope.newReleaseDate = data.latest.timestamp ? moment.utc(data.latest.timestamp).locale('en').format('MMMM DD') : '';
+            $scope.newsLink = data.latest_news_url || '';
             $scope.isUpdateAvailable = data.update_available || false;
-
-            if ($scope.isUpdateAvailable) {
-                this.checkForUpdate.call(this, $scope, $http);
-            } else {
-                $('#refresh').removeClass('fa-spin');
-            }
             $scope.isDefaultView = false;
+            $('#refresh').removeClass('fa-spin');
         }).catch(() => {
             $('#refresh').removeClass('fa-spin');
             //TODO: add error handler

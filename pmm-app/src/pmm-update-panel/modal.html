@@ -38,6 +38,10 @@
         width: 100%;
     }
 
+    #pmm-update-modal .output-collapse {
+        cursor: pointer;
+    }
+
 </style>
 <div class="modal-dialog" role="document" id="pmm-update-modal">
     <div class="modal-content" ng-if="!isUpdated">
@@ -46,15 +50,15 @@
             <h4 ng-if="updateFailed">Update failed</h4>
             <h4 ng-if="updateFailed">{{ errorMessage }}</h4>
             <div class="output-content">
-                <div>
-                    <i class="fa" ng-click="isOutputShown = !isOutputShown"
+                <div class="output-header">
+                    <i class="fa output-collapse" ng-click="isOutputShown = !isOutputShown"
                        ng-class="{'fa-chevron-down': !isOutputShown, 'fa-chevron-up':isOutputShown}"></i>
                     <span>Log</span>
                     <span class="text-secondary text-primary text-right" clipboard-button="output">Copy to clipboard</span>
                 </div>
 
-                <div class="pre-scrollable output-value">
-                    <pre>{{ output }}</pre>
+                <div id="scroll-container" class="pre-scrollable output-value" ng-if="isOutputShown" ng-init="init();">
+                    <pre id="pre-scrollable">{{ output }}</pre>
                 </div>
             </div>
         </div>
