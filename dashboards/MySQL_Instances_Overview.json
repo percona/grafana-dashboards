@@ -36,7 +36,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1568026399336,
+    "iteration": 1568890460359,
     "links": [
         {
             "icon": "doc",
@@ -776,17 +776,11 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "calculatedInterval": "10m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "max((max_over_time(mysql_global_status_max_used_connections{service_name=~\"$service\"}[$interval]) or \nmax_over_time(mysql_global_status_max_used_connections{service_name=~\"$service\"}[5m])) / on (service_name)\nmysql_global_variables_max_connections{service_name=~\"$service\"})",
-                    "format": "time_series",
+                    "expr": "clamp_max(max((max_over_time(mysql_global_status_max_used_connections{service_name=~\"$service\"}[$interval]) or max_over_time(mysql_global_status_max_used_connections{service_name=~\"$service\"}[5m])) / ignoring (job) mysql_global_variables_max_connections{service_name=~\"$service\"}),1)",
+                    "hide": false,
+                    "instant": false,
                     "interval": "5m",
-                    "intervalFactor": 1,
-                    "legendFormat": "",
-                    "metric": "",
-                    "refId": "A",
-                    "step": 300
+                    "refId": "B"
                 }
             ],
             "thresholds": "50,80",
@@ -867,8 +861,9 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "max((max_over_time(mysql_global_status_threads_connected{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_connected{service_name=~\"$service\"}[5m])) / on (service_name)\nmysql_global_variables_max_connections{service_name=~\"$service\"})",
+                    "expr": "max((max_over_time(mysql_global_status_threads_connected{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_connected{service_name=~\"$service\"}[5m])) / ignoring (job)\nmysql_global_variables_max_connections{service_name=~\"$service\"})",
                     "format": "time_series",
+                    "hide": false,
                     "interval": "5m",
                     "intervalFactor": 1,
                     "legendFormat": "",
@@ -955,8 +950,10 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "max(1 - (max_over_time(mysql_global_status_threads_running{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_running{service_name=~\"$service\"}[5m])) / on (service_name)\n(max_over_time(mysql_global_status_threads_connected{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_connected{service_name=~\"$service\"}[5m])))",
+                    "expr": "max(1 - (max_over_time(mysql_global_status_threads_running{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_running{service_name=~\"$service\"}[5m])) / ignoring (job)\n(max_over_time(mysql_global_status_threads_connected{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_connected{service_name=~\"$service\"}[5m])))",
                     "format": "time_series",
+                    "hide": false,
+                    "instant": false,
                     "interval": "5m",
                     "intervalFactor": 1,
                     "legendFormat": "",
@@ -1043,8 +1040,9 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "max((max_over_time(mysql_global_status_threads_cached{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_cached{service_name=~\"$service\"}[5m])) / on (service_name)\n(max_over_time(mysql_global_variables_thread_cache_size{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_variables_thread_cache_size{service_name=~\"$service\"}[5m])))",
+                    "expr": "max((max_over_time(mysql_global_status_threads_cached{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_cached{service_name=~\"$service\"}[5m])) / ignoring (job)\n(max_over_time(mysql_global_variables_thread_cache_size{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_variables_thread_cache_size{service_name=~\"$service\"}[5m])))",
                     "format": "time_series",
+                    "hide": false,
                     "interval": "5m",
                     "intervalFactor": 1,
                     "legendFormat": "",
@@ -1297,7 +1295,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "clamp_max(((max_over_time(mysql_global_status_max_used_connections{service_name=~\"$service\"}[$interval]) or \nmax_over_time(mysql_global_status_max_used_connections{service_name=~\"$service\"}[5m])) / on (service_name)\nmysql_global_variables_max_connections{service_name=~\"$service\"}),1)",
+                            "expr": "clamp_max(((max_over_time(mysql_global_status_max_used_connections{service_name=~\"$service\"}[$interval]) or \nmax_over_time(mysql_global_status_max_used_connections{service_name=~\"$service\"}[5m])) / ignoring (job)\nmysql_global_variables_max_connections{service_name=~\"$service\"}),1)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1532,7 +1530,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "clamp_max(((max_over_time(mysql_global_status_threads_connected{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_connected{service_name=~\"$service\"}[5m])) / on (service_name)\nmysql_global_variables_max_connections{service_name=~\"$service\"}),1)",
+                            "expr": "clamp_max(((max_over_time(mysql_global_status_threads_connected{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_connected{service_name=~\"$service\"}[5m])) / ignoring (job)\nmysql_global_variables_max_connections{service_name=~\"$service\"}),1)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1766,7 +1764,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "clamp_max((1 - (max_over_time(mysql_global_status_threads_running{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_running{service_name=~\"$service\"}[5m])) / on (service_name)\n(max_over_time(mysql_global_status_threads_connected{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_connected{service_name=~\"$service\"}[5m]))),1)",
+                            "expr": "clamp_max((1 - (max_over_time(mysql_global_status_threads_running{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_running{service_name=~\"$service\"}[5m])) / ignoring (job)\n(max_over_time(mysql_global_status_threads_connected{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_connected{service_name=~\"$service\"}[5m]))),1)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1790,6 +1788,7 @@
                     "editable": true,
                     "error": false,
                     "fill": 2,
+                    "fillGradient": 0,
                     "grid": {},
                     "gridPos": {
                         "h": 8,
@@ -1820,7 +1819,9 @@
                         }
                     ],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "paceLength": 10,
                     "percentage": false,
                     "pointradius": 1,
@@ -1999,7 +2000,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "clamp_max(((max_over_time(mysql_global_status_threads_cached{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_cached{service_name=~\"$service\"}[5m])) / on (service_name)\n(max_over_time(mysql_global_variables_thread_cache_size{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_variables_thread_cache_size{service_name=~\"$service\"}[5m]))),1)",
+                            "expr": "clamp_max(((max_over_time(mysql_global_status_threads_cached{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_cached{service_name=~\"$service\"}[5m])) / ignoring (job)\n(max_over_time(mysql_global_variables_thread_cache_size{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_variables_thread_cache_size{service_name=~\"$service\"}[5m]))),1)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2491,12 +2492,13 @@
                     "editable": true,
                     "error": false,
                     "fill": 2,
+                    "fillGradient": 0,
                     "grid": {},
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 11
+                        "y": 13
                     },
                     "id": 428,
                     "legend": {
@@ -2522,7 +2524,9 @@
                         }
                     ],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "paceLength": 10,
                     "percentage": false,
                     "pointradius": 1,
@@ -2618,7 +2622,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 11
+                        "y": 13
                     },
                     "id": 412,
                     "links": [],
@@ -2709,12 +2713,13 @@
                     "editable": true,
                     "error": false,
                     "fill": 2,
+                    "fillGradient": 0,
                     "grid": {},
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 19
+                        "y": 21
                     },
                     "id": 53,
                     "interval": "",
@@ -2741,7 +2746,9 @@
                         }
                     ],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "paceLength": 10,
                     "percentage": false,
                     "pointradius": 1,
@@ -2838,7 +2845,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 19
+                        "y": 21
                     },
                     "id": 429,
                     "links": [],
@@ -2960,12 +2967,13 @@
                     "editable": true,
                     "error": false,
                     "fill": 2,
+                    "fillGradient": 0,
                     "grid": {},
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 12
+                        "y": 14
                     },
                     "id": 438,
                     "legend": {
@@ -2985,7 +2993,9 @@
                     "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "paceLength": 10,
                     "percentage": false,
                     "pointradius": 1,
@@ -3079,7 +3089,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 12
+                        "y": 14
                     },
                     "id": 439,
                     "links": [],
@@ -3186,12 +3196,13 @@
                     "editable": true,
                     "error": false,
                     "fill": 2,
+                    "fillGradient": 0,
                     "grid": {},
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 20
+                        "y": 22
                     },
                     "id": 440,
                     "legend": {
@@ -3211,7 +3222,9 @@
                     "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "paceLength": 10,
                     "percentage": false,
                     "pointradius": 1,
@@ -3306,7 +3319,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 20
+                        "y": 22
                     },
                     "id": 442,
                     "links": [],
@@ -3413,12 +3426,13 @@
                     "editable": true,
                     "error": false,
                     "fill": 2,
+                    "fillGradient": 0,
                     "grid": {},
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 28
+                        "y": 30
                     },
                     "id": 441,
                     "legend": {
@@ -3444,7 +3458,9 @@
                         }
                     ],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "paceLength": 10,
                     "percentage": false,
                     "pointradius": 1,
@@ -3540,7 +3556,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 28
+                        "y": 30
                     },
                     "id": 443,
                     "links": [],
@@ -4113,12 +4129,13 @@
                     "editable": true,
                     "error": false,
                     "fill": 2,
+                    "fillGradient": 0,
                     "grid": {},
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 16
+                        "y": 18
                     },
                     "id": 22,
                     "legend": {
@@ -4138,7 +4155,9 @@
                     "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "paceLength": 10,
                     "percentage": false,
                     "pointradius": 1,
@@ -4233,7 +4252,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 16
+                        "y": 18
                     },
                     "id": 414,
                     "links": [],
@@ -4340,12 +4359,13 @@
                     "editable": true,
                     "error": false,
                     "fill": 2,
+                    "fillGradient": 0,
                     "grid": {},
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 24
+                        "y": 26
                     },
                     "height": "250px",
                     "id": 311,
@@ -4367,7 +4387,9 @@
                     "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "paceLength": 10,
                     "percentage": false,
                     "pointradius": 1,
@@ -4462,7 +4484,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 24
+                        "y": 26
                     },
                     "id": 415,
                     "links": [],
@@ -4584,12 +4606,13 @@
                     "editable": true,
                     "error": false,
                     "fill": 2,
+                    "fillGradient": 0,
                     "grid": {},
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 17
+                        "y": 19
                     },
                     "id": 30,
                     "legend": {
@@ -4610,7 +4633,9 @@
                     "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "paceLength": 10,
                     "percentage": false,
                     "pointradius": 1,
@@ -4706,7 +4731,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 17
+                        "y": 19
                     },
                     "id": 416,
                     "links": [],
@@ -4828,12 +4853,13 @@
                     "editable": true,
                     "error": false,
                     "fill": 2,
+                    "fillGradient": 0,
                     "grid": {},
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 18
+                        "y": 20
                     },
                     "id": 47,
                     "legend": {
@@ -4852,7 +4878,9 @@
                     "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "paceLength": 10,
                     "percentage": false,
                     "pointradius": 1,
@@ -4949,7 +4977,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 18
+                        "y": 20
                     },
                     "id": 418,
                     "links": [],
@@ -5056,12 +5084,13 @@
                     "editable": true,
                     "error": false,
                     "fill": 2,
+                    "fillGradient": 0,
                     "grid": {},
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 26
+                        "y": 28
                     },
                     "id": 32,
                     "legend": {
@@ -5081,7 +5110,9 @@
                     "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "paceLength": 10,
                     "percentage": false,
                     "pointradius": 1,
@@ -5176,7 +5207,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 26
+                        "y": 28
                     },
                     "id": 419,
                     "links": [],
@@ -5537,7 +5568,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "max(1 - (max_over_time(mysql_global_status_qcache_free_memory{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_qcache_free_memory{service_name=~\"$service\"}[5m])) / on (service_name)\n(max_over_time(mysql_global_variables_query_cache_size{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_variables_query_cache_size{service_name=~\"$service\"}[5m])))",
+                    "expr": "max(1 - (max_over_time(mysql_global_status_qcache_free_memory{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_qcache_free_memory{service_name=~\"$service\"}[5m])) / ignoring(job)\n(max_over_time(mysql_global_variables_query_cache_size{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_variables_query_cache_size{service_name=~\"$service\"}[5m])))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -5713,7 +5744,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "max((max_over_time(mysql_global_status_open_files{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_open_files{service_name=~\"$service\"}[5m])) / on (service_name)\n(max_over_time(mysql_global_variables_open_files_limit{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_variables_open_files_limit{service_name=~\"$service\"}[5m])))",
+                    "expr": "max((max_over_time(mysql_global_status_open_files{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_open_files{service_name=~\"$service\"}[5m]))) / on (service_name)\nmax((max_over_time(mysql_global_variables_open_files_limit{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_variables_open_files_limit{service_name=~\"$service\"}[5m])))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -5751,12 +5782,13 @@
                     "editable": true,
                     "error": false,
                     "fill": 6,
+                    "fillGradient": 0,
                     "grid": {},
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 22
+                        "y": 24
                     },
                     "id": 9,
                     "legend": {
@@ -5776,7 +5808,9 @@
                     "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "paceLength": 10,
                     "percentage": false,
                     "pointradius": 1,
@@ -5873,12 +5907,13 @@
                     "editable": true,
                     "error": false,
                     "fill": 6,
+                    "fillGradient": 0,
                     "grid": {},
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 22
+                        "y": 24
                     },
                     "id": 420,
                     "legend": {
@@ -5898,7 +5933,9 @@
                     "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "paceLength": 10,
                     "percentage": false,
                     "pointradius": 1,
@@ -6008,12 +6045,13 @@
                     "editable": true,
                     "error": false,
                     "fill": 2,
+                    "fillGradient": 0,
                     "grid": {},
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 23
+                        "y": 25
                     },
                     "id": 46,
                     "legend": {
@@ -6033,7 +6071,9 @@
                     "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "paceLength": 10,
                     "percentage": false,
                     "pointradius": 5,
@@ -6131,7 +6171,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 23
+                        "y": 25
                     },
                     "id": 421,
                     "links": [],
@@ -6252,12 +6292,13 @@
                     "editable": true,
                     "error": false,
                     "fill": 2,
+                    "fillGradient": 0,
                     "grid": {},
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 24
+                        "y": 26
                     },
                     "id": 43,
                     "legend": {
@@ -6277,7 +6318,9 @@
                     "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "paceLength": 10,
                     "percentage": false,
                     "pointradius": 1,
@@ -6372,7 +6415,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 24
+                        "y": 26
                     },
                     "id": 422,
                     "links": [],
@@ -6478,12 +6521,13 @@
                     "editable": true,
                     "error": false,
                     "fill": 2,
+                    "fillGradient": 0,
                     "grid": {},
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 32
+                        "y": 34
                     },
                     "id": 41,
                     "legend": {
@@ -6503,7 +6547,9 @@
                     "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "paceLength": 10,
                     "percentage": false,
                     "pointradius": 1,
@@ -6597,7 +6643,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 32
+                        "y": 34
                     },
                     "id": 423,
                     "links": [],
@@ -6680,7 +6726,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "clamp_max(((max_over_time(mysql_global_status_open_files{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_open_files{service_name=~\"$service\"}[5m])) / on (service_name)\n(max_over_time(mysql_global_variables_open_files_limit{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_variables_open_files_limit{service_name=~\"$service\"}[5m]))),1)",
+                            "expr": "clamp_max(((max_over_time(mysql_global_status_open_files{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_open_files{service_name=~\"$service\"}[5m])) / ignoring (job)\n(max_over_time(mysql_global_variables_open_files_limit{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_variables_open_files_limit{service_name=~\"$service\"}[5m]))),1)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -7134,7 +7180,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "max((max_over_time(mysql_global_status_open_table_definitions{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_open_table_definitions{service_name=~\"$service\"}[5m])) / on (service_name)\n(max_over_time(mysql_global_variables_table_definition_cache{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_variables_table_definition_cache{service_name=~\"$service\"}[5m])))",
+                    "expr": "max((max_over_time(mysql_global_status_open_table_definitions{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_open_table_definitions{service_name=~\"$service\"}[5m]))) / on (service_name)\nmax((max_over_time(mysql_global_variables_table_definition_cache{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_variables_table_definition_cache{service_name=~\"$service\"}[5m])))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -7419,12 +7465,13 @@
                     "editable": true,
                     "error": false,
                     "fill": 2,
+                    "fillGradient": 0,
                     "grid": {},
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 29
+                        "y": 31
                     },
                     "id": 430,
                     "legend": {
@@ -7444,7 +7491,9 @@
                     "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "paceLength": 10,
                     "percentage": false,
                     "pointradius": 5,
@@ -7528,12 +7577,13 @@
                     "editable": true,
                     "error": false,
                     "fill": 2,
+                    "fillGradient": 0,
                     "grid": {},
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 29
+                        "y": 31
                     },
                     "id": 427,
                     "legend": {
@@ -7558,7 +7608,9 @@
                         }
                     ],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "paceLength": 10,
                     "percentage": false,
                     "pointradius": 1,
@@ -7649,12 +7701,13 @@
                     "editable": true,
                     "error": false,
                     "fill": 2,
+                    "fillGradient": 0,
                     "grid": {},
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 37
+                        "y": 39
                     },
                     "id": 54,
                     "legend": {
@@ -7679,7 +7732,9 @@
                         }
                     ],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "paceLength": 10,
                     "percentage": false,
                     "pointradius": 1,
@@ -7775,7 +7830,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 37
+                        "y": 39
                     },
                     "id": 433,
                     "links": [],
@@ -7858,7 +7913,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "clamp_max(((max_over_time(mysql_global_status_open_table_definitions{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_open_table_definitions{service_name=~\"$service\"}[5m])) / on (service_name)\n(max_over_time(mysql_global_variables_table_definition_cache{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_variables_table_definition_cache{service_name=~\"$service\"}[5m]))),1)",
+                            "expr": "clamp_max(((max_over_time(mysql_global_status_open_table_definitions{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_open_table_definitions{service_name=~\"$service\"}[5m])) / ignoring (job)\n(max_over_time(mysql_global_variables_table_definition_cache{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mysql_global_variables_table_definition_cache{service_name=~\"$service\"}[5m]))),1)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
