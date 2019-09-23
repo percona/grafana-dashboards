@@ -105,7 +105,7 @@
             <p class="text-center">PMM checks for updates once a day</p>
         </div>
     </section>
-    <section class="state" ng-if="!isUpdateAvailable && !isDefaultView">
+    <section class="state" ng-if="!isUpdateAvailable && !isDefaultView && !forceUpdate">
         <p class="text-center">You are up to date</p>
     </section>
     <section class="available-version" ng-if="isUpdateAvailable && !isDefaultView">
@@ -119,7 +119,7 @@
         </div>
     </section>
     <button class="btn btn-secondary btn-block update-button"
-            ng-if="isUpdateAvailable"
+            ng-if="isUpdateAvailable || forceUpdate"
             ng-click="update()"
             ng-disabled="disableUpdate">
         <span>
@@ -129,7 +129,7 @@
     </button>
     <footer>
         <p>Last check: {{lastCheckDate}}</p>
-        <button ng-click="checkForUpdate()" class="check-update-button">
+        <button ng-click="checkForUpdate($event)" class="check-update-button">
             <i class="fa fa-spin fa-refresh" id="refresh"></i>
         </button>
     </footer>

@@ -72,6 +72,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
         $scope.lastCheck = '';
         $scope.keydownCode = '';
 
+        $scope.forceUpdate = false;
         $scope.updateAuthToken = '';
         $scope.updateLogOffset = 0;
         $scope.updateCntErrors = 0;
@@ -190,9 +191,13 @@ export class PanelCtrl extends MetricsPanelCtrl {
     /**
      * Send request to check if update possible and re-init params
      */
-    private checkForUpdate($scope, $http): void {
+    private checkForUpdate($scope, $http, $event): void {
         const refreshButton = $('#refresh');
         refreshButton.addClass('fa-spin');
+
+        if ($event.altKey){
+            $scope.forceUpdate = true;
+        }
 
         $http({
             method: 'POST',
