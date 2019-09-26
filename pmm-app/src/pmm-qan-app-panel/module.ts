@@ -145,9 +145,10 @@ export class PanelCtrl extends MetricsPanelCtrl {
 
     private retrieveDashboardURLParams(url): Array<string> {
         const currentURL = new URL(url);
+        const hostFilter = currentURL.searchParams.get('var-host') ? 'node_name:'+currentURL.searchParams.get('var-host') : '';
         const id = currentURL.searchParams.get('queryID') ? currentURL.searchParams.get('queryID') : '';
         const search = currentURL.searchParams.get('search') ? currentURL.searchParams.get('search') : '';
-        const filters = currentURL.searchParams.get('filters') ? currentURL.searchParams.get('filters') : '';
+        const filters = currentURL.searchParams.get('filters') ? currentURL.searchParams.get('filters') : hostFilter;
         const main_metric = currentURL.searchParams.get('main_metric') ? currentURL.searchParams.get('main_metric') : '';
         const columns = currentURL.searchParams.get('columns') ? currentURL.searchParams.get('columns') : '';
         const order_by = currentURL.searchParams.get('order_by') ? currentURL.searchParams.get('order_by') : '';
