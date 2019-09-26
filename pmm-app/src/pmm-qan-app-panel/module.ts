@@ -145,10 +145,9 @@ export class PanelCtrl extends MetricsPanelCtrl {
 
     private retrieveDashboardURLParams(url): Array<string> {
         const currentURL = new URL(url);
-        const hostFilter = currentURL.searchParams.get('var-host') ? 'node_name:'+currentURL.searchParams.get('var-host') : '';
         const id = currentURL.searchParams.get('queryID') ? currentURL.searchParams.get('queryID') : '';
         const search = currentURL.searchParams.get('search') ? currentURL.searchParams.get('search') : '';
-        const filters = currentURL.searchParams.get('filters') ? currentURL.searchParams.get('filters') : hostFilter;
+        const filters = currentURL.searchParams.get('filters') ? currentURL.searchParams.get('filters') : this.retrieveFiltersFromVarParams(currentURL);
         const main_metric = currentURL.searchParams.get('main_metric') ? currentURL.searchParams.get('main_metric') : '';
         const columns = currentURL.searchParams.get('columns') ? currentURL.searchParams.get('columns') : '';
         const order_by = currentURL.searchParams.get('order_by') ? currentURL.searchParams.get('order_by') : '';
@@ -158,6 +157,23 @@ export class PanelCtrl extends MetricsPanelCtrl {
         const type = currentURL.searchParams.get('type') ? currentURL.searchParams.get('type') : '';
 
         return [id, type, search, filters, main_metric, columns, order_by, group_by, filter_by, active_details_tab];
+    }
+
+    private retrieveFiltersFromVarParams(currentURL) {
+        const filtersFromVar = Array<String>();
+        PanelCtrl.retrieveVarParam(currentURL, filtersFromVar, 'var-host', 'node_name');
+        PanelCtrl.retrieveVarParam(currentURL, filtersFromVar, 'var-service', 'service_name');
+        PanelCtrl.retrieveVarParam(currentURL, filtersFromVar, 'var-db', 'database');
+        PanelCtrl.retrieveVarParam(currentURL, filtersFromVar, 'var-replication_set', 'replication_set');
+        PanelCtrl.retrieveVarParam(currentURL, filtersFromVar, 'var-environment', 'environment');
+        PanelCtrl.retrieveVarParam(currentURL, filtersFromVar, 'var-cluster', 'cluster');
+        return filtersFromVar.join(",");
+    }
+
+    private static retrieveVarParam(currentURL, filtersFromVar, param: string, key: string) {
+        if (currentURL.searchParams.get(param) && currentURL.searchParams.get(param) != 'All') {
+            filtersFromVar.push(key + ':' + currentURL.searchParams.get(param));
+        }
     }
 
     private retrieveIFrameURLParams(url) {
