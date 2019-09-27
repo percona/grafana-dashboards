@@ -172,7 +172,10 @@ export class PanelCtrl extends MetricsPanelCtrl {
 
     private static retrieveVarParam(currentURL, filtersFromVar, param: string, key: string) {
         if (currentURL.searchParams.get(param) && currentURL.searchParams.get(param) != 'All') {
-            filtersFromVar.push(key + ':' + currentURL.searchParams.get(param));
+            let params = currentURL.searchParams.getAll(param);
+            params.forEach(x => {
+                filtersFromVar.push(key + ':' + x);
+            });
         }
     }
 
