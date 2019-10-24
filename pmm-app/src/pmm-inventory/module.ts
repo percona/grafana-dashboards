@@ -1,26 +1,22 @@
-/// <reference path="../../headers/common.d.ts" />
-
-import {MetricsPanelCtrl} from 'app/plugins/sdk';
-import config from 'app/core/config';
-import $ from "jquery";
+import { MetricsPanelCtrl } from 'grafana/app/plugins/sdk';
+import config from 'grafana/app/core/config';
 
 export class PanelCtrl extends MetricsPanelCtrl {
-
   static template = `
 		<iframe ng-src="{{ trustSrc(url) }}"
 			style="width: 100%; height: 400px; border: 0;" scrolling="no" />
 	`;
 
-  base_url = '/qan/pmm-inventory';
+  baseUrl = '/qan/pmm-inventory';
 
   constructor($scope, $injector, templateSrv, $sce, $http) {
     super($scope, $injector);
-    $scope.trustSrc = (src) => $sce.trustAsResourceUrl(src);
+    $scope.trustSrc = src => $sce.trustAsResourceUrl(src);
     $scope.qanParams = {
-      'theme': config.bootData.user.lightTheme ? 'light' : 'dark'
+      theme: config.bootData.user.lightTheme ? 'light' : 'dark',
     };
 
-    $scope.url = this.base_url + '?theme=' + $scope.qanParams.theme;
+    $scope.url = this.baseUrl + '?theme=' + $scope.qanParams.theme;
   }
 
   link($scope, elem) {
@@ -29,12 +25,16 @@ export class PanelCtrl extends MetricsPanelCtrl {
     const panelContent = elem.find('div.panel-content');
     panel.css({
       'background-color': 'transparent',
-      'border': 'none'
+      border: 'none',
     });
 
     $scope.ctrl.calculatePanelHeight = () => {
-      const h = frame.contents().find('body').height() || 400;
-      const documentH = (elem && elem[0]) ? elem[0].ownerDocument.height : h;
+      const h =
+        frame
+          .contents()
+          .find('body')
+          .height() || 400;
+      const documentH = elem && elem[0] ? elem[0].ownerDocument.height : h;
 
       $scope.ctrl.containerHeight = documentH;
       $scope.ctrl.height = documentH - 100;
@@ -61,20 +61,24 @@ export class PanelCtrl extends MetricsPanelCtrl {
    * @returns {void, boolean}
    */
   private disableGrafanaPerfectScroll(elem): void | boolean {
-    if (!elem || !elem[0]) return false;
+    if (!elem || !elem[0]) {
+      return false;
+    }
 
-    const perfectScrollContainers = (<any>elem[0].ownerDocument.getElementsByClassName('ps'));
-    const rightScrollbarContainers = (<any>elem[0].ownerDocument.getElementsByClassName('ps__thumb-y'));
+    const perfectScrollContainers = elem[0].ownerDocument.getElementsByClassName('ps') as any;
+    const rightScrollbarContainers = elem[0].ownerDocument.getElementsByClassName('ps__thumb-y') as any;
 
-    [].forEach.call(perfectScrollContainers, container => container.setAttribute('style', 'overflow: auto !important'));
-    [].forEach.call(rightScrollbarContainers, container => container.setAttribute('style', 'display: none !important'));
+    [].forEach.call(perfectScrollContainers, (container: HTMLElement) => container.setAttribute('style', 'overflow: auto !important'));
+    [].forEach.call(rightScrollbarContainers, (container: HTMLElement) => container.setAttribute('style', 'display: none !important'));
   }
 
   private fixMenuVisibility(elem): void | boolean {
-    if (!elem || !elem[0]) return false;
+    if (!elem || !elem[0]) {
+      return false;
+    }
 
-    const menu = (<any>elem[0].ownerDocument.getElementsByClassName('dropdown-menu'));
+    const menu = elem[0].ownerDocument.getElementsByClassName('dropdown-menu') as any;
 
-    [].forEach.call(menu, e => e.setAttribute('style', 'z-index: 1001'));
+    [].forEach.call(menu, (e: HTMLElement) => e.setAttribute('style', 'z-index: 1001'));
   }
 }
