@@ -26,10 +26,6 @@ export class PanelCtrl extends MetricsPanelCtrl {
     };
     $scope.trustSrc = src => $sce.trustAsResourceUrl(src);
 
-    this.setUrl($scope, templateSrv);
-
-    $scope.$root.onAppEvent('template-variable-value-updated', this.setUrl.bind(this, $scope, templateSrv));
-
     $scope.$watch(
       'ctrl.range',
       newValue => {
@@ -225,11 +221,6 @@ export class PanelCtrl extends MetricsPanelCtrl {
       })
       .filter(param => param)
       .join('&');
-  }
-
-  // translates Grafana's variables into iframe's URL;
-  private setUrl($scope, templateSrv) {
-    $scope.qanParams['var-host'] = templateSrv.variables[0].current.value;
   }
 
   private resetUrl($scope) {
