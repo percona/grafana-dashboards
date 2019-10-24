@@ -6,10 +6,15 @@ all: build pack disable install enable
 	tput bel
 
 build:
-	cd pmm-app && npm run build && cd ..
+	cd pmm-app && npm i && npm run build && cd ..
 
 pack:
 	tar czf pmm-app.tar.gz pmm-app
+
+release:
+      npm version
+      npm ci
+      npm run build
 
 install:
 	docker exec pmm-server supervisorctl stop grafana
