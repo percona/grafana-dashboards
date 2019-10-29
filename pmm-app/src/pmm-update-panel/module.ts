@@ -1,11 +1,7 @@
-/// <reference path="../../headers/common.d.ts" />
-
-import {MetricsPanelCtrl} from 'app/plugins/sdk';
-import AppEvents from 'app/core/app_events';
+import {MetricsPanelCtrl} from 'grafana/app/plugins/sdk';
+import AppEvents from 'grafana/app/core/app_events';
 import moment from 'moment';
 import $ from 'jquery';
-
-import config from 'app/core/config';
 
 export class PanelCtrl extends MetricsPanelCtrl {
     /**
@@ -113,15 +109,15 @@ export class PanelCtrl extends MetricsPanelCtrl {
             modalScope.currentReleaseDate = newState.currentReleaseDate;
             modalScope.newReleaseDate = newState.newReleaseDate;
             modalScope.canBeReloaded = newState.canBeReloaded;
-            modalScope.updateCntErrors = newState.updateCntErrors
-            modalScope.errorMessage = newState.errorMessage
+            modalScope.updateCntErrors = newState.updateCntErrors;
+            modalScope.errorMessage = newState.errorMessage;
         });
 
         modalScope.reloadAfterUpdate = () => {
             location.reload(true);
         };
 
-        modalScope.init = (elem) => {
+        modalScope.init = () => {
             const element = document.getElementById("pre-scrollable");
             // scroll update status to the end.
             setInterval(() => element.scrollIntoView(false), 500);
@@ -237,17 +233,17 @@ export class PanelCtrl extends MetricsPanelCtrl {
             url:  PanelCtrl.API.UPDATE_STATUS,
             data: {'auth_token': $scope.updateAuthToken, 'log_offset': $scope.updateLogOffset}
         }).then(response => {
-             const data = response.data;
-             $scope.isUpdated = 'done' in data ? data.done : false;
-             $scope.updateLogOffset = 'log_offset' in data ? data.log_offset : 0;
-             $scope.output += data.log_lines.join('\n') + '\n';
-             $scope.updateCntErrors = 0;
-             window.setTimeout(this.getLog.bind(this, $scope, $http), 500);
+            const data = response.data;
+            $scope.isUpdated = 'done' in data ? data.done : false;
+            $scope.updateLogOffset = 'log_offset' in data ? data.log_offset : 0;
+            $scope.output += data.log_lines.join('\n') + '\n';
+            $scope.updateCntErrors = 0;
+            window.setTimeout(this.getLog.bind(this, $scope, $http), 500);
         }).catch((err) => {
-             $scope.updateCntErrors++;
-             $scope.errorMessage = err.message;
-             console.log('error: ', err, $scope.errorMessage, $scope.updateCntErrors);
-             window.setTimeout(this.getLog.bind(this, $scope, $http), 500);
+            $scope.updateCntErrors++;
+            $scope.errorMessage = err.message;
+            console.log('error: ', err, $scope.errorMessage, $scope.updateCntErrors);
+            window.setTimeout(this.getLog.bind(this, $scope, $http), 500);
         });
     }
 
