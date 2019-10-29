@@ -4990,7 +4990,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "min(sum(pg_stat_database_blks_hit{datname=~\"$db\",service_name=~\"$service\",datname!~\"template.*\"}) by (datname) /\n(sum(pg_stat_database_blks_hit{datname=~\"$db\",service_name=~\"$service\",datname!~\"template.*\"}) by (datname) + \nsum(pg_stat_database_blks_read{datname=~\"$db\",service_name=~\"$service\",datname!~\"template.*\"}) by (datname)))",
+                    "expr": "clamp_max(min(sum(pg_stat_database_blks_hit{datname=~\"$db\",service_name=~\"$service\",datname!~\"template.*\"}) by (datname) /\n(sum(pg_stat_database_blks_hit{datname=~\"$db\",service_name=~\"$service\",datname!~\"template.*\"}) by (datname) + \nsum(pg_stat_database_blks_read{datname=~\"$db\",service_name=~\"$service\",datname!~\"template.*\"}) by (datname))),1)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -5075,7 +5075,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "max(sum(pg_stat_database_blks_hit{datname=~\"$db\",service_name=~\"$service\",datname!~\"template.*\"}) by (datname) /\n(sum(pg_stat_database_blks_hit{datname=~\"$db\",service_name=~\"$service\",datname!~\"template.*\"}) by (datname) + \nsum(pg_stat_database_blks_read{datname=~\"$db\",service_name=~\"$service\",datname!~\"template.*\"}) by (datname)))",
+                    "expr": "clamp_max(max(sum(pg_stat_database_blks_hit{datname=~\"$db\",service_name=~\"$service\",datname!~\"template.*\"}) by (datname) /\n(sum(pg_stat_database_blks_hit{datname=~\"$db\",service_name=~\"$service\",datname!~\"template.*\"}) by (datname) + \nsum(pg_stat_database_blks_read{datname=~\"$db\",service_name=~\"$service\",datname!~\"template.*\"}) by (datname))),1)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
