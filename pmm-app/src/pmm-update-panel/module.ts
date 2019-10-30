@@ -1,3 +1,5 @@
+/// <reference path="../../headers/common.d.ts" />
+
 import { MetricsPanelCtrl } from 'app/plugins/sdk';
 import AppEvents from 'app/core/app_events';
 import moment from 'moment';
