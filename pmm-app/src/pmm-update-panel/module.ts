@@ -1,5 +1,5 @@
-import { MetricsPanelCtrl } from 'grafana/app/plugins/sdk';
-import AppEvents from 'grafana/app/core/app_events';
+import { MetricsPanelCtrl } from 'app/plugins/sdk';
+import AppEvents from 'app/core/app_events';
 import moment from 'moment';
 import $ from 'jquery';
 
