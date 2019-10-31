@@ -1,0 +1,193 @@
+.grid-table {
+  --row-height: 40px;
+  --row-cells-indent: 0.5rem;
+  --row-background: var(--page-background);
+
+  display: grid;
+  grid-template-rows: minmax(var(--row-height), auto);
+  grid-auto-rows: minmax(var(--row-height), auto);
+  color: var(--main-text-color);
+  font-size: var(--main-font-size);
+  font-weight: 100;
+  border: 1px solid var(--main-border-color);
+}
+
+.grid-table > *:not(:last-child) {
+  border-bottom: 1px solid var(--main-border-color);
+}
+
+.grid-table--parent {
+  grid-auto-rows: auto;
+}
+
+.grid-table--no-frame {
+  --row-background: var(--element-background);
+  border: none;
+}
+
+.grid-table__row {
+  display: grid;
+  align-items: center;
+  background-color: var(--row-background, transparent);
+  outline: none;
+  word-break: break-all;
+}
+
+.grid-table__row > * {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 10px;
+}
+
+.grid-table__row > *:not(:last-child) {
+  border-right: 1px solid var(--main-border-color);
+}
+
+.grid-table__row--cursor {
+  cursor: pointer;
+}
+
+.grid-table__row--title {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.grid-table__row--highlight {
+  --row-background: var(--highlight-background);
+}
+
+.grid-table__row--active,
+.grid-table__row--active.grid-table__row--first-seen {
+  background-color: var(--row-active);
+}
+
+.grid-table__row--first-seen {
+  background: var(--row-first-seen);
+}
+
+//QAN queries table
+.grid-table__row--main {
+  grid-template-columns: 40px minmax(515px, 1fr) minmax(0, auto) minmax(0, auto) 375px;
+  grid-auto-rows: minmax(var(--row-height), auto);
+}
+
+.grid-table__row--main > *:first-child {
+  word-break: keep-all;
+}
+
+//Query details metrics table
+.grid-table__row--metrics {
+  grid-template-columns: repeat(4, 2fr);
+}
+
+.grid-table__row--two-columns {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+//MySQL query details indexes table
+.grid-table__row--indexes {
+  grid-template-columns: repeat(2, 1fr) repeat(2, .5fr) repeat(3, 1fr) .5fr 1fr;
+}
+
+//Settings status table
+.grid-table__row--status--log {
+  grid-template-columns: 2fr 7fr;
+}
+
+//Settings log table
+.grid-table__row--log {
+  grid-template-columns: 3fr 2.5fr minmax(80px, 1fr) 7fr;
+}
+
+//RDS remote instances tables
+.grid-table__row--remote-instances {
+  grid-template-columns: 2.5fr 6fr 1.5fr 2fr 80px;
+}
+
+.grid-table__row--remote-instances > *:last-child {
+  justify-content: center;
+}
+
+//AWS Credentials instances table
+.grid-table__row--instances {
+  grid-template-columns: 1.5fr 1fr 6fr 2fr .85fr;
+}
+
+.grid-table__row--instances > *:last-child {
+  justify-content: space-between;
+}
+
+//AWS Credentials sub table for connect instance
+.grid-table__row--connect-instances {
+  grid-template-columns: 2.5fr 6fr 2.85fr;
+}
+
+.grid-table__row--connect-instances > * {
+  padding: 10px;
+}
+
+.row__link,
+.row__link:hover {
+  display: inline-block;
+  color: var(--main-highlight-color);
+}
+
+.row__cells {
+  justify-content: space-between;
+  background-color: inherit;
+}
+
+.row__cells > *:not(:last-child) {
+  margin-right: var(--row-cells-indent);
+}
+
+.row__cells--w-30 {
+  width: 30%;
+}
+
+.row__sub-table {
+  display: grid;
+  grid-template-columns: 5fr 3fr;
+  padding: 0;
+}
+
+.row__sub-table > * {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+}
+
+.row__sub-table > *:not(:last-of-type) {
+  height: 100%;
+  border-right: 1px solid var(--main-border-color);
+}
+
+.app-theme-dark .grid-table {
+  --row-active: rgb(35, 70, 130);
+  --row-first-seen: rgb(13, 35, 59);
+}
+
+.app-theme-light .grid-table {
+  --row-active: rgb(255, 228, 225);
+  --row-first-seen: rgb(221, 228, 237);
+}
+
+// Rewrite when `display: contents` will have good browser support https://caniuse.com/#search=display%3Acontents
+.grid-table--no-grid {
+  display: table;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.grid-table__row--no-grid {
+  display: table-row;
+}
+
+.grid-table__row--no-grid > * {
+  display: table-cell;
+  height: 100%;
+  padding: 5px;
+  vertical-align: middle;
+}
