@@ -188,7 +188,7 @@ def add_links(dashboard):
                     if (tag in dashboard['tags'] or tag in ['Services','PMM',service_tag]) and tag not in ['Compare','Home','MySQL_HA','MongoDB_HA']:
                         add_item = {
                             'asDropdown': True,
-                            'includeVars': True if tag not in ['Services'] else False,
+                            'includeVars': True if (tag not in ['Services'] or 'Query Analytics' in dashboard['tags'])  else False,
                             'keepTime': True,
                             'tags': [ tag ],
                             'targetBlank': False,
