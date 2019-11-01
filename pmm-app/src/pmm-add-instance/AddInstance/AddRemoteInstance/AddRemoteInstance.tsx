@@ -1,165 +1,199 @@
-import React, {Component, ReactElement} from "react";
-import "./AddRemoteInstance.scss";
-import { InputField } from "../../../react-plugins-deps/components/fields-components/Input";
-import { TextAreaField } from "../../../react-plugins-deps/components/fields-components/TextArea";
-import { CheckboxField } from "../../../react-plugins-deps/components/fields-components/Checkbox";
+import React, { Component, ReactElement } from 'react';
+import './AddRemoteInstance.scss';
+import { InputField } from '../../../react-plugins-deps/components/fields-components/Input';
+import { TextAreaField } from '../../../react-plugins-deps/components/fields-components/TextArea';
+import { CheckboxField } from '../../../react-plugins-deps/components/fields-components/Checkbox';
 
-import { Form as FormFinal } from "react-final-form";
+import { Form as FormFinal } from 'react-final-form';
+import { useForm, useField } from 'react-final-form-hooks';
 
-class AddRemoteInstance extends Component {
-  render() {
-    // @ts-ignore
-    return (
-      <FormFinal
-        onSubmit={() => {}}
-        validate={() => {return undefined}}
-        render={({ handleSubmit }): ReactElement => (
-          <form className="add-instance-form app-theme-dark">
-            <div className="add-instance-panel">
-              <h6>Main details</h6>
-              <span></span>
-              <InputField
-                name="Hostname"
-                data-cy="add-account-username"
-                placeholder="*Hostname"
-                required={true}
-              />
-              <span className="description">
-                Public DNS hostname of your instance
-              </span>
-
-              <InputField
-                name="Hostname"
-                data-cy="add-account-username"
-                placeholder="Service name (default: Hostname)"
-                required={true}
-
-              />
-              <span className="description">Service name to use.</span>
-
-              <InputField
-                name="Port"
-                data-cy="add-account-username"
-                placeholder="Port (default: + defaultPort"
-                required={true}
-
-              />
-              <span className="description">
-                Port your service is listening on
-              </span>
-
-              <InputField
-                name="email"
-                data-cy="add-account-username"
-                placeholder="*Username"
-                required={true}
-
-              />
-              <span className="description">Your database user name</span>
-
-              <InputField
-                name="email"
-                data-cy="add-account-username"
-                placeholder="*Password"
-                required={true}
-
-              />
-              <span className="description">Your database password</span>
-            </div>
-            <div className="add-instance-panel">
-              <h6>Labels</h6>
-              <span></span>
-              <InputField
-                name="email"
-                data-cy="add-account-username"
-                placeholder="Email"
-                required={true}
-
-              />
-              <span className="description">
-                Public DNS hostname of your instance
-              </span>
-
-              <InputField
-                name="email"
-                data-cy="add-account-username"
-                placeholder="Email"
-                required={true}
-
-              />
-              <span className="description">Service name to use.</span>
-
-              <InputField
-                name="email"
-                data-cy="add-account-username"
-                placeholder="Email"
-                required={true}
-
-              />
-              <span className="description">
-                Port your service is listening on
-              </span>
-
-              <TextAreaField
-                name="email"
-                data-cy="add-account-username"
-                placeholder="Email"
-              />
-              <span className="description">Your database user name</span>
-            </div>
-            <div className="add-instance-panel">
-              <h6>Additional options</h6>
-              <span></span>
-              <div>
-                <CheckboxField
-                  name="email"
-                  data-cy="add-account-username"
-                />
-                <label className="description" htmlFor="skip_connection_check">
-                  Skip connection check
-                </label>
-              </div>
-              <span className="description"></span>
-              <div>
-                <CheckboxField
-                  name="email"
-                  data-cy="add-account-username"
-                />
-                <label className="description" htmlFor="tls">
-                  Use TLS for database connections.
-                </label>
-              </div>
-              <span className="description"></span>
-              <div>
-                <CheckboxField
-                  name="email"
-                  data-cy="add-account-username"
-                />
-                <label className="description" htmlFor="tls_skip_verify">
-                  Skip TLS certificate and hostname validation
-                </label>
-              </div>
-              <span className="description"></span>
-            </div>
-
-            <div className="add-instance-form__submit-block">
-              <button
-                type="submit"
-                className="button button--dark"
-                id="addInstance"
-              >
-                Add service
-              </button>
-
-              <div className="spinner-wrapper">
-                <i className="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
-              </div>
-            </div>
-          </form>
-        )}
-      />
-    );
+const getInstanceData = (instanceType, credentials) => {
+  const instance = {};
+  switch (instanceType) {
+    case 'postgresql':
+      instance.instanceType = 'PostgreSQL';
+      instance.remoteInstanceCredentials = {};
+      instance.defaultPort = 5432;
+      break;
+    case 'mysql':
+      instance.instanceType = 'MySQL';
+      instance.remoteInstanceCredentials = {};
+      instance.defaultPort = 3306;
+      instance;
+    case 'mongodb':
+      instance.instanceType = 'MongoDB';
+      instance.remoteInstanceCredentials = {};
+      instance.defaultPort = 27017;
+      break;
+    case 'proxysql':
+      instance.instanceType = 'ProxySQL';
+      instance.remoteInstanceCredentials = {};
+      instance.defaultPort = 6032;
+      break;
   }
-}
 
-export default AddRemoteInstance;
+  return instance;
+};
+
+const getAdditionalOptions = type => {
+  switch (type) {
+    case 'PostgreSQL':
+      return (
+        <>
+          <div className={'additional-options-wrapper'}>
+            <CheckboxField name="remoteInstanceCredentials.qan_mysql_perfschema" data-cy="add-account-username" />
+            <label className="description" htmlFor="tls_skip_verify">
+              Use Pg Stat Statements{' '}
+            </label>
+          </div>
+          <span className="description"></span>
+        </>
+      );
+    case 'MySQL':
+      return (
+        <>
+          <div className={'additional-options-wrapper'}>
+            <CheckboxField name="remoteInstanceCredentials.qan_postgresql_pgstatements_agent" data-cy="add-account-username" />
+            <label className="description" htmlFor="tls_skip_verify">
+              Use performance schema
+            </label>
+          </div>
+          <span className="description"></span>
+        </>
+      );
+    case 'MongoDB':
+      return (
+        <>
+          <div className={'additional-options-wrapper'}>
+            <CheckboxField name="remoteInstanceCredentials.qan_mongodb_profiler" data-cy="add-account-username" />
+            <label className="description" htmlFor="tls_skip_verify">
+              Use QAN MongoDB Profiler
+            </label>
+          </div>
+          <span className="description"></span>
+        </>
+      );
+  }
+};
+const AddRemoteInstance = props => {
+  const { instanceType, remoteInstanceCredentials, defaultPort } = getInstanceData(props.instance.type, props.instance.credentials);
+
+  const { form, handleSubmit, values, pristine, submitting } = useForm({
+    onSubmit: () => {},
+    validate: () => {},
+    initialValues: { remoteInstanceCredentials: { service_name: 'mongo.example.com', username: 'tester', password: 'test password' } },
+  });
+
+  console.log(form);
+  // @ts-ignore
+  return (
+    <form onSubmit={handleSubmit} className="add-instance-form app-theme-dark">
+      <h1>{`Add remote ${instanceType} Instance`}</h1>
+      <div className="add-instance-panel">
+        <h6>Main details</h6>
+        <span></span>
+        <InputField form={form} name="remoteInstanceCredentials.address" data-cy="add-account-username" placeholder="*Hostname" required={true} />
+        <span className="description">Public DNS hostname of your instance</span>
+
+        <InputField
+          form={form}
+          name="remoteInstanceCredentials.service_name"
+          data-cy="add-account-username"
+          placeholder="Service name (default: Hostname)"
+          required={true}
+        />
+        <span className="description">Service name to use.</span>
+
+        <InputField
+          form={form}
+          name="remoteInstanceCredentials.port"
+          data-cy="add-account-username"
+          placeholder={`Port (default: ${defaultPort} )`}
+          required={true}
+        />
+        <span className="description">Port your service is listening on</span>
+
+        <InputField form={form} name="remoteInstanceCredentials.username" data-cy="add-account-username" placeholder="*Username" required={true} />
+        <span className="description">Your database user name</span>
+
+        <InputField form={form} name="remoteInstanceCredentials.password" data-cy="add-account-username" placeholder="*Password" required={true} />
+        <span className="description">Your database password</span>
+      </div>
+      <div className="add-instance-panel">
+        <h6>Labels</h6>
+        <span></span>
+        <InputField
+          form={form}
+          name="remoteInstanceCredentials.environment"
+          data-cy="add-account-username"
+          placeholder="Environment"
+          required={true}
+        />
+        <span className="description"></span>
+
+        <InputField
+          form={form}
+          name="remoteInstanceCredentials.replication_set"
+          data-cy="add-account-username"
+          placeholder="Replication set"
+          required={true}
+        />
+        <span className="description"></span>
+
+        <InputField form={form} name="remoteInstanceCredentials.cluster" data-cy="add-account-username" placeholder="Cluster" required={true} />
+        <span className="description"></span>
+
+        <TextAreaField
+          name="customLabels"
+          data-cy="add-account-username"
+          placeholder="Custom labels
+Format:
+key1:value1
+key2:value2"
+        />
+        <span className="description"></span>
+      </div>
+      <div className="add-instance-panel">
+        <h6>Additional options</h6>
+        <span></span>
+        <div className={'additional-options-wrapper'}>
+          <CheckboxField name="remoteInstanceCredentials.skip_connection_check" data-cy="add-account-username" />
+          <label className="description" htmlFor="skip_connection_check">
+            Skip connection check
+          </label>
+        </div>
+        <span className="description"></span>
+        <div className={'additional-options-wrapper'}>
+          <CheckboxField name="remoteInstanceCredentials.tls" data-cy="add-account-username" />
+          <label className="description" htmlFor="tls">
+            Use TLS for database connections.
+          </label>
+        </div>
+        <span className="description"></span>
+        <div className={'additional-options-wrapper'}>
+          <CheckboxField name="remoteInstanceCredentials.tls_skip_verify" data-cy="add-account-username" />
+          <label className="description" htmlFor="tls_skip_verify">
+            Skip TLS certificate and hostname validation
+          </label>
+        </div>
+        <span className="description"></span>
+        {getAdditionalOptions(instanceType)}
+      </div>
+
+      <div className="add-instance-form__submit-block">
+        <button type="submit" className="button button--dark" id="addInstance">
+          Add service
+        </button>
+
+        {/*<div className="spinner-wrapper">*/}
+        {/*  <i className="fa fa-spinner fa-pulse fa-2x fa-fw"></i>*/}
+        {/*</div>*/}
+      </div>
+    </form>
+  );
+};
+
+const FormWrapper = props => {
+  return <FormFinal onSubmit={() => {}} render={({ handleSubmit }): ReactElement => <AddRemoteInstance {...props} />} />;
+};
+export default FormWrapper;
