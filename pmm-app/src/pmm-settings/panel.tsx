@@ -5,6 +5,7 @@ import { Select } from 'antd';
 
 const { Option } = Select;
 import 'antd/dist/antd.css';
+import '../react-plugins-deps/styles.scss';
 
 const { Panel } = Collapse;
 
@@ -24,29 +25,44 @@ const marks = {
   2: 'High',
 };
 
+
 const customPanelStyle = {
-  // background: '#212124',
+  background: 'rgb(51, 51, 51)',
   // borderRadius: 4,
-  // marginBottom: 24,
-  // border: 1,
+  marginBottom: 10,
+  border: 1,
+  borderColor: 'white'
   // overflow: 'hidden',
-  // color: 'white',
-  // textColor: 'white'
+  color: 'white',
+  textColor: 'white'
+};
+
+const customCollapseStyle = {
+  background: 'transparent',
+  // borderRadius: 4,
+  marginBottom: 10,
+  border: 1,
+  borderColor: 'black',
+  color: 'white',
+  textColor: 'white'
 };
 
 const textStyle = {
-  color: 'black',
+  color: 'white',
 };
 
 const SimplePanel = () => {
   return (
-    <>
-      <Collapse bordered={false} defaultActiveKey={['1']} onChange={callback} style={customPanelStyle}>
-        <Panel header="General" key="1">
+    <div className={'app-theme-dark'}>
+      <Collapse bordered={false} defaultActiveKey={['1']} onChange={callback} style={customCollapseStyle}>
+        <Panel header="General" key="1" style={customPanelStyle}>
           <p style={textStyle}>
-            {' '}
             Metrics resolution: <Slider marks={marks} max={2} step={null} defaultValue={2} />
           </p>
+          <Tooltip placement="topLeft" title={<>This setting defines how frequently the data will be collected. <a
+              href="link-to-doc">Read more.</a></>} style={{ background: 'deepskyblue' }}>
+            <Icon type="question-circle" style={{ marginLeft: '5px' }} />
+          </Tooltip>
         </Panel>
         <Panel header="Advanced settings" key="2" style={customPanelStyle}>
           <p style={textStyle}>
@@ -78,9 +94,17 @@ const SimplePanel = () => {
           <p style={textStyle}> Orchestrator user:</p>
           <p style={textStyle}> Orchestrator password:</p>
         </Panel>
+        <Panel header="SSH Key Details" key="3" style={customPanelStyle}>
+          <p style={textStyle}>
+            SSH key: <Input placeholder="Enter ssh key" style={{ width: 240 }} />
+          </p>
+        </Panel>
+        <Panel header="Diagnostics" key="4" style={customPanelStyle}>
+          <p style={textStyle}>Access to logs</p>
+        </Panel>
       </Collapse>
       <Button type="primary">Apply changes</Button>
-    </>
+    </div>
   );
 };
 
