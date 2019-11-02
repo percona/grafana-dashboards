@@ -8,7 +8,7 @@ import AddInstance from './AddInstance/AddInstance';
 const SimplePanel = () => {
   const [selectedInstance, setSelectedInstance] = useState({});
   return (
-    <div className={'app-theme-dark'}>
+    <div className={'app-theme-dark'} className={'content-wrapper'}>
       {!selectedInstance.type ? <AddInstance selectInstanceType={setSelectedInstance} /> : null}
       {selectedInstance.type === 'rds' ? (
         <DiscoverySearchPanel

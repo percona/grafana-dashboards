@@ -1,8 +1,8 @@
 import React, { Component, ReactElement } from 'react';
 import './AddRemoteInstance.scss';
-import { InputField } from '../../../react-plugins-deps/components/fields-components/Input';
-import { TextAreaField } from '../../../react-plugins-deps/components/fields-components/TextArea';
-import { CheckboxField } from '../../../react-plugins-deps/components/fields-components/Checkbox';
+import { InputField } from '../../../react-plugins-deps/components/FieldsComponents/Input';
+import { TextAreaField } from '../../../react-plugins-deps/components/FieldsComponents/TextArea';
+import { CheckboxField } from '../../../react-plugins-deps/components/FieldsComponents/Checkbox';
 
 import { Form as FormFinal } from 'react-final-form';
 import { useForm, useField } from 'react-final-form-hooks';
