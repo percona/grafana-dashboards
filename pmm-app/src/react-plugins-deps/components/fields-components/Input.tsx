@@ -1,5 +1,5 @@
-import React, { FunctionComponent } from 'react';
-import { useForm, useField } from 'react-final-form-hooks';
+import React from 'react';
+import { useField } from 'react-final-form-hooks';
 
 export const InputField = ({ name, placeholder, required, form, ...rest }) => {
   // @ts-ignore
