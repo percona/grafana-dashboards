@@ -1,39 +1,14 @@
-import React, {FunctionComponent} from "react";
-import { Field } from "react-final-form";
-
-const CheckboxComponent = ({
-  input,
-  meta,
-  required,
-  labelCol,
-  wrapperCol,
-  ...rest
-}) => {
-  return (
-    <input
-      onChange={input.onChange}
-      type="checkbox"
-      className="input-field--dark"
-    />
-  );
-};
+import React, { FunctionComponent } from 'react';
+import { useField } from 'react-final-form-hooks';
 
 interface CheckboxFieldInterface {
   required?: boolean;
   name: string;
-  "data-cy": string;
+  'data-cy': string;
+  form: any;
 }
-export const CheckboxField = ({
-  name,
-  required,
-  ...rest
-}: CheckboxFieldInterface) => {
-  return (
-    <Field
-      {...rest}
-      name={name}
-      component={CheckboxComponent as FunctionComponent}
-      required={required}
-    />
-  );
+export const CheckboxField = ({ name, required, form, ...rest }: CheckboxFieldInterface) => {
+  const field = useField(name, form);
+
+  return <input {...field.input} type="checkbox" className="input-field--dark" />;
 };
