@@ -12,22 +12,22 @@ const getInstanceData = (instanceType, credentials) => {
   switch (instanceType) {
     case 'postgresql':
       instance.instanceType = 'PostgreSQL';
-      instance.remoteInstanceCredentials = {};
+      instance.remoteInstanceCredentials = credentials;
       instance.defaultPort = 5432;
       break;
     case 'mysql':
       instance.instanceType = 'MySQL';
-      instance.remoteInstanceCredentials = {};
+      instance.remoteInstanceCredentials = credentials;
       instance.defaultPort = 3306;
       instance;
     case 'mongodb':
       instance.instanceType = 'MongoDB';
-      instance.remoteInstanceCredentials = {};
+      instance.remoteInstanceCredentials = credentials;
       instance.defaultPort = 27017;
       break;
     case 'proxysql':
       instance.instanceType = 'ProxySQL';
-      instance.remoteInstanceCredentials = {};
+      instance.remoteInstanceCredentials = credentials;
       instance.defaultPort = 6032;
       break;
   }
@@ -35,13 +35,13 @@ const getInstanceData = (instanceType, credentials) => {
   return instance;
 };
 
-const getAdditionalOptions = type => {
+const getAdditionalOptions = (type, form) => {
   switch (type) {
     case 'PostgreSQL':
       return (
         <>
           <div className={'additional-options-wrapper'}>
-            <CheckboxField name="remoteInstanceCredentials.qan_mysql_perfschema" data-cy="add-account-username" />
+            <CheckboxField form={form} name="remoteInstanceCredentials.qan_mysql_perfschema" data-cy="add-account-username" />
             <label className="description" htmlFor="tls_skip_verify">
               Use Pg Stat Statements{' '}
             </label>
@@ -53,7 +53,7 @@ const getAdditionalOptions = type => {
       return (
         <>
           <div className={'additional-options-wrapper'}>
-            <CheckboxField name="remoteInstanceCredentials.qan_postgresql_pgstatements_agent" data-cy="add-account-username" />
+            <CheckboxField form={form} name="remoteInstanceCredentials.qan_postgresql_pgstatements_agent" data-cy="add-account-username" />
             <label className="description" htmlFor="tls_skip_verify">
               Use performance schema
             </label>
@@ -65,7 +65,7 @@ const getAdditionalOptions = type => {
       return (
         <>
           <div className={'additional-options-wrapper'}>
-            <CheckboxField name="remoteInstanceCredentials.qan_mongodb_profiler" data-cy="add-account-username" />
+            <CheckboxField form={form} name="remoteInstanceCredentials.qan_mongodb_profiler" data-cy="add-account-username" />
             <label className="description" htmlFor="tls_skip_verify">
               Use QAN MongoDB Profiler
             </label>
@@ -79,16 +79,18 @@ const AddRemoteInstance = props => {
   const { instanceType, remoteInstanceCredentials, defaultPort } = getInstanceData(props.instance.type, props.instance.credentials);
 
   const { form, handleSubmit, values, pristine, submitting } = useForm({
-    onSubmit: () => {},
+    onSubmit: values => {
+      console.log(values);
+    },
     validate: () => {},
-    initialValues: { remoteInstanceCredentials: { service_name: 'mongo.example.com', username: 'tester', password: 'test password' } },
+    initialValues: { remoteInstanceCredentials: remoteInstanceCredentials },
   });
 
   console.log(form);
   // @ts-ignore
   return (
     <form onSubmit={handleSubmit} className="add-instance-form app-theme-dark">
-      <h1>{`Add remote ${instanceType} Instance`}</h1>
+      <h5>{`Add remote ${instanceType} Instance`}</h5>
       <div className="add-instance-panel">
         <h6>Main details</h6>
         <span></span>
@@ -144,6 +146,7 @@ const AddRemoteInstance = props => {
         <span className="description"></span>
 
         <TextAreaField
+          form={form}
           name="customLabels"
           data-cy="add-account-username"
           placeholder="Custom labels
@@ -157,27 +160,27 @@ key2:value2"
         <h6>Additional options</h6>
         <span></span>
         <div className={'additional-options-wrapper'}>
-          <CheckboxField name="remoteInstanceCredentials.skip_connection_check" data-cy="add-account-username" />
+          <CheckboxField form={form} name="remoteInstanceCredentials.skip_connection_check" data-cy="add-account-username" />
           <label className="description" htmlFor="skip_connection_check">
             Skip connection check
           </label>
         </div>
         <span className="description"></span>
         <div className={'additional-options-wrapper'}>
-          <CheckboxField name="remoteInstanceCredentials.tls" data-cy="add-account-username" />
+          <CheckboxField form={form} name="remoteInstanceCredentials.tls" data-cy="add-account-username" />
           <label className="description" htmlFor="tls">
             Use TLS for database connections.
           </label>
         </div>
         <span className="description"></span>
         <div className={'additional-options-wrapper'}>
-          <CheckboxField name="remoteInstanceCredentials.tls_skip_verify" data-cy="add-account-username" />
+          <CheckboxField form={form} name="remoteInstanceCredentials.tls_skip_verify" data-cy="add-account-username" />
           <label className="description" htmlFor="tls_skip_verify">
             Skip TLS certificate and hostname validation
           </label>
         </div>
         <span className="description"></span>
-        {getAdditionalOptions(instanceType)}
+        {getAdditionalOptions(instanceType, form)}
       </div>
 
       <div className="add-instance-form__submit-block">
