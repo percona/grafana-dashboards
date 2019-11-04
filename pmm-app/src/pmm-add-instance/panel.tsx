@@ -4,11 +4,12 @@ import DiscoverySearchPanel from './DIscoveryAWS/DiscoverySearchPanel';
 import 'antd/dist/antd.css';
 import '../react-plugins-deps/styles.scss';
 import AddInstance from './AddInstance/AddInstance';
+import {Button} from "antd";
 
 const SimplePanel = () => {
   const [selectedInstance, setSelectedInstance] = useState({});
   return (
-    <div className={'app-theme-dark'} className={'content-wrapper'}>
+    <div className={'app-theme-dark content-wrapper'}>
       {!selectedInstance.type ? <AddInstance selectInstanceType={setSelectedInstance} /> : null}
       {selectedInstance.type === 'rds' ? (
         <DiscoverySearchPanel
@@ -17,7 +18,14 @@ const SimplePanel = () => {
           }}
         />
       ) : null}
-      {selectedInstance.type && selectedInstance.type !== 'rds' ? <AddRemoteInstance instance={selectedInstance} /> : null}
+      {selectedInstance.type && selectedInstance.type !== 'rds' ? (
+        <>
+          <Button type={'link'} onClick={setSelectedInstance.bind(null, {})}>
+            Return to instance select menu
+          </Button>
+          <AddRemoteInstance instance={selectedInstance} />{' '}
+        </>
+      ) : null}
     </div>
   );
 };

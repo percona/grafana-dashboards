@@ -1,10 +1,11 @@
 import React, {ReactElement} from 'react';
-import {Collapse, Icon, Input, Select, Slider, Switch, Tooltip} from 'antd';
+import {Collapse, Icon, Input, Select, Slider, Tooltip} from 'antd';
 import {useForm} from 'react-final-form-hooks';
 import 'antd/dist/antd.css';
 import '../react-plugins-deps/styles.scss';
 import './panel.scss';
 import {Form as FormFinal} from 'react-final-form';
+import {ToggleField} from '../react-plugins-deps/components/FieldsComponents/Toggle';
 
 const { Option } = Select;
 
@@ -102,7 +103,7 @@ const SettingsPanel = () => {
               <Collapse bordered={false} defaultActiveKey={['1']} onChange={callback} style={customCollapseStyle}>
                 <Panel header="General" key="1" style={customPanelStyle}>
                   <p style={textStyle} style={{ width: '400px' }}>
-                    Metrics resolution: <Slider marks={marks} max={2} step={null} defaultValue={2} />
+                    Metrics resolution: <Slider marks={marks} max={2} step={null} included={false} defaultValue={2} />
                     {getTooltip(
                       <>
                         This setting defines how frequently the data will be collected. <a href="link-to-doc">Read more.</a>
@@ -127,7 +128,7 @@ const SettingsPanel = () => {
                     )}
                   </p>
                   <p style={textStyle}>
-                    Call home: <Switch defaultChecked onChange={() => {}} />
+                    Call home: <ToggleField form={form} name={'call_home'} />
                     {getTooltip(
                       <>
                         Option to send usage data back to Percona to let us make product better. <a href="link-to-doc">Read more.</a>
@@ -135,7 +136,7 @@ const SettingsPanel = () => {
                     )}
                   </p>
                   <p style={textStyle}>
-                    Check for updates: <Switch defaultChecked onChange={() => {}} />
+                    Check for updates: <ToggleField form={form} name={'check_for_updates'} />
                     {getTooltip(
                       <>
                         Option to check new versions and ability to update PMM from UI. <a href="link-to-doc">Read more.</a>

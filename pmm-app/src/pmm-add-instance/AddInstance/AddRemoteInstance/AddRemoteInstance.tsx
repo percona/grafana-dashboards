@@ -6,6 +6,7 @@ import { CheckboxField } from '../../../react-plugins-deps/components/FieldsComp
 
 import { Form as FormFinal } from 'react-final-form';
 import { useForm, useField } from 'react-final-form-hooks';
+import { PasswordField } from '../../../react-plugins-deps/components/FieldsComponents/Password';
 
 const getInstanceData = (instanceType, credentials) => {
   const instance = {};
@@ -118,7 +119,7 @@ const AddRemoteInstance = props => {
         <InputField form={form} name="remoteInstanceCredentials.username" data-cy="add-account-username" placeholder="*Username" required={true} />
         <span className="description">Your database user name</span>
 
-        <InputField form={form} name="remoteInstanceCredentials.password" data-cy="add-account-username" placeholder="*Password" required={true} />
+        <PasswordField form={form} name="remoteInstanceCredentials.password" data-cy="add-account-username" placeholder="*Password" required={true} />
         <span className="description">Your database password</span>
       </div>
       <div className="add-instance-panel">

@@ -1,8 +1,8 @@
-import React, {ReactElement, useEffect, useState} from 'react';
-import {Form as FormFinal} from 'react-final-form';
-import {useForm} from 'react-final-form-hooks';
-import {InputField} from '../../react-plugins-deps/components/FieldsComponents/Input';
-import {Button, Table} from 'antd';
+import React, { ReactElement, useEffect, useState } from 'react';
+import { Form as FormFinal } from 'react-final-form';
+import { useForm } from 'react-final-form-hooks';
+import { InputField } from '../../react-plugins-deps/components/FieldsComponents/Input';
+import { Button, Table } from 'antd';
 import './DiscoverySearchPanel.scss';
 
 interface DiscoverySearchPanelInterface {
@@ -64,7 +64,7 @@ const DiscoverySearchPanel = (props: DiscoverySearchPanelInterface) => {
 
   return (
     <>
-      <div style={{ width: '600px' }}>
+      <div style={{ width: '800px' }}>
         <FormFinal
           onSubmit={setCredentials}
           validate={() => {
@@ -104,7 +104,9 @@ const DiscoverySearchPanel = (props: DiscoverySearchPanelInterface) => {
             );
           }}
         />
-        {instances.length && <Table dataSource={instances} bordered={false} columns={columns} style={{ color: 'white' }} size={'small'} />}
+        {instances.length && (
+          <Table dataSource={instances} pagination={false} bordered={false} columns={columns} rowClassName={'discovery-table-row'} style={{ color: 'white' }} size={'small'} />
+        )}
       </div>
     </>
   );
