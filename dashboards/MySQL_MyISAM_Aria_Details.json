@@ -36,7 +36,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1568373588859,
+    "iteration": 1573148293273,
     "links": [
         {
             "icon": "doc",
@@ -121,12 +121,15 @@
     ],
     "panels": [
         {
+            "breadcrumbItemsMaxAmount": 25,
+            "datasource": null,
             "gridPos": {
                 "h": 2,
                 "w": 24,
                 "x": 0,
                 "y": 0
             },
+            "hideTextInRootDashboard": false,
             "id": 999,
             "isRootDashboard": false,
             "links": [],
@@ -147,6 +150,7 @@
         },
         {
             "collapsed": false,
+            "datasource": null,
             "gridPos": {
                 "h": 1,
                 "w": 24,
@@ -333,7 +337,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 10
+                "y": 11
             },
             "height": "250px",
             "id": 22,
@@ -466,7 +470,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 10
+                "y": 11
             },
             "height": "250px",
             "id": 21,
@@ -509,7 +513,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "mysql_global_variables_key_buffer_size{service_name=\"$service\"}",
+                    "expr": "max_over_time(mysql_global_variables_key_buffer_size{service_name=\"$service\"}[$interval]) or\nmax_over_time(mysql_global_variables_key_buffer_size{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -522,7 +526,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "mysql_global_variables_key_buffer_size{service_name=\"$service\"} - mysql_global_status_key_blocks_unused{service_name=\"$service\"} * mysql_global_variables_key_cache_block_size{service_name=\"$service\"}",
+                    "expr": "((max_over_time(mysql_global_variables_key_buffer_size{service_name=\"$service\"}[$interval]) or max_over_time(mysql_global_variables_key_buffer_size{service_name=\"$service\"}[5m])) - \n(max_over_time(mysql_global_status_key_blocks_unused{service_name=\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_key_blocks_unused{service_name=\"$service\"}[5m]))) * mysql_global_variables_key_cache_block_size{service_name=\"$service\"}",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -535,7 +539,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "mysql_global_status_key_blocks_not_flushed{service_name=\"$service\"} * mysql_global_variables_key_cache_block_size{service_name=\"$service\"}",
+                    "expr": "(max_over_time(mysql_global_status_key_blocks_not_flushed{service_name=\"$service\"}[$interval]) or \nmax_over_time(mysql_global_status_key_blocks_not_flushed{service_name=\"$service\"}[5m])) * \nmysql_global_variables_key_cache_block_size{service_name=\"$service\"}",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -566,6 +570,7 @@
             },
             "yaxes": [
                 {
+                    "decimals": 2,
                     "format": "short",
                     "logBase": 1,
                     "max": null,
@@ -587,11 +592,12 @@
         },
         {
             "collapsed": false,
+            "datasource": null,
             "gridPos": {
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 17
+                "y": 19
             },
             "id": 29,
             "panels": [],
@@ -616,7 +622,7 @@
                 "h": 8,
                 "w": 18,
                 "x": 0,
-                "y": 18
+                "y": 20
             },
             "height": "250px",
             "id": 24,
@@ -751,7 +757,7 @@
                 "h": 7,
                 "w": 6,
                 "x": 18,
-                "y": 18
+                "y": 20
             },
             "height": "250px",
             "id": 27,
@@ -780,7 +786,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 25
+                "y": 28
             },
             "height": "250px",
             "id": 26,
@@ -884,7 +890,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 25
+                "y": 28
             },
             "height": "250px",
             "id": 25,
@@ -927,7 +933,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "mysql_global_status_aria_pagecache_blocks_not_flushed{service_name=\"$service\"}",
+                    "expr": "max_over_time(mysql_global_status_aria_pagecache_blocks_not_flushed{service_name=\"$service\"}[$interval]) or \nmax_over_time(mysql_global_status_aria_pagecache_blocks_not_flushed{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -941,7 +947,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "mysql_global_status_aria_pagecache_blocks_used{service_name=\"$service\"}",
+                    "expr": "max_over_time(mysql_global_status_aria_pagecache_blocks_used{service_name=\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_aria_pagecache_blocks_used{service_name=\"$service\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -954,9 +960,9 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "mysql_global_status_aria_pagecache_blocks_unused{service_name=\"$service\"}",
+                    "expr": "max_over_time(mysql_global_status_aria_pagecache_blocks_unused{service_name=\"$service\"}[$interval]) or\nmax_over_time(mysql_global_status_aria_pagecache_blocks_unused{service_name=\"$service\"}[5m])",
                     "format": "time_series",
-                    "interval": "",
+                    "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Aria Pagecache Blocks Unused",
                     "metric": "",
@@ -964,9 +970,10 @@
                     "step": 5
                 },
                 {
-                    "expr": "mysql_global_variables_aria_pagecache_buffer_size{service_name=\"$service\"} / mysql_global_variables_aria_block_size{service_name=\"$service\"}",
+                    "expr": "(max_over_time(mysql_global_variables_aria_pagecache_buffer_size{service_name=\"$service\"}[$interval]) or\nmax_over_time(mysql_global_variables_aria_pagecache_buffer_size{service_name=\"$service\"}[5m])) / (max_over_time(mysql_global_variables_aria_block_size{service_name=\"$service\"}[$interval]) or\nmax_over_time(mysql_global_variables_aria_block_size{service_name=\"$service\"}[5m]))",
                     "format": "time_series",
                     "hide": false,
+                    "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Aria Pagecache Total Blocks",
                     "refId": "B",
@@ -1017,11 +1024,12 @@
         },
         {
             "collapsed": true,
+            "datasource": null,
             "gridPos": {
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 32
+                "y": 36
             },
             "id": 293,
             "panels": [
@@ -2353,11 +2361,12 @@
         },
         {
             "collapsed": true,
+            "datasource": null,
             "gridPos": {
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 33
+                "y": 37
             },
             "id": 291,
             "panels": [
@@ -3572,7 +3581,7 @@
         }
     ],
     "refresh": "1m",
-    "schemaVersion": 19,
+    "schemaVersion": 20,
     "style": "dark",
     "tags": [
         "Percona",
