@@ -36,7 +36,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1569423994864,
+    "iteration": 1573225937338,
     "links": [
         {
             "icon": "doc",
@@ -110,12 +110,15 @@
     ],
     "panels": [
         {
+            "breadcrumbItemsMaxAmount": 25,
+            "datasource": null,
             "gridPos": {
                 "h": 2,
                 "w": 24,
                 "x": 0,
                 "y": 0
             },
+            "hideTextInRootDashboard": false,
             "id": 999,
             "isRootDashboard": false,
             "links": [],
@@ -136,6 +139,7 @@
         },
         {
             "content": "<h1><i><font color=#5991A7><b><center>Data for </font><font color=#e68a00>$host</font> <font color=#5991A7> with</font> </font><font color=#e68a00>$interval</font> <font color=#5991A7>resolution</center></b></font></i></h1>",
+            "datasource": null,
             "gridPos": {
                 "h": 2,
                 "w": 24,
@@ -596,6 +600,7 @@
                 "rgba(237, 129, 40, 0.89)",
                 "#299c46"
             ],
+            "datasource": null,
             "decimals": 2,
             "description": "Estimated time of Disk usage based on trend",
             "format": "h",
@@ -937,6 +942,7 @@
                 "rgba(237, 129, 40, 0.89)",
                 "#d44a3a"
             ],
+            "datasource": null,
             "gridPos": {
                 "h": 7,
                 "w": 12,
@@ -1090,6 +1096,7 @@
         },
         {
             "columns": [],
+            "datasource": null,
             "description": "",
             "fontSize": "100%",
             "gridPos": {
@@ -1165,6 +1172,7 @@
         },
         {
             "collapsed": false,
+            "datasource": null,
             "gridPos": {
                 "h": 1,
                 "w": 24,
@@ -1554,6 +1562,7 @@
             },
             "yaxes": [
                 {
+                    "decimals": null,
                     "format": "short",
                     "label": "",
                     "logBase": 1,
@@ -1713,11 +1722,12 @@
         },
         {
             "collapsed": false,
+            "datasource": null,
             "gridPos": {
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 29
+                "y": 30
             },
             "id": 47,
             "panels": [],
@@ -1745,7 +1755,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 30
+                "y": 31
             },
             "height": "",
             "id": 29,
@@ -1789,7 +1799,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "node_memory_MemTotal_bytes{node_name=~\"$host\"}",
+                    "expr": "max_over_time(node_memory_MemTotal_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_MemTotal_bytes{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1800,7 +1810,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "node_memory_MemFree_bytes{node_name=~\"$host\"}",
+                    "expr": "max_over_time(node_memory_MemFree_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_MemFree_bytes{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1814,7 +1824,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "node_memory_Buffers_bytes{node_name=~\"$host\"}",
+                    "expr": "max_over_time(node_memory_Buffers_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_Buffers_bytes{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1828,7 +1838,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "node_memory_MemTotal_bytes{node_name=~\"$host\"} - (node_memory_MemFree_bytes{node_name=~\"$host\"} + node_memory_Buffers_bytes{node_name=~\"$host\"} + node_memory_Cached_bytes{node_name=~\"$host\"})",
+                    "expr": "(max_over_time(node_memory_MemTotal_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_MemTotal_bytes{node_name=~\"$host\"}[5m])) - ((max_over_time(node_memory_MemFree_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_MemFree_bytes{node_name=~\"$host\"}[5m]))+ \n(max_over_time(node_memory_Buffers_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_Buffers_bytes{node_name=~\"$host\"}[5m])) + \n(max_over_time(node_memory_Cached_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_Cached_bytes{node_name=~\"$host\"}[5m])))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -1840,7 +1850,7 @@
                     "target": ""
                 },
                 {
-                    "expr": "max(node_memory_Cached_bytes{node_name=~\"$host\",job=~\"rds-enhanced|rds-basic|node.*\"}) without (job)",
+                    "expr": "max(max_over_time(node_memory_Cached_bytes{node_name=~\"$host\",job=~\"rds-enhanced|rds-basic|node.*\"}[$interval]) or max_over_time(node_memory_Cached_bytes{node_name=~\"$host\",job=~\"rds-enhanced|rds-basic|node.*\"}[5m])) without (job)",
                     "interval": "$interval",
                     "legendFormat": "Cache",
                     "refId": "F"
@@ -1867,6 +1877,7 @@
             },
             "yaxes": [
                 {
+                    "decimals": 2,
                     "format": "bytes",
                     "label": "",
                     "logBase": 1,
@@ -1907,7 +1918,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 30
+                "y": 31
             },
             "height": "",
             "id": 6,
@@ -1958,7 +1969,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "node_memory_MemTotal_bytes{node_name=~\"$host\"} + node_memory_SwapTotal_bytes{node_name=~\"$host\"}",
+                    "expr": "(max_over_time(node_memory_MemTotal_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_MemTotal_bytes{node_name=~\"$host\"}[5m])) + \n(max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$host\"}[5m]))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -1973,8 +1984,9 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "(node_memory_MemAvailable_bytes{node_name=~\"$host\"} or \n(node_memory_MemFree_bytes{node_name=~\"$host\"} + node_memory_Buffers_bytes{node_name=~\"$host\"} + node_memory_Cached_bytes{node_name=~\"$host\"})) + \nnode_memory_SwapFree_bytes{node_name=~\"$host\"}",
+                    "expr": "((max_over_time(node_memory_MemAvailable_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_MemAvailable_bytes{node_name=~\"$host\"}[5m])) or \n((max_over_time(node_memory_MemFree_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_MemFree_bytes{node_name=~\"$host\"}[5m]))+ \n(max_over_time(node_memory_Buffers_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_Buffers_bytes{node_name=~\"$host\"}[5m]))+ \n(max_over_time(node_memory_Cached_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_Cached_bytes{node_name=~\"$host\"}[5m])))) + \n(max_over_time(node_memory_SwapFree_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_SwapFree_bytes{node_name=~\"$host\"}[5m]))",
                     "format": "time_series",
+                    "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Available",
@@ -1984,7 +1996,7 @@
                     "target": ""
                 },
                 {
-                    "expr": "node_memory_MemTotal_bytes{node_name=~\"$host\"} + node_memory_SwapTotal_bytes{node_name=~\"$host\"} - \n((node_memory_MemAvailable_bytes{node_name=~\"$host\"} or \n(node_memory_MemFree_bytes{node_name=~\"$host\"} + node_memory_Buffers_bytes{node_name=~\"$host\"} + node_memory_Cached_bytes{node_name=~\"$host\"})) + \nnode_memory_SwapFree_bytes{node_name=~\"$host\"})",
+                    "expr": "(max_over_time(node_memory_MemTotal_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_MemTotal_bytes{node_name=~\"$host\"}[5m])) + \n(max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$host\"}[5m])) - \n((max_over_time(node_memory_MemAvailable_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_MemAvailable_bytes{node_name=~\"$host\"}[5m])) or \n((max_over_time(node_memory_MemFree_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_MemFree_bytes{node_name=~\"$host\"}[5m]))+ \n(max_over_time(node_memory_Buffers_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_Buffers_bytes{node_name=~\"$host\"}[5m]))+ \n(max_over_time(node_memory_Cached_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_Cached_bytes{node_name=~\"$host\"}[5m])))) + \n(max_over_time(node_memory_SwapFree_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_SwapFree_bytes{node_name=~\"$host\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2013,6 +2025,7 @@
             },
             "yaxes": [
                 {
+                    "decimals": 2,
                     "format": "bytes",
                     "label": "",
                     "logBase": 1,
@@ -2053,7 +2066,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 37
+                "y": 39
             },
             "id": 23,
             "legend": {
@@ -2097,7 +2110,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "node_memory_SwapTotal_bytes{node_name=~\"$host\"} - node_memory_SwapFree_bytes{node_name=~\"$host\"}",
+                    "expr": "(max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$host\"}[5m])) -\n(max_over_time(node_memory_SwapFree_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_SwapFree_bytes{node_name=~\"$host\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2111,7 +2124,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "node_memory_SwapFree_bytes{node_name=~\"$host\"}",
+                    "expr": "max_over_time(node_memory_SwapFree_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_SwapFree_bytes{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2122,7 +2135,7 @@
                     "target": ""
                 },
                 {
-                    "expr": "node_memory_SwapTotal_bytes{node_name=~\"$host\"}",
+                    "expr": "max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2151,6 +2164,7 @@
             },
             "yaxes": [
                 {
+                    "decimals": 2,
                     "format": "bytes",
                     "label": "",
                     "logBase": 1,
@@ -2191,7 +2205,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 37
+                "y": 39
             },
             "id": 30,
             "legend": {
@@ -2293,6 +2307,7 @@
             },
             "yaxes": [
                 {
+                    "decimals": 2,
                     "format": "Bps",
                     "label": "Swap out (-) / Swap in (+)",
                     "logBase": 1,
@@ -2315,11 +2330,12 @@
         },
         {
             "collapsed": false,
+            "datasource": null,
             "gridPos": {
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 44
+                "y": 47
             },
             "id": 45,
             "panels": [],
@@ -2344,7 +2360,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 45
+                "y": 48
             },
             "id": 31,
             "legend": {
@@ -2452,6 +2468,7 @@
             },
             "yaxes": [
                 {
+                    "decimals": 2,
                     "format": "Bps",
                     "label": "Page Out (-) / Page In (+)",
                     "logBase": 1,
@@ -2491,7 +2508,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 45
+                "y": 48
             },
             "id": 32,
             "legend": {
@@ -2534,7 +2551,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "node_filefd_maximum{node_name=~\"$host\"}",
+                    "expr": "max_over_time(node_filefd_maximum{node_name=~\"$host\"}[$interval]) or max_over_time(node_filefd_maximum{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2548,7 +2565,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "node_filefd_allocated{node_name=~\"$host\"}",
+                    "expr": "max_over_time(node_filefd_allocated{node_name=~\"$host\"}[$interval]) or max_over_time(node_filefd_allocated{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2580,6 +2597,7 @@
             },
             "yaxes": [
                 {
+                    "decimals": 2,
                     "format": "short",
                     "label": "",
                     "logBase": 1,
@@ -2617,7 +2635,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 52
+                "y": 56
             },
             "id": 61,
             "legend": {
@@ -2760,7 +2778,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 52
+                "y": 56
             },
             "id": 51,
             "legend": {
@@ -2869,6 +2887,7 @@
             },
             "yaxes": [
                 {
+                    "decimals": 2,
                     "format": "short",
                     "label": "Write Load (-) / Read Load (+)",
                     "logBase": 1,
@@ -2892,11 +2911,12 @@
         },
         {
             "collapsed": false,
+            "datasource": null,
             "gridPos": {
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 59
+                "y": 64
             },
             "id": 42,
             "panels": [],
@@ -2919,7 +2939,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 60
+                "y": 65
             },
             "id": 21,
             "legend": {
@@ -3008,6 +3028,7 @@
             },
             "yaxes": [
                 {
+                    "decimals": 2,
                     "format": "Bps",
                     "label": "Outbound (-) / Inbound (+)",
                     "logBase": 1,
@@ -3046,7 +3067,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 60
+                "y": 65
             },
             "id": 22,
             "legend": {
@@ -3146,6 +3167,7 @@
             },
             "yaxes": [
                 {
+                    "decimals": 2,
                     "format": "bytes",
                     "label": "",
                     "logBase": 1,
@@ -3188,7 +3210,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 67
+                "y": 73
             },
             "id": 52,
             "legend": {
@@ -3321,7 +3343,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 67
+                "y": 73
             },
             "id": 53,
             "legend": {
@@ -3437,7 +3459,7 @@
         }
     ],
     "refresh": "1m",
-    "schemaVersion": 19,
+    "schemaVersion": 20,
     "style": "dark",
     "tags": [
         "OS",
