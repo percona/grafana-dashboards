@@ -36,7 +36,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1560951716421,
+    "iteration": 1573229693255,
     "links": [
         {
             "icon": "doc",
@@ -110,12 +110,15 @@
     ],
     "panels": [
         {
+            "breadcrumbItemsMaxAmount": 25,
+            "datasource": null,
             "gridPos": {
                 "h": 2,
                 "w": 24,
                 "x": 0,
                 "y": 0
             },
+            "hideTextInRootDashboard": false,
             "id": 999,
             "isRootDashboard": false,
             "links": [],
@@ -136,11 +139,12 @@
         },
         {
             "collapsed": false,
+            "datasource": null,
             "gridPos": {
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 0
+                "y": 2
             },
             "id": 35,
             "panels": [],
@@ -158,11 +162,12 @@
             "datasource": "Prometheus",
             "decimals": 2,
             "fill": 2,
+            "fillGradient": 0,
             "gridPos": {
-                "h": 7,
+                "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 1
+                "y": 3
             },
             "id": 22,
             "legend": {
@@ -181,7 +186,9 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
-            "options": {},
+            "options": {
+                "dataLinks": []
+            },
             "paceLength": 10,
             "percentage": false,
             "pointradius": 1,
@@ -210,7 +217,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "sum by (node) (node_memory_numa_MemTotal{node_name=~\"$host\"})",
+                    "expr": "sum  by (node) (max_over_time(node_memory_numa_MemTotal{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_numa_MemTotal{node_name=~\"$host\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -218,7 +225,7 @@
                     "refId": "C"
                 },
                 {
-                    "expr": "sum by (node) (node_memory_numa_MemFree{node_name=~\"$host\"})",
+                    "expr": "sum  by (node) (max_over_time(node_memory_numa_MemFree{node_name=~\"$host\"}[$interval]) or\nmax_over_time(node_memory_numa_MemFree{node_name=~\"$host\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -226,7 +233,7 @@
                     "refId": "A"
                 },
                 {
-                    "expr": "sum by (node) (node_memory_numa_MemUsed{node_name=~\"$host\"})",
+                    "expr": "sum  by (node) (max_over_time(node_memory_numa_MemUsed{node_name=~\"$host\"}[$interval]) or\nmax_over_time(node_memory_numa_MemUsed{node_name=~\"$host\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -254,8 +261,9 @@
             },
             "yaxes": [
                 {
+                    "decimals": 2,
                     "format": "bytes",
-                    "label": null,
+                    "label": "",
                     "logBase": 1,
                     "max": null,
                     "min": "0",
@@ -286,11 +294,12 @@
             "datasource": "Prometheus",
             "decimals": 2,
             "fill": 2,
+            "fillGradient": 0,
             "gridPos": {
-                "h": 7,
+                "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 1
+                "y": 3
             },
             "id": 23,
             "legend": {
@@ -309,7 +318,9 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
-            "options": {},
+            "options": {
+                "dataLinks": []
+            },
             "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
@@ -321,7 +332,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "sum by (node) (node_memory_numa_MemFree{node_name=~\"$host\"}) * 100 /\nsum by (node) (node_memory_numa_MemTotal{node_name=~\"$host\"})",
+                    "expr": "sum by (node) (max_over_time(node_memory_numa_MemFree{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_numa_MemFree{node_name=~\"$host\"}[5m])) * 100 /\nsum by (node) (max_over_time(node_memory_numa_MemTotal{node_name=~\"$host\"}[$interval]) or\nmax_over_time(node_memory_numa_MemTotal{node_name=~\"$host\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -393,12 +404,13 @@
             "editable": true,
             "error": false,
             "fill": 0,
+            "fillGradient": 0,
             "grid": {},
             "gridPos": {
-                "h": 7,
+                "h": 8,
                 "w": 24,
                 "x": 0,
-                "y": 8
+                "y": 11
             },
             "id": 9,
             "legend": {
@@ -421,7 +433,9 @@
             "links": [],
             "maxPerRow": 2,
             "nullPointMode": "null",
-            "options": {},
+            "options": {
+                "dataLinks": []
+            },
             "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
@@ -436,7 +450,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "sum(node_memory_numa_Active{node_name=~\"$host\"})",
+                    "expr": "sum(max_over_time(node_memory_numa_Active{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_numa_Active{node_name=~\"$host\"}[5m]))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -447,7 +461,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "sum(node_memory_numa_Inactive{node_name=~\"$host\"})",
+                    "expr": "sum(max_over_time(node_memory_numa_Inactive{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_numa_Inactive{node_name=~\"$host\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -455,7 +469,7 @@
                     "refId": "A"
                 },
                 {
-                    "expr": "sum(node_memory_numa_Dirty{node_name=~\"$host\"})",
+                    "expr": "sum(max_over_time(node_memory_numa_Dirty{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_numa_Dirty{node_name=~\"$host\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -463,7 +477,7 @@
                     "refId": "C"
                 },
                 {
-                    "expr": "sum(node_memory_numa_Bounce{node_name=~\"$host\"})",
+                    "expr": "sum(max_over_time(node_memory_numa_Bounce{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_numa_Bounce{node_name=~\"$host\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -471,7 +485,7 @@
                     "refId": "D"
                 },
                 {
-                    "expr": "sum(node_memory_numa_Mapped{node_name=~\"$host\"})",
+                    "expr": "sum(max_over_time(node_memory_numa_Mapped{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_numa_Mapped{node_name=~\"$host\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -479,7 +493,7 @@
                     "refId": "E"
                 },
                 {
-                    "expr": "sum(node_memory_numa_KernelStack{node_name=~\"$host\"})",
+                    "expr": "sum(max_over_time(node_memory_numa_KernelStack{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_numa_KernelStack{node_name=~\"$host\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -508,6 +522,7 @@
             },
             "yaxes": [
                 {
+                    "decimals": 2,
                     "format": "bytes",
                     "label": "",
                     "logBase": 1,
@@ -537,11 +552,12 @@
             "decimals": 2,
             "description": "Memory successfully allocated on this node as intended.",
             "fill": 2,
+            "fillGradient": 0,
             "gridPos": {
-                "h": 7,
+                "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 15
+                "y": 19
             },
             "id": 27,
             "legend": {
@@ -560,7 +576,9 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
-            "options": {},
+            "options": {
+                "dataLinks": []
+            },
             "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
@@ -646,11 +664,12 @@
             "decimals": 2,
             "description": "**Memory missed** is allocated on a node despite the process preferring some different node.\n\n**Memory foreign** is intended for a node, but actually allocated on some different node.",
             "fill": 2,
+            "fillGradient": 0,
             "gridPos": {
-                "h": 7,
+                "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 15
+                "y": 19
             },
             "id": 29,
             "legend": {
@@ -670,7 +689,9 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
-            "options": {},
+            "options": {
+                "dataLinks": []
+            },
             "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
@@ -805,11 +826,12 @@
             "decimals": 2,
             "description": "**Active anonymous memory** that has been used more recently and usually not swapped out.\n\n**Inactive anonymous memory** that has not been used recently and can be swapped out.",
             "fill": 2,
+            "fillGradient": 0,
             "gridPos": {
-                "h": 7,
+                "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 22
+                "y": 27
             },
             "id": 16,
             "legend": {
@@ -828,7 +850,9 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
-            "options": {},
+            "options": {
+                "dataLinks": []
+            },
             "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
@@ -840,7 +864,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "sum(avg_over_time(node_memory_numa_Active_anon{node_name=~\"$host\"}[$interval]))",
+                    "expr": "sum(avg_over_time(node_memory_numa_Active_anon{node_name=~\"$host\"}[$interval]) or avg_over_time(node_memory_numa_Active_anon{node_name=~\"$host\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -848,7 +872,7 @@
                     "refId": "A"
                 },
                 {
-                    "expr": "sum(avg_over_time(node_memory_numa_Inactive_anon{node_name=~\"$host\"}[$interval]))",
+                    "expr": "sum(avg_over_time(node_memory_numa_Inactive_anon{node_name=~\"$host\"}[$interval]) or avg_over_time(node_memory_numa_Inactive_anon{node_name=~\"$host\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -876,6 +900,7 @@
             },
             "yaxes": [
                 {
+                    "decimals": 2,
                     "format": "bytes",
                     "label": null,
                     "logBase": 1,
@@ -906,11 +931,12 @@
             "decimals": 2,
             "description": "**Active(file)** Pagecache memory that has been used more recently and usually not reclaimed until needed\n\n**Inactive(file)** Pagecache memory that can be reclaimed without huge performance impact",
             "fill": 2,
+            "fillGradient": 0,
             "gridPos": {
-                "h": 7,
+                "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 22
+                "y": 27
             },
             "id": 18,
             "legend": {
@@ -929,7 +955,9 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
-            "options": {},
+            "options": {
+                "dataLinks": []
+            },
             "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
@@ -941,7 +969,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "sum(avg_over_time(node_memory_numa_Active_file{node_name=~\"$host\"}[$interval]))",
+                    "expr": "sum(avg_over_time(node_memory_numa_Active_file{node_name=~\"$host\"}[$interval]) or avg_over_time(node_memory_numa_Active_file{node_name=~\"$host\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -949,7 +977,7 @@
                     "refId": "A"
                 },
                 {
-                    "expr": "sum(avg_over_time(node_memory_numa_Inactive_file{node_name=~\"$host\"}[$interval]))",
+                    "expr": "sum(avg_over_time(node_memory_numa_Inactive_file{node_name=~\"$host\"}[$interval]) or avg_over_time(node_memory_numa_Inactive_file{node_name=~\"$host\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -977,8 +1005,9 @@
             },
             "yaxes": [
                 {
+                    "decimals": 2,
                     "format": "bytes",
-                    "label": null,
+                    "label": "",
                     "logBase": 1,
                     "max": null,
                     "min": "0",
@@ -1007,11 +1036,12 @@
             "decimals": 2,
             "description": "**Shmem** Total used shared memory (shared between several processes, thus including RAM disks, SYS-V-IPC and BSD like SHMEM)",
             "fill": 2,
+            "fillGradient": 0,
             "gridPos": {
-                "h": 7,
+                "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 29
+                "y": 35
             },
             "id": 41,
             "legend": {
@@ -1031,7 +1061,9 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
-            "options": {},
+            "options": {
+                "dataLinks": []
+            },
             "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
@@ -1043,7 +1075,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "sum by (node) (node_memory_numa_Shmem{node_name=~\"$host\"})",
+                    "expr": "sum by (node) (max_over_time(node_memory_numa_Shmem{node_name=~\"$host\"}[$interval]) or \nmax_over_time(node_memory_numa_Shmem{node_name=~\"$host\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1051,7 +1083,7 @@
                     "refId": "A"
                 },
                 {
-                    "expr": "sum by (node) (node_memory_numa_ShmemHugePages{node_name=~\"$host\"})",
+                    "expr": "sum by (node) (max_over_time(node_memory_numa_ShmemHugePages{node_name=~\"$host\"}[$interval]) or\nmax_over_time(node_memory_numa_ShmemHugePages{node_name=~\"$host\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1059,7 +1091,7 @@
                     "refId": "B"
                 },
                 {
-                    "expr": "sum by (node) (node_memory_numa_ShmemPmdMapped{node_name=~\"$host\"})",
+                    "expr": "sum by (node) (max_over_time(node_memory_numa_ShmemPmdMapped{node_name=~\"$host\"}[$interval]) or\nmax_over_time(node_memory_numa_ShmemPmdMapped{node_name=~\"$host\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1087,6 +1119,7 @@
             },
             "yaxes": [
                 {
+                    "decimals": 2,
                     "format": "bytes",
                     "label": null,
                     "logBase": 1,
@@ -1117,11 +1150,12 @@
             "decimals": 2,
             "description": "**Total** Number of hugepages being allocated by the kernel (Defined with vm.nr_hugepages)\n\n**Free** The number of hugepages not being allocated by a process\n\n**Surp**  The number of hugepages in the pool above the value in vm.nr_hugepages. The maximum number of surplus hugepages is controlled by vm.nr_overcommit_hugepages.",
             "fill": 2,
+            "fillGradient": 0,
             "gridPos": {
-                "h": 7,
+                "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 29
+                "y": 35
             },
             "id": 37,
             "legend": {
@@ -1141,7 +1175,9 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
-            "options": {},
+            "options": {
+                "dataLinks": []
+            },
             "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
@@ -1153,7 +1189,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "sum by (node) (node_memory_numa_HugePages_Total{node_name=~\"$host\"})",
+                    "expr": "sum by (node) (max_over_time(node_memory_numa_HugePages_Total{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_numa_HugePages_Total{node_name=~\"$host\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1161,7 +1197,7 @@
                     "refId": "A"
                 },
                 {
-                    "expr": "sum by (node) (node_memory_numa_HugePages_Free{node_name=~\"$host\"})",
+                    "expr": "sum by (node) (max_over_time(node_memory_numa_HugePages_Free{node_name=~\"$host\"}[$interval]) or \nmax_over_time(node_memory_numa_HugePages_Free{node_name=~\"$host\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1169,7 +1205,7 @@
                     "refId": "B"
                 },
                 {
-                    "expr": "sum by (node) (node_memory_numa_HugePages_Surp{node_name=~\"$host\"})",
+                    "expr": "sum by (node) (max_over_time(node_memory_numa_HugePages_Surp{node_name=~\"$host\"}[$interval]) or\nmax_over_time(node_memory_numa_HugePages_Surp{node_name=~\"$host\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1197,6 +1233,7 @@
             },
             "yaxes": [
                 {
+                    "decimals": 2,
                     "format": "short",
                     "label": null,
                     "logBase": 1,
@@ -1227,11 +1264,12 @@
             "decimals": 2,
             "description": "Memory allocated on a node while a process was running on it.",
             "fill": 2,
+            "fillGradient": 0,
             "gridPos": {
-                "h": 7,
+                "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 36
+                "y": 43
             },
             "id": 46,
             "legend": {
@@ -1250,7 +1288,9 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
-            "options": {},
+            "options": {
+                "dataLinks": []
+            },
             "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
@@ -1344,11 +1384,12 @@
             "decimals": 2,
             "description": "Memory allocated on a node while a process was running on some other node.",
             "fill": 2,
+            "fillGradient": 0,
             "gridPos": {
-                "h": 7,
+                "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 36
+                "y": 43
             },
             "id": 47,
             "legend": {
@@ -1367,7 +1408,9 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
-            "options": {},
+            "options": {
+                "dataLinks": []
+            },
             "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
@@ -1468,11 +1511,12 @@
             "decimals": 2,
             "description": "**Slab** allocation is a memory management mechanism intended for the efficient memory allocation of kernel objects.\n\n**SReclaimable** The part of the Slab that might be reclaimed (such as caches).\n\n**SUnreclaim** The part of the Slab that can't be reclaimed under memory pressure",
             "fill": 2,
+            "fillGradient": 0,
             "gridPos": {
-                "h": 7,
+                "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 43
+                "y": 51
             },
             "id": 39,
             "legend": {
@@ -1492,7 +1536,9 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
-            "options": {},
+            "options": {
+                "dataLinks": []
+            },
             "paceLength": 10,
             "percentage": false,
             "pointradius": 5,
@@ -1511,7 +1557,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "sum(avg_over_time(node_memory_numa_Slab{node_name=~\"$host\"}[$interval]))",
+                    "expr": "sum(avg_over_time(node_memory_numa_Slab{node_name=~\"$host\"}[$interval]) or avg_over_time(node_memory_numa_Slab{node_name=~\"$host\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1519,7 +1565,7 @@
                     "refId": "A"
                 },
                 {
-                    "expr": "sum(avg_over_time(node_memory_numa_SReclaimable{node_name=~\"$host\"}[$interval]))",
+                    "expr": "sum(avg_over_time(node_memory_numa_SReclaimable{node_name=~\"$host\"}[$interval]) or avg_over_time(node_memory_numa_SReclaimable{node_name=~\"$host\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1527,7 +1573,7 @@
                     "refId": "B"
                 },
                 {
-                    "expr": "sum(avg_over_time(node_memory_numa_SUnreclaim{node_name=~\"$host\"}[$interval]))",
+                    "expr": "sum(avg_over_time(node_memory_numa_SUnreclaim{node_name=~\"$host\"}[$interval]) or avg_over_time(node_memory_numa_SUnreclaim{node_name=~\"$host\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1555,6 +1601,7 @@
             },
             "yaxes": [
                 {
+                    "decimals": 2,
                     "format": "bytes",
                     "label": null,
                     "logBase": 1,
@@ -1578,11 +1625,12 @@
         },
         {
             "collapsed": true,
+            "datasource": null,
             "gridPos": {
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 50
+                "y": 59
             },
             "id": 13,
             "panels": [
@@ -1597,11 +1645,12 @@
                     "datasource": "Prometheus",
                     "decimals": 2,
                     "fill": 2,
+                    "fillGradient": 0,
                     "gridPos": {
-                        "h": 7,
+                        "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 2
+                        "y": 60
                     },
                     "id": 25,
                     "legend": {
@@ -1620,7 +1669,9 @@
                     "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "paceLength": 10,
                     "percentage": false,
                     "pointradius": 5,
@@ -1640,7 +1691,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "avg_over_time(node_memory_numa_MemTotal{node_name=~\"$host\", node=\"$node\"}[$interval])",
+                            "expr": "avg_over_time(node_memory_numa_MemTotal{node_name=~\"$host\", node=\"$node\"}[$interval]) or avg_over_time(node_memory_numa_MemTotal{node_name=~\"$host\", node=\"$node\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1648,7 +1699,7 @@
                             "refId": "C"
                         },
                         {
-                            "expr": "avg_over_time(node_memory_numa_MemFree{node_name=~\"$host\", node=\"$node\"}[$interval])",
+                            "expr": "avg_over_time(node_memory_numa_MemFree{node_name=~\"$host\", node=\"$node\"}[$interval]) or avg_over_time(node_memory_numa_MemFree{node_name=~\"$host\", node=\"$node\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1656,7 +1707,7 @@
                             "refId": "A"
                         },
                         {
-                            "expr": "avg_over_time(node_memory_numa_MemUsed{node_name=~\"$host\", node=\"$node\"}[$interval])",
+                            "expr": "avg_over_time(node_memory_numa_MemUsed{node_name=~\"$host\", node=\"$node\"}[$interval]) or avg_over_time(node_memory_numa_MemUsed{node_name=~\"$host\", node=\"$node\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1684,6 +1735,7 @@
                     },
                     "yaxes": [
                         {
+                            "decimals": 2,
                             "format": "bytes",
                             "label": null,
                             "logBase": 1,
@@ -1710,17 +1762,18 @@
                         "Free": "#1f78c1",
                         "Used": "#962d82"
                     },
-                    "bars": false,
+                    "bars": true,
                     "dashLength": 10,
                     "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 2,
                     "fill": 2,
+                    "fillGradient": 0,
                     "gridPos": {
-                        "h": 7,
+                        "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 2
+                        "y": 60
                     },
                     "id": 24,
                     "legend": {
@@ -1735,11 +1788,13 @@
                         "total": false,
                         "values": true
                     },
-                    "lines": true,
+                    "lines": false,
                     "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "paceLength": 10,
                     "percentage": false,
                     "pointradius": 5,
@@ -1751,21 +1806,12 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "(node_memory_numa_MemFree{node_name=~\"$host\", node=\"$node\"}) * 100 /\n(node_memory_numa_MemTotal{node_name=~\"$host\", node=\"$node\"})",
+                            "expr": "(max_over_time(node_memory_numa_MemFree{node_name=~\"$host\", node=\"$node\"}[$interval]) or max_over_time(node_memory_numa_MemFree{node_name=~\"$host\", node=\"$node\"}[5m])) * 100 /\n(max_over_time(node_memory_numa_MemTotal{node_name=~\"$host\", node=\"$node\"}[$interval]) or max_over_time(node_memory_numa_MemTotal{node_name=~\"$host\", node=\"$node\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Free",
                             "refId": "A"
-                        },
-                        {
-                            "expr": "(node_memory_numa_MemUsed{node_name=~\"$host\", node=\"$node\"}) * 100 /\n(node_memory_numa_MemTotal{node_name=~\"$host\", node=\"$node\"})",
-                            "format": "time_series",
-                            "hide": true,
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Used",
-                            "refId": "B"
                         }
                     ],
                     "thresholds": [],
@@ -1788,11 +1834,12 @@
                     },
                     "yaxes": [
                         {
+                            "decimals": null,
                             "format": "percent",
                             "label": null,
                             "logBase": 1,
                             "max": null,
-                            "min": null,
+                            "min": "0",
                             "show": true
                         },
                         {
@@ -1823,12 +1870,13 @@
                     "editable": true,
                     "error": false,
                     "fill": 0,
+                    "fillGradient": 0,
                     "grid": {},
                     "gridPos": {
-                        "h": 7,
+                        "h": 8,
                         "w": 24,
                         "x": 0,
-                        "y": 9
+                        "y": 68
                     },
                     "id": 44,
                     "legend": {
@@ -1851,7 +1899,9 @@
                     "links": [],
                     "maxPerRow": 2,
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "paceLength": 10,
                     "percentage": false,
                     "pointradius": 5,
@@ -1866,7 +1916,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "avg_over_time(node_memory_numa_Active{node_name=~\"$host\"}[$interval])",
+                            "expr": "avg_over_time(node_memory_numa_Active{node_name=~\"$host\"}[$interval]) or avg_over_time(node_memory_numa_Active{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -1877,7 +1927,7 @@
                             "step": 300
                         },
                         {
-                            "expr": "avg_over_time(node_memory_numa_Inactive{node_name=~\"$host\"}[$interval])",
+                            "expr": "avg_over_time(node_memory_numa_Inactive{node_name=~\"$host\"}[$interval]) or avg_over_time(node_memory_numa_Inactive{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1885,7 +1935,7 @@
                             "refId": "A"
                         },
                         {
-                            "expr": "avg_over_time(node_memory_numa_Dirty{node_name=~\"$host\"}[$interval])",
+                            "expr": "avg_over_time(node_memory_numa_Dirty{node_name=~\"$host\"}[$interval]) or avg_over_time(node_memory_numa_Dirty{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1893,7 +1943,7 @@
                             "refId": "C"
                         },
                         {
-                            "expr": "avg_over_time(node_memory_numa_Bounce{node_name=~\"$host\"}[$interval])",
+                            "expr": "avg_over_time(node_memory_numa_Bounce{node_name=~\"$host\"}[$interval]) or avg_over_time(node_memory_numa_Bounce{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1901,7 +1951,7 @@
                             "refId": "D"
                         },
                         {
-                            "expr": "avg_over_time(node_memory_numa_Mapped{node_name=~\"$host\"}[$interval])",
+                            "expr": "avg_over_time(node_memory_numa_Mapped{node_name=~\"$host\"}[$interval]) or avg_over_time(node_memory_numa_Mapped{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1909,7 +1959,7 @@
                             "refId": "E"
                         },
                         {
-                            "expr": "avg_over_time(node_memory_numa_KernelStack{node_name=~\"$host\"}[$interval])",
+                            "expr": "avg_over_time(node_memory_numa_KernelStack{node_name=~\"$host\"}[$interval]) or avg_over_time(node_memory_numa_KernelStack{node_name=~\"$host\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1938,6 +1988,7 @@
                     },
                     "yaxes": [
                         {
+                            "decimals": 2,
                             "format": "bytes",
                             "label": "",
                             "logBase": 1,
@@ -1967,11 +2018,12 @@
                     "decimals": 2,
                     "description": "Memory successfully allocated on this node as intended.",
                     "fill": 2,
+                    "fillGradient": 0,
                     "gridPos": {
-                        "h": 7,
+                        "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 16
+                        "y": 76
                     },
                     "id": 42,
                     "legend": {
@@ -1990,7 +2042,9 @@
                     "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "paceLength": 10,
                     "percentage": false,
                     "pointradius": 5,
@@ -2068,11 +2122,12 @@
                     "decimals": 2,
                     "description": "**Memory missed** is allocated on a node despite the process preferring some different node.\n\n**Memory foreign** is intended for a node, but actually allocated on some different node.",
                     "fill": 2,
+                    "fillGradient": 0,
                     "gridPos": {
-                        "h": 7,
+                        "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 16
+                        "y": 76
                     },
                     "id": 43,
                     "legend": {
@@ -2092,7 +2147,9 @@
                     "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "paceLength": 10,
                     "percentage": false,
                     "pointradius": 5,
@@ -2177,11 +2234,12 @@
                     "decimals": 2,
                     "description": "**Active** Anonymous memory that has been used more recently and usually not swapped out\n\n**Inactive** Anonymous memory that has not been used recently and can be swapped out",
                     "fill": 2,
+                    "fillGradient": 0,
                     "gridPos": {
-                        "h": 7,
+                        "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 23
+                        "y": 84
                     },
                     "id": 20,
                     "legend": {
@@ -2200,7 +2258,9 @@
                     "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "paceLength": 10,
                     "percentage": false,
                     "pointradius": 5,
@@ -2212,7 +2272,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "avg_over_time(node_memory_numa_Active_anon{node_name=~\"$host\",node=\"$node\"}[$interval])",
+                            "expr": "avg_over_time(node_memory_numa_Active_anon{node_name=~\"$host\",node=\"$node\"}[$interval]) or avg_over_time(node_memory_numa_Active_anon{node_name=~\"$host\",node=\"$node\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2220,7 +2280,7 @@
                             "refId": "A"
                         },
                         {
-                            "expr": "avg_over_time(node_memory_numa_Inactive_anon{node_name=~\"$host\", node=\"$node\"}[$interval])",
+                            "expr": "avg_over_time(node_memory_numa_Inactive_anon{node_name=~\"$host\", node=\"$node\"}[$interval]) or avg_over_time(node_memory_numa_Inactive_anon{node_name=~\"$host\", node=\"$node\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2248,6 +2308,7 @@
                     },
                     "yaxes": [
                         {
+                            "decimals": 2,
                             "format": "bytes",
                             "label": null,
                             "logBase": 1,
@@ -2278,11 +2339,12 @@
                     "decimals": 2,
                     "description": "**Active(file)** Pagecache memory that has been used more recently and usually not reclaimed until needed\n\n**Inactive(file)** Pagecache memory that can be reclaimed without huge performance impact",
                     "fill": 2,
+                    "fillGradient": 0,
                     "gridPos": {
-                        "h": 7,
+                        "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 23
+                        "y": 84
                     },
                     "id": 19,
                     "legend": {
@@ -2301,7 +2363,9 @@
                     "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "paceLength": 10,
                     "percentage": false,
                     "pointradius": 5,
@@ -2313,7 +2377,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "avg_over_time(node_memory_numa_Active_file{node_name=~\"$host\", node=\"$node\"}[$interval])",
+                            "expr": "avg_over_time(node_memory_numa_Active_file{node_name=~\"$host\", node=\"$node\"}[$interval]) or avg_over_time(node_memory_numa_Active_file{node_name=~\"$host\", node=\"$node\"}[5m]) ",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2321,7 +2385,7 @@
                             "refId": "A"
                         },
                         {
-                            "expr": "avg_over_time(node_memory_numa_Inactive_file{node_name=~\"$host\", node=\"$node\"}[$interval])",
+                            "expr": "avg_over_time(node_memory_numa_Inactive_file{node_name=~\"$host\", node=\"$node\"}[$interval]) or avg_over_time(node_memory_numa_Inactive_file{node_name=~\"$host\", node=\"$node\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2349,8 +2413,9 @@
                     },
                     "yaxes": [
                         {
+                            "decimals": 2,
                             "format": "bytes",
-                            "label": null,
+                            "label": "",
                             "logBase": 1,
                             "max": null,
                             "min": null,
@@ -2379,11 +2444,12 @@
                     "decimals": 2,
                     "description": "**Shmem** Total used shared memory (shared between several processes, thus including RAM disks, SYS-V-IPC and BSD like SHMEM)",
                     "fill": 2,
+                    "fillGradient": 0,
                     "gridPos": {
-                        "h": 7,
+                        "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 30
+                        "y": 92
                     },
                     "id": 48,
                     "legend": {
@@ -2403,7 +2469,9 @@
                     "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "paceLength": 10,
                     "percentage": false,
                     "pointradius": 5,
@@ -2415,7 +2483,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "sum by (node) (node_memory_numa_Shmem{node_name=~\"$host\", node=\"$node\"})",
+                            "expr": "sum by (node) (max_over_time(node_memory_numa_Shmem{node_name=~\"$host\", node=\"$node\"}[$interval]) or max_over_time(node_memory_numa_Shmem{node_name=~\"$host\", node=\"$node\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2423,7 +2491,7 @@
                             "refId": "A"
                         },
                         {
-                            "expr": "sum by (node) (node_memory_numa_ShmemHugePages{node_name=~\"$host\", node=\"$node\"})",
+                            "expr": "sum by (node) (max_over_time(node_memory_numa_ShmemHugePages{node_name=~\"$host\", node=\"$node\"}[$interval]) or max_over_time(node_memory_numa_ShmemHugePages{node_name=~\"$host\", node=\"$node\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2431,7 +2499,7 @@
                             "refId": "B"
                         },
                         {
-                            "expr": "sum by (node) (node_memory_numa_ShmemPmdMapped{node_name=~\"$host\", node=\"$node\"})",
+                            "expr": "sum by (node) (max_over_time(node_memory_numa_ShmemPmdMapped{node_name=~\"$host\", node=\"$node\"}[$interval]) or max_over_time(node_memory_numa_ShmemPmdMapped{node_name=~\"$host\", node=\"$node\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2459,6 +2527,7 @@
                     },
                     "yaxes": [
                         {
+                            "decimals": 2,
                             "format": "bytes",
                             "label": null,
                             "logBase": 1,
@@ -2489,11 +2558,12 @@
                     "decimals": 2,
                     "description": "**Total** Number of hugepages being allocated by the kernel (Defined with vm.nr_hugepages)\n\n**Free** The number of hugepages not being allocated by a process\n\n**Surp**  The number of hugepages in the pool above the value in vm.nr_hugepages. The maximum number of surplus hugepages is controlled by vm.nr_overcommit_hugepages.",
                     "fill": 2,
+                    "fillGradient": 0,
                     "gridPos": {
-                        "h": 7,
+                        "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 30
+                        "y": 92
                     },
                     "id": 49,
                     "legend": {
@@ -2513,7 +2583,9 @@
                     "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "paceLength": 10,
                     "percentage": false,
                     "pointradius": 5,
@@ -2525,7 +2597,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "sum by (node) (node_memory_numa_HugePages_Total{node_name=~\"$host\", node=\"$node\"})",
+                            "expr": "sum by (node) (max_over_time(node_memory_numa_HugePages_Total{node_name=~\"$host\", node=\"$node\"}[$interval]) or max_over_time(node_memory_numa_HugePages_Total{node_name=~\"$host\", node=\"$node\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2533,7 +2605,7 @@
                             "refId": "A"
                         },
                         {
-                            "expr": "sum by (node) (node_memory_numa_HugePages_Free{node_name=~\"$host\", node=\"$node\"})",
+                            "expr": "sum by (node) (max_over_time(node_memory_numa_HugePages_Free{node_name=~\"$host\", node=\"$node\"}[$interval]) or max_over_time(node_memory_numa_HugePages_Free{node_name=~\"$host\", node=\"$node\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2541,7 +2613,7 @@
                             "refId": "B"
                         },
                         {
-                            "expr": "sum by (node) (node_memory_numa_HugePages_Surp{node_name=~\"$host\", node=\"$node\"})",
+                            "expr": "sum by (node) (max_over_time(node_memory_numa_HugePages_Surp{node_name=~\"$host\", node=\"$node\"}[$interval]) or max_over_time(node_memory_numa_HugePages_Surp{node_name=~\"$host\", node=\"$node\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2599,11 +2671,12 @@
                     "decimals": 2,
                     "description": "Memory allocated on this node while a process was running on it.",
                     "fill": 2,
+                    "fillGradient": 0,
                     "gridPos": {
-                        "h": 7,
+                        "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 37
+                        "y": 100
                     },
                     "id": 31,
                     "legend": {
@@ -2622,7 +2695,9 @@
                     "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "paceLength": 10,
                     "percentage": false,
                     "pointradius": 5,
@@ -2692,11 +2767,12 @@
                     "decimals": 2,
                     "description": "Memory allocated on this node while a process was running on some other node.",
                     "fill": 2,
+                    "fillGradient": 0,
                     "gridPos": {
-                        "h": 7,
+                        "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 37
+                        "y": 100
                     },
                     "id": 33,
                     "legend": {
@@ -2715,7 +2791,9 @@
                     "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "paceLength": 10,
                     "percentage": false,
                     "pointradius": 5,
@@ -2787,11 +2865,12 @@
                     "decimals": 2,
                     "description": "**Slab** allocation is a memory management mechanism intended for the efficient memory allocation of kernel objects.\n\n**SReclaimable** The part of the Slab that might be reclaimed (such as caches).\n\n**SUnreclaim** The part of the Slab that can't be reclaimed under memory pressure",
                     "fill": 2,
+                    "fillGradient": 0,
                     "gridPos": {
-                        "h": 7,
+                        "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 44
+                        "y": 108
                     },
                     "id": 45,
                     "legend": {
@@ -2811,7 +2890,9 @@
                     "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "paceLength": 10,
                     "percentage": false,
                     "pointradius": 5,
@@ -2830,7 +2911,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "avg_over_time(node_memory_numa_Slab{node_name=~\"$host\", node=\"$node\"}[$interval])",
+                            "expr": "avg_over_time(node_memory_numa_Slab{node_name=~\"$host\", node=\"$node\"}[$interval]) or avg_over_time(node_memory_numa_Slab{node_name=~\"$host\", node=\"$node\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2838,7 +2919,7 @@
                             "refId": "A"
                         },
                         {
-                            "expr": "avg_over_time(node_memory_numa_SReclaimable{node_name=~\"$host\", node=\"$node\"}[$interval])",
+                            "expr": "avg_over_time(node_memory_numa_SReclaimable{node_name=~\"$host\", node=\"$node\"}[$interval]) or avg_over_time(node_memory_numa_SReclaimable{node_name=~\"$host\", node=\"$node\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2846,7 +2927,7 @@
                             "refId": "B"
                         },
                         {
-                            "expr": "avg_over_time(node_memory_numa_SUnreclaim{node_name=~\"$host\", node=\"$node\"}[$interval])",
+                            "expr": "avg_over_time(node_memory_numa_SUnreclaim{node_name=~\"$host\", node=\"$node\"}[$interval]) or avg_over_time(node_memory_numa_SUnreclaim{node_name=~\"$host\", node=\"$node\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2874,6 +2955,7 @@
                     },
                     "yaxes": [
                         {
+                            "decimals": 2,
                             "format": "bytes",
                             "label": null,
                             "logBase": 1,
@@ -2901,16 +2983,30 @@
             "type": "row"
         },
         {
+            "collapsed": false,
+            "datasource": null,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 60
+            },
+            "id": 1005,
+            "panels": [],
+            "title": "",
+            "type": "row"
+        },
+        {
             "content": "<h1><i><font color=#5991A7><b><center>Free Memory Pages</center></b></font></i></h1>\n\n\n",
+            "datasource": null,
             "description": "/proc/buddyinfo gives you an idea about the free memory fragments on your Linux box. You get to view the free fragments for each available order, for different zones of each numa node.\n\nNote: Non-Uniform Memory Access (NUMA) refers to multiprocessor systems whose memory is divided into multiple memory nodes.\n\nEach NUMA node is an entry in the kernel linked list pgdat_list. Each node is further divided into zones. Here are some example zone types:\n\nDMA Zone: Lower 16 MiB of RAM used by legacy devices that cannot address anything beyond the first 16MiB of RAM.\n\nDMA32 Zone (only on x86_64): Some devices can't address beyond the first 4GiB of RAM. On x86, this zone would probably be covered by Normal zone\n\nNormal Zone: Anything above zone DMA and doesn't require kernel tricks to be addressable. Typically on x86, this is 16MiB to 896MiB. Many kernel operations require that the memory being used be from this zone\n\nHighmem Zone (x86 only): Anything above 896MiB.",
             "gridPos": {
                 "h": 2,
                 "w": 24,
                 "x": 0,
-                "y": 51
+                "y": 61
             },
-            "id": 66,
-            "links": [],
+            "id": 1003,
             "mode": "html",
             "options": {},
             "timeFrom": null,
@@ -2919,315 +3015,328 @@
             "type": "text"
         },
         {
-            "collapsed": true,
+            "collapsed": false,
+            "datasource": null,
             "gridPos": {
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 53
+                "y": 63
             },
             "id": 58,
-            "panels": [
-                {
-                    "aliasColors": {},
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "decimals": 0,
-                    "description": "Formula for chunks of memory 2^(Size * PAGE_SIZE) ",
-                    "fill": 1,
-                    "gridPos": {
-                        "h": 8,
-                        "w": 24,
-                        "x": 0,
-                        "y": 54
-                    },
-                    "id": 51,
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "max": true,
-                        "min": true,
-                        "rightSide": true,
-                        "show": true,
-                        "sort": "avg",
-                        "sortDesc": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": true,
-                    "linewidth": 1,
-                    "links": [],
-                    "nullPointMode": "null",
-                    "options": {},
-                    "percentage": false,
-                    "pointradius": 2,
-                    "points": false,
-                    "renderer": "flot",
-                    "repeat": "zone",
-                    "repeatDirection": "v",
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": false,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "expr": "sum by (node,zone,size) (node_buddyinfo_blocks{node_name=~\"$host\", zone=~\"$zone\"})",
-                            "format": "time_series",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Size {{size}}",
-                            "refId": "A"
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeRegions": [],
-                    "timeShift": null,
-                    "title": "Zone $zone",
-                    "tooltip": {
-                        "shared": true,
-                        "sort": 0,
-                        "value_type": "individual"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "decimals": 0,
-                            "format": "short",
-                            "label": null,
-                            "logBase": 1,
-                            "max": null,
-                            "min": null,
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "label": null,
-                            "logBase": 1,
-                            "max": null,
-                            "min": null,
-                            "show": true
-                        }
-                    ],
-                    "yaxis": {
-                        "align": false,
-                        "alignLevel": null
-                    }
-                },
-                {
-                    "aliasColors": {},
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "decimals": 0,
-                    "description": "Formula for chunks of memory 2^(Size * PAGE_SIZE) ",
-                    "fill": 1,
-                    "gridPos": {
-                        "h": 8,
-                        "w": 24,
-                        "x": 0,
-                        "y": 62
-                    },
-                    "id": 85,
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "max": true,
-                        "min": true,
-                        "rightSide": true,
-                        "show": true,
-                        "sort": "avg",
-                        "sortDesc": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": true,
-                    "linewidth": 1,
-                    "links": [],
-                    "nullPointMode": "null",
-                    "options": {},
-                    "percentage": false,
-                    "pointradius": 2,
-                    "points": false,
-                    "renderer": "flot",
-                    "repeat": null,
-                    "repeatDirection": "v",
-                    "repeatIteration": 1560951716421,
-                    "repeatPanelId": 51,
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": false,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "expr": "sum by (node,zone,size) (node_buddyinfo_blocks{node_name=~\"$host\", zone=~\"$zone\"})",
-                            "format": "time_series",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Size {{size}}",
-                            "refId": "A"
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeRegions": [],
-                    "timeShift": null,
-                    "title": "Zone $zone",
-                    "tooltip": {
-                        "shared": true,
-                        "sort": 0,
-                        "value_type": "individual"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "decimals": 0,
-                            "format": "short",
-                            "label": null,
-                            "logBase": 1,
-                            "max": null,
-                            "min": null,
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "label": null,
-                            "logBase": 1,
-                            "max": null,
-                            "min": null,
-                            "show": true
-                        }
-                    ],
-                    "yaxis": {
-                        "align": false,
-                        "alignLevel": null
-                    }
-                },
-                {
-                    "aliasColors": {},
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "decimals": 0,
-                    "description": "Formula for chunks of memory 2^(Size * PAGE_SIZE) ",
-                    "fill": 1,
-                    "gridPos": {
-                        "h": 8,
-                        "w": 24,
-                        "x": 0,
-                        "y": 70
-                    },
-                    "id": 86,
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "max": true,
-                        "min": true,
-                        "rightSide": true,
-                        "show": true,
-                        "sort": "avg",
-                        "sortDesc": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": true,
-                    "linewidth": 1,
-                    "links": [],
-                    "nullPointMode": "null",
-                    "options": {},
-                    "percentage": false,
-                    "pointradius": 2,
-                    "points": false,
-                    "renderer": "flot",
-                    "repeat": null,
-                    "repeatDirection": "v",
-                    "repeatIteration": 1560951716421,
-                    "repeatPanelId": 51,
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": false,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "expr": "sum by (node,zone,size) (node_buddyinfo_blocks{node_name=~\"$host\", zone=~\"$zone\"})",
-                            "format": "time_series",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Size {{size}}",
-                            "refId": "A"
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeRegions": [],
-                    "timeShift": null,
-                    "title": "Zone $zone",
-                    "tooltip": {
-                        "shared": true,
-                        "sort": 0,
-                        "value_type": "individual"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "decimals": 0,
-                            "format": "short",
-                            "label": null,
-                            "logBase": 1,
-                            "max": null,
-                            "min": null,
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "label": null,
-                            "logBase": 1,
-                            "max": null,
-                            "min": null,
-                            "show": true
-                        }
-                    ],
-                    "yaxis": {
-                        "align": false,
-                        "alignLevel": null
-                    }
-                }
-            ],
+            "panels": [],
             "title": "Total",
             "type": "row"
         },
         {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": null,
+            "decimals": 0,
+            "description": "Formula for chunks of memory 2^(Size * PAGE_SIZE) ",
+            "fill": 2,
+            "fillGradient": 6,
+            "gridPos": {
+                "h": 8,
+                "w": 24,
+                "x": 0,
+                "y": 64
+            },
+            "id": 51,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "rightSide": true,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "null",
+            "options": {
+                "dataLinks": []
+            },
+            "percentage": false,
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "repeat": "zone",
+            "repeatDirection": "v",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "sum by (node,zone,size) (max_over_time(node_buddyinfo_blocks{node_name=~\"$host\", zone=~\"$zone\"}[$interval]) or \nmax_over_time(node_buddyinfo_blocks{node_name=~\"$host\", zone=~\"$zone\"}[5m]))",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Size {{size}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "Zone $zone",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 0,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": null,
+            "decimals": 0,
+            "description": "Formula for chunks of memory 2^(Size * PAGE_SIZE) ",
+            "fill": 2,
+            "fillGradient": 6,
+            "gridPos": {
+                "h": 8,
+                "w": 24,
+                "x": 0,
+                "y": 72
+            },
+            "id": 1010,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "rightSide": true,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "null",
+            "options": {
+                "dataLinks": []
+            },
+            "percentage": false,
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "repeat": null,
+            "repeatDirection": "v",
+            "repeatIteration": 1573229693255,
+            "repeatPanelId": 51,
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "sum by (node,zone,size) (max_over_time(node_buddyinfo_blocks{node_name=~\"$host\", zone=~\"$zone\"}[$interval]) or \nmax_over_time(node_buddyinfo_blocks{node_name=~\"$host\", zone=~\"$zone\"}[5m]))",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Size {{size}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "Zone $zone",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 0,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": null,
+            "decimals": 0,
+            "description": "Formula for chunks of memory 2^(Size * PAGE_SIZE) ",
+            "fill": 2,
+            "fillGradient": 6,
+            "gridPos": {
+                "h": 8,
+                "w": 24,
+                "x": 0,
+                "y": 80
+            },
+            "id": 1011,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "rightSide": true,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "null",
+            "options": {
+                "dataLinks": []
+            },
+            "percentage": false,
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "repeat": null,
+            "repeatDirection": "v",
+            "repeatIteration": 1573229693255,
+            "repeatPanelId": 51,
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "sum by (node,zone,size) (max_over_time(node_buddyinfo_blocks{node_name=~\"$host\", zone=~\"$zone\"}[$interval]) or \nmax_over_time(node_buddyinfo_blocks{node_name=~\"$host\", zone=~\"$zone\"}[5m]))",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Size {{size}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "Zone $zone",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 0,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
             "collapsed": true,
+            "datasource": null,
             "gridPos": {
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 54
+                "y": 88
             },
             "id": 70,
             "panels": [
@@ -3236,14 +3345,16 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
+                    "datasource": null,
                     "decimals": 0,
                     "description": "Formula for chunks of memory 2^(Size * PAGE_SIZE) ",
-                    "fill": 1,
+                    "fill": 2,
+                    "fillGradient": 6,
                     "gridPos": {
                         "h": 8,
                         "w": 24,
                         "x": 0,
-                        "y": 55
+                        "y": 89
                     },
                     "id": 52,
                     "legend": {
@@ -3260,10 +3371,12 @@
                         "values": true
                     },
                     "lines": true,
-                    "linewidth": 1,
+                    "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "percentage": false,
                     "pointradius": 2,
                     "points": false,
@@ -3276,7 +3389,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "sum by (node,zone,size) (node_buddyinfo_blocks{node_name=~\"$host\", node=\"$node\", zone=~\"$zone\"})",
+                            "expr": "sum by (node,zone,size) (max_over_time(node_buddyinfo_blocks{node_name=~\"$host\", node=\"$node\", zone=~\"$zone\"}[$interval]) or max_over_time(node_buddyinfo_blocks{node_name=~\"$host\", node=\"$node\", zone=~\"$zone\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3331,15 +3444,18 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
+                    "datasource": null,
                     "decimals": 0,
-                    "fill": 1,
+                    "description": "Formula for chunks of memory 2^(Size * PAGE_SIZE) ",
+                    "fill": 2,
+                    "fillGradient": 6,
                     "gridPos": {
                         "h": 8,
                         "w": 24,
                         "x": 0,
-                        "y": 63
+                        "y": 97
                     },
-                    "id": 84,
+                    "id": 1012,
                     "legend": {
                         "alignAsTable": true,
                         "avg": true,
@@ -3354,17 +3470,19 @@
                         "values": true
                     },
                     "lines": true,
-                    "linewidth": 1,
+                    "linewidth": 2,
                     "links": [],
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "percentage": false,
                     "pointradius": 2,
                     "points": false,
                     "renderer": "flot",
                     "repeat": null,
                     "repeatDirection": "v",
-                    "repeatIteration": 1560951716417,
+                    "repeatIteration": 1573229693255,
                     "repeatPanelId": 52,
                     "seriesOverrides": [],
                     "spaceLength": 10,
@@ -3372,11 +3490,112 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "sum by (node,zone,size) (node_buddyinfo_blocks{node_name=~\"$host\", node=\"$node\", zone=~\"$zone\"})",
+                            "expr": "sum by (node,zone,size) (max_over_time(node_buddyinfo_blocks{node_name=~\"$host\", node=\"$node\", zone=~\"$zone\"}[$interval]) or max_over_time(node_buddyinfo_blocks{node_name=~\"$host\", node=\"$node\", zone=~\"$zone\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
-                            "legendFormat": "Page Size {{size}}",
+                            "legendFormat": "Size {{size}}",
+                            "refId": "A"
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeRegions": [],
+                    "timeShift": null,
+                    "title": "Node $node - Zone $zone",
+                    "tooltip": {
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "decimals": 0,
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        }
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
+                },
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": null,
+                    "decimals": 0,
+                    "description": "Formula for chunks of memory 2^(Size * PAGE_SIZE) ",
+                    "fill": 2,
+                    "fillGradient": 6,
+                    "gridPos": {
+                        "h": 8,
+                        "w": 24,
+                        "x": 0,
+                        "y": 105
+                    },
+                    "id": 1013,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "rightSide": true,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "options": {
+                        "dataLinks": []
+                    },
+                    "percentage": false,
+                    "pointradius": 2,
+                    "points": false,
+                    "renderer": "flot",
+                    "repeat": null,
+                    "repeatDirection": "v",
+                    "repeatIteration": 1573229693255,
+                    "repeatPanelId": 52,
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "expr": "sum by (node,zone,size) (max_over_time(node_buddyinfo_blocks{node_name=~\"$host\", node=\"$node\", zone=~\"$zone\"}[$interval]) or \nmax_over_time(node_buddyinfo_blocks{node_name=~\"$host\", node=\"$node\", zone=~\"$zone\"}[5m]))",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Size {{size}}",
                             "refId": "A"
                         }
                     ],
@@ -3429,7 +3648,7 @@
         }
     ],
     "refresh": "1m",
-    "schemaVersion": 18,
+    "schemaVersion": 20,
     "style": "dark",
     "tags": [
         "OS",
