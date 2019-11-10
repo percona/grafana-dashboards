@@ -1,8 +1,6 @@
-/// <reference path="../../headers/common.d.ts" />
-
-import { MetricsPanelCtrl } from 'app/plugins/sdk';
-import config from 'app/core/config';
-import AppEvents from 'app/core/app_events';
+import { MetricsPanelCtrl } from 'grafana/app/plugins/sdk';
+import config from 'grafana/app/core/config';
+import AppEvents from 'grafana/app/core/app_events';
 
 export class PanelCtrl extends MetricsPanelCtrl {
   static template = `
