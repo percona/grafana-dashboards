@@ -149,7 +149,14 @@ export class PanelCtrl extends MetricsPanelCtrl {
       existedParams['type'] = type;
     }
     const queryParams = Object.keys(existedParams)
-      .map(param => `${param}=${existedParams[param] || ''}`)
+      .map(param => {
+        if (existedParams[param].length === 1) {
+          return `${param}=${existedParams[param] || ''}`;
+        } else if (existedParams[param].length > 1) {
+          return existedParams[param].map(paramValue => `${param}=${paramValue}`).join('&');
+        }
+        return '';
+      })
       .join('&');
     const url = `${host}?${queryParams}`;
     // @ts-ignore
@@ -161,7 +168,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
     const currentURL = new URL(url);
     const id = currentURL.searchParams.get('queryID') ? currentURL.searchParams.get('queryID') : '';
     const search = currentURL.searchParams.get('search') ? currentURL.searchParams.get('search') : '';
-    const filters = currentURL.searchParams.get('filters') ? currentURL.searchParams.get('filters') : this.retrieveFiltersFromVarParams(currentURL);
+    const filters = this.retrieveFiltersFromVarParams(currentURL);
     const mainMetric = currentURL.searchParams.get('main_metric') ? currentURL.searchParams.get('main_metric') : '';
     const columns = currentURL.searchParams.get('columns') ? currentURL.searchParams.get('columns') : '';
     const orderBy = currentURL.searchParams.get('order_by') ? currentURL.searchParams.get('order_by') : '';
@@ -169,28 +176,42 @@ export class PanelCtrl extends MetricsPanelCtrl {
     const filterBy = currentURL.searchParams.get('filter_by') ? currentURL.searchParams.get('filter_by') : '';
     const activeDetailsTab = currentURL.searchParams.get('active_details_tab') ? currentURL.searchParams.get('active_details_tab') : '';
     const type = currentURL.searchParams.get('type') ? currentURL.searchParams.get('type') : '';
-
     // @ts-ignore
     return [id, type, search, filters, mainMetric, columns, orderBy, groupBy, filterBy, activeDetailsTab];
   }
 
   private retrieveFiltersFromVarParams(currentURL) {
-    const filtersFromVar = [];
-    PanelCtrl.retrieveVarParam(currentURL, filtersFromVar, 'var-host', 'node_name');
-    PanelCtrl.retrieveVarParam(currentURL, filtersFromVar, 'var-service', 'service_name');
-    PanelCtrl.retrieveVarParam(currentURL, filtersFromVar, 'var-db', 'database');
-    PanelCtrl.retrieveVarParam(currentURL, filtersFromVar, 'var-replication_set', 'replication_set');
-    PanelCtrl.retrieveVarParam(currentURL, filtersFromVar, 'var-environment', 'environment');
-    PanelCtrl.retrieveVarParam(currentURL, filtersFromVar, 'var-cluster', 'cluster');
-    return filtersFromVar.join(',');
+    const filtersList = [
+      'var-host',
+      'var-replication_set',
+      'var-environment',
+      'var-database',
+      'var-region',
+      'var-service',
+      'var-cluster',
+      'var-node_id',
+      'var-agent_id',
+      'var-service_id',
+      'var-az',
+      'var-node_type',
+      'var-node_model',
+      'var-node_name',
+      'var-service_name',
+      'var-service_type',
+      'var-username',
+    ];
+    return filtersList
+      .reduce((list, filter) => {
+        PanelCtrl.retrieveVarParam(currentURL, list, filter);
+        return list;
+      }, [])
+      .join('&');
   }
 
-  private static retrieveVarParam(currentURL, filtersFromVar, param: string, key: string) {
+  private static retrieveVarParam(currentURL, filtersFromVar, param: string) {
     if (currentURL.searchParams.get(param) && currentURL.searchParams.get(param) !== 'All') {
       const params = currentURL.searchParams.getAll(param);
-      params.forEach(x => {
-        filtersFromVar.push(key + ':' + x);
-      });
+      params.forEach(x => filtersFromVar.push(`${param}=${x}`));
     }
   }
 
@@ -208,7 +229,12 @@ export class PanelCtrl extends MetricsPanelCtrl {
     const result = {};
     query.split('&').forEach(part => {
       const item = part.split('=');
-      result[item[0]] = decodeURIComponent(item[1]);
+      if (result[item[0]]) {
+        result[item[0]].push(decodeURIComponent(item[1]));
+      } else {
+        result[item[0]] = [decodeURIComponent(item[1])];
+      }
+      // = decodeURIComponent(item[1]);
     });
     return result;
   }
@@ -226,8 +252,13 @@ export class PanelCtrl extends MetricsPanelCtrl {
   }
 
   private resetUrl($scope) {
+    const filters = $scope.qanParams.filters;
+    delete $scope.qanParams.filters;
     const data = this.encodeData($scope.qanParams);
 
-    $scope.url = $scope.qanParams.type && $scope.qanParams.queryID ? `/qan/profile/report/${$scope.qanParams.type}?${data}` : `/qan/profile/?${data}`;
+    $scope.url =
+      $scope.qanParams.type && $scope.qanParams.queryID
+        ? `/qan/profile/report/${$scope.qanParams.type}?${data}&${filters}`
+        : `/qan/profile/?${data}&${filters}`;
   }
 }
