@@ -12,9 +12,9 @@ pack:
 	tar czf pmm-app.tar.gz pmm-app
 
 release:
-	npm version
-	npm ci
-	npm run build
+	cd pmm-app && npm version
+	cd pmm-app && npm ci
+	cd pmm-app && npm run build
 
 install:
 	docker exec pmm-server supervisorctl stop grafana
