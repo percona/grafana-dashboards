@@ -36,7 +36,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1568379481565,
+    "iteration": 1573488830001,
     "links": [
         {
             "icon": "doc",
@@ -121,12 +121,15 @@
     ],
     "panels": [
         {
+            "breadcrumbItemsMaxAmount": 25,
+            "datasource": null,
             "gridPos": {
                 "h": 2,
                 "w": 24,
                 "x": 0,
                 "y": 0
             },
+            "hideTextInRootDashboard": false,
             "id": 999,
             "isRootDashboard": false,
             "links": [],
@@ -724,7 +727,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 12
+                "y": 13
             },
             "id": 60,
             "legend": {
@@ -834,7 +837,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 12
+                "y": 13
             },
             "id": 68,
             "legend": {
@@ -932,7 +935,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 19
+                "y": 21
             },
             "id": 55,
             "legend": {
@@ -1036,7 +1039,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 19
+                "y": 21
             },
             "id": 40,
             "legend": {
@@ -1136,7 +1139,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 26
+                "y": 29
             },
             "id": 36,
             "legend": {
@@ -1274,7 +1277,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 26
+                "y": 29
             },
             "id": 53,
             "legend": {
@@ -1374,7 +1377,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 33
+                "y": 37
             },
             "id": 32,
             "legend": {
@@ -1484,7 +1487,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 33
+                "y": 37
             },
             "id": 39,
             "legend": {
@@ -1567,11 +1570,12 @@
         },
         {
             "collapsed": true,
+            "datasource": null,
             "gridPos": {
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 40
+                "y": 45
             },
             "id": 1009,
             "panels": [
@@ -1585,6 +1589,7 @@
                         "rgba(237, 129, 40, 0.89)",
                         "#299c46"
                     ],
+                    "datasource": null,
                     "decimals": 2,
                     "format": "s",
                     "gauge": {
@@ -1598,7 +1603,7 @@
                         "h": 2,
                         "w": 6,
                         "x": 0,
-                        "y": 41
+                        "y": 46
                     },
                     "id": 1001,
                     "interval": null,
@@ -1669,6 +1674,7 @@
                         "rgba(237, 129, 40, 0.89)",
                         "#d44a3a"
                     ],
+                    "datasource": null,
                     "decimals": 2,
                     "description": "",
                     "format": "ops",
@@ -1683,7 +1689,7 @@
                         "h": 2,
                         "w": 6,
                         "x": 6,
-                        "y": 41
+                        "y": 46
                     },
                     "id": 1005,
                     "interval": null,
@@ -1754,6 +1760,7 @@
                         "rgba(237, 129, 40, 0.89)",
                         "#d44a3a"
                     ],
+                    "datasource": null,
                     "decimals": 2,
                     "format": "\u00b5s",
                     "gauge": {
@@ -1767,7 +1774,7 @@
                         "h": 2,
                         "w": 6,
                         "x": 12,
-                        "y": 41
+                        "y": 46
                     },
                     "id": 1007,
                     "interval": null,
@@ -1832,11 +1839,12 @@
                 {
                     "cacheTimeout": null,
                     "content": "<h5><b><font color=#e68a00><center><a href=\"/graph/d/mongodb-instance-summary/mongodb-instance-summary?var-host=$host&var-service=$service\" target=\"_blank\">$crop_service...</a></center></font></b></h5>",
+                    "datasource": null,
                     "gridPos": {
                         "h": 2,
                         "w": 6,
                         "x": 18,
-                        "y": 41
+                        "y": 46
                     },
                     "id": 1003,
                     "links": [],
@@ -1871,7 +1879,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 43
+                        "y": 48
                     },
                     "height": "250px",
                     "id": 1012,
@@ -1906,7 +1914,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "mongodb_mongod_connections{service_name=\"$service\", state=\"current\"} or\nmongodb_mongos_connections{service_name=\"$service\", state=\"current\"} or\nmongodb_connections{service_name=\"$service\", state=\"current\"}",
+                            "expr": "max_over_time(mongodb_mongod_connections{service_name=\"$service\", state=\"current\"}[$interval]) or max_over_time(mongodb_mongod_connections{service_name=\"$service\", state=\"current\"}[5m]) or\nmax_over_time(mongodb_mongos_connections{service_name=\"$service\", state=\"current\"}[$interval]) or\nmax_over_time(mongodb_mongos_connections{service_name=\"$service\", state=\"current\"}[5m]) or\nmax_over_time(mongodb_connections{service_name=\"$service\", state=\"current\"}[$interval]) or\nmax_over_time(mongodb_connections{service_name=\"$service\", state=\"current\"}[5m])",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -1987,7 +1995,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 43
+                        "y": 48
                     },
                     "height": "250px",
                     "id": 1013,
@@ -2023,7 +2031,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "mongodb_mongod_metrics_cursor_open{service_name=\"$service\"} or\nmongodb_mongod_cursors{service_name=\"$service\"} or\nmongodb_mongos_metrics_cursor_open{service_name=\"$service\"} or \nmongodb_mongos_cursors{service_name=\"$service\"}",
+                            "expr": "max_over_time(mongodb_mongod_metrics_cursor_open{service_name=\"$service\"}[$interval]) or\nmax_over_time(mongodb_mongod_metrics_cursor_open{service_name=\"$service\"}[5m]) or\nmax_over_time(mongodb_mongod_cursors{service_name=\"$service\"}[$interval]) or\nmax_over_time(mongodb_mongod_cursors{service_name=\"$service\"}[5m]) or\nmax_over_time(mongodb_mongos_metrics_cursor_open{service_name=\"$service\"}[$interval]) or \nmax_over_time(mongodb_mongos_metrics_cursor_open{service_name=\"$service\"}[5m]) or\nmax_over_time(mongodb_mongos_cursors{service_name=\"$service\"}[$interval]) or\nmax_over_time(mongodb_mongos_cursors{service_name=\"$service\"}[5m])",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -2086,11 +2094,12 @@
         },
         {
             "collapsed": true,
+            "datasource": null,
             "gridPos": {
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 41
+                "y": 46
             },
             "id": 291,
             "panels": [
@@ -3305,7 +3314,7 @@
         }
     ],
     "refresh": "1m",
-    "schemaVersion": 19,
+    "schemaVersion": 20,
     "style": "dark",
     "tags": [
         "MongoDB",
@@ -3491,8 +3500,8 @@
                 "tagsQuery": null,
                 "type": "query",
                 "useTags": false
-           },
-           {
+            },
+            {
                 "allValue": null,
                 "current": {},
                 "datasource": "Prometheus",

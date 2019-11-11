@@ -36,7 +36,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1568380732489,
+    "iteration": 1573491558905,
     "links": [
         {
             "icon": "doc",
@@ -121,12 +121,15 @@
     ],
     "panels": [
         {
+            "breadcrumbItemsMaxAmount": 25,
+            "datasource": null,
             "gridPos": {
                 "h": 2,
                 "w": 24,
                 "x": 0,
                 "y": 0
             },
+            "hideTextInRootDashboard": false,
             "id": 999,
             "isRootDashboard": false,
             "links": [],
@@ -725,7 +728,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 11
+                "y": 12
             },
             "id": 48,
             "legend": {
@@ -825,7 +828,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 11
+                "y": 12
             },
             "id": 60,
             "legend": {
@@ -859,7 +862,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "mongodb_mongod_wiredtiger_session_open_cursors_total{service_name=\"$service\"}",
+                    "expr": "max_over_time(mongodb_mongod_wiredtiger_session_open_cursors_total{service_name=\"$service\"}[$interval]) or\nmax_over_time(mongodb_mongod_wiredtiger_session_open_cursors_total{service_name=\"$service\"}[5m])",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Cursors",
@@ -868,7 +871,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "mongodb_mongod_wiredtiger_session_open_sessions_total{service_name=\"$service\"}",
+                    "expr": "max_over_time(mongodb_mongod_wiredtiger_session_open_sessions_total{service_name=\"$service\"}[$interval]) or\nmax_over_time(mongodb_mongod_wiredtiger_session_open_sessions_total{service_name=\"$service\"}[5m])",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Sessions",
@@ -935,7 +938,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 18
+                "y": 20
             },
             "id": 55,
             "legend": {
@@ -972,7 +975,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "mongodb_mongod_wiredtiger_concurrent_transactions_total_tickets{service_name=\"$service\"}-mongodb_mongod_wiredtiger_concurrent_transactions_out_tickets{service_name=\"$service\"}",
+                    "expr": "(max_over_time(mongodb_mongod_wiredtiger_concurrent_transactions_total_tickets{service_name=\"$service\"}[$interval]) or\nmax_over_time(mongodb_mongod_wiredtiger_concurrent_transactions_total_tickets{service_name=\"$service\"}[5m])) -\n(max_over_time(mongodb_mongod_wiredtiger_concurrent_transactions_out_tickets{service_name=\"$service\"}[$interval]) or\nmax_over_time(mongodb_mongod_wiredtiger_concurrent_transactions_out_tickets{service_name=\"$service\"}[5m]))",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "{{type}}",
@@ -1002,11 +1005,12 @@
             },
             "yaxes": [
                 {
+                    "decimals": 0,
                     "format": "short",
                     "label": "",
                     "logBase": 1,
                     "max": null,
-                    "min": "0",
+                    "min": null,
                     "show": true
                 },
                 {
@@ -1039,7 +1043,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 18
+                "y": 20
             },
             "id": 40,
             "legend": {
@@ -1072,7 +1076,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "mongodb_mongod_global_lock_current_queue{service_name=\"$service\"}",
+                    "expr": "max_over_time(mongodb_mongod_global_lock_current_queue{service_name=\"$service\"}[$interval]) or\nmax_over_time(mongodb_mongod_global_lock_current_queue{service_name=\"$service\"}[5m])",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1139,7 +1143,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 25
+                "y": 28
             },
             "id": 57,
             "legend": {
@@ -1186,7 +1190,8 @@
                     "step": 300
                 },
                 {
-                    "expr": "mongodb_mongod_wiredtiger_transactions_checkpoint_milliseconds{service_name=\"$service\"}",
+                    "expr": "max_over_time(mongodb_mongod_wiredtiger_transactions_checkpoint_milliseconds{service_name=\"$service\"}[$interval]) or\nmax_over_time(mongodb_mongod_wiredtiger_transactions_checkpoint_milliseconds{service_name=\"$service\"}[5m])",
+                    "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "{{type}}",
@@ -1253,7 +1258,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 25
+                "y": 28
             },
             "id": 53,
             "legend": {
@@ -1353,7 +1358,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 32
+                "y": 36
             },
             "id": 45,
             "legend": {
@@ -1389,7 +1394,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "mongodb_mongod_wiredtiger_cache_max_bytes{service_name=\"$service\"}",
+                    "expr": "max_over_time(mongodb_mongod_wiredtiger_cache_max_bytes{service_name=\"$service\"}[$interval]) or\nmax_over_time(mongodb_mongod_wiredtiger_cache_max_bytes{service_name=\"$service\"}[5m])",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1398,7 +1403,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "mongodb_mongod_wiredtiger_cache_bytes{service_name=\"$service\", type=\"total\"}",
+                    "expr": "max_over_time(mongodb_mongod_wiredtiger_cache_bytes{service_name=\"$service\", type=\"total\"}[$interval]) or\nmax_over_time(mongodb_mongod_wiredtiger_cache_bytes{service_name=\"$service\", type=\"total\"}[5m])",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1428,6 +1433,7 @@
             },
             "yaxes": [
                 {
+                    "decimals": 2,
                     "format": "bytes",
                     "label": "",
                     "logBase": 1,
@@ -1465,7 +1471,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 32
+                "y": 36
             },
             "id": 68,
             "legend": {
@@ -1497,7 +1503,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "mongodb_mongod_wiredtiger_cache_pages{service_name=\"$service\"}",
+                    "expr": "max_over_time(mongodb_mongod_wiredtiger_cache_pages{service_name=\"$service\"}[$interval]) or\nmax_over_time(mongodb_mongod_wiredtiger_cache_pages{service_name=\"$service\"}[5m])",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "{{type}}",
@@ -1563,7 +1569,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 39
+                "y": 44
             },
             "id": 59,
             "legend": {
@@ -1664,7 +1670,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 39
+                "y": 44
             },
             "id": 58,
             "legend": {
@@ -1764,7 +1770,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 46
+                "y": 52
             },
             "id": 61,
             "legend": {
@@ -1866,7 +1872,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 46
+                "y": 52
             },
             "id": 36,
             "legend": {
@@ -2004,7 +2010,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 53
+                "y": 60
             },
             "id": 32,
             "legend": {
@@ -2114,7 +2120,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 53
+                "y": 60
             },
             "id": 39,
             "legend": {
@@ -2197,11 +2203,12 @@
         },
         {
             "collapsed": true,
+            "datasource": null,
             "gridPos": {
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 60
+                "y": 68
             },
             "id": 1009,
             "panels": [
@@ -2215,6 +2222,7 @@
                         "rgba(237, 129, 40, 0.89)",
                         "#299c46"
                     ],
+                    "datasource": null,
                     "decimals": 2,
                     "format": "s",
                     "gauge": {
@@ -2228,7 +2236,7 @@
                         "h": 2,
                         "w": 6,
                         "x": 0,
-                        "y": 61
+                        "y": 69
                     },
                     "id": 1001,
                     "interval": null,
@@ -2299,6 +2307,7 @@
                         "rgba(237, 129, 40, 0.89)",
                         "#d44a3a"
                     ],
+                    "datasource": null,
                     "decimals": 2,
                     "description": "",
                     "format": "ops",
@@ -2313,7 +2322,7 @@
                         "h": 2,
                         "w": 6,
                         "x": 6,
-                        "y": 61
+                        "y": 69
                     },
                     "id": 1005,
                     "interval": null,
@@ -2384,6 +2393,7 @@
                         "rgba(237, 129, 40, 0.89)",
                         "#d44a3a"
                     ],
+                    "datasource": null,
                     "decimals": 2,
                     "format": "\u00b5s",
                     "gauge": {
@@ -2397,7 +2407,7 @@
                         "h": 2,
                         "w": 6,
                         "x": 12,
-                        "y": 61
+                        "y": 69
                     },
                     "id": 1007,
                     "interval": null,
@@ -2462,11 +2472,12 @@
                 {
                     "cacheTimeout": null,
                     "content": "<h4><b><font color=#e68a00><center><a href=\"/graph/d/mongodb-instance-summary/mongodb-instance-summary?var-host=$host&var-service=$service\" target=\"_blank\">$service</a></center></font></b></h4>",
+                    "datasource": null,
                     "gridPos": {
                         "h": 2,
                         "w": 6,
                         "x": 18,
-                        "y": 61
+                        "y": 69
                     },
                     "id": 1003,
                     "links": [],
@@ -2501,7 +2512,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 63
+                        "y": 71
                     },
                     "height": "250px",
                     "id": 1012,
@@ -2536,7 +2547,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "mongodb_mongod_connections{service_name=\"$service\", state=\"current\"} or\nmongodb_mongos_connections{service_name=\"$service\", state=\"current\"} or\nmongodb_connections{service_name=\"$service\", state=\"current\"}",
+                            "expr": "max_over_time(mongodb_mongod_connections{service_name=\"$service\", state=\"current\"}[$interval]) or \nmax_over_time(mongodb_mongod_connections{service_name=\"$service\", state=\"current\"}[5m]) or\nmax_over_time(mongodb_mongos_connections{service_name=\"$service\", state=\"current\"}[$interval]) or\nmax_over_time(mongodb_mongos_connections{service_name=\"$service\", state=\"current\"}[5m]) or\nmax_over_time(mongodb_connections{service_name=\"$service\", state=\"current\"}[$interval]) or\nmax_over_time(mongodb_connections{service_name=\"$service\", state=\"current\"}[5m])",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -2617,7 +2628,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 63
+                        "y": 71
                     },
                     "height": "250px",
                     "id": 1013,
@@ -2653,7 +2664,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "mongodb_mongod_metrics_cursor_open{service_name=\"$service\"} or\nmongodb_mongod_cursors{service_name=\"$service\"} or\nmongodb_mongos_metrics_cursor_open{service_name=\"$service\"} or \nmongodb_mongos_cursors{service_name=\"$service\"}",
+                            "expr": "max_over_time(mongodb_mongod_metrics_cursor_open{service_name=\"$service\"}[$interval]) or\nmax_over_time(mongodb_mongod_metrics_cursor_open{service_name=\"$service\"}[5m]) or\nmax_over_time(mongodb_mongod_cursors{service_name=\"$service\"}[$interval]) or\nmax_over_time(mongodb_mongod_cursors{service_name=\"$service\"}[5m]) or\nmax_over_time(mongodb_mongos_metrics_cursor_open{service_name=\"$service\"}[$interval]) or \nmax_over_time(mongodb_mongos_metrics_cursor_open{service_name=\"$service\"}[5m]) or\nmax_over_time(mongodb_mongos_cursors{service_name=\"$service\"}[$interval]) or\nmax_over_time(mongodb_mongos_cursors{service_name=\"$service\"}[5m])",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -2716,11 +2727,12 @@
         },
         {
             "collapsed": true,
+            "datasource": null,
             "gridPos": {
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 61
+                "y": 69
             },
             "id": 291,
             "panels": [
@@ -3935,7 +3947,7 @@
         }
     ],
     "refresh": "1m",
-    "schemaVersion": 19,
+    "schemaVersion": 20,
     "style": "dark",
     "tags": [
         "MongoDB",
@@ -4121,8 +4133,8 @@
                 "tagsQuery": null,
                 "type": "query",
                 "useTags": false
-           },
-           {
+            },
+            {
                 "allValue": null,
                 "current": {},
                 "datasource": "Prometheus",

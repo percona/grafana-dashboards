@@ -36,7 +36,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1563969568681,
+    "iteration": 1573487532506,
     "links": [
         {
             "icon": "doc",
@@ -109,12 +109,15 @@
     ],
     "panels": [
         {
+            "breadcrumbItemsMaxAmount": 25,
+            "datasource": null,
             "gridPos": {
                 "h": 2,
                 "w": 24,
                 "x": 0,
                 "y": 0
             },
+            "hideTextInRootDashboard": false,
             "id": 999,
             "isRootDashboard": false,
             "links": [],
@@ -158,7 +161,7 @@
                 "h": 2,
                 "w": 6,
                 "x": 0,
-                "y": 0
+                "y": 2
             },
             "hideTimeOverride": true,
             "id": 39,
@@ -240,7 +243,7 @@
                 "h": 2,
                 "w": 6,
                 "x": 6,
-                "y": 0
+                "y": 2
             },
             "hideTimeOverride": true,
             "id": 35,
@@ -322,7 +325,7 @@
                 "h": 2,
                 "w": 6,
                 "x": 12,
-                "y": 0
+                "y": 2
             },
             "hideTimeOverride": true,
             "id": 10,
@@ -404,7 +407,7 @@
                 "h": 2,
                 "w": 6,
                 "x": 18,
-                "y": 0
+                "y": 2
             },
             "hideTimeOverride": true,
             "id": 36,
@@ -486,7 +489,7 @@
                 "h": 2,
                 "w": 6,
                 "x": 0,
-                "y": 2
+                "y": 4
             },
             "hideTimeOverride": true,
             "id": 11,
@@ -568,7 +571,7 @@
                 "h": 2,
                 "w": 6,
                 "x": 6,
-                "y": 2
+                "y": 4
             },
             "hideTimeOverride": true,
             "id": 5,
@@ -662,7 +665,7 @@
                 "h": 2,
                 "w": 6,
                 "x": 12,
-                "y": 2
+                "y": 4
             },
             "hideTimeOverride": true,
             "id": 4,
@@ -742,12 +745,13 @@
             "editable": true,
             "error": false,
             "fill": 2,
+            "fillGradient": 6,
             "grid": {},
             "gridPos": {
                 "h": 7,
                 "w": 24,
                 "x": 0,
-                "y": 4
+                "y": 6
             },
             "id": 46,
             "interval": "",
@@ -769,7 +773,9 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
-            "options": {},
+            "options": {
+                "dataLinks": []
+            },
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -780,7 +786,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "sum by (type) (rate(mongodb_op_counters_total{cluster=\"$cluster\", type!=\"command\"}[$interval]) or irate(mongodb_op_counters_total{cluster=\"$cluster\", type!=\"command\"}[5m]))",
+                    "expr": "sum by (type) (rate(mongodb_op_counters_total{cluster=~\"$cluster\", type!=\"command\"}[$interval]) or \nirate(mongodb_op_counters_total{cluster=~\"$cluster\", type!=\"command\"}[5m]))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -834,11 +840,12 @@
         },
         {
             "collapsed": true,
+            "datasource": null,
             "gridPos": {
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 11
+                "y": 13
             },
             "id": 52,
             "panels": [
@@ -852,12 +859,13 @@
                     "editable": true,
                     "error": false,
                     "fill": 2,
+                    "fillGradient": 0,
                     "grid": {},
                     "gridPos": {
                         "h": 7,
-                        "w": 12,
+                        "w": 24,
                         "x": 0,
-                        "y": 12
+                        "y": 14
                     },
                     "id": 53,
                     "interval": "",
@@ -880,328 +888,15 @@
                     "links": [],
                     "maxPerRow": 2,
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "percentage": false,
                     "pointradius": 5,
                     "points": false,
                     "renderer": "flot",
                     "repeat": "service",
                     "repeatDirection": "h",
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": false,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "expr": "sum by (type) (rate(mongodb_op_counters_total{cluster=\"$cluster\", type!=\"command\",service_name=\"$service\"}[$interval]) or \nirate(mongodb_op_counters_total{cluster=\"$cluster\", type!=\"command\",service_name=\"$service\"}[5m]))",
-                            "format": "time_series",
-                            "hide": false,
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "{{type}}",
-                            "refId": "J",
-                            "step": 300
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeRegions": [],
-                    "timeShift": null,
-                    "title": "Mongos Operations $service",
-                    "tooltip": {
-                        "msResolution": false,
-                        "shared": true,
-                        "sort": 0,
-                        "value_type": "cumulative"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "decimals": 2,
-                            "format": "ops",
-                            "label": "",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "logBase": 1,
-                            "max": null,
-                            "min": null,
-                            "show": true
-                        }
-                    ],
-                    "yaxis": {
-                        "align": false,
-                        "alignLevel": null
-                    }
-                },
-                {
-                    "aliasColors": {},
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "datasource": "Prometheus",
-                    "decimals": 2,
-                    "editable": true,
-                    "error": false,
-                    "fill": 2,
-                    "grid": {},
-                    "gridPos": {
-                        "h": 7,
-                        "w": 12,
-                        "x": 12,
-                        "y": 12
-                    },
-                    "id": 119,
-                    "interval": "",
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "hideZero": true,
-                        "max": true,
-                        "min": true,
-                        "rightSide": false,
-                        "show": true,
-                        "sort": "avg",
-                        "sortDesc": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": true,
-                    "linewidth": 2,
-                    "links": [],
-                    "maxPerRow": 2,
-                    "nullPointMode": "null",
-                    "options": {},
-                    "percentage": false,
-                    "pointradius": 5,
-                    "points": false,
-                    "renderer": "flot",
-                    "repeat": null,
-                    "repeatDirection": "h",
-                    "repeatIteration": 1563969568681,
-                    "repeatPanelId": 53,
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": false,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "expr": "sum by (type) (rate(mongodb_op_counters_total{cluster=\"$cluster\", type!=\"command\",service_name=\"$service\"}[$interval]) or \nirate(mongodb_op_counters_total{cluster=\"$cluster\", type!=\"command\",service_name=\"$service\"}[5m]))",
-                            "format": "time_series",
-                            "hide": false,
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "{{type}}",
-                            "refId": "J",
-                            "step": 300
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeRegions": [],
-                    "timeShift": null,
-                    "title": "Mongos Operations $service",
-                    "tooltip": {
-                        "msResolution": false,
-                        "shared": true,
-                        "sort": 0,
-                        "value_type": "cumulative"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "decimals": 2,
-                            "format": "ops",
-                            "label": "",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "logBase": 1,
-                            "max": null,
-                            "min": null,
-                            "show": true
-                        }
-                    ],
-                    "yaxis": {
-                        "align": false,
-                        "alignLevel": null
-                    }
-                },
-                {
-                    "aliasColors": {},
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "datasource": "Prometheus",
-                    "decimals": 2,
-                    "editable": true,
-                    "error": false,
-                    "fill": 2,
-                    "grid": {},
-                    "gridPos": {
-                        "h": 7,
-                        "w": 12,
-                        "x": 0,
-                        "y": 19
-                    },
-                    "id": 120,
-                    "interval": "",
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "hideZero": true,
-                        "max": true,
-                        "min": true,
-                        "rightSide": false,
-                        "show": true,
-                        "sort": "avg",
-                        "sortDesc": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": true,
-                    "linewidth": 2,
-                    "links": [],
-                    "maxPerRow": 2,
-                    "nullPointMode": "null",
-                    "options": {},
-                    "percentage": false,
-                    "pointradius": 5,
-                    "points": false,
-                    "renderer": "flot",
-                    "repeat": null,
-                    "repeatDirection": "h",
-                    "repeatIteration": 1563969568681,
-                    "repeatPanelId": 53,
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": false,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "expr": "sum by (type) (rate(mongodb_op_counters_total{cluster=\"$cluster\", type!=\"command\",service_name=\"$service\"}[$interval]) or \nirate(mongodb_op_counters_total{cluster=\"$cluster\", type!=\"command\",service_name=\"$service\"}[5m]))",
-                            "format": "time_series",
-                            "hide": false,
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "{{type}}",
-                            "refId": "J",
-                            "step": 300
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeRegions": [],
-                    "timeShift": null,
-                    "title": "Mongos Operations $service",
-                    "tooltip": {
-                        "msResolution": false,
-                        "shared": true,
-                        "sort": 0,
-                        "value_type": "cumulative"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "decimals": 2,
-                            "format": "ops",
-                            "label": "",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "logBase": 1,
-                            "max": null,
-                            "min": null,
-                            "show": true
-                        }
-                    ],
-                    "yaxis": {
-                        "align": false,
-                        "alignLevel": null
-                    }
-                },
-                {
-                    "aliasColors": {},
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "datasource": "Prometheus",
-                    "decimals": 2,
-                    "editable": true,
-                    "error": false,
-                    "fill": 2,
-                    "grid": {},
-                    "gridPos": {
-                        "h": 7,
-                        "w": 12,
-                        "x": 12,
-                        "y": 19
-                    },
-                    "id": 121,
-                    "interval": "",
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "hideZero": true,
-                        "max": true,
-                        "min": true,
-                        "rightSide": false,
-                        "show": true,
-                        "sort": "avg",
-                        "sortDesc": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": true,
-                    "linewidth": 2,
-                    "links": [],
-                    "maxPerRow": 2,
-                    "nullPointMode": "null",
-                    "options": {},
-                    "percentage": false,
-                    "pointradius": 5,
-                    "points": false,
-                    "renderer": "flot",
-                    "repeat": null,
-                    "repeatDirection": "h",
-                    "repeatIteration": 1563969568681,
-                    "repeatPanelId": 53,
                     "seriesOverrides": [],
                     "spaceLength": 10,
                     "stack": false,
@@ -1266,11 +961,12 @@
         },
         {
             "collapsed": false,
+            "datasource": null,
             "gridPos": {
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 12
+                "y": 14
             },
             "id": 81,
             "panels": [],
@@ -1287,12 +983,13 @@
             "editable": true,
             "error": false,
             "fill": 2,
+            "fillGradient": 6,
             "grid": {},
             "gridPos": {
                 "h": 7,
                 "w": 12,
                 "x": 0,
-                "y": 13
+                "y": 15
             },
             "id": 7,
             "legend": {
@@ -1309,7 +1006,9 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
-            "options": {},
+            "options": {
+                "dataLinks": []
+            },
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -1320,7 +1019,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "sum by (state) (mongodb_connections{cluster=\"$cluster\"})",
+                    "expr": "sum by (state) (max_over_time(mongodb_connections{cluster=\"$cluster\"}[$interval]) or max_over_time(mongodb_connections{cluster=\"$cluster\"}[5m]))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -1381,12 +1080,13 @@
             "editable": true,
             "error": false,
             "fill": 2,
+            "fillGradient": 6,
             "grid": {},
             "gridPos": {
                 "h": 7,
                 "w": 12,
                 "x": 12,
-                "y": 13
+                "y": 15
             },
             "id": 31,
             "legend": {
@@ -1403,7 +1103,9 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
-            "options": {},
+            "options": {
+                "dataLinks": []
+            },
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -1414,7 +1116,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "sum(mongodb_mongos_metrics_cursor_open{cluster=\"$cluster\", state=\"total\"} or mongodb_mongos_cursors{cluster=\"$cluster\", state=\"total_open\"})",
+                    "expr": "sum(max_over_time(mongodb_mongos_metrics_cursor_open{cluster=\"$cluster\", state=\"total\"}[$interval]) or\nmax_over_time(mongodb_mongos_metrics_cursor_open{cluster=\"$cluster\", state=\"total\"}[5m]) or \nmax_over_time(mongodb_mongos_cursors{cluster=\"$cluster\", state=\"total_open\"}[$interval]) or\nmax_over_time(mongodb_mongos_cursors{cluster=\"$cluster\", state=\"total_open\"}[5m]))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -1467,11 +1169,12 @@
         },
         {
             "collapsed": true,
+            "datasource": null,
             "gridPos": {
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 20
+                "y": 22
             },
             "id": 50,
             "panels": [
@@ -1484,12 +1187,13 @@
                     "editable": true,
                     "error": false,
                     "fill": 2,
+                    "fillGradient": 0,
                     "grid": {},
                     "gridPos": {
                         "h": 7,
-                        "w": 12,
+                        "w": 24,
                         "x": 0,
-                        "y": 20
+                        "y": 23
                     },
                     "id": 57,
                     "legend": {
@@ -1507,7 +1211,9 @@
                     "links": [],
                     "maxPerRow": 2,
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "percentage": false,
                     "pointradius": 5,
                     "points": false,
@@ -1520,301 +1226,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "sum by (state) (mongodb_connections{cluster=\"$cluster\",service_name=\"$service\"})",
-                            "format": "time_series",
-                            "hide": false,
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "{{state}}",
-                            "refId": "J",
-                            "step": 300
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeRegions": [],
-                    "timeShift": null,
-                    "title": "Mongos  Connections $service",
-                    "tooltip": {
-                        "msResolution": false,
-                        "shared": true,
-                        "sort": 0,
-                        "value_type": "cumulative"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "format": "short",
-                            "label": "",
-                            "logBase": 2,
-                            "max": null,
-                            "min": 0,
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "logBase": 1,
-                            "max": null,
-                            "min": null,
-                            "show": true
-                        }
-                    ],
-                    "yaxis": {
-                        "align": false,
-                        "alignLevel": null
-                    }
-                },
-                {
-                    "aliasColors": {},
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "datasource": "Prometheus",
-                    "editable": true,
-                    "error": false,
-                    "fill": 2,
-                    "grid": {},
-                    "gridPos": {
-                        "h": 7,
-                        "w": 12,
-                        "x": 12,
-                        "y": 20
-                    },
-                    "id": 71,
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "max": true,
-                        "min": true,
-                        "show": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": true,
-                    "linewidth": 2,
-                    "links": [],
-                    "maxPerRow": 2,
-                    "nullPointMode": "null",
-                    "options": {},
-                    "percentage": false,
-                    "pointradius": 5,
-                    "points": false,
-                    "renderer": "flot",
-                    "repeat": null,
-                    "repeatDirection": "h",
-                    "repeatIteration": 1563965218361,
-                    "repeatPanelId": 57,
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": false,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "expr": "sum by (state) (mongodb_connections{cluster=\"$cluster\",service_name=\"$service\"})",
-                            "format": "time_series",
-                            "hide": false,
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "{{state}}",
-                            "refId": "J",
-                            "step": 300
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeRegions": [],
-                    "timeShift": null,
-                    "title": "Mongos  Connections $service",
-                    "tooltip": {
-                        "msResolution": false,
-                        "shared": true,
-                        "sort": 0,
-                        "value_type": "cumulative"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "format": "short",
-                            "label": "",
-                            "logBase": 2,
-                            "max": null,
-                            "min": 0,
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "logBase": 1,
-                            "max": null,
-                            "min": null,
-                            "show": true
-                        }
-                    ],
-                    "yaxis": {
-                        "align": false,
-                        "alignLevel": null
-                    }
-                },
-                {
-                    "aliasColors": {},
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "datasource": "Prometheus",
-                    "editable": true,
-                    "error": false,
-                    "fill": 2,
-                    "grid": {},
-                    "gridPos": {
-                        "h": 7,
-                        "w": 12,
-                        "x": 0,
-                        "y": 27
-                    },
-                    "id": 72,
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "max": true,
-                        "min": true,
-                        "show": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": true,
-                    "linewidth": 2,
-                    "links": [],
-                    "maxPerRow": 2,
-                    "nullPointMode": "null",
-                    "options": {},
-                    "percentage": false,
-                    "pointradius": 5,
-                    "points": false,
-                    "renderer": "flot",
-                    "repeat": null,
-                    "repeatDirection": "h",
-                    "repeatIteration": 1563965218361,
-                    "repeatPanelId": 57,
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": false,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "expr": "sum by (state) (mongodb_connections{cluster=\"$cluster\",service_name=\"$service\"})",
-                            "format": "time_series",
-                            "hide": false,
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "{{state}}",
-                            "refId": "J",
-                            "step": 300
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeRegions": [],
-                    "timeShift": null,
-                    "title": "Mongos  Connections $service",
-                    "tooltip": {
-                        "msResolution": false,
-                        "shared": true,
-                        "sort": 0,
-                        "value_type": "cumulative"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "format": "short",
-                            "label": "",
-                            "logBase": 2,
-                            "max": null,
-                            "min": 0,
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "logBase": 1,
-                            "max": null,
-                            "min": null,
-                            "show": true
-                        }
-                    ],
-                    "yaxis": {
-                        "align": false,
-                        "alignLevel": null
-                    }
-                },
-                {
-                    "aliasColors": {},
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "datasource": "Prometheus",
-                    "editable": true,
-                    "error": false,
-                    "fill": 2,
-                    "grid": {},
-                    "gridPos": {
-                        "h": 7,
-                        "w": 12,
-                        "x": 12,
-                        "y": 27
-                    },
-                    "id": 73,
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "max": true,
-                        "min": true,
-                        "show": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": true,
-                    "linewidth": 2,
-                    "links": [],
-                    "maxPerRow": 2,
-                    "nullPointMode": "null",
-                    "options": {},
-                    "percentage": false,
-                    "pointradius": 5,
-                    "points": false,
-                    "renderer": "flot",
-                    "repeat": null,
-                    "repeatDirection": "h",
-                    "repeatIteration": 1563965218361,
-                    "repeatPanelId": 57,
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": false,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "expr": "sum by (state) (mongodb_connections{cluster=\"$cluster\",service_name=\"$service\"})",
+                            "expr": "sum by (state) (max_over_time(mongodb_connections{cluster=\"$cluster\",service_name=\"$service\"}[$interval]) or \nmax_over_time(mongodb_connections{cluster=\"$cluster\",service_name=\"$service\"}[5m]))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -1871,11 +1283,12 @@
         },
         {
             "collapsed": true,
+            "datasource": null,
             "gridPos": {
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 21
+                "y": 23
             },
             "id": 62,
             "panels": [
@@ -1888,12 +1301,13 @@
                     "editable": true,
                     "error": false,
                     "fill": 2,
+                    "fillGradient": 0,
                     "grid": {},
                     "gridPos": {
                         "h": 7,
-                        "w": 12,
+                        "w": 24,
                         "x": 0,
-                        "y": 21
+                        "y": 24
                     },
                     "id": 67,
                     "legend": {
@@ -1911,307 +1325,15 @@
                     "links": [],
                     "maxPerRow": 2,
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "percentage": false,
                     "pointradius": 5,
                     "points": false,
                     "renderer": "flot",
                     "repeat": "service",
                     "repeatDirection": "h",
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": false,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "expr": "sum(mongodb_mongos_metrics_cursor_open{cluster=\"$cluster\", state=\"total\",service_name=\"$service\"} or\nmongodb_mongos_cursors{cluster=\"$cluster\", state=\"total_open\",service_name=\"$service\"})",
-                            "format": "time_series",
-                            "hide": false,
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Cursors",
-                            "refId": "J",
-                            "step": 300
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeRegions": [],
-                    "timeShift": null,
-                    "title": "Mongos  Cursors $service",
-                    "tooltip": {
-                        "msResolution": false,
-                        "shared": true,
-                        "sort": 0,
-                        "value_type": "cumulative"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "format": "short",
-                            "label": "",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "logBase": 1,
-                            "max": null,
-                            "min": null,
-                            "show": true
-                        }
-                    ],
-                    "yaxis": {
-                        "align": false,
-                        "alignLevel": null
-                    }
-                },
-                {
-                    "aliasColors": {},
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "datasource": "Prometheus",
-                    "editable": true,
-                    "error": false,
-                    "fill": 2,
-                    "grid": {},
-                    "gridPos": {
-                        "h": 7,
-                        "w": 12,
-                        "x": 12,
-                        "y": 21
-                    },
-                    "id": 74,
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "max": true,
-                        "min": true,
-                        "show": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": true,
-                    "linewidth": 2,
-                    "links": [],
-                    "maxPerRow": 2,
-                    "nullPointMode": "null",
-                    "options": {},
-                    "percentage": false,
-                    "pointradius": 5,
-                    "points": false,
-                    "renderer": "flot",
-                    "repeat": null,
-                    "repeatDirection": "h",
-                    "repeatIteration": 1563965355672,
-                    "repeatPanelId": 67,
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": false,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "expr": "sum(mongodb_mongos_metrics_cursor_open{cluster=\"$cluster\", state=\"total\",service_name=\"$service\"} or\nmongodb_mongos_cursors{cluster=\"$cluster\", state=\"total_open\",service_name=\"$service\"})",
-                            "format": "time_series",
-                            "hide": false,
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Cursors",
-                            "refId": "J",
-                            "step": 300
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeRegions": [],
-                    "timeShift": null,
-                    "title": "Mongos  Cursors $service",
-                    "tooltip": {
-                        "msResolution": false,
-                        "shared": true,
-                        "sort": 0,
-                        "value_type": "cumulative"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "format": "short",
-                            "label": "",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "logBase": 1,
-                            "max": null,
-                            "min": null,
-                            "show": true
-                        }
-                    ],
-                    "yaxis": {
-                        "align": false,
-                        "alignLevel": null
-                    }
-                },
-                {
-                    "aliasColors": {},
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "datasource": "Prometheus",
-                    "editable": true,
-                    "error": false,
-                    "fill": 2,
-                    "grid": {},
-                    "gridPos": {
-                        "h": 7,
-                        "w": 12,
-                        "x": 0,
-                        "y": 28
-                    },
-                    "id": 75,
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "max": true,
-                        "min": true,
-                        "show": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": true,
-                    "linewidth": 2,
-                    "links": [],
-                    "maxPerRow": 2,
-                    "nullPointMode": "null",
-                    "options": {},
-                    "percentage": false,
-                    "pointradius": 5,
-                    "points": false,
-                    "renderer": "flot",
-                    "repeat": null,
-                    "repeatDirection": "h",
-                    "repeatIteration": 1563965355672,
-                    "repeatPanelId": 67,
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": false,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "expr": "sum(mongodb_mongos_metrics_cursor_open{cluster=\"$cluster\", state=\"total\",service_name=\"$service\"} or\nmongodb_mongos_cursors{cluster=\"$cluster\", state=\"total_open\",service_name=\"$service\"})",
-                            "format": "time_series",
-                            "hide": false,
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Cursors",
-                            "refId": "J",
-                            "step": 300
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeRegions": [],
-                    "timeShift": null,
-                    "title": "Mongos  Cursors $service",
-                    "tooltip": {
-                        "msResolution": false,
-                        "shared": true,
-                        "sort": 0,
-                        "value_type": "cumulative"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "format": "short",
-                            "label": "",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "logBase": 1,
-                            "max": null,
-                            "min": null,
-                            "show": true
-                        }
-                    ],
-                    "yaxis": {
-                        "align": false,
-                        "alignLevel": null
-                    }
-                },
-                {
-                    "aliasColors": {},
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "datasource": "Prometheus",
-                    "editable": true,
-                    "error": false,
-                    "fill": 2,
-                    "grid": {},
-                    "gridPos": {
-                        "h": 7,
-                        "w": 12,
-                        "x": 12,
-                        "y": 28
-                    },
-                    "id": 76,
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "max": true,
-                        "min": true,
-                        "show": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": true,
-                    "linewidth": 2,
-                    "links": [],
-                    "maxPerRow": 2,
-                    "nullPointMode": "null",
-                    "options": {},
-                    "percentage": false,
-                    "pointradius": 5,
-                    "points": false,
-                    "renderer": "flot",
-                    "repeat": null,
-                    "repeatDirection": "h",
-                    "repeatIteration": 1563965355672,
-                    "repeatPanelId": 67,
                     "seriesOverrides": [],
                     "spaceLength": 10,
                     "stack": false,
@@ -2275,11 +1397,12 @@
         },
         {
             "collapsed": false,
+            "datasource": null,
             "gridPos": {
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 22
+                "y": 24
             },
             "id": 87,
             "panels": [],
@@ -2297,12 +1420,13 @@
             "editable": true,
             "error": false,
             "fill": 2,
+            "fillGradient": 6,
             "grid": {},
             "gridPos": {
                 "h": 7,
                 "w": 12,
                 "x": 0,
-                "y": 23
+                "y": 25
             },
             "id": 3,
             "legend": {
@@ -2322,7 +1446,9 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
-            "options": {},
+            "options": {
+                "dataLinks": []
+            },
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -2395,12 +1521,13 @@
             "editable": true,
             "error": false,
             "fill": 2,
+            "fillGradient": 6,
             "grid": {},
             "gridPos": {
                 "h": 7,
                 "w": 12,
                 "x": 12,
-                "y": 23
+                "y": 25
             },
             "id": 38,
             "legend": {
@@ -2420,7 +1547,9 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
-            "options": {},
+            "options": {
+                "dataLinks": []
+            },
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -2484,11 +1613,12 @@
         },
         {
             "collapsed": true,
+            "datasource": null,
             "gridPos": {
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 30
+                "y": 32
             },
             "id": 85,
             "panels": [
@@ -2502,12 +1632,13 @@
                     "editable": true,
                     "error": false,
                     "fill": 2,
+                    "fillGradient": 0,
                     "grid": {},
                     "gridPos": {
                         "h": 7,
-                        "w": 12,
+                        "w": 24,
                         "x": 0,
-                        "y": 31
+                        "y": 33
                     },
                     "id": 109,
                     "legend": {
@@ -2528,319 +1659,15 @@
                     "links": [],
                     "maxPerRow": 2,
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "percentage": false,
                     "pointradius": 5,
                     "points": false,
                     "renderer": "flot",
                     "repeat": "service",
                     "repeatDirection": "h",
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": false,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "expr": "max(increase(mongodb_mongos_sharding_changelog_10min_total{cluster=\"$cluster\", event=~\".*split.*\",service_name=\"$service\"}[$interval])) by (event)",
-                            "format": "time_series",
-                            "hide": false,
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "{{event}}",
-                            "refId": "J",
-                            "step": 300
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeRegions": [],
-                    "timeShift": null,
-                    "title": "Chunk Split Events $service",
-                    "tooltip": {
-                        "msResolution": false,
-                        "shared": true,
-                        "sort": 0,
-                        "value_type": "cumulative"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "format": "short",
-                            "label": "",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "logBase": 1,
-                            "max": null,
-                            "min": null,
-                            "show": true
-                        }
-                    ],
-                    "yaxis": {
-                        "align": false,
-                        "alignLevel": null
-                    }
-                },
-                {
-                    "aliasColors": {},
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "datasource": "Prometheus",
-                    "decimals": null,
-                    "editable": true,
-                    "error": false,
-                    "fill": 2,
-                    "grid": {},
-                    "gridPos": {
-                        "h": 7,
-                        "w": 12,
-                        "x": 12,
-                        "y": 31
-                    },
-                    "id": 111,
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "hideZero": true,
-                        "max": true,
-                        "min": true,
-                        "show": true,
-                        "sort": "avg",
-                        "sortDesc": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": true,
-                    "linewidth": 2,
-                    "links": [],
-                    "maxPerRow": 2,
-                    "nullPointMode": "null",
-                    "options": {},
-                    "percentage": false,
-                    "pointradius": 5,
-                    "points": false,
-                    "renderer": "flot",
-                    "repeat": null,
-                    "repeatDirection": "h",
-                    "repeatIteration": 1563969137041,
-                    "repeatPanelId": 109,
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": false,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "expr": "max(increase(mongodb_mongos_sharding_changelog_10min_total{cluster=\"$cluster\", event=~\".*split.*\",service_name=\"$service\"}[$interval])) by (event)",
-                            "format": "time_series",
-                            "hide": false,
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "{{event}}",
-                            "refId": "J",
-                            "step": 300
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeRegions": [],
-                    "timeShift": null,
-                    "title": "Chunk Split Events $service",
-                    "tooltip": {
-                        "msResolution": false,
-                        "shared": true,
-                        "sort": 0,
-                        "value_type": "cumulative"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "format": "short",
-                            "label": "",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "logBase": 1,
-                            "max": null,
-                            "min": null,
-                            "show": true
-                        }
-                    ],
-                    "yaxis": {
-                        "align": false,
-                        "alignLevel": null
-                    }
-                },
-                {
-                    "aliasColors": {},
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "datasource": "Prometheus",
-                    "decimals": null,
-                    "editable": true,
-                    "error": false,
-                    "fill": 2,
-                    "grid": {},
-                    "gridPos": {
-                        "h": 7,
-                        "w": 12,
-                        "x": 0,
-                        "y": 38
-                    },
-                    "id": 112,
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "hideZero": true,
-                        "max": true,
-                        "min": true,
-                        "show": true,
-                        "sort": "avg",
-                        "sortDesc": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": true,
-                    "linewidth": 2,
-                    "links": [],
-                    "maxPerRow": 2,
-                    "nullPointMode": "null",
-                    "options": {},
-                    "percentage": false,
-                    "pointradius": 5,
-                    "points": false,
-                    "renderer": "flot",
-                    "repeat": null,
-                    "repeatDirection": "h",
-                    "repeatIteration": 1563969137041,
-                    "repeatPanelId": 109,
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": false,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "expr": "max(increase(mongodb_mongos_sharding_changelog_10min_total{cluster=\"$cluster\", event=~\".*split.*\",service_name=\"$service\"}[$interval])) by (event)",
-                            "format": "time_series",
-                            "hide": false,
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "{{event}}",
-                            "refId": "J",
-                            "step": 300
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeRegions": [],
-                    "timeShift": null,
-                    "title": "Chunk Split Events $service",
-                    "tooltip": {
-                        "msResolution": false,
-                        "shared": true,
-                        "sort": 0,
-                        "value_type": "cumulative"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "format": "short",
-                            "label": "",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "logBase": 1,
-                            "max": null,
-                            "min": null,
-                            "show": true
-                        }
-                    ],
-                    "yaxis": {
-                        "align": false,
-                        "alignLevel": null
-                    }
-                },
-                {
-                    "aliasColors": {},
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "datasource": "Prometheus",
-                    "decimals": null,
-                    "editable": true,
-                    "error": false,
-                    "fill": 2,
-                    "grid": {},
-                    "gridPos": {
-                        "h": 7,
-                        "w": 12,
-                        "x": 12,
-                        "y": 38
-                    },
-                    "id": 113,
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "hideZero": true,
-                        "max": true,
-                        "min": true,
-                        "show": true,
-                        "sort": "avg",
-                        "sortDesc": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": true,
-                    "linewidth": 2,
-                    "links": [],
-                    "maxPerRow": 2,
-                    "nullPointMode": "null",
-                    "options": {},
-                    "percentage": false,
-                    "pointradius": 5,
-                    "points": false,
-                    "renderer": "flot",
-                    "repeat": null,
-                    "repeatDirection": "h",
-                    "repeatIteration": 1563969137041,
-                    "repeatPanelId": 109,
                     "seriesOverrides": [],
                     "spaceLength": 10,
                     "stack": false,
@@ -2904,11 +1731,12 @@
         },
         {
             "collapsed": true,
+            "datasource": null,
             "gridPos": {
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 31
+                "y": 33
             },
             "id": 83,
             "panels": [
@@ -2922,12 +1750,13 @@
                     "editable": true,
                     "error": false,
                     "fill": 2,
+                    "fillGradient": 0,
                     "grid": {},
                     "gridPos": {
                         "h": 7,
-                        "w": 12,
+                        "w": 24,
                         "x": 0,
-                        "y": 32
+                        "y": 34
                     },
                     "id": 110,
                     "legend": {
@@ -2948,319 +1777,15 @@
                     "links": [],
                     "maxPerRow": 2,
                     "nullPointMode": "null",
-                    "options": {},
+                    "options": {
+                        "dataLinks": []
+                    },
                     "percentage": false,
                     "pointradius": 5,
                     "points": false,
                     "renderer": "flot",
                     "repeat": "service",
                     "repeatDirection": "h",
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": false,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "expr": "max(increase(mongodb_mongos_sharding_changelog_10min_total{cluster=\"$cluster\", event=~\".*(shard|Shard).*\",service_name=\"$service\"}[$interval])) by (event)",
-                            "format": "time_series",
-                            "hide": false,
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "{{event}}",
-                            "refId": "A",
-                            "step": 300
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeRegions": [],
-                    "timeShift": null,
-                    "title": "Change Log Events $service",
-                    "tooltip": {
-                        "msResolution": false,
-                        "shared": true,
-                        "sort": 0,
-                        "value_type": "cumulative"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "format": "short",
-                            "label": "",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "logBase": 1,
-                            "max": null,
-                            "min": null,
-                            "show": true
-                        }
-                    ],
-                    "yaxis": {
-                        "align": false,
-                        "alignLevel": null
-                    }
-                },
-                {
-                    "aliasColors": {},
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "datasource": "Prometheus",
-                    "decimals": 0,
-                    "editable": true,
-                    "error": false,
-                    "fill": 2,
-                    "grid": {},
-                    "gridPos": {
-                        "h": 7,
-                        "w": 12,
-                        "x": 12,
-                        "y": 32
-                    },
-                    "id": 116,
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "hideZero": true,
-                        "max": true,
-                        "min": true,
-                        "show": true,
-                        "sort": "avg",
-                        "sortDesc": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": true,
-                    "linewidth": 2,
-                    "links": [],
-                    "maxPerRow": 2,
-                    "nullPointMode": "null",
-                    "options": {},
-                    "percentage": false,
-                    "pointradius": 5,
-                    "points": false,
-                    "renderer": "flot",
-                    "repeat": null,
-                    "repeatDirection": "h",
-                    "repeatIteration": 1563969283889,
-                    "repeatPanelId": 110,
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": false,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "expr": "max(increase(mongodb_mongos_sharding_changelog_10min_total{cluster=\"$cluster\", event=~\".*(shard|Shard).*\",service_name=\"$service\"}[$interval])) by (event)",
-                            "format": "time_series",
-                            "hide": false,
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "{{event}}",
-                            "refId": "A",
-                            "step": 300
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeRegions": [],
-                    "timeShift": null,
-                    "title": "Change Log Events $service",
-                    "tooltip": {
-                        "msResolution": false,
-                        "shared": true,
-                        "sort": 0,
-                        "value_type": "cumulative"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "format": "short",
-                            "label": "",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "logBase": 1,
-                            "max": null,
-                            "min": null,
-                            "show": true
-                        }
-                    ],
-                    "yaxis": {
-                        "align": false,
-                        "alignLevel": null
-                    }
-                },
-                {
-                    "aliasColors": {},
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "datasource": "Prometheus",
-                    "decimals": 0,
-                    "editable": true,
-                    "error": false,
-                    "fill": 2,
-                    "grid": {},
-                    "gridPos": {
-                        "h": 7,
-                        "w": 12,
-                        "x": 0,
-                        "y": 39
-                    },
-                    "id": 117,
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "hideZero": true,
-                        "max": true,
-                        "min": true,
-                        "show": true,
-                        "sort": "avg",
-                        "sortDesc": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": true,
-                    "linewidth": 2,
-                    "links": [],
-                    "maxPerRow": 2,
-                    "nullPointMode": "null",
-                    "options": {},
-                    "percentage": false,
-                    "pointradius": 5,
-                    "points": false,
-                    "renderer": "flot",
-                    "repeat": null,
-                    "repeatDirection": "h",
-                    "repeatIteration": 1563969283889,
-                    "repeatPanelId": 110,
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": false,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "expr": "max(increase(mongodb_mongos_sharding_changelog_10min_total{cluster=\"$cluster\", event=~\".*(shard|Shard).*\",service_name=\"$service\"}[$interval])) by (event)",
-                            "format": "time_series",
-                            "hide": false,
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "{{event}}",
-                            "refId": "A",
-                            "step": 300
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeRegions": [],
-                    "timeShift": null,
-                    "title": "Change Log Events $service",
-                    "tooltip": {
-                        "msResolution": false,
-                        "shared": true,
-                        "sort": 0,
-                        "value_type": "cumulative"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "format": "short",
-                            "label": "",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "logBase": 1,
-                            "max": null,
-                            "min": null,
-                            "show": true
-                        }
-                    ],
-                    "yaxis": {
-                        "align": false,
-                        "alignLevel": null
-                    }
-                },
-                {
-                    "aliasColors": {},
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "datasource": "Prometheus",
-                    "decimals": 0,
-                    "editable": true,
-                    "error": false,
-                    "fill": 2,
-                    "grid": {},
-                    "gridPos": {
-                        "h": 7,
-                        "w": 12,
-                        "x": 12,
-                        "y": 39
-                    },
-                    "id": 118,
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "hideZero": true,
-                        "max": true,
-                        "min": true,
-                        "show": true,
-                        "sort": "avg",
-                        "sortDesc": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": true,
-                    "linewidth": 2,
-                    "links": [],
-                    "maxPerRow": 2,
-                    "nullPointMode": "null",
-                    "options": {},
-                    "percentage": false,
-                    "pointradius": 5,
-                    "points": false,
-                    "renderer": "flot",
-                    "repeat": null,
-                    "repeatDirection": "h",
-                    "repeatIteration": 1563969283889,
-                    "repeatPanelId": 110,
                     "seriesOverrides": [],
                     "spaceLength": 10,
                     "stack": false,
@@ -3324,11 +1849,12 @@
         },
         {
             "collapsed": false,
+            "datasource": null,
             "gridPos": {
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 32
+                "y": 34
             },
             "id": 64,
             "panels": [],
@@ -3345,13 +1871,14 @@
             "description": "Ops/sec, classified by legacy wire protocol type (query, insert, update, delete, getmore)",
             "editable": true,
             "error": false,
-            "fill": 6,
+            "fill": 2,
+            "fillGradient": 6,
             "grid": {},
             "gridPos": {
                 "h": 7,
                 "w": 12,
                 "x": 0,
-                "y": 33
+                "y": 35
             },
             "id": 30,
             "legend": {
@@ -3373,7 +1900,9 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
-            "options": {},
+            "options": {
+                "dataLinks": []
+            },
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -3402,14 +1931,16 @@
                     "fill": true,
                     "fillColor": "rgba(0, 0, 0, 0.27)",
                     "op": "gt",
-                    "value": 1
+                    "value": 1,
+                    "yaxis": "left"
                 },
                 {
                     "colorMode": "custom",
                     "fill": true,
                     "fillColor": "rgba(38, 4, 4, 0.22)",
                     "op": "gt",
-                    "value": 2
+                    "value": 2,
+                    "yaxis": "left"
                 }
             ],
             "timeFrom": null,
@@ -3462,13 +1993,14 @@
             "description": "",
             "editable": true,
             "error": false,
-            "fill": 6,
+            "fill": 2,
+            "fillGradient": 6,
             "grid": {},
             "gridPos": {
                 "h": 7,
                 "w": 12,
                 "x": 12,
-                "y": 33
+                "y": 35
             },
             "id": 41,
             "legend": {
@@ -3489,7 +2021,9 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
-            "options": {},
+            "options": {
+                "dataLinks": []
+            },
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -3500,7 +2034,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "mongodb_mongos_sharding_shard_chunks_total{cluster=\"$cluster\"}",
+                    "expr": "max_over_time(mongodb_mongos_sharding_shard_chunks_total{cluster=\"$cluster\"}[$interval]) or max_over_time(mongodb_mongos_sharding_shard_chunks_total{cluster=\"$cluster\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -3552,11 +2086,12 @@
         },
         {
             "collapsed": false,
+            "datasource": null,
             "gridPos": {
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 40
+                "y": 42
             },
             "id": 91,
             "panels": [],
@@ -3572,13 +2107,14 @@
             "description": "TCP connections (Incoming) in mongod processes",
             "editable": true,
             "error": false,
-            "fill": 6,
+            "fill": 2,
+            "fillGradient": 6,
             "grid": {},
             "gridPos": {
                 "h": 7,
                 "w": 12,
                 "x": 0,
-                "y": 41
+                "y": 43
             },
             "id": 37,
             "legend": {
@@ -3600,7 +2136,9 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
-            "options": {},
+            "options": {
+                "dataLinks": []
+            },
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -3673,12 +2211,13 @@
             "editable": true,
             "error": false,
             "fill": 2,
+            "fillGradient": 6,
             "grid": {},
             "gridPos": {
                 "h": 7,
                 "w": 12,
                 "x": 12,
-                "y": 41
+                "y": 43
             },
             "id": 25,
             "legend": {
@@ -3699,7 +2238,9 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
-            "options": {},
+            "options": {
+                "dataLinks": []
+            },
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -3763,11 +2304,12 @@
         },
         {
             "collapsed": false,
+            "datasource": null,
             "gridPos": {
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 48
+                "y": 50
             },
             "id": 97,
             "panels": [],
@@ -3783,12 +2325,13 @@
             "editable": true,
             "error": false,
             "fill": 2,
+            "fillGradient": 0,
             "grid": {},
             "gridPos": {
                 "h": 7,
                 "w": 12,
                 "x": 0,
-                "y": 49
+                "y": 51
             },
             "id": 14,
             "legend": {
@@ -3809,7 +2352,9 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
-            "options": {},
+            "options": {
+                "dataLinks": []
+            },
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -3820,7 +2365,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "max(mongodb_mongod_replset_member_optime_date{cluster=\"$cluster\", state=\"PRIMARY\"}) by (set) - min(mongodb_mongod_replset_member_optime_date{cluster=\"$cluster\", state=\"SECONDARY\"}) by (set)",
+                    "expr": "max(max_over_time(mongodb_mongod_replset_member_optime_date{cluster=\"$cluster\", state=\"PRIMARY\"}[$interval]) or \nmax_over_time(mongodb_mongod_replset_member_optime_date{cluster=\"$cluster\", state=\"PRIMARY\"}[5m])) by (set) - min(min_over_time(mongodb_mongod_replset_member_optime_date{cluster=\"$cluster\", state=\"SECONDARY\"}[$interval]) or\nmin_over_time(mongodb_mongod_replset_member_optime_date{cluster=\"$cluster\", state=\"SECONDARY\"}[5m])) by (set)",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -3881,12 +2426,13 @@
             "editable": true,
             "error": false,
             "fill": 2,
+            "fillGradient": 0,
             "grid": {},
             "gridPos": {
                 "h": 7,
                 "w": 12,
                 "x": 12,
-                "y": 49
+                "y": 51
             },
             "id": 27,
             "legend": {
@@ -3907,7 +2453,9 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
-            "options": {},
+            "options": {
+                "dataLinks": []
+            },
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -3971,11 +2519,12 @@
         },
         {
             "collapsed": false,
+            "datasource": null,
             "gridPos": {
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 56
+                "y": 58
             },
             "id": 48,
             "panels": [],
@@ -3992,12 +2541,13 @@
             "editable": true,
             "error": false,
             "fill": 2,
+            "fillGradient": 6,
             "grid": {},
             "gridPos": {
                 "h": 7,
                 "w": 12,
                 "x": 0,
-                "y": 57
+                "y": 59
             },
             "id": 12,
             "legend": {
@@ -4018,7 +2568,9 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
-            "options": {},
+            "options": {
+                "dataLinks": []
+            },
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -4029,7 +2581,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "max(changes(mongodb_mongod_replset_member_election_date{cluster=\"$cluster\"}[$interval])) by (set)",
+                    "expr": "max(changes(mongodb_mongod_replset_member_election_date{cluster=\"$cluster\"}[$interval]) or changes(mongodb_mongod_replset_member_election_date{cluster=\"$cluster\"}[5m])) by (set)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -4089,12 +2641,13 @@
             "editable": true,
             "error": false,
             "fill": 2,
+            "fillGradient": 6,
             "grid": {},
             "gridPos": {
                 "h": 7,
                 "w": 12,
                 "x": 12,
-                "y": 57
+                "y": 59
             },
             "id": 22,
             "legend": {
@@ -4115,7 +2668,9 @@
             "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
-            "options": {},
+            "options": {
+                "dataLinks": []
+            },
             "percentage": false,
             "pointradius": 5,
             "points": false,
@@ -4179,7 +2734,7 @@
         }
     ],
     "refresh": "1m",
-    "schemaVersion": 18,
+    "schemaVersion": 20,
     "style": "dark",
     "tags": [
         "MongoDB_HA",
@@ -4314,8 +2869,8 @@
                 "tagsQuery": "",
                 "type": "query",
                 "useTags": false
-           },
-           {
+            },
+            {
                 "allValue": null,
                 "current": {},
                 "datasource": "Prometheus",
@@ -4327,28 +2882,6 @@
                 "name": "environment",
                 "options": [],
                 "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
-                "refresh": 2,
-                "regex": "",
-                "skipUrlSync": false,
-                "sort": 0,
-                "tagValuesQuery": "",
-                "tags": [],
-                "tagsQuery": "",
-                "type": "query",
-                "useTags": false
-            },
-            {
-                "allValue": null,
-                "current": {},
-                "datasource": "Prometheus",
-                "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, cluster)",
-                "hide": 2,
-                "includeAll": true,
-                "label": "Cluster",
-                "multi": true,
-                "name": "cluster",
-                "options": [],
-                "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, cluster)",
                 "refresh": 2,
                 "regex": "",
                 "skipUrlSync": false,
