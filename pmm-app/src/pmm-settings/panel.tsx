@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { Col, Collapse, Divider, Icon, Input, Row, Select, Slider, Tooltip } from 'antd';
+import { Col, Collapse, Icon, Row, Slider, Tooltip } from 'antd';
 import { useForm } from 'react-final-form-hooks';
 import 'antd/dist/antd.css';
 import '../react-plugins-deps/styles.scss';
@@ -8,8 +8,6 @@ import { Form as FormFinal } from 'react-final-form';
 import { ToggleField } from '../react-plugins-deps/components/FieldsComponents/Toggle';
 import { TextAreaField } from '../react-plugins-deps/components/FieldsComponents/TextArea';
 import { SelectField } from '../react-plugins-deps/components/FieldsComponents/Select';
-
-const { Option } = Select;
 
 const { Panel } = Collapse;
 
@@ -68,20 +66,15 @@ const SettingsTooltip = ({ url, linkText, text }) => {
 };
 
 const ConfigurationOfSSH = props => {
-  return (
+  // @ts-ignore
+    // @ts-ignore
+    return (
     <>
       <VerticalFormWrapper
         label={'SSH key'}
-        tooltip={<SettingsTooltip text={'Public SSH key to let you login into the server using SSH.'} />}
-        element={
-          <textarea
-            rows={5}
-            className="input-field input-field--textarea input-field--dark"
-            placeholder="Enter ssh key"
-            style={{ width: '100%' }}
-          ></textarea>
-        }
-      />{' '}
+        tooltip={<SettingsTooltip linkText={'Read more'} url={'#'}  text={'Public SSH key to let you login into the server using SSH.'} />}
+        element={<TextAreaField placeholder="Enter ssh key" style={{ width: '100%' }} />}
+      />
       <button type="submit" className="button button--dark" id="addInstance" style={{ color: 'white' }}>
         Apply SSH key
       </button>
@@ -127,34 +120,29 @@ const SettingsPanel = () => {
                 <Panel header="Settings" key="1" style={customPanelStyle}>
                   <VerticalFormWrapper
                     label={'Metrics resolution'}
-                    tooltip={<SettingsTooltip text={'This setting defines how frequently the data will be collected'} />}
+                    tooltip={<SettingsTooltip linkText={'Read more'} url={'#'}  text={'This setting defines how frequently the data will be collected'} />}
                     element={<Slider marks={marks} max={2} step={null} included={false} defaultValue={2} />}
                   />
                   <Collapse bordered={false} defaultActiveKey={['1']} onChange={callback} style={customCollapseStyle}>
                     <Panel header="Advanced settings" key="1" style={customPanelStyle}>
                       <VerticalFormWrapper
                         label={'Data retention'}
-                        tooltip={<SettingsTooltip text={'This is the value for how long data will be stored'} />}
+                        tooltip={<SettingsTooltip linkText={'Read more'} url={'#'}  text={'This is the value for how long data will be stored'} />}
                         element={
                           <>
-                            <input
-                              type="text"
-                              placeholder="Basic usage"
-                              className="input-field input-field--dark"
-                              style={{ width: '60%', height: '32px' }}
-                            />
+                            <input placeholder="Basic usage" className="input-field input-field--dark" style={{ width: '60%', height: '32px' }} />
                             <SelectField options={dataRetentionOptions} defaultValue={'weeks'} />
                           </>
                         }
                       />
                       <VerticalFormWrapper
                         label={'Call home'}
-                        tooltip={<SettingsTooltip text={'Option to send usage data back to Percona to let us make product better'} />}
+                        tooltip={<SettingsTooltip linkText={'Read more'} url={'#'}  text={'Option to send usage data back to Percona to let us make product better'} />}
                         element={<ToggleField form={form} name={'call_home'} />}
                       />
                       <VerticalFormWrapper
                         label={'Check for updates'}
-                        tooltip={<SettingsTooltip text={'Option to check new versions and ability to update PMM from UI'} />}
+                        tooltip={<SettingsTooltip linkText={'Read more'} url={'#'}  text={'Option to check new versions and ability to update PMM from UI'} />}
                         element={<ToggleField form={form} name={'check_for_updates'} />}
                       />
                     </Panel>
