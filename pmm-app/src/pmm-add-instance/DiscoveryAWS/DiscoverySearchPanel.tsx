@@ -39,14 +39,17 @@ const DiscoverySearchPanel = (props: DiscoverySearchPanelInterface) => {
       title: 'Type',
       dataIndex: 'type',
       key: 'type',
+      className: 'discovery-column',
     },
     {
       title: 'Address',
       dataIndex: 'address',
       key: 'address',
+      className: 'discovery-column',
     },
     {
       title: 'Action',
+      className: 'discovery-column',
       render: element => {
         return (
           <Button type="link" onClick={() => props.selectInstance(element)}>

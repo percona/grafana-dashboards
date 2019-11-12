@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import AddRemoteInstance from './AddInstance/AddRemoteInstance/AddRemoteInstance';
-import DiscoverySearchPanel from './DIscoveryAWS/DiscoverySearchPanel';
+import DiscoverySearchPanel from './DiscoveryAWS/DiscoverySearchPanel';
 import 'antd/dist/antd.css';
 import '../react-plugins-deps/styles.scss';
 import AddInstance from './AddInstance/AddInstance';
