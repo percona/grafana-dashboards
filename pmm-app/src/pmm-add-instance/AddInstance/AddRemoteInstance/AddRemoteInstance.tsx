@@ -1,15 +1,20 @@
-import React, { Component, ReactElement } from 'react';
+import React, { ReactElement } from 'react';
 import './AddRemoteInstance.scss';
 import { InputField } from '../../../react-plugins-deps/components/FieldsComponents/Input';
 import { TextAreaField } from '../../../react-plugins-deps/components/FieldsComponents/TextArea';
 import { CheckboxField } from '../../../react-plugins-deps/components/FieldsComponents/Checkbox';
 
 import { Form as FormFinal } from 'react-final-form';
-import { useForm, useField } from 'react-final-form-hooks';
+import { useForm } from 'react-final-form-hooks';
 import { PasswordField } from '../../../react-plugins-deps/components/FieldsComponents/Password';
 
+interface InstanceData {
+  instanceType?: string;
+  defaultPort?: number;
+  remoteInstanceCredentials?: any;
+}
 const getInstanceData = (instanceType, credentials) => {
-  const instance = {};
+  const instance: InstanceData = {};
   switch (instanceType) {
     case 'postgresql':
       instance.instanceType = 'PostgreSQL';
@@ -20,7 +25,6 @@ const getInstanceData = (instanceType, credentials) => {
       instance.instanceType = 'MySQL';
       instance.remoteInstanceCredentials = credentials;
       instance.defaultPort = 3306;
-      instance;
     case 'mongodb':
       instance.instanceType = 'MongoDB';
       instance.remoteInstanceCredentials = credentials;
@@ -74,16 +78,18 @@ const getAdditionalOptions = (type, form) => {
           <span className="description"></span>
         </>
       );
+    default:
+      return null;
   }
 };
 const AddRemoteInstance = props => {
   const { instanceType, remoteInstanceCredentials, defaultPort } = getInstanceData(props.instance.type, props.instance.credentials);
 
-  const { form, handleSubmit, values, pristine, submitting } = useForm({
+  const { form, handleSubmit } = useForm({
     onSubmit: values => {
       console.log(values);
     },
-    validate: () => {},
+    // validate: () => {},
     initialValues: { remoteInstanceCredentials: remoteInstanceCredentials },
   });
 
