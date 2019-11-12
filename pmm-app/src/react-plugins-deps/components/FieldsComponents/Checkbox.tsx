@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React from 'react';
 import { useField } from 'react-final-form-hooks';
 
 interface CheckboxFieldInterface {

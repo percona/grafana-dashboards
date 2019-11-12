@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './AddInstance.scss';
 
 const AddInstance = props => {
   const selectInstanceType = type => () => {
-    props.selectInstanceType({type: type})
+    props.selectInstanceType({ type: type });
   };
   return (
     <section className="content-wrapper">

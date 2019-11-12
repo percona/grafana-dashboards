@@ -31,7 +31,7 @@ const dataSource = [
 ];
 
 const DiscoverySearchPanel = (props: DiscoverySearchPanelInterface) => {
-  const [instances, setInstances] = useState([]);
+  const [instances, setInstances] = useState([] as any);
   const [credentials, setCredentials] = useState([]);
 
   const columns = [
@@ -105,7 +105,15 @@ const DiscoverySearchPanel = (props: DiscoverySearchPanelInterface) => {
           }}
         />
         {instances.length && (
-          <Table dataSource={instances} pagination={false} bordered={false} columns={columns} rowClassName={'discovery-table-row'} style={{ color: 'white' }} size={'small'} />
+          <Table
+            dataSource={instances}
+            pagination={false}
+            bordered={false}
+            columns={columns}
+            rowClassName={() => 'discovery-table-row'}
+            style={{ color: 'white' }}
+            size={'small'}
+          />
         )}
       </div>
     </>
