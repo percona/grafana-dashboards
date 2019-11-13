@@ -3,6 +3,7 @@ import React from 'react';
 import { Select } from 'antd';
 import './Select.scss';
 
+const { Option } = Select;
 interface SelectFieldInterface {
   required?: boolean;
   name?: string;
@@ -27,7 +28,7 @@ export const SelectField = ({ name, placeholder, required, form, options, defaul
           // @ts-ignore
           return (
             <Option value={option.value}>
-              <div class={'select-item'}>{option.label}</div>
+              <div className={'select-item'}>{option.label}</div>
             </Option>
           );
         })}
