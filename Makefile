@@ -13,7 +13,7 @@ pack:
 
 release:
 	cd pmm-app && npm version
-	cd pmm-app && npm ci
+	cd pmm-app && npm i
 	cd pmm-app && npm run build
 
 install:
