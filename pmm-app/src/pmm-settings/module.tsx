@@ -1,4 +1,4 @@
 import { PanelPlugin } from '@grafana/ui';
-import SimplePanel  from './panel';
+import SettingsPanel from './panel';
 
-export const plugin = new PanelPlugin(SimplePanel)
+export const plugin = new PanelPlugin(SettingsPanel);
