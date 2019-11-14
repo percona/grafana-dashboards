@@ -1,12 +1,10 @@
 import { PluginTooltip, VerticalFormWrapper } from '../../react-plugins-deps/components/helpers/Helpers';
 import { SelectField } from '../../react-plugins-deps/components/FieldsComponents/Select';
 import { ToggleField } from '../../react-plugins-deps/components/FieldsComponents/Toggle';
-import React, { ReactElement } from 'react';
+import React from 'react';
 import { Collapse, Slider } from 'antd';
-// import { TextAreaField } from '../../react-plugins-deps/components/FieldsComponents/TextArea';
 const { Panel } = Collapse;
-import { Form as FormFinal } from 'react-final-form';
-import { useForm } from 'react-final-form-hooks';
+import PanelForm from '../../react-plugins-deps/components/helpers/PanelForm';
 const dataRetentionOptions = [
   { value: 'weeks', label: 'Weeks' },
   { value: 'days', label: 'Days' },
@@ -43,63 +41,46 @@ const customCollapseStyle = {
 };
 
 const SettingsPart = props => {
+  const { form } = props;
   return (
-    <FormFinal
-      onSubmit={() => {}}
-      validate={() => {
-        return undefined;
-      }}
-      render={(): ReactElement => {
-        const { form } = useForm({
-          onSubmit: () => {},
-          validate: () => {},
-        });
-        // @ts-ignore
-        return (
-          <form>
-            <VerticalFormWrapper
-              label={'Metrics resolution'}
-              tooltip={<PluginTooltip linkText={'Read more'} url={'#'} text={'This setting defines how frequently the data will be collected'} />}
-              element={<Slider marks={marks} max={2} step={null} included={false} defaultValue={2} />}
-            />
-            <Collapse bordered={false} defaultActiveKey={['1']} onChange={callback} style={customCollapseStyle}>
-              <Panel header="Advanced settings" key="1" style={customPanelStyle}>
-                <VerticalFormWrapper
-                  label={'Data retention'}
-                  tooltip={<PluginTooltip linkText={'Read more'} url={'#'} text={'This is the value for how long data will be stored'} />}
-                  element={
-                    <>
-                      <input placeholder="Basic usage" className="input-field input-field--dark" style={{ width: '60%', height: '32px' }} />
-                      <SelectField options={dataRetentionOptions} defaultValue={'weeks'} />
-                    </>
-                  }
-                />
-                <VerticalFormWrapper
-                  label={'Call home'}
-                  tooltip={
-                    <PluginTooltip
-                      linkText={'Read more'}
-                      url={'#'}
-                      text={'Option to send usage data back to Percona to let us make product better'}
-                    />
-                  }
-                  element={<ToggleField form={form} name={'call_home'} />}
-                />
-                <VerticalFormWrapper
-                  label={'Check for updates'}
-                  tooltip={<PluginTooltip linkText={'Read more'} url={'#'} text={'Option to check new versions and ability to update PMM from UI'} />}
-                  element={<ToggleField form={form} name={'check_for_updates'} />}
-                />
-              </Panel>
-            </Collapse>
-            <button type="submit" className="button button--dark" id="addInstance" style={{ color: 'white' }}>
-              Apply changes
-            </button>
-          </form>
-        );
-      }}
-    />
+    <>
+      {' '}
+      <VerticalFormWrapper
+        label={'Metrics resolution'}
+        tooltip={<PluginTooltip linkText={'Read more'} url={'#'} text={'This setting defines how frequently the data will be collected'} />}
+        element={<Slider marks={marks} max={2} step={null} included={false} defaultValue={2} />}
+      />
+      <Collapse bordered={false} defaultActiveKey={['1']} onChange={callback} style={customCollapseStyle}>
+        <Panel header="Advanced settings" key="1" style={customPanelStyle}>
+          <VerticalFormWrapper
+            label={'Data retention'}
+            tooltip={<PluginTooltip linkText={'Read more'} url={'#'} text={'This is the value for how long data will be stored'} />}
+            element={
+              <>
+                <input placeholder="Basic usage" className="input-field input-field--dark" style={{ width: '60%', height: '32px' }} />
+                <SelectField options={dataRetentionOptions} defaultValue={'weeks'} />
+              </>
+            }
+          />
+          <VerticalFormWrapper
+            label={'Call home'}
+            tooltip={
+              <PluginTooltip linkText={'Read more'} url={'#'} text={'Option to send usage data back to Percona to let us make product better'} />
+            }
+            element={<ToggleField form={form} name={'call_home'} />}
+          />
+          <VerticalFormWrapper
+            label={'Check for updates'}
+            tooltip={<PluginTooltip linkText={'Read more'} url={'#'} text={'Option to check new versions and ability to update PMM from UI'} />}
+            element={<ToggleField form={form} name={'check_for_updates'} />}
+          />
+        </Panel>
+      </Collapse>
+      <button type="submit" className="button button--dark" id="addInstance" style={{ color: 'white' }}>
+        Apply changes
+      </button>
+    </>
   );
 };
 
-export default SettingsPart;
+export default PanelForm({ Element: SettingsPart });
