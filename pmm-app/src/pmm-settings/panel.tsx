@@ -3,11 +3,10 @@ import { Collapse } from 'antd';
 import '../react-plugins-deps/antd.withoutglobal.css';
 import '../react-plugins-deps/styles.scss';
 import './panel.scss';
-import Something from './Parts/Something';
+import AlertManager from './Parts/AlertManager';
 import UploadSSHKey from './Parts/UploadSSHKey';
 import Diagnostics from './Parts/Diagnostics';
 import SettingsPart from './Parts/Settings';
-
 const { Panel } = Collapse;
 
 const customPanelStyle = {
@@ -38,8 +37,8 @@ const SettingsPanel = () => {
         <Panel header="SSH Key Details" key="3" style={customPanelStyle}>
           <UploadSSHKey />
         </Panel>
-        <Panel header="Some other panel" key="4" style={customPanelStyle}>
-          <Something />
+        <Panel header="AlertManager integration" key="4" style={customPanelStyle}>
+          <AlertManager />
         </Panel>
         <Panel header="Diagnostics" key="5" style={customPanelStyle}>
           <Diagnostics />

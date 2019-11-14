@@ -67,7 +67,7 @@ const DiscoverySearchPanel = (props: DiscoverySearchPanelInterface) => {
 
   return (
     <>
-      <div style={{ width: '800px' }}>
+      <div style={{ width: '100%' }}>
         <FormFinal
           onSubmit={setCredentials}
           validate={() => {

@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import AddRemoteInstance from './AddInstance/AddRemoteInstance/AddRemoteInstance';
 import DiscoverySearchPanel from './DiscoveryAWS/DiscoverySearchPanel';
-import 'antd/dist/antd.css';
+import '../react-plugins-deps/antd.withoutglobal.css';
 import '../react-plugins-deps/styles.scss';
 import AddInstance from './AddInstance/AddInstance';
 import { Button } from 'antd';
 
-const SimplePanel = () => {
+const AddInstancePanel = () => {
   // @ts-ignore
   const [selectedInstance, setSelectedInstance] = useState({
-    type: undefined
+    type: undefined,
   });
   return (
     <div className={'app-theme-dark content-wrapper'}>
@@ -23,7 +23,7 @@ const SimplePanel = () => {
       ) : null}
       {selectedInstance.type && selectedInstance.type !== 'rds' ? (
         <>
-          <Button type={'link'} onClick={setSelectedInstance.bind(null, {type: undefined})}>
+          <Button type={'link'} onClick={setSelectedInstance.bind(null, { type: undefined })}>
             Return to instance select menu
           </Button>
           <AddRemoteInstance instance={selectedInstance} />{' '}
@@ -33,4 +33,4 @@ const SimplePanel = () => {
   );
 };
 
-export default SimplePanel;
+export default AddInstancePanel;
