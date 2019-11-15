@@ -7,6 +7,7 @@ import AlertManager from './Parts/AlertManager';
 import UploadSSHKey from './Parts/UploadSSHKey';
 import Diagnostics from './Parts/Diagnostics';
 import SettingsPart from './Parts/Settings';
+import { CheckboxField } from '../react-plugins-deps/components/FieldsComponents/Checkbox';
 const { Panel } = Collapse;
 
 const customPanelStyle = {
@@ -33,6 +34,7 @@ const SettingsPanel = () => {
       <Collapse bordered={false} defaultActiveKey={['1']} onChange={() => {}} style={customCollapseStyle}>
         <Panel header="Settings" key="1" style={customPanelStyle}>
           <SettingsPart />
+          <CheckboxField name={'tester'} data-cy={'dsa'} />
         </Panel>
         <Panel header="SSH Key Details" key="3" style={customPanelStyle}>
           <UploadSSHKey />
