@@ -36,7 +36,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1568377862178,
+    "iteration": 1573838479439,
     "links": [
         {
             "icon": "doc",
@@ -109,12 +109,15 @@
     ],
     "panels": [
         {
+            "breadcrumbItemsMaxAmount": 25,
+            "datasource": null,
             "gridPos": {
                 "h": 2,
                 "w": 24,
                 "x": 0,
                 "y": 0
             },
+            "hideTextInRootDashboard": false,
             "id": 999,
             "isRootDashboard": false,
             "links": [],
@@ -155,7 +158,7 @@
                 "h": 3,
                 "w": 8,
                 "x": 0,
-                "y": 3
+                "y": 2
             },
             "id": 41,
             "interval": null,
@@ -216,7 +219,7 @@
                     "value": "null"
                 }
             ],
-            "valueName": "avg"
+            "valueName": "first"
         },
         {
             "cacheTimeout": null,
@@ -244,7 +247,7 @@
                 "h": 3,
                 "w": 4,
                 "x": 8,
-                "y": 3
+                "y": 2
             },
             "height": "125px",
             "hideTimeOverride": false,
@@ -360,7 +363,7 @@
                 "h": 3,
                 "w": 4,
                 "x": 12,
-                "y": 3
+                "y": 2
             },
             "height": "125px",
             "id": 17,
@@ -474,7 +477,7 @@
                 "h": 3,
                 "w": 4,
                 "x": 16,
-                "y": 3
+                "y": 2
             },
             "height": "125px",
             "id": 39,
@@ -575,7 +578,7 @@
                 "h": 3,
                 "w": 4,
                 "x": 20,
-                "y": 3
+                "y": 2
             },
             "height": "125px",
             "id": 27,
@@ -659,7 +662,7 @@
             "dashLength": 10,
             "dashes": false,
             "datasource": "Prometheus",
-            "decimals": 0,
+            "decimals": 2,
             "description": "Shows the number of seconds the Slave host is delayed in replication applying events compared to when the Master host applied them, denoted by the **Seconds_Behind_Master** value, and only applies to a Slave host. The most common reasons for Slaves to lag their Master are:\n\n* Network round trip time - High latency links will lead to non-zero replication lag values\n\n* Single threaded nature of replication channels - Master servers have the advantage of applying changes in parallel, whereas Slaves are only able to apply changes in serial, thus limiting their throughput.  In some cases Group Commit can help but is not always applicable.\n\n* High number of changed rows or computationally expensive SQL - Depending on the replication format (ROW vs STATEMENT), significant changes to the database through high volume of rows modified, or expensive CPU will all contribute to Slaves lagging behind their Master\n\nGenerally adding more CPU or Disk resources can alleviate replication lag issues, up to a point.\n\nSee also:",
             "editable": true,
             "error": false,
@@ -670,7 +673,7 @@
                 "h": 8,
                 "w": 24,
                 "x": 0,
-                "y": 6
+                "y": 5
             },
             "id": 16,
             "legend": {
@@ -681,6 +684,8 @@
                 "min": true,
                 "rightSide": true,
                 "show": true,
+                "sort": "avg",
+                "sortDesc": true,
                 "total": false,
                 "values": true
             },
@@ -757,6 +762,7 @@
             },
             "yaxes": [
                 {
+                    "decimals": 2,
                     "format": "short",
                     "logBase": 1,
                     "max": null,
@@ -768,7 +774,7 @@
                     "logBase": 1,
                     "max": null,
                     "min": 0,
-                    "show": true
+                    "show": false
                 }
             ],
             "yaxis": {
@@ -782,7 +788,7 @@
             "dashLength": 10,
             "dashes": false,
             "datasource": "Prometheus",
-            "decimals": null,
+            "decimals": 2,
             "description": "Shows the overall size of the binary log files, which can exist on both Masters and Slaves. The binary log (also known as the binlog) contains events that describe database changes: CREATE TABLE, ALTER TABLE, updates, inserts, deletes and other statements or database changes. The binlog is the file that is read by Slaves via their IO Thread process in order to replicate database changes modification on the data and on the table structures. There can be more than one binlog file present depending on the binlog rotation policy adopted (for example using the configuration variables **max_binlog_size** and **expire_logs_days**).\n\nSee also:",
             "editable": true,
             "error": false,
@@ -804,6 +810,8 @@
                 "min": true,
                 "rightSide": false,
                 "show": true,
+                "sort": "avg",
+                "sortDesc": true,
                 "total": false,
                 "values": true
             },
@@ -875,6 +883,7 @@
             },
             "yaxes": [
                 {
+                    "decimals": 2,
                     "format": "bytes",
                     "logBase": 1,
                     "max": null,
@@ -886,7 +895,7 @@
                     "logBase": 1,
                     "max": null,
                     "min": 0,
-                    "show": true
+                    "show": false
                 }
             ],
             "yaxis": {
@@ -982,6 +991,7 @@
             },
             "yaxes": [
                 {
+                    "decimals": 2,
                     "format": "bytes",
                     "logBase": 1,
                     "max": null,
@@ -993,7 +1003,7 @@
                     "logBase": 1,
                     "max": null,
                     "min": 0,
-                    "show": true
+                    "show": false
                 }
             ],
             "yaxis": {
@@ -1007,7 +1017,7 @@
             "dashLength": 10,
             "dashes": false,
             "datasource": "Prometheus",
-            "decimals": 0,
+            "decimals": 2,
             "description": "Shows the overall count of binary log files, which can exist on both Masters and Slaves. The binary log (also known as the binlog) contains events that describe database changes: CREATE TABLE, ALTER TABLE, updates, inserts, deletes and other statements or database changes. The binlog is the file that is read by Slaves via their IO Thread process in order to replicate database changes modification on the data and on the table structures. There can be more than one binlog file present depending on the binlog rotation policy adopted (for example using the configuration variables **max_binlog_size** and **expire_logs_days**).\n\nSee also:",
             "editable": true,
             "error": false,
@@ -1018,7 +1028,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 20
+                "y": 21
             },
             "id": 34,
             "legend": {
@@ -1100,6 +1110,7 @@
             },
             "yaxes": [
                 {
+                    "decimals": 2,
                     "format": "none",
                     "logBase": 1,
                     "max": null,
@@ -1111,7 +1122,7 @@
                     "logBase": 1,
                     "max": null,
                     "min": 0,
-                    "show": true
+                    "show": false
                 }
             ],
             "yaxis": {
@@ -1136,7 +1147,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 20
+                "y": 21
             },
             "id": 36,
             "legend": {
@@ -1209,6 +1220,7 @@
                 {
                     "decimals": 0,
                     "format": "none",
+                    "label": "",
                     "logBase": 1,
                     "max": null,
                     "min": 0,
@@ -1219,7 +1231,7 @@
                     "logBase": 1,
                     "max": null,
                     "min": 0,
-                    "show": true
+                    "show": false
                 }
             ],
             "yaxis": {
@@ -1233,7 +1245,7 @@
             "dashLength": 10,
             "dashes": false,
             "datasource": "Prometheus",
-            "decimals": null,
+            "decimals": 2,
             "description": "Shows the overall size of the relay log files, and applies only to Slaves. The relay log consists of a set of numbered files containing the events to be executed on a Slave in order to replicate database changes.  As soon as the SQL Thread completes execution of all events in a relay log file, the relay log file is then deleted by MySQL.\n\nSee also:",
             "editable": true,
             "error": false,
@@ -1244,7 +1256,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 27
+                "y": 29
             },
             "id": 37,
             "legend": {
@@ -1321,6 +1333,7 @@
             },
             "yaxes": [
                 {
+                    "decimals": 2,
                     "format": "bytes",
                     "logBase": 1,
                     "max": null,
@@ -1332,7 +1345,7 @@
                     "logBase": 1,
                     "max": null,
                     "min": 0,
-                    "show": true
+                    "show": false
                 }
             ],
             "yaxis": {
@@ -1357,7 +1370,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 27
+                "y": 29
             },
             "id": 38,
             "legend": {
@@ -1428,6 +1441,7 @@
             },
             "yaxes": [
                 {
+                    "decimals": 2,
                     "format": "bytes",
                     "logBase": 1,
                     "max": null,
@@ -1439,7 +1453,7 @@
                     "logBase": 1,
                     "max": null,
                     "min": 0,
-                    "show": true
+                    "show": false
                 }
             ],
             "yaxis": {
@@ -1449,11 +1463,12 @@
         },
         {
             "collapsed": true,
+            "datasource": null,
             "gridPos": {
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 34
+                "y": 37
             },
             "id": 293,
             "panels": [
@@ -1484,7 +1499,7 @@
                         "h": 2,
                         "w": 3,
                         "x": 0,
-                        "y": 35
+                        "y": 38
                     },
                     "height": "125px",
                     "id": 295,
@@ -1547,11 +1562,12 @@
                 },
                 {
                     "content": "<h5><b><font color=#e68a00><center>$version</center></font></b></h5>\n\n\n",
+                    "datasource": null,
                     "gridPos": {
                         "h": 2,
                         "w": 3,
                         "x": 3,
-                        "y": 35
+                        "y": 38
                     },
                     "id": 297,
                     "links": [],
@@ -1588,7 +1604,7 @@
                         "h": 2,
                         "w": 3,
                         "x": 6,
-                        "y": 35
+                        "y": 38
                     },
                     "height": "125px",
                     "id": 299,
@@ -1680,7 +1696,7 @@
                         "h": 2,
                         "w": 3,
                         "x": 9,
-                        "y": 35
+                        "y": 38
                     },
                     "id": 316,
                     "interval": null,
@@ -1772,7 +1788,7 @@
                         "h": 2,
                         "w": 3,
                         "x": 12,
-                        "y": 35
+                        "y": 38
                     },
                     "id": 317,
                     "interval": null,
@@ -1864,7 +1880,7 @@
                         "h": 2,
                         "w": 3,
                         "x": 15,
-                        "y": 35
+                        "y": 38
                     },
                     "id": 318,
                     "interval": null,
@@ -1956,7 +1972,7 @@
                         "h": 2,
                         "w": 3,
                         "x": 18,
-                        "y": 35
+                        "y": 38
                     },
                     "id": 319,
                     "interval": null,
@@ -2026,11 +2042,12 @@
                 },
                 {
                     "content": "<h5><b><font color=#e68a00><center><a href=\"/graph/d/mysql-instance-summary/mysql-instance-summary?var-host=$host&var-service=$service\" target=\"_blank\">$crop_service...</a></center></font></b></h5>",
+                    "datasource": null,
                     "gridPos": {
                         "h": 2,
                         "w": 3,
                         "x": 21,
-                        "y": 35
+                        "y": 38
                     },
                     "id": 1000,
                     "links": [],
@@ -2058,7 +2075,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 37
+                        "y": 40
                     },
                     "height": "250px",
                     "id": 301,
@@ -2168,6 +2185,7 @@
                     },
                     "yaxes": [
                         {
+                            "decimals": 2,
                             "format": "short",
                             "label": "",
                             "logBase": 1,
@@ -2181,7 +2199,7 @@
                             "logBase": 1,
                             "max": null,
                             "min": 0,
-                            "show": true
+                            "show": false
                         }
                     ],
                     "yaxis": {
@@ -2206,7 +2224,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 37
+                        "y": 40
                     },
                     "id": 303,
                     "legend": {
@@ -2315,6 +2333,7 @@
                     },
                     "yaxes": [
                         {
+                            "decimals": 2,
                             "format": "short",
                             "label": "Threads",
                             "logBase": 1,
@@ -2353,7 +2372,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 44
+                        "y": 48
                     },
                     "id": 309,
                     "legend": {
@@ -2362,7 +2381,7 @@
                         "current": false,
                         "hideZero": true,
                         "max": true,
-                        "min": false,
+                        "min": true,
                         "rightSide": false,
                         "show": true,
                         "sort": "avg",
@@ -2422,6 +2441,7 @@
                     },
                     "yaxes": [
                         {
+                            "decimals": 2,
                             "format": "ops",
                             "logBase": 1,
                             "max": null,
@@ -2433,7 +2453,7 @@
                             "logBase": 1,
                             "max": null,
                             "min": 0,
-                            "show": true
+                            "show": false
                         }
                     ],
                     "yaxis": {
@@ -2458,7 +2478,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 44
+                        "y": 48
                     },
                     "id": 307,
                     "legend": {
@@ -2468,7 +2488,7 @@
                         "hideEmpty": false,
                         "hideZero": false,
                         "max": true,
-                        "min": false,
+                        "min": true,
                         "rightSide": false,
                         "show": true,
                         "sort": "avg",
@@ -2534,6 +2554,7 @@
                     },
                     "yaxes": [
                         {
+                            "decimals": 2,
                             "format": "short",
                             "logBase": 1,
                             "max": null,
@@ -2545,7 +2566,7 @@
                             "logBase": 1,
                             "max": null,
                             "min": 0,
-                            "show": true
+                            "show": false
                         }
                     ],
                     "yaxis": {
@@ -2569,7 +2590,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 52
+                        "y": 56
                     },
                     "id": 311,
                     "legend": {
@@ -2578,7 +2599,7 @@
                         "current": false,
                         "hideZero": true,
                         "max": true,
-                        "min": false,
+                        "min": true,
                         "rightSide": false,
                         "show": true,
                         "sort": "avg",
@@ -2638,6 +2659,7 @@
                     },
                     "yaxes": [
                         {
+                            "decimals": 2,
                             "format": "short",
                             "logBase": 1,
                             "max": null,
@@ -2649,7 +2671,7 @@
                             "logBase": 1,
                             "max": null,
                             "min": 0,
-                            "show": true
+                            "show": false
                         }
                     ],
                     "yaxis": {
@@ -2674,7 +2696,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 52
+                        "y": 56
                     },
                     "id": 305,
                     "legend": {
@@ -2760,6 +2782,7 @@
                     },
                     "yaxes": [
                         {
+                            "decimals": 2,
                             "format": "Bps",
                             "logBase": 1,
                             "max": null,
@@ -2771,7 +2794,7 @@
                             "logBase": 1,
                             "max": null,
                             "min": 0,
-                            "show": true
+                            "show": false
                         }
                     ],
                     "yaxis": {
@@ -2785,11 +2808,12 @@
         },
         {
             "collapsed": true,
+            "datasource": null,
             "gridPos": {
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 35
+                "y": 38
             },
             "id": 291,
             "panels": [
@@ -2819,7 +2843,7 @@
                         "h": 2,
                         "w": 3,
                         "x": 0,
-                        "y": 36
+                        "y": 39
                     },
                     "height": "125px",
                     "id": 321,
@@ -2904,7 +2928,7 @@
                         "h": 2,
                         "w": 3,
                         "x": 3,
-                        "y": 36
+                        "y": 39
                     },
                     "id": 323,
                     "interval": null,
@@ -2991,7 +3015,7 @@
                         "h": 2,
                         "w": 3,
                         "x": 6,
-                        "y": 36
+                        "y": 39
                     },
                     "height": "125px",
                     "id": 327,
@@ -3077,7 +3101,7 @@
                         "h": 2,
                         "w": 3,
                         "x": 9,
-                        "y": 36
+                        "y": 39
                     },
                     "id": 329,
                     "interval": null,
@@ -3165,7 +3189,7 @@
                         "h": 2,
                         "w": 3,
                         "x": 12,
-                        "y": 36
+                        "y": 39
                     },
                     "height": "125px",
                     "id": 331,
@@ -3253,7 +3277,7 @@
                         "h": 2,
                         "w": 3,
                         "x": 15,
-                        "y": 36
+                        "y": 39
                     },
                     "height": "125px",
                     "id": 333,
@@ -3345,7 +3369,7 @@
                         "h": 2,
                         "w": 3,
                         "x": 18,
-                        "y": 36
+                        "y": 39
                     },
                     "id": 335,
                     "interval": null,
@@ -3416,7 +3440,7 @@
                         "h": 2,
                         "w": 3,
                         "x": 21,
-                        "y": 36
+                        "y": 39
                     },
                     "id": 387,
                     "links": [],
@@ -3465,7 +3489,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 38
+                        "y": 41
                     },
                     "height": "",
                     "id": 337,
@@ -3548,7 +3572,7 @@
                     },
                     "yaxes": [
                         {
-                            "decimals": null,
+                            "decimals": 2,
                             "format": "percent",
                             "label": "",
                             "logBase": 1,
@@ -3594,7 +3618,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 38
+                        "y": 41
                     },
                     "id": 339,
                     "legend": {
@@ -3687,6 +3711,7 @@
                     },
                     "yaxes": [
                         {
+                            "decimals": 2,
                             "format": "short",
                             "label": "",
                             "logBase": 1,
@@ -3695,7 +3720,9 @@
                             "show": true
                         },
                         {
+                            "decimals": 2,
                             "format": "percentunit",
+                            "label": "",
                             "logBase": 1,
                             "max": "1",
                             "min": 0,
@@ -3727,7 +3754,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 46
+                        "y": 49
                     },
                     "id": 341,
                     "legend": {
@@ -3854,6 +3881,7 @@
                     },
                     "yaxes": [
                         {
+                            "decimals": 2,
                             "format": "Bps",
                             "label": "Page Out (-) / Page In (+)",
                             "logBase": 1,
@@ -3890,7 +3918,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 46
+                        "y": 49
                     },
                     "id": 343,
                     "legend": {
@@ -3978,6 +4006,7 @@
                     },
                     "yaxes": [
                         {
+                            "decimals": 2,
                             "format": "Bps",
                             "label": "Outbound (-) / Inbound (+)",
                             "logBase": 1,
@@ -4004,7 +4033,7 @@
         }
     ],
     "refresh": "1m",
-    "schemaVersion": 19,
+    "schemaVersion": 20,
     "style": "dark",
     "tags": [
         "Percona",
