@@ -5,7 +5,6 @@ import React from 'react';
 import { Collapse, Slider } from 'antd';
 const { Panel } = Collapse;
 import PanelForm from '../../react-plugins-deps/components/helpers/PanelForm';
-import { CheckboxField } from '../../react-plugins-deps/components/FieldsComponents/Checkbox';
 import './Settings.scss';
 const dataRetentionOptions = [
   { value: 'weeks', label: 'Weeks' },
