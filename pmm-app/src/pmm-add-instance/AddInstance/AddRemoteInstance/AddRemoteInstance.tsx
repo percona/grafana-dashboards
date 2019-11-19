@@ -13,26 +13,35 @@ interface InstanceData {
   defaultPort?: number;
   remoteInstanceCredentials?: any;
 }
+
+const extractCredentials = credentials => {
+  const [service_name, port] = credentials.address.split(':');
+  return {
+    service_name,
+    port,
+    address: service_name,
+  };
+};
 const getInstanceData = (instanceType, credentials) => {
   const instance: InstanceData = {};
   switch (instanceType) {
     case 'postgresql':
       instance.instanceType = 'PostgreSQL';
-      instance.remoteInstanceCredentials = credentials;
+      instance.remoteInstanceCredentials = extractCredentials(credentials);
       instance.defaultPort = 5432;
       break;
     case 'mysql':
       instance.instanceType = 'MySQL';
-      instance.remoteInstanceCredentials = credentials;
+      instance.remoteInstanceCredentials = extractCredentials(credentials);
       instance.defaultPort = 3306;
     case 'mongodb':
       instance.instanceType = 'MongoDB';
-      instance.remoteInstanceCredentials = credentials;
+      instance.remoteInstanceCredentials = extractCredentials(credentials);
       instance.defaultPort = 27017;
       break;
     case 'proxysql':
       instance.instanceType = 'ProxySQL';
-      instance.remoteInstanceCredentials = credentials;
+      instance.remoteInstanceCredentials = extractCredentials(credentials);
       instance.defaultPort = 6032;
       break;
   }
@@ -194,10 +203,6 @@ key2:value2"
         <button type="submit" className="button button--dark" id="addInstance">
           Add service
         </button>
-
-        {/*<div className="spinner-wrapper">*/}
-        {/*  <i className="fa fa-spinner fa-pulse fa-2x fa-fw"></i>*/}
-        {/*</div>*/}
       </div>
     </form>
   );

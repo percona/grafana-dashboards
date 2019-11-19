@@ -12,4 +12,4 @@ const Diagnostics = props => {
   );
 };
 
-export default Diagnostics
+export default Diagnostics;

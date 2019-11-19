@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import AddRemoteInstance from './AddInstance/AddRemoteInstance/AddRemoteInstance';
 import DiscoverySearchPanel from './DiscoveryAWS/DiscoverySearchPanel';
-import '../react-plugins-deps/antd.withoutglobal.css';
 import '../react-plugins-deps/styles.scss';
+import '../react-plugins-deps/style.less';
 import AddInstance from './AddInstance/AddInstance';
 import { Button } from 'antd';
 
@@ -12,11 +12,12 @@ const AddInstancePanel = () => {
     type: undefined,
   });
   return (
-    <div className={'app-theme-dark content-wrapper'}>
+    <div className={'app-theme-dark content-wrapper'} id={'antd'}>
       {!selectedInstance.type ? <AddInstance selectInstanceType={setSelectedInstance} /> : null}
       {selectedInstance.type === 'rds' ? (
         <DiscoverySearchPanel
           selectInstance={instanceData => {
+            debugger;
             setSelectedInstance(instanceData);
           }}
         />

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Tabs} from 'antd';
+import { Tabs } from 'antd';
 import './QueryDetails.scss';
 import Fingerprint from './Fingerprint';
 import Explain from './Explain/Explain';
@@ -12,14 +12,13 @@ const { TabPane } = Tabs;
 
 const QueryDetails = props => {
   const MetricsProps = {
-    filterBy: 'f04c27d594ea4e37808d795f8c4646d8',
+    filterBy: '80295d1d2720d4515b05d648e8caa82f',
     groupBy: 'queryid',
-    periodStartFrom: '2019-10-15T23:50:13+00:00',
-    periodStartTo: '2019-10-16T11:50:13+00:00',
     labels: [],
+    periodStartFrom: '2019-11-18T19:54:22+00:00',
+    periodStartTo: '2019-11-19T07:54:22+00:00',
     tables: [],
   };
-
   return (
     <div className={'query-analytics-details-grid'} id={'query-analytics-details'}>
       <Fingerprint

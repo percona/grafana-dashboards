@@ -1,4 +1,4 @@
-let result = {
+const result = {
   labels: {
     '': {
       name: [{ main_metric_percent: 1, main_metric_per_sec: 0.003997429 }],

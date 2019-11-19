@@ -15,8 +15,10 @@ const checkboxGroup = (name, items, showPercentage) => {
         .map(item => {
           return (
             <div className={'filter-label'}>
-              <CheckboxField />
-              {showPercentage && <span>{Humanize.formatPercent(item.main_metric_percent)}</span>}
+              <span className={'filter-name'}>
+                <CheckboxField label={item.value} checked={item.checked} />
+              </span>
+              {showPercentage && <span className={'percentage'}>{Humanize.formatPercent(item.main_metric_percent)}</span>}
             </div>
           );
         })}
