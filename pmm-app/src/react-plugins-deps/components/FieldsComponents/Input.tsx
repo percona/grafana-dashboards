@@ -1,5 +1,5 @@
 import React from 'react';
-// import { useField } from 'react-final-form-hooks';
+import { useField } from 'react-final-form-hooks';
 interface InputFieldInterface {
   required?: boolean;
   name?: string;
@@ -16,7 +16,7 @@ interface InputFieldInterface {
 
 export const InputField = ({ name, placeholder, required, form }: InputFieldInterface) => {
   // // @ts-ignore
-  // const field = useField(name, form);
-  // {...field.input}
-  return <input type="text" placeholder={placeholder} className="input-field input-field--dark" />;
+  const field = useField(name, form);
+
+  return <input {...field.input} type="text" placeholder={placeholder} className="input-field input-field--dark" />;
 };

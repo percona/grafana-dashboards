@@ -1,6 +1,6 @@
 import React from 'react';
 import { Collapse } from 'antd';
-import '../react-plugins-deps/antd.withoutglobal.css';
+// import '../react-plugins-deps/antd.withoutglobal.css';
 import '../react-plugins-deps/styles.scss';
 import './panel.scss';
 import AlertManager from './Parts/AlertManager';

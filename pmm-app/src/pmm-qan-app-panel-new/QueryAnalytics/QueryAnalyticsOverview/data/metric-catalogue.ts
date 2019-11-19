@@ -8,8 +8,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'size',
       subSumPipe: 'percent',
       sparklineType: 'size',
-      perQueryStatsPipe: 'size'
-    }
+      perQueryStatsPipe: 'size',
+    },
   },
   blk_read_time: {
     humanizeName: 'Reading Blocks Time',
@@ -20,8 +20,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'time',
       subSumPipe: 'percent',
       sparklineType: 'number',
-      perQueryStatsPipe: 'time'
-    }
+      perQueryStatsPipe: 'time',
+    },
   },
   blk_write_time: {
     humanizeName: 'Writing Blocks Time',
@@ -32,8 +32,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'time',
       subSumPipe: 'percent',
       sparklineType: 'number',
-      perQueryStatsPipe: 'time'
-    }
+      perQueryStatsPipe: 'time',
+    },
   },
   local_blks_dirtied: {
     humanizeName: 'Local Blocks Dirtied',
@@ -44,8 +44,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'number',
       subSumPipe: 'percent',
       sparklineType: 'number',
-      perQueryStatsPipe: 'number'
-    }
+      perQueryStatsPipe: 'number',
+    },
   },
   local_blks_hit: {
     humanizeName: 'Local Block Cache Hits',
@@ -56,8 +56,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'number',
       subSumPipe: 'percent',
       sparklineType: 'number',
-      perQueryStatsPipe: 'number'
-    }
+      perQueryStatsPipe: 'number',
+    },
   },
   local_blks_read: {
     humanizeName: 'Local Blocks Read',
@@ -68,8 +68,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'number',
       subSumPipe: 'percent',
       sparklineType: 'number',
-      perQueryStatsPipe: 'number'
-    }
+      perQueryStatsPipe: 'number',
+    },
   },
   local_blks_written: {
     humanizeName: 'Local Blocks Written',
@@ -80,8 +80,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'number',
       subSumPipe: 'percent',
       sparklineType: 'number',
-      perQueryStatsPipe: 'number'
-    }
+      perQueryStatsPipe: 'number',
+    },
   },
   shared_blks_dirtied: {
     humanizeName: 'Shared Blocks Dirtied',
@@ -92,8 +92,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'number',
       subSumPipe: 'percent',
       sparklineType: 'number',
-      perQueryStatsPipe: 'number'
-    }
+      perQueryStatsPipe: 'number',
+    },
   },
   shared_blks_hit: {
     humanizeName: 'Shared Block Cache Hits',
@@ -104,8 +104,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'number',
       subSumPipe: 'percent',
       sparklineType: 'number',
-      perQueryStatsPipe: 'number'
-    }
+      perQueryStatsPipe: 'number',
+    },
   },
   shared_blks_read: {
     humanizeName: 'Shared Blocks Read',
@@ -116,8 +116,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'number',
       subSumPipe: 'percent',
       sparklineType: 'number',
-      perQueryStatsPipe: 'number'
-    }
+      perQueryStatsPipe: 'number',
+    },
   },
   shared_blks_written: {
     humanizeName: 'Shared Blocks Written',
@@ -128,8 +128,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'number',
       subSumPipe: 'percent',
       sparklineType: 'number',
-      perQueryStatsPipe: 'number'
-    }
+      perQueryStatsPipe: 'number',
+    },
   },
   temp_blks_read: {
     humanizeName: 'Temp Blocks Read',
@@ -140,8 +140,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'number',
       subSumPipe: 'percent',
       sparklineType: 'number',
-      perQueryStatsPipe: 'number'
-    }
+      perQueryStatsPipe: 'number',
+    },
   },
   temp_blks_written: {
     humanizeName: 'Temp Blocks Written',
@@ -152,8 +152,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'number',
       subSumPipe: 'percent',
       sparklineType: 'number',
-      perQueryStatsPipe: 'number'
-    }
+      perQueryStatsPipe: 'number',
+    },
   },
   num_queries: {
     humanizeName: 'Query Count',
@@ -164,8 +164,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'number',
       subSumPipe: 'percent',
       sparklineType: 'number',
-      perQueryStatsPipe: 'number'
-    }
+      perQueryStatsPipe: 'number',
+    },
   },
   count: {
     humanizeName: 'Query Count',
@@ -176,8 +176,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'number',
       subSumPipe: 'percent',
       sparklineType: 'number',
-      perQueryStatsPipe: 'number'
-    }
+      perQueryStatsPipe: 'number',
+    },
   },
   num_queries_with_errors: {
     humanizeName: 'Query Count with errors',
@@ -188,8 +188,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'number',
       subSumPipe: 'percent',
       sparklineType: 'number',
-      perQueryStatsPipe: 'number'
-    }
+      perQueryStatsPipe: 'number',
+    },
   },
   num_queries_with_warnings: {
     humanizeName: 'Query Count with warnings',
@@ -200,8 +200,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'number',
       subSumPipe: 'percent',
       sparklineType: 'number',
-      perQueryStatsPipe: 'number'
-    }
+      perQueryStatsPipe: 'number',
+    },
   },
   docs_scanned: {
     humanizeName: 'Docs scanned',
@@ -212,8 +212,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'number',
       subSumPipe: 'percent',
       sparklineType: 'number',
-      perQueryStatsPipe: 'number'
-    }
+      perQueryStatsPipe: 'number',
+    },
   },
   docs_returned: {
     humanizeName: 'Docs Returned',
@@ -224,8 +224,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'number',
       subSumPipe: 'percent',
       sparklineType: 'number',
-      perQueryStatsPipe: 'number'
-    }
+      perQueryStatsPipe: 'number',
+    },
   },
   filesort: {
     humanizeName: 'Filesort',
@@ -236,8 +236,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'number',
       subSumPipe: 'percent',
       sparklineType: 'number',
-      perQueryStatsPipe: ''
-    }
+      perQueryStatsPipe: '',
+    },
   },
   filesort_on_disk: {
     humanizeName: 'Filesort on Disk',
@@ -248,8 +248,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'number',
       subSumPipe: 'percent',
       sparklineType: 'number',
-      perQueryStatsPipe: ''
-    }
+      perQueryStatsPipe: '',
+    },
   },
   full_join: {
     humanizeName: 'Full Join',
@@ -260,8 +260,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'number',
       subSumPipe: 'percent',
       sparklineType: 'number',
-      perQueryStatsPipe: ''
-    }
+      perQueryStatsPipe: '',
+    },
   },
   full_scan: {
     humanizeName: 'Full Scan',
@@ -272,8 +272,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'number',
       subSumPipe: 'percent',
       sparklineType: 'number',
-      perQueryStatsPipe: ''
-    }
+      perQueryStatsPipe: '',
+    },
   },
   innodb_io_r_bytes: {
     humanizeName: 'Innodb Read Bytes',
@@ -284,8 +284,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'size',
       subSumPipe: 'percent',
       sparklineType: 'size',
-      perQueryStatsPipe: 'size'
-    }
+      perQueryStatsPipe: 'size',
+    },
   },
   innodb_io_r_ops: {
     humanizeName: 'Innodb IO Read Ops',
@@ -296,8 +296,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'number',
       subSumPipe: 'percent',
       sparklineType: 'number',
-      perQueryStatsPipe: 'number'
-    }
+      perQueryStatsPipe: 'number',
+    },
   },
   innodb_io_r_wait: {
     humanizeName: 'Innodb IO Read Wait',
@@ -308,8 +308,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'time',
       subSumPipe: 'percent',
       sparklineType: 'number',
-      perQueryStatsPipe: 'time'
-    }
+      perQueryStatsPipe: 'time',
+    },
   },
   innodb_pages_distinct: {
     humanizeName: 'Innodb Pages Distinct',
@@ -320,21 +320,20 @@ export const METRIC_CATALOGUE = {
       sumPipe: '',
       subSumPipe: '',
       sparklineType: '',
-      perQueryStatsPipe: 'number'
-    }
+      perQueryStatsPipe: 'number',
+    },
   },
   innodb_queue_wait: {
     humanizeName: 'Innodb Queue Wait',
-    tooltipText:
-      'Shows how long( in seconds) the query spent either waiting to enter the InnoDB queue or inside that queue waiting for + execution',
+    tooltipText: 'Shows how long( in seconds) the query spent either waiting to enter the InnoDB queue or inside that queue waiting for + execution',
     simpleName: 'innodb_queue_wait',
     pipeTypes: {
       ratePipe: 'number',
       sumPipe: 'time',
       subSumPipe: 'percent',
       sparklineType: 'number',
-      perQueryStatsPipe: 'time'
-    }
+      perQueryStatsPipe: 'time',
+    },
   },
   innodb_rec_lock_wait: {
     humanizeName: 'Innodb Rec Lock Wait',
@@ -345,8 +344,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'time',
       subSumPipe: 'percent',
       sparklineType: 'number',
-      perQueryStatsPipe: 'time'
-    }
+      perQueryStatsPipe: 'time',
+    },
   },
   load: {
     humanizeName: 'Load',
@@ -357,8 +356,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'number',
       subSumPipe: 'percent',
       sparklineType: 'number',
-      perQueryStatsPipe: 'number'
-    }
+      perQueryStatsPipe: 'number',
+    },
   },
   lock_time: {
     humanizeName: 'Lock Time',
@@ -369,8 +368,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'time',
       subSumPipe: 'percent',
       sparklineType: 'number',
-      perQueryStatsPipe: 'time'
-    }
+      perQueryStatsPipe: 'time',
+    },
   },
   merge_passes: {
     humanizeName: 'Merge Passes',
@@ -381,8 +380,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'number',
       subSumPipe: 'percent',
       sparklineType: 'number',
-      perQueryStatsPipe: 'number'
-    }
+      perQueryStatsPipe: 'number',
+    },
   },
   no_good_index_used: {
     humanizeName: 'No Good Index Used',
@@ -393,8 +392,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'number',
       subSumPipe: 'percent',
       sparklineType: 'number',
-      perQueryStatsPipe: 'number'
-    }
+      perQueryStatsPipe: 'number',
+    },
   },
   no_index_used: {
     humanizeName: 'No index used',
@@ -405,8 +404,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'number',
       subSumPipe: 'percent',
       sparklineType: 'number',
-      perQueryStatsPipe: 'number'
-    }
+      perQueryStatsPipe: 'number',
+    },
   },
   qc_hit: {
     humanizeName: 'Query Cache Hit',
@@ -417,8 +416,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'number',
       subSumPipe: 'percent',
       sparklineType: 'number',
-      perQueryStatsPipe: ''
-    }
+      perQueryStatsPipe: '',
+    },
   },
   query_length: {
     humanizeName: 'Query Length',
@@ -429,8 +428,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'number',
       subSumPipe: 'percent',
       sparklineType: 'number',
-      perQueryStatsPipe: 'number'
-    }
+      perQueryStatsPipe: 'number',
+    },
   },
   query_time: {
     humanizeName: 'Query Time',
@@ -441,8 +440,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'time',
       subSumPipe: 'percent',
       sparklineType: 'number',
-      perQueryStatsPipe: 'time'
-    }
+      perQueryStatsPipe: 'time',
+    },
   },
   response_length: {
     humanizeName: 'Response Length',
@@ -453,8 +452,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'number',
       subSumPipe: 'percent',
       sparklineType: 'number',
-      perQueryStatsPipe: 'number'
-    }
+      perQueryStatsPipe: 'number',
+    },
   },
   rows_affected: {
     humanizeName: 'Rows Affected',
@@ -465,8 +464,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'number',
       subSumPipe: 'percent',
       sparklineType: 'number',
-      perQueryStatsPipe: 'number'
-    }
+      perQueryStatsPipe: 'number',
+    },
   },
   rows_examined: {
     humanizeName: 'Rows Examined',
@@ -477,8 +476,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'number',
       subSumPipe: 'percent',
       sparklineType: 'number',
-      perQueryStatsPipe: 'number'
-    }
+      perQueryStatsPipe: 'number',
+    },
   },
   rows_read: {
     humanizeName: 'Bytes Read',
@@ -489,8 +488,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'number',
       subSumPipe: 'percent',
       sparklineType: 'number',
-      perQueryStatsPipe: 'number'
-    }
+      perQueryStatsPipe: 'number',
+    },
   },
   rows_sent: {
     humanizeName: 'Rows Sent',
@@ -501,8 +500,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'number',
       subSumPipe: 'percent',
       sparklineType: 'number',
-      perQueryStatsPipe: 'number'
-    }
+      perQueryStatsPipe: 'number',
+    },
   },
   select_full_range_join: {
     humanizeName: 'Select Full Range Join',
@@ -513,8 +512,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'number',
       subSumPipe: 'percent',
       sparklineType: 'number',
-      perQueryStatsPipe: 'number'
-    }
+      perQueryStatsPipe: 'number',
+    },
   },
   sort_range: {
     humanizeName: 'Sort Range',
@@ -525,8 +524,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'number',
       subSumPipe: 'percent',
       sparklineType: 'number',
-      perQueryStatsPipe: 'number'
-    }
+      perQueryStatsPipe: 'number',
+    },
   },
   select_range: {
     humanizeName: 'Select Range',
@@ -537,8 +536,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'number',
       subSumPipe: 'percent',
       sparklineType: 'number',
-      perQueryStatsPipe: 'number'
-    }
+      perQueryStatsPipe: 'number',
+    },
   },
   select_range_check: {
     humanizeName: 'Select Range Check',
@@ -549,8 +548,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'number',
       subSumPipe: 'percent',
       sparklineType: 'number',
-      perQueryStatsPipe: 'number'
-    }
+      perQueryStatsPipe: 'number',
+    },
   },
   sort_rows: {
     humanizeName: 'Sort Rows',
@@ -561,8 +560,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'number',
       subSumPipe: 'percent',
       sparklineType: 'number',
-      perQueryStatsPipe: 'number'
-    }
+      perQueryStatsPipe: 'number',
+    },
   },
   sort_scan: {
     humanizeName: 'Sort Scan',
@@ -573,8 +572,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'number',
       subSumPipe: 'percent',
       sparklineType: 'number',
-      perQueryStatsPipe: 'number'
-    }
+      perQueryStatsPipe: 'number',
+    },
   },
   tmp_disk_tables: {
     humanizeName: 'Tmp Disk Tables',
@@ -585,8 +584,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'number',
       subSumPipe: 'percent',
       sparklineType: 'number',
-      perQueryStatsPipe: 'number'
-    }
+      perQueryStatsPipe: 'number',
+    },
   },
   tmp_table: {
     humanizeName: 'Tmp Table',
@@ -597,8 +596,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'number',
       subSumPipe: 'percent',
       sparklineType: 'number',
-      perQueryStatsPipe: ''
-    }
+      perQueryStatsPipe: '',
+    },
   },
   tmp_table_on_disk: {
     humanizeName: 'Tmp Table on Disk',
@@ -609,8 +608,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'number',
       subSumPipe: 'percent',
       sparklineType: 'number',
-      perQueryStatsPipe: ''
-    }
+      perQueryStatsPipe: '',
+    },
   },
   tmp_table_sizes: {
     humanizeName: 'Tmp Table Sizes',
@@ -621,8 +620,8 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'size',
       subSumPipe: 'percent',
       sparklineType: 'size',
-      perQueryStatsPipe: 'size'
-    }
+      perQueryStatsPipe: 'size',
+    },
   },
   tmp_tables: {
     humanizeName: 'Tmp Tables',
@@ -633,7 +632,7 @@ export const METRIC_CATALOGUE = {
       sumPipe: 'number',
       subSumPipe: 'percent',
       sparklineType: 'number',
-      perQueryStatsPipe: 'number'
-    }
+      perQueryStatsPipe: 'number',
+    },
   },
 };

@@ -1,15 +1,16 @@
 import React, { useContext } from 'react';
 import { Divider, Icon, Input, Select } from 'antd';
-import { METRIC_CATALOGUE } from './data/metric-catalogue';
+// import { METRIC_CATALOGUE } from './data/metric-catalogue';
 import { StateContext } from '../StateContext';
 
-const { Option } = Select;
+// const { Option } = Select;
 
 const { Search } = Input;
 
 const AddColumn = props => {
   const context = useContext(StateContext);
 
+  // @ts-ignore
   return (
     <Select
       style={{ width: 240 }}
@@ -26,9 +27,9 @@ const AddColumn = props => {
         </div>
       )}
     >
-      {Object.values(METRIC_CATALOGUE).map(item => (
-        <Option key={item.simpleName}>{item.humanizeName}</Option>
-      ))}
+      {/*{Object.values(METRIC_CATALOGUE).map(item => (*/}
+      {/*  <Option key={item.simpleName}>{item.humanizeName}</Option>*/}
+      {/*))}*/}
     </Select>
   );
 };

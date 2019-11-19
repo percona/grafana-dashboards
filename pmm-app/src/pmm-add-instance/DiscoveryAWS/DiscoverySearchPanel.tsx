@@ -4,42 +4,34 @@ import { useForm } from 'react-final-form-hooks';
 import { InputField } from '../../react-plugins-deps/components/FieldsComponents/Input';
 import { Button, Table } from 'antd';
 import './DiscoverySearchPanel.scss';
+import DiscoveryService from './Discovery.service';
 
 interface DiscoverySearchPanelInterface {
   selectInstance: (instanceData: any) => void;
 }
 
-const dataSource = [
-  {
-    key: '1',
-    type: 'mongodb',
-    address: 'mongo.example.com',
-    credentials: { service_name: 'mongo.example.com', username: 'tester', password: 'test password' },
-  },
-  {
-    key: '2',
-    type: 'mysql',
-    address: 'mysql.example.com',
-    credentials: { service_name: 'mysql.example.com', username: 'tester', password: 'test password' },
-  },
-  {
-    key: '3',
-    type: 'postgresql',
-    address: 'psql.example.com',
-    credentials: { service_name: 'psql.example.com', username: 'tester', password: 'test password' },
-  },
-];
-
 const DiscoverySearchPanel = (props: DiscoverySearchPanelInterface) => {
   const [instances, setInstances] = useState([] as any);
-  const [credentials, setCredentials] = useState([]);
+  const [credentials, setCredentials] = useState({ aws_secret_key: '', aws_access_key: '' });
 
+  const getColumnType = type => {
+    switch (type) {
+      case 'DISCOVER_RDS_MYSQL':
+        return 'MySQL';
+      case 'DISCOVER_RDS_POSTGRES':
+        return 'Postgres';
+      case 'DISCOVER_RDS_INVALID':
+        return 'Unknown type';
+    }
+  };
   const columns = [
     {
       title: 'Type',
       dataIndex: 'type',
-      key: 'type',
       className: 'discovery-column',
+      render: element => {
+        element ? getColumnType(element.credentials.engine) : 'nothing';
+      },
     },
     {
       title: 'Address',
@@ -52,7 +44,7 @@ const DiscoverySearchPanel = (props: DiscoverySearchPanelInterface) => {
       className: 'discovery-column',
       render: element => {
         return (
-          <Button type="link" onClick={() => props.selectInstance(element)}>
+          <Button type="link" onClick={() => props.selectInstance({ type: 'mysql', credentials: element })}>
             Start monitoring
           </Button>
         );
@@ -61,42 +53,57 @@ const DiscoverySearchPanel = (props: DiscoverySearchPanelInterface) => {
   ];
 
   useEffect(() => {
-    console.log('search started');
-    setInstances(dataSource);
+    console.log(credentials, 'updated');
+    const updateInstances = async () => {
+      const result = await DiscoveryService.discoveryRDS({
+        aws_secret_key: credentials.aws_secret_key,
+        aws_access_key: credentials.aws_access_key,
+      });
+      setInstances(result['rds_instances']);
+    };
+    if (credentials.aws_secret_key.length && credentials.aws_access_key.length) {
+      updateInstances();
+    }
   }, [credentials]);
 
   return (
     <>
       <div style={{ width: '100%' }}>
         <FormFinal
-          onSubmit={setCredentials}
+          onSubmit={values => {
+            // debugger;
+            // setCredentials()
+          }}
           validate={() => {
             return undefined;
           }}
           render={(): ReactElement => {
-            const { form } = useForm({
-              onSubmit: setCredentials,
+            const { form, handleSubmit } = useForm({
+              onSubmit: values => {
+                setCredentials(values);
+                console.log(values);
+              },
               validate: () => {},
             });
 
             return (
-              <form className="add-instance-form app-theme-dark">
+              <form onSubmit={handleSubmit} className="add-instance-form app-theme-dark">
                 <div className="discovery-search-panel">
                   <InputField
                     form={form}
-                    name="amazonAccessKey"
+                    name="aws_access_key"
                     data-cy="add-account-username"
                     placeholder="AMAZON_RDS_ACCESS_KEY_ID"
                     required={true}
                   />
                   <InputField
                     form={form}
-                    name="amazonSecretKey"
+                    name="aws_secret_key"
                     data-cy="add-account-username"
                     placeholder="AMAZON_RDS_SECRET_ACCESS_KEY"
                     required={true}
                   />
-                  <button type="submit" className="button button--dark" id="addInstance">
+                  <button className="button button--dark" id="addInstance">
                     Discover
                   </button>
                 </div>
@@ -107,7 +114,7 @@ const DiscoverySearchPanel = (props: DiscoverySearchPanelInterface) => {
             );
           }}
         />
-        {instances.length && (
+        {instances.length ? (
           <Table
             dataSource={instances}
             pagination={false}
@@ -117,7 +124,7 @@ const DiscoverySearchPanel = (props: DiscoverySearchPanelInterface) => {
             style={{ color: 'white' }}
             size={'small'}
           />
-        )}
+        ) : null}
       </div>
     </>
   );
