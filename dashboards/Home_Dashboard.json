@@ -16,7 +16,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1573665537206,
+    "iteration": 1574272242391,
     "links": [
         {
             "icon": "doc",
@@ -148,7 +148,7 @@
             "content": "**Overview**  \n[Percona Monitoring and Management (PMM)](https://www.percona.com/pmm) is a free and open-source platform for managing and monitoring MySQL and MongoDB performance, and provides time-based analysis to ensure that your data works as efficiently as possible. \n\n**Documentation**  \nPlease consult the official [PMM documentation](https://www.percona.com/doc/percona-monitoring-and-management/2.x/index.html) to learn more about PMM. Also of interest are the [Release notes](https://www.percona.com/doc/percona-monitoring-and-management/2.x/release-notes/index.html) and [FAQ](https://www.percona.com/doc/percona-monitoring-and-management/2.x/faq.html) for common questions about PMM.\n\n**Community and Blogs**  \nOn the [PMM Community Forums](https://www.percona.com/forums/questions-discussions/percona-monitoring-and-management) you will find help from Perconians and the Community at large.  Further, we publish PMM announcements and use cases regularly on the [Percona Database Performance Blog](https://www.percona.com/blog/)  \n\n**Get Help from Percona**  \nAre you looking for assistance that comes with a response-time guarantee? Let our [Support team](https://www.percona.com/services/support?utm_source=pmm&utm_medium=web&utm_campaign=support_link)  help you!\nAlready a customer? Log in to your [Percona Support Portal](https://customers.percona.com) \n\n\n\n",
             "datasource": null,
             "gridPos": {
-                "h": 11,
+                "h": 12,
                 "w": 12,
                 "x": 0,
                 "y": 7
@@ -165,7 +165,7 @@
             "datasource": null,
             "folderId": 0,
             "gridPos": {
-                "h": 11,
+                "h": 7,
                 "w": 6,
                 "x": 12,
                 "y": 7
@@ -250,10 +250,10 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "count(node_memory_MemTotal_bytes{node_name=~\"$host\"})",
+                    "expr": "count(count by (node_name) (up{node_name=~\"$host\", job=~\"node_exporter_agent_id_.*\"})) or vector(0)",
                     "format": "time_series",
                     "instant": false,
-                    "interval": "5m",
+                    "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "",
                     "refId": "A",
@@ -342,10 +342,10 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "count(mysql_global_status_uptime{node_name=~\"$host\"} or \nmongodb_up {node_name=~\"$host\"} or \npg_up{node_name=~\"$host\"} or \npostgresql_up{node_name=~\"$host\"})",
+                    "expr": "count((count by (service_name) (mysql_up{node_name=~\"$host\"})/3) or mongodb_up{node_name=~\"$host\"} or pg_up{node_name=~\"$host\"}) or vector(0)",
                     "format": "time_series",
                     "instant": false,
-                    "interval": "5m",
+                    "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "",
                     "metric": "",
@@ -361,12 +361,100 @@
             "valueName": "current"
         },
         {
+            "cacheTimeout": null,
+            "colorBackground": false,
+            "colorValue": false,
+            "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "#1F60C4",
+                "rgba(50, 172, 45, 0.97)"
+            ],
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "description": "",
+            "editable": true,
+            "error": false,
+            "format": "none",
+            "gauge": {
+                "maxValue": 100,
+                "minValue": 0,
+                "show": false,
+                "thresholdLabels": false,
+                "thresholdMarkers": true
+            },
+            "gridPos": {
+                "h": 3,
+                "w": 6,
+                "x": 18,
+                "y": 13
+            },
+            "height": "50",
+            "id": 1393,
+            "interval": "$interval",
+            "links": [],
+            "mappingType": 1,
+            "mappingTypes": [
+                {
+                    "name": "value to text",
+                    "value": 1
+                },
+                {
+                    "name": "range to text",
+                    "value": 2
+                }
+            ],
+            "maxDataPoints": 100,
+            "nullPointMode": "connected",
+            "nullText": null,
+            "options": {},
+            "postfix": "",
+            "postfixFontSize": "100%",
+            "prefix": "",
+            "prefixFontSize": "100%",
+            "rangeMaps": [
+                {
+                    "from": "null",
+                    "text": "N/A",
+                    "to": "null"
+                }
+            ],
+            "sparkline": {
+                "fillColor": "rgba(31, 118, 189, 0.18)",
+                "full": false,
+                "lineColor": "rgb(31, 120, 193)",
+                "show": true
+            },
+            "tableColumn": "",
+            "targets": [
+                {
+                    "calculatedInterval": "10m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "count((count by (service_name) (mysql_up{node_name=~\"$host\"} > 0)/3) or (mongodb_up{node_name=~\"$host\"} > 0) or (pg_up{node_name=~\"$host\"} > 0)) or vector(0)",
+                    "format": "time_series",
+                    "instant": false,
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "",
+                    "metric": "",
+                    "refId": "A",
+                    "step": 300
+                }
+            ],
+            "thresholds": "",
+            "title": "DB Instances UP",
+            "type": "singlestat",
+            "valueFontSize": "100%",
+            "valueMaps": [],
+            "valueName": "current"
+        },
+        {
             "datasource": "Prometheus",
             "gridPos": {
                 "h": 5,
                 "w": 6,
-                "x": 18,
-                "y": 13
+                "x": 12,
+                "y": 14
             },
             "height": "120px",
             "id": 1337,
@@ -384,13 +472,101 @@
             "type": "pmm-update-panel"
         },
         {
+            "cacheTimeout": null,
+            "colorBackground": false,
+            "colorValue": true,
+            "colors": [
+                "rgba(50, 172, 45, 0.97)",
+                "#56A64B",
+                "rgba(245, 54, 54, 0.9)"
+            ],
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "description": "",
+            "editable": true,
+            "error": false,
+            "format": "none",
+            "gauge": {
+                "maxValue": 100,
+                "minValue": 0,
+                "show": false,
+                "thresholdLabels": false,
+                "thresholdMarkers": true
+            },
+            "gridPos": {
+                "h": 3,
+                "w": 6,
+                "x": 18,
+                "y": 16
+            },
+            "height": "50",
+            "id": 1394,
+            "interval": "$interval",
+            "links": [],
+            "mappingType": 1,
+            "mappingTypes": [
+                {
+                    "name": "value to text",
+                    "value": 1
+                },
+                {
+                    "name": "range to text",
+                    "value": 2
+                }
+            ],
+            "maxDataPoints": 100,
+            "nullPointMode": "connected",
+            "nullText": null,
+            "options": {},
+            "postfix": "",
+            "postfixFontSize": "100%",
+            "prefix": "",
+            "prefixFontSize": "100%",
+            "rangeMaps": [
+                {
+                    "from": "null",
+                    "text": "N/A",
+                    "to": "null"
+                }
+            ],
+            "sparkline": {
+                "fillColor": "rgba(31, 118, 189, 0.18)",
+                "full": false,
+                "lineColor": "rgb(31, 120, 193)",
+                "show": true
+            },
+            "tableColumn": "",
+            "targets": [
+                {
+                    "calculatedInterval": "10m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "count((count by (service_name) (mysql_up{node_name=~\"$host\"} == 0)/3) or (mongodb_up{node_name=~\"$host\"} == 0) or (pg_up{node_name=~\"$host\"} == 0)) or vector(0)",
+                    "format": "time_series",
+                    "instant": false,
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "",
+                    "metric": "",
+                    "refId": "A",
+                    "step": 300
+                }
+            ],
+            "thresholds": "0,1",
+            "title": "DB Instances Down",
+            "type": "singlestat",
+            "valueFontSize": "100%",
+            "valueMaps": [],
+            "valueName": "current"
+        },
+        {
             "collapsed": false,
             "datasource": null,
             "gridPos": {
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 18
+                "y": 19
             },
             "id": 1342,
             "panels": [],
@@ -405,7 +581,7 @@
                 "h": 3,
                 "w": 2,
                 "x": 0,
-                "y": 19
+                "y": 20
             },
             "id": 1298,
             "links": [
@@ -442,7 +618,7 @@
                 "h": 3,
                 "w": 2,
                 "x": 2,
-                "y": 19
+                "y": 20
             },
             "id": 1358,
             "interval": null,
@@ -532,7 +708,7 @@
                 "h": 3,
                 "w": 2,
                 "x": 4,
-                "y": 19
+                "y": 20
             },
             "id": 1360,
             "interval": null,
@@ -625,7 +801,7 @@
                 "h": 3,
                 "w": 2,
                 "x": 6,
-                "y": 19
+                "y": 20
             },
             "height": "50",
             "id": 1301,
@@ -725,7 +901,7 @@
                 "h": 3,
                 "w": 2,
                 "x": 8,
-                "y": 19
+                "y": 20
             },
             "height": "50",
             "id": 1302,
@@ -824,7 +1000,7 @@
                 "h": 3,
                 "w": 2,
                 "x": 10,
-                "y": 19
+                "y": 20
             },
             "height": "50",
             "id": 1303,
@@ -923,7 +1099,7 @@
                 "h": 3,
                 "w": 2,
                 "x": 12,
-                "y": 19
+                "y": 20
             },
             "height": "50",
             "id": 1304,
@@ -1033,7 +1209,7 @@
                 "h": 3,
                 "w": 2,
                 "x": 14,
-                "y": 19
+                "y": 20
             },
             "height": "50",
             "id": 1305,
@@ -1142,7 +1318,7 @@
                 "h": 3,
                 "w": 2,
                 "x": 16,
-                "y": 19
+                "y": 20
             },
             "height": "20",
             "id": 1306,
@@ -1236,7 +1412,7 @@
                 "h": 3,
                 "w": 2,
                 "x": 18,
-                "y": 19
+                "y": 20
             },
             "height": "50",
             "id": 1307,
@@ -1329,7 +1505,7 @@
                 "h": 3,
                 "w": 2,
                 "x": 20,
-                "y": 19
+                "y": 20
             },
             "id": 1379,
             "interval": "$interval",
@@ -1424,7 +1600,7 @@
                 "h": 3,
                 "w": 2,
                 "x": 22,
-                "y": 19
+                "y": 20
             },
             "height": "50",
             "id": 1309,
@@ -1504,7 +1680,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 22
+                "y": 23
             },
             "id": 1343,
             "panels": [],
@@ -1519,7 +1695,7 @@
                 "h": 3,
                 "w": 2,
                 "x": 0,
-                "y": 23
+                "y": 24
             },
             "height": "50px",
             "id": 162,
@@ -1559,7 +1735,7 @@
                 "h": 3,
                 "w": 2,
                 "x": 2,
-                "y": 23
+                "y": 24
             },
             "id": 1361,
             "interval": null,
@@ -1649,7 +1825,7 @@
                 "h": 3,
                 "w": 2,
                 "x": 4,
-                "y": 23
+                "y": 24
             },
             "id": 1376,
             "interval": null,
@@ -1742,7 +1918,7 @@
                 "h": 3,
                 "w": 2,
                 "x": 6,
-                "y": 23
+                "y": 24
             },
             "height": "25",
             "id": 314,
@@ -1840,7 +2016,7 @@
                 "h": 3,
                 "w": 2,
                 "x": 8,
-                "y": 23
+                "y": 24
             },
             "height": "50",
             "id": 490,
@@ -1938,7 +2114,7 @@
                 "h": 3,
                 "w": 2,
                 "x": 10,
-                "y": 23
+                "y": 24
             },
             "height": "50",
             "id": 491,
@@ -2035,7 +2211,7 @@
                 "h": 3,
                 "w": 2,
                 "x": 12,
-                "y": 23
+                "y": 24
             },
             "height": "50",
             "id": 492,
@@ -2143,7 +2319,7 @@
                 "h": 3,
                 "w": 2,
                 "x": 14,
-                "y": 23
+                "y": 24
             },
             "height": "50",
             "id": 743,
@@ -2250,7 +2426,7 @@
                 "h": 3,
                 "w": 2,
                 "x": 16,
-                "y": 23
+                "y": 24
             },
             "height": "20",
             "id": 25,
@@ -2350,7 +2526,7 @@
                 "h": 3,
                 "w": 2,
                 "x": 18,
-                "y": 23
+                "y": 24
             },
             "height": "50",
             "id": 26,
@@ -2445,7 +2621,7 @@
                 "h": 3,
                 "w": 2,
                 "x": 20,
-                "y": 23
+                "y": 24
             },
             "height": "50",
             "id": 19,
@@ -2545,7 +2721,7 @@
                 "h": 3,
                 "w": 2,
                 "x": 22,
-                "y": 23
+                "y": 24
             },
             "height": "50",
             "id": 1297,
@@ -2624,12 +2800,12 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 26
+                "y": 27
             },
-            "id": 1380,
+            "id": 1395,
             "panels": [],
             "repeat": null,
-            "repeatIteration": 1573665537206,
+            "repeatIteration": 1574272242391,
             "repeatPanelId": 1343,
             "title": "",
             "type": "row"
@@ -2641,10 +2817,10 @@
                 "h": 3,
                 "w": 2,
                 "x": 0,
-                "y": 27
+                "y": 28
             },
             "height": "50px",
-            "id": 1381,
+            "id": 1396,
             "links": [
                 {
                     "targetBlank": true,
@@ -2655,7 +2831,7 @@
             "maxPerRow": 12,
             "mode": "markdown",
             "options": {},
-            "repeatIteration": 1573665537206,
+            "repeatIteration": 1574272242391,
             "repeatPanelId": 162,
             "repeatedByRow": true,
             "title": "",
@@ -2684,9 +2860,9 @@
                 "h": 3,
                 "w": 2,
                 "x": 2,
-                "y": 27
+                "y": 28
             },
-            "id": 1382,
+            "id": 1397,
             "interval": null,
             "links": [
                 {
@@ -2721,7 +2897,7 @@
                     "to": "null"
                 }
             ],
-            "repeatIteration": 1573665537206,
+            "repeatIteration": 1574272242391,
             "repeatPanelId": 1361,
             "repeatedByRow": true,
             "sparkline": {
@@ -2777,9 +2953,9 @@
                 "h": 3,
                 "w": 2,
                 "x": 4,
-                "y": 27
+                "y": 28
             },
-            "id": 1383,
+            "id": 1398,
             "interval": null,
             "links": [
                 {
@@ -2814,7 +2990,7 @@
                     "to": "null"
                 }
             ],
-            "repeatIteration": 1573665537206,
+            "repeatIteration": 1574272242391,
             "repeatPanelId": 1376,
             "repeatedByRow": true,
             "sparkline": {
@@ -2873,10 +3049,10 @@
                 "h": 3,
                 "w": 2,
                 "x": 6,
-                "y": 27
+                "y": 28
             },
             "height": "25",
-            "id": 1384,
+            "id": 1399,
             "interval": "$interval",
             "links": [
                 {
@@ -2911,7 +3087,7 @@
                     "to": "null"
                 }
             ],
-            "repeatIteration": 1573665537206,
+            "repeatIteration": 1574272242391,
             "repeatPanelId": 314,
             "repeatedByRow": true,
             "sparkline": {
@@ -2974,10 +3150,10 @@
                 "h": 3,
                 "w": 2,
                 "x": 8,
-                "y": 27
+                "y": 28
             },
             "height": "50",
-            "id": 1385,
+            "id": 1400,
             "interval": "$interval",
             "links": [
                 {
@@ -3012,7 +3188,7 @@
                     "to": "null"
                 }
             ],
-            "repeatIteration": 1573665537206,
+            "repeatIteration": 1574272242391,
             "repeatPanelId": 490,
             "repeatedByRow": true,
             "sparkline": {
@@ -3075,10 +3251,10 @@
                 "h": 3,
                 "w": 2,
                 "x": 10,
-                "y": 27
+                "y": 28
             },
             "height": "50",
-            "id": 1386,
+            "id": 1401,
             "interval": "$interval",
             "links": [
                 {
@@ -3112,7 +3288,7 @@
                     "to": "null"
                 }
             ],
-            "repeatIteration": 1573665537206,
+            "repeatIteration": 1574272242391,
             "repeatPanelId": 491,
             "repeatedByRow": true,
             "sparkline": {
@@ -3175,10 +3351,10 @@
                 "h": 3,
                 "w": 2,
                 "x": 12,
-                "y": 27
+                "y": 28
             },
             "height": "50",
-            "id": 1387,
+            "id": 1402,
             "interval": "$interval",
             "links": [
                 {
@@ -3223,7 +3399,7 @@
                     "to": "null"
                 }
             ],
-            "repeatIteration": 1573665537206,
+            "repeatIteration": 1574272242391,
             "repeatPanelId": 492,
             "repeatedByRow": true,
             "sparkline": {
@@ -3286,10 +3462,10 @@
                 "h": 3,
                 "w": 2,
                 "x": 14,
-                "y": 27
+                "y": 28
             },
             "height": "50",
-            "id": 1388,
+            "id": 1403,
             "interval": "$interval",
             "links": [
                 {
@@ -3334,7 +3510,7 @@
                     "to": "null"
                 }
             ],
-            "repeatIteration": 1573665537206,
+            "repeatIteration": 1574272242391,
             "repeatPanelId": 743,
             "repeatedByRow": true,
             "sparkline": {
@@ -3396,10 +3572,10 @@
                 "h": 3,
                 "w": 2,
                 "x": 16,
-                "y": 27
+                "y": 28
             },
             "height": "20",
-            "id": 1389,
+            "id": 1404,
             "interval": "$interval",
             "links": [
                 {
@@ -3434,7 +3610,7 @@
                     "to": "null"
                 }
             ],
-            "repeatIteration": 1573665537206,
+            "repeatIteration": 1574272242391,
             "repeatPanelId": 25,
             "repeatedByRow": true,
             "sparkline": {
@@ -3499,10 +3675,10 @@
                 "h": 3,
                 "w": 2,
                 "x": 18,
-                "y": 27
+                "y": 28
             },
             "height": "50",
-            "id": 1390,
+            "id": 1405,
             "interval": "$interval",
             "links": [
                 {
@@ -3536,7 +3712,7 @@
                     "to": "null"
                 }
             ],
-            "repeatIteration": 1573665537206,
+            "repeatIteration": 1574272242391,
             "repeatPanelId": 26,
             "repeatedByRow": true,
             "sparkline": {
@@ -3597,10 +3773,10 @@
                 "h": 3,
                 "w": 2,
                 "x": 20,
-                "y": 27
+                "y": 28
             },
             "height": "50",
-            "id": 1391,
+            "id": 1406,
             "interval": "$interval",
             "links": [
                 {
@@ -3634,7 +3810,7 @@
                     "to": "null"
                 }
             ],
-            "repeatIteration": 1573665537206,
+            "repeatIteration": 1574272242391,
             "repeatPanelId": 19,
             "repeatedByRow": true,
             "sparkline": {
@@ -3700,10 +3876,10 @@
                 "h": 3,
                 "w": 2,
                 "x": 22,
-                "y": 27
+                "y": 28
             },
             "height": "50",
-            "id": 1392,
+            "id": 1407,
             "interval": "$interval",
             "links": [
                 {
@@ -3737,7 +3913,7 @@
                     "to": "null"
                 }
             ],
-            "repeatIteration": 1573665537206,
+            "repeatIteration": 1574272242391,
             "repeatPanelId": 1297,
             "repeatedByRow": true,
             "sparkline": {
@@ -3776,7 +3952,7 @@
             "valueName": "current"
         }
     ],
-    "refresh": false,
+    "refresh": "1m",
     "schemaVersion": 20,
     "style": "dark",
     "tags": [
