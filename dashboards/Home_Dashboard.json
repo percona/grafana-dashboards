@@ -1316,7 +1316,7 @@
             ],
             "datasource": null,
             "decimals": 1,
-            "description": "AVG Uptime for `All`",
+            "description": "Minimal Uptime for `All`",
             "format": "s",
             "gauge": {
                 "maxValue": 100,
@@ -1376,7 +1376,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "avg(node_time_seconds{node_name=~\"$host\"} - node_boot_time_seconds{node_name=~\"$host\"})",
+                    "expr": "min(node_time_seconds{node_name=~\"$host\"} - node_boot_time_seconds{node_name=~\"$host\"})",
                     "hide": false,
                     "interval": "5m",
                     "refId": "A"
@@ -1409,7 +1409,7 @@
             ],
             "datasource": "Prometheus",
             "decimals": 1,
-            "description": "AVG Uptime for `All`",
+            "description": "Minimal Uptime for `All`",
             "editable": true,
             "error": false,
             "format": "s",
@@ -1473,7 +1473,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "avg(mysql_global_status_uptime{node_name=~\"$host\"} or \nmongodb_instance_uptime_seconds {node_name=~\"$host\"} or \n(time() - process_start_time_seconds{node_name=~\"$host\",job=~\"postgres_exporter.*\"}))",
+                    "expr": "min(mysql_global_status_uptime{node_name=~\"$host\"} or \nmongodb_instance_uptime_seconds {node_name=~\"$host\"} or \n(time() - process_start_time_seconds{node_name=~\"$host\",job=~\"postgres_exporter.*\"}))",
                     "format": "time_series",
                     "instant": false,
                     "interval": "5m",
@@ -3776,7 +3776,7 @@
             "valueName": "current"
         }
     ],
-    "refresh": false,
+    "refresh": "1m",
     "schemaVersion": 20,
     "style": "dark",
     "tags": [
