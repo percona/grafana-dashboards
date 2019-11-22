@@ -4,7 +4,7 @@ import './Checkbox.scss';
 // import { useField } from 'react-final-form';
 interface CheckboxFieldInterface {
   required?: boolean;
-  name?: string;
+  name: string;
   'data-cy'?: string;
   form?: any;
   label?: string;

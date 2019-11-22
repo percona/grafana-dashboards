@@ -1,3 +1,4 @@
+
 class DiscoveryService {
   static async discoveryRDS({ aws_secret_key, aws_access_key }) {
     const data = {
@@ -9,7 +10,9 @@ class DiscoveryService {
       method: 'POST',
       body: JSON.stringify(data),
     });
-
+    if (!response.ok) {
+      throw Error(response.statusText);
+    }
     return response.json();
   }
 }

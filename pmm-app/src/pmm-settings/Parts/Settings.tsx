@@ -1,6 +1,6 @@
 import { PluginTooltip, VerticalFormWrapper } from '../../react-plugins-deps/components/helpers/Helpers';
-import { SelectField } from '../../react-plugins-deps/components/FieldsComponents/Select';
-import { ToggleField } from '../../react-plugins-deps/components/FieldsComponents/Toggle';
+import { SelectField } from '../../react-plugins-deps/components/FieldsComponents/Select/Select';
+import { ToggleField } from '../../react-plugins-deps/components/FieldsComponents/Toggle/Toggle';
 import React from 'react';
 import { Collapse, Slider } from 'antd';
 const { Panel } = Collapse;
@@ -59,7 +59,7 @@ const SettingsPart = props => {
             element={
               <>
                 <input placeholder="Basic usage" className="input-field input-field--dark" style={{ width: '60%', height: '32px' }} />
-                <SelectField options={dataRetentionOptions} defaultValue={'weeks'} />
+                <SelectField name={'data-retention'} options={dataRetentionOptions} defaultValue={'weeks'} />
               </>
             }
           />

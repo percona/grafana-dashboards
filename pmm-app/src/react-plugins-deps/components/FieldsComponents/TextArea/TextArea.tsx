@@ -4,7 +4,7 @@ import { useField } from 'react-final-form-hooks';
 
 interface TextAreaFieldInterface {
   required?: boolean;
-  name?: string;
+  name: string;
   'data-cy'?: string;
   label?: string;
   prefix?: string;
