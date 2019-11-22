@@ -4,7 +4,7 @@ import './QueryAnalyticsFilters.scss';
 import { Divider } from 'antd';
 import { StateContext } from '../../StateContext';
 import FiltersService from '../../storage/filtersService';
-import { CheckboxField } from '../../../../react-plugins-deps/components/FieldsComponents/Checkbox';
+import { CheckboxField } from '../../../../react-plugins-deps/components/FieldsComponents/Checkbox/Checkbox';
 
 const checkboxGroup = (name, items, showPercentage) => {
   return (
@@ -16,7 +16,7 @@ const checkboxGroup = (name, items, showPercentage) => {
           return (
             <div className={'filter-label'}>
               <span className={'filter-name'}>
-                <CheckboxField label={item.value} checked={item.checked} />
+                <CheckboxField name={'testerok'} label={item.value} checked={item.checked} />
               </span>
               {showPercentage && <span className={'percentage'}>{Humanize.formatPercent(item.main_metric_percent)}</span>}
             </div>

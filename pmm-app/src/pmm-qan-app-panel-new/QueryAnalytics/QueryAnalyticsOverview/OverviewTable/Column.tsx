@@ -1,4 +1,4 @@
-import { METRIC_CATALOGUE } from '../data/metric-catalogue';
+// import { METRIC_CATALOGUE } from '../data/metric-catalogue';
 import AddColumn from '../AddColumn';
 import React from 'react';
 // import PolygonChart from '../../../../react-plugins-deps/components/PolygonChart/PolygonChart';
@@ -7,11 +7,11 @@ import React from 'react';
 import './OverviewTable.scss';
 
 export const getColumnName = (metricName, columnIndex, totalValues) => {
-  let metric = METRIC_CATALOGUE[metricName];
+  // let metric = METRIC_CATALOGUE[metricName];
   return {
     sorter: () => {},
     title: () => <AddColumn placeholder={metricName} />,
-    render: (text, item, index) => {
+    render: (text, item) => {
       const stats = item.metrics[metricName].stats;
       return (
         <div className={'overview-content-column'}>

@@ -1,7 +1,5 @@
 class AddRemoteInstanceService {
-  static async addMysql() {
-    const data = {};
-
+  static async addMysql(data) {
     const response = await fetch('/v1/management/MySQL/Add', {
       method: 'POST',
       body: JSON.stringify(data),
@@ -10,9 +8,7 @@ class AddRemoteInstanceService {
     return response.json();
   }
 
-  static async addPostgresql() {
-    const data = {};
-
+  static async addPostgresql(data) {
     const response = await fetch('/v1/management/PostgreSQL/Add', {
       method: 'POST',
       body: JSON.stringify(data),
@@ -21,9 +17,7 @@ class AddRemoteInstanceService {
     return response.json();
   }
 
-  static async addProxysql() {
-    const data = {};
-
+  static async addProxysql(data) {
     const response = await fetch('/v1/management/ProxySQL/Add', {
       method: 'POST',
       body: JSON.stringify(data),
@@ -32,9 +26,7 @@ class AddRemoteInstanceService {
     return response.json();
   }
 
-  static async addMongodb() {
-    const data = {};
-
+  static async addMongodb(data) {
     const response = await fetch('/v1/management/MongoDB/Add', {
       method: 'POST',
       body: JSON.stringify(data),

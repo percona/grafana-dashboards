@@ -10,10 +10,11 @@ class MetricsService {
       tables: tables || [],
     };
 
-    // const response = await fetch('/v0/qan/ObjectDetails/GetMetrics', {
-    //   method: 'POST',
-    //   body: JSON.stringify(data),
-    // });
+    const response = await fetch('/v0/qan/ObjectDetails/GetMetrics', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+    console.log(response);
     return metricsMock;
     // return response.json();
   }

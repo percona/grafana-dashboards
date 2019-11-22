@@ -7,7 +7,7 @@ import AlertManager from './Parts/AlertManager';
 import UploadSSHKey from './Parts/UploadSSHKey';
 import Diagnostics from './Parts/Diagnostics';
 import SettingsPart from './Parts/Settings';
-import { CheckboxField } from '../react-plugins-deps/components/FieldsComponents/Checkbox';
+import { CheckboxField } from '../react-plugins-deps/components/FieldsComponents/Checkbox/Checkbox';
 const { Panel } = Collapse;
 
 const customPanelStyle = {

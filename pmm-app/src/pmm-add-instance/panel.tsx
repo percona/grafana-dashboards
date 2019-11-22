@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import AddRemoteInstance from './AddInstance/AddRemoteInstance/AddRemoteInstance';
-import DiscoverySearchPanel from './DiscoveryAWS/DiscoverySearchPanel';
+import DiscoveryPanel from './DiscoveryAWS/DiscoveryPanel';
 import '../react-plugins-deps/styles.scss';
 import '../react-plugins-deps/style.less';
 import AddInstance from './AddInstance/AddInstance';
@@ -15,9 +15,8 @@ const AddInstancePanel = () => {
     <div className={'app-theme-dark content-wrapper'} id={'antd'}>
       {!selectedInstance.type ? <AddInstance selectInstanceType={setSelectedInstance} /> : null}
       {selectedInstance.type === 'rds' ? (
-        <DiscoverySearchPanel
+        <DiscoveryPanel
           selectInstance={instanceData => {
-            debugger;
             setSelectedInstance(instanceData);
           }}
         />

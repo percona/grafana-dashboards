@@ -7,7 +7,7 @@ import { getColumnName } from './Column';
 
 const { Option } = Select;
 
-let CurrentGroupBy = 'queryid';
+const CurrentGroupBy = 'queryid';
 const TOTAL = tableData.rows[0];
 //
 const getDefaultColumns = selectQuery => {
@@ -17,9 +17,11 @@ const getDefaultColumns = selectQuery => {
       dataIndex: 'rowNumber',
       key: 'rowNumber',
       width: '20px',
-      fixed: 'left',
+      // fixed: 'left',
       render: (text, record, index) => {
-        if (index === 0) return '';
+        if (index === 0) {
+          return '';
+        }
         return index;
       },
     },
@@ -39,9 +41,9 @@ const getDefaultColumns = selectQuery => {
       width: '200px',
       ellipsis: true,
       className: 'overview-main-column',
-      fixed: 'left',
-      sorter: () => {},
-      render: (text, record, index) => {
+      // fixed: 'left',
+      // sorter: () => {},
+      render: (text, record) => {
         return <span onClick={selectQuery}>{record.fingerprint}</span>;
       },
     },
@@ -52,7 +54,7 @@ const OverviewTable = props => {
   const columns = getDefaultColumns(context.selectQuery).concat(context.columns.map((key, index) => getColumnName(key, index, TOTAL)));
 
   // // @ts-ignore
-  return <Table dataSource={tableData.rows} columns={columns} size={'small'} bordered={true} scroll={{ x: 1300 }}/>;
+  return <Table dataSource={tableData.rows} columns={columns} size={'small'} bordered={true} scroll={{ x: 1300 }} />;
   // return '123';
 };
 //
