@@ -28,21 +28,21 @@ const getInstanceData = (instanceType, credentials) => {
   switch (instanceType) {
     case 'postgresql':
       instance.instanceType = 'PostgreSQL';
-      instance.remoteInstanceCredentials = extractCredentials(credentials);
+      instance.remoteInstanceCredentials = credentials ? extractCredentials(credentials) : {};
       instance.defaultPort = 5432;
       break;
     case 'mysql':
       instance.instanceType = 'MySQL';
-      instance.remoteInstanceCredentials = extractCredentials(credentials);
+      instance.remoteInstanceCredentials = credentials ? extractCredentials(credentials) : {};
       instance.defaultPort = 3306;
     case 'mongodb':
       instance.instanceType = 'MongoDB';
-      instance.remoteInstanceCredentials = extractCredentials(credentials);
+      instance.remoteInstanceCredentials = credentials ? extractCredentials(credentials) : {};
       instance.defaultPort = 27017;
       break;
     case 'proxysql':
       instance.instanceType = 'ProxySQL';
-      instance.remoteInstanceCredentials = extractCredentials(credentials);
+      instance.remoteInstanceCredentials = credentials ? extractCredentials(credentials) : {};
       instance.defaultPort = 6032;
       break;
   }

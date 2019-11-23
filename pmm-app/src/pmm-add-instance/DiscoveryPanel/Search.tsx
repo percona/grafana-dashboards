@@ -23,7 +23,7 @@ const Search = props => {
         });
 
         return (
-          <form onSubmit={handleSubmit} className="add-instance-form app-theme-dark">
+          <form onSubmit={handleSubmit} className="discovery-instance-form app-theme-dark">
             <div className="discovery-search-panel">
               <InputField
                 form={form}
