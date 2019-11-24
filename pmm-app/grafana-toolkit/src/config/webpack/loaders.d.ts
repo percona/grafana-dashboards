@@ -43,6 +43,32 @@ export declare const getStyleLoaders: () => ({
         };
     })[];
     exclude: string[];
+} | {
+    test: RegExp;
+    use: ({
+        loader: string;
+        options: {
+            importLoaders: number;
+            sourceMap: boolean;
+            plugins?: undefined;
+        };
+    } | {
+        loader: string;
+        options: {
+            plugins: () => any[];
+            importLoaders?: undefined;
+            sourceMap?: undefined;
+        };
+    } | {
+        loader: string;
+        options?: undefined;
+    } | {
+        loader: string;
+        options: {
+            javascriptEnabled: boolean;
+        };
+    })[];
+    exclude: string[];
 })[];
 export declare const getFileLoaders: () => ({
     test: RegExp;
