@@ -49,11 +49,16 @@ const InstancesTable = props => {
       title: 'Action',
       className: 'discovery-column',
       render: element => {
-        return (
-          <Button type="link" onClick={() => selectInstance({ type: 'mysql', credentials: element })}>
-            Start monitoring
-          </Button>
-        );
+        let type = '';
+        switch (element.engine) {
+          case 'DISCOVER_RDS_MYSQL':
+            type = 'mysql';
+            break;
+          default:
+            type = 'mysql';
+            break;
+        }
+        return <a onClick={() => selectInstance({ type: type, credentials: element })}> Start monitoring</a>;
       },
     },
   ];

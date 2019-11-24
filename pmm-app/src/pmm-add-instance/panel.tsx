@@ -16,11 +16,16 @@ const AddInstancePanel = () => {
     <div className={'app-theme-dark content-wrapper antd'} id={'antd'}>
       {!selectedInstance.type ? <AddInstance selectInstanceType={setSelectedInstance} /> : null}
       {selectedInstance.type === 'rds' ? (
-        <DiscoveryPanel
-          selectInstance={instanceData => {
-            setSelectedInstance(instanceData);
-          }}
-        />
+        <>
+          <Button type={'link'} onClick={setSelectedInstance.bind(null, { type: undefined })}>
+            Return to instance select menu
+          </Button>
+          <DiscoveryPanel
+            selectInstance={instanceData => {
+              setSelectedInstance(instanceData);
+            }}
+          />
+        </>
       ) : null}
       {selectedInstance.type && selectedInstance.type !== 'rds' ? (
         <>
