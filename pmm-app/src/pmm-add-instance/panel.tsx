@@ -11,7 +11,7 @@ import { createBrowserHistory } from 'history';
 const history = createBrowserHistory({});
 const AddInstancePanel = props => {
   // @ts-ignore
-  var urlParams = new URLSearchParams(window.location.search);
+  const urlParams = new URLSearchParams(window.location.search);
   console.log(props.history, urlParams.get('instance_type'));
 
   const [selectedInstance, selectInstance] = useState({

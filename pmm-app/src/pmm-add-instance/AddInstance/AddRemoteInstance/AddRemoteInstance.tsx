@@ -86,7 +86,7 @@ const validateInstanceForm = values => {
 
   errors.port = Validators.validatePort(values.port);
   errors.custom_labels = Validators.validateKeyValue(values.custom_labels);
-  for (let propName in errors) {
+  for (const propName in errors) {
     if (!errors[propName]) {
       delete errors[propName];
     }
