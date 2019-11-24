@@ -5,7 +5,7 @@ var fs_1 = tslib_1.__importDefault(require("fs"));
 var path_1 = tslib_1.__importDefault(require("path"));
 var getPluginId_1 = require("../utils/getPluginId");
 var MiniCssExtractPlugin = require('mini-css-extract-plugin');
-var supportedExtensions = ['css', 'scss'];
+var supportedExtensions = ['css', 'scss', 'less'];
 var getStylesheetPaths = function (root) {
     if (root === void 0) { root = process.cwd(); }
     return [root + "/src/styles/light", root + "/src/styles/dark"];
@@ -108,6 +108,18 @@ exports.getStyleLoaders = function () {
             test: /\.scss$/,
             use: tslib_1.__spread(['style-loader'], cssLoaders, ['sass-loader']),
             exclude: [styleDir + "light.scss", styleDir + "dark.scss"],
+        },
+        {
+            test: /\.less$/,
+            use: tslib_1.__spread([{
+                    loader: 'style-loader'
+                }], cssLoaders, [{
+                    loader: 'less-loader',
+                    options: {
+                        javascriptEnabled: true,
+                    },
+                },]),
+            exclude: [styleDir + "light.less", styleDir + "dark.less"],
         },
     ];
     return rules;
