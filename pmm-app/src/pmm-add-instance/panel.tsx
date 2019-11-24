@@ -6,12 +6,24 @@ import '../react-plugins-deps/style.less';
 import AddInstance from './AddInstance/AddInstance';
 import { Button } from 'antd';
 import './panel.scss';
-
-const AddInstancePanel = () => {
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
+const history = createBrowserHistory({});
+const AddInstancePanel = props => {
   // @ts-ignore
-  const [selectedInstance, setSelectedInstance] = useState({
-    type: undefined,
+  var urlParams = new URLSearchParams(window.location.search);
+  console.log(props.history, urlParams.get('instance_type'));
+
+  const [selectedInstance, selectInstance] = useState({
+    type: urlParams.get('instance_type'),
   });
+
+  const setSelectedInstance = instance => {
+    const url = new URL(window.location);
+    url.searchParams.set('instance_type', instance.type);
+    selectInstance(instance);
+    history.push(url.pathname + url.search);
+  };
   return (
     <div className={'app-theme-dark content-wrapper antd'} id={'antd'}>
       {!selectedInstance.type ? <AddInstance selectInstanceType={setSelectedInstance} /> : null}
@@ -39,4 +51,15 @@ const AddInstancePanel = () => {
   );
 };
 
-export default AddInstancePanel;
+const Wrapper = InnerComponent => {
+  return (
+    <Router history={history}>
+      <Route path="*" component={AddInstancePanel} />
+    </Router>
+  );
+};
+
+const AddPanel2 = () => {
+  return Wrapper();
+};
+export default AddPanel2;
