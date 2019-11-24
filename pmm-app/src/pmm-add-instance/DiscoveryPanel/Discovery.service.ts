@@ -5,26 +5,14 @@ class DiscoveryService {
       aws_access_key: aws_access_key,
     };
 
-    // const response = await fetch('/v1/management/Discovery/RDS', {
-    //   method: 'POST',
-    //   body: JSON.stringify(data),
-    // });
-    // if (!response.ok) {
-    //   throw Error(response.statusText);
-    // }
-    // return response.json();
-
-    return {
-      rds_instances: [
-        {
-          region: 'us-west1',
-          instance_id: 'sdadadqdmj238e12en',
-          address: 'mysql.example.com:3306',
-          engine: 'DISCOVER_RDS_MYSQL',
-          engine_version: '5.6.11',
-        },
-      ],
-    };
+    const response = await fetch('/v1/management/Discovery/RDS', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) {
+      throw Error(response.statusText);
+    }
+    return response.json();
   }
 }
 
