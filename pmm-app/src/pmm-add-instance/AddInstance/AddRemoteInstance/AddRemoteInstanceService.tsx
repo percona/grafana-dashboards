@@ -5,6 +5,9 @@ class AddRemoteInstanceService {
       body: JSON.stringify(data),
     });
 
+    if (!response.ok) {
+      throw Error(response.statusText);
+    }
     return response.json();
   }
 
@@ -14,6 +17,9 @@ class AddRemoteInstanceService {
       body: JSON.stringify(data),
     });
 
+    if (!response.ok) {
+      throw Error(response.statusText);
+    }
     return response.json();
   }
 
@@ -22,7 +28,9 @@ class AddRemoteInstanceService {
       method: 'POST',
       body: JSON.stringify(data),
     });
-
+    if (!response.ok) {
+      throw Error(response.statusText);
+    }
     return response.json();
   }
 
@@ -32,7 +40,25 @@ class AddRemoteInstanceService {
       body: JSON.stringify(data),
     });
 
+    if (!response.ok) {
+      throw Error(response.statusText);
+    }
     return response.json();
+  }
+
+  static createInstance(type, data) {
+    switch (type) {
+      case 'MongoDB':
+        return AddRemoteInstanceService.addMongodb(data);
+      case 'MySQL':
+        return AddRemoteInstanceService.addMysql(data);
+      case 'ProxySQL':
+        return AddRemoteInstanceService.addProxysql(data);
+      case 'PostgreSQL':
+        return AddRemoteInstanceService.addPostgresql(data);
+      default:
+        return AddRemoteInstanceService.addPostgresql(data);
+    }
   }
 }
 

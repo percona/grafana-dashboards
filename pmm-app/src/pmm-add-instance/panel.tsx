@@ -5,6 +5,7 @@ import '../react-plugins-deps/styles.scss';
 import '../react-plugins-deps/style.less';
 import AddInstance from './AddInstance/AddInstance';
 import { Button } from 'antd';
+import './panel.scss';
 
 const AddInstancePanel = () => {
   // @ts-ignore
