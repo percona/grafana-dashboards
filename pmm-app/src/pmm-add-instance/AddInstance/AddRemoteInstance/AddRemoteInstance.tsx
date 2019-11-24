@@ -28,24 +28,24 @@ const extractCredentials = credentials => {
 };
 const getInstanceData = (instanceType, credentials) => {
   const instance: InstanceData = {};
+  console.log(instanceType, credentials);
+
+  instance.remoteInstanceCredentials = credentials ? extractCredentials(credentials) : {};
   switch (instanceType) {
     case 'postgresql':
       instance.instanceType = 'PostgreSQL';
-      instance.remoteInstanceCredentials = credentials ? extractCredentials(credentials) : {};
       instance.defaultPort = 5432;
       break;
     case 'mysql':
       instance.instanceType = 'MySQL';
-      instance.remoteInstanceCredentials = credentials ? extractCredentials(credentials) : {};
       instance.defaultPort = 3306;
+      break;
     case 'mongodb':
       instance.instanceType = 'MongoDB';
-      instance.remoteInstanceCredentials = credentials ? extractCredentials(credentials) : {};
       instance.defaultPort = 27017;
       break;
     case 'proxysql':
       instance.instanceType = 'ProxySQL';
-      instance.remoteInstanceCredentials = credentials ? extractCredentials(credentials) : {};
       instance.defaultPort = 6032;
       break;
   }
@@ -86,7 +86,6 @@ const validateInstanceForm = values => {
 
   errors.port = Validators.validatePort(values.port);
   errors.custom_labels = Validators.validateKeyValue(values.custom_labels);
-  console.log(errors);
   for (let propName in errors) {
     if (!errors[propName]) {
       delete errors[propName];
@@ -124,12 +123,10 @@ const AddRemoteInstance = props => {
     }
 
     setLoading(true);
-    showSuccessNotification({ message: 'Instance added successfully' });
     try {
       await AddRemoteInstanceService.createInstance(instanceType, data);
       setLoading(false);
       window.location.assign(newURL);
-      showSuccessNotification({ message: 'Instance added successfully' });
     } catch (e) {
       setLoading(false);
       showErrorNotification({ message: e.message });
@@ -189,9 +186,9 @@ const AddRemoteInstance = props => {
                 name="custom_labels"
                 data-cy="add-account-username"
                 placeholder="Custom labels
-                              Format:
-                              key1:value1
-                              key2:value2"
+Format:
+key1:value1
+key2:value2"
               />
               <span className="description"></span>
             </div>
@@ -219,9 +216,6 @@ const AddRemoteInstance = props => {
               <button type="submit" className="button button--dark" id="addInstance" disabled={loading}>
                 Add service
               </button>
-              {/*<Button htmlType="submit" type="primary" loading className="button button--dark">*/}
-              {/*  Add service*/}
-              {/*</Button>*/}
             </div>
           </form>
         );
