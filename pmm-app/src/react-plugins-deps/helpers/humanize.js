@@ -1,4 +1,3 @@
-import * as moment from "moment";
 import * as numeral from "numeral";
 
 class Humanize {
