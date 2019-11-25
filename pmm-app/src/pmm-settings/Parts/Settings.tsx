@@ -52,7 +52,7 @@ const SettingsPart = props => {
         element={<Slider marks={marks} max={2} step={null} included={false} defaultValue={2} />}
       />
       <Collapse bordered={false} defaultActiveKey={['1']} onChange={callback} style={customCollapseStyle}>
-        <Panel header="Advanced settings" key="1" style={customPanelStyle}>
+        <Panel header="Advanced settings " key="1" style={customPanelStyle}>
           <VerticalFormWrapper
             label={'Data retention'}
             tooltip={<PluginTooltip linkText={'Read more'} url={'#'} text={'This is the value for how long data will be stored'} />}
