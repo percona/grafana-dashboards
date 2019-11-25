@@ -59,7 +59,7 @@ const SettingsPart = props => {
             element={
               <>
                 <input placeholder="Basic usage" className="input-field input-field--dark" style={{ width: '60%', height: '32px' }} />
-                <SelectField name={'data-retention'} options={dataRetentionOptions} defaultValue={'weeks'} />
+                <SelectField form={form} name={'data-retention'} options={dataRetentionOptions} defaultValue={'weeks'} />
               </>
             }
           />
