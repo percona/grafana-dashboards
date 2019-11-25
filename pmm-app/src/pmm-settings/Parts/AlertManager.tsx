@@ -3,6 +3,8 @@ import { InputField } from '../../react-plugins-deps/components/FieldsComponents
 import { TextAreaField } from '../../react-plugins-deps/components/FieldsComponents/TextArea/TextArea';
 import React from 'react';
 import PanelForm from '../../react-plugins-deps/components/helpers/PanelForm';
+import SettingsService from './SettingsService';
+import { showErrorNotification, showSuccessNotification } from '../../react-plugins-deps/components/helpers/notification-manager';
 
 const AlertManager = props => {
   const { form } = props;
@@ -23,4 +25,21 @@ const AlertManager = props => {
   );
 };
 
-export default PanelForm({ Element: AlertManager });
+// export default PanelForm({ Element: AlertManager });
+
+export default PanelForm({
+  Element: AlertManager,
+  onSubmit: async (values, setLoading) => {
+    console.log(values, '-----');
+    setLoading(true);
+    try {
+      await SettingsService.setSettings(values);
+      setLoading(false);
+      showSuccessNotification({ message: 'Alert Manager settings updated' });
+    } catch (e) {
+      setLoading(false);
+      showErrorNotification({ message: e.message });
+    }
+  },
+  validate: () => {},
+});

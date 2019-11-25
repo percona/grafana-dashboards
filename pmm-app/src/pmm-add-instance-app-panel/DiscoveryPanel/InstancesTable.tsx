@@ -1,4 +1,4 @@
-import { Button, Table } from 'antd';
+import { Table } from 'antd';
 import React from 'react';
 
 const getColumnType = type => {

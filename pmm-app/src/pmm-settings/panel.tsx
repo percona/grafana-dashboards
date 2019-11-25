@@ -1,5 +1,5 @@
 import React from 'react';
-import {Collapse} from 'antd';
+import { Collapse } from 'antd';
 import '../react-plugins-deps/styles.scss';
 import '../react-plugins-deps/style.less';
 import './panel.scss';
