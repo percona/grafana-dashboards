@@ -1,23 +1,24 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { Form as FormFinal } from 'react-final-form';
 import { useForm } from 'react-final-form-hooks';
 
-const PanelForm = ({ Element }) => props => {
+const PanelForm = ({ Element, onSubmit, validate }) => props => {
+  const [loading, setLoading] = useState(false);
+
   return (
     <FormFinal
       onSubmit={() => {}}
-      validate={() => {
-        return undefined;
-      }}
       render={(): ReactElement => {
-        const { form } = useForm({
-          onSubmit: () => {},
-          validate: () => {},
+        const { form, handleSubmit } = useForm({
+          onSubmit: values => {
+            onSubmit(values, setLoading);
+          },
+          validate: validate,
         });
         // @ts-ignore
         return (
-          <form>
-            <Element form={form} {...props} />
+          <form onSubmit={handleSubmit}>
+            <Element form={form} {...props} loading={loading} />
           </form>
         );
       }}

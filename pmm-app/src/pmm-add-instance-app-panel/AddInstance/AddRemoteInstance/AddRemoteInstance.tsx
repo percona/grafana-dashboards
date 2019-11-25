@@ -8,9 +8,8 @@ import { Form as FormFinal } from 'react-final-form';
 import { useForm } from 'react-final-form-hooks';
 import { PasswordField } from '../../../react-plugins-deps/components/FieldsComponents/Password/Password';
 import AddRemoteInstanceService from 'pmm-add-instance-app-panel/AddInstance/AddRemoteInstance/AddRemoteInstanceService';
-import { Button } from 'antd';
 import Validators from '../../../react-plugins-deps/components/validators/validators';
-import { showErrorNotification, showSuccessNotification } from '../../../react-plugins-deps/components/helpers/notification-manager';
+import { showErrorNotification } from '../../../react-plugins-deps/components/helpers/notification-manager';
 
 interface InstanceData {
   instanceType?: string;
@@ -82,7 +81,7 @@ const getAdditionalOptions = (type, form) => {
 };
 
 const validateInstanceForm = values => {
-  const errors = {};
+  const errors = {} as any;
 
   errors.port = Validators.validatePort(values.port);
   errors.custom_labels = Validators.validateKeyValue(values.custom_labels);

@@ -20,7 +20,7 @@ const AddInstancePanel = props => {
   });
 
   const setSelectedInstance = instance => {
-    const url = new URL(window.location);
+    const url = new URL((window.location as unknown) as string);
     url.searchParams.set('instance_type', instance.type);
     selectInstance(instance);
     history.push(url.pathname + url.search);
@@ -52,7 +52,7 @@ const AddInstancePanel = props => {
   );
 };
 
-const Wrapper = InnerComponent => {
+const Wrapper = () => {
   return (
     <Router history={history}>
       <Route path="*" component={AddInstancePanel} />

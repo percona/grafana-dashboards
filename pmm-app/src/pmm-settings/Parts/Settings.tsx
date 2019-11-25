@@ -1,11 +1,15 @@
 import { PluginTooltip, VerticalFormWrapper } from '../../react-plugins-deps/components/helpers/Helpers';
 import { SelectField } from '../../react-plugins-deps/components/FieldsComponents/Select/Select';
 import { ToggleField } from '../../react-plugins-deps/components/FieldsComponents/Toggle/Toggle';
+import SettingsService from './SettingsService';
 import React from 'react';
 import { Collapse, Slider } from 'antd';
-const { Panel } = Collapse;
 import PanelForm from '../../react-plugins-deps/components/helpers/PanelForm';
 import './Settings.scss';
+import { InputField } from '../../react-plugins-deps/components/FieldsComponents/Input/Input';
+import { showErrorNotification, showSuccessNotification } from '../../react-plugins-deps/components/helpers/notification-manager';
+
+const { Panel } = Collapse;
 const dataRetentionOptions = [
   { value: 'weeks', label: 'Weeks' },
   { value: 'days', label: 'Days' },
@@ -45,7 +49,6 @@ const SettingsPart = props => {
   const { form } = props;
   return (
     <>
-      {' '}
       <VerticalFormWrapper
         label={'Metrics resolution'}
         tooltip={<PluginTooltip linkText={'Read more'} url={'#'} text={'This setting defines how frequently the data will be collected'} />}
@@ -58,7 +61,7 @@ const SettingsPart = props => {
             tooltip={<PluginTooltip linkText={'Read more'} url={'#'} text={'This is the value for how long data will be stored'} />}
             element={
               <>
-                <input placeholder="Basic usage" className="input-field input-field--dark" style={{ width: '60%', height: '32px' }} />
+                <InputField name={'data-retention-count'} form={form} wrapperStyle={{ width: '60%' }} />
                 <SelectField form={form} name={'data-retention'} options={dataRetentionOptions} defaultValue={'weeks'} />
               </>
             }
@@ -78,10 +81,25 @@ const SettingsPart = props => {
         </Panel>
       </Collapse>
       <button type="submit" className="button button--dark" id="addInstance" style={{ color: 'white' }}>
-        Apply changes
+        {props.loading ? 'Applying' : 'Apply changes'}
       </button>
     </>
   );
 };
 
-export default PanelForm({ Element: SettingsPart });
+export default PanelForm({
+  Element: SettingsPart,
+  onSubmit: async (values, setLoading) => {
+    console.log(values, '-----');
+    setLoading(true);
+    try {
+      await SettingsService.setSettings(values);
+      setLoading(false);
+      showSuccessNotification({ message: 'Settings updated!' });
+    } catch (e) {
+      setLoading(false);
+      showErrorNotification({ message: e.message });
+    }
+  },
+  validate: () => {},
+});
