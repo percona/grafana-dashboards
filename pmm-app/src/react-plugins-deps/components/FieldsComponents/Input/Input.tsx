@@ -10,16 +10,17 @@ interface InputFieldInterface {
   placeholder?: string;
   form: any;
   style?: any;
+  wrapperStyle?: any;
   text?: string;
   options?: any;
   defaultValue?: any;
 }
 
-export const InputField = ({ name, placeholder, required, form, style }: InputFieldInterface) => {
+export const InputField = ({ name, placeholder, required, form, style, wrapperStyle }: InputFieldInterface) => {
   // // @ts-ignore
   const { input, meta } = useField(name, form);
   return (
-    <div className={'input-field-wrapper'}>
+    <div className={'input-field-wrapper'} style={wrapperStyle || {}}>
       <input {...input} type="text" required={required} placeholder={placeholder} style={style || {}} className="input-field input-field--dark" />
       {meta.error && meta.touched && <span className={'error-message'}>{meta.error}</span>}
     </div>

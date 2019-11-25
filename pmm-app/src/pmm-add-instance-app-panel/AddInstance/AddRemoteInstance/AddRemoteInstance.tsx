@@ -7,7 +7,7 @@ import { CheckboxField } from '../../../react-plugins-deps/components/FieldsComp
 import { Form as FormFinal } from 'react-final-form';
 import { useForm } from 'react-final-form-hooks';
 import { PasswordField } from '../../../react-plugins-deps/components/FieldsComponents/Password/Password';
-import AddRemoteInstanceService from 'pmm-add-instance/AddInstance/AddRemoteInstance/AddRemoteInstanceService';
+import AddRemoteInstanceService from 'pmm-add-instance-app-panel/AddInstance/AddRemoteInstance/AddRemoteInstanceService';
 import { Button } from 'antd';
 import Validators from '../../../react-plugins-deps/components/validators/validators';
 import { showErrorNotification, showSuccessNotification } from '../../../react-plugins-deps/components/helpers/notification-manager';

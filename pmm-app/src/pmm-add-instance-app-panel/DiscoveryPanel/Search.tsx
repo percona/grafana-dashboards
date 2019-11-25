@@ -31,7 +31,7 @@ const Search = props => {
                 data-cy="add-account-username"
                 placeholder="AMAZON_RDS_ACCESS_KEY_ID"
                 required={true}
-                style={{ marginRight: '10px' }}
+                wrapperStyle={{ paddingRight: '10px' }}
               />
               <InputField
                 form={form}
@@ -39,7 +39,7 @@ const Search = props => {
                 data-cy="add-account-username"
                 placeholder="AMAZON_RDS_SECRET_ACCESS_KEY"
                 required={true}
-                style={{ marginRight: '10px' }}
+                wrapperStyle={{ paddingRight: '10px' }}
               />
               <button className="button button--dark" id="addInstance">
                 Discover
