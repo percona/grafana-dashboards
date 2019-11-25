@@ -1,13 +1,13 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import AddRemoteInstance from './AddInstance/AddRemoteInstance/AddRemoteInstance';
 import DiscoveryPanel from './DiscoveryPanel/DiscoveryPanel';
 import '../react-plugins-deps/styles.scss';
 import '../react-plugins-deps/style.less';
 import AddInstance from './AddInstance/AddInstance';
-import {Button} from 'antd';
+import { Button } from 'antd';
 import './panel.scss';
-import {BrowserRouter as Router, Route} from 'react-router-dom';
-import {createBrowserHistory} from 'history';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
 
 const history = createBrowserHistory({});
 const AddInstancePanel = props => {
