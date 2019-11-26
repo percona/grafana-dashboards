@@ -123,6 +123,7 @@ const AddRemoteInstance = props => {
     if (data.pmm_agent_id === undefined || data.pmm_agent_id === '') {
       data.pmm_agent_id = 'pmm-server'; // set default value for pmm agent id
     }
+    console.log(values, '---- on submit')
 
     setLoading(true);
     try {
@@ -167,13 +168,16 @@ const AddRemoteInstance = props => {
               <span className="description">Port your service is listening on</span>
             </div>
             <div className="add-instance-panel">
-              <CheckboxField form={form} label={'Use RDS instance'} name="isRDS" data-cy="add-account-username" />
+              <InputField form={form} name="username" data-cy="add-account-username" placeholder="*Username" required={true} />
+              <span className="description">Your database user name</span>
+
+              <PasswordField form={form} name="password" data-cy="add-account-username" placeholder="*Password" required={true} />
+              <span className="description">Your database password</span>
+              <CheckboxField form={form} label={'Hosted in RDS'} name="isRDS" data-cy="add-account-username" />
               <span className="description"></span>
               {form.getFieldState('isRDS') &&
                 (form.getFieldState('isRDS').value ? (
                   <>
-                    <h6>RDS instance credentials</h6>
-                    <span></span>
                     <InputField form={form} name="aws_access_key" data-cy="add-account-username" placeholder="AWS_ACCESS_KEY" />
                     <span className="description">AWS access key</span>
 
@@ -183,17 +187,7 @@ const AddRemoteInstance = props => {
                     <InputField form={form} name="instance_id" data-cy="add-account-username" placeholder="Instance ID" />
                     <span className="description">Instance ID</span>
                   </>
-                ) : (
-                  <>
-                    <h6>Local instance credentials</h6>
-                    <span></span>
-                    <InputField form={form} name="username" data-cy="add-account-username" placeholder="*Username" required={true} />
-                    <span className="description">Your database user name</span>
-
-                    <PasswordField form={form} name="password" data-cy="add-account-username" placeholder="*Password" required={true} />
-                    <span className="description">Your database password</span>
-                  </>
-                ))}
+                ) : null)}
             </div>
             <div className="add-instance-panel">
               <h6>Labels</h6>

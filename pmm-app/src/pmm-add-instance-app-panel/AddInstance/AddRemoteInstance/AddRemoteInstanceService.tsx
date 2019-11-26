@@ -46,6 +46,18 @@ class AddRemoteInstanceService {
     return response.json();
   }
 
+  static async addRDS(data) {
+    const response = await fetch('/v1/management/RDS/Add', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      throw Error(response.statusText);
+    }
+    return response.json();
+  }
+
   static createInstance(type, data) {
     switch (type) {
       case 'MongoDB':
