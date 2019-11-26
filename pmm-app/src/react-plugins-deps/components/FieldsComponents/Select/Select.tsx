@@ -17,13 +17,12 @@ interface SelectFieldInterface {
   options?: any;
   defaultValue?: any;
 }
-export const SelectField = ({ name, placeholder, required, form, options, defaultValue }: SelectFieldInterface) => {
-  // @ts-ignore
+export const SelectField = ({ name, placeholder, required, form, options, style, defaultValue }: SelectFieldInterface) => {
   const { input } = useField(name, form);
 
   return (
-    <span className={'fields__select-field'}>
-      <Select defaultValue={defaultValue} style={{ width: '40%' }}>
+    <span className={'fields__select-field'} style={style || {}}>
+      <Select defaultValue={defaultValue} style={{ width: '100%' }}>
         {options &&
           options.map(option => {
             // @ts-ignore

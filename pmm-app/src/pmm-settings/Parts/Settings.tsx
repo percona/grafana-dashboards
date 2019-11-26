@@ -60,10 +60,10 @@ const SettingsPart = props => {
             label={'Data retention'}
             tooltip={<PluginTooltip linkText={'Read more'} url={'#'} text={'This is the value for how long data will be stored'} />}
             element={
-              <>
+              <div style={{ display: 'flex', justifyContent: 'flex-start', width: '100%' }}>
                 <InputField name={'data-retention-count'} form={form} wrapperStyle={{ width: '60%' }} />
-                <SelectField form={form} name={'data-retention'} options={dataRetentionOptions} defaultValue={'weeks'} />
-              </>
+                <SelectField form={form} name={'data-retention'} options={dataRetentionOptions} defaultValue={'weeks'} style={{ width: '40%' }} />
+              </div>
             }
           />
           <VerticalFormWrapper
