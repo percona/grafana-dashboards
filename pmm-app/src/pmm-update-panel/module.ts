@@ -50,7 +50,6 @@ export class PanelCtrl extends MetricsPanelCtrl {
     // Re-init all scope params
     this.reset($scope);
     $scope.logLocation = '';
-
     $scope.version = '';
     $scope.fullVersion = '';
     $scope.versionCashed = '';
