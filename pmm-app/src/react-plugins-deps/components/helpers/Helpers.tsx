@@ -6,7 +6,7 @@ export const VerticalFormWrapper = props => (
     <Col span={3} style={{ display: 'flex', justifyContent: 'flex-end', paddingRight: '20px' }}>
       <span>{props.label}</span>
     </Col>
-    <Col span={8}>{props.element}</Col>
+    <Col span={8} >{props.element}</Col>
     <Col span={1}>{props.tooltip || ''}</Col>
   </Row>
 );

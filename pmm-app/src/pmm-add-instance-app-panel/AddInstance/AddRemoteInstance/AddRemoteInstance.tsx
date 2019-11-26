@@ -10,6 +10,7 @@ import { PasswordField } from '../../../react-plugins-deps/components/FieldsComp
 import AddRemoteInstanceService from 'pmm-add-instance-app-panel/AddInstance/AddRemoteInstance/AddRemoteInstanceService';
 import Validators from '../../../react-plugins-deps/components/validators/validators';
 import { showErrorNotification } from '../../../react-plugins-deps/components/helpers/notification-manager';
+import { Switch } from 'antd';
 
 interface InstanceData {
   instanceType?: string;
@@ -83,8 +84,8 @@ const getAdditionalOptions = (type, form) => {
 const validateInstanceForm = values => {
   const errors = {} as any;
 
-  errors.port = Validators.validatePort(values.port);
-  errors.custom_labels = Validators.validateKeyValue(values.custom_labels);
+  errors.port = values.port ? Validators.validatePort(values.port) : '';
+  errors.custom_labels = values.custom_labels ? Validators.validateKeyValue(values.custom_labels) : '';
   for (const propName in errors) {
     if (!errors[propName]) {
       delete errors[propName];
@@ -101,14 +102,16 @@ const AddRemoteInstance = props => {
     const newURL = currentUrl.split('/graph/d/').shift() + '/graph/d/pmm-inventory/';
 
     const data = Object.assign({}, values);
-    data.custom_labels = data.custom_labels
-      .split(/[\n\s]/)
-      .filter(Boolean)
-      .reduce((acc, val) => {
-        const [key, value] = val.split(':');
-        acc[key] = value;
-        return acc;
-      }, {});
+    if (values.custom_labels) {
+      data.custom_labels = data.custom_labels
+        .split(/[\n\s]/)
+        .filter(Boolean)
+        .reduce((acc, val) => {
+          const [key, value] = val.split(':');
+          acc[key] = value;
+          return acc;
+        }, {});
+    }
 
     if (data.add_node === undefined) {
       data.add_node = {
@@ -141,6 +144,7 @@ const AddRemoteInstance = props => {
           validate: validateInstanceForm,
           initialValues: { ...remoteInstanceCredentials },
         });
+        console.log(form);
         return (
           <form onSubmit={handleSubmit} className="add-instance-form app-theme-dark">
             <h5>{`Add remote ${instanceType} Instance`}</h5>
@@ -159,25 +163,48 @@ const AddRemoteInstance = props => {
               />
               <span className="description">Service name to use.</span>
 
-              <InputField form={form} name="port" data-cy="add-account-username" placeholder={`Port (default: ${defaultPort} )`} required={true} />
+              <InputField form={form} name="port" data-cy="add-account-username" placeholder={`Port (default: ${defaultPort} )`} />
               <span className="description">Port your service is listening on</span>
+            </div>
+            <div className="add-instance-panel">
+              <CheckboxField form={form} label={'Use RDS instance'} name="isRDS" data-cy="add-account-username" />
+              <span className="description"></span>
+              {form.getFieldState('isRDS') &&
+                (form.getFieldState('isRDS').value ? (
+                  <>
+                    <h6>RDS instance credentials</h6>
+                    <span></span>
+                    <InputField form={form} name="aws_access_key" data-cy="add-account-username" placeholder="AWS_ACCESS_KEY" />
+                    <span className="description">AWS access key</span>
 
-              <InputField form={form} name="username" data-cy="add-account-username" placeholder="*Username" required={true} />
-              <span className="description">Your database user name</span>
+                    <InputField form={form} name="aws_secret_key" data-cy="add-account-username" placeholder="AWS_SECRET_KEY" />
+                    <span className="description">AWS secret key</span>
 
-              <PasswordField form={form} name="password" data-cy="add-account-username" placeholder="*Password" required={true} />
-              <span className="description">Your database password</span>
+                    <InputField form={form} name="instance_id" data-cy="add-account-username" placeholder="Instance ID" />
+                    <span className="description">Instance ID</span>
+                  </>
+                ) : (
+                  <>
+                    <h6>Local instance credentials</h6>
+                    <span></span>
+                    <InputField form={form} name="username" data-cy="add-account-username" placeholder="*Username" required={true} />
+                    <span className="description">Your database user name</span>
+
+                    <PasswordField form={form} name="password" data-cy="add-account-username" placeholder="*Password" required={true} />
+                    <span className="description">Your database password</span>
+                  </>
+                ))}
             </div>
             <div className="add-instance-panel">
               <h6>Labels</h6>
               <span></span>
-              <InputField form={form} name="environment" data-cy="add-account-username" placeholder="Environment" required={true} />
+              <InputField form={form} name="environment" data-cy="add-account-username" placeholder="Environment" />
               <span className="description"></span>
 
-              <InputField form={form} name="replication_set" data-cy="add-account-username" placeholder="Replication set" required={true} />
+              <InputField form={form} name="replication_set" data-cy="add-account-username" placeholder="Replication set" />
               <span className="description"></span>
 
-              <InputField form={form} name="cluster" data-cy="add-account-username" placeholder="Cluster" required={true} />
+              <InputField form={form} name="cluster" data-cy="add-account-username" placeholder="Cluster" />
               <span className="description"></span>
 
               <TextAreaField
