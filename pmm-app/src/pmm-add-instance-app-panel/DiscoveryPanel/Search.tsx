@@ -6,20 +6,15 @@ import { InputField } from '../../react-plugins-deps/components/FieldsComponents
 const Search = props => {
   return (
     <FormFinal
-      onSubmit={values => {
-        // debugger;
-        // setCredentials()
-      }}
+      onSubmit={() => {}}
       validate={() => {
         return undefined;
       }}
       render={(): ReactElement => {
         const { form, handleSubmit } = useForm({
           onSubmit: values => {
-            props.setCredentials(values);
-            console.log(values);
+            props.setCredentials({ ...values });
           },
-          // validate: () => {},
         });
 
         return (

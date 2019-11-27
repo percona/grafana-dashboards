@@ -13,7 +13,6 @@ const history = createBrowserHistory({});
 const AddInstancePanel = props => {
   // @ts-ignore
   const urlParams = new URLSearchParams(window.location.search);
-  console.log(props.history, urlParams.get('instance_type'));
 
   const [selectedInstance, selectInstance] = useState({
     type: urlParams.get('instance_type'),
@@ -35,7 +34,6 @@ const AddInstancePanel = props => {
           </Button>
           <DiscoveryPanel
             selectInstance={instanceData => {
-              console.log(instanceData)
               setSelectedInstance(instanceData);
             }}
           />
