@@ -38,6 +38,7 @@ const getInstanceData = (instanceType, credentials) => {
       break;
     case 'mysql':
       instance.instanceType = 'MySQL';
+      instance.discoverName = 'DISCOVER_RDS_MYSQL';
       instance.defaultPort = 3306;
       break;
     case 'mongodb':
@@ -94,7 +95,7 @@ const validateInstanceForm = values => {
   return errors;
 };
 const AddRemoteInstance = props => {
-  const { instanceType, remoteInstanceCredentials, defaultPort } = getInstanceData(props.instance.type, props.instance.credentials);
+  const { instanceType, remoteInstanceCredentials, defaultPort, discoverName } = getInstanceData(props.instance.type, props.instance.credentials);
   const [loading, setLoading] = useState<boolean>(false);
 
   const onSubmit = async values => {
@@ -120,7 +121,10 @@ const AddRemoteInstance = props => {
       };
     }
 
-    data.engine = 1;
+    if (discoverName) {
+      data.engine = discoverName;
+    }
+
     if (data.pmm_agent_id === undefined || data.pmm_agent_id === '') {
       data.pmm_agent_id = 'pmm-server'; // set default value for pmm agent id
     }
