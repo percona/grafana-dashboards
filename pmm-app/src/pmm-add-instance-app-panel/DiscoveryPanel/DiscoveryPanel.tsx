@@ -25,7 +25,6 @@ const DiscoveryPanel = (props: DiscoverySearchPanelInterface) => {
         startLoading(false);
       } catch (e) {
         startLoading(false);
-        showErrorNotification({ message: e.message });
       }
     };
     if (credentials.aws_secret_key && credentials.aws_access_key) {

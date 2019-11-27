@@ -141,7 +141,6 @@ const AddRemoteInstance = props => {
       window.location.assign(newURL);
     } catch (e) {
       setLoading(false);
-      showErrorNotification({ message: e.message });
     }
   };
   // @ts-ignore
@@ -187,16 +186,16 @@ const AddRemoteInstance = props => {
               <span className="description"></span>
               {form.getFieldState('isRDS') && (form.getFieldState('isRDS') as any).value ? (
                 <>
-                  <InputField form={form} name="aws_access_key" data-cy="add-account-username" placeholder="AWS_ACCESS_KEY" />
+                  <InputField form={form} name="aws_access_key" data-cy="add-account-username" placeholder="AWS_ACCESS_KEY" required={true} />
                   <span className="description">AWS access key</span>
 
-                  <InputField form={form} name="aws_secret_key" data-cy="add-account-username" placeholder="AWS_SECRET_KEY" />
+                  <InputField form={form} name="aws_secret_key" data-cy="add-account-username" placeholder="AWS_SECRET_KEY" required={true} />
                   <span className="description">AWS secret key</span>
 
-                  <InputField form={form} name="region" data-cy="add-account-username" placeholder="AWS region" />
+                  <InputField form={form} name="region" data-cy="add-account-username" placeholder="AWS region" required={true} />
                   <span className="description">AWS region</span>
 
-                  <InputField form={form} name="instance_id" data-cy="add-account-username" placeholder="Instance ID" />
+                  <InputField form={form} name="instance_id" data-cy="add-account-username" placeholder="Instance ID" required={true} />
                   <span className="description">Instance ID</span>
                 </>
               ) : null}

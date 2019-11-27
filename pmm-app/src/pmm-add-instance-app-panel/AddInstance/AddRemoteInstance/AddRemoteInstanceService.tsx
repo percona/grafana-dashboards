@@ -1,61 +1,24 @@
+import { apiRequest } from '../../../react-plugins-deps/components/helpers/api';
+
 class AddRemoteInstanceService {
-  static async addMysql(data) {
-    const response = await fetch('/v1/management/MySQL/Add', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    });
-
-    if (!response.ok) {
-      throw Error(response.statusText);
-    }
-    return response.json();
+  static async addMysql(body) {
+    return apiRequest.post<any, any>('/v1/management/MySQL/Add', body);
   }
 
-  static async addPostgresql(data) {
-    const response = await fetch('/v1/management/PostgreSQL/Add', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    });
-
-    if (!response.ok) {
-      throw Error(response.statusText);
-    }
-    return response.json();
+  static async addPostgresql(body) {
+    return apiRequest.post<any, any>('/v1/management/PostgreSQL/Add', body);
   }
 
-  static async addProxysql(data) {
-    const response = await fetch('/v1/management/ProxySQL/Add', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    });
-    if (!response.ok) {
-      throw Error(response.statusText);
-    }
-    return response.json();
+  static async addProxysql(body) {
+    return apiRequest.post<any, any>('/v1/management/ProxySQL/Add', body);
   }
 
-  static async addMongodb(data) {
-    const response = await fetch('/v1/management/MongoDB/Add', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    });
-
-    if (!response.ok) {
-      throw Error(response.statusText);
-    }
-    return response.json();
+  static async addMongodb(body) {
+    return apiRequest.post<any, any>('/v1/management/MongoDB/Add', body);
   }
 
-  static async addRDS(data) {
-    const response = await fetch('/v1/management/RDS/Add', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    });
-
-    if (!response.ok) {
-      throw Error(response.statusText);
-    }
-    return response.json();
+  static async addRDS(body) {
+    return apiRequest.post<any, any>('/v1/management/RDS/Add', body);
   }
 
   static createInstance(type, data) {
