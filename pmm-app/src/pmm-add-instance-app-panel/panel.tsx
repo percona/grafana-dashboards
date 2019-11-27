@@ -35,6 +35,7 @@ const AddInstancePanel = props => {
           </Button>
           <DiscoveryPanel
             selectInstance={instanceData => {
+              console.log(instanceData)
               setSelectedInstance(instanceData);
             }}
           />

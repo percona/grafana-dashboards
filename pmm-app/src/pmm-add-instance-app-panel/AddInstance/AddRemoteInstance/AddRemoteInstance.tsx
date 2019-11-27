@@ -18,11 +18,15 @@ interface InstanceData {
 }
 
 const extractCredentials = credentials => {
-  const [serviceName, port] = credentials.address.split(':');
   return {
-    service_name: serviceName,
-    port,
-    address: serviceName,
+    service_name: credentials.address,
+    port: credentials.port,
+    address: credentials.address,
+    isRDS: credentials.isRDS,
+    region: credentials.region,
+    aws_access_key: credentials.aws_access_key,
+    aws_secret_key: credentials.aws_secret_key,
+    instance_id: credentials.instance_id,
   };
 };
 const getInstanceData = (instanceType, credentials) => {
@@ -119,14 +123,20 @@ const AddRemoteInstance = props => {
       };
     }
 
+    data.engine = 1;
     if (data.pmm_agent_id === undefined || data.pmm_agent_id === '') {
       data.pmm_agent_id = 'pmm-server'; // set default value for pmm agent id
     }
-    console.log(values, '---- on submit');
 
     setLoading(true);
+
     try {
-      await AddRemoteInstanceService.createInstance(instanceType, data);
+      if (values.isRDS) {
+        await AddRemoteInstanceService.addRDS(data);
+      } else {
+        // remove rds fields from data
+        await AddRemoteInstanceService.createInstance(instanceType, data);
+      }
       setLoading(false);
       window.location.assign(newURL);
     } catch (e) {
@@ -175,13 +185,16 @@ const AddRemoteInstance = props => {
               <span className="description">Your database password</span>
               <CheckboxField form={form} label={'Hosted in RDS'} name="isRDS" data-cy="add-account-username" />
               <span className="description"></span>
-              {(form.getFieldState('isRDS') as any).value ? (
+              {form.getFieldState('isRDS') && (form.getFieldState('isRDS') as any).value ? (
                 <>
                   <InputField form={form} name="aws_access_key" data-cy="add-account-username" placeholder="AWS_ACCESS_KEY" />
                   <span className="description">AWS access key</span>
 
                   <InputField form={form} name="aws_secret_key" data-cy="add-account-username" placeholder="AWS_SECRET_KEY" />
                   <span className="description">AWS secret key</span>
+
+                  <InputField form={form} name="region" data-cy="add-account-username" placeholder="AWS region" />
+                  <span className="description">AWS region</span>
 
                   <InputField form={form} name="instance_id" data-cy="add-account-username" placeholder="Instance ID" />
                   <span className="description">Instance ID</span>

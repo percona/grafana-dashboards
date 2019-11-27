@@ -15,7 +15,7 @@ const getColumnType = type => {
 };
 
 const InstancesTable = props => {
-  const { instances, selectInstance } = props;
+  const { instances, selectInstance, credentials } = props;
   const columns = [
     {
       title: 'AWS region',
@@ -58,7 +58,11 @@ const InstancesTable = props => {
             type = 'mysql';
             break;
         }
-        return <a onClick={() => selectInstance({ type: type, credentials: element })}> Start monitoring</a>;
+        return (
+          <a onClick={() => selectInstance({ type: type, credentials: { ...Object.assign({}, element, credentials), isRDS: true } })}>
+            Start monitoring
+          </a>
+        );
       },
     },
   ];
