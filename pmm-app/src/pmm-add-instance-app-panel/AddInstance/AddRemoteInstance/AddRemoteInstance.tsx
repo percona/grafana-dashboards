@@ -31,8 +31,6 @@ const extractCredentials = credentials => {
 };
 const getInstanceData = (instanceType, credentials) => {
   const instance: InstanceData = {};
-  console.log(instanceType, credentials);
-
   instance.remoteInstanceCredentials = credentials ? extractCredentials(credentials) : {};
   switch (instanceType) {
     case 'postgresql':
@@ -153,7 +151,6 @@ const AddRemoteInstance = props => {
           validate: validateInstanceForm,
           initialValues: { ...remoteInstanceCredentials },
         });
-        console.log(form);
         // @ts-ignore
         return (
           <form onSubmit={handleSubmit} className="add-instance-form app-theme-dark">
@@ -182,8 +179,13 @@ const AddRemoteInstance = props => {
 
               <PasswordField form={form} name="password" data-cy="add-account-username" placeholder="*Password" required={true} />
               <span className="description">Your database password</span>
-              <CheckboxField form={form} label={'Hosted in RDS'} name="isRDS" data-cy="add-account-username" />
-              <span className="description"></span>
+              {/*// TODO: remove hardcode and add real check*/}
+              {props.instance.type === 'mysql' ? (
+                <>
+                  <CheckboxField form={form} label={'RDS database'} name="isRDS" data-cy="add-account-username" />
+                  <span className="description"></span>
+                </>
+              ) : null}
               {form.getFieldState('isRDS') && (form.getFieldState('isRDS') as any).value ? (
                 <>
                   <InputField form={form} name="aws_access_key" data-cy="add-account-username" placeholder="AWS_ACCESS_KEY" required={true} />

@@ -30,7 +30,6 @@ const AlertManager = props => {
 export default PanelForm({
   Element: AlertManager,
   onSubmit: async (values, setLoading) => {
-    console.log(values, '-----');
     setLoading(true);
     try {
       await SettingsService.setSettings(values);
