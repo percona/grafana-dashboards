@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
-import get from 'lodash/get';
+// import get from 'lodash/get';
 import { showErrorNotification } from './notification-manager';
 
 // eslint-disable-next-line no-undef
