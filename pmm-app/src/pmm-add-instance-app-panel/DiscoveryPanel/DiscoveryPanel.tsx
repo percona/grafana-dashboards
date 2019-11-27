@@ -4,7 +4,6 @@ import DiscoveryService from './Discovery.service';
 import Search from './Search';
 import InstancesTable from './InstancesTable';
 import { Spin } from 'antd';
-import { showErrorNotification } from '../../react-plugins-deps/components/helpers/notification-manager';
 
 interface DiscoverySearchPanelInterface {
   selectInstance: (instanceData: any) => void;

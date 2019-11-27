@@ -7,16 +7,16 @@ import { showErrorNotification } from './notification-manager';
 export const AUTHORIZATION = 'Authorization';
 
 class ApiRequest {
-  public axiosInstance: AxiosInstance;
+  axiosInstance: AxiosInstance;
 
-  public constructor() {
+  constructor() {
     this.axiosInstance = axios.create({
       baseURL: '',
     });
     // this.axiosInstance.defaults.headers.common[AUTHORIZATION] = `Bearer ${localStorage.getItem(JWT_TOKEN)}`;
   }
 
-  public async get<T, B>(path: string, query?: { params: B; cancelToken?: any }): Promise<void | T> {
+  async get<T, B>(path: string, query?: { params: B; cancelToken?: any }): Promise<void | T> {
     return this.axiosInstance
       .get<T>(path, query)
       .then((response): T => response.data)
@@ -31,21 +31,21 @@ class ApiRequest {
       });
   }
 
-  public async post<T, B>(path: string, body: B): Promise<void | T> {
+  async post<T, B>(path: string, body: B): Promise<void | T> {
     return this.axiosInstance
       .post<T>(path, body)
       .then((response): T => response.data)
       .catch((e): void => {
         // eslint-disable-next-line no-console
         console.error(e.response);
-        const errorText = get(e, 'response.data.message', e.message);
+        // const errorText = get(e, 'response.data.message', e.message);
         showErrorNotification({ message: e.response.data.message });
         // Notify.error(errorText);
         throw e;
       });
   }
 
-  public async delete<T>(path: string): Promise<void | T> {
+  async delete<T>(path: string): Promise<void | T> {
     return this.axiosInstance
       .delete<T>(path)
       .then((response): T => response.data)
@@ -56,7 +56,7 @@ class ApiRequest {
       });
   }
 
-  public async patch<T, B>(path: string, body: B): Promise<void | T> {
+  async patch<T, B>(path: string, body: B): Promise<void | T> {
     return this.axiosInstance
       .patch<T>(path, body)
       .then((response): T => response.data)
