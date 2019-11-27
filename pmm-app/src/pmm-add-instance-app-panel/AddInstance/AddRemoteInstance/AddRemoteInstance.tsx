@@ -14,6 +14,7 @@ interface InstanceData {
   instanceType?: string;
   defaultPort?: number;
   remoteInstanceCredentials?: any;
+  discoverName?: string;
 }
 
 const extractCredentials = credentials => {
