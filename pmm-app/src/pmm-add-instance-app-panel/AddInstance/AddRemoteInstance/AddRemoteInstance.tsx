@@ -10,7 +10,6 @@ import { PasswordField } from '../../../react-plugins-deps/components/FieldsComp
 import AddRemoteInstanceService from 'pmm-add-instance-app-panel/AddInstance/AddRemoteInstance/AddRemoteInstanceService';
 import Validators from '../../../react-plugins-deps/components/validators/validators';
 import { showErrorNotification } from '../../../react-plugins-deps/components/helpers/notification-manager';
-import { Switch } from 'antd';
 
 interface InstanceData {
   instanceType?: string;
@@ -123,7 +122,7 @@ const AddRemoteInstance = props => {
     if (data.pmm_agent_id === undefined || data.pmm_agent_id === '') {
       data.pmm_agent_id = 'pmm-server'; // set default value for pmm agent id
     }
-    console.log(values, '---- on submit')
+    console.log(values, '---- on submit');
 
     setLoading(true);
     try {
@@ -146,6 +145,7 @@ const AddRemoteInstance = props => {
           initialValues: { ...remoteInstanceCredentials },
         });
         console.log(form);
+        // @ts-ignore
         return (
           <form onSubmit={handleSubmit} className="add-instance-form app-theme-dark">
             <h5>{`Add remote ${instanceType} Instance`}</h5>
@@ -175,19 +175,18 @@ const AddRemoteInstance = props => {
               <span className="description">Your database password</span>
               <CheckboxField form={form} label={'Hosted in RDS'} name="isRDS" data-cy="add-account-username" />
               <span className="description"></span>
-              {form.getFieldState('isRDS') &&
-                (form.getFieldState('isRDS').value ? (
-                  <>
-                    <InputField form={form} name="aws_access_key" data-cy="add-account-username" placeholder="AWS_ACCESS_KEY" />
-                    <span className="description">AWS access key</span>
+              {(form.getFieldState('isRDS') as any).value ? (
+                <>
+                  <InputField form={form} name="aws_access_key" data-cy="add-account-username" placeholder="AWS_ACCESS_KEY" />
+                  <span className="description">AWS access key</span>
 
-                    <InputField form={form} name="aws_secret_key" data-cy="add-account-username" placeholder="AWS_SECRET_KEY" />
-                    <span className="description">AWS secret key</span>
+                  <InputField form={form} name="aws_secret_key" data-cy="add-account-username" placeholder="AWS_SECRET_KEY" />
+                  <span className="description">AWS secret key</span>
 
-                    <InputField form={form} name="instance_id" data-cy="add-account-username" placeholder="Instance ID" />
-                    <span className="description">Instance ID</span>
-                  </>
-                ) : null)}
+                  <InputField form={form} name="instance_id" data-cy="add-account-username" placeholder="Instance ID" />
+                  <span className="description">Instance ID</span>
+                </>
+              ) : null}
             </div>
             <div className="add-instance-panel">
               <h6>Labels</h6>
