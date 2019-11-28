@@ -30,21 +30,23 @@ const customCollapseStyle = {
 
 const SettingsPanel = () => {
   return (
-    <div className={'app-theme-dark pmm-settings-panel'}>
-      <Collapse bordered={false} defaultActiveKey={['1']} onChange={() => {}} style={customCollapseStyle}>
-        <Panel header="Settings" key="1" style={customPanelStyle}>
-          <SettingsPart />
-        </Panel>
-        <Panel header="SSH Key Details" key="3" style={customPanelStyle}>
-          <UploadSSHKey />
-        </Panel>
-        <Panel header="AlertManager integration" key="4" style={customPanelStyle}>
-          <AlertManager />
-        </Panel>
-        <Panel header="Diagnostics" key="5" style={customPanelStyle}>
-          <Diagnostics />
-        </Panel>
-      </Collapse>
+    <div id={'antd'}>
+      <div className={'app-theme-dark pmm-settings-panel'}>
+        <Collapse bordered={false} defaultActiveKey={['1']} onChange={() => {}} style={customCollapseStyle}>
+          <Panel header="Settings" key="1" style={customPanelStyle}>
+            <SettingsPart />
+          </Panel>
+          <Panel header="SSH Key Details" key="3" style={customPanelStyle}>
+            <UploadSSHKey />
+          </Panel>
+          <Panel header="AlertManager integration" key="4" style={customPanelStyle}>
+            <AlertManager />
+          </Panel>
+          <Panel header="Diagnostics" key="5" style={customPanelStyle}>
+            <Diagnostics />
+          </Panel>
+        </Collapse>
+      </div>
     </div>
   );
 };

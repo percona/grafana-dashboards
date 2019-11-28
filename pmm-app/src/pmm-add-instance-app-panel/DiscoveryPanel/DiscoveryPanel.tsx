@@ -17,7 +17,7 @@ const DiscoveryPanel = (props: DiscoverySearchPanelInterface) => {
     const updateInstances = async () => {
       try {
         const result = await DiscoveryService.discoveryRDS({
-          aws_access_key: credentials.aws_secret_key,
+          aws_access_key: credentials.aws_access_key,
           aws_secret_key: credentials.aws_secret_key,
         });
         setInstances(result['rds_instances']);
