@@ -173,7 +173,7 @@ const AddRemoteInstance = props => {
               <InputField form={form} name="service_name" data-cy="add-account-username" placeholder="Service name (default: Hostname)" />
               <span className="description">Service name to use.</span>
 
-              <InputField form={form} name="port" data-cy="add-account-username" placeholder={`Port (default: ${defaultPort} )`} />
+              <InputField form={form} name="port" data-cy="add-account-username" placeholder={`Port (default: ${defaultPort} )`} required={true} />
               <span className="description">Port your service is listening on</span>
             </div>
             <div className="add-instance-panel">
