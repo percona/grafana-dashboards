@@ -195,7 +195,7 @@ const AddRemoteInstance = props => {
                   <InputField form={form} name="aws_access_key" data-cy="add-account-username" placeholder="AWS_ACCESS_KEY" required={true} />
                   <span className="description">AWS access key</span>
 
-                  <InputField form={form} name="aws_secret_key" data-cy="add-account-username" placeholder="AWS_SECRET_KEY" required={true} />
+                  <PasswordField form={form} name="aws_secret_key" data-cy="add-account-username" placeholder="AWS_SECRET_KEY" required={true} />
                   <span className="description">AWS secret key</span>
 
                   <InputField form={form} name="region" data-cy="add-account-username" placeholder="AWS region" required={true} />

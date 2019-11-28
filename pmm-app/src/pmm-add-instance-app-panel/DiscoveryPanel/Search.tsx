@@ -2,6 +2,7 @@ import { Form as FormFinal } from 'react-final-form';
 import React, { ReactElement } from 'react';
 import { useForm } from 'react-final-form-hooks';
 import { InputField } from '../../react-plugins-deps/components/FieldsComponents/Input/Input';
+import { PasswordField } from '../../react-plugins-deps/components/FieldsComponents/Password/Password';
 
 const Search = props => {
   return (
@@ -28,7 +29,7 @@ const Search = props => {
                 required={true}
                 wrapperStyle={{ paddingRight: '10px' }}
               />
-              <InputField
+              <PasswordField
                 form={form}
                 name="aws_secret_key"
                 data-cy="add-account-username"
