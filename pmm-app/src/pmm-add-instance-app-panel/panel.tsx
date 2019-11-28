@@ -29,7 +29,7 @@ const AddInstancePanel = props => {
       {!selectedInstance.type ? <AddInstance selectInstanceType={setSelectedInstance} /> : null}
       {selectedInstance.type === 'rds' ? (
         <>
-          <Button type={'link'} onClick={setSelectedInstance.bind(null, { type: undefined })}>
+          <Button type={'link'} onClick={setSelectedInstance.bind(null, { type: '' })}>
             Return to instance select menu
           </Button>
           <DiscoveryPanel
@@ -41,7 +41,7 @@ const AddInstancePanel = props => {
       ) : null}
       {selectedInstance.type && selectedInstance.type !== 'rds' ? (
         <>
-          <Button type={'link'} onClick={setSelectedInstance.bind(null, { type: undefined })}>
+          <Button type={'link'} onClick={setSelectedInstance.bind(null, { type: '' })}>
             Return to instance select menu
           </Button>
           <AddRemoteInstance instance={selectedInstance} />{' '}
