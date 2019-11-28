@@ -27,6 +27,7 @@ const extractCredentials = credentials => {
     aws_access_key: credentials.aws_access_key,
     aws_secret_key: credentials.aws_secret_key,
     instance_id: credentials.instance_id,
+    az: credentials.az,
   };
 };
 const getInstanceData = (instanceType, credentials) => {
@@ -60,14 +61,14 @@ const getAdditionalOptions = (type, form) => {
     case 'PostgreSQL':
       return (
         <>
-          <CheckboxField form={form} label={'Use Pg Stat Statements'} name="qan_mysql_perfschema" data-cy="add-account-username" />
+          <CheckboxField form={form} label={'Use Pg Stat Statements'} name="qan_postgresql_pgstatements_agent" data-cy="add-account-username" />
           <span className="description"></span>
         </>
       );
     case 'MySQL':
       return (
         <>
-          <CheckboxField form={form} label={'Use performance schema'} name="qan_postgresql_pgstatements_agent" data-cy="add-account-username" />
+          <CheckboxField form={form} label={'Use performance schema'} name="qan_mysql_perfschema" data-cy="add-account-username" />
           <span className="description"></span>
         </>
       );
@@ -98,6 +99,10 @@ const validateInstanceForm = values => {
 const AddRemoteInstance = props => {
   const { instanceType, remoteInstanceCredentials, defaultPort, discoverName } = getInstanceData(props.instance.type, props.instance.credentials);
   const [loading, setLoading] = useState<boolean>(false);
+  const initialValues = { ...remoteInstanceCredentials };
+  if (instanceType === 'MySQL') {
+    initialValues.qan_mysql_perfschema = true;
+  }
 
   const onSubmit = async values => {
     const currentUrl = `${window.parent.location}`;
@@ -153,7 +158,7 @@ const AddRemoteInstance = props => {
         const { form, handleSubmit } = useForm({
           onSubmit: onSubmit,
           validate: validateInstanceForm,
-          initialValues: { ...remoteInstanceCredentials },
+          initialValues: initialValues,
         });
         // @ts-ignore
         return (
@@ -165,13 +170,7 @@ const AddRemoteInstance = props => {
               <InputField form={form} name="address" data-cy="add-account-username" placeholder="*Hostname" required={true} />
               <span className="description">Public DNS hostname of your instance</span>
 
-              <InputField
-                form={form}
-                name="service_name"
-                data-cy="add-account-username"
-                placeholder="Service name (default: Hostname)"
-                required={true}
-              />
+              <InputField form={form} name="service_name" data-cy="add-account-username" placeholder="Service name (default: Hostname)" />
               <span className="description">Service name to use.</span>
 
               <InputField form={form} name="port" data-cy="add-account-username" placeholder={`Port (default: ${defaultPort} )`} />
@@ -198,9 +197,6 @@ const AddRemoteInstance = props => {
                   <PasswordField form={form} name="aws_secret_key" data-cy="add-account-username" placeholder="AWS_SECRET_KEY" required={true} />
                   <span className="description">AWS secret key</span>
 
-                  <InputField form={form} name="region" data-cy="add-account-username" placeholder="AWS region" required={true} />
-                  <span className="description">AWS region</span>
-
                   <InputField form={form} name="instance_id" data-cy="add-account-username" placeholder="Instance ID" required={true} />
                   <span className="description">Instance ID</span>
                 </>
@@ -211,6 +207,12 @@ const AddRemoteInstance = props => {
               <span></span>
               <InputField form={form} name="environment" data-cy="add-account-username" placeholder="Environment" />
               <span className="description"></span>
+
+              <InputField form={form} name="region" data-cy="add-account-username" placeholder="Region" />
+              <span className="description">Region</span>
+
+              <InputField form={form} name="az" data-cy="add-account-username" placeholder="Availability Zone" required={true} />
+              <span className="description">Availability Zone</span>
 
               <InputField form={form} name="replication_set" data-cy="add-account-username" placeholder="Replication set" />
               <span className="description"></span>

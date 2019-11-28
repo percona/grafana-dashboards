@@ -18,9 +18,15 @@ const InstancesTable = props => {
   const { instances, selectInstance, credentials } = props;
   const columns = [
     {
-      title: 'AWS region',
+      title: 'Region',
       dataIndex: 'region',
       key: 'region',
+      className: 'discovery-column',
+    },
+    {
+      title: 'Availability Zone',
+      dataIndex: 'az',
+      key: 'az',
       className: 'discovery-column',
     },
     {
