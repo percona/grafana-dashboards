@@ -2,7 +2,6 @@ import { MetricsPanelCtrl } from 'grafana/app/plugins/sdk';
 import AppEvents from 'grafana/app/core/app_events';
 import moment from 'moment';
 import $ from 'jquery';
-
 export class PanelCtrl extends MetricsPanelCtrl {
   /**
    * Urls to define panels templates
@@ -44,14 +43,13 @@ export class PanelCtrl extends MetricsPanelCtrl {
    * Grafana param, define url of template that will be used for panel
    */
   static templateUrl: string = PanelCtrl.TEMPLATES.MAIN;
-
+  /** @ngInject */
   constructor(public $scope, public $injector, public $http) {
     super($scope, $injector);
 
     // Re-init all scope params
     this.reset($scope);
     $scope.logLocation = '';
-
     $scope.version = '';
     $scope.fullVersion = '';
     $scope.versionCashed = '';

@@ -8,7 +8,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
 	`;
 
   baseUrl = '/qan/pmm-inventory';
-
+  /** @ngInject */
   constructor($scope, $injector, templateSrv, $sce, $http) {
     super($scope, $injector);
     $scope.trustSrc = src => $sce.trustAsResourceUrl(src);

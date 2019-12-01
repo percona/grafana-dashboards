@@ -8,7 +8,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
 			style="width: 100%; height: 400px; border: 0;" scrolling="no" />
 	`;
   baseUrl = '/qan/settings?var-host=';
-
+  /** @ngInject */
   constructor($scope, $injector, templateSrv, $sce, $http) {
     super($scope, $injector);
     $scope.trustSrc = src => $sce.trustAsResourceUrl(src);
