@@ -34,7 +34,6 @@ const InstancesTable = props => {
       dataIndex: 'type',
       className: 'discovery-column',
       render: (element, instance) => {
-        console.log(instance);
         return instance.engine ? `${getColumnType(instance.engine)}  ${instance.engine_version}` : 'nothing';
       },
     },

@@ -59,7 +59,7 @@ const Wrapper = () => {
   );
 };
 
-const AddPanel2 = () => {
+const AddPanel = () => {
   return Wrapper();
 };
-export default AddPanel2;
+export default AddPanel;
