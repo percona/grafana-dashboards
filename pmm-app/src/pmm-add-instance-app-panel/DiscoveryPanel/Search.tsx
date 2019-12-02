@@ -42,7 +42,7 @@ const Search = props => {
               </button>
             </div>
             <div>
-              <a href="#">Where do i get the security credentials for my amazon RDS DB instance</a>
+              <a href="#">Where do I get the security credentials for my amazon RDS DB instance</a>
             </div>
           </form>
         );
