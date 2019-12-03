@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Collapse, Table, Tabs } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Table, Tabs } from 'antd';
 import '../react-plugins-deps/styles.scss';
 import '../react-plugins-deps/style.less';
 import './panel.scss';
@@ -15,19 +15,15 @@ function callback(key) {
 const Services = props => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
-  const responseData = {
-    postgresql: [
-      {
-        service_id: '/service_id/fb62589b-ecb7-4af7-abe5-1e6564efbc67',
-        service_name: 'pmm-server-postgresql',
-        node_id: 'pmm-server',
-        address: '127.0.0.1',
-        port: 5432,
-      },
-    ],
-  };
+  useEffect(() => {
+    setLoading(true);
+    (async () => {
+      const result = await InventoryService.getServices({});
+      setData(InventoryDataService.generateStructure(result));
+      setLoading(false);
+    })();
+  }, []);
 
-  const content = InventoryDataService.generateStructure(responseData);
   const columns = [
     {
       title: 'ID',
@@ -75,39 +71,21 @@ const Services = props => {
     },
   ];
 
-  return <Table dataSource={content} columns={columns} />;
+  return <Table dataSource={data} columns={columns} pagination={false} bordered loading={loading} />;
 };
 
 const Agents = props => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
-  const responseData = {
-    pmm_agent: [{ agent_id: 'pmm-server', runs_on_node_id: 'pmm-server', connected: true }],
-    node_exporter: [
-      { agent_id: '/agent_id/42383b72-372f-4bf9-b1d8-1747006edf30', pmm_agent_id: 'pmm-server', status: 'RUNNING', listen_port: 42000 },
-    ],
-    postgres_exporter: [
-      {
-        agent_id: '/agent_id/b5920469-47a1-41ae-98bb-e4c54f264f42',
-        pmm_agent_id: 'pmm-server',
-        service_id: '/service_id/fb62589b-ecb7-4af7-abe5-1e6564efbc67',
-        username: 'pmm-managed',
-        status: 'RUNNING',
-        listen_port: 42001,
-      },
-    ],
-    qan_postgresql_pgstatements_agent: [
-      {
-        agent_id: '/agent_id/503fbb92-dc22-4080-9805-bc578ba63bc6',
-        pmm_agent_id: 'pmm-server',
-        service_id: '/service_id/fb62589b-ecb7-4af7-abe5-1e6564efbc67',
-        username: 'pmm-managed',
-        status: 'RUNNING',
-      },
-    ],
-  };
-  const content = InventoryDataService.generateStructure(responseData);
-  console.log(content);
+  useEffect(() => {
+    setLoading(true);
+    (async () => {
+      const result = await InventoryService.getAgents({});
+      setData(InventoryDataService.generateStructure(result));
+      setLoading(false);
+    })();
+  }, []);
+
   const columns = [
     {
       title: 'ID',
@@ -125,7 +103,7 @@ const Agents = props => {
       key: 'age',
       render: (text, agentData) => {
         return (
-          <p>
+          <div className={'other-details-wrapper'}>
             {agentData.connected ? <span>{`connected: ${agentData.connected}`}</span> : null}
             {agentData.runs_on_node_id ? <span>{`runs_on_node: ${agentData.runs_on_node_id}`}</span> : null}
             {agentData.metrics_url ? <span>{`metrics_url: ${agentData.metrics_url}`}</span> : null}
@@ -147,20 +125,26 @@ const Agents = props => {
                 `${label.key}: ${label.value}` }
               </span>
             ))}
-          </p>
+          </div>
         );
       },
     },
   ];
 
-  return <Table dataSource={content} columns={columns} />;
+  return <Table dataSource={data} columns={columns} pagination={false} bordered loading={loading} />;
 };
 
 const Nodes = props => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
-  const responseData = { generic: [{ node_id: 'pmm-server', node_name: 'pmm-server', address: '127.0.0.1' }] };
-  const content = InventoryDataService.generateStructure(responseData);
+  useEffect(() => {
+    setLoading(true);
+    (async () => {
+      const result = await InventoryService.getNodes({});
+      setData(InventoryDataService.generateStructure(result));
+      setLoading(false);
+    })();
+  }, []);
 
   const columns = [
     {
@@ -184,7 +168,7 @@ const Nodes = props => {
       key: 'age',
       render: (text, element) => {
         return (
-          <div>
+          <div className={'other-details-wrapper'}>
             {element.docker_container_id ? <span>{`docker_container_id: ${element.docker_container_id}`}</span> : null}
             {element.docker_container_name ? <span>{`docker_container_name: ${element.docker_container_name}`}</span> : null}
             {element.machine_id ? <span>{`machine_id: ${element.machine_id}`}</span> : null}
@@ -207,7 +191,7 @@ const Nodes = props => {
     },
   ];
 
-  return <Table dataSource={content} columns={columns} />;
+  return <Table dataSource={data} columns={columns} pagination={false} bordered loading={loading} />;
 };
 
 const InventoryPanel = () => {
@@ -220,7 +204,7 @@ const InventoryPanel = () => {
         <TabPane tab="Agents" key="2">
           <Agents />
         </TabPane>
-        <TabPane tab="Nodes" key="3">
+        <TabPane tab="Nodes" key="3"S>
           <Nodes />
         </TabPane>
       </Tabs>
