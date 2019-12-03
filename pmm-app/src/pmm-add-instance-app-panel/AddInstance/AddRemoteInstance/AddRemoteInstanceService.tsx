@@ -31,8 +31,6 @@ class AddRemoteInstanceService {
         return AddRemoteInstanceService.addProxysql(data);
       case 'PostgreSQL':
         return AddRemoteInstanceService.addPostgresql(data);
-      default:
-        return AddRemoteInstanceService.addPostgresql(data);
     }
   }
 }

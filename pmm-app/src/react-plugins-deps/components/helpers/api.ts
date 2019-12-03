@@ -1,10 +1,7 @@
 import axios, { AxiosInstance } from 'axios';
-// import get from 'lodash/get';
 import { showErrorNotification } from './notification-manager';
 
 // eslint-disable-next-line no-undef
-// const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || '';
-export const AUTHORIZATION = 'Authorization';
 
 class ApiRequest {
   axiosInstance: AxiosInstance;
@@ -13,7 +10,6 @@ class ApiRequest {
     this.axiosInstance = axios.create({
       baseURL: '',
     });
-    // this.axiosInstance.defaults.headers.common[AUTHORIZATION] = `Bearer ${localStorage.getItem(JWT_TOKEN)}`;
   }
 
   async get<T, B>(path: string, query?: { params: B; cancelToken?: any }): Promise<void | T> {

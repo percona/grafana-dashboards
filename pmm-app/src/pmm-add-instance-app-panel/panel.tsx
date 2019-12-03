@@ -13,9 +13,10 @@ const history = createBrowserHistory({});
 const AddInstancePanel = props => {
   // @ts-ignore
   const urlParams = new URLSearchParams(window.location.search);
-
+  const instanceType = urlParams.get('instance_type') || '';
+  const availableInstanceTypes = ['rds', 'postgresql', 'mysql', 'proxysql', 'mongodb', 'proxysql'];
   const [selectedInstance, selectInstance] = useState({
-    type: urlParams.get('instance_type'),
+    type: availableInstanceTypes.includes(instanceType) ? instanceType : '',
   });
 
   const setSelectedInstance = instance => {
