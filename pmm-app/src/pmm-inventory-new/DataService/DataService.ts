@@ -45,7 +45,7 @@ export class InventoryDataService {
         return new GenericModel(params, 'Generic');
       case 'remote':
         return new RemoteModel(params, 'Remote');
-      case 'remote_amazon_rds':
+      case 'remote_rds':
         return new RemoteAmazonRdsModel(params, 'Remote Amazon RDS');
       case 'amazon_rds_mysql':
       case 'mongodb':
