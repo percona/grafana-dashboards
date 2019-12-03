@@ -139,6 +139,7 @@ const AddRemoteInstance = props => {
 
     try {
       if (values.isRDS) {
+        data.rds_exporter = true;
         await AddRemoteInstanceService.addRDS(data);
       } else {
         // remove rds fields from data
