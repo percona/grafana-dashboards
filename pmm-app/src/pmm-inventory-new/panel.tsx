@@ -204,7 +204,7 @@ const InventoryPanel = () => {
         <TabPane tab="Agents" key="2">
           <Agents />
         </TabPane>
-        <TabPane tab="Nodes" key="3"S>
+        <TabPane tab="Nodes" key="3">
           <Nodes />
         </TabPane>
       </Tabs>
