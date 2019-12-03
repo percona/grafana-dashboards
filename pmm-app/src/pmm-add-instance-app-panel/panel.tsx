@@ -27,26 +27,18 @@ const AddInstancePanel = props => {
   return (
     <div className={'app-theme-dark content-wrapper antd'} id={'antd'}>
       {!selectedInstance.type ? <AddInstance selectInstanceType={setSelectedInstance} /> : null}
-      {selectedInstance.type === 'rds' ? (
+      {selectedInstance.type && (
         <>
           <Button type={'link'} onClick={setSelectedInstance.bind(null, { type: '' })}>
             Return to instance select menu
           </Button>
-          <DiscoveryPanel
-            selectInstance={instanceData => {
-              setSelectedInstance(instanceData);
-            }}
-          />
+          {selectedInstance.type === 'rds' ? (
+            <AddRemoteInstance instance={selectedInstance} />
+          ) : (
+            <DiscoveryPanel selectInstance={setSelectedInstance} />
+          )}
         </>
-      ) : null}
-      {selectedInstance.type && selectedInstance.type !== 'rds' ? (
-        <>
-          <Button type={'link'} onClick={setSelectedInstance.bind(null, { type: '' })}>
-            Return to instance select menu
-          </Button>
-          <AddRemoteInstance instance={selectedInstance} />{' '}
-        </>
-      ) : null}
+      )}
     </div>
   );
 };

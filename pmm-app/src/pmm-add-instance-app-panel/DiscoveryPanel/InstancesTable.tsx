@@ -1,7 +1,7 @@
 import { Table } from 'antd';
 import React from 'react';
 
-const getColumnType = type => {
+const getEngineType = type => {
   switch (type) {
     case 'DISCOVER_RDS_MYSQL':
       return 'MySQL';
@@ -15,7 +15,7 @@ const getColumnType = type => {
 };
 
 const InstancesTable = props => {
-  const { instances, selectInstance, credentials } = props;
+  const { instances, onInstanceSelect, credentials } = props;
   const columns = [
     {
       title: 'Region',
@@ -34,7 +34,7 @@ const InstancesTable = props => {
       dataIndex: 'type',
       className: 'discovery-column',
       render: (element, instance) => {
-        return instance.engine ? `${getColumnType(instance.engine)}  ${instance.engine_version}` : 'nothing';
+        return instance.engine ? `${getEngineType(instance.engine)}  ${instance.engine_version}` : 'nothing';
       },
     },
     {
@@ -64,7 +64,7 @@ const InstancesTable = props => {
             break;
         }
         return (
-          <a onClick={() => selectInstance({ type: type, credentials: { ...Object.assign({}, element, credentials), isRDS: true } })}>
+          <a onClick={() => onInstanceSelect({ type: type, credentials: { ...Object.assign({}, element, credentials), isRDS: true } })}>
             Start monitoring
           </a>
         );

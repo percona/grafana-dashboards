@@ -61,21 +61,21 @@ const getAdditionalOptions = (type, form) => {
     case 'PostgreSQL':
       return (
         <>
-          <CheckboxField form={form} label={'Use Pg Stat Statements'} name="qan_postgresql_pgstatements_agent" data-cy="add-account-username" />
+          <CheckboxField form={form} label={'Use Pg Stat Statements'} name="qan_postgresql_pgstatements_agent" />
           <span className="description"></span>
         </>
       );
     case 'MySQL':
       return (
         <>
-          <CheckboxField form={form} label={'Use performance schema'} name="qan_mysql_perfschema" data-cy="add-account-username" />
+          <CheckboxField form={form} label={'Use performance schema'} name="qan_mysql_perfschema" />
           <span className="description"></span>
         </>
       );
     case 'MongoDB':
       return (
         <>
-          <CheckboxField form={form} label={'Use QAN MongoDB Profiler'} name="qan_mongodb_profiler" data-cy="add-account-username" />
+          <CheckboxField form={form} label={'Use QAN MongoDB Profiler'} name="qan_mongodb_profiler" />
           <span className="description"></span>
         </>
       );
@@ -140,7 +140,7 @@ const AddRemoteInstance = props => {
     try {
       if (values.isRDS) {
         data.rds_exporter = true;
-        await AddRemoteInstanceService.addRDS(data);
+        await AddRemoteInstanceService.addRemote(data);
       } else {
         // remove rds fields from data
         await AddRemoteInstanceService.createInstance(instanceType, data);
@@ -168,37 +168,37 @@ const AddRemoteInstance = props => {
             <div className="add-instance-panel">
               <h6>Main details</h6>
               <span></span>
-              <InputField form={form} name="address" data-cy="add-account-username" placeholder="*Hostname" required={true} />
+              <InputField form={form} name="address" required={true} />
               <span className="description">Public DNS hostname of your instance</span>
 
-              <InputField form={form} name="service_name" data-cy="add-account-username" placeholder="Service name (default: Hostname)" />
+              <InputField form={form} name="service_name" />
               <span className="description">Service name to use.</span>
 
-              <InputField form={form} name="port" data-cy="add-account-username" placeholder={`Port (default: ${defaultPort} )`} required={true} />
+              <InputField form={form} name="port" placeholder={`Port (default: ${defaultPort} )`} required={true} />
               <span className="description">Port your service is listening on</span>
             </div>
             <div className="add-instance-panel">
-              <InputField form={form} name="username" data-cy="add-account-username" placeholder="*Username" required={true} />
+              <InputField form={form} name="username" required={true} />
               <span className="description">Your database user name</span>
 
-              <PasswordField form={form} name="password" data-cy="add-account-username" placeholder="*Password" required={true} />
+              <PasswordField form={form} name="password" required={true} />
               <span className="description">Your database password</span>
               {/*// TODO: remove hardcode and add real check*/}
               {props.instance.type === 'mysql' ? (
                 <>
-                  <CheckboxField form={form} label={'RDS database'} name="isRDS" data-cy="add-account-username" />
+                  <CheckboxField form={form} label={'RDS database'} name="isRDS" />
                   <span className="description"></span>
                 </>
               ) : null}
               {form.getFieldState('isRDS') && (form.getFieldState('isRDS') as any).value ? (
                 <>
-                  <InputField form={form} name="aws_access_key" data-cy="add-account-username" placeholder="AWS_ACCESS_KEY" required={true} />
+                  <InputField form={form} name="aws_access_key" required={true} />
                   <span className="description">AWS access key</span>
 
-                  <PasswordField form={form} name="aws_secret_key" data-cy="add-account-username" placeholder="AWS_SECRET_KEY" required={true} />
+                  <PasswordField form={form} name="aws_secret_key" required={true} />
                   <span className="description">AWS secret key</span>
 
-                  <InputField form={form} name="instance_id" data-cy="add-account-username" placeholder="Instance ID" required={true} />
+                  <InputField form={form} name="instance_id" required={true} />
                   <span className="description">Instance ID</span>
                 </>
               ) : null}
@@ -206,25 +206,24 @@ const AddRemoteInstance = props => {
             <div className="add-instance-panel">
               <h6>Labels</h6>
               <span></span>
-              <InputField form={form} name="environment" data-cy="add-account-username" placeholder="Environment" />
+              <InputField form={form} name="environment" />
               <span className="description"></span>
 
-              <InputField form={form} name="region" data-cy="add-account-username" placeholder="Region" />
+              <InputField form={form} name="region" />
               <span className="description">Region</span>
 
-              <InputField form={form} name="az" data-cy="add-account-username" placeholder="Availability Zone" required={true} />
+              <InputField form={form} name="az" required={true} />
               <span className="description">Availability Zone</span>
 
-              <InputField form={form} name="replication_set" data-cy="add-account-username" placeholder="Replication set" />
+              <InputField form={form} name="replication_set" />
               <span className="description"></span>
 
-              <InputField form={form} name="cluster" data-cy="add-account-username" placeholder="Cluster" />
+              <InputField form={form} name="cluster" />
               <span className="description"></span>
 
               <TextAreaField
                 form={form}
                 name="custom_labels"
-                data-cy="add-account-username"
                 placeholder="Custom labels
 Format:
 key1:value1
@@ -235,11 +234,11 @@ key2:value2"
             <div className="add-instance-panel">
               <h6>Additional options</h6>
               <span></span>
-              <CheckboxField form={form} label={'Skip connection check'} name="skip_connection_check" data-cy="add-account-username" />
+              <CheckboxField form={form} label={'Skip connection check'} name="skip_connection_check" />
 
               <span className="description"></span>
 
-              <CheckboxField form={form} label={'Use TLS for database connections'} name="tls" data-cy="add-account-username" />
+              <CheckboxField form={form} label={'Use TLS for database connections'} name="tls" />
 
               <span className="description"></span>
               <CheckboxField

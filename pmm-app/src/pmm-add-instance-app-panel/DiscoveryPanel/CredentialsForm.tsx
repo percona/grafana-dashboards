@@ -4,7 +4,7 @@ import { useForm } from 'react-final-form-hooks';
 import { InputField } from '../../react-plugins-deps/components/FieldsComponents/Input/Input';
 import { PasswordField } from '../../react-plugins-deps/components/FieldsComponents/Password/Password';
 
-const Search = props => {
+const CredentialsForm = props => {
   return (
     <FormFinal
       onSubmit={() => {}}
@@ -24,7 +24,6 @@ const Search = props => {
               <InputField
                 form={form}
                 name="aws_access_key"
-                data-cy="add-account-username"
                 placeholder="AMAZON_RDS_ACCESS_KEY_ID"
                 required={true}
                 wrapperStyle={{ paddingRight: '10px' }}
@@ -51,4 +50,4 @@ const Search = props => {
   );
 };
 
-export default Search;
+export default CredentialsForm;

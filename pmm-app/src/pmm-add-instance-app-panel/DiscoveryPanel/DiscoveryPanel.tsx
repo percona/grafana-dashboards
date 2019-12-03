@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './DiscoveryPanel.scss';
 import DiscoveryService from './Discovery.service';
-import Search from './Search';
+import CredentialsForm from './CredentialsForm';
 import InstancesTable from './InstancesTable';
 import { Spin } from 'antd';
 
@@ -35,11 +35,11 @@ const DiscoveryPanel = (props: DiscoverySearchPanelInterface) => {
   return (
     <>
       <div>
-        <Search setCredentials={setCredentials} />
+        <CredentialsForm setCredentials={setCredentials} />
         <div className={'spinner-wrapper'} style={{ width: '100%' }}>
           {loading && <Spin size="large" />}
         </div>
-        {!loading && <InstancesTable instances={instances} selectInstance={props.selectInstance} credentials={credentials} />}
+        {!loading && <InstancesTable instances={instances} onInstanceSelect={props.selectInstance} credentials={credentials} />}
       </div>
     </>
   );

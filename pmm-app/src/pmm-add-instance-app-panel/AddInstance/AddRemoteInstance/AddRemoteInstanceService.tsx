@@ -17,7 +17,7 @@ class AddRemoteInstanceService {
     return apiRequest.post<any, any>('/v1/management/MongoDB/Add', body);
   }
 
-  static async addRDS(body) {
+  static async addRemote(body) {
     return apiRequest.post<any, any>('/v1/management/RDS/Add', body);
   }
 
