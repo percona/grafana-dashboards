@@ -31,6 +31,8 @@ class AddRemoteInstanceService {
         return AddRemoteInstanceService.addProxysql(data);
       case 'PostgreSQL':
         return AddRemoteInstanceService.addPostgresql(data);
+      default:
+        throw new Error('Unknown instance type');
     }
   }
 }
