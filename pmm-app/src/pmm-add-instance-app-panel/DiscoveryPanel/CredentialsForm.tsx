@@ -14,7 +14,7 @@ const CredentialsForm = props => {
       render={(): ReactElement => {
         const { form, handleSubmit } = useForm({
           onSubmit: values => {
-            props.setCredentials({ ...values });
+            props.onSetCredentials({ ...values });
           },
         });
 

@@ -17,11 +17,11 @@ class AddRemoteInstanceService {
     return apiRequest.post<any, any>('/v1/management/MongoDB/Add', body);
   }
 
-  static async addRemote(body) {
+  static async addRDS(body) {
     return apiRequest.post<any, any>('/v1/management/RDS/Add', body);
   }
 
-  static createInstance(type, data) {
+  static addRemote(type, data) {
     switch (type) {
       case 'MongoDB':
         return AddRemoteInstanceService.addMongodb(data);

@@ -6,7 +6,7 @@ import InstancesTable from './InstancesTable';
 import { Spin } from 'antd';
 
 interface DiscoverySearchPanelInterface {
-  selectInstance: (instanceData: any) => void;
+  onSelectInstance: (instanceData: any) => void;
 }
 
 const DiscoveryPanel = (props: DiscoverySearchPanelInterface) => {
@@ -35,11 +35,11 @@ const DiscoveryPanel = (props: DiscoverySearchPanelInterface) => {
   return (
     <>
       <div>
-        <CredentialsForm setCredentials={setCredentials} />
+        <CredentialsForm onSetCredentials={setCredentials} />
         <div className={'spinner-wrapper'} style={{ width: '100%' }}>
           {loading && <Spin size="large" />}
         </div>
-        {!loading && <InstancesTable instances={instances} onInstanceSelect={props.selectInstance} credentials={credentials} />}
+        {!loading && <InstancesTable instances={instances} onSelectInstance={props.onSelectInstance} credentials={credentials} />}
       </div>
     </>
   );

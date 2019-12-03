@@ -6,7 +6,7 @@ const getEngineType = type => {
     case 'DISCOVER_RDS_MYSQL':
       return 'MySQL';
     case 'DISCOVER_RDS_POSTGRES':
-      return 'Postgres';
+      return 'PostgreSQL';
     case 'DISCOVER_RDS_INVALID':
       return 'Unknown type';
     default:
@@ -15,7 +15,7 @@ const getEngineType = type => {
 };
 
 const InstancesTable = props => {
-  const { instances, onInstanceSelect, credentials } = props;
+  const { instances, onSelectInstance, credentials } = props;
   const columns = [
     {
       title: 'Region',
@@ -64,7 +64,7 @@ const InstancesTable = props => {
             break;
         }
         return (
-          <a onClick={() => onInstanceSelect({ type: type, credentials: { ...Object.assign({}, element, credentials), isRDS: true } })}>
+          <a onClick={() => onSelectInstance({ type: type, credentials: { ...Object.assign({}, element, credentials), isRDS: true } })}>
             Start monitoring
           </a>
         );

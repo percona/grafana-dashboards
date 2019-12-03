@@ -3,7 +3,7 @@ import './AddInstance.scss';
 
 const AddInstance = props => {
   const selectInstanceType = type => () => {
-    props.selectInstanceType({ type: type });
+    props.onSelectInstanceType({ type: type });
   };
   return (
     <section className="content-wrapper">
