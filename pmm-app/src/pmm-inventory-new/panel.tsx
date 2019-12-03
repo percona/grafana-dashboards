@@ -8,10 +8,6 @@ import { InventoryDataService } from './DataService/DataService';
 
 const { TabPane } = Tabs;
 
-function callback(key) {
-  console.log(key);
-}
-
 const Services = props => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
@@ -197,7 +193,7 @@ const Nodes = props => {
 const InventoryPanel = () => {
   return (
     <div id={'antd'}>
-      <Tabs defaultActiveKey="1" onChange={callback}>
+      <Tabs defaultActiveKey="1">
         <TabPane tab="Services" key="1">
           <Services />
         </TabPane>
