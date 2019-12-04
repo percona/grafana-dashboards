@@ -206,16 +206,16 @@ const AddRemoteInstance = props => {
             <div className="add-instance-panel">
               <h6>Labels</h6>
               <span></span>
-              <InputField form={form} name="environment" placeholder="Environment"/>
+              <InputField form={form} name="environment" placeholder="Environment" />
               <span className="description"></span>
 
-              <InputField form={form} name="region" placeholder="Region"/>
+              <InputField form={form} name="region" placeholder="Region" />
               <span className="description">Region</span>
 
-              <InputField form={form} name="az" required={true} placeholder="Availability Zone"/>
+              <InputField form={form} name="az" required={true} placeholder="Availability Zone" />
               <span className="description">Availability Zone</span>
 
-              <InputField form={form} name="replication_set" placeholder="Replication set"/>
+              <InputField form={form} name="replication_set" placeholder="Replication set" />
               <span className="description"></span>
 
               <InputField form={form} name="cluster" placeholder="Cluster" />
