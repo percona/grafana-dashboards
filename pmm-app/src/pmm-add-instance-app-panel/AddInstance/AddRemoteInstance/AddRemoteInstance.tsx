@@ -36,20 +36,20 @@ const getInstanceData = (instanceType, credentials) => {
   switch (instanceType) {
     case 'postgresql':
       instance.instanceType = 'PostgreSQL';
-      instance.defaultPort = 5432;
+      instance.remoteInstanceCredentials.port = instance.remoteInstanceCredentials.port || 5432;
       break;
     case 'mysql':
       instance.instanceType = 'MySQL';
       instance.discoverName = 'DISCOVER_RDS_MYSQL';
-      instance.defaultPort = 3306;
+      instance.remoteInstanceCredentials.port = instance.remoteInstanceCredentials.port || 3306;
       break;
     case 'mongodb':
       instance.instanceType = 'MongoDB';
-      instance.defaultPort = 27017;
+      instance.remoteInstanceCredentials.port = instance.remoteInstanceCredentials.port || 27017;
       break;
     case 'proxysql':
       instance.instanceType = 'ProxySQL';
-      instance.defaultPort = 6032;
+      instance.remoteInstanceCredentials.port = instance.remoteInstanceCredentials.port || 6032;
       break;
   }
 
@@ -174,7 +174,7 @@ const AddRemoteInstance = props => {
               <InputField form={form} name="service_name" placeholder="Service name (default: Hostname)" />
               <span className="description">Service name to use.</span>
 
-              <InputField form={form} name="port" placeholder={`Port (default: ${defaultPort} )`} required={true} />
+              <InputField form={form} name="port" placeholder={`Port (default: ${remoteInstanceCredentials.port} )`} required={true} />
               <span className="description">Port your service is listening on</span>
             </div>
             <div className="add-instance-panel">
