@@ -168,20 +168,20 @@ const AddRemoteInstance = props => {
             <div className="add-instance-panel">
               <h6>Main details</h6>
               <span></span>
-              <InputField form={form} name="address" required={true} />
+              <InputField form={form} name="address" placeholder="*Hostname" required={true} />
               <span className="description">Public DNS hostname of your instance</span>
 
-              <InputField form={form} name="service_name" />
+              <InputField form={form} name="service_name" placeholder="Service name (default: Hostname)" />
               <span className="description">Service name to use.</span>
 
               <InputField form={form} name="port" placeholder={`Port (default: ${defaultPort} )`} required={true} />
               <span className="description">Port your service is listening on</span>
             </div>
             <div className="add-instance-panel">
-              <InputField form={form} name="username" required={true} />
+              <InputField form={form} name="username" placeholder="*Username" required={true} />
               <span className="description">Your database user name</span>
 
-              <PasswordField form={form} name="password" required={true} />
+              <PasswordField form={form} name="password" placeholder="*Password" required={true} />
               <span className="description">Your database password</span>
               {/*// TODO: remove hardcode and add real check*/}
               {props.instance.type === 'mysql' ? (
@@ -192,13 +192,13 @@ const AddRemoteInstance = props => {
               ) : null}
               {form.getFieldState('isRDS') && (form.getFieldState('isRDS') as any).value ? (
                 <>
-                  <InputField form={form} name="aws_access_key" required={true} />
+                  <InputField form={form} name="aws_access_key" placeholder="AWS_ACCESS_KEY" required={true} />
                   <span className="description">AWS access key</span>
 
-                  <PasswordField form={form} name="aws_secret_key" required={true} />
+                  <PasswordField form={form} name="aws_secret_key" placeholder="AWS_SECRET_KEY" required={true} />
                   <span className="description">AWS secret key</span>
 
-                  <InputField form={form} name="instance_id" required={true} />
+                  <InputField form={form} name="instance_id" placeholder="Instance ID" required={true} />
                   <span className="description">Instance ID</span>
                 </>
               ) : null}
@@ -206,19 +206,19 @@ const AddRemoteInstance = props => {
             <div className="add-instance-panel">
               <h6>Labels</h6>
               <span></span>
-              <InputField form={form} name="environment" />
+              <InputField form={form} name="environment" placeholder="Environment"/>
               <span className="description"></span>
 
-              <InputField form={form} name="region" />
+              <InputField form={form} name="region" placeholder="Region"/>
               <span className="description">Region</span>
 
-              <InputField form={form} name="az" required={true} />
+              <InputField form={form} name="az" required={true} placeholder="Availability Zone"/>
               <span className="description">Availability Zone</span>
 
-              <InputField form={form} name="replication_set" />
+              <InputField form={form} name="replication_set" placeholder="Replication set"/>
               <span className="description"></span>
 
-              <InputField form={form} name="cluster" />
+              <InputField form={form} name="cluster" placeholder="Cluster" />
               <span className="description"></span>
 
               <TextAreaField
