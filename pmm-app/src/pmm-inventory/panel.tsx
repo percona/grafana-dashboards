@@ -75,7 +75,7 @@ const agentsColumns = [
       const labels = ['connected', 'runs_on_node_id', 'metrics_url', 'listen_port', 'pmm_agent_id', 'service_id', 'status', 'username', 'disabled'];
       return (
         <div className={'other-details-wrapper'}>
-          {labels.map(label => (element[label] ? <span>{`${label}: ${element[label]}`}</span> : null))}
+          {labels.map(label => (agentData[label] ? <span>{`${label}: ${agentData[label]}`}</span> : null))}
           {agentData.username ? <span>{`password: ******`}</span> : null}
           {/* TODO: know more about isString*/}
           {agentData.service_ids && agentData.service_ids.length ? (
