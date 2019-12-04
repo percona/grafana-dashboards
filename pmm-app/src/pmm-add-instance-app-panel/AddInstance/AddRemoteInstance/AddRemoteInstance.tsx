@@ -97,7 +97,7 @@ const validateInstanceForm = values => {
   return errors;
 };
 const AddRemoteInstance = props => {
-  const { instanceType, remoteInstanceCredentials, defaultPort, discoverName } = getInstanceData(props.instance.type, props.instance.credentials);
+  const { instanceType, remoteInstanceCredentials, discoverName } = getInstanceData(props.instance.type, props.instance.credentials);
   const [loading, setLoading] = useState<boolean>(false);
   const initialValues = { ...remoteInstanceCredentials };
   if (instanceType === 'MySQL') {
