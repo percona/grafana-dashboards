@@ -34,9 +34,9 @@ const AddInstancePanel = props => {
             Return to instance select menu
           </Button>
           {selectedInstance.type === 'rds' ? (
-            <AddRemoteInstance instance={selectedInstance} />
-          ) : (
             <DiscoveryPanel onSelectInstance={setSelectedInstance} />
+          ) : (
+            <AddRemoteInstance instance={selectedInstance} />
           )}
         </>
       )}
