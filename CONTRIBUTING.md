@@ -6,8 +6,7 @@ Our experts must verify all contributions from contributors.
 
 We'd love it if you could contribute:
  * New dashboard or improve existing ones.
- * New widget or improve it. 
- * Add descriptions and tooltips.
+ * Add descriptions (tooltips) for charts or improve existing ones. 
 
 We can help you, more information on the [link](https://www.percona.com/community/contributions/pmm)
 
