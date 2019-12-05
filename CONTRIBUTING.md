@@ -4,9 +4,7 @@ We're looking forward to the new contributors.
 
 Our experts must verify all contributions from contributors. 
 
-We'd love it if you could contribute:
- * New dashboard or improve existing ones.
- * Add descriptions (tooltips) for charts or improve existing ones. 
+We'd love it if you could contribute new dashboard or improve existing ones.
 
 We can help you, more information on the [link](https://www.percona.com/community/contributions/pmm)
 
