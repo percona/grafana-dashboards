@@ -8,10 +8,13 @@ export class RemoteAmazonRdsModel {
   region: string;
   agentType: string;
   isDeleted: boolean;
-
+  address: string;
   constructor(params, type) {
-    this.custom_labels = params.custom_labels && Object.keys(params.custom_labels).length ?
-      Object.entries(params.custom_labels).map(item => new CustomLabelsModel(item)) : [];
+    this.custom_labels =
+      params.custom_labels && Object.keys(params.custom_labels).length
+        ? Object.entries(params.custom_labels).map(item => new CustomLabelsModel(item))
+        : [];
+    this.address = params.address || '';
     this.instance = params.instance || '';
     this.node_id = params.node_id || '';
     this.node_name = params.node_name || '';

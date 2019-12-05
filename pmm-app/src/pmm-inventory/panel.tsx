@@ -139,9 +139,13 @@ const Services = () => {
   useEffect(() => {
     setLoading(true);
     (async () => {
-      const result = await InventoryService.getServices({});
-      setData(InventoryDataService.generateStructure(result));
-      setLoading(false);
+      try {
+        const result = await InventoryService.getServices({});
+        setData(InventoryDataService.generateStructure(result));
+      } catch (e) {
+      } finally {
+        setLoading(false);
+      }
     })();
   }, []);
 
@@ -154,9 +158,13 @@ const Agents = () => {
   useEffect(() => {
     setLoading(true);
     (async () => {
-      const result = await InventoryService.getAgents({});
-      setData(InventoryDataService.generateStructure(result));
-      setLoading(false);
+      try {
+        const result = await InventoryService.getAgents({});
+        setData(InventoryDataService.generateStructure(result));
+      } catch (e) {
+      } finally {
+        setLoading(false);
+      }
     })();
   }, []);
 
@@ -169,9 +177,13 @@ const Nodes = () => {
   useEffect(() => {
     setLoading(true);
     (async () => {
-      const result = await InventoryService.getNodes({});
-      setData(InventoryDataService.generateStructure(result));
-      setLoading(false);
+      try {
+        const result = await InventoryService.getNodes({});
+        setData(InventoryDataService.generateStructure(result));
+      } catch (e) {
+      } finally {
+        setLoading(false);
+      }
     })();
   }, []);
 
