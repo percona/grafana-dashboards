@@ -1,3 +1,4 @@
+/* tslint:disable */
 export class CustomLabelsModel {
   key: string;
   value: string;

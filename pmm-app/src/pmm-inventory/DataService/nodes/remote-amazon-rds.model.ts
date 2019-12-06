@@ -1,7 +1,8 @@
+/* tslint:disable */
 import { CustomLabelsModel } from '../custom-labels.model';
 
 export class RemoteAmazonRdsModel {
-  custom_labels: Array<CustomLabelsModel>;
+  custom_labels: CustomLabelsModel[];
   instance: string;
   node_id: string;
   node_name: string;

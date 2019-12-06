@@ -1,9 +1,10 @@
+/* tslint:disable */
 import { CustomLabelsModel } from '../custom-labels.model';
 
 export class ServicesGeneralModel {
   address: string;
   cluster: string;
-  custom_labels: Array<CustomLabelsModel>;
+  custom_labels: CustomLabelsModel[];
   environment: string;
   node_id: string;
   port: number;
@@ -16,8 +17,10 @@ export class ServicesGeneralModel {
   constructor(params, type) {
     this.address = params.address || '';
     this.cluster = params.cluster || '';
-    this.custom_labels = params.custom_labels && Object.keys(params.custom_labels).length ?
-      Object.entries(params.custom_labels).map(item => new CustomLabelsModel(item)) : [];
+    this.custom_labels =
+      params.custom_labels && Object.keys(params.custom_labels).length
+        ? Object.entries(params.custom_labels).map(item => new CustomLabelsModel(item))
+        : [];
     this.environment = params.environment || '';
     this.node_id = params.node_id || '';
     this.port = params.port || '';

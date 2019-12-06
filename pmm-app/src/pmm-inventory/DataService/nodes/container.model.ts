@@ -1,3 +1,4 @@
+/* tslint:disable */
 import { CustomLabelsModel } from '../custom-labels.model';
 
 export class ContainerModel {
@@ -5,7 +6,7 @@ export class ContainerModel {
   az: string;
   docker_container_id: string;
   docker_container_name: string;
-  custom_labels: Array<CustomLabelsModel>;
+  custom_labels: CustomLabelsModel[];
   machine_id: string;
   node_id: string;
   node_model: string;
@@ -16,8 +17,10 @@ export class ContainerModel {
   constructor(params, type) {
     this.address = params.address || '';
     this.az = params.az || '';
-    this.custom_labels = params.custom_labels && Object.keys(params.custom_labels).length ?
-      Object.entries(params.custom_labels).map(item => new CustomLabelsModel(item)) : [];
+    this.custom_labels =
+      params.custom_labels && Object.keys(params.custom_labels).length
+        ? Object.entries(params.custom_labels).map(item => new CustomLabelsModel(item))
+        : [];
     this.docker_container_id = params.docker_container_id || '';
     this.docker_container_name = params.docker_container_name || '';
     this.machine_id = params.machine_id || '';
