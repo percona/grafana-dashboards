@@ -16,7 +16,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1573665537206,
+    "iteration": 1575638234190,
     "links": [
         {
             "icon": "doc",
@@ -250,14 +250,9 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "count(node_memory_MemTotal_bytes{node_name=~\"$host\"})",
-                    "format": "time_series",
-                    "instant": false,
+                    "expr": "count(count by (node_name) (up{node_name=~\"$host\"}))",
                     "interval": "5m",
-                    "intervalFactor": 1,
-                    "legendFormat": "",
-                    "refId": "A",
-                    "step": 300
+                    "refId": "C"
                 }
             ],
             "thresholds": "",
@@ -339,18 +334,9 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "calculatedInterval": "10m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "count(mysql_global_status_uptime{node_name=~\"$host\"} or mysql_global_status_uptime{node_type=~\"remote\"} or \nmongodb_up {node_name=~\"$host\"} or mongodb_up{node_type=~\"remote\"} or \npg_up{node_name=~\"$host\"} or pg_up{node_type=~\"remote\"} or \nproxysql_mysql_status_active_transactions{node_name=~\"$host\"} or proxysql_mysql_status_active_transactions{node_type=~\"remote\"})",
-                    "format": "time_series",
-                    "instant": false,
-                    "interval": "5m",
-                    "intervalFactor": 1,
-                    "legendFormat": "",
-                    "metric": "",
-                    "refId": "A",
-                    "step": 300
+                    "expr": "count(count by (id_service) (label_replace(up{node_name=~\"$host\",job=~\"mysql.*|mongodb.*|postgres.*|proxysql.*\"}, \"id_service\", \"$2\", \"job\", \"(.*)_exporter_agent_id_(.*)_(.*)\"))) or vector(0)",
+                    "interval": "$interval",
+                    "refId": "A"
                 }
             ],
             "thresholds": "",
@@ -580,9 +566,8 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "avg by () ((node_memory_MemAvailable_bytes{node_name=~\"$host\"} or (node_memory_MemFree_bytes{node_name=~\"$host\"} + node_memory_Buffers_bytes{node_name=~\"$host\"} + node_memory_Cached_bytes{node_name=~\"$host\"})) / node_memory_MemTotal_bytes{node_name=~\"$host\"}) * 100",
-                    "interval": "$interval",
-                    "refId": "A"
+                    "expr": "avg by () ((node_memory_MemAvailable_bytes{node_name=~\"$host\"} or (node_memory_MemFree_bytes{node_name=~\"$host\"} + node_memory_Buffers_bytes{node_name=~\"$host\"} + node_memory_Cached_bytes{node_name=~\"$host\"})) / node_memory_MemTotal_bytes{node_name=~\"$host\"} or\n(rdsosmetrics_memory_free{node_name=~\"$host\"} + rdsosmetrics_memory_buffers{node_name=~\"$host\"} + rdsosmetrics_memory_cached{node_name=~\"$host\"})/ rdsosmetrics_memory_total{node_name=~\"$host\"}) * 100",
+                    "refId": "B"
                 }
             ],
             "thresholds": "10,20",
@@ -674,17 +659,9 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "calculatedInterval": "10m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "sum by () (rate(node_vmstat_pgpgin{node_name=~\"$host\"}[$interval]) or irate(node_vmstat_pgpgin{node_name=~\"$host\"}[5m])) * 1024",
-                    "format": "time_series",
+                    "expr": "sum by () (rate(node_vmstat_pgpgin{node_name=~\"$host\"}[$interval]) or irate(node_vmstat_pgpgin{node_name=~\"$host\"}[5m]) or max_over_time(rdsosmetrics_diskIO_readKbPS{node_name=~\"$host\"}[$interval]) or max_over_time(rdsosmetrics_diskIO_readKbPS{node_name=~\"$host\"}[5m])) * 1024",
                     "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "",
-                    "metric": "node_mem",
-                    "refId": "A",
-                    "step": 300
+                    "refId": "B"
                 }
             ],
             "thresholds": "10000000,100000000",
@@ -773,17 +750,9 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "calculatedInterval": "10m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "sum by () (rate(node_vmstat_pgpgout{node_name=~\"$host\"}[$interval]) or irate(node_vmstat_pgpgout{node_name=~\"$host\"}[5m])) * 1024",
-                    "format": "time_series",
+                    "expr": "sum by () (rate(node_vmstat_pgpgout{node_name=~\"$host\"}[$interval]) or irate(node_vmstat_pgpgout{node_name=~\"$host\"}[5m]) or\nmax_over_time(rdsosmetrics_diskIO_writeKbPS{node_name=~\"$host\"}[$interval]) or max_over_time(rdsosmetrics_diskIO_writeKbPS{node_name=~\"$host\"}[5m])) * 1024",
                     "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "",
-                    "metric": "node_mem",
-                    "refId": "A",
-                    "step": 300
+                    "refId": "B"
                 }
             ],
             "thresholds": "10000000,100000000",
@@ -982,17 +951,9 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "calculatedInterval": "10m",
-                    "datasourceErrors": {},
-                    "errors": {},
                     "expr": "sum by () (max_over_time(mysql_global_status_threads_connected{node_name=~\"$host\"}[$interval]) or \nmax_over_time(mongodb_connections{node_name=~\"$host\",state=\"current\"}[$interval]) or\nsum by (node_name) (max_over_time(pg_stat_database_numbackends{node_name=~\"$host\"}[$interval])))",
-                    "format": "time_series",
                     "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "",
-                    "metric": "node_mem",
-                    "refId": "A",
-                    "step": 300
+                    "refId": "C"
                 }
             ],
             "thresholds": "",
@@ -1282,13 +1243,9 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "sum by () (node_memory_MemTotal_bytes{node_name=~\"$host\"})",
-                    "format": "time_series",
-                    "instant": true,
+                    "expr": "sum by () (node_memory_MemTotal_bytes{node_name=~\"$host\"} or (rdsosmetrics_memory_total{node_name=~\"$host\"}*1024))",
                     "interval": "5m",
-                    "intervalFactor": 1,
-                    "refId": "A",
-                    "step": 300
+                    "refId": "B"
                 }
             ],
             "thresholds": "",
@@ -1607,9 +1564,9 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "clamp_max(avg by (node_name) (sum by (cpu) ( (clamp_max(rate(node_cpu_seconds_total{node_name=~\"$host\",mode!='idle',mode!=\"iowait\"}[$interval]),1)) or(clamp_max(irate(node_cpu_seconds_total{node_name=~\"$host\",mode!='idle',mode!=\"iowait\"}[5m]),1)) )),1) *100 or\nsum by () (avg_over_time(node_cpu_average{node_name=~\"$host\",mode!=\"idle\", mode!=\"total\",job=\"rds-enhanced\"}[$interval]) or avg_over_time(node_cpu_average{node_name=~\"$host\",mode!=\"idle\", mode!=\"total\",job=\"rds-enhanced\"}[5m]))",
+                    "expr": "clamp_max(avg by (node_name) (sum by (cpu) ( (clamp_max(rate(node_cpu_seconds_total{node_name=~\"$host\",mode!='idle',mode!=\"iowait\"}[$interval]),1)) or(clamp_max(irate(node_cpu_seconds_total{node_name=~\"$host\",mode!='idle',mode!=\"iowait\"}[5m]),1)) )),1) *100 or\nsum by () (avg_over_time(node_cpu_average{node_name=~\"$host\",mode!=\"idle\", mode!=\"total\"}[$interval]) or avg_over_time(node_cpu_average{node_name=~\"$host\",mode!=\"idle\", mode!=\"total\"}[5m]))",
                     "interval": "$interval",
-                    "refId": "A"
+                    "refId": "B"
                 }
             ],
             "thresholds": "70,90",
@@ -1697,7 +1654,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "(node_memory_MemAvailable_bytes{node_name=~\"$host\"} or (node_memory_MemFree_bytes{node_name=~\"$host\"} + node_memory_Buffers_bytes{node_name=~\"$host\"} + node_memory_Cached_bytes{node_name=~\"$host\"})) / node_memory_MemTotal_bytes{node_name=~\"$host\"} * 100",
+                    "expr": "((node_memory_MemAvailable_bytes{node_name=~\"$host\"} or (node_memory_MemFree_bytes{node_name=~\"$host\"} + node_memory_Buffers_bytes{node_name=~\"$host\"} + node_memory_Cached_bytes{node_name=~\"$host\"})) / node_memory_MemTotal_bytes{node_name=~\"$host\"} or\n(rdsosmetrics_memory_free{node_name=~\"$host\"} + rdsosmetrics_memory_buffers{node_name=~\"$host\"} + rdsosmetrics_memory_cached{node_name=~\"$host\"})/ rdsosmetrics_memory_total{node_name=~\"$host\"}) * 100",
                     "interval": "$interval",
                     "refId": "A"
                 }
@@ -1792,7 +1749,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(node_vmstat_pgpgin{node_name=~\"$host\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=~\"$host\"}[5m]) * 1024",
+                    "expr": "(rate(node_vmstat_pgpgin{node_name=~\"$host\"}[$interval]) or irate(node_vmstat_pgpgin{node_name=~\"$host\"}[5m]) or max_over_time(rdsosmetrics_diskIO_readKbPS{node_name=~\"$host\"}[$interval]) or max_over_time(rdsosmetrics_diskIO_readKbPS{node_name=~\"$host\"}[5m])) * 1024",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1890,7 +1847,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(node_vmstat_pgpgout{node_name=~\"$host\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=~\"$host\"}[5m]) * 1024",
+                    "expr": "(rate(node_vmstat_pgpgout{node_name=~\"$host\"}[$interval]) or irate(node_vmstat_pgpgout{node_name=~\"$host\"}[5m]) or\nmax_over_time(rdsosmetrics_diskIO_writeKbPS{node_name=~\"$host\"}[$interval]) or max_over_time(rdsosmetrics_diskIO_writeKbPS{node_name=~\"$host\"}[5m])) * 1024",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2092,17 +2049,9 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "calculatedInterval": "10m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "sum by (node_name) (max_over_time(mysql_global_status_threads_connected{node_name=~\"$host\"}[$interval]) or \nmax_over_time(mongodb_connections{node_name=~\"$host\",state=\"current\"}[$interval]) or\nsum by (node_name) (max_over_time(pg_stat_database_numbackends{node_name=~\"$host\"}[$interval])))",
-                    "format": "time_series",
+                    "expr": "sum by()(max_over_time(mysql_global_status_threads_connected{node_name=~\"$host\"}[$interval]) or \nlabel_replace(mysql_global_status_threads_connected{node_name=~\"$host\",node_type=\"remote\"},\"node_name\",\"pmm-server\",\"\",\"\") or\nmax_over_time(mongodb_connections{node_name=~\"$host\",state=\"current\"}[$interval]) or\nsum by (node_name) (max_over_time(pg_stat_database_numbackends{node_name=~\"$host\"}[$interval])))",
                     "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "",
-                    "metric": "node_mem",
-                    "refId": "A",
-                    "step": 300
+                    "refId": "B"
                 }
             ],
             "thresholds": "",
@@ -2396,13 +2345,9 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "node_memory_MemTotal_bytes{node_name=~\"$host\"}",
-                    "format": "time_series",
+                    "expr": "node_memory_MemTotal_bytes{node_name=~\"$host\"} or (rdsosmetrics_memory_total{node_name=~\"$host\"}*1024)",
                     "interval": "5m",
-                    "intervalFactor": 1,
-                    "legendFormat": "",
-                    "refId": "A",
-                    "step": 300
+                    "refId": "A"
                 }
             ],
             "thresholds": "",
@@ -2616,1164 +2561,6 @@
                 }
             ],
             "valueName": "current"
-        },
-        {
-            "collapsed": false,
-            "datasource": null,
-            "gridPos": {
-                "h": 1,
-                "w": 24,
-                "x": 0,
-                "y": 26
-            },
-            "id": 1380,
-            "panels": [],
-            "repeat": null,
-            "repeatIteration": 1573665537206,
-            "repeatPanelId": 1343,
-            "title": "",
-            "type": "row"
-        },
-        {
-            "content": "$host",
-            "datasource": null,
-            "gridPos": {
-                "h": 3,
-                "w": 2,
-                "x": 0,
-                "y": 27
-            },
-            "height": "50px",
-            "id": 1381,
-            "links": [
-                {
-                    "targetBlank": true,
-                    "title": "Node Summary - $host",
-                    "url": "/graph/d/node-instance-summary/node-summary?$__url_time_range&var-host=$host"
-                }
-            ],
-            "maxPerRow": 12,
-            "mode": "markdown",
-            "options": {},
-            "repeatIteration": 1573665537206,
-            "repeatPanelId": 162,
-            "repeatedByRow": true,
-            "title": "",
-            "transparent": true,
-            "type": "text"
-        },
-        {
-            "cacheTimeout": null,
-            "colorBackground": false,
-            "colorValue": true,
-            "colors": [
-                "#299c46",
-                "rgba(237, 129, 40, 0.89)",
-                "#d44a3a"
-            ],
-            "datasource": null,
-            "format": "percent",
-            "gauge": {
-                "maxValue": 100,
-                "minValue": 0,
-                "show": false,
-                "thresholdLabels": false,
-                "thresholdMarkers": true
-            },
-            "gridPos": {
-                "h": 3,
-                "w": 2,
-                "x": 2,
-                "y": 27
-            },
-            "id": 1382,
-            "interval": null,
-            "links": [
-                {
-                    "targetBlank": true,
-                    "title": "Node Summary- $host",
-                    "url": "/graph/d/node-instance-summary/node-summary?$__url_time_range&var-host=$host"
-                }
-            ],
-            "mappingType": 1,
-            "mappingTypes": [
-                {
-                    "name": "value to text",
-                    "value": 1
-                },
-                {
-                    "name": "range to text",
-                    "value": 2
-                }
-            ],
-            "maxDataPoints": 100,
-            "nullPointMode": "connected",
-            "nullText": null,
-            "options": {},
-            "postfix": "",
-            "postfixFontSize": "50%",
-            "prefix": "",
-            "prefixFontSize": "30%",
-            "rangeMaps": [
-                {
-                    "from": "null",
-                    "text": "N/A",
-                    "to": "null"
-                }
-            ],
-            "repeatIteration": 1573665537206,
-            "repeatPanelId": 1361,
-            "repeatedByRow": true,
-            "sparkline": {
-                "fillColor": "rgba(31, 118, 189, 0.18)",
-                "full": false,
-                "lineColor": "rgb(31, 120, 193)",
-                "show": true,
-                "ymax": null,
-                "ymin": null
-            },
-            "tableColumn": "",
-            "targets": [
-                {
-                    "expr": "clamp_max(avg by (node_name) (sum by (cpu) ( (clamp_max(rate(node_cpu_seconds_total{node_name=~\"$host\",mode!='idle',mode!=\"iowait\"}[$interval]),1)) or(clamp_max(irate(node_cpu_seconds_total{node_name=~\"$host\",mode!='idle',mode!=\"iowait\"}[5m]),1)) )),1) *100 or\nsum by () (avg_over_time(node_cpu_average{node_name=~\"$host\",mode!=\"idle\", mode!=\"total\",job=\"rds-enhanced\"}[$interval]) or avg_over_time(node_cpu_average{node_name=~\"$host\",mode!=\"idle\", mode!=\"total\",job=\"rds-enhanced\"}[5m]))",
-                    "interval": "$interval",
-                    "refId": "A"
-                }
-            ],
-            "thresholds": "70,90",
-            "timeFrom": null,
-            "timeShift": null,
-            "title": "",
-            "type": "singlestat",
-            "valueFontSize": "50%",
-            "valueMaps": [
-                {
-                    "op": "=",
-                    "text": "N/A",
-                    "value": "null"
-                }
-            ],
-            "valueName": "current"
-        },
-        {
-            "cacheTimeout": null,
-            "colorBackground": false,
-            "colorValue": true,
-            "colors": [
-                "#d44a3a",
-                "rgba(237, 129, 40, 0.89)",
-                "#299c46"
-            ],
-            "datasource": null,
-            "format": "percent",
-            "gauge": {
-                "maxValue": 100,
-                "minValue": 0,
-                "show": false,
-                "thresholdLabels": false,
-                "thresholdMarkers": true
-            },
-            "gridPos": {
-                "h": 3,
-                "w": 2,
-                "x": 4,
-                "y": 27
-            },
-            "id": 1383,
-            "interval": null,
-            "links": [
-                {
-                    "targetBlank": true,
-                    "title": "Memory Overview - $host",
-                    "url": "/graph/d/node-memory/memory-details?$__url_time_range&var-host=$host"
-                }
-            ],
-            "mappingType": 1,
-            "mappingTypes": [
-                {
-                    "name": "value to text",
-                    "value": 1
-                },
-                {
-                    "name": "range to text",
-                    "value": 2
-                }
-            ],
-            "maxDataPoints": 100,
-            "nullPointMode": "connected",
-            "nullText": null,
-            "options": {},
-            "postfix": "",
-            "postfixFontSize": "50%",
-            "prefix": "",
-            "prefixFontSize": "30%",
-            "rangeMaps": [
-                {
-                    "from": "null",
-                    "text": "N/A",
-                    "to": "null"
-                }
-            ],
-            "repeatIteration": 1573665537206,
-            "repeatPanelId": 1376,
-            "repeatedByRow": true,
-            "sparkline": {
-                "fillColor": "rgba(31, 118, 189, 0.18)",
-                "full": false,
-                "lineColor": "rgb(31, 120, 193)",
-                "show": true,
-                "ymax": null,
-                "ymin": null
-            },
-            "tableColumn": "",
-            "targets": [
-                {
-                    "expr": "(node_memory_MemAvailable_bytes{node_name=~\"$host\"} or (node_memory_MemFree_bytes{node_name=~\"$host\"} + node_memory_Buffers_bytes{node_name=~\"$host\"} + node_memory_Cached_bytes{node_name=~\"$host\"})) / node_memory_MemTotal_bytes{node_name=~\"$host\"} * 100",
-                    "interval": "$interval",
-                    "refId": "A"
-                }
-            ],
-            "thresholds": "10,20",
-            "timeFrom": null,
-            "timeShift": null,
-            "title": "",
-            "type": "singlestat",
-            "valueFontSize": "50%",
-            "valueMaps": [
-                {
-                    "op": "=",
-                    "text": "N/A",
-                    "value": "null"
-                }
-            ],
-            "valueName": "current"
-        },
-        {
-            "cacheTimeout": null,
-            "colorBackground": false,
-            "colorValue": false,
-            "colors": [
-                "#0a437c",
-                "#1f78c1",
-                "#5195ce"
-            ],
-            "datasource": "Prometheus",
-            "decimals": 1,
-            "editable": true,
-            "error": false,
-            "format": "Bps",
-            "gauge": {
-                "maxValue": 100,
-                "minValue": 0,
-                "show": false,
-                "thresholdLabels": false,
-                "thresholdMarkers": true
-            },
-            "gridPos": {
-                "h": 3,
-                "w": 2,
-                "x": 6,
-                "y": 27
-            },
-            "height": "25",
-            "id": 1384,
-            "interval": "$interval",
-            "links": [
-                {
-                    "targetBlank": true,
-                    "title": "Disk Performance - $host",
-                    "url": "/graph/d/node-disk/disk-details?$__url_time_range&var-host=$host"
-                }
-            ],
-            "mappingType": 1,
-            "mappingTypes": [
-                {
-                    "name": "value to text",
-                    "value": 1
-                },
-                {
-                    "name": "range to text",
-                    "value": 2
-                }
-            ],
-            "maxDataPoints": 100,
-            "nullPointMode": "connected",
-            "nullText": null,
-            "options": {},
-            "postfix": "",
-            "postfixFontSize": "50%",
-            "prefix": "",
-            "prefixFontSize": "30%",
-            "rangeMaps": [
-                {
-                    "from": "null",
-                    "text": "N/A",
-                    "to": "null"
-                }
-            ],
-            "repeatIteration": 1573665537206,
-            "repeatPanelId": 314,
-            "repeatedByRow": true,
-            "sparkline": {
-                "fillColor": "rgba(224, 249, 215, 0)",
-                "full": false,
-                "lineColor": "rgb(31, 120, 193)",
-                "show": true
-            },
-            "tableColumn": "",
-            "targets": [
-                {
-                    "calculatedInterval": "10m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "rate(node_vmstat_pgpgin{node_name=~\"$host\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=~\"$host\"}[5m]) * 1024",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "",
-                    "metric": "node_mem",
-                    "refId": "A",
-                    "step": 300
-                }
-            ],
-            "thresholds": "10000000,100000000",
-            "title": "",
-            "type": "singlestat",
-            "valueFontSize": "50%",
-            "valueMaps": [
-                {
-                    "op": "=",
-                    "text": "N/A",
-                    "value": "null"
-                }
-            ],
-            "valueName": "current"
-        },
-        {
-            "cacheTimeout": null,
-            "colorBackground": false,
-            "colorValue": false,
-            "colors": [
-                "#6d1f62",
-                "#962d82",
-                "#ba43a9"
-            ],
-            "datasource": "Prometheus",
-            "decimals": 1,
-            "editable": true,
-            "error": false,
-            "format": "Bps",
-            "gauge": {
-                "maxValue": 100,
-                "minValue": 0,
-                "show": false,
-                "thresholdLabels": false,
-                "thresholdMarkers": true
-            },
-            "gridPos": {
-                "h": 3,
-                "w": 2,
-                "x": 8,
-                "y": 27
-            },
-            "height": "50",
-            "id": 1385,
-            "interval": "$interval",
-            "links": [
-                {
-                    "targetBlank": true,
-                    "title": "Disk Performance - $host",
-                    "url": "/graph/d/node-disk/disk-details?$__url_time_range&var-host=$host"
-                }
-            ],
-            "mappingType": 1,
-            "mappingTypes": [
-                {
-                    "name": "value to text",
-                    "value": 1
-                },
-                {
-                    "name": "range to text",
-                    "value": 2
-                }
-            ],
-            "maxDataPoints": 100,
-            "nullPointMode": "connected",
-            "nullText": null,
-            "options": {},
-            "postfix": "",
-            "postfixFontSize": "50%",
-            "prefix": "",
-            "prefixFontSize": "30%",
-            "rangeMaps": [
-                {
-                    "from": "null",
-                    "text": "N/A",
-                    "to": "null"
-                }
-            ],
-            "repeatIteration": 1573665537206,
-            "repeatPanelId": 490,
-            "repeatedByRow": true,
-            "sparkline": {
-                "fillColor": "rgba(31, 118, 189, 0.18)",
-                "full": false,
-                "lineColor": "rgb(31, 120, 193)",
-                "show": true
-            },
-            "tableColumn": "",
-            "targets": [
-                {
-                    "calculatedInterval": "10m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "rate(node_vmstat_pgpgout{node_name=~\"$host\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=~\"$host\"}[5m]) * 1024",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "",
-                    "metric": "node_mem",
-                    "refId": "A",
-                    "step": 300
-                }
-            ],
-            "thresholds": "10000000,100000000",
-            "title": "",
-            "type": "singlestat",
-            "valueFontSize": "50%",
-            "valueMaps": [
-                {
-                    "op": "=",
-                    "text": "N/A",
-                    "value": "null"
-                }
-            ],
-            "valueName": "current"
-        },
-        {
-            "cacheTimeout": null,
-            "colorBackground": false,
-            "colorValue": false,
-            "colors": [
-                "rgba(50, 172, 45, 0.97)",
-                "#fce2de",
-                "rgba(245, 54, 54, 0.9)"
-            ],
-            "datasource": "Prometheus",
-            "decimals": 1,
-            "editable": true,
-            "error": false,
-            "format": "Bps",
-            "gauge": {
-                "maxValue": 100,
-                "minValue": 0,
-                "show": false,
-                "thresholdLabels": false,
-                "thresholdMarkers": true
-            },
-            "gridPos": {
-                "h": 3,
-                "w": 2,
-                "x": 10,
-                "y": 27
-            },
-            "height": "50",
-            "id": 1386,
-            "interval": "$interval",
-            "links": [
-                {
-                    "title": "Network Overview - $host",
-                    "url": "/graph/d/node-network/network-details?$__url_time_range&var-host=$host"
-                }
-            ],
-            "mappingType": 1,
-            "mappingTypes": [
-                {
-                    "name": "value to text",
-                    "value": 1
-                },
-                {
-                    "name": "range to text",
-                    "value": 2
-                }
-            ],
-            "maxDataPoints": 100,
-            "nullPointMode": "connected",
-            "nullText": null,
-            "options": {},
-            "postfix": "",
-            "postfixFontSize": "50%",
-            "prefix": "",
-            "prefixFontSize": "30%",
-            "rangeMaps": [
-                {
-                    "from": "null",
-                    "text": "N/A",
-                    "to": "null"
-                }
-            ],
-            "repeatIteration": 1573665537206,
-            "repeatPanelId": 491,
-            "repeatedByRow": true,
-            "sparkline": {
-                "fillColor": "rgba(31, 118, 189, 0.18)",
-                "full": false,
-                "lineColor": "rgb(31, 120, 193)",
-                "show": true
-            },
-            "tableColumn": "",
-            "targets": [
-                {
-                    "calculatedInterval": "10m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "(sum(rate(node_network_receive_bytes_total{node_name=~\"$host\", device!=\"lo\"}[$interval]) or\nirate(node_network_receive_bytes_total{node_name=~\"$host\", device!=\"lo\"}[5m])) or \nsum(max_over_time(rdsosmetrics_network_rx{node_name=~\"$host\"}[$interval])) or \nsum(max_over_time(rdsosmetrics_network_rx{node_name=~\"$host\"}[5m]))) + \n(sum(rate(node_network_transmit_bytes_total{node_name=~\"$host\", device!=\"lo\"}[$interval]) or \nirate(node_network_transmit_bytes_total{node_name=~\"$host\", device!=\"lo\"}[5m])) or \nsum(max_over_time(rdsosmetrics_network_tx{node_name=~\"$host\"}[$interval])) or \nsum(max_over_time(rdsosmetrics_network_tx{node_name=~\"$host\"}[5m]))) ",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "",
-                    "metric": "node_mem",
-                    "refId": "A",
-                    "step": 300
-                }
-            ],
-            "thresholds": "",
-            "title": "",
-            "type": "singlestat",
-            "valueFontSize": "50%",
-            "valueMaps": [
-                {
-                    "op": "=",
-                    "text": "N/A",
-                    "value": "null"
-                }
-            ],
-            "valueName": "current"
-        },
-        {
-            "cacheTimeout": null,
-            "colorBackground": false,
-            "colorValue": false,
-            "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "#7eb26d",
-                "rgba(50, 172, 45, 0.97)"
-            ],
-            "datasource": "Prometheus",
-            "decimals": null,
-            "editable": true,
-            "error": false,
-            "format": "short",
-            "gauge": {
-                "maxValue": 100,
-                "minValue": 0,
-                "show": false,
-                "thresholdLabels": false,
-                "thresholdMarkers": true
-            },
-            "gridPos": {
-                "h": 3,
-                "w": 2,
-                "x": 12,
-                "y": 27
-            },
-            "height": "50",
-            "id": 1387,
-            "interval": "$interval",
-            "links": [
-                {
-                    "targetBlank": true,
-                    "title": "MySQL Overview - $host",
-                    "url": "/graph/d/mysql-instance-summary/mysql-instance-summary?$__url_time_range&var-host=$host"
-                },
-                {
-                    "targetBlank": true,
-                    "title": "MongoDB Overview - $host",
-                    "url": "/graph/d/mongodb-instance-summary/mongodb-instance-summary?$__url_time_range&var-host=$host"
-                },
-                {
-                    "targetBlank": true,
-                    "title": "PostgreSQL Overview - $host",
-                    "url": "/graph/d/postgresql-instance-summary/postgresql-instance-summary?$__url_time_range&var-host=$host"
-                }
-            ],
-            "mappingType": 1,
-            "mappingTypes": [
-                {
-                    "name": "value to text",
-                    "value": 1
-                },
-                {
-                    "name": "range to text",
-                    "value": 2
-                }
-            ],
-            "maxDataPoints": 100,
-            "nullPointMode": "connected",
-            "nullText": null,
-            "options": {},
-            "postfix": "",
-            "postfixFontSize": "50%",
-            "prefix": "",
-            "prefixFontSize": "30%",
-            "rangeMaps": [
-                {
-                    "from": "null",
-                    "text": "N/A",
-                    "to": "null"
-                }
-            ],
-            "repeatIteration": 1573665537206,
-            "repeatPanelId": 492,
-            "repeatedByRow": true,
-            "sparkline": {
-                "fillColor": "rgba(31, 118, 189, 0.18)",
-                "full": false,
-                "lineColor": "rgb(31, 120, 193)",
-                "show": true
-            },
-            "tableColumn": "",
-            "targets": [
-                {
-                    "calculatedInterval": "10m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "sum by (node_name) (max_over_time(mysql_global_status_threads_connected{node_name=~\"$host\"}[$interval]) or \nmax_over_time(mongodb_connections{node_name=~\"$host\",state=\"current\"}[$interval]) or\nsum by (node_name) (max_over_time(pg_stat_database_numbackends{node_name=~\"$host\"}[$interval])))",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "",
-                    "metric": "node_mem",
-                    "refId": "A",
-                    "step": 300
-                }
-            ],
-            "thresholds": "",
-            "title": "",
-            "type": "singlestat",
-            "valueFontSize": "50%",
-            "valueMaps": [
-                {
-                    "op": "=",
-                    "text": "N/A",
-                    "value": "null"
-                }
-            ],
-            "valueName": "current"
-        },
-        {
-            "cacheTimeout": null,
-            "colorBackground": false,
-            "colorValue": false,
-            "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "#7eb26d",
-                "rgba(50, 172, 45, 0.97)"
-            ],
-            "datasource": "Prometheus",
-            "decimals": 2,
-            "editable": true,
-            "error": false,
-            "format": "short",
-            "gauge": {
-                "maxValue": 100,
-                "minValue": 0,
-                "show": false,
-                "thresholdLabels": false,
-                "thresholdMarkers": true
-            },
-            "gridPos": {
-                "h": 3,
-                "w": 2,
-                "x": 14,
-                "y": 27
-            },
-            "height": "50",
-            "id": 1388,
-            "interval": "$interval",
-            "links": [
-                {
-                    "targetBlank": true,
-                    "title": "MySQL Overview - $host",
-                    "url": "/graph/d/mysql-instance-summary/mysql-instance-summary?$__url_time_range&var-host=$host"
-                },
-                {
-                    "targetBlank": true,
-                    "title": "MongoDB Overview - $host",
-                    "url": "/graph/d/mongodb-instance-summary/mongodb-instance-summary?$__url_time_range&var-host=$host"
-                },
-                {
-                    "targetBlank": true,
-                    "title": "PostgreSQL Overview - $host",
-                    "url": "/graph/d/postgresql-instance-summary/postgresql-instance-summary?$__url_time_range&var-host=$host"
-                }
-            ],
-            "mappingType": 1,
-            "mappingTypes": [
-                {
-                    "name": "value to text",
-                    "value": 1
-                },
-                {
-                    "name": "range to text",
-                    "value": 2
-                }
-            ],
-            "maxDataPoints": 100,
-            "nullPointMode": "connected",
-            "nullText": null,
-            "options": {},
-            "postfix": "",
-            "postfixFontSize": "50%",
-            "prefix": "",
-            "prefixFontSize": "30%",
-            "rangeMaps": [
-                {
-                    "from": "null",
-                    "text": "N/A",
-                    "to": "null"
-                }
-            ],
-            "repeatIteration": 1573665537206,
-            "repeatPanelId": 743,
-            "repeatedByRow": true,
-            "sparkline": {
-                "fillColor": "rgba(31, 118, 189, 0.18)",
-                "full": false,
-                "lineColor": "rgb(31, 120, 193)",
-                "show": true
-            },
-            "tableColumn": "",
-            "targets": [
-                {
-                    "calculatedInterval": "10m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "sum by (node_name) (\n(rate(mysql_global_status_queries{node_name=~\"$host\"}[$interval]) or \nirate(mysql_global_status_queries{node_name=~\"$host\"}[5m])) or \n(sum by (node_name) (rate(mongodb_mongod_op_counters_total{node_name=~\"$host\",type!=\"command\"}[$interval])) or \nsum by (node_name) (irate(mongodb_mongod_op_counters_total{node_name=~\"$host\",type!=\"command\"}[5m]))) or\n(sum by (node_name) (rate(pg_stat_database_xact_commit{node_name=~\"$host\"}[$interval]) + \nrate(pg_stat_database_xact_rollback{node_name=~\"$host\"}[$interval])) or\nsum by (node_name) (irate(pg_stat_database_xact_commit{node_name=~\"$host\"}[5m]) + \nirate(pg_stat_database_xact_rollback{node_name=~\"$host\"}[5m])))\n)",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "",
-                    "metric": "node_mem",
-                    "refId": "A",
-                    "step": 300
-                }
-            ],
-            "thresholds": "",
-            "title": "",
-            "type": "singlestat",
-            "valueFontSize": "50%",
-            "valueMaps": [
-                {
-                    "op": "=",
-                    "text": "N/A",
-                    "value": "null"
-                }
-            ],
-            "valueName": "current"
-        },
-        {
-            "cacheTimeout": null,
-            "colorBackground": false,
-            "colorValue": false,
-            "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-            ],
-            "datasource": "Prometheus",
-            "editable": true,
-            "error": false,
-            "format": "none",
-            "gauge": {
-                "maxValue": 100,
-                "minValue": 0,
-                "show": false,
-                "thresholdLabels": false,
-                "thresholdMarkers": true
-            },
-            "gridPos": {
-                "h": 3,
-                "w": 2,
-                "x": 16,
-                "y": 27
-            },
-            "height": "20",
-            "id": 1389,
-            "interval": "$interval",
-            "links": [
-                {
-                    "title": "Node Summary - $host",
-                    "url": "/graph/d/node-instance-summary/node-summary?$__url_time_range&var-host=$host"
-                }
-            ],
-            "mappingType": 1,
-            "mappingTypes": [
-                {
-                    "name": "value to text",
-                    "value": 1
-                },
-                {
-                    "name": "range to text",
-                    "value": 2
-                }
-            ],
-            "maxDataPoints": 100,
-            "maxPerRow": 12,
-            "nullPointMode": "connected",
-            "nullText": null,
-            "options": {},
-            "postfix": "",
-            "postfixFontSize": "50%",
-            "prefix": "",
-            "prefixFontSize": "50%",
-            "rangeMaps": [
-                {
-                    "from": "null",
-                    "text": "N/A",
-                    "to": "null"
-                }
-            ],
-            "repeatIteration": 1573665537206,
-            "repeatPanelId": 25,
-            "repeatedByRow": true,
-            "sparkline": {
-                "fillColor": "rgba(31, 118, 189, 0.18)",
-                "full": false,
-                "lineColor": "rgb(31, 120, 193)",
-                "show": true
-            },
-            "tableColumn": "",
-            "targets": [
-                {
-                    "expr": "(count(node_cpu_seconds_total{node_name=~\"$host\",mode=~\"user\"}) or (1-absent(node_cpu_seconds_total{node_name=~\"$host\",mode=~\"user\"}))) + \nsum(rdsosmetrics_General_numVCPUs{node_name=~\"$host\"} or up * 0)",
-                    "format": "time_series",
-                    "instant": true,
-                    "interval": "5m",
-                    "intervalFactor": 1,
-                    "legendFormat": "",
-                    "refId": "A",
-                    "step": 300
-                }
-            ],
-            "thresholds": "",
-            "title": "",
-            "type": "singlestat",
-            "valueFontSize": "50%",
-            "valueMaps": [
-                {
-                    "op": "=",
-                    "text": "N/A",
-                    "value": "null"
-                },
-                {
-                    "op": "=",
-                    "text": "N/A",
-                    "value": "0"
-                }
-            ],
-            "valueName": "current"
-        },
-        {
-            "cacheTimeout": null,
-            "colorBackground": false,
-            "colorValue": false,
-            "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-            ],
-            "datasource": "Prometheus",
-            "decimals": 2,
-            "editable": true,
-            "error": false,
-            "format": "bytes",
-            "gauge": {
-                "maxValue": 100,
-                "minValue": 0,
-                "show": false,
-                "thresholdLabels": false,
-                "thresholdMarkers": true
-            },
-            "gridPos": {
-                "h": 3,
-                "w": 2,
-                "x": 18,
-                "y": 27
-            },
-            "height": "50",
-            "id": 1390,
-            "interval": "$interval",
-            "links": [
-                {
-                    "title": "Memory Overview - $host",
-                    "url": "/graph/d/node-memory/memory-details?$__url_time_range&var-host=$host"
-                }
-            ],
-            "mappingType": 1,
-            "mappingTypes": [
-                {
-                    "name": "value to text",
-                    "value": 1
-                },
-                {
-                    "name": "range to text",
-                    "value": 2
-                }
-            ],
-            "maxDataPoints": 100,
-            "nullPointMode": "connected",
-            "nullText": null,
-            "options": {},
-            "postfix": "",
-            "postfixFontSize": "50%",
-            "prefix": "",
-            "prefixFontSize": "20%",
-            "rangeMaps": [
-                {
-                    "from": "null",
-                    "text": "N/A",
-                    "to": "null"
-                }
-            ],
-            "repeatIteration": 1573665537206,
-            "repeatPanelId": 26,
-            "repeatedByRow": true,
-            "sparkline": {
-                "fillColor": "rgba(31, 118, 189, 0.18)",
-                "full": false,
-                "lineColor": "rgb(31, 120, 193)",
-                "show": true
-            },
-            "tableColumn": "",
-            "targets": [
-                {
-                    "expr": "node_memory_MemTotal_bytes{node_name=~\"$host\"}",
-                    "format": "time_series",
-                    "interval": "5m",
-                    "intervalFactor": 1,
-                    "legendFormat": "",
-                    "refId": "A",
-                    "step": 300
-                }
-            ],
-            "thresholds": "",
-            "title": "",
-            "type": "singlestat",
-            "valueFontSize": "50%",
-            "valueMaps": [
-                {
-                    "op": "=",
-                    "text": "N/A",
-                    "value": "null"
-                }
-            ],
-            "valueName": "current"
-        },
-        {
-            "cacheTimeout": null,
-            "colorBackground": false,
-            "colorPostfix": true,
-            "colorValue": true,
-            "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-            ],
-            "datasource": "Prometheus",
-            "decimals": 1,
-            "description": "Uptime for  `$host`",
-            "editable": true,
-            "error": false,
-            "format": "s",
-            "gauge": {
-                "maxValue": 100,
-                "minValue": 0,
-                "show": false,
-                "thresholdLabels": false,
-                "thresholdMarkers": true
-            },
-            "gridPos": {
-                "h": 3,
-                "w": 2,
-                "x": 20,
-                "y": 27
-            },
-            "height": "50",
-            "id": 1391,
-            "interval": "$interval",
-            "links": [
-                {
-                    "title": "Node Summary - $host",
-                    "url": "/graph/d/node-instance-summary/node-summary?$__url_time_range&var-host=$host"
-                }
-            ],
-            "mappingType": 1,
-            "mappingTypes": [
-                {
-                    "name": "value to text",
-                    "value": 1
-                },
-                {
-                    "name": "range to text",
-                    "value": 2
-                }
-            ],
-            "maxDataPoints": 100,
-            "nullPointMode": "connected",
-            "nullText": null,
-            "options": {},
-            "postfix": "s",
-            "postfixFontSize": "50%",
-            "prefix": "",
-            "prefixFontSize": "20%",
-            "rangeMaps": [
-                {
-                    "from": "null",
-                    "text": "N/A",
-                    "to": "null"
-                }
-            ],
-            "repeatIteration": 1573665537206,
-            "repeatPanelId": 19,
-            "repeatedByRow": true,
-            "sparkline": {
-                "fillColor": "rgba(31, 118, 189, 0.18)",
-                "full": false,
-                "lineColor": "rgb(31, 120, 193)",
-                "show": false
-            },
-            "tableColumn": "",
-            "targets": [
-                {
-                    "calculatedInterval": "10m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "node_time_seconds{node_name=~\"$host\"} - node_boot_time_seconds{node_name=~\"$host\"}",
-                    "format": "time_series",
-                    "interval": "5m",
-                    "intervalFactor": 1,
-                    "legendFormat": "",
-                    "metric": "",
-                    "refId": "A",
-                    "step": 300
-                }
-            ],
-            "thresholds": "3600,86400",
-            "timeFrom": null,
-            "title": "",
-            "type": "singlestat",
-            "valueFontSize": "50%",
-            "valueMaps": [
-                {
-                    "op": "=",
-                    "text": "N/A",
-                    "value": "null"
-                }
-            ],
-            "valueName": "current"
-        },
-        {
-            "cacheTimeout": null,
-            "colorBackground": false,
-            "colorPostfix": true,
-            "colorValue": true,
-            "colors": [
-                "rgba(245, 54, 54, 0.9)",
-                "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
-            ],
-            "datasource": "Prometheus",
-            "decimals": 1,
-            "description": "DB Uptime for $host",
-            "editable": true,
-            "error": false,
-            "format": "s",
-            "gauge": {
-                "maxValue": 100,
-                "minValue": 0,
-                "show": false,
-                "thresholdLabels": false,
-                "thresholdMarkers": true
-            },
-            "gridPos": {
-                "h": 3,
-                "w": 2,
-                "x": 22,
-                "y": 27
-            },
-            "height": "50",
-            "id": 1392,
-            "interval": "$interval",
-            "links": [
-                {
-                    "title": "Node Summary - $host",
-                    "url": "/graph/d/node-instance-summary/node-summary?$__url_time_range&var-host=$host"
-                }
-            ],
-            "mappingType": 1,
-            "mappingTypes": [
-                {
-                    "name": "value to text",
-                    "value": 1
-                },
-                {
-                    "name": "range to text",
-                    "value": 2
-                }
-            ],
-            "maxDataPoints": 100,
-            "nullPointMode": "connected",
-            "nullText": null,
-            "options": {},
-            "postfix": "s",
-            "postfixFontSize": "50%",
-            "prefix": "",
-            "prefixFontSize": "50%",
-            "rangeMaps": [
-                {
-                    "from": "null",
-                    "text": "N/A",
-                    "to": "null"
-                }
-            ],
-            "repeatIteration": 1573665537206,
-            "repeatPanelId": 1297,
-            "repeatedByRow": true,
-            "sparkline": {
-                "fillColor": "rgba(31, 118, 189, 0.18)",
-                "full": false,
-                "lineColor": "rgb(31, 120, 193)",
-                "show": false
-            },
-            "tableColumn": "",
-            "targets": [
-                {
-                    "calculatedInterval": "10m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "avg by (node_name) (mysql_global_status_uptime{node_name=~\"$host\"} or \nmongodb_instance_uptime_seconds {node_name=~\"$host\"} or \n(time() - process_start_time_seconds{node_name=~\"$host\",job=~\"postgres_exporter.*\"}))",
-                    "format": "time_series",
-                    "interval": "5m",
-                    "intervalFactor": 1,
-                    "legendFormat": "",
-                    "metric": "",
-                    "refId": "A",
-                    "step": 300
-                }
-            ],
-            "thresholds": "3600,86400",
-            "title": "",
-            "type": "singlestat",
-            "valueFontSize": "50%",
-            "valueMaps": [
-                {
-                    "op": "=",
-                    "text": "N/A",
-                    "value": "null"
-                }
-            ],
-            "valueName": "current"
         }
     ],
     "refresh": "1m",
@@ -3849,14 +2636,14 @@
                 "allValue": null,
                 "current": {},
                 "datasource": "Prometheus",
-                "definition": "label_values(node_boot_time_seconds, environment)",
+                "definition": "label_values(up, environment)",
                 "hide": 0,
                 "includeAll": true,
                 "label": "Environment",
                 "multi": true,
                 "name": "environment",
                 "options": [],
-                "query": "label_values(node_boot_time_seconds, environment)",
+                "query": "label_values(up, environment)",
                 "refresh": 2,
                 "regex": "",
                 "skipUrlSync": false,
@@ -3872,7 +2659,7 @@
                 "allValue": null,
                 "current": {},
                 "datasource": "Prometheus",
-                "definition": "label_values(node_boot_time_seconds{environment=~\"$environment\"}, node_name)",
+                "definition": "label_values(up{environment=~\"$environment|\",node_type=~\"generic|remote_rds|container|remote\"}, node_name)",
                 "hide": 0,
                 "includeAll": true,
                 "label": "Node Name",
@@ -3880,7 +2667,7 @@
                 "multiFormat": "regex values",
                 "name": "host",
                 "options": [],
-                "query": "label_values(node_boot_time_seconds{environment=~\"$environment\"}, node_name)",
+                "query": "label_values(up{environment=~\"$environment|\",node_type=~\"generic|remote_rds|container|remote\"}, node_name)",
                 "refresh": 2,
                 "refresh_on_load": false,
                 "regex": "",
