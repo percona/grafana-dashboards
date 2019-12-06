@@ -4,7 +4,7 @@ We're looking forward to the new contributors.
 
 Our experts must verify all contributions from contributors. 
 
-We'd love it if you could contribute new dashboard or improve existing ones.
+We'd love it if you could contribute a new dashboard or improve existing ones.
 
 We can help you, more information on the [link](https://www.percona.com/community/contributions/pmm)
 
@@ -31,7 +31,7 @@ make
 
 6.    Make changes to the code in your branch.
 
-7.    Make commit. It is essential to calls commit correctly. Use a formula: "[JIRA_ISSUE_ID] What has done."
+7.    Make a commit. It is essential to call commit correctly. Use the following formula: "[JIRA_ISSUE_ID] What has done."
 
     Example
 
@@ -42,7 +42,7 @@ make
 
         git push origin PMM-5053_dbazhenov_tooltip
 
-9.    Make a Pull Request for your branch in the right branch in percona/grafana-dashboards.
+9.    Make a Pull Request from your branch to the right branch in percona/grafana-dashboards.
 
     Example: from dbazhenov:PMM-5053_dbazhenov_tooltip to percona:PMM-2.0
 
