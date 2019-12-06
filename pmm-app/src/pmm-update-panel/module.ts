@@ -81,11 +81,13 @@ export class PanelCtrl extends MetricsPanelCtrl {
     $scope.getCurrentVersion($scope, $http);
     const body = document.querySelector('body') as HTMLElement;
     const escKeyCode = 'Escape';
-    body.addEventListener('click', event => {
+    // @ts-ignore
+        body.addEventListener('click', event => {
       if ($(event.target).hasClass('modal-backdrop') && $scope.canBeReloaded) {
         location.reload(true);
       }
-    });
+        });
+        // @ts-ignore
     body.addEventListener('keydown', event => {
       $scope.keydownCode = event.code;
       event.key === escKeyCode && $scope.canBeReloaded ? location.reload(true) : event.stopPropagation();
