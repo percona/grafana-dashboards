@@ -7,7 +7,7 @@ import AlertManager from './Parts/AlertManager';
 import UploadSSHKey from './Parts/UploadSSHKey';
 import Diagnostics from './Parts/Diagnostics';
 import SettingsPart from './Parts/Settings';
-import SettingsService from './Parts/SettingsService';
+import SettingsService from './Settings.service';
 import { Form as FormFinal } from 'react-final-form';
 
 const { Panel } = Collapse;

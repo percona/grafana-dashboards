@@ -8,7 +8,7 @@ import { InputField } from '../../react-plugins-deps/components/FieldsComponents
 import ButtonElement from '../../react-plugins-deps/components/FieldsComponents/Button/Button';
 import { Form as FormFinal } from 'react-final-form';
 import { useForm } from 'react-final-form-hooks';
-import SettingsService from './SettingsService';
+import SettingsService from '../Settings.service';
 import { showErrorNotification, showSuccessNotification } from '../../react-plugins-deps/components/helpers/notification-manager';
 import { SliderField } from '../../react-plugins-deps/components/FieldsComponents/Slider/Slider';
 import set = Reflect.set;
