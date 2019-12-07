@@ -75,7 +75,7 @@ const SettingsPart = props => {
               data_retention: values.data_retention_count + values.data_retention_units,
               call_home: values.call_home,
               check_for_updates: values.check_for_updates,
-              slider_values: dataRetentionValues[values.metrics_resolutions_slider],
+              metrics_resolutions: dataRetentionValues[values.metrics_resolutions_slider],
             };
             setLoading(true);
             try {

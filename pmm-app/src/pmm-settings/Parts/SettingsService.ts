@@ -1,19 +1,11 @@
+import { apiRequest } from '../../react-plugins-deps/components/helpers/api';
+
 class SettingsService {
-  static async getSettings() {
-    const response = await fetch('/v1/Settings/Get', {
-      method: 'POST',
-    });
-
-    return response.json();
+  static async getSettings(body) {
+    return apiRequest.post<any, any>('/v1/Settings/Get', body);
   }
-
-  static async setSettings(formData) {
-    const response = await fetch('/v1/Settings/Change', {
-      method: 'POST',
-      body: JSON.stringify(formData),
-    });
-
-    return response.json();
+  static async setSettings(body) {
+    return apiRequest.post<any, any>('/v1/Settings/Change', body);
   }
 }
 
