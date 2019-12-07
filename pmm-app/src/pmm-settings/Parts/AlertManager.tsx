@@ -1,4 +1,4 @@
-import { PluginTooltip, VerticalFormWrapper } from '../../react-plugins-deps/components/helpers/Helpers';
+import { VerticalFormWrapper } from '../../react-plugins-deps/components/helpers/Helpers';
 import { InputField } from '../../react-plugins-deps/components/FieldsComponents/Input/Input';
 import { TextAreaField } from '../../react-plugins-deps/components/FieldsComponents/TextArea/TextArea';
 import React, { ReactElement, useEffect, useState } from 'react';
@@ -7,7 +7,6 @@ import { Form as FormFinal } from 'react-final-form';
 import { useForm } from 'react-final-form-hooks';
 import SettingsService from './SettingsService';
 import { showErrorNotification, showSuccessNotification } from '../../react-plugins-deps/components/helpers/notification-manager';
-import set = Reflect.set;
 
 const AlertManager = props => {
   const [loading, setLoading] = useState(false);
@@ -24,7 +23,7 @@ const AlertManager = props => {
             };
             setLoading(true);
             try {
-              await SettingsService.setSettings({settings: settings});
+              await SettingsService.setSettings({ settings: settings });
               setLoading(false);
               showSuccessNotification({ message: 'Alert manager settings updated' });
             } catch (e) {

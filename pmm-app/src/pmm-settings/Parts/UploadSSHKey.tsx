@@ -6,11 +6,6 @@ import { Form as FormFinal } from 'react-final-form';
 import { useForm } from 'react-final-form-hooks';
 import SettingsService from './SettingsService';
 import { showErrorNotification, showSuccessNotification } from '../../react-plugins-deps/components/helpers/notification-manager';
-import { Collapse } from 'antd';
-import SettingsPart from './Settings';
-import AlertManager from './AlertManager';
-import Diagnostics from './Diagnostics';
-import set = Reflect.set;
 
 const UploadSSHKey = props => {
   const [loading, setLoading] = useState(false);

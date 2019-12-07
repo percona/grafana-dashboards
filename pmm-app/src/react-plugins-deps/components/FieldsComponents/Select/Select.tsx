@@ -21,7 +21,7 @@ export const SelectField = ({ name, placeholder, required, form, options, style,
   const { input } = useField(name, form);
   return (
     <span className={'fields__select-field'} style={style || {}}>
-      <Select defaultValue={defaultValue} style={{ width: '100%', height: '40px' }}>
+      <Select {...input} defaultValue={defaultValue} style={{ width: '100%', height: '40px' }}>
         {options &&
           options.map(option => {
             // @ts-ignore

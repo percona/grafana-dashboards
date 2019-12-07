@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Col, Row} from 'antd';
+import { Button, Col, Row } from 'antd';
 
 const Diagnostics = props => {
   return (

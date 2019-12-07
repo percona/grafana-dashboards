@@ -10,15 +10,11 @@ import { Form as FormFinal } from 'react-final-form';
 import { useForm } from 'react-final-form-hooks';
 import SettingsService from './SettingsService';
 import { showErrorNotification, showSuccessNotification } from '../../react-plugins-deps/components/helpers/notification-manager';
-import { TextAreaField } from '../../react-plugins-deps/components/FieldsComponents/TextArea/TextArea';
+import { SliderField } from '../../react-plugins-deps/components/FieldsComponents/Slider/Slider';
+import set = Reflect.set;
 
 const { Panel } = Collapse;
-const dataRetentionOptions = [
-  { value: 'weeks', label: 'Weeks' },
-  { value: 'days', label: 'Days' },
-  { value: 'hours', label: 'Hours' },
-  { value: 'minutes', label: 'Minutes' },
-];
+const dataRetentionOptions = [{ value: 'h', label: 'Hours' }, { value: 'm', label: 'Minutes' }, { value: 's', label: 'Seconds' }];
 
 const marks = {
   0: 'Low',
@@ -48,8 +44,27 @@ const customCollapseStyle = {
   textColor: 'white',
 };
 
+const dataRetentionValues = [
+  {
+    hr: '60s',
+    mr: '180s',
+    lr: '300s',
+  },
+  {
+    hr: '5s',
+    mr: '30s',
+    lr: '300s',
+  },
+  {
+    hr: '5s',
+    mr: '5s',
+    lr: '60s',
+  },
+];
+
 const SettingsPart = props => {
   const [loading, setLoading] = useState(false);
+  const { settings } = props;
   return (
     <FormFinal
       onSubmit={() => {}}
@@ -57,10 +72,10 @@ const SettingsPart = props => {
         const { form, handleSubmit } = useForm({
           onSubmit: async values => {
             const settings = {
-              data_retention_count: values.data_retention_count,
-              data_retention: values.data_retention,
+              data_retention: values.data_retention_count + values.data_retention_units,
               call_home: values.call_home,
               check_for_updates: values.check_for_updates,
+              slider_values: dataRetentionValues[values.metrics_resolutions_slider],
             };
             setLoading(true);
             try {
@@ -75,8 +90,29 @@ const SettingsPart = props => {
           validate: () => {},
         });
         useEffect(() => {
-          form.initialize(props.settings);
-        }, [props.settings]);
+          if (!settings.data_retention && !settings.metrics_resolutions) {
+            return;
+          }
+          const [data_retention_count, data_retention_units] = [settings.data_retention.slice(0, -1), settings.data_retention.slice(-1)];
+
+          let metrics_resolutions_slider;
+          if (settings.metrics_resolutions.hr == '5s' && settings.metrics_resolutions.mr == '5s' && settings.metrics_resolutions.lr == '60s') {
+            metrics_resolutions_slider = 2;
+          } else if (
+            settings.metrics_resolutions.hr == '5s' &&
+            settings.metrics_resolutions.mr == '30s' &&
+            settings.metrics_resolutions.lr == '300s'
+          ) {
+            metrics_resolutions_slider = 1;
+          } else if (
+            settings.metrics_resolutions.hr == '60s' &&
+            settings.metrics_resolutions.mr == '180s' &&
+            settings.metrics_resolutions.lr == '300s'
+          ) {
+            metrics_resolutions_slider = 0;
+          }
+          form.initialize(Object.assign(settings, { data_retention_count, data_retention_units, metrics_resolutions_slider }));
+        }, [settings]);
         // @ts-ignore
         return (
           <form onSubmit={handleSubmit}>
@@ -84,7 +120,7 @@ const SettingsPart = props => {
               <VerticalFormWrapper
                 label={'Metrics resolution'}
                 tooltip={<PluginTooltip linkText={'Read more'} url={'#'} text={'This setting defines how frequently the data will be collected'} />}
-                element={<Slider marks={marks} max={2} step={null} included={false} defaultValue={2} />}
+                element={<SliderField marks={marks} form={form} defaultValue={2} name={'metrics_resolutions_slider'} />}
               />
               <Collapse bordered={false} defaultActiveKey={['1']} onChange={callback} style={customCollapseStyle}>
                 <Panel header="Advanced settings " key="1" style={customPanelStyle}>
@@ -96,7 +132,7 @@ const SettingsPart = props => {
                         <InputField name={'data_retention_count'} form={form} wrapperStyle={{ width: '60%' }} />
                         <SelectField
                           form={form}
-                          name={'data_retention'}
+                          name={'data_retention_units'}
                           options={dataRetentionOptions}
                           defaultValue={'weeks'}
                           style={{ width: '40%' }}

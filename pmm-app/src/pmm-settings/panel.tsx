@@ -32,13 +32,12 @@ const customCollapseStyle = {
 
 const SettingsPanel = () => {
   const [settings, updateSettings] = useState({});
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     (async () => {
-      const result = await SettingsService.getSettings();
-      updateSettings(result.settings);
-      updateSettings({ ssh_key: 'pes_ssh' });
+      const { settings } = await SettingsService.getSettings();
+
+      updateSettings(settings);
     })();
   }, []);
   return (
