@@ -1,14 +1,12 @@
 import { PluginTooltip, VerticalFormWrapper } from '../../react-plugins-deps/components/helpers/Helpers';
 import { SelectField } from '../../react-plugins-deps/components/FieldsComponents/Select/Select';
 import { ToggleField } from '../../react-plugins-deps/components/FieldsComponents/Toggle/Toggle';
-import SettingsService from './SettingsService';
 import React from 'react';
 import { Collapse, Slider } from 'antd';
-import PanelForm from '../../react-plugins-deps/components/helpers/PanelForm';
 import './Settings.scss';
 import { InputField } from '../../react-plugins-deps/components/FieldsComponents/Input/Input';
-import { showErrorNotification, showSuccessNotification } from '../../react-plugins-deps/components/helpers/notification-manager';
 import ButtonElement from '../../react-plugins-deps/components/FieldsComponents/Button/Button';
+
 const { Panel } = Collapse;
 const dataRetentionOptions = [
   { value: 'weeks', label: 'Weeks' },
@@ -85,19 +83,4 @@ const SettingsPart = props => {
   );
 };
 
-export default PanelForm({
-  Element: SettingsPart,
-  onSubmit: async (values, setLoading) => {
-    console.log(values, '-----');
-    setLoading(true);
-    try {
-      await SettingsService.setSettings(values);
-      setLoading(false);
-      showSuccessNotification({ message: 'Settings updated!' });
-    } catch (e) {
-      setLoading(false);
-      showErrorNotification({ message: e.message });
-    }
-  },
-  validate: () => {},
-});
+export default SettingsPart;
