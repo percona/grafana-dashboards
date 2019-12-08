@@ -3,18 +3,10 @@ import { useField } from 'react-final-form-hooks';
 import { Slider } from 'antd';
 import './Slider.scss';
 
-const { Option } = Slider;
 interface SliderFieldInterface {
-  required?: boolean;
   name: string;
-  'data-cy'?: string;
-  label?: string;
-  prefix?: string;
-  placeholder?: string;
   form?: any;
   style?: any;
-  text?: string;
-  options?: any;
   defaultValue?: any;
   marks?: any;
 }
