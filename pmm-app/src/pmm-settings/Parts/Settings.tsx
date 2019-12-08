@@ -62,57 +62,57 @@ const dataRetentionValues = [
   },
 ];
 
+const getMetricsResolutionValues = metricsResolutions => {
+  if (metricsResolutions.hr == '5s' && metricsResolutions.mr == '5s' && metricsResolutions.lr == '60s') {
+    return 2;
+  } else if (metricsResolutions.hr == '5s' && metricsResolutions.mr == '30s' && metricsResolutions.lr == '300s') {
+    return 1;
+  } else if (metricsResolutions.hr == '60s' && metricsResolutions.mr == '180s' && metricsResolutions.lr == '300s') {
+    return 0;
+  } else {
+    return 0;
+  }
+};
 const SettingsPart = props => {
   const [loading, setLoading] = useState(false);
   const { settings } = props;
+  const onSubmit = async values => {
+    const settings = {
+      data_retention: values.data_retention_count + values.data_retention_units,
+      call_home: values.call_home,
+      check_for_updates: values.check_for_updates,
+      metrics_resolutions: dataRetentionValues[values.metrics_resolutions_slider],
+    };
+    setLoading(true);
+    try {
+      await SettingsService.setSettings({ settings: settings });
+      setLoading(false);
+      showSuccessNotification({ message: 'Settings updated' });
+    } catch (e) {
+      setLoading(false);
+      showErrorNotification({ message: e.message });
+    }
+  };
+
   return (
     <FormFinal
       onSubmit={() => {}}
       render={(): ReactElement => {
         const { form, handleSubmit } = useForm({
-          onSubmit: async values => {
-            const settings = {
-              data_retention: values.data_retention_count + values.data_retention_units,
-              call_home: values.call_home,
-              check_for_updates: values.check_for_updates,
-              metrics_resolutions: dataRetentionValues[values.metrics_resolutions_slider],
-            };
-            setLoading(true);
-            try {
-              await SettingsService.setSettings({ settings: settings });
-              setLoading(false);
-              showSuccessNotification({ message: 'Settings updated' });
-            } catch (e) {
-              setLoading(false);
-              showErrorNotification({ message: e.message });
-            }
-          },
+          onSubmit: onSubmit,
           validate: () => {},
         });
+
         useEffect(() => {
           if (!settings.data_retention && !settings.metrics_resolutions) {
             return;
           }
           const [data_retention_count, data_retention_units] = [settings.data_retention.slice(0, -1), settings.data_retention.slice(-1)];
+          let metrics_resolutions_slider = getMetricsResolutionValues(settings.metrics_resolutions);
 
-          let metrics_resolutions_slider;
-          if (settings.metrics_resolutions.hr == '5s' && settings.metrics_resolutions.mr == '5s' && settings.metrics_resolutions.lr == '60s') {
-            metrics_resolutions_slider = 2;
-          } else if (
-            settings.metrics_resolutions.hr == '5s' &&
-            settings.metrics_resolutions.mr == '30s' &&
-            settings.metrics_resolutions.lr == '300s'
-          ) {
-            metrics_resolutions_slider = 1;
-          } else if (
-            settings.metrics_resolutions.hr == '60s' &&
-            settings.metrics_resolutions.mr == '180s' &&
-            settings.metrics_resolutions.lr == '300s'
-          ) {
-            metrics_resolutions_slider = 0;
-          }
           form.initialize(Object.assign(settings, { data_retention_count, data_retention_units, metrics_resolutions_slider }));
         }, [settings]);
+
         // @ts-ignore
         return (
           <form onSubmit={handleSubmit}>
