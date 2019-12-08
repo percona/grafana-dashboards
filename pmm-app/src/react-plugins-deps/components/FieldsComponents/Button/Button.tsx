@@ -6,7 +6,7 @@ import { ButtonHTMLType } from 'antd/es/button/button';
 interface ButtonElementInterface {
   loading?: boolean;
   disabled?: boolean;
-  onClick?: Function;
+  onClick?: (event: any) => void;
   text: string;
   htmlType?: ButtonHTMLType;
 }
