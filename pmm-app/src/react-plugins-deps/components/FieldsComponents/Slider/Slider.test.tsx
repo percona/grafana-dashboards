@@ -1,9 +1,9 @@
 // Just a stub test
-import {SliderField} from './Slider';
+import { SliderField } from './Slider';
 import React from 'react';
 import renderer from 'react-test-renderer';
-import {renderHook} from '@testing-library/react-hooks';
-import {useForm} from 'react-final-form-hooks';
+import { renderHook } from '@testing-library/react-hooks';
+import { useForm } from 'react-final-form-hooks';
 
 describe('Slider field test', () => {
   it('Slider renders correct without props', () => {

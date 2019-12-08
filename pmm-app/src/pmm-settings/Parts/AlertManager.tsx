@@ -8,6 +8,10 @@ import { useForm } from 'react-final-form-hooks';
 import SettingsService from '../Settings.service';
 import { showErrorNotification, showSuccessNotification } from '../../react-plugins-deps/components/helpers/notification-manager';
 
+interface AlertManagerSettingsInterface {
+  alert_manager_ip: string;
+  alert_manager_rules: string;
+}
 const AlertManager = props => {
   const [loading, setLoading] = useState(false);
 
@@ -16,7 +20,7 @@ const AlertManager = props => {
       onSubmit={() => {}}
       render={(): ReactElement => {
         const { form, handleSubmit } = useForm({
-          onSubmit: async values => {
+          onSubmit: async (values: AlertManagerSettingsInterface): Promise<void> => {
             const settings = {
               alert_manager_ip: values.alert_manager_ip,
               alert_manager_rules: values.alert_manager_rules,
@@ -31,7 +35,7 @@ const AlertManager = props => {
               showErrorNotification({ message: e.message });
             }
           },
-          validate: () => {},
+          validate: () => undefined,
         });
         useEffect(() => {
           form.initialize(props.settings);

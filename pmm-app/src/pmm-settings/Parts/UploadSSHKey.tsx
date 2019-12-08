@@ -7,6 +7,10 @@ import { useForm } from 'react-final-form-hooks';
 import SettingsService from '../Settings.service';
 import { showErrorNotification, showSuccessNotification } from '../../react-plugins-deps/components/helpers/notification-manager';
 
+interface UploadSSHKeyInterface {
+  ssh_key: string;
+}
+
 const UploadSSHKey = props => {
   const [loading, setLoading] = useState(false);
   // @ts-ignore
@@ -15,7 +19,7 @@ const UploadSSHKey = props => {
       onSubmit={() => {}}
       render={(): ReactElement => {
         const { form, handleSubmit } = useForm({
-          onSubmit: async values => {
+          onSubmit: async (values: UploadSSHKeyInterface) => {
             const settings = {
               ssh_key: values.ssh_key,
             };
@@ -29,7 +33,7 @@ const UploadSSHKey = props => {
               showErrorNotification({ message: e.message });
             }
           },
-          validate: () => {},
+          validate: () => undefined,
         });
         useEffect(() => {
           form.initialize(props.settings);

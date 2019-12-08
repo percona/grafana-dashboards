@@ -2,7 +2,7 @@ import { PluginTooltip, VerticalFormWrapper } from '../../react-plugins-deps/com
 import { SelectField } from '../../react-plugins-deps/components/FieldsComponents/Select/Select';
 import { ToggleField } from '../../react-plugins-deps/components/FieldsComponents/Toggle/Toggle';
 import React, { ReactElement, useEffect, useState } from 'react';
-import { Collapse, Slider } from 'antd';
+import { Collapse } from 'antd';
 import './Settings.scss';
 import { InputField } from '../../react-plugins-deps/components/FieldsComponents/Input/Input';
 import ButtonElement from '../../react-plugins-deps/components/FieldsComponents/Button/Button';
@@ -11,10 +11,13 @@ import { useForm } from 'react-final-form-hooks';
 import SettingsService from '../Settings.service';
 import { showErrorNotification, showSuccessNotification } from '../../react-plugins-deps/components/helpers/notification-manager';
 import { SliderField } from '../../react-plugins-deps/components/FieldsComponents/Slider/Slider';
-import set = Reflect.set;
 
 const { Panel } = Collapse;
-const dataRetentionOptions = [{ value: 'h', label: 'Hours' }, { value: 'm', label: 'Minutes' }, { value: 's', label: 'Seconds' }];
+const dataRetentionOptions = [
+  { value: 'h', label: 'Hours' },
+  { value: 'm', label: 'Minutes' },
+  { value: 's', label: 'Seconds' },
+];
 
 const marks = {
   0: 'Low',
@@ -63,11 +66,11 @@ const dataRetentionValues = [
 ];
 
 const getMetricsResolutionValues = metricsResolutions => {
-  if (metricsResolutions.hr == '5s' && metricsResolutions.mr == '5s' && metricsResolutions.lr == '60s') {
+  if (metricsResolutions.hr === '5s' && metricsResolutions.mr === '5s' && metricsResolutions.lr === '60s') {
     return 2;
-  } else if (metricsResolutions.hr == '5s' && metricsResolutions.mr == '30s' && metricsResolutions.lr == '300s') {
+  } else if (metricsResolutions.hr === '5s' && metricsResolutions.mr === '30s' && metricsResolutions.lr === '300s') {
     return 1;
-  } else if (metricsResolutions.hr == '60s' && metricsResolutions.mr == '180s' && metricsResolutions.lr == '300s') {
+  } else if (metricsResolutions.hr === '60s' && metricsResolutions.mr === '180s' && metricsResolutions.lr === '300s') {
     return 0;
   } else {
     return 0;
@@ -100,17 +103,19 @@ const SettingsPart = props => {
       render={(): ReactElement => {
         const { form, handleSubmit } = useForm({
           onSubmit: onSubmit,
-          validate: () => {},
+          validate: () => undefined,
         });
 
         useEffect(() => {
           if (!settings.data_retention && !settings.metrics_resolutions) {
             return;
           }
-          const [data_retention_count, data_retention_units] = [settings.data_retention.slice(0, -1), settings.data_retention.slice(-1)];
-          let metrics_resolutions_slider = getMetricsResolutionValues(settings.metrics_resolutions);
+          const [count, units] = [settings.data_retention.slice(0, -1), settings.data_retention.slice(-1)];
+          const sliderValue = getMetricsResolutionValues(settings.metrics_resolutions);
 
-          form.initialize(Object.assign(settings, { data_retention_count, data_retention_units, metrics_resolutions_slider }));
+          form.initialize(
+            Object.assign(settings, { data_retention_count: count, data_retention_units: units, metrics_resolutions_slider: sliderValue })
+          );
         }, [settings]);
 
         // @ts-ignore
