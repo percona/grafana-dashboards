@@ -250,7 +250,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "count(count by (node_name) (up{node_name=~\"$host\"}))",
+                    "expr": "count(count by (node_name) (up{node_name=~\"$host\"})) or vector(0)",
                     "interval": "5m",
                     "refId": "C"
                 }
@@ -1749,7 +1749,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "(rate(node_vmstat_pgpgin{node_name=~\"$host\"}[$interval]) or irate(node_vmstat_pgpgin{node_name=~\"$host\"}[5m]) or max_over_time(rdsosmetrics_diskIO_readKbPS{node_name=~\"$host\"}[$interval]) or max_over_time(rdsosmetrics_diskIO_readKbPS{node_name=~\"$host\"}[5m])) * 1024",
+                    "expr": "(rate(node_vmstat_pgpgin{node_name=~\"$host\"}[$interval]) or irate(node_vmstat_pgpgin{node_name=~\"$host\"}[5m]) or sum by (node_name) (max_over_time(rdsosmetrics_diskIO_readKbPS{node_name=~\"$host\"}[$interval]) or max_over_time(rdsosmetrics_diskIO_readKbPS{node_name=~\"$host\"}[5m]))) * 1024",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1847,7 +1847,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "(rate(node_vmstat_pgpgout{node_name=~\"$host\"}[$interval]) or irate(node_vmstat_pgpgout{node_name=~\"$host\"}[5m]) or\nmax_over_time(rdsosmetrics_diskIO_writeKbPS{node_name=~\"$host\"}[$interval]) or max_over_time(rdsosmetrics_diskIO_writeKbPS{node_name=~\"$host\"}[5m])) * 1024",
+                    "expr": "(rate(node_vmstat_pgpgout{node_name=~\"$host\"}[$interval]) or irate(node_vmstat_pgpgout{node_name=~\"$host\"}[5m]) or\nsum by (node_name) (max_over_time(rdsosmetrics_diskIO_writeKbPS{node_name=~\"$host\"}[$interval]) or max_over_time(rdsosmetrics_diskIO_writeKbPS{node_name=~\"$host\"}[5m]))) * 1024",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
