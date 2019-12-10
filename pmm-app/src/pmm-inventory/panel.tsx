@@ -123,6 +123,8 @@ const nodesColumns = [
         'address',
         'connected',
       ];
+      // const mainColumns = ['node_id', 'node_name', 'address', 'custom_labels'];
+      // const labels = Object.keys(element).filter(label => !mainColumns.includes(label));
       return (
         <div className={'other-details-wrapper'}>
           {labels.map(label => (element[label] ? <span>{`${label}: ${element[label]}`}</span> : null))}
