@@ -20,11 +20,14 @@ const DEFAULT_COLUMNS = ['load', 'num_queries', 'query_time'];
 export const UrlParametersProvider = ({ children }) => {
   const query = new URLSearchParams(window.location.search);
   const [hack, setHack] = useState({});
-  console.log(hack);
   const reload = () => setHack({});
   const addFilter = filter => changeFilter(filter, true);
   const removeFilter = filter => changeFilter(filter, false);
-  const selectQuery = queryId => {};
+  const selectQuery = queryId => {
+    // setState({ filterBy: queryId });
+    updateUrl();
+    // reload();
+  };
 
   const setFilters = query => {
     const filtersListNames = ['host', 'city', 'cluster', 'az'];
@@ -47,7 +50,8 @@ export const UrlParametersProvider = ({ children }) => {
     const columnsQuery = state.columns ? `columns=${JSON.stringify(state.columns)}` : '';
     const filterByQuery = state.filterBy ? `filter_by=${state.filterBy}` : '';
     // TODO: replace crutch with right redirect
-    window.location.href = `${window.location.pathname}?${[filtersQuery, columnsQuery, filterByQuery].filter(Boolean).join('&')}`;
+    console.log(`${window.location.pathname}?${[filtersQuery, columnsQuery, filterByQuery].filter(Boolean).join('&')}`);
+    // window.location.href = `${window.location.pathname}?${[filtersQuery, columnsQuery, filterByQuery].filter(Boolean).join('&')}`;
   };
 
   const changeFilter = (filter, isAdding) => {
