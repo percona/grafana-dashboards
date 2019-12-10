@@ -4,7 +4,7 @@ import '../react-plugins-deps/styles.scss';
 import '../react-plugins-deps/style.less';
 import './panel.scss';
 import InventoryService from './InventoryService';
-import { InventoryDataService } from './DataService/DataService';
+import { InventoryDataService } from './DataService';
 
 const { TabPane } = Tabs;
 
@@ -52,7 +52,14 @@ const servicesColumns = [
     dataIndex: 'age',
     key: 'age',
     render: (text, element) => {
-      return getCustomLabels(element.custom_labels);
+      const mainColumns = ['service_id', 'agentType', 'service_name', 'custom_labels', 'node_id', 'address', 'port'];
+      const labels = Object.keys(element).filter(label => !mainColumns.includes(label));
+      return (
+        <div className={'other-details-wrapper'}>
+          {labels.map(label => (element[label] ? <span>{`${label}: ${element[label]}`}</span> : null))}
+          {element.custom_labels && getCustomLabels(element.custom_labels)}
+        </div>
+      );
     },
   },
 ];
@@ -71,19 +78,20 @@ const agentsColumns = [
     title: 'Other Details',
     dataIndex: 'age',
     key: 'age',
-    render: (text, agentData) => {
-      const labels = ['connected', 'runs_on_node_id', 'metrics_url', 'listen_port', 'pmm_agent_id', 'service_id', 'status', 'username', 'disabled'];
+    render: (text, element) => {
+      const mainColumns = ['agent_id', 'agentType', 'isDeleted', 'service_ids', 'custom_labels'];
+      const labels = Object.keys(element).filter(label => !mainColumns.includes(label));
       return (
         <div className={'other-details-wrapper'}>
-          {labels.map(label => (agentData[label] ? <span>{`${label}: ${agentData[label]}`}</span> : null))}
-          {agentData.username ? <span>{`password: ******`}</span> : null}
+          {labels.map(label => (element[label] ? <span>{`${label}: ${element[label]}`}</span> : null))}
+          {element.username ? <span>{`password: ******`}</span> : null}
           {/* TODO: know more about isString*/}
-          {agentData.service_ids && agentData.service_ids.length ? (
+          {element.service_ids && element.service_ids.length ? (
             <>
-              service_ids: <span>{agentData.service_ids.map(serviceId => serviceId)}</span>
+              service_ids: <span>{element.service_ids.map(serviceId => serviceId)}</span>
             </>
           ) : null}
-          {getCustomLabels(agentData.custom_labels)}
+          {element.custom_labels && getCustomLabels(element.custom_labels)}
         </div>
       );
     },
@@ -110,25 +118,12 @@ const nodesColumns = [
     dataIndex: 'age',
     key: 'age',
     render: (text, element) => {
-      const labels = [
-        'docker_container_id',
-        'docker_container_name',
-        'machine_id',
-        'distro',
-        'distro_version',
-        'node_id',
-        'node_name',
-        'instance',
-        'region',
-        'address',
-        'connected',
-      ];
-      // const mainColumns = ['node_id', 'node_name', 'address', 'custom_labels'];
-      // const labels = Object.keys(element).filter(label => !mainColumns.includes(label));
+      const mainColumns = ['node_id', 'node_name', 'address', 'custom_labels', 'agentType', 'isDeleted'];
+      const labels = Object.keys(element).filter(label => !mainColumns.includes(label));
       return (
         <div className={'other-details-wrapper'}>
           {labels.map(label => (element[label] ? <span>{`${label}: ${element[label]}`}</span> : null))}
-          {getCustomLabels(element.custom_labels)}
+          {element.custom_labels && getCustomLabels(element.custom_labels)}
         </div>
       );
     },
