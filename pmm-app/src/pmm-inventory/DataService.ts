@@ -26,63 +26,40 @@ export class CommonModel {
   }
 }
 
+const inventoryTypes = {
+  external_exporter: 'External exporter',
+  mongodb_exporter: 'MongoDB exporter',
+  mysqld_exporter: 'MySQL exporter',
+  postgres_exporter: 'Postgres exporter',
+  proxysql_exporter: 'ProxySQL exporter',
+  node_exporter: 'Node exporter',
+  pmm_agent: 'PMM Agent',
+  qan_mongodb_profiler_agent: 'Qan MongoDB Profiler Agent',
+  qan_mysql_perfschema_agent: 'Qan MySQL Perfschema Agent',
+  qan_mysql_slowlog_agent: 'Qan MySQL Slowlog Agent',
+  qan_postgresql_pgstatements_agent: 'QAN PostgreSQL PgStatements Agent',
+  rds_exporter: 'RDS exporter',
+  container: 'Container',
+  generic: 'Generic',
+  remote: 'Remote',
+  remote_rds: 'Remote Amazon RDS',
+  amazon_rds_mysql: 'Amazon RDS MySQL',
+  mongodb: 'MongoDB',
+  mysql: 'MySQL',
+  postgresql: 'PostgreSQL',
+  proxysql: 'ProxySQL',
+};
 export class InventoryDataService {
   constructor() {}
 
   static generateStructure(item) {
     const addAgentType = Object.keys(item).map(agentType => new Object({ agentType: agentType, params: item[agentType] }));
     const createParams = addAgentType.map(agent =>
-      agent['params'].map(arrItem => new CommonModel(arrItem, InventoryDataService.getType(agent['agentType'])))
+      agent['params'].map(arrItem => {
+        const type = inventoryTypes[agent['agentType']] || '';
+        new CommonModel(arrItem, type);
+      })
     );
     return [].concat(...createParams);
-  }
-
-  static getType(type) {
-    switch (type) {
-      case 'external_exporter':
-        return 'External exporter';
-      case 'mongodb_exporter':
-        return 'MongoDB exporter';
-      case 'mysqld_exporter':
-        return 'MySQL exporter';
-      case 'postgres_exporter':
-        return 'Postgres exporter';
-      case 'proxysql_exporter':
-        return 'ProxySQL exporter';
-      case 'node_exporter':
-        return 'Node exporter';
-      case 'pmm_agent':
-        return 'PMM Agent';
-      case 'qan_mongodb_profiler_agent':
-        return 'Qan MongoDB Profiler Agent';
-      case 'qan_mysql_perfschema_agent':
-        return 'Qan MySQL Perfschema Agent';
-      case 'qan_mysql_slowlog_agent':
-        return 'Qan MySQL Slowlog Agent';
-      case 'qan_postgresql_pgstatements_agent':
-        return 'QAN PostgreSQL PgStatements Agent';
-      case 'rds_exporter':
-        return 'RDS exporter';
-      case 'container':
-        return 'Container';
-      case 'generic':
-        return 'Generic';
-      case 'remote':
-        return 'Remote';
-      case 'remote_rds':
-        return 'Remote Amazon RDS';
-      case 'amazon_rds_mysql':
-        return 'Amazon RDS MySQL';
-      case 'mongodb':
-        return 'MongoDB';
-      case 'mysql':
-        return 'MySQL';
-      case 'postgresql':
-        return 'PostgreSQL';
-      case 'proxysql':
-        return 'ProxySQL';
-      default:
-        return '';
-    }
   }
 }

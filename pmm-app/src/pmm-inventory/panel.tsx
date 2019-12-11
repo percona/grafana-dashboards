@@ -8,13 +8,7 @@ import { InventoryDataService } from './DataService';
 
 const { TabPane } = Tabs;
 
-const getCustomLabels = customLabels => {
-  return customLabels.map(label => (
-    <span>
-      `${label.key}: ${label.value}` }
-    </span>
-  ));
-};
+const getCustomLabels = customLabels => customLabels.map(label => <span>{`${label.key}: ${label.value}`}</span>);
 
 const servicesColumns = [
   {
