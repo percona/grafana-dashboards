@@ -13,11 +13,7 @@ import { showErrorNotification, showSuccessNotification } from '../../react-plug
 import { SliderField } from '../../react-plugins-deps/components/FieldsComponents/Slider/Slider';
 
 const { Panel } = Collapse;
-const dataRetentionOptions = [
-  { value: 'h', label: 'Hours' },
-  { value: 'm', label: 'Minutes' },
-  { value: 's', label: 'Seconds' },
-];
+const dataRetentionOptions = [{ value: 'h', label: 'Hours' }, { value: 'm', label: 'Minutes' }, { value: 's', label: 'Seconds' }];
 
 const marks = {
   0: 'Low',
@@ -30,7 +26,7 @@ function callback(key) {
 }
 
 const customPanelStyle = {
-  background: 'rgb(51, 51, 51)',
+  background: '#1f1d1d',
   marginBottom: 10,
   border: 1,
   borderColor: 'white',
@@ -82,8 +78,8 @@ const SettingsPart = props => {
   const onSubmit = async values => {
     const settings = {
       data_retention: values.data_retention_count + values.data_retention_units,
-      call_home: values.call_home,
-      check_for_updates: values.check_for_updates,
+      telemetry_enabled: values.telemetry_enabled,
+      updates_disabled: values.updates_disabled,
       metrics_resolutions: dataRetentionValues[values.metrics_resolutions_slider],
     };
     setLoading(true);
@@ -154,14 +150,14 @@ const SettingsPart = props => {
                         text={'Option to send usage data back to Percona to let us make product better'}
                       />
                     }
-                    element={<ToggleField form={form} name={'call_home'} />}
+                    element={<ToggleField form={form} name={'telemetry_enabled'} />}
                   />
                   <VerticalFormWrapper
                     label={'Check for updates'}
                     tooltip={
                       <PluginTooltip linkText={'Read more'} url={'#'} text={'Option to check new versions and ability to update PMM from UI'} />
                     }
-                    element={<ToggleField form={form} name={'check_for_updates'} />}
+                    element={<ToggleField form={form} name={'updates_disabled'} />}
                   />
                 </Panel>
               </Collapse>

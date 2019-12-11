@@ -13,7 +13,7 @@ import { Form as FormFinal } from 'react-final-form';
 const { Panel } = Collapse;
 
 const customPanelStyle = {
-  background: 'rgb(51, 51, 51)',
+  background: '#1f1d1d',
   marginBottom: 10,
   border: 1,
   borderColor: 'white',
@@ -55,9 +55,9 @@ const SettingsPanel = () => {
                 <Panel header="SSH Key Details" key="2" style={customPanelStyle}>
                   <UploadSSHKey settings={settings} />
                 </Panel>
-                <Panel header="AlertManager integration" key="3" style={customPanelStyle}>
-                  <AlertManager settings={settings} />
-                </Panel>
+                {/*<Panel header="AlertManager integration" key="3" style={customPanelStyle}>*/}
+                {/*  <AlertManager settings={settings} />*/}
+                {/*</Panel>*/}
                 <Panel header="Diagnostics" key="4" style={customPanelStyle}>
                   <Diagnostics />
                 </Panel>
