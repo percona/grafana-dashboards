@@ -146,7 +146,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
       if (urlParams[param]) {
         existedParams[param] = urlParams[param];
       } else if (existedParams[param] && !urlParams[param] && param.startsWith('var-')) {
-        existedParams[param] = ['All']
+        existedParams[param] = ['All'];
       }
     });
     if (type && urlParams['queryID']) {
