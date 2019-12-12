@@ -1,7 +1,21 @@
 import { Col, Icon, Row, Tooltip } from 'antd';
-import React from 'react';
+import React, { ReactComponentElement } from 'react';
 
-export const VerticalFormWrapper = props => {
+enum AlignLabel {
+  Top = 'top',
+  Middle = 'middle',
+  Botton = 'bottom',
+}
+
+interface VerticalFormWrapperInterface {
+  alignLabel?: AlignLabel;
+  label: string;
+  tooltip: string;
+  // Add correct type for element
+  element: ReactComponentElement<any, any>;
+}
+
+export const VerticalFormWrapper = (props: VerticalFormWrapperInterface) => {
   let alignLabel;
   switch (props.alignLabel) {
     case 'top':
@@ -23,11 +37,17 @@ export const VerticalFormWrapper = props => {
         <span>{props.tooltip || ''}</span>
       </Col>
       <Col span={8}>{props.element}</Col>
-      {/*<Col span={1}>{props.tooltip || ''}</Col>*/}
     </Row>
   );
 };
-export const PluginTooltip = ({ url, linkText, text }) => {
+
+interface PluginTooltipInterface {
+  url: string;
+  linkText: string;
+  text: string;
+}
+
+export const PluginTooltip = ({ url, linkText, text }: PluginTooltipInterface) => {
   return (
     <Tooltip
       placement="topLeft"

@@ -11,9 +11,9 @@ class Validators {
       !value
         .split(/[\n\s]/)
         .filter(Boolean)
-        .every(element => /.*:.*/.test(element))
+        .every(element => /^[a-z0-9]+:[a-z0-9]+$/.test(element))
     ) {
-      return 'values have to be in key:value format, and separated with new line or space';
+      return 'Values have to be in key:value format, and separated with new line or space';
     }
     return '';
   }

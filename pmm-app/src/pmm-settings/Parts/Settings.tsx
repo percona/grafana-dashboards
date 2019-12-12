@@ -1,16 +1,16 @@
-import { PluginTooltip, VerticalFormWrapper } from '../../react-plugins-deps/components/helpers/Helpers';
-import { SelectField } from '../../react-plugins-deps/components/FieldsComponents/Select/Select';
-import { ToggleField } from '../../react-plugins-deps/components/FieldsComponents/Toggle/Toggle';
 import React, { ReactElement, useEffect, useState } from 'react';
 import { Collapse } from 'antd';
-import './Settings.scss';
-import { InputField } from '../../react-plugins-deps/components/FieldsComponents/Input/Input';
-import ButtonElement from '../../react-plugins-deps/components/FieldsComponents/Button/Button';
 import { Form as FormFinal } from 'react-final-form';
 import { useForm } from 'react-final-form-hooks';
+import { PluginTooltip, VerticalFormWrapper } from '../../react-plugins-deps/components/helpers/Helpers';
 import SettingsService from '../Settings.service';
 import { showErrorNotification, showSuccessNotification } from '../../react-plugins-deps/components/helpers/notification-manager';
 import { SliderField } from '../../react-plugins-deps/components/FieldsComponents/Slider/Slider';
+import { SelectField } from '../../react-plugins-deps/components/FieldsComponents/Select/Select';
+import { ToggleField } from '../../react-plugins-deps/components/FieldsComponents/Toggle/Toggle';
+import { InputField } from '../../react-plugins-deps/components/FieldsComponents/Input/Input';
+import ButtonElement from '../../react-plugins-deps/components/FieldsComponents/Button/Button';
+import './Settings.scss';
 
 const { Panel } = Collapse;
 const dataRetentionOptions = [{ value: 'h', label: 'Hours' }, { value: 'm', label: 'Minutes' }, { value: 's', label: 'Seconds' }];
