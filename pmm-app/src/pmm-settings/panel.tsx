@@ -1,8 +1,5 @@
 import React, { ReactElement, useEffect, useState } from 'react';
 import { Collapse } from 'antd';
-import '../react-plugins-deps/styles.scss';
-import '../react-plugins-deps/style.less';
-import './panel.scss';
 // import AlertManager from './Parts/AlertManager';
 import UploadSSHKey from './Parts/UploadSSHKey';
 import Diagnostics from './Parts/Diagnostics';

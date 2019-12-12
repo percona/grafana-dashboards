@@ -16,7 +16,7 @@ describe('VerticalFormWrapper component test', () => {
   });
 });
 
-describe('PluginTooltip component test', () => {
+describe('PlsuginTooltip component test', () => {
   it('Renders correct with right props', () => {
     const component = renderer.create(<PluginTooltip url={'/test-url'} linkText={'Some text'} text={'test tooltip text'} />);
     const tree = component.toJSON();
