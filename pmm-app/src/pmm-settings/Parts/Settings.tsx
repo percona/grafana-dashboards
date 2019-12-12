@@ -43,7 +43,7 @@ const customCollapseStyle = {
   textColor: 'white',
 };
 
-const dataRetentionValues = [
+const dataRetentionValues: MetricsResolutionInterface[] = [
   {
     hr: '60s',
     mr: '180s',
@@ -72,19 +72,36 @@ const getMetricsResolutionValues = metricsResolutions => {
     return 0;
   }
 };
+interface MetricsResolutionInterface {
+  lr: string;
+  mr: string;
+  hr: string;
+}
+interface SettingsInterface {
+  data_retention: string;
+  metrics_resolutions: MetricsResolutionInterface;
+  disable_telemetry?: boolean;
+  enable_telemetry?: boolean;
+}
 const SettingsPart = props => {
   const [loading, setLoading] = useState(false);
   const { settings } = props;
   const onSubmit = async values => {
-    const settings = {
+    const updatedSettings: SettingsInterface = {
       data_retention: values.data_retention_count + values.data_retention_units,
-      telemetry_enabled: values.telemetry_enabled,
-      updates_disabled: values.updates_disabled,
       metrics_resolutions: dataRetentionValues[values.metrics_resolutions_slider],
     };
+
+    if (values.telemetry_enabled) {
+      updatedSettings.disable_telemetry = false;
+      updatedSettings.enable_telemetry = true;
+    } else {
+      updatedSettings.disable_telemetry = true;
+      updatedSettings.enable_telemetry = false;
+    }
     setLoading(true);
     try {
-      await SettingsService.setSettings({ settings: settings });
+      await SettingsService.setSettings(updatedSettings);
       setLoading(false);
       showSuccessNotification({ message: 'Settings updated' });
     } catch (e) {
@@ -157,7 +174,7 @@ const SettingsPart = props => {
                     tooltip={
                       <PluginTooltip linkText={'Read more'} url={'#'} text={'Option to check new versions and ability to update PMM from UI'} />
                     }
-                    element={<ToggleField form={form} name={'updates_disabled'} />}
+                    element={<ToggleField form={form} name={'updates_disabled'} disabled={true} />}
                   />
                 </Panel>
               </Collapse>

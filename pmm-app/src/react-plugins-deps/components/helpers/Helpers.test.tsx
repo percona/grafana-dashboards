@@ -3,19 +3,13 @@ import { PluginTooltip, VerticalFormWrapper } from './Helpers';
 import React from 'react';
 import renderer from 'react-test-renderer';
 
-enum AlignLabel {
-  Top = 'top',
-  Middle = 'middle',
-  Botton = 'bottom',
-}
-
 describe('VerticalFormWrapper component test', () => {
   it('Renders correct with right props', () => {
     const MockElement = () => {
       return null;
     };
     const component = renderer.create(
-      <VerticalFormWrapper alignLabel={'top' as AlignLabel} label={'test label'} tooltip={'test tooltip'} element={<MockElement />} />
+      <VerticalFormWrapper alignLabel={'top'} label={'test label'} tooltip={'test tooltip'} element={<MockElement />} />
     );
     const tree = component.toJSON();
     expect(tree).toMatchSnapshot();

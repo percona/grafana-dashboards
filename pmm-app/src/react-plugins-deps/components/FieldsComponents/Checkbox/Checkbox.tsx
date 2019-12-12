@@ -6,7 +6,7 @@ interface CheckboxFieldInterface {
   required?: boolean;
   name: string;
   'data-cy'?: string;
-  form?: any;
+  form: any;
   label?: string;
   checked?: boolean;
 }

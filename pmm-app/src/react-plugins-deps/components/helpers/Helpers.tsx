@@ -1,16 +1,10 @@
 import { Col, Icon, Row, Tooltip } from 'antd';
 import React, { ReactComponentElement } from 'react';
 
-enum AlignLabel {
-  Top = 'top',
-  Middle = 'middle',
-  Botton = 'bottom',
-}
-
 interface VerticalFormWrapperInterface {
-  alignLabel?: AlignLabel;
+  alignLabel?: string;
   label: string;
-  tooltip: string;
+  tooltip: string | JSX.Element;
   // Add correct type for element
   element: ReactComponentElement<any, any>;
 }
@@ -53,7 +47,10 @@ export const PluginTooltip = ({ url, linkText, text }: PluginTooltipInterface) =
       placement="topLeft"
       title={
         <>
-          {text} <a href={url || ''}>{linkText || 'Read more'}</a>
+          {text}{' '}
+          <a style={{ color: 'white', textDecoration: 'underline' }} href={url || ''}>
+            {linkText || 'Read more'}
+          </a>
         </>
       }
       style={{ background: 'deepskyblue' }}
