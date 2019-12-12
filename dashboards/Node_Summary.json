@@ -36,7 +36,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1575647410696,
+    "iteration": 1576153355197,
     "links": [
         {
             "icon": "doc",
@@ -485,7 +485,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "sum(avg(node_filesystem_size_bytes{node_name=~\"$host\",fstype=~\"(ext.|xfs|vfat)\"}) without (mountpoint)) without (device,fstype)",
+                    "expr": "sum(avg(node_filesystem_size_bytes{node_name=~\"$host\",fstype=~\"(ext.|xfs|vfat|)\"}) without (mountpoint)) without (device,fstype)",
                     "format": "time_series",
                     "interval": "5m",
                     "intervalFactor": 1,
@@ -743,7 +743,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "node_memory_MemTotal_bytes{node_name=~\"$host\"} or (rdsosmetrics_memory_total{node_name=~\"$host\"}*1024)",
+                    "expr": "node_memory_MemTotal_bytes{node_name=~\"$host\"}",
                     "format": "time_series",
                     "interval": "5m",
                     "intervalFactor": 1,
@@ -829,7 +829,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "((node_memory_MemAvailable_bytes{node_name=~\"$host\"} or (node_memory_MemFree_bytes{node_name=~\"$host\"} + node_memory_Buffers_bytes{node_name=~\"$host\"} + node_memory_Cached_bytes{node_name=~\"$host\"})) / node_memory_MemTotal_bytes{node_name=~\"$host\"} or\n(rdsosmetrics_memory_free{node_name=~\"$host\"} + rdsosmetrics_memory_buffers{node_name=~\"$host\"} + rdsosmetrics_memory_cached{node_name=~\"$host\"})/ rdsosmetrics_memory_total{node_name=~\"$host\"}) * 100",
+                    "expr": "((node_memory_MemAvailable_bytes{node_name=~\"$host\"} or (node_memory_MemFree_bytes{node_name=~\"$host\"} + node_memory_Buffers_bytes{node_name=~\"$host\"} + node_memory_Cached_bytes{node_name=~\"$host\"})) / node_memory_MemTotal_bytes{node_name=~\"$host\"}) * 100",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -916,7 +916,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "(node_memory_MemTotal_bytes{node_name=~\"$host\"} + node_memory_SwapTotal_bytes{node_name=~\"$host\"}) or\n(rdsosmetrics_memory_total{node_name=~\"$host\"} + rdsosmetrics_swap_total{node_name=~\"$host\"}) * 1024",
+                    "expr": "(node_memory_MemTotal_bytes{node_name=~\"$host\"} + node_memory_SwapTotal_bytes{node_name=~\"$host\"})",
                     "format": "time_series",
                     "interval": "5m",
                     "intervalFactor": 1,
@@ -1212,6 +1212,7 @@
                 "y": 14
             },
             "height": "",
+            "hiddenSeries": false,
             "id": 2,
             "legend": {
                 "alignAsTable": true,
@@ -1237,7 +1238,7 @@
                     {
                         "targetBlank": true,
                         "title": "CPU Utilization Details - ${__series.labels.node_name}",
-                        "url": "/graph/d/node-cpu/cpu-utilization-details?var-host=${__series.labels.node_name}&$__url_time_range"
+                        "url": "/graph/d/node-cpu/cpu-utilization-details?var-host=${__field.labels.node_name}&$__url_time_range"
                     }
                 ]
             },
@@ -1350,6 +1351,7 @@
                 "x": 12,
                 "y": 14
             },
+            "hiddenSeries": false,
             "id": 33,
             "legend": {
                 "alignAsTable": true,
@@ -1374,7 +1376,7 @@
                     {
                         "targetBlank": true,
                         "title": "CPU Utilization Details - ${__series.labels.node_name}",
-                        "url": "/graph/d/node-cpu/cpu-utilization-details?var-host=${__series.labels.node_name}&$__url_time_range"
+                        "url": "/graph/d/node-cpu/cpu-utilization-details?var-host=${__field.labels.node_name}&$__url_time_range"
                     }
                 ]
             },
@@ -1428,6 +1430,7 @@
                 },
                 {
                     "expr": "aws_rds_cpu_credit_usage_average{node_name=~\"$host\"}",
+                    "hide": false,
                     "interval": "$interval",
                     "legendFormat": "CPU Credits Usage",
                     "refId": "C"
@@ -1494,6 +1497,7 @@
                 "x": 0,
                 "y": 22
             },
+            "hiddenSeries": false,
             "id": 27,
             "legend": {
                 "alignAsTable": true,
@@ -1518,7 +1522,7 @@
                     {
                         "targetBlank": true,
                         "title": "CPU Utilization Details - ${__series.labels.node_name}",
-                        "url": "/graph/d/node-cpu/cpu-utilization-details?var-host=${__series.labels.node_name}&$__url_time_range"
+                        "url": "/graph/d/node-cpu/cpu-utilization-details?var-host=${__field.labels.node_name}&$__url_time_range"
                     }
                 ]
             },
@@ -1635,6 +1639,7 @@
                 "x": 12,
                 "y": 22
             },
+            "hiddenSeries": false,
             "id": 43,
             "legend": {
                 "alignAsTable": true,
@@ -1780,6 +1785,7 @@
                 "y": 31
             },
             "height": "",
+            "hiddenSeries": false,
             "id": 29,
             "legend": {
                 "alignAsTable": true,
@@ -1804,7 +1810,7 @@
                     {
                         "targetBlank": true,
                         "title": "Memory Details - ${__series.labels.node_name}",
-                        "url": "/graph/d/node-memory/memory-details?var-host=${__series.labels.node_name}&$__url_time_range"
+                        "url": "/graph/d/node-memory/memory-details?var-host=${__field.labels.node_name}&$__url_time_range"
                     }
                 ]
             },
@@ -1827,7 +1833,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "max_over_time(node_memory_MemTotal_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_MemTotal_bytes{node_name=~\"$host\"}[5m]) or\n(max_over_time(rdsosmetrics_memory_total{node_name=~\"$host\"}[$interval]) or max_over_time(rdsosmetrics_memory_total{node_name=~\"$host\"}[5m]))*1024",
+                    "expr": "max_over_time(node_memory_MemTotal_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_MemTotal_bytes{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1838,7 +1844,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "max_over_time(node_memory_MemFree_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_MemFree_bytes{node_name=~\"$host\"}[5m]) or\n(max_over_time(rdsosmetrics_memory_free{node_name=~\"$host\"}[$interval]) or max_over_time(rdsosmetrics_memory_free{node_name=~\"$host\"}[5m])) *1024",
+                    "expr": "max_over_time(node_memory_MemFree_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_MemFree_bytes{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1852,7 +1858,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "max_over_time(node_memory_Buffers_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_Buffers_bytes{node_name=~\"$host\"}[5m]) or\n(max_over_time(rdsosmetrics_memory_buffers{node_name=~\"$host\"}[$interval]) or max_over_time(rdsosmetrics_memory_buffers{node_name=~\"$host\"}[5m])) * 1024",
+                    "expr": "max_over_time(node_memory_Buffers_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_Buffers_bytes{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1866,7 +1872,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "((max_over_time(node_memory_MemTotal_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_MemTotal_bytes{node_name=~\"$host\"}[5m])) - ((max_over_time(node_memory_MemFree_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_MemFree_bytes{node_name=~\"$host\"}[5m]))+ \n(max_over_time(node_memory_Buffers_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_Buffers_bytes{node_name=~\"$host\"}[5m])) + \n(max_over_time(node_memory_Cached_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_Cached_bytes{node_name=~\"$host\"}[5m])))) or\n((max_over_time(rdsosmetrics_memory_total{node_name=~\"$host\"}[$interval]) or max_over_time(rdsosmetrics_memory_total{node_name=~\"$host\"}[5m])) - ((max_over_time(rdsosmetrics_memory_free{node_name=~\"$host\"}[$interval]) or max_over_time(rdsosmetrics_memory_free{node_name=~\"$host\"}[5m]))+ \n(max_over_time(rdsosmetrics_memory_buffers{node_name=~\"$host\"}[$interval]) or max_over_time(rdsosmetrics_memory_buffers{node_name=~\"$host\"}[5m])) + \n(max_over_time(rdsosmetrics_memory_cached{node_name=~\"$host\"}[$interval]) or max_over_time(rdsosmetrics_memory_cached{node_name=~\"$host\"}[5m])))) * 1024",
+                    "expr": "((max_over_time(node_memory_MemTotal_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_MemTotal_bytes{node_name=~\"$host\"}[5m])) - ((max_over_time(node_memory_MemFree_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_MemFree_bytes{node_name=~\"$host\"}[5m]))+ \n(max_over_time(node_memory_Buffers_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_Buffers_bytes{node_name=~\"$host\"}[5m])) + \n(max_over_time(node_memory_Cached_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_Cached_bytes{node_name=~\"$host\"}[5m]))))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -1878,7 +1884,7 @@
                     "target": ""
                 },
                 {
-                    "expr": "max(max_over_time(node_memory_Cached_bytes{node_name=~\"$host\",job=~\"rds-enhanced|rds-basic|node.*\"}[$interval]) or max_over_time(node_memory_Cached_bytes{node_name=~\"$host\",job=~\"rds-enhanced|rds-basic|node.*\"}[5m])) without (job) or\n(max_over_time(rdsosmetrics_memory_cached{node_name=~\"$host\"}[$interval]) or max_over_time(rdsosmetrics_memory_cached{node_name=~\"$host\"}[5m])) * 1024",
+                    "expr": "max(max_over_time(node_memory_Cached_bytes{node_name=~\"$host\",job=~\"rds.*|node.*\"}[$interval]) or max_over_time(node_memory_Cached_bytes{node_name=~\"$host\",job=~\"rds.*|node.*\"}[5m])) without (job)",
                     "interval": "$interval",
                     "legendFormat": "Cache",
                     "refId": "F"
@@ -1949,6 +1955,7 @@
                 "y": 31
             },
             "height": "",
+            "hiddenSeries": false,
             "id": 6,
             "legend": {
                 "alignAsTable": true,
@@ -1979,7 +1986,7 @@
                     {
                         "targetBlank": true,
                         "title": "Memory Details - ${__series.labels.node_name}",
-                        "url": "/graph/d/node-memory/memory-details?var-host=${__series.labels.node_name}&$__url_time_range"
+                        "url": "/graph/d/node-memory/memory-details?var-host=${__field.labels.node_name}&$__url_time_range"
                     }
                 ]
             },
@@ -2003,7 +2010,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "((max_over_time(node_memory_MemTotal_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_MemTotal_bytes{node_name=~\"$host\"}[5m])) + \n(max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$host\"}[5m]))) or\n((max_over_time(rdsosmetrics_memory_total{node_name=~\"$host\"}[$interval]) or max_over_time(rdsosmetrics_memory_total{node_name=~\"$host\"}[5m])) + \n(max_over_time(rdsosmetrics_swap_total{node_name=~\"$host\"}[$interval]) or max_over_time(rdsosmetrics_swap_total{node_name=~\"$host\"}[5m]))) * 1024",
+                    "expr": "((max_over_time(node_memory_MemTotal_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_MemTotal_bytes{node_name=~\"$host\"}[5m])) + \n(max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$host\"}[5m])))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -2018,7 +2025,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "(((max_over_time(node_memory_MemAvailable_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_MemAvailable_bytes{node_name=~\"$host\"}[5m])) or \n((max_over_time(node_memory_MemFree_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_MemFree_bytes{node_name=~\"$host\"}[5m]))+ \n(max_over_time(node_memory_Buffers_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_Buffers_bytes{node_name=~\"$host\"}[5m]))+ \n(max_over_time(node_memory_Cached_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_Cached_bytes{node_name=~\"$host\"}[5m])))) + \n(max_over_time(node_memory_SwapFree_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_SwapFree_bytes{node_name=~\"$host\"}[5m]))) or\n(((max_over_time(rdsosmetrics_memory_free{node_name=~\"$host\"}[$interval]) or max_over_time(rdsosmetrics_memory_free{node_name=~\"$host\"}[5m]))+ \n(max_over_time(rdsosmetrics_memory_buffers{node_name=~\"$host\"}[$interval]) or max_over_time(rdsosmetrics_memory_buffers{node_name=~\"$host\"}[5m]))+ \n(max_over_time(rdsosmetrics_memory_cached{node_name=~\"$host\"}[$interval]) or max_over_time(rdsosmetrics_memory_cached{node_name=~\"$host\"}[5m]))) + \n(max_over_time(rdsosmetrics_swap_free{node_name=~\"$host\"}[$interval]) or max_over_time(rdsosmetrics_swap_free{node_name=~\"$host\"}[5m]))) * 1024",
+                    "expr": "(((max_over_time(node_memory_MemAvailable_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_MemAvailable_bytes{node_name=~\"$host\"}[5m])) or \n((max_over_time(node_memory_MemFree_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_MemFree_bytes{node_name=~\"$host\"}[5m]))+ \n(max_over_time(node_memory_Buffers_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_Buffers_bytes{node_name=~\"$host\"}[5m]))+ \n(max_over_time(node_memory_Cached_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_Cached_bytes{node_name=~\"$host\"}[5m])))) + \n(max_over_time(node_memory_SwapFree_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_SwapFree_bytes{node_name=~\"$host\"}[5m])))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -2030,7 +2037,7 @@
                     "target": ""
                 },
                 {
-                    "expr": "((max_over_time(node_memory_MemTotal_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_MemTotal_bytes{node_name=~\"$host\"}[5m])) + \n(max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$host\"}[5m])) - \n((max_over_time(node_memory_MemAvailable_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_MemAvailable_bytes{node_name=~\"$host\"}[5m])) or \n((max_over_time(node_memory_MemFree_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_MemFree_bytes{node_name=~\"$host\"}[5m]))+ \n(max_over_time(node_memory_Buffers_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_Buffers_bytes{node_name=~\"$host\"}[5m]))+ \n(max_over_time(node_memory_Cached_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_Cached_bytes{node_name=~\"$host\"}[5m])))) + \n(max_over_time(node_memory_SwapFree_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_SwapFree_bytes{node_name=~\"$host\"}[5m]))) or\n(((max_over_time(rdsosmetrics_memory_total{node_name=~\"$host\"}[$interval]) or max_over_time(rdsosmetrics_memory_total{node_name=~\"$host\"}[5m])) + \n(max_over_time(rdsosmetrics_swap_total{node_name=~\"$host\"}[$interval]) or max_over_time(rdsosmetrics_swap_total{node_name=~\"$host\"}[5m]))) - \n(((max_over_time(rdsosmetrics_memory_free{node_name=~\"$host\"}[$interval]) or max_over_time(rdsosmetrics_memory_free{node_name=~\"$host\"}[5m]))+ \n(max_over_time(rdsosmetrics_memory_buffers{node_name=~\"$host\"}[$interval]) or max_over_time(rdsosmetrics_memory_buffers{node_name=~\"$host\"}[5m]))+ \n(max_over_time(rdsosmetrics_memory_cached{node_name=~\"$host\"}[$interval]) or max_over_time(rdsosmetrics_memory_cached{node_name=~\"$host\"}[5m])))) + \n(max_over_time(rdsosmetrics_swap_free{node_name=~\"$host\"}[$interval]) or max_over_time(rdsosmetrics_swap_free{node_name=~\"$host\"}[5m]))) * 1024",
+                    "expr": "(max_over_time(node_memory_MemTotal_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_MemTotal_bytes{node_name=~\"$host\"}[5m])) + \n(max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$host\"}[5m])) - \n((max_over_time(node_memory_MemAvailable_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_MemAvailable_bytes{node_name=~\"$host\"}[5m])) or \n((max_over_time(node_memory_MemFree_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_MemFree_bytes{node_name=~\"$host\"}[5m]))+ \n(max_over_time(node_memory_Buffers_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_Buffers_bytes{node_name=~\"$host\"}[5m]))+ \n(max_over_time(node_memory_Cached_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_Cached_bytes{node_name=~\"$host\"}[5m]))) + \n(max_over_time(node_memory_SwapFree_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_SwapFree_bytes{node_name=~\"$host\"}[5m])))",
                     "interval": "$interval",
                     "legendFormat": "Used",
                     "refId": "D"
@@ -2100,6 +2107,7 @@
                 "x": 0,
                 "y": 39
             },
+            "hiddenSeries": false,
             "id": 23,
             "legend": {
                 "alignAsTable": true,
@@ -2124,7 +2132,7 @@
                     {
                         "targetBlank": true,
                         "title": "Memory Details - ${__series.labels.node_name}",
-                        "url": "/graph/d/node-memory/memory-details?var-host=${__series.labels.node_name}&$__url_time_range"
+                        "url": "/graph/d/node-memory/memory-details?var-host=${__field.labels.node_name}&$__url_time_range"
                     }
                 ]
             },
@@ -2148,7 +2156,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "(max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$host\"}[5m])) -\n(max_over_time(node_memory_SwapFree_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_SwapFree_bytes{node_name=~\"$host\"}[5m])) or\n((max_over_time(rdsosmetrics_swap_total{node_name=~\"$host\"}[$interval]) or max_over_time(rdsosmetrics_swap_total{node_name=~\"$host\"}[5m])) -\n(max_over_time(rdsosmetrics_swap_free{node_name=~\"$host\"}[$interval]) or max_over_time(rdsosmetrics_swap_free{node_name=~\"$host\"}[5m]))) * 1024",
+                    "expr": "(max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$host\"}[5m])) -\n(max_over_time(node_memory_SwapFree_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_SwapFree_bytes{node_name=~\"$host\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2162,7 +2170,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "max_over_time(node_memory_SwapFree_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_SwapFree_bytes{node_name=~\"$host\"}[5m]) or\n(max_over_time(rdsosmetrics_swap_free{node_name=~\"$host\"}[$interval]) or max_over_time(rdsosmetrics_swap_free{node_name=~\"$host\"}[5m])) * 1024",
+                    "expr": "max_over_time(node_memory_SwapFree_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_SwapFree_bytes{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2173,7 +2181,7 @@
                     "target": ""
                 },
                 {
-                    "expr": "max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$host\"}[5m]) or\n(max_over_time(rdsosmetrics_swap_total{node_name=~\"$host\"}[$interval]) or max_over_time(rdsosmetrics_swap_total{node_name=~\"$host\"}[5m])) * 1024",
+                    "expr": "max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$host\"}[$interval]) or max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$host\"}[5m])",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2245,6 +2253,7 @@
                 "x": 12,
                 "y": 39
             },
+            "hiddenSeries": false,
             "id": 30,
             "legend": {
                 "alignAsTable": true,
@@ -2269,7 +2278,7 @@
                     {
                         "targetBlank": true,
                         "title": "Memory Details - ${__series.labels.node_name}",
-                        "url": "/graph/d/node-memory/memory-details?var-host=${__series.labels.node_name}&$__url_time_range"
+                        "url": "/graph/d/node-memory/memory-details?var-host=${__field.labels.node_name}&$__url_time_range"
                     }
                 ]
             },
@@ -2406,6 +2415,7 @@
                 "x": 0,
                 "y": 48
             },
+            "hiddenSeries": false,
             "id": 31,
             "legend": {
                 "alignAsTable": true,
@@ -2436,7 +2446,7 @@
                     {
                         "targetBlank": true,
                         "title": "Disk Details - ${__series.labels.node_name}",
-                        "url": "/graph/d/node-disk/disk-details?var-host=${__series.labels.node_name}&$__url_time_range"
+                        "url": "/graph/d/node-disk/disk-details?var-host=${__field.labels.node_name}&$__url_time_range"
                     }
                 ]
             },
@@ -2560,6 +2570,7 @@
                 "x": 12,
                 "y": 48
             },
+            "hiddenSeries": false,
             "id": 32,
             "legend": {
                 "alignAsTable": true,
@@ -2584,7 +2595,7 @@
                     {
                         "targetBlank": true,
                         "title": "Disk Details - ${__series.labels.node_name}",
-                        "url": "/graph/d/node-disk/disk-details?var-host=${__series.labels.node_name}&$__url_time_range"
+                        "url": "/graph/d/node-disk/disk-details?var-host=${__field.labels.node_name}&$__url_time_range"
                     }
                 ]
             },
@@ -2693,6 +2704,7 @@
                 "x": 0,
                 "y": 56
             },
+            "hiddenSeries": false,
             "id": 61,
             "legend": {
                 "alignAsTable": true,
@@ -2717,7 +2729,7 @@
                     {
                         "targetBlank": true,
                         "title": "Disk Details - ${__series.labels.node_name}",
-                        "url": "/graph/d/node-disk/disk-details?var-host=${__series.labels.node_name}&$__url_time_range"
+                        "url": "/graph/d/node-disk/disk-details?var-host=${__field.labels.node_name}&$__url_time_range"
                     }
                 ]
             },
@@ -2842,6 +2854,7 @@
                 "x": 12,
                 "y": 56
             },
+            "hiddenSeries": false,
             "id": 51,
             "legend": {
                 "alignAsTable": true,
@@ -2873,7 +2886,7 @@
                     {
                         "targetBlank": true,
                         "title": "Disk Details - ${__series.labels.node_name}",
-                        "url": "/graph/d/node-disk/disk-details?var-host=${__series.labels.node_name}&$__url_time_range"
+                        "url": "/graph/d/node-disk/disk-details?var-host=${__field.labels.node_name}&$__url_time_range"
                     }
                 ]
             },
@@ -3009,6 +3022,7 @@
                 "x": 0,
                 "y": 65
             },
+            "hiddenSeries": false,
             "id": 21,
             "legend": {
                 "alignAsTable": true,
@@ -3033,7 +3047,7 @@
                     {
                         "targetBlank": true,
                         "title": "Network Details - ${__series.labels.node_name}",
-                        "url": "/graph/d/node-network/network-details?var-host=${__series.labels.node_name}&$__url_time_range"
+                        "url": "/graph/d/node-network/network-details?var-host=${__field.labels.node_name}&$__url_time_range"
                     }
                 ]
             },
@@ -3143,6 +3157,7 @@
                 "x": 12,
                 "y": 65
             },
+            "hiddenSeries": false,
             "id": 22,
             "legend": {
                 "alignAsTable": true,
@@ -3286,6 +3301,7 @@
                 "x": 0,
                 "y": 73
             },
+            "hiddenSeries": false,
             "id": 52,
             "legend": {
                 "alignAsTable": true,
@@ -3310,7 +3326,7 @@
                     {
                         "targetBlank": true,
                         "title": "Network Details - ${__series.labels.node_name}",
-                        "url": "/graph/d/node-network/network-details?var-host=${__series.labels.node_name}&$__url_time_range"
+                        "url": "/graph/d/node-network/network-details?var-host=${__field.labels.node_name}&$__url_time_range"
                     }
                 ]
             },
@@ -3426,6 +3442,7 @@
                 "x": 12,
                 "y": 73
             },
+            "hiddenSeries": false,
             "id": 53,
             "legend": {
                 "alignAsTable": true,
@@ -3450,7 +3467,7 @@
                     {
                         "targetBlank": true,
                         "title": "Network Details - ${__series.labels.node_name}",
-                        "url": "/graph/d/node-network/network-details?var-host=${__series.labels.node_name}&$__url_time_range"
+                        "url": "/graph/d/node-network/network-details?var-host=${__field.labels.node_name}&$__url_time_range"
                     }
                 ]
             },
@@ -3546,7 +3563,7 @@
         }
     ],
     "refresh": "1m",
-    "schemaVersion": 20,
+    "schemaVersion": 21,
     "style": "dark",
     "tags": [
         "OS",
