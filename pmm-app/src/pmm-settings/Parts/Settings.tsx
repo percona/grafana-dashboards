@@ -13,7 +13,11 @@ import ButtonElement from '../../react-plugins-deps/components/FieldsComponents/
 import './Settings.scss';
 
 const { Panel } = Collapse;
-const dataRetentionOptions = [{ value: 'h', label: 'Hours' }, { value: 'm', label: 'Minutes' }, { value: 's', label: 'Seconds' }];
+const dataRetentionOptions = [
+  { value: 'h', label: 'Hours' },
+  { value: 'm', label: 'Minutes' },
+  { value: 's', label: 'Seconds' },
+];
 
 const marks = {
   0: 'Low',
