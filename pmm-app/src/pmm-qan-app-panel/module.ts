@@ -142,8 +142,13 @@ export class PanelCtrl extends MetricsPanelCtrl {
   private reloadQuery(window, $scope, type = '', urlParams: {}) {
     const host = window.location.href.split('?')[0];
     const existedParams = this.getJsonFromUrl(window.location);
-    Object.keys(urlParams).forEach(param => (existedParams[param] = urlParams[param]));
-
+    [...Object.keys(existedParams), ...Object.keys(urlParams)].forEach(param => {
+      if (urlParams[param]) {
+        existedParams[param] = urlParams[param];
+      } else if (existedParams[param] && !urlParams[param] && param.startsWith('var-')) {
+        existedParams[param] = ['All']
+      }
+    });
     if (type && urlParams['queryID']) {
       existedParams['type'] = type;
     }
@@ -252,12 +257,12 @@ export class PanelCtrl extends MetricsPanelCtrl {
 
   private resetUrl($scope) {
     const filters = $scope.qanParams.filters;
-    delete $scope.qanParams.filters;
-    const data = this.encodeData($scope.qanParams);
-
+    const data = Object.assign({}, $scope.qanParams);
+    delete data.filters;
+    const query = this.encodeData(data);
     $scope.url =
       $scope.qanParams.type && $scope.qanParams.queryID
-        ? `/qan/profile/report/${$scope.qanParams.type}?${data}&${filters}`
-        : `/qan/profile/?${data}&${filters}`;
+        ? `/qan/profile/report/${$scope.qanParams.type}?${query}&${filters}`
+        : `/qan/profile/?${query}&${filters}`;
   }
 }
