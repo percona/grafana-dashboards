@@ -18,16 +18,11 @@ const dataRetentionOptions = [
   { value: 'm', label: 'Minutes' },
   { value: 's', label: 'Seconds' },
 ];
-
 const marks = {
   0: 'Low',
   1: 'Medium',
   2: 'High',
 };
-
-function callback(key) {
-  console.log(key);
-}
 
 const customPanelStyle = {
   background: '#1f1d1d',
@@ -144,7 +139,7 @@ const SettingsPart = props => {
                 tooltip={<PluginTooltip linkText={'Read more'} url={'#'} text={'This setting defines how frequently the data will be collected'} />}
                 element={<SliderField marks={marks} form={form} defaultValue={2} name={'metrics_resolutions_slider'} />}
               />
-              <Collapse bordered={false} defaultActiveKey={['1']} onChange={callback} style={customCollapseStyle}>
+              <Collapse bordered={false} defaultActiveKey={['1']} onChange={() => {}} style={customCollapseStyle}>
                 <Panel header="Advanced settings " key="1" style={customPanelStyle}>
                   <VerticalFormWrapper
                     label={'Data retention'}
