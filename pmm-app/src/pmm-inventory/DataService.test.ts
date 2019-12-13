@@ -1,7 +1,7 @@
 import { InventoryDataService } from './DataService';
 
-describe('Inventory data service', function() {
-  it('Transforms response correct', function() {
+describe('Inventory data service', () => {
+  it('Transforms response correct', () => {
     const response = {
       pmm_agent: [{ agent_id: 'pmm-server', runs_on_node_id: 'pmm-server', connected: true }],
       node_exporter: [

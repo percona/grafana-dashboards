@@ -7,7 +7,7 @@ import { render, unmountComponentAtNode } from 'react-dom';
 jest.mock('../react-plugins-deps/components/helpers/notification-manager', () => () => ({
   showErrorNotification: () => {},
 }));
-describe('Inventory tables', function() {
+describe('Inventory tables', () => {
   let container = null;
   beforeEach(() => {
     // setup a DOM element as a render target
@@ -26,7 +26,7 @@ describe('Inventory tables', function() {
     container = null;
   });
 
-  it('Agents table renders correct with right data', function() {
+  it('Agents table renders correct with right data', () => {
     const response = {
       pmm_agent: [{ agent_id: 'pmm-server', runs_on_node_id: 'pmm-server', connected: true }],
       node_exporter: [
@@ -63,7 +63,7 @@ describe('Inventory tables', function() {
     expect(container.querySelectorAll('tr').length).toEqual(5);
   });
 
-  it('Services table renders correct with right data', function() {
+  it('Services table renders correct with right data', () => {
     const response = {
       postgresql: [
         {
@@ -85,7 +85,7 @@ describe('Inventory tables', function() {
     expect(container.querySelectorAll('tr').length).toEqual(2);
   });
 
-  it('Nodes table renders correct with right data', function() {
+  it('Nodes table renders correct with right data', () => {
     const response = {
       generic: [
         { node_id: 'pmm-server', node_name: 'pmm-server', address: '127.0.0.1' },
