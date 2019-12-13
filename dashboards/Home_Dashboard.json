@@ -250,8 +250,8 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "count(count by (node_name) (up{node_name=~\"$host\"}))",
-                    "interval": "5m",
+                    "expr": "count(count by (node_name) (up{node_name=~\"$host\"})) or vector(0)",
+                    "interval": "$interval",
                     "refId": "C"
                 }
             ],
@@ -1244,7 +1244,7 @@
             "targets": [
                 {
                     "expr": "sum by () (node_memory_MemTotal_bytes{node_name=~\"$host\"} or (rdsosmetrics_memory_total{node_name=~\"$host\"}*1024))",
-                    "interval": "5m",
+                    "interval": "$interval",
                     "refId": "B"
                 }
             ],
@@ -1335,7 +1335,7 @@
                 {
                     "expr": "min(node_time_seconds{node_name=~\"$host\"} - node_boot_time_seconds{node_name=~\"$host\"})",
                     "hide": false,
-                    "interval": "5m",
+                    "interval": "$interval",
                     "refId": "A"
                 }
             ],
@@ -1433,7 +1433,7 @@
                     "expr": "min(mysql_global_status_uptime{node_name=~\"$host\"} or \nmongodb_instance_uptime_seconds {node_name=~\"$host\"} or \n(time() - process_start_time_seconds{node_name=~\"$host\",job=~\"postgres_exporter.*\"}))",
                     "format": "time_series",
                     "instant": false,
-                    "interval": "5m",
+                    "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "",
                     "metric": "",
@@ -1749,7 +1749,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "(rate(node_vmstat_pgpgin{node_name=~\"$host\"}[$interval]) or irate(node_vmstat_pgpgin{node_name=~\"$host\"}[5m]) or max_over_time(rdsosmetrics_diskIO_readKbPS{node_name=~\"$host\"}[$interval]) or max_over_time(rdsosmetrics_diskIO_readKbPS{node_name=~\"$host\"}[5m])) * 1024",
+                    "expr": "(rate(node_vmstat_pgpgin{node_name=~\"$host\"}[$interval]) or irate(node_vmstat_pgpgin{node_name=~\"$host\"}[5m]) or sum by (node_name) (max_over_time(rdsosmetrics_diskIO_readKbPS{node_name=~\"$host\"}[$interval]) or max_over_time(rdsosmetrics_diskIO_readKbPS{node_name=~\"$host\"}[5m]))) * 1024",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1847,7 +1847,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "(rate(node_vmstat_pgpgout{node_name=~\"$host\"}[$interval]) or irate(node_vmstat_pgpgout{node_name=~\"$host\"}[5m]) or\nmax_over_time(rdsosmetrics_diskIO_writeKbPS{node_name=~\"$host\"}[$interval]) or max_over_time(rdsosmetrics_diskIO_writeKbPS{node_name=~\"$host\"}[5m])) * 1024",
+                    "expr": "(rate(node_vmstat_pgpgout{node_name=~\"$host\"}[$interval]) or irate(node_vmstat_pgpgout{node_name=~\"$host\"}[5m]) or\nsum by (node_name) (max_over_time(rdsosmetrics_diskIO_writeKbPS{node_name=~\"$host\"}[$interval]) or max_over_time(rdsosmetrics_diskIO_writeKbPS{node_name=~\"$host\"}[5m]))) * 1024",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2249,7 +2249,7 @@
                     "expr": "(count(node_cpu_seconds_total{node_name=~\"$host\",mode=~\"user\"}) or (1-absent(node_cpu_seconds_total{node_name=~\"$host\",mode=~\"user\"}))) + \nsum(rdsosmetrics_General_numVCPUs{node_name=~\"$host\"} or up * 0)",
                     "format": "time_series",
                     "instant": true,
-                    "interval": "5m",
+                    "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "",
                     "refId": "A",
@@ -2346,7 +2346,7 @@
             "targets": [
                 {
                     "expr": "node_memory_MemTotal_bytes{node_name=~\"$host\"} or (rdsosmetrics_memory_total{node_name=~\"$host\"}*1024)",
-                    "interval": "5m",
+                    "interval": "$interval",
                     "refId": "A"
                 }
             ],
@@ -2441,7 +2441,7 @@
                     "errors": {},
                     "expr": "node_time_seconds{node_name=~\"$host\"} - node_boot_time_seconds{node_name=~\"$host\"}",
                     "format": "time_series",
-                    "interval": "5m",
+                    "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "",
                     "metric": "",
@@ -2541,7 +2541,7 @@
                     "errors": {},
                     "expr": "avg by (node_name) (mysql_global_status_uptime{node_name=~\"$host\"} or \nmongodb_instance_uptime_seconds {node_name=~\"$host\"} or \n(time() - process_start_time_seconds{node_name=~\"$host\",job=~\"postgres_exporter.*\"}))",
                     "format": "time_series",
-                    "interval": "5m",
+                    "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "",
                     "metric": "",
