@@ -57,7 +57,7 @@ export class InventoryDataService {
     const createParams = addAgentType.map(agent =>
       agent['params'].map(arrItem => {
         const type = inventoryTypes[agent['agentType']] || '';
-        new CommonModel(arrItem, type);
+        return new CommonModel(arrItem, type);
       })
     );
     return [].concat(...createParams);
