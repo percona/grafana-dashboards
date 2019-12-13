@@ -59,7 +59,7 @@ describe('Inventory tables', () => {
         container
       );
     });
-
+    // length is 5 because header is also tr
     expect(container.querySelectorAll('tr').length).toEqual(5);
   });
 
@@ -81,7 +81,7 @@ describe('Inventory tables', () => {
         container
       );
     });
-
+    // length is 2 because header is also tr
     expect(container.querySelectorAll('tr').length).toEqual(2);
   });
 
@@ -98,7 +98,7 @@ describe('Inventory tables', () => {
         container
       );
     });
-
+    // length is 3 because header is also tr
     expect(container.querySelectorAll('tr').length).toEqual(3);
   });
 });
