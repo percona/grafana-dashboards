@@ -57,7 +57,7 @@ const dataRetentionValues: MetricsResolutionInterface[] = [
   },
 ];
 
-const getMetricsResolutionValues = metricsResolutions => {
+export const getMetricsResolutionValues = metricsResolutions => {
   if (metricsResolutions.hr === '5s' && metricsResolutions.mr === '5s' && metricsResolutions.lr === '60s') {
     return 2;
   } else if (metricsResolutions.hr === '5s' && metricsResolutions.mr === '30s' && metricsResolutions.lr === '300s') {

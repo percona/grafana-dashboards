@@ -7,9 +7,10 @@ class ApiRequest {
   axiosInstance: AxiosInstance;
 
   constructor() {
-    this.axiosInstance = axios.create({
-      baseURL: '',
-    });
+    this.axiosInstance = axios;
+    //     .create({
+    //   baseURL: '',
+    // });
   }
 
   async get<T, B>(path: string, query?: { params: B; cancelToken?: any }): Promise<void | T> {
@@ -17,12 +18,13 @@ class ApiRequest {
       .get<T>(path, query)
       .then((response): T => response.data)
       .catch((e): void => {
+        showErrorNotification({ message: e.message });
         if (axios.isCancel(e)) {
           throw e;
         } else {
           // eslint-disable-next-line no-console
           console.error(e);
-          // Notify.error(e.message);
+          showErrorNotification({ message: e.message });
         }
       });
   }
