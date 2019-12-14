@@ -2,22 +2,19 @@ import React, { ReactElement, useEffect, useState } from 'react';
 import { Collapse } from 'antd';
 import { Form as FormFinal } from 'react-final-form';
 import { useForm } from 'react-final-form-hooks';
-import { PluginTooltip, VerticalFormWrapper } from '../../react-plugins-deps/components/helpers/Helpers';
-import SettingsService from '../Settings.service';
-import { showErrorNotification, showSuccessNotification } from '../../react-plugins-deps/components/helpers/notification-manager';
-import { SliderField } from '../../react-plugins-deps/components/FieldsComponents/Slider/Slider';
-import { SelectField } from '../../react-plugins-deps/components/FieldsComponents/Select/Select';
-import { ToggleField } from '../../react-plugins-deps/components/FieldsComponents/Toggle/Toggle';
-import { InputField } from '../../react-plugins-deps/components/FieldsComponents/Input/Input';
-import ButtonElement from '../../react-plugins-deps/components/FieldsComponents/Button/Button';
+import { PluginTooltip, VerticalFormWrapper } from '../../../react-plugins-deps/components/helpers/Helpers';
+import SettingsService from '../../Settings.service';
+import { showErrorNotification, showSuccessNotification } from '../../../react-plugins-deps/components/helpers/notification-manager';
+import { SliderField } from '../../../react-plugins-deps/components/FormComponents/Slider/Slider';
+import { SelectField } from '../../../react-plugins-deps/components/FormComponents/Select/Select';
+import { ToggleField } from '../../../react-plugins-deps/components/FormComponents/Toggle/Toggle';
+import { InputField } from '../../../react-plugins-deps/components/FormComponents/Input/Input';
+import ButtonElement from '../../../react-plugins-deps/components/FormComponents/Button/Button';
 import './Settings.scss';
 
 const { Panel } = Collapse;
-const dataRetentionOptions = [
-  { value: 'h', label: 'Hours' },
-  { value: 'm', label: 'Minutes' },
-  { value: 's', label: 'Seconds' },
-];
+
+const dataRetentionOptions = [{ value: 'h', label: 'Hours' }, { value: 'm', label: 'Minutes' }, { value: 's', label: 'Seconds' }];
 const marks = {
   0: 'Low',
   1: 'Medium',
@@ -71,17 +68,20 @@ const getMetricsResolutionValues = metricsResolutions => {
     return 0;
   }
 };
+
 interface MetricsResolutionInterface {
   lr: string;
   mr: string;
   hr: string;
 }
+
 interface SettingsInterface {
   data_retention: string;
   metrics_resolutions: MetricsResolutionInterface;
   disable_telemetry?: boolean;
   enable_telemetry?: boolean;
 }
+
 const SettingsPart = props => {
   const [loading, setLoading] = useState(false);
   const { settings } = props;
@@ -177,7 +177,7 @@ const SettingsPart = props => {
                   />
                 </Panel>
               </Collapse>
-              <ButtonElement onClick={() => {}} loading={loading} text={'Apply changes'} />
+              <ButtonElement loading={loading} text={'Apply changes'} />
             </>
           </form>
         );

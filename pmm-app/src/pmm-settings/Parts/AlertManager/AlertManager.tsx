@@ -1,12 +1,12 @@
-import { VerticalFormWrapper } from '../../react-plugins-deps/components/helpers/Helpers';
-import { InputField } from '../../react-plugins-deps/components/FieldsComponents/Input/Input';
-import { TextAreaField } from '../../react-plugins-deps/components/FieldsComponents/TextArea/TextArea';
+import { VerticalFormWrapper } from '../../../react-plugins-deps/components/helpers/Helpers';
+import { InputField } from '../../../react-plugins-deps/components/FormComponents/Input/Input';
+import { TextAreaField } from '../../../react-plugins-deps/components/FormComponents/TextArea/TextArea';
 import React, { ReactElement, useEffect, useState } from 'react';
-import ButtonElement from '../../react-plugins-deps/components/FieldsComponents/Button/Button';
+import ButtonElement from '../../../react-plugins-deps/components/FormComponents/Button/Button';
 import { Form as FormFinal } from 'react-final-form';
 import { useForm } from 'react-final-form-hooks';
-import SettingsService from '../Settings.service';
-import { showErrorNotification, showSuccessNotification } from '../../react-plugins-deps/components/helpers/notification-manager';
+import SettingsService from '../../Settings.service';
+import { showErrorNotification, showSuccessNotification } from '../../../react-plugins-deps/components/helpers/notification-manager';
 
 interface AlertManagerSettingsInterface {
   alert_manager_ip: string;
@@ -14,7 +14,6 @@ interface AlertManagerSettingsInterface {
 }
 const AlertManager = props => {
   const [loading, setLoading] = useState(false);
-
   return (
     <FormFinal
       onSubmit={() => {}}
@@ -53,7 +52,7 @@ const AlertManager = props => {
                 element={<TextAreaField form={form} name={'alert_manager_rules'} placeholder="Alert manager rule" style={{ width: '100%' }} />}
                 alignLabel={'top'}
               />
-              <ButtonElement onClick={() => {}} loading={loading} text={'Apply AlertManager settings'} />
+              <ButtonElement loading={loading} text={'Apply AlertManager settings'} />
             </>
           </form>
         );

@@ -1,9 +1,9 @@
 import React, { ReactElement, useEffect, useState } from 'react';
 import { Collapse } from 'antd';
 // import AlertManager from './Parts/AlertManager';
-import UploadSSHKey from './Parts/UploadSSHKey';
-import Diagnostics from './Parts/Diagnostics';
-import SettingsPart from './Parts/Settings';
+import UploadSSH from './Parts/UploadSSH/UploadSSH';
+import Diagnostics from './Parts/Diagnostics/Diagnostics';
+import SettingsPart from './Parts/Settings/Settings';
 import SettingsService from './Settings.service';
 import { Form as FormFinal } from 'react-final-form';
 
@@ -50,7 +50,7 @@ const SettingsPanel = () => {
                   <SettingsPart settings={settings} />
                 </Panel>
                 <Panel header="SSH Key Details" key="2" style={customPanelStyle}>
-                  <UploadSSHKey settings={settings} />
+                  <UploadSSH settings={settings} />
                 </Panel>
                 {/*<Panel header="AlertManager integration" key="3" style={customPanelStyle}>*/}
                 {/*  <AlertManager settings={settings} />*/}

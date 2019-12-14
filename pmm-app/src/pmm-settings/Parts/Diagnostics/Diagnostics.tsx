@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Col, Row } from 'antd';
 
-const Diagnostics = props => {
+const Diagnostics = () => {
   return (
     <>
       <Row style={{ color: 'white', marginBottom: '10px' }} align={'middle'}>

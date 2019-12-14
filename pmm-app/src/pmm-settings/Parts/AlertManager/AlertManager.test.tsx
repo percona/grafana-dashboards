@@ -2,18 +2,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import AlertManager from './AlertManager';
-jest.mock('../../react-plugins-deps/components/helpers/notification-manager', () => () => ({
-  strings: {
-    polish: {
-      agree: 'tak',
-      disagree: 'nie',
-    },
-    malaysian: {
-      agree: 'ya',
-      disagree: 'tidak',
-    },
-  },
-}));
+jest.mock('../../../react-plugins-deps/components/helpers/notification-manager', () => () => ({}));
 describe('Settings Part test', () => {
   it('Alert Manager renders correct without props', () => {
     const component = renderer.create(

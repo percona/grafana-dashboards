@@ -1,17 +1,17 @@
-import { PluginTooltip, VerticalFormWrapper } from '../../react-plugins-deps/components/helpers/Helpers';
-import { TextAreaField } from '../../react-plugins-deps/components/FieldsComponents/TextArea/TextArea';
+import { PluginTooltip, VerticalFormWrapper } from '../../../react-plugins-deps/components/helpers/Helpers';
+import { TextAreaField } from '../../../react-plugins-deps/components/FormComponents/TextArea/TextArea';
 import React, { ReactElement, useEffect, useState } from 'react';
-import ButtonElement from '../../react-plugins-deps/components/FieldsComponents/Button/Button';
+import ButtonElement from '../../../react-plugins-deps/components/FormComponents/Button/Button';
 import { Form as FormFinal } from 'react-final-form';
 import { useForm } from 'react-final-form-hooks';
-import SettingsService from '../Settings.service';
-import { showErrorNotification, showSuccessNotification } from '../../react-plugins-deps/components/helpers/notification-manager';
+import SettingsService from '../../Settings.service';
+import { showErrorNotification, showSuccessNotification } from '../../../react-plugins-deps/components/helpers/notification-manager';
 
-interface UploadSSHKeyInterface {
+interface UploadSSHInterface {
   ssh_key: string;
 }
 
-const UploadSSHKey = props => {
+const UploadSSH = props => {
   const [loading, setLoading] = useState(false);
   // @ts-ignore
   return (
@@ -19,7 +19,7 @@ const UploadSSHKey = props => {
       onSubmit={() => {}}
       render={(): ReactElement => {
         const { form, handleSubmit } = useForm({
-          onSubmit: async (values: UploadSSHKeyInterface) => {
+          onSubmit: async (values: UploadSSHInterface) => {
             const settings = {
               ssh_key: values.ssh_key,
             };
@@ -38,7 +38,6 @@ const UploadSSHKey = props => {
         useEffect(() => {
           form.initialize(props.settings);
         }, [props.settings]);
-        // @ts-ignore
         return (
           <form onSubmit={handleSubmit}>
             <>
@@ -48,7 +47,7 @@ const UploadSSHKey = props => {
                 element={<TextAreaField name={'ssh_key'} form={form} placeholder="Enter ssh key" style={{ width: '100%' }} />}
                 alignLabel={'top'}
               />
-              <ButtonElement onClick={() => {}} loading={loading} text={'Apply SSH key'} />
+              <ButtonElement loading={loading} text={'Apply SSH key'} />
             </>
           </form>
         );
@@ -56,4 +55,4 @@ const UploadSSHKey = props => {
     />
   );
 };
-export default UploadSSHKey;
+export default UploadSSH;
