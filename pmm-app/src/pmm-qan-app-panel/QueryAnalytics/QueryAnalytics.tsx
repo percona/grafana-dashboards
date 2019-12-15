@@ -1,17 +1,17 @@
-import React, { useContext } from 'react';
-import QueryDetails from './QueryDetails/QueryDetails';
-import QueryAnalyticsOverview from './QueryAnalyticsOverview/QueryAnalyticsOverview';
-import AutocompleteSearch from './AutocompleteSearch';
+import React from 'react';
 import './QueryAnalytics.scss';
-import { StateContext } from './StateContext';
+import Filters from './Filters/Filters';
+import DataOutput from './DataOutput/DataOutput';
 
 const QueryAnalytics = props => {
-  const context = useContext(StateContext);
   return (
     <div className={'query-analytics-grid'} id={'antd'}>
-      <AutocompleteSearch />
-      <QueryAnalyticsOverview columns={context.columns} />
-      {context.filterBy && <QueryDetails filterBy={context.filterBy} />}
+      <div className="overview-filters" id="query-analytics-filters">
+        <Filters />
+      </div>
+      <div id="query-analytics-data">
+        <DataOutput />
+      </div>
     </div>
   );
 };
