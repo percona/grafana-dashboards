@@ -20,6 +20,7 @@ const DEFAULT_COLUMNS = ['load', 'num_queries', 'query_time'];
 export const UrlParametersProvider = ({ children }) => {
   const query = new URLSearchParams(window.location.search);
   const [hack, setHack] = useState({});
+  console.log(hack);
   const reload = () => setHack({});
   const addFilter = filter => changeFilter(filter, true);
   const removeFilter = filter => changeFilter(filter, false);
