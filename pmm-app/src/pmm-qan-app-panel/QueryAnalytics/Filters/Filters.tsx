@@ -101,7 +101,7 @@ const Filters = () => {
       render={(): ReactElement => {
         const { form, handleSubmit } = useForm({
           onSubmit: () => {},
-          validate: () => {},
+          validate: () => undefined,
           initialValues: {},
         });
         // @ts-ignore
