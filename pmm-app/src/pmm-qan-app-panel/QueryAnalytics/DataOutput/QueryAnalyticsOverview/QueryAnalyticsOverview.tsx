@@ -10,9 +10,6 @@ const QueryAnalyticsOverview = props => {
       <div className={'add-column'}>
         <AddColumn />
       </div>
-      <div className="overview-filters">
-        <QueryAnalyticsFilters showPercentage={true} />
-      </div>
       <div className="overview-table">
         <OverviewTable columns={props.columns} />
       </div>
