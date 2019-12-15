@@ -146,7 +146,7 @@ const Metrics = props => {
     getMetrics();
   }, []);
 
-  return <Table dataSource={processMetrics(metrics)} columns={columns} size={'small'} bordered={true} />;
+  return <Table dataSource={processMetrics(metrics)} columns={columns} pagination={false} size={'small'} bordered={true} />;
 };
 
 export default Metrics;

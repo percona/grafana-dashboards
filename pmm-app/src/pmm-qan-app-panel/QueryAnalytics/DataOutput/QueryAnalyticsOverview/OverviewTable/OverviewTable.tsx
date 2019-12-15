@@ -16,7 +16,7 @@ const getDefaultColumns = selectQuery => {
       title: '#',
       dataIndex: 'rowNumber',
       key: 'rowNumber',
-      width: '20px',
+      width: '30px',
       // fixed: 'left',
       render: (text, record, index) => {
         if (index === 0) {
@@ -54,11 +54,7 @@ const OverviewTable = props => {
   const columns = getDefaultColumns(context.selectQuery).concat(context.columns.map((key, index) => getColumnName(key, index, TOTAL)));
 
   // // @ts-ignore
-  return (
-    <div >
-      <Table dataSource={tableData.rows} columns={columns} size={'small'} bordered={true} scroll={{ x: 1300 }} />
-    </div>
-  );
+  return <Table dataSource={tableData.rows} columns={columns} size={'small'} bordered={true} pagination={false} scroll={{ x: 1300 }} />;
   // return '123';
 };
 //
