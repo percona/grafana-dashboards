@@ -7,6 +7,7 @@ import Example from './Example/Example';
 import Metrics from './Metrics/Metrics';
 import TableCreate from './Table/Table';
 // import Labels from './Labels/Labels';
+import { Divider } from 'antd';
 
 const { TabPane } = Tabs;
 
@@ -25,6 +26,11 @@ const QueryDetails = props => {
         query={'COLLSTATS sbtest3 clusterTime,collStats,hash,id,keyId,lsid,mode,scale,signature'}
         controlSum={'4675a0d6d2e18bdce08b7c7aa83f88ff'}
       />
+      <div className={'more-filters'}>
+        <Divider></Divider>
+        <h4>More filters for this query</h4>
+        <Divider></Divider>
+      </div>
       <div className="details-tabs">
         <Tabs defaultActiveKey="1" onChange={() => {}}>
           <TabPane tab="Details" key="1">
