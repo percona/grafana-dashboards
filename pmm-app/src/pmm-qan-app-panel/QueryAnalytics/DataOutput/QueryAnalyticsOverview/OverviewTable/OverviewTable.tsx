@@ -2,7 +2,7 @@ import { Table, Select } from 'antd';
 import React, { useContext } from 'react';
 import { tableData } from '../mock-data/table-data';
 import './OverviewTable.scss';
-import { StateContext } from '../../StateContext';
+import { StateContext } from '../../../StateContext';
 import { getColumnName } from './Column';
 
 const { Option } = Select;
@@ -54,7 +54,11 @@ const OverviewTable = props => {
   const columns = getDefaultColumns(context.selectQuery).concat(context.columns.map((key, index) => getColumnName(key, index, TOTAL)));
 
   // // @ts-ignore
-  return <Table dataSource={tableData.rows} columns={columns} size={'small'} bordered={true} scroll={{ x: 1300 }} />;
+  return (
+    <div >
+      <Table dataSource={tableData.rows} columns={columns} size={'small'} bordered={true} scroll={{ x: 1300 }} />
+    </div>
+  );
   // return '123';
 };
 //

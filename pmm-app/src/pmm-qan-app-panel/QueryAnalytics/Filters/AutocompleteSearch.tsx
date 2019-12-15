@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Select } from 'antd';
-import { StateContext } from './StateContext';
-import FiltersService from './storage/filtersService';
+import { StateContext } from '../StateContext';
+import FiltersService from '../storage/filtersService';
 
 const { Option } = Select;
 
