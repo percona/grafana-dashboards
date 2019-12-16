@@ -36,7 +36,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1573144365614,
+    "iteration": 1576508545079,
     "links": [
         {
             "icon": "doc",
@@ -167,6 +167,7 @@
                 "x": 0,
                 "y": 3
             },
+            "hiddenSeries": false,
             "id": 1018,
             "interval": "",
             "legend": {
@@ -263,6 +264,7 @@
                 "x": 0,
                 "y": 11
             },
+            "hiddenSeries": false,
             "id": 1023,
             "legend": {
                 "alignAsTable": true,
@@ -390,6 +392,7 @@
                 "x": 12,
                 "y": 11
             },
+            "hiddenSeries": false,
             "id": 1024,
             "legend": {
                 "alignAsTable": true,
@@ -416,7 +419,267 @@
             "renderer": "flot",
             "repeat": null,
             "repeatDirection": "h",
-            "repeatIteration": 1573144365614,
+            "repeatIteration": 1576508545079,
+            "repeatPanelId": 1023,
+            "seriesOverrides": [
+                {
+                    "alias": "/Used/",
+                    "color": "#FFB357"
+                },
+                {
+                    "alias": "/Free/",
+                    "color": "#FA6400"
+                },
+                {
+                    "alias": "Usage",
+                    "fill": 0,
+                    "legend": false,
+                    "yaxis": 2
+                }
+            ],
+            "spaceLength": 10,
+            "stack": true,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "(max_over_time(node_filesystem_size_bytes{node_name=~\"$host\",mountpoint=~\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[$interval]) or max_over_time(node_filesystem_size_bytes{node_name=~\"$host\",mountpoint=~\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[5m])) - (max_over_time(node_filesystem_free_bytes{node_name=~\"$host\",mountpoint=~\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[$interval]) or max_over_time(node_filesystem_free_bytes{node_name=~\"$host\",mountpoint=~\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[5m]))",
+                    "hide": false,
+                    "interval": "$interval",
+                    "legendFormat": "Used (device {{ device }}, {{ fstype }})",
+                    "refId": "A"
+                },
+                {
+                    "expr": "max_over_time(node_filesystem_free_bytes{node_name=~\"$host\", mountpoint=\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[$interval]) or max_over_time(node_filesystem_free_bytes{node_name=~\"$host\", mountpoint=\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[5m])",
+                    "hide": false,
+                    "interval": "$interval",
+                    "legendFormat": "Free (device {{ device }}, {{ fstype }})",
+                    "refId": "B"
+                },
+                {
+                    "expr": "1 - (max_over_time(node_filesystem_free_bytes{node_name=~\"$host\",mountpoint=~\"$mountpoint\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[$interval]) or max_over_time(node_filesystem_free_bytes{node_name=~\"$host\",mountpoint=~\"$mountpoint\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[5m])) / (max_over_time(node_filesystem_size_bytes{node_name=~\"$host\",mountpoint=~\"$mountpoint\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[$interval]) \nor max_over_time(node_filesystem_size_bytes{node_name=~\"$host\",mountpoint=~\"$mountpoint\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[5m]))",
+                    "hide": false,
+                    "interval": "$interval",
+                    "legendFormat": "Usage",
+                    "refId": "C"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "Mountpoint $mountpoint",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 2,
+                    "format": "bytes",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "decimals": 2,
+                    "format": "percentunit",
+                    "label": null,
+                    "logBase": 1,
+                    "max": "1",
+                    "min": "0",
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": null,
+            "decimals": 2,
+            "description": "Shows information about the disk space usage of the specified mountpoint.\n\n**Used** is the amount of space used.\n\n**Free** is the amount of space not in use.\n\n**Used+Free** is the total disk space allocated to the mountpoint.\n\nHaving *Free* close to 0 B is not good because of the risk to have a \u201cdisk full\u201d error that can block one of the services or even cause a crash of the entire system.\n\nIn case Free is close to 0 B consider to remove unused files or to expand the space allocated to the mountpoint.",
+            "fill": 6,
+            "fillGradient": 0,
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 19
+            },
+            "hiddenSeries": false,
+            "id": 1025,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "maxPerRow": 2,
+            "nullPointMode": "null",
+            "options": {
+                "dataLinks": []
+            },
+            "percentage": false,
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1576508545079,
+            "repeatPanelId": 1023,
+            "seriesOverrides": [
+                {
+                    "alias": "/Used/",
+                    "color": "#FFB357"
+                },
+                {
+                    "alias": "/Free/",
+                    "color": "#FA6400"
+                },
+                {
+                    "alias": "Usage",
+                    "fill": 0,
+                    "legend": false,
+                    "yaxis": 2
+                }
+            ],
+            "spaceLength": 10,
+            "stack": true,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "(max_over_time(node_filesystem_size_bytes{node_name=~\"$host\",mountpoint=~\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[$interval]) or max_over_time(node_filesystem_size_bytes{node_name=~\"$host\",mountpoint=~\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[5m])) - (max_over_time(node_filesystem_free_bytes{node_name=~\"$host\",mountpoint=~\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[$interval]) or max_over_time(node_filesystem_free_bytes{node_name=~\"$host\",mountpoint=~\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[5m]))",
+                    "hide": false,
+                    "interval": "$interval",
+                    "legendFormat": "Used (device {{ device }}, {{ fstype }})",
+                    "refId": "A"
+                },
+                {
+                    "expr": "max_over_time(node_filesystem_free_bytes{node_name=~\"$host\", mountpoint=\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[$interval]) or max_over_time(node_filesystem_free_bytes{node_name=~\"$host\", mountpoint=\"$mountpoint\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[5m])",
+                    "hide": false,
+                    "interval": "$interval",
+                    "legendFormat": "Free (device {{ device }}, {{ fstype }})",
+                    "refId": "B"
+                },
+                {
+                    "expr": "1 - (max_over_time(node_filesystem_free_bytes{node_name=~\"$host\",mountpoint=~\"$mountpoint\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[$interval]) or max_over_time(node_filesystem_free_bytes{node_name=~\"$host\",mountpoint=~\"$mountpoint\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[5m])) / (max_over_time(node_filesystem_size_bytes{node_name=~\"$host\",mountpoint=~\"$mountpoint\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[$interval]) \nor max_over_time(node_filesystem_size_bytes{node_name=~\"$host\",mountpoint=~\"$mountpoint\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}[5m]))",
+                    "hide": false,
+                    "interval": "$interval",
+                    "legendFormat": "Usage",
+                    "refId": "C"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "Mountpoint $mountpoint",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 2,
+                    "format": "bytes",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "decimals": 2,
+                    "format": "percentunit",
+                    "label": null,
+                    "logBase": 1,
+                    "max": "1",
+                    "min": "0",
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": null,
+            "decimals": 2,
+            "description": "Shows information about the disk space usage of the specified mountpoint.\n\n**Used** is the amount of space used.\n\n**Free** is the amount of space not in use.\n\n**Used+Free** is the total disk space allocated to the mountpoint.\n\nHaving *Free* close to 0 B is not good because of the risk to have a \u201cdisk full\u201d error that can block one of the services or even cause a crash of the entire system.\n\nIn case Free is close to 0 B consider to remove unused files or to expand the space allocated to the mountpoint.",
+            "fill": 6,
+            "fillGradient": 0,
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 12,
+                "y": 19
+            },
+            "hiddenSeries": false,
+            "id": 1026,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "maxPerRow": 2,
+            "nullPointMode": "null",
+            "options": {
+                "dataLinks": []
+            },
+            "percentage": false,
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "repeat": null,
+            "repeatDirection": "h",
+            "repeatIteration": 1576508545079,
             "repeatPanelId": 1023,
             "seriesOverrides": [
                 {
@@ -510,7 +773,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 19
+                "y": 27
             },
             "id": 1001,
             "panels": [],
@@ -534,8 +797,9 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 20
+                "y": 28
             },
+            "hiddenSeries": false,
             "id": 11,
             "legend": {
                 "alignAsTable": true,
@@ -658,8 +922,9 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 20
+                "y": 28
             },
+            "hiddenSeries": false,
             "id": 15,
             "legend": {
                 "alignAsTable": true,
@@ -780,8 +1045,9 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 28
+                "y": 36
             },
+            "hiddenSeries": false,
             "id": 16,
             "legend": {
                 "alignAsTable": true,
@@ -818,21 +1084,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "sum(\n(rate(node_disk_read_bytes_total{device=~\"$device\", node_name=\"$host\"}[$interval]) or \nirate(node_disk_read_bytes_total{device=~\"$device\", node_name=\"$host\"}[5m])) or\n(rate(rdsosmetrics_diskIO_readThroughput{node_name=\"$host\"}[$interval]) or\nirate(rdsosmetrics_diskIO_readThroughput{node_name=\"$host\"}[5m]))\n)",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Read",
-                    "metric": "",
-                    "refId": "A",
-                    "step": 300,
-                    "target": ""
-                },
-                {
-                    "calculatedInterval": "2m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "sum(\n(rate(node_disk_written_bytes_total{device=~\"$device\", node_name=\"$host\"}[$interval])) or \nirate(node_disk_written_bytes_total{device=~\"$device\", node_name=\"$host\"}[5m]) or\n(rate(rdsosmetrics_diskIO_writeThroughput{node_name=\"$host\"}[$interval]) or\nirate(rdsosmetrics_diskIO_writeThroughput{node_name=\"$host\"}[5m]))\n)",
+                    "expr": "sum(rate(node_disk_written_bytes_total{node_name=~\"$host\",device=~\"$device\"}[$interval]) or \nirate(node_disk_written_bytes_total{node_name=~\"$host\",device=~\"$device\"}[5m]) or\nrate(node_disk_written_bytes_total{node_name=~\"$host\",node_type=\"remote_rds\"}[$interval]) or \nirate(node_disk_written_bytes_total{node_name=~\"$host\",node_type=\"remote_rds\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -841,6 +1093,12 @@
                     "refId": "B",
                     "step": 300,
                     "target": ""
+                },
+                {
+                    "expr": "sum(rate(node_disk_read_bytes_total{node_name=~\"$host\",device=~\"$device\"}[$interval]) or \nirate(node_disk_read_bytes_total{node_name=~\"$host\",device=~\"$device\"}[5m]) or\nrate(node_disk_read_bytes_total{node_name=~\"$host\",node_type=\"remote_rds\"}[$interval]) or \nirate(node_disk_read_bytes_total{node_name=~\"$host\",node_type=\"remote_rds\"}[5m]))",
+                    "interval": "$interval",
+                    "legendFormat": "Read",
+                    "refId": "C"
                 }
             ],
             "thresholds": [],
@@ -903,8 +1161,9 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 28
+                "y": 36
             },
+            "hiddenSeries": false,
             "id": 14,
             "legend": {
                 "alignAsTable": true,
@@ -941,20 +1200,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "sum(\nrate(node_disk_read_time_seconds_total{device=~\"$device\", node_name=\"$host\"}[$interval]) or \nirate(node_disk_read_time_seconds_total{device=~\"$device\", node_name=\"$host\"}[5m])\n)",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Read",
-                    "metric": "",
-                    "refId": "A",
-                    "step": 300,
-                    "target": ""
-                },
-                {
-                    "calculatedInterval": "2m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "sum(\nrate(node_disk_write_time_seconds_total{device=~\"$device\", node_name=\"$host\"}[$interval]) or \nirate(node_disk_write_time_seconds_total{device=~\"$device\", node_name=\"$host\"}[5m])\n)",
+                    "expr": "sum(\nrate(node_disk_write_time_seconds_total{device=~\"$device\",node_name=~\"$host\"}[$interval]) or \nirate(node_disk_write_time_seconds_total{device=~\"$device\",node_name=~\"$host\"}[5m]) or\nmax_over_time(rdsosmetrics_diskIO_writeIOsPS{node_name=~\"$host\"}[$interval]) or \nmax_over_time(rdsosmetrics_diskIO_writeIOsPS{node_name=~\"$host\"}[5m])\n)",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Write",
@@ -962,6 +1208,12 @@
                     "refId": "B",
                     "step": 300,
                     "target": ""
+                },
+                {
+                    "expr": "sum(rate(node_disk_read_time_seconds_total{device=~\"$device\",node_name=~\"$host\"}[$interval]) or \nirate(node_disk_read_time_seconds_total{device=~\"$device\",node_name=~\"$host\"}[5m]) or\nmax_over_time(rdsosmetrics_diskIO_readIOsPS{node_name=~\"$host\"}[$interval]) or \nmax_over_time(rdsosmetrics_diskIO_readIOsPS{node_name=~\"$host\"}[5m]))",
+                    "interval": "$interval",
+                    "legendFormat": "Read",
+                    "refId": "C"
                 }
             ],
             "thresholds": [],
@@ -1023,8 +1275,9 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 36
+                "y": 44
             },
+            "hiddenSeries": false,
             "id": 17,
             "legend": {
                 "alignAsTable": true,
@@ -1058,19 +1311,10 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "calculatedInterval": "2m",
-                    "datasourceErrors": {},
-                    "errors": {},
-                    "expr": "sum(\nrate(node_disk_io_time_seconds_total{device=~\"$device\", node_name=\"$host\"}[$interval]) or \nirate(node_disk_io_time_seconds_total{device=~\"$device\", node_name=\"$host\"}[5m])\n)",
-                    "format": "time_series",
-                    "hide": false,
+                    "expr": "sum by (node_name) (rate(node_disk_io_time_seconds_total{device=~\"$device\",node_name=~\"$host\"}[$interval]) or irate(node_disk_io_time_seconds_total{device=~\"$device\",node_name=~\"$host\"}[5m]) or\n(max_over_time(rdsosmetrics_diskIO_util{device=~\"$device\",node_name=~\"$host\"}[$interval]) or max_over_time(rdsosmetrics_diskIO_util{device=~\"$device\",node_name=~\"$host\"}[5m]))/100)",
                     "interval": "$interval",
-                    "intervalFactor": 1,
                     "legendFormat": "{{ node_name }}",
-                    "metric": "",
-                    "refId": "A",
-                    "step": 300,
-                    "target": ""
+                    "refId": "B"
                 }
             ],
             "thresholds": [],
@@ -1133,8 +1377,9 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 36
+                "y": 44
             },
+            "hiddenSeries": false,
             "id": 18,
             "legend": {
                 "alignAsTable": true,
@@ -1256,8 +1501,9 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 44
+                "y": 52
             },
+            "hiddenSeries": false,
             "id": 20,
             "legend": {
                 "alignAsTable": true,
@@ -1367,7 +1613,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 52
+                "y": 60
             },
             "id": 1003,
             "panels": [
@@ -1388,8 +1634,9 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 61
+                        "y": 53
                     },
+                    "hiddenSeries": false,
                     "id": 1004,
                     "legend": {
                         "alignAsTable": true,
@@ -1511,8 +1758,9 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 61
+                        "y": 53
                     },
+                    "hiddenSeries": false,
                     "id": 1005,
                     "legend": {
                         "alignAsTable": true,
@@ -1549,7 +1797,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "(rate(node_disk_reads_completed_total{device=~\"$device\", node_name=\"$host\"}[$interval]) or \nirate(node_disk_reads_completed_total{device=~\"$device\", node_name=\"$host\"}[5m])) or\n(max_over_time(rdsosmetrics_diskIO_readIOsPS{node_name=\"$host\"}[$interval]) or\nmax_over_time(rdsosmetrics_diskIO_readIOsPS{node_name=\"$host\"}[5m])) ",
+                            "expr": "(rate(node_disk_reads_completed_total{device=~\"$device\", node_name=\"$host\"}[$interval]) or \nirate(node_disk_reads_completed_total{device=~\"$device\", node_name=\"$host\"}[5m])) or\n(max_over_time(rdsosmetrics_diskIO_readIOsPS{device=~\"$device\",node_name=\"$host\"}[$interval]) or\nmax_over_time(rdsosmetrics_diskIO_readIOsPS{device=~\"$device\",node_name=\"$host\"}[5m])) ",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1563,7 +1811,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "(rate(node_disk_writes_completed_total{device=~\"$device\", node_name=\"$host\"}[$interval]) or \nirate(node_disk_writes_completed_total{device=~\"$device\", node_name=\"$host\"}[5m])) or\n(max_over_time(rdsosmetrics_diskIO_writeIOsPS{node_name=\"$host\"}[$interval]) or\nmax_over_time(rdsosmetrics_diskIO_writeIOsPS{node_name=\"$host\"}[5m])) ",
+                            "expr": "(rate(node_disk_writes_completed_total{device=~\"$device\", node_name=\"$host\"}[$interval]) or \nirate(node_disk_writes_completed_total{device=~\"$device\", node_name=\"$host\"}[5m])) or\n(max_over_time(rdsosmetrics_diskIO_writeIOsPS{device=~\"$device\",node_name=\"$host\"}[$interval]) or\nmax_over_time(rdsosmetrics_diskIO_writeIOsPS{device=~\"$device\",node_name=\"$host\"}[5m])) ",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1633,8 +1881,9 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 69
+                        "y": 61
                     },
+                    "hiddenSeries": false,
                     "id": 1006,
                     "legend": {
                         "alignAsTable": true,
@@ -1671,7 +1920,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "(rate(node_disk_read_bytes_total{device=~\"$device\", node_name=\"$host\"}[$interval]) or \nirate(node_disk_read_bytes_total{device=~\"$device\", node_name=\"$host\"}[5m])) or\n(rate(rdsosmetrics_diskIO_readThroughput{node_name=\"$host\"}[$interval]) or\nirate(rdsosmetrics_diskIO_readThroughput{node_name=\"$host\"}[5m]))",
+                            "expr": "(rate(node_disk_read_bytes_total{device=~\"$device\", node_name=\"$host\"}[$interval]) or \nirate(node_disk_read_bytes_total{device=~\"$device\", node_name=\"$host\"}[5m])) or\n(rate(rdsosmetrics_diskIO_readThroughput{device=~\"$device\",node_name=\"$host\"}[$interval]) or\nirate(rdsosmetrics_diskIO_readThroughput{device=~\"$device\",node_name=\"$host\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1685,7 +1934,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "rate(node_disk_written_bytes_total{device=~\"$device\", node_name=\"$host\"}[$interval]) or \nirate(node_disk_written_bytes_total{device=~\"$device\", node_name=\"$host\"}[5m]) or\n(rate(rdsosmetrics_diskIO_writeThroughput{node_name=\"$host\"}[$interval]) or\nirate(rdsosmetrics_diskIO_writeThroughput{node_name=\"$host\"}[5m]))",
+                            "expr": "rate(node_disk_written_bytes_total{device=~\"$device\", node_name=\"$host\"}[$interval]) or \nirate(node_disk_written_bytes_total{device=~\"$device\", node_name=\"$host\"}[5m]) or\n(rate(rdsosmetrics_diskIO_writeThroughput{device=~\"$device\",node_name=\"$host\"}[$interval]) or\nirate(rdsosmetrics_diskIO_writeThroughput{device=~\"$device\",node_name=\"$host\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1756,8 +2005,9 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 69
+                        "y": 61
                     },
+                    "hiddenSeries": false,
                     "id": 1007,
                     "legend": {
                         "alignAsTable": true,
@@ -1794,7 +2044,8 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "rate(node_disk_read_time_seconds_total{device=~\"$device\", node_name=\"$host\"}[$interval]) or irate(node_disk_read_time_seconds_total{device=~\"$device\", node_name=\"$host\"}[5m])",
+                            "expr": "rate(node_disk_read_time_seconds_total{device=~\"$device\",node_name=~\"$host\"}[$interval]) or \nirate(node_disk_read_time_seconds_total{device=~\"$device\",node_name=~\"$host\"}[5m]) or\nmax_over_time(rdsosmetrics_diskIO_readIOsPS{device=~\"$device\",node_name=~\"$host\"}[$interval]) or \nmax_over_time(rdsosmetrics_diskIO_readIOsPS{device=~\"$device\",node_name=~\"$host\"}[5m])",
+                            "hide": false,
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Read: {{ device }}",
@@ -1807,7 +2058,8 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "rate(node_disk_write_time_seconds_total{device=~\"$device\", node_name=\"$host\"}[$interval]) or irate(node_disk_write_time_seconds_total{device=~\"$device\", node_name=\"$host\"}[5m])",
+                            "expr": "rate(node_disk_write_time_seconds_total{device=~\"$device\",node_name=~\"$host\"}[$interval]) or \nirate(node_disk_write_time_seconds_total{device=~\"$device\",node_name=~\"$host\"}[5m]) or\nmax_over_time(rdsosmetrics_diskIO_writeIOsPS{device=~\"$device\",node_name=~\"$host\"}[$interval]) or \nmax_over_time(rdsosmetrics_diskIO_writeIOsPS{device=~\"$device\",node_name=~\"$host\"}[5m])",
+                            "hide": false,
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Write: {{ device }}",
@@ -1876,8 +2128,9 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 77
+                        "y": 69
                     },
+                    "hiddenSeries": false,
                     "id": 1008,
                     "legend": {
                         "alignAsTable": true,
@@ -1914,7 +2167,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "rate(node_disk_io_time_seconds_total{device=~\"$device\", node_name=\"$host\"}[$interval]) or \nirate(node_disk_io_time_seconds_total{device=~\"$device\", node_name=\"$host\"}[5m])",
+                            "expr": "rate(node_disk_io_time_seconds_total{device=~\"$device\",node_name=~\"$host\"}[$interval]) or irate(node_disk_io_time_seconds_total{device=~\"$device\",node_name=~\"$host\"}[5m]) or\n(max_over_time(rdsosmetrics_diskIO_util{device=~\"$device\",node_name=~\"$host\"}[$interval]) or max_over_time(rdsosmetrics_diskIO_util{device=~\"$device\",node_name=~\"$host\"}[5m]))/100",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -1985,8 +2238,9 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 77
+                        "y": 69
                     },
+                    "hiddenSeries": false,
                     "id": 1009,
                     "legend": {
                         "alignAsTable": true,
@@ -2108,8 +2362,9 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 85
+                        "y": 77
                     },
+                    "hiddenSeries": false,
                     "id": 1010,
                     "legend": {
                         "alignAsTable": true,
@@ -2219,7 +2474,7 @@
         }
     ],
     "refresh": "1m",
-    "schemaVersion": 20,
+    "schemaVersion": 21,
     "style": "dark",
     "tags": [
         "OS",
@@ -2292,7 +2547,7 @@
                 "allValue": null,
                 "current": {},
                 "datasource": "Prometheus",
-                "definition": "",
+                "definition": "label_values({__name__=~\"node_disk_reads_completed_total|aws_rds_disk_queue_depth_average|rdsosmetrics_diskIO_readLatency\"}, node_name)",
                 "hide": 0,
                 "includeAll": false,
                 "label": "Node Name",
@@ -2317,7 +2572,7 @@
                 "allValue": null,
                 "current": {},
                 "datasource": "Prometheus",
-                "definition": "label_values(node_disk_reads_completed_total{node_name=\"$host\", device!~\"dm-.+\"}, device)",
+                "definition": "label_values({__name__=~\"node_disk_reads_completed_total|rdsosmetrics_diskIO_util\",node_name=~\"$host\", device!~\"dm-.+\"}, device)",
                 "hide": 0,
                 "includeAll": true,
                 "label": "Device",
@@ -2325,7 +2580,7 @@
                 "multiFormat": "regex values",
                 "name": "device",
                 "options": [],
-                "query": "label_values(node_disk_reads_completed_total{node_name=\"$host\", device!~\"dm-.+\"}, device)",
+                "query": "label_values({__name__=~\"node_disk_reads_completed_total|rdsosmetrics_diskIO_util\",node_name=~\"$host\", device!~\"dm-.+\"}, device)",
                 "refresh": 2,
                 "refresh_on_load": false,
                 "regex": "",
