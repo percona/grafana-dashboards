@@ -19,14 +19,10 @@ const DataOutput = props => {
         <a href="#" className={'filter-switchers'} style={{ marginLeft: '20px' }}>
           First Seen
         </a>
-        <a href="#" className={'filter-switchers'} style={{ marginLeft: '20px' }}>
-          Reset All
-        </a>
         <div style={{ marginLeft: 'auto' }}>
           <Pagination defaultCurrent={1} total={30} />
         </div>
         <div style={{ marginLeft: '10px' }}>
-          {/*<Button icon="search">Add column</Button>*/}
           <AddColumn />
         </div>
       </div>
@@ -34,7 +30,7 @@ const DataOutput = props => {
         sizes={[25, 75]}
         minSize={100}
         direction="vertical"
-        cursor="col-resize"
+        cursor="row-resize"
         className={'splitter-wrapper'}
         elementStyle={(dimension, size, gutterSize) => ({ height: `calc(${size}% - ${gutterSize}px)`, 'overflow-y': `scroll` })}
       >

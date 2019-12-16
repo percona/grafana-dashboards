@@ -24,7 +24,9 @@ const checkboxGroup = (form, name, items, showAll) => {
           <span className={'filter-name'}>
             <CheckboxField form={form} name={'testerok'} label={item.value} checked={item.checked} />
           </span>
-          <span className={'percentage'}>{Humanize.formatPercent(item.main_metric_percent)}</span>
+          <span className={'percentage'}>
+            <span>{Humanize.formatPercent(item.main_metric_percent)}</span>
+          </span>
         </div>
       );
     });

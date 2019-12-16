@@ -44,7 +44,16 @@ const getDefaultColumns = selectQuery => {
       // fixed: 'left',
       // sorter: () => {},
       render: (text, record) => {
-        return <span onClick={selectQuery}>{record.fingerprint}</span>;
+        return (
+          <span
+            onClick={() => {
+              console.log(record);
+              selectQuery(record.dimension);
+            }}
+          >
+            {record.fingerprint}
+          </span>
+        );
       },
     },
   ];
@@ -72,5 +81,5 @@ const OverviewTable = props => {
   return <Table dataSource={rows} columns={columns} size={'small'} bordered={true} pagination={false} scroll={{ x: 1300 }} />;
   // return '123';
 };
-//
+
 export default OverviewTable;
