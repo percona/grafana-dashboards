@@ -61,9 +61,11 @@ const OverviewTable = props => {
   useEffect(() => {
     const updateInstances = async () => {
       try {
+        // @ts-ignore
         const result = await OverviewService.getReport();
         setRows(result.rows);
         const columns = getDefaultColumns(context.selectQuery).concat(context.columns.map((key, index) => getColumnName(key, index, result.rows[0])));
+        // @ts-ignore
         setColumns(columns);
         // startLoading(false);
       } catch (e) {
