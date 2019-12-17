@@ -110,7 +110,7 @@ const Filters = () => {
         });
         // @ts-ignore
         return (
-          <form onSubmit={handleSubmit} className="add-instance-form app-theme-dark" style={{ padding: '5px' }}>
+          <form onSubmit={handleSubmit} className="add-instance-form app-theme-dark">
             <div className={'filters-header'} style={{ padding: '5px 0px', height: '50px' }}>
               <h5 style={{ marginRight: '15px' }}>Filters</h5>
               {showAll ? (
