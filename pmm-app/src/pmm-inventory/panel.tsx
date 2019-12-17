@@ -95,6 +95,11 @@ export const nodesColumns = [
     key: 'node_id',
   },
   {
+    title: 'Node Type',
+    dataIndex: 'agentType',
+    key: 'agentType',
+  },
+  {
     title: 'Node Name',
     dataIndex: 'node_name',
     key: 'node_name',
