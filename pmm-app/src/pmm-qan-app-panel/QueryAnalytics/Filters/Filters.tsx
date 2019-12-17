@@ -9,7 +9,7 @@ import { useForm } from 'react-final-form-hooks';
 import { Form as FormFinal } from 'react-final-form';
 import AutocompleteSearch from './AutocompleteSearch';
 
-const checkboxGroup = (form, name, items, showAll) => {
+const checkboxGroup = (form, name, items, showAll, filter) => {
   const itemsList = items
     .filter(item => item.value)
     .filter(item => {
@@ -18,6 +18,7 @@ const checkboxGroup = (form, name, items, showAll) => {
       }
       return true;
     })
+    .filter(item => item.value.toLowerCase().includes(filter.toLowerCase()))
     .map(item => {
       return (
         <div className={'filter-label'}>
@@ -30,12 +31,12 @@ const checkboxGroup = (form, name, items, showAll) => {
         </div>
       );
     });
-  return (
+  return itemsList.length ? (
     <div>
-      {itemsList.length ? <Divider>{name}</Divider> : null}
+      <Divider>{name}</Divider>
       {itemsList}
     </div>
-  );
+  ) : null;
 };
 
 const checkboxGroups = [
@@ -95,7 +96,9 @@ const checkboxGroups = [
 
 const Filters = () => {
   const [showAll, showSetAll] = useState(true);
+  const [filter, setFilter] = useState('');
   const context = useContext(StateContext);
+  console.log(context);
   const filters = FiltersService.getQueryOverviewFiltersList(context.selectedVariables);
   return (
     <FormFinal
@@ -108,7 +111,7 @@ const Filters = () => {
         });
         // @ts-ignore
         return (
-          <form onSubmit={handleSubmit} className="add-instance-form app-theme-dark">
+          <form onSubmit={handleSubmit} className="add-instance-form app-theme-dark" style={{ padding: '5px' }}>
             <div className={'filters-header'} style={{ padding: '5px 0px', height: '50px' }}>
               <h5 style={{ marginRight: '15px' }}>Filters</h5>
               {showAll ? (
@@ -124,10 +127,10 @@ const Filters = () => {
                 Reset All
               </a>
             </div>
-            <AutocompleteSearch />
             <div className={'query-analytics-filters-wrapper'}>
+              <input type="text" className="input-field input-field--dark" onChange={event => setFilter(event.target.value)} />
               {checkboxGroups.map(group => {
-                return checkboxGroup(form, group.name, filters[group.dataKey].name, showAll);
+                return checkboxGroup(form, group.name, filters[group.dataKey].name, showAll, filter);
               })}
             </div>
           </form>
