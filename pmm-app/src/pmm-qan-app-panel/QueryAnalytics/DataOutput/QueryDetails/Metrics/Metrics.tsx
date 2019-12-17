@@ -6,6 +6,8 @@ import { METRIC_CATALOGUE } from './metric-catalogue';
 import Icon from 'antd/es/icon';
 import Tooltip from 'antd/es/tooltip';
 import MetricsService from './Metrics.service';
+import LatencyChart from '../../../../../react-plugins-deps/components/LatencyChart/LatencyChart';
+import PolygonChart from '../../../../../react-plugins-deps/components/PolygonChart/PolygonChart';
 
 const getPercentOfTotal = (current, total) => {
   const key = current.sum ? 'sum' : 'sum_per_sec';
@@ -75,6 +77,7 @@ const columns = [
     width: '25%',
     render: (text, item, index) => {
       // {{ isRate ? (currentMetric?.stats?.rate | humanize: pipeInfo?.ratePipe) : '0' }}
+      console.log(item.sparkline);
 
       // @ts-ignore
       return (
@@ -86,7 +89,7 @@ const columns = [
           }}
         >
           {<span>{item.isRate ? item.metric.rate : '0'}</span>}
-          {/*{item.sparkline && <PolygonChart data={item.sparkline as object[]} width={150} ykey={'metric'} />}*/}
+          {item.sparkline && <PolygonChart data={item.sparkline as object[]} width={150} ykey={'metric'} />}
         </div>
       );
     },

@@ -18,12 +18,7 @@ const getDefaultColumns = selectQuery => {
       key: 'rowNumber',
       width: '30px',
       // fixed: 'left',
-      render: (text, record, index) => {
-        if (index === 0) {
-          return '';
-        }
-        return index;
-      },
+      render: (text, record, index) => <div style={{ wordWrap: 'normal', wordBreak: 'normal' }}>{index === 0 ? '' : index}</div>,
     },
     {
       title: () => {

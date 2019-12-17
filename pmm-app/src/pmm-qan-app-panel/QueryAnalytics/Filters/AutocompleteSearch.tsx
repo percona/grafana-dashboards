@@ -75,7 +75,7 @@ const getOptions = options => {
 
 const AutocompleteSearch = props => {
   const context = useContext(StateContext);
-
+  const result = FiltersService.getAutocompleteFiltersList(context.selectedVariables);
   const [{ options, selected }, setFilters] = useState({
     options: [],
     selected: [],
@@ -83,6 +83,7 @@ const AutocompleteSearch = props => {
 
   useEffect(() => {
     // @ts-ignore
+    console.log(context.selectedVariables);
     setFilters(FiltersService.getAutocompleteFiltersList(context.selectedVariables));
   }, context.selectedVariables);
 
@@ -92,11 +93,11 @@ const AutocompleteSearch = props => {
         mode="tags"
         style={{ width: '100%' }}
         placeholder="Search by..."
-        value={selected}
+        value={result.selected}
         onSelect={context.addFilter}
         onDeselect={context.removeFilter}
       >
-        {getOptions(options)}
+        {getOptions(result.options)}
       </Select>
     </div>
   );
