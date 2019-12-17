@@ -13,7 +13,7 @@
                 "showIn": 0,
                 "tags": [
                     "pmm_annotation",
-                    "$host",
+                    "$node_name",
                     "$service"
                 ],
                 "type": "tags"
@@ -205,7 +205,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "avg((sum(rate(process_cpu_seconds_total{job=~\".*exporter.*\",node_name=~\"$host\"}[$interval])) by (node_name) or \nsum(irate(process_cpu_seconds_total{job=~\".*exporter.*\",node_name=~\"$host\"}[5m])) by (node_name)) / \ncount(node_cpu_seconds_total{mode=\"user\",node_name=~\"$host\"}) by (node_name)) by ()*100",
+                    "expr": "avg((sum(rate(process_cpu_seconds_total{job=~\".*exporter.*\",node_name=~\"$node_name\"}[$interval])) by (node_name) or \nsum(irate(process_cpu_seconds_total{job=~\".*exporter.*\",node_name=~\"$node_name\"}[5m])) by (node_name)) / \ncount(node_cpu_seconds_total{mode=\"user\",node_name=~\"$node_name\"}) by (node_name)) by ()*100",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -307,7 +307,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "avg(sum(process_resident_memory_bytes{job=~\".*exporter.*\",node_name=~\"$host\"}) by (node_name))",
+                    "expr": "avg(sum(process_resident_memory_bytes{job=~\".*exporter.*\",node_name=~\"$node_name\"}) by (node_name))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -405,7 +405,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "count(count(process_open_fds{job=~\".*exporter.*\",node_name=~\"$host\"}) by (node_name))",
+                    "expr": "count(count(process_open_fds{job=~\".*exporter.*\",node_name=~\"$node_name\"}) by (node_name))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -503,7 +503,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "count(process_open_fds{job=~\".*exporter.*\",node_name=~\"$host\"}) ",
+                    "expr": "count(process_open_fds{job=~\".*exporter.*\",node_name=~\"$node_name\"}) ",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -593,7 +593,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "(sum(rate(process_cpu_seconds_total{job=~\".*exporter.*\",node_name=~\"$host\"}[$interval])) by (node_name) or \nsum(irate(process_cpu_seconds_total{job=~\".*exporter.*\",node_name=~\"$host\"}[5m])) by (node_name)) / \ncount(node_cpu_seconds_total{job=~\".*exporter.*\",node_name=~\"$host\"}) by (node_name) *100",
+                    "expr": "(sum(rate(process_cpu_seconds_total{job=~\".*exporter.*\",node_name=~\"$node_name\"}[$interval])) by (node_name) or \nsum(irate(process_cpu_seconds_total{job=~\".*exporter.*\",node_name=~\"$node_name\"}[5m])) by (node_name)) / \ncount(node_cpu_seconds_total{job=~\".*exporter.*\",node_name=~\"$node_name\"}) by (node_name) *100",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -701,7 +701,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "sum(max_over_time(process_resident_memory_bytes{job=~\".*exporter.*\",node_name=~\"$host\"}[$interval]) or max_over_time(process_resident_memory_bytes{job=~\".*exporter.*\",node_name=~\"$host\"}[5m])) by (node_name)",
+                    "expr": "sum(max_over_time(process_resident_memory_bytes{job=~\".*exporter.*\",node_name=~\"$node_name\"}[$interval]) or max_over_time(process_resident_memory_bytes{job=~\".*exporter.*\",node_name=~\"$node_name\"}[5m])) by (node_name)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -824,7 +824,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "(avg(rate(process_cpu_seconds_total{job=~\".*exporter.*\",node_name=~\"$host\"}[$interval])) by (agent_type) or \navg(irate(process_cpu_seconds_total{job=~\".*exporter.*\",node_name=~\"$host\"}[5m])) by (agent_type))",
+                    "expr": "(avg(rate(process_cpu_seconds_total{job=~\".*exporter.*\",node_name=~\"$node_name\"}[$interval])) by (agent_type) or \navg(irate(process_cpu_seconds_total{job=~\".*exporter.*\",node_name=~\"$node_name\"}[5m])) by (agent_type))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -932,7 +932,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "avg(max_over_time(process_resident_memory_bytes{job=~\".*exporter.*\",node_name=~\"$host\"}[$interval]) or max_over_time(process_resident_memory_bytes{job=~\".*exporter.*\",node_name=~\"$host\"}[5m])) by (agent_type)",
+                    "expr": "avg(max_over_time(process_resident_memory_bytes{job=~\".*exporter.*\",node_name=~\"$node_name\"}[$interval]) or max_over_time(process_resident_memory_bytes{job=~\".*exporter.*\",node_name=~\"$node_name\"}[5m])) by (agent_type)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -993,12 +993,12 @@
             },
             "id": 2220,
             "panels": [],
-            "repeat": "host",
+            "repeat": "node_name",
             "title": "",
             "type": "row"
         },
         {
-            "content": "$host",
+            "content": "$node_name",
             "datasource": null,
             "gridPos": {
                 "h": 2,
@@ -1111,7 +1111,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "((sum(rate(process_cpu_seconds_total{job=~\".*exporter.*\",node_name=~\"$host\"}[$interval])) by (node_name) \nor sum(irate(process_cpu_seconds_total{job=~\".*exporter.*\",node_name=~\"$host\"}[5m])) by (node_name)) \n/ count(node_cpu_seconds_total{node_name=~\"$host\",mode=\"user\"}) by (node_name)*100) or \nsum by () ((max_over_time(node_cpu_average{node_name=~\"$host\", mode=\"total\"}[$interval]) or \nmax_over_time(node_cpu_average{node_name=~\"$host\", mode=\"total\"}[5m])))",
+                    "expr": "((sum(rate(process_cpu_seconds_total{job=~\".*exporter.*\",node_name=~\"$node_name\"}[$interval])) by (node_name) \nor sum(irate(process_cpu_seconds_total{job=~\".*exporter.*\",node_name=~\"$node_name\"}[5m])) by (node_name)) \n/ count(node_cpu_seconds_total{node_name=~\"$node_name\",mode=\"user\"}) by (node_name)*100) or \nsum by () ((max_over_time(node_cpu_average{node_name=~\"$node_name\", mode=\"total\"}[$interval]) or \nmax_over_time(node_cpu_average{node_name=~\"$node_name\", mode=\"total\"}[5m])))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1218,7 +1218,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "sum(process_resident_memory_bytes{job=~\".*exporter.*\",node_name=~\"$host\"}) by (node_name)",
+                    "expr": "sum(process_resident_memory_bytes{job=~\".*exporter.*\",node_name=~\"$node_name\"}) by (node_name)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1321,7 +1321,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "count(process_open_fds{job=~\".*exporter.*\",node_name=~\"$host\"}) ",
+                    "expr": "count(process_open_fds{job=~\".*exporter.*\",node_name=~\"$node_name\"}) ",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1398,7 +1398,7 @@
             ],
             "targets": [
                 {
-                    "expr": "count(process_cpu_seconds_total{node_name=~\"$host\"}) by (agent_type)",
+                    "expr": "count(process_cpu_seconds_total{node_name=~\"$node_name\"}) by (agent_type)",
                     "format": "table",
                     "instant": true,
                     "interval": "",
@@ -1490,7 +1490,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "(count(node_cpu_seconds_total{node_name=~\"$host\",mode=~\"user\"}) or \n(1-absent(node_cpu_seconds_total{node_name=~\"$host\",mode=~\"user\"}))) + sum(rdsosmetrics_General_numVCPUs{node_name=~\"$host\"} or up * 0)",
+                    "expr": "(count(node_cpu_seconds_total{node_name=~\"$node_name\",mode=~\"user\"}) or \n(1-absent(node_cpu_seconds_total{node_name=~\"$node_name\",mode=~\"user\"}))) + sum(rdsosmetrics_General_numVCPUs{node_name=~\"$node_name\"} or up * 0)",
                     "format": "time_series",
                     "instant": true,
                     "interval": "$interval",
@@ -1591,7 +1591,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "node_memory_MemTotal_bytes{node_name=~\"$host\"}",
+                    "expr": "node_memory_MemTotal_bytes{node_name=~\"$node_name\"}",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1680,7 +1680,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "sum(process_open_fds{node_name=~\"$host\"})",
+                    "expr": "sum(process_open_fds{node_name=~\"$node_name\"})",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1720,7 +1720,7 @@
             "type": "row"
         },
         {
-            "content": "$host",
+            "content": "$node_name",
             "datasource": null,
             "gridPos": {
                 "h": 2,
@@ -1839,7 +1839,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "((sum(rate(process_cpu_seconds_total{job=~\".*exporter.*\",node_name=~\"$host\"}[$interval])) by (node_name) \nor sum(irate(process_cpu_seconds_total{job=~\".*exporter.*\",node_name=~\"$host\"}[5m])) by (node_name)) \n/ count(node_cpu_seconds_total{node_name=~\"$host\",mode=\"user\"}) by (node_name)*100) or \nsum by () ((max_over_time(node_cpu_average{node_name=~\"$host\", mode=\"total\"}[$interval]) or \nmax_over_time(node_cpu_average{node_name=~\"$host\", mode=\"total\"}[5m])))",
+                    "expr": "((sum(rate(process_cpu_seconds_total{job=~\".*exporter.*\",node_name=~\"$node_name\"}[$interval])) by (node_name) \nor sum(irate(process_cpu_seconds_total{job=~\".*exporter.*\",node_name=~\"$node_name\"}[5m])) by (node_name)) \n/ count(node_cpu_seconds_total{node_name=~\"$node_name\",mode=\"user\"}) by (node_name)*100) or \nsum by () ((max_over_time(node_cpu_average{node_name=~\"$node_name\", mode=\"total\"}[$interval]) or \nmax_over_time(node_cpu_average{node_name=~\"$node_name\", mode=\"total\"}[5m])))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1949,7 +1949,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "sum(process_resident_memory_bytes{job=~\".*exporter.*\",node_name=~\"$host\"}) by (node_name)",
+                    "expr": "sum(process_resident_memory_bytes{job=~\".*exporter.*\",node_name=~\"$node_name\"}) by (node_name)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2055,7 +2055,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "count(process_open_fds{job=~\".*exporter.*\",node_name=~\"$host\"}) ",
+                    "expr": "count(process_open_fds{job=~\".*exporter.*\",node_name=~\"$node_name\"}) ",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2135,7 +2135,7 @@
             ],
             "targets": [
                 {
-                    "expr": "count(process_cpu_seconds_total{node_name=~\"$host\"}) by (agent_type)",
+                    "expr": "count(process_cpu_seconds_total{node_name=~\"$node_name\"}) by (agent_type)",
                     "format": "table",
                     "instant": true,
                     "interval": "",
@@ -2230,7 +2230,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "(count(node_cpu_seconds_total{node_name=~\"$host\",mode=~\"user\"}) or \n(1-absent(node_cpu_seconds_total{node_name=~\"$host\",mode=~\"user\"}))) + sum(rdsosmetrics_General_numVCPUs{node_name=~\"$host\"} or up * 0)",
+                    "expr": "(count(node_cpu_seconds_total{node_name=~\"$node_name\",mode=~\"user\"}) or \n(1-absent(node_cpu_seconds_total{node_name=~\"$node_name\",mode=~\"user\"}))) + sum(rdsosmetrics_General_numVCPUs{node_name=~\"$node_name\"} or up * 0)",
                     "format": "time_series",
                     "instant": true,
                     "interval": "$interval",
@@ -2334,7 +2334,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "node_memory_MemTotal_bytes{node_name=~\"$host\"}",
+                    "expr": "node_memory_MemTotal_bytes{node_name=~\"$node_name\"}",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2426,7 +2426,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "sum(process_open_fds{node_name=~\"$host\"})",
+                    "expr": "sum(process_open_fds{node_name=~\"$node_name\"})",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2529,7 +2529,7 @@
                 "label": "Node Name",
                 "multi": true,
                 "multiFormat": "regex values",
-                "name": "host",
+                "name": "node_name",
                 "options": [],
                 "query": "label_values({__name__=~\"node_load1|process_start_time_seconds\"}, node_name)",
                 "refresh": 2,
@@ -2547,14 +2547,14 @@
                 "allValue": null,
                 "current": {},
                 "datasource": "Prometheus",
-                "definition": "label_values(process_start_time_seconds{node_name=~\"$host\"}, service_name)",
+                "definition": "label_values(process_start_time_seconds{node_name=~\"$node_name\"}, service_name)",
                 "hide": 2,
                 "includeAll": true,
                 "label": "Service Name",
                 "multi": true,
                 "name": "service",
                 "options": [],
-                "query": "label_values(process_start_time_seconds{node_name=~\"$host\"}, service_name)",
+                "query": "label_values(process_start_time_seconds{node_name=~\"$node_name\"}, service_name)",
                 "refresh": 2,
                 "regex": "",
                 "skipUrlSync": false,
