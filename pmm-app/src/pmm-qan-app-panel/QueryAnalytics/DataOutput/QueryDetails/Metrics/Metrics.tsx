@@ -2,10 +2,10 @@ import { Table } from 'antd';
 import React, { useEffect, useState } from 'react';
 // import PolygonChart from '../../../../react-plugins-deps/components/PolygonChart/PolygonChart';
 // import LatencyChart from '../../../../react-plugins-deps/components/LatencyChart/LatencyChart';
-import { METRIC_CATALOGUE } from '../data/metric-catalogue';
+import { METRIC_CATALOGUE } from './metric-catalogue';
 import Icon from 'antd/es/icon';
 import Tooltip from 'antd/es/tooltip';
-import MetricsService from './MetricsService';
+import MetricsService from './Metrics.service';
 
 const getPercentOfTotal = (current, total) => {
   const key = current.sum ? 'sum' : 'sum_per_sec';
@@ -141,6 +141,7 @@ const Metrics = props => {
         labels: labels,
         tables: tables,
       });
+      console.log('----', result, processMetrics(metrics));
       setMetrics(result);
     };
     getMetrics();

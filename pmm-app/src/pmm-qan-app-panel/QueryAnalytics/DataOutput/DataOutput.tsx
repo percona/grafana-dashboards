@@ -5,6 +5,7 @@ import Split from 'react-split';
 import { StateContext } from '../StateContext';
 import './DataOutput.scss';
 import { Button, Pagination } from 'antd';
+import AddColumn from './QueryAnalyticsOverview/AddColumn';
 const DataOutput = props => {
   const context = useContext(StateContext);
 
@@ -25,7 +26,8 @@ const DataOutput = props => {
           <Pagination defaultCurrent={1} total={30} />
         </div>
         <div style={{ marginLeft: '10px' }}>
-          <Button icon="search">Add column</Button>
+          {/*<Button icon="search">Add column</Button>*/}
+          <AddColumn />
         </div>
       </div>
       <Split

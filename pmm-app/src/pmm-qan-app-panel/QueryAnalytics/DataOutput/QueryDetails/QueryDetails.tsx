@@ -3,7 +3,7 @@ import React from 'react';
 import { Tabs } from 'antd';
 import './QueryDetails.scss';
 import Fingerprint from './Fingerprint';
-import Explain from './Explain/Explain';
+import Explain from './Explain/Explain.container';
 import Example from './Example/Example';
 import Metrics from './Metrics/Metrics';
 import TableCreate from './Table/Table';
@@ -12,11 +12,11 @@ const { TabPane } = Tabs;
 
 const QueryDetails = props => {
   const MetricsProps = {
-    filterBy: '80295d1d2720d4515b05d648e8caa82f',
+    filterBy: '1087289585964552152',
     groupBy: 'queryid',
     labels: [],
-    periodStartFrom: '2019-11-18T19:54:22+00:00',
-    periodStartTo: '2019-11-19T07:54:22+00:00',
+    periodStartFrom: '2019-12-16T12:09:16+00:00',
+    periodStartTo: '2019-12-17T00:09:16+00:00',
     tables: [],
   };
   return (
@@ -27,7 +27,7 @@ const QueryDetails = props => {
       />
 
       <div className="details-tabs">
-        <Tabs defaultActiveKey="1" onChange={() => {}}>
+        <Tabs defaultActiveKey="1" onChange={() => {}} tabPosition={'left'}>
           <TabPane tab="Details" key="1">
             <div className="details-table">
               <div className="details-table-content">
@@ -53,7 +53,14 @@ const QueryDetails = props => {
             />
           </TabPane>
           <TabPane tab="Explain" key="3">
-            <Explain />
+            <Explain
+              filterBy={MetricsProps.filterBy}
+              groupBy={MetricsProps.groupBy}
+              periodStartFrom={MetricsProps.periodStartFrom}
+              periodStartTo={MetricsProps.periodStartTo}
+              labels={MetricsProps.labels}
+              tables={MetricsProps.tables}
+            />
           </TabPane>
           <TabPane tab="Tables" key="4">
             <TableCreate />
