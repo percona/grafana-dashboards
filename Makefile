@@ -8,6 +8,9 @@ all: build pack disable install enable
 build:
 	cd pmm-app && npm i && npm run build && cd ..
 
+coverage:
+	cd pmm-app && npm i && npm run coverage && npm run build && cd ..
+
 pack:
 	tar czf pmm-app.tar.gz pmm-app
 
@@ -29,7 +32,7 @@ disable:
 enable:
 	curl -X POST --retry-delay 5 --retry 5 'http://admin:admin@localhost/graph/api/plugins/pmm-app/settings' -d 'enabled=true'
 
-test: build pack disable install enable
+test: coverage build pack disable install enable
 
 clean:
 	rm -r pmm-app/dist/

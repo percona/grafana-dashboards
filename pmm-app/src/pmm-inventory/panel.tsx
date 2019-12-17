@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Tabs } from 'antd';
-import '../react-plugins-deps/styles.scss';
-import '../react-plugins-deps/style.less';
-import './panel.scss';
 import InventoryService from './InventoryService';
 import { InventoryDataService } from './DataService';
 
@@ -10,7 +7,7 @@ const { TabPane } = Tabs;
 
 const getCustomLabels = customLabels => customLabels.map(label => <span>{`${label.key}: ${label.value}`}</span>);
 
-const servicesColumns = [
+export const servicesColumns = [
   {
     title: 'ID',
     dataIndex: 'service_id',
@@ -57,7 +54,7 @@ const servicesColumns = [
     },
   },
 ];
-const agentsColumns = [
+export const agentsColumns = [
   {
     title: 'ID',
     dataIndex: 'agent_id',
@@ -91,7 +88,7 @@ const agentsColumns = [
     },
   },
 ];
-const nodesColumns = [
+export const nodesColumns = [
   {
     title: 'ID',
     dataIndex: 'node_id',
