@@ -19,15 +19,22 @@ export const StateContext = React.createContext(initialState);
 const DEFAULT_COLUMNS = ['load', 'num_queries', 'query_time'];
 
 class ContextActions {
-  public selectedVariables: {};
-  public columns: any[];
-  public filterBy: any;
+  selectedVariables: {};
+  columns: any[];
+  filterBy: any;
   constructor(query) {
     this.selectedVariables = this.setFilters(query);
     this.columns = DEFAULT_COLUMNS;
     this.filterBy = query.get('filter_by');
   }
 
+  getCurrentState() {
+    return {
+      selectedVariables: Object.assign({}, this.selectedVariables),
+      columns: this.columns,
+      filterBy: this.filterBy,
+    };
+  }
   private setFilters(query) {
     const filtersListNames = ['host', 'city', 'cluster', 'az'];
 
@@ -55,7 +62,10 @@ class ContextActions {
 
   private reload() {
     const newUrl = this.generateURL();
-    window.location.href = newUrl;
+    // window.location.href = newUrl;
+    // history.push(newUrl);
+    console.log(newUrl);
+    history.pushState({}, 'test', newUrl);
   }
 
   private changeFilter(filter, isAdding) {
@@ -105,8 +115,15 @@ export const UrlParametersProvider = ({ children }) => {
   const contextData = new ContextActions(query);
   // Initial setup
   const [state, setState] = useState({
-    addFilter: contextData.addFilter.bind(contextData),
-    removeFilter: contextData.removeFilter.bind(contextData),
+    addFilter: filter => {
+      contextData.addFilter(filter);
+      setState({ ...state, ...contextData.getCurrentState() });
+    },
+    removeFilter: filter => {
+      console.log('remove');
+      contextData.removeFilter(filter);
+      setState({ ...state, ...contextData.getCurrentState() });
+    },
     selectQuery: contextData.selectQuery.bind(contextData),
     columns: contextData.columns,
     filterBy: contextData.filterBy,

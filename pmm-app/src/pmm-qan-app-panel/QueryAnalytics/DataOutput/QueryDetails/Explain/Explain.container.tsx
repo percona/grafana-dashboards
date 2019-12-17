@@ -1,4 +1,4 @@
-import {useContext, useEffect, useState} from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Explain from './Explain';
 import * as React from 'react';
 import ExplainService from './Explain.service';
