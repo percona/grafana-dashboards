@@ -62,15 +62,15 @@ const dataRetentionValues: MetricsResolutionInterface[] = [
 ];
 
 export const getMetricsResolutionValues = metricsResolutions => {
-  if (metricsResolutions.hr === '5s' && metricsResolutions.mr === '5s' && metricsResolutions.lr === '60s') {
-    return 2;
-  } else if (metricsResolutions.hr === '5s' && metricsResolutions.mr === '30s' && metricsResolutions.lr === '300s') {
-    return 1;
-  } else if (metricsResolutions.hr === '60s' && metricsResolutions.mr === '180s' && metricsResolutions.lr === '300s') {
-    return 0;
-  } else {
-    return 0;
-  }
+  let metricsIndex = 0;
+
+  dataRetentionValues.forEach((resolution, index) => {
+    if (resolution.hr === metricsResolutions.hr && resolution.mr === metricsResolutions.mr && resolution.lr === metricsResolutions.lr) {
+      metricsIndex = index;
+    }
+  });
+
+  return metricsIndex;
 };
 
 interface MetricsResolutionInterface {
@@ -95,13 +95,9 @@ const SettingsPart = props => {
       metrics_resolutions: dataRetentionValues[values.metrics_resolutions_slider],
     };
 
-    if (values.telemetry_enabled) {
-      updatedSettings.disable_telemetry = false;
-      updatedSettings.enable_telemetry = true;
-    } else {
-      updatedSettings.disable_telemetry = true;
-      updatedSettings.enable_telemetry = false;
-    }
+    updatedSettings.disable_telemetry = !values.telemetry_enabled;
+    updatedSettings.enable_telemetry = values.telemetry_enabled;
+
     setLoading(true);
     try {
       await SettingsService.setSettings(updatedSettings);
