@@ -1,7 +1,8 @@
-import { metricsMock } from './metrics-mock';
+import { apiRequest } from '../../../../../react-plugins-deps/components/helpers/api';
+
 class MetricsService {
   static async getMetrics({ filterBy, groupBy, labels, periodStartFrom, periodStartTo, tables }) {
-    const data = {
+    const body = {
       filter_by: filterBy,
       group_by: groupBy,
       labels: labels || [],
@@ -10,13 +11,7 @@ class MetricsService {
       tables: tables || [],
     };
 
-    const response = await fetch('/v0/qan/ObjectDetails/GetMetrics', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    });
-    console.log(response);
-    return metricsMock;
-    // return response.json();
+    return apiRequest.post<any, any>('/v0/qan/ObjectDetails/GetMetrics', body);
   }
 }
 

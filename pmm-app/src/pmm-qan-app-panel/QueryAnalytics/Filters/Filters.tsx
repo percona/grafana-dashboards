@@ -3,7 +3,7 @@ import Humanize from '../../../react-plugins-deps/helpers/humanize';
 import './Filters.scss';
 import { Divider } from 'antd';
 import { StateContext } from '../StateContext';
-import FiltersService from '../storage/filtersService';
+import FiltersService from './Filters.service';
 import { CheckboxField } from '../../../react-plugins-deps/components/FieldsComponents/Checkbox/Checkbox';
 import { useForm } from 'react-final-form-hooks';
 import { Form as FormFinal } from 'react-final-form';

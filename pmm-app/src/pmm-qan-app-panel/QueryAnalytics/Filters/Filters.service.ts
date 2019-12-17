@@ -433,21 +433,6 @@ class FiltersService {
     });
   }
 
-  async getDetailedFilters() {
-    return fetch('https://pmmdemo.percona.com/v0/qan/ObjectDetails/GetLabels', {
-      method: 'POST',
-      body: JSON.stringify({
-        main_metric_name: '',
-        period_start_from: '2019-10-22T08:52:19+00:00',
-        period_start_to: '2019-10-22T20:52:19+00:00',
-        labels: [],
-        tables: [],
-        group_by: '',
-        filter_by: '',
-      }),
-    });
-  }
-
   async getQueryDetailsFiltersList() {
     const selected = [];
     const notSelected = [];
