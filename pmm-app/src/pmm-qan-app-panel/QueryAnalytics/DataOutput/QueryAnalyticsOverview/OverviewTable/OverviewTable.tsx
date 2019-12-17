@@ -1,14 +1,14 @@
 import { Table, Select } from 'antd';
-import React, { useContext } from 'react';
-import { tableData } from '../mock-data/table-data';
+import React, { useContext, useEffect, useState } from 'react';
 import './OverviewTable.scss';
 import { StateContext } from '../../../StateContext';
 import { getColumnName } from './Column';
+import OverviewService from './Overview.service';
 
 const { Option } = Select;
 
 const CurrentGroupBy = 'queryid';
-const TOTAL = tableData.rows[0];
+// const TOTAL = tableData.rows[0]x;
 //
 const getDefaultColumns = selectQuery => {
   return [
@@ -51,10 +51,25 @@ const getDefaultColumns = selectQuery => {
 };
 const OverviewTable = props => {
   const context = useContext(StateContext);
-  const columns = getDefaultColumns(context.selectQuery).concat(context.columns.map((key, index) => getColumnName(key, index, TOTAL)));
+  const [rows, setRows] = useState([]);
+  const [columns, setColumns] = useState([]);
 
+  useEffect(() => {
+    const updateInstances = async () => {
+      try {
+        const result = await OverviewService.getReport();
+        setRows(result.rows);
+        const columns = getDefaultColumns(context.selectQuery).concat(context.columns.map((key, index) => getColumnName(key, index, result.rows[0])));
+        setColumns(columns);
+        // startLoading(false);
+      } catch (e) {
+        // startLoading(false);
+      }
+    };
+    updateInstances().then(r => {});
+  }, []);
   // // @ts-ignore
-  return <Table dataSource={tableData.rows} columns={columns} size={'small'} bordered={true} pagination={false} scroll={{ x: 1300 }} />;
+  return <Table dataSource={rows} columns={columns} size={'small'} bordered={true} pagination={false} scroll={{ x: 1300 }} />;
   // return '123';
 };
 //

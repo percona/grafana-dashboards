@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Select } from 'antd';
 import { StateContext } from '../StateContext';
-import FiltersService from '../storage/filtersService';
+import FiltersService from './Filters.service';
 
 const { Option } = Select;
 
@@ -64,7 +64,6 @@ const getOptions = options => {
   return options
     .map((option, index) => {
       const groupName = groupNames.filter(group => group.dataKey === option.key.split(':')[0]);
-      console.log(groupName);
       // if (!groupName[0]) {
       //   return null;
       // }
