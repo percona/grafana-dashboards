@@ -17,7 +17,7 @@ interface InstanceData {
   discoverName?: string;
 }
 
-const extractCredentials = credentials => {
+export const extractCredentials = credentials => {
   return {
     service_name: !credentials.isRDS ? credentials.address : credentials.instance_id,
     port: credentials.port,
@@ -30,7 +30,7 @@ const extractCredentials = credentials => {
     az: credentials.az,
   };
 };
-const getInstanceData = (instanceType, credentials) => {
+export const getInstanceData = (instanceType, credentials) => {
   const instance: InstanceData = {};
   instance.remoteInstanceCredentials = credentials ? extractCredentials(credentials) : {};
   switch (instanceType) {
@@ -170,10 +170,8 @@ const AddRemoteInstance = props => {
               <span></span>
               <InputField form={form} name="address" placeholder="*Hostname" required={true} readonly={remoteInstanceCredentials.isRDS} />
               <span className="description">Public DNS hostname of your instance</span>
-
-              {/*<InputField form={form} name="service_name" placeholder="Service name (default: Hostname)" />*/}
-              {/*<span className="description">Service name to use.</span>*/}
-
+              <InputField form={form} name="service_name" placeholder="Service name (default: Hostname)" />
+              <span className="description">Service name to use.</span>
               <InputField
                 form={form}
                 name="port"
@@ -189,25 +187,6 @@ const AddRemoteInstance = props => {
 
               <PasswordField form={form} name="password" placeholder="*Password" required={true} />
               <span className="description">Your database password</span>
-              {/*// TODO: remove hardcode and add real check*/}
-              {/*{props.instance.type === 'mysql' ? (*/}
-              {/*  <>*/}
-              {/*    <CheckboxField form={form} label={'RDS database'} name="isRDS" />*/}
-              {/*    <span className="description"></span>*/}
-              {/*  </>*/}
-              {/*) : null}*/}
-              {/*{form.getFieldState('isRDS') && (form.getFieldState('isRDS') as any).value ? (*/}
-              {/*  <>*/}
-              {/*    <InputField form={form} name="aws_access_key" placeholder="AWS_ACCESS_KEY" required={true} />*/}
-              {/*    <span className="description">AWS access key</span>*/}
-
-              {/*    <PasswordField form={form} name="aws_secret_key" placeholder="AWS_SECRET_KEY" required={true} />*/}
-              {/*    <span className="description">AWS secret key</span>*/}
-
-              {/*    <InputField form={form} name="instance_id" placeholder="Instance ID" required={true} />*/}
-              {/*    <span className="description">Instance ID</span>*/}
-              {/*  </>*/}
-              {/*) : null}*/}
             </div>
             <div className="add-instance-panel">
               <h6>Labels</h6>
