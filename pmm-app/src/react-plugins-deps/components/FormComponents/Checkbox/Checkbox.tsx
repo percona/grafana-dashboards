@@ -20,7 +20,7 @@ export const CheckboxField = ({ name, label, required, form, ...rest }: Checkbox
     <label className="checkbox-container checkbox-container--main">
       <input {...field.input} type="checkbox" checked={field.input.value} />
       <span className="checkbox-container__checkmark"></span>
-      <Text className="checkbox-container__label-text" ellipsis={{ rows: 1, expandable: true }}>
+      <Text className="checkbox-container__label-text" ellipsis={true}>
         {label}
       </Text>
     </label>
