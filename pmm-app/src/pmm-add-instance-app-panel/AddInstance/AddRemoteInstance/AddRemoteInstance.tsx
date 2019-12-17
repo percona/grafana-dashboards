@@ -19,9 +19,9 @@ interface InstanceData {
 
 const extractCredentials = credentials => {
   return {
-    service_name: credentials.address,
+    service_name: !credentials.isRDS ? credentials.address : credentials.instance_id,
     port: credentials.port,
-    address: credentials.address,
+    address: !credentials.isRDS ? credentials.address : credentials.instance_id,
     isRDS: credentials.isRDS,
     region: credentials.region,
     aws_access_key: credentials.aws_access_key,
@@ -168,13 +168,19 @@ const AddRemoteInstance = props => {
             <div className="add-instance-panel">
               <h6>Main details</h6>
               <span></span>
-              <InputField form={form} name="address" placeholder="*Hostname" required={true} />
+              <InputField form={form} name="address" placeholder="*Hostname" required={true} readonly={remoteInstanceCredentials.isRDS} />
               <span className="description">Public DNS hostname of your instance</span>
 
-              <InputField form={form} name="service_name" placeholder="Service name (default: Hostname)" />
-              <span className="description">Service name to use.</span>
+              {/*<InputField form={form} name="service_name" placeholder="Service name (default: Hostname)" />*/}
+              {/*<span className="description">Service name to use.</span>*/}
 
-              <InputField form={form} name="port" placeholder={`Port (default: ${remoteInstanceCredentials.port} )`} required={true} />
+              <InputField
+                form={form}
+                name="port"
+                placeholder={`Port (default: ${remoteInstanceCredentials.port} )`}
+                required={true}
+                readonly={remoteInstanceCredentials.isRDS}
+              />
               <span className="description">Port your service is listening on</span>
             </div>
             <div className="add-instance-panel">
@@ -184,24 +190,24 @@ const AddRemoteInstance = props => {
               <PasswordField form={form} name="password" placeholder="*Password" required={true} />
               <span className="description">Your database password</span>
               {/*// TODO: remove hardcode and add real check*/}
-              {props.instance.type === 'mysql' ? (
-                <>
-                  <CheckboxField form={form} label={'RDS database'} name="isRDS" />
-                  <span className="description"></span>
-                </>
-              ) : null}
-              {form.getFieldState('isRDS') && (form.getFieldState('isRDS') as any).value ? (
-                <>
-                  <InputField form={form} name="aws_access_key" placeholder="AWS_ACCESS_KEY" required={true} />
-                  <span className="description">AWS access key</span>
+              {/*{props.instance.type === 'mysql' ? (*/}
+              {/*  <>*/}
+              {/*    <CheckboxField form={form} label={'RDS database'} name="isRDS" />*/}
+              {/*    <span className="description"></span>*/}
+              {/*  </>*/}
+              {/*) : null}*/}
+              {/*{form.getFieldState('isRDS') && (form.getFieldState('isRDS') as any).value ? (*/}
+              {/*  <>*/}
+              {/*    <InputField form={form} name="aws_access_key" placeholder="AWS_ACCESS_KEY" required={true} />*/}
+              {/*    <span className="description">AWS access key</span>*/}
 
-                  <PasswordField form={form} name="aws_secret_key" placeholder="AWS_SECRET_KEY" required={true} />
-                  <span className="description">AWS secret key</span>
+              {/*    <PasswordField form={form} name="aws_secret_key" placeholder="AWS_SECRET_KEY" required={true} />*/}
+              {/*    <span className="description">AWS secret key</span>*/}
 
-                  <InputField form={form} name="instance_id" placeholder="Instance ID" required={true} />
-                  <span className="description">Instance ID</span>
-                </>
-              ) : null}
+              {/*    <InputField form={form} name="instance_id" placeholder="Instance ID" required={true} />*/}
+              {/*    <span className="description">Instance ID</span>*/}
+              {/*  </>*/}
+              {/*) : null}*/}
             </div>
             <div className="add-instance-panel">
               <h6>Labels</h6>

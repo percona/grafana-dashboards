@@ -14,14 +14,23 @@ interface InputFieldInterface {
   text?: string;
   options?: any;
   defaultValue?: any;
+  readonly?: boolean;
 }
 
-export const InputField = ({ name, placeholder, required, form, style, wrapperStyle }: InputFieldInterface) => {
+export const InputField = ({ name, placeholder, required, form, style, wrapperStyle, readonly }: InputFieldInterface) => {
   // // @ts-ignore
   const { input, meta } = useField(name, form);
   return (
     <div className={'input-field-wrapper'} style={wrapperStyle || {}}>
-      <input {...input} type="text" required={required} placeholder={placeholder} style={style || {}} className="input-field input-field--dark" />
+      <input
+        {...input}
+        type="text"
+        required={required}
+        placeholder={placeholder}
+        style={style || {}}
+        readOnly={readonly}
+        className="input-field input-field--dark"
+      />
       {meta.error && meta.touched && <span className={'error-message'}>{meta.error}</span>}
     </div>
   );
