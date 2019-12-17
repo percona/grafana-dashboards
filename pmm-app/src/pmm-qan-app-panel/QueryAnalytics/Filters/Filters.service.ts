@@ -417,10 +417,10 @@ const result = {
 };
 
 class FiltersService {
-  private variables: any;
-  constructor(variables) {
-    this.variables = variables;
-  }
+  // private variables: any;
+  // constructor(variables) {
+  //   this.variables = variables;
+  // }
 
   async getFilters() {
     return fetch('https://pmmdemo.percona.com/v0/qan/Filters/Get', {
@@ -431,21 +431,6 @@ class FiltersService {
         period_start_to: '2019-10-22T20:52:19+00:00',
       }),
     });
-  }
-
-  async getQueryDetailsFiltersList() {
-    const selected = [];
-    const notSelected = [];
-    const result = await this.getDetailedFilters();
-    const { labels } = await result.json();
-
-    Object.keys(labels).forEach(label => {
-      labels[label].name.forEach(metric => {
-        const passedVariables = this.variables.filter(variable => variable.groupName === label).selectedValues;
-        metric.selected = passedVariables.some(variable => variable === metric.value);
-      });
-    });
-    return { selected, notSelected };
   }
 
   static getAutocompleteFiltersList(selectedVariables) {
