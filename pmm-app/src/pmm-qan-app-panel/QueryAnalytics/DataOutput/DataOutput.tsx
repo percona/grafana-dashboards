@@ -4,8 +4,9 @@ import React, { useContext } from 'react';
 import Split from 'react-split';
 import { StateContext } from '../StateContext';
 import './DataOutput.scss';
-import { Button, Pagination } from 'antd';
+import { Pagination } from 'antd';
 import AddColumn from './QueryAnalyticsOverview/AddColumn';
+
 const DataOutput = props => {
   const context = useContext(StateContext);
 

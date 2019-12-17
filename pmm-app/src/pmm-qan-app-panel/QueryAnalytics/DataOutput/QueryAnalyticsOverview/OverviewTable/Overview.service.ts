@@ -15,7 +15,8 @@ interface OverviewServiceInterface {
   period_start_to?: any; // ISO8601
 }
 class OverviewService {
-  static async getReport(body) {
+  static async getReport(body: OverviewServiceInterface) {
+    console.log(body);
     const request = {
       columns: ['load', 'num_queries', 'query_time'],
       first_seen: false,

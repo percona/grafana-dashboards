@@ -7,7 +7,6 @@ import FiltersService from './Filters.service';
 import { CheckboxField } from '../../../react-plugins-deps/components/FieldsComponents/Checkbox/Checkbox';
 import { useForm } from 'react-final-form-hooks';
 import { Form as FormFinal } from 'react-final-form';
-import AutocompleteSearch from './AutocompleteSearch';
 
 const checkboxGroup = (form, name, items, showAll, filter) => {
   const itemsList = items
