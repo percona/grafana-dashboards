@@ -35,7 +35,6 @@ class ApiRequest {
       .then((response): T => response.data)
       .catch((e): void => {
         // eslint-disable-next-line no-console
-        console.error(e.response);
         // const errorText = get(e, 'response.data.message', e.message);
         showErrorNotification({ message: e.response.data.message });
         // Notify.error(errorText);

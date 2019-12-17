@@ -5,7 +5,7 @@ import ButtonElement from '../../../react-plugins-deps/components/FormComponents
 import { Form as FormFinal } from 'react-final-form';
 import { useForm } from 'react-final-form-hooks';
 import SettingsService from '../../Settings.service';
-import { showErrorNotification, showSuccessNotification } from '../../../react-plugins-deps/components/helpers/notification-manager';
+import { showSuccessNotification } from '../../../react-plugins-deps/components/helpers/notification-manager';
 
 interface UploadSSHInterface {
   ssh_key: string;
@@ -30,7 +30,6 @@ const UploadSSH = props => {
               showSuccessNotification({ message: 'SSH key updated' });
             } catch (e) {
               setLoading(false);
-              showErrorNotification({ message: e.message });
             }
           },
           validate: () => undefined,

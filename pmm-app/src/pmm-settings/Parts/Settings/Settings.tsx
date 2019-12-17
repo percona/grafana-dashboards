@@ -4,7 +4,7 @@ import { Form as FormFinal } from 'react-final-form';
 import { useForm } from 'react-final-form-hooks';
 import { PluginTooltip, VerticalFormWrapper } from '../../../react-plugins-deps/components/helpers/Helpers';
 import SettingsService from '../../Settings.service';
-import { showErrorNotification, showSuccessNotification } from '../../../react-plugins-deps/components/helpers/notification-manager';
+import { showSuccessNotification } from '../../../react-plugins-deps/components/helpers/notification-manager';
 import { SliderField } from '../../../react-plugins-deps/components/FormComponents/Slider/Slider';
 import { SelectField } from '../../../react-plugins-deps/components/FormComponents/Select/Select';
 import { ToggleField } from '../../../react-plugins-deps/components/FormComponents/Toggle/Toggle';
@@ -105,7 +105,6 @@ const SettingsPart = props => {
       showSuccessNotification({ message: 'Settings updated' });
     } catch (e) {
       setLoading(false);
-      showErrorNotification({ message: e.message });
     }
   };
 
@@ -137,7 +136,18 @@ const SettingsPart = props => {
               <VerticalFormWrapper
                 label={'Metrics resolution'}
                 tooltip={<PluginTooltip linkText={'Read more'} url={'#'} text={'This setting defines how frequently the data will be collected'} />}
-                element={<SliderField marks={marks} form={form} defaultValue={2} name={'metrics_resolutions_slider'} />}
+                element={
+                  <SliderField
+                    marks={marks}
+                    form={form}
+                    defaultValue={2}
+                    name={'metrics_resolutions_slider'}
+                    tipFormatter={value => {
+                      const values = dataRetentionValues[value];
+                      return `high: ${values.hr}, medium: ${values.mr}, low: ${values.lr}`;
+                    }}
+                  />
+                }
               />
               <Collapse bordered={false} defaultActiveKey={['1']} onChange={() => {}} style={customCollapseStyle}>
                 <Panel header="Advanced settings " key="1" style={customPanelStyle}>
