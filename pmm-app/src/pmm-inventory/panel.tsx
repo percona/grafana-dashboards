@@ -14,9 +14,9 @@ export const servicesColumns = [
     key: 'service_id',
   },
   {
-    title: 'Type',
-    dataIndex: 'agentType',
-    key: 'agentType',
+    title: 'Service Type',
+    dataIndex: 'type',
+    key: 'type',
   },
   {
     title: 'Service name',
@@ -43,7 +43,7 @@ export const servicesColumns = [
     dataIndex: 'age',
     key: 'age',
     render: (text, element) => {
-      const mainColumns = ['service_id', 'agentType', 'service_name', 'custom_labels', 'node_id', 'address', 'port'];
+      const mainColumns = ['service_id', 'type', 'service_name', 'custom_labels', 'node_id', 'address', 'port'];
       const labels = Object.keys(element).filter(label => !mainColumns.includes(label));
       return (
         <div className={'other-details-wrapper'}>
@@ -61,16 +61,16 @@ export const agentsColumns = [
     key: 'agent_id',
   },
   {
-    title: 'Type',
-    dataIndex: 'agentType',
-    key: 'agentType',
+    title: 'Agent Type',
+    dataIndex: 'type',
+    key: 'type',
   },
   {
     title: 'Other Details',
     dataIndex: 'age',
     key: 'age',
     render: (text, element) => {
-      const mainColumns = ['agent_id', 'agentType', 'isDeleted', 'service_ids', 'custom_labels'];
+      const mainColumns = ['agent_id', 'type', 'isDeleted', 'service_ids', 'custom_labels'];
       const labels = Object.keys(element).filter(label => !mainColumns.includes(label));
       return (
         <div className={'other-details-wrapper'}>
@@ -95,6 +95,11 @@ export const nodesColumns = [
     key: 'node_id',
   },
   {
+    title: 'Node Type',
+    dataIndex: 'type',
+    key: 'type',
+  },
+  {
     title: 'Node Name',
     dataIndex: 'node_name',
     key: 'node_name',
@@ -109,7 +114,7 @@ export const nodesColumns = [
     dataIndex: 'age',
     key: 'age',
     render: (text, element) => {
-      const mainColumns = ['node_id', 'node_name', 'address', 'custom_labels', 'agentType', 'isDeleted'];
+      const mainColumns = ['node_id', 'node_name', 'address', 'custom_labels', 'type', 'isDeleted'];
       const labels = Object.keys(element).filter(label => !mainColumns.includes(label));
       return (
         <div className={'other-details-wrapper'}>

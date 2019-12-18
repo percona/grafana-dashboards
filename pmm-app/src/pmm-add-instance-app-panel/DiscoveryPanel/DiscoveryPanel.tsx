@@ -34,7 +34,7 @@ const DiscoveryPanel = (props: DiscoverySearchPanelInterface) => {
 
   return (
     <>
-      <div>
+      <div className={'form-wrapper'}>
         <CredentialsForm onSetCredentials={setCredentials} />
         <div className={'spinner-wrapper'} style={{ width: '100%' }}>
           {loading && <Spin size="large" />}
