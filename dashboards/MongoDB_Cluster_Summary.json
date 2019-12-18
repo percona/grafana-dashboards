@@ -903,7 +903,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "sum by (type) (rate(mongodb_op_counters_total{cluster=\"$cluster\", type!=\"command\",service_name=\"$service\"}[$interval]) or \nirate(mongodb_op_counters_total{cluster=\"$cluster\", type!=\"command\",service_name=\"$service\"}[5m]))",
+                            "expr": "sum by (type) (rate(mongodb_op_counters_total{cluster=\"$cluster\", type!=\"command\",service_name=~\"$service\"}[$interval]) or \nirate(mongodb_op_counters_total{cluster=\"$cluster\", type!=\"command\",service_name=~\"$service\"}[5m]))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -1226,7 +1226,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "sum by (state) (max_over_time(mongodb_connections{cluster=\"$cluster\",service_name=\"$service\"}[$interval]) or \nmax_over_time(mongodb_connections{cluster=\"$cluster\",service_name=\"$service\"}[5m]))",
+                            "expr": "sum by (state) (max_over_time(mongodb_connections{cluster=\"$cluster\",service_name=~\"$service\"}[$interval]) or \nmax_over_time(mongodb_connections{cluster=\"$cluster\",service_name=~\"$service\"}[5m]))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -1340,7 +1340,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "sum(mongodb_mongos_metrics_cursor_open{cluster=\"$cluster\", state=\"total\",service_name=\"$service\"} or\nmongodb_mongos_cursors{cluster=\"$cluster\", state=\"total_open\",service_name=\"$service\"})",
+                            "expr": "sum(mongodb_mongos_metrics_cursor_open{cluster=\"$cluster\", state=\"total\",service_name=~\"$service\"} or\nmongodb_mongos_cursors{cluster=\"$cluster\", state=\"total_open\",service_name=~\"$service\"})",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -1674,7 +1674,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "max(increase(mongodb_mongos_sharding_changelog_10min_total{cluster=\"$cluster\", event=~\".*split.*\",service_name=\"$service\"}[$interval])) by (event)",
+                            "expr": "max(increase(mongodb_mongos_sharding_changelog_10min_total{cluster=\"$cluster\", event=~\".*split.*\",service_name=~\"$service\"}[$interval])) by (event)",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -1792,7 +1792,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "max(increase(mongodb_mongos_sharding_changelog_10min_total{cluster=\"$cluster\", event=~\".*(shard|Shard).*\",service_name=\"$service\"}[$interval])) by (event)",
+                            "expr": "max(increase(mongodb_mongos_sharding_changelog_10min_total{cluster=\"$cluster\", event=~\".*(shard|Shard).*\",service_name=~\"$service\"}[$interval])) by (event)",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
