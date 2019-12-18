@@ -13,7 +13,7 @@
                 "showIn": 0,
                 "tags": [
                     "pmm_annotation",
-                    "$host",
+                    "$node_name",
                     "$service"
                 ],
                 "type": "tags"
@@ -1690,7 +1690,7 @@
                     "valueName": "current"
                 },
                 {
-                    "content": "<h5><b><font color=#e68a00><center><a href=\"/graph/d/mysql-instance-summary/mysql-instance-summary?var-host=$host&var-service=$service\" target=\"_blank\">$crop_service...</a></center></font></b></h5>",
+                    "content": "<h5><b><font color=#e68a00><center><a href=\"/graph/d/mysql-instance-summary/mysql-instance-summary?var-node_name=$node_name&var-service=$service\" target=\"_blank\">$crop_service...</a></center></font></b></h5>",
                     "datasource": null,
                     "gridPos": {
                         "h": 2,
@@ -2536,7 +2536,7 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "(node_time_seconds{node_name=~\"$host\"} - node_boot_time_seconds{node_name=~\"$host\"}) or (time() - node_boot_time_seconds{node_name=~\"$host\"})",
+                            "expr": "(node_time_seconds{node_name=~\"$node_name\"} - node_boot_time_seconds{node_name=~\"$node_name\"}) or (time() - node_boot_time_seconds{node_name=~\"$node_name\"})",
                             "format": "time_series",
                             "hide": false,
                             "interval": "5m",
@@ -2619,7 +2619,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "avg_over_time(node_load1{node_name=~\"$host\"}[$interval]) or avg_over_time(node_load1{node_name=~\"$host\"}[5m])",
+                            "expr": "avg_over_time(node_load1{node_name=~\"$node_name\"}[$interval]) or avg_over_time(node_load1{node_name=~\"$node_name\"}[5m])",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2705,7 +2705,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "node_memory_MemTotal_bytes{node_name=~\"$host\"}",
+                            "expr": "node_memory_MemTotal_bytes{node_name=~\"$node_name\"}",
                             "format": "time_series",
                             "interval": "5m",
                             "intervalFactor": 1,
@@ -2792,7 +2792,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "(node_memory_MemAvailable_bytes{node_name=~\"$host\"} or (node_memory_MemFree_bytes{node_name=~\"$host\"} + node_memory_Buffers_bytes{node_name=~\"$host\"} + node_memory_Cached_bytes{node_name=~\"$host\"})) / node_memory_MemTotal_bytes{node_name=~\"$host\"} * 100",
+                            "expr": "(node_memory_MemAvailable_bytes{node_name=~\"$node_name\"} or (node_memory_MemFree_bytes{node_name=~\"$node_name\"} + node_memory_Buffers_bytes{node_name=~\"$node_name\"} + node_memory_Cached_bytes{node_name=~\"$node_name\"})) / node_memory_MemTotal_bytes{node_name=~\"$node_name\"} * 100",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2879,7 +2879,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "node_memory_MemTotal_bytes{node_name=~\"$host\"}+node_memory_SwapTotal_bytes{node_name=~\"$host\"}",
+                            "expr": "node_memory_MemTotal_bytes{node_name=~\"$node_name\"}+node_memory_SwapTotal_bytes{node_name=~\"$node_name\"}",
                             "format": "time_series",
                             "interval": "5m",
                             "intervalFactor": 1,
@@ -2973,7 +2973,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "sum(avg(node_filesystem_size_bytes{node_name=~\"$host\",fstype=~\"(ext.|xfs|vfat)\"}) without (mountpoint)) without (device,fstype)",
+                            "expr": "sum(avg(node_filesystem_size_bytes{node_name=~\"$node_name\",fstype=~\"(ext.|xfs|vfat)\"}) without (mountpoint)) without (device,fstype)",
                             "format": "time_series",
                             "interval": "5m",
                             "intervalFactor": 1,
@@ -3060,7 +3060,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "min(node_filesystem_free_bytes{node_name=~\"$host\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay|squashfs\"}/node_filesystem_size_bytes{node_name=~\"$host\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay|squashfs\"})*100",
+                            "expr": "min(node_filesystem_free_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay|squashfs\"}/node_filesystem_size_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay|squashfs\"})*100",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3082,7 +3082,7 @@
                 },
                 {
                     "cacheTimeout": null,
-                    "content": "<h5><b><font color=#e68a00><center><a href=\"/graph/d/node-instance-summary/node-summary?var-host=$host\" target=\"_blank\">$crop_host...</a></center></font></b></h5>",
+                    "content": "<h5><b><font color=#e68a00><center><a href=\"/graph/d/node-instance-summary/node-summary?var-node_name=$node_name\" target=\"_blank\">$crop_host...</a></center></font></b></h5>",
                     "datasource": "Prometheus",
                     "description": "",
                     "gridPos": {
@@ -3183,7 +3183,7 @@
                     "steppedLine": true,
                     "targets": [
                         {
-                            "expr": "clamp_max(((avg by (mode) ( (clamp_max(rate(node_cpu_seconds_total{node_name=~\"$host\",mode!=\"idle\"}[$interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{node_name=~\"$host\",mode!=\"idle\"}[5m]),1)) ))*100 or (avg_over_time(node_cpu_average{node_name=~\"$host\", mode!=\"total\", mode!=\"idle\"}[$interval]) or avg_over_time(node_cpu_average{node_name=~\"$host\", mode!=\"total\", mode!=\"idle\"}[5m]))),100)",
+                            "expr": "clamp_max(((avg by (mode) ( (clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\"}[$interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\"}[5m]),1)) ))*100 or (avg_over_time(node_cpu_average{node_name=~\"$node_name\", mode!=\"total\", mode!=\"idle\"}[$interval]) or avg_over_time(node_cpu_average{node_name=~\"$node_name\", mode!=\"total\", mode!=\"idle\"}[5m]))),100)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3191,7 +3191,7 @@
                             "refId": "B"
                         },
                         {
-                            "expr": "clamp_max(max by () (sum  by (cpu) ( (clamp_max(rate(node_cpu_seconds_total{node_name=~\"$host\",mode!=\"idle\",mode!=\"iowait\"}[$interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{node_name=~\"$host\",mode!=\"idle\",mode!=\"iowait\"}[5m]),1)) )),1)",
+                            "expr": "clamp_max(max by () (sum  by (cpu) ( (clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\",mode!=\"iowait\"}[$interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\",mode!=\"iowait\"}[5m]),1)) )),1)",
                             "format": "time_series",
                             "hide": true,
                             "interval": "$interval",
@@ -3313,7 +3313,7 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "(avg_over_time(node_procs_running{node_name=~\"$host\"}[$interval])-1) / scalar(count(node_cpu_seconds_total{mode=\"user\", node_name=~\"$host\"})) or (avg_over_time(node_procs_running{node_name=~\"$host\"}[5m])-1) / scalar(count(node_cpu_seconds_total{mode=\"user\", node_name=~\"$host\"}))",
+                            "expr": "(avg_over_time(node_procs_running{node_name=~\"$node_name\"}[$interval])-1) / scalar(count(node_cpu_seconds_total{mode=\"user\", node_name=~\"$node_name\"})) or (avg_over_time(node_procs_running{node_name=~\"$node_name\"}[5m])-1) / scalar(count(node_cpu_seconds_total{mode=\"user\", node_name=~\"$node_name\"}))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -3328,7 +3328,7 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "clamp_max(max by () (sum  by (cpu) ( (clamp_max(rate(node_cpu_seconds_total{node_name=~\"$host\",mode!=\"idle\",mode!=\"iowait\"}[$interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{node_name=~\"$host\",mode!=\"idle\",mode!=\"iowait\"}[5m]),1)) )),1)",
+                            "expr": "clamp_max(max by () (sum  by (cpu) ( (clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\",mode!=\"iowait\"}[$interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\",mode!=\"iowait\"}[5m]),1)) )),1)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3459,7 +3459,7 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "rate(node_vmstat_pgpgin{node_name=\"$host\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=\"$host\"}[5m]) * 1024",
+                            "expr": "rate(node_vmstat_pgpgin{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=\"$node_name\"}[5m]) * 1024",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3473,7 +3473,7 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "(rate(node_vmstat_pgpgout{node_name=\"$host\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=\"$host\"}[5m]) * 1024)",
+                            "expr": "(rate(node_vmstat_pgpgout{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=\"$node_name\"}[5m]) * 1024)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3484,7 +3484,7 @@
                             "target": ""
                         },
                         {
-                            "expr": "(rate(node_vmstat_pgpgin{node_name=\"$host\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=\"$host\"}[5m]) * 1024 ) + (rate(node_vmstat_pgpgout{node_name=\"$host\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=\"$host\"}[5m]) * 1024)",
+                            "expr": "(rate(node_vmstat_pgpgin{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=\"$node_name\"}[5m]) * 1024 ) + (rate(node_vmstat_pgpgout{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=\"$node_name\"}[5m]) * 1024)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3492,7 +3492,7 @@
                             "refId": "C"
                         },
                         {
-                            "expr": "rate(node_vmstat_pswpin{node_name=\"$host\"}[$interval]) * 4096 or irate(node_vmstat_pswpin{node_name=\"$host\"}[5m]) * 4096",
+                            "expr": "rate(node_vmstat_pswpin{node_name=\"$node_name\"}[$interval]) * 4096 or irate(node_vmstat_pswpin{node_name=\"$node_name\"}[5m]) * 4096",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3500,7 +3500,7 @@
                             "refId": "D"
                         },
                         {
-                            "expr": "rate(node_vmstat_pswpout{node_name=\"$host\"}[$interval]) * 4096 or irate(node_vmstat_pswpout{node_name=\"$host\"}[5m]) * 4096",
+                            "expr": "rate(node_vmstat_pswpout{node_name=\"$node_name\"}[$interval]) * 4096 or irate(node_vmstat_pswpout{node_name=\"$node_name\"}[5m]) * 4096",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3608,7 +3608,7 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "sum(rate(node_network_receive_bytes_total{node_name=\"$host\", device!=\"lo\"}[$interval])) or sum(irate(node_network_receive_bytes_total{node_name=\"$host\", device!=\"lo\"}[5m])) or sum(max_over_time(rdsosmetrics_network_rx{node_name=\"$host\"}[$interval])) or sum(max_over_time(rdsosmetrics_network_rx{node_name=\"$host\"}[5m])) ",
+                            "expr": "sum(rate(node_network_receive_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[$interval])) or sum(irate(node_network_receive_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[5m])) or sum(max_over_time(rdsosmetrics_network_rx{node_name=\"$node_name\"}[$interval])) or sum(max_over_time(rdsosmetrics_network_rx{node_name=\"$node_name\"}[5m])) ",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3622,7 +3622,7 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "sum(rate(node_network_transmit_bytes_total{node_name=\"$host\", device!=\"lo\"}[$interval])) or sum(irate(node_network_transmit_bytes_total{node_name=\"$host\", device!=\"lo\"}[5m])) or\nsum(max_over_time(rdsosmetrics_network_tx{node_name=\"$host\"}[$interval])) or sum(max_over_time(rdsosmetrics_network_tx{node_name=\"$host\"}[5m]))",
+                            "expr": "sum(rate(node_network_transmit_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[$interval])) or sum(irate(node_network_transmit_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[5m])) or\nsum(max_over_time(rdsosmetrics_network_tx{node_name=\"$node_name\"}[$interval])) or sum(max_over_time(rdsosmetrics_network_tx{node_name=\"$node_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3760,7 +3760,7 @@
                 "label": "Node Name",
                 "multi": false,
                 "multiFormat": "regex values",
-                "name": "host",
+                "name": "node_name",
                 "options": [],
                 "query": "label_values(mysql_up, node_name)",
                 "refresh": 2,
@@ -3778,14 +3778,14 @@
                 "allValue": null,
                 "current": {},
                 "datasource": "Prometheus",
-                "definition": "label_values(mysql_up{node_name=~\"$host\"}, service_name)",
+                "definition": "label_values(mysql_up{node_name=~\"$node_name\"}, service_name)",
                 "hide": 0,
                 "includeAll": true,
                 "label": "Service Name",
                 "multi": true,
                 "name": "service",
                 "options": [],
-                "query": "label_values(mysql_up{node_name=~\"$host\"}, service_name)",
+                "query": "label_values(mysql_up{node_name=~\"$node_name\"}, service_name)",
                 "refresh": 2,
                 "regex": "",
                 "skipUrlSync": false,
@@ -3845,7 +3845,7 @@
                 "allValue": null,
                 "current": {},
                 "datasource": "Prometheus",
-                "definition": "label_values(mysql_up{node_name=\"$host\"},node_name)",
+                "definition": "label_values(mysql_up{node_name=\"$node_name\"},node_name)",
                 "hide": 2,
                 "includeAll": false,
                 "label": "Crop Node Name",
@@ -3853,7 +3853,7 @@
                 "multiFormat": "regex values",
                 "name": "crop_host",
                 "options": [],
-                "query": "label_values(mysql_up{node_name=\"$host\"},node_name)",
+                "query": "label_values(mysql_up{node_name=\"$node_name\"},node_name)",
                 "refresh": 2,
                 "refresh_on_load": false,
                 "regex": "/(.?.?.?.?.?.?.?.?.?.?.?.?.?).*/",
@@ -3940,7 +3940,7 @@
                 "includeAll": true,
                 "label": "Database",
                 "multi": true,
-                "name": "db",
+                "name": "database",
                 "options": [],
                 "query": "label_values(pg_stat_database_tup_fetched{service_name=~\"$service\",datname!~\"template.*|postgres\"},datname)",
                 "refresh": 0,
