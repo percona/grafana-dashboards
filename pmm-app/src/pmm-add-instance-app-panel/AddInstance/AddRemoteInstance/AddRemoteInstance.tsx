@@ -120,6 +120,10 @@ const AddRemoteInstance = props => {
         }, {});
     }
 
+    if (!data.service_name) {
+      data.service_name = data.address;
+    }
+
     if (data.add_node === undefined) {
       data.add_node = {
         node_name: data.service_name,
@@ -197,7 +201,7 @@ const AddRemoteInstance = props => {
               <InputField form={form} name="region" placeholder="Region" />
               <span className="description">Region</span>
 
-              <InputField form={form} name="az" required={true} placeholder="Availability Zone" />
+              <InputField form={form} name="az" required={true} placeholder="*Availability Zone" />
               <span className="description">Availability Zone</span>
 
               <InputField form={form} name="replication_set" placeholder="Replication set" />
