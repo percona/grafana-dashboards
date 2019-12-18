@@ -21,7 +21,7 @@ export const extractCredentials = credentials => {
   return {
     service_name: !credentials.isRDS ? credentials.address : credentials.instance_id,
     port: credentials.port,
-    address: !credentials.isRDS ? credentials.address : credentials.instance_id,
+    address: credentials.address,
     isRDS: credentials.isRDS,
     region: credentials.region,
     aws_access_key: credentials.aws_access_key,
