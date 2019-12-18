@@ -1,9 +1,10 @@
 class Validators {
   static validatePort(value) {
-    if (!/^([1-9]|[1-9][0-9]{2,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$/.test(value)) {
-      return 'Port should be a number and between the range of 0 and 65535';
+    const portNumber = Number.parseInt(value)
+    if (portNumber > 0 && portNumber < 65535 && portNumber == value) {
+      return '';
     }
-    return '';
+    return 'Port should be a number and between the range of 0 and 65535';
   }
   static validateKeyValue(value) {
     if (
