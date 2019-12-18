@@ -30,7 +30,7 @@ describe('Inventory data service', () => {
     const testTransformedData = [
       {
         custom_labels: [],
-        agentType: 'PMM Agent',
+        type: 'PMM Agent',
         isDeleted: false,
         agent_id: 'pmm-server',
         runs_on_node_id: 'pmm-server',
@@ -38,7 +38,7 @@ describe('Inventory data service', () => {
       },
       {
         custom_labels: [],
-        agentType: 'Node exporter',
+        type: 'Node exporter',
         isDeleted: false,
         agent_id: '/agent_id/262189d8-e10f-41c2-b0ae-73cc76be6968',
         pmm_agent_id: 'pmm-server',
@@ -47,7 +47,7 @@ describe('Inventory data service', () => {
       },
       {
         custom_labels: [],
-        agentType: 'Postgres exporter',
+        type: 'Postgres exporter',
         isDeleted: false,
         agent_id: '/agent_id/8b74c54e-4307-4a10-9a6f-1646215cbe07',
         pmm_agent_id: 'pmm-server',
@@ -58,7 +58,7 @@ describe('Inventory data service', () => {
       },
       {
         custom_labels: [],
-        agentType: 'QAN PostgreSQL PgStatements Agent',
+        type: 'QAN PostgreSQL PgStatements Agent',
         isDeleted: false,
         agent_id: '/agent_id/ac55153c-5211-4072-a5de-59eb2a136a5c',
         pmm_agent_id: 'pmm-server',
