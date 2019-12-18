@@ -125,7 +125,7 @@ const SettingsPart = props => {
           const sliderValue = getMetricsResolutionValues(settings.metrics_resolutions);
 
           form.initialize(
-            Object.assign(settings, { data_retention_count: count, data_retention_units: units, metrics_resolutions_slider: sliderValue })
+            Object.assign(settings, { data_retention_count: count, data_retention_units: units, metrics_resolutions_slider: sliderValue, updates_disabled: !settings.updates_disabled })
           );
         }, [settings]);
 
