@@ -51,7 +51,7 @@ describe('Add remote instance', () => {
       instanceType: 'PostgreSQL',
       remoteInstanceCredentials: {
         isRDS: true,
-        address: 'test instance id',
+        address: 'test address',
         instance_id: 'test instance id',
         service_name: 'test instance id',
         port: '5432',
