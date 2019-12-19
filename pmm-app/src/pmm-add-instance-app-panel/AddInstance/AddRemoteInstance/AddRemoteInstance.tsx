@@ -1,12 +1,12 @@
 import React, { ReactElement, useState } from 'react';
 import './AddRemoteInstance.scss';
-import { InputField } from '../../../react-plugins-deps/components/FieldsComponents/Input/Input';
-import { TextAreaField } from '../../../react-plugins-deps/components/FieldsComponents/TextArea/TextArea';
-import { CheckboxField } from '../../../react-plugins-deps/components/FieldsComponents/Checkbox/Checkbox';
+import { InputField } from '../../../react-plugins-deps/components/FormComponents/Input/Input';
+import { TextAreaField } from '../../../react-plugins-deps/components/FormComponents/TextArea/TextArea';
+import { CheckboxField } from '../../../react-plugins-deps/components/FormComponents/Checkbox/Checkbox';
 
 import { Form as FormFinal } from 'react-final-form';
 import { useForm } from 'react-final-form-hooks';
-import { PasswordField } from '../../../react-plugins-deps/components/FieldsComponents/Password/Password';
+import { PasswordField } from '../../../react-plugins-deps/components/FormComponents/Password/Password';
 import AddRemoteInstanceService from 'pmm-add-instance-app-panel/AddInstance/AddRemoteInstance/AddRemoteInstanceService';
 import Validators from '../../../react-plugins-deps/components/validators/validators';
 

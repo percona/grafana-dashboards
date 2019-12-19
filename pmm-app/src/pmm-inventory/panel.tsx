@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Tabs } from 'antd';
-import InventoryService from './InventoryService';
+import InventoryService from './Inventory.service';
 import { InventoryDataService } from './DataService';
 
 const { TabPane } = Tabs;
