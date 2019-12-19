@@ -1,6 +1,10 @@
 import { MetricsPanelCtrl } from 'grafana/app/plugins/sdk';
 import config from 'grafana/app/core/config';
 import AppEvents from 'grafana/app/core/app_events';
+// import QueryVariables from 'grafana/app/features/templating/query_variable';
+import * as services from '@grafana/runtime';
+
+var locationSrv = services.getLocationSrv();
 
 export class PanelCtrl extends MetricsPanelCtrl {
   static template = `<iframe ng-src="{{trustSrc(url)}}" id="iframe-qan" style="width: 100%; height: 400px; border: 0;" scrolling="no" />`;
@@ -8,6 +12,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
   /** @ngInject */
   constructor($scope, $injector, templateSrv, $sce) {
     super($scope, $injector);
+    console.log(this);
     $scope.qanParams = {
       'var-host': null,
       from: '',
@@ -152,19 +157,26 @@ export class PanelCtrl extends MetricsPanelCtrl {
     if (type && urlParams['queryID']) {
       existedParams['type'] = type;
     }
-    const queryParams = Object.keys(existedParams)
-      .map(param => {
-        if (existedParams[param].length === 1) {
-          return `${param}=${existedParams[param] || ''}`;
-        } else if (existedParams[param].length > 1) {
-          return existedParams[param].map(paramValue => `${param}=${paramValue}`).join('&');
-        }
-        return '';
-      })
-      .join('&');
-    const url = `${host}?${queryParams}`;
+    // const queryParams = Object.keys(existedParams)
+    //   .map(param => {
+    //     if (existedParams[param].length === 1) {
+    //       return `${param}=${existedParams[param] || ''}`;
+    //     } else if (existedParams[param].length > 1) {
+    //       return existedParams[param].map(paramValue => `${param}=${paramValue}`).join('&');
+    //     }
+    //     return '';
+    //   })
+    //   .join('&');
+    console.log(existedParams);
+    // const url = `${host}?${queryParams}`;
+    // console.log(url);
+    locationSrv.update({
+      query: existedParams,
+      replace: true,
+    });
+    console.log(services);
     // @ts-ignore
-    history.pushState({}, null, url);
+    // history.pushState({}, null, url);
     Object.keys(existedParams).forEach(param => ($scope.qanParams[param] = existedParams[param]));
   }
 
@@ -264,5 +276,6 @@ export class PanelCtrl extends MetricsPanelCtrl {
       $scope.qanParams.type && $scope.qanParams.queryID
         ? `/qan/profile/report/${$scope.qanParams.type}?${query}&${filters}`
         : `/qan/profile/?${query}&${filters}`;
+    // locationSrv.update({ path: window.location.href});
   }
 }
