@@ -25,7 +25,7 @@ const UploadSSH = props => {
             };
             setLoading(true);
             try {
-              await SettingsService.setSettings({ settings: settings });
+              await SettingsService.setSettings(settings);
               setLoading(false);
               showSuccessNotification({ message: 'SSH key updated' });
             } catch (e) {
