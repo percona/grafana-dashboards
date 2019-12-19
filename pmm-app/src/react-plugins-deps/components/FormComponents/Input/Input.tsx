@@ -26,7 +26,7 @@ export const InputField = ({ name, placeholder, required, form, style, wrapperSt
         {...input}
         type="text"
         required={required}
-        placeholder={placeholder}
+        placeholder={`${required ? '*' : ''}${placeholder}`}
         style={style || {}}
         readOnly={readonly}
         className="input-field input-field--dark"
