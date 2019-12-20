@@ -172,7 +172,7 @@ const AddRemoteInstance = props => {
             <div className="add-instance-panel">
               <h6>Main details</h6>
               <span></span>
-              <InputField form={form} name="address" placeholder="*Hostname" required={true} readonly={remoteInstanceCredentials.isRDS} />
+              <InputField form={form} name="address" placeholder="Hostname" required={true} readonly={remoteInstanceCredentials.isRDS} />
               <span className="description">Public DNS hostname of your instance</span>
               <InputField form={form} name="service_name" placeholder="Service name (default: Hostname)" />
               <span className="description">Service name to use.</span>
@@ -186,10 +186,10 @@ const AddRemoteInstance = props => {
               <span className="description">Port your service is listening on</span>
             </div>
             <div className="add-instance-panel">
-              <InputField form={form} name="username" placeholder="*Username" required={true} />
+              <InputField form={form} name="username" placeholder="Username" required={true} />
               <span className="description">Your database user name</span>
 
-              <PasswordField form={form} name="password" placeholder="*Password" required={true} />
+              <PasswordField form={form} name="password" placeholder="Password" required={true} />
               <span className="description">Your database password</span>
             </div>
             <div className="add-instance-panel">
@@ -198,10 +198,10 @@ const AddRemoteInstance = props => {
               <InputField form={form} name="environment" placeholder="Environment" />
               <span className="description"></span>
 
-              <InputField form={form} name="region" placeholder="Region" />
+              <InputField form={form} name="region" required={initialValues.isRDS} placeholder="Region" />
               <span className="description">Region</span>
 
-              <InputField form={form} name="az" required={true} placeholder="*Availability Zone" />
+              <InputField form={form} name="az" placeholder="Availability Zone" />
               <span className="description">Availability Zone</span>
 
               <InputField form={form} name="replication_set" placeholder="Replication set" />
