@@ -26,7 +26,7 @@ const AlertManager = props => {
             };
             setLoading(true);
             try {
-              await SettingsService.setSettings({ settings: settings });
+              await SettingsService.setSettings(settings);
               setLoading(false);
               showSuccessNotification({ message: 'Alert manager settings updated' });
             } catch (e) {
