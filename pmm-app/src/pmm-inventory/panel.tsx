@@ -185,7 +185,7 @@ const Nodes = () => {
 
 const InventoryPanel = () => {
   return (
-    <div id={'antd'}>
+    <div id={'antd'} style={{ width: '100%' }}>
       <Tabs defaultActiveKey="1">
         <TabPane tab="Services" key="1">
           <Services />
