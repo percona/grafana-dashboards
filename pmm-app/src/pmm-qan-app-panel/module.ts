@@ -33,6 +33,18 @@ export class PanelCtrl extends MetricsPanelCtrl {
         if (!newValue) {
           return;
         }
+        [
+          $scope.qanParams.queryID,
+          $scope.qanParams.type,
+          $scope.qanParams.search,
+          $scope.qanParams.filters,
+          $scope.qanParams.main_metric,
+          $scope.qanParams.columns,
+          $scope.qanParams.order_by,
+          $scope.qanParams.group_by,
+          $scope.qanParams.filter_by,
+          $scope.qanParams.active_details_tab,
+        ] = this.retrieveDashboardURLParams(window.location.href);
         $scope.qanParams.from = newValue.raw.from;
         $scope.qanParams.to = newValue.raw.to;
         this.resetUrl($scope);
@@ -151,14 +163,13 @@ export class PanelCtrl extends MetricsPanelCtrl {
     if (type && urlParams['queryID']) {
       existedParams['type'] = type;
     }
-
     Object.keys(existedParams).forEach(paramKey => {
       if (paramKey.startsWith('var-')) {
         const key = paramKey.replace('var-', '');
         const templateVariables = this.templateSrv.variables;
         const variable = _.find(templateVariables, { name: key });
         if (!variable) {
-          return
+          return;
         }
         variable.variableSrv.setOptionAsCurrent(variable, {
           text: existedParams[paramKey],
