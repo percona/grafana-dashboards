@@ -1,7 +1,7 @@
 import { MetricsPanelCtrl } from 'grafana/app/plugins/sdk';
 import config from 'grafana/app/core/config';
 import AppEvents from 'grafana/app/core/app_events';
-
+import _ from 'lodash';
 export class PanelCtrl extends MetricsPanelCtrl {
   static template = `<iframe ng-src="{{trustSrc(url)}}" id="iframe-qan" style="width: 100%; height: 400px; border: 0;" scrolling="no" />`;
 
