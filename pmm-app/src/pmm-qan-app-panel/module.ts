@@ -1,10 +1,6 @@
 import { MetricsPanelCtrl } from 'grafana/app/plugins/sdk';
 import config from 'grafana/app/core/config';
 import AppEvents from 'grafana/app/core/app_events';
-// import QueryVariables from 'grafana/app/features/templating/query_variable';
-import * as services from '@grafana/runtime';
-
-var locationSrv = services.getLocationSrv();
 
 export class PanelCtrl extends MetricsPanelCtrl {
   static template = `<iframe ng-src="{{trustSrc(url)}}" id="iframe-qan" style="width: 100%; height: 400px; border: 0;" scrolling="no" />`;
@@ -12,7 +8,6 @@ export class PanelCtrl extends MetricsPanelCtrl {
   /** @ngInject */
   constructor($scope, $injector, templateSrv, $sce) {
     super($scope, $injector);
-    console.log(this);
     $scope.qanParams = {
       'var-host': null,
       from: '',
@@ -145,7 +140,6 @@ export class PanelCtrl extends MetricsPanelCtrl {
 
   // TODO: add strict urlParams presence check
   private reloadQuery(window, $scope, type = '', urlParams: {}) {
-    const host = window.location.href.split('?')[0];
     const existedParams = this.getJsonFromUrl(window.location);
     [...Object.keys(existedParams), ...Object.keys(urlParams)].forEach(param => {
       if (urlParams[param]) {
@@ -157,27 +151,22 @@ export class PanelCtrl extends MetricsPanelCtrl {
     if (type && urlParams['queryID']) {
       existedParams['type'] = type;
     }
-    // const queryParams = Object.keys(existedParams)
-    //   .map(param => {
-    //     if (existedParams[param].length === 1) {
-    //       return `${param}=${existedParams[param] || ''}`;
-    //     } else if (existedParams[param].length > 1) {
-    //       return existedParams[param].map(paramValue => `${param}=${paramValue}`).join('&');
-    //     }
-    //     return '';
-    //   })
-    //   .join('&');
-    console.log(existedParams);
-    // const url = `${host}?${queryParams}`;
-    // console.log(url);
-    locationSrv.update({
-      query: existedParams,
-      replace: true,
+
+    Object.keys(existedParams).forEach(paramKey => {
+      if (paramKey.startsWith('var-')) {
+        const key = paramKey.replace('var-', '');
+        const templateVariables = this.templateSrv.variables;
+        const variable = _.find(templateVariables, { name: key });
+        if (!variable) {
+          return
+        }
+        variable.variableSrv.setOptionAsCurrent(variable, {
+          text: existedParams[paramKey],
+          value: existedParams[paramKey],
+        });
+        variable.variableSrv.variableUpdated(variable, true);
+      }
     });
-    console.log(services);
-    // @ts-ignore
-    // history.pushState({}, null, url);
-    Object.keys(existedParams).forEach(param => ($scope.qanParams[param] = existedParams[param]));
   }
 
   private retrieveDashboardURLParams(url): string[] {
@@ -276,6 +265,5 @@ export class PanelCtrl extends MetricsPanelCtrl {
       $scope.qanParams.type && $scope.qanParams.queryID
         ? `/qan/profile/report/${$scope.qanParams.type}?${query}&${filters}`
         : `/qan/profile/?${query}&${filters}`;
-    // locationSrv.update({ path: window.location.href});
   }
 }
