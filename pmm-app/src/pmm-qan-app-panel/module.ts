@@ -2,6 +2,27 @@ import { MetricsPanelCtrl } from 'grafana/app/plugins/sdk';
 import config from 'grafana/app/core/config';
 import AppEvents from 'grafana/app/core/app_events';
 import _ from 'lodash';
+
+const filtersList = [
+  'var-agent_id',
+  'var-az',
+  'var-database',
+  'var-host',
+  'var-environment',
+  'var-replication_set',
+  'var-region',
+  'var-cluster',
+  'var-node_id',
+  'var-node_name',
+  'var-node_type',
+  'var-node_model',
+  'var-service',
+  'var-service_id',
+  'var-service_name',
+  'var-service_type',
+  'var-username',
+];
+
 export class PanelCtrl extends MetricsPanelCtrl {
   static template = `<iframe ng-src="{{trustSrc(url)}}" id="iframe-qan" style="width: 100%; height: 400px; border: 0;" scrolling="no" />`;
 
@@ -155,7 +176,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
     [...Object.keys(existedParams), ...Object.keys(urlParams)].forEach(param => {
       if (urlParams[param]) {
         existedParams[param] = urlParams[param];
-      } else if (existedParams[param] && !urlParams[param] && param.startsWith('var-')) {
+      } else if (existedParams[param] && !urlParams[param] && filtersList.includes(param)) {
         existedParams[param] = ['All'];
       }
     });
@@ -196,25 +217,6 @@ export class PanelCtrl extends MetricsPanelCtrl {
   }
 
   private retrieveFiltersFromVarParams(currentURL) {
-    const filtersList = [
-      'var-agent_id',
-      'var-az',
-      'var-database',
-      'var-host',
-      'var-environment',
-      'var-replication_set',
-      'var-region',
-      'var-cluster',
-      'var-node_id',
-      'var-node_name',
-      'var-node_type',
-      'var-node_model',
-      'var-service',
-      'var-service_id',
-      'var-service_name',
-      'var-service_type',
-      'var-username',
-    ];
     return filtersList
       .reduce((list, filter) => {
         PanelCtrl.retrieveVarParam(currentURL, list, filter);
