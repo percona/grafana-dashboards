@@ -44,7 +44,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
           $scope.qanParams.group_by,
           $scope.qanParams.filter_by,
           $scope.qanParams.active_details_tab,
-        ] = this.retrieveDashboardURLParams(window.location.href);
+        ] = this.retrieveDashboardURLParams();
         $scope.qanParams.from = newValue.raw.from;
         $scope.qanParams.to = newValue.raw.to;
         this.resetUrl($scope);
@@ -58,7 +58,6 @@ export class PanelCtrl extends MetricsPanelCtrl {
     const panel = elem.find('div.panel-container');
     const panelContent = elem.find('div.panel-content');
     // TODO: investigate this workaround. Inside $window - CtrlPanel
-    const location = $window.$injector.get('$location');
     const window = $window.$injector.get('$window');
     panel.css({
       'background-color': 'transparent',
@@ -99,7 +98,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
       $scope.qanParams.group_by,
       $scope.qanParams.filter_by,
       $scope.qanParams.active_details_tab,
-    ] = this.retrieveDashboardURLParams(location.absUrl());
+    ] = this.retrieveDashboardURLParams();
 
     frame.on('load', () => {
       setTimeout(() => $scope.ctrl.calculatePanelHeight(), 10);
@@ -180,8 +179,8 @@ export class PanelCtrl extends MetricsPanelCtrl {
     });
   }
 
-  private retrieveDashboardURLParams(url): string[] {
-    const currentURL = new URL(url);
+  private retrieveDashboardURLParams(): string[] {
+    const currentURL = new URL(window.location.href);
     const id = currentURL.searchParams.get('queryID') ? currentURL.searchParams.get('queryID') : '';
     const search = currentURL.searchParams.get('search') ? currentURL.searchParams.get('search') : '';
     const filters = this.retrieveFiltersFromVarParams(currentURL);
