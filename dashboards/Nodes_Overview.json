@@ -14,7 +14,7 @@
                 "tags": [
                     "pmm_annotation",
                     "$node_name",
-                    "$service"
+                    "$service_name"
                 ],
                 "type": "tags"
             },
@@ -1164,7 +1164,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "count by (service_type) (sum by (service_name,service_type) (max_over_time(mysql_global_status_threads_connected{service_name=~\"$service\"}[$interval]) or \nsum by (service_name,service_type) (max_over_time(mongodb_connections{service_name=~\"$service\",state=\"current\"}[$interval])) or\nsum by (service_name,service_type) (max_over_time(pg_stat_database_numbackends{service_name=~\"$service\"}[$interval]))))",
+                            "expr": "count by (service_type) (sum by (service_name,service_type) (max_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\"}[$interval]) or \nsum by (service_name,service_type) (max_over_time(mongodb_connections{service_name=~\"$service_name\",state=\"current\"}[$interval])) or\nsum by (service_name,service_type) (max_over_time(pg_stat_database_numbackends{service_name=~\"$service_name\"}[$interval]))))",
                             "format": "table",
                             "instant": true,
                             "interval": "$interval",
@@ -1315,7 +1315,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "max_over_time(mysql_global_status_threads_connected{service_name=~\"$service\"}[$interval])",
+                            "expr": "max_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\"}[$interval])",
                             "format": "time_series",
                             "interval": "",
                             "intervalFactor": 1,
@@ -1323,14 +1323,14 @@
                             "refId": "A"
                         },
                         {
-                            "expr": "max_over_time(mongodb_connections{service_name=~\"$service\",state=\"current\"}[$interval])",
+                            "expr": "max_over_time(mongodb_connections{service_name=~\"$service_name\",state=\"current\"}[$interval])",
                             "format": "time_series",
                             "intervalFactor": 1,
                             "legendFormat": "MongoDB - {{service_name}}",
                             "refId": "B"
                         },
                         {
-                            "expr": "sum by (service_name) (max_over_time(pg_stat_database_numbackends{service_name=~\"$service\"}[$interval]))",
+                            "expr": "sum by (service_name) (max_over_time(pg_stat_database_numbackends{service_name=~\"$service_name\"}[$interval]))",
                             "format": "time_series",
                             "interval": "",
                             "intervalFactor": 1,
@@ -10028,7 +10028,7 @@
                 "includeAll": true,
                 "label": "Service Name",
                 "multi": true,
-                "name": "service",
+                "name": "service_name",
                 "options": [],
                 "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up\",node_name=~\"$node_name\"}, service_name)",
                 "refresh": 2,
@@ -10045,14 +10045,14 @@
                 "allValue": null,
                 "current": {},
                 "datasource": "Prometheus",
-                "definition": "label_values(pg_stat_database_tup_fetched{service_name=~\"$service\",datname!~\"template.*|postgres\"},datname)",
+                "definition": "label_values(pg_stat_database_tup_fetched{service_name=~\"$service_name\",datname!~\"template.*|postgres\"},datname)",
                 "hide": 2,
                 "includeAll": true,
                 "label": "Database",
                 "multi": true,
                 "name": "database",
                 "options": [],
-                "query": "label_values(pg_stat_database_tup_fetched{service_name=~\"$service\",datname!~\"template.*|postgres\"},datname)",
+                "query": "label_values(pg_stat_database_tup_fetched{service_name=~\"$service_name\",datname!~\"template.*|postgres\"},datname)",
                 "refresh": 0,
                 "regex": "",
                 "skipUrlSync": false,
