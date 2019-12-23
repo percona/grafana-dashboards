@@ -9,6 +9,7 @@ import json
 import copy
 import datetime
 import re
+import pprint
 
 __version__ = '1.0.0'
 refresh_intervals = ['5s','10s','30s','1m','5m','15m','30m','1h','2h','1d']
@@ -278,9 +279,6 @@ def drop_some_internal_elements(dashboard):
             del dashboard['__inputs']
         if '__requires' in element:
             del dashboard['__requires']
-        for index, listelement in enumerate(dashboard['templating']['list']):
-            if 'current' in listelement:
-                dashboard['templating']['list'][index]['current'] = {}
         if 'panels' in element:
             for panel_index, panel in enumerate(dashboard['panels']):
                 if 'scopedVars' in panel:
@@ -289,6 +287,30 @@ def drop_some_internal_elements(dashboard):
                     for panelIn_index, panelIn in enumerate(dashboard['panels'][panel_index]['panels']):
                         if 'scopedVars' in panelIn:
                             del dashboard['panels'][panel_index]['panels'][panelIn_index]['scopedVars']
+
+    prompt = 'Drop all current variables values (conventional: **True**) [True]: '
+    user_input = raw_input(prompt)
+    if user_input:
+        if user_input == 'False':
+            for index, listelement in enumerate(dashboard['templating']['list']):
+                if 'current' in listelement:
+                    for current_index, currentelement in enumerate(dashboard['templating']['list'][index]['current']):
+                        if 'value' in currentelement:
+                            print('Current value: %s' % (
+                                dashboard['templating']['list'][index]['current']['text']))
+                            prompt = ('Drop elements for variable %s [True]: ' % (
+                                dashboard['templating']['list'][index]['name']
+                            ))
+                            user_input = raw_input(prompt)
+                            if user_input:
+                                if user_input == 'True':
+                                    dashboard['templating']['list'][index]['current'] = {}
+                            else:
+                                dashboard['templating']['list'][index]['current'] = {}
+    else:
+        for index, listelement in enumerate(dashboard['templating']['list']):
+            if 'current' in listelement:
+                dashboard['templating']['list'][index]['current'] = {}
 
     return dashboard
 
