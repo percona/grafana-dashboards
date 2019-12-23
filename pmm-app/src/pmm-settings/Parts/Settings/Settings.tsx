@@ -140,7 +140,7 @@ const SettingsPart = props => {
             <>
               <VerticalFormWrapper
                 label={'Metrics resolution'}
-                tooltip={<PluginTooltip linkText={'Read more'} url={'#'} text={'This setting defines how frequently the data will be collected'} />}
+                tooltip={<PluginTooltip linkText={'Read more'} url={'https://www.percona.com/doc/percona-monitoring-and-management/2.x/faq.html#what-resolution-is-used-for-metrics'} text={'This setting defines how frequently the data will be collected'} />}
                 element={
                   <SliderField
                     marks={marks}
@@ -158,7 +158,13 @@ const SettingsPart = props => {
                 <Panel header="Advanced settings " key="1" style={customPanelStyle}>
                   <VerticalFormWrapper
                     label={'Data retention'}
-                    tooltip={<PluginTooltip linkText={'Read more'} url={'https://www.percona.com/doc/percona-monitoring-and-management/2.x/faq.html#how-to-control-data-retention-for-pmm'} text={'This is the value for how long data will be stored'} />}
+                    tooltip={
+                      <PluginTooltip
+                        linkText={'Read more'}
+                        url={'https://www.percona.com/doc/percona-monitoring-and-management/2.x/faq.html#how-to-control-data-retention-for-pmm'}
+                        text={'This is the value for how long data will be stored'}
+                      />
+                    }
                     element={
                       <div style={{ display: 'flex', justifyContent: 'flex-start', width: '100%' }}>
                         <InputField name={'data_retention_count'} form={form} wrapperStyle={{ width: '60%' }} />
@@ -186,7 +192,11 @@ const SettingsPart = props => {
                   <VerticalFormWrapper
                     label={'Check for updates'}
                     tooltip={
-                      <PluginTooltip linkText={'Read more'} url={'https://www.percona.com/doc/percona-monitoring-and-management/2.x/glossary-terminology.html#PMM-Version'} text={'Option to check new versions and ability to update PMM from UI'} />
+                      <PluginTooltip
+                        linkText={'Read more'}
+                        url={'https://www.percona.com/doc/percona-monitoring-and-management/2.x/glossary-terminology.html#PMM-Version'}
+                        text={'Option to check new versions and ability to update PMM from UI'}
+                      />
                     }
                     element={<ToggleField form={form} name={'updates_disabled'} disabled={true} />}
                   />
