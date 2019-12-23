@@ -140,7 +140,13 @@ const SettingsPart = props => {
             <>
               <VerticalFormWrapper
                 label={'Metrics resolution'}
-                tooltip={<PluginTooltip linkText={'Read more'} url={'https://www.percona.com/doc/percona-monitoring-and-management/2.x/faq.html#what-resolution-is-used-for-metrics'} text={'This setting defines how frequently the data will be collected'} />}
+                tooltip={
+                  <PluginTooltip
+                    linkText={'Read more'}
+                    url={'https://www.percona.com/doc/percona-monitoring-and-management/2.x/faq.html#what-resolution-is-used-for-metrics'}
+                    text={'This setting defines how frequently the data will be collected'}
+                  />
+                }
                 element={
                   <SliderField
                     marks={marks}
