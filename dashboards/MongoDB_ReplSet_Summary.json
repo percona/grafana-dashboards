@@ -14,7 +14,7 @@
                 "tags": [
                     "pmm_annotation",
                     "$node_name",
-                    "$service"
+                    "$service_name"
                 ],
                 "type": "tags"
             },
@@ -205,7 +205,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "mongodb_mongod_replset_my_state{service_name=~\"$service\"}",
+                    "expr": "mongodb_mongod_replset_my_state{service_name=~\"$service_name\"}",
                     "format": "time_series",
                     "interval": "5m",
                     "intervalFactor": 1,
@@ -342,7 +342,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "mongodb_mongod_replset_number_of_members{service_name=~\"$service\"}",
+                    "expr": "mongodb_mongod_replset_number_of_members{service_name=~\"$service_name\"}",
                     "interval": "5m",
                     "intervalFactor": 1,
                     "legendFormat": "",
@@ -428,7 +428,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "time() - mongodb_mongod_replset_member_election_date{service_name=~\"$service\"}",
+                    "expr": "time() - mongodb_mongod_replset_member_election_date{service_name=~\"$service_name\"}",
                     "format": "time_series",
                     "interval": "5m",
                     "intervalFactor": 1,
@@ -514,7 +514,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "(max(mongodb_mongod_replset_member_optime_date{state=\"PRIMARY\", set=\"$replset\"}) - min(mongodb_mongod_replset_member_optime_date{state=\"SECONDARY\"} * on (name) group_left mongodb_mongod_replset_my_name{service_name=~\"$service\"})) or vector(0)",
+                    "expr": "(max(mongodb_mongod_replset_member_optime_date{state=\"PRIMARY\", set=\"$replset\"}) - min(mongodb_mongod_replset_member_optime_date{state=\"SECONDARY\"} * on (name) group_left mongodb_mongod_replset_my_name{service_name=~\"$service_name\"})) or vector(0)",
                     "interval": "5m",
                     "intervalFactor": 1,
                     "legendFormat": "",
@@ -599,7 +599,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "mongodb_mongod_storage_engine{service_name=~\"$service\"}",
+                    "expr": "mongodb_mongod_storage_engine{service_name=~\"$service_name\"}",
                     "interval": "5m",
                     "intervalFactor": 1,
                     "legendFormat": "{{ engine }}",
@@ -671,7 +671,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(mongodb_mongod_op_counters_repl_total{service_name=~\"$service\", type!~\"(command|getmore|query)\"}[$interval]) or irate(mongodb_mongod_op_counters_repl_total{service_name=~\"$service\", type!~\"(command|getmore|query)\"}[5m])",
+                    "expr": "rate(mongodb_mongod_op_counters_repl_total{service_name=~\"$service_name\", type!~\"(command|getmore|query)\"}[$interval]) or irate(mongodb_mongod_op_counters_repl_total{service_name=~\"$service_name\", type!~\"(command|getmore|query)\"}[5m])",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "{{type}}",
@@ -782,7 +782,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "time()-mongodb_mongod_replset_oplog_tail_timestamp{service_name=~\"$service\"}",
+                    "expr": "time()-mongodb_mongod_replset_oplog_tail_timestamp{service_name=~\"$service_name\"}",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -792,7 +792,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "mongodb_mongod_replset_oplog_head_timestamp{service_name=~\"$service\"}-mongodb_mongod_replset_oplog_tail_timestamp{service_name=~\"$service\"}",
+                    "expr": "mongodb_mongod_replset_oplog_head_timestamp{service_name=~\"$service_name\"}-mongodb_mongod_replset_oplog_tail_timestamp{service_name=~\"$service_name\"}",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -906,7 +906,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "(max(mongodb_mongod_replset_member_optime_date{state=\"PRIMARY\", set=\"$replset\"}) - min(mongodb_mongod_replset_member_optime_date{state=\"SECONDARY\"} * on (name) group_left mongodb_mongod_replset_my_name{service_name=~\"$service\"})) or vector(0)",
+                    "expr": "(max(mongodb_mongod_replset_member_optime_date{state=\"PRIMARY\", set=\"$replset\"}) - min(mongodb_mongod_replset_member_optime_date{state=\"SECONDARY\"} * on (name) group_left mongodb_mongod_replset_my_name{service_name=~\"$service_name\"})) or vector(0)",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Lag",
@@ -1017,7 +1017,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "max(changes(mongodb_mongod_replset_member_election_date{service_name=~\"$service\"}[$interval]))",
+                    "expr": "max(changes(mongodb_mongod_replset_member_election_date{service_name=~\"$service_name\"}[$interval]))",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Count",
@@ -1131,7 +1131,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "mongodb_mongod_replset_member_uptime{service_name=~\"$service\"}\n* on (name) group_right(state) (max_over_time(mongodb_mongod_replset_my_name[$interval]) or max_over_time(mongodb_mongod_replset_my_name[5m]))",
+                    "expr": "mongodb_mongod_replset_member_uptime{service_name=~\"$service_name\"}\n* on (name) group_right(state) (max_over_time(mongodb_mongod_replset_my_name[$interval]) or max_over_time(mongodb_mongod_replset_my_name[5m]))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -1247,7 +1247,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "time() - max(mongodb_mongod_replset_member_last_heartbeat{service_name=~\"$service\"}) by (name) * on (name) group_right mongodb_mongod_replset_my_name",
+                    "expr": "time() - max(mongodb_mongod_replset_member_last_heartbeat{service_name=~\"$service_name\"}) by (name) * on (name) group_right mongodb_mongod_replset_my_name",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1362,7 +1362,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "mongodb_mongod_replset_member_ping_ms{service_name=~\"$service\"}\n* on (name) group_right(state) (max_over_time(mongodb_mongod_replset_my_name[$interval]) or max_over_time(mongodb_mongod_replset_my_name[5m]))",
+                    "expr": "mongodb_mongod_replset_member_ping_ms{service_name=~\"$service_name\"}\n* on (name) group_right(state) (max_over_time(mongodb_mongod_replset_my_name[$interval]) or max_over_time(mongodb_mongod_replset_my_name[5m]))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -1477,7 +1477,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(mongodb_mongod_metrics_repl_network_getmores_total_milliseconds{service_name=~\"$service\"}[$interval]) or irate(mongodb_mongod_metrics_repl_network_getmores_total_milliseconds{service_name=~\"$service\"}[5m])",
+                    "expr": "rate(mongodb_mongod_metrics_repl_network_getmores_total_milliseconds{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_metrics_repl_network_getmores_total_milliseconds{service_name=~\"$service_name\"}[5m])",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "{{instance}}",
@@ -1590,7 +1590,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(mongodb_mongod_metrics_repl_preload_docs_num_total{service_name=~\"$service\"}[$interval]) or irate(mongodb_mongod_metrics_repl_preload_docs_num_total{service_name=~\"$service\"}[5m])",
+                    "expr": "rate(mongodb_mongod_metrics_repl_preload_docs_num_total{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_metrics_repl_preload_docs_num_total{service_name=~\"$service_name\"}[5m])",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Document Preload",
@@ -1599,7 +1599,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mongodb_mongod_metrics_repl_preload_indexes_num_total{service_name=~\"$service\"}[$interval]) or irate(mongodb_mongod_metrics_repl_preload_indexes_num_total{service_name=~\"$service\"}[5m])",
+                    "expr": "rate(mongodb_mongod_metrics_repl_preload_indexes_num_total{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_metrics_repl_preload_indexes_num_total{service_name=~\"$service_name\"}[5m])",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Index Preload",
@@ -1608,7 +1608,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mongodb_mongod_metrics_repl_apply_ops_total{service_name=~\"$service\"}[$interval]) or irate(mongodb_mongod_metrics_repl_apply_ops_total{service_name=~\"$service\"}[5m])",
+                    "expr": "rate(mongodb_mongod_metrics_repl_apply_ops_total{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_metrics_repl_apply_ops_total{service_name=~\"$service_name\"}[5m])",
                     "intervalFactor": 2,
                     "legendFormat": "Batch Apply",
                     "refId": "C",
@@ -1720,7 +1720,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(mongodb_mongod_metrics_repl_preload_docs_total_milliseconds{service_name=~\"$service\"}[$interval]) or irate(mongodb_mongod_metrics_repl_preload_docs_total_milliseconds{service_name=~\"$service\"}[5m])",
+                    "expr": "rate(mongodb_mongod_metrics_repl_preload_docs_total_milliseconds{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_metrics_repl_preload_docs_total_milliseconds{service_name=~\"$service_name\"}[5m])",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Document Preload",
@@ -1728,7 +1728,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mongodb_mongod_metrics_repl_preload_indexes_total_milliseconds{service_name=~\"$service\"}[$interval]) or irate(mongodb_mongod_metrics_repl_preload_indexes_total_milliseconds{service_name=~\"$service\"}[5m])",
+                    "expr": "rate(mongodb_mongod_metrics_repl_preload_indexes_total_milliseconds{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_metrics_repl_preload_indexes_total_milliseconds{service_name=~\"$service_name\"}[5m])",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Index Preload",
@@ -1737,7 +1737,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mongodb_mongod_metrics_repl_apply_batches_total_milliseconds{service_name=~\"$service\"}[$interval]) or irate(mongodb_mongod_metrics_repl_apply_batches_total_milliseconds{service_name=~\"$service\"}[5m])",
+                    "expr": "rate(mongodb_mongod_metrics_repl_apply_batches_total_milliseconds{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_metrics_repl_apply_batches_total_milliseconds{service_name=~\"$service_name\"}[5m])",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Batch Apply",
@@ -1851,7 +1851,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "mongodb_mongod_metrics_repl_buffer_count{service_name=~\"$service\"}",
+                    "expr": "mongodb_mongod_metrics_repl_buffer_count{service_name=~\"$service_name\"}",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Current",
@@ -1964,7 +1964,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "mongodb_mongod_metrics_repl_buffer_size_bytes{service_name=~\"$service\"}",
+                    "expr": "mongodb_mongod_metrics_repl_buffer_size_bytes{service_name=~\"$service_name\"}",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Used",
@@ -1972,7 +1972,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "mongodb_mongod_metrics_repl_buffer_max_size_bytes{service_name=~\"$service\"}",
+                    "expr": "mongodb_mongod_metrics_repl_buffer_max_size_bytes{service_name=~\"$service_name\"}",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Max",
@@ -2105,7 +2105,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "mongodb_instance_uptime_seconds{service_name=~\"$service\"}",
+                            "expr": "mongodb_instance_uptime_seconds{service_name=~\"$service_name\"}",
                             "interval": "$interval",
                             "refId": "A"
                         }
@@ -2191,7 +2191,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "sum(rate(mongodb_mongod_op_counters_total{service_name=~\"$service\",type!=\"command\"}[$interval]) or irate(mongodb_mongod_op_counters_total{service_name=~\"$service\",type!=\"command\"}[5m]) or rate(mongodb_op_counters_total{service_name=~\"$service\",type!=\"command\"}[$interval]) or irate(mongodb_op_counters_total{service_name=~\"$service\",type!=\"command\"}[5m]))",
+                            "expr": "sum(rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\",type!=\"command\"}[$interval]) or irate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\",type!=\"command\"}[5m]) or rate(mongodb_op_counters_total{service_name=~\"$service_name\",type!=\"command\"}[$interval]) or irate(mongodb_op_counters_total{service_name=~\"$service_name\",type!=\"command\"}[5m]))",
                             "interval": "$interval",
                             "refId": "A"
                         }
@@ -2276,7 +2276,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service\",type=\"command\"}[$interval]) / rate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service\",type=\"command\"}[$interval]) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service\",type=\"command\"}[5m]) / irate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service\",type=\"command\"}[5m])",
+                            "expr": "rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"command\"}[$interval]) / rate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"command\"}[$interval]) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"command\"}[5m]) / irate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"command\"}[5m])",
                             "interval": "$interval",
                             "refId": "A"
                         }
@@ -2298,7 +2298,7 @@
                 },
                 {
                     "cacheTimeout": null,
-                    "content": "<h4><b><font color=#e68a00><center><a href=\"/graph/d/mongodb-instance-summary/mongodb-instance-summary?var-node_name=$node_name&var-service=$service\" target=\"_blank\">$service</a></center></font></b></h4>\n",
+                    "content": "<h4><b><font color=#e68a00><center><a href=\"/graph/d/mongodb-instance-summary/mongodb-instance-summary?var-node_name=$node_name&var-service_name=$service_name\" target=\"_blank\">$service_name</a></center></font></b></h4>\n",
                     "datasource": null,
                     "gridPos": {
                         "h": 2,
@@ -2374,7 +2374,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "max_over_time(mongodb_mongod_connections{service_name=~\"$service\", state=\"current\"}[$interval]) or \nmax_over_time(mongodb_mongod_connections{service_name=~\"$service\", state=\"current\"}[5m]) or\nmax_over_time(mongodb_mongos_connections{service_name=~\"$service\", state=\"current\"}[$interval]) or\nmax_over_time(mongodb_mongos_connections{service_name=~\"$service\", state=\"current\"}[5m]) or\nmax_over_time(mongodb_connections{service_name=~\"$service\", state=\"current\"}[$interval]) or\nmax_over_time(mongodb_connections{service_name=~\"$service\", state=\"current\"}[5m])",
+                            "expr": "max_over_time(mongodb_mongod_connections{service_name=~\"$service_name\", state=\"current\"}[$interval]) or \nmax_over_time(mongodb_mongod_connections{service_name=~\"$service_name\", state=\"current\"}[5m]) or\nmax_over_time(mongodb_mongos_connections{service_name=~\"$service_name\", state=\"current\"}[$interval]) or\nmax_over_time(mongodb_mongos_connections{service_name=~\"$service_name\", state=\"current\"}[5m]) or\nmax_over_time(mongodb_connections{service_name=~\"$service_name\", state=\"current\"}[$interval]) or\nmax_over_time(mongodb_connections{service_name=~\"$service_name\", state=\"current\"}[5m])",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -2492,7 +2492,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "max_over_time(mongodb_mongod_metrics_cursor_open{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mongodb_mongod_metrics_cursor_open{service_name=~\"$service\"}[5m]) or\nmax_over_time(mongodb_mongod_cursors{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mongodb_mongod_cursors{service_name=~\"$service\"}[5m]) or\nmax_over_time(mongodb_mongos_metrics_cursor_open{service_name=~\"$service\"}[$interval]) or \nmax_over_time(mongodb_mongos_metrics_cursor_open{service_name=~\"$service\"}[5m]) or\nmax_over_time(mongodb_mongos_cursors{service_name=~\"$service\"}[$interval]) or\nmax_over_time(mongodb_mongos_cursors{service_name=~\"$service\"}[5m])",
+                            "expr": "max_over_time(mongodb_mongod_metrics_cursor_open{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mongodb_mongod_metrics_cursor_open{service_name=~\"$service_name\"}[5m]) or\nmax_over_time(mongodb_mongod_cursors{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mongodb_mongod_cursors{service_name=~\"$service_name\"}[5m]) or\nmax_over_time(mongodb_mongos_metrics_cursor_open{service_name=~\"$service_name\"}[$interval]) or \nmax_over_time(mongodb_mongos_metrics_cursor_open{service_name=~\"$service_name\"}[5m]) or\nmax_over_time(mongodb_mongos_cursors{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mongodb_mongos_cursors{service_name=~\"$service_name\"}[5m])",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -3199,7 +3199,7 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "mysql_global_variables_innodb_buffer_pool_size{service_name=~\"$service\"} ",
+                            "expr": "mysql_global_variables_innodb_buffer_pool_size{service_name=~\"$service_name\"} ",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3930,7 +3930,7 @@
                 "label": "Service Name",
                 "multi": false,
                 "multiFormat": "glob",
-                "name": "service",
+                "name": "service_name",
                 "options": [],
                 "query": "label_values(mongodb_mongod_replset_my_state{cluster=~\"$cluster\",node_name=~\"$node_name\",set=\"$replset\"}, service_name)",
                 "refresh": 2,
@@ -3947,14 +3947,14 @@
                 "allValue": null,
                 "current": {},
                 "datasource": "Prometheus",
-                "definition": "label_values(mongodb_up{service_name=~\"$service\"}, service_name)",
+                "definition": "label_values(mongodb_up{service_name=~\"$service_name\"}, service_name)",
                 "hide": 2,
                 "includeAll": false,
                 "label": "Service Name",
                 "multi": false,
                 "name": "crop_service",
                 "options": [],
-                "query": "label_values(mongodb_up{service_name=~\"$service\"}, service_name)",
+                "query": "label_values(mongodb_up{service_name=~\"$service_name\"}, service_name)",
                 "refresh": 2,
                 "regex": "/(.?.?.?.?.?.?.?.?.?.?.?.?.?.?.?.?.?.?.?).*/",
                 "skipUrlSync": false,
@@ -4038,14 +4038,14 @@
                 "allValue": null,
                 "current": {},
                 "datasource": "Prometheus",
-                "definition": "label_values(pg_stat_database_tup_fetched{service_name=~\"$service\",datname!~\"template.*|postgres\"},datname)",
+                "definition": "label_values(pg_stat_database_tup_fetched{service_name=~\"$service_name\",datname!~\"template.*|postgres\"},datname)",
                 "hide": 2,
                 "includeAll": true,
                 "label": "Database",
                 "multi": true,
                 "name": "database",
                 "options": [],
-                "query": "label_values(pg_stat_database_tup_fetched{service_name=~\"$service\",datname!~\"template.*|postgres\"},datname)",
+                "query": "label_values(pg_stat_database_tup_fetched{service_name=~\"$service_name\",datname!~\"template.*|postgres\"},datname)",
                 "refresh": 0,
                 "regex": "",
                 "skipUrlSync": false,
