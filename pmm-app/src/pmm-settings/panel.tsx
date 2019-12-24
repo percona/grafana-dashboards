@@ -6,6 +6,7 @@ import Diagnostics from './Parts/Diagnostics/Diagnostics';
 import SettingsPart from './Parts/Settings/Settings';
 import SettingsService from './Settings.service';
 import { Form as FormFinal } from 'react-final-form';
+import Styling from '../react-plugins-deps/components/helpers/styling';
 
 const { Panel } = Collapse;
 
@@ -28,12 +29,13 @@ const customCollapseStyle = {
 };
 
 const SettingsPanel = () => {
+  // document.getElementById('antd').classList.add('custom-grafana-plugin');
   const [settings, updateSettings] = useState({});
 
   useEffect(() => {
     (async () => {
+      Styling.setPluginPanelClass();
       const { settings } = await SettingsService.getSettings();
-
       updateSettings(settings);
     })();
   }, []);
