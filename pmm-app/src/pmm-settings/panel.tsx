@@ -43,7 +43,7 @@ const SettingsPanel = () => {
       <div className={'app-theme-dark pmm-settings-panel'} style={{ width: '100%' }}>
         <FormFinal
           onSubmit={() => {}}
-          render={(lin: ReactElement => {
+          render={(): ReactElement => {
             // @ts-ignore
             return (
               <Collapse bordered={false} defaultActiveKey={['1']} onChange={() => {}} style={customCollapseStyle}>
