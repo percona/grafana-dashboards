@@ -1,6 +1,6 @@
 class Styling {
-  static setPluginPanelClass(panelWrapperId = '#antd', newClass = 'custom-grafana-plugin') {
-    const pluginsList = document.querySelectorAll(panelWrapperId);
+  static addPluginPanelClass(panelWrapperSelector = '#antd', newClass = 'custom-grafana-plugin') {
+    const pluginsList = document.querySelectorAll(panelWrapperSelector);
     pluginsList.forEach(element => {
       while (element.parentNode !== null) {
         element = element.parentNode as Element;

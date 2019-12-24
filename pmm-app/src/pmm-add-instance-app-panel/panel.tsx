@@ -12,7 +12,7 @@ import Styling from '../react-plugins-deps/components/helpers/styling';
 
 const history = createBrowserHistory({});
 const AddInstancePanel = props => {
-  useEffect(() => Styling.setPluginPanelClass(), []);
+  useEffect(() => Styling.addPluginPanelClass(), []);
 
   // @ts-ignore
   const urlParams = new URLSearchParams(window.location.search);

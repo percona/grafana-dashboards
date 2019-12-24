@@ -185,7 +185,7 @@ const Nodes = () => {
 };
 
 const InventoryPanel = () => {
-  useEffect(() => Styling.setPluginPanelClass(), []);
+  useEffect(() => Styling.addPluginPanelClass(), []);
   return (
     <div id={'antd'} style={{ width: '100%' }}>
       <Tabs defaultActiveKey="1">

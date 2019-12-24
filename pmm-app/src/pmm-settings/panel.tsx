@@ -29,12 +29,11 @@ const customCollapseStyle = {
 };
 
 const SettingsPanel = () => {
-  // document.getElementById('antd').classList.add('custom-grafana-plugin');
   const [settings, updateSettings] = useState({});
 
   useEffect(() => {
     (async () => {
-      Styling.setPluginPanelClass();
+      Styling.addPluginPanelClass();
       const { settings } = await SettingsService.getSettings();
       updateSettings(settings);
     })();
@@ -44,7 +43,7 @@ const SettingsPanel = () => {
       <div className={'app-theme-dark pmm-settings-panel'} style={{ width: '100%' }}>
         <FormFinal
           onSubmit={() => {}}
-          render={(): ReactElement => {
+          render={(lin: ReactElement => {
             // @ts-ignore
             return (
               <Collapse bordered={false} defaultActiveKey={['1']} onChange={() => {}} style={customCollapseStyle}>
