@@ -48,7 +48,7 @@ export const PluginTooltip = ({ url, linkText, text }: PluginTooltipInterface) =
       title={
         <>
           {text}{' '}
-          <a style={{ color: 'white', textDecoration: 'underline' }} href={url || ''}>
+          <a style={{ color: 'white', textDecoration: 'underline' }} href={url || ''} target="_blank" rel="noopener noreferrer">
             {linkText || 'Read more'}
           </a>
         </>
