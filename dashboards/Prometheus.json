@@ -36,7 +36,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1574022356247,
+    "iteration": 1577450608139,
     "links": [
         {
             "icon": "doc",
@@ -782,6 +782,7 @@
                         "y": 8
                     },
                     "height": "250",
+                    "hiddenSeries": false,
                     "id": 3,
                     "legend": {
                         "alignAsTable": true,
@@ -915,6 +916,7 @@
                         "y": 8
                     },
                     "height": "250",
+                    "hiddenSeries": false,
                     "id": 5,
                     "legend": {
                         "alignAsTable": true,
@@ -1053,6 +1055,7 @@
                         "x": 0,
                         "y": 16
                     },
+                    "hiddenSeries": false,
                     "id": 86,
                     "legend": {
                         "alignAsTable": true,
@@ -2127,6 +2130,7 @@
                     "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 2,
+                    "description": "The Head Block is kept in memory. Older blocks are accessed through mmap().\n\nThis eliminates the need to configure cache separately, but also means you need to allocate plenty of memory for OS Cache if you want to query data older than fits in the Head Block.",
                     "fill": 0,
                     "fillGradient": 0,
                     "gridPos": {
@@ -2205,7 +2209,6 @@
                     "timeRegions": [],
                     "timeShift": null,
                     "title": "Head Block",
-                    "description": "The Head Block is kept in memory. Older blocks are accessed through mmap().\n\nThis eliminates the need to configure cache separately, but also means you need to allocate plenty of memory for OS Cache if you want to query data older than fits in the Head Block.",
                     "tooltip": {
                         "shared": true,
                         "sort": 0,
@@ -2605,6 +2608,7 @@
                         "x": 0,
                         "y": 10
                     },
+                    "hiddenSeries": false,
                     "id": 2,
                     "legend": {
                         "alignAsTable": true,
@@ -2724,6 +2728,7 @@
                         "x": 12,
                         "y": 10
                     },
+                    "hiddenSeries": false,
                     "id": 12,
                     "legend": {
                         "alignAsTable": true,
@@ -2856,6 +2861,7 @@
                         "x": 0,
                         "y": 18
                     },
+                    "hiddenSeries": false,
                     "id": 24,
                     "interval": "",
                     "legend": {
@@ -2924,7 +2930,7 @@
                             "refId": "F"
                         },
                         {
-                            "expr": "sum by (job) (label_replace(sum(avg_over_time(up{service_type=\"rds\"}[$interval])) by (job,service_name) or sum(avg_over_time(up{service_type=\"rds\"}[5m])) by (job,service_name),\"job\", \"$2\", \"job\", \"proxysql_(.*)_(.*)\"))",
+                            "expr": "sum by (job) (label_replace(sum(avg_over_time(up{instance=~\"127\\\\.0\\\\.0\\\\.1.*\"}[$interval])) by (job,service_name) or sum(avg_over_time(up{instance=~\"127\\\\.0\\\\.0\\\\.1.*\"}[5m])) by (job,service_name),\"job\", \"$2\", \"job\", \"rds_exporter_(.*)_(.*)\"))",
                             "interval": "$interval",
                             "legendFormat": "rds_exporter_{{job}}",
                             "refId": "G"
@@ -3002,6 +3008,7 @@
                         "x": 12,
                         "y": 18
                     },
+                    "hiddenSeries": false,
                     "id": 42,
                     "interval": "",
                     "legend": {
@@ -3153,6 +3160,7 @@
                         "x": 0,
                         "y": 26
                     },
+                    "hiddenSeries": false,
                     "id": 25,
                     "legend": {
                         "alignAsTable": true,
@@ -3189,7 +3197,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "sum(avg_over_time(up{instance!=\"pmm-server\",node_name!=\"pmm-server\"}[$interval])) by (node_name) or \nsum(avg_over_time(up{instance!=\"pmm-server\",node_name!=\"pmm-server\"}[5m])) by (node_name)",
+                            "expr": "sum(avg_over_time(up{instance!~\"pmm-server|127\\\\.0\\\\.0\\\\.1.*\",node_name!=\"pmm-server\"}[$interval])) by (node_name) or \nsum(avg_over_time(up{instance!~\"pmm-server|127\\\\.0\\\\.0\\\\.1.*\",node_name!=\"pmm-server\"}[5m])) by (node_name)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3199,7 +3207,7 @@
                             "step": 60
                         },
                         {
-                            "expr": "sum(\nsum(avg_over_time(up{node_name=\"pmm-server\"}[$interval])) by (node_name) or\nsum(avg_over_time(up{instance=\"pmm-server\"}[$interval])) by (instance) or\nsum(avg_over_time(up{node_name=\"pmm-server\"}[5m])) by (node_name) or\nsum(avg_over_time(up{instance=\"pmm-server\"}[5m])) by (instance)\n)",
+                            "expr": "sum(\nsum(avg_over_time(up{node_name=\"pmm-server\"}[$interval])) by (node_name) or\nsum(avg_over_time(up{instance=~\"pmm-server|127\\\\.0\\\\.0\\\\.1.*\"}[$interval])) by (instance) or\nsum(avg_over_time(up{node_name=\"pmm-server\"}[5m])) by (node_name) or\nsum(avg_over_time(up{instance=~\"pmm-server|127\\\\.0\\\\.0\\\\.1.*\"}[5m])) by (instance)\n)",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -3271,7 +3279,9 @@
                         "x": 12,
                         "y": 26
                     },
+                    "hiddenSeries": false,
                     "id": 43,
+                    "interval": "",
                     "legend": {
                         "alignAsTable": true,
                         "avg": true,
@@ -3302,7 +3312,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "avg(avg_over_time(scrape_duration_seconds{instance!=\"pmm-server\",node_name!=\"pmm-server\"}[$interval])) by (node_name) or \navg(avg_over_time(scrape_duration_seconds{instance!=\"pmm-server\",node_name!=\"pmm-server\"}[5m])) by (node_name) ",
+                            "expr": "avg(avg_over_time(scrape_duration_seconds{instance!~\"pmm-server|127.0.0.1.*\",node_name!=\"pmm-server\"}[$interval])) by (node_name) or \navg(avg_over_time(scrape_duration_seconds{instance!~\"pmm-server|127.0.0.1.*\",node_name!=\"pmm-server\"}[5m])) by (node_name) ",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -3385,6 +3395,7 @@
                         "x": 0,
                         "y": 34
                     },
+                    "hiddenSeries": false,
                     "id": 26,
                     "legend": {
                         "alignAsTable": true,
@@ -3494,6 +3505,7 @@
                         "x": 12,
                         "y": 34
                     },
+                    "hiddenSeries": false,
                     "id": 27,
                     "legend": {
                         "alignAsTable": true,
@@ -3603,6 +3615,7 @@
                         "x": 0,
                         "y": 42
                     },
+                    "hiddenSeries": false,
                     "id": 41,
                     "legend": {
                         "alignAsTable": true,
@@ -3707,6 +3720,7 @@
                         "x": 12,
                         "y": 42
                     },
+                    "hiddenSeries": false,
                     "id": 40,
                     "legend": {
                         "alignAsTable": true,
@@ -3832,6 +3846,7 @@
                         "x": 0,
                         "y": 50
                     },
+                    "hiddenSeries": false,
                     "id": 44,
                     "interval": "",
                     "legend": {
@@ -3880,13 +3895,10 @@
                             "step": 60
                         },
                         {
-                            "expr": "topk(10,(\nlabel_join((max_over_time(scrape_duration_seconds{instance=\"pmm-server\"}[$interval]) or \nmax_over_time(scrape_duration_seconds{instance=\"pmm-server\"}[5m])), \"node_name\", \",\",\"instance\") or\nlabel_replace((max_over_time(scrape_duration_seconds{service_type=\"mysql\"}[$interval]) or \nmax_over_time(scrape_duration_seconds{service_type=\"mysql\"}[5m])),\"job\", \"mysqld_exporter_$3\", \"job\", \"(.*)_agent_id_(.*)_(.*)\") or\nlabel_replace((max_over_time(scrape_duration_seconds{service_type=\"postgresql\"}[$interval]) or \nmax_over_time(scrape_duration_seconds{service_type=\"postgresql\"}[5m])),\"job\", \"postgres_exporter_$3\", \"job\", \"(.*)_agent_id_(.*)_(.*)\") or\nlabel_replace((max_over_time(scrape_duration_seconds{service_type=\"mongodb\"}[$interval]) or max_over_time(scrape_duration_seconds{service_type=\"mongodb\"}[5m])),\"job\", \"mongodb_exporter_$3\", \"job\", \"(.*)_agent_id_(.*)_(.*)\") or\nlabel_replace((max_over_time(scrape_duration_seconds{service_type=\"proxysql\"}[$interval]) or max_over_time(scrape_duration_seconds{service_type=\"proxysql\"}[5m])),\"job\", \"proxysql_exporter_$3\", \"job\", \"(.*)_agent_id_(.*)_(.*)\") or\nlabel_replace((max_over_time(scrape_duration_seconds{service_type=\"rds\"}[$interval]) or \nmax_over_time(scrape_duration_seconds{service_type=\"rds\"}[5m])),\"job\", \"rds_exporter_$3\", \"job\", \"(.*)_agent_id_(.*)_(.*)\")\n))",
-                            "format": "time_series",
-                            "hide": false,
+                            "expr": "topk(10,(\nlabel_join((max_over_time(scrape_duration_seconds{instance=\"pmm-server\"}[$interval]) or \nmax_over_time(scrape_duration_seconds{instance=\"pmm-server\"}[5m])), \"node_name\", \",\",\"instance\") or\nlabel_replace((max_over_time(scrape_duration_seconds{service_type=\"mysql\"}[$interval]) or \nmax_over_time(scrape_duration_seconds{service_type=\"mysql\"}[5m])),\"job\", \"mysqld_exporter_$3\", \"job\", \"(.*)_agent_id_(.*)_(.*)\") or\nlabel_replace((max_over_time(scrape_duration_seconds{service_type=\"postgresql\"}[$interval]) or \nmax_over_time(scrape_duration_seconds{service_type=\"postgresql\"}[5m])),\"job\", \"postgres_exporter_$3\", \"job\", \"(.*)_agent_id_(.*)_(.*)\") or\nlabel_replace((max_over_time(scrape_duration_seconds{service_type=\"mongodb\"}[$interval]) or max_over_time(scrape_duration_seconds{service_type=\"mongodb\"}[5m])),\"job\", \"mongodb_exporter_$3\", \"job\", \"(.*)_agent_id_(.*)_(.*)\") or\nlabel_replace((max_over_time(scrape_duration_seconds{service_type=\"proxysql\"}[$interval]) or max_over_time(scrape_duration_seconds{service_type=\"proxysql\"}[5m])),\"job\", \"proxysql_exporter_$3\", \"job\", \"(.*)_agent_id_(.*)_(.*)\") or\nlabel_replace(label_replace((max_over_time(scrape_duration_seconds{instance=~\"127\\\\.0\\\\.0\\\\.1.*\"}[$interval]) or \nmax_over_time(scrape_duration_seconds{instance=~\"127\\\\.0\\\\.0\\\\.1.*\"}[5m])),\"job\", \"rds_exporter_$2\", \"job\", \"rds_exporter_(.*)_(.*)\"),\"node_name\",\"pmm-server\",\"\",\"\")\n))",
                             "interval": "$interval",
-                            "intervalFactor": 1,
                             "legendFormat": "{{job}} at {{node_name}}",
-                            "refId": "B"
+                            "refId": "C"
                         }
                     ],
                     "thresholds": [],
@@ -3952,6 +3964,7 @@
                         "x": 12,
                         "y": 50
                     },
+                    "hiddenSeries": false,
                     "id": 45,
                     "interval": "",
                     "legend": {
@@ -4000,7 +4013,7 @@
                             "step": 60
                         },
                         {
-                            "expr": "topk(10,(label_join((max_over_time(scrape_samples_scraped{instance=\"pmm-server\"}[$interval]) or \nmax_over_time(scrape_samples_scraped{instance=\"pmm-server\"}[5m])), \"node_name\", \",\",\"instance\") or\nlabel_replace((max_over_time(scrape_samples_scraped{service_type=\"mysql\"}[$interval]) or \nmax_over_time(scrape_samples_scraped{service_type=\"mysql\"}[5m])),\"job\", \"mysqld_exporter_$3\", \"job\", \"(.*)_agent_id_(.*)_(.*)\") or\nlabel_replace((max_over_time(scrape_samples_scraped{service_type=\"mongodb\"}[$interval]) or \nmax_over_time(scrape_samples_scraped{service_type=\"mongodb\"}[5m])),\"job\", \"mongodb_exporter_$3\", \"job\", \"(.*)_agent_id_(.*)_(.*)\") or\nlabel_replace((max_over_time(scrape_samples_scraped{service_type=\"postgresql\"}[$interval]) or \nmax_over_time(scrape_samples_scraped{service_type=\"postgresql\"}[5m])),\"job\", \"postgresql_exporter_$3\", \"job\", \"(.*)_agent_id_(.*)_(.*)\") or\nlabel_replace((max_over_time(scrape_samples_scraped{service_type=\"proxysql\"}[$interval]) or max_over_time(scrape_samples_scraped{service_type=\"proxysql\"}[5m])),\"job\", \"proxysql_exporter_$3\", \"job\", \"(.*)_agent_id_(.*)_(.*)\") or\nlabel_replace((max_over_time(scrape_samples_scraped{service_type=\"rds\"}[$interval]) or \nmax_over_time(scrape_samples_scraped{service_type=\"rds\"}[5m])),\"job\", \"rds_exporter_$3\", \"job\", \"(.*)_agent_id_(.*)_(.*)\")\n))",
+                            "expr": "topk(10,(label_join((max_over_time(scrape_samples_scraped{instance=\"pmm-server\"}[$interval]) or \nmax_over_time(scrape_samples_scraped{instance=\"pmm-server\"}[5m])), \"service_name\", \",\",\"instance\") or\nlabel_replace((max_over_time(scrape_samples_scraped{service_type=\"mysql\"}[$interval]) or \nmax_over_time(scrape_samples_scraped{service_type=\"mysql\"}[5m])),\"job\", \"mysqld_exporter_$3\", \"job\", \"(.*)_agent_id_(.*)_(.*)\") or\nlabel_replace((max_over_time(scrape_samples_scraped{service_type=\"mongodb\"}[$interval]) or \nmax_over_time(scrape_samples_scraped{service_type=\"mongodb\"}[5m])),\"job\", \"mongodb_exporter_$3\", \"job\", \"(.*)_agent_id_(.*)_(.*)\") or\nlabel_replace((max_over_time(scrape_samples_scraped{service_type=\"postgresql\"}[$interval]) or \nmax_over_time(scrape_samples_scraped{service_type=\"postgresql\"}[5m])),\"job\", \"postgresql_exporter_$3\", \"job\", \"(.*)_agent_id_(.*)_(.*)\") or\nlabel_replace((max_over_time(scrape_samples_scraped{service_type=\"proxysql\"}[$interval]) or max_over_time(scrape_samples_scraped{service_type=\"proxysql\"}[5m])),\"job\", \"proxysql_exporter_$3\", \"job\", \"(.*)_agent_id_(.*)_(.*)\") or\nlabel_replace(label_replace((max_over_time(scrape_samples_scraped{instance=~\"127\\\\.0\\\\.0\\\\.1.*\"}[$interval]) or \nmax_over_time(scrape_samples_scraped{instance=~\"127\\\\.0\\\\.0\\\\.1.*\"}[5m])),\"job\", \"rds_exporter_$2\", \"job\", \"rds_exporter_(.*)_(.*)\"),\"service_name\",\"pmm-server\",\"\",\"\")\n))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4089,6 +4102,7 @@
                         "x": 0,
                         "y": 11
                     },
+                    "hiddenSeries": false,
                     "id": 28,
                     "legend": {
                         "alignAsTable": true,
@@ -4219,6 +4233,7 @@
                         "x": 12,
                         "y": 11
                     },
+                    "hiddenSeries": false,
                     "id": 29,
                     "legend": {
                         "alignAsTable": true,
@@ -4332,6 +4347,7 @@
                         "x": 0,
                         "y": 19
                     },
+                    "hiddenSeries": false,
                     "id": 30,
                     "legend": {
                         "alignAsTable": true,
@@ -4445,6 +4461,7 @@
                         "x": 12,
                         "y": 19
                     },
+                    "hiddenSeries": false,
                     "id": 39,
                     "legend": {
                         "alignAsTable": true,
@@ -5472,7 +5489,7 @@
         }
     ],
     "refresh": "1m",
-    "schemaVersion": 20,
+    "schemaVersion": 21,
     "style": "dark",
     "tags": [
         "Percona",
