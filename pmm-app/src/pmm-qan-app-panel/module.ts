@@ -173,6 +173,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
   // TODO: add strict urlParams presence check
   private reloadQuery(window, $scope, type = '', urlParams: {}) {
     const existedParams = this.getJsonFromUrl(window.location);
+
     [...Object.keys(existedParams), ...Object.keys(urlParams)].forEach(param => {
       if (urlParams[param]) {
         existedParams[param] = urlParams[param];
@@ -183,21 +184,18 @@ export class PanelCtrl extends MetricsPanelCtrl {
     if (type && urlParams['queryID']) {
       existedParams['type'] = type;
     }
-    Object.keys(existedParams).forEach(paramKey => {
-      if (paramKey.startsWith('var-')) {
-        const key = paramKey.replace('var-', '');
-        const templateVariables = this.templateSrv.variables;
-        const variable = _.find(templateVariables, { name: key });
-        if (!variable) {
-          return;
-        }
-        variable.variableSrv.setOptionAsCurrent(variable, {
-          text: existedParams[paramKey],
-          value: existedParams[paramKey],
-        });
-        variable.variableSrv.variableUpdated(variable, true);
+    const templateVariables = this.templateSrv.variables;
+    filtersList.forEach(filter => {
+      if (!existedParams[filter]) {
+        return;
       }
+      const variables = _.find(templateVariables, { name: filter.replace('var-', '') });
+      variables.current = {
+        text: existedParams[filter],
+        value: existedParams[filter],
+      };
     });
+    templateVariables[0].variableSrv.variableUpdated(templateVariables[0], true);
   }
 
   private retrieveDashboardURLParams(): string[] {
