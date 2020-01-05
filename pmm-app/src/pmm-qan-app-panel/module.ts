@@ -191,7 +191,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
       }
       const variables = _.find(templateVariables, { name: filter.replace('var-', '') });
       if (!variables) {
-        return
+        return;
       }
       variables.current = {
         text: existedParams[filter],
