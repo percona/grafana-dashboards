@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Table, Tabs } from 'antd';
 import InventoryService from './Inventory.service';
 import { InventoryDataService } from './DataService';
+import Styling from '../react-plugins-deps/components/helpers/styling';
 
 const { TabPane } = Tabs;
 
@@ -184,6 +185,7 @@ const Nodes = () => {
 };
 
 const InventoryPanel = () => {
+  useEffect(() => Styling.addPluginPanelClass(), []);
   return (
     <div id={'antd'} style={{ width: '100%' }}>
       <Tabs defaultActiveKey="1">
