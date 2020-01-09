@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AddRemoteInstance from './AddInstance/AddRemoteInstance/AddRemoteInstance';
 import DiscoveryPanel from './DiscoveryPanel/DiscoveryPanel';
 import '../react-plugins-deps/styles.scss';
@@ -8,9 +8,12 @@ import { Button } from 'antd';
 import './panel.scss';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
+import Styling from '../react-plugins-deps/components/helpers/styling';
 
 const history = createBrowserHistory({});
 const AddInstancePanel = props => {
+  useEffect(() => Styling.addPluginPanelClass(), []);
+
   // @ts-ignore
   const urlParams = new URLSearchParams(window.location.search);
   const instanceType = urlParams.get('instance_type') || '';
