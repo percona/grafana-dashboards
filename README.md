@@ -2,7 +2,6 @@
 
 This is a set of Grafana dashboards for database and system monitoring using Prometheus datasource.
 
- * Amazon RDS OS metrics (CloudWatch datasource)
  * Cross Server Graphs
  * Disk Performance
  * Disk Space
