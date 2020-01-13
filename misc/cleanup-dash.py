@@ -321,8 +321,6 @@ def fix_datasource(dashboard):
                 if 'datasource' in panel:
                     if panel['datasource'] == '${DS_PROMETHEUS}':
                         dashboard['panels'][panel_index]['datasource'] = 'Prometheus'
-                    if panel['datasource'] == '${DS_CLOUDWATCH}':
-                        dashboard['panels'][panel_index]['datasource'] = 'CloudWatch'
                     if panel['datasource'] == '${DS_QAN-API}':
                         dashboard['panels'][panel_index]['datasource'] = 'QAN-API'
                 if 'panels' in panel:
@@ -331,8 +329,6 @@ def fix_datasource(dashboard):
                                 if 'datasource' in panelIn:
                                     if dashboard['panels'][panel_index]['panels'][panelIn_index]['datasource'] == '${DS_PROMETHEUS}':
                                         dashboard['panels'][panel_index]['panels'][panelIn_index]['datasource'] = 'Prometheus'
-                                    if dashboard['panels'][panel_index]['panels'][panelIn_index]['datasource'] == '${DS_CLOUDWATCH}':
-                                        dashboard['panels'][panel_index]['panels'][panelIn_index]['datasource'] = 'CloudWatch'
                                     if dashboard['panels'][panel_index]['panels'][panelIn_index]['datasource'] == '${DS_QAN-API}':
                                         dashboard['panels'][panel_index]['panels'][panelIn_index]['datasource'] = 'QAN-API'
                 if 'mappingTypes' in panel:
@@ -340,8 +336,6 @@ def fix_datasource(dashboard):
                             if 'datasource' in mappingTypes:
                                 if dashboard['panels'][panel_index]['mappingTypes'][mappingTypes_index]['datasource'] == '${DS_PROMETHEUS}':
                                     dashboard['panels'][panel_index]['mappingTypes'][mappingTypes_index]['datasource'] = 'Prometheus'
-                                if dashboard['panels'][panel_index]['mappingTypes'][mappingTypes_index]['datasource'] == '${DS_CLOUDWATCH}':
-                                    dashboard['panels'][panel_index]['mappingTypes'][mappingTypes_index]['datasource'] = 'CloudWatch'
                                 if dashboard['panels'][panel_index]['mappingTypes'][mappingTypes_index]['datasource'] == '${DS_QAN-API}':
                                     dashboard['panels'][panel_index]['mappingTypes'][mappingTypes_index]['datasource'] = 'QAN-API'
 
@@ -350,8 +344,6 @@ def fix_datasource(dashboard):
                     if 'datasource' in panel.keys():
                         if panel['datasource'] == '${DS_PROMETHEUS}':
                             dashboard['templating']['list'][panel_index]['datasource'] = 'Prometheus'
-                        if panel['datasource'] == '${DS_CLOUDWATCH}':
-                            dashboard['templating']['list'][panel_index]['datasource'] = 'CloudWatch'
                         if panel['datasource'] == '${DS_QAN-API}':
                             dashboard['templating']['list'][panel_index]['datasource'] = 'QAN-API'
 
