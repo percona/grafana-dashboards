@@ -41,8 +41,6 @@ def dash_cleanup(a):
     i = 0
     for e in a['templating']['list']:
         a['templating']['list'][i]['datasource'] = 'Prometheus'
-        if 'Amazon RDS' in a['title']:
-            a['templating']['list'][i]['datasource'] = 'CloudWatch'
 
         if e['name'] in TEMPLATE_VARS:
             if 'options' in a['templating']['list'][i]:
@@ -61,8 +59,6 @@ def dash_cleanup(a):
 
         for i in range(len(r['panels'])):
             a['rows'][j]['panels'][i]['datasource'] = 'Prometheus'
-            if 'Amazon RDS' in a['title']:
-                a['rows'][j]['panels'][i]['datasource'] = 'CloudWatch'
 
         j += 1
 
