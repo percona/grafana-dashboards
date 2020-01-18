@@ -24,7 +24,7 @@ const DataOutput = props => {
           <Pagination defaultCurrent={1} total={30} />
         </div>
         <div style={{ marginLeft: '10px' }}>
-          <AddColumn />
+          <AddColumn onlyAdd={true}/>
         </div>
       </div>
       <Split

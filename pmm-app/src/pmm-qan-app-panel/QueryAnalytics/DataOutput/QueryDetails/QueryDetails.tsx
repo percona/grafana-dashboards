@@ -18,8 +18,8 @@ const QueryDetails = props => {
     filterBy: context.filterBy,
     groupBy: 'queryid',
     labels: [],
-    periodStartFrom: '2019-12-17T05:02:10+00:00',
-    periodStartTo: '2019-12-17T17:02:10+00:00',
+    periodStartFrom: '2020-01-17T14:02:10+00:00',
+    periodStartTo: '2020-01-18T04:02:10+00:00',
     tables: [],
   };
 
