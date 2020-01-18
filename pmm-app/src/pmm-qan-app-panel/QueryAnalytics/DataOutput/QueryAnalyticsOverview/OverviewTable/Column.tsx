@@ -13,7 +13,7 @@ export const getColumnName = (metricName, columnIndex, totalValues) => {
   let metric = METRIC_CATALOGUE[metricName];
   return {
     sorter: () => {},
-    title: () => <AddColumn placeholder={metricName} />,
+    title: () => <AddColumn placeholder={metricName} currentMetric={metric} />,
     render: (text, item) => {
       const stats = item.metrics[metricName].stats;
       return (
