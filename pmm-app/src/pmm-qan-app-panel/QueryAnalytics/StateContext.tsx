@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 // import { createBrowserHistory } from 'history';
 
 // const history = createBrowserHistory();
+
 interface ContextInterface {
   filterBy?: any;
   labels?: any;
   selectedVariables?: any;
   columns?: any;
-  addColumn?: any;
+  changeColumn?: any;
   selectQuery?: any;
   removeFilter?: any;
   addFilter?: any;
@@ -68,38 +69,50 @@ class ContextActions {
     history.pushState({}, 'test', newUrl);
   }
 
-  private changeFilter(filter, isAdding) {
-    const [group, value] = filter.split(':');
-    function onlyUnique(value, index, self) {
-      return self.indexOf(value) === index;
-    }
-    let filtersList = this.selectedVariables[group];
-    if (isAdding) {
-      filtersList.push(value);
-    } else {
-      filtersList = filtersList.filter(item => item !== value);
-    }
-    this.selectedVariables[group] = filtersList.filter(onlyUnique);
-    this.reload();
+  setLabels(filters) {
+    console.log('setting labels', filters)
+    // const [group, value] = filter.split(':');
+    // function onlyUnique(value, index, self) {
+    //   return self.indexOf(value) === index;
+    // }
+    // let filtersList = this.selectedVariables[group];
+    // if (isAdding) {
+    //   filtersList.push(value);
+    // } else {
+    //   filtersList = filtersList.filter(item => item !== value);
+    // }
+    // this.selectedVariables[group] = filtersList.filter(onlyUnique);
+    // this.reload();
   }
 
-  addFilter(filter) {
-    this.changeFilter(filter, true);
-    this.reload();
-  }
-
-  removeFilter(filter) {
-    this.changeFilter(filter, false);
-    this.reload();
-  }
+  // addFilter(filter) {
+  //   this.changeFilter(filter, true);
+  //   this.reload();
+  // }
+  //
+  // removeFilter(filter) {
+  //   this.changeFilter(filter, false);
+  //   this.reload();
+  // }
 
   selectQuery(queryId) {
     this.filterBy = queryId;
     this.reload();
   }
 
-  addColumn() {}
-  removeColumn() {}
+  changeColumn({ column, oldColumn, action }) {
+    switch (action) {
+      case 'ADD':
+        console.log('ADD', column);
+        break;
+      case 'REPLACE':
+        console.log('REPLACE', column, oldColumn);
+        break;
+      case 'REMOVE':
+        console.log('REMOVE', column);
+        break;
+    }
+  }
 
   changePagination() {}
 
@@ -115,16 +128,21 @@ export const UrlParametersProvider = ({ children }) => {
   const contextData = new ContextActions(query);
   // Initial setup
   const [state, setState] = useState({
-    addFilter: filter => {
-      contextData.addFilter(filter);
-      setState({ ...state, ...contextData.getCurrentState() });
+    setLabels: (filters) => {
+      contextData.setLabels(filters)
+      // setState({ ...state, ...contextData.getCurrentState() });
     },
-    removeFilter: filter => {
-      console.log('remove');
-      contextData.removeFilter(filter);
-      setState({ ...state, ...contextData.getCurrentState() });
-    },
+    // addFilter: filter => {
+    //   contextData.addFilter(filter);
+    //   setState({ ...state, ...contextData.getCurrentState() });
+    // },
+    // removeFilter: filter => {
+    //   console.log('remove');
+    //   contextData.removeFilter(filter);
+    //   setState({ ...state, ...contextData.getCurrentState() });
+    // },
     selectQuery: contextData.selectQuery.bind(contextData),
+    changeColumn: contextData.changeColumn.bind(contextData),
     columns: contextData.columns,
     filterBy: contextData.filterBy,
     selectedVariables: contextData.selectedVariables,
