@@ -1,14 +1,16 @@
 import React, { ReactElement, useContext, useState } from 'react';
-import Humanize from '../../../react-plugins-deps/helpers/humanize';
+import { Humanize } from '../../../react-plugins-deps/components/helpers/Humanize';
 import './Filters.scss';
 import { Divider } from 'antd';
 import { StateContext } from '../StateContext';
 import FiltersService from './Filters.service';
-import { CheckboxField } from '../../../react-plugins-deps/components/FieldsComponents/Checkbox/Checkbox';
+import { CheckboxField } from '../../../react-plugins-deps/components/FormComponents/Checkbox/Checkbox';
 import { useForm } from 'react-final-form-hooks';
 import { Form as FormFinal } from 'react-final-form';
+import Search from 'antd/es/input/Search';
+const humanize = new Humanize();
 
-const checkboxGroup = (form, name, items, showAll, filter) => {
+const checkboxGroup = (form, name, items, group, showAll, filter) => {
   const itemsList = items
     .filter(item => item.value)
     .filter(item => {
@@ -22,10 +24,10 @@ const checkboxGroup = (form, name, items, showAll, filter) => {
       return (
         <div className={'filter-label'}>
           <span className={'filter-name'}>
-            <CheckboxField form={form} name={'testerok'} label={item.value} checked={item.checked} />
+            <CheckboxField form={form} name={`${group}:${item.value}`} label={item.value} checked={item.checked} />
           </span>
           <span className={'percentage'}>
-            <span>{Humanize.formatPercent(item.main_metric_percent)}</span>
+            <span>{humanize.transform(item.main_metric_percent, 'percent')}</span>
           </span>
         </div>
       );
@@ -97,20 +99,26 @@ const Filters = () => {
   const [showAll, showSetAll] = useState(true);
   const [filter, setFilter] = useState('');
   const context = useContext(StateContext);
-  console.log(context);
   const filters = FiltersService.getQueryOverviewFiltersList(context.selectedVariables);
   return (
     <FormFinal
       onSubmit={() => {}}
       render={(): ReactElement => {
         const { form, handleSubmit } = useForm({
-          onSubmit: () => {},
-          validate: () => undefined,
+          onSubmit: filters => {},
+          validate: filters => {
+            // TODO: temp solution, need to figure out why handleSubmit works wrong
+            console.log(filters, 'form data');
+            context.setLabels(filters)
+          },
           initialValues: {},
         });
         // @ts-ignore
         return (
-          <form onSubmit={handleSubmit} className="add-instance-form app-theme-dark">
+          <form
+            onSubmit={handleSubmit}
+            className="add-instance-form app-theme-dark"
+          >
             <div className={'filters-header'} style={{ padding: '5px 0px', height: '50px' }}>
               <h5 style={{ marginRight: '15px' }}>Filters</h5>
               {showAll ? (
@@ -127,9 +135,9 @@ const Filters = () => {
               </a>
             </div>
             <div className={'query-analytics-filters-wrapper'}>
-              <input type="text" className="input-field input-field--dark" onChange={event => setFilter(event.target.value)} />
+              <Search placeholder="Filters search..." onChange={e => setFilter(e.target.value)} style={{ width: '100%' }} />
               {checkboxGroups.map(group => {
-                return checkboxGroup(form, group.name, filters[group.dataKey].name, showAll, filter);
+                return checkboxGroup(form, group.name, filters[group.dataKey].name, group.dataKey, showAll, filter);
               })}
             </div>
           </form>
