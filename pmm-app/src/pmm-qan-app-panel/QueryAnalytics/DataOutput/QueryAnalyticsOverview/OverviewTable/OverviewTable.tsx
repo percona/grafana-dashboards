@@ -62,7 +62,7 @@ const OverviewTable = props => {
     const updateInstances = async () => {
       try {
         // @ts-ignore
-        const result = await OverviewService.getReport();
+        const result = await OverviewService.getReport({ labels: context.labels });
         setRows(result.rows);
         const columns = getDefaultColumns(context.selectQuery).concat(context.columns.map((key, index) => getColumnName(key, index, result.rows[0])));
         // @ts-ignore
@@ -76,7 +76,6 @@ const OverviewTable = props => {
   }, []);
   // // @ts-ignore
   return <Table dataSource={rows} columns={columns} size={'small'} bordered={true} pagination={false} scroll={{ x: 1300 }} />;
-  // return '123';
 };
 
 export default OverviewTable;
