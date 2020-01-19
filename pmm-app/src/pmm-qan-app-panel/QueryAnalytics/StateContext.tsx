@@ -23,6 +23,7 @@ class ContextActions {
   selectedVariables: {};
   columns: any[];
   filterBy: any;
+  labels: any;
   constructor(query) {
     this.selectedVariables = this.setFilters(query);
     this.columns = DEFAULT_COLUMNS;
@@ -57,8 +58,9 @@ class ContextActions {
     const filtersQuery = filtersResult || '';
     const columnsQuery = this.columns ? `columns=${JSON.stringify(this.columns)}` : '';
     const filterByQuery = this.filterBy ? `filter_by=${this.filterBy}` : '';
+    const labels = `var-testerok=${this.labels}`;
     // TODO: replace crutch with right redirect
-    return `${window.location.pathname}?${[filtersQuery, columnsQuery, filterByQuery].filter(Boolean).join('&')}`;
+    return `${window.location.pathname}?${[filtersQuery, columnsQuery, filterByQuery, labels].filter(Boolean).join('&')}`;
   }
 
   private reload() {
@@ -70,30 +72,20 @@ class ContextActions {
   }
 
   setLabels(filters) {
-    console.log('setting labels', filters)
-    // const [group, value] = filter.split(':');
-    // function onlyUnique(value, index, self) {
-    //   return self.indexOf(value) === index;
-    // }
-    // let filtersList = this.selectedVariables[group];
-    // if (isAdding) {
-    //   filtersList.push(value);
-    // } else {
-    //   filtersList = filtersList.filter(item => item !== value);
-    // }
-    // this.selectedVariables[group] = filtersList.filter(onlyUnique);
-    // this.reload();
+    const labels = {};
+    Object.keys(filters)
+      .filter(filter => filters[filter])
+      .forEach(filter => {
+        const [group, value] = filter.split(':');
+        if (labels[group]) {
+          labels[group].push(value);
+        } else {
+          labels[group] = [value];
+        }
+      });
+    this.labels = labels;
+    this.reload();
   }
-
-  // addFilter(filter) {
-  //   this.changeFilter(filter, true);
-  //   this.reload();
-  // }
-  //
-  // removeFilter(filter) {
-  //   this.changeFilter(filter, false);
-  //   this.reload();
-  // }
 
   selectQuery(queryId) {
     this.filterBy = queryId;
@@ -125,27 +117,19 @@ class ContextActions {
 export const UrlParametersProvider = ({ children }) => {
   const query = new URLSearchParams(window.location.search);
 
-  const contextData = new ContextActions(query);
+  const context = new ContextActions(query);
   // Initial setup
   const [state, setState] = useState({
-    setLabels: (filters) => {
-      contextData.setLabels(filters)
+    setLabels: filters => {
+      context.setLabels(filters);
+      // setState({ labels: context.labels });
       // setState({ ...state, ...contextData.getCurrentState() });
     },
-    // addFilter: filter => {
-    //   contextData.addFilter(filter);
-    //   setState({ ...state, ...contextData.getCurrentState() });
-    // },
-    // removeFilter: filter => {
-    //   console.log('remove');
-    //   contextData.removeFilter(filter);
-    //   setState({ ...state, ...contextData.getCurrentState() });
-    // },
-    selectQuery: contextData.selectQuery.bind(contextData),
-    changeColumn: contextData.changeColumn.bind(contextData),
-    columns: contextData.columns,
-    filterBy: contextData.filterBy,
-    selectedVariables: contextData.selectedVariables,
+    selectQuery: context.selectQuery.bind(context),
+    changeColumn: context.changeColumn.bind(context),
+    columns: context.columns,
+    filterBy: context.filterBy,
+    selectedVariables: context.selectedVariables,
   } as ContextInterface);
 
   return <StateContext.Provider value={state}>{children}</StateContext.Provider>;
