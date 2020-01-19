@@ -23,7 +23,7 @@ class OverviewService {
       group_by: 'queryid',
       include_only_fields: [],
       keyword: '',
-      labels: [],
+      labels: body.labels || [],
       limit: 10,
       offset: 0,
       order_by: '-load',

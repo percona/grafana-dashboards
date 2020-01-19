@@ -19,7 +19,7 @@ const AddColumn = props => {
     >
       <Select
         style={{ width: 240 }}
-        placeholder={props.placeholder}
+        placeholder={props.placeholder || 'Add column'}
         onChange={(column, second) => {
           if (props.onlyAdd) {
             context.changeColumn({
