@@ -99,26 +99,23 @@ const Filters = () => {
   const [showAll, showSetAll] = useState(true);
   const [filter, setFilter] = useState('');
   const context = useContext(StateContext);
-  const filters = FiltersService.getQueryOverviewFiltersList(context.selectedVariables);
+  const filters = FiltersService.getQueryOverviewFiltersList(context.selectedVariables || {});
   return (
     <FormFinal
       onSubmit={() => {}}
       render={(): ReactElement => {
         const { form, handleSubmit } = useForm({
-          onSubmit: filters => {},
+          onSubmit: () => {},
           validate: filters => {
             // TODO: temp solution, need to figure out why handleSubmit works wrong
             console.log(filters, 'form data');
-            context.setLabels(filters)
+            context.setLabels(filters);
           },
           initialValues: {},
         });
         // @ts-ignore
         return (
-          <form
-            onSubmit={handleSubmit}
-            className="add-instance-form app-theme-dark"
-          >
+          <form onSubmit={handleSubmit} className="add-instance-form app-theme-dark">
             <div className={'filters-header'} style={{ padding: '5px 0px', height: '50px' }}>
               <h5 style={{ marginRight: '15px' }}>Filters</h5>
               {showAll ? (
