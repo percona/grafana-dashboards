@@ -4,7 +4,7 @@ import React, { ReactComponentElement } from 'react';
 interface VerticalFormWrapperInterface {
   alignLabel?: string;
   label: string;
-  tooltip: string | JSX.Element;
+  tooltip?: string | JSX.Element;
   // Add correct type for element
   element: ReactComponentElement<any, any>;
 }

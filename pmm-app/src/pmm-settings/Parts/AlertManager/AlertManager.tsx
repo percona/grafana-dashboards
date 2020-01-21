@@ -15,18 +15,18 @@ interface AlertManagerSettingsInterface {
   remove_alert_manager_address?: boolean;
   remove_alert_manager_rules?: boolean;
 }
-
-const validateAlertManagerSettings = values => {
-  const errors = {} as any;
-
-  errors.alert_manager_address = values.alert_manager_address ? Validators.validateIP(values.port) : '';
-  for (const propName in errors) {
-    if (!errors[propName]) {
-      delete errors[propName];
-    }
-  }
-  return errors;
-};
+//
+// const validateAlertManagerSettings = values => {
+//   const errors = {} as any;
+//
+//   errors.alert_manager_address = values.alert_manager_address ? Validators.validateIP(values.port) : '';
+//   for (const propName in errors) {
+//     if (!errors[propName]) {
+//       delete errors[propName];
+//     }
+//   }
+//   return errors;
+// };
 
 const AlertManager = props => {
   const [loading, setLoading] = useState(false);

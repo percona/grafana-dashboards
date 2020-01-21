@@ -3,7 +3,7 @@ import { Collapse } from 'antd';
 import UploadSSH from './Parts/UploadSSH/UploadSSH';
 import Diagnostics from './Parts/Diagnostics/Diagnostics';
 import SettingsPart from './Parts/Settings/Settings';
-import AlertManager from "./Parts/AlertManager/AlertManager";
+import AlertManager from './Parts/AlertManager/AlertManager';
 import SettingsService from './Settings.service';
 import { Form as FormFinal } from 'react-final-form';
 import Styling from '../react-plugins-deps/components/helpers/styling';
