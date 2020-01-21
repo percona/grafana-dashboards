@@ -36,7 +36,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1577450608139,
+    "iteration": 1579609876117,
     "links": [
         {
             "icon": "doc",
@@ -3599,14 +3599,14 @@
                         "Rushed Mode High Watermark": "#BF1B00",
                         "Rushed Mode Low Watermark": "#EAB839"
                     },
-                    "bars": true,
+                    "bars": false,
                     "dashLength": 10,
                     "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 2,
                     "editable": true,
                     "error": false,
-                    "fill": 0,
+                    "fill": 6,
                     "fillGradient": 0,
                     "grid": {},
                     "gridPos": {
@@ -3630,10 +3630,10 @@
                         "total": false,
                         "values": true
                     },
-                    "lines": false,
+                    "lines": true,
                     "linewidth": 1,
                     "links": [],
-                    "nullPointMode": "null",
+                    "nullPointMode": "null as zero",
                     "options": {
                         "dataLinks": []
                     },
@@ -3647,14 +3647,11 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "time() - node_time_seconds",
-                            "format": "time_series",
+                            "expr": "clamp_min((time() - max by (node_name) (node_time_seconds)) - scalar(floor(prometheus_target_interval_length_seconds{quantile=\"0.99\",interval=~\"$scrapingInterval\"})),0)",
+                            "hide": false,
                             "interval": "$interval",
-                            "intervalFactor": 1,
                             "legendFormat": "{{node_name}}",
-                            "metric": "",
-                            "refId": "A",
-                            "step": 60
+                            "refId": "B"
                         }
                     ],
                     "thresholds": [],
@@ -3680,13 +3677,14 @@
                         {
                             "decimals": 2,
                             "format": "s",
-                            "logBase": 2,
+                            "label": "",
+                            "logBase": 1,
                             "max": null,
-                            "min": 0,
+                            "min": "0",
                             "show": true
                         },
                         {
-                            "format": "percentunit",
+                            "format": "s",
                             "logBase": 1,
                             "max": null,
                             "min": 0,
@@ -5575,6 +5573,28 @@
                 "query": "pmm-server",
                 "skipUrlSync": false,
                 "type": "custom"
+            },
+            {
+                "allValue": null,
+                "current": {},
+                "datasource": "Prometheus",
+                "definition": "label_values({__name__=~\"node_time_seconds\"},job)",
+                "hide": 2,
+                "includeAll": false,
+                "label": null,
+                "multi": false,
+                "name": "scrapingInterval",
+                "options": [],
+                "query": "label_values({__name__=~\"node_time_seconds\"},job)",
+                "refresh": 2,
+                "regex": "/.*_hr-([0-9]m[0-9]s|.?[0-9]s).*/",
+                "skipUrlSync": false,
+                "sort": 3,
+                "tagValuesQuery": "apps.$tag",
+                "tags": [],
+                "tagsQuery": "node_time_seconds",
+                "type": "query",
+                "useTags": false
             }
         ]
     },
