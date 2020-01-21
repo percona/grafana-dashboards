@@ -7,11 +7,27 @@ import { Form as FormFinal } from 'react-final-form';
 import { useForm } from 'react-final-form-hooks';
 import SettingsService from '../../Settings.service';
 import { showErrorNotification, showSuccessNotification } from '../../../react-plugins-deps/components/helpers/notification-manager';
+import Validators from '../../../react-plugins-deps/components/validators/validators';
 
 interface AlertManagerSettingsInterface {
-  alert_manager_ip: string;
+  alert_manager_address: string;
   alert_manager_rules: string;
+  remove_alert_manager_address?: boolean;
+  remove_alert_manager_rules?: boolean;
 }
+
+const validateAlertManagerSettings = values => {
+  const errors = {} as any;
+
+  errors.alert_manager_address = values.alert_manager_address ? Validators.validateIP(values.port) : '';
+  for (const propName in errors) {
+    if (!errors[propName]) {
+      delete errors[propName];
+    }
+  }
+  return errors;
+};
+
 const AlertManager = props => {
   const [loading, setLoading] = useState(false);
   return (
@@ -20,10 +36,19 @@ const AlertManager = props => {
       render={(): ReactElement => {
         const { form, handleSubmit } = useForm({
           onSubmit: async (values: AlertManagerSettingsInterface): Promise<void> => {
-            const settings = {
-              alert_manager_ip: values.alert_manager_ip,
-              alert_manager_rules: values.alert_manager_rules,
+            const settings: AlertManagerSettingsInterface = {
+              alert_manager_address: values.alert_manager_address || '',
+              alert_manager_rules: values.alert_manager_rules || '',
             };
+
+            if (!values.alert_manager_address) {
+              settings.remove_alert_manager_address = true;
+            }
+
+            if (!values.alert_manager_rules) {
+              settings.remove_alert_manager_rules = true;
+            }
+
             setLoading(true);
             try {
               await SettingsService.setSettings(settings);
@@ -45,7 +70,7 @@ const AlertManager = props => {
             <>
               <VerticalFormWrapper
                 label={'AlertManager IP'}
-                element={<InputField form={form} name={'alert_manager_ip'} placeholder="Enter IP" style={{ width: '100%' }} />}
+                element={<InputField form={form} name={'alert_manager_address'} placeholder="Enter IP" style={{ width: '100%' }} />}
               />
               <VerticalFormWrapper
                 label={'AlertManager rules'}

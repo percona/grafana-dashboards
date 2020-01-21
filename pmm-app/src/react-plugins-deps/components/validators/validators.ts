@@ -6,6 +6,14 @@ class Validators {
     }
     return 'Port should be a number and between the range of 0 and 65535';
   }
+
+  static validateIP(value) {
+    if (/^(?!0)(?!.*\.$)((1?\d?\d|25[0-5]|2[0-4]\d)(\.|$)){4}$/.test(value)) {
+      return '';
+    }
+    return 'IP address is invalid';
+  }
+
   static validateKeyValue(value) {
     if (
       value &&
