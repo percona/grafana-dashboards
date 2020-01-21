@@ -65,8 +65,6 @@ class ContextActions {
 
   private reload() {
     const newUrl = this.generateURL();
-    // window.location.href = newUrl;
-    // history.push(newUrl);
     console.log(newUrl);
     history.pushState({}, 'test', newUrl);
   }
@@ -120,11 +118,7 @@ export const UrlParametersProvider = ({ children }) => {
   const context = new ContextActions(query);
   // Initial setup
   const [state, setState] = useState({
-    setLabels: filters => {
-      context.setLabels(filters);
-      // setState({ labels: context.labels });
-      // setState({ ...state, ...contextData.getCurrentState() });
-    },
+    setLabels: context.setLabels.bind(context),
     selectQuery: context.selectQuery.bind(context),
     changeColumn: context.changeColumn.bind(context),
     columns: context.columns,
