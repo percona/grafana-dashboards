@@ -6,7 +6,6 @@ import { PluginTooltip, VerticalFormWrapper } from '../../../react-plugins-deps/
 import SettingsService from '../../Settings.service';
 import { showSuccessNotification } from '../../../react-plugins-deps/components/helpers/notification-manager';
 import { SliderField } from '../../../react-plugins-deps/components/FormComponents/Slider/Slider';
-import { SelectField } from '../../../react-plugins-deps/components/FormComponents/Select/Select';
 import { ToggleField } from '../../../react-plugins-deps/components/FormComponents/Toggle/Toggle';
 import { InputField } from '../../../react-plugins-deps/components/FormComponents/Input/Input';
 import ButtonElement from '../../../react-plugins-deps/components/FormComponents/Button/Button';
@@ -14,11 +13,6 @@ import './Settings.scss';
 
 const { Panel } = Collapse;
 
-const dataRetentionOptions = [
-  { value: 'h', label: 'Hours' },
-  { value: 'm', label: 'Minutes' },
-  { value: 's', label: 'Seconds' },
-];
 const marks = {
   0: 'Low',
   1: 'Medium',
@@ -73,6 +67,19 @@ export const getMetricsResolutionValues = metricsResolutions => {
   return metricsIndex;
 };
 
+const transformToDays = (count, units) => {
+  switch (units) {
+    case 'h':
+      return count / 24;
+    case 'm':
+      return count / 60 / 24;
+    case 's':
+      return count / 60 / 60 / 24;
+    default:
+      return '';
+  }
+};
+
 interface MetricsResolutionInterface {
   lr: string;
   mr: string;
@@ -91,7 +98,7 @@ const SettingsPart = props => {
   const { settings } = props;
   const onSubmit = async values => {
     const updatedSettings: SettingsInterface = {
-      data_retention: values.data_retention_count + values.data_retention_units,
+      data_retention: values.data_retention_count * 3600 * 24 + 's',
       metrics_resolutions: dataRetentionValues[values.metrics_resolutions_slider],
     };
 
@@ -126,8 +133,7 @@ const SettingsPart = props => {
 
           form.initialize(
             Object.assign(settings, {
-              data_retention_count: count,
-              data_retention_units: units,
+              data_retention_count: transformToDays(count, units),
               metrics_resolutions_slider: sliderValue,
               updates_disabled: !settings.updates_disabled,
             })
@@ -172,15 +178,9 @@ const SettingsPart = props => {
                       />
                     }
                     element={
-                      <div style={{ display: 'flex', justifyContent: 'flex-start', width: '100%' }}>
-                        <InputField name={'data_retention_count'} form={form} wrapperStyle={{ width: '60%' }} />
-                        <SelectField
-                          form={form}
-                          name={'data_retention_units'}
-                          options={dataRetentionOptions}
-                          defaultValue={'weeks'}
-                          style={{ width: '40%' }}
-                        />
+                      <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', width: '100%' }}>
+                        <InputField name={'data_retention_count'} form={form} wrapperStyle={{ width: '20%' }} />
+                        <span style={{ marginLeft: '10px' }}>Days</span>
                       </div>
                     }
                   />
