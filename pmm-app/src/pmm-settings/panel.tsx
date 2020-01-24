@@ -6,6 +6,7 @@ import Diagnostics from './Parts/Diagnostics/Diagnostics';
 import SettingsPart from './Parts/Settings/Settings';
 import SettingsService from './Settings.service';
 import { Form as FormFinal } from 'react-final-form';
+import Styling from '../react-plugins-deps/components/helpers/styling';
 
 const { Panel } = Collapse;
 
@@ -32,8 +33,8 @@ const SettingsPanel = () => {
 
   useEffect(() => {
     (async () => {
+      Styling.addPluginPanelClass();
       const { settings } = await SettingsService.getSettings();
-
       updateSettings(settings);
     })();
   }, []);

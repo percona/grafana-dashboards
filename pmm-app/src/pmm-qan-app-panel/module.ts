@@ -1,6 +1,27 @@
 import { MetricsPanelCtrl } from 'grafana/app/plugins/sdk';
 import config from 'grafana/app/core/config';
 import AppEvents from 'grafana/app/core/app_events';
+import _ from 'lodash';
+
+const filtersList = [
+  'var-agent_id',
+  'var-az',
+  'var-database',
+  'var-host',
+  'var-environment',
+  'var-replication_set',
+  'var-region',
+  'var-cluster',
+  'var-node_id',
+  'var-node_name',
+  'var-node_type',
+  'var-node_model',
+  'var-service',
+  'var-service_id',
+  'var-service_name',
+  'var-service_type',
+  'var-username',
+];
 
 export class PanelCtrl extends MetricsPanelCtrl {
   static template = `<iframe ng-src="{{trustSrc(url)}}" id="iframe-qan" style="width: 100%; height: 400px; border: 0;" scrolling="no" />`;
@@ -33,6 +54,18 @@ export class PanelCtrl extends MetricsPanelCtrl {
         if (!newValue) {
           return;
         }
+        [
+          $scope.qanParams.queryID,
+          $scope.qanParams.type,
+          $scope.qanParams.search,
+          $scope.qanParams.filters,
+          $scope.qanParams.main_metric,
+          $scope.qanParams.columns,
+          $scope.qanParams.order_by,
+          $scope.qanParams.group_by,
+          $scope.qanParams.filter_by,
+          $scope.qanParams.active_details_tab,
+        ] = this.retrieveDashboardURLParams();
         $scope.qanParams.from = newValue.raw.from;
         $scope.qanParams.to = newValue.raw.to;
         this.resetUrl($scope);
@@ -46,7 +79,6 @@ export class PanelCtrl extends MetricsPanelCtrl {
     const panel = elem.find('div.panel-container');
     const panelContent = elem.find('div.panel-content');
     // TODO: investigate this workaround. Inside $window - CtrlPanel
-    const location = $window.$injector.get('$location');
     const window = $window.$injector.get('$window');
     panel.css({
       'background-color': 'transparent',
@@ -87,7 +119,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
       $scope.qanParams.group_by,
       $scope.qanParams.filter_by,
       $scope.qanParams.active_details_tab,
-    ] = this.retrieveDashboardURLParams(location.absUrl());
+    ] = this.retrieveDashboardURLParams();
 
     frame.on('load', () => {
       setTimeout(() => $scope.ctrl.calculatePanelHeight(), 10);
@@ -140,36 +172,37 @@ export class PanelCtrl extends MetricsPanelCtrl {
 
   // TODO: add strict urlParams presence check
   private reloadQuery(window, $scope, type = '', urlParams: {}) {
-    const host = window.location.href.split('?')[0];
     const existedParams = this.getJsonFromUrl(window.location);
+
     [...Object.keys(existedParams), ...Object.keys(urlParams)].forEach(param => {
       if (urlParams[param]) {
         existedParams[param] = urlParams[param];
-      } else if (existedParams[param] && !urlParams[param] && param.startsWith('var-')) {
+      } else if (existedParams[param] && !urlParams[param] && filtersList.includes(param)) {
         existedParams[param] = ['All'];
       }
     });
     if (type && urlParams['queryID']) {
       existedParams['type'] = type;
     }
-    const queryParams = Object.keys(existedParams)
-      .map(param => {
-        if (existedParams[param].length === 1) {
-          return `${param}=${existedParams[param] || ''}`;
-        } else if (existedParams[param].length > 1) {
-          return existedParams[param].map(paramValue => `${param}=${paramValue}`).join('&');
-        }
-        return '';
-      })
-      .join('&');
-    const url = `${host}?${queryParams}`;
-    // @ts-ignore
-    history.pushState({}, null, url);
-    Object.keys(existedParams).forEach(param => ($scope.qanParams[param] = existedParams[param]));
+    const templateVariables = this.templateSrv.variables;
+    filtersList.forEach(filter => {
+      if (!existedParams[filter]) {
+        return;
+      }
+      const variables = _.find(templateVariables, { name: filter.replace('var-', '') });
+      if (!variables) {
+        return;
+      }
+      variables.current = {
+        text: existedParams[filter],
+        value: existedParams[filter],
+      };
+    });
+    templateVariables[0].variableSrv.variableUpdated(templateVariables[0], true);
   }
 
-  private retrieveDashboardURLParams(url): string[] {
-    const currentURL = new URL(url);
+  private retrieveDashboardURLParams(): string[] {
+    const currentURL = new URL(window.location.href);
     const id = currentURL.searchParams.get('queryID') ? currentURL.searchParams.get('queryID') : '';
     const search = currentURL.searchParams.get('search') ? currentURL.searchParams.get('search') : '';
     const filters = this.retrieveFiltersFromVarParams(currentURL);
@@ -185,25 +218,6 @@ export class PanelCtrl extends MetricsPanelCtrl {
   }
 
   private retrieveFiltersFromVarParams(currentURL) {
-    const filtersList = [
-      'var-agent_id',
-      'var-az',
-      'var-database',
-      'var-host',
-      'var-environment',
-      'var-replication_set',
-      'var-region',
-      'var-cluster',
-      'var-node_id',
-      'var-node_name',
-      'var-node_type',
-      'var-node_model',
-      'var-service',
-      'var-service_id',
-      'var-service_name',
-      'var-service_type',
-      'var-username',
-    ];
     return filtersList
       .reduce((list, filter) => {
         PanelCtrl.retrieveVarParam(currentURL, list, filter);
