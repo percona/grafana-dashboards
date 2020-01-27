@@ -1,8 +1,4 @@
 import React, { useState } from 'react';
-import set = Reflect.set;
-// import { createBrowserHistory } from 'history';
-
-// const history = createBrowserHistory();
 
 interface ContextInterface {
   filterBy?: any;
@@ -13,6 +9,7 @@ interface ContextInterface {
   selectQuery?: any;
   removeFilter?: any;
   addFilter?: any;
+  resetLabels?: any;
 }
 const initialState = {} as ContextInterface;
 
@@ -21,10 +18,12 @@ export const StateContext = React.createContext(initialState);
 const DEFAULT_COLUMNS = ['load', 'num_queries', 'query_time'];
 
 class ContextActions {
-  selectedVariables: {};
-  columns: any[];
+  selectedVariables?: {};
+  columns?: any[];
   filterBy: any;
   labels: any;
+  from: any;
+  to: any;
   constructor(query) {
     this.parseURL(query);
   }
@@ -47,40 +46,41 @@ class ContextActions {
 
   private generateURL() {
     // read parameters and create new url
-    const filtersResult = Object.keys(this.selectedVariables)
+    // @ts-ignore
+    const labels = this.labels && Object.keys(this.labels)
       .map(key => {
-        const variables = this.selectedVariables[key];
+        // @ts-ignore
+        const variables = this.labels[key];
         return variables.map(variable => `var-${key}=${variable}`).join('&');
       })
       .filter(Boolean)
       .join('&');
-    const filtersQuery = filtersResult || '';
     const columnsQuery = this.columns ? `columns=${JSON.stringify(this.columns)}` : '';
     const filterByQuery = this.filterBy ? `filter_by=${this.filterBy}` : '';
-    const labels = '';
-    // `var-testerok=${this.labels}`;
     // TODO: replace crutch with right redirect
-    return `${window.location.pathname}?${[filtersQuery, columnsQuery, filterByQuery, labels].filter(Boolean).join('&')}`;
+    return `${window.location.pathname}?${[columnsQuery, filterByQuery, labels].filter(Boolean).join('&')}`;
   }
 
   private parseURL(query) {
     this.selectedVariables = this.setFilters(query);
     this.columns = DEFAULT_COLUMNS;
     this.filterBy = query.get('filter_by');
+    this.from = query.get('from') || 'now-12h';
+    this.to = query.get('to') || 'now';
+    console.log(this);
   }
 
-  private reloadURL() {
+  reloadURL() {
     const newUrl = this.generateURL();
     console.log('--------', 'Generating new url');
     history.pushState({}, 'test', newUrl);
   }
 
-  private reloadState() {
+  reloadState() {
     console.log('new state is', this);
   }
 
   setLabels(state, setState, filters) {
-    console.log(setState);
     const labels = {};
     Object.keys(filters)
       .filter(filter => filters[filter])
@@ -93,8 +93,6 @@ class ContextActions {
         }
       });
     this.labels = labels;
-    this.reloadURL();
-    this.reloadState();
   }
 
   selectQuery(state, setState, queryId) {
@@ -107,20 +105,21 @@ class ContextActions {
     switch (action) {
       case 'ADD':
         console.log('ADD', column);
+        // @ts-ignore
         this.columns.push(column);
         break;
       case 'REPLACE':
         console.log('REPLACE', column, oldColumn);
-        this.columns[this.columns.indexOf(oldColumn.simpleName) + 1] = column;
+        // @ts-ignore
+        this.columns[this.columns.indexOf(oldColumn.simpleName)] = column;
         break;
       case 'REMOVE':
         console.log('REMOVE', column);
-        this.columns.splice(column, 1);
+        // @ts-ignore
+        this.columns.splice(this.columns.indexOf(oldColumn.column), 1);
         break;
     }
     this.reloadURL();
-    // console.log(this);
-    // debugger;
     setState({ ...state, columns: this.columns });
     // TODO: there is some index issues, need to check and fix it, in general it works
     this.reloadState();
@@ -128,22 +127,44 @@ class ContextActions {
 
   changePage() {}
 
+  resetLabels() {
+    this.labels = {};
+    // this.reloadURL();
+    // this.reloadState();
+  }
+
   changeSort() {}
 }
 
 export const UrlParametersProvider = ({ children }) => {
   const query = new URLSearchParams(window.location.search);
+  console.log('------- rerender provider -----------')
   const context = new ContextActions(query);
 
   const [state, setState] = useState({
     setLabels: labels => {
+      console.log('set labels called', labels)
       context.setLabels.bind(context, state, setState)(labels);
+      context.reloadURL();
+      context.reloadState();
+      // setState(state);
+    },
+    resetLabels: () => {
+      context.resetLabels.bind(context, state, setState)();
+      context.reloadURL();
+      context.reloadURL();
+      context.reloadURL();
+      context.reloadURL();
+
+      context.reloadState();
+      setState({ ...state, labels: {} });
     },
     selectQuery: queryId => {
       context.selectQuery.bind(context, state, setState)(queryId);
     },
     changeColumn: columnUpdate => {
       context.changeColumn.bind(context, state, setState)(columnUpdate);
+      context.reloadURL();
     },
     columns: context.columns,
     filterBy: context.filterBy,
