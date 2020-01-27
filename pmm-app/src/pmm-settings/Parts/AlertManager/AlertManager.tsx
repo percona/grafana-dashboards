@@ -9,9 +9,9 @@ import SettingsService from '../../Settings.service';
 import { showErrorNotification, showSuccessNotification } from '../../../react-plugins-deps/components/helpers/notification-manager';
 
 interface AlertManagerSettingsInterface {
-  alert_manager_address: string;
+  alert_manager_url: string;
   alert_manager_rules: string;
-  remove_alert_manager_address?: boolean;
+  remove_alert_manager_url?: boolean;
   remove_alert_manager_rules?: boolean;
 }
 
@@ -24,12 +24,12 @@ const AlertManager = props => {
         const { form, handleSubmit } = useForm({
           onSubmit: async (values: AlertManagerSettingsInterface): Promise<void> => {
             const settings: AlertManagerSettingsInterface = {
-              alert_manager_address: values.alert_manager_address || '',
+              alert_manager_url: values.alert_manager_url || '',
               alert_manager_rules: values.alert_manager_rules || '',
             };
 
-            if (!values.alert_manager_address) {
-              settings.remove_alert_manager_address = true;
+            if (!values.alert_manager_url) {
+              settings.remove_alert_manager_url = true;
             }
 
             if (!values.alert_manager_rules) {
@@ -56,8 +56,8 @@ const AlertManager = props => {
           <form onSubmit={handleSubmit}>
             <>
               <VerticalFormWrapper
-                label={'AlertManager IP'}
-                element={<InputField form={form} name={'alert_manager_address'} placeholder="Enter IP" style={{ width: '100%' }} />}
+                label={'AlertManager URL'}
+                element={<InputField form={form} name={'alert_manager_url'} placeholder="Enter URL" style={{ width: '100%' }} />}
               />
               <VerticalFormWrapper
                 label={'AlertManager rules'}
