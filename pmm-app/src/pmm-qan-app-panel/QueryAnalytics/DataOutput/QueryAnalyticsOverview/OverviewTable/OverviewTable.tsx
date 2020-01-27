@@ -42,7 +42,6 @@ const getDefaultColumns = selectQuery => {
         return (
           <span
             onClick={() => {
-              console.log(record);
               selectQuery(record.dimension);
             }}
           >

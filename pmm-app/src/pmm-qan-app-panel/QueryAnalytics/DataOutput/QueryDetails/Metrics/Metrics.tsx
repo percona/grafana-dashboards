@@ -79,8 +79,6 @@ const columns = [
     width: '25%',
     render: (text, item, index) => {
       // {{ isRate ? (currentMetric?.stats?.rate | humanize: pipeInfo?.ratePipe) : '0' }}
-      console.log(item);
-
       // @ts-ignore
       return (
         <div
@@ -147,7 +145,7 @@ const Metrics = props => {
         labels: labels,
         tables: tables,
       });
-      console.log('----', result, processMetrics(metrics));
+      // console.log('----', result, processMetrics(metrics));
       setMetrics(result);
     };
     getMetrics();

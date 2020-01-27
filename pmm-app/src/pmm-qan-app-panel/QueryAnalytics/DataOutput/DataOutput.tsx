@@ -13,7 +13,7 @@ const DataOutput = props => {
   return (
     <div>
       <div className={'filters-header'} style={{ padding: '5px 0px', height: '50px' }}>
-        <h5 style={{ marginRight: '15px' }}>Filters</h5>
+        <h5 style={{ margin: '3px', marginRight: '15px' }}>Queries overview</h5>
         <a href="#" className={'filter-switchers'} style={{ marginLeft: '20px' }}>
           All Queries
         </a>{' '}
@@ -24,7 +24,7 @@ const DataOutput = props => {
           <Pagination defaultCurrent={1} total={30} />
         </div>
         <div style={{ marginLeft: '10px' }}>
-          <AddColumn onlyAdd={true}/>
+          <AddColumn onlyAdd={true} />
         </div>
       </div>
       <Split

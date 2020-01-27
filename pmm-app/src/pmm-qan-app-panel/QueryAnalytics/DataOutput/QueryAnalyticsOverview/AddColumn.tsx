@@ -9,7 +9,7 @@ const { Search } = Input;
 
 const AddColumn = props => {
   const context = useContext(StateContext);
-  console.log('context', context);
+  // console.log('context', context);
   // @ts-ignore
   return (
     <div
