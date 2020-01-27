@@ -27,8 +27,8 @@ class OverviewService {
       offset: 0,
       order_by: '-load',
       main_metric: 'load',
-      period_start_from: '2020-01-26T14:02:10+00:00',
-      period_start_to: '2020-01-27T04:02:10+00:00',
+      period_start_from: '2020-01-27T14:02:10+00:00',
+      period_start_to: '2020-01-28T04:02:10+00:00',
     };
     return apiRequest.post<any, any>('/v0/qan/GetReport', request);
   }
