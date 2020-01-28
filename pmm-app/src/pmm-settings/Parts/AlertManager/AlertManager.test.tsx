@@ -8,7 +8,7 @@ describe('Settings Part test', () => {
     const component = renderer.create(
       <AlertManager
         settings={{
-          alert_manager_url: '192.168.0.1',
+          alert_manager_url: 'http://localhost',
           alert_manager_rules: 'test rules',
         }}
       />
