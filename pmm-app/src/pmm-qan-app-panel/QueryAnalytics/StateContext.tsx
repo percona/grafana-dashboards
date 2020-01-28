@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useReducer, useState } from 'react';
 
 interface ContextInterface {
   filterBy?: any;
@@ -11,7 +11,7 @@ interface ContextInterface {
   addFilter?: any;
   resetLabels?: any;
 }
-const initialState = {} as ContextInterface;
+const initialState = {} as any;
 
 export const StateContext = React.createContext(initialState);
 
@@ -44,19 +44,21 @@ class ContextActions {
     }, {});
   }
 
-  private generateURL() {
+  static generateURL(state) {
     // read parameters and create new url
     // @ts-ignore
-    const labels = this.labels && Object.keys(this.labels)
-      .map(key => {
-        // @ts-ignore
-        const variables = this.labels[key];
-        return variables.map(variable => `var-${key}=${variable}`).join('&');
-      })
-      .filter(Boolean)
-      .join('&');
-    const columnsQuery = this.columns ? `columns=${JSON.stringify(this.columns)}` : '';
-    const filterByQuery = this.filterBy ? `filter_by=${this.filterBy}` : '';
+    const labels =
+      state.labels &&
+      Object.keys(state.labels)
+        .map(key => {
+          // @ts-ignore
+          const variables = state.labels[key];
+          return variables.map(variable => `var-${key}=${variable}`).join('&');
+        })
+        .filter(Boolean)
+        .join('&');
+    const columnsQuery = state.columns ? `columns=${JSON.stringify(state.columns)}` : '';
+    const filterByQuery = state.filterBy ? `filter_by=${state.filterBy}` : '';
     // TODO: replace crutch with right redirect
     return `${window.location.pathname}?${[columnsQuery, filterByQuery, labels].filter(Boolean).join('&')}`;
   }
@@ -101,7 +103,7 @@ class ContextActions {
     this.reloadState();
   }
 
-  changeColumn(state, setState, { column, oldColumn, action }) {
+  changeColumn({ column, oldColumn, action }) {
     switch (action) {
       case 'ADD':
         console.log('ADD', column);
@@ -138,38 +140,80 @@ class ContextActions {
 
 export const UrlParametersProvider = ({ children }) => {
   const query = new URLSearchParams(window.location.search);
-  console.log('------- rerender provider -----------')
+  console.log('------- rerender provider -----------');
   const context = new ContextActions(query);
+  //
+  // const [state2, setState] = useState({
+  //   setLabels: labels => {
+  //     console.log('set labels called', labels);
+  //     context.setLabels.bind(context, state, setState)(labels);
+  //     context.reloadURL();
+  //     context.reloadState();
+  //     // setState(state);
+  //   },
+  //   resetLabels: () => {
+  //     context.resetLabels.bind(context, state, setState)();
+  //     context.reloadURL();
+  //     context.reloadURL();
+  //     context.reloadURL();
+  //     context.reloadURL();
+  //
+  //     context.reloadState();
+  //     setState({ ...state, labels: {} });
+  //   },
+  //   selectQuery: queryId => {
+  //     context.selectQuery.bind(context, state, setState)(queryId);
+  //   },
+  //   changeColumn: columnUpdate => {
+  //     context.changeColumn.bind(context, state, setState)(columnUpdate);
+  //     context.reloadURL();
+  //   },
+  //   columns: context.columns,
+  //   filterBy: context.filterBy,
+  //   selectedVariables: context.selectedVariables,
+  // } as ContextInterface);
 
-  const [state, setState] = useState({
-    setLabels: labels => {
-      console.log('set labels called', labels)
-      context.setLabels.bind(context, state, setState)(labels);
-      context.reloadURL();
-      context.reloadState();
-      // setState(state);
+  const [state, dispatch] = useReducer(
+    (state, action) => {
+      console.log('dispatch-------', action);
+      let columns;
+      let newState;
+      switch (action.type) {
+        case 'SET_LABELS':
+          newState = { ...state, queryId: action.payload.queryId };
+        case 'RESET_LABELS':
+          newState = { ...state };
+        case 'SELECT_QUERY':
+          newState = { ...state, filter_by: action.payload };
+        case 'ADD_COLUMN':
+          columns = state.columns.slice();
+          columns.push(action.payload.column);
+          newState = {
+            ...state,
+            columns: columns,
+          };
+        case 'REPLACE_COLUMN':
+          columns = state.columns.slice();
+          columns[columns.indexOf(action.payload.oldColumn.simpleName)] = action.payload.column;
+          newState = {
+            ...state,
+            columns: columns,
+          };
+        case 'REMOVE_COLUMN':
+          columns = state.columns.slice();
+          columns.splice(columns.indexOf(action.payload.column), 1);
+          newState = {
+            ...state,
+            columns: columns,
+          };
+      }
+      const newUrl = ContextActions.generateURL(newState);
+      console.log('--------', 'Generating new url');
+      history.pushState({}, 'test', newUrl);
+      return newState;
     },
-    resetLabels: () => {
-      context.resetLabels.bind(context, state, setState)();
-      context.reloadURL();
-      context.reloadURL();
-      context.reloadURL();
-      context.reloadURL();
+    { columns: DEFAULT_COLUMNS }
+  );
 
-      context.reloadState();
-      setState({ ...state, labels: {} });
-    },
-    selectQuery: queryId => {
-      context.selectQuery.bind(context, state, setState)(queryId);
-    },
-    changeColumn: columnUpdate => {
-      context.changeColumn.bind(context, state, setState)(columnUpdate);
-      context.reloadURL();
-    },
-    columns: context.columns,
-    filterBy: context.filterBy,
-    selectedVariables: context.selectedVariables,
-  } as ContextInterface);
-
-  return <StateContext.Provider value={state}>{children}</StateContext.Provider>;
+  return <StateContext.Provider value={{ state, dispatch }}>{children}</StateContext.Provider>;
 };

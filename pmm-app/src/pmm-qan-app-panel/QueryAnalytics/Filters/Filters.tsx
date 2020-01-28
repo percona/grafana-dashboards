@@ -2,7 +2,7 @@ import React, { ReactElement, useContext, useEffect, useState } from 'react';
 import { Humanize } from '../../../react-plugins-deps/components/helpers/Humanize';
 import './Filters.scss';
 import { Divider } from 'antd';
-import {ManagementContext, StateContext} from '../StateContext';
+import { ManagementContext, StateContext } from '../StateContext';
 import FiltersService from './Filters.service';
 import { CheckboxField } from '../../../react-plugins-deps/components/FormComponents/Checkbox/Checkbox';
 import { useForm } from 'react-final-form-hooks';
@@ -100,24 +100,25 @@ const Filters = () => {
   const [showAll, showSetAll] = useState(true);
   const [filter, setFilter] = useState('');
   const context = useContext(StateContext);
-  const [filters, setFilters] = useState(FiltersService.getQueryOverviewFiltersList(context.labels || {}));
+  console.log(context);
+  const filters = FiltersService.getQueryOverviewFiltersList(context.state.labels || {});
 
-  useEffect(() => {
-    console.log('labels updated', context.labels);
-    setFilters(FiltersService.getQueryOverviewFiltersList(context.labels || {}));
-  }, [context.labels]);
   return (
     <FormFinal
       onSubmit={() => {}}
       render={(): ReactElement => {
         const { form, handleSubmit } = useForm({
-          onSubmit: (filters) => {
-            console.log('submitting')
+          onSubmit: filters => {
+            console.log('submitting');
           },
           validate: filters => {
             // TODO: temp solution, need to figure out why handleSubmit works wrong
-            console.log('set labels called')
+            console.log('set labels called');
             // context.setLabels(filters);
+            // context.dispatch({
+            //   type: 'SET_LABELS',
+            //   payload: filters,
+            // });
           },
           initialValues: {},
         });
@@ -135,7 +136,14 @@ const Filters = () => {
                   Show All
                 </a>
               )}
-              <a href="#" className={'filter-switchers'} style={{ marginLeft: 'auto' }} onClick={context.resetLabels}>
+              <a
+                href="#"
+                className={'filter-switchers'}
+                style={{ marginLeft: 'auto' }}
+                onClick={() => {
+                  context.dispatch({ type: 'RESET_LABELS' });
+                }}
+              >
                 Reset All
               </a>
             </div>
