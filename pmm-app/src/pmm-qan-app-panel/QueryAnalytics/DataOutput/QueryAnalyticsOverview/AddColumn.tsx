@@ -22,15 +22,19 @@ const AddColumn = props => {
         placeholder={props.placeholder || 'Add column'}
         onChange={(column, second) => {
           if (props.onlyAdd) {
-            context.changeColumn({
-              column: column,
-              action: 'ADD',
+            context.dispatch({
+              type: 'ADD_COLUMN',
+              payload: {
+                column: column,
+              },
             });
           } else {
-            context.changeColumn({
-              column: column,
-              oldColumn: props.currentMetric,
-              action: 'REPLACE',
+            context.dispatch({
+              type: 'REPLACE_COLUMN',
+              payload: {
+                column: column,
+                oldColumn: props.currentMetric,
+              },
             });
           }
           // context.addColumn(column);
@@ -51,9 +55,11 @@ const AddColumn = props => {
                 style={{ padding: '4px 8px', cursor: 'pointer' }}
                 onMouseDown={e => e.preventDefault()}
                 onClick={() => {
-                  context.changeColumn({
-                    column: props.currentMetric,
-                    action: 'REMOVE',
+                  context.dispatch({
+                    type: 'REMOVE_COLUMN',
+                    payload: {
+                      column: props.currentMetric,
+                    },
                   });
                 }}
               >
