@@ -35,8 +35,8 @@ const DataOutput = props => {
         className={'splitter-wrapper'}
         elementStyle={(dimension, size, gutterSize) => ({ height: `calc(${size}% - ${gutterSize}px)`, 'overflow-y': `scroll` })}
       >
-        <OverviewTable columns={context.columns} />
-        {context.filterBy && <QueryDetails filterBy={context.filterBy} />}
+        <OverviewTable />
+        {context.state.filterBy && <QueryDetails filterBy={context.state.filterBy} />}
       </Split>
     </div>
   );
