@@ -10,7 +10,7 @@ const { Option } = Select;
 const CurrentGroupBy = 'queryid';
 // const TOTAL = tableData.rows[0]x;
 //
-const getDefaultColumns = selectQuery => {
+const getDefaultColumns = dispatch => {
   return [
     {
       title: '#',
@@ -42,7 +42,12 @@ const getDefaultColumns = selectQuery => {
         return (
           <span
             onClick={() => {
-              selectQuery(record.dimension);
+              dispatch({
+                type: 'SELECT_QUERY',
+                payload: {
+                  queryId: record.dimension,
+                },
+              });
             }}
           >
             {record.fingerprint}
@@ -60,19 +65,24 @@ const OverviewTable = props => {
   useEffect(() => {
     const updateInstances = async () => {
       try {
+        console.log('im here');
         // @ts-ignore
-        const result = await OverviewService.getReport({ labels: context.labels });
+        const result = await OverviewService.getReport({ labels: context.state.labels });
         setRows(result.rows);
-        const columns = getDefaultColumns(context.selectQuery).concat(context.columns.map((key, index) => getColumnName(key, index, result.rows[0])));
+        const columns = getDefaultColumns(context.dispatch).concat(
+          context.state.columns.map((key, index) => getColumnName(key, index, result.rows[0]))
+        );
         // @ts-ignore
+        console.log('inside', columns, result);
         setColumns(columns);
         // startLoading(false);
       } catch (e) {
+        console.log(e);
         // startLoading(false);
       }
     };
     updateInstances().then(r => {});
-  }, []);
+  }, [context.state.columns]);
   // // @ts-ignore
   return <Table dataSource={rows} columns={columns} size={'small'} bordered={true} pagination={false} scroll={{ x: 1300 }} />;
 };
