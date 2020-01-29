@@ -40,7 +40,9 @@ const AlertManager = props => {
             try {
               await SettingsService.setSettings(settings);
               setLoading(false);
-              showSuccessNotification({ message: 'Alert manager settings updated' });
+              showSuccessNotification({
+                message: 'Alert manager settings updated',
+              });
             } catch (e) {
               setLoading(false);
               showErrorNotification({ message: e.message });
@@ -56,15 +58,15 @@ const AlertManager = props => {
           <form onSubmit={handleSubmit}>
             <>
               <VerticalFormWrapper
-                label={'AlertManager URL'}
-                element={<InputField form={form} name={'alert_manager_url'} placeholder="Enter URL" style={{ width: '100%' }} />}
+                label="AlertManager URL"
+                element={<InputField form={form} name="alert_manager_url" placeholder="Enter URL" style={{ width: '100%' }} />}
               />
               <VerticalFormWrapper
-                label={'AlertManager rules'}
-                element={<TextAreaField form={form} name={'alert_manager_rules'} placeholder="Alert manager rule" style={{ width: '100%' }} />}
-                alignLabel={'top'}
+                label="AlertManager rules"
+                element={<TextAreaField form={form} name="alert_manager_rules" placeholder="Alert manager rule" style={{ width: '100%' }} />}
+                alignLabel="top"
               />
-              <ButtonElement loading={loading} text={'Apply AlertManager settings'} />
+              <ButtonElement loading={loading} text="Apply AlertManager settings" />
             </>
           </form>
         );
