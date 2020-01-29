@@ -15,6 +15,7 @@ export const getColumnName = (metricName, columnIndex, totalValues) => {
     sorter: () => {},
     title: () => <AddColumn placeholder={metricName} currentMetric={metric} />,
     render: (text, item) => {
+      // TODO: crash after second change of same column
       const stats = item.metrics[metricName].stats;
       return (
         <div className={'overview-content-column'}>

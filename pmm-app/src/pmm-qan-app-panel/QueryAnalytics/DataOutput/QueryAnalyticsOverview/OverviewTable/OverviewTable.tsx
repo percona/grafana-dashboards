@@ -65,15 +65,13 @@ const OverviewTable = props => {
   useEffect(() => {
     const updateInstances = async () => {
       try {
-        console.log('im here');
         // @ts-ignore
-        const result = await OverviewService.getReport({ labels: context.state.labels });
+        const result = await OverviewService.getReport({ labels: context.state.labels, columns: context.state.columns });
         setRows(result.rows);
         const columns = getDefaultColumns(context.dispatch).concat(
           context.state.columns.map((key, index) => getColumnName(key, index, result.rows[0]))
         );
         // @ts-ignore
-        console.log('inside', columns, result);
         setColumns(columns);
         // startLoading(false);
       } catch (e) {
