@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-// import Labels from './Labels/Labels';
 import { Divider, Tabs } from 'antd';
 import './QueryDetails.scss';
 import Fingerprint from './Fingerprint';
@@ -15,14 +14,14 @@ const QueryDetails = props => {
   const context = useContext(StateContext);
 
   const MetricsProps = {
-    filterBy: context.filterBy,
+    filterBy: context.state.queryId,
     groupBy: 'queryid',
     labels: [],
-    periodStartFrom: '2020-01-26T14:02:10+00:00',
-    periodStartTo: '2020-01-27T04:02:10+00:00',
+    periodStartFrom: '2020-01-29T10:37:56+00:00',
+    periodStartTo: '2020-01-29T22:37:56+00:00',
     tables: [],
   };
-
+  console.log(context.state.queryId);
   return (
     <div className={'query-analytics-details-grid'} id={'query-analytics-details'}>
       <Fingerprint
@@ -36,7 +35,7 @@ const QueryDetails = props => {
             <div className="details-table">
               <div className="details-table-content">
                 <Metrics
-                  filterBy={MetricsProps.filterBy}
+                  queryId={context.state.queryId}
                   groupBy={MetricsProps.groupBy}
                   periodStartFrom={MetricsProps.periodStartFrom}
                   periodStartTo={MetricsProps.periodStartTo}
@@ -48,7 +47,7 @@ const QueryDetails = props => {
           </TabPane>
           <TabPane tab="Examples" key="2">
             <Example
-              filterBy={MetricsProps.filterBy}
+              queryId={context.state.queryId}
               groupBy={MetricsProps.groupBy}
               periodStartFrom={MetricsProps.periodStartFrom}
               periodStartTo={MetricsProps.periodStartTo}
@@ -58,7 +57,7 @@ const QueryDetails = props => {
           </TabPane>
           <TabPane tab="Explain" key="3">
             <Explain
-              filterBy={MetricsProps.filterBy}
+              queryId={context.state.queryId}
               groupBy={MetricsProps.groupBy}
               periodStartFrom={MetricsProps.periodStartFrom}
               periodStartTo={MetricsProps.periodStartTo}

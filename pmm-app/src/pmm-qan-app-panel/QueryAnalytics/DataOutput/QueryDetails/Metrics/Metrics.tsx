@@ -132,13 +132,13 @@ const columns = [
 ];
 
 const Metrics = props => {
-  const { filterBy, groupBy, periodStartFrom, periodStartTo, labels, tables } = props;
+  const { queryId, groupBy, periodStartFrom, periodStartTo, labels, tables } = props;
 
   const [metrics, setMetrics] = useState({});
   useEffect(() => {
     const getMetrics = async () => {
       const result = await MetricsService.getMetrics({
-        filterBy: filterBy,
+        filterBy: queryId,
         groupBy: groupBy,
         periodStartFrom: periodStartFrom,
         periodStartTo: periodStartTo,
@@ -149,7 +149,7 @@ const Metrics = props => {
       setMetrics(result);
     };
     getMetrics();
-  }, []);
+  }, [queryId]);
 
   return <Table dataSource={processMetrics(metrics)} columns={columns} pagination={false} size={'small'} bordered={true} />;
 };
