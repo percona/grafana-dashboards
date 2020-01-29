@@ -36,7 +36,7 @@ const DataOutput = props => {
         elementStyle={(dimension, size, gutterSize) => ({ height: `calc(${size}% - ${gutterSize}px)`, 'overflow-y': `scroll` })}
       >
         <OverviewTable />
-        {context.state.filterBy && <QueryDetails filterBy={context.state.filterBy} />}
+        {context.state.queryId && <QueryDetails filterBy={context.state.queryId} />}
       </Split>
     </div>
   );

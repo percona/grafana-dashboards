@@ -11,7 +11,8 @@ import Search from 'antd/es/input/Search';
 import set = Reflect.set;
 const humanize = new Humanize();
 
-const checkboxGroup = (form, name, items, group, showAll, filter) => {
+const checkboxGroup = (form, name, items, group, showAll, filter, labels) => {
+  console.log('inside again', labels, group)
   const itemsList = items
     .filter(item => item.value)
     .filter(item => {
@@ -25,7 +26,12 @@ const checkboxGroup = (form, name, items, group, showAll, filter) => {
       return (
         <div className={'filter-label'}>
           <span className={'filter-name'}>
-            <CheckboxField form={form} name={`${group}:${item.value}`} label={item.value} checked={item.checked} />
+            <CheckboxField
+              form={form}
+              name={`${group}:${item.value}`}
+              label={item.value}
+              checked={labels && labels[group] && labels[group].includes(item.value)}
+            />
           </span>
           <span className={'percentage'}>
             <span>{humanize.transform(item.main_metric_percent, 'percent')}</span>
@@ -124,7 +130,16 @@ const Filters = () => {
         });
         // @ts-ignore
         return (
-          <form onSubmit={handleSubmit} className="add-instance-form app-theme-dark">
+          <form
+            onSubmit={handleSubmit}
+            className="add-instance-form app-theme-dark"
+            onChange={() => {
+              context.dispatch({
+                type: 'SET_LABELS',
+                payload: { labels: form.getState().values },
+              });
+            }}
+          >
             <div className={'filters-header'} style={{ padding: '5px 0px', height: '50px' }}>
               <h5 style={{ margin: '3px', marginRight: '15px' }}>Filters</h5>
               {showAll ? (
@@ -150,7 +165,7 @@ const Filters = () => {
             <div className={'query-analytics-filters-wrapper'}>
               <Search placeholder="Filters search..." onChange={e => setFilter(e.target.value)} style={{ width: '100%' }} />
               {checkboxGroups.map(group => {
-                return checkboxGroup(form, group.name, filters[group.dataKey].name, group.dataKey, showAll, filter);
+                return checkboxGroup(form, group.name, filters[group.dataKey].name, group.dataKey, showAll, filter, context.state.labels);
               })}
             </div>
           </form>
