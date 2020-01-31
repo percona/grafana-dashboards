@@ -2,7 +2,7 @@ import { Table } from 'antd';
 import React, { useEffect, useState } from 'react';
 // import PolygonChart from '../../../../react-plugins-deps/components/PolygonChart/PolygonChart';
 // import LatencyChart from '../../../../react-plugins-deps/components/LatencyChart/LatencyChart';
-import { METRIC_CATALOGUE } from './metric-catalogue';
+import { METRIC_CATALOGUE } from '../../metric-catalogue';
 import Icon from 'antd/es/icon';
 import Tooltip from 'antd/es/tooltip';
 import MetricsService from './Metrics.service';
@@ -40,11 +40,11 @@ const processMetrics = metrics => {
       const total = metrics.totals[metricName];
 
       // this.pipeInfo = this.currentMetricInfo.pipeTypes || this.defaultPipeInfo;
-
       return {
         name: METRIC_CATALOGUE[metricName].humanizeName,
         tooltip: METRIC_CATALOGUE[metricName].tooltipText,
         pipeTypes: METRIC_CATALOGUE[metricName].pipeTypes,
+        units: METRIC_CATALOGUE[metricName].units,
         sparkline: sparkline,
         metric: metric,
         total: total,
@@ -88,7 +88,7 @@ const columns = [
             alignItems: 'flex-end',
           }}
         >
-          {<span>{item.isRate ? humanize.transform(item.metric.rate, item.pipeTypes['ratePipe']) : '0'}</span>}
+          {<span>{item.isRate ? humanize.transform(item.metric.rate, item.pipeTypes['ratePipe']) : '0' + ` ${item.units}`}</span>}
           {item.sparkline && <PolygonChart data={item.sparkline as any} width={150} ykey={'metric'} />}
         </div>
       );
@@ -103,7 +103,8 @@ const columns = [
           {/*isSum, percentOfTotal*/}
           {/*{{isSum ? (currentMetric?.stats?.sum | humanize: pipeInfo?.sumPipe) : '0' }}*/}
           {item.isSum && <span style={{ marginRight: '10px' }}>{humanize.transform(item.metric.sum, item.pipeTypes['sumPipe']) || 0}</span>}
-          {<span>{`${item.percentOfTotal}% of total`}</span>}
+          {<span style={{ marginLeft: '5px', color: '#26afe1' }}>{`${item.percentOfTotal}% of total`}</span>}
+          {<span style={{ marginLeft: '5px', color: '#268b40' }}>{`${item.percentOfTotal}% of total`}</span>}
         </>
       );
     },
@@ -145,7 +146,6 @@ const Metrics = props => {
         labels: labels,
         tables: tables,
       });
-      // console.log('----', result, processMetrics(metrics));
       setMetrics(result);
     };
     getMetrics();

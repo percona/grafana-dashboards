@@ -28,11 +28,29 @@ class ContextActions {
     this.parseURL(query);
   }
 
-  private setFilters(query) {
-    const filtersListNames = ['host', 'city', 'cluster', 'az'];
+  static setFilters(query) {
+    const filtersListNames = [
+      'environment',
+      'cluster',
+      'replication_set',
+      'database',
+      'schema',
+      'node_name',
+      'service_name',
+      'client_host',
+      'username',
+      'service_type',
+      'node_type',
+      'city',
+      'az',
+    ];
 
     return filtersListNames.reduce((result, filterName) => {
-      result[filterName] = query.getAll(`var-${filterName}`);
+      const filters = query.getAll(`var-${filterName}`);
+      if (!filters.length) {
+        return result;
+      }
+      result[filterName] = filters;
       return result;
     }, {});
   }
@@ -58,7 +76,7 @@ class ContextActions {
   }
 
   private parseURL(query) {
-    this.selectedVariables = this.setFilters(query);
+    this.selectedVariables = ContextActions.setFilters(query);
     this.columns = DEFAULT_COLUMNS;
     this.filterBy = query.get('filter_by');
     this.from = query.get('from') || 'now-12h';
@@ -135,6 +153,9 @@ export const UrlParametersProvider = ({ children }) => {
             columns: columns,
           };
           break;
+        case 'CHANGE_PAGE':
+
+
       }
       const newUrl = ContextActions.generateURL(newState);
       console.log('--------', 'Generating new url', newUrl);
@@ -143,10 +164,7 @@ export const UrlParametersProvider = ({ children }) => {
     },
     {
       columns: DEFAULT_COLUMNS,
-      // TODO: replace with real data read from url use set filters
-      labels: {
-        environment: ['Prod'],
-      },
+      labels: ContextActions.setFilters(query),
     }
   );
 
