@@ -12,7 +12,7 @@ import set = Reflect.set;
 const humanize = new Humanize();
 
 const checkboxGroup = (form, name, items, group, showAll, filter, labels) => {
-  console.log('inside again', labels, group)
+  console.log('inside again', labels, group);
   const itemsList = items
     .filter(item => item.value)
     .filter(item => {
@@ -114,18 +114,8 @@ const Filters = () => {
       onSubmit={() => {}}
       render={(): ReactElement => {
         const { form, handleSubmit } = useForm({
-          onSubmit: filters => {
-            console.log('submitting');
-          },
-          validate: filters => {
-            // TODO: temp solution, need to figure out why handleSubmit works wrong
-            console.log('set labels called');
-            // context.setLabels(filters);
-            // context.dispatch({
-            //   type: 'SET_LABELS',
-            //   payload: filters,
-            // });
-          },
+          onSubmit: filters => {},
+          validate: () => {},
           initialValues: {},
         });
         // @ts-ignore

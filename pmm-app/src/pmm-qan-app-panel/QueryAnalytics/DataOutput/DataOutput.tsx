@@ -21,7 +21,18 @@ const DataOutput = props => {
           First Seen
         </a>
         <div style={{ marginLeft: 'auto' }}>
-          <Pagination defaultCurrent={1} total={30} />
+          <Pagination
+            showSizeChanger={true}
+            pageSizeOptions={['10', '50', '100']}
+            defaultCurrent={1}
+            total={30}
+            onShowSizeChange={(pageSize) => {
+                console.log(pageSize)
+            }}
+            onChange={data => {
+              console.log(data);
+            }}
+          />
         </div>
         <div style={{ marginLeft: '10px' }}>
           <AddColumn onlyAdd={true} />

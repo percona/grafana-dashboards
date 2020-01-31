@@ -22,13 +22,19 @@ class OverviewService {
       group_by: 'queryid',
       include_only_fields: [],
       keyword: '',
-      labels: body.labels || [],
+      labels:
+        Object.keys(body.labels).map(key => {
+          return {
+            key: key,
+            value: body.labels[key],
+          };
+        }) || [],
       limit: 10,
       offset: 0,
       order_by: '-load',
       main_metric: 'load',
-      period_start_from: '2020-01-29T14:02:10+00:00',
-      period_start_to: '2020-01-30T04:02:10+00:00',
+      period_start_from: '2020-01-31T14:02:10+00:00',
+      period_start_to: '2020-02-01T04:02:10+00:00',
     };
     return apiRequest.post<any, any>('/v0/qan/GetReport', request);
   }
