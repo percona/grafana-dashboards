@@ -6,7 +6,7 @@ import LatencyChart from '../../../../../react-plugins-deps/components/LatencyCh
 
 import './OverviewTable.scss';
 import { Humanize } from '../../../../../react-plugins-deps/components/helpers/Humanize';
-import { METRIC_CATALOGUE } from './metric-catalogue';
+import { METRIC_CATALOGUE } from '../../metric-catalogue';
 
 export const getColumnName = (metricName, columnIndex, totalValues) => {
   const humanize = new Humanize();
