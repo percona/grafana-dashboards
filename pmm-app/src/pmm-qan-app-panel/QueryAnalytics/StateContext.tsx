@@ -181,6 +181,11 @@ export const UrlParametersProvider = ({ children }) => {
             ...state,
             orderBy: action.payload.orderBy,
           };
+        case 'CHANGE_GROUP_BY':
+          newState = {
+            ...state,
+            groupBy: action.payload.groupBy,
+          };
       }
       const newUrl = ContextActions.generateURL(newState);
       console.log('--------', 'Generating new url', newUrl);
@@ -193,6 +198,7 @@ export const UrlParametersProvider = ({ children }) => {
       pageNumber: 1,
       pageSize: 10,
       orderBy: query.get('order_by'),
+      groupBy: query.get('group_by') || 'queryid',
       from: from,
       to: to,
     }
