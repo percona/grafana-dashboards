@@ -17,11 +17,10 @@ const QueryDetails = props => {
     filterBy: context.state.queryId,
     groupBy: 'queryid',
     labels: [],
-    periodStartFrom: '2020-01-31T10:37:56+00:00',
-    periodStartTo: '2020-02-01T22:37:56+00:00',
+    periodStartFrom: context.state.from,
+    periodStartTo: context.state.to,
     tables: [],
   };
-  console.log(context.state.queryId);
   return (
     <div className={'query-analytics-details-grid'} id={'query-analytics-details'}>
       <Fingerprint

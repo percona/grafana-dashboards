@@ -1,4 +1,5 @@
 import React, { useReducer, useState } from 'react';
+import { ParseQueryParamDate } from '../../react-plugins-deps/components/helpers/time-parameters-parser';
 
 interface ContextInterface {
   filterBy?: any;
@@ -113,6 +114,15 @@ export const UrlParametersProvider = ({ children }) => {
   const query = new URLSearchParams(window.location.search);
   const context = new ContextActions(query);
 
+  // this.from = ;
+  // this.to = query.get('to') || 'now';
+  const from = ParseQueryParamDate.transform(query.get('from') || 'now-12h', 'from')
+    .utc()
+    .format('YYYY-MM-DDTHH:mm:ssZ');
+  const to = ParseQueryParamDate.transform(query.get('to') || 'now', 'to')
+    .utc()
+    .format('YYYY-MM-DDTHH:mm:ssZ');
+  console.log(from, to, 'dates ====');
   const [state, dispatch] = useReducer(
     (state, action) => {
       console.log('dispatch-------', action);
@@ -183,6 +193,8 @@ export const UrlParametersProvider = ({ children }) => {
       pageNumber: 1,
       pageSize: 10,
       orderBy: query.get('order_by'),
+      from: from,
+      to: to,
     }
   );
 

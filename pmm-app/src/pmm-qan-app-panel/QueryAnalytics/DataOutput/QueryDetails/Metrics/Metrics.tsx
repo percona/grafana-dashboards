@@ -141,8 +141,8 @@ const Metrics = props => {
       const result = await MetricsService.getMetrics({
         filterBy: queryId,
         groupBy: groupBy,
-        periodStartFrom: periodStartFrom,
-        periodStartTo: periodStartTo,
+        from: periodStartFrom,
+        to: periodStartTo,
         labels: labels,
         tables: tables,
       });
