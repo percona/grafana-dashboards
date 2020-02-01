@@ -7,7 +7,7 @@ import './DataOutput.scss';
 import { Pagination } from 'antd';
 import AddColumn from './QueryAnalyticsOverview/AddColumn';
 
-const DataOutput = props => {
+const DataOutput = () => {
   const context = useContext(StateContext);
 
   return (
@@ -54,13 +54,16 @@ const DataOutput = props => {
       <Split
         sizes={[25, 75]}
         minSize={100}
+        gutterSize={10}
         direction="vertical"
         cursor="row-resize"
         className={'splitter-wrapper'}
-        elementStyle={(dimension, size, gutterSize) => ({ height: `calc(${size}% - ${gutterSize}px)`, 'overflow-y': `scroll` })}
+        elementStyle={(dimension, size, gutterSize) => {
+          return { height: `calc(${size}% - ${gutterSize}px)`, 'overflow-y': `scroll` };
+        }}
       >
         <OverviewTable />
-        {context.state.queryId && <QueryDetails filterBy={context.state.queryId} />}
+        <QueryDetails />
       </Split>
     </div>
   );

@@ -13,9 +13,13 @@ const { TabPane } = Tabs;
 const QueryDetails = props => {
   const context = useContext(StateContext);
 
+  if (!context.state.queryId) {
+    return null
+  }
+
   const MetricsProps = {
     filterBy: context.state.queryId,
-    groupBy: 'queryid',
+    groupBy: context.state.groupBy,
     labels: [],
     periodStartFrom: context.state.from,
     periodStartTo: context.state.to,
