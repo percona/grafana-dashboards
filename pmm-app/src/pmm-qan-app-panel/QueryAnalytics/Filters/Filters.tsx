@@ -9,10 +9,8 @@ import { useForm } from 'react-final-form-hooks';
 import { Form as FormFinal } from 'react-final-form';
 import Search from 'antd/es/input/Search';
 import set = Reflect.set;
-const humanize = new Humanize();
 
 const checkboxGroup = (form, name, items, group, showAll, filter, labels) => {
-  console.log('inside again', labels, group);
   const itemsList = items
     .filter(item => item.value)
     .filter(item => {
@@ -34,7 +32,7 @@ const checkboxGroup = (form, name, items, group, showAll, filter, labels) => {
             />
           </span>
           <span className={'percentage'}>
-            <span>{humanize.transform(item.main_metric_percent, 'percent')}</span>
+            <span>{Humanize.transform(item.main_metric_percent, 'percent')}</span>
           </span>
         </div>
       );

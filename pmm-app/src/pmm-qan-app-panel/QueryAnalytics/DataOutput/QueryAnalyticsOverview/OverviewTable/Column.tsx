@@ -9,7 +9,6 @@ import { Humanize } from '../../../../../react-plugins-deps/components/helpers/H
 import { METRIC_CATALOGUE } from '../../metric-catalogue';
 
 export const getColumnName = (metricName, columnIndex, totalValues, orderBy) => {
-  const humanize = new Humanize();
   const metric = METRIC_CATALOGUE[metricName];
   let sortOrder = false;
   if (orderBy === metricName) {
@@ -30,10 +29,10 @@ export const getColumnName = (metricName, columnIndex, totalValues, orderBy) => 
           {columnIndex === 0 && <PolygonChart width={150} data={item.sparkline} />}
           <span className="per-unit" style={{ marginRight: '10px' }}></span>
           <span className="summarize" style={{ marginRight: '10px' }}>
-            {humanize.transform(stats.qps || stats.sum_per_sec, 'number')}
+            {Humanize.transform(stats.qps || stats.sum_per_sec, 'number')}
           </span>
           <span className="per-unit" style={{ marginRight: '10px' }}>
-            {stats.sum && humanize.transform(stats.sum, metric.pipeTypes.sumPipe)}
+            {stats.sum && Humanize.transform(stats.sum, metric.pipeTypes.sumPipe)}
           </span>
 
           <span className="total-percentage" style={{ marginRight: '10px' }}>
