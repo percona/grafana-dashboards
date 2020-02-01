@@ -15,6 +15,7 @@ interface OverviewServiceInterface {
   period_start_to?: any; // ISO8601
   pageSize?: number;
   pageNumber?: number;
+  groupBy?: string;
 }
 class OverviewService {
   static async getReport(body: OverviewServiceInterface) {
@@ -22,7 +23,7 @@ class OverviewService {
     const request = {
       columns: columns,
       first_seen: false,
-      group_by: 'queryid',
+      group_by: body.groupBy,
       include_only_fields: [],
       keyword: '',
       labels:
