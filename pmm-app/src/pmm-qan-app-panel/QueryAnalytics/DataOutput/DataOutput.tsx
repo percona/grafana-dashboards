@@ -25,12 +25,25 @@ const DataOutput = props => {
             showSizeChanger={true}
             pageSizeOptions={['10', '50', '100']}
             defaultCurrent={1}
+            defaultPageSize={10}
+            current={context.state.pageNumber}
+            pageSize={context.state.pageSize}
             total={30}
-            onShowSizeChange={(pageSize) => {
-                console.log(pageSize)
+            onShowSizeChange={(current, pageSize) => {
+              context.dispatch({
+                type: 'CHANGE_PAGE_SIZE',
+                payload: {
+                  pageSize: pageSize,
+                },
+              });
             }}
-            onChange={data => {
-              console.log(data);
+            onChange={pageNumber => {
+              context.dispatch({
+                type: 'CHANGE_PAGE',
+                payload: {
+                  pageNumber: pageNumber,
+                },
+              });
             }}
           />
         </div>

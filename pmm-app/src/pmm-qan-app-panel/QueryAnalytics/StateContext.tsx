@@ -154,8 +154,22 @@ export const UrlParametersProvider = ({ children }) => {
           };
           break;
         case 'CHANGE_PAGE':
-
-
+          newState = {
+            ...state,
+            pageNumber: action.payload.pageNumber,
+          };
+          break;
+        case 'CHANGE_PAGE_SIZE':
+          newState = {
+            ...state,
+            pageSize: action.payload.pageSize,
+            pageNumber: 1,
+          };
+        case 'CHANGE_SORT':
+          newState = {
+            ...state,
+            orderBy: action.payload.orderBy,
+          }
       }
       const newUrl = ContextActions.generateURL(newState);
       console.log('--------', 'Generating new url', newUrl);
@@ -165,6 +179,8 @@ export const UrlParametersProvider = ({ children }) => {
     {
       columns: DEFAULT_COLUMNS,
       labels: ContextActions.setFilters(query),
+      pageNumber: 1,
+      pageSize: 10,
     }
   );
 
