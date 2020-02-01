@@ -70,9 +70,10 @@ class ContextActions {
         .join('&');
     const columnsQuery = state.columns ? `columns=${JSON.stringify(state.columns)}` : '';
     const filterByQuery = state.queryId ? `filter_by=${state.queryId}` : '';
+    const orderBy = state.orderBy ? `order_by=${state.orderBy}` : '';
     // page, sort
     // TODO: replace crutch with right redirect
-    return `${window.location.pathname}?${[columnsQuery, filterByQuery, labels].filter(Boolean).join('&')}`;
+    return `${window.location.pathname}?${[columnsQuery, filterByQuery, labels, orderBy].filter(Boolean).join('&')}`;
   }
 
   private parseURL(query) {
@@ -169,7 +170,7 @@ export const UrlParametersProvider = ({ children }) => {
           newState = {
             ...state,
             orderBy: action.payload.orderBy,
-          }
+          };
       }
       const newUrl = ContextActions.generateURL(newState);
       console.log('--------', 'Generating new url', newUrl);
@@ -181,6 +182,7 @@ export const UrlParametersProvider = ({ children }) => {
       labels: ContextActions.setFilters(query),
       pageNumber: 1,
       pageSize: 10,
+      orderBy: query.get('order_by'),
     }
   );
 

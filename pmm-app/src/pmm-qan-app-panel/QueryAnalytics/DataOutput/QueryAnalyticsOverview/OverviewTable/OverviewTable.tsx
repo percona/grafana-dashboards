@@ -74,7 +74,7 @@ const OverviewTable = props => {
         });
         setRows(result.rows);
         const columns = getDefaultColumns(context.dispatch).concat(
-          context.state.columns.map((key, index) => getColumnName(key, index, result.rows[0]))
+          context.state.columns.map((key, index) => getColumnName(key, index, result.rows[0], context.state.orderBy))
         );
         // @ts-ignore
         setColumns(columns);
