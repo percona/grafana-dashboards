@@ -1,13 +1,13 @@
 import { apiRequest } from '../../../../../react-plugins-deps/components/helpers/api';
 
 class MetricsService {
-  static async getMetrics({ filterBy, groupBy, labels, periodStartFrom, periodStartTo, tables }) {
+  static async getMetrics({ filterBy, groupBy, labels, from, to, tables }) {
     const body = {
       filter_by: filterBy,
       group_by: groupBy,
       labels: labels || [],
-      period_start_from: periodStartFrom,
-      period_start_to: periodStartTo,
+      period_start_from: from,
+      period_start_to: to,
       tables: tables || [],
     };
 

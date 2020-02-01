@@ -34,10 +34,10 @@ class OverviewService {
         }) || [],
       limit: body.pageSize,
       offset: (body.pageNumber - 1) * body.pageSize,
-      order_by: '-load',
+      order_by: body.order_by,
       main_metric: columns[0],
-      period_start_from: '2020-01-31T14:02:10+00:00',
-      period_start_to: '2020-02-01T04:02:10+00:00',
+      period_start_from: body.period_start_from,
+      period_start_to: body.period_start_to,
     };
     return apiRequest.post<any, any>('/v0/qan/GetReport', request);
   }
