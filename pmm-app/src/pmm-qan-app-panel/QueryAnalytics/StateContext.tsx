@@ -169,6 +169,7 @@ export const UrlParametersProvider = ({ children }) => {
             ...state,
             pageNumber: action.payload.pageNumber,
           };
+          delete newState.queryId;
           break;
         case 'CHANGE_PAGE_SIZE':
           newState = {
@@ -176,16 +177,22 @@ export const UrlParametersProvider = ({ children }) => {
             pageSize: action.payload.pageSize,
             pageNumber: 1,
           };
+          delete newState.queryId;
+          break;
         case 'CHANGE_SORT':
           newState = {
             ...state,
             orderBy: action.payload.orderBy,
           };
+          delete newState.queryId;
+          break;
         case 'CHANGE_GROUP_BY':
           newState = {
             ...state,
             groupBy: action.payload.groupBy,
           };
+          delete newState.queryId;
+          break;
       }
       const newUrl = ContextActions.generateURL(newState);
       console.log('--------', 'Generating new url', newUrl);
@@ -198,6 +205,7 @@ export const UrlParametersProvider = ({ children }) => {
       pageNumber: 1,
       pageSize: 10,
       orderBy: query.get('order_by'),
+      queryId: query.get('filter_by'),
       groupBy: query.get('group_by') || 'queryid',
       from: from,
       to: to,
