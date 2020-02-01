@@ -8,12 +8,19 @@ import './OverviewTable.scss';
 import { Humanize } from '../../../../../react-plugins-deps/components/helpers/Humanize';
 import { METRIC_CATALOGUE } from '../../metric-catalogue';
 
-export const getColumnName = (metricName, columnIndex, totalValues) => {
+export const getColumnName = (metricName, columnIndex, totalValues, orderBy) => {
   const humanize = new Humanize();
-  let metric = METRIC_CATALOGUE[metricName];
+  const metric = METRIC_CATALOGUE[metricName];
+  let sortOrder = false;
+  if (orderBy === metricName) {
+    sortOrder = 'ascend';
+  } else if (orderBy === `-${metricName}`) {
+    sortOrder = 'descend';
+  }
   return {
     sorter: true,
     key: metricName,
+    defaultSortOrder: sortOrder,
     title: () => <AddColumn placeholder={metricName} currentMetric={metric} />,
     render: (text, item) => {
       // TODO: crash after second change of same column
