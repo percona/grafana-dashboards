@@ -71,6 +71,9 @@ const OverviewTable = props => {
           columns: context.state.columns,
           pageNumber: context.state.pageNumber,
           pageSize: context.state.pageSize,
+          order_by: context.state.orderBy,
+          period_start_from: context.state.from,
+          period_start_to: context.state.to,
         });
         setRows(result.rows);
         const columns = getDefaultColumns(context.dispatch).concat(
