@@ -12,7 +12,8 @@ export const getColumnName = (metricName, columnIndex, totalValues) => {
   const humanize = new Humanize();
   let metric = METRIC_CATALOGUE[metricName];
   return {
-    sorter: () => {},
+    sorter: true,
+    key: metricName,
     title: () => <AddColumn placeholder={metricName} currentMetric={metric} />,
     render: (text, item) => {
       // TODO: crash after second change of same column
