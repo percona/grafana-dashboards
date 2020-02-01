@@ -10,7 +10,7 @@ const { Option } = Select;
 const CurrentGroupBy = 'queryid';
 // const TOTAL = tableData.rows[0]x;
 //
-const getDefaultColumns = dispatch => {
+const getDefaultColumns = context => {
   return [
     {
       title: '#',
@@ -23,7 +23,18 @@ const getDefaultColumns = dispatch => {
     {
       title: () => {
         return (
-          <Select defaultValue={CurrentGroupBy} style={{ width: '120px' }}>
+          <Select
+            defaultValue={context.state.groupBy}
+            style={{ width: '120px' }}
+            onChange={value => {
+              context.dispatch({
+                type: 'CHANGE_GROUP_BY',
+                payload: {
+                  groupBy: value,
+                },
+              });
+            }}
+          >
             <Option value="queryid">Query</Option>
             <Option value="service_name">Service Name</Option>
             <Option value="database">Database</Option>
@@ -42,7 +53,7 @@ const getDefaultColumns = dispatch => {
         return (
           <span
             onClick={() => {
-              dispatch({
+              context.dispatch({
                 type: 'SELECT_QUERY',
                 payload: {
                   queryId: record.dimension,
@@ -50,7 +61,7 @@ const getDefaultColumns = dispatch => {
               });
             }}
           >
-            {record.fingerprint}
+            {record.fingerprint || record.dimension || 'TOTAL'}
           </span>
         );
       },
@@ -74,9 +85,10 @@ const OverviewTable = props => {
           order_by: context.state.orderBy,
           period_start_from: context.state.from,
           period_start_to: context.state.to,
+          groupBy: context.state.groupBy,
         });
         setRows(result.rows);
-        const columns = getDefaultColumns(context.dispatch).concat(
+        const columns = getDefaultColumns(context).concat(
           context.state.columns.map((key, index) => getColumnName(key, index, result.rows[0], context.state.orderBy))
         );
         // @ts-ignore
@@ -88,7 +100,7 @@ const OverviewTable = props => {
       }
     };
     updateInstances().then(r => {});
-  }, [context.state.columns, context.state.pageNumber, context.state.pageSize]);
+  }, [context.state.columns, context.state.pageNumber, context.state.pageSize, context.state.groupBy, context.state.labels]);
   // // @ts-ignore
   return (
     <Table
