@@ -66,7 +66,12 @@ const OverviewTable = props => {
     const updateInstances = async () => {
       try {
         // @ts-ignore
-        const result = await OverviewService.getReport({ labels: context.state.labels, columns: context.state.columns });
+        const result = await OverviewService.getReport({
+          labels: context.state.labels,
+          columns: context.state.columns,
+          pageNumber: context.state.pageNumber,
+          pageSize: context.state.pageSize,
+        });
         setRows(result.rows);
         const columns = getDefaultColumns(context.dispatch).concat(
           context.state.columns.map((key, index) => getColumnName(key, index, result.rows[0]))
@@ -80,9 +85,32 @@ const OverviewTable = props => {
       }
     };
     updateInstances().then(r => {});
-  }, [context.state.columns]);
+  }, [context.state.columns, context.state.pageNumber, context.state.pageSize]);
   // // @ts-ignore
-  return <Table dataSource={rows} columns={columns} size={'small'} bordered={true} pagination={false} scroll={{ x: 1300 }} />;
+  return (
+    <Table
+      dataSource={rows}
+      onChange={(pagination, filters, sorter) => {
+        let orderBy = '';
+        if (sorter.order === 'ascend') {
+          orderBy = sorter.columnKey;
+        } else if (sorter.order === 'descend') {
+          orderBy = `-${sorter.columnKey}`;
+        }
+        context.dispatch({
+          type: 'CHANGE_SORT',
+          payload: {
+            orderBy: orderBy,
+          },
+        });
+      }}
+      columns={columns}
+      size={'small'}
+      bordered={true}
+      pagination={false}
+      scroll={{ x: 1300 }}
+    />
+  );
 };
 
 export default OverviewTable;

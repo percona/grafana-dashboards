@@ -13,11 +13,14 @@ interface OverviewServiceInterface {
   order_by: string;
   period_start_from?: any; // ISO8601
   period_start_to?: any; // ISO8601
+  pageSize?: number;
+  pageNumber?: number;
 }
 class OverviewService {
   static async getReport(body: OverviewServiceInterface) {
+    const columns = body.columns || ['load', 'num_queries', 'query_time'];
     const request = {
-      columns: body.columns || ['load', 'num_queries', 'query_time'],
+      columns: columns,
       first_seen: false,
       group_by: 'queryid',
       include_only_fields: [],
@@ -29,10 +32,10 @@ class OverviewService {
             value: body.labels[key],
           };
         }) || [],
-      limit: 10,
-      offset: 0,
+      limit: body.pageSize,
+      offset: (body.pageNumber - 1) * body.pageSize,
       order_by: '-load',
-      main_metric: 'load',
+      main_metric: columns[0],
       period_start_from: '2020-01-31T14:02:10+00:00',
       period_start_to: '2020-02-01T04:02:10+00:00',
     };
