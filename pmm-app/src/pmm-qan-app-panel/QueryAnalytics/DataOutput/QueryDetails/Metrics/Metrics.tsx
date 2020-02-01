@@ -102,9 +102,21 @@ const columns = [
         <>
           {/*isSum, percentOfTotal*/}
           {/*{{isSum ? (currentMetric?.stats?.sum | humanize: pipeInfo?.sumPipe) : '0' }}*/}
-          {item.isSum && <span style={{ marginRight: '10px' }}>{humanize.transform(item.metric.sum, item.pipeTypes['sumPipe']) || 0}</span>}
-          {<span style={{ marginLeft: '5px', color: '#26afe1' }}>{`${item.percentOfTotal}% of total`}</span>}
-          {<span style={{ marginLeft: '5px', color: '#268b40' }}>{`${item.percentOfTotal}% of total`}</span>}
+          {item.isSum && (
+            <span style={{ marginRight: '10px', minWidth: '65px', display: 'inline-block' }}>
+              {humanize.transform(item.metric.sum, item.pipeTypes['sumPipe']) || 0}
+            </span>
+          )}
+          {
+            <span
+              style={{ marginLeft: '5px', color: '#26afe1', minWidth: '90px', display: 'inline-block' }}
+            >{`${item.percentOfTotal}% of total`}</span>
+          }
+          {
+            <span
+              style={{ marginLeft: '5px', color: '#268b40', minWidth: '90px', display: 'inline-block' }}
+            >{`${item.percentOfTotal}% of total`}</span>
+          }
         </>
       );
     },
