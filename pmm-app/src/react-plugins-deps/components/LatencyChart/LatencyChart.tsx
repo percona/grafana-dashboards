@@ -12,7 +12,6 @@ class LatencyChart extends Component {
   private width: number;
   // private height: number;
   private data: any[];
-  // private dataTooltip: string;
   private measurement: string;
   private dataTooltip: string;
   constructor(props: LatencyChartInterface) {
