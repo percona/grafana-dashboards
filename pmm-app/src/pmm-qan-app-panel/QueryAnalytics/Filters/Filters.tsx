@@ -1,12 +1,12 @@
-import React, {ReactElement, useContext, useState} from 'react';
-import {Humanize} from '../../../react-plugins-deps/components/helpers/Humanize';
+import React, { ReactElement, useContext, useEffect, useState } from 'react';
+import { Humanize } from '../../../react-plugins-deps/components/helpers/Humanize';
 import './Filters.scss';
-import {Divider} from 'antd';
-import {StateContext} from '../StateContext';
+import { Divider } from 'antd';
+import { StateContext } from '../StateContext';
 import FiltersService from './Filters.service';
-import {CheckboxField} from '../../../react-plugins-deps/components/FormComponents/Checkbox/Checkbox';
-import {useForm} from 'react-final-form-hooks';
-import {Form as FormFinal} from 'react-final-form';
+import { CheckboxField } from '../../../react-plugins-deps/components/FormComponents/Checkbox/Checkbox';
+import { useForm } from 'react-final-form-hooks';
+import { Form as FormFinal } from 'react-final-form';
 import Search from 'antd/es/input/Search';
 
 const checkboxGroup = (form, name, items, group, showAll, filter, labels) => {
@@ -102,10 +102,19 @@ const checkboxGroups = [
 const Filters = () => {
   const [showAll, showSetAll] = useState(true);
   const [filter, setFilter] = useState('');
+  const [filters, setFilters] = useState({});
+  const [groups, setGroups] = useState([]);
   const context = useContext(StateContext);
-  console.log(context);
-  const filters = FiltersService.getQueryOverviewFiltersList(context.state.labels || {});
+  // const filters = FiltersService.getQueryOverviewFiltersList(context.state.labels || {}, context.state.from, context.state.to);
 
+  useEffect(() => {
+    (async () => {
+      const result = await FiltersService.getQueryOverviewFiltersList(context.state.labels || {}, context.state.from, context.state.to);
+      console.log(result, checkboxGroups);
+      setFilters(result);
+      setGroups(checkboxGroups);
+    })();
+  }, [context.state.labels, context.state.from, context.state.to]);
   return (
     <FormFinal
       onSubmit={() => {}}
@@ -151,9 +160,12 @@ const Filters = () => {
             </div>
             <div className={'query-analytics-filters-wrapper'}>
               <Search placeholder="Filters search..." onChange={e => setFilter(e.target.value)} style={{ width: '100%' }} />
-              {checkboxGroups.map(group => {
-                return checkboxGroup(form, group.name, filters[group.dataKey].name, group.dataKey, showAll, filter, context.state.labels);
-              })}
+              {groups
+                .filter(group => filters[group.dataKey])
+                .map(group => {
+                  console.log(filters, group, 'inside groups');
+                  return checkboxGroup(form, group.name, filters[group.dataKey].name, group.dataKey, showAll, filter, context.state.labels);
+                })}
             </div>
           </form>
         );

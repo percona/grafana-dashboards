@@ -1,15 +1,15 @@
 import OverviewTable from './QueryAnalyticsOverview/OverviewTable/OverviewTable';
 import QueryDetails from './QueryDetails/QueryDetails';
-import React, {useContext} from 'react';
+import React, { useContext, useState } from 'react';
 import Split from 'react-split';
-import {StateContext} from '../StateContext';
+import { StateContext } from '../StateContext';
 import './DataOutput.scss';
-import {Pagination} from 'antd';
+import { Pagination } from 'antd';
 import AddColumn from './QueryAnalyticsOverview/AddColumn';
 
 const DataOutput = () => {
   const context = useContext(StateContext);
-
+  const [total, setTotal] = useState(30);
   return (
     <div>
       <div className={'filters-header'} style={{ padding: '5px 0px', height: '50px' }}>
@@ -28,7 +28,7 @@ const DataOutput = () => {
             defaultPageSize={10}
             current={context.state.pageNumber}
             pageSize={context.state.pageSize}
-            total={30}
+            total={total}
             onShowSizeChange={(current, pageSize) => {
               context.dispatch({
                 type: 'CHANGE_PAGE_SIZE',
@@ -62,7 +62,7 @@ const DataOutput = () => {
           return { height: `calc(${size}% - ${gutterSize}px)`, 'overflow-y': `scroll` };
         }}
       >
-        <OverviewTable />
+        <OverviewTable setTotal={setTotal} />
         <QueryDetails />
       </Split>
     </div>
