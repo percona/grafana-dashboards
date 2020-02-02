@@ -1,10 +1,10 @@
 import OverviewTable from './QueryAnalyticsOverview/OverviewTable/OverviewTable';
 import QueryDetails from './QueryDetails/QueryDetails';
-import React, { useContext } from 'react';
+import React, {useContext} from 'react';
 import Split from 'react-split';
-import { StateContext } from '../StateContext';
+import {StateContext} from '../StateContext';
 import './DataOutput.scss';
-import { Pagination } from 'antd';
+import {Pagination} from 'antd';
 import AddColumn from './QueryAnalyticsOverview/AddColumn';
 
 const DataOutput = () => {
