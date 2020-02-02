@@ -1,12 +1,11 @@
-// import { METRIC_CATALOGUE } from '../data/metric-catalogue';
-import AddColumn from '../AddColumn';
 import React from 'react';
-import PolygonChart from '../../../../../react-plugins-deps/components/PolygonChart/PolygonChart';
-import LatencyChart from '../../../../../react-plugins-deps/components/LatencyChart/LatencyChart';
+import PolygonChart from 'react-plugins-deps/components/PolygonChart/PolygonChart';
+import LatencyChart from 'react-plugins-deps/components/LatencyChart/LatencyChart';
+import {Humanize} from 'react-plugins-deps/components/helpers/Humanize';
 
+import AddColumn from '../AddColumn';
 import './OverviewTable.scss';
-import { Humanize } from '../../../../../react-plugins-deps/components/helpers/Humanize';
-import { METRIC_CATALOGUE } from '../../metric-catalogue';
+import {METRIC_CATALOGUE} from '../../metric-catalogue';
 
 export const getColumnName = (metricName, columnIndex, totalValues, orderBy) => {
   const metric = METRIC_CATALOGUE[metricName];
