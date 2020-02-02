@@ -7,19 +7,13 @@ interface LatencyChartInterface {
   data?: any[];
 }
 class LatencyChart extends Component {
-  // private measurement: string;
-  // private margin: number;
-  private width: number;
-  // private height: number;
-  private data: any[];
-  private measurement: string;
-  private dataTooltip: string;
+  private readonly width: number;
+  private readonly data: any[];
+  private measurement: string | undefined;
+  private dataTooltip: string | undefined;
   constructor(props: LatencyChartInterface) {
     super(props as any);
-    // this.measurement = 'time';
-    // this.margin = 0;
     this.width = 150;
-    // this.height = 30;
     this.data = props.data || [];
     this.state = {};
   }
