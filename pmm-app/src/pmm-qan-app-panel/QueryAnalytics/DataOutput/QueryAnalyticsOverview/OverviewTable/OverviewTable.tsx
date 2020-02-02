@@ -1,8 +1,8 @@
-import {Select, Table} from 'antd';
-import React, {useContext, useEffect, useState} from 'react';
+import { Select, Table } from 'antd';
+import React, { useContext, useEffect, useState } from 'react';
 import './OverviewTable.scss';
-import {StateContext} from '../../../StateContext';
-import {getColumnName} from './Column';
+import { StateContext } from '../../../StateContext';
+import { getColumnName } from './Column';
 import OverviewService from './Overview.service';
 
 const { Option } = Select;
@@ -84,6 +84,8 @@ const OverviewTable = props => {
           period_start_to: context.state.to,
           groupBy: context.state.groupBy,
         });
+
+        props.setTotal(result.total_rows);
         const columns = getDefaultColumns(context).concat(
           context.state.columns.map((key, index) => getColumnName(key, index, result.rows[0], context.state.orderBy))
         );
