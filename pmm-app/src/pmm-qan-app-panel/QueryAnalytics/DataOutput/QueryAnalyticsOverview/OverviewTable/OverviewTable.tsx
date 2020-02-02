@@ -70,7 +70,7 @@ const getDefaultColumns = context => {
 };
 const OverviewTable = props => {
   const context = useContext(StateContext);
-  const [rows, setRows] = useState([]);
+  const [data, setData] = useState({ rows: [], columns: [] });
   const [columns, setColumns] = useState([]);
 
   useEffect(() => {
@@ -87,12 +87,11 @@ const OverviewTable = props => {
           period_start_to: context.state.to,
           groupBy: context.state.groupBy,
         });
-        setRows(result.rows);
         const columns = getDefaultColumns(context).concat(
           context.state.columns.map((key, index) => getColumnName(key, index, result.rows[0], context.state.orderBy))
         );
         // @ts-ignore
-        setColumns(columns);
+        setData({ rows: result.rows, columns: columns });
         // startLoading(false);
       } catch (e) {
         console.log(e);
@@ -104,7 +103,7 @@ const OverviewTable = props => {
   // // @ts-ignore
   return (
     <Table
-      dataSource={rows}
+      dataSource={data.rows}
       onChange={(pagination, filters, sorter) => {
         let orderBy = '';
         if (sorter.order === 'ascend') {
@@ -119,7 +118,7 @@ const OverviewTable = props => {
           },
         });
       }}
-      columns={columns}
+      columns={data.columns}
       size={'small'}
       bordered={true}
       pagination={false}
