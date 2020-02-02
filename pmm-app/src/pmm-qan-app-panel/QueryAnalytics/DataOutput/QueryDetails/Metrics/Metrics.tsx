@@ -1,13 +1,13 @@
-import { Table } from 'antd';
-import React, { useEffect, useState } from 'react';
+import {Table} from 'antd';
+import React, {useEffect, useState} from 'react';
 // import PolygonChart from '../../../../react-plugins-deps/components/PolygonChart/PolygonChart';
 // import LatencyChart from '../../../../react-plugins-deps/components/LatencyChart/LatencyChart';
-import { METRIC_CATALOGUE } from '../../metric-catalogue';
+import {METRIC_CATALOGUE} from '../../metric-catalogue';
 import Icon from 'antd/es/icon';
 import Tooltip from 'antd/es/tooltip';
 import MetricsService from './Metrics.service';
 import PolygonChart from '../../../../../react-plugins-deps/components/PolygonChart/PolygonChart';
-import { Humanize } from '../../../../../react-plugins-deps/components/helpers/Humanize';
+import {Humanize} from '../../../../../react-plugins-deps/components/helpers/Humanize';
 
 const getPercentOfTotal = (current, total) => {
   const key = current.sum ? 'sum' : 'sum_per_sec';

@@ -1,4 +1,4 @@
-import { apiRequest } from '../../../../../react-plugins-deps/components/helpers/api';
+import {apiRequest} from '../../../../../react-plugins-deps/components/helpers/api';
 
 // interface ExplainInterface {
 //   pmm_agent_id: 'string';

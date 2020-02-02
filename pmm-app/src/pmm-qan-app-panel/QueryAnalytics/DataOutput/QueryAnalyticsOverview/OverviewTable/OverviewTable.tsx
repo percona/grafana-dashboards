@@ -1,15 +1,12 @@
-import { Table, Select } from 'antd';
-import React, { useContext, useEffect, useState } from 'react';
+import {Select, Table} from 'antd';
+import React, {useContext, useEffect, useState} from 'react';
 import './OverviewTable.scss';
-import { StateContext } from '../../../StateContext';
-import { getColumnName } from './Column';
+import {StateContext} from '../../../StateContext';
+import {getColumnName} from './Column';
 import OverviewService from './Overview.service';
 
 const { Option } = Select;
 
-const CurrentGroupBy = 'queryid';
-// const TOTAL = tableData.rows[0]x;
-//
 const getDefaultColumns = context => {
   return [
     {
