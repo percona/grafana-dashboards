@@ -1,13 +1,14 @@
-import {Table} from 'antd';
-import React, {useEffect, useState} from 'react';
+import { Table } from 'antd';
+import React, { useEffect, useState } from 'react';
 // import PolygonChart from '../../../../react-plugins-deps/components/PolygonChart/PolygonChart';
 // import LatencyChart from '../../../../react-plugins-deps/components/LatencyChart/LatencyChart';
-import {METRIC_CATALOGUE} from '../../metric-catalogue';
+import { METRIC_CATALOGUE } from '../../metric-catalogue';
 import Icon from 'antd/es/icon';
 import Tooltip from 'antd/es/tooltip';
 import MetricsService from './Metrics.service';
 import PolygonChart from '../../../../../react-plugins-deps/components/PolygonChart/PolygonChart';
-import {Humanize} from '../../../../../react-plugins-deps/components/helpers/Humanize';
+import { Humanize } from '../../../../../react-plugins-deps/components/helpers/Humanize';
+import LatencyChart from '../../../../../react-plugins-deps/components/LatencyChart/LatencyChart';
 
 const getPercentOfTotal = (current, total) => {
   const key = current.sum ? 'sum' : 'sum_per_sec';
@@ -26,6 +27,11 @@ const getSparkline = (sparklines, metricName) => {
   });
 };
 
+const metricColumnsStyle = {
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'flex-end',
+};
 const processMetrics = metrics => {
   if (!metrics.metrics) {
     return [];
@@ -80,13 +86,7 @@ const columns = [
       // {{ isRate ? (currentMetric?.stats?.rate | humanize: pipeInfo?.ratePipe) : '0' }}
       // @ts-ignore
       return (
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'flex-end',
-          }}
-        >
+        <div style={metricColumnsStyle}>
           {<span>{item.isRate ? Humanize.transform(item.metric.rate, item.pipeTypes['ratePipe']) : '0' + ` ${item.units}`}</span>}
           {item.sparkline && <PolygonChart data={item.sparkline as any} width={150} ykey={'metric'} />}
         </div>
@@ -99,8 +99,6 @@ const columns = [
     render: (text, item) => {
       return (
         <>
-          {/*isSum, percentOfTotal*/}
-          {/*{{isSum ? (currentMetric?.stats?.sum | humanize: pipeInfo?.sumPipe) : '0' }}*/}
           {item.isSum && (
             <span style={{ marginRight: '10px', minWidth: '65px', display: 'inline-block' }}>
               {Humanize.transform(item.metric.sum, item.pipeTypes['sumPipe']) || 0}
@@ -125,18 +123,11 @@ const columns = [
     width: '25%',
     render: (text, item) => {
       return (
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'flex-end',
-          }}
-        >
-          {/*{{ isStats ? (currentMetric?.stats?.avg | humanize: pipeInfo?.perQueryStatsPipe) : isSum ? perQueryStat() : '0' }}*/}
+        <div style={metricColumnsStyle}>
           <span style={{ marginRight: '10px' }}>
             {Humanize.transform(item.metric.avg, item.pipeTypes['perQueryStatsPipe']) || (+item.metric.sum / +item.queryCount).toFixed(2) || '0'}
           </span>
-          {/*{item.isLatencyChart && <LatencyChart data={item.metric} />}*/}
+          {item.isLatencyChart && <LatencyChart data={item.metric} />}
         </div>
       );
     },
