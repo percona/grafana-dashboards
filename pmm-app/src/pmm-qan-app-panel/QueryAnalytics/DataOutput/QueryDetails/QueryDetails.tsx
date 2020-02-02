@@ -1,12 +1,12 @@
-import React, { useContext } from 'react';
-import { Divider, Tabs } from 'antd';
+import React, {useContext} from 'react';
+import {Divider, Tabs} from 'antd';
 import './QueryDetails.scss';
 import Fingerprint from './Fingerprint';
 import Explain from './Explain/Explain.container';
 import Example from './Example/Example';
 import Metrics from './Metrics/Metrics';
 import TableCreate from './Table/Table';
-import { StateContext } from '../../StateContext';
+import {StateContext} from '../../StateContext';
 
 const { TabPane } = Tabs;
 

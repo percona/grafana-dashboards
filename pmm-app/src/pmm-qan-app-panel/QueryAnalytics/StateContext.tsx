@@ -1,17 +1,6 @@
-import React, { useReducer, useState } from 'react';
-import { ParseQueryParamDate } from '../../react-plugins-deps/components/helpers/time-parameters-parser';
+import React, {useReducer} from 'react';
+import {ParseQueryParamDate} from '../../react-plugins-deps/components/helpers/time-parameters-parser';
 
-interface ContextInterface {
-  filterBy?: any;
-  labels?: any;
-  selectedVariables?: any;
-  columns?: any;
-  changeColumn?: any;
-  selectQuery?: any;
-  removeFilter?: any;
-  addFilter?: any;
-  resetLabels?: any;
-}
 const initialState = {} as any;
 
 export const StateContext = React.createContext(initialState);
@@ -85,15 +74,6 @@ class ContextActions {
     this.to = query.get('to') || 'now';
   }
 
-  reloadURL() {
-    const newUrl = this.generateURL();
-    history.pushState({}, 'test', newUrl);
-  }
-
-  reloadState() {
-    console.log('new state is', this);
-  }
-
   static setLabels(filters) {
     const labels = {};
     Object.keys(filters)
@@ -112,17 +92,13 @@ class ContextActions {
 
 export const UrlParametersProvider = ({ children }) => {
   const query = new URLSearchParams(window.location.search);
-  const context = new ContextActions(query);
 
-  // this.from = ;
-  // this.to = query.get('to') || 'now';
   const from = ParseQueryParamDate.transform(query.get('from') || 'now-12h', 'from')
     .utc()
     .format('YYYY-MM-DDTHH:mm:ssZ');
   const to = ParseQueryParamDate.transform(query.get('to') || 'now', 'to')
     .utc()
     .format('YYYY-MM-DDTHH:mm:ssZ');
-  console.log(from, to, 'dates ====');
   const [state, dispatch] = useReducer(
     (state, action) => {
       console.log('dispatch-------', action);
@@ -204,7 +180,7 @@ export const UrlParametersProvider = ({ children }) => {
       labels: ContextActions.setFilters(query),
       pageNumber: 1,
       pageSize: 10,
-      orderBy: query.get('order_by'),
+      orderBy: query.get('order_by') || 'load',
       queryId: query.get('filter_by'),
       groupBy: query.get('group_by') || 'queryid',
       from: from,

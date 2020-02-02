@@ -1,14 +1,13 @@
-import React, { ReactElement, useContext, useEffect, useState } from 'react';
-import { Humanize } from '../../../react-plugins-deps/components/helpers/Humanize';
+import React, {ReactElement, useContext, useState} from 'react';
+import {Humanize} from '../../../react-plugins-deps/components/helpers/Humanize';
 import './Filters.scss';
-import { Divider } from 'antd';
-import { ManagementContext, StateContext } from '../StateContext';
+import {Divider} from 'antd';
+import {StateContext} from '../StateContext';
 import FiltersService from './Filters.service';
-import { CheckboxField } from '../../../react-plugins-deps/components/FormComponents/Checkbox/Checkbox';
-import { useForm } from 'react-final-form-hooks';
-import { Form as FormFinal } from 'react-final-form';
+import {CheckboxField} from '../../../react-plugins-deps/components/FormComponents/Checkbox/Checkbox';
+import {useForm} from 'react-final-form-hooks';
+import {Form as FormFinal} from 'react-final-form';
 import Search from 'antd/es/input/Search';
-import set = Reflect.set;
 
 const checkboxGroup = (form, name, items, group, showAll, filter, labels) => {
   const itemsList = items

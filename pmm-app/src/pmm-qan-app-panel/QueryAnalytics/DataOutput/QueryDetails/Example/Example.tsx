@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import ExampleService from './Example.service';
 import ReactJson from 'react-json-view';
 

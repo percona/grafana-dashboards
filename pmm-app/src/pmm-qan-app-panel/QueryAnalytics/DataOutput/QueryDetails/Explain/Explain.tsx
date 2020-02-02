@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactJson from 'react-json-view';
-import { Collapse } from 'antd';
+import {Collapse} from 'antd';
 
 const { Panel } = Collapse;
 
