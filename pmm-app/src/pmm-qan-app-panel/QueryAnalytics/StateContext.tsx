@@ -1,5 +1,5 @@
-import React, {useReducer} from 'react';
-import {ParseQueryParamDate} from '../../react-plugins-deps/components/helpers/time-parameters-parser';
+import React, { useReducer } from 'react';
+import { ParseQueryParamDate } from '../../react-plugins-deps/components/helpers/time-parameters-parser';
 
 const initialState = {} as any;
 
@@ -106,10 +106,10 @@ export const UrlParametersProvider = ({ children }) => {
       let newState;
       switch (action.type) {
         case 'SET_LABELS':
-          newState = { ...state, labels: ContextActions.setLabels(action.payload.labels) };
+          newState = { ...state, labels: ContextActions.setLabels(action.payload.labels), pageNumber: 1 };
           break;
         case 'RESET_LABELS':
-          newState = { ...state, labels: {} };
+          newState = { ...state, labels: {}, pageNumber: 1 };
           break;
         case 'SELECT_QUERY':
           newState = { ...state, queryId: action.payload.queryId };
