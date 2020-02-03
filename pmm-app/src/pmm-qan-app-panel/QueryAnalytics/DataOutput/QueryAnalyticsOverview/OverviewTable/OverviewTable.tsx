@@ -7,7 +7,7 @@ import OverviewService from './Overview.service';
 
 const { Option } = Select;
 
-const getDefaultColumns = context => {
+const getDefaultColumns = (context, pageNumber, pageSize) => {
   return [
     {
       title: '#',
@@ -15,7 +15,9 @@ const getDefaultColumns = context => {
       key: 'rowNumber',
       width: '30px',
       // fixed: 'left',
-      render: (text, record, index) => <div style={{ wordWrap: 'normal', wordBreak: 'normal' }}>{index === 0 ? '' : index}</div>,
+      render: (text, record, index) => (
+        <div style={{ wordWrap: 'normal', wordBreak: 'normal' }}>{index === 0 ? '' : (pageNumber - 1) * pageSize + index}</div>
+      ),
     },
     {
       title: () => {
@@ -47,20 +49,7 @@ const getDefaultColumns = context => {
       // fixed: 'left',
       // sorter: () => {},
       render: (text, record) => {
-        return (
-          <span
-            onClick={() => {
-              context.dispatch({
-                type: 'SELECT_QUERY',
-                payload: {
-                  queryId: record.dimension,
-                },
-              });
-            }}
-          >
-            {record.fingerprint || record.dimension || 'TOTAL'}
-          </span>
-        );
+        return <span>{record.fingerprint || record.dimension || 'TOTAL'}</span>;
       },
     },
   ];
@@ -68,8 +57,7 @@ const getDefaultColumns = context => {
 const OverviewTable = props => {
   const context = useContext(StateContext);
   const [data, setData] = useState({ rows: [], columns: [] });
-  const [columns, setColumns] = useState([]);
-
+  const [selectedRow, selectRow] = useState(null);
   useEffect(() => {
     const updateInstances = async () => {
       try {
@@ -86,7 +74,7 @@ const OverviewTable = props => {
         });
 
         props.setTotal(result.total_rows);
-        const columns = getDefaultColumns(context).concat(
+        const columns = getDefaultColumns(context, context.state.pageNumber, context.state.pageSize).concat(
           context.state.columns.map((key, index) => getColumnName(key, index, result.rows[0], context.state.orderBy))
         );
         // @ts-ignore
@@ -122,6 +110,25 @@ const OverviewTable = props => {
       bordered={true}
       pagination={false}
       scroll={{ x: 1300 }}
+      onRow={(record, rowIndex) => {
+        return {
+          onClick: event => {
+            selectRow(rowIndex);
+            context.dispatch({
+              type: 'SELECT_QUERY',
+              payload: {
+                queryId: data.rows[rowIndex].dimension,
+              },
+            });
+          },
+        };
+      }}
+      rowClassName={(record, index) => {
+        if (index === selectedRow) {
+          return 'selected-overview-row';
+        }
+        return '';
+      }}
     />
   );
 };
