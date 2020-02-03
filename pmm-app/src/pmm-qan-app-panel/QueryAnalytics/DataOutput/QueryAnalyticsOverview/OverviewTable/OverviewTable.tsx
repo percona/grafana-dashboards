@@ -14,7 +14,6 @@ const getDefaultColumns = (context, pageNumber, pageSize) => {
       dataIndex: 'rowNumber',
       key: 'rowNumber',
       width: '30px',
-      // fixed: 'left',
       render: (text, record, index) => (
         <div style={{ wordWrap: 'normal', wordBreak: 'normal' }}>{index === 0 ? '' : (pageNumber - 1) * pageSize + index}</div>
       ),
@@ -46,8 +45,6 @@ const getDefaultColumns = (context, pageNumber, pageSize) => {
       width: '200px',
       ellipsis: true,
       className: 'overview-main-column',
-      // fixed: 'left',
-      // sorter: () => {},
       render: (text, record) => {
         return <span>{record.fingerprint || record.dimension || 'TOTAL'}</span>;
       },
