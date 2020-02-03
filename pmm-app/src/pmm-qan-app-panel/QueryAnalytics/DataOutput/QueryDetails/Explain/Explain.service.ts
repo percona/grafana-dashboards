@@ -1,11 +1,5 @@
 import {apiRequest} from '../../../../../react-plugins-deps/components/helpers/api';
 
-// interface ExplainInterface {
-//   pmm_agent_id: 'string';
-//   service_id: 'string';
-//   query: 'string';
-//   database: 'string';
-// }
 class ExplainService {
   static async getTraditionalExplainJSON({ filterBy, groupBy, labels, periodStartFrom, periodStartTo, tables }) {
     const body = {

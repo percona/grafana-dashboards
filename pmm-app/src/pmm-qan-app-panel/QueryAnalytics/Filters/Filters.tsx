@@ -44,7 +44,7 @@ const checkboxGroup = (form, name, items, group, showAll, filter, labels) => {
   ) : null;
 };
 
-const checkboxGroups = [
+const FILTERS_GROUPS = [
   {
     name: 'Environment',
     dataKey: 'environment',
@@ -105,14 +105,12 @@ const Filters = () => {
   const [filters, setFilters] = useState({});
   const [groups, setGroups] = useState([]);
   const context = useContext(StateContext);
-  // const filters = FiltersService.getQueryOverviewFiltersList(context.state.labels || {}, context.state.from, context.state.to);
 
   useEffect(() => {
     (async () => {
       const result = await FiltersService.getQueryOverviewFiltersList(context.state.labels || {}, context.state.from, context.state.to);
-      console.log(result, checkboxGroups);
       setFilters(result);
-      setGroups(checkboxGroups);
+      setGroups(FILTERS_GROUPS);
     })();
   }, [context.state.labels, context.state.from, context.state.to]);
   return (
@@ -163,7 +161,6 @@ const Filters = () => {
               {groups
                 .filter(group => filters[group.dataKey])
                 .map(group => {
-                  console.log(filters, group, 'inside groups');
                   return checkboxGroup(form, group.name, filters[group.dataKey].name, group.dataKey, showAll, filter, context.state.labels);
                 })}
             </div>
