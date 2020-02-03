@@ -108,11 +108,7 @@ const columns = [
               style={{ marginLeft: '5px', color: '#26afe1', minWidth: '90px', display: 'inline-block' }}
             >{`${item.percentOfTotal}% of total`}</span>
           }
-          {
-            <span
-              style={{ marginLeft: '5px', color: '#268b40', minWidth: '90px', display: 'inline-block' }}
-            >{`${item.percentOfTotal}% of total`}</span>
-          }
+          {<span style={{ marginLeft: '5px', color: '#268b40', minWidth: '90px', display: 'inline-block' }}>{`complex`}</span>}
         </>
       );
     },
