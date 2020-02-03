@@ -7,6 +7,48 @@ import './DataOutput.scss';
 import { Pagination } from 'antd';
 import AddColumn from './QueryAnalyticsOverview/AddColumn';
 
+const FirstSeen = () => {
+  const context = useContext(StateContext);
+
+  return (
+    <>
+      {context.state.firstSeen ? (
+        <a
+          href="#"
+          className={'filter-switchers'}
+          style={{ marginLeft: '20px' }}
+          onClick={() => {
+            context.dispatch({
+              type: 'CHANGE_FIRST_SEEN',
+              payload: {
+                firstSeen: false,
+              },
+            });
+          }}
+        >
+          Show all Queries
+        </a>
+      ) : (
+        <a
+          href="#"
+          className={'filter-switchers'}
+          style={{ marginLeft: '20px' }}
+          onClick={() => {
+            context.dispatch({
+              type: 'CHANGE_FIRST_SEEN',
+              payload: {
+                firstSeen: true,
+              },
+            });
+          }}
+        >
+          Show first Seen
+        </a>
+      )}
+    </>
+  );
+};
+
 const DataOutput = () => {
   const context = useContext(StateContext);
   const [total, setTotal] = useState(30);
@@ -14,12 +56,7 @@ const DataOutput = () => {
     <div>
       <div className={'filters-header'} style={{ padding: '5px 0px', height: '50px' }}>
         <h5 style={{ margin: '3px', marginRight: '15px' }}>Queries overview</h5>
-        <a href="#" className={'filter-switchers'} style={{ marginLeft: '20px' }}>
-          All Queries
-        </a>{' '}
-        <a href="#" className={'filter-switchers'} style={{ marginLeft: '20px' }}>
-          First Seen
-        </a>
+        <FirstSeen />
         <div style={{ marginLeft: 'auto' }}>
           <Pagination
             showSizeChanger={true}
