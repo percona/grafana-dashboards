@@ -1,4 +1,4 @@
-import {apiRequest} from '../../../../../react-plugins-deps/components/helpers/api';
+import { apiRequest } from '../../../../../react-plugins-deps/components/helpers/api';
 
 interface OverviewServiceInterface {
   columns: string[];
@@ -16,13 +16,14 @@ interface OverviewServiceInterface {
   pageSize?: number;
   pageNumber?: number;
   groupBy?: string;
+  firstSeen?: boolean;
 }
 class OverviewService {
   static async getReport(body: OverviewServiceInterface) {
     const columns = body.columns || ['load', 'num_queries', 'query_time'];
     const request = {
       columns: columns,
-      first_seen: false,
+      first_seen: body.firstSeen,
       group_by: body.groupBy,
       include_only_fields: [],
       keyword: '',
