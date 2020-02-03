@@ -44,7 +44,6 @@ const processMetrics = metrics => {
       const sparkline = getSparkline(metrics.sparkline, metricName);
       const total = metrics.totals[metricName];
 
-      // this.pipeInfo = this.currentMetricInfo.pipeTypes || this.defaultPipeInfo;
       return {
         name: METRIC_CATALOGUE[metricName].humanizeName,
         tooltip: METRIC_CATALOGUE[metricName].tooltipText,
