@@ -9,7 +9,7 @@ import { useForm } from 'react-final-form-hooks';
 import { Form as FormFinal } from 'react-final-form';
 import Search from 'antd/es/input/Search';
 
-const checkboxGroup = (form, name, items, group, showAll, filter, labels) => {
+const checkboxGroup = ({ form, name, items, group, showAll, filter, labels }) => {
   const itemsList = items
     .filter(item => item.value)
     .filter(item => {
@@ -104,15 +104,18 @@ const Filters = () => {
   const [filter, setFilter] = useState('');
   const [filters, setFilters] = useState({});
   const [groups, setGroups] = useState([]);
-  const context = useContext(StateContext);
+  const {
+    dispatch,
+    state: { labels = {}, from, to },
+  } = useContext(StateContext);
 
   useEffect(() => {
     (async () => {
-      const result = await FiltersService.getQueryOverviewFiltersList(context.state.labels || {}, context.state.from, context.state.to);
+      const result = await FiltersService.getQueryOverviewFiltersList(labels, from, to);
       setFilters(result);
       setGroups(FILTERS_GROUPS);
     })();
-  }, [context.state.labels, context.state.from, context.state.to]);
+  }, [labels, from, to]);
   return (
     <FormFinal
       onSubmit={() => {}}
@@ -128,7 +131,7 @@ const Filters = () => {
             onSubmit={handleSubmit}
             className="add-instance-form app-theme-dark"
             onChange={() => {
-              context.dispatch({
+              dispatch({
                 type: 'SET_LABELS',
                 payload: { labels: form.getState().values },
               });
@@ -150,7 +153,7 @@ const Filters = () => {
                 className={'filter-switchers'}
                 style={{ marginLeft: 'auto' }}
                 onClick={() => {
-                  context.dispatch({ type: 'RESET_LABELS' });
+                  dispatch({ type: 'RESET_LABELS' });
                 }}
               >
                 Reset All
@@ -161,7 +164,16 @@ const Filters = () => {
               {groups
                 .filter(group => filters[group.dataKey])
                 .map(group => {
-                  return checkboxGroup(form, group.name, filters[group.dataKey].name, group.dataKey, showAll, filter, context.state.labels);
+                  const { name, dataKey } = group;
+                  return checkboxGroup({
+                    form,
+                    name,
+                    items: filters[dataKey].name,
+                    group: dataKey,
+                    showAll,
+                    filter,
+                    labels,
+                  });
                 })}
             </div>
           </form>
