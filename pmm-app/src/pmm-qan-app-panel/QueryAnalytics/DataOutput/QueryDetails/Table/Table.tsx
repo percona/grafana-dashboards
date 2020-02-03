@@ -1,12 +1,11 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
 class TableCreate extends Component {
   render() {
     return (
       <div>
         <pre>
-          {'' +
-            'Table: t1\n' +
+          {'Table: t1\n' +
             '    Create Table: CREATE TABLE `t1` (\n' +
             '        `i1` int(11) DEFAULT NULL,\n' +
             '        `i2` int(11) DEFAULT NULL,\n' +
