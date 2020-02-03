@@ -1,13 +1,20 @@
 import { Select, Table } from 'antd';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import './OverviewTable.scss';
 import { StateContext } from '../../../StateContext';
 import { getColumnName } from './Column';
 import OverviewService from './Overview.service';
 
 const { Option } = Select;
-
-const getDefaultColumns = (context, pageNumber, pageSize) => {
+const GROUP_BY_OPTIONS = [
+  { value: 'queryid', label: 'Query' },
+  { value: 'service_name', label: 'Service Name' },
+  { value: 'database', label: 'Database' },
+  { value: 'schema', label: 'Schema' },
+  { value: 'username', label: 'User Name' },
+  { value: 'client_host', label: 'Client Host' },
+];
+const getDefaultColumns = (groupBy, setGroupBy, pageNumber, pageSize) => {
   return [
     {
       title: '#',
@@ -21,24 +28,12 @@ const getDefaultColumns = (context, pageNumber, pageSize) => {
     {
       title: () => {
         return (
-          <Select
-            defaultValue={context.state.groupBy}
-            style={{ width: '120px' }}
-            onChange={value => {
-              context.dispatch({
-                type: 'CHANGE_GROUP_BY',
-                payload: {
-                  groupBy: value,
-                },
-              });
-            }}
-          >
-            <Option value="queryid">Query</Option>
-            <Option value="service_name">Service Name</Option>
-            <Option value="database">Database</Option>
-            <Option value="schema">Schema</Option>
-            <Option value="username">User Name</Option>
-            <Option value="client_host">Client Host</Option>
+          <Select optionLabelProp="label" defaultValue={groupBy} style={{ width: '120px' }} onChange={setGroupBy}>
+            {GROUP_BY_OPTIONS.map(option => (
+              <Option value={option.value} label={option.label}>
+                {option.label}
+              </Option>
+            ))}
           </Select>
         );
       },
@@ -51,34 +46,77 @@ const getDefaultColumns = (context, pageNumber, pageSize) => {
     },
   ];
 };
+
 const OverviewTable = props => {
-  const context = useContext(StateContext);
+  const {
+    dispatch,
+    state: { labels, columns, pageNumber, pageSize, orderBy, from, to, groupBy, firstSeen },
+  } = useContext(StateContext);
   const [data, setData] = useState({ rows: [], columns: [] });
   const [selectedRow, selectRow] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const setGroupBy = useCallback(value => {
+    dispatch({
+      type: 'CHANGE_GROUP_BY',
+      payload: {
+        groupBy: value,
+      },
+    });
+  }, []);
+
+  const onTableChange = useCallback((pagination, filters, sorter) => {
+    let orderBy = '';
+    if (sorter.order === 'ascend') {
+      orderBy = sorter.columnKey;
+    } else if (sorter.order === 'descend') {
+      orderBy = `-${sorter.columnKey}`;
+    }
+    dispatch({
+      type: 'CHANGE_SORT',
+      payload: {
+        orderBy: orderBy,
+      },
+    });
+  }, []);
+
+  const onRowClick = useCallback((record, rowIndex) => {
+    return {
+      onClick: () => {
+        selectRow(rowIndex);
+        dispatch({
+          type: 'SELECT_QUERY',
+          payload: {
+            queryId: data.rows[rowIndex].dimension,
+          },
+        });
+      },
+    };
+  }, []);
+
   useEffect(() => {
     const updateInstances = async () => {
       try {
         setLoading(true);
         // @ts-ignore
         const result = await OverviewService.getReport({
-          labels: context.state.labels,
-          columns: context.state.columns,
-          pageNumber: context.state.pageNumber,
-          pageSize: context.state.pageSize,
-          order_by: context.state.orderBy,
-          period_start_from: context.state.from,
-          period_start_to: context.state.to,
-          groupBy: context.state.groupBy,
-          firstSeen: context.state.firstSeen,
+          labels,
+          columns,
+          pageNumber,
+          pageSize,
+          orderBy,
+          from,
+          to,
+          groupBy,
+          firstSeen,
         });
 
         props.setTotal(result.total_rows);
-        const columns = getDefaultColumns(context, context.state.pageNumber, context.state.pageSize).concat(
-          context.state.columns.map((key, index) => getColumnName(key, index, result.rows[0], context.state.orderBy))
+        const calculatedColumns = getDefaultColumns(groupBy, setGroupBy, pageNumber, pageSize).concat(
+          columns.map((key, index) => getColumnName(key, index, result.rows[0], orderBy))
         );
         // @ts-ignore
-        setData({ rows: result.rows, columns: columns });
+        setData({ rows: result.rows, columns: calculatedColumns });
         setLoading(false);
       } catch (e) {
         console.log(e);
@@ -86,49 +124,19 @@ const OverviewTable = props => {
       }
     };
     updateInstances().then(r => {});
-  }, [context.state.columns, context.state.pageNumber, context.state.pageSize, context.state.groupBy, context.state.labels, context.state.firstSeen]);
-  // // @ts-ignore
+  }, [columns, pageNumber, pageSize, groupBy, labels, firstSeen]);
+  // @ts-ignore
   return (
     <Table
       dataSource={data.rows}
-      onChange={(pagination, filters, sorter) => {
-        let orderBy = '';
-        if (sorter.order === 'ascend') {
-          orderBy = sorter.columnKey;
-        } else if (sorter.order === 'descend') {
-          orderBy = `-${sorter.columnKey}`;
-        }
-        context.dispatch({
-          type: 'CHANGE_SORT',
-          payload: {
-            orderBy: orderBy,
-          },
-        });
-      }}
+      onChange={onTableChange}
       columns={data.columns}
       size={'small'}
       bordered={true}
       pagination={false}
       scroll={{ x: 1300 }}
-      onRow={(record, rowIndex) => {
-        return {
-          onClick: event => {
-            selectRow(rowIndex);
-            context.dispatch({
-              type: 'SELECT_QUERY',
-              payload: {
-                queryId: data.rows[rowIndex].dimension,
-              },
-            });
-          },
-        };
-      }}
-      rowClassName={(record, index) => {
-        if (index === selectedRow) {
-          return 'selected-overview-row';
-        }
-        return '';
-      }}
+      onRow={onRowClick}
+      rowClassName={(record, index) => (index === selectedRow ? 'selected-overview-row' : '')}
       loading={loading}
     />
   );
