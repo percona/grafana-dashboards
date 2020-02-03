@@ -10,9 +10,9 @@ interface OverviewServiceInterface {
   limit?: number;
   main_metric: string;
   offset?: number;
-  order_by: string;
-  period_start_from?: any; // ISO8601
-  period_start_to?: any; // ISO8601
+  orderBy: string;
+  from?: any; // ISO8601
+  to?: any; // ISO8601
   pageSize?: number;
   pageNumber?: number;
   groupBy?: string;
@@ -20,26 +20,27 @@ interface OverviewServiceInterface {
 }
 class OverviewService {
   static async getReport(body: OverviewServiceInterface) {
-    const columns = body.columns || ['load', 'num_queries', 'query_time'];
+    const columns = body.columns;
+    const labels =
+      Object.keys(body.labels).map(key => {
+        return {
+          key: key,
+          value: body.labels[key],
+        };
+      }) || [];
     const request = {
       columns: columns,
       first_seen: body.firstSeen,
       group_by: body.groupBy,
       include_only_fields: [],
       keyword: '',
-      labels:
-        Object.keys(body.labels).map(key => {
-          return {
-            key: key,
-            value: body.labels[key],
-          };
-        }) || [],
+      labels: labels,
       limit: body.pageSize,
       offset: (body.pageNumber - 1) * body.pageSize,
-      order_by: body.order_by,
+      order_by: body.orderBy,
       main_metric: columns[0],
-      period_start_from: body.period_start_from,
-      period_start_to: body.period_start_to,
+      period_start_from: body.from,
+      period_start_to: body.to,
     };
     return apiRequest.post<any, any>('/v0/qan/GetReport', request);
   }

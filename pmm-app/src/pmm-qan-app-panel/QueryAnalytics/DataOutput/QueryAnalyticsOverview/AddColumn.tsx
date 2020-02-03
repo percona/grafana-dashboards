@@ -1,7 +1,7 @@
-import React, {useContext} from 'react';
-import {Divider, Icon, Input, Select} from 'antd';
-import {METRIC_CATALOGUE} from '../metric-catalogue';
-import {StateContext} from '../../StateContext';
+import React, { useContext } from 'react';
+import { Divider, Icon, Input, Select } from 'antd';
+import { METRIC_CATALOGUE } from '../metric-catalogue';
+import { StateContext } from '../../StateContext';
 
 const { Option } = Select;
 
@@ -17,6 +17,7 @@ const AddColumn = props => {
       }}
     >
       <Select
+        optionLabelProp="label"
         style={{ width: 240 }}
         placeholder={props.placeholder || 'Add column'}
         onChange={(column, second) => {
@@ -68,7 +69,9 @@ const AddColumn = props => {
         )}
       >
         {Object.values(METRIC_CATALOGUE).map(item => (
-          <Option key={item.simpleName}>{item.humanizeName}</Option>
+          <Option key={item.simpleName} label={item.humanizeName}>
+            {item.humanizeName}
+          </Option>
         ))}
       </Select>
     </div>
