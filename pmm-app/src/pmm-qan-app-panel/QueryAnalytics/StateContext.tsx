@@ -169,6 +169,12 @@ export const UrlParametersProvider = ({ children }) => {
           };
           delete newState.queryId;
           break;
+        case 'CHANGE_FIRST_SEEN':
+          newState = {
+            ...state,
+            firstSeen: action.payload.firstSeen,
+          };
+          break;
       }
       const newUrl = ContextActions.generateURL(newState);
       console.log('--------', 'Generating new url', newUrl);
@@ -185,6 +191,7 @@ export const UrlParametersProvider = ({ children }) => {
       groupBy: query.get('group_by') || 'queryid',
       from: from,
       to: to,
+      firstSeen: false,
     }
   );
 

@@ -58,9 +58,11 @@ const OverviewTable = props => {
   const context = useContext(StateContext);
   const [data, setData] = useState({ rows: [], columns: [] });
   const [selectedRow, selectRow] = useState(null);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     const updateInstances = async () => {
       try {
+        setLoading(true);
         // @ts-ignore
         const result = await OverviewService.getReport({
           labels: context.state.labels,
@@ -71,6 +73,7 @@ const OverviewTable = props => {
           period_start_from: context.state.from,
           period_start_to: context.state.to,
           groupBy: context.state.groupBy,
+          firstSeen: context.state.firstSeen,
         });
 
         props.setTotal(result.total_rows);
@@ -79,14 +82,14 @@ const OverviewTable = props => {
         );
         // @ts-ignore
         setData({ rows: result.rows, columns: columns });
-        // startLoading(false);
+        setLoading(false);
       } catch (e) {
         console.log(e);
-        // startLoading(false);
+        setLoading(false);
       }
     };
     updateInstances().then(r => {});
-  }, [context.state.columns, context.state.pageNumber, context.state.pageSize, context.state.groupBy, context.state.labels]);
+  }, [context.state.columns, context.state.pageNumber, context.state.pageSize, context.state.groupBy, context.state.labels, context.state.firstSeen]);
   // // @ts-ignore
   return (
     <Table
@@ -129,6 +132,7 @@ const OverviewTable = props => {
         }
         return '';
       }}
+      loading={loading}
     />
   );
 };
