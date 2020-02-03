@@ -9,7 +9,6 @@ const { Search } = Input;
 
 const AddColumn = props => {
   const context = useContext(StateContext);
-  // console.log('context', context);
   // @ts-ignore
   return (
     <div
@@ -37,7 +36,6 @@ const AddColumn = props => {
               },
             });
           }
-          // context.addColumn(column);
         }}
         dropdownRender={menu => (
           <div>
