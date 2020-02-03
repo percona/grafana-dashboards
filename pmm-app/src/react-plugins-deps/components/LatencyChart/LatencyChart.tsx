@@ -38,7 +38,6 @@ class LatencyChart extends Component {
       .nice();
 
     const { min = 0, max = 0, avg = 0, p99 = 0 } = data;
-    console.log(data,'data')
     const minStr = `⌜ Min: ${Humanize.transform(min, this.measurement)}`;
     const maxStr = `⌟ Max: ${Humanize.transform(max, this.measurement)}`;
     const avgStr = `◦ Avg: ${Humanize.transform(avg, this.measurement)}`;
