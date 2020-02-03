@@ -92,7 +92,7 @@ const OverviewTable = props => {
         });
       },
     };
-  }, []);
+  }, [data.rows]);
 
   useEffect(() => {
     const updateInstances = async () => {
@@ -119,7 +119,6 @@ const OverviewTable = props => {
         setData({ rows: result.rows, columns: calculatedColumns });
         setLoading(false);
       } catch (e) {
-        console.log(e);
         setLoading(false);
       }
     };
