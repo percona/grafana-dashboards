@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import Explain from './Explain';
 import ExplainService from './Explain.service';
 
@@ -10,26 +10,34 @@ const ExplainContainer = props => {
 
   useEffect(() => {
     (async () => {
-      const result = await ExplainService.getTraditionalExplain({
-        filterBy: filterBy,
-        groupBy: groupBy,
-        periodStartFrom: periodStartFrom,
-        periodStartTo: periodStartTo,
-        labels: labels,
-        tables: tables,
-      });
-      setTraditionalExplain(result);
+      try {
+        const result = await ExplainService.getTraditionalExplain({
+          filterBy: filterBy,
+          groupBy: groupBy,
+          periodStartFrom: periodStartFrom,
+          periodStartTo: periodStartTo,
+          labels: labels,
+          tables: tables,
+        });
+        setTraditionalExplain(result);
+      } catch (e) {
+        //TODO: add error handling
+      }
     })();
     (async () => {
-      const result = await ExplainService.getTraditionalExplainJSON({
-        filterBy: filterBy,
-        groupBy: groupBy,
-        periodStartFrom: periodStartFrom,
-        periodStartTo: periodStartTo,
-        labels: labels,
-        tables: tables,
-      });
-      setJsonExplain(result);
+      try {
+        const result = await ExplainService.getTraditionalExplainJSON({
+          filterBy: filterBy,
+          groupBy: groupBy,
+          periodStartFrom: periodStartFrom,
+          periodStartTo: periodStartTo,
+          labels: labels,
+          tables: tables,
+        });
+        setJsonExplain(result);
+      } catch (e) {
+        //TODO: add error handling
+      }
     })();
   }, []);
   return <Explain json={jsonExplain} classic={traditionalExplain} />;

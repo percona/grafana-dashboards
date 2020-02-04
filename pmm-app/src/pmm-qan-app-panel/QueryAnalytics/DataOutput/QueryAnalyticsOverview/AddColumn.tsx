@@ -45,11 +45,11 @@ const AddColumn = props => {
     <div onClick={e => e.stopPropagation()}>
       <Select
         optionLabelProp="label"
-        style={{ width: 240 }}
+        style={{ width: 180 }}
         placeholder={props.placeholder || 'Add column'}
         onChange={changeColumn}
         dropdownRender={menu => (
-          <div>
+          <div style={{ width: 400 }}>
             <Search
               placeholder="input search text"
               onSearch={value => console.log(value)}

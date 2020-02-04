@@ -37,7 +37,6 @@ const getDefaultColumns = (groupBy, setGroupBy, pageNumber, pageSize) => {
           </Select>
         );
       },
-      width: '200px',
       ellipsis: true,
       className: 'overview-main-column',
       render: (text, record) => {
@@ -133,7 +132,7 @@ const OverviewTable = props => {
       size={'small'}
       bordered={true}
       pagination={false}
-      scroll={{ x: 1300 }}
+      scroll={{ x: 1320 }}
       onRow={onRowClick}
       rowClassName={(record, index) => (index === selectedRow ? 'selected-overview-row' : '')}
       loading={loading}
