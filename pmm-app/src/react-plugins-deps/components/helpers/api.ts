@@ -1,11 +1,14 @@
 import axios, { AxiosInstance } from 'axios';
 import { showErrorNotification } from './notification-manager';
 
+
 class ApiRequest {
   axiosInstance: AxiosInstance;
 
-  constructor() {
-    this.axiosInstance = axios;
+  constructor(params) {
+    this.axiosInstance = axios.create({
+      ...params,
+    });
   }
 
   async get<T, B>(path: string, query?: { params: B; cancelToken?: any }): Promise<void | T> {
@@ -52,3 +55,5 @@ class ApiRequest {
 }
 
 export const apiRequest = new ApiRequest();
+export const apiRequestQAN = new ApiRequest({ baseURL: '/v0/qan' });
+export const apiRequestManagement = new ApiRequest({ baseURL: '/v1/management' });
