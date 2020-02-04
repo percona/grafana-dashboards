@@ -1,8 +1,8 @@
-import { apiRequest } from '../../react-plugins-deps/components/helpers/api';
+import { apiRequestManagement } from '../../react-plugins-deps/components/helpers/api';
 
 class DiscoveryService {
   static async discoveryRDS(body) {
-    return apiRequest.post<any, any>('/v1/management/RDS/Discover', body);
+    return apiRequestManagement.post<any, any>('/RDS/Discover', body);
   }
 }
 

@@ -5,7 +5,7 @@ import Split from 'react-split';
 import { StateContext } from '../StateContext';
 import './DataOutput.scss';
 import { Pagination } from 'antd';
-import AddColumn from './QueryAnalyticsOverview/AddColumn';
+import AddColumn from './AddColumn';
 
 const FirstSeen = () => {
   const context = useContext(StateContext);
