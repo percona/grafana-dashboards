@@ -1,4 +1,4 @@
-import {apiRequest} from '../../../../../react-plugins-deps/components/helpers/api';
+import { apiRequestManagement } from '../../../../../react-plugins-deps/components/helpers/api';
 
 class ExplainService {
   static async getTraditionalExplainJSON({ filterBy, groupBy, labels, periodStartFrom, periodStartTo, tables }) {
@@ -10,7 +10,7 @@ class ExplainService {
       period_start_to: periodStartTo,
       tables: tables || [],
     };
-    return apiRequest.post<any, any>('/v1/management/Actions/StartMySQLExplainTraditionalJSON', body);
+    return apiRequestManagement.post<any, any>('/Actions/StartMySQLExplainTraditionalJSON', body);
   }
   static async getTraditionalExplain({ filterBy, groupBy, labels, periodStartFrom, periodStartTo, tables }) {
     const body = {
@@ -21,7 +21,7 @@ class ExplainService {
       period_start_to: periodStartTo,
       tables: tables || [],
     };
-    return apiRequest.post<any, any>('/v1/management/Actions/StartMySQLExplainTraditional', body);
+    return apiRequestManagement.post<any, any>('/Actions/StartMySQLExplain', body);
   }
 }
 
