@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ExampleService from './Example.service';
 import ReactJson from 'react-json-view';
+import ExplainService from '../Explain/Explain.service';
 
 const themeJSONView = {
   base00: 'transparent',
@@ -28,15 +29,19 @@ const Example = props => {
   const [examples, setExamples] = useState([]);
   useEffect(() => {
     (async () => {
-      const result = await ExampleService.getExample({
-        filterBy: queryId,
-        groupBy: groupBy,
-        periodStartFrom: periodStartFrom,
-        periodStartTo: periodStartTo,
-        labels: labels,
-        tables: tables,
-      });
-      setExamples(result['query_examples']);
+      try {
+        const result = await ExampleService.getExample({
+          filterBy: queryId,
+          groupBy: groupBy,
+          periodStartFrom: periodStartFrom,
+          periodStartTo: periodStartTo,
+          labels: labels,
+          tables: tables,
+        });
+        setExamples(result['query_examples']);
+      } catch (e) {
+        //TODO: add error handling
+      }
     })();
   }, [queryId]);
 
