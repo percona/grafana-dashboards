@@ -1,24 +1,24 @@
-import { apiRequest } from '../../../react-plugins-deps/components/helpers/api';
+import { apiRequestManagement } from '../../../react-plugins-deps/components/helpers/api';
 
 class AddRemoteInstanceService {
   static async addMysql(body) {
-    return apiRequest.post<any, any>('/v1/management/MySQL/Add', body);
+    return apiRequestManagement.post<any, any>('/MySQL/Add', body);
   }
 
   static async addPostgresql(body) {
-    return apiRequest.post<any, any>('/v1/management/PostgreSQL/Add', body);
+    return apiRequestManagement.post<any, any>('/PostgreSQL/Add', body);
   }
 
   static async addProxysql(body) {
-    return apiRequest.post<any, any>('/v1/management/ProxySQL/Add', body);
+    return apiRequestManagement.post<any, any>('/ProxySQL/Add', body);
   }
 
   static async addMongodb(body) {
-    return apiRequest.post<any, any>('/v1/management/MongoDB/Add', body);
+    return apiRequestManagement.post<any, any>('/MongoDB/Add', body);
   }
 
   static async addRDS(body) {
-    return apiRequest.post<any, any>('/v1/management/RDS/Add', body);
+    return apiRequestManagement.post<any, any>('/RDS/Add', body);
   }
 
   static addRemote(type, data) {

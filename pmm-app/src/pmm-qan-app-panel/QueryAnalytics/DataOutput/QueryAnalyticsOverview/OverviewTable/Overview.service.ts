@@ -1,4 +1,4 @@
-import { apiRequest } from '../../../../../react-plugins-deps/components/helpers/api';
+import { apiRequestQAN } from '../../../../../react-plugins-deps/components/helpers/api';
 
 interface OverviewServiceInterface {
   columns: string[];
@@ -42,7 +42,7 @@ class OverviewService {
       period_start_from: body.from,
       period_start_to: body.to,
     };
-    return apiRequest.post<any, any>('/v0/qan/GetReport', request);
+    return apiRequestQAN.post<any, any>('/GetReport', request);
   }
 }
 
