@@ -135,15 +135,19 @@ const Metrics = props => {
   const [metrics, setMetrics] = useState({});
   useEffect(() => {
     const getMetrics = async () => {
-      const result = await MetricsService.getMetrics({
-        filterBy: queryId,
-        groupBy: groupBy,
-        from: periodStartFrom,
-        to: periodStartTo,
-        labels: labels,
-        tables: tables,
-      });
-      setMetrics(result);
+      try {
+        const result = await MetricsService.getMetrics({
+          filterBy: queryId,
+          groupBy: groupBy,
+          from: periodStartFrom,
+          to: periodStartTo,
+          labels: labels,
+          tables: tables,
+        });
+        setMetrics(result);
+      } catch (e) {
+        //TODO: add error handling
+      }
     };
     getMetrics();
   }, [queryId]);
