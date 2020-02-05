@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import ExampleService from './Example.service';
 import ReactJson from 'react-json-view';
 
-const themeJSONView = {
+const THEME_JSON_VIEW = {
   base00: 'transparent',
   base01: 'transparent',
   base02: 'lightgray',
@@ -21,7 +21,7 @@ const themeJSONView = {
   base0F: 'white',
 };
 
-const getJSONExample = example => <ReactJson src={example} theme={themeJSONView} />;
+const getJSONExample = example => <ReactJson src={example} theme={THEME_JSON_VIEW} />;
 
 const Example = props => {
   const { queryId, groupBy, periodStartFrom, periodStartTo, labels, tables } = props;

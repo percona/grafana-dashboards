@@ -99,11 +99,16 @@ const FILTERS_GROUPS = [
   },
 ];
 
+interface GroupInterface {
+  dataKey: string;
+  name: string;
+}
+
 const Filters = () => {
   const [showAll, showSetAll] = useState(true);
   const [filter, setFilter] = useState('');
   const [filters, setFilters] = useState({});
-  const [groups, setGroups] = useState([]);
+  const [groups, setGroups] = useState<GroupInterface[]>([]);
   const {
     dispatch,
     state: { labels = {}, from, to },
@@ -122,7 +127,7 @@ const Filters = () => {
       render={(): ReactElement => {
         const { form, handleSubmit } = useForm({
           onSubmit: filters => {},
-          validate: () => {},
+          validate: () => (undefined),
           initialValues: {},
         });
         // @ts-ignore

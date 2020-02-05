@@ -1,4 +1,4 @@
-import {apiRequestQAN} from '../../../../../react-plugins-deps/components/helpers/api';
+import { apiRequestQAN } from '../../../../../react-plugins-deps/components/helpers/api';
 
 class MetricsService {
   static async getMetrics({ filterBy, groupBy, labels, from, to, tables }) {

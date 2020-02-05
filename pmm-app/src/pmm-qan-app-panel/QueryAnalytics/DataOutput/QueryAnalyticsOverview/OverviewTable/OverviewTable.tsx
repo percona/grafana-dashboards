@@ -46,12 +46,19 @@ const getDefaultColumns = (groupBy, setGroupBy, pageNumber, pageSize) => {
   ];
 };
 
+interface RowInterface {
+  dimension?: string;
+}
+interface DataInterface {
+  rows: RowInterface[];
+  columns: any;
+}
 const OverviewTable = props => {
   const {
     dispatch,
     state: { labels, columns, pageNumber, pageSize, orderBy, from, to, groupBy, firstSeen },
   } = useContext(StateContext);
-  const [data, setData] = useState({ rows: [], columns: [] });
+  const [data, setData] = useState<DataInterface>({ rows: [], columns: [] });
   const [selectedRow, selectRow] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -79,19 +86,22 @@ const OverviewTable = props => {
     });
   }, []);
 
-  const onRowClick = useCallback((record, rowIndex) => {
-    return {
-      onClick: () => {
-        selectRow(rowIndex);
-        dispatch({
-          type: 'SELECT_QUERY',
-          payload: {
-            queryId: data.rows[rowIndex].dimension,
-          },
-        });
-      },
-    };
-  }, [data.rows]);
+  const onRowClick = useCallback(
+    (record, rowIndex) => {
+      return {
+        onClick: () => {
+          selectRow(rowIndex);
+          dispatch({
+            type: 'SELECT_QUERY',
+            payload: {
+              queryId: data.rows[rowIndex].dimension,
+            },
+          });
+        },
+      };
+    },
+    [data.rows]
+  );
 
   useEffect(() => {
     const updateInstances = async () => {

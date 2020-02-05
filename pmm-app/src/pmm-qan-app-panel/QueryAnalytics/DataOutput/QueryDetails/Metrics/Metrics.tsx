@@ -84,10 +84,15 @@ const columns = [
     render: (text, item, index) => {
       // {{ isRate ? (currentMetric?.stats?.rate | humanize: pipeInfo?.ratePipe) : '0' }}
       // @ts-ignore
+      const polygonChartProps = {
+        data: item.sparkline,
+        width: 150,
+        ykey: 'metric',
+      };
       return (
         <div style={metricColumnsStyle}>
           {<span>{item.isRate ? Humanize.transform(item.metric.rate, item.pipeTypes['ratePipe']) : '0' + ` ${item.units}`}</span>}
-          {item.sparkline && <PolygonChart data={item.sparkline as any} width={150} ykey={'metric'} />}
+          {item.sparkline && <PolygonChart {...polygonChartProps} />}
         </div>
       );
     },
@@ -117,12 +122,15 @@ const columns = [
     title: 'Per Query Stats',
     width: '25%',
     render: (text, item) => {
+      const latencyChartProps = {
+        data: item.metric,
+      };
       return (
         <div style={metricColumnsStyle}>
           <span style={{ marginRight: '10px' }}>
             {Humanize.transform(item.metric.avg, item.pipeTypes['perQueryStatsPipe']) || (+item.metric.sum / +item.queryCount).toFixed(2) || '0'}
           </span>
-          {item.isLatencyChart && <LatencyChart data={item.metric} />}
+          {item.isLatencyChart && <LatencyChart {...latencyChartProps} />}
         </div>
       );
     },
