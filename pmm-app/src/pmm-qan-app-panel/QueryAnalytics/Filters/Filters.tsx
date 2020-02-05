@@ -1,7 +1,7 @@
 import React, { ReactElement, useContext, useEffect, useState } from 'react';
 import { Humanize } from '../../../react-plugins-deps/components/helpers/humanize';
 import './Filters.scss';
-import { Divider } from 'antd';
+import { Button, Divider } from 'antd';
 import { StateContext } from '../StateContext';
 import FiltersService from './Filters.service';
 import { CheckboxField } from '../../../react-plugins-deps/components/FormComponents/Checkbox/Checkbox';
@@ -148,19 +148,18 @@ const Filters = () => {
           >
             <div className={'filters-header'} style={{ padding: '5px 0px', height: '50px' }}>
               <h5 style={{ margin: '3px', marginRight: '15px' }}>Filters</h5>
-              <a href="#" className={'filter-switchers'} onClick={showSetAll.bind(null, !showAll)}>
+              <Button type="link" style={{ padding: 0, height: 'auto' }} onClick={showSetAll.bind(null, !showAll)}>
                 {showAll ? `Show Selected` : `Show All`}
-              </a>
-              <a
-                href="#"
-                className={'filter-switchers'}
-                style={{ marginLeft: 'auto' }}
+              </Button>
+              <Button
+                type="link"
+                style={{ padding: 0, height: 'auto', marginLeft: 'auto' }}
                 onClick={() => {
                   dispatch({ type: 'RESET_LABELS' });
                 }}
               >
                 Reset All
-              </a>
+              </Button>
             </div>
             <div className={'query-analytics-filters-wrapper'}>
               <Search placeholder="Filters search..." onChange={e => setFilter(e.target.value)} style={{ width: '100%' }} />
