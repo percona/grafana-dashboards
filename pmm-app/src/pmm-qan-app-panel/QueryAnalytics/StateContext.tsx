@@ -101,7 +101,6 @@ export const UrlParametersProvider = ({ children }) => {
     .format('YYYY-MM-DDTHH:mm:ssZ');
   const [state, dispatch] = useReducer(
     (state, action) => {
-      console.log('dispatch-------', action);
       let columns;
       let newState;
       switch (action.type) {
@@ -177,7 +176,6 @@ export const UrlParametersProvider = ({ children }) => {
           break;
       }
       const newUrl = ContextActions.generateURL(newState);
-      console.log('--------', 'Generating new url', newUrl);
       history.pushState({}, 'test', newUrl);
       return newState;
     },

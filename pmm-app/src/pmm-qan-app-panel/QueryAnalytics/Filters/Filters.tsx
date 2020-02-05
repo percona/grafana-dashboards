@@ -116,9 +116,13 @@ const Filters = () => {
 
   useEffect(() => {
     (async () => {
-      const result = await FiltersService.getQueryOverviewFiltersList(labels, from, to);
-      setFilters(result);
-      setGroups(FILTERS_GROUPS);
+      try {
+        const result = await FiltersService.getQueryOverviewFiltersList(labels, from, to);
+        setFilters(result);
+        setGroups(FILTERS_GROUPS);
+      } catch (e) {
+        //TODO: add error handling
+      }
     })();
   }, [labels, from, to]);
   return (
@@ -127,7 +131,7 @@ const Filters = () => {
       render={(): ReactElement => {
         const { form, handleSubmit } = useForm({
           onSubmit: filters => {},
-          validate: () => (undefined),
+          validate: () => undefined,
           initialValues: {},
         });
         // @ts-ignore
