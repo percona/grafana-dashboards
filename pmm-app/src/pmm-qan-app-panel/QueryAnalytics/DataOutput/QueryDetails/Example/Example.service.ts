@@ -1,3 +1,5 @@
+import { apiRequestQAN } from '../../../../../react-plugins-deps/components/helpers/api';
+
 class ExampleService {
   static async getExample({ filterBy, groupBy, labels, periodStartFrom, periodStartTo, tables }) {
     const data = {
@@ -9,12 +11,7 @@ class ExampleService {
       tables: tables || [],
     };
 
-    const response = await fetch('/v0/qan/ObjectDetails/GetQueryExample', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    });
-
-    return response.json();
+    return apiRequestQAN.post<any, any>('/ObjectDetails/GetQueryExample', data);
   }
 }
 
