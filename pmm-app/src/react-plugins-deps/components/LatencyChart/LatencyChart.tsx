@@ -3,19 +3,22 @@ import * as d3 from 'd3';
 import { scaleLog } from 'd3';
 import { Humanize } from '../helpers/humanize';
 
-interface LatencyChartInterface {
-  data?: any[];
+interface LatencyChartState {
+  tooltip: string | undefined;
 }
-class LatencyChart extends Component {
-  private readonly width: number;
-  private readonly data: any[];
+
+class LatencyChart extends Component<any, LatencyChartState> {
+  private width: number;
+  private data: any[] | any;
   private measurement: string | undefined;
   private dataTooltip: string | undefined;
-  constructor(props: LatencyChartInterface) {
+  constructor(props: any) {
     super(props as any);
     this.width = 150;
     this.data = props.data || [];
-    this.state = {};
+    this.state = {
+      tooltip: '',
+    };
   }
 
   componentDidMount() {

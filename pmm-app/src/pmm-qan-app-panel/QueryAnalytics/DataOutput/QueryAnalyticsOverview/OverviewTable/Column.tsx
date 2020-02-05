@@ -11,7 +11,7 @@ import { Card, List } from 'antd';
 
 export const getColumnName = (metricName, columnIndex, totalValues, orderBy) => {
   const metric = METRIC_CATALOGUE[metricName];
-  let sortOrder = false;
+  let sortOrder: boolean | string = false;
   if (orderBy === metricName) {
     sortOrder = 'ascend';
   } else if (orderBy === `-${metricName}`) {
@@ -31,16 +31,18 @@ export const getColumnName = (metricName, columnIndex, totalValues, orderBy) => 
         { header: 'Sum', value: stats.sum && Humanize.transform(stats.sum, metric.pipeTypes.sumPipe) },
         { header: 'From total', value: ((stats.sum_per_sec / totalValues.metrics[metricName].stats.sum_per_sec) * 100).toFixed(2) + '%' },
       ];
+      // @ts-ignore
+      const polygonChartProps = { width: 150, data: item.sparkline };
       return (
         <div className={'overview-content-column'}>
-          {columnIndex === 0 && <PolygonChart width={150} data={item.sparkline} />}
+          {columnIndex === 0 && <PolygonChart {...polygonChartProps} />}
           <Tooltip
             getPopupContainer={() => document.querySelector('#antd') || document.body}
             placement="topLeft"
             title={
               <Card title={`${metric.humanizeName} details`}>
                 <List size="small" dataSource={tooltipData} renderItem={item => <List.Item>{`${item.header} : ${item.value}`}</List.Item>} />
-                {metricName === 'query_time' && <LatencyChart data={stats} />}
+                {metricName === 'query_time' && <LatencyChart {...{ data: stats }} />}
               </Card>
             }
             overlayStyle={{ backgroundColor: 'transparent' }}
