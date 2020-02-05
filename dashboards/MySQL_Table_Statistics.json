@@ -197,7 +197,7 @@
             ],
             "targets": [
                 {
-                    "expr": "topk(10, sum(mysql_info_schema_table_rows{instance=\"$host\"}) by (schema, table)) > 0",
+                    "expr": "topk(10, sum(mysql_info_schema_table_rows{instance=~\"$host\"}) by (schema, table)) > 0",
                     "interval": "5m",
                     "intervalFactor": 1,
                     "legendFormat": "{{ schema }}.{{ table }}",
@@ -256,7 +256,7 @@
             ],
             "targets": [
                 {
-                    "expr": "topk(10, sum(mysql_info_schema_table_size{instance=\"$host\", component!=\"data_free\"}) by (schema, table)) > 0",
+                    "expr": "topk(10, sum(mysql_info_schema_table_size{instance=~\"$host\", component!=\"data_free\"}) by (schema, table)) > 0",
                     "interval": "5m",
                     "intervalFactor": 1,
                     "legendFormat": "{{ schema }}.{{ table }}",
@@ -332,7 +332,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "sum(mysql_info_schema_table_size{instance=\"$host\", component!=\"data_free\"})",
+                    "expr": "sum(mysql_info_schema_table_size{instance=~\"$host\", component!=\"data_free\"})",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Data + Index Size",
@@ -344,7 +344,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "sum(mysql_info_schema_table_size{instance=\"$host\", component=\"data_free\"})",
+                    "expr": "sum(mysql_info_schema_table_size{instance=~\"$host\", component=\"data_free\"})",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Freeable Size",
@@ -438,7 +438,7 @@
             ],
             "targets": [
                 {
-                    "expr": "topk(5, sum(mysql_info_schema_table_size{instance=\"$host\", component=\"data_free\"}) by (schema, table)) > 0",
+                    "expr": "topk(5, sum(mysql_info_schema_table_size{instance=~\"$host\", component=\"data_free\"}) by (schema, table)) > 0",
                     "interval": "5m",
                     "intervalFactor": 1,
                     "legendFormat": "{{ schema }}.{{ table }}",
@@ -548,7 +548,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "topk(5, rate(mysql_info_schema_table_statistics_rows_read_total{instance=\"$host\"}[$interval])>0) or topk(5, irate(mysql_info_schema_table_statistics_rows_read_total{instance=\"$host\"}[5m])>0)",
+                    "expr": "topk(5, rate(mysql_info_schema_table_statistics_rows_read_total{instance=~\"$host\"}[$interval])>0) or topk(5, irate(mysql_info_schema_table_statistics_rows_read_total{instance=~\"$host\"}[5m])>0)",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "{{ schema }}.{{ table }}",
@@ -660,7 +660,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "topk(5, rate(mysql_info_schema_table_statistics_rows_changed_total{instance=\"$host\"}[$interval])>0) or topk(5, irate(mysql_info_schema_table_statistics_rows_changed_total{instance=\"$host\"}[5m])>0)",
+                    "expr": "topk(5, rate(mysql_info_schema_table_statistics_rows_changed_total{instance=~\"$host\"}[$interval])>0) or topk(5, irate(mysql_info_schema_table_statistics_rows_changed_total{instance=~\"$host\"}[5m])>0)",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "{{ schema }}.{{ table }}",
@@ -752,26 +752,44 @@
             },
             "styles": [
                 {
-                    "colorMode": null,
-                    "colors": [
-                        "rgba(50, 172, 45, 0.97)",
-                        "rgba(237, 129, 40, 0.89)",
-                        "rgba(245, 54, 54, 0.9)"
-                    ],
-                    "dateFormat": "YYYY-MM-DD HH:mm:ss",
-                    "decimals": 2,
-                    "pattern": "/.*/",
-                    "thresholds": [
-                        "95",
-                        "98"
-                    ],
-                    "type": "number",
-                    "unit": "percentunit"
+                  "$$hashKey": "object:333",
+                  "alias": "",
+                  "colorMode": null,
+                  "colors": [
+                    "rgba(245, 54, 54, 0.9)",
+                    "rgba(237, 129, 40, 0.89)",
+                    "rgba(50, 172, 45, 0.97)"
+                  ],
+                  "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                  "decimals": 0,
+                  "mappingType": 1,
+                  "pattern": "Time",
+                  "thresholds": [],
+                  "type": "date",
+                  "unit": "dateTimeAsIso"
+                },
+                {
+                  "$$hashKey": "object:334",
+                  "colorMode": null,
+                  "colors": [
+                    "rgba(50, 172, 45, 0.97)",
+                    "rgba(237, 129, 40, 0.89)",
+                    "rgba(245, 54, 54, 0.9)"
+                  ],
+                  "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                  "decimals": 2,
+                  "pattern": "Value",
+                  "thresholds": [
+                    "95",
+                    "98"
+                  ],
+                  "type": "number",
+                  "unit": "percentunit"
                 }
-            ],
+              ],
             "targets": [
                 {
-                    "expr": "topk(10, mysql_info_schema_auto_increment_column{instance=\"$host\"} / mysql_info_schema_auto_increment_column_max{instance=\"$host\"})",
+                    "expr": "topk(10, mysql_info_schema_auto_increment_column{instance=~\"$host\"} / mysql_info_schema_auto_increment_column_max{instance=~\"$host\"})",
                     "format": "table",
                     "interval": "5m",
                     "intervalFactor": 1,
@@ -870,7 +888,7 @@
                 "name": "host",
                 "options": [],
                 "query": "label_values(mysql_up, instance)",
-                "refresh": 1,
+                "refresh": 2,
                 "refresh_on_load": false,
                 "regex": "",
                 "sort": 1,
