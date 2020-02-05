@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ExampleService from './Example.service';
 import ReactJson from 'react-json-view';
-import ExplainService from '../Explain/Explain.service';
 
 const themeJSONView = {
   base00: 'transparent',

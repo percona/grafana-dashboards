@@ -1,7 +1,7 @@
 import React from 'react';
 import PolygonChart from 'react-plugins-deps/components/PolygonChart/PolygonChart';
 import LatencyChart from 'react-plugins-deps/components/LatencyChart/LatencyChart';
-import { Humanize } from 'react-plugins-deps/components/helpers/Humanize';
+import { Humanize } from 'react-plugins-deps/components/helpers/humanize';
 
 import AddColumn from '../../AddColumn';
 import './OverviewTable.scss';

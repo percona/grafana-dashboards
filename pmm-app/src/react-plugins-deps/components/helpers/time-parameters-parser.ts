@@ -1,4 +1,4 @@
-import * as moment from 'moment';
+import moment from 'moment';
 
 type TimeEdge = 'from' | 'to';
 
@@ -62,7 +62,7 @@ export class MomentFormatPipe {
     }, '');
   }
 
-  transform(value: any, format = 'YYYY-MM-DD HH:mm:ss'): string {
+  transform(value: any, format = 'YYYY-MM-DD HH:mm:ss'): string | null {
     if (value === null) {
       return null;
     }

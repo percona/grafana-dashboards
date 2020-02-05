@@ -1,5 +1,5 @@
 import React, { ReactElement, useContext, useEffect, useState } from 'react';
-import { Humanize } from '../../../react-plugins-deps/components/helpers/Humanize';
+import { Humanize } from '../../../react-plugins-deps/components/helpers/humanize';
 import './Filters.scss';
 import { Divider } from 'antd';
 import { StateContext } from '../StateContext';
