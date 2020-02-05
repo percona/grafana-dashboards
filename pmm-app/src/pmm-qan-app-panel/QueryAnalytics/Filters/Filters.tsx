@@ -148,15 +148,9 @@ const Filters = () => {
           >
             <div className={'filters-header'} style={{ padding: '5px 0px', height: '50px' }}>
               <h5 style={{ margin: '3px', marginRight: '15px' }}>Filters</h5>
-              {showAll ? (
-                <a href="#" className={'filter-switchers'} onClick={showSetAll.bind(null, false)}>
-                  Show Selected
-                </a>
-              ) : (
-                <a href="#" className={'filter-switchers'} onClick={showSetAll.bind(null, true)}>
-                  Show All
-                </a>
-              )}
+              <a href="#" className={'filter-switchers'} onClick={showSetAll.bind(null, !showAll)}>
+                {showAll ? `Show Selected` : `Show All`}
+              </a>
               <a
                 href="#"
                 className={'filter-switchers'}
