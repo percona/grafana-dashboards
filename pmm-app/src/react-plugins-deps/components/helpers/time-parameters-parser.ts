@@ -100,6 +100,15 @@ export class ParseQueryParamDate {
       // ex: ["now-7d/d", "now", "-", "7", "d", "/", "d"]
       const parts = date.match('(now)(-|/)?([0-9]*)([yMwdhms])(/)?([yMwdhms])?');
 
+      if (!parts) {
+        const isnum = /^\d+$/.test(date);
+        if (isnum) {
+          return nowFunc(parseInt(date, 10));
+        } else {
+          return nowFunc(date);
+        }
+      }
+
       if (parts[1] === 'now') {
         parsedDate = nowFunc();
       }

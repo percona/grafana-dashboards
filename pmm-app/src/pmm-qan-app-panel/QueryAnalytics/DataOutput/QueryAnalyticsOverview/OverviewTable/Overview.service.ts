@@ -6,15 +6,15 @@ interface OverviewServiceInterface {
   group_by: string;
   include_only_fields?: any[]; // ?????
   keyword?: string; // ?????
-  labels?: string[];
+  labels: string[];
   limit?: number;
   main_metric: string;
   offset?: number;
   orderBy: string;
   from?: any; // ISO8601
   to?: any; // ISO8601
-  pageSize?: number;
-  pageNumber?: number;
+  pageSize: number;
+  pageNumber: number;
   groupBy?: string;
   firstSeen?: boolean;
 }
