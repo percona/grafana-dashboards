@@ -1,7 +1,7 @@
 import React, { useCallback, useContext } from 'react';
 import { Divider, Icon, Input, Select } from 'antd';
-import { METRIC_CATALOGUE } from '../metric-catalogue';
-import { StateContext } from '../../StateContext';
+import { METRIC_CATALOGUE } from './metric-catalogue';
+import { StateContext } from '../StateContext';
 
 const { Option } = Select;
 

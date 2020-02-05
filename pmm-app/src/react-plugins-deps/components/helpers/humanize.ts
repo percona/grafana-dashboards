@@ -1,5 +1,5 @@
-import * as moment from 'moment';
-import * as numeral from 'numeral';
+import moment from 'moment';
+import numeral from 'numeral';
 
 export class Humanize {
   parceTime(input: number) {
@@ -32,7 +32,8 @@ export class Humanize {
     return dur;
   }
 
-  transform(input: number, name: string): string {
+  static transform(input: number, name?: string): string {
+
     if (input === null) {
       return '0';
     }

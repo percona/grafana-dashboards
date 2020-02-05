@@ -7,7 +7,7 @@ import Icon from 'antd/es/icon';
 import Tooltip from 'antd/es/tooltip';
 import MetricsService from './Metrics.service';
 import PolygonChart from '../../../../../react-plugins-deps/components/PolygonChart/PolygonChart';
-import { Humanize } from '../../../../../react-plugins-deps/components/helpers/Humanize';
+import { Humanize } from '../../../../../react-plugins-deps/components/helpers/humanize';
 import LatencyChart from '../../../../../react-plugins-deps/components/LatencyChart/LatencyChart';
 
 const getPercentOfTotal = (current, total) => {

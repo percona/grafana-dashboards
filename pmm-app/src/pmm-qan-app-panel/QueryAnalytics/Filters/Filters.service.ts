@@ -1,19 +1,19 @@
 import { apiRequestQAN } from '../../../react-plugins-deps/components/helpers/api';
 
 class FiltersService {
-  static async getQueryOverviewFiltersList(paramLabels, period_start_from, period_start_to) {
+  static async getQueryOverviewFiltersList(paramLabels, from, to) {
     const requestLabels = Object.keys(paramLabels).map(key => {
       return {
         key: key,
         value: paramLabels[key],
       };
-    })
+    });
 
     const { labels } = await apiRequestQAN.post<any, any>('/Filters/Get', {
       labels: requestLabels,
       main_metric_name: '',
-      period_start_from,
-      period_start_to,
+      period_start_from: from,
+      period_start_to: to,
     });
 
     Object.keys(labels).forEach(label => {
