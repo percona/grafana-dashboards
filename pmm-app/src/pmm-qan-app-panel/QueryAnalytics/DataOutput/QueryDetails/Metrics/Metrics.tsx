@@ -7,7 +7,7 @@ import Icon from 'antd/es/icon';
 import Tooltip from 'antd/es/tooltip';
 import MetricsService from './Metrics.service';
 import PolygonChart from '../../../../../react-plugins-deps/components/PolygonChart/PolygonChart';
-import { Humanize } from '../../../../../react-plugins-deps/components/helpers/humanize';
+import { Humanize } from '../../../../../react-plugins-deps/components/helpers/Humanization';
 import LatencyChart from '../../../../../react-plugins-deps/components/LatencyChart/LatencyChart';
 
 const getPercentOfTotal = (current, total) => {
@@ -67,7 +67,7 @@ const columns = [
   {
     title: 'Metric',
     width: '25%',
-    render: (text, item, index) => {
+    render: (text, item) => {
       return (
         <span style={{ textAlign: 'center' }}>
           {item.name}
@@ -81,7 +81,7 @@ const columns = [
   {
     title: 'Rate/Second',
     width: '25%',
-    render: (text, item, index) => {
+    render: (text, item) => {
       // {{ isRate ? (currentMetric?.stats?.rate | humanize: pipeInfo?.ratePipe) : '0' }}
       // @ts-ignore
       const polygonChartProps = {

@@ -1,5 +1,5 @@
 import React, { ReactElement, useContext, useEffect, useState } from 'react';
-import { Humanize } from '../../../react-plugins-deps/components/helpers/humanize';
+import { Humanize } from '../../../react-plugins-deps/components/helpers/Humanization';
 import './Filters.scss';
 import { Button, Divider } from 'antd';
 import { StateContext } from '../StateContext';
@@ -130,7 +130,7 @@ const Filters = () => {
       onSubmit={() => {}}
       render={(): ReactElement => {
         const { form, handleSubmit } = useForm({
-          onSubmit: filters => {},
+          onSubmit: () => {},
           validate: () => undefined,
           initialValues: {},
         });
