@@ -67,7 +67,7 @@ var getCommonPlugins = function (options) {
         new webpack.optimize.OccurrenceOrderPlugin(true),
         new CopyWebpackPlugin([
             { from: 'plugin.json', to: '.' },
-            { from: '../README.md', to: '.' },
+            { from: './README.md', to: '.' },
             { from: '../LICENSE', to: '.' },
             { from: 'img/*', to: '.' },
             { from: '**/*.json', to: '.' },
