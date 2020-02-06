@@ -34,7 +34,7 @@ This is a set of Grafana dashboards for database and system monitoring using Pro
 
 These dashboards are also a part of [Percona Monitoring and Management](https://www.percona.com/doc/percona-monitoring-and-management/index.html) project.
 
-Live demo is available at https://pmmdemo.percona.com/graph/
+Live demo is available at https://pmmdemo.percona.com/graph
 
 We're looking forward to the new contributors. Detailed information in [CONTRIBUTING.md](CONTRIBUTING.md)
 
