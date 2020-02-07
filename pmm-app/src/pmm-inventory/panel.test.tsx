@@ -55,7 +55,13 @@ describe('Inventory tables', () => {
 
     act(() => {
       render(
-        <Table dataSource={InventoryDataService.generateStructure(response)} columns={agentsColumns} pagination={false} bordered loading={false} />,
+        <Table
+          dataSource={InventoryDataService.generateStructure(response)}
+          columns={agentsColumns}
+          pagination={false}
+          bordered={true}
+          loading={false}
+        />,
         container
       );
     });
@@ -77,7 +83,13 @@ describe('Inventory tables', () => {
     };
     act(() => {
       render(
-        <Table dataSource={InventoryDataService.generateStructure(response)} columns={servicesColumns} pagination={false} bordered loading={false} />,
+        <Table
+          dataSource={InventoryDataService.generateStructure(response)}
+          columns={servicesColumns}
+          pagination={false}
+          bordered={true}
+          loading={false}
+        />,
         container
       );
     });
@@ -94,7 +106,13 @@ describe('Inventory tables', () => {
     };
     act(() => {
       render(
-        <Table dataSource={InventoryDataService.generateStructure(response)} columns={nodesColumns} pagination={false} bordered loading={false} />,
+        <Table
+          dataSource={InventoryDataService.generateStructure(response)}
+          columns={nodesColumns}
+          pagination={false}
+          bordered={true}
+          loading={false}
+        />,
         container
       );
     });

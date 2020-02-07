@@ -6,7 +6,7 @@ import Styling from '../react-plugins-deps/components/helpers/styling';
 
 const { TabPane } = Tabs;
 
-const getCustomLabels = customLabels => customLabels.map(label => <span>{`${label.key}: ${label.value}`}</span>);
+const getCustomLabels = customLabels => customLabels.map(label => <span key={label.key}>{`${label.key}: ${label.value}`}</span>);
 
 export const servicesColumns = [
   {
@@ -143,7 +143,7 @@ const Services = () => {
     })();
   }, []);
 
-  return <Table dataSource={data} columns={servicesColumns} pagination={false} bordered loading={loading} />;
+  return <Table dataSource={data} columns={servicesColumns} pagination={false} bordered={true} loading={loading} />;
 };
 
 const Agents = () => {
@@ -162,7 +162,7 @@ const Agents = () => {
     })();
   }, []);
 
-  return <Table dataSource={data} columns={agentsColumns} pagination={false} bordered loading={loading} />;
+  return <Table dataSource={data} columns={agentsColumns} pagination={false} bordered={true} loading={loading} />;
 };
 
 const Nodes = () => {
@@ -181,7 +181,7 @@ const Nodes = () => {
     })();
   }, []);
 
-  return <Table dataSource={data} columns={nodesColumns} pagination={false} bordered loading={loading} />;
+  return <Table dataSource={data} columns={nodesColumns} pagination={false} bordered={true} loading={loading} />;
 };
 
 const InventoryPanel = () => {

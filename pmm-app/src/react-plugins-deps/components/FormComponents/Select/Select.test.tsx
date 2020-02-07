@@ -9,9 +9,7 @@ describe('Select field test', () => {
   it('Select renders correct without props', () => {
     renderHook(() => {
       const { form } = useForm({
-        onSubmit: values => {
-          console.log(values);
-        },
+        onSubmit: () => {},
       });
 
       const component = renderer.create(<SelectField form={form} name={'test-field'} defaultValue={'tester'} />);

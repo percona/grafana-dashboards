@@ -7,7 +7,7 @@ import { CheckboxField } from '../../../react-plugins-deps/components/FormCompon
 import { Form as FormFinal } from 'react-final-form';
 import { useForm } from 'react-final-form-hooks';
 import { PasswordField } from '../../../react-plugins-deps/components/FormComponents/Password/Password';
-import AddRemoteInstanceService from 'pmm-add-instance-app-panel/AddInstance/AddRemoteInstance/AddRemoteInstanceService';
+import AddRemoteInstanceService from './AddRemoteInstanceService';
 import Validators from '../../../react-plugins-deps/components/validators/validators';
 
 interface InstanceData {
@@ -108,7 +108,7 @@ const AddRemoteInstance = props => {
     const currentUrl = `${window.parent.location}`;
     const newURL = currentUrl.split('/graph/d/').shift() + '/graph/d/pmm-inventory/';
 
-    const data = Object.assign({}, values);
+    const data = { ...values };
     if (values.custom_labels) {
       data.custom_labels = data.custom_labels
         .split(/[\n\s]/)
@@ -161,9 +161,9 @@ const AddRemoteInstance = props => {
       onSubmit={() => {}}
       render={(): ReactElement => {
         const { form, handleSubmit } = useForm({
-          onSubmit: onSubmit,
+          onSubmit,
+          initialValues,
           validate: validateInstanceForm,
-          initialValues: initialValues,
         });
         // @ts-ignore
         return (

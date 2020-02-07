@@ -34,8 +34,8 @@ const SettingsPanel = () => {
   useEffect(() => {
     (async () => {
       Styling.addPluginPanelClass();
-      const { settings } = await SettingsService.getSettings();
-      updateSettings(settings);
+      const response = await SettingsService.getSettings();
+      updateSettings(response.settings);
     })();
   }, []);
   return (

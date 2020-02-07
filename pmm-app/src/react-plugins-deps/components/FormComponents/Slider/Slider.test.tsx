@@ -9,9 +9,7 @@ describe('Slider field test', () => {
   it('Slider renders correct without props', () => {
     renderHook(() => {
       const { form } = useForm({
-        onSubmit: values => {
-          console.log(values);
-        },
+        onSubmit: () => {},
       });
 
       const marks = {

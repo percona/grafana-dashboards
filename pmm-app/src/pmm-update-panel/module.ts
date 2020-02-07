@@ -142,9 +142,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
         $scope.updateLogOffset = 'log_offset' in data ? data.log_offset : 0;
         $scope.getLog($scope, $http);
       })
-      .catch(err => {
-        console.log('Update error:', err);
-      });
+      .catch(() => {});
   }
 
   /**
@@ -200,7 +198,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
       })
       .catch(() => {
         $('#refresh').removeClass('fa-spin');
-        //TODO: add error handler
+        // TODO: add error handler
       });
   }
 
@@ -251,7 +249,6 @@ export class PanelCtrl extends MetricsPanelCtrl {
    */
   private getLog($scope, $http): void {
     if ($scope.updateCntErrors > 600) {
-      console.log('error: ', $scope.errorMessage, $scope.updateCntErrors);
       $scope.updateFailed = true;
       return;
     }
@@ -275,7 +272,6 @@ export class PanelCtrl extends MetricsPanelCtrl {
       .catch(err => {
         $scope.updateCntErrors++;
         $scope.errorMessage = err.message;
-        console.log('error: ', err, $scope.errorMessage, $scope.updateCntErrors);
         window.setTimeout(this.getLog.bind(this, $scope, $http), 500);
       });
   }

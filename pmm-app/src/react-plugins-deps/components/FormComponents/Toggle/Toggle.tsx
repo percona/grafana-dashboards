@@ -11,5 +11,5 @@ interface ToggleInterface {
 export const ToggleField = ({ name, form, disabled }: ToggleInterface) => {
   // @ts-ignore
   const { input } = useField(name, form);
-  return <Switch onChange={input.onChange} checked={Boolean(input.value)} defaultChecked className={'toggle-field'} disabled={disabled} />;
+  return <Switch onChange={input.onChange} checked={Boolean(input.value)} defaultChecked={true} className={'toggle-field'} disabled={disabled} />;
 };

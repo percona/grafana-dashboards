@@ -26,7 +26,7 @@ export const SelectField = ({ name, placeholder, required, form, options, style,
           options.map(option => {
             // @ts-ignore
             return (
-              <Option value={option.value}>
+              <Option value={option.value} key={option.label}>
                 <div className={'select-item'}>{option.label}</div>
               </Option>
             );
