@@ -40,6 +40,11 @@ class ContextActions {
       if (!filters.length) {
         return result;
       }
+
+      if (filters[0] === 'All' || filters[0] === '') {
+        return result;
+      }
+
       result[filterName] = filters;
       return result;
     }, {});
