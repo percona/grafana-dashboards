@@ -11,7 +11,7 @@ const PAGE_SIZE_OPTIONS = ['10', '50', '100'];
 const DataOutput = () => {
   const {
     dispatch,
-    state: { pageNumber, pageSize, firstSeen },
+    state: { pageNumber, pageSize, firstSeen, queryId },
   } = useContext(StateContext);
   const [total, setTotal] = useState(30);
 
@@ -66,20 +66,24 @@ const DataOutput = () => {
           <AddColumn onlyAdd={true} />
         </div>
       </div>
-      <Split
-        sizes={[25, 75]}
-        minSize={100}
-        gutterSize={10}
-        direction="vertical"
-        cursor="row-resize"
-        className={'splitter-wrapper'}
-        elementStyle={(dimension, size, gutterSize) => {
-          return { height: `calc(${size}% - ${gutterSize}px)`, 'overflow-y': `scroll` };
-        }}
-      >
+      {!queryId ? (
         <OverviewTable setTotal={setTotal} />
-        <QueryDetails />
-      </Split>
+      ) : (
+        <Split
+          sizes={[25, 75]}
+          minSize={100}
+          gutterSize={10}
+          direction="vertical"
+          cursor="row-resize"
+          className={'splitter-wrapper'}
+          elementStyle={(dimension, size, gutterSize) => {
+            return { height: `calc(${size}% - ${gutterSize}px)`, 'overflow-y': `scroll` };
+          }}
+        >
+          <OverviewTable setTotal={setTotal} />
+          <QueryDetails />
+        </Split>
+      )}
     </div>
   );
 };

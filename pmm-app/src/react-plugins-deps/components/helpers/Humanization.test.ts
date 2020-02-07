@@ -1,4 +1,4 @@
-import { Humanize } from './humanize';
+import { Humanize } from './Humanization';
 
 describe('Humanize', () => {
     it('should return 0 if input is zero', () => {
