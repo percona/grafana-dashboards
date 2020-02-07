@@ -63,9 +63,7 @@ const InstancesTable = props => {
             type = 'mysql';
             break;
         }
-        return (
-          <a onClick={() => onSelectInstance({ type, credentials: { ...{...element, ...credentials}, isRDS: true } })}>Start monitoring</a>
-        );
+        return <a onClick={() => onSelectInstance({ type, credentials: { ...{ ...element, ...credentials }, isRDS: true } })}>Start monitoring</a>;
       },
     },
   ];
