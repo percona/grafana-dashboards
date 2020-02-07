@@ -56,10 +56,9 @@ interface DataInterface {
 const OverviewTable = props => {
   const {
     dispatch,
-    state: { labels, columns, pageNumber, pageSize, orderBy, from, to, groupBy, firstSeen },
+    state: { labels, columns, pageNumber, pageSize, orderBy, from, to, groupBy, firstSeen, queryId },
   } = useContext(StateContext);
   const [data, setData] = useState<DataInterface>({ rows: [], columns: [] });
-  const [selectedRow, selectRow] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const setGroupBy = useCallback(value => {
@@ -90,7 +89,6 @@ const OverviewTable = props => {
     (record, rowIndex) => {
       return {
         onClick: () => {
-          selectRow(rowIndex);
           dispatch({
             type: 'SELECT_QUERY',
             payload: {
@@ -144,7 +142,7 @@ const OverviewTable = props => {
       pagination={false}
       scroll={{ x: 1320 }}
       onRow={onRowClick}
-      rowClassName={(record, index) => (index === selectedRow ? 'selected-overview-row' : '')}
+      rowClassName={record => (record.dimension === queryId ? 'selected-overview-row' : '')}
       loading={loading}
     />
   );
