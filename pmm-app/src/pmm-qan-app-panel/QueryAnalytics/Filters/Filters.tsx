@@ -139,8 +139,8 @@ const Filters = () => {
           <form
             onSubmit={handleSubmit}
             className="add-instance-form app-theme-dark"
-            onChange={(e) => {
-              console.log(e)
+            onChange={e => {
+              console.log(e);
               dispatch({
                 type: 'SET_LABELS',
                 payload: { labels: form.getState().values },
@@ -163,10 +163,14 @@ const Filters = () => {
               </Button>
             </div>
             <div className={'query-analytics-filters-wrapper'}>
-              <Search placeholder="Filters search..." onChange={e => {
-                setFilter(e.target.value)
-                e.stopPropagation()
-              }} style={{ width: '100%' }} />
+              <Search
+                placeholder="Filters search..."
+                onChange={e => {
+                  setFilter(e.target.value);
+                  e.stopPropagation();
+                }}
+                style={{ width: '100%' }}
+              />
               {groups
                 .filter(group => filters[group.dataKey])
                 .map(group => {
