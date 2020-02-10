@@ -49,12 +49,22 @@ const AddColumn = props => {
         placeholder={props.placeholder || 'Add column'}
         onChange={changeColumn}
         dropdownRender={menu => (
-          <div style={{ width: 400 }}>
+          <div style={{ width: 400 }} className={'add-column-wrapper'}>
             <Search
               placeholder="input search text"
               onSearch={value => console.log(value)}
-              onClick={e => e.stopPropagation()}
-              onFocus={e => e.stopPropagation()}
+              onMouseDown={e => {
+                console.log('mouse down', e);
+                // e.preventDefault();
+              }}
+              onMouseUp={e => {
+                console.log('mouse up', e);
+                // e.preventDefault();
+              }}
+              onFocus={e => {
+                console.log('focus', e);
+                event.stopImmediatePropagation();
+              }}
               style={{ width: '100%' }}
             />
             {menu}
