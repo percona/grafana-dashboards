@@ -9,9 +9,12 @@ import SettingsService from '../../Settings.service';
 import { showErrorNotification, showSuccessNotification } from '../../../react-plugins-deps/components/helpers/notification-manager';
 
 interface AlertManagerSettingsInterface {
-  alert_manager_ip: string;
+  alert_manager_url: string;
   alert_manager_rules: string;
+  remove_alert_manager_url?: boolean;
+  remove_alert_manager_rules?: boolean;
 }
+
 const AlertManager = props => {
   const [loading, setLoading] = useState(false);
   return (
@@ -20,15 +23,26 @@ const AlertManager = props => {
       render={(): ReactElement => {
         const { form, handleSubmit } = useForm({
           onSubmit: async (values: AlertManagerSettingsInterface): Promise<void> => {
-            const settings = {
-              alert_manager_ip: values.alert_manager_ip,
-              alert_manager_rules: values.alert_manager_rules,
+            const settings: AlertManagerSettingsInterface = {
+              alert_manager_url: values.alert_manager_url || '',
+              alert_manager_rules: values.alert_manager_rules || '',
             };
+
+            if (!values.alert_manager_url) {
+              settings.remove_alert_manager_url = true;
+            }
+
+            if (!values.alert_manager_rules) {
+              settings.remove_alert_manager_rules = true;
+            }
+
             setLoading(true);
             try {
               await SettingsService.setSettings(settings);
               setLoading(false);
-              showSuccessNotification({ message: 'Alert manager settings updated' });
+              showSuccessNotification({
+                message: 'Alert manager settings updated',
+              });
             } catch (e) {
               setLoading(false);
               showErrorNotification({ message: e.message });
@@ -44,15 +58,15 @@ const AlertManager = props => {
           <form onSubmit={handleSubmit}>
             <>
               <VerticalFormWrapper
-                label={'AlertManager IP'}
-                element={<InputField form={form} name={'alert_manager_ip'} placeholder="Enter IP" style={{ width: '100%' }} />}
+                label="AlertManager URL"
+                element={<InputField form={form} name="alert_manager_url" placeholder="Enter URL" style={{ width: '100%' }} />}
               />
               <VerticalFormWrapper
-                label={'AlertManager rules'}
-                element={<TextAreaField form={form} name={'alert_manager_rules'} placeholder="Alert manager rule" style={{ width: '100%' }} />}
-                alignLabel={'top'}
+                label="AlertManager rules"
+                element={<TextAreaField form={form} name="alert_manager_rules" placeholder="Alert manager rule" style={{ width: '100%' }} />}
+                alignLabel="top"
               />
-              <ButtonElement loading={loading} text={'Apply AlertManager settings'} />
+              <ButtonElement loading={loading} text="Apply AlertManager settings" />
             </>
           </form>
         );
