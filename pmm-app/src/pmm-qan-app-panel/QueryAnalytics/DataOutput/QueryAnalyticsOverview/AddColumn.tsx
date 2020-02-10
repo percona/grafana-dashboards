@@ -63,7 +63,6 @@ const AddColumn = props => {
               }}
               onFocus={e => {
                 console.log('focus', e);
-                event.stopImmediatePropagation();
               }}
               style={{ width: '100%' }}
             />
