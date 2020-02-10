@@ -9,7 +9,7 @@ build:
 	cd pmm-app && npm i && npm run build && cd ..
 
 coverage:
-	cd pmm-app && npm i && npm run coverage && npm run build && cd ..
+	cd pmm-app && npm i -g npm && npm i && npm run coverage && npm run build && cd ..
 
 pack:
 	tar czf pmm-app.tar.gz pmm-app
