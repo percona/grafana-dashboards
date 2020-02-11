@@ -45,6 +45,7 @@ const AddColumn = props => {
     <div onClick={e => e.stopPropagation()}>
       <Select
         optionLabelProp="label"
+        showSearch={true}
         style={{ width: 160 }}
         placeholder={(props.placeholder && METRIC_CATALOGUE[props.placeholder].humanizeName) || 'Add column'}
         onChange={changeColumn}
@@ -52,22 +53,6 @@ const AddColumn = props => {
         showArrow={false}
         dropdownRender={menu => (
           <div style={{ width: 400 }} className={'add-column-wrapper'}>
-            <Search
-              placeholder="input search text"
-              onSearch={value => console.log(value)}
-              onMouseDown={e => {
-                console.log('mouse down', e);
-                // e.preventDefault();
-              }}
-              onMouseUp={e => {
-                console.log('mouse up', e);
-                // e.preventDefault();
-              }}
-              onFocus={e => {
-                console.log('focus', e);
-              }}
-              style={{ width: '100%' }}
-            />
             {menu}
             <Divider style={{ margin: '4px 0' }} />
             {!props.onlyAdd && (
