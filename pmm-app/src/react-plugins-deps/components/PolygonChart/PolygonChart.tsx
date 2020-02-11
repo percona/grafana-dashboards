@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import React, { Component } from 'react';
 import * as d3 from 'd3';
 import { area, axisBottom, curveStepAfter, scaleLinear } from 'd3';
