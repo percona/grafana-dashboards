@@ -12,7 +12,7 @@ xdescribe('Input field test', () => {
         onSubmit: () => {},
       });
 
-      const component = renderer.create(<InputField form={form} name={'test-field'} />);
+      const component = renderer.create(<InputField form={form} name="test-field" />);
       const tree = component.toJSON();
       expect(tree).toMatchSnapshot();
     });

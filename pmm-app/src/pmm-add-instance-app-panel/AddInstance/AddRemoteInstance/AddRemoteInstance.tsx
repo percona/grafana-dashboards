@@ -61,21 +61,21 @@ const getAdditionalOptions = (type, form) => {
     case 'PostgreSQL':
       return (
         <>
-          <CheckboxField form={form} label={'Use Pg Stat Statements'} name="qan_postgresql_pgstatements_agent" />
+          <CheckboxField form={form} label="Use Pg Stat Statements" name="qan_postgresql_pgstatements_agent" />
           <span className="description"></span>
         </>
       );
     case 'MySQL':
       return (
         <>
-          <CheckboxField form={form} label={'Use performance schema'} name="qan_mysql_perfschema" />
+          <CheckboxField form={form} label="Use performance schema" name="qan_mysql_perfschema" />
           <span className="description"></span>
         </>
       );
     case 'MongoDB':
       return (
         <>
-          <CheckboxField form={form} label={'Use QAN MongoDB Profiler'} name="qan_mongodb_profiler" />
+          <CheckboxField form={form} label="Use QAN MongoDB Profiler" name="qan_mongodb_profiler" />
           <span className="description"></span>
         </>
       );
@@ -223,19 +223,14 @@ key2:value2"
             <div className="add-instance-panel">
               <h6>Additional options</h6>
               <span></span>
-              <CheckboxField form={form} label={'Skip connection check'} name="skip_connection_check" />
+              <CheckboxField form={form} label="Skip connection check" name="skip_connection_check" />
 
               <span className="description"></span>
 
-              <CheckboxField form={form} label={'Use TLS for database connections'} name="tls" />
+              <CheckboxField form={form} label="Use TLS for database connections" name="tls" />
 
               <span className="description"></span>
-              <CheckboxField
-                form={form}
-                label={'Skip TLS certificate and hostname validation'}
-                name="tls_skip_verify"
-                data-cy="add-account-username"
-              />
+              <CheckboxField form={form} label="Skip TLS certificate and hostname validation" name="tls_skip_verify" data-cy="add-account-username" />
               <span className="description"></span>
               {getAdditionalOptions(instanceType, form)}
             </div>

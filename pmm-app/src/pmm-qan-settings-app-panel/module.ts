@@ -60,7 +60,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
       frame.height(`${h + 100}px`);
       panel.height(`${h + 150}px`);
 
-      panelContent.height(`inherit`);
+      panelContent.height('inherit');
       panelContent[0].style.padding = '0 0 10px';
     };
 

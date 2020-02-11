@@ -6,7 +6,7 @@ export const PasswordField = ({ name, placeholder = '', required, form, ...rest 
   const field = useField(name, form);
   return (
     <input
-      type={'password'}
+      type="password"
       {...field.input}
       required={required}
       placeholder={`${required ? '*' : ''}${placeholder}`}

@@ -12,7 +12,7 @@ describe('Select field test', () => {
         onSubmit: () => {},
       });
 
-      const component = renderer.create(<SelectField form={form} name={'test-field'} defaultValue={'tester'} />);
+      const component = renderer.create(<SelectField form={form} name="test-field" defaultValue="tester" />);
       const tree = component.toJSON();
       expect(tree).toMatchSnapshot();
     });

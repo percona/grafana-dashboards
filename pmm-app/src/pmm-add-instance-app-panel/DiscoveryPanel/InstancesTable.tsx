@@ -69,7 +69,7 @@ const InstancesTable = props => {
   ];
 
   return instances && instances.length ? (
-    <Table dataSource={instances} pagination={false} bordered={false} columns={columns} rowClassName={() => 'discovery-table-row'} size={'small'} />
+    <Table dataSource={instances} pagination={false} bordered={false} columns={columns} rowClassName={() => 'discovery-table-row'} size="small" />
   ) : null;
 };
 

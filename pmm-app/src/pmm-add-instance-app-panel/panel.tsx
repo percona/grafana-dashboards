@@ -29,11 +29,11 @@ const AddInstancePanel = props => {
     history.push(url.pathname + url.search);
   };
   return (
-    <div className={'app-theme-dark content-wrapper antd'} id={'antd'}>
+    <div className="app-theme-dark content-wrapper antd" id="antd">
       {!selectedInstance.type ? <AddInstance onSelectInstanceType={setSelectedInstance} /> : null}
       {selectedInstance.type && (
         <>
-          <Button type={'link'} onClick={setSelectedInstance.bind(null, { type: '' })}>
+          <Button type="link" onClick={setSelectedInstance.bind(null, { type: '' })}>
             Return to instance select menu
           </Button>
           {selectedInstance.type === 'rds' ? (
