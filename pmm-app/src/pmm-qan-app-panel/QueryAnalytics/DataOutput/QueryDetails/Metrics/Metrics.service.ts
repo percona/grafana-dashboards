@@ -1,7 +1,7 @@
 import { apiRequestQAN } from '../../../../../react-plugins-deps/components/helpers/api';
 
 class MetricsService {
-  static async getMetrics({ filterBy, groupBy, labels, from, to, tables }) {
+  static getMetrics({ filterBy, groupBy, labels, from, to, tables }) {
     const body = {
       filter_by: filterBy,
       group_by: groupBy,

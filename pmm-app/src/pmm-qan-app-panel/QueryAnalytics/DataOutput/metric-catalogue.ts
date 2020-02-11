@@ -1,4 +1,4 @@
-import numeral from 'numeral';
+import * as numeral from 'numeral';
 import _ from 'lodash';
 
 const transform = (input: number, name?: string): string => {
@@ -56,6 +56,7 @@ const Units = {
   AVG_LOAD: '(avg load)',
   LOAD: 'load',
   PER_SEC: '(per sec)',
+  BYTES_PER_SEC: 'Bytes (per sec)',
   QPS: 'QPS',
   AVG: 'avg',
   PERCENT: '%',
@@ -68,8 +69,8 @@ export const METRIC_CATALOGUE = {
     tooltipText: 'The number of bytes sent to all clients',
     simpleName: 'bytes_sent',
     metricRelation: data => {
-      const mainMetric = _.get(data, ['bytes_sent', 'stats', 'sum']);
-      const divider = _.get(data, ['rows_sent', 'stats', 'sum']);
+      const mainMetric = _.get(data, ['bytes_sent', 'sum']);
+      const divider = _.get(data, ['rows_sent', 'sum']);
 
       if (!mainMetric || !divider) {
         return '';
@@ -257,7 +258,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Query Count',
     tooltipText: 'Count',
     simpleName: 'num_queries',
-    units: Units.PER_SEC,
+    units: Units.QPS,
     metricRelation: () => '',
     pipeTypes: {
       ratePipe: 'number',
@@ -271,7 +272,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Query Count',
     tooltipText: 'Count',
     simpleName: 'count',
-    units: Units.PER_SEC,
+    units: Units.QPS,
     metricRelation: () => '',
     pipeTypes: {
       ratePipe: 'number',
@@ -286,7 +287,7 @@ export const METRIC_CATALOGUE = {
     tooltipText: 'Query Count with errors',
     simpleName: 'num_queries_with_errors',
     metricRelation: () => '',
-    units: Units.PER_SEC,
+    units: Units.QPS,
     pipeTypes: {
       ratePipe: 'number',
       sumPipe: 'number',
@@ -300,7 +301,7 @@ export const METRIC_CATALOGUE = {
     tooltipText: 'Query Count with warnings',
     simpleName: 'num_queries_with_warnings',
     metricRelation: () => '',
-    units: Units.PER_SEC,
+    units: Units.QPS,
     pipeTypes: {
       ratePipe: 'number',
       sumPipe: 'number',
@@ -313,7 +314,16 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Docs scanned',
     tooltipText: 'The number of scanned documents',
     simpleName: 'docs_scanned',
-    metricRelation: () => '',
+    metricRelation: data => {
+      const mainMetric = _.get(data, ['docs_scanned', 'sum']);
+      const divider = _.get(data, ['docs_returned', 'sum']);
+
+      if (!mainMetric || !divider) {
+        return '';
+      }
+
+      return `${transform(mainMetric / divider)} per row sent`;
+    },
     units: Units.PER_SEC,
     pipeTypes: {
       ratePipe: 'number',
@@ -342,8 +352,8 @@ export const METRIC_CATALOGUE = {
     tooltipText: 'The query used a filesort',
     simpleName: 'filesort',
     metricRelation: data => {
-      const mainMetric = _.get(data, ['filesort', 'stats', 'sum']);
-      const divider = _.get(data, ['num_queries', 'stats', 'sum']);
+      const mainMetric = _.get(data, ['filesort', 'sum']);
+      const divider = _.get(data, ['num_queries', 'sum']);
 
       if (!mainMetric || !divider) {
         return '';
@@ -364,8 +374,8 @@ export const METRIC_CATALOGUE = {
     tooltipText: 'The filesort was performed on disk',
     simpleName: 'filesort_on_disk',
     metricRelation: data => {
-      const mainMetric = _.get(data, ['filesort_on_disk', 'stats', 'sum']);
-      const divider = _.get(data, ['num_queries', 'stats', 'sum']);
+      const mainMetric = _.get(data, ['filesort_on_disk', 'sum']);
+      const divider = _.get(data, ['num_queries', 'sum']);
 
       if (!mainMetric || !divider) {
         return '';
@@ -387,8 +397,8 @@ export const METRIC_CATALOGUE = {
     tooltipText: 'The query performed a full join (a join without indexes)',
     simpleName: 'full_join',
     metricRelation: data => {
-      const mainMetric = _.get(data, ['full_join', 'stats', 'sum']);
-      const divider = _.get(data, ['num_queries', 'stats', 'sum']);
+      const mainMetric = _.get(data, ['full_join', 'sum']);
+      const divider = _.get(data, ['num_queries', 'sum']);
 
       if (!mainMetric || !divider) {
         return '';
@@ -410,8 +420,8 @@ export const METRIC_CATALOGUE = {
     tooltipText: 'The query performed a full table scan',
     simpleName: 'full_scan',
     metricRelation: data => {
-      const mainMetric = _.get(data, ['full_scan', 'stats', 'sum']);
-      const divider = _.get(data, ['num_queries', 'stats', 'sum']);
+      const mainMetric = _.get(data, ['full_scan', 'sum']);
+      const divider = _.get(data, ['num_queries', 'sum']);
 
       if (!mainMetric || !divider) {
         return '';
@@ -433,8 +443,8 @@ export const METRIC_CATALOGUE = {
     tooltipText: 'Similar to innodb_IO_r_ops, but the unit is bytes',
     simpleName: 'innodb_io_r_bytes',
     metricRelation: data => {
-      const mainMetric = _.get(data, ['innodb_io_r_bytes', 'stats', 'sum']);
-      const divider = _.get(data, ['innodb_io_r_ops', 'stats', 'sum']);
+      const mainMetric = _.get(data, ['innodb_io_r_bytes', 'sum']);
+      const divider = _.get(data, ['innodb_io_r_ops', 'sum']);
 
       if (!mainMetric || !divider) {
         return '';
@@ -470,16 +480,16 @@ export const METRIC_CATALOGUE = {
     tooltipText: 'Shows how long (in seconds) it took InnoDB to actually read the data from storage',
     simpleName: 'innodb_io_r_wait',
     metricRelation: data => {
-      const mainMetric = _.get(data, ['innodb_io_r_wait', 'stats', 'avg']);
-      const divider = _.get(data, ['query_time', 'stats', 'avg']);
+      const mainMetric = _.get(data, ['innodb_io_r_wait', 'avg']);
+      const divider = _.get(data, ['query_time', 'avg']);
 
       if (!mainMetric || !divider) {
         return '';
       }
 
-      return `${transform(mainMetric / divider)} of query time`;
+      return `${transform(mainMetric / divider, 'percent')} of query time`;
     },
-    units: Units.NONE,
+    units: Units.LOAD,
     pipeTypes: {
       ratePipe: 'number',
       sumPipe: 'time',
@@ -508,14 +518,14 @@ export const METRIC_CATALOGUE = {
       'Shows how long( in seconds) the query spent either waiting to' + ' enter the InnoDB queue or inside that queue waiting for + execution',
     simpleName: 'innodb_queue_wait',
     metricRelation: data => {
-      const mainMetric = _.get(data, ['innodb_queue_wait', 'stats', 'avg']);
-      const divider = _.get(data, ['query_time', 'stats', 'avg']);
+      const mainMetric = _.get(data, ['innodb_queue_wait', 'avg']);
+      const divider = _.get(data, ['query_time', 'avg']);
 
       if (!mainMetric || !divider) {
         return '';
       }
 
-      return `${transform(mainMetric / divider)} of query time`;
+      return `${transform(mainMetric / divider, 'percent')} of query time`;
     },
     units: Units.NONE,
     pipeTypes: {
@@ -531,14 +541,14 @@ export const METRIC_CATALOGUE = {
     tooltipText: 'Shows how long( in seconds) the query waited for row locks',
     simpleName: 'innodb_rec_lock_wait',
     metricRelation: data => {
-      const mainMetric = _.get(data, ['innodb_rec_lock_wait', 'stats', 'avg']);
-      const divider = _.get(data, ['query_time', 'stats', 'avg']);
+      const mainMetric = _.get(data, ['innodb_rec_lock_wait', 'avg']);
+      const divider = _.get(data, ['query_time', 'avg']);
 
       if (!mainMetric || !divider) {
         return '';
       }
 
-      return `${transform(mainMetric / divider)} of query time`;
+      return `${transform(mainMetric / divider, 'percent')} of query time`;
     },
     units: Units.AVG_LOAD,
     pipeTypes: {
@@ -568,14 +578,14 @@ export const METRIC_CATALOGUE = {
     tooltipText: 'The time to acquire locks in seconds',
     simpleName: 'lock_time',
     metricRelation: data => {
-      const mainMetric = _.get(data, ['lock_time', 'stats', 'avg']);
-      const divider = _.get(data, ['query_time', 'stats', 'avg']);
-
+      const mainMetric = _.get(data, ['lock_time', 'avg']);
+      const divider = _.get(data, ['query_time', 'avg']);
+      console.log(data, mainMetric, divider);
       if (!mainMetric || !divider) {
         return '';
       }
 
-      return `${transform(mainMetric / divider)} of query time`;
+      return `${transform(mainMetric / divider, 'percent')} of query time`;
     },
     units: Units.AVG_LOAD,
     pipeTypes: {
@@ -591,8 +601,8 @@ export const METRIC_CATALOGUE = {
     tooltipText: 'The number of merge passes that the sort algorithm has had to do',
     simpleName: 'merge_passes',
     metricRelation: data => {
-      const mainMetric = _.get(data, ['merge_passes', 'stats', 'sum']);
-      const divider = _.get(data, ['filesort', 'stats', 'sum']);
+      const mainMetric = _.get(data, ['merge_passes', 'sum']);
+      const divider = _.get(data, ['filesort', 'sum']);
 
       if (!mainMetric || !divider) {
         return '';
@@ -642,8 +652,8 @@ export const METRIC_CATALOGUE = {
     tooltipText: 'Query Cache hits',
     simpleName: 'qc_hit',
     metricRelation: data => {
-      const mainMetric = _.get(data, ['qc_hit', 'stats', 'sum']);
-      const divider = _.get(data, ['num_queries', 'stats', 'sum']);
+      const mainMetric = _.get(data, ['qc_hit', 'sum']);
+      const divider = _.get(data, ['num_queries', 'sum']);
 
       if (!mainMetric || !divider) {
         return '';
@@ -679,7 +689,7 @@ export const METRIC_CATALOGUE = {
     tooltipText: 'The statement execution time in seconds',
     simpleName: 'query_time',
     metricRelation: () => '',
-    units: Units.PER_SEC,
+    units: Units.LOAD,
     pipeTypes: {
       ratePipe: 'number',
       sumPipe: 'time',
@@ -692,8 +702,17 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Response Length',
     tooltipText: 'The response length of the query result in bytes',
     simpleName: 'response_length',
-    metricRelation: () => '',
-    units: Units.PER_SEC,
+    metricRelation: data => {
+      const mainMetric = _.get(data, ['response_length', 'sum']);
+      const divider = _.get(data, ['docs_returned', 'sum']);
+
+      if (!mainMetric || !divider) {
+        return '';
+      }
+
+      return `${transform(mainMetric / divider, 'size')} bytes/row`;
+    },
+    units: Units.BYTES_PER_SEC,
     pipeTypes: {
       ratePipe: 'number',
       sumPipe: 'number',
@@ -721,8 +740,8 @@ export const METRIC_CATALOGUE = {
     tooltipText: 'Number of rows scanned -SELECT',
     simpleName: 'rows_examined',
     metricRelation: data => {
-      const mainMetric = _.get(data, ['rows_examined', 'stats', 'sum']);
-      const divider = _.get(data, ['rows_sent', 'stats', 'sum']);
+      const mainMetric = _.get(data, ['rows_examined', 'sum']);
+      const divider = _.get(data, ['rows_sent', 'sum']);
 
       if (!mainMetric || !divider) {
         return '';
@@ -856,8 +875,8 @@ export const METRIC_CATALOGUE = {
     tooltipText: 'Number of temporary tables created on disk for the query',
     simpleName: 'tmp_disk_tables',
     metricRelation: data => {
-      const mainMetric = _.get(data, ['tmp_disk_tables', 'stats', 'sum']);
-      const divider = _.get(data, ['tmp_table_on_disk', 'stats', 'sum']);
+      const mainMetric = _.get(data, ['tmp_disk_tables', 'sum']);
+      const divider = _.get(data, ['tmp_table_on_disk', 'sum']);
 
       if (!mainMetric || !divider) {
         return '';
@@ -879,8 +898,8 @@ export const METRIC_CATALOGUE = {
     tooltipText: 'The query created an implicit internal temporary table',
     simpleName: 'tmp_table',
     metricRelation: data => {
-      const mainMetric = _.get(data, ['tmp_table', 'stats', 'sum']);
-      const divider = _.get(data, ['num_queries', 'stats', 'sum']);
+      const mainMetric = _.get(data, ['tmp_table', 'sum']);
+      const divider = _.get(data, ['num_queries', 'sum']);
 
       if (!mainMetric || !divider) {
         return '';
@@ -902,8 +921,8 @@ export const METRIC_CATALOGUE = {
     tooltipText: 'The queries temporary table was stored on disk',
     simpleName: 'tmp_table_on_disk',
     metricRelation: data => {
-      const mainMetric = _.get(data, ['tmp_table_on_disk', 'stats', 'sum']);
-      const divider = _.get(data, ['num_queries', 'stats', 'sum']);
+      const mainMetric = _.get(data, ['tmp_table_on_disk', 'sum']);
+      const divider = _.get(data, ['num_queries', 'sum']);
 
       if (!mainMetric || !divider) {
         return '';
@@ -925,8 +944,8 @@ export const METRIC_CATALOGUE = {
     tooltipText: 'Total Size in bytes for all temporary tables used in the query',
     simpleName: 'tmp_table_sizes',
     metricRelation: data => {
-      const mainMetric = _.get(data, ['tmp_table_sizes', 'stats', 'sum']);
-      const divider = _.get(data, ['tmp_table_on_disk', 'stats', 'sum']);
+      const mainMetric = _.get(data, ['tmp_table_sizes', 'sum']);
+      const divider = _.get(data, ['tmp_table_on_disk', 'sum']);
 
       if (!mainMetric || !divider) {
         return '';
@@ -948,8 +967,8 @@ export const METRIC_CATALOGUE = {
     tooltipText: 'Number of temporary tables created on memory for the query',
     simpleName: 'tmp_tables',
     metricRelation: data => {
-      const mainMetric = _.get(data, ['tmp_tables', 'stats', 'sum']);
-      const divider = _.get(data, ['tmp_table', 'stats', 'sum']);
+      const mainMetric = _.get(data, ['tmp_tables', 'sum']);
+      const divider = _.get(data, ['tmp_table', 'sum']);
 
       if (!mainMetric || !divider) {
         return '';
