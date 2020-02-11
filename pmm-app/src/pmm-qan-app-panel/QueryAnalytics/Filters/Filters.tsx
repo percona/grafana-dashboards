@@ -140,7 +140,6 @@ const Filters = () => {
             onSubmit={handleSubmit}
             className="add-instance-form app-theme-dark"
             onChange={e => {
-              console.log(e);
               dispatch({
                 type: 'SET_LABELS',
                 payload: { labels: form.getState().values },
