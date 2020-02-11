@@ -1,4 +1,4 @@
-import * as numeral from 'numeral';
+import numeral from 'numeral';
 import _ from 'lodash';
 
 const transform = (input: number, name?: string): string => {
