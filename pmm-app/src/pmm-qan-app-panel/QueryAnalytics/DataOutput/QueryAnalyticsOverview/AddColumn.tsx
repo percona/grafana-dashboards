@@ -1,5 +1,6 @@
 import React, { useCallback, useContext } from 'react';
 import { Divider, Icon, Input, Select } from 'antd';
+import './AddColumn.less';
 import { METRIC_CATALOGUE } from '../metric-catalogue';
 import { StateContext } from '../../StateContext';
 
@@ -9,7 +10,6 @@ const { Search } = Input;
 
 const AddColumn = props => {
   const { dispatch } = useContext(StateContext);
-    console.log(props, 'add columns inside')
   const changeColumn = useCallback(
     (column, second) => {
       if (props.onlyAdd) {
@@ -45,10 +45,11 @@ const AddColumn = props => {
     <div onClick={e => e.stopPropagation()}>
       <Select
         optionLabelProp="label"
-        style={{ width: 180 }}
-        placeholder={props.placeholder && METRIC_CATALOGUE[props.placeholder].humanizeName || 'Add column'}
+        style={{ width: 160 }}
+        placeholder={(props.placeholder && METRIC_CATALOGUE[props.placeholder].humanizeName) || 'Add column'}
         onChange={changeColumn}
         dropdownMatchSelectWidth={false}
+        showArrow={false}
         dropdownRender={menu => (
           <div style={{ width: 400 }} className={'add-column-wrapper'}>
             <Search
