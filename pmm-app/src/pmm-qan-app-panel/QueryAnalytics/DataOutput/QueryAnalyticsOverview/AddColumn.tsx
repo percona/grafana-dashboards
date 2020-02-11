@@ -9,7 +9,7 @@ const { Search } = Input;
 
 const AddColumn = props => {
   const { dispatch } = useContext(StateContext);
-
+    console.log(props, 'add columns inside')
   const changeColumn = useCallback(
     (column, second) => {
       if (props.onlyAdd) {
@@ -46,8 +46,9 @@ const AddColumn = props => {
       <Select
         optionLabelProp="label"
         style={{ width: 180 }}
-        placeholder={props.placeholder || 'Add column'}
+        placeholder={props.placeholder && METRIC_CATALOGUE[props.placeholder].humanizeName || 'Add column'}
         onChange={changeColumn}
+        dropdownMatchSelectWidth={false}
         dropdownRender={menu => (
           <div style={{ width: 400 }} className={'add-column-wrapper'}>
             <Search
