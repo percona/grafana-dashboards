@@ -2,7 +2,7 @@ import { Select, Table } from 'antd';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import './OverviewTable.scss';
 import { StateContext } from '../../../StateContext';
-import { getColumnName } from './Column';
+import { getOverviewColumn } from './Column';
 import OverviewService from './Overview.service';
 
 const { Option } = Select;
@@ -120,7 +120,7 @@ const OverviewTable = props => {
 
         props.setTotal(result.total_rows);
         const calculatedColumns = getDefaultColumns(groupBy, setGroupBy, pageNumber, pageSize).concat(
-          columns.map((key, index) => getColumnName(key, index, result.rows[0], orderBy))
+          columns.map((key, index) => getOverviewColumn(key, index, result.rows[0], orderBy))
         );
         // @ts-ignore
         setData({ rows: result.rows, columns: calculatedColumns });
