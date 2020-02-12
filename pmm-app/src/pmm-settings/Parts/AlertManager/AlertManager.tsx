@@ -6,7 +6,7 @@ import ButtonElement from '../../../react-plugins-deps/components/FormComponents
 import { Form as FormFinal } from 'react-final-form';
 import { useForm } from 'react-final-form-hooks';
 import SettingsService from '../../Settings.service';
-import { showErrorNotification, showSuccessNotification } from '../../../react-plugins-deps/components/helpers/notification-manager';
+import { showSuccessNotification } from '../../../react-plugins-deps/components/helpers/notification-manager';
 
 interface AlertManagerSettingsInterface {
   alert_manager_url: string;
