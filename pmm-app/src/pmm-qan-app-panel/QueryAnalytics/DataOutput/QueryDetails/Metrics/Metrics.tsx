@@ -72,7 +72,7 @@ const columns = [
       return (
         <span style={{ textAlign: 'center' }}>
           {item.name}
-          <Tooltip title={item.tooltipText}>
+          <Tooltip title={item.tooltip} placement={'leftTop'}>
             <Icon type="question-circle" style={{ marginLeft: '5px' }} />
           </Tooltip>
         </span>
