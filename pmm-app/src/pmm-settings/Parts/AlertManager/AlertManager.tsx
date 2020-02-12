@@ -45,7 +45,6 @@ const AlertManager = props => {
               });
             } catch (e) {
               setLoading(false);
-              showErrorNotification({ message: e.message });
             }
           },
           validate: () => undefined,
