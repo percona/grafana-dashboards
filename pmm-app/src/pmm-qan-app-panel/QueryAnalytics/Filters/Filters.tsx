@@ -9,8 +9,11 @@ import { useForm } from 'react-final-form-hooks';
 import { Form as FormFinal } from 'react-final-form';
 import Search from 'antd/es/input/Search';
 
-const checkboxGroup = ({ form, name, items, group, showAll, filter, labels }) => {
-  const itemsList = items
+const TOP_LIMIT = 5;
+const CheckboxGroup = ({ form, name, items, group, showAll, filter, labels }) => {
+  const [showTop, setShowTop] = useState(false);
+  const data = showTop ? items.slice(0, TOP_LIMIT) : items;
+  const itemsList = data
     .filter(item => item.value)
     .filter(item => {
       if (!showAll) {
@@ -38,7 +41,22 @@ const checkboxGroup = ({ form, name, items, group, showAll, filter, labels }) =>
     });
   return itemsList.length ? (
     <div>
-      <Divider>{name}</Divider>
+      <p style={{ display: 'flex', justifyItems: 'space-between', marginBottom: '0', marginTop: '20px' }}>
+        <span style={{ marginRight: 'auto' }}>{name}</span>
+        {items.length > TOP_LIMIT ? (
+          <span
+            onClick={() => {
+              setShowTop(!showTop);
+            }}
+            style={{ cursor: 'pointer' }}
+          >
+            {showTop ? `Show all (${items.length})` : `Show top ${TOP_LIMIT}`}
+          </span>
+        ) : (
+          <span></span>
+        )}
+      </p>
+      <Divider style={{ marginTop: '0', marginBottom: '5px' }}></Divider>
       {itemsList}
     </div>
   ) : null;
@@ -174,15 +192,19 @@ const Filters = () => {
                 .filter(group => filters[group.dataKey])
                 .map(group => {
                   const { name, dataKey } = group;
-                  return checkboxGroup({
-                    form,
-                    name,
-                    items: filters[dataKey].name,
-                    group: dataKey,
-                    showAll,
-                    filter,
-                    labels,
-                  });
+                  return (
+                    <CheckboxGroup
+                      {...{
+                        form,
+                        name,
+                        items: filters[dataKey].name,
+                        group: dataKey,
+                        showAll,
+                        filter,
+                        labels,
+                      }}
+                    />
+                  );
                 })}
             </div>
           </form>
