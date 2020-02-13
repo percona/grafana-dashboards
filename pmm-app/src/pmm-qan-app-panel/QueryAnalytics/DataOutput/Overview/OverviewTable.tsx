@@ -3,7 +3,7 @@ import React, { useCallback, useContext, useEffect, useState } from 'react';
 import './OverviewTable.scss';
 import { StateContext } from '../../StateContext';
 import { getOverviewColumn } from './Column';
-import OverviewService from './Overview.service';
+import OverviewTableService from './OverviewTable.service';
 
 const { Option } = Select;
 const GROUP_BY_OPTIONS = [
@@ -106,7 +106,7 @@ const OverviewTable = props => {
       try {
         setLoading(true);
         // @ts-ignore
-        const result = await OverviewService.getReport({
+        const result = await OverviewTableService.getReport({
           labels,
           columns,
           pageNumber,

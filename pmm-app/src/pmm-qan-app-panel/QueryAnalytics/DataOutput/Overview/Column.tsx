@@ -2,7 +2,6 @@ import React from 'react';
 import PolygonChart from 'react-plugins-deps/components/PolygonChart/PolygonChart';
 import LatencyChart from 'react-plugins-deps/components/LatencyChart/LatencyChart';
 import { Humanize } from 'react-plugins-deps/components/helpers/Humanization';
-
 import ManageColumns from '../ManageColumns/ManageColumns';
 import './OverviewTable.scss';
 import { METRIC_CATALOGUE } from '../MetricCatalogue';
@@ -33,7 +32,6 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
         { header: 'From total', value: ((stats.sum_per_sec / totalValues.metrics[metricName].stats.sum_per_sec) * 100).toFixed(2) + '%' },
       ];
 
-      // const { min = 0, max = 0, avg = 0, p99 = 0 } = stats;
       const minStr = `${Humanize.transform(stats.min)}`;
       const maxStr = `${Humanize.transform(stats.max)}`;
       const avgStr = `${Humanize.transform(stats.avg)}`;
