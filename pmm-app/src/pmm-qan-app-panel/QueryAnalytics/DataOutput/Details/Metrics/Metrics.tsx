@@ -1,7 +1,5 @@
 import { Table } from 'antd';
 import React, { useEffect, useState } from 'react';
-// import PolygonChart from '../../../../react-plugins-deps/components/PolygonChart/PolygonChart';
-// import LatencyChart from '../../../../react-plugins-deps/components/LatencyChart/LatencyChart';
 import { METRIC_CATALOGUE } from '../../MetricCatalogue';
 import Icon from 'antd/es/icon';
 import Tooltip from 'antd/es/tooltip';
@@ -9,59 +7,12 @@ import MetricsService from './Metrics.service';
 import PolygonChart from '../../../../../react-plugins-deps/components/PolygonChart/PolygonChart';
 import { Humanize } from '../../../../../react-plugins-deps/components/helpers/Humanization';
 import LatencyChart from '../../../../../react-plugins-deps/components/LatencyChart/LatencyChart';
-
-const getPercentOfTotal = (current, total) => {
-  const key = current.sum ? 'sum' : 'sum_per_sec';
-  return +((+current[key] / +total[key]) * 100).toFixed(2);
-};
-
-const getSparkline = (sparklines, metricName) => {
-  return sparklines.map(sparkline => {
-    const key = Object.keys(sparkline).find(sparklineKey => sparklineKey.includes(metricName));
-    return {
-      point: sparkline.point,
-      time_frame: sparkline.time_frame,
-      timestamp: sparkline.timestamp,
-      metric: key ? sparkline[key] : '',
-    };
-  });
-};
+import { processMetrics } from '../../../../../react-plugins-deps/components/helpers/processMetrics';
 
 const metricColumnsStyle = {
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'flex-end',
-};
-const processMetrics = metrics => {
-  if (!metrics.metrics) {
-    return [];
-  }
-  const metricsList = Object.keys(metrics.metrics);
-  return metricsList
-    .filter(metric => Object.keys(metrics.metrics[metric]).length !== 0 && metrics.totals[metric])
-    .map(metricName => {
-      const metric = metrics.metrics[metricName];
-      const sparkline = getSparkline(metrics.sparkline, metricName);
-      const total = metrics.totals[metricName];
-
-      return {
-        name: METRIC_CATALOGUE[metricName].humanizeName,
-        tooltip: METRIC_CATALOGUE[metricName].tooltipText,
-        pipeTypes: METRIC_CATALOGUE[metricName].pipeTypes,
-        units: METRIC_CATALOGUE[metricName].units,
-        complexMetric: METRIC_CATALOGUE[metricName].metricRelation(metrics.metrics),
-        sparkline: sparkline,
-        metric: metric,
-        total: total,
-        queryCount: metrics.metrics['num_queries'].sum,
-        percentOfTotal: getPercentOfTotal(metric, total),
-        isRate: metric.rate >= 0,
-        isSum: metric.sum >= 0,
-        isStats: metric.avg >= 0,
-        isLatencyChart: metric.min && metric.max,
-      };
-    })
-    .filter(item => item.percentOfTotal);
 };
 
 const columns = [
@@ -162,7 +113,7 @@ const Metrics = props => {
     getMetrics();
   }, [queryId]);
 
-  return <Table dataSource={processMetrics(metrics)} columns={columns} pagination={false} size={'small'} bordered={true} />;
+  return <Table dataSource={processMetrics(METRIC_CATALOGUE, metrics)} columns={columns} pagination={false} size={'small'} bordered={true} />;
 };
 
 export default Metrics;
