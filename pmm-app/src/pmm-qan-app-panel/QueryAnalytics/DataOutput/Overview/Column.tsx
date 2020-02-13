@@ -9,7 +9,7 @@ import Tooltip from 'antd/es/tooltip';
 import { Card, List } from 'antd';
 import './Column.scss';
 
-export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy) => {
+export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy, width) => {
   const metric = METRIC_CATALOGUE[metricName];
   let sortOrder: boolean | string = false;
   if (orderBy === metricName) {
@@ -21,7 +21,7 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
     sorter: true,
     key: metricName,
     defaultSortOrder: sortOrder,
-    // width: '200px',
+    width: width,
     title: () => <ManageColumns placeholder={metricName} currentMetric={metric} />,
     render: (text, item) => {
       const stats = item.metrics[metricName].stats;
