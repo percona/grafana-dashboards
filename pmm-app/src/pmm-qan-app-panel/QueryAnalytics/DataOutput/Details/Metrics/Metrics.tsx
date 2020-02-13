@@ -2,7 +2,7 @@ import { Table } from 'antd';
 import React, { useEffect, useState } from 'react';
 // import PolygonChart from '../../../../react-plugins-deps/components/PolygonChart/PolygonChart';
 // import LatencyChart from '../../../../react-plugins-deps/components/LatencyChart/LatencyChart';
-import { METRIC_CATALOGUE } from '../../metric-catalogue';
+import { METRIC_CATALOGUE } from '../../MetricCatalogue';
 import Icon from 'antd/es/icon';
 import Tooltip from 'antd/es/tooltip';
 import MetricsService from './Metrics.service';
