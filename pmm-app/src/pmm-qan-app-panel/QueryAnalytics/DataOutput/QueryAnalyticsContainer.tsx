@@ -43,7 +43,7 @@ const QueryAnalyticsContainer = () => {
   }, []);
 
   return (
-    <div>
+    <div style={{width: '1250px'}}>
       <div className={'filters-header'} style={{ padding: '5px 0px', height: '50px' }}>
         <h5 style={{ margin: '3px', marginRight: '15px' }}>Queries overview</h5>
         <Button type="link" style={{ padding: 0, height: 'auto', marginLeft: '20px' }} onClick={changeFirstSeen}>
