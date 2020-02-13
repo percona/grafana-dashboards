@@ -1,15 +1,15 @@
 import React, { useCallback, useContext } from 'react';
 import { Divider, Icon, Select } from 'antd';
-import { METRIC_CATALOGUE } from './metric-catalogue';
-import { StateContext } from '../StateContext';
-import './AddColumn.less';
+import { METRIC_CATALOGUE } from '../MetricCatalogue';
+import { StateContext } from '../../StateContext';
+import './ManageColumns.less';
 
 const { Option } = Select;
 
-const AddColumn = props => {
+const ManageColumns = props => {
   const { dispatch } = useContext(StateContext);
   const changeColumn = useCallback(
-    (column, second) => {
+    (column) => {
       if (props.onlyAdd) {
         dispatch({
           type: 'ADD_COLUMN',
@@ -71,4 +71,4 @@ const AddColumn = props => {
   );
 };
 
-export default AddColumn;
+export default ManageColumns;

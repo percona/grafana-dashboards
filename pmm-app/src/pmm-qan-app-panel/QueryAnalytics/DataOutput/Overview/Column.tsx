@@ -3,7 +3,7 @@ import PolygonChart from 'react-plugins-deps/components/PolygonChart/PolygonChar
 import LatencyChart from 'react-plugins-deps/components/LatencyChart/LatencyChart';
 import { Humanize } from 'react-plugins-deps/components/helpers/Humanization';
 
-import AddColumn from '../../AddColumn';
+import ManageColumns from '../ManageColumns/ManageColumns';
 import './OverviewTable.scss';
 import { METRIC_CATALOGUE } from '../../metric-catalogue';
 import Tooltip from 'antd/es/tooltip';
@@ -23,7 +23,7 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
     key: metricName,
     defaultSortOrder: sortOrder,
     // width: '200px',
-    title: () => <AddColumn placeholder={metricName} currentMetric={metric} />,
+    title: () => <ManageColumns placeholder={metricName} currentMetric={metric} />,
     render: (text, item) => {
       const stats = item.metrics[metricName].stats;
       // @ts-ignore

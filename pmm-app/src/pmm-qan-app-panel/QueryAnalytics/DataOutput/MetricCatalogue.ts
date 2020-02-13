@@ -1,56 +1,5 @@
-import * as numeral from 'numeral';
 import _ from 'lodash';
-
-const transform = (input: number, name?: string): string => {
-  if (input === null) {
-    return '0';
-  }
-
-  let res = '0';
-  switch (name) {
-    case 'size':
-      if (input !== 0 && input < 0.01) {
-        res = '<0.01 B';
-      } else {
-        res = numeral(input).format('0.00 b');
-      }
-      res = res.replace(/([\d]) B/, '$1 Bytes');
-      break;
-    // ops
-    case 'number':
-      if (input !== 0 && input < 0.01) {
-        res = '<0.01';
-      } else {
-        res = numeral(input).format('0.00a');
-      }
-      break;
-    case 'percent':
-      if (input !== 0 && input < 0.0001) {
-        res = '<0.01';
-      } else if (input === 1) {
-        res = '100%';
-      } else {
-        res = numeral(input).format('0.00%');
-      }
-      break;
-    case 'percentRounded':
-      if (input !== 0 && input < 0.0001) {
-        res = '<0.01';
-      } else {
-        res = numeral(input).format('0%');
-      }
-      break;
-    // ops
-    default:
-      if (input !== 0 && input < 0.01) {
-        res = '<0.01';
-      } else {
-        res = numeral(input).format('0.00 a');
-      }
-      break;
-  }
-  return String(res).replace('<0.00', '<0.01');
-};
+import { Humanize } from '../../../react-plugins-deps/components/helpers/Humanization';
 
 const Units = {
   AVG_LOAD: '(avg load)',
@@ -75,7 +24,7 @@ export const METRIC_CATALOGUE = {
       if (!mainMetric || !divider) {
         return '';
       }
-      return `${transform(mainMetric / divider)} per row sent`;
+      return `${Humanize.transform(mainMetric / divider)} per row sent`;
     },
     units: Units.PER_SEC,
     pipeTypes: {
@@ -322,7 +271,7 @@ export const METRIC_CATALOGUE = {
         return '';
       }
 
-      return `${transform(mainMetric / divider)} per row sent`;
+      return `${Humanize.transform(mainMetric / divider)} per row sent`;
     },
     units: Units.PER_SEC,
     pipeTypes: {
@@ -358,7 +307,7 @@ export const METRIC_CATALOGUE = {
       if (!mainMetric || !divider) {
         return '';
       }
-      return `${transform(mainMetric / divider)} per query`;
+      return `${Humanize.transform(mainMetric / divider)} per query`;
     },
     units: Units.NONE,
     pipeTypes: {
@@ -381,7 +330,7 @@ export const METRIC_CATALOGUE = {
         return '';
       }
 
-      return `${transform(mainMetric / divider)} per query`;
+      return `${Humanize.transform(mainMetric / divider)} per query`;
     },
     units: Units.NONE,
     pipeTypes: {
@@ -404,7 +353,7 @@ export const METRIC_CATALOGUE = {
         return '';
       }
 
-      return `${transform(mainMetric / divider)} per query`;
+      return `${Humanize.transform(mainMetric / divider)} per query`;
     },
     units: Units.PER_SEC,
     pipeTypes: {
@@ -427,7 +376,7 @@ export const METRIC_CATALOGUE = {
         return '';
       }
 
-      return `${transform(mainMetric / divider)} per query`;
+      return `${Humanize.transform(mainMetric / divider)} per query`;
     },
     units: Units.NONE,
     pipeTypes: {
@@ -450,7 +399,7 @@ export const METRIC_CATALOGUE = {
         return '';
       }
 
-      return `${transform(mainMetric / divider)} per Read Ops`;
+      return `${Humanize.transform(mainMetric / divider)} per Read Ops`;
     },
     units: Units.PER_SEC,
     pipeTypes: {
@@ -487,7 +436,7 @@ export const METRIC_CATALOGUE = {
         return '';
       }
 
-      return `${transform(mainMetric / divider, 'percent')} of query time`;
+      return `${Humanize.transform(mainMetric / divider, 'percent')} of query time`;
     },
     units: Units.LOAD,
     pipeTypes: {
@@ -525,7 +474,7 @@ export const METRIC_CATALOGUE = {
         return '';
       }
 
-      return `${transform(mainMetric / divider, 'percent')} of query time`;
+      return `${Humanize.transform(mainMetric / divider, 'percent')} of query time`;
     },
     units: Units.NONE,
     pipeTypes: {
@@ -548,7 +497,7 @@ export const METRIC_CATALOGUE = {
         return '';
       }
 
-      return `${transform(mainMetric / divider, 'percent')} of query time`;
+      return `${Humanize.transform(mainMetric / divider, 'percent')} of query time`;
     },
     units: Units.AVG_LOAD,
     pipeTypes: {
@@ -585,7 +534,7 @@ export const METRIC_CATALOGUE = {
         return '';
       }
 
-      return `${transform(mainMetric / divider, 'percent')} of query time`;
+      return `${Humanize.transform(mainMetric / divider, 'percent')} of query time`;
     },
     units: Units.AVG_LOAD,
     pipeTypes: {
@@ -608,7 +557,7 @@ export const METRIC_CATALOGUE = {
         return '';
       }
 
-      return `${transform(mainMetric / divider)} per external sort`;
+      return `${Humanize.transform(mainMetric / divider)} per external sort`;
     },
     units: Units.NONE,
     pipeTypes: {
@@ -659,7 +608,7 @@ export const METRIC_CATALOGUE = {
         return '';
       }
 
-      return `${transform(mainMetric / divider)} per query`;
+      return `${Humanize.transform(mainMetric / divider)} per query`;
     },
     units: Units.PERCENT,
     pipeTypes: {
@@ -710,7 +659,7 @@ export const METRIC_CATALOGUE = {
         return '';
       }
 
-      return `${transform(mainMetric / divider, 'size')} bytes/row`;
+      return `${Humanize.transform(mainMetric / divider, 'size')} bytes/row`;
     },
     units: Units.BYTES_PER_SEC,
     pipeTypes: {
@@ -747,7 +696,7 @@ export const METRIC_CATALOGUE = {
         return '';
       }
 
-      return `${transform(mainMetric / divider)} per row sent`;
+      return `${Humanize.transform(mainMetric / divider)} per row sent`;
     },
     units: Units.PER_SEC,
     pipeTypes: {
@@ -882,7 +831,7 @@ export const METRIC_CATALOGUE = {
         return '';
       }
 
-      return `${transform(mainMetric / divider)} per query`;
+      return `${Humanize.transform(mainMetric / divider)} per query`;
     },
     units: Units.NONE,
     pipeTypes: {
@@ -905,7 +854,7 @@ export const METRIC_CATALOGUE = {
         return '';
       }
 
-      return `${transform(mainMetric / divider)} per query`;
+      return `${Humanize.transform(mainMetric / divider)} per query`;
     },
     units: Units.NONE,
     pipeTypes: {
@@ -928,7 +877,7 @@ export const METRIC_CATALOGUE = {
         return '';
       }
 
-      return `${transform(mainMetric / divider)} per query`;
+      return `${Humanize.transform(mainMetric / divider)} per query`;
     },
     units: Units.NONE,
     pipeTypes: {
@@ -951,7 +900,7 @@ export const METRIC_CATALOGUE = {
         return '';
       }
 
-      return `${transform(mainMetric / divider)} per query`;
+      return `${Humanize.transform(mainMetric / divider)} per query`;
     },
     units: Units.NONE,
     pipeTypes: {
@@ -974,7 +923,7 @@ export const METRIC_CATALOGUE = {
         return '';
       }
 
-      return `${transform(mainMetric / divider)} per query`;
+      return `${Humanize.transform(mainMetric / divider)} per query`;
     },
     units: Units.NONE,
     pipeTypes: {
