@@ -5,7 +5,7 @@ import { Humanize } from 'react-plugins-deps/components/helpers/Humanization';
 
 import ManageColumns from '../ManageColumns/ManageColumns';
 import './OverviewTable.scss';
-import { METRIC_CATALOGUE } from '../../metric-catalogue';
+import { METRIC_CATALOGUE } from '../MetricCatalogue';
 import Tooltip from 'antd/es/tooltip';
 import { Card, List } from 'antd';
 import './Column.scss';

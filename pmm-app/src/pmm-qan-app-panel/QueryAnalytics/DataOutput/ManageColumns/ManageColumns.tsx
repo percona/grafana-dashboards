@@ -9,7 +9,7 @@ const { Option } = Select;
 const ManageColumns = props => {
   const { dispatch } = useContext(StateContext);
   const changeColumn = useCallback(
-    (column) => {
+    column => {
       if (props.onlyAdd) {
         dispatch({
           type: 'ADD_COLUMN',

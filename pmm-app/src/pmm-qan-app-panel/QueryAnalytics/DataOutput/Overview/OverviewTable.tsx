@@ -1,7 +1,7 @@
 import { Select, Table } from 'antd';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import './OverviewTable.scss';
-import { StateContext } from '../../../StateContext';
+import { StateContext } from '../../StateContext';
 import { getOverviewColumn } from './Column';
 import OverviewService from './Overview.service';
 
