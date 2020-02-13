@@ -1,12 +1,10 @@
 import React, { useCallback, useContext } from 'react';
-import { Divider, Icon, Input, Select } from 'antd';
+import { Divider, Icon, Select } from 'antd';
 import { METRIC_CATALOGUE } from './metric-catalogue';
 import { StateContext } from '../StateContext';
 import './AddColumn.less';
 
 const { Option } = Select;
-
-const { Search } = Input;
 
 const AddColumn = props => {
   const { dispatch } = useContext(StateContext);
