@@ -1,14 +1,14 @@
-import OverviewTable from './QueryAnalyticsOverview/OverviewTable/OverviewTable';
-import QueryDetails from './QueryDetails/QueryDetails';
+import OverviewTable from './Overview/OverviewTable';
+import QueryDetails from './Details/QueryDetails';
 import React, { useCallback, useContext, useState } from 'react';
 import Split from 'react-split';
 import { StateContext } from '../StateContext';
-import './DataOutput.scss';
+import './QueryAnalyticsContainer.scss';
 import { Button, Pagination } from 'antd';
-import AddColumn from './AddColumn';
+import ManageColumns from './ManageColumns/ManageColumns';
 
 const PAGE_SIZE_OPTIONS = ['10', '50', '100'];
-const DataOutput = () => {
+const QueryAnalyticsContainer = () => {
   const {
     dispatch,
     state: { pageNumber, pageSize, firstSeen, queryId },
@@ -63,7 +63,7 @@ const DataOutput = () => {
           />
         </div>
         <div style={{ marginLeft: '10px' }}>
-          <AddColumn onlyAdd={true} />
+          <ManageColumns onlyAdd={true} />
         </div>
       </div>
       {!queryId ? (
@@ -88,4 +88,4 @@ const DataOutput = () => {
   );
 };
 
-export default DataOutput;
+export default QueryAnalyticsContainer;

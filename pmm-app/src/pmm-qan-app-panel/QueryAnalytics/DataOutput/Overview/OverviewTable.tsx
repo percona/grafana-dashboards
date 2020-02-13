@@ -129,7 +129,7 @@ const OverviewTable = props => {
         setLoading(false);
       }
     };
-    updateInstances().then(r => {});
+    updateInstances().then(() => {});
   }, [columns, pageNumber, pageSize, groupBy, labels, firstSeen]);
   // @ts-ignore
   return (
