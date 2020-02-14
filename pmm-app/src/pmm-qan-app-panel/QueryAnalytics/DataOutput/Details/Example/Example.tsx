@@ -24,18 +24,18 @@ const THEME_JSON_VIEW = {
 const getJSONExample = example => <ReactJson src={example} theme={THEME_JSON_VIEW} />;
 
 const Example = props => {
-  const { queryId, groupBy, periodStartFrom, periodStartTo, labels, tables } = props;
+  const { queryId, groupBy, from, to, labels, tables } = props;
   const [examples, setExamples] = useState([]);
   useEffect(() => {
     (async () => {
       try {
         const result = await ExampleService.getExample({
           filterBy: queryId,
-          groupBy: groupBy,
-          periodStartFrom: periodStartFrom,
-          periodStartTo: periodStartTo,
-          labels: labels,
-          tables: tables,
+          groupBy,
+          from,
+          to,
+          labels,
+          tables,
         });
         setExamples(result['query_examples']);
       } catch (e) {

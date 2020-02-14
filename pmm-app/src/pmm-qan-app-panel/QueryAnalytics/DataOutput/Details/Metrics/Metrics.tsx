@@ -90,7 +90,7 @@ const columns = [
 ];
 
 const Metrics = props => {
-  const { queryId, groupBy, periodStartFrom, periodStartTo, labels, tables } = props;
+  const { queryId, groupBy, from, to, labels, tables } = props;
 
   const [metrics, setMetrics] = useState({});
   useEffect(() => {
@@ -98,11 +98,11 @@ const Metrics = props => {
       try {
         const result = await MetricsService.getMetrics({
           filterBy: queryId,
-          groupBy: groupBy,
-          from: periodStartFrom,
-          to: periodStartTo,
-          labels: labels,
-          tables: tables,
+          groupBy,
+          from,
+          to,
+          labels,
+          tables,
         });
 
         setMetrics(result);

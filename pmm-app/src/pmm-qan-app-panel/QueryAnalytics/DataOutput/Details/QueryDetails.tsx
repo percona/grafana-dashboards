@@ -24,7 +24,12 @@ const QueryDetails = () => {
   const MetricsProps = {
     labels: [],
     tables: [],
+    queryId,
+    groupBy,
+    from,
+    to,
   };
+
   return (
     <div className={'query-analytics-details-grid'} id={'query-analytics-details'}>
       <Fingerprint query={HARDCODED_FINGERPRINT} controlSum={HARDCODED_CONTROL_SUM} />
@@ -34,36 +39,15 @@ const QueryDetails = () => {
           <TabPane tab="Details" key="1">
             <div className="details-table">
               <div className="details-table-content">
-                <Metrics
-                  queryId={queryId}
-                  groupBy={groupBy}
-                  periodStartFrom={from}
-                  periodStartTo={to}
-                  labels={MetricsProps.labels}
-                  tables={MetricsProps.tables}
-                />
+                <Metrics {...MetricsProps} />
               </div>
             </div>
           </TabPane>
           <TabPane tab="Examples" key="2">
-            <Example
-              queryId={queryId}
-              groupBy={groupBy}
-              periodStartFrom={from}
-              periodStartTo={to}
-              labels={MetricsProps.labels}
-              tables={MetricsProps.tables}
-            />
+            <Example {...MetricsProps} />
           </TabPane>
           <TabPane tab="Explain" key="3">
-            <Explain
-              queryId={queryId}
-              groupBy={groupBy}
-              periodStartFrom={from}
-              periodStartTo={to}
-              labels={MetricsProps.labels}
-              tables={MetricsProps.tables}
-            />
+            <Explain {...MetricsProps} />
           </TabPane>
           <TabPane tab="Tables" key="4">
             <TableCreate />
