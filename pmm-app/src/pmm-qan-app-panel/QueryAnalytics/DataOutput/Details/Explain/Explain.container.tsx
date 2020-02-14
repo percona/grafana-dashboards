@@ -23,44 +23,44 @@ const ExplainContainer = props => {
           tables,
         });
         setExample(result['query_examples'][0]);
+
+        (async () => {
+          try {
+            const { action_id } = await ExplainService.getTraditionalExplain({
+              database: queryExample.schema,
+              query: queryExample.example,
+              service_id: queryExample.service_id,
+            });
+            const explain = await ExplainService.getActionResult({
+              action_id,
+            });
+            setTraditionalExplain(explain.output);
+          } catch (e) {
+            //TODO: add error handling
+          }
+        })();
+
+        (async () => {
+          try {
+            const { action_id } = await ExplainService.getTraditionalExplainJSON({
+              database: queryExample.schema,
+              query: queryExample.example,
+              service_id: queryExample.service_id,
+            });
+            const explain = await ExplainService.getActionResult({
+              action_id,
+            });
+            setJsonExplain(JSON.parse(explain.output));
+          } catch (e) {
+            //TODO: add error handling
+          }
+        })();
       } catch (e) {
         //TODO: add error handling
       }
     })();
   }, []);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const { action_id } = await ExplainService.getTraditionalExplain({
-          database: queryExample.schema,
-          query: queryExample.example,
-          service_id: queryExample.service_id,
-        });
-        const explain = await ExplainService.getActionResult({
-          action_id,
-        });
-        setTraditionalExplain(explain.output);
-      } catch (e) {
-        //TODO: add error handling
-      }
-    })();
-    (async () => {
-      try {
-        const { action_id } = await ExplainService.getTraditionalExplainJSON({
-          database: queryExample.schema,
-          query: queryExample.example,
-          service_id: queryExample.service_id,
-        });
-        const explain = await ExplainService.getActionResult({
-          action_id,
-        });
-        setJsonExplain(JSON.parse(explain.output));
-      } catch (e) {
-        //TODO: add error handling
-      }
-    })();
-  }, [queryExample]);
   return <Explain json={jsonExplain} classic={traditionalExplain} />;
 };
 

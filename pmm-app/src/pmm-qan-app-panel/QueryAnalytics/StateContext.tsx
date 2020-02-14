@@ -64,11 +64,11 @@ class ContextActions {
         .filter(Boolean)
         .join('&');
     const columnsQuery = state.columns ? `columns=${JSON.stringify(state.columns)}` : '';
+    const groupBy = state.groupBy ? `group_by=${state.groupBy}` : '';
     const filterByQuery = state.queryId ? `filter_by=${state.queryId}` : '';
     const orderBy = state.orderBy ? `order_by=${state.orderBy}` : '';
-    // page, sort
     // TODO: replace crutch with right redirect
-    return `${window.location.pathname}?${[columnsQuery, filterByQuery, labels, orderBy].filter(Boolean).join('&')}`;
+    return `${window.location.pathname}?${[columnsQuery, filterByQuery, labels, orderBy, groupBy].filter(Boolean).join('&')}`;
   }
 
   private parseURL(query) {
