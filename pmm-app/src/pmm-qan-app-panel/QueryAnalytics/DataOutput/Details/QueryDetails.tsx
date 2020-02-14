@@ -8,7 +8,6 @@ import Metrics from './Metrics/Metrics';
 import TableCreate from './Table/Table';
 import { StateContext } from '../../StateContext';
 import ExampleService from './Example/Example.service';
-import Icon from 'antd/es/icon';
 import Tooltip from 'antd/es/tooltip';
 
 const { TabPane } = Tabs;
@@ -86,7 +85,7 @@ const QueryDetails = () => {
             key="4"
             disabled={databaseType === 'postgresql'}
           >
-            <TableCreate />
+            <TableCreate {...MetricsProps} />
           </TabPane>
         </Tabs>
       </div>
