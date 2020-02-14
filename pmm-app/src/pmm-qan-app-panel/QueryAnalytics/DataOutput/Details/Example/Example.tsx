@@ -45,7 +45,7 @@ const Example = props => {
     })();
   }, [queryId]);
 
-  return <div>{examples.length && examples.map(getJSONExample)}</div>;
+  return <div>{examples && examples.length && examples.map(getJSONExample)}</div>;
 };
 
 export default Example;

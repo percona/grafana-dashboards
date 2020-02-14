@@ -40,7 +40,7 @@ const ManageColumns = props => {
   }, [props.currentMetric]);
   // @ts-ignore
   return (
-    <div onClick={e => e.stopPropagation()}>
+    <div className={'manage-columns'} onClick={e => e.stopPropagation()}>
       <Select
         optionLabelProp="label"
         showSearch={true}
