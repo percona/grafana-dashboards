@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Divider, Tabs } from 'antd';
 import './QueryDetails.scss';
 import Fingerprint from './Fingerprint';
@@ -7,6 +7,9 @@ import Example from './Example/Example';
 import Metrics from './Metrics/Metrics';
 import TableCreate from './Table/Table';
 import { StateContext } from '../../StateContext';
+import ExampleService from './Example/Example.service';
+import Icon from 'antd/es/icon';
+import Tooltip from 'antd/es/tooltip';
 
 const { TabPane } = Tabs;
 
@@ -16,7 +19,7 @@ const QueryDetails = () => {
   const {
     state: { queryId, groupBy, from, to },
   } = useContext(StateContext);
-
+  const [databaseType, setDatabaseType] = useState('');
   if (!queryId) {
     return null;
   }
@@ -30,6 +33,23 @@ const QueryDetails = () => {
     to,
   };
 
+  useEffect(() => {
+    (async () => {
+      try {
+        const result = await ExampleService.getExample({
+          filterBy: queryId,
+          groupBy,
+          from,
+          to,
+          labels: MetricsProps.labels,
+          tables: MetricsProps.tables,
+        });
+        setDatabaseType(result['query_examples'][0].service_type);
+      } catch (e) {
+        //TODO: add error handling
+      }
+    })();
+  }, [queryId]);
   return (
     <div className={'query-analytics-details-grid'} id={'query-analytics-details'}>
       <Fingerprint query={HARDCODED_FINGERPRINT} controlSum={HARDCODED_CONTROL_SUM} />
@@ -46,10 +66,26 @@ const QueryDetails = () => {
           <TabPane tab="Examples" key="2">
             <Example {...MetricsProps} />
           </TabPane>
-          <TabPane tab="Explain" key="3">
+          <TabPane
+            tab={
+              <Tooltip title={'Available for MySQL'} placement={'leftTop'}>
+                {'Explain'}
+              </Tooltip>
+            }
+            key="3"
+            disabled={databaseType === 'postgresql'}
+          >
             <Explain {...MetricsProps} />
           </TabPane>
-          <TabPane tab="Tables" key="4">
+          <TabPane
+            tab={
+              <Tooltip title={'Available for MySQL'} placement={'leftTop'}>
+                {'Tables'}
+              </Tooltip>
+            }
+            key="4"
+            disabled={databaseType === 'postgresql'}
+          >
             <TableCreate />
           </TabPane>
         </Tabs>
