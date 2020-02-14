@@ -1,27 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import ExampleService from './Example.service';
-import ReactJson from 'react-json-view';
+import { ReactJSON } from '../../../../../react-plugins-deps/components/ReactJSON/ReactJSON';
 
-const THEME_JSON_VIEW = {
-  base00: 'transparent',
-  base01: 'transparent',
-  base02: 'lightgray',
-  base03: '#bfbfbf',
-  base04: '#1890ff',
-  base05: '#bfbfbf',
-  base06: '#bfbfbf',
-  base07: '#bfbfbf',
-  base08: '#bfbfbf',
-  base09: 'white',
-  base0A: 'white',
-  base0B: 'white',
-  base0C: 'white',
-  base0D: 'white',
-  base0E: 'white',
-  base0F: 'white',
-};
-
-const getJSONExample = example => <ReactJson src={example} theme={THEME_JSON_VIEW} />;
+const getJSONExample = example => <ReactJSON json={example} />;
 
 const Example = props => {
   const { queryId, groupBy, from, to, labels, tables } = props;
