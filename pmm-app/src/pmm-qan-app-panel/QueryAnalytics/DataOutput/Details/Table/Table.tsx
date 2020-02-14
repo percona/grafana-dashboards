@@ -1,22 +1,43 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect, useState } from 'react';
+import ExampleService from '../Example/Example.service';
+import TableService from './Table.service';
 
-class TableCreate extends Component {
-  render() {
-    return (
-      <div>
-        <pre>
-          {'Table: t1\n' +
-            '    Create Table: CREATE TABLE `t1` (\n' +
-            '        `i1` int(11) DEFAULT NULL,\n' +
-            '        `i2` int(11) DEFAULT NULL,\n' +
-            '        CONSTRAINT `t1_chk_1` CHECK ((`i1` <> 0)),\n' +
-            '        CONSTRAINT `t1_chk_2` CHECK ((`i2` > `i1`)),\n' +
-            '        CONSTRAINT `t1_chk_3` CHECK ((`i2` <> 0)) /*!80016 NOT ENFORCED */\n' +
-            '    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci'}
-        </pre>
-      </div>
-    );
-  }
-}
+const TableCreate = props => {
+  const { queryId, groupBy, from, to, labels, tables } = props;
+  const [showCreateTable, setShowCreateTable] = useState('');
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const result = await ExampleService.getExample({
+          filterBy: queryId,
+          groupBy,
+          from,
+          to,
+          labels,
+          tables,
+        });
+        const example = result['query_examples'][0];
+        const { action_id } = await TableService.getShowCreateTable({
+          database: example.schema,
+          table_name: example.table_name,
+          service_id: example.service_id,
+        });
+        const table = await TableService.getActionResult({
+          action_id,
+        });
+        setShowCreateTable(table.output);
+      } catch (e) {
+        //TODO: add error handling
+      }
+    })();
+  }, []);
+
+  return (
+    <div>
+      <pre>{showCreateTable}</pre>
+    </div>
+  );
+};
 
 export default TableCreate;
