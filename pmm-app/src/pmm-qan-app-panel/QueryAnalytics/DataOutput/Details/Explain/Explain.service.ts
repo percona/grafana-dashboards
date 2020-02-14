@@ -1,27 +1,28 @@
 import { apiRequestManagement } from '../../../../../react-plugins-deps/components/helpers/api';
 
 class ExplainService {
-  static getTraditionalExplainJSON({ filterBy, groupBy, labels = [], from, to, tables = [] }) {
+  static getTraditionalExplainJSON({ database, service_id, query }) {
     const body = {
-      filter_by: filterBy,
-      group_by: groupBy,
-      labels: labels,
-      period_start_from: from,
-      period_start_to: to,
-      tables: tables,
+      database,
+      service_id,
+      query,
     };
-    return apiRequestManagement.post<any, any>('/Actions/StartMySQLExplainTraditionalJSON', body);
+    return apiRequestManagement.post<any, any>('/Actions/StartMySQLExplainJSON', body);
   }
-  static getTraditionalExplain({ filterBy, groupBy, labels = [], from, to, tables = [] }) {
+  static getTraditionalExplain({ database, service_id, query }) {
     const body = {
-      filter_by: filterBy,
-      group_by: groupBy,
-      labels: labels,
-      period_start_from: from,
-      period_start_to: to,
-      tables: tables,
+      database,
+      service_id,
+      query,
     };
     return apiRequestManagement.post<any, any>('/Actions/StartMySQLExplain', body);
+  }
+
+  static getActionResult({ action_id }) {
+    const body = {
+      action_id,
+    };
+    return apiRequestManagement.post<any, any>('/Actions/Get', body);
   }
 }
 
