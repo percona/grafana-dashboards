@@ -133,6 +133,7 @@ export const UrlParametersProvider = ({ children }) => {
           newState = {
             ...state,
             columns: columns,
+            orderBy: action.payload.oldColumn.simpleName === action.payload.orderBy ? columns[0] : action.payload.orderBy,
           };
           break;
 
@@ -142,6 +143,7 @@ export const UrlParametersProvider = ({ children }) => {
           newState = {
             ...state,
             columns: columns,
+            orderBy: action.payload.column === action.payload.orderBy ? columns[0] : action.payload.orderBy,
           };
           break;
         case 'CHANGE_PAGE':
