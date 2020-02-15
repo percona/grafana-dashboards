@@ -529,7 +529,6 @@ export const METRIC_CATALOGUE = {
     metricRelation: data => {
       const mainMetric = _.get(data, ['lock_time', 'avg']);
       const divider = _.get(data, ['query_time', 'avg']);
-      console.log(data, mainMetric, divider);
       if (!mainMetric || !divider) {
         return '';
       }
