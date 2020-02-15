@@ -92,7 +92,7 @@ const columns = [
 const Metrics = props => {
   const { queryId, groupBy, from, to, labels, tables } = props;
 
-  const [metrics, setMetrics] = useState({});
+  const [metrics, setMetrics] = useState([]);
   useEffect(() => {
     const getMetrics = async () => {
       try {
@@ -105,7 +105,7 @@ const Metrics = props => {
           tables,
         });
 
-        setMetrics(result);
+        setMetrics(processMetrics(METRIC_CATALOGUE, result));
       } catch (e) {
         //TODO: add error handling
       }
@@ -113,7 +113,7 @@ const Metrics = props => {
     getMetrics();
   }, [queryId]);
 
-  return <Table dataSource={processMetrics(METRIC_CATALOGUE, metrics)} columns={columns} pagination={false} size={'small'} bordered={true} />;
+  return <Table dataSource={metrics} columns={columns} pagination={false} size={'small'} bordered={true} />;
 };
 
 export default Metrics;

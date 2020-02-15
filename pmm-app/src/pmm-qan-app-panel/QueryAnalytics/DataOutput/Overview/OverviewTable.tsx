@@ -2,7 +2,7 @@ import { Table } from 'antd';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import './OverviewTable.scss';
 import { StateContext } from '../../StateContext';
-import { getDefaultColumns, getOverviewColumn, TABLE_X_SCROLL_WIDTH, TABLE_Y_SCROLL_WIDTH } from './Columns';
+import { getDefaultColumns, getOverviewColumn, TABLE_X_SCROLL, TABLE_Y_SCROLL } from './Columns';
 import OverviewTableService from './OverviewTable.service';
 
 interface RowInterface {
@@ -100,7 +100,7 @@ const OverviewTable = props => {
       size={'small'}
       bordered={true}
       pagination={false}
-      scroll={{ y: TABLE_Y_SCROLL_WIDTH, x: TABLE_X_SCROLL_WIDTH }}
+      scroll={{ y: TABLE_Y_SCROLL, x: TABLE_X_SCROLL }}
       onRow={onRowClick}
       rowClassName={record => (record.dimension === queryId ? 'selected-overview-row' : '')}
       loading={loading}
