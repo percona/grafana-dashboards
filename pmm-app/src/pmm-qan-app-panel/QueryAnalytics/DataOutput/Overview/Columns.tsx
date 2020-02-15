@@ -20,8 +20,8 @@ const GROUP_BY_OPTIONS = [
 ];
 
 const MAIN_METRIC_MIN_WIDTH = 470;
-export const TABLE_X_SCROLL_WIDTH = 1250;
-export const TABLE_Y_SCROLL_WIDTH = 400;
+export const TABLE_X_SCROLL = 1250;
+export const TABLE_Y_SCROLL = 450;
 const COLUMN_WIDTH = 250;
 const ROW_NUMBER_COLUMN_WIDTH = 30;
 
@@ -89,7 +89,7 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
 };
 
 export const getDefaultColumns = (groupBy, setGroupBy, pageNumber, pageSize, columns) => {
-  const mainMetricColumnWidth = Math.max(TABLE_X_SCROLL_WIDTH - columns * COLUMN_WIDTH - ROW_NUMBER_COLUMN_WIDTH, MAIN_METRIC_MIN_WIDTH);
+  const mainMetricColumnWidth = Math.max(TABLE_X_SCROLL - columns * COLUMN_WIDTH - ROW_NUMBER_COLUMN_WIDTH, MAIN_METRIC_MIN_WIDTH);
   return [
     {
       title: '#',
