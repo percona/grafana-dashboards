@@ -8,7 +8,6 @@ const ExplainContainer = props => {
   const { queryId, groupBy, from, to, labels, tables } = props;
   const [traditionalExplain, setTraditionalExplain] = useState(null);
   const [jsonExplain, setJsonExplain] = useState({});
-  const [queryExample, setExample] = useState({});
 
   // TODO: implement explain
   useEffect(() => {
@@ -22,7 +21,7 @@ const ExplainContainer = props => {
           labels,
           tables,
         });
-        setExample(result['query_examples'][0]);
+        const queryExample = result['query_examples'][0]
 
         (async () => {
           try {
@@ -59,7 +58,7 @@ const ExplainContainer = props => {
         //TODO: add error handling
       }
     })();
-  }, []);
+  }, [queryId]);
 
   return <Explain json={jsonExplain} classic={traditionalExplain} />;
 };

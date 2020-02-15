@@ -31,7 +31,7 @@ const TableCreate = props => {
         //TODO: add error handling
       }
     })();
-  }, []);
+  }, [queryId]);
 
   return (
     <div>
