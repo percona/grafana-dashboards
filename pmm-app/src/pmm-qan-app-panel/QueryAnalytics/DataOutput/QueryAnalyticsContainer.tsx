@@ -70,7 +70,7 @@ const QueryAnalyticsContainer = () => {
         <OverviewTable setTotal={setTotal} />
       ) : (
         <Split
-          sizes={[25, 75]}
+          sizes={[70, 30]}
           minSize={100}
           gutterSize={10}
           direction="vertical"
