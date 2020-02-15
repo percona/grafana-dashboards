@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import { Divider, Icon, Select } from 'antd';
 import { METRIC_CATALOGUE } from '../MetricCatalogue';
 import { StateContext } from '../../StateContext';
@@ -40,14 +40,15 @@ const ManageColumns = props => {
   }, [props.currentMetric]);
   // @ts-ignore
   return (
-    <div className={'manage-columns'} onClick={e => e.stopPropagation()}>
+    <div className={!props.onlyAdd ? 'manage-columns' : ''} onClick={e => e.stopPropagation()}>
       <Select
         optionLabelProp="label"
         showSearch={true}
         style={{ width: 160 }}
-        placeholder={(props.placeholder && METRIC_CATALOGUE[props.placeholder].humanizeName) || 'Add column'}
+        placeholder={!props.onlyAdd ? props.placeholder && METRIC_CATALOGUE[props.placeholder].humanizeName : 'Add column'}
         onChange={changeColumn}
         dropdownMatchSelectWidth={false}
+        value={undefined}
         showArrow={false}
         dropdownRender={menu => (
           <div style={{ width: 400 }} className={'add-column-wrapper'}>
