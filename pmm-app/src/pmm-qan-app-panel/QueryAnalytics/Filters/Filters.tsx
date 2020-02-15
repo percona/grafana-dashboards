@@ -1,15 +1,12 @@
 import React, { ReactElement, useContext, useEffect, useState } from 'react';
-import { Humanize } from '../../../react-plugins-deps/components/helpers/Humanization';
 import './Filters.scss';
 import { Button, Divider } from 'antd';
 import { StateContext } from '../StateContext';
 import FiltersService from './Filters.service';
-import { CheckboxField } from '../../../react-plugins-deps/components/FormComponents/Checkbox/Checkbox';
 import { useForm } from 'react-final-form-hooks';
 import { Form as FormFinal } from 'react-final-form';
 import Search from 'antd/es/input/Search';
-
-const TOP_LIMIT = 5;
+import { CheckboxGroup } from './CheckboxGroup';
 
 export const FILTERS_GROUPS = [
   {
@@ -71,58 +68,6 @@ interface GroupInterface {
   name: string;
 }
 
-const CheckboxGroup = ({ form, name, items, group, showAll, filter, labels }) => {
-  const [showTop, setShowTop] = useState(false);
-  const data = showTop ? items.slice(0, TOP_LIMIT) : items;
-  const itemsList = data
-    .filter(item => item.value)
-    .filter(item => {
-      if (!showAll) {
-        return item.checked;
-      }
-      return true;
-    })
-    .filter(item => item.value.toLowerCase().includes(filter.toLowerCase()))
-    .map(item => {
-      return (
-        <div className={'filter-label'}>
-          <span className={'filter-name'}>
-            <CheckboxField
-              form={form}
-              name={`${group}:${item.value}`}
-              label={item.value}
-              checked={labels && labels[group] && labels[group].includes(item.value)}
-            />
-          </span>
-          <span className={'percentage'}>
-            <span>{Humanize.transform(item.main_metric_percent, 'percent')}</span>
-          </span>
-        </div>
-      );
-    });
-  return itemsList.length ? (
-    <div>
-      <p style={{ display: 'flex', justifyItems: 'space-between', marginBottom: '0', marginTop: '20px' }}>
-        <span style={{ marginRight: 'auto' }}>{name}</span>
-        {items.length > TOP_LIMIT ? (
-          <span
-            onClick={() => {
-              setShowTop(!showTop);
-            }}
-            style={{ cursor: 'pointer' }}
-          >
-            {showTop ? `Show all (${items.length})` : `Show top ${TOP_LIMIT}`}
-          </span>
-        ) : (
-          <span></span>
-        )}
-      </p>
-      <Divider style={{ marginTop: '0', marginBottom: '5px' }}></Divider>
-      {itemsList}
-    </div>
-  ) : null;
-};
-
 export const Filters = ({ dispatch, groups, form, labels, filters }) => {
   const [filter, setFilter] = useState('');
   const [showAll, showSetAll] = useState(true);
@@ -138,6 +83,7 @@ export const Filters = ({ dispatch, groups, form, labels, filters }) => {
           style={{ padding: 0, height: 'auto', marginLeft: 'auto' }}
           onClick={() => {
             dispatch({ type: 'RESET_LABELS' });
+            form.reset()
           }}
         >
           Reset All
@@ -194,6 +140,7 @@ const FiltersContainer = () => {
       }
     })();
   }, [labels, from, to]);
+
   return (
     <FormFinal
       onSubmit={() => {}}
