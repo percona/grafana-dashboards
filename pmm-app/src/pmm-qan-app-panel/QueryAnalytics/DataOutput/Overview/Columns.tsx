@@ -37,7 +37,7 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
     sorter: true,
     key: metricName,
     defaultSortOrder: sortOrder,
-    width: COLUMN_WIDTH,
+    width: columnIndex === 0 ? COLUMN_WIDTH * 1.5 : COLUMN_WIDTH,
     title: () => <ManageColumns placeholder={metricName} currentMetric={metric} />,
     render: (text, item) => {
       const stats = item.metrics[metricName].stats;

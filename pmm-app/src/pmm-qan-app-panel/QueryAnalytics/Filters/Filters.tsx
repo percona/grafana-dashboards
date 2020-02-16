@@ -83,7 +83,7 @@ export const Filters = ({ dispatch, groups, form, labels, filters }) => {
           style={{ padding: 0, height: 'auto', marginLeft: 'auto' }}
           onClick={() => {
             dispatch({ type: 'RESET_LABELS' });
-            form.reset()
+            form.reset();
           }}
         >
           Reset All
