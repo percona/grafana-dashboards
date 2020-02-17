@@ -46,7 +46,7 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
         { header: 'Per sec', value: Humanize.transform(stats.qps || stats.sum_per_sec, 'number') },
         { header: 'Sum', value: stats.sum && Humanize.transform(stats.sum, metric.pipeTypes.sumPipe) },
         { header: 'From total', value: ((stats.sum_per_sec / totalValues.metrics[metricName].stats.sum_per_sec) * 100).toFixed(2) + '%' },
-      ];
+      ].filter(tooltip => tooltip.value);
 
       const minStr = `${Humanize.transform(stats.min)}`;
       const maxStr = `${Humanize.transform(stats.max)}`;
@@ -67,16 +67,15 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
           {columnIndex === 0 && <PolygonChart {...polygonChartProps} />}
           <Tooltip
             getPopupContainer={() => document.querySelector('#antd') || document.body}
-            placement="topLeft"
+            placement="left"
             overlayClassName={'overview-column-toolkit'}
             title={
-              <Card title={`${metric.humanizeName} details`}>
+              <Card title={`${metric.humanizeName} details`} style={{ width: 'auto', backgroundColor: 'darkgray' }}>
                 <List size="small" dataSource={tooltipData} renderItem={item => <List.Item>{`${item.header} : ${item.value}`}</List.Item>} />
                 {metricName === 'query_time' && <LatencyChart {...{ data: stats }} />}
                 <List size="small" dataSource={latencyTooltipData} renderItem={item => <List.Item>{`${item.header} : ${item.value}`}</List.Item>} />
               </Card>
             }
-            overlayStyle={{ backgroundColor: 'transparent' }}
           >
             <span className="summarize" style={{ marginLeft: 'auto' }}>
               {Humanize.transform(stats.qps || stats.sum_per_sec, 'number')}

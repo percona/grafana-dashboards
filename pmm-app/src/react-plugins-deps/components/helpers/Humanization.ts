@@ -41,7 +41,8 @@ export class Humanize {
     switch (name) {
       // "top 10"/profile queries no name parameters
       case undefined:
-        res = Humanize.parceTime(input);
+        res = input !== 0 && input < 0.00001 ? '<' : '';
+        res += Humanize.parceTime(input);
         break;
       // time
       case 'time':
