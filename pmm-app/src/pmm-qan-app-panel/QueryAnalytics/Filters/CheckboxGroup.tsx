@@ -19,7 +19,6 @@ export const CheckboxGroup = ({ form, name, items, group, showAll, filter, label
     })
     .filter(item => item.value.toLowerCase().includes(filter.toLowerCase()))
     .map(item => {
-      console.log('checked----', item.value, labels[group], labels && labels[group] && labels[group].includes(item.value));
       return (
         <div className={'filter-label'}>
           <span className={'filter-name'}>
