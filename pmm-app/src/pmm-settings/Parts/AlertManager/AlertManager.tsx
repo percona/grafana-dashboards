@@ -1,4 +1,4 @@
-import { VerticalFormWrapper } from '../../../react-plugins-deps/components/helpers/Helpers';
+import { PluginTooltip, VerticalFormWrapper } from '../../../react-plugins-deps/components/helpers/Helpers';
 import { InputField } from '../../../react-plugins-deps/components/FormComponents/Input/Input';
 import { TextAreaField } from '../../../react-plugins-deps/components/FormComponents/TextArea/TextArea';
 import React, { ReactElement, useEffect, useState } from 'react';
@@ -58,10 +58,40 @@ const AlertManager = props => {
             <>
               <VerticalFormWrapper
                 label="AlertManager URL"
+                tooltip={
+                  <PluginTooltip
+                    links={[
+                      {
+                        url: 'https://new.percona.com/doc/percona-monitoring-and-management/2.x/faq.html#how-to-integrate-alertmanager-with-pmm',
+                        text: 'How to integrate Alertmanager with PMM',
+                      },
+                      {
+                        url: 'https://prometheus.io/docs/alerting/alertmanager/',
+                        text: 'Prometheus Alertmanager',
+                      },
+                    ]}
+                    text={'The URL of the external Alertmanager to use'}
+                  />
+                }
                 element={<InputField form={form} name="alert_manager_url" placeholder="Enter URL" style={{ width: '100%' }} />}
               />
               <VerticalFormWrapper
                 label="AlertManager rules"
+                tooltip={
+                  <PluginTooltip
+                    links={[
+                      {
+                        url: 'https://new.percona.com/doc/percona-monitoring-and-management/2.x/faq.html#how-to-integrate-alertmanager-with-pmm',
+                        text: 'How to integrate Alertmanager with PMM',
+                      },
+                      {
+                        url: 'https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/',
+                        text: 'Prometheus alerting rules',
+                      },
+                    ]}
+                    text={'Alerting rules in the YAML configuration format'}
+                  />
+                }
                 element={<TextAreaField form={form} name="alert_manager_rules" placeholder="Alert manager rule" style={{ width: '100%' }} />}
                 alignLabel="top"
               />
