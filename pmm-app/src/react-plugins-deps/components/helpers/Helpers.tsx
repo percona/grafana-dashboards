@@ -45,7 +45,7 @@ interface PluginTooltipInterface {
   links: Link[];
 }
 
-export const PluginTooltip = ({ url, linkText, text, links }: PluginTooltipInterface) => {
+export const PluginTooltip = ({ text, links }: PluginTooltipInterface) => {
   return (
     <Tooltip
       placement="topLeft"
