@@ -7,6 +7,14 @@ class Validators {
     return 'Port should be a number and between the range of 0 and 65535';
   }
 
+  static validateRange(value, from, to) {
+    if (!value) {
+      return '';
+    }
+
+    return value > from && value < to ? '' : `Value should be in range from ${from} to ${to}`;
+  }
+
   static validateKeyValue(value) {
     if (
       value &&

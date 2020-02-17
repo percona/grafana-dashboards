@@ -2,11 +2,10 @@ import React, { ReactElement, useEffect, useState } from 'react';
 import { Collapse } from 'antd';
 import { Form as FormFinal } from 'react-final-form';
 import { useForm } from 'react-final-form-hooks';
-import { PluginTooltip } from '../../../react-plugins-deps/components/helpers/Helpers';
+import { PluginTooltip, VerticalFormWrapper } from '../../../react-plugins-deps/components/helpers/Helpers';
 import SettingsService from '../../Settings.service';
 import { showSuccessNotification } from '../../../react-plugins-deps/components/helpers/notification-manager';
 import { SliderField } from '../../../react-plugins-deps/components/FormComponents/Slider/Slider';
-import { SelectField } from '../../../react-plugins-deps/components/FormComponents/Select/Select';
 import { ToggleField } from '../../../react-plugins-deps/components/FormComponents/Toggle/Toggle';
 import { InputField } from '../../../react-plugins-deps/components/FormComponents/Input/Input';
 import ButtonElement from '../../../react-plugins-deps/components/FormComponents/Button/Button';
@@ -16,7 +15,6 @@ import { FormElement } from '../../../react-plugins-deps/components/FormComponen
 
 const { Panel } = Collapse;
 
-const dataRetentionOptions = [{ value: 'h', label: 'Hours' }, { value: 'm', label: 'Minutes' }, { value: 's', label: 'Seconds' }];
 const marks = {
   0: 'Low',
   1: 'Medium',
@@ -71,6 +69,19 @@ export const getMetricsResolutionValues = metricsResolutions => {
   return metricsIndex;
 };
 
+const transformToDays = (count, units) => {
+  switch (units) {
+    case 'h':
+      return count / 24;
+    case 'm':
+      return count / 60 / 24;
+    case 's':
+      return count / 60 / 60 / 24;
+    default:
+      return '';
+  }
+};
+
 interface MetricsResolutionInterface {
   lr: string;
   mr: string;
@@ -84,12 +95,23 @@ interface SettingsInterface {
   enable_telemetry?: boolean;
 }
 
+const validateSettingsForm = values => {
+  const errors = {} as any;
+
+  errors.data_retention_count = Validators.validateRange(values.data_retention_count, 0, 3651);
+  for (const propName in errors) {
+    if (!errors[propName]) {
+      delete errors[propName];
+    }
+  }
+  return errors;
+};
 const SettingsPart = props => {
   const [loading, setLoading] = useState(false);
   const { settings } = props;
   const onSubmit = async values => {
     const updatedSettings: SettingsInterface = {
-      data_retention: values.data_retention_count + values.data_retention_units,
+      data_retention: values.data_retention_count * 3600 * 24 + 's',
       metrics_resolutions: dataRetentionValues[values.metrics_resolutions_slider],
     };
 
@@ -112,7 +134,7 @@ const SettingsPart = props => {
       render={(): ReactElement => {
         const { form, handleSubmit } = useForm({
           onSubmit: onSubmit,
-          validate: () => undefined,
+          validate: validateSettingsForm,
         });
 
         useEffect(() => {
@@ -124,8 +146,7 @@ const SettingsPart = props => {
 
           form.initialize(
             Object.assign(settings, {
-              data_retention_count: count,
-              data_retention_units: units,
+              data_retention_count: transformToDays(count, units),
               metrics_resolutions_slider: sliderValue,
               updates_disabled: !settings.updates_disabled,
             })
@@ -136,7 +157,7 @@ const SettingsPart = props => {
         return (
           <form onSubmit={handleSubmit}>
             <>
-              <VerticalFormWrapper
+              <FormElement
                 label={'Metrics resolution'}
                 tooltip={
                   <PluginTooltip
@@ -164,7 +185,7 @@ const SettingsPart = props => {
               />
               <Collapse bordered={false} defaultActiveKey={['1']} onChange={() => {}} style={customCollapseStyle}>
                 <Panel header="Advanced settings " key="1" style={customPanelStyle}>
-                  <VerticalFormWrapper
+                  <FormElement
                     label={'Data retention'}
                     tooltip={
                       <PluginTooltip
@@ -178,20 +199,15 @@ const SettingsPart = props => {
                       />
                     }
                     element={
-                      <div style={{ display: 'flex', justifyContent: 'flex-start', width: '100%' }}>
-                        <InputField name={'data_retention_count'} form={form} wrapperStyle={{ width: '60%' }} />
-                        <SelectField
-                          form={form}
-                          name={'data_retention_units'}
-                          options={dataRetentionOptions}
-                          defaultValue={'weeks'}
-                          style={{ width: '40%' }}
-                        />
+                      <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', width: '100%' }}>
+                        <InputField name={'data_retention_count'} form={form} wrapperStyle={{ width: '100%' }} />
+                        <span style={{ marginLeft: '10px' }}>Days</span>
                       </div>
                     }
                   />
-                  <VerticalFormWrapper
+                  <FormElement
                     label={'Call home'}
+                    type={'horizontal'}
                     tooltip={
                       <PluginTooltip
                         links={[
@@ -205,8 +221,9 @@ const SettingsPart = props => {
                     }
                     element={<ToggleField form={form} name={'telemetry_enabled'} />}
                   />
-                  <VerticalFormWrapper
+                  <FormElement
                     label={'Check for updates'}
+                    type={'horizontal'}
                     tooltip={
                       <PluginTooltip
                         links={[

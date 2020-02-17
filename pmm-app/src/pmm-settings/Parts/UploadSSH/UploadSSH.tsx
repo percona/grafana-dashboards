@@ -1,12 +1,12 @@
-import {PluginTooltip} from '../../../react-plugins-deps/components/helpers/Helpers';
-import {TextAreaField} from '../../../react-plugins-deps/components/FormComponents/TextArea/TextArea';
-import React, {ReactElement, useEffect, useState} from 'react';
+import { PluginTooltip, VerticalFormWrapper } from '../../../react-plugins-deps/components/helpers/Helpers';
+import { TextAreaField } from '../../../react-plugins-deps/components/FormComponents/TextArea/TextArea';
+import React, { ReactElement, useEffect, useState } from 'react';
 import ButtonElement from '../../../react-plugins-deps/components/FormComponents/Button/Button';
-import {Form as FormFinal} from 'react-final-form';
-import {useForm} from 'react-final-form-hooks';
+import { Form as FormFinal } from 'react-final-form';
+import { useForm } from 'react-final-form-hooks';
 import SettingsService from '../../Settings.service';
-import {showSuccessNotification} from '../../../react-plugins-deps/components/helpers/notification-manager';
-import {FormElement} from '../../../react-plugins-deps/components/FormComponents/FormElement/FormElement';
+import { showSuccessNotification } from '../../../react-plugins-deps/components/helpers/notification-manager';
+import { FormElement } from '../../../react-plugins-deps/components/FormComponents/FormElement/FormElement';
 
 interface UploadSSHInterface {
   ssh_key: string;
@@ -41,7 +41,7 @@ const UploadSSH = props => {
         return (
           <form onSubmit={handleSubmit}>
             <>
-              <VerticalFormWrapper
+              <FormElement
                 label={'SSH key'}
                 tooltip={
                   <PluginTooltip

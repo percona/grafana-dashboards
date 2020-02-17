@@ -17,7 +17,7 @@ interface InputFieldInterface {
   readonly?: boolean;
 }
 
-export const InputField = ({ name, placeholder, required, form, style, wrapperStyle, readonly }: InputFieldInterface) => {
+export const InputField = ({ name, placeholder = '', required, form, style, wrapperStyle, readonly }: InputFieldInterface) => {
   // // @ts-ignore
   const { input, meta } = useField(name, form);
   return (
