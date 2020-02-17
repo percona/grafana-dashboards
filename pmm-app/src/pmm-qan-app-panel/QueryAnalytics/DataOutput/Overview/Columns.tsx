@@ -70,12 +70,19 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
             placement="left"
             overlayClassName={'overview-column-toolkit'}
             title={
-              <Card title={`${metric.humanizeName} details`} style={{ width: 'auto', backgroundColor: 'darkgray' }}>
+              <>
                 <List size="small" dataSource={tooltipData} renderItem={item => <List.Item>{`${item.header} : ${item.value}`}</List.Item>} />
                 {metricName === 'query_time' && <LatencyChart {...{ data: stats }} />}
                 <List size="small" dataSource={latencyTooltipData} renderItem={item => <List.Item>{`${item.header} : ${item.value}`}</List.Item>} />
-              </Card>
+              </>
             }
+            // title={
+            //   <Card title={`${metric.humanizeName} details`} style={{ width: 'auto', backgroundColor: 'darkgray' }}>
+            //     <List size="small" dataSource={tooltipData} renderItem={item => <List.Item>{`${item.header} : ${item.value}`}</List.Item>} />
+            //     {metricName === 'query_time' && <LatencyChart {...{ data: stats }} />}
+            //     <List size="small" dataSource={latencyTooltipData} renderItem={item => <List.Item>{`${item.header} : ${item.value}`}</List.Item>} />
+            //   </Card>
+            // }
           >
             <span className="summarize" style={{ marginLeft: 'auto' }}>
               {Humanize.transform(stats.qps || stats.sum_per_sec, 'number')}
