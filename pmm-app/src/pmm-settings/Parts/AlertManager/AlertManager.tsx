@@ -92,11 +92,11 @@ const AlertManager = props => {
                     text={'Alerting rules in the YAML configuration format'}
                   />
                 }
-                element={<TextAreaField form={form} name="alert_manager_rules" placeholder="Alert manager rule" style={{ width: '100%' }} />}
+                element={<TextAreaField form={form} name="alert_manager_rules" placeholder="Alertmanager rules" style={{ width: '100%' }} />}
                 alignLabel="top"
               />
               <ButtonElement loading={loading} text="Apply Alertmanager settings" />
-            </>
+            </>s
           </form>
         );
       }}
