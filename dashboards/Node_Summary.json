@@ -36,7 +36,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1576153355197,
+    "iteration": 1581443745756,
     "links": [
         {
             "icon": "doc",
@@ -223,7 +223,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "(node_time_seconds{node_name=~\"$node_name\"} - node_boot_time_seconds{node_name=~\"$node_name\"}) or (time() - node_boot_time_seconds{node_name=~\"$node_name\"})",
+                    "expr": "avg by (node_name) ((node_time_seconds{node_name=~\"$node_name\"} - node_boot_time_seconds{node_name=~\"$node_name\"}) or (time() - node_boot_time_seconds{node_name=~\"$node_name\"}))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "5m",
@@ -392,7 +392,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "avg_over_time(node_load1{node_name=~\"$node_name\"}[$interval]) or avg_over_time(node_load1{node_name=~\"$node_name\"}[5m])",
+                    "expr": "avg by (node_name) (avg_over_time(node_load1{node_name=~\"$node_name\"}[$interval]) or avg_over_time(node_load1{node_name=~\"$node_name\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -485,7 +485,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "sum(avg(node_filesystem_size_bytes{node_name=~\"$node_name\",fstype=~\"(ext.|xfs|vfat|)\"}) without (mountpoint)) without (device,fstype)",
+                    "expr": "avg by (node_name) (sum(avg(node_filesystem_size_bytes{node_name=~\"$node_name\",fstype=~\"(ext.|xfs|vfat|)\"}) without (mountpoint)) without (device,fstype))",
                     "format": "time_series",
                     "interval": "5m",
                     "intervalFactor": 1,
@@ -516,6 +516,7 @@
                 "#299c46"
             ],
             "datasource": "Prometheus",
+            "decimals": null,
             "description": "Lowest percent of the disk space available",
             "format": "percent",
             "gauge": {
@@ -565,13 +566,13 @@
                 "full": false,
                 "lineColor": "rgb(31, 120, 193)",
                 "show": true,
-                "ymax": null,
-                "ymin": null
+                "ymax": 100,
+                "ymin": 0
             },
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "min(node_filesystem_free_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay|squashfs\"}/node_filesystem_size_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay|squashfs\"})*100",
+                    "expr": "avg by (node_name) (min(node_filesystem_free_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay|squashfs\"}/node_filesystem_size_bytes{node_name=~\"$node_name\", fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs|shm|overlay|squashfs\"})*100)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -743,7 +744,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "node_memory_MemTotal_bytes{node_name=~\"$node_name\"}",
+                    "expr": "avg by (node_name) (node_memory_MemTotal_bytes{node_name=~\"$node_name\"})",
                     "format": "time_series",
                     "interval": "5m",
                     "intervalFactor": 1,
@@ -829,7 +830,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "((node_memory_MemAvailable_bytes{node_name=~\"$node_name\"} or (node_memory_MemFree_bytes{node_name=~\"$node_name\"} + node_memory_Buffers_bytes{node_name=~\"$node_name\"} + node_memory_Cached_bytes{node_name=~\"$node_name\"})) / node_memory_MemTotal_bytes{node_name=~\"$node_name\"}) * 100",
+                    "expr": "avg by (node_name) (((node_memory_MemAvailable_bytes{node_name=~\"$node_name\"} or (node_memory_MemFree_bytes{node_name=~\"$node_name\"} + node_memory_Buffers_bytes{node_name=~\"$node_name\"} + node_memory_Cached_bytes{node_name=~\"$node_name\"})) / node_memory_MemTotal_bytes{node_name=~\"$node_name\"}) * 100)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -916,7 +917,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "(node_memory_MemTotal_bytes{node_name=~\"$node_name\"} + node_memory_SwapTotal_bytes{node_name=~\"$node_name\"})",
+                    "expr": "avg by (node_name) ((node_memory_MemTotal_bytes{node_name=~\"$node_name\"} + node_memory_SwapTotal_bytes{node_name=~\"$node_name\"}))",
                     "format": "time_series",
                     "interval": "5m",
                     "intervalFactor": 1,
@@ -1403,7 +1404,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "(avg_over_time(node_procs_running{node_name=~\"$node_name\"}[$interval])-1) / scalar(count(node_cpu_seconds_total{mode=\"user\", node_name=~\"$node_name\"})) or (avg_over_time(node_procs_running{node_name=~\"$node_name\"}[5m])-1) / scalar(count(node_cpu_seconds_total{mode=\"user\", node_name=~\"$node_name\"}))",
+                    "expr": "avg by (node_name) ((avg_over_time(node_procs_running{node_name=~\"$node_name\"}[$interval])-1) / scalar(count(node_cpu_seconds_total{mode=\"user\", node_name=~\"$node_name\"})) or (avg_over_time(node_procs_running{node_name=~\"$node_name\"}[5m])-1) / scalar(count(node_cpu_seconds_total{mode=\"user\", node_name=~\"$node_name\"})))",
                     "format": "time_series",
                     "hide": false,
                     "instant": false,
@@ -1430,7 +1431,7 @@
                     "target": ""
                 },
                 {
-                    "expr": "aws_rds_cpu_credit_usage_average{node_name=~\"$node_name\"}",
+                    "expr": "avg by (node_name) (aws_rds_cpu_credit_usage_average{node_name=~\"$node_name\"})",
                     "hide": false,
                     "interval": "$interval",
                     "legendFormat": "CPU Credits Usage",
@@ -1546,7 +1547,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(node_context_switches_total{node_name=~\"$node_name\"}[$interval]) or irate(node_context_switches_total{node_name=~\"$node_name\"}[5m])",
+                    "expr": "avg by (node_name) (rate(node_context_switches_total{node_name=~\"$node_name\"}[$interval]) or irate(node_context_switches_total{node_name=~\"$node_name\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1557,7 +1558,7 @@
                     "target": ""
                 },
                 {
-                    "expr": "(rate(node_context_switches_total{node_name=~\"$node_name\"}[$interval]) or irate(node_context_switches_total{node_name=~\"$node_name\"}[5m])) / scalar(count(node_cpu_seconds_total{mode=\"user\", node_name=~\"$node_name\"}))",
+                    "expr": "avg by (node_name) ((rate(node_context_switches_total{node_name=~\"$node_name\"}[$interval]) or irate(node_context_switches_total{node_name=~\"$node_name\"}[5m])) / scalar(count(node_cpu_seconds_total{mode=\"user\", node_name=~\"$node_name\"})))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1566,7 +1567,7 @@
                     "step": 60
                 },
                 {
-                    "expr": "rate(node_intr_total{node_name=~\"$node_name\"}[$interval]) or irate(node_intr_total{node_name=~\"$node_name\"}[5m])",
+                    "expr": "avg by (node_name) (rate(node_intr_total{node_name=~\"$node_name\"}[$interval]) or irate(node_intr_total{node_name=~\"$node_name\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1683,13 +1684,13 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "clamp_min((avg_over_time(node_procs_running{node_name=~\"$node_name\"}[$interval]) - 1) or (avg_over_time(node_procs_running{node_name=~\"$node_name\"}[5m]) -1),0)",
+                    "expr": "avg by (node_name) (clamp_min((avg_over_time(node_procs_running{node_name=~\"$node_name\"}[$interval]) - 1) or (avg_over_time(node_procs_running{node_name=~\"$node_name\"}[5m]) -1),0))",
                     "interval": "$interval",
                     "legendFormat": "Runnable Processes",
                     "refId": "A"
                 },
                 {
-                    "expr": "avg_over_time(node_procs_blocked{node_name=~\"$node_name\"}[$interval]) or avg_over_time(node_procs_blocked{node_name=~\"$node_name\"}[5m])",
+                    "expr": "avg by (node_name) (avg_over_time(node_procs_blocked{node_name=~\"$node_name\"}[$interval]) or avg_over_time(node_procs_blocked{node_name=~\"$node_name\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1697,7 +1698,7 @@
                     "refId": "B"
                 },
                 {
-                    "expr": "rate(node_forks_total{node_name=~\"$node_name\"}[$interval]) or irate(node_forks_total{node_name=~\"$node_name\"}[5m])",
+                    "expr": "avg by (node_name) (rate(node_forks_total{node_name=~\"$node_name\"}[$interval]) or irate(node_forks_total{node_name=~\"$node_name\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1825,7 +1826,6 @@
                     "alias": "Total",
                     "color": "#C4162A",
                     "fill": 0,
-                    "points": true,
                     "stack": false
                 }
             ],
@@ -1834,7 +1834,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "max_over_time(node_memory_MemTotal_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_MemTotal_bytes{node_name=~\"$node_name\"}[5m])",
+                    "expr": "avg by (node_name) (max_over_time(node_memory_MemTotal_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_MemTotal_bytes{node_name=~\"$node_name\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1845,7 +1845,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "max_over_time(node_memory_MemFree_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_MemFree_bytes{node_name=~\"$node_name\"}[5m])",
+                    "expr": "avg by (node_name) (max_over_time(node_memory_MemFree_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_MemFree_bytes{node_name=~\"$node_name\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1859,7 +1859,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "max_over_time(node_memory_Buffers_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_Buffers_bytes{node_name=~\"$node_name\"}[5m])",
+                    "expr": "avg by (node_name) (max_over_time(node_memory_Buffers_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_Buffers_bytes{node_name=~\"$node_name\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1873,7 +1873,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "((max_over_time(node_memory_MemTotal_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_MemTotal_bytes{node_name=~\"$node_name\"}[5m])) - ((max_over_time(node_memory_MemFree_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_MemFree_bytes{node_name=~\"$node_name\"}[5m]))+ \n(max_over_time(node_memory_Buffers_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_Buffers_bytes{node_name=~\"$node_name\"}[5m])) + \n(max_over_time(node_memory_Cached_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_Cached_bytes{node_name=~\"$node_name\"}[5m]))))",
+                    "expr": "avg by (node_name) (((max_over_time(node_memory_MemTotal_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_MemTotal_bytes{node_name=~\"$node_name\"}[5m])) - ((max_over_time(node_memory_MemFree_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_MemFree_bytes{node_name=~\"$node_name\"}[5m]))+ \n(max_over_time(node_memory_Buffers_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_Buffers_bytes{node_name=~\"$node_name\"}[5m])) + \n(max_over_time(node_memory_Cached_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_Cached_bytes{node_name=~\"$node_name\"}[5m])))))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -1885,7 +1885,7 @@
                     "target": ""
                 },
                 {
-                    "expr": "max(max_over_time(node_memory_Cached_bytes{node_name=~\"$node_name\",job=~\"rds.*|node.*\"}[$interval]) or max_over_time(node_memory_Cached_bytes{node_name=~\"$node_name\",job=~\"rds.*|node.*\"}[5m])) without (job)",
+                    "expr": "avg by (node_name) (max(max_over_time(node_memory_Cached_bytes{node_name=~\"$node_name\",job=~\"rds.*|node.*\"}[$interval]) or max_over_time(node_memory_Cached_bytes{node_name=~\"$node_name\",job=~\"rds.*|node.*\"}[5m])) without (job))",
                     "interval": "$interval",
                     "legendFormat": "Cache",
                     "refId": "F"
@@ -2011,7 +2011,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "((max_over_time(node_memory_MemTotal_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_MemTotal_bytes{node_name=~\"$node_name\"}[5m])) + \n(max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$node_name\"}[5m])))",
+                    "expr": "avg by (node_name) (((max_over_time(node_memory_MemTotal_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_MemTotal_bytes{node_name=~\"$node_name\"}[5m])) + \n(max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$node_name\"}[5m]))))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -2026,7 +2026,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "(((max_over_time(node_memory_MemAvailable_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_MemAvailable_bytes{node_name=~\"$node_name\"}[5m])) or \n((max_over_time(node_memory_MemFree_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_MemFree_bytes{node_name=~\"$node_name\"}[5m]))+ \n(max_over_time(node_memory_Buffers_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_Buffers_bytes{node_name=~\"$node_name\"}[5m]))+ \n(max_over_time(node_memory_Cached_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_Cached_bytes{node_name=~\"$node_name\"}[5m])))) + \n(max_over_time(node_memory_SwapFree_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_SwapFree_bytes{node_name=~\"$node_name\"}[5m])))",
+                    "expr": "avg by (node_name) ((((max_over_time(node_memory_MemAvailable_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_MemAvailable_bytes{node_name=~\"$node_name\"}[5m])) or \n((max_over_time(node_memory_MemFree_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_MemFree_bytes{node_name=~\"$node_name\"}[5m]))+ \n(max_over_time(node_memory_Buffers_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_Buffers_bytes{node_name=~\"$node_name\"}[5m]))+ \n(max_over_time(node_memory_Cached_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_Cached_bytes{node_name=~\"$node_name\"}[5m])))) + \n(max_over_time(node_memory_SwapFree_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_SwapFree_bytes{node_name=~\"$node_name\"}[5m]))))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -2038,7 +2038,7 @@
                     "target": ""
                 },
                 {
-                    "expr": "(max_over_time(node_memory_MemTotal_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_MemTotal_bytes{node_name=~\"$node_name\"}[5m])) + \n(max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$node_name\"}[5m])) - \n((max_over_time(node_memory_MemAvailable_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_MemAvailable_bytes{node_name=~\"$node_name\"}[5m])) or \n((max_over_time(node_memory_MemFree_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_MemFree_bytes{node_name=~\"$node_name\"}[5m]))+ \n(max_over_time(node_memory_Buffers_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_Buffers_bytes{node_name=~\"$node_name\"}[5m]))+ \n(max_over_time(node_memory_Cached_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_Cached_bytes{node_name=~\"$node_name\"}[5m]))) + \n(max_over_time(node_memory_SwapFree_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_SwapFree_bytes{node_name=~\"$node_name\"}[5m])))",
+                    "expr": "avg by (node_name) ((max_over_time(node_memory_MemTotal_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_MemTotal_bytes{node_name=~\"$node_name\"}[5m])) + \n(max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$node_name\"}[5m])) - \n((max_over_time(node_memory_MemAvailable_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_MemAvailable_bytes{node_name=~\"$node_name\"}[5m])) or \n((max_over_time(node_memory_MemFree_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_MemFree_bytes{node_name=~\"$node_name\"}[5m]))+ \n(max_over_time(node_memory_Buffers_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_Buffers_bytes{node_name=~\"$node_name\"}[5m]))+ \n(max_over_time(node_memory_Cached_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_Cached_bytes{node_name=~\"$node_name\"}[5m]))) + \n(max_over_time(node_memory_SwapFree_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_SwapFree_bytes{node_name=~\"$node_name\"}[5m]))))",
                     "interval": "$interval",
                     "legendFormat": "Used",
                     "refId": "D"
@@ -2157,7 +2157,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "(max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$node_name\"}[5m])) -\n(max_over_time(node_memory_SwapFree_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_SwapFree_bytes{node_name=~\"$node_name\"}[5m]))",
+                    "expr": "avg by (node_name) ((max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$node_name\"}[5m])) -\n(max_over_time(node_memory_SwapFree_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_SwapFree_bytes{node_name=~\"$node_name\"}[5m])))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2171,7 +2171,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "max_over_time(node_memory_SwapFree_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_SwapFree_bytes{node_name=~\"$node_name\"}[5m])",
+                    "expr": "avg by (node_name) (max_over_time(node_memory_SwapFree_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_SwapFree_bytes{node_name=~\"$node_name\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2182,7 +2182,7 @@
                     "target": ""
                 },
                 {
-                    "expr": "max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$node_name\"}[5m])",
+                    "expr": "avg by (node_name) (max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$node_name\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2307,7 +2307,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(node_vmstat_pswpin{node_name=~\"$node_name\"}[$interval]) * 4096 or irate(node_vmstat_pswpin{node_name=~\"$node_name\"}[5m]) * 4096",
+                    "expr": "avg by (node_name) (rate(node_vmstat_pswpin{node_name=~\"$node_name\"}[$interval]) * 4096 or irate(node_vmstat_pswpin{node_name=~\"$node_name\"}[5m]) * 4096)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2321,7 +2321,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(node_vmstat_pswpout{node_name=~\"$node_name\"}[$interval]) * 4096 or irate(node_vmstat_pswpout{node_name=~\"$node_name\"}[5m]) * 4096",
+                    "expr": "avg by (node_name) (rate(node_vmstat_pswpout{node_name=~\"$node_name\"}[$interval]) * 4096 or irate(node_vmstat_pswpout{node_name=~\"$node_name\"}[5m]) * 4096)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2332,7 +2332,7 @@
                     "target": ""
                 },
                 {
-                    "expr": "(rate(node_vmstat_pswpin{node_name=~\"$node_name\"}[$interval]) * 4096 or irate(node_vmstat_pswpin{node_name=~\"$node_name\"}[5m]) * 4096) + (rate(node_vmstat_pswpout{node_name=~\"$node_name\"}[$interval]) * 4096 or irate(node_vmstat_pswpout{node_name=~\"$node_name\"}[5m]) * 4096)",
+                    "expr": "avg by (node_name) ((rate(node_vmstat_pswpin{node_name=~\"$node_name\"}[$interval]) * 4096 or irate(node_vmstat_pswpin{node_name=~\"$node_name\"}[5m]) * 4096) + (rate(node_vmstat_pswpout{node_name=~\"$node_name\"}[$interval]) * 4096 or irate(node_vmstat_pswpout{node_name=~\"$node_name\"}[5m]) * 4096))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2475,7 +2475,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(node_vmstat_pgpgin{node_name=~\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=~\"$node_name\"}[5m]) * 1024 or\n(max_over_time(rdsosmetrics_diskIO_readKbPS{node_name=~\"$node_name\"}[$interval]) or max_over_time(rdsosmetrics_diskIO_readKbPS{node_name=~\"$node_name\"}[5m])) * 1024",
+                    "expr": "avg by (node_name) (rate(node_vmstat_pgpgin{node_name=~\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=~\"$node_name\"}[5m]) * 1024 or\n(max_over_time(rdsosmetrics_diskIO_readKbPS{node_name=~\"$node_name\"}[$interval]) or max_over_time(rdsosmetrics_diskIO_readKbPS{node_name=~\"$node_name\"}[5m])) * 1024)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2489,7 +2489,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "(rate(node_vmstat_pgpgout{node_name=~\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=~\"$node_name\"}[5m]) * 1024) or\n(max_over_time(rdsosmetrics_diskIO_writeKbPS{node_name=~\"$node_name\"}[$interval]) or max_over_time(rdsosmetrics_diskIO_writeKbPS{node_name=~\"$node_name\"}[5m])) * 1024",
+                    "expr": "avg by (node_name) ((rate(node_vmstat_pgpgout{node_name=~\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=~\"$node_name\"}[5m]) * 1024) or\n(max_over_time(rdsosmetrics_diskIO_writeKbPS{node_name=~\"$node_name\"}[$interval]) or max_over_time(rdsosmetrics_diskIO_writeKbPS{node_name=~\"$node_name\"}[5m])) * 1024)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2500,7 +2500,7 @@
                     "target": ""
                 },
                 {
-                    "expr": "(rate(node_vmstat_pgpgin{node_name=~\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=~\"$node_name\"}[5m]) * 1024 ) + (rate(node_vmstat_pgpgout{node_name=~\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=~\"$node_name\"}[5m]) * 1024) or\n((max_over_time(rdsosmetrics_diskIO_writeKbPS{node_name=~\"$node_name\"}[$interval]) or max_over_time(rdsosmetrics_diskIO_writeKbPS{node_name=~\"$node_name\"}[5m])) +\n(max_over_time(rdsosmetrics_diskIO_readKbPS{node_name=~\"$node_name\"}[$interval]) or max_over_time(rdsosmetrics_diskIO_readKbPS{node_name=~\"$node_name\"}[5m])))* 1024",
+                    "expr": "avg by (node_name) ((rate(node_vmstat_pgpgin{node_name=~\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=~\"$node_name\"}[5m]) * 1024 ) + (rate(node_vmstat_pgpgout{node_name=~\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=~\"$node_name\"}[5m]) * 1024) or\n((max_over_time(rdsosmetrics_diskIO_writeKbPS{node_name=~\"$node_name\"}[$interval]) or max_over_time(rdsosmetrics_diskIO_writeKbPS{node_name=~\"$node_name\"}[5m])) +\n(max_over_time(rdsosmetrics_diskIO_readKbPS{node_name=~\"$node_name\"}[$interval]) or max_over_time(rdsosmetrics_diskIO_readKbPS{node_name=~\"$node_name\"}[5m])))* 1024)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2619,7 +2619,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "max_over_time(node_filefd_maximum{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_filefd_maximum{node_name=~\"$node_name\"}[5m])",
+                    "expr": "avg by (node_name) (max_over_time(node_filefd_maximum{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_filefd_maximum{node_name=~\"$node_name\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2633,7 +2633,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "max_over_time(node_filefd_allocated{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_filefd_allocated{node_name=~\"$node_name\"}[5m])",
+                    "expr": "avg by (node_name) (max_over_time(node_filefd_allocated{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_filefd_allocated{node_name=~\"$node_name\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2760,7 +2760,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "(sum(rate(node_disk_read_time_seconds_total{node_name=~\"$node_name\"}[$interval])) / sum(rate(node_disk_reads_completed_total{node_name=~\"$node_name\"}[$interval]))) or (sum(irate(node_disk_read_time_seconds_total{node_name=~\"$node_name\"}[5m])) / sum(irate(node_disk_reads_completed_total{node_name=~\"$node_name\"}[5m])))\nor avg_over_time(aws_rds_read_latency_average{node_name=~\"$node_name\"}[$interval])/1000 or avg_over_time(aws_rds_read_latency_average{node_name=~\"$node_name\"}[5m])/1000 or\navg_over_time(rdsosmetrics_diskIO_readLatency{node_name=~\"$node_name\"}[$interval])/1000 or avg_over_time(rdsosmetrics_diskIO_readLatency{node_name=~\"$node_name\"}[5m])/1000",
+                    "expr": "avg by (node_name) ((sum(rate(node_disk_read_time_seconds_total{node_name=~\"$node_name\"}[$interval])) / sum(rate(node_disk_reads_completed_total{node_name=~\"$node_name\"}[$interval]))) or (sum(irate(node_disk_read_time_seconds_total{node_name=~\"$node_name\"}[5m])) / sum(irate(node_disk_reads_completed_total{node_name=~\"$node_name\"}[5m])))\nor avg_over_time(aws_rds_read_latency_average{node_name=~\"$node_name\"}[$interval])/1000 or avg_over_time(aws_rds_read_latency_average{node_name=~\"$node_name\"}[5m])/1000 or\navg_over_time(rdsosmetrics_diskIO_readLatency{node_name=~\"$node_name\"}[$interval])/1000 or avg_over_time(rdsosmetrics_diskIO_readLatency{node_name=~\"$node_name\"}[5m])/1000)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2768,7 +2768,7 @@
                     "refId": "A"
                 },
                 {
-                    "expr": "(sum(rate(node_disk_write_time_seconds_total{node_name=~\"$node_name\"}[$interval])) / sum(rate(node_disk_writes_completed_total{node_name=~\"$node_name\"}[$interval]))) or (sum(irate(node_disk_write_time_seconds_total{node_name=~\"$node_name\"}[5m])) / sum(irate(node_disk_writes_completed_total{node_name=~\"$node_name\"}[5m])))\nor (avg_over_time(aws_rds_write_latency_average{node_name=~\"$node_name\"}[$interval])/1000 or avg_over_time(aws_rds_write_latency_average{node_name=~\"$node_name\"}[5m])/1000) or\n(avg_over_time(rdsosmetrics_diskIO_writeLatency{node_name=~\"$node_name\"}[$interval]) or avg_over_time(rdsosmetrics_diskIO_writeLatency{node_name=~\"$node_name\"}[5m]))/1000",
+                    "expr": "avg by (node_name) ((sum(rate(node_disk_write_time_seconds_total{node_name=~\"$node_name\"}[$interval])) / sum(rate(node_disk_writes_completed_total{node_name=~\"$node_name\"}[$interval]))) or (sum(irate(node_disk_write_time_seconds_total{node_name=~\"$node_name\"}[5m])) / sum(irate(node_disk_writes_completed_total{node_name=~\"$node_name\"}[5m])))\nor (avg_over_time(aws_rds_write_latency_average{node_name=~\"$node_name\"}[$interval])/1000 or avg_over_time(aws_rds_write_latency_average{node_name=~\"$node_name\"}[5m])/1000) or\n(avg_over_time(rdsosmetrics_diskIO_writeLatency{node_name=~\"$node_name\"}[$interval]) or avg_over_time(rdsosmetrics_diskIO_writeLatency{node_name=~\"$node_name\"}[5m]))/1000)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2776,7 +2776,7 @@
                     "refId": "B"
                 },
                 {
-                    "expr": "(sum(rate(node_disk_read_time_seconds_total{node_name=~\"$node_name\"}[1h])) / sum(rate(node_disk_reads_completed_total{node_name=~\"$node_name\"}[1h])))\nor avg_over_time(aws_rds_read_latency_average{node_name=~\"$node_name\"}[1h])/1000 or avg_over_time(aws_rds_read_latency_average{node_name=~\"$node_name\"}[1h])/1000 or\navg_over_time(rdsosmetrics_diskIO_readLatency{node_name=~\"$node_name\"}[1h])/1000 or avg_over_time(rdsosmetrics_diskIO_readLatency{node_name=~\"$node_name\"}[1h])/1000",
+                    "expr": "avg by (node_name) ((sum(rate(node_disk_read_time_seconds_total{node_name=~\"$node_name\"}[1h])) / sum(rate(node_disk_reads_completed_total{node_name=~\"$node_name\"}[1h])))\nor avg_over_time(aws_rds_read_latency_average{node_name=~\"$node_name\"}[1h])/1000 or avg_over_time(aws_rds_read_latency_average{node_name=~\"$node_name\"}[1h])/1000 or\navg_over_time(rdsosmetrics_diskIO_readLatency{node_name=~\"$node_name\"}[1h])/1000 or avg_over_time(rdsosmetrics_diskIO_readLatency{node_name=~\"$node_name\"}[1h])/1000)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2784,7 +2784,7 @@
                     "refId": "C"
                 },
                 {
-                    "expr": "(sum(rate(node_disk_write_time_seconds_total{node_name=~\"$node_name\"}[1h])) / sum(rate(node_disk_writes_completed_total{node_name=~\"$node_name\"}[1h]))) \nor (avg_over_time(aws_rds_write_latency_average{node_name=~\"$node_name\"}[$interval])/1000 or avg_over_time(aws_rds_write_latency_average{node_name=~\"$node_name\"}[1h])/1000) or\n(avg_over_time(rdsosmetrics_diskIO_writeLatency{node_name=~\"$node_name\"}[$interval])/1000 or avg_over_time(rdsosmetrics_diskIO_writeLatency{node_name=~\"$node_name\"}[1h])/1000)",
+                    "expr": "avg by (node_name) ((sum(rate(node_disk_write_time_seconds_total{node_name=~\"$node_name\"}[1h])) / sum(rate(node_disk_writes_completed_total{node_name=~\"$node_name\"}[1h]))) \nor (avg_over_time(aws_rds_write_latency_average{node_name=~\"$node_name\"}[$interval])/1000 or avg_over_time(aws_rds_write_latency_average{node_name=~\"$node_name\"}[1h])/1000) or\n(avg_over_time(rdsosmetrics_diskIO_writeLatency{node_name=~\"$node_name\"}[$interval])/1000 or avg_over_time(rdsosmetrics_diskIO_writeLatency{node_name=~\"$node_name\"}[1h])/1000))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2915,7 +2915,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "sum(rate(node_disk_read_time_seconds_total{node_name=~\"$node_name\"}[$interval])) or sum(irate(node_disk_read_time_seconds_total{node_name=~\"$node_name\"}[5m])) or\n(sum(rdsosmetrics_diskIO_readIOsPS{node_name=~\"$node_name\"}))",
+                    "expr": "avg by (node_name) (sum(rate(node_disk_read_time_seconds_total{node_name=~\"$node_name\"}[$interval])) or sum(irate(node_disk_read_time_seconds_total{node_name=~\"$node_name\"}[5m])) or\n(sum(rdsosmetrics_diskIO_readIOsPS{node_name=~\"$node_name\"})))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2929,7 +2929,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "sum(rate(node_disk_write_time_seconds_total{node_name=~\"$node_name\"}[$interval])) or sum(irate(node_disk_write_time_seconds_total{node_name=~\"$node_name\"}[5m])) or (sum(rdsosmetrics_diskIO_writeIOsPS{node_name=~\"$node_name\"}))",
+                    "expr": "avg by (node_name) (sum(rate(node_disk_write_time_seconds_total{node_name=~\"$node_name\"}[$interval])) or sum(irate(node_disk_write_time_seconds_total{node_name=~\"$node_name\"}[5m])) or (sum(rdsosmetrics_diskIO_writeIOsPS{node_name=~\"$node_name\"})))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2940,7 +2940,7 @@
                     "target": ""
                 },
                 {
-                    "expr": "(sum(rate(node_disk_read_time_seconds_total{node_name=~\"$node_name\"}[$interval])) or sum(irate(node_disk_read_time_seconds_total{node_name=~\"$node_name\"}[5m]))) + (sum(rate(node_disk_write_time_seconds_total{node_name=~\"$node_name\"}[$interval])) or sum(irate(node_disk_write_time_seconds_total{node_name=~\"$node_name\"}[5m]))) or\n(sum(rdsosmetrics_diskIO_writeIOsPS{node_name=~\"$node_name\"})) +  (sum(rdsosmetrics_diskIO_readIOsPS{node_name=~\"$node_name\"}))",
+                    "expr": "avg by (node_name) ((sum(rate(node_disk_read_time_seconds_total{node_name=~\"$node_name\"}[$interval])) or sum(irate(node_disk_read_time_seconds_total{node_name=~\"$node_name\"}[5m]))) + (sum(rate(node_disk_write_time_seconds_total{node_name=~\"$node_name\"}[$interval])) or sum(irate(node_disk_write_time_seconds_total{node_name=~\"$node_name\"}[5m]))) or\n(sum(rdsosmetrics_diskIO_writeIOsPS{node_name=~\"$node_name\"})) +  (sum(rdsosmetrics_diskIO_readIOsPS{node_name=~\"$node_name\"})))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -3498,7 +3498,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(node_netstat_Tcp_RetransSegs{node_name=~\"$node_name\"}[$interval]) or irate(node_netstat_Tcp_RetransSegs{node_name=~\"$node_name\"}[5m])",
+                    "expr": "avg by (node_name) (rate(node_netstat_Tcp_RetransSegs{node_name=~\"$node_name\"}[$interval]) or irate(node_netstat_Tcp_RetransSegs{node_name=~\"$node_name\"}[5m]))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -3510,7 +3510,7 @@
                     "target": ""
                 },
                 {
-                    "expr": "rate(node_netstat_Tcp_RetransSegs{node_name=~\"$node_name\"}[$interval])/rate(node_netstat_Tcp_OutSegs{node_name=~\"$node_name\"}[$interval]) or irate(node_netstat_Tcp_RetransSegs{node_name=~\"$node_name\"}[5m])/irate(node_netstat_Tcp_OutSegsSegs{node_name=~\"$node_name\"}[5m])",
+                    "expr": "avg by (node_name) (rate(node_netstat_Tcp_RetransSegs{node_name=~\"$node_name\"}[$interval])/rate(node_netstat_Tcp_OutSegs{node_name=~\"$node_name\"}[$interval]) or irate(node_netstat_Tcp_RetransSegs{node_name=~\"$node_name\"}[5m])/irate(node_netstat_Tcp_OutSegsSegs{node_name=~\"$node_name\"}[5m]))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",

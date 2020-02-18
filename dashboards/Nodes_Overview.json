@@ -36,7 +36,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1576503569138,
+    "iteration": 1581424849115,
     "links": [
         {
             "icon": "doc",
@@ -1315,7 +1315,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "max_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\"}[$interval])",
+                            "expr": "avg by (service_name) (max_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\"}[$interval]))",
                             "format": "time_series",
                             "interval": "",
                             "intervalFactor": 1,
@@ -1323,7 +1323,7 @@
                             "refId": "A"
                         },
                         {
-                            "expr": "max_over_time(mongodb_connections{service_name=~\"$service_name\",state=\"current\"}[$interval])",
+                            "expr": "avg by (service_name) (max_over_time(mongodb_connections{service_name=~\"$service_name\",state=\"current\"}[$interval]))",
                             "format": "time_series",
                             "intervalFactor": 1,
                             "legendFormat": "MongoDB - {{service_name}}",
@@ -1419,7 +1419,9 @@
                 "fillColor": "rgba(31, 118, 189, 0.18)",
                 "full": false,
                 "lineColor": "rgb(31, 120, 193)",
-                "show": true
+                "show": true,
+                "ymax": 100,
+                "ymin": 0
             },
             "tableColumn": "",
             "targets": [
@@ -1504,7 +1506,9 @@
                 "fillColor": "rgba(31, 118, 189, 0.18)",
                 "full": false,
                 "lineColor": "rgb(31, 120, 193)",
-                "show": true
+                "show": true,
+                "ymax": 100,
+                "ymin": 0
             },
             "tableColumn": "",
             "targets": [
@@ -1590,7 +1594,9 @@
                 "fillColor": "rgba(31, 118, 189, 0.18)",
                 "full": false,
                 "lineColor": "rgb(31, 120, 193)",
-                "show": true
+                "show": true,
+                "ymax": 100,
+                "ymin": 0
             },
             "tableColumn": "",
             "targets": [
@@ -3196,7 +3202,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "topk(5,rate(node_context_switches_total{node_name=~\"$node_name\"}[$interval]) or irate(node_context_switches_total{node_name=~\"$node_name\"}[5m]))",
+                            "expr": "topk(5,avg by (node_name) (rate(node_context_switches_total{node_name=~\"$node_name\"}[$interval]) or irate(node_context_switches_total{node_name=~\"$node_name\"}[5m])))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -3553,7 +3559,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "rate(node_context_switches_total{node_name=~\"$node_name\"}[$interval]) or irate(node_context_switches_total{node_name=~\"$node_name\"}[5m])",
+                            "expr": "avg by (node_name) (rate(node_context_switches_total{node_name=~\"$node_name\"}[$interval]) or irate(node_context_switches_total{node_name=~\"$node_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3643,7 +3649,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "topk(5,clamp_min((avg_over_time(node_procs_running{node_name=~\"$node_name\"}[$interval]) - 1) or (avg_over_time(node_procs_running{node_name=~\"$node_name\"}[5m]) -1),0))",
+                            "expr": "topk(5,clamp_min(avg by (node_name) ((avg_over_time(node_procs_running{node_name=~\"$node_name\"}[$interval]) - 1) or (avg_over_time(node_procs_running{node_name=~\"$node_name\"}[5m]) -1)),0))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3817,7 +3823,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "clamp_min((avg_over_time(node_procs_running{node_name=~\"$node_name\"}[$interval]) - 1) or \n(avg_over_time(node_procs_running{node_name=~\"$node_name\"}[5m]) -1),0)",
+                            "expr": "clamp_min(avg by (node_name) ((avg_over_time(node_procs_running{node_name=~\"$node_name\"}[$interval]) - 1) or \n(avg_over_time(node_procs_running{node_name=~\"$node_name\"}[5m]) -1)),0)",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -3899,7 +3905,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "topk(5,(max_over_time(node_procs_blocked{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_procs_blocked{node_name=~\"$node_name\"}[5m])))",
+                            "expr": "topk(5,avg by (node_name) (max_over_time(node_procs_blocked{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_procs_blocked{node_name=~\"$node_name\"}[5m])))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4070,61 +4076,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "sum by (node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode!=\"idle\",mode!=\"iowait\"}[$interval]),1)) or \n(clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode!=\"idle\",mode!=\"iowait\"}[5m]),1)) )*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"total\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"total\"}[5m]))",
-                            "format": "time_series",
-                            "hide": true,
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "{{node_name}} - CPU  Usage",
-                            "refId": "A"
-                        },
-                        {
-                            "expr": "rate(node_context_switches_total{node_name=~\"$node_name\"}[$interval]) or irate(node_context_switches_total{node_name=~\"$node_name\"}[5m])",
-                            "format": "time_series",
-                            "hide": true,
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "{{node_name}} - Switches",
-                            "refId": "C"
-                        },
-                        {
-                            "expr": "rate(node_intr_total{node_name=~\"$node_name\"}[$interval]) or irate(node_intr_total{node_name=~\"$node_name\"}[5m])",
-                            "format": "time_series",
-                            "hide": true,
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "{{node_name}} - Interrupts",
-                            "refId": "B"
-                        },
-                        {
-                            "expr": "(avg_over_time(node_procs_running{node_name=~\"$node_name\"}[$interval])-1) / scalar(count(node_cpu_seconds_total{mode=\"user\", node_name=~\"$node_name\"})) or \n(avg_over_time(node_procs_running{node_name=~\"$node_name\"}[5m])-1) / scalar(count(node_cpu_seconds_total{mode=\"user\", node_name=~\"$node_name\"}))",
-                            "format": "time_series",
-                            "hide": true,
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "{{node_name}} - Saturation",
-                            "refId": "D"
-                        },
-                        {
-                            "expr": "(sum  by (node_name) ( (clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\",mode!=\"iowait\"}[$interval]),1)) or \n(clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\",mode!=\"iowait\"}[5m]),1)) ))",
-                            "format": "time_series",
-                            "hide": true,
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "{{node_name}} - Core Usage",
-                            "refId": "E"
-                        },
-                        {
-                            "expr": "(rate(node_forks_total{node_name=~\"$node_name\"}[$interval]) or irate(node_forks_total{node_name=~\"$node_name\"}[5m]))",
-                            "format": "time_series",
-                            "hide": true,
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "{{node_name}} - Forks",
-                            "refId": "F"
-                        },
-                        {
-                            "expr": "(max_over_time(node_procs_blocked{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_procs_blocked{node_name=~\"$node_name\"}[5m]))",
+                            "expr": "avg by (node_name) (max_over_time(node_procs_blocked{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_procs_blocked{node_name=~\"$node_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4213,7 +4165,9 @@
                 "fillColor": "rgba(31, 118, 189, 0.18)",
                 "full": false,
                 "lineColor": "rgb(31, 120, 193)",
-                "show": true
+                "show": true,
+                "ymax": 100,
+                "ymin": 0
             },
             "tableColumn": "",
             "targets": [
@@ -4299,7 +4253,9 @@
                 "fillColor": "rgba(31, 118, 189, 0.18)",
                 "full": false,
                 "lineColor": "rgb(31, 120, 193)",
-                "show": true
+                "show": true,
+                "ymax": 100,
+                "ymin": 0
             },
             "tableColumn": "",
             "targets": [
@@ -4776,16 +4732,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "clamp_max(((max_over_time(node_memory_MemFree_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_MemFree_bytes{node_name=~\"$node_name\"}[5m])) * 100 /\n(max_over_time(node_memory_MemTotal_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_MemTotal_bytes{node_name=~\"$node_name\"}[$interval]))),100)",
-                            "format": "time_series",
-                            "hide": true,
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "{{node_name}}",
-                            "refId": "A"
-                        },
-                        {
-                            "expr": "clamp_max((((max_over_time(node_memory_MemAvailable_bytes{node_name=~\"$node_name\"}[$interval]) or\nmax_over_time(node_memory_MemAvailable_bytes{node_name=~\"$node_name\"}[5m])) or \n(node_memory_MemFree_bytes{node_name=~\"$node_name\"} + \nnode_memory_Buffers_bytes{node_name=~\"$node_name\"} + \nnode_memory_Cached_bytes{node_name=~\"$node_name\"})) /\n(max_over_time(node_memory_MemTotal_bytes{node_name=~\"$node_name\"}[$interval]) or \nmax_over_time(node_memory_MemTotal_bytes{node_name=~\"$node_name\"}[$interval]))),1)",
+                            "expr": "clamp_max(avg by (node_name) ((((max_over_time(node_memory_MemAvailable_bytes{node_name=~\"$node_name\"}[$interval]) or\nmax_over_time(node_memory_MemAvailable_bytes{node_name=~\"$node_name\"}[5m])) or \n(node_memory_MemFree_bytes{node_name=~\"$node_name\"} + \nnode_memory_Buffers_bytes{node_name=~\"$node_name\"} + \nnode_memory_Cached_bytes{node_name=~\"$node_name\"})) /\n(max_over_time(node_memory_MemTotal_bytes{node_name=~\"$node_name\"}[$interval]) or \nmax_over_time(node_memory_MemTotal_bytes{node_name=~\"$node_name\"}[$interval])))),1)",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -4893,7 +4840,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "clamp_max(((node_memory_MemAvailable_bytes{node_name=~\"$node_name\"} or \n(node_memory_MemFree_bytes{node_name=~\"$node_name\"} + node_memory_Buffers_bytes{node_name=~\"$node_name\"} + node_memory_Cached_bytes{node_name=~\"$node_name\"})) + \nnode_memory_SwapFree_bytes{node_name=~\"$node_name\"} * 100) / \n(node_memory_MemTotal_bytes{node_name=~\"$node_name\"} + node_memory_SwapTotal_bytes{node_name=~\"$node_name\"}),100)",
+                            "expr": "clamp_max(avg by (node_name) (((node_memory_MemAvailable_bytes{node_name=~\"$node_name\"} or \n(node_memory_MemFree_bytes{node_name=~\"$node_name\"} + node_memory_Buffers_bytes{node_name=~\"$node_name\"} + node_memory_Cached_bytes{node_name=~\"$node_name\"})) + \nnode_memory_SwapFree_bytes{node_name=~\"$node_name\"} * 100) / \n(node_memory_MemTotal_bytes{node_name=~\"$node_name\"} + node_memory_SwapTotal_bytes{node_name=~\"$node_name\"})),100)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -5000,7 +4947,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "clamp_max(((max_over_time(node_memory_SwapFree_bytes{node_name=~\"$node_name\"}[$interval]) or \nmax_over_time(node_memory_SwapFree_bytes{node_name=~\"$node_name\"}[5m])) * 100) / \n(max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$node_name\"}[$interval]) or \nmax_over_time(node_memory_SwapTotal_bytes{node_name=~\"$node_name\"}[5m])),100)",
+                            "expr": "clamp_max(avg by (node_name) (((max_over_time(node_memory_SwapFree_bytes{node_name=~\"$node_name\"}[$interval]) or \nmax_over_time(node_memory_SwapFree_bytes{node_name=~\"$node_name\"}[5m])) * 100) / \n(max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$node_name\"}[$interval]) or \nmax_over_time(node_memory_SwapTotal_bytes{node_name=~\"$node_name\"}[5m]))),100)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -5089,7 +5036,7 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "topk(5,(node_memory_MemTotal_bytes{node_name=~\"$node_name\"} - \n(node_memory_MemFree_bytes{node_name=~\"$node_name\"} + node_memory_Buffers_bytes{node_name=~\"$node_name\"} + node_memory_Cached_bytes{node_name=~\"$node_name\"})))",
+                            "expr": "topk(5,avg by (node_name) (node_memory_MemTotal_bytes{node_name=~\"$node_name\"} - \n(node_memory_MemFree_bytes{node_name=~\"$node_name\"} + node_memory_Buffers_bytes{node_name=~\"$node_name\"} + node_memory_Cached_bytes{node_name=~\"$node_name\"})))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -5228,7 +5175,7 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "topk(5,(max_over_time(node_memory_MemFree_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_MemFree_bytes{node_name=~\"$node_name\"}[5m])))",
+                            "expr": "topk(5,avg by (node_name)(max_over_time(node_memory_MemFree_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_MemFree_bytes{node_name=~\"$node_name\"}[5m])))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -5367,7 +5314,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "topk(5,(node_memory_MemTotal_bytes{node_name=~\"$node_name\"} + node_memory_SwapTotal_bytes{node_name=~\"$node_name\"} - \n((node_memory_MemAvailable_bytes{node_name=~\"$node_name\"} or \n(node_memory_MemFree_bytes{node_name=~\"$node_name\"} + node_memory_Buffers_bytes{node_name=~\"$node_name\"} + node_memory_Cached_bytes{node_name=~\"$node_name\"})) + \nnode_memory_SwapFree_bytes{node_name=~\"$node_name\"})))",
+                            "expr": "topk(5,avg by (node_name)(node_memory_MemTotal_bytes{node_name=~\"$node_name\"} + node_memory_SwapTotal_bytes{node_name=~\"$node_name\"} - \n((node_memory_MemAvailable_bytes{node_name=~\"$node_name\"} or \n(node_memory_MemFree_bytes{node_name=~\"$node_name\"} + node_memory_Buffers_bytes{node_name=~\"$node_name\"} + node_memory_Cached_bytes{node_name=~\"$node_name\"})) + \nnode_memory_SwapFree_bytes{node_name=~\"$node_name\"})))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -5507,7 +5454,7 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "topk(5,((node_memory_MemAvailable_bytes{node_name=~\"$node_name\"} or \n(node_memory_MemFree_bytes{node_name=~\"$node_name\"} + node_memory_Buffers_bytes{node_name=~\"$node_name\"} + node_memory_Cached_bytes{node_name=~\"$node_name\"})) + \nnode_memory_SwapFree_bytes{node_name=~\"$node_name\"}))",
+                            "expr": "topk(5,avg by (node_name)((node_memory_MemAvailable_bytes{node_name=~\"$node_name\"} or \n(node_memory_MemFree_bytes{node_name=~\"$node_name\"} + node_memory_Buffers_bytes{node_name=~\"$node_name\"} + node_memory_Cached_bytes{node_name=~\"$node_name\"})) + \nnode_memory_SwapFree_bytes{node_name=~\"$node_name\"}))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -5643,7 +5590,7 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "topk(5,(node_memory_SwapTotal_bytes{node_name=~\"$node_name\"} - node_memory_SwapFree_bytes{node_name=~\"$node_name\"}))",
+                            "expr": "topk(5,avg by (node_name)(node_memory_SwapTotal_bytes{node_name=~\"$node_name\"} - node_memory_SwapFree_bytes{node_name=~\"$node_name\"}))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -5779,7 +5726,7 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "topk(5,(node_memory_SwapFree_bytes{node_name=~\"$node_name\"}))",
+                            "expr": "topk(5,avg by (node_name)(node_memory_SwapFree_bytes{node_name=~\"$node_name\"}))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -5914,7 +5861,7 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "topk(5,(rate(node_vmstat_pswpin{node_name=~\"$node_name\"}[$interval]) * 4096 or irate(node_vmstat_pswpin{node_name=~\"$node_name\"}[5m]) * 4096))",
+                            "expr": "topk(5,avg by (node_name)(rate(node_vmstat_pswpin{node_name=~\"$node_name\"}[$interval]) * 4096 or irate(node_vmstat_pswpin{node_name=~\"$node_name\"}[5m]) * 4096))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -6048,7 +5995,7 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "topk(5,(rate(node_vmstat_pswpout{node_name=~\"$node_name\"}[$interval]) * 4096 or irate(node_vmstat_pswpout{node_name=~\"$node_name\"}[5m]) * 4096))",
+                            "expr": "topk(5,avg by (node_name)(rate(node_vmstat_pswpout{node_name=~\"$node_name\"}[$interval]) * 4096 or irate(node_vmstat_pswpout{node_name=~\"$node_name\"}[5m]) * 4096))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -6186,7 +6133,9 @@
                 "fillColor": "rgba(31, 118, 189, 0.18)",
                 "full": false,
                 "lineColor": "rgb(31, 120, 193)",
-                "show": true
+                "show": true,
+                "ymax": 100,
+                "ymin": 0
             },
             "tableColumn": "",
             "targets": [
@@ -7811,7 +7760,7 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "topk(5,((rate(node_vmstat_pgpgin{node_name=~\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=~\"$node_name\"}[5m]) * 1024 ) + (rate(node_vmstat_pgpgout{node_name=~\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=~\"$node_name\"}[5m]) * 1024)) or \nsum by (node_name) (max_over_time(rdsosmetrics_diskIO_readKbPS{node_name=~\"$node_name\"}[$interval]) or max_over_time(rdsosmetrics_diskIO_readKbPS{node_name=~\"$node_name\"}[5m]) + max_over_time(rdsosmetrics_diskIO_writeKbPS{node_name=~\"$node_name\"}[$interval]) or max_over_time(rdsosmetrics_diskIO_writeKbPS{node_name=~\"$node_name\"}[5m])))",
+                            "expr": "topk(5,avg by (node_name)((rate(node_vmstat_pgpgin{node_name=~\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=~\"$node_name\"}[5m]) * 1024 ) + (rate(node_vmstat_pgpgout{node_name=~\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=~\"$node_name\"}[5m]) * 1024)) or \nsum by (node_name) (max_over_time(rdsosmetrics_diskIO_readKbPS{node_name=~\"$node_name\"}[$interval]) or max_over_time(rdsosmetrics_diskIO_readKbPS{node_name=~\"$node_name\"}[5m]) + max_over_time(rdsosmetrics_diskIO_writeKbPS{node_name=~\"$node_name\"}[$interval]) or max_over_time(rdsosmetrics_diskIO_writeKbPS{node_name=~\"$node_name\"}[5m])))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -8079,7 +8028,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "((rate(node_vmstat_pgpgin{node_name=~\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=~\"$node_name\"}[5m]) * 1024 ) + (rate(node_vmstat_pgpgout{node_name=~\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=~\"$node_name\"}[5m]) * 1024)) or \nsum by (node_name) (max_over_time(rdsosmetrics_diskIO_readKbPS{node_name=~\"$node_name\"}[$interval]) or max_over_time(rdsosmetrics_diskIO_readKbPS{node_name=~\"$node_name\"}[5m]) + max_over_time(rdsosmetrics_diskIO_writeKbPS{node_name=~\"$node_name\"}[$interval]) or max_over_time(rdsosmetrics_diskIO_writeKbPS{node_name=~\"$node_name\"}[5m]))",
+                            "expr": "avg by (node_name)((rate(node_vmstat_pgpgin{node_name=~\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=~\"$node_name\"}[5m]) * 1024 ) + (rate(node_vmstat_pgpgout{node_name=~\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=~\"$node_name\"}[5m]) * 1024)) or \nsum by (node_name) (max_over_time(rdsosmetrics_diskIO_readKbPS{node_name=~\"$node_name\"}[$interval]) or max_over_time(rdsosmetrics_diskIO_readKbPS{node_name=~\"$node_name\"}[5m]) + max_over_time(rdsosmetrics_diskIO_writeKbPS{node_name=~\"$node_name\"}[$interval]) or max_over_time(rdsosmetrics_diskIO_writeKbPS{node_name=~\"$node_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -8613,7 +8562,9 @@
                 "fillColor": "rgba(31, 118, 189, 0.18)",
                 "full": false,
                 "lineColor": "rgb(31, 120, 193)",
-                "show": true
+                "show": true,
+                "ymax": 100,
+                "ymin": 0
             },
             "tableColumn": "",
             "targets": [
@@ -9305,7 +9256,7 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "topk(5,(rate(node_netstat_Tcp_RetransSegs{node_name=~\"$node_name\"}[$interval]) or \nirate(node_netstat_Tcp_RetransSegs{node_name=~\"$node_name\"}[5m])))",
+                            "expr": "topk(5,avg by (node_name)(rate(node_netstat_Tcp_RetransSegs{node_name=~\"$node_name\"}[$interval]) or \nirate(node_netstat_Tcp_RetransSegs{node_name=~\"$node_name\"}[5m])))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -9554,43 +9505,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "(sum by (node_name) (rate(node_network_receive_bytes_total{node_name=~\"$node_name\", device!=\"lo\"}[$interval])) or \nsum by (node_name) (irate(node_network_receive_bytes_total{node_name=~\"$node_name\", device!=\"lo\"}[5m])) or \nsum by (node_name) (max_over_time(rdsosmetrics_network_rx{node_name=~\"$node_name\"}[$interval])) or \nsum by (node_name) (max_over_time(rdsosmetrics_network_rx{node_name=~\"$node_name\"}[5m])))",
-                            "format": "time_series",
-                            "hide": true,
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "{{node_name}}",
-                            "refId": "A"
-                        },
-                        {
-                            "expr": "(sum by (node_name) (rate(node_network_transmit_bytes_total{node_name=~\"$node_name\", device!=\"lo\"}[$interval])) or \nsum by (node_name) (irate(node_network_transmit_bytes_total{node_name=~\"$node_name\", device!=\"lo\"}[5m])) or\nsum by (node_name) (max_over_time(rdsosmetrics_network_tx{node_name=~\"$node_name\"}[$interval])) or \nsum by (node_name) (max_over_time(rdsosmetrics_network_tx{node_name=~\"$node_name\"}[5m])))",
-                            "format": "time_series",
-                            "hide": true,
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "{{node_name}} - Outbound",
-                            "refId": "B"
-                        },
-                        {
-                            "expr": "(sum by (node_name) (rate(node_network_receive_errs_total{node_name=~\"$node_name\", device!=\"lo\"}[$interval]) + rate(node_network_transmit_errs_total{node_name=~\"$node_name\", device!=\"lo\"}[$interval])) or \nsum by (node_name) (irate(node_network_receive_errs_total{node_name=~\"$node_name\", device!=\"lo\"}[5m]) + irate(node_network_transmit_errs_total{node_name=~\"$node_name\", device!=\"lo\"}[5m])))",
-                            "format": "time_series",
-                            "hide": true,
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "{{node_name}} - Errors",
-                            "refId": "C"
-                        },
-                        {
-                            "expr": "(sum by (node_name) (rate(node_network_receive_drop_total{node_name=~\"$node_name\", device!=\"lo\"}[$interval]) + \nrate(node_network_transmit_drop_total{node_name=~\"$node_name\", device!=\"lo\"}[$interval])) or\nsum by (node_name) (irate(node_network_receive_drop_total{node_name=~\"$node_name\", device!=\"lo\"}[5m]) + \nirate(node_network_transmit_drop_total{node_name=~\"$node_name\", device!=\"lo\"}[5m])))",
-                            "format": "time_series",
-                            "hide": true,
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "{{node_name}} - Local Drop",
-                            "refId": "D"
-                        },
-                        {
-                            "expr": "(rate(node_netstat_Tcp_RetransSegs{node_name=~\"$node_name\"}[$interval]) or \nirate(node_netstat_Tcp_RetransSegs{node_name=~\"$node_name\"}[5m]))",
+                            "expr": "avg by (node_name)(rate(node_netstat_Tcp_RetransSegs{node_name=~\"$node_name\"}[$interval]) or \nirate(node_netstat_Tcp_RetransSegs{node_name=~\"$node_name\"}[5m]))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
