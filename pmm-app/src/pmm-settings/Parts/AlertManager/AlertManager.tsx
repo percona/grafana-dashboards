@@ -57,7 +57,7 @@ const AlertManager = props => {
           <form onSubmit={handleSubmit}>
             <>
               <VerticalFormWrapper
-                label="AlertManager URL"
+                label="Alertmanager URL"
                 tooltip={
                   <PluginTooltip
                     links={[
@@ -76,7 +76,7 @@ const AlertManager = props => {
                 element={<InputField form={form} name="alert_manager_url" placeholder="Enter URL" style={{ width: '100%' }} />}
               />
               <VerticalFormWrapper
-                label="AlertManager rules"
+                label="Alertmanager rules"
                 tooltip={
                   <PluginTooltip
                     links={[
@@ -95,7 +95,7 @@ const AlertManager = props => {
                 element={<TextAreaField form={form} name="alert_manager_rules" placeholder="Alert manager rule" style={{ width: '100%' }} />}
                 alignLabel="top"
               />
-              <ButtonElement loading={loading} text="Apply AlertManager settings" />
+              <ButtonElement loading={loading} text="Apply Alertmanager settings" />
             </>
           </form>
         );

@@ -53,7 +53,7 @@ const SettingsPanel = () => {
                 <Panel header="SSH Key Details" key="2" style={customPanelStyle}>
                   <UploadSSH settings={settings} />
                 </Panel>
-                <Panel header="AlertManager integration" key="3" style={customPanelStyle}>
+                <Panel header="Alertmanager integration" key="3" style={customPanelStyle}>
                   <AlertManager settings={settings} />
                 </Panel>
                 <Panel header="Diagnostics" key="4" style={customPanelStyle}>
