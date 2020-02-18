@@ -48,6 +48,7 @@ const OverviewTable = props => {
     (record, rowIndex) => {
       return {
         onClick: () => {
+          console.log(rowIndex, record);
           dispatch({
             type: 'SELECT_QUERY',
             payload: {
@@ -102,7 +103,7 @@ const OverviewTable = props => {
       pagination={false}
       scroll={{ y: TABLE_Y_SCROLL, x: TABLE_X_SCROLL }}
       onRow={onRowClick}
-      rowClassName={record => (record.dimension === queryId ? 'selected-overview-row' : '')}
+      rowClassName={record => (record.dimension && record.dimension === queryId ? 'selected-overview-row' : '')}
       loading={loading}
     />
   );

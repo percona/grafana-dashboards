@@ -20,6 +20,7 @@ const GROUP_BY_OPTIONS = [
 ];
 
 const MAIN_METRIC_MIN_WIDTH = 470;
+const MAIN_METRIC_VALUE_WIDTH = 90;
 export const TABLE_X_SCROLL = 1250;
 export const TABLE_Y_SCROLL = 450;
 const COLUMN_WIDTH = 250;
@@ -38,7 +39,7 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
     key: metricName,
     defaultSortOrder: sortOrder,
     width: columnIndex === 0 ? COLUMN_WIDTH * 1.5 : COLUMN_WIDTH,
-    title: () => <ManageColumns placeholder={metricName} currentMetric={metric} />,
+    title: () => <ManageColumns placeholder={metricName} currentMetric={metric} width={'100%'} />,
     render: (text, item) => {
       const stats = item.metrics[metricName].stats;
       // @ts-ignore
@@ -61,7 +62,7 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
       ].filter(element => element.value);
 
       // @ts-ignore
-      const polygonChartProps = { width: 150, data: item.sparkline };
+      const polygonChartProps = { width: COLUMN_WIDTH * 1.5 - MAIN_METRIC_VALUE_WIDTH, data: item.sparkline };
       return (
         <div className={'overview-content-column'}>
           {columnIndex === 0 && <PolygonChart {...polygonChartProps} />}
@@ -76,13 +77,6 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
                 <List size="small" dataSource={latencyTooltipData} renderItem={item => <List.Item>{`${item.header} : ${item.value}`}</List.Item>} />
               </>
             }
-            // title={
-            //   <Card title={`${metric.humanizeName} details`} style={{ width: 'auto', backgroundColor: 'darkgray' }}>
-            //     <List size="small" dataSource={tooltipData} renderItem={item => <List.Item>{`${item.header} : ${item.value}`}</List.Item>} />
-            //     {metricName === 'query_time' && <LatencyChart {...{ data: stats }} />}
-            //     <List size="small" dataSource={latencyTooltipData} renderItem={item => <List.Item>{`${item.header} : ${item.value}`}</List.Item>} />
-            //   </Card>
-            // }
           >
             <span className="summarize" style={{ marginLeft: 'auto' }}>
               {Humanize.transform(stats.qps || stats.sum_per_sec, 'number')}
