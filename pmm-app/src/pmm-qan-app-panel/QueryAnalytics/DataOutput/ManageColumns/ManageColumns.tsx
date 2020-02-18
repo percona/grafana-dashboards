@@ -44,7 +44,7 @@ const ManageColumns = props => {
       <Select
         optionLabelProp="label"
         showSearch={true}
-        style={{ width: 160 }}
+        style={{ width: props.width || '160px' }}
         placeholder={!props.onlyAdd ? props.placeholder && METRIC_CATALOGUE[props.placeholder].humanizeName : 'Add column'}
         onChange={changeColumn}
         dropdownMatchSelectWidth={false}
