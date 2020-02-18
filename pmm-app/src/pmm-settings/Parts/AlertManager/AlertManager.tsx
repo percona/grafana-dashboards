@@ -62,7 +62,7 @@ const AlertManager = props => {
                   <PluginTooltip
                     links={[
                       {
-                        url: 'https://new.percona.com/doc/percona-monitoring-and-management/2.x/faq.html#how-to-integrate-alertmanager-with-pmm',
+                        url: 'https://percona.com/doc/percona-monitoring-and-management/2.x/faq.html#how-to-integrate-alertmanager-with-pmm',
                         text: 'How to integrate Alertmanager with PMM',
                       },
                       {
@@ -81,7 +81,7 @@ const AlertManager = props => {
                   <PluginTooltip
                     links={[
                       {
-                        url: 'https://new.percona.com/doc/percona-monitoring-and-management/2.x/faq.html#how-to-integrate-alertmanager-with-pmm',
+                        url: 'https://percona.com/doc/percona-monitoring-and-management/2.x/faq.html#how-to-integrate-alertmanager-with-pmm',
                         text: 'How to integrate Alertmanager with PMM',
                       },
                       {
