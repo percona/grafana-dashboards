@@ -1,4 +1,3 @@
-import { PluginTooltip, VerticalFormWrapper } from '../../../react-plugins-deps/components/helpers/Helpers';
 import { InputField } from '../../../react-plugins-deps/components/FormComponents/Input/Input';
 import { TextAreaField } from '../../../react-plugins-deps/components/FormComponents/TextArea/TextArea';
 import React, { ReactElement, useEffect, useState } from 'react';
@@ -8,7 +7,6 @@ import { useForm } from 'react-final-form-hooks';
 import SettingsService from '../../Settings.service';
 import { showSuccessNotification } from '../../../react-plugins-deps/components/helpers/notification-manager';
 import { FormElement } from '../../../react-plugins-deps/components/FormComponents/FormElement/FormElement';
-import { ToggleField } from '../../../react-plugins-deps/components/FormComponents/Toggle/Toggle';
 
 interface AlertManagerSettingsInterface {
   alert_manager_url: string;
