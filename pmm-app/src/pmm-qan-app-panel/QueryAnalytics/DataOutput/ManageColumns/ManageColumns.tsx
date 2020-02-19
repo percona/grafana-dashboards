@@ -1,7 +1,7 @@
-import React, { useCallback, useContext, useState } from 'react';
-import { Divider, Icon, Select } from 'antd';
-import { METRIC_CATALOGUE } from '../MetricCatalogue';
-import { StateContext } from '../../StateContext';
+import React, {useCallback, useContext} from 'react';
+import {Divider, Icon, Select} from 'antd';
+import {METRIC_CATALOGUE} from '../MetricCatalogue';
+import {StateContext} from '../../StateContext';
 import './ManageColumns.less';
 
 const { Option } = Select;
