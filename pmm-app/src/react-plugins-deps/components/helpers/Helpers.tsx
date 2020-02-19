@@ -35,22 +35,33 @@ export const VerticalFormWrapper = (props: VerticalFormWrapperInterface) => {
   );
 };
 
-interface PluginTooltipInterface {
+interface Link {
   url: string;
-  linkText: string;
   text: string;
 }
 
-export const PluginTooltip = ({ url, linkText, text }: PluginTooltipInterface) => {
+interface PluginTooltipInterface {
+  text: string;
+  links: Link[];
+}
+
+export const PluginTooltip = ({ text, links }: PluginTooltipInterface) => {
   return (
     <Tooltip
       placement="topLeft"
       title={
         <>
-          {text}{' '}
-          <a style={{ color: 'white', textDecoration: 'underline' }} href={url || ''} target="_blank" rel="noopener noreferrer">
-            {linkText || 'Read more'}
-          </a>
+          {text} <br />
+          {links.map(link => {
+            return (
+              <>
+                <a style={{ color: 'white', textDecoration: 'underline' }} href={link.url || ''} target="_blank" rel="noopener noreferrer">
+                  {link.text || 'Read more'}
+                </a>
+                <br />
+              </>
+            );
+          })}
         </>
       }
       style={{ background: 'deepskyblue' }}
