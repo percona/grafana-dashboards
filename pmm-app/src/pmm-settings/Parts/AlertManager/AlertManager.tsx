@@ -96,7 +96,7 @@ const AlertManager = props => {
                 alignLabel="top"
               />
               <ButtonElement loading={loading} text="Apply Alertmanager settings" />
-            </>s
+            </>
           </form>
         );
       }}
