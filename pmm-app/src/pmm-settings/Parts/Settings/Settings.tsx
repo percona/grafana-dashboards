@@ -12,6 +12,7 @@ import ButtonElement from '../../../react-plugins-deps/components/FormComponents
 import './Settings.scss';
 import Validators from '../../../react-plugins-deps/components/validators/validators';
 import { FormElement } from '../../../react-plugins-deps/components/FormComponents/FormElement/FormElement';
+import { css } from 'emotion';
 
 const { Panel } = Collapse;
 
@@ -21,22 +22,21 @@ const marks = {
   2: 'High',
 };
 
-const customPanelStyle = {
-  background: '#1f1d1d',
-  marginBottom: 10,
-  border: 1,
-  borderColor: 'white',
-  color: 'white',
-  textColor: 'white',
-};
-
-const customCollapseStyle = {
-  background: 'transparent',
-  marginBottom: 10,
-  border: 1,
-  borderColor: 'black',
-  color: 'white',
-  textColor: 'white',
+const style = {
+  panel: css`
+    background: #1f1d1d;
+    margin-bottom: 10;
+    border: none !important;
+    color: white;
+    text-color: white;
+  `,
+  collapse: css`
+    background: transparent;
+    margin-bottom: 10;
+    border: none !important;
+    color: white;
+    text-color: white;
+  `,
 };
 
 const dataRetentionValues: MetricsResolutionInterface[] = [
@@ -190,10 +190,10 @@ const SettingsPart = props => {
                   />
                 }
               />
-              <Collapse bordered={false} defaultActiveKey={['1']} onChange={() => {}} style={customCollapseStyle}>
-                <Panel header="Advanced settings " key="1" style={customPanelStyle}>
+              <Collapse bordered={false} defaultActiveKey={['1']} onChange={() => {}} className={style.collapse}>
+                <Panel header="Advanced settings " key="1" className={style.panel}>
                   <FormElement
-                    label={'Data retention'}
+                    label={'Data retention (In Days)'}
                     tooltip={
                       <PluginTooltip
                         links={[
@@ -205,12 +205,7 @@ const SettingsPart = props => {
                         text={'This is the value for how long data will be stored'}
                       />
                     }
-                    element={
-                      <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', width: '100%' }}>
-                        <InputField name={'data_retention_count'} form={form} wrapperStyle={{ width: '100%' }} />
-                        <span style={{ marginLeft: '10px' }}>Days</span>
-                      </div>
-                    }
+                    element={<InputField name={'data_retention_count'} form={form} wrapperStyle={{ width: '100%' }} />}
                   />
                   <FormElement
                     label={'Call home'}
