@@ -15,7 +15,7 @@ interface DataInterface {
 const OverviewTable = props => {
   const {
     dispatch,
-    state: { labels, columns, pageNumber, pageSize, orderBy, from, to, groupBy, firstSeen, queryId },
+    state: { labels, columns, pageNumber, pageSize, orderBy, from, to, groupBy, firstSeen, queryId, querySelected },
   } = useContext(StateContext);
   const [data, setData] = useState<DataInterface>({ rows: [], columns: [] });
   const [loading, setLoading] = useState(false);
@@ -104,7 +104,10 @@ const OverviewTable = props => {
       scroll={{ y: TABLE_Y_SCROLL, x: TABLE_X_SCROLL }}
       onRow={onRowClick}
       rowClassName={record => {
-        (record.dimension && record.dimension === queryId ? 'selected-overview-row' : '')
+        if (querySelected) {
+          return String(record.dimension) === queryId ? 'selected-overview-row' : '';
+        }
+        return '';
       }}
       loading={loading}
     />
