@@ -11,7 +11,7 @@ const PAGE_SIZE_OPTIONS = ['10', '50', '100'];
 const QueryAnalyticsContainer = () => {
   const {
     dispatch,
-    state: { pageNumber, pageSize, firstSeen, queryId },
+    state: { pageNumber, pageSize, firstSeen, querySelected },
   } = useContext(StateContext);
   const [total, setTotal] = useState(30);
 
@@ -66,7 +66,7 @@ const QueryAnalyticsContainer = () => {
           <ManageColumns onlyAdd={true} />
         </div>
       </div>
-      {!queryId ? (
+      {!querySelected ? (
         <OverviewTable setTotal={setTotal} />
       ) : (
         <Split

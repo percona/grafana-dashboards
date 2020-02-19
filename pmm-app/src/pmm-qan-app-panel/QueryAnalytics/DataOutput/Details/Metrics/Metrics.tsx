@@ -104,7 +104,6 @@ const Metrics = props => {
           labels,
           tables,
         });
-
         setMetrics(processMetrics(METRIC_CATALOGUE, result));
       } catch (e) {
         //TODO: add error handling

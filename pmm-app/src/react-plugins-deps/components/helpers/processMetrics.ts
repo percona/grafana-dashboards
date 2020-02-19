@@ -17,7 +17,7 @@ const getSparkline = (sparklines, metricName) => {
 
 export const processMetrics = (metricsCatalogue, metrics) => {
   if (!metrics.metrics) {
-    return [];
+    metrics.metrics = metrics.totals
   }
   const metricsList = Object.keys(metrics.metrics);
   return metricsList
