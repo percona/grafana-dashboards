@@ -1,6 +1,6 @@
 import React, { ReactElement, useContext, useEffect, useState } from 'react';
 import './Filters.scss';
-import { Button, Divider } from 'antd';
+import { Button } from 'antd';
 import { StateContext } from '../StateContext';
 import FiltersService from './Filters.service';
 import { useForm } from 'react-final-form-hooks';
