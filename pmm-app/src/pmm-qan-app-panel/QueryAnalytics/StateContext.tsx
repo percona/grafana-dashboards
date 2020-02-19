@@ -116,7 +116,7 @@ export const UrlParametersProvider = ({ children }) => {
           newState = { ...state, labels: {}, pageNumber: 1 };
           break;
         case 'SELECT_QUERY':
-          newState = { ...state, queryId: action.payload.queryId };
+          newState = { ...state, queryId: action.payload.queryId, querySelected: true };
           break;
         case 'ADD_COLUMN':
           columns = state.columns.slice();
@@ -193,6 +193,7 @@ export const UrlParametersProvider = ({ children }) => {
       pageSize: 10,
       orderBy: query.get('order_by') || 'load',
       queryId: query.get('filter_by'),
+      querySelected: !!query.get('filter_by'),
       groupBy: query.get('group_by') || 'queryid',
       from: from,
       to: to,
