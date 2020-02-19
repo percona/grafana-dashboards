@@ -48,7 +48,7 @@ export const FormElement = props => {
   }
   return (
     <div style={{ width: '600px', marginBottom: '20px' }}>
-      {props.type == 'horizontal' ? <HorizontalFieldLayout {...props} /> : <VerticalFieldLayout {...props} />}
+      {props.type === 'horizontal' ? <HorizontalFieldLayout {...props} /> : <VerticalFieldLayout {...props} />}
       <Row style={{ color: 'white', marginBottom: '10px', display: 'flex', alignItems: alignLabel }} align={'middle'}>
         <Col span={24}>{props.errors}</Col>
       </Row>
