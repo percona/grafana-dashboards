@@ -7,6 +7,7 @@ import { useForm } from 'react-final-form-hooks';
 import SettingsService from '../../Settings.service';
 import { showSuccessNotification } from '../../../react-plugins-deps/components/helpers/notification-manager';
 import { FormElement } from '../../../react-plugins-deps/components/FormComponents/FormElement/FormElement';
+import {PluginTooltip} from "../../../react-plugins-deps/components/helpers/Helpers";
 
 interface AlertManagerSettingsInterface {
   alert_manager_url: string;
