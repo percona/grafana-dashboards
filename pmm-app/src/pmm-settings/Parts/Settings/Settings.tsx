@@ -69,14 +69,17 @@ export const getMetricsResolutionValues = metricsResolutions => {
   return metricsIndex;
 };
 
+const SECONDS_DIVIDER = 60;
+const MINUTES_DIVIDER = 60;
+const HOURS_DIVIDER = 24;
 const transformToDays = (count, units) => {
   switch (units) {
     case 'h':
-      return count / 24;
+      return count / HOURS_DIVIDER;
     case 'm':
-      return count / 60 / 24;
+      return count / MINUTES_DIVIDER / HOURS_DIVIDER;
     case 's':
-      return count / 60 / 60 / 24;
+      return count / SECONDS_DIVIDER / MINUTES_DIVIDER / HOURS_DIVIDER;
     default:
       return '';
   }
