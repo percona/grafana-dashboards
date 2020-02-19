@@ -34,10 +34,11 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
   } else if (orderBy === `-${metricName}`) {
     sortOrder = 'descend';
   }
-  console.log(metricName, sortOrder);
-  const column = {
+
+  return {
     sorter: true,
     key: metricName,
+    defaultSortOrder: sortOrder,
     width: columnIndex === 0 ? COLUMN_WIDTH * 1.5 : COLUMN_WIDTH,
     title: () => <ManageColumns placeholder={metricName} currentMetric={metric} width={'100%'} />,
     render: (text, item) => {
@@ -86,12 +87,6 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
       );
     },
   };
-
-  if (sortOrder) {
-    column.defaultSortOrder = sortOrder;
-  }
-
-  return column;
 };
 
 export const getDefaultColumns = (groupBy, setGroupBy, pageNumber, pageSize, columns) => {
