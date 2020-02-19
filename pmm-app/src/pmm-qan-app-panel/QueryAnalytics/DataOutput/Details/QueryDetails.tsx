@@ -19,14 +19,14 @@ const QueryDetails = () => {
     state: { queryId, groupBy, from, to },
   } = useContext(StateContext);
   const [databaseType, setDatabaseType] = useState('');
-  if (!queryId) {
-    return null;
-  }
+  // if (!queryId) {
+  //   return null;
+  // }
 
   const MetricsProps = {
     labels: [],
     tables: [],
-    queryId,
+    queryId: queryId || '',
     groupBy,
     from,
     to,
