@@ -69,17 +69,19 @@ export const getMetricsResolutionValues = metricsResolutions => {
   return metricsIndex;
 };
 
-const SECONDS_DIVIDER = 60;
-const MINUTES_DIVIDER = 60;
-const HOURS_DIVIDER = 24;
+const SECONDS = 60;
+const MINUTES = 60;
+const HOURS = 24;
+const SECONDS_IN_DAY = SECONDS * MINUTES * HOURS;
+
 const transformToDays = (count, units) => {
   switch (units) {
     case 'h':
-      return count / HOURS_DIVIDER;
+      return count / HOURS;
     case 'm':
-      return count / MINUTES_DIVIDER / HOURS_DIVIDER;
+      return count / MINUTES / HOURS;
     case 's':
-      return count / SECONDS_DIVIDER / MINUTES_DIVIDER / HOURS_DIVIDER;
+      return count / SECONDS / MINUTES / HOURS;
     default:
       return '';
   }
@@ -109,12 +111,14 @@ const validateSettingsForm = values => {
   }
   return errors;
 };
+
 const SettingsPart = props => {
   const [loading, setLoading] = useState(false);
   const { settings } = props;
   const onSubmit = async values => {
     const updatedSettings: SettingsInterface = {
-      data_retention: values.data_retention_count * 3600 * 24 + 's',
+      // transform count in days to seconds
+      data_retention: values.data_retention_count * SECONDS_IN_DAY + 's',
       metrics_resolutions: dataRetentionValues[values.metrics_resolutions_slider],
     };
 
