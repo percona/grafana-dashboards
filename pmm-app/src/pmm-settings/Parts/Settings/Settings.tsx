@@ -14,11 +14,7 @@ import './Settings.scss';
 
 const { Panel } = Collapse;
 
-const dataRetentionOptions = [
-  { value: 'h', label: 'Hours' },
-  { value: 'm', label: 'Minutes' },
-  { value: 's', label: 'Seconds' },
-];
+const dataRetentionOptions = [{ value: 'h', label: 'Hours' }, { value: 'm', label: 'Minutes' }, { value: 's', label: 'Seconds' }];
 const marks = {
   0: 'Low',
   1: 'Medium',
@@ -142,8 +138,12 @@ const SettingsPart = props => {
                 label={'Metrics resolution'}
                 tooltip={
                   <PluginTooltip
-                    linkText={'Read more'}
-                    url={'https://www.percona.com/doc/percona-monitoring-and-management/2.x/faq.html#what-resolution-is-used-for-metrics'}
+                    links={[
+                      {
+                        url: 'https://www.percona.com/doc/percona-monitoring-and-management/2.x/faq.html#what-resolution-is-used-for-metrics',
+                        text: 'Read more',
+                      },
+                    ]}
                     text={'This setting defines how frequently the data will be collected'}
                   />
                 }
@@ -166,8 +166,12 @@ const SettingsPart = props => {
                     label={'Data retention'}
                     tooltip={
                       <PluginTooltip
-                        linkText={'Read more'}
-                        url={'https://www.percona.com/doc/percona-monitoring-and-management/2.x/faq.html#how-to-control-data-retention-for-pmm'}
+                        links={[
+                          {
+                            url: 'https://www.percona.com/doc/percona-monitoring-and-management/2.x/faq.html#how-to-control-data-retention-for-pmm',
+                            text: 'Read more',
+                          },
+                        ]}
                         text={'This is the value for how long data will be stored'}
                       />
                     }
@@ -188,8 +192,12 @@ const SettingsPart = props => {
                     label={'Call home'}
                     tooltip={
                       <PluginTooltip
-                        linkText={'Read more'}
-                        url={'https://www.percona.com/doc/percona-monitoring-and-management/2.x/glossary-terminology.html#Telemetry'}
+                        links={[
+                          {
+                            url: 'https://www.percona.com/doc/percona-monitoring-and-management/2.x/glossary-terminology.html#Telemetry',
+                            text: 'Read more',
+                          },
+                        ]}
                         text={'Option to send usage data back to Percona to let us make product better'}
                       />
                     }
@@ -199,8 +207,12 @@ const SettingsPart = props => {
                     label={'Check for updates'}
                     tooltip={
                       <PluginTooltip
-                        linkText={'Read more'}
-                        url={'https://www.percona.com/doc/percona-monitoring-and-management/2.x/glossary-terminology.html#PMM-Version'}
+                        links={[
+                          {
+                            url: 'https://www.percona.com/doc/percona-monitoring-and-management/2.x/glossary-terminology.html#PMM-Version',
+                            text: 'Read more',
+                          },
+                        ]}
                         text={'Option to check new versions and ability to update PMM from UI'}
                       />
                     }

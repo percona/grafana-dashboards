@@ -1,4 +1,4 @@
-import { VerticalFormWrapper } from '../../../react-plugins-deps/components/helpers/Helpers';
+import { PluginTooltip, VerticalFormWrapper } from '../../../react-plugins-deps/components/helpers/Helpers';
 import { InputField } from '../../../react-plugins-deps/components/FormComponents/Input/Input';
 import { TextAreaField } from '../../../react-plugins-deps/components/FormComponents/TextArea/TextArea';
 import React, { ReactElement, useEffect, useState } from 'react';
@@ -6,7 +6,7 @@ import ButtonElement from '../../../react-plugins-deps/components/FormComponents
 import { Form as FormFinal } from 'react-final-form';
 import { useForm } from 'react-final-form-hooks';
 import SettingsService from '../../Settings.service';
-import { showErrorNotification, showSuccessNotification } from '../../../react-plugins-deps/components/helpers/notification-manager';
+import { showSuccessNotification } from '../../../react-plugins-deps/components/helpers/notification-manager';
 
 interface AlertManagerSettingsInterface {
   alert_manager_url: string;
@@ -45,7 +45,6 @@ const AlertManager = props => {
               });
             } catch (e) {
               setLoading(false);
-              showErrorNotification({ message: e.message });
             }
           },
           validate: () => undefined,
@@ -58,15 +57,45 @@ const AlertManager = props => {
           <form onSubmit={handleSubmit}>
             <>
               <VerticalFormWrapper
-                label="AlertManager URL"
+                label="Alertmanager URL"
+                tooltip={
+                  <PluginTooltip
+                    links={[
+                      {
+                        url: 'https://percona.com/doc/percona-monitoring-and-management/2.x/faq.html#how-to-integrate-alertmanager-with-pmm',
+                        text: 'How to integrate Alertmanager with PMM',
+                      },
+                      {
+                        url: 'https://prometheus.io/docs/alerting/alertmanager/',
+                        text: 'Prometheus Alertmanager',
+                      },
+                    ]}
+                    text={'The URL of the external Alertmanager to use'}
+                  />
+                }
                 element={<InputField form={form} name="alert_manager_url" placeholder="Enter URL" style={{ width: '100%' }} />}
               />
               <VerticalFormWrapper
-                label="AlertManager rules"
-                element={<TextAreaField form={form} name="alert_manager_rules" placeholder="Alert manager rule" style={{ width: '100%' }} />}
+                label="Alertmanager rules"
+                tooltip={
+                  <PluginTooltip
+                    links={[
+                      {
+                        url: 'https://percona.com/doc/percona-monitoring-and-management/2.x/faq.html#how-to-integrate-alertmanager-with-pmm',
+                        text: 'How to integrate Alertmanager with PMM',
+                      },
+                      {
+                        url: 'https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/',
+                        text: 'Prometheus alerting rules',
+                      },
+                    ]}
+                    text={'Alerting rules in the YAML configuration format'}
+                  />
+                }
+                element={<TextAreaField form={form} name="alert_manager_rules" placeholder="Alertmanager rules" style={{ width: '100%' }} />}
                 alignLabel="top"
               />
-              <ButtonElement loading={loading} text="Apply AlertManager settings" />
+              <ButtonElement loading={loading} text="Apply Alertmanager settings" />
             </>
           </form>
         );
