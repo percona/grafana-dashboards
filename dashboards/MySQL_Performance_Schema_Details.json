@@ -36,7 +36,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1573837579324,
+    "iteration": 1582030119851,
     "links": [
         {
             "icon": "doc",
@@ -166,6 +166,7 @@
                 "x": 0,
                 "y": 2
             },
+            "hiddenSeries": false,
             "id": 47,
             "legend": {
                 "alignAsTable": true,
@@ -200,7 +201,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "topk(10, rate(mysql_perf_schema_file_events_total{service_name=~\"$service_name\"}[$interval])>0) or topk(10, irate(mysql_perf_schema_file_events_total{service_name=~\"$service_name\"}[5m])>0)",
+                    "expr": "topk(10, avg by (service_name,event_name,mode) (rate(mysql_perf_schema_file_events_total{service_name=~\"$service_name\"}[$interval]))>0) or topk(10, avg by (service_name,event_name,mode) (irate(mysql_perf_schema_file_events_total{service_name=~\"$service_name\"}[5m]))>0)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -256,7 +257,7 @@
             "dashLength": 10,
             "dashes": false,
             "datasource": "Prometheus",
-            "decimals": 4,
+            "decimals": 6,
             "editable": true,
             "error": false,
             "fill": 2,
@@ -268,6 +269,7 @@
                 "x": 0,
                 "y": 10
             },
+            "hiddenSeries": false,
             "id": 48,
             "legend": {
                 "alignAsTable": true,
@@ -303,7 +305,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "topk(10, rate(mysql_perf_schema_file_events_seconds_total{service_name=~\"$service_name\"}[$interval])>0) or topk(10, irate(mysql_perf_schema_file_events_seconds_total{service_name=~\"$service_name\"}[5m])>0)",
+                    "expr": "topk(10, avg by (service_name,event_name,mode) (rate(mysql_perf_schema_file_events_seconds_total{service_name=~\"$service_name\"}[$interval]))>0) or topk(10, avg by (service_name,event_name,mode) (irate(mysql_perf_schema_file_events_seconds_total{service_name=~\"$service_name\"}[5m]))>0)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -371,6 +373,7 @@
                 "x": 0,
                 "y": 18
             },
+            "hiddenSeries": false,
             "id": 49,
             "legend": {
                 "alignAsTable": true,
@@ -405,7 +408,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "topk(10, rate(mysql_perf_schema_file_events_bytes_total{service_name=~\"$service_name\"}[$interval])>0) or \ntopk(10, irate(mysql_perf_schema_file_events_bytes_total{service_name=~\"$service_name\"}[5m])>0)",
+                    "expr": "topk(10, avg by (service_name,event_name,mode) (rate(mysql_perf_schema_file_events_bytes_total{service_name=~\"$service_name\"}[$interval]))>0) or \ntopk(10, avg by (service_name,event_name,mode) (irate(mysql_perf_schema_file_events_bytes_total{service_name=~\"$service_name\"}[5m]))>0)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -464,7 +467,7 @@
             "decimals": 2,
             "editable": true,
             "error": false,
-            "fill": 2,
+            "fill": 6,
             "fillGradient": 0,
             "grid": {},
             "gridPos": {
@@ -473,6 +476,7 @@
                 "x": 0,
                 "y": 26
             },
+            "hiddenSeries": false,
             "id": 51,
             "legend": {
                 "alignAsTable": true,
@@ -507,7 +511,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "topk(5, rate(mysql_perf_schema_events_waits_total{service_name=~\"$service_name\"}[$interval])>0) or topk(5, irate(mysql_perf_schema_events_waits_total{service_name=~\"$service_name\"}[5m])>0)",
+                    "expr": "topk(5, avg by (service_name,event_name) (rate(mysql_perf_schema_events_waits_total{service_name=~\"$service_name\"}[$interval]))>0) or topk(5, avg by (service_name,event_name) (irate(mysql_perf_schema_events_waits_total{service_name=~\"$service_name\"}[5m]))>0)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -525,7 +529,7 @@
                 "msResolution": false,
                 "shared": true,
                 "sort": 0,
-                "value_type": "cumulative"
+                "value_type": "individual"
             },
             "type": "graph",
             "xaxis": {
@@ -563,7 +567,7 @@
             "dashLength": 10,
             "dashes": false,
             "datasource": "Prometheus",
-            "decimals": 4,
+            "decimals": 6,
             "editable": true,
             "error": false,
             "fill": 1,
@@ -575,6 +579,7 @@
                 "x": 0,
                 "y": 34
             },
+            "hiddenSeries": false,
             "id": 52,
             "legend": {
                 "alignAsTable": true,
@@ -610,7 +615,7 @@
             "steppedLine": true,
             "targets": [
                 {
-                    "expr": "topk(5, rate(mysql_perf_schema_events_waits_seconds_total{service_name=~\"$service_name\",event_name!='idle',event_name!='wait/io/table/sql/handler'}[$interval])>0) or topk(5, irate(mysql_perf_schema_events_waits_seconds_total{service_name=~\"$service_name\",event_name!='idle',event_name!='wait/io/table/sql/handler'}[5m])>0)",
+                    "expr": "topk(5, avg by (service_name,event_name) (rate(mysql_perf_schema_events_waits_seconds_total{service_name=~\"$service_name\",event_name!='idle',event_name!='wait/io/table/sql/handler'}[$interval]))>0) or topk(5, avg by (service_name,event_name) (irate(mysql_perf_schema_events_waits_seconds_total{service_name=~\"$service_name\",event_name!='idle',event_name!='wait/io/table/sql/handler'}[5m]))>0)",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -678,6 +683,7 @@
                 "x": 0,
                 "y": 42
             },
+            "hiddenSeries": false,
             "id": 77,
             "legend": {
                 "alignAsTable": true,
@@ -712,7 +718,7 @@
             "steppedLine": true,
             "targets": [
                 {
-                    "expr": "topk(5, rate(mysql_perf_schema_index_io_waits_seconds_total{service_name=~\"$service_name\"}[$interval])>0) or topk(5, irate(mysql_perf_schema_index_io_waits_seconds_total{service_name=~\"$service_name\"}[5m])>0)",
+                    "expr": "topk(5, avg by (service_name,operation,index,schema,name) (rate(mysql_perf_schema_index_io_waits_seconds_total{service_name=~\"$service_name\"}[$interval]))>0) or topk(5, avg by (service_name,operation,index,schema,name) (irate(mysql_perf_schema_index_io_waits_seconds_total{service_name=~\"$service_name\"}[5m]))>0)",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -780,6 +786,7 @@
                 "x": 0,
                 "y": 50
             },
+            "hiddenSeries": false,
             "id": 78,
             "legend": {
                 "alignAsTable": true,
@@ -814,7 +821,7 @@
             "steppedLine": true,
             "targets": [
                 {
-                    "expr": "topk(5, rate(mysql_perf_schema_table_io_waits_seconds_total{service_name=~\"$service_name\"}[$interval])>0) or topk(5, irate(mysql_perf_schema_table_io_waits_seconds_total{service_name=~\"$service_name\"}[5m])>0)",
+                    "expr": "topk(5, avg by (service_name,operation,schema,name) (rate(mysql_perf_schema_table_io_waits_seconds_total{service_name=~\"$service_name\"}[$interval]))>0) or topk(5, avg by (service_name,operation,schema,name) (irate(mysql_perf_schema_table_io_waits_seconds_total{service_name=~\"$service_name\"}[5m]))>0)",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -880,6 +887,7 @@
                 "x": 0,
                 "y": 58
             },
+            "hiddenSeries": false,
             "id": 79,
             "legend": {
                 "alignAsTable": true,
@@ -889,6 +897,8 @@
                 "min": false,
                 "rightSide": true,
                 "show": true,
+                "sort": "avg",
+                "sortDesc": true,
                 "total": false,
                 "values": true
             },
@@ -910,7 +920,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "topk(10, rate(mysql_perf_schema_sql_lock_waits_total{service_name=~\"$service_name\"}[$interval])) or topk(10, irate(mysql_perf_schema_sql_lock_waits_total{service_name=~\"$service_name\"}[5m]))",
+                    "expr": "topk(10, avg by (service_name,operation,schema) (rate(mysql_perf_schema_sql_lock_waits_total{service_name=~\"$service_name\"}[$interval]))) or topk(10, avg by (service_name,operation,schema) (irate(mysql_perf_schema_sql_lock_waits_total{service_name=~\"$service_name\"}[5m])))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -919,7 +929,7 @@
                     "refId": "A"
                 },
                 {
-                    "expr": "topk(10, rate(mysql_perf_schema_external_lock_waits_total{service_name=~\"$service_name\"}[$interval])>0) or topk(10, irate(mysql_perf_schema_external_lock_waits_total{service_name=~\"$service_name\"}[5m])>0)",
+                    "expr": "topk(10, avg by (service_name,operation,schema) (rate(mysql_perf_schema_external_lock_waits_total{service_name=~\"$service_name\"}[$interval]))>0) or topk(10, avg by (service_name,operation,schema) (irate(mysql_perf_schema_external_lock_waits_total{service_name=~\"$service_name\"}[5m]))>0)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -984,6 +994,7 @@
                 "x": 0,
                 "y": 66
             },
+            "hiddenSeries": false,
             "id": 80,
             "legend": {
                 "alignAsTable": true,
@@ -1016,7 +1027,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "topk(10, rate(mysql_perf_schema_external_lock_waits_seconds_total{service_name=~\"$service_name\"}[$interval])>0) or topk(10, irate(mysql_perf_schema_external_lock_waits_seconds_total{service_name=~\"$service_name\"}[5m])>0)",
+                    "expr": "topk(10, avg by (service_name,operation,schema,name) (rate(mysql_perf_schema_external_lock_waits_seconds_total{service_name=~\"$service_name\"}[$interval]))>0) or topk(10, avg by (service_name,operation,schema,name) (irate(mysql_perf_schema_external_lock_waits_seconds_total{service_name=~\"$service_name\"}[5m]))>0)",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -1025,7 +1036,7 @@
                     "refId": "A"
                 },
                 {
-                    "expr": "topk(10, rate(mysql_perf_schema_sql_lock_waits_seconds_total{service_name=~\"$service_name\"}[$interval])>0) or topk(10, irate(mysql_perf_schema_sql_lock_waits_seconds_total{service_name=~\"$service_name\"}[5m])>0)",
+                    "expr": "topk(10, avg by (service_name,operation,schema,name) (rate(mysql_perf_schema_sql_lock_waits_seconds_total{service_name=~\"$service_name\"}[$interval]))>0) or topk(10, avg by (service_name,operation,schema,name) (irate(mysql_perf_schema_sql_lock_waits_seconds_total{service_name=~\"$service_name\"}[5m]))>0)",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -1158,7 +1169,7 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "mysql_global_status_uptime{service_name=~\"$service_name\"}",
+                            "expr": "avg by (service_name) (mysql_global_status_uptime{service_name=~\"$service_name\"})",
                             "format": "time_series",
                             "interval": "5m",
                             "intervalFactor": 1,
@@ -1269,7 +1280,7 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "rate(mysql_global_status_queries{service_name=~\"$service_name\"}[$interval]) or irate(mysql_global_status_queries{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (rate(mysql_global_status_queries{service_name=~\"$service_name\"}[$interval]) or irate(mysql_global_status_queries{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1448,7 +1459,7 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "1-((rate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\"}[$interval]) or irate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\"}[5m]))/((rate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\"}[$interval]) or irate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\"}[5m]))+(rate(mysql_global_status_table_open_cache_misses{service_name=~\"$service_name\"}[$interval]) or irate(mysql_global_status_table_open_cache_misses{service_name=~\"$service_name\"}[5m]))))",
+                            "expr": "avg by (service_name) (1-((rate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\"}[$interval]) or irate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\"}[5m]))/((rate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\"}[$interval]) or irate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\"}[5m]))+(rate(mysql_global_status_table_open_cache_misses{service_name=~\"$service_name\"}[$interval]) or irate(mysql_global_status_table_open_cache_misses{service_name=~\"$service_name\"}[5m])))))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1540,7 +1551,7 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "mysql_global_variables_table_open_cache{service_name=~\"$service_name\"} ",
+                            "expr": "avg by (service_name) (mysql_global_variables_table_open_cache{service_name=~\"$service_name\"})",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1632,7 +1643,7 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "mysql_global_variables_table_definition_cache{service_name=~\"$service_name\"} ",
+                            "expr": "avg by (service_name) (mysql_global_variables_table_definition_cache{service_name=~\"$service_name\"})",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1693,6 +1704,7 @@
                         "y": 77
                     },
                     "height": "250px",
+                    "hiddenSeries": false,
                     "id": 301,
                     "legend": {
                         "alignAsTable": true,
@@ -1739,7 +1751,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "max(max_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\"}[$interval]) or \nmax_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\"}[5m]))",
+                            "expr": "avg by (service_name) (max(max_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\"}[$interval]) or \nmax_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\"}[5m])))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1752,7 +1764,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "max_over_time(mysql_global_status_max_used_connections{service_name=~\"$service_name\"}[$interval]) or \nmax_over_time(mysql_global_status_max_used_connections{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (max_over_time(mysql_global_status_max_used_connections{service_name=~\"$service_name\"}[$interval]) or \nmax_over_time(mysql_global_status_max_used_connections{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -1767,7 +1779,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "max_over_time(mysql_global_variables_max_connections{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_variables_max_connections{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (max_over_time(mysql_global_variables_max_connections{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_variables_max_connections{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -1841,6 +1853,7 @@
                         "x": 12,
                         "y": 77
                     },
+                    "hiddenSeries": false,
                     "id": 303,
                     "legend": {
                         "alignAsTable": true,
@@ -1892,7 +1905,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "max_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (max_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -1906,7 +1919,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "max_over_time(mysql_global_status_threads_running{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_running{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (max_over_time(mysql_global_status_threads_running{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_running{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1916,7 +1929,7 @@
                             "step": 20
                         },
                         {
-                            "expr": "avg_over_time(mysql_global_status_threads_running{service_name=~\"$service_name\"}[$interval]) or \navg_over_time(mysql_global_status_threads_running{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (avg_over_time(mysql_global_status_threads_running{service_name=~\"$service_name\"}[$interval]) or \navg_over_time(mysql_global_status_threads_running{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1989,6 +2002,7 @@
                         "x": 0,
                         "y": 85
                     },
+                    "hiddenSeries": false,
                     "id": 309,
                     "legend": {
                         "alignAsTable": true,
@@ -2025,7 +2039,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "rate(mysql_global_status_handlers_total{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_handlers_total{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name,handler) (rate(mysql_global_status_handlers_total{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_handlers_total{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2095,6 +2109,7 @@
                         "x": 12,
                         "y": 85
                     },
+                    "hiddenSeries": false,
                     "id": 307,
                     "legend": {
                         "alignAsTable": true,
@@ -2137,7 +2152,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "topk(10, rate(mysql_global_status_commands_total{service_name=~\"$service_name\"}[$interval])>0) or \nirate(mysql_global_status_commands_total{service_name=~\"$service_name\"}[5m])>0",
+                            "expr": "topk(10, avg by (service_name,command) (rate(mysql_global_status_commands_total{service_name=~\"$service_name\"}[$interval]))>0 or \navg by (service_name,command) (irate(mysql_global_status_commands_total{service_name=~\"$service_name\"}[5m]))>0)",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -2207,6 +2222,7 @@
                         "x": 0,
                         "y": 93
                     },
+                    "hiddenSeries": false,
                     "id": 311,
                     "legend": {
                         "alignAsTable": true,
@@ -2243,7 +2259,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "max_over_time(mysql_info_schema_threads{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_info_schema_threads{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name,state) (max_over_time(mysql_info_schema_threads{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_info_schema_threads{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2313,6 +2329,7 @@
                         "x": 12,
                         "y": 93
                     },
+                    "hiddenSeries": false,
                     "id": 305,
                     "legend": {
                         "alignAsTable": true,
@@ -2353,7 +2370,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "rate(mysql_global_status_bytes_received{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_bytes_received{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (rate(mysql_global_status_bytes_received{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_bytes_received{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2366,7 +2383,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "rate(mysql_global_status_bytes_sent{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_bytes_sent{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (rate(mysql_global_status_bytes_sent{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_bytes_sent{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2502,7 +2519,7 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "(node_time_seconds{node_name=~\"$node_name\"} - node_boot_time_seconds{node_name=~\"$node_name\"}) or (time() - node_boot_time_seconds{node_name=~\"$node_name\"})",
+                            "expr": "avg by (node_name) ((node_time_seconds{node_name=~\"$node_name\"} - node_boot_time_seconds{node_name=~\"$node_name\"}) or (time() - node_boot_time_seconds{node_name=~\"$node_name\"}))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "5m",
@@ -2585,7 +2602,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "avg_over_time(node_load1{node_name=~\"$node_name\"}[$interval]) or avg_over_time(node_load1{node_name=~\"$node_name\"}[5m])",
+                            "expr": "avg by (node_name) (avg_over_time(node_load1{node_name=~\"$node_name\"}[$interval]) or avg_over_time(node_load1{node_name=~\"$node_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2671,7 +2688,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "node_memory_MemTotal_bytes{node_name=~\"$node_name\"}",
+                            "expr": "avg by (node_name) (node_memory_MemTotal_bytes{node_name=~\"$node_name\"})",
                             "format": "time_series",
                             "interval": "5m",
                             "intervalFactor": 1,
@@ -2758,7 +2775,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "(node_memory_MemAvailable_bytes{node_name=~\"$node_name\"} or (node_memory_MemFree_bytes{node_name=~\"$node_name\"} + node_memory_Buffers_bytes{node_name=~\"$node_name\"} + node_memory_Cached_bytes{node_name=~\"$node_name\"})) / node_memory_MemTotal_bytes{node_name=~\"$node_name\"} * 100",
+                            "expr": "avg by (node_name) ((node_memory_MemAvailable_bytes{node_name=~\"$node_name\"} or (node_memory_MemFree_bytes{node_name=~\"$node_name\"} + node_memory_Buffers_bytes{node_name=~\"$node_name\"} + node_memory_Cached_bytes{node_name=~\"$node_name\"})) / node_memory_MemTotal_bytes{node_name=~\"$node_name\"} * 100)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2845,7 +2862,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "node_memory_MemTotal_bytes{node_name=~\"$node_name\"}+node_memory_SwapTotal_bytes{node_name=~\"$node_name\"}",
+                            "expr": "avg by (node_name) (node_memory_MemTotal_bytes{node_name=~\"$node_name\"}+node_memory_SwapTotal_bytes{node_name=~\"$node_name\"})",
                             "format": "time_series",
                             "interval": "5m",
                             "intervalFactor": 1,
@@ -2939,7 +2956,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "sum(avg(node_filesystem_size_bytes{node_name=~\"$node_name\",fstype=~\"(ext.|xfs|vfat|)\"}) without (mountpoint)) without (device,fstype)",
+                            "expr": "avg by (node_name) (sum(avg(node_filesystem_size_bytes{node_name=~\"$node_name\",fstype=~\"(ext.|xfs|vfat|)\"}) without (mountpoint)) without (device,fstype))",
                             "format": "time_series",
                             "interval": "5m",
                             "intervalFactor": 1,
@@ -3107,6 +3124,7 @@
                         "y": 78
                     },
                     "height": "",
+                    "hiddenSeries": false,
                     "id": 337,
                     "legend": {
                         "alignAsTable": true,
@@ -3235,6 +3253,7 @@
                         "x": 12,
                         "y": 78
                     },
+                    "hiddenSeries": false,
                     "id": 339,
                     "legend": {
                         "alignAsTable": true,
@@ -3279,7 +3298,7 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "(avg_over_time(node_procs_running{node_name=~\"$node_name\"}[$interval])-1) / scalar(count(node_cpu_seconds_total{mode=\"user\", node_name=~\"$node_name\"})) or (avg_over_time(node_procs_running{node_name=~\"$node_name\"}[5m])-1) / scalar(count(node_cpu_seconds_total{mode=\"user\", node_name=~\"$node_name\"}))",
+                            "expr": "avg by (node_name) ((avg_over_time(node_procs_running{node_name=~\"$node_name\"}[$interval])-1) / scalar(count(node_cpu_seconds_total{mode=\"user\", node_name=~\"$node_name\"})) or (avg_over_time(node_procs_running{node_name=~\"$node_name\"}[5m])-1) / scalar(count(node_cpu_seconds_total{mode=\"user\", node_name=~\"$node_name\"})))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -3294,7 +3313,7 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "clamp_max(max by () (sum  by (cpu) ( (clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\",mode!=\"iowait\"}[$interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\",mode!=\"iowait\"}[5m]),1)) )),1)",
+                            "expr": "avg by (node_name) (clamp_max(max by () (sum  by (cpu) ( (clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\",mode!=\"iowait\"}[$interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\",mode!=\"iowait\"}[5m]),1)) )),1))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3370,6 +3389,7 @@
                         "x": 0,
                         "y": 86
                     },
+                    "hiddenSeries": false,
                     "id": 341,
                     "legend": {
                         "alignAsTable": true,
@@ -3425,7 +3445,7 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "rate(node_vmstat_pgpgin{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=\"$node_name\"}[5m]) * 1024",
+                            "expr": "avg by (node_name) (rate(node_vmstat_pgpgin{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=\"$node_name\"}[5m]) * 1024)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3439,7 +3459,7 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "(rate(node_vmstat_pgpgout{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=\"$node_name\"}[5m]) * 1024)",
+                            "expr": "avg by (node_name) ((rate(node_vmstat_pgpgout{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=\"$node_name\"}[5m]) * 1024))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3450,7 +3470,7 @@
                             "target": ""
                         },
                         {
-                            "expr": "(rate(node_vmstat_pgpgin{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=\"$node_name\"}[5m]) * 1024 ) + (rate(node_vmstat_pgpgout{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=\"$node_name\"}[5m]) * 1024)",
+                            "expr": "avg by (node_name) ((rate(node_vmstat_pgpgin{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=\"$node_name\"}[5m]) * 1024 ) + (rate(node_vmstat_pgpgout{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=\"$node_name\"}[5m]) * 1024))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3458,7 +3478,7 @@
                             "refId": "C"
                         },
                         {
-                            "expr": "rate(node_vmstat_pswpin{node_name=\"$node_name\"}[$interval]) * 4096 or irate(node_vmstat_pswpin{node_name=\"$node_name\"}[5m]) * 4096",
+                            "expr": "avg by (node_name) (rate(node_vmstat_pswpin{node_name=\"$node_name\"}[$interval]) * 4096 or irate(node_vmstat_pswpin{node_name=\"$node_name\"}[5m]) * 4096)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3466,7 +3486,7 @@
                             "refId": "D"
                         },
                         {
-                            "expr": "rate(node_vmstat_pswpout{node_name=\"$node_name\"}[$interval]) * 4096 or irate(node_vmstat_pswpout{node_name=\"$node_name\"}[5m]) * 4096",
+                            "expr": "avg by (node_name) (rate(node_vmstat_pswpout{node_name=\"$node_name\"}[$interval]) * 4096 or irate(node_vmstat_pswpout{node_name=\"$node_name\"}[5m]) * 4096)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3534,6 +3554,7 @@
                         "x": 12,
                         "y": 86
                     },
+                    "hiddenSeries": false,
                     "id": 343,
                     "legend": {
                         "alignAsTable": true,
@@ -3574,7 +3595,7 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "sum(rate(node_network_receive_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[$interval])) or sum(irate(node_network_receive_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[5m])) or sum(max_over_time(rdsosmetrics_network_rx{node_name=\"$node_name\"}[$interval])) or sum(max_over_time(rdsosmetrics_network_rx{node_name=\"$node_name\"}[5m])) ",
+                            "expr": "avg by (node_name) (sum(rate(node_network_receive_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[$interval])) or sum(irate(node_network_receive_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[5m])) or sum(max_over_time(rdsosmetrics_network_rx{node_name=\"$node_name\"}[$interval])) or sum(max_over_time(rdsosmetrics_network_rx{node_name=\"$node_name\"}[5m])))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3588,7 +3609,7 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "sum(rate(node_network_transmit_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[$interval])) or sum(irate(node_network_transmit_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[5m])) or\nsum(max_over_time(rdsosmetrics_network_tx{node_name=\"$node_name\"}[$interval])) or sum(max_over_time(rdsosmetrics_network_tx{node_name=\"$node_name\"}[5m]))",
+                            "expr": "avg by (node_name) (sum(rate(node_network_transmit_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[$interval])) or sum(irate(node_network_transmit_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[5m])) or\nsum(max_over_time(rdsosmetrics_network_tx{node_name=\"$node_name\"}[$interval])) or sum(max_over_time(rdsosmetrics_network_tx{node_name=\"$node_name\"}[5m])))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3647,7 +3668,7 @@
         }
     ],
     "refresh": "1m",
-    "schemaVersion": 20,
+    "schemaVersion": 21,
     "style": "dark",
     "tags": [
         "MySQL",

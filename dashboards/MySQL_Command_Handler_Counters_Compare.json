@@ -36,7 +36,7 @@
     "gnetId": null,
     "graphTooltip": 1,
     "id": null,
-    "iteration": 1573828739308,
+    "iteration": 1581959498847,
     "links": [
         {
             "icon": "doc",
@@ -168,7 +168,7 @@
             "datasource": null,
             "gridPos": {
                 "h": 1,
-                "w": 12,
+                "w": 24,
                 "x": 0,
                 "y": 3
             },
@@ -180,29 +180,6 @@
             "options": {},
             "repeat": "service_name",
             "repeatDirection": "h",
-            "title": "$service_name",
-            "transparent": true,
-            "type": "text"
-        },
-        {
-            "content": "",
-            "datasource": null,
-            "gridPos": {
-                "h": 1,
-                "w": 12,
-                "x": 12,
-                "y": 3
-            },
-            "height": "50px",
-            "id": 1000,
-            "links": [],
-            "maxPerRow": 6,
-            "mode": "html",
-            "options": {},
-            "repeat": null,
-            "repeatDirection": "h",
-            "repeatIteration": 1573828739308,
-            "repeatPanelId": 12,
             "title": "$service_name",
             "transparent": true,
             "type": "text"
@@ -269,10 +246,11 @@
             "fillGradient": 0,
             "gridPos": {
                 "h": 7,
-                "w": 12,
+                "w": 24,
                 "x": 0,
                 "y": 8
             },
+            "hiddenSeries": false,
             "id": 1,
             "legend": {
                 "alignAsTable": true,
@@ -310,114 +288,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(mysql_global_status_commands_total{command=\"$command\", service_name=~\"$service_name\"}[$interval]) or irate(mysql_global_status_commands_total{command=\"$command\", service_name=~\"$service_name\"}[5m])",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "{{command}}",
-                    "refId": "A"
-                }
-            ],
-            "thresholds": [],
-            "timeFrom": null,
-            "timeRegions": [],
-            "timeShift": null,
-            "title": "$service_name - $command",
-            "tooltip": {
-                "shared": true,
-                "sort": 0,
-                "value_type": "individual"
-            },
-            "type": "graph",
-            "xaxis": {
-                "buckets": null,
-                "mode": "time",
-                "name": null,
-                "show": true,
-                "values": []
-            },
-            "yaxes": [
-                {
-                    "decimals": 2,
-                    "format": "short",
-                    "label": null,
-                    "logBase": 1,
-                    "max": null,
-                    "min": "0",
-                    "show": true
-                },
-                {
-                    "format": "short",
-                    "label": null,
-                    "logBase": 1,
-                    "max": null,
-                    "min": null,
-                    "show": false
-                }
-            ],
-            "yaxis": {
-                "align": false,
-                "alignLevel": null
-            }
-        },
-        {
-            "aliasColors": {
-                "insert": "#447ebc",
-                "select": "#447ebc"
-            },
-            "bars": false,
-            "dashLength": 10,
-            "dashes": false,
-            "datasource": "Prometheus",
-            "decimals": 2,
-            "fill": 2,
-            "fillGradient": 0,
-            "gridPos": {
-                "h": 7,
-                "w": 12,
-                "x": 12,
-                "y": 8
-            },
-            "id": 1001,
-            "legend": {
-                "alignAsTable": true,
-                "avg": true,
-                "current": false,
-                "max": true,
-                "min": true,
-                "show": true,
-                "total": false,
-                "values": true
-            },
-            "lines": true,
-            "linewidth": 2,
-            "links": [],
-            "maxPerRow": 6,
-            "nullPointMode": "null",
-            "options": {
-                "dataLinks": []
-            },
-            "paceLength": 10,
-            "percentage": false,
-            "pointradius": 1,
-            "points": false,
-            "renderer": "flot",
-            "repeat": null,
-            "repeatDirection": "h",
-            "repeatIteration": 1573828739308,
-            "repeatPanelId": 1,
-            "seriesOverrides": [
-                {
-                    "alias": "/.*/",
-                    "color": "#614d93"
-                }
-            ],
-            "spaceLength": 10,
-            "stack": false,
-            "steppedLine": false,
-            "targets": [
-                {
-                    "expr": "rate(mysql_global_status_commands_total{command=\"$command\", service_name=~\"$service_name\"}[$interval]) or irate(mysql_global_status_commands_total{command=\"$command\", service_name=~\"$service_name\"}[5m])",
+                    "expr": "avg by (service_name) (rate(mysql_global_status_commands_total{command=\"$command\", service_name=~\"$service_name\"}[$interval]) or irate(mysql_global_status_commands_total{command=\"$command\", service_name=~\"$service_name\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -476,6 +347,636 @@
                 "x": 0,
                 "y": 15
             },
+            "id": 1000,
+            "panels": [],
+            "repeat": null,
+            "repeatIteration": 1581959498847,
+            "repeatPanelId": 258,
+            "title": "$service_name- $command",
+            "type": "row"
+        },
+        {
+            "aliasColors": {
+                "insert": "#447ebc",
+                "select": "#447ebc"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 2,
+            "fill": 2,
+            "fillGradient": 0,
+            "gridPos": {
+                "h": 7,
+                "w": 24,
+                "x": 0,
+                "y": 16
+            },
+            "hiddenSeries": false,
+            "id": 1001,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "maxPerRow": 6,
+            "nullPointMode": "null",
+            "options": {
+                "dataLinks": []
+            },
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 1,
+            "points": false,
+            "renderer": "flot",
+            "repeat": "service_name",
+            "repeatDirection": "h",
+            "repeatIteration": 1581959498847,
+            "repeatPanelId": 1,
+            "repeatedByRow": true,
+            "seriesOverrides": [
+                {
+                    "alias": "/.*/",
+                    "color": "#614d93"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "avg by (service_name) (rate(mysql_global_status_commands_total{command=\"$command\", service_name=~\"$service_name\"}[$interval]) or irate(mysql_global_status_commands_total{command=\"$command\", service_name=~\"$service_name\"}[5m]))",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{command}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "$service_name - $command",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 2,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "collapsed": false,
+            "datasource": null,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 23
+            },
+            "id": 1002,
+            "panels": [],
+            "repeat": null,
+            "repeatIteration": 1581959498847,
+            "repeatPanelId": 258,
+            "title": "$service_name- $command",
+            "type": "row"
+        },
+        {
+            "aliasColors": {
+                "insert": "#447ebc",
+                "select": "#447ebc"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 2,
+            "fill": 2,
+            "fillGradient": 0,
+            "gridPos": {
+                "h": 7,
+                "w": 24,
+                "x": 0,
+                "y": 24
+            },
+            "hiddenSeries": false,
+            "id": 1003,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "maxPerRow": 6,
+            "nullPointMode": "null",
+            "options": {
+                "dataLinks": []
+            },
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 1,
+            "points": false,
+            "renderer": "flot",
+            "repeat": "service_name",
+            "repeatDirection": "h",
+            "repeatIteration": 1581959498847,
+            "repeatPanelId": 1,
+            "repeatedByRow": true,
+            "seriesOverrides": [
+                {
+                    "alias": "/.*/",
+                    "color": "#614d93"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "avg by (service_name) (rate(mysql_global_status_commands_total{command=\"$command\", service_name=~\"$service_name\"}[$interval]) or irate(mysql_global_status_commands_total{command=\"$command\", service_name=~\"$service_name\"}[5m]))",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{command}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "$service_name - $command",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 2,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "collapsed": false,
+            "datasource": null,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 31
+            },
+            "id": 1004,
+            "panels": [],
+            "repeat": null,
+            "repeatIteration": 1581959498847,
+            "repeatPanelId": 258,
+            "title": "$service_name- $command",
+            "type": "row"
+        },
+        {
+            "aliasColors": {
+                "insert": "#447ebc",
+                "select": "#447ebc"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 2,
+            "fill": 2,
+            "fillGradient": 0,
+            "gridPos": {
+                "h": 7,
+                "w": 24,
+                "x": 0,
+                "y": 32
+            },
+            "hiddenSeries": false,
+            "id": 1005,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "maxPerRow": 6,
+            "nullPointMode": "null",
+            "options": {
+                "dataLinks": []
+            },
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 1,
+            "points": false,
+            "renderer": "flot",
+            "repeat": "service_name",
+            "repeatDirection": "h",
+            "repeatIteration": 1581959498847,
+            "repeatPanelId": 1,
+            "repeatedByRow": true,
+            "seriesOverrides": [
+                {
+                    "alias": "/.*/",
+                    "color": "#614d93"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "avg by (service_name) (rate(mysql_global_status_commands_total{command=\"$command\", service_name=~\"$service_name\"}[$interval]) or irate(mysql_global_status_commands_total{command=\"$command\", service_name=~\"$service_name\"}[5m]))",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{command}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "$service_name - $command",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 2,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "collapsed": false,
+            "datasource": null,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 39
+            },
+            "id": 1006,
+            "panels": [],
+            "repeat": null,
+            "repeatIteration": 1581959498847,
+            "repeatPanelId": 258,
+            "title": "$service_name- $command",
+            "type": "row"
+        },
+        {
+            "aliasColors": {
+                "insert": "#447ebc",
+                "select": "#447ebc"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 2,
+            "fill": 2,
+            "fillGradient": 0,
+            "gridPos": {
+                "h": 7,
+                "w": 24,
+                "x": 0,
+                "y": 40
+            },
+            "hiddenSeries": false,
+            "id": 1007,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "maxPerRow": 6,
+            "nullPointMode": "null",
+            "options": {
+                "dataLinks": []
+            },
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 1,
+            "points": false,
+            "renderer": "flot",
+            "repeat": "service_name",
+            "repeatDirection": "h",
+            "repeatIteration": 1581959498847,
+            "repeatPanelId": 1,
+            "repeatedByRow": true,
+            "seriesOverrides": [
+                {
+                    "alias": "/.*/",
+                    "color": "#614d93"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "avg by (service_name) (rate(mysql_global_status_commands_total{command=\"$command\", service_name=~\"$service_name\"}[$interval]) or irate(mysql_global_status_commands_total{command=\"$command\", service_name=~\"$service_name\"}[5m]))",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{command}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "$service_name - $command",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 2,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "collapsed": false,
+            "datasource": null,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 47
+            },
+            "id": 1008,
+            "panels": [],
+            "repeat": null,
+            "repeatIteration": 1581959498847,
+            "repeatPanelId": 258,
+            "title": "$service_name- $command",
+            "type": "row"
+        },
+        {
+            "aliasColors": {
+                "insert": "#447ebc",
+                "select": "#447ebc"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 2,
+            "fill": 2,
+            "fillGradient": 0,
+            "gridPos": {
+                "h": 7,
+                "w": 24,
+                "x": 0,
+                "y": 48
+            },
+            "hiddenSeries": false,
+            "id": 1009,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "maxPerRow": 6,
+            "nullPointMode": "null",
+            "options": {
+                "dataLinks": []
+            },
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 1,
+            "points": false,
+            "renderer": "flot",
+            "repeat": "service_name",
+            "repeatDirection": "h",
+            "repeatIteration": 1581959498847,
+            "repeatPanelId": 1,
+            "repeatedByRow": true,
+            "seriesOverrides": [
+                {
+                    "alias": "/.*/",
+                    "color": "#614d93"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "avg by (service_name) (rate(mysql_global_status_commands_total{command=\"$command\", service_name=~\"$service_name\"}[$interval]) or irate(mysql_global_status_commands_total{command=\"$command\", service_name=~\"$service_name\"}[5m]))",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{command}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "$service_name - $command",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 2,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "collapsed": false,
+            "datasource": null,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 55
+            },
             "id": 259,
             "panels": [],
             "repeat": null,
@@ -489,7 +990,7 @@
                 "h": 2,
                 "w": 24,
                 "x": 0,
-                "y": 16
+                "y": 56
             },
             "height": "25",
             "id": 16,
@@ -507,7 +1008,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 18
+                "y": 58
             },
             "id": 261,
             "panels": [],
@@ -528,10 +1029,11 @@
             "fillGradient": 0,
             "gridPos": {
                 "h": 7,
-                "w": 12,
+                "w": 24,
                 "x": 0,
-                "y": 19
+                "y": 59
             },
+            "hiddenSeries": false,
             "id": 9,
             "legend": {
                 "alignAsTable": true,
@@ -569,7 +1071,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=~\"$service_name\"}[5m])",
+                    "expr": "avg by (service_name) (rate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=~\"$service_name\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -620,6 +1122,23 @@
             }
         },
         {
+            "collapsed": false,
+            "datasource": null,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 66
+            },
+            "id": 1010,
+            "panels": [],
+            "repeat": null,
+            "repeatIteration": 1581959498847,
+            "repeatPanelId": 261,
+            "title": "$service_name - $handler",
+            "type": "row"
+        },
+        {
             "aliasColors": {
                 "commit": "#614d93"
             },
@@ -632,11 +1151,12 @@
             "fillGradient": 0,
             "gridPos": {
                 "h": 7,
-                "w": 12,
-                "x": 12,
-                "y": 19
+                "w": 24,
+                "x": 0,
+                "y": 67
             },
-            "id": 1002,
+            "hiddenSeries": false,
+            "id": 1011,
             "legend": {
                 "alignAsTable": true,
                 "avg": true,
@@ -660,10 +1180,11 @@
             "pointradius": 5,
             "points": false,
             "renderer": "flot",
-            "repeat": null,
+            "repeat": "service_name",
             "repeatDirection": "h",
-            "repeatIteration": 1573828739308,
+            "repeatIteration": 1581959498847,
             "repeatPanelId": 9,
+            "repeatedByRow": true,
             "seriesOverrides": [
                 {
                     "alias": "/.*/",
@@ -675,7 +1196,257 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=~\"$service_name\"}[5m])",
+                    "expr": "avg by (service_name) (rate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=~\"$service_name\"}[5m]))",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{handler}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "$service_name - $handler",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 0,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "collapsed": false,
+            "datasource": null,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 74
+            },
+            "id": 1012,
+            "panels": [],
+            "repeat": null,
+            "repeatIteration": 1581959498847,
+            "repeatPanelId": 261,
+            "title": "$service_name - $handler",
+            "type": "row"
+        },
+        {
+            "aliasColors": {
+                "commit": "#614d93"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "fill": 2,
+            "fillGradient": 0,
+            "gridPos": {
+                "h": 7,
+                "w": 24,
+                "x": 0,
+                "y": 75
+            },
+            "hiddenSeries": false,
+            "id": 1013,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "maxPerRow": 6,
+            "nullPointMode": "null",
+            "options": {
+                "dataLinks": []
+            },
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "repeat": "service_name",
+            "repeatDirection": "h",
+            "repeatIteration": 1581959498847,
+            "repeatPanelId": 9,
+            "repeatedByRow": true,
+            "seriesOverrides": [
+                {
+                    "alias": "/.*/",
+                    "color": "#806eb7"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "avg by (service_name) (rate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=~\"$service_name\"}[5m]))",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{handler}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "$service_name - $handler",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 0,
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "collapsed": false,
+            "datasource": null,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 82
+            },
+            "id": 1014,
+            "panels": [],
+            "repeat": null,
+            "repeatIteration": 1581959498847,
+            "repeatPanelId": 261,
+            "title": "$service_name - $handler",
+            "type": "row"
+        },
+        {
+            "aliasColors": {
+                "commit": "#614d93"
+            },
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "fill": 2,
+            "fillGradient": 0,
+            "gridPos": {
+                "h": 7,
+                "w": 24,
+                "x": 0,
+                "y": 83
+            },
+            "hiddenSeries": false,
+            "id": 1015,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "total": false,
+                "values": true
+            },
+            "lines": true,
+            "linewidth": 2,
+            "links": [],
+            "maxPerRow": 6,
+            "nullPointMode": "null",
+            "options": {
+                "dataLinks": []
+            },
+            "paceLength": 10,
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "repeat": "service_name",
+            "repeatDirection": "h",
+            "repeatIteration": 1581959498847,
+            "repeatPanelId": 9,
+            "repeatedByRow": true,
+            "seriesOverrides": [
+                {
+                    "alias": "/.*/",
+                    "color": "#806eb7"
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "avg by (service_name) (rate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_handlers_total{handler=\"$handler\",service_name=~\"$service_name\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -726,7 +1497,7 @@
             }
         }
     ],
-    "schemaVersion": 20,
+    "schemaVersion": 21,
     "style": "dark",
     "tags": [
         "Percona",
@@ -836,15 +1607,15 @@
             {
                 "allValue": "",
                 "current": {
-                  "text": "alter_table + delete + insert + replace + select + update",
-                  "value": [
-                    "alter_table",
-                    "delete",
-                    "insert",
-                    "replace",
-                    "select",
-                    "update"
-                  ]
+                    "text": "alter_table + delete + insert + replace + select + update",
+                    "value": [
+                        "alter_table",
+                        "delete",
+                        "insert",
+                        "replace",
+                        "select",
+                        "update"
+                    ]
                 },
                 "datasource": "Prometheus",
                 "definition": "label_values(mysql_global_status_commands_total{service_name=~\"$service_name\"},command)",
@@ -868,15 +1639,13 @@
             {
                 "allValue": null,
                 "current": {
-                  "selected": true,
-                  "tags": [],
-                  "text": "commit + delete + update + write",
-                  "value": [
-                    "commit",
-                    "delete",
-                    "update",
-                    "write"
-                  ]
+                    "text": "commit + delete + update + write",
+                    "value": [
+                        "commit",
+                        "delete",
+                        "update",
+                        "write"
+                    ]
                 },
                 "datasource": "Prometheus",
                 "definition": "label_values(mysql_global_status_handlers_total{service_name=~\"$service_name\"},handler)",
