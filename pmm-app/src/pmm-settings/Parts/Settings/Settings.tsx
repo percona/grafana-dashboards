@@ -74,6 +74,7 @@ const MINUTES = 60;
 const HOURS = 24;
 const SECONDS_IN_DAY = SECONDS * MINUTES * HOURS;
 const MINUTES_IN_HOUR = MINUTES * HOURS;
+
 const transformToDays = (count, units) => {
   switch (units) {
     case 'h':
@@ -99,18 +100,6 @@ interface SettingsInterface {
   disable_telemetry?: boolean;
   enable_telemetry?: boolean;
 }
-
-const validateSettingsForm = values => {
-  const errors = {} as any;
-
-  errors.data_retention_count = Validators.validateRange(values.data_retention_count, 0, 3651);
-  for (const propName in errors) {
-    if (!errors[propName]) {
-      delete errors[propName];
-    }
-  }
-  return errors;
-};
 
 const SettingsPart = props => {
   const [loading, setLoading] = useState(false);
@@ -141,7 +130,7 @@ const SettingsPart = props => {
       render={(): ReactElement => {
         const { form, handleSubmit } = useForm({
           onSubmit: onSubmit,
-          validate: validateSettingsForm,
+          validate: () => undefined,
         });
 
         useEffect(() => {
@@ -205,7 +194,17 @@ const SettingsPart = props => {
                         text={'This is the value for how long data will be stored'}
                       />
                     }
-                    element={<InputField name={'data_retention_count'} form={form} wrapperStyle={{ width: '100%' }} />}
+                    element={
+                      <InputField
+                        name={'data_retention_count'}
+                        validate={Validators.compose(
+                          Validators.range(1, 3650),
+                          Validators.required
+                        )}
+                        form={form}
+                        wrapperStyle={{ width: '100%' }}
+                      />
+                    }
                   />
                   <FormElement
                     label={'Call home'}

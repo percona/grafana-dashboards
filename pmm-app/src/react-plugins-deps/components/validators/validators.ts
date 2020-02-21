@@ -2,7 +2,7 @@ class Validators {
   static validatePort(value) {
     const portNumber = Number.parseInt(value, 10);
     if (portNumber > 0 && portNumber < 65535) {
-      return '';
+      return undefined;
     }
     return 'Port should be a number and between the range of 0 and 65535';
   }
@@ -12,7 +12,17 @@ class Validators {
       return '';
     }
 
-    return value > from && value < to ? '' : `Value should be in range from ${from} to ${to}`;
+    return value >= from && value <= to ? '' : `Value should be in range from ${from} to ${to}`;
+  }
+
+  static range(from, to) {
+    return (value, values) => {
+      if (!value) {
+        return undefined;
+      }
+
+      return value >= from && value <= to ? '' : `Value should be in range from ${from} to ${to}`;
+    };
   }
 
   static validateKeyValue(value) {
@@ -25,7 +35,15 @@ class Validators {
     ) {
       return 'Values have to be in key:value format, and separated with new line or space';
     }
-    return '';
+    return undefined;
+  }
+
+  static required(value) {
+    return Boolean(value) ? undefined : 'Required field';
+  }
+
+  static compose(...validators) {
+    return value => validators.reduce((error, validator) => error || validator(value), undefined);
   }
 }
 
