@@ -12,16 +12,16 @@ class Validators {
       return '';
     }
 
-    return value >= from && value <= to ? '' : `Value should be in range from ${from} to ${to}`;
+    return value >= from && value <= to ? undefined : `Value should be in range from ${from} to ${to}`;
   }
 
   static range(from, to) {
-    return (value, values) => {
+    return value => {
       if (!value) {
         return undefined;
       }
 
-      return value >= from && value <= to ? '' : `Value should be in range from ${from} to ${to}`;
+      return value >= from && value <= to ? undefined : `Value should be in range from ${from} to ${to}`;
     };
   }
 
