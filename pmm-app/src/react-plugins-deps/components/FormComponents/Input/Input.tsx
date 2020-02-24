@@ -15,7 +15,7 @@ interface InputFieldInterface {
   options?: any;
   defaultValue?: any;
   readonly?: boolean;
-  validate: any;
+  validate?: any;
 }
 
 export const InputField = ({ name, placeholder = '', required, form, style, wrapperStyle, readonly, validate }: InputFieldInterface) => {
