@@ -1057,7 +1057,7 @@
                 }
             ],
             "thresholds": "0.5,0.8",
-            "title": "Top MySQL Thread Cached",
+            "title": "Top MySQL Threads Cached",
             "type": "singlestat",
             "valueFontSize": "50%",
             "valueMaps": [],
@@ -1329,7 +1329,7 @@
                     "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 2,
-                    "description": "**MySQL Active Threads**\n\nThreads Connected is the number of open connections, while Threads Running is the number of threads not sleeping.",
+                    "description": "**Aborted Connections**\n\nWhen a given host connects to MySQL and the connection is interrupted in the middle (for example due to bad credentials), MySQL keeps that info in a system table (since 5.6 this table is exposed in performance_schema).\n\nIf the amount of failed requests without a successful connection reaches the value of max_connect_errors, mysqld assumes that something is wrong and blocks the host from further connection.\n\nTo allow connections from that host again, you need to issue the ``FLUSH HOSTS`` statement.",
                     "editable": true,
                     "error": false,
                     "fill": 2,
@@ -1340,6 +1340,261 @@
                         "w": 12,
                         "x": 0,
                         "y": 17
+                    },
+                    "hiddenSeries": false,
+                    "id": 47,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": false,
+                    "linewidth": 2,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "options": {
+                        "dataLinks": [
+                            {
+                                "targetBlank": true,
+                                "title": "MySQL Instance Summary - ${__series.name}",
+                                "url": "/graph/d/mysql-instance-summary/mysql-instance-summary?var-service_name=${__series.name}&$__url_time_range"
+                            }
+                        ]
+                    },
+                    "paceLength": 10,
+                    "percentage": false,
+                    "pointradius": 1,
+                    "points": true,
+                    "renderer": "flot",
+                    "seriesOverrides": [
+                        {
+                            "alias": "Avg",
+                            "color": "#C4162A",
+                            "fill": 0,
+                            "legend": false,
+                            "lines": true,
+                            "linewidth": 2,
+                            "points": false
+                        }
+                    ],
+                    "spaceLength": 10,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "topk(5,avg by (service_name)(rate(mysql_global_status_aborted_connects{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_aborted_connects{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_aborted_clients{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_aborted_clients{service_name=~\"$service_name\"}[5m])))",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "{{service_name}}",
+                            "metric": "",
+                            "refId": "A",
+                            "step": 20
+                        },
+                        {
+                            "expr": "avg(rate(mysql_global_status_aborted_connects{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_aborted_connects{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_aborted_clients{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_aborted_clients{service_name=~\"$service_name\"}[5m]))",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Avg",
+                            "refId": "B"
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeRegions": [],
+                    "timeShift": null,
+                    "title": "Top 5 MySQL Aborted Connections",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "cumulative"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "decimals": 2,
+                            "format": "short",
+                            "label": "",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "label": "",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": false
+                        }
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
+                },
+                {
+                    "colors": [
+                        "#299c46",
+                        "rgba(237, 129, 40, 0.89)",
+                        "#d44a3a"
+                    ],
+                    "datasource": null,
+                    "description": "",
+                    "gridPos": {
+                        "h": 8,
+                        "w": 12,
+                        "x": 12,
+                        "y": 17
+                    },
+                    "id": 418,
+                    "links": [],
+                    "options": {},
+                    "polystat": {
+                        "animationSpeed": 2500,
+                        "columnAutoSize": true,
+                        "columns": "",
+                        "defaultClickThrough": "",
+                        "defaultClickThroughSanitize": false,
+                        "displayLimit": 100,
+                        "fontAutoScale": true,
+                        "fontSize": 12,
+                        "fontType": "Roboto",
+                        "globalDecimals": 0,
+                        "globalDisplayMode": "all",
+                        "globalDisplayTextTriggeredEmpty": "OK",
+                        "globalOperatorName": "current",
+                        "globalUnitFormat": "short",
+                        "gradientEnabled": true,
+                        "hexagonSortByDirection": "asc",
+                        "hexagonSortByField": "name",
+                        "maxMetrics": 0,
+                        "polygonBorderColor": "black",
+                        "polygonBorderSize": 2,
+                        "polygonGlobalFillColor": "#0a50a1",
+                        "radius": "",
+                        "radiusAutoSize": true,
+                        "rowAutoSize": true,
+                        "rows": "",
+                        "shape": "hexagon_pointed_top",
+                        "tooltipDisplayMode": "all",
+                        "tooltipDisplayTextTriggeredEmpty": "OK",
+                        "tooltipFontSize": 12,
+                        "tooltipFontType": "Roboto",
+                        "tooltipPrimarySortDirection": "desc",
+                        "tooltipPrimarySortField": "thresholdLevel",
+                        "tooltipSecondarySortDirection": "desc",
+                        "tooltipSecondarySortField": "value",
+                        "tooltipTimestampEnabled": true
+                    },
+                    "savedComposites": [],
+                    "savedOverrides": [
+                        {
+                            "clickThrough": "/graph/d/mysql-instance-summary/mysql-instance-summary?var-service_name=${__cell_name}&amp;fullscreen&panelId=22",
+                            "colors": [
+                                "#299c46",
+                                "#e5ac0e",
+                                "#bf1b00",
+                                "#ffffff"
+                            ],
+                            "decimals": 0,
+                            "enabled": true,
+                            "label": "OVERRIDE 1",
+                            "metricName": "/.*/",
+                            "operatorName": "current",
+                            "prefix": "",
+                            "sanitizeURLEnabled": true,
+                            "scaledDecimals": null,
+                            "suffix": "",
+                            "thresholds": [
+                                {
+                                    "color": "#299c46",
+                                    "state": 0,
+                                    "value": 0
+                                },
+                                {
+                                    "color": "#e5ac0e",
+                                    "state": 1,
+                                    "value": 1
+                                },
+                                {
+                                    "color": "#bf1b00",
+                                    "state": 2,
+                                    "value": 10
+                                }
+                            ],
+                            "unitFormat": "short"
+                        }
+                    ],
+                    "targets": [
+                        {
+                            "expr": "avg by (service_name)(rate(mysql_global_status_aborted_connects{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_aborted_connects{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_aborted_clients{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_aborted_clients{service_name=~\"$service_name\"}[5m]))",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "{{service_name}}",
+                            "refId": "A"
+                        }
+                    ],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Aborted Connections",
+                    "type": "grafana-polystat-panel"
+                }
+            ],
+            "repeat": null,
+            "title": "Connections details",
+            "type": "row"
+        },
+        {
+            "collapsed": true,
+            "datasource": null,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 9
+            },
+            "id": 1001,
+            "panels": [
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": 2,
+                    "description": "**MySQL Active Threads**\n\nThreads Connected is the number of open connections, while Threads Running is the number of threads not sleeping.",
+                    "editable": true,
+                    "error": false,
+                    "fill": 2,
+                    "fillGradient": 0,
+                    "grid": {},
+                    "gridPos": {
+                        "h": 8,
+                        "w": 12,
+                        "x": 0,
+                        "y": 26
                     },
                     "hiddenSeries": false,
                     "id": 10,
@@ -1469,7 +1724,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 17
+                        "y": 26
                     },
                     "id": 410,
                     "links": [],
@@ -1582,7 +1837,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 25
+                        "y": 34
                     },
                     "hiddenSeries": false,
                     "id": 409,
@@ -1711,7 +1966,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 25
+                        "y": 34
                     },
                     "id": 411,
                     "links": [],
@@ -1824,7 +2079,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 33
+                        "y": 42
                     },
                     "hiddenSeries": false,
                     "id": 11,
@@ -1955,7 +2210,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 33
+                        "y": 42
                     },
                     "id": 413,
                     "links": [],
@@ -2052,8 +2307,7 @@
                     "type": "grafana-polystat-panel"
                 }
             ],
-            "repeat": null,
-            "title": "Connections details",
+            "title": "Client Threads details",
             "type": "row"
         },
         {
@@ -2063,7 +2317,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 9
+                "y": 10
             },
             "id": 452,
             "panels": [],
@@ -2097,7 +2351,7 @@
                 "h": 2,
                 "w": 4,
                 "x": 0,
-                "y": 10
+                "y": 11
             },
             "height": "125px",
             "id": 453,
@@ -2185,7 +2439,7 @@
                 "h": 2,
                 "w": 5,
                 "x": 4,
-                "y": 10
+                "y": 11
             },
             "height": "125px",
             "id": 454,
@@ -2273,7 +2527,7 @@
                 "h": 2,
                 "w": 5,
                 "x": 9,
-                "y": 10
+                "y": 11
             },
             "height": "125px",
             "id": 455,
@@ -2363,7 +2617,7 @@
                 "h": 2,
                 "w": 5,
                 "x": 14,
-                "y": 10
+                "y": 11
             },
             "height": "125px",
             "id": 457,
@@ -2453,7 +2707,7 @@
                 "h": 2,
                 "w": 5,
                 "x": 19,
-                "y": 10
+                "y": 11
             },
             "height": "125px",
             "id": 456,
@@ -2523,7 +2777,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 12
+                "y": 13
             },
             "id": 384,
             "panels": [
@@ -3015,7 +3269,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 13
+                "y": 14
             },
             "id": 437,
             "panels": [
@@ -3751,7 +4005,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 14
+                "y": 15
             },
             "id": 459,
             "panels": [],
@@ -3785,7 +4039,7 @@
                 "h": 2,
                 "w": 4,
                 "x": 0,
-                "y": 15
+                "y": 16
             },
             "height": "125px",
             "id": 460,
@@ -3873,7 +4127,7 @@
                 "h": 2,
                 "w": 5,
                 "x": 4,
-                "y": 15
+                "y": 16
             },
             "height": "125px",
             "id": 461,
@@ -3961,7 +4215,7 @@
                 "h": 2,
                 "w": 5,
                 "x": 9,
-                "y": 15
+                "y": 16
             },
             "height": "125px",
             "id": 462,
@@ -4049,7 +4303,7 @@
                 "h": 2,
                 "w": 5,
                 "x": 14,
-                "y": 15
+                "y": 16
             },
             "height": "125px",
             "id": 463,
@@ -4137,7 +4391,7 @@
                 "h": 2,
                 "w": 5,
                 "x": 19,
-                "y": 15
+                "y": 16
             },
             "height": "125px",
             "id": 464,
@@ -4205,7 +4459,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 17
+                "y": 18
             },
             "id": 385,
             "panels": [
@@ -4698,7 +4952,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 18
+                "y": 19
             },
             "id": 386,
             "panels": [
@@ -4954,249 +5208,10 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 19
+                "y": 20
             },
             "id": 387,
             "panels": [
-                {
-                    "aliasColors": {},
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "datasource": "Prometheus",
-                    "decimals": 2,
-                    "description": "**Aborted Connections**\n\nWhen a given host connects to MySQL and the connection is interrupted in the middle (for example due to bad credentials), MySQL keeps that info in a system table (since 5.6 this table is exposed in performance_schema).\n\nIf the amount of failed requests without a successful connection reaches the value of max_connect_errors, mysqld assumes that something is wrong and blocks the host from further connection.\n\nTo allow connections from that host again, you need to issue the ``FLUSH HOSTS`` statement.",
-                    "editable": true,
-                    "error": false,
-                    "fill": 2,
-                    "fillGradient": 0,
-                    "grid": {},
-                    "gridPos": {
-                        "h": 8,
-                        "w": 12,
-                        "x": 0,
-                        "y": 20
-                    },
-                    "hiddenSeries": false,
-                    "id": 47,
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "max": true,
-                        "min": true,
-                        "show": true,
-                        "sort": "avg",
-                        "sortDesc": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": false,
-                    "linewidth": 2,
-                    "links": [],
-                    "nullPointMode": "null",
-                    "options": {
-                        "dataLinks": [
-                            {
-                                "targetBlank": true,
-                                "title": "MySQL Instance Summary - ${__series.name}",
-                                "url": "/graph/d/mysql-instance-summary/mysql-instance-summary?var-service_name=${__series.name}&$__url_time_range"
-                            }
-                        ]
-                    },
-                    "paceLength": 10,
-                    "percentage": false,
-                    "pointradius": 1,
-                    "points": true,
-                    "renderer": "flot",
-                    "seriesOverrides": [
-                        {
-                            "alias": "Avg",
-                            "color": "#C4162A",
-                            "fill": 0,
-                            "legend": false,
-                            "lines": true,
-                            "linewidth": 2,
-                            "points": false
-                        }
-                    ],
-                    "spaceLength": 10,
-                    "stack": false,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "calculatedInterval": "2m",
-                            "datasourceErrors": {},
-                            "errors": {},
-                            "expr": "topk(5,avg by (service_name)(rate(mysql_global_status_aborted_connects{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_aborted_connects{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_aborted_clients{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_aborted_clients{service_name=~\"$service_name\"}[5m])))",
-                            "format": "time_series",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "{{service_name}}",
-                            "metric": "",
-                            "refId": "A",
-                            "step": 20
-                        },
-                        {
-                            "expr": "avg(rate(mysql_global_status_aborted_connects{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_aborted_connects{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_aborted_clients{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_aborted_clients{service_name=~\"$service_name\"}[5m]))",
-                            "format": "time_series",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Avg",
-                            "refId": "B"
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeRegions": [],
-                    "timeShift": null,
-                    "title": "Top 5 MySQL Aborted Connections",
-                    "tooltip": {
-                        "msResolution": false,
-                        "shared": true,
-                        "sort": 0,
-                        "value_type": "cumulative"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "decimals": 2,
-                            "format": "short",
-                            "label": "",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "label": "",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": false
-                        }
-                    ],
-                    "yaxis": {
-                        "align": false,
-                        "alignLevel": null
-                    }
-                },
-                {
-                    "colors": [
-                        "#299c46",
-                        "rgba(237, 129, 40, 0.89)",
-                        "#d44a3a"
-                    ],
-                    "datasource": null,
-                    "description": "",
-                    "gridPos": {
-                        "h": 8,
-                        "w": 12,
-                        "x": 12,
-                        "y": 20
-                    },
-                    "id": 418,
-                    "links": [],
-                    "options": {},
-                    "polystat": {
-                        "animationSpeed": 2500,
-                        "columnAutoSize": true,
-                        "columns": "",
-                        "defaultClickThrough": "",
-                        "defaultClickThroughSanitize": false,
-                        "displayLimit": 100,
-                        "fontAutoScale": true,
-                        "fontSize": 12,
-                        "fontType": "Roboto",
-                        "globalDecimals": 0,
-                        "globalDisplayMode": "all",
-                        "globalDisplayTextTriggeredEmpty": "OK",
-                        "globalOperatorName": "current",
-                        "globalUnitFormat": "short",
-                        "gradientEnabled": true,
-                        "hexagonSortByDirection": "asc",
-                        "hexagonSortByField": "name",
-                        "maxMetrics": 0,
-                        "polygonBorderColor": "black",
-                        "polygonBorderSize": 2,
-                        "polygonGlobalFillColor": "#0a50a1",
-                        "radius": "",
-                        "radiusAutoSize": true,
-                        "rowAutoSize": true,
-                        "rows": "",
-                        "shape": "hexagon_pointed_top",
-                        "tooltipDisplayMode": "all",
-                        "tooltipDisplayTextTriggeredEmpty": "OK",
-                        "tooltipFontSize": 12,
-                        "tooltipFontType": "Roboto",
-                        "tooltipPrimarySortDirection": "desc",
-                        "tooltipPrimarySortField": "thresholdLevel",
-                        "tooltipSecondarySortDirection": "desc",
-                        "tooltipSecondarySortField": "value",
-                        "tooltipTimestampEnabled": true
-                    },
-                    "savedComposites": [],
-                    "savedOverrides": [
-                        {
-                            "clickThrough": "/graph/d/mysql-instance-summary/mysql-instance-summary?var-service_name=${__cell_name}&amp;fullscreen&panelId=22",
-                            "colors": [
-                                "#299c46",
-                                "#e5ac0e",
-                                "#bf1b00",
-                                "#ffffff"
-                            ],
-                            "decimals": 0,
-                            "enabled": true,
-                            "label": "OVERRIDE 1",
-                            "metricName": "/.*/",
-                            "operatorName": "current",
-                            "prefix": "",
-                            "sanitizeURLEnabled": true,
-                            "scaledDecimals": null,
-                            "suffix": "",
-                            "thresholds": [
-                                {
-                                    "color": "#299c46",
-                                    "state": 0,
-                                    "value": 0
-                                },
-                                {
-                                    "color": "#e5ac0e",
-                                    "state": 1,
-                                    "value": 1
-                                },
-                                {
-                                    "color": "#bf1b00",
-                                    "state": 2,
-                                    "value": 10
-                                }
-                            ],
-                            "unitFormat": "short"
-                        }
-                    ],
-                    "targets": [
-                        {
-                            "expr": "avg by (service_name)(rate(mysql_global_status_aborted_connects{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_aborted_connects{service_name=~\"$service_name\"}[5m]) +\nrate(mysql_global_status_aborted_clients{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_aborted_clients{service_name=~\"$service_name\"}[5m]))",
-                            "format": "time_series",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "{{service_name}}",
-                            "refId": "A"
-                        }
-                    ],
-                    "timeFrom": null,
-                    "timeShift": null,
-                    "title": "Aborted Connections",
-                    "type": "grafana-polystat-panel"
-                },
                 {
                     "aliasColors": {},
                     "bars": false,
@@ -5214,7 +5229,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 28
+                        "y": 20
                     },
                     "hiddenSeries": false,
                     "id": 32,
@@ -5339,7 +5354,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 28
+                        "y": 20
                     },
                     "id": 419,
                     "links": [],
@@ -5437,7 +5452,7 @@
                 }
             ],
             "repeat": null,
-            "title": "Aborted Connections and Locks details",
+            "title": "Locks details",
             "type": "row"
         },
         {
@@ -5447,7 +5462,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 20
+                "y": 21
             },
             "id": 466,
             "panels": [],
@@ -5481,7 +5496,7 @@
                 "h": 2,
                 "w": 4,
                 "x": 0,
-                "y": 21
+                "y": 22
             },
             "height": "125px",
             "id": 467,
@@ -5569,7 +5584,7 @@
                 "h": 2,
                 "w": 5,
                 "x": 4,
-                "y": 21
+                "y": 22
             },
             "height": "125px",
             "id": 468,
@@ -5657,7 +5672,7 @@
                 "h": 2,
                 "w": 5,
                 "x": 9,
-                "y": 21
+                "y": 22
             },
             "height": "125px",
             "id": 469,
@@ -5747,7 +5762,7 @@
                 "h": 2,
                 "w": 5,
                 "x": 14,
-                "y": 21
+                "y": 22
             },
             "height": "125px",
             "id": 470,
@@ -5837,7 +5852,7 @@
                 "h": 2,
                 "w": 5,
                 "x": 19,
-                "y": 21
+                "y": 22
             },
             "height": "125px",
             "id": 471,
@@ -5907,7 +5922,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 23
+                "y": 24
             },
             "id": 388,
             "panels": [
@@ -6185,7 +6200,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 24
+                "y": 25
             },
             "id": 391,
             "panels": [
@@ -6443,7 +6458,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 25
+                "y": 26
             },
             "id": 392,
             "panels": [
@@ -6463,7 +6478,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 34
+                        "y": 26
                     },
                     "hiddenSeries": false,
                     "id": 43,
@@ -6588,7 +6603,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 34
+                        "y": 26
                     },
                     "id": 422,
                     "links": [],
@@ -6700,7 +6715,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 42
+                        "y": 34
                     },
                     "hiddenSeries": false,
                     "id": 41,
@@ -6825,7 +6840,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 42
+                        "y": 34
                     },
                     "id": 423,
                     "links": [],
@@ -6933,7 +6948,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 26
+                "y": 27
             },
             "id": 473,
             "panels": [],
@@ -6967,7 +6982,7 @@
                 "h": 2,
                 "w": 4,
                 "x": 0,
-                "y": 27
+                "y": 28
             },
             "height": "125px",
             "id": 474,
@@ -7057,7 +7072,7 @@
                 "h": 2,
                 "w": 5,
                 "x": 4,
-                "y": 27
+                "y": 28
             },
             "height": "125px",
             "id": 478,
@@ -7145,7 +7160,7 @@
                 "h": 2,
                 "w": 5,
                 "x": 9,
-                "y": 27
+                "y": 28
             },
             "height": "125px",
             "id": 475,
@@ -7233,7 +7248,7 @@
                 "h": 2,
                 "w": 5,
                 "x": 14,
-                "y": 27
+                "y": 28
             },
             "height": "125px",
             "id": 476,
@@ -7321,7 +7336,7 @@
                 "h": 2,
                 "w": 5,
                 "x": 19,
-                "y": 27
+                "y": 28
             },
             "height": "125px",
             "id": 477,
@@ -7391,7 +7406,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 29
+                "y": 30
             },
             "id": 393,
             "panels": [
@@ -7647,7 +7662,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 30
+                "y": 31
             },
             "id": 394,
             "panels": [
