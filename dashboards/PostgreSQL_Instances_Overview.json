@@ -713,6 +713,7 @@
                         "x": 0,
                         "y": 6
                     },
+                    "hiddenSeries": false,
                     "id": 23,
                     "legend": {
                         "alignAsTable": true,
@@ -898,7 +899,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "sum by (service_name) (max_over_time(pg_stat_activity_count{service_name=~\"$service_name\",state=~'idle'}[$interval]) or \nmax_over_time(pg_stat_activity_count{service_name=~\"$service_name\",state='idle'}[5m])) / on (service_name)\n(max_over_time(pg_settings_max_connections{service_name=~\"$service_name\"}[$interval]) or \nmax_over_time(pg_settings_max_connections{service_name=~\"$service_name\"}[5m]))",
+                            "expr": "sum by (service_name) (avg by (service_name) (max_over_time(pg_stat_activity_count{service_name=~\"$service_name\",state=~'idle'}[$interval]) or \nmax_over_time(pg_stat_activity_count{service_name=~\"$service_name\",state='idle'}[5m]))) / on (service_name)\navg by (service_name) ((max_over_time(pg_settings_max_connections{service_name=~\"$service_name\"}[$interval]) or \nmax_over_time(pg_settings_max_connections{service_name=~\"$service_name\"}[5m])))",
                             "interval": "$interval",
                             "legendFormat": "{{service_name}}",
                             "refId": "B"
@@ -926,6 +927,7 @@
                         "x": 0,
                         "y": 14
                     },
+                    "hiddenSeries": false,
                     "id": 34,
                     "legend": {
                         "alignAsTable": true,
@@ -1123,7 +1125,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "sum by (service_name) (max_over_time(pg_stat_activity_count{service_name=~\"$service_name\",state='active'}[$interval]) or max_over_time(pg_stat_activity_count{service_name=~\"$service_name\",state='active'}[5m])) / on (service_name)(max_over_time(pg_settings_max_connections{service_name=~\"$service_name\"}[$interval]) or max_over_time(pg_settings_max_connections{service_name=~\"$service_name\"}[5m]))",
+                            "expr": "sum by (service_name) (avg by (service_name) (max_over_time(pg_stat_activity_count{service_name=~\"$service_name\",state='active',datname!~\"template.*|postgres\"}[$interval]) or max_over_time(pg_stat_activity_count{service_name=~\"$service_name\",state='active',datname!~\"template.*|postgres\"}[5m]))) / on (service_name) avg by (service_name) ((max_over_time(pg_settings_max_connections{service_name=~\"$service_name\"}[$interval]) or max_over_time(pg_settings_max_connections{service_name=~\"$service_name\"}[5m])))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1159,7 +1161,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 23
+                        "y": 7
                     },
                     "id": 120,
                     "links": [],
@@ -1217,13 +1219,13 @@
                             "dateFormat": "YYYY-MM-DD HH:mm:ss",
                             "decimals": 2,
                             "mappingType": 1,
-                            "pattern": "/agent.*|.*_id|node.*|instance|job|service_type/",
+                            "pattern": "/agent.*|.*_id|node.*|instance|job|service_type|cluster|environment|replication_set|server/",
                             "thresholds": [],
                             "type": "hidden",
                             "unit": "short"
                         },
                         {
-                            "alias": "",
+                            "alias": "Service Name",
                             "colorMode": null,
                             "colors": [
                                 "rgba(245, 54, 54, 0.9)",
@@ -1270,7 +1272,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 23
+                        "y": 7
                     },
                     "id": 116,
                     "links": [],
@@ -1348,7 +1350,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "max_over_time(pg_settings_autovacuum{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_autovacuum{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (max_over_time(pg_settings_autovacuum{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_autovacuum{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1913,8 +1915,9 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 27
+                        "y": 11
                     },
+                    "hiddenSeries": false,
                     "id": 36,
                     "legend": {
                         "alignAsTable": true,
@@ -2029,7 +2032,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 27
+                        "y": 11
                     },
                     "id": 128,
                     "links": [],
@@ -2122,8 +2125,9 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 35
+                        "y": 19
                     },
+                    "hiddenSeries": false,
                     "id": 127,
                     "legend": {
                         "alignAsTable": true,
@@ -2238,7 +2242,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 35
+                        "y": 19
                     },
                     "id": 135,
                     "links": [],
@@ -2331,8 +2335,9 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 43
+                        "y": 27
                     },
+                    "hiddenSeries": false,
                     "id": 129,
                     "legend": {
                         "alignAsTable": true,
@@ -2447,7 +2452,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 43
+                        "y": 27
                     },
                     "id": 134,
                     "links": [],
@@ -2540,8 +2545,9 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 51
+                        "y": 35
                     },
+                    "hiddenSeries": false,
                     "id": 130,
                     "legend": {
                         "alignAsTable": true,
@@ -2656,7 +2662,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 51
+                        "y": 35
                     },
                     "id": 133,
                     "links": [],
@@ -2749,8 +2755,9 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 59
+                        "y": 43
                     },
+                    "hiddenSeries": false,
                     "id": 131,
                     "legend": {
                         "alignAsTable": true,
@@ -2865,7 +2872,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 59
+                        "y": 43
                     },
                     "id": 132,
                     "links": [],
@@ -3498,8 +3505,9 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 71
+                        "y": 15
                     },
+                    "hiddenSeries": false,
                     "id": 26,
                     "legend": {
                         "alignAsTable": true,
@@ -3616,7 +3624,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 71
+                        "y": 15
                     },
                     "id": 142,
                     "links": [],
@@ -3709,8 +3717,9 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 79
+                        "y": 23
                     },
+                    "hiddenSeries": false,
                     "id": 140,
                     "legend": {
                         "alignAsTable": true,
@@ -3796,10 +3805,10 @@
                         {
                             "decimals": 2,
                             "format": "ops",
-                            "label": null,
+                            "label": "",
                             "logBase": 1,
                             "max": null,
-                            "min": null,
+                            "min": "0",
                             "show": true
                         },
                         {
@@ -3827,7 +3836,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 79
+                        "y": 23
                     },
                     "id": 143,
                     "links": [],
@@ -3920,8 +3929,9 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 87
+                        "y": 31
                     },
+                    "hiddenSeries": false,
                     "id": 18,
                     "legend": {
                         "alignAsTable": true,
@@ -4038,7 +4048,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 87
+                        "y": 31
                     },
                     "id": 144,
                     "links": [],
@@ -4131,8 +4141,9 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 95
+                        "y": 39
                     },
+                    "hiddenSeries": false,
                     "id": 141,
                     "legend": {
                         "alignAsTable": true,
@@ -4249,7 +4260,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 95
+                        "y": 39
                     },
                     "id": 145,
                     "links": [],
@@ -4357,8 +4368,9 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 104
+                        "y": 16
                     },
+                    "hiddenSeries": false,
                     "id": 48,
                     "legend": {
                         "alignAsTable": true,
@@ -4473,7 +4485,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 104
+                        "y": 16
                     },
                     "id": 160,
                     "links": [],
@@ -4566,8 +4578,9 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 112
+                        "y": 24
                     },
+                    "hiddenSeries": false,
                     "id": 49,
                     "legend": {
                         "alignAsTable": true,
@@ -4683,7 +4696,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 112
+                        "y": 24
                     },
                     "id": 161,
                     "links": [],
@@ -5322,8 +5335,9 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 124
+                        "y": 20
                     },
+                    "hiddenSeries": false,
                     "id": 61,
                     "legend": {
                         "alignAsTable": true,
@@ -5484,7 +5498,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 124
+                        "y": 20
                     },
                     "id": 164,
                     "links": [],
@@ -5580,8 +5594,9 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 132
+                        "y": 28
                     },
+                    "hiddenSeries": false,
                     "id": 3,
                     "legend": {
                         "alignAsTable": true,
@@ -5742,7 +5757,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 132
+                        "y": 28
                     },
                     "id": 166,
                     "links": [],
@@ -5854,8 +5869,9 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 140
+                        "y": 36
                     },
+                    "hiddenSeries": false,
                     "id": 163,
                     "legend": {
                         "alignAsTable": true,
@@ -6017,7 +6033,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 140
+                        "y": 36
                     },
                     "id": 165,
                     "links": [],
@@ -6144,8 +6160,9 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 149
+                        "y": 21
                     },
+                    "hiddenSeries": false,
                     "id": 14,
                     "legend": {
                         "alignAsTable": true,
@@ -6262,7 +6279,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 149
+                        "y": 21
                     },
                     "id": 167,
                     "links": [],
@@ -6387,8 +6404,9 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 158
+                        "y": 22
                     },
+                    "hiddenSeries": false,
                     "id": 28,
                     "legend": {
                         "alignAsTable": true,
@@ -6505,7 +6523,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 158
+                        "y": 22
                     },
                     "id": 168,
                     "links": [],
@@ -7153,8 +7171,9 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 170
+                        "y": 26
                     },
+                    "hiddenSeries": false,
                     "id": 50,
                     "legend": {
                         "alignAsTable": true,
@@ -7270,7 +7289,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 170
+                        "y": 26
                     },
                     "id": 170,
                     "links": [],
@@ -7363,8 +7382,9 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 178
+                        "y": 34
                     },
+                    "hiddenSeries": false,
                     "id": 169,
                     "legend": {
                         "alignAsTable": true,
@@ -7480,7 +7500,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 178
+                        "y": 34
                     },
                     "id": 171,
                     "links": [],
@@ -7591,8 +7611,9 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 187
+                        "y": 27
                     },
+                    "hiddenSeries": false,
                     "id": 176,
                     "legend": {
                         "alignAsTable": true,
@@ -7755,7 +7776,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 187
+                        "y": 27
                     },
                     "id": 178,
                     "links": [],
@@ -7851,8 +7872,9 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 195
+                        "y": 35
                     },
+                    "hiddenSeries": false,
                     "id": 177,
                     "legend": {
                         "alignAsTable": true,
@@ -8015,7 +8037,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 195
+                        "y": 35
                     },
                     "id": 179,
                     "interval": "",
@@ -8112,8 +8134,9 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 203
+                        "y": 43
                     },
+                    "hiddenSeries": false,
                     "id": 2,
                     "legend": {
                         "alignAsTable": true,
@@ -8276,7 +8299,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 203
+                        "y": 43
                     },
                     "id": 180,
                     "interval": "",
@@ -8373,8 +8396,9 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 211
+                        "y": 51
                     },
+                    "hiddenSeries": false,
                     "id": 175,
                     "legend": {
                         "alignAsTable": true,
@@ -8537,7 +8561,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 211
+                        "y": 51
                     },
                     "id": 182,
                     "interval": "",
@@ -8634,8 +8658,9 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 219
+                        "y": 59
                     },
+                    "hiddenSeries": false,
                     "id": 174,
                     "legend": {
                         "alignAsTable": true,
@@ -8798,7 +8823,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 219
+                        "y": 59
                     },
                     "id": 181,
                     "interval": "",
@@ -8907,8 +8932,9 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 228
+                        "y": 28
                     },
+                    "hiddenSeries": false,
                     "id": 22,
                     "legend": {
                         "alignAsTable": true,
@@ -9028,7 +9054,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 228
+                        "y": 28
                     },
                     "id": 183,
                     "interval": "",
@@ -9122,8 +9148,9 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 236
+                        "y": 36
                     },
+                    "hiddenSeries": false,
                     "id": 184,
                     "legend": {
                         "alignAsTable": true,
@@ -9243,7 +9270,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 236
+                        "y": 36
                     },
                     "id": 185,
                     "interval": "",
