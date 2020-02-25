@@ -283,6 +283,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
       const iframe = document.getElementById('iframe-qan');
       setTimeout(() => {
         if (iframe) {
+          // @ts-ignore
           iframe.contentWindow.location.reload();
         }
       }, 100);
