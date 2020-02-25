@@ -282,7 +282,9 @@ export class PanelCtrl extends MetricsPanelCtrl {
     if ($scope.url === oldScopeUrl) {
       const iframe = document.getElementById('iframe-qan');
       setTimeout(() => {
-        iframe && iframe.contentWindow.location.reload();
+        if (iframe) {
+          iframe.contentWindow.location.reload();
+        }
       }, 100);
     }
   }
