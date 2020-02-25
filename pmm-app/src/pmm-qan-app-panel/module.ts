@@ -274,9 +274,16 @@ export class PanelCtrl extends MetricsPanelCtrl {
     const data = Object.assign({}, $scope.qanParams);
     delete data.filters;
     const query = this.encodeData(data);
+    const oldScopeUrl = String($scope.url);
     $scope.url =
       $scope.qanParams.type && $scope.qanParams.queryID
         ? `/qan/profile/report/${$scope.qanParams.type}?${query}&${filters}`
         : `/qan/profile/?${query}&${filters}`;
+    if ($scope.url === oldScopeUrl) {
+      const iframe = document.getElementById('iframe-qan');
+      setTimeout(() => {
+        iframe && iframe.contentWindow.location.reload();
+      }, 100);
+    }
   }
 }
