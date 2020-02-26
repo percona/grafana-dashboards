@@ -20,15 +20,6 @@ const OverviewTable = props => {
   const [data, setData] = useState<DataInterface>({ rows: [], columns: [] });
   const [loading, setLoading] = useState(false);
 
-  const setGroupBy = useCallback(value => {
-    dispatch({
-      type: 'CHANGE_GROUP_BY',
-      payload: {
-        groupBy: value,
-      },
-    });
-  }, []);
-
   const onTableChange = useCallback((pagination, filters, sorter) => {
     let orderBy = '';
     if (sorter.order === 'ascend') {
@@ -48,7 +39,6 @@ const OverviewTable = props => {
     (record, rowIndex) => {
       return {
         onClick: () => {
-          console.log(rowIndex, record);
           dispatch({
             type: 'SELECT_QUERY',
             payload: {
@@ -78,7 +68,7 @@ const OverviewTable = props => {
         });
 
         props.setTotal(result.total_rows);
-        const calculatedColumns = getDefaultColumns(groupBy, setGroupBy, pageNumber, pageSize, columns.length).concat(
+        const calculatedColumns = getDefaultColumns(groupBy, pageNumber, pageSize, columns.length).concat(
           columns.map((key, index) => getOverviewColumn(key, index, result.rows[0], orderBy))
         );
         // @ts-ignore
