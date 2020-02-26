@@ -16,7 +16,6 @@ interface OverviewServiceInterface {
   pageSize: number;
   pageNumber: number;
   groupBy?: string;
-  firstSeen?: boolean;
 }
 class OverviewTableService {
   static async getReport(body: OverviewServiceInterface) {
@@ -30,7 +29,6 @@ class OverviewTableService {
       }) || [];
     const request = {
       columns: columns,
-      first_seen: body.firstSeen,
       group_by: body.groupBy,
       include_only_fields: [],
       keyword: '',

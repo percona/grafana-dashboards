@@ -15,7 +15,7 @@ interface DataInterface {
 const OverviewTable = props => {
   const {
     dispatch,
-    state: { labels, columns, pageNumber, pageSize, orderBy, from, to, groupBy, firstSeen, queryId, querySelected },
+    state: { labels, columns, pageNumber, pageSize, orderBy, from, to, groupBy, queryId, querySelected },
   } = useContext(StateContext);
   const [data, setData] = useState<DataInterface>({ rows: [], columns: [] });
   const [loading, setLoading] = useState(false);
@@ -75,7 +75,6 @@ const OverviewTable = props => {
           from,
           to,
           groupBy,
-          firstSeen,
         });
 
         props.setTotal(result.total_rows);
@@ -90,7 +89,7 @@ const OverviewTable = props => {
       }
     };
     updateInstances().then(() => {});
-  }, [columns, pageNumber, pageSize, groupBy, labels, firstSeen]);
+  }, [columns, pageNumber, pageSize, groupBy, labels]);
   // @ts-ignore
 
   return (
