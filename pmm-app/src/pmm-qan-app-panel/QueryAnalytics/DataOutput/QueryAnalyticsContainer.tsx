@@ -4,14 +4,16 @@ import React, { useCallback, useContext, useState } from 'react';
 import Split from 'react-split';
 import { StateContext } from '../StateContext';
 import './QueryAnalyticsContainer.scss';
-import { Pagination } from 'antd';
+import { Pagination, Select } from 'antd';
 import ManageColumns from './ManageColumns/ManageColumns';
+import { GroupByControl } from './GroupByControl/GroupByControl';
 
 const PAGE_SIZE_OPTIONS = ['10', '50', '100'];
+
 const QueryAnalyticsContainer = () => {
   const {
     dispatch,
-    state: { pageNumber, pageSize, querySelected },
+    state: { pageNumber, pageSize, querySelected, groupBy },
   } = useContext(StateContext);
   const [total, setTotal] = useState(30);
 
@@ -36,7 +38,8 @@ const QueryAnalyticsContainer = () => {
   return (
     <div style={{ width: '1250px' }}>
       <div className={'filters-header'} style={{ padding: '5px 0px', height: '50px' }}>
-        <h5 style={{ margin: '3px', marginRight: '15px' }}>Queries overview</h5>
+        <h5 style={{ margin: '3px', marginRight: '40px' }}>Queries overview</h5>
+        <GroupByControl />
         <div style={{ marginLeft: 'auto' }}>
           <Pagination
             showSizeChanger={true}
