@@ -217,7 +217,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "pg_up{service_name=~\"$service_name\"}",
+                    "expr": "avg by (service_name) (pg_up{service_name=~\"$service_name\"})",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -353,7 +353,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "max_over_time(pg_settings_max_connections{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_max_connections{service_name=~\"$service_name\"}[5m])",
+                    "expr": "avg by (service_name) (max_over_time(pg_settings_max_connections{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_max_connections{service_name=~\"$service_name\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -444,7 +444,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "max_over_time(pg_settings_shared_buffers_bytes{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_shared_buffers_bytes{service_name=~\"$service_name\"}[5m]) ",
+                    "expr": "avg by (service_name) (max_over_time(pg_settings_shared_buffers_bytes{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_shared_buffers_bytes{service_name=~\"$service_name\"}[5m])) ",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -538,7 +538,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "max_over_time(pg_settings_wal_buffers_bytes{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_wal_buffers_bytes{service_name=~\"$service_name\"}[5m])",
+                    "expr": "avg by (service_name) (max_over_time(pg_settings_wal_buffers_bytes{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_wal_buffers_bytes{service_name=~\"$service_name\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -628,7 +628,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "max_over_time(pg_settings_work_mem_bytes{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_work_mem_bytes{service_name=~\"$service_name\"}[5m])",
+                    "expr": "avg by (service_name) (max_over_time(pg_settings_work_mem_bytes{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_work_mem_bytes{service_name=~\"$service_name\"}[5m]))",
                     "format": "time_series",
                     "intervalFactor": 1,
                     "legendFormat": "",
@@ -718,7 +718,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "max_over_time(pg_settings_effective_cache_size_bytes{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_effective_cache_size_bytes{service_name=~\"$service_name\"}[5m])",
+                    "expr": "avg by (service_name) (max_over_time(pg_settings_effective_cache_size_bytes{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_effective_cache_size_bytes{service_name=~\"$service_name\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -808,7 +808,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "max_over_time(pg_settings_autovacuum{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_autovacuum{service_name=~\"$service_name\"}[5m])",
+                    "expr": "avg by (service_name) (max_over_time(pg_settings_autovacuum{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_autovacuum{service_name=~\"$service_name\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -869,6 +869,7 @@
                 "x": 0,
                 "y": 7
             },
+            "hiddenSeries": false,
             "id": 23,
             "legend": {
                 "alignAsTable": true,
@@ -906,7 +907,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "sum(max_over_time(pg_stat_activity_count{service_name=~\"$service_name\",datname=~\"$database\"}[$interval]) or\nmax_over_time(pg_stat_activity_count{service_name=~\"$service_name\",datname=~\"$database\"}[5m])) by (state)",
+                    "expr": "avg by (service_name,state) (sum(max_over_time(pg_stat_activity_count{service_name=~\"$service_name\",datname=~\"$database\"}[$interval]) or\nmax_over_time(pg_stat_activity_count{service_name=~\"$service_name\",datname=~\"$database\"}[5m])) by (state))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -985,6 +986,7 @@
                 "x": 12,
                 "y": 7
             },
+            "hiddenSeries": false,
             "id": 34,
             "legend": {
                 "alignAsTable": true,
@@ -1022,7 +1024,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "max_over_time(pg_stat_activity_count{service_name=~\"$service_name\",datname=~\"$database\",state='active'}[$interval]) or\nmax_over_time(pg_stat_activity_count{service_name=~\"$service_name\",datname=~\"$database\",state='active'}[5m])",
+                    "expr": "avg by (service_name,datname) (max_over_time(pg_stat_activity_count{service_name=~\"$service_name\",datname=~\"$database\",state='active'}[$interval]) or\nmax_over_time(pg_stat_activity_count{service_name=~\"$service_name\",datname=~\"$database\",state='active'}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1030,7 +1032,7 @@
                     "refId": "A"
                 },
                 {
-                    "expr": "max_over_time(pg_settings_max_connections{service_name=~\"$service_name\"}[$interval]) or \nmax_over_time(pg_settings_max_connections{service_name=~\"$service_name\"}[5m])",
+                    "expr": "avg by (service_name) (max_over_time(pg_settings_max_connections{service_name=~\"$service_name\"}[$interval]) or \nmax_over_time(pg_settings_max_connections{service_name=~\"$service_name\"}[5m]))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -1110,6 +1112,7 @@
                 "x": 0,
                 "y": 16
             },
+            "hiddenSeries": false,
             "id": 36,
             "legend": {
                 "alignAsTable": true,
@@ -1237,6 +1240,7 @@
                 "x": 12,
                 "y": 16
             },
+            "hiddenSeries": false,
             "id": 24,
             "legend": {
                 "alignAsTable": true,
@@ -1344,6 +1348,7 @@
                 "x": 0,
                 "y": 24
             },
+            "hiddenSeries": false,
             "id": 25,
             "legend": {
                 "alignAsTable": true,
@@ -1475,6 +1480,7 @@
                 "x": 0,
                 "y": 33
             },
+            "hiddenSeries": false,
             "id": 26,
             "legend": {
                 "alignAsTable": true,
@@ -1582,6 +1588,7 @@
                 "x": 12,
                 "y": 33
             },
+            "hiddenSeries": false,
             "id": 18,
             "legend": {
                 "alignAsTable": true,
@@ -1612,7 +1619,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "max_over_time(pg_stat_activity_max_tx_duration{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_stat_activity_max_tx_duration{service_name=~\"$service_name\"}[5m])",
+                    "expr": "avg by (service_name,state) (max_over_time(pg_stat_activity_max_tx_duration{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_stat_activity_max_tx_duration{service_name=~\"$service_name\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1693,6 +1700,7 @@
                 "x": 0,
                 "y": 42
             },
+            "hiddenSeries": false,
             "id": 48,
             "legend": {
                 "alignAsTable": true,
@@ -1723,7 +1731,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "max_over_time(pg_stat_database_temp_files{service_name=~\"$service_name\",datname!~\"template.*\"}[$interval]) or \nmax_over_time(pg_stat_database_temp_files{service_name=~\"$service_name\",datname!~\"template.*\"}[5m])",
+                    "expr": "avg by (service_name,datname) (max_over_time(pg_stat_database_temp_files{service_name=~\"$service_name\",datname!~\"template.*\"}[$interval]) or \nmax_over_time(pg_stat_database_temp_files{service_name=~\"$service_name\",datname!~\"template.*\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1788,6 +1796,7 @@
                 "x": 12,
                 "y": 42
             },
+            "hiddenSeries": false,
             "id": 49,
             "legend": {
                 "alignAsTable": true,
@@ -1824,7 +1833,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "max_over_time(pg_stat_database_temp_bytes{service_name=~\"$service_name\",datname!~\"template.*\"}[$interval]) or \nmax_over_time(pg_stat_database_temp_bytes{service_name=~\"$service_name\",datname!~\"template.*\"}[5m])",
+                    "expr": "avg by (service_name,datname) (max_over_time(pg_stat_database_temp_bytes{service_name=~\"$service_name\",datname!~\"template.*\"}[$interval]) or \nmax_over_time(pg_stat_database_temp_bytes{service_name=~\"$service_name\",datname!~\"template.*\"}[5m]))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -1916,6 +1925,7 @@
                 "x": 0,
                 "y": 51
             },
+            "hiddenSeries": false,
             "id": 3,
             "legend": {
                 "alignAsTable": true,
@@ -2113,6 +2123,7 @@
                 "x": 12,
                 "y": 51
             },
+            "hiddenSeries": false,
             "id": 61,
             "legend": {
                 "alignAsTable": true,
@@ -2145,7 +2156,7 @@
                 {
                     "alias": "conflicts",
                     "dsType": "prometheus",
-                    "expr": "max_over_time(pg_locks_count{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}[$interval]) or\nmax_over_time(pg_locks_count{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}[5m])",
+                    "expr": "avg by (service_name,datname,mode) (max_over_time(pg_locks_count{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}[$interval]) or\nmax_over_time(pg_locks_count{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*\"}[5m]))",
                     "format": "time_series",
                     "groupBy": [
                         {
@@ -2268,6 +2279,7 @@
                 "x": 0,
                 "y": 60
             },
+            "hiddenSeries": false,
             "id": 50,
             "legend": {
                 "alignAsTable": true,
@@ -2303,7 +2315,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(pg_stat_database_blk_read_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*|postgres\"}[$interval]) or\nirate(pg_stat_database_blk_read_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*|postgres\"}[5m])",
+                    "expr": "avg by (service_name,datname) (rate(pg_stat_database_blk_read_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*|postgres\"}[$interval]) or\nirate(pg_stat_database_blk_read_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*|postgres\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2311,7 +2323,7 @@
                     "refId": "A"
                 },
                 {
-                    "expr": "rate(pg_stat_database_blk_write_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*|postgres\"}[$interval]) or\nirate(pg_stat_database_blk_write_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*|postgres\"}[5m])",
+                    "expr": "avg by (service_name,datname) (rate(pg_stat_database_blk_write_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*|postgres\"}[$interval]) or\nirate(pg_stat_database_blk_write_time{datname=~\"$database\",service_name=~\"$service_name\",datname!~\"template.*|postgres\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2380,6 +2392,7 @@
                 "x": 12,
                 "y": 60
             },
+            "hiddenSeries": false,
             "id": 2,
             "legend": {
                 "alignAsTable": true,
@@ -2414,7 +2427,7 @@
                 {
                     "alias": "Buffers Allocated",
                     "dsType": "prometheus",
-                    "expr": "rate(pg_stat_bgwriter_buffers_alloc{service_name=~\"$service_name\"}[$interval]) or \nirate(pg_stat_bgwriter_buffers_alloc{service_name=~\"$service_name\"}[5m])",
+                    "expr": "avg by (service_name) (rate(pg_stat_bgwriter_buffers_alloc{service_name=~\"$service_name\"}[$interval]) or \nirate(pg_stat_bgwriter_buffers_alloc{service_name=~\"$service_name\"}[5m]))",
                     "format": "time_series",
                     "groupBy": [
                         {
@@ -2467,7 +2480,7 @@
                 {
                     "alias": "Buffers Allocated",
                     "dsType": "prometheus",
-                    "expr": "rate(pg_stat_bgwriter_buffers_backend_fsync{service_name=~\"$service_name\"}[$interval]) or\nirate(pg_stat_bgwriter_buffers_backend_fsync{service_name=~\"$service_name\"}[5m])",
+                    "expr": "avg by (service_name) (rate(pg_stat_bgwriter_buffers_backend_fsync{service_name=~\"$service_name\"}[$interval]) or\nirate(pg_stat_bgwriter_buffers_backend_fsync{service_name=~\"$service_name\"}[5m]))",
                     "format": "time_series",
                     "groupBy": [
                         {
@@ -2520,7 +2533,7 @@
                 {
                     "alias": "Buffers Allocated",
                     "dsType": "prometheus",
-                    "expr": "rate(pg_stat_bgwriter_buffers_backend{service_name=~\"$service_name\"}[$interval]) or\nirate(pg_stat_bgwriter_buffers_backend{service_name=~\"$service_name\"}[5m])",
+                    "expr": "avg by (service_name) (rate(pg_stat_bgwriter_buffers_backend{service_name=~\"$service_name\"}[$interval]) or\nirate(pg_stat_bgwriter_buffers_backend{service_name=~\"$service_name\"}[5m]))",
                     "format": "time_series",
                     "groupBy": [
                         {
@@ -2573,7 +2586,7 @@
                 {
                     "alias": "Buffers Allocated",
                     "dsType": "prometheus",
-                    "expr": "rate(pg_stat_bgwriter_buffers_clean{service_name=~\"$service_name\"}[$interval]) or \nirate(pg_stat_bgwriter_buffers_clean{service_name=~\"$service_name\"}[5m])",
+                    "expr": "avg by (service_name) (rate(pg_stat_bgwriter_buffers_clean{service_name=~\"$service_name\"}[$interval]) or \nirate(pg_stat_bgwriter_buffers_clean{service_name=~\"$service_name\"}[5m]))",
                     "format": "time_series",
                     "groupBy": [
                         {
@@ -2626,7 +2639,7 @@
                 {
                     "alias": "Buffers Allocated",
                     "dsType": "prometheus",
-                    "expr": "rate(pg_stat_bgwriter_buffers_checkpoint{service_name=~\"$service_name\"}[5m]) or\nirate(pg_stat_bgwriter_buffers_checkpoint{service_name=~\"$service_name\"}[5m])",
+                    "expr": "avg by (service_name) (rate(pg_stat_bgwriter_buffers_checkpoint{service_name=~\"$service_name\"}[$interval]) or\nirate(pg_stat_bgwriter_buffers_checkpoint{service_name=~\"$service_name\"}[5m]))",
                     "format": "time_series",
                     "groupBy": [
                         {
@@ -2750,6 +2763,7 @@
                 "x": 0,
                 "y": 69
             },
+            "hiddenSeries": false,
             "id": 28,
             "legend": {
                 "alignAsTable": true,
@@ -2890,6 +2904,7 @@
                 "x": 12,
                 "y": 69
             },
+            "hiddenSeries": false,
             "id": 14,
             "legend": {
                 "alignAsTable": true,
@@ -2955,7 +2970,7 @@
                     "format": "percentunit",
                     "label": "",
                     "logBase": 1,
-                    "max": "1",
+                    "max": null,
                     "min": "0",
                     "show": true
                 },
@@ -2988,6 +3003,7 @@
                 "x": 0,
                 "y": 77
             },
+            "hiddenSeries": false,
             "id": 22,
             "legend": {
                 "alignAsTable": true,
@@ -3020,7 +3036,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(pg_stat_bgwriter_checkpoint_sync_time{service_name=~'$service_name'}[$interval]) or\nirate(pg_stat_bgwriter_checkpoint_sync_time{service_name=~'$service_name'}[5m])",
+                    "expr": "avg by (service_name) (rate(pg_stat_bgwriter_checkpoint_sync_time{service_name=~'$service_name'}[$interval]) or\nirate(pg_stat_bgwriter_checkpoint_sync_time{service_name=~'$service_name'}[5m]))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -3031,7 +3047,7 @@
                     "step": 2
                 },
                 {
-                    "expr": "rate(pg_stat_bgwriter_checkpoint_write_time{service_name=~'$service_name'}[$interval]) or\nirate(pg_stat_bgwriter_checkpoint_write_time{service_name=~'$service_name'}[5m])",
+                    "expr": "avg by (service_name) (rate(pg_stat_bgwriter_checkpoint_write_time{service_name=~'$service_name'}[$interval]) or\nirate(pg_stat_bgwriter_checkpoint_write_time{service_name=~'$service_name'}[5m]))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -3097,15 +3113,17 @@
             "panels": [
                 {
                     "content": "<table style=\"width:100%; border: 2px solid grey;\">\n  <tr><td></td><td></td><td></td><td></td></tr>\n  <tr><td> The maximum number of concurrent connections </td><td>${max_connections}</td><td> Shared memory buffers (bytes) </td><td>${shared_buffers}</td></tr>\n  <tr><td> The maximum memory to be used for query workspaces (bytes)</td><td>${work_mem}</td><td> The number of disk-page buffers in shared memory for WAL (bytes)</td><td>${wal_buffers}</td></tr>\n  <tr><td> The number of pages per write ahead log segment (bytes) </td><td>${wal_segment_size}</td><td>The maximum memory to be used for query workspaces (bytes)</td><td>${maintenance_work_mem}</td></tr>\n  <tr><td> The block size in the write ahead log </td><td>${block_size}</td><td>The maximum distance in log segments between automatic WAL checkpoints</td><td>${checkpoint_segments}</td></tr>\n  <tr><td> Time spent flushing dirty buffers during checkpoint, as fraction of checkpoint interval </td><td>${checkpoint_timeout}</td><td>The maximum number of simultaneously running WAL sender processes</td><td>${max_wal_senders}</td></tr>\n  <tr><td> The minimum size to shrink the WAL to (bytes)</td><td>${min_wal_size}</td><td>The WAL size that triggers a checkpoint (bytes)</td><td>${max_wal_size}</td></tr>\n  <tr><td> Compresses full-page writes written in WAL file </td><td>${wal_compression}</td><td>Maximum number of concurrent worker processes</td><td>${max_worker_processes}</td></tr>\n  <tr><td> The maximum number of parallel processes per executor node </td><td>${max_parallel_workers_per_gather}</td><td>The maximum number of parallel processes per executor node</td><td>${max_parallel_workers}</td></tr>\n  <tr><td> The default statistics target </td><td>${default_statistics_target}</td><td>The planner's estimate of the cost of a sequentially fetched disk page </td><td>${seq_page_cost}</td></tr>\n  <tr><td> The planner's estimate of the cost of a nonsequentially fetched disk page </td><td>${random_page_cost}</td><td>The planner's assumption about the size of the disk cache</td><td>${effective_cache_size}</td></tr>\n  <tr><td> Number of simultaneous requests that can be handled efficiently by the disk subsystem </td><td>${effective_io_concurrency}</td><td>Forces synchronization of updates to disk </td><td>${fsync}</td></tr>\n  <tr><td> Starts the autovacuum subprocess </td><td>${autovacuum}</td><td>Number of tuple inserts, updates, or deletes prior to analyze as a fraction of reltuples</td><td>${autovacuum_analyze_scale_factor}</td></tr>\n  <tr><td> Minimum number of tuple inserts, updates, or deletes prior to analyze </td><td>${autovacuum_analyze_threshold}</td><td>Number of tuple updates or deletes prior to vacuum as a fraction of reltuples</td><td>${autovacuum_vacuum_scale_factor}</td></tr>\n  <tr><td> Minimum number of tuple updates or deletes prior to vacuum </td><td>${autovacuum_vacuum_threshold}</td><td>Vacuum cost amount available before napping, for autovacuum </td><td>${autovacuum_vacuum_cost_limit}</td></tr>\n  <tr><td> Vacuum cost delay in milliseconds, for autovacuum (seconds) </td><td>${autovacuum_vacuum_cost_delay}</td><td> The maximum number of simultaneously running autovacuum worker processes </td><td>${autovacuum_max_workers}</td></tr>\n  <tr><td> Time to sleep between autovacuum runs (seconds) </td><td>${autovacuum_naptime}</td><td>Age at which to autovacuum a table to prevent transaction ID wraparound </td><td>${autovacuum_freeze_max_age}</td></tr>\n  <tr><td> The maximum memory to be used by each autovacuum worker process (bytes)</td><td>${autovacuum_work_mem}</td><td>Multixact age at which to autovacuum a table to prevent multixact wraparound</td><td>${autovacuum_multixact_freeze_max_age}</td></tr>\n  <tr><td> Start a subprocess to capture stderr output and/or csvlogs into log files </td><td>${logging_collector}</td><td>Sets the minimum execution time above which statements will be logged (seconds) </td><td>${log_min_duration_statement}</td></tr>\n  <tr><td> Logs the duration of each completed SQL statement </td><td>${log_duration}</td><td>Logs long lock waits </td><td>${log_lock_waits}</td></tr>\n  <tr><td></td><td></td><td></td><td></td></tr>\n</table>\n\n",
+                    "datasource": null,
                     "gridPos": {
                         "h": 18,
                         "w": 24,
                         "x": 0,
-                        "y": 84
+                        "y": 86
                     },
                     "id": 58,
                     "links": [],
                     "mode": "html",
+                    "options": {},
                     "title": "PostgreSQL Settings",
                     "type": "text"
                 }
@@ -3194,7 +3212,7 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "(node_time_seconds{node_name=~\"$node_name\"} - node_boot_time_seconds{node_name=~\"$node_name\"}) or (time() - node_boot_time_seconds{node_name=~\"$node_name\"})",
+                            "expr": "avg by (node_name) ((node_time_seconds{node_name=~\"$node_name\"} - node_boot_time_seconds{node_name=~\"$node_name\"}) or (time() - node_boot_time_seconds{node_name=~\"$node_name\"}))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "5m",
@@ -3277,7 +3295,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "avg_over_time(node_load1{node_name=~\"$node_name\"}[$interval]) or avg_over_time(node_load1{node_name=~\"$node_name\"}[5m])",
+                            "expr": "avg by (node_name) (avg_over_time(node_load1{node_name=~\"$node_name\"}[$interval]) or avg_over_time(node_load1{node_name=~\"$node_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3363,7 +3381,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "node_memory_MemTotal_bytes{node_name=~\"$node_name\"}",
+                            "expr": "avg by (node_name) (node_memory_MemTotal_bytes{node_name=~\"$node_name\"})",
                             "format": "time_series",
                             "interval": "5m",
                             "intervalFactor": 1,
@@ -3450,7 +3468,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "(node_memory_MemAvailable_bytes{node_name=~\"$node_name\"} or (node_memory_MemFree_bytes{node_name=~\"$node_name\"} + node_memory_Buffers_bytes{node_name=~\"$node_name\"} + node_memory_Cached_bytes{node_name=~\"$node_name\"})) / node_memory_MemTotal_bytes{node_name=~\"$node_name\"} * 100",
+                            "expr": "avg by (node_name) ((node_memory_MemAvailable_bytes{node_name=~\"$node_name\"} or (node_memory_MemFree_bytes{node_name=~\"$node_name\"} + node_memory_Buffers_bytes{node_name=~\"$node_name\"} + node_memory_Cached_bytes{node_name=~\"$node_name\"})) / node_memory_MemTotal_bytes{node_name=~\"$node_name\"} * 100)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3537,7 +3555,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "node_memory_MemTotal_bytes{node_name=~\"$node_name\"}+node_memory_SwapTotal_bytes{node_name=~\"$node_name\"}",
+                            "expr": "avg by (node_name) (node_memory_MemTotal_bytes{node_name=~\"$node_name\"}+node_memory_SwapTotal_bytes{node_name=~\"$node_name\"})",
                             "format": "time_series",
                             "interval": "5m",
                             "intervalFactor": 1,
@@ -3631,7 +3649,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "sum(avg(node_filesystem_size_bytes{node_name=~\"$node_name\",fstype=~\"(ext.|xfs|vfat|)\"}) without (mountpoint)) without (device,fstype)",
+                            "expr": "avg by (node_name) (sum(avg(node_filesystem_size_bytes{node_name=~\"$node_name\",fstype=~\"(ext.|xfs|vfat|)\"}) without (mountpoint)) without (device,fstype))",
                             "format": "time_series",
                             "interval": "5m",
                             "intervalFactor": 1,
@@ -3784,6 +3802,7 @@
                         "y": 89
                     },
                     "height": "",
+                    "hiddenSeries": false,
                     "id": 337,
                     "legend": {
                         "alignAsTable": true,
@@ -3826,7 +3845,7 @@
                     "steppedLine": true,
                     "targets": [
                         {
-                            "expr": "clamp_max(((avg by (mode) ( (clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\"}[$interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\"}[5m]),1)) ))*100 or (avg_over_time(node_cpu_average{node_name=~\"$node_name\", mode!=\"total\", mode!=\"idle\"}[$interval]) or avg_over_time(node_cpu_average{node_name=~\"$node_name\", mode!=\"total\", mode!=\"idle\"}[5m]))),100)",
+                            "expr": "avg by (node_name,mode) (clamp_max(((avg by (mode) ( (clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\"}[$interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\"}[5m]),1)) ))*100 or (avg_over_time(node_cpu_average{node_name=~\"$node_name\", mode!=\"total\", mode!=\"idle\"}[$interval]) or avg_over_time(node_cpu_average{node_name=~\"$node_name\", mode!=\"total\", mode!=\"idle\"}[5m]))),100))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3912,6 +3931,7 @@
                         "x": 12,
                         "y": 89
                     },
+                    "hiddenSeries": false,
                     "id": 339,
                     "legend": {
                         "alignAsTable": true,
@@ -3956,7 +3976,7 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "(avg_over_time(node_procs_running{node_name=~\"$node_name\"}[$interval])-1) / scalar(count(node_cpu_seconds_total{mode=\"user\", node_name=~\"$node_name\"})) or (avg_over_time(node_procs_running{node_name=~\"$node_name\"}[5m])-1) / scalar(count(node_cpu_seconds_total{mode=\"user\", node_name=~\"$node_name\"}))",
+                            "expr": "avg by (node_name) ((avg_over_time(node_procs_running{node_name=~\"$node_name\"}[$interval])-1) / scalar(count(node_cpu_seconds_total{mode=\"user\", node_name=~\"$node_name\"})) or (avg_over_time(node_procs_running{node_name=~\"$node_name\"}[5m])-1) / scalar(count(node_cpu_seconds_total{mode=\"user\", node_name=~\"$node_name\"})))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -4048,6 +4068,7 @@
                         "x": 0,
                         "y": 97
                     },
+                    "hiddenSeries": false,
                     "id": 341,
                     "legend": {
                         "alignAsTable": true,
@@ -4103,7 +4124,7 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "rate(node_vmstat_pgpgin{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=\"$node_name\"}[5m]) * 1024",
+                            "expr": "avg by (node_name) (rate(node_vmstat_pgpgin{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=\"$node_name\"}[5m]) * 1024)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4117,7 +4138,7 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "(rate(node_vmstat_pgpgout{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=\"$node_name\"}[5m]) * 1024)",
+                            "expr": "avg by (node_name) ((rate(node_vmstat_pgpgout{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=\"$node_name\"}[5m]) * 1024))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4128,7 +4149,7 @@
                             "target": ""
                         },
                         {
-                            "expr": "(rate(node_vmstat_pgpgin{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=\"$node_name\"}[5m]) * 1024 ) + (rate(node_vmstat_pgpgout{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=\"$node_name\"}[5m]) * 1024)",
+                            "expr": "avg by (node_name) ((rate(node_vmstat_pgpgin{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=\"$node_name\"}[5m]) * 1024 ) + (rate(node_vmstat_pgpgout{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=\"$node_name\"}[5m]) * 1024))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4136,7 +4157,7 @@
                             "refId": "C"
                         },
                         {
-                            "expr": "rate(node_vmstat_pswpin{node_name=\"$node_name\"}[$interval]) * 4096 or irate(node_vmstat_pswpin{node_name=\"$node_name\"}[5m]) * 4096",
+                            "expr": "avg by (node_name) (rate(node_vmstat_pswpin{node_name=\"$node_name\"}[$interval]) * 4096 or irate(node_vmstat_pswpin{node_name=\"$node_name\"}[5m]) * 4096)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4144,7 +4165,7 @@
                             "refId": "D"
                         },
                         {
-                            "expr": "rate(node_vmstat_pswpout{node_name=\"$node_name\"}[$interval]) * 4096 or irate(node_vmstat_pswpout{node_name=\"$node_name\"}[5m]) * 4096",
+                            "expr": "avg by (node_name) (rate(node_vmstat_pswpout{node_name=\"$node_name\"}[$interval]) * 4096 or irate(node_vmstat_pswpout{node_name=\"$node_name\"}[5m]) * 4096)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4212,6 +4233,7 @@
                         "x": 12,
                         "y": 97
                     },
+                    "hiddenSeries": false,
                     "id": 343,
                     "legend": {
                         "alignAsTable": true,
@@ -4252,7 +4274,7 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "sum(rate(node_network_receive_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[$interval])) or sum(irate(node_network_receive_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[5m])) or sum(max_over_time(rdsosmetrics_network_rx{node_name=\"$node_name\"}[$interval])) or sum(max_over_time(rdsosmetrics_network_rx{node_name=\"$node_name\"}[5m])) ",
+                            "expr": "avg by (node_name) (sum(rate(node_network_receive_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[$interval])) or sum(irate(node_network_receive_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[5m])) or sum(max_over_time(rdsosmetrics_network_rx{node_name=\"$node_name\"}[$interval])) or sum(max_over_time(rdsosmetrics_network_rx{node_name=\"$node_name\"}[5m])))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4266,7 +4288,7 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "sum(rate(node_network_transmit_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[$interval])) or sum(irate(node_network_transmit_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[5m])) or\nsum(max_over_time(rdsosmetrics_network_tx{node_name=\"$node_name\"}[$interval])) or sum(max_over_time(rdsosmetrics_network_tx{node_name=\"$node_name\"}[5m]))",
+                            "expr": "avg by (node_name) (sum(rate(node_network_transmit_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[$interval])) or sum(irate(node_network_transmit_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[5m])) or\nsum(max_over_time(rdsosmetrics_network_tx{node_name=\"$node_name\"}[$interval])) or sum(max_over_time(rdsosmetrics_network_tx{node_name=\"$node_name\"}[5m])))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4325,7 +4347,7 @@
         }
     ],
     "refresh": "1m",
-    "schemaVersion": 20,
+    "schemaVersion": 21,
     "style": "dark",
     "tags": [
         "Percona",

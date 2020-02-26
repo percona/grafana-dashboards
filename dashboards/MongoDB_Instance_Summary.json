@@ -247,7 +247,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "mongodb_instance_uptime_seconds{service_name=~\"$service_name\"}",
+                    "expr": "avg by (service_name) (mongodb_instance_uptime_seconds{service_name=~\"$service_name\"})",
                     "interval": "$interval",
                     "refId": "A"
                 }
@@ -418,7 +418,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"command\"}[$interval]) / rate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"command\"}[$interval]) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"command\"}[5m]) / irate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"command\"}[5m])",
+                    "expr": "avg by (service_name) (rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"command\"}[$interval]) / rate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"command\"}[$interval]) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"command\"}[5m]) / irate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"command\"}[5m]))",
                     "interval": "$interval",
                     "refId": "A"
                 }
@@ -478,6 +478,7 @@
                 "x": 0,
                 "y": 6
             },
+            "hiddenSeries": false,
             "id": 15,
             "legend": {
                 "alignAsTable": true,
@@ -511,7 +512,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", type!=\"command\"}[$interval]) or \nirate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", type!=\"command\"}[5m]) or \nrate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", type!=\"command\"}[$interval]) or \nirate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", type!=\"command\"}[5m])",
+                    "expr": "avg by (service_name) (rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", type!=\"command\"}[$interval]) or \nirate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", type!=\"command\"}[5m]) or \nrate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", type!=\"command\"}[$interval]) or \nirate(mongodb_mongos_op_counters_total{service_name=~\"$service_name\", type!=\"command\"}[5m]))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -521,7 +522,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mongodb_mongod_op_counters_repl_total{service_name=~\"$service_name\", type!~\"(command|query|getmore)\"}[$interval]) or \nirate(mongodb_mongod_op_counters_repl_total{service_name=~\"$service_name\", type!~\"(command|query|getmore)\"}[5m]) or\nrate(mongodb_mongos_op_counters_repl_total{service_name=~\"$service_name\", type!~\"(command|query|getmore)\"}[$interval]) or \nirate(mongodb_mongos_op_counters_repl_total{service_name=~\"$service_name\", type!~\"(command|query|getmore)\"}[5m])",
+                    "expr": "avg by (service_name) (rate(mongodb_mongod_op_counters_repl_total{service_name=~\"$service_name\", type!~\"(command|query|getmore)\"}[$interval]) or \nirate(mongodb_mongod_op_counters_repl_total{service_name=~\"$service_name\", type!~\"(command|query|getmore)\"}[5m]) or\nrate(mongodb_mongos_op_counters_repl_total{service_name=~\"$service_name\", type!~\"(command|query|getmore)\"}[$interval]) or \nirate(mongodb_mongos_op_counters_repl_total{service_name=~\"$service_name\", type!~\"(command|query|getmore)\"}[5m]))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -531,7 +532,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mongodb_mongod_metrics_ttl_deleted_documents_total{service_name=~\"$service_name\"}[$interval]) or \nirate(mongodb_mongod_metrics_ttl_deleted_documents_total{service_name=~\"$service_name\"}[5m]) or\nrate(mongodb_mongos_metrics_ttl_deleted_documents_total{service_name=~\"$service_name\"}[$interval]) or \nirate(mongodb_mongos_metrics_ttl_deleted_documents_total{service_name=~\"$service_name\"}[5m])",
+                    "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_ttl_deleted_documents_total{service_name=~\"$service_name\"}[$interval]) or \nirate(mongodb_mongod_metrics_ttl_deleted_documents_total{service_name=~\"$service_name\"}[5m]) or\nrate(mongodb_mongos_metrics_ttl_deleted_documents_total{service_name=~\"$service_name\"}[$interval]) or \nirate(mongodb_mongos_metrics_ttl_deleted_documents_total{service_name=~\"$service_name\"}[5m]))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -605,6 +606,7 @@
                 "x": 0,
                 "y": 14
             },
+            "hiddenSeries": false,
             "id": 1014,
             "legend": {
                 "alignAsTable": true,
@@ -635,7 +637,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\"}[$interval]) / rate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\"}[5m]) / irate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\"}[5m])",
+                    "expr": "avg by (service_name,type) (rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\"}[$interval]) / rate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\"}[5m]) / irate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\"}[5m]))",
                     "interval": "$interval",
                     "legendFormat": "{{type}}",
                     "refId": "A"
@@ -710,6 +712,7 @@
                 "y": 22
             },
             "height": "250px",
+            "hiddenSeries": false,
             "id": 38,
             "legend": {
                 "alignAsTable": true,
@@ -742,7 +745,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "mongodb_mongod_connections{service_name=~\"$service_name\", state=\"current\"} or\nmongodb_mongos_connections{service_name=~\"$service_name\", state=\"current\"} or\nmongodb_connections{service_name=~\"$service_name\", state=\"current\"}",
+                    "expr": "avg by (service_name) (mongodb_mongod_connections{service_name=~\"$service_name\", state=\"current\"} or\nmongodb_mongos_connections{service_name=~\"$service_name\", state=\"current\"} or\nmongodb_connections{service_name=~\"$service_name\", state=\"current\"})",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -827,6 +830,7 @@
                 "y": 22
             },
             "height": "250px",
+            "hiddenSeries": false,
             "id": 25,
             "legend": {
                 "alignAsTable": true,
@@ -860,7 +864,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "mongodb_mongod_metrics_cursor_open{service_name=~\"$service_name\"} or\nmongodb_mongod_cursors{service_name=~\"$service_name\"} or\nmongodb_mongos_metrics_cursor_open{service_name=~\"$service_name\"} or \nmongodb_mongos_cursors{service_name=~\"$service_name\"}",
+                    "expr": "avg by (service_name,state) (mongodb_mongod_metrics_cursor_open{service_name=~\"$service_name\"} or\nmongodb_mongod_cursors{service_name=~\"$service_name\"} or\nmongodb_mongos_metrics_cursor_open{service_name=~\"$service_name\"} or \nmongodb_mongos_cursors{service_name=~\"$service_name\"})",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -945,6 +949,7 @@
                 "y": 30
             },
             "height": "250px",
+            "hiddenSeries": false,
             "id": 36,
             "legend": {
                 "alignAsTable": true,
@@ -977,7 +982,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\"}[$interval]) or \nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\"}[5m])",
+                    "expr": "avg by (service_name,state) (rate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\"}[$interval]) or \nirate(mongodb_mongod_metrics_document_total{service_name=~\"$service_name\"}[5m]))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -1062,6 +1067,7 @@
                 "y": 30
             },
             "height": "250px",
+            "hiddenSeries": false,
             "id": 40,
             "legend": {
                 "alignAsTable": true,
@@ -1094,7 +1100,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "mongodb_mongod_global_lock_current_queue{service_name=~\"$service_name\"}",
+                    "expr": "avg by (service_name,type) (mongodb_mongod_global_lock_current_queue{service_name=~\"$service_name\"})",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -1179,6 +1185,7 @@
                 "y": 38
             },
             "height": "250px",
+            "hiddenSeries": false,
             "id": 63,
             "legend": {
                 "alignAsTable": true,
@@ -1297,6 +1304,7 @@
                 "x": 12,
                 "y": 38
             },
+            "hiddenSeries": false,
             "id": 64,
             "legend": {
                 "alignAsTable": true,
@@ -1330,7 +1338,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\"}[$interval]) or \nirate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\"}[5m])",
+                    "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\"}[$interval]) or \nirate(mongodb_mongod_metrics_query_executor_total{service_name=~\"$service_name\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1340,7 +1348,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mongodb_mongod_metrics_record_moves_total{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_metrics_record_moves_total{service_name=~\"$service_name\"}[5m])",
+                    "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_record_moves_total{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_metrics_record_moves_total{service_name=~\"$service_name\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1417,6 +1425,7 @@
                 "x": 0,
                 "y": 46
             },
+            "hiddenSeries": false,
             "id": 41,
             "legend": {
                 "alignAsTable": true,
@@ -1448,7 +1457,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(mongodb_mongod_metrics_get_last_error_wtime_total_milliseconds{service_name=~\"$service_name\"}[$interval]) or \nirate(mongodb_mongod_metrics_get_last_error_wtime_total_milliseconds{service_name=~\"$service_name\"}[5m]) or\nrate(mongodb_mongos_metrics_get_last_error_wtime_total_milliseconds{service_name=~\"$service_name\"}[$interval]) or \nirate(mongodb_mongos_metrics_get_last_error_wtime_total_milliseconds{service_name=~\"$service_name\"}[5m])",
+                    "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_get_last_error_wtime_total_milliseconds{service_name=~\"$service_name\"}[$interval]) or \nirate(mongodb_mongod_metrics_get_last_error_wtime_total_milliseconds{service_name=~\"$service_name\"}[5m]) or\nrate(mongodb_mongos_metrics_get_last_error_wtime_total_milliseconds{service_name=~\"$service_name\"}[$interval]) or \nirate(mongodb_mongos_metrics_get_last_error_wtime_total_milliseconds{service_name=~\"$service_name\"}[5m]))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -1533,6 +1542,7 @@
                 "y": 46
             },
             "height": "250px",
+            "hiddenSeries": false,
             "id": 62,
             "legend": {
                 "alignAsTable": true,
@@ -1565,7 +1575,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(mongodb_mongod_metrics_get_last_error_wtime_num_total{service_name=~\"$service_name\"}[$interval]) or \nirate(mongodb_mongod_metrics_get_last_error_wtime_num_total{service_name=~\"$service_name\"}[5m]) or\nrate(mongodb_mongos_metrics_get_last_error_wtime_num_total{service_name=~\"$service_name\"}[$interval]) or \nirate(mongodb_mongos_metrics_get_last_error_wtime_num_total{service_name=~\"$service_name\"}[5m])",
+                    "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_get_last_error_wtime_num_total{service_name=~\"$service_name\"}[$interval]) or \nirate(mongodb_mongod_metrics_get_last_error_wtime_num_total{service_name=~\"$service_name\"}[5m]) or\nrate(mongodb_mongos_metrics_get_last_error_wtime_num_total{service_name=~\"$service_name\"}[$interval]) or \nirate(mongodb_mongos_metrics_get_last_error_wtime_num_total{service_name=~\"$service_name\"}[5m]))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -1575,7 +1585,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mongodb_mongod_metrics_get_last_error_wtimeouts_total{service_name=~\"$service_name\"}[$interval]) or\nirate(mongodb_mongod_metrics_get_last_error_wtimeouts_total{service_name=~\"$service_name\"}[5m]) or\nrate(mongodb_mongos_metrics_get_last_error_wtimeouts_total{service_name=~\"$service_name\"}[$interval]) or\nirate(mongodb_mongos_metrics_get_last_error_wtimeouts_total{service_name=~\"$service_name\"}[5m])",
+                    "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_get_last_error_wtimeouts_total{service_name=~\"$service_name\"}[$interval]) or\nirate(mongodb_mongod_metrics_get_last_error_wtimeouts_total{service_name=~\"$service_name\"}[5m]) or\nrate(mongodb_mongos_metrics_get_last_error_wtimeouts_total{service_name=~\"$service_name\"}[$interval]) or\nirate(mongodb_mongos_metrics_get_last_error_wtimeouts_total{service_name=~\"$service_name\"}[5m]))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -1660,6 +1670,7 @@
                 "y": 54
             },
             "height": "250px",
+            "hiddenSeries": false,
             "id": 37,
             "legend": {
                 "alignAsTable": true,
@@ -1693,7 +1704,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(mongodb_mongod_asserts_total{service_name=~\"$service_name\"}[$interval]) or \nirate(mongodb_mongod_asserts_total{service_name=~\"$service_name\"}[5m]) or\nrate(mongodb_mongos_asserts_total{service_name=~\"$service_name\"}[$interval]) or \nirate(mongodb_mongos_asserts_total{service_name=~\"$service_name\"}[5m]) or\nrate(mongodb_asserts_total{service_name=~\"$service_name\"}[$interval]) or \nirate(mongodb_asserts_total{service_name=~\"$service_name\"}[5m])",
+                    "expr": "avg by (service_name,type) (rate(mongodb_mongod_asserts_total{service_name=~\"$service_name\"}[$interval]) or \nirate(mongodb_mongod_asserts_total{service_name=~\"$service_name\"}[5m]) or\nrate(mongodb_mongos_asserts_total{service_name=~\"$service_name\"}[$interval]) or \nirate(mongodb_mongos_asserts_total{service_name=~\"$service_name\"}[5m]) or\nrate(mongodb_asserts_total{service_name=~\"$service_name\"}[$interval]) or \nirate(mongodb_asserts_total{service_name=~\"$service_name\"}[5m]))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -1778,6 +1789,7 @@
                 "y": 54
             },
             "height": "250px",
+            "hiddenSeries": false,
             "id": 39,
             "legend": {
                 "alignAsTable": true,
@@ -1809,7 +1821,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(mongodb_mongod_extra_info_page_faults_total{service_name=~\"$service_name\"}[$interval]) or \nirate(mongodb_mongod_extra_info_page_faults_total{service_name=~\"$service_name\"}[5m]) or\nrate(mongodb_mongos_extra_info_page_faults_total{service_name=~\"$service_name\"}[$interval]) or \nirate(mongodb_mongos_extra_info_page_faults_total{service_name=~\"$service_name\"}[5m]) or\nrate(mongodb_extra_info_page_faults_total{service_name=~\"$service_name\"}[$interval]) or \nirate(mongodb_extra_info_page_faults_total{service_name=~\"$service_name\"}[5m])",
+                    "expr": "avg by (service_name) (rate(mongodb_mongod_extra_info_page_faults_total{service_name=~\"$service_name\"}[$interval]) or \nirate(mongodb_mongod_extra_info_page_faults_total{service_name=~\"$service_name\"}[5m]) or\nrate(mongodb_mongos_extra_info_page_faults_total{service_name=~\"$service_name\"}[$interval]) or \nirate(mongodb_mongos_extra_info_page_faults_total{service_name=~\"$service_name\"}[5m]) or\nrate(mongodb_extra_info_page_faults_total{service_name=~\"$service_name\"}[$interval]) or \nirate(mongodb_extra_info_page_faults_total{service_name=~\"$service_name\"}[5m]))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -1948,7 +1960,7 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "(node_time_seconds{node_name=~\"$node_name\"} - node_boot_time_seconds{node_name=~\"$node_name\"}) or (time() - node_boot_time_seconds{node_name=~\"$node_name\"})",
+                            "expr": "avg by (node_name) ((node_time_seconds{node_name=~\"$node_name\"} - node_boot_time_seconds{node_name=~\"$node_name\"}) or (time() - node_boot_time_seconds{node_name=~\"$node_name\"}))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "5m",
@@ -2031,7 +2043,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "avg_over_time(node_load1{node_name=~\"$node_name\"}[$interval]) or avg_over_time(node_load1{node_name=~\"$node_name\"}[5m])",
+                            "expr": "avg by (node_name) (avg_over_time(node_load1{node_name=~\"$node_name\"}[$interval]) or avg_over_time(node_load1{node_name=~\"$node_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2117,7 +2129,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "node_memory_MemTotal_bytes{node_name=~\"$node_name\"}",
+                            "expr": "avg by (node_name) (node_memory_MemTotal_bytes{node_name=~\"$node_name\"})",
                             "format": "time_series",
                             "interval": "5m",
                             "intervalFactor": 1,
@@ -2204,7 +2216,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "(node_memory_MemAvailable_bytes{node_name=~\"$node_name\"} or (node_memory_MemFree_bytes{node_name=~\"$node_name\"} + node_memory_Buffers_bytes{node_name=~\"$node_name\"} + node_memory_Cached_bytes{node_name=~\"$node_name\"})) / node_memory_MemTotal_bytes{node_name=~\"$node_name\"} * 100",
+                            "expr": "avg by (node_name) ((node_memory_MemAvailable_bytes{node_name=~\"$node_name\"} or (node_memory_MemFree_bytes{node_name=~\"$node_name\"} + node_memory_Buffers_bytes{node_name=~\"$node_name\"} + node_memory_Cached_bytes{node_name=~\"$node_name\"})) / node_memory_MemTotal_bytes{node_name=~\"$node_name\"} * 100)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2291,7 +2303,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "node_memory_MemTotal_bytes{node_name=~\"$node_name\"}+node_memory_SwapTotal_bytes{node_name=~\"$node_name\"}",
+                            "expr": "avg by (node_name) (node_memory_MemTotal_bytes{node_name=~\"$node_name\"}+node_memory_SwapTotal_bytes{node_name=~\"$node_name\"})",
                             "format": "time_series",
                             "interval": "5m",
                             "intervalFactor": 1,
@@ -2385,7 +2397,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "sum(avg(node_filesystem_size_bytes{node_name=~\"$node_name\",fstype=~\"(ext.|xfs|vfat|)\"}) without (mountpoint)) without (device,fstype)",
+                            "expr": "avg by (node_name) (sum(avg(node_filesystem_size_bytes{node_name=~\"$node_name\",fstype=~\"(ext.|xfs|vfat|)\"}) without (mountpoint)) without (device,fstype))",
                             "format": "time_series",
                             "interval": "5m",
                             "intervalFactor": 1,
@@ -2539,6 +2551,7 @@
                         "y": 65
                     },
                     "height": "",
+                    "hiddenSeries": false,
                     "id": 337,
                     "legend": {
                         "alignAsTable": true,
@@ -2581,7 +2594,7 @@
                     "steppedLine": true,
                     "targets": [
                         {
-                            "expr": "clamp_max(((avg by (mode) ( (clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\"}[$interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\"}[5m]),1)) ))*100 or (avg_over_time(node_cpu_average{node_name=~\"$node_name\", mode!=\"total\", mode!=\"idle\"}[$interval]) or avg_over_time(node_cpu_average{node_name=~\"$node_name\", mode!=\"total\", mode!=\"idle\"}[5m]))),100)",
+                            "expr": "avg by (node_name,mode) (clamp_max(((avg by (mode) ( (clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\"}[$interval]),1)) or (clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",mode!=\"idle\"}[5m]),1)) ))*100 or (avg_over_time(node_cpu_average{node_name=~\"$node_name\", mode!=\"total\", mode!=\"idle\"}[$interval]) or avg_over_time(node_cpu_average{node_name=~\"$node_name\", mode!=\"total\", mode!=\"idle\"}[5m]))),100))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2655,7 +2668,7 @@
                     "dashLength": 10,
                     "dashes": false,
                     "datasource": "Prometheus",
-                    "decimals": 5,
+                    "decimals": 2,
                     "editable": true,
                     "error": false,
                     "fill": 2,
@@ -2667,6 +2680,7 @@
                         "x": 12,
                         "y": 65
                     },
+                    "hiddenSeries": false,
                     "id": 339,
                     "legend": {
                         "alignAsTable": true,
@@ -2711,7 +2725,7 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "(avg_over_time(node_procs_running{node_name=~\"$node_name\"}[$interval])-1) / scalar(count(node_cpu_seconds_total{mode=\"user\", node_name=~\"$node_name\"})) or (avg_over_time(node_procs_running{node_name=~\"$node_name\"}[5m])-1) / scalar(count(node_cpu_seconds_total{mode=\"user\", node_name=~\"$node_name\"}))",
+                            "expr": "avg by (node_name) ((avg_over_time(node_procs_running{node_name=~\"$node_name\"}[$interval])-1) / scalar(count(node_cpu_seconds_total{mode=\"user\", node_name=~\"$node_name\"})) or (avg_over_time(node_procs_running{node_name=~\"$node_name\"}[5m])-1) / scalar(count(node_cpu_seconds_total{mode=\"user\", node_name=~\"$node_name\"})))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -2803,6 +2817,7 @@
                         "x": 0,
                         "y": 73
                     },
+                    "hiddenSeries": false,
                     "id": 341,
                     "legend": {
                         "alignAsTable": true,
@@ -2858,7 +2873,7 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "rate(node_vmstat_pgpgin{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=\"$node_name\"}[5m]) * 1024",
+                            "expr": "avg by (node_name) (rate(node_vmstat_pgpgin{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=\"$node_name\"}[5m]) * 1024)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2872,7 +2887,7 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "(rate(node_vmstat_pgpgout{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=\"$node_name\"}[5m]) * 1024)",
+                            "expr": "avg by (node_name) ((rate(node_vmstat_pgpgout{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=\"$node_name\"}[5m]) * 1024))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2883,7 +2898,7 @@
                             "target": ""
                         },
                         {
-                            "expr": "(rate(node_vmstat_pgpgin{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=\"$node_name\"}[5m]) * 1024 ) + (rate(node_vmstat_pgpgout{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=\"$node_name\"}[5m]) * 1024)",
+                            "expr": "avg by (node_name) ((rate(node_vmstat_pgpgin{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=\"$node_name\"}[5m]) * 1024 ) + (rate(node_vmstat_pgpgout{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=\"$node_name\"}[5m]) * 1024))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2891,7 +2906,7 @@
                             "refId": "C"
                         },
                         {
-                            "expr": "rate(node_vmstat_pswpin{node_name=\"$node_name\"}[$interval]) * 4096 or irate(node_vmstat_pswpin{node_name=\"$node_name\"}[5m]) * 4096",
+                            "expr": "avg by (node_name) (rate(node_vmstat_pswpin{node_name=\"$node_name\"}[$interval]) * 4096 or irate(node_vmstat_pswpin{node_name=\"$node_name\"}[5m]) * 4096)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2967,6 +2982,7 @@
                         "x": 12,
                         "y": 73
                     },
+                    "hiddenSeries": false,
                     "id": 343,
                     "legend": {
                         "alignAsTable": true,
@@ -3079,7 +3095,7 @@
         }
     ],
     "refresh": "1m",
-    "schemaVersion": 20,
+    "schemaVersion": 21,
     "style": "dark",
     "tags": [
         "MongoDB",

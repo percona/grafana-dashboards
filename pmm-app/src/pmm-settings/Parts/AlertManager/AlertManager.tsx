@@ -1,4 +1,3 @@
-import { PluginTooltip, VerticalFormWrapper } from '../../../react-plugins-deps/components/helpers/Helpers';
 import { InputField } from '../../../react-plugins-deps/components/FormComponents/Input/Input';
 import { TextAreaField } from '../../../react-plugins-deps/components/FormComponents/TextArea/TextArea';
 import React, { ReactElement, useEffect, useState } from 'react';
@@ -7,6 +6,8 @@ import { Form as FormFinal } from 'react-final-form';
 import { useForm } from 'react-final-form-hooks';
 import SettingsService from '../../Settings.service';
 import { showSuccessNotification } from '../../../react-plugins-deps/components/helpers/notification-manager';
+import { FormElement } from '../../../react-plugins-deps/components/FormComponents/FormElement/FormElement';
+import {PluginTooltip} from "../../../react-plugins-deps/components/helpers/Helpers";
 
 interface AlertManagerSettingsInterface {
   alert_manager_url: string;
@@ -56,7 +57,7 @@ const AlertManager = props => {
         return (
           <form onSubmit={handleSubmit}>
             <>
-              <VerticalFormWrapper
+              <FormElement
                 label="Alertmanager URL"
                 tooltip={
                   <PluginTooltip
@@ -75,7 +76,7 @@ const AlertManager = props => {
                 }
                 element={<InputField form={form} name="alert_manager_url" placeholder="Enter URL" style={{ width: '100%' }} />}
               />
-              <VerticalFormWrapper
+              <FormElement
                 label="Alertmanager rules"
                 tooltip={
                   <PluginTooltip
