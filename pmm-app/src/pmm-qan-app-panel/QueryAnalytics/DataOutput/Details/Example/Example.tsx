@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import ExampleService from './Example.service';
-import { ReactJSON } from '../../../../../react-plugins-deps/components/ReactJSON/ReactJSON';
+import sqlFormatter from 'sql-formatter';
 
-const getJSONExample = example => <ReactJSON json={example} />;
+const getExample = (example: string): string =>
+  sqlFormatter
+    .format(example.toLowerCase())
+    .replace('explain', 'EXPLAIN ')
+    .replace('  ', ' ');
 
 const Example = props => {
   const { queryId, groupBy, from, to, labels, tables } = props;
@@ -25,7 +29,7 @@ const Example = props => {
     })();
   }, [queryId]);
 
-  return <div>{examples && examples.length && examples.map(getJSONExample)}</div>;
+  return <pre>{examples && examples.length && examples.map(example => example.example).map(getExample)}</pre>;
 };
 
 export default Example;
