@@ -15,11 +15,12 @@ interface InputFieldInterface {
   options?: any;
   defaultValue?: any;
   readonly?: boolean;
+  validate?: any;
 }
 
-export const InputField = ({ name, placeholder, required, form, style, wrapperStyle, readonly }: InputFieldInterface) => {
+export const InputField = ({ name, placeholder = '', required, form, style, wrapperStyle, readonly, validate }: InputFieldInterface) => {
   // // @ts-ignore
-  const { input, meta } = useField(name, form);
+  const { input, meta } = useField(name, form, validate);
   return (
     <div className={'input-field-wrapper'} style={wrapperStyle || {}}>
       <input

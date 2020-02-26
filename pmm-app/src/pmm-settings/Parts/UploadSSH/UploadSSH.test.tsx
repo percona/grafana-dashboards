@@ -2,6 +2,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import UploadSSH from './UploadSSH';
+
 jest.mock('../../../react-plugins-deps/components/helpers/notification-manager', () => () => ({}));
 describe('Settings Part test', () => {
   it('Upload SSH key renders correct without props', () => {
