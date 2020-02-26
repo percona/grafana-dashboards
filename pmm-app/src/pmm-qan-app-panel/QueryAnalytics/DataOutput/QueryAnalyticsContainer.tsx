@@ -4,25 +4,16 @@ import React, { useCallback, useContext, useState } from 'react';
 import Split from 'react-split';
 import { StateContext } from '../StateContext';
 import './QueryAnalyticsContainer.scss';
-import { Button, Pagination } from 'antd';
+import { Pagination } from 'antd';
 import ManageColumns from './ManageColumns/ManageColumns';
 
 const PAGE_SIZE_OPTIONS = ['10', '50', '100'];
 const QueryAnalyticsContainer = () => {
   const {
     dispatch,
-    state: { pageNumber, pageSize, firstSeen, querySelected },
+    state: { pageNumber, pageSize, querySelected },
   } = useContext(StateContext);
   const [total, setTotal] = useState(30);
-
-  const changeFirstSeen = useCallback(() => {
-    dispatch({
-      type: 'CHANGE_FIRST_SEEN',
-      payload: {
-        firstSeen: !firstSeen,
-      },
-    });
-  }, [firstSeen]);
 
   const changePageNumber = useCallback(pageNumber => {
     dispatch({
@@ -46,9 +37,6 @@ const QueryAnalyticsContainer = () => {
     <div style={{ width: '1250px' }}>
       <div className={'filters-header'} style={{ padding: '5px 0px', height: '50px' }}>
         <h5 style={{ margin: '3px', marginRight: '15px' }}>Queries overview</h5>
-        <Button type="link" style={{ padding: 0, height: 'auto', marginLeft: '20px' }} onClick={changeFirstSeen}>
-          {firstSeen ? `Show all Queries` : `Show first Seen`}
-        </Button>
         <div style={{ marginLeft: 'auto' }}>
           <Pagination
             showSizeChanger={true}
