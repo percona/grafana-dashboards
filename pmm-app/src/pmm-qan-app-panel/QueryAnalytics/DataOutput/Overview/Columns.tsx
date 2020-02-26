@@ -6,18 +6,8 @@ import ManageColumns from '../ManageColumns/ManageColumns';
 import './OverviewTable.scss';
 import { METRIC_CATALOGUE } from '../MetricCatalogue';
 import Tooltip from 'antd/es/tooltip';
-import { List, Select } from 'antd';
-
-const { Option } = Select;
-
-const GROUP_BY_OPTIONS = [
-  { value: 'queryid', label: 'Query' },
-  { value: 'service_name', label: 'Service Name' },
-  { value: 'database', label: 'Database' },
-  { value: 'schema', label: 'Schema' },
-  { value: 'username', label: 'User Name' },
-  { value: 'client_host', label: 'Client Host' },
-];
+import { List } from 'antd';
+import { GROUP_BY_OPTIONS } from '../GroupByControl/GroupByControl';
 
 const MAIN_METRIC_MIN_WIDTH = 470;
 const MAIN_METRIC_VALUE_WIDTH = 90;
@@ -25,6 +15,46 @@ export const TABLE_X_SCROLL = 1250;
 export const TABLE_Y_SCROLL = 450;
 const COLUMN_WIDTH = 250;
 const ROW_NUMBER_COLUMN_WIDTH = 30;
+
+export const getDefaultColumns = (groupBy, pageNumber, pageSize, columns) => {
+  const mainMetricColumnWidth = Math.max(TABLE_X_SCROLL - columns * COLUMN_WIDTH - ROW_NUMBER_COLUMN_WIDTH, MAIN_METRIC_MIN_WIDTH);
+  return [
+    {
+      title: '#',
+      dataIndex: 'rowNumber',
+      key: 'rowNumber',
+      fixed: 'left',
+      width: ROW_NUMBER_COLUMN_WIDTH,
+      render: (text, record, index) => (
+        <div style={{ wordWrap: 'normal', wordBreak: 'normal' }}>{index === 0 ? '' : (pageNumber - 1) * pageSize + index}</div>
+      ),
+    },
+    {
+      dataIndex: 'mainMetric',
+      fixed: 'left',
+      width: mainMetricColumnWidth,
+      title: () => `Group by ${GROUP_BY_OPTIONS.find(({ value }) => value === groupBy).label}`,
+      ellipsis: true,
+      className: 'overview-main-column',
+      render: (text, record) => {
+        return (
+          <div
+            style={{
+              wordWrap: 'break-word',
+              wordBreak: 'break-word',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+              maxWidth: mainMetricColumnWidth,
+            }}
+          >
+            {record.fingerprint || record.dimension || 'TOTAL'}
+          </div>
+        );
+      },
+    },
+  ];
+};
 
 export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy) => {
   const metric = METRIC_CATALOGUE[metricName];
@@ -87,54 +117,4 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
       );
     },
   };
-};
-
-export const getDefaultColumns = (groupBy, setGroupBy, pageNumber, pageSize, columns) => {
-  const mainMetricColumnWidth = Math.max(TABLE_X_SCROLL - columns * COLUMN_WIDTH - ROW_NUMBER_COLUMN_WIDTH, MAIN_METRIC_MIN_WIDTH);
-  return [
-    {
-      title: '#',
-      dataIndex: 'rowNumber',
-      key: 'rowNumber',
-      fixed: 'left',
-      width: ROW_NUMBER_COLUMN_WIDTH,
-      render: (text, record, index) => (
-        <div style={{ wordWrap: 'normal', wordBreak: 'normal' }}>{index === 0 ? '' : (pageNumber - 1) * pageSize + index}</div>
-      ),
-    },
-    {
-      dataIndex: 'mainMetric',
-      fixed: 'left',
-      width: mainMetricColumnWidth,
-      title: () => {
-        return (
-          <Select optionLabelProp="label" defaultValue={groupBy} style={{ width: '120px' }} onChange={setGroupBy}>
-            {GROUP_BY_OPTIONS.map(option => (
-              <Option value={option.value} label={option.label}>
-                {option.label}
-              </Option>
-            ))}
-          </Select>
-        );
-      },
-      ellipsis: true,
-      className: 'overview-main-column',
-      render: (text, record) => {
-        return (
-          <div
-            style={{
-              wordWrap: 'break-word',
-              wordBreak: 'break-word',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap',
-              maxWidth: mainMetricColumnWidth,
-            }}
-          >
-            {record.fingerprint || record.dimension || 'TOTAL'}
-          </div>
-        );
-      },
-    },
-  ];
 };
