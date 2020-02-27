@@ -172,7 +172,6 @@ export class PanelCtrl extends MetricsPanelCtrl {
 
   // TODO: add strict urlParams presence check
   private reloadQuery(window, $scope, type = '', urlParams: {}) {
-    const host = window.location.href.split('?')[0];
     const existedParams = this.getJsonFromUrl(window.location);
 
     [...Object.keys(existedParams), ...Object.keys(urlParams)].forEach(param => {
@@ -200,15 +199,6 @@ export class PanelCtrl extends MetricsPanelCtrl {
       };
     });
     templateVariables[0].variableSrv.variableUpdated(templateVariables[0], true);
-    const query = Object.keys(existedParams)
-      .map(paramKey => {
-        const item = existedParams[paramKey];
-        return item.map(element => `${paramKey}=${element}`).join('&');
-      })
-      .join('&');
-    const url = `${host}?${query}`;
-    // @ts-ignore
-    history.pushState({}, null, url);
   }
 
   private retrieveDashboardURLParams(): string[] {
