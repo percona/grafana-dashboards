@@ -12,7 +12,7 @@ import { processMetrics } from '../../../../../react-plugins-deps/components/hel
 const metricColumnsStyle = {
   display: 'flex',
   justifyContent: 'space-between',
-  alignItems: 'flex-end',
+  alignItems: 'center',
 };
 
 const columns = [
@@ -32,13 +32,12 @@ const columns = [
   },
   {
     title: 'Rate/Second',
-    width: '25%',
+    width: '35%',
     render: (text, item) => {
-      // {{ isRate ? (currentMetric?.stats?.rate | humanize: pipeInfo?.ratePipe) : '0' }}
       // @ts-ignore
       const polygonChartProps = {
         data: item.sparkline,
-        width: 150,
+        width: 285,
         ykey: 'metric',
       };
       return (
@@ -51,21 +50,25 @@ const columns = [
   },
   {
     title: 'Sum',
-    width: '30%',
+    width: '20%',
     render: (text, item) => {
       return (
         <>
-          {item.isSum && (
-            <span style={{ marginRight: '10px', minWidth: '65px', display: 'inline-block' }}>
-              {Humanize.transform(item.metric.sum, item.pipeTypes['sumPipe']) || 0}
-            </span>
-          )}
-          {
-            <span
-              style={{ marginLeft: '5px', color: '#26afe1', minWidth: '90px', display: 'inline-block' }}
-            >{`${item.percentOfTotal}% of total`}</span>
-          }
-          {<span style={{ marginLeft: '5px', color: '#268b40', minWidth: '90px', display: 'inline-block' }}>{item.complexMetric}</span>}
+          <div>
+            {item.isSum && (
+              <span style={{ marginRight: '10px', minWidth: '65px', display: 'inline-block' }}>
+                {Humanize.transform(item.metric.sum, item.pipeTypes['sumPipe']) || 0}
+              </span>
+            )}
+            {
+              <span
+                style={{ marginLeft: '5px', color: '#26afe1', minWidth: '90px', display: 'inline-block' }}
+              >{`${item.percentOfTotal}% of total`}</span>
+            }
+          </div>
+          {item.complexMetric ? (
+            <div>{<span style={{ color: '#268b40', minWidth: '90px', display: 'inline-block' }}>{item.complexMetric}</span>}</div>
+          ) : null}
         </>
       );
     },
