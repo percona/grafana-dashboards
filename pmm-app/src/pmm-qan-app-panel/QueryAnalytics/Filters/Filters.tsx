@@ -1,6 +1,6 @@
 import React, { ReactElement, useContext, useEffect, useLayoutEffect, useState } from 'react';
 import './Filters.scss';
-import { Button } from 'antd';
+import { Affix, Button } from 'antd';
 import { StateContext } from '../StateContext';
 import FiltersService from './Filters.service';
 import { useForm } from 'react-final-form-hooks';
@@ -8,6 +8,7 @@ import { Form as FormFinal } from 'react-final-form';
 import Search from 'antd/es/input/Search';
 import { CheckboxGroup } from './CheckboxGroup';
 import useWindowSize from 'react-plugins-deps/components/helpers/WindowSize.hooks';
+import ScrollArea from 'react-scrollbar';
 export const FILTERS_GROUPS = [
   {
     name: 'Environment',
@@ -71,7 +72,7 @@ interface GroupInterface {
 const FILTERS_BODY_HEIGHT = 600;
 export const Filters = ({ dispatch, groups, form, labels, filters }) => {
   const [width, height] = useWindowSize();
-  const [filtersBodyHeight, setFiltersBodyHeight] = useState(FILTERS_BODY_HEIGHT)
+  const [filtersBodyHeight, setFiltersBodyHeight] = useState(FILTERS_BODY_HEIGHT);
   const [filter, setFilter] = useState('');
   const [showAll, showSetAll] = useState(true);
 
@@ -83,7 +84,7 @@ export const Filters = ({ dispatch, groups, form, labels, filters }) => {
     const filtersHeight = filtersWrapperElement
       ? height - filtersWrapperElement.getBoundingClientRect().y - FILTERS_HEADER_SIZE - FILTERS_MARGIN_BOTTOM
       : FILTERS_BODY_HEIGHT;
-    setFiltersBodyHeight(filtersHeight)
+    setFiltersBodyHeight(filtersHeight);
   }, [height]);
 
   return (
@@ -104,7 +105,7 @@ export const Filters = ({ dispatch, groups, form, labels, filters }) => {
           Reset All
         </Button>
       </div>
-      <div className={'query-analytics-filters-wrapper'} style={{ height: filtersBodyHeight + 'px' }}>
+      <ScrollArea className={'query-analytics-filters-wrapper'} style={{ height: filtersBodyHeight + 'px' }}>
         <Search
           placeholder="Filters search..."
           onChange={e => {
@@ -131,7 +132,7 @@ export const Filters = ({ dispatch, groups, form, labels, filters }) => {
               />
             );
           })}
-      </div>
+      </ScrollArea>
     </div>
   );
 };
