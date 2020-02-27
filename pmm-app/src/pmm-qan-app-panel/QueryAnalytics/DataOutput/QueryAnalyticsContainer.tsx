@@ -1,6 +1,6 @@
 import OverviewTable from './Overview/OverviewTable';
 import QueryDetails from './Details/QueryDetails';
-import React, { useCallback, useContext, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import Split from 'react-split';
 import { StateContext } from '../StateContext';
 import './QueryAnalyticsContainer.scss';
@@ -35,8 +35,12 @@ const QueryAnalyticsContainer = () => {
     });
   }, []);
 
+  // TODO: replace with something more elegant & fast
+  const container = document.querySelector('#antd')
+  const size = container && container.clientWidth;
+
   return (
-    <div style={{ width: '1250px' }}>
+    <div style={{ width: `${(size || 1500) - 260}px` }}>
       <div className={'filters-header'} style={{ padding: '5px 0px', height: '50px' }}>
         <h5 style={{ margin: '3px', marginRight: '40px' }}>Queries overview</h5>
         <GroupByControl />
