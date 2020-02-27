@@ -36,7 +36,7 @@ const QueryAnalyticsContainer = () => {
   }, []);
 
   // TODO: replace with something more elegant & fast
-  const container = document.querySelector('#antd')
+  const container = document.querySelector('#antd');
   const size = container && container.clientWidth;
 
   return (
@@ -50,6 +50,7 @@ const QueryAnalyticsContainer = () => {
             pageSizeOptions={PAGE_SIZE_OPTIONS}
             defaultCurrent={1}
             defaultPageSize={10}
+            showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} items`}
             current={pageNumber}
             pageSize={pageSize}
             total={total}
