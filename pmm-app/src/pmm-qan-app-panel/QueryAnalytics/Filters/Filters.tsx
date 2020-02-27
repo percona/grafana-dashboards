@@ -1,4 +1,4 @@
-import React, { ReactElement, useContext, useEffect, useState } from 'react';
+import React, { ReactElement, useContext, useEffect, useLayoutEffect, useState } from 'react';
 import './Filters.scss';
 import { Button } from 'antd';
 import { StateContext } from '../StateContext';
@@ -7,7 +7,7 @@ import { useForm } from 'react-final-form-hooks';
 import { Form as FormFinal } from 'react-final-form';
 import Search from 'antd/es/input/Search';
 import { CheckboxGroup } from './CheckboxGroup';
-
+import useWindowSize from 'react-plugins-deps/components/helpers/WindowSize.hooks';
 export const FILTERS_GROUPS = [
   {
     name: 'Environment',
@@ -68,9 +68,24 @@ interface GroupInterface {
   name: string;
 }
 
+const FILTERS_BODY_HEIGHT = 600;
 export const Filters = ({ dispatch, groups, form, labels, filters }) => {
+  const [width, height] = useWindowSize();
+  const [filtersBodyHeight, setFiltersBodyHeight] = useState(FILTERS_BODY_HEIGHT)
   const [filter, setFilter] = useState('');
   const [showAll, showSetAll] = useState(true);
+
+  // TODO: replace with something more elegant & fast
+  useEffect(() => {
+    const FILTERS_HEADER_SIZE = 50;
+    const FILTERS_MARGIN_BOTTOM = 20;
+    const filtersWrapperElement = document.querySelector('#query-analytics-filters');
+    const filtersHeight = filtersWrapperElement
+      ? height - filtersWrapperElement.getBoundingClientRect().y - FILTERS_HEADER_SIZE - FILTERS_MARGIN_BOTTOM
+      : FILTERS_BODY_HEIGHT;
+    setFiltersBodyHeight(filtersHeight)
+  }, [height]);
+
   return (
     <div>
       <div className={'filters-header'} style={{ padding: '5px 0px', height: '50px' }}>
@@ -89,7 +104,7 @@ export const Filters = ({ dispatch, groups, form, labels, filters }) => {
           Reset All
         </Button>
       </div>
-      <div className={'query-analytics-filters-wrapper'}>
+      <div className={'query-analytics-filters-wrapper'} style={{ height: filtersBodyHeight + 'px' }}>
         <Search
           placeholder="Filters search..."
           onChange={e => {
