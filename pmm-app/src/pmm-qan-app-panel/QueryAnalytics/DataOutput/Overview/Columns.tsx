@@ -6,7 +6,7 @@ import ManageColumns from '../ManageColumns/ManageColumns';
 import './OverviewTable.scss';
 import { METRIC_CATALOGUE } from '../MetricCatalogue';
 import Tooltip from 'antd/es/tooltip';
-import { List } from 'antd';
+import { Divider, List } from 'antd';
 import { GROUP_BY_OPTIONS } from '../GroupByControl/GroupByControl';
 
 const MAIN_METRIC_MIN_WIDTH = 470;
@@ -77,7 +77,7 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
       const tooltipData = [
         { header: 'Per sec', value: Humanize.transform(stats.qps || stats.sum_per_sec, 'number') },
         { header: 'Sum', value: stats.sum && Humanize.transform(stats.sum, metric.pipeTypes.sumPipe) },
-        { header: 'From total', value: ((stats.sum_per_sec / totalValues.metrics[metricName].stats.sum_per_sec) * 100).toFixed(2) + '%' },
+        { header: 'From total', value: ((stats.sum_per_sec / totalValues.metrics[metricName].stats.sum_per_sec) * 100).toFixed(2) + ' %' },
       ].filter(tooltip => tooltip.value);
 
       const minStr = `${Humanize.transform(stats.min)}`;
@@ -103,6 +103,8 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
             overlayClassName={'overview-column-toolkit'}
             title={
               <>
+                <span>{metric.humanizeName}</span>
+                <Divider />
                 <List size="small" dataSource={tooltipData} renderItem={item => <List.Item>{`${item.header} : ${item.value}`}</List.Item>} />
                 {metricName === 'query_time' && <LatencyChart {...{ data: stats }} />}
                 <List size="small" dataSource={latencyTooltipData} renderItem={item => <List.Item>{`${item.header} : ${item.value}`}</List.Item>} />
