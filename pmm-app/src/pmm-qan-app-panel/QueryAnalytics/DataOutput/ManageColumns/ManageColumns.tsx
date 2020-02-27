@@ -1,13 +1,20 @@
-import React, {useCallback, useContext} from 'react';
-import {Divider, Icon, Select} from 'antd';
-import {METRIC_CATALOGUE} from '../MetricCatalogue';
-import {StateContext} from '../../StateContext';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { Divider, Icon, Select } from 'antd';
+import { METRIC_CATALOGUE } from '../MetricCatalogue';
+import { StateContext } from '../../StateContext';
 import './ManageColumns.less';
 
 const { Option } = Select;
 
 const ManageColumns = props => {
-  const { dispatch } = useContext(StateContext);
+  const {
+    dispatch,
+    state: { columns },
+  } = useContext(StateContext);
+  const [availableColumns, setAvailableColumns] = useState(Object.values(METRIC_CATALOGUE));
+  useEffect(() => {
+    setAvailableColumns(Object.values(METRIC_CATALOGUE).filter(metric => !columns.find(item => item === metric.simpleName)));
+  }, [columns]);
   const changeColumn = useCallback(
     column => {
       if (props.onlyAdd) {
@@ -62,7 +69,7 @@ const ManageColumns = props => {
           </div>
         )}
       >
-        {Object.values(METRIC_CATALOGUE).map(item => (
+        {availableColumns.map(item => (
           <Option key={item.simpleName} label={item.humanizeName}>
             {item.humanizeName}
           </Option>
