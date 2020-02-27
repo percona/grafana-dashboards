@@ -139,7 +139,7 @@ export const UrlParametersProvider = ({ children }) => {
 
         case 'REMOVE_COLUMN':
           columns = state.columns.slice();
-          columns.splice(columns.indexOf(action.payload.column), 1);
+          columns.splice(columns.indexOf(action.payload.column.simpleName), 1);
           newState = {
             ...state,
             columns: columns,
@@ -181,7 +181,7 @@ export const UrlParametersProvider = ({ children }) => {
       return newState;
     },
     {
-      columns: DEFAULT_COLUMNS,
+      columns: JSON.parse(query.get('columns')) || DEFAULT_COLUMNS,
       labels: ContextActions.setFilters(query),
       pageNumber: 1,
       pageSize: 10,
