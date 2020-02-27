@@ -110,7 +110,7 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
             }
           >
             <span className="summarize" style={{ marginLeft: 'auto' }}>
-              {Humanize.transform(stats.qps || stats.sum_per_sec, 'number')}
+              {Humanize.transform(stats.qps || stats.sum_per_sec, 'number')} {metric.units}
             </span>
           </Tooltip>
         </div>
