@@ -19,6 +19,8 @@ export const CheckboxGroup = ({ form, name, items, group, showAll, filter, label
     })
     .filter(item => item.value.toLowerCase().includes(filter.toLowerCase()))
     .map(item => {
+      // If there is no value - disable checkbox and hide percent
+      const isValue = item.hasOwnProperty('main_metric_percent');
       return (
         <div className={'filter-label'}>
           <span className={'filter-name'}>
@@ -27,11 +29,14 @@ export const CheckboxGroup = ({ form, name, items, group, showAll, filter, label
               name={`${group}:${item.value}`}
               label={item.value}
               checked={labels && labels[group] && labels[group].includes(item.value)}
+              disabled={!isValue}
             />
           </span>
-          <span className={'percentage'}>
-            <span>{Humanize.transform(item.main_metric_percent, 'percent')}</span>
-          </span>
+          {isValue ? (
+            <span className={'percentage'}>
+              <span>{Humanize.transform(item.main_metric_percent, 'percent')}</span>
+            </span>
+          ) : null}
         </div>
       );
     });
