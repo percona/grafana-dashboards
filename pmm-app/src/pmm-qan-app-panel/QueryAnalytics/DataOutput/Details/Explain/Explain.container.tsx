@@ -21,9 +21,7 @@ const ExplainContainer = props => {
           labels,
           tables,
         });
-        const queryExample = result['query_examples'][0]
-
-        (async () => {
+        const queryExample = result['query_examples'][0](async () => {
           try {
             const { action_id } = await ExplainService.getTraditionalExplain({
               database: queryExample.schema,
