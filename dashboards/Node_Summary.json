@@ -1826,21 +1826,30 @@
                     "alias": "Total",
                     "color": "#C4162A",
                     "fill": 0,
+                    "legend": false,
                     "stack": false
+                },
+                {
+                    "alias": "Free",
+                    "color": "#508642"
+                },
+                {
+                    "alias": "Cache",
+                    "color": "#1f78c1"
+                },
+                {
+                    "alias": "Used",
+                    "color": "#eab839"
+                },
+                {
+                    "alias": "Buffers",
+                    "color": "#A352CC"
                 }
             ],
             "spaceLength": 10,
             "stack": true,
             "steppedLine": false,
             "targets": [
-                {
-                    "expr": "avg by (node_name) (max_over_time(node_memory_MemTotal_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_MemTotal_bytes{node_name=~\"$node_name\"}[5m]))",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Total",
-                    "refId": "C"
-                },
                 {
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
@@ -1873,7 +1882,7 @@
                     "calculatedInterval": "2s",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "avg by (node_name) (((max_over_time(node_memory_MemTotal_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_MemTotal_bytes{node_name=~\"$node_name\"}[5m])) - ((max_over_time(node_memory_MemFree_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_MemFree_bytes{node_name=~\"$node_name\"}[5m]))+ \n(max_over_time(node_memory_Buffers_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_Buffers_bytes{node_name=~\"$node_name\"}[5m])) + \n(max_over_time(node_memory_Cached_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_Cached_bytes{node_name=~\"$node_name\"}[5m])))))",
+                    "expr": "clamp_min(avg by (node_name) (((max_over_time(node_memory_MemTotal_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_MemTotal_bytes{node_name=~\"$node_name\"}[5m])) - ((max_over_time(node_memory_MemFree_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_MemFree_bytes{node_name=~\"$node_name\"}[5m]))+ \n(max_over_time(node_memory_Buffers_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_Buffers_bytes{node_name=~\"$node_name\"}[5m])) + \n(max_over_time(node_memory_Cached_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_Cached_bytes{node_name=~\"$node_name\"}[5m]))))),0)",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -1889,6 +1898,14 @@
                     "interval": "$interval",
                     "legendFormat": "Cache",
                     "refId": "F"
+                },
+                {
+                    "expr": "avg by (node_name) (max_over_time(node_memory_MemTotal_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_MemTotal_bytes{node_name=~\"$node_name\"}[5m]))",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Total",
+                    "refId": "C"
                 }
             ],
             "thresholds": [],
@@ -1999,8 +2016,17 @@
             "seriesOverrides": [
                 {
                     "alias": "Total",
+                    "color": "#bf1b00",
                     "fill": 0,
                     "stack": false
+                },
+                {
+                    "alias": "Used",
+                    "color": "#eab839"
+                },
+                {
+                    "alias": "Available",
+                    "color": "#508642"
                 }
             ],
             "spaceLength": 10,
