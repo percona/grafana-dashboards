@@ -1,6 +1,7 @@
 import React from 'react';
 import { Collapse } from 'antd';
 import { ReactJSON } from '../../../../../react-plugins-deps/components/ReactJSON/ReactJSON';
+
 const { Panel } = Collapse;
 
 const customPanelStyle = {

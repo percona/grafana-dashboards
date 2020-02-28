@@ -1,14 +1,15 @@
-import React, { ReactElement, useContext, useEffect, useLayoutEffect, useState } from 'react';
-import './Filters.scss';
-import { Affix, Button } from 'antd';
+import React, { ReactElement, useContext, useEffect, useState } from 'react';
+import { Button } from 'antd';
 import { StateContext } from '../StateContext';
 import FiltersService from './Filters.service';
 import { useForm } from 'react-final-form-hooks';
 import { Form as FormFinal } from 'react-final-form';
-import Search from 'antd/es/input/Search';
+import Search from 'antd/lib/input/Search';
 import { CheckboxGroup } from './CheckboxGroup';
 import useWindowSize from 'react-plugins-deps/components/helpers/WindowSize.hooks';
 import ScrollArea from 'react-scrollbar';
+import { css } from 'emotion';
+
 export const FILTERS_GROUPS = [
   {
     name: 'Environment',
@@ -64,6 +65,33 @@ export const FILTERS_GROUPS = [
   },
 ];
 
+const Styling = {
+  filtersWrapper: css`
+    border: 1px solid rgb(40, 40, 40);
+    padding: 5px 10px;
+    overflow-y: scroll;
+  `,
+  filtersHeader: css`
+    display: flex;
+    align-items: flex-end;
+    padding: 5px 0px;
+    height: 50px;
+  `,
+  showAllButton: css`
+    padding: 0;
+    height: auto;
+  `,
+  title: css`
+    margin: 3px;
+    margin-right: 15px;
+  `,
+  resetButton: css`
+    padding: 0;
+    height: auto;
+    margin-left: auto;
+  `,
+};
+
 interface GroupInterface {
   dataKey: string;
   name: string;
@@ -89,14 +117,14 @@ export const Filters = ({ dispatch, groups, form, labels, filters }) => {
 
   return (
     <div>
-      <div className={'filters-header'} style={{ padding: '5px 0px', height: '50px' }}>
-        <h5 style={{ margin: '3px', marginRight: '15px' }}>Filters</h5>
-        <Button type="link" style={{ padding: 0, height: 'auto' }} onClick={showSetAll.bind(null, !showAll)}>
+      <div className={Styling.filtersHeader}>
+        <h5 className={Styling.title}>Filters</h5>
+        <Button type="link" className={Styling.showAllButton} onClick={showSetAll.bind(null, !showAll)}>
           {showAll ? `Show Selected` : `Show All`}
         </Button>
         <Button
           type="link"
-          style={{ padding: 0, height: 'auto', marginLeft: 'auto' }}
+          className={Styling.resetButton}
           onClick={() => {
             dispatch({ type: 'RESET_LABELS' });
             form.reset();
@@ -105,7 +133,7 @@ export const Filters = ({ dispatch, groups, form, labels, filters }) => {
           Reset All
         </Button>
       </div>
-      <ScrollArea className={'query-analytics-filters-wrapper'} style={{ height: filtersBodyHeight + 'px' }}>
+      <ScrollArea className={Styling.filtersWrapper} style={{ height: filtersBodyHeight + 'px' }}>
         <Search
           placeholder="Filters search..."
           onChange={e => {
