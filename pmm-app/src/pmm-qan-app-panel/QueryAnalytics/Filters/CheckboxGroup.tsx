@@ -2,9 +2,29 @@ import React, { useState } from 'react';
 import { CheckboxField } from '../../../react-plugins-deps/components/FormComponents/Checkbox/Checkbox';
 import { Humanize } from '../../../react-plugins-deps/components/helpers/Humanization';
 import { Divider } from 'antd';
-import './CheckboxGroup.scss';
+import { css } from 'emotion';
 
 const TOP_LIMIT = 5;
+
+const Styling = {
+  label: css`
+    display: grid;
+    grid-template-areas: 'filtername percentagearea';
+    grid-template-rows: 30px;
+    grid-template-columns: 160px auto;
+    grid-gap: 10px;
+    height: auto;
+    margin: 0;
+  `,
+  filterName: css`
+    grid-area: filtername;
+  `,
+  percentage: css`
+    grid-area: percentagearea;
+    display: flex;
+    justify-content: flex-end;
+  `,
+};
 
 export const CheckboxGroup = ({ form, name, items, group, showAll, filter, labels }) => {
   const [showTop, setShowTop] = useState(false);
@@ -22,8 +42,8 @@ export const CheckboxGroup = ({ form, name, items, group, showAll, filter, label
       // If there is no value - disable checkbox and hide percent
       const isValue = item.hasOwnProperty('main_metric_percent');
       return (
-        <div className={'filter-label'}>
-          <span className={'filter-name'}>
+        <div className={Styling.label}>
+          <span className={Styling.filterName}>
             <CheckboxField
               form={form}
               name={`${group}:${item.value}`}
@@ -33,7 +53,7 @@ export const CheckboxGroup = ({ form, name, items, group, showAll, filter, label
             />
           </span>
           {isValue ? (
-            <span className={'percentage'}>
+            <span className={Styling.percentage}>
               <span>{Humanize.transform(item.main_metric_percent, 'percent')}</span>
             </span>
           ) : null}

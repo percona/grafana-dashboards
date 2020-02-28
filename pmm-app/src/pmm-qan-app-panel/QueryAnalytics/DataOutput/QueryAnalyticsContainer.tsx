@@ -1,10 +1,10 @@
 import OverviewTable from './Overview/OverviewTable';
 import QueryDetails from './Details/QueryDetails';
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import Split from 'react-split';
 import { StateContext } from '../StateContext';
 import './QueryAnalyticsContainer.scss';
-import { Pagination, Select } from 'antd';
+import { Pagination } from 'antd';
 import ManageColumns from './ManageColumns/ManageColumns';
 import { GroupByControl } from './GroupByControl/GroupByControl';
 
