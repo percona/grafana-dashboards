@@ -313,7 +313,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "mysql_global_status_uptime{service_name=~\"$service_name\"}",
+                    "expr": "avg by (service_name) (mysql_global_status_uptime{service_name=~\"$service_name\"})",
                     "format": "time_series",
                     "interval": "5m",
                     "intervalFactor": 1,
@@ -413,7 +413,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(mysql_global_status_queries{service_name=~\"$service_name\"}[$interval]) or irate(mysql_global_status_queries{service_name=~\"$service_name\"}[5m])",
+                    "expr": "avg by (service_name) (rate(mysql_global_status_queries{service_name=~\"$service_name\"}[$interval]) or irate(mysql_global_status_queries{service_name=~\"$service_name\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -606,7 +606,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "mysql_global_variables_innodb_buffer_pool_size{service_name=~\"$service_name\"}",
+                    "expr": "avg by (service_name) (mysql_global_variables_innodb_buffer_pool_size{service_name=~\"$service_name\"})",
                     "format": "time_series",
                     "interval": "5m",
                     "intervalFactor": 1,
@@ -703,7 +703,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "(mysql_global_variables_innodb_buffer_pool_size{service_name=~\"$service_name\"} * 100) / on (node_name) node_memory_MemTotal_bytes{node_name=~\"$node_name\"}",
+                    "expr": "avg by (node_name) ((mysql_global_variables_innodb_buffer_pool_size{service_name=~\"$service_name\"} * 100)) / \non (node_name) (avg by (node_name) (node_memory_MemTotal_bytes{node_name=~\"$node_name\"}))",
                     "format": "time_series",
                     "interval": "5m",
                     "intervalFactor": 1,
@@ -812,7 +812,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "max(max_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\"}[$interval]) or \nmax_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\"}[5m]))",
+                            "expr": "avg by (service_name) (max(max_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\"}[$interval]) or \nmax_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\"}[5m])))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -825,7 +825,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "max_over_time(mysql_global_status_max_used_connections{service_name=~\"$service_name\"}[$interval]) or \nmax_over_time(mysql_global_status_max_used_connections{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (max_over_time(mysql_global_status_max_used_connections{service_name=~\"$service_name\"}[$interval]) or \nmax_over_time(mysql_global_status_max_used_connections{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -840,7 +840,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "max_over_time(mysql_global_variables_max_connections{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_variables_max_connections{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (max_over_time(mysql_global_variables_max_connections{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_variables_max_connections{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -958,7 +958,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "rate(mysql_global_status_aborted_connects{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_aborted_connects{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (rate(mysql_global_status_aborted_connects{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_aborted_connects{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -971,7 +971,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "rate(mysql_global_status_aborted_clients{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_aborted_clients{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (rate(mysql_global_status_aborted_clients{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_aborted_clients{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1111,7 +1111,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "rate(mysql_global_status_questions{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_questions{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (rate(mysql_global_status_questions{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_questions{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1259,7 +1259,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "max_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (max_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_connected{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -1273,7 +1273,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "max_over_time(mysql_global_status_threads_running{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_running{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (max_over_time(mysql_global_status_threads_running{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_running{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1283,7 +1283,7 @@
                             "step": 20
                         },
                         {
-                            "expr": "avg_over_time(mysql_global_status_threads_running{service_name=~\"$service_name\"}[$interval]) or \navg_over_time(mysql_global_status_threads_running{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (avg_over_time(mysql_global_status_threads_running{service_name=~\"$service_name\"}[$interval]) or \navg_over_time(mysql_global_status_threads_running{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1411,7 +1411,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "max_over_time(mysql_global_variables_thread_cache_size{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_variables_thread_cache_size{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (max_over_time(mysql_global_variables_thread_cache_size{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_variables_thread_cache_size{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1424,7 +1424,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "max_over_time(mysql_global_status_threads_cached{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_cached{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (max_over_time(mysql_global_status_threads_cached{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_threads_cached{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1437,7 +1437,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "rate(mysql_global_status_threads_created{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_threads_created{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (rate(mysql_global_status_threads_created{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_threads_created{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1567,7 +1567,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "rate(mysql_global_status_created_tmp_tables{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_created_tmp_tables{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (rate(mysql_global_status_created_tmp_tables{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_created_tmp_tables{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1580,7 +1580,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "rate(mysql_global_status_created_tmp_disk_tables{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_created_tmp_disk_tables{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (rate(mysql_global_status_created_tmp_disk_tables{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_created_tmp_disk_tables{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1593,7 +1593,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "rate(mysql_global_status_created_tmp_files{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_created_tmp_files{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (rate(mysql_global_status_created_tmp_files{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_created_tmp_files{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1726,7 +1726,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "rate(mysql_global_status_select_full_join{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_select_full_join{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (rate(mysql_global_status_select_full_join{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_select_full_join{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1739,7 +1739,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "rate(mysql_global_status_select_full_range_join{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_select_full_range_join{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (rate(mysql_global_status_select_full_range_join{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_select_full_range_join{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1752,7 +1752,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "rate(mysql_global_status_select_range{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_select_range{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (rate(mysql_global_status_select_range{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_select_range{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1765,7 +1765,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "rate(mysql_global_status_select_range_check{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_select_range_check{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (rate(mysql_global_status_select_range_check{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_select_range_check{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1778,7 +1778,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "rate(mysql_global_status_select_scan{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_select_scan{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (rate(mysql_global_status_select_scan{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_select_scan{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1911,7 +1911,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "rate(mysql_global_status_slow_queries{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_slow_queries{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (rate(mysql_global_status_slow_queries{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_slow_queries{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1995,7 +1995,7 @@
                         "h": 8,
                         "w": 24,
                         "x": 0,
-                        "y": 38
+                        "y": 24
                     },
                     "hiddenSeries": false,
                     "id": 30,
@@ -2043,7 +2043,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "rate(mysql_global_status_sort_rows{service_name=~\"$service_name\"}[$interval]) or irate(mysql_global_status_sort_rows{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (rate(mysql_global_status_sort_rows{service_name=~\"$service_name\"}[$interval]) or irate(mysql_global_status_sort_rows{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -2057,7 +2057,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "rate(mysql_global_status_sort_range{service_name=~\"$service_name\"}[$interval]) or irate(mysql_global_status_sort_range{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (rate(mysql_global_status_sort_range{service_name=~\"$service_name\"}[$interval]) or irate(mysql_global_status_sort_range{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -2071,7 +2071,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "rate(mysql_global_status_sort_merge_passes{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_sort_merge_passes{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (rate(mysql_global_status_sort_merge_passes{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_sort_merge_passes{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -2085,7 +2085,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "rate(mysql_global_status_sort_scan{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_sort_scan{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (rate(mysql_global_status_sort_scan{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_sort_scan{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2217,7 +2217,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "rate(mysql_global_status_table_locks_immediate{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_table_locks_immediate{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (rate(mysql_global_status_table_locks_immediate{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_table_locks_immediate{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2230,7 +2230,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "rate(mysql_global_status_table_locks_waited{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_table_locks_waited{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (rate(mysql_global_status_table_locks_waited{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_table_locks_waited{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2362,7 +2362,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "rate(mysql_global_status_bytes_received{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_bytes_received{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (rate(mysql_global_status_bytes_received{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_bytes_received{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2375,7 +2375,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "rate(mysql_global_status_bytes_sent{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_bytes_sent{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (rate(mysql_global_status_bytes_sent{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_bytes_sent{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2486,7 +2486,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "increase(mysql_global_status_bytes_received{service_name=~\"$service_name\"}[1h])",
+                            "expr": "avg by (service_name) (increase(mysql_global_status_bytes_received{service_name=~\"$service_name\"}[1h]))",
                             "format": "time_series",
                             "interval": "1h",
                             "intervalFactor": 1,
@@ -2499,7 +2499,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "increase(mysql_global_status_bytes_sent{service_name=~\"$service_name\"}[1h])",
+                            "expr": "avg by (service_name) (increase(mysql_global_status_bytes_sent{service_name=~\"$service_name\"}[1h]))",
                             "format": "time_series",
                             "interval": "1h",
                             "intervalFactor": 1,
@@ -2581,10 +2581,11 @@
                     "grid": {},
                     "gridPos": {
                         "h": 8,
-                        "w": 8,
+                        "w": 24,
                         "x": 0,
-                        "y": 120
+                        "y": 27
                     },
+                    "hiddenSeries": false,
                     "id": 50,
                     "interval": "",
                     "legend": {
@@ -2640,7 +2641,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "(max_over_time(mysql_global_status_innodb_page_size{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_innodb_page_size{service_name=~\"$service_name\"}[5m])) * on (service_name) (max_over_time(mysql_global_status_buffer_pool_pages{service_name=~\"$service_name\",state=\"data\"}[$interval]) or\nmax_over_time(mysql_global_status_buffer_pool_pages{service_name=~\"$service_name\",state=\"data\"}[5m]))",
+                            "expr": "avg by (service_name) (max_over_time(mysql_global_status_innodb_page_size{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_innodb_page_size{service_name=~\"$service_name\"}[5m])) * on (service_name) \navg by (service_name) (max_over_time(mysql_global_status_buffer_pool_pages{service_name=~\"$service_name\",state=\"data\"}[$interval]) or\nmax_over_time(mysql_global_status_buffer_pool_pages{service_name=~\"$service_name\",state=\"data\"}[5m]))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -2650,8 +2651,9 @@
                             "step": 20
                         },
                         {
-                            "expr": "max_over_time(mysql_global_variables_innodb_log_buffer_size{service_name=~\"$service_name\"}[$interval]) or \nmax_over_time(mysql_global_variables_innodb_log_buffer_size{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (max_over_time(mysql_global_variables_innodb_log_buffer_size{service_name=~\"$service_name\"}[$interval]) or \nmax_over_time(mysql_global_variables_innodb_log_buffer_size{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
+                            "hide": false,
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "InnoDB Log Buffer Size",
@@ -2659,7 +2661,7 @@
                             "step": 20
                         },
                         {
-                            "expr": "max_over_time(mysql_global_variables_innodb_additional_mem_pool_size{service_name=~\"$service_name\"}[$interval]) or \nmax_over_time(mysql_global_variables_innodb_additional_mem_pool_size{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (max_over_time(mysql_global_variables_innodb_additional_mem_pool_size{service_name=~\"$service_name\"}[$interval]) or \nmax_over_time(mysql_global_variables_innodb_additional_mem_pool_size{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2668,7 +2670,7 @@
                             "step": 40
                         },
                         {
-                            "expr": "max_over_time(mysql_global_status_innodb_mem_dictionary{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_innodb_mem_dictionary{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (max_over_time(mysql_global_status_innodb_mem_dictionary{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_innodb_mem_dictionary{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2677,7 +2679,7 @@
                             "step": 20
                         },
                         {
-                            "expr": "max_over_time(mysql_global_variables_key_buffer_size{service_name=~\"$service_name\"}[$interval]) or \nmax_over_time(mysql_global_variables_key_buffer_size{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (max_over_time(mysql_global_variables_key_buffer_size{service_name=~\"$service_name\"}[$interval]) or \nmax_over_time(mysql_global_variables_key_buffer_size{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2686,7 +2688,7 @@
                             "step": 20
                         },
                         {
-                            "expr": "max_over_time(mysql_global_variables_query_cache_size{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_variables_query_cache_size{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (max_over_time(mysql_global_variables_query_cache_size{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_variables_query_cache_size{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2695,7 +2697,7 @@
                             "step": 20
                         },
                         {
-                            "expr": "max_over_time(mysql_global_status_innodb_mem_adaptive_hash{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_innodb_mem_adaptive_hash{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (max_over_time(mysql_global_status_innodb_mem_adaptive_hash{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_innodb_mem_adaptive_hash{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2704,391 +2706,7 @@
                             "step": 20
                         },
                         {
-                            "expr": "max_over_time(mysql_global_variables_tokudb_cache_size{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_variables_tokudb_cache_size{service_name=~\"$service_name\"}[5m])",
-                            "format": "time_series",
-                            "hide": false,
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "TokuDB Cache Size",
-                            "refId": "I",
-                            "step": 20
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeRegions": [],
-                    "timeShift": null,
-                    "title": "$service_name - MySQL Internal Memory Overview",
-                    "tooltip": {
-                        "msResolution": false,
-                        "shared": true,
-                        "sort": 0,
-                        "value_type": "individual"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "decimals": 2,
-                            "format": "bytes",
-                            "label": "",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "label": null,
-                            "logBase": 1,
-                            "max": null,
-                            "min": null,
-                            "show": false
-                        }
-                    ],
-                    "yaxis": {
-                        "align": false,
-                        "alignLevel": null
-                    }
-                },
-                {
-                    "aliasColors": {},
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "datasource": "Prometheus",
-                    "decimals": 0,
-                    "description": "***System Memory***: Total Memory for the system.\\\n***InnoDB Buffer Pool Data***: InnoDB maintains a storage area called the buffer pool for caching data and indexes in memory.\\\n***TokuDB Cache Size***: Similar in function to the InnoDB Buffer Pool,  TokuDB will allocate 50% of the installed RAM for its own cache.\\\n***Key Buffer Size***: Index blocks for MYISAM tables are buffered and are shared by all threads. key_buffer_size is the size of the buffer used for index blocks.\\\n***Adaptive Hash Index Size***: When InnoDB notices that some index values are being accessed very frequently, it builds a hash index for them in memory on top of B-Tree indexes.\\\n ***Query Cache Size***: The query cache stores the text of a SELECT statement together with the corresponding result that was sent to the client. The query cache has huge scalability problems in that only one thread can do an operation in the query cache at the same time.\\\n***InnoDB Dictionary Size***: The data dictionary is InnoDB \u2018s internal catalog of tables. InnoDB stores the data dictionary on disk, and loads entries into memory while the server is running.\\\n***InnoDB Log Buffer Size***: The MySQL InnoDB log buffer allows transactions to run without having to write the log to disk before the transactions commit.",
-                    "editable": true,
-                    "error": false,
-                    "fill": 6,
-                    "fillGradient": 0,
-                    "grid": {},
-                    "gridPos": {
-                        "h": 8,
-                        "w": 8,
-                        "x": 8,
-                        "y": 120
-                    },
-                    "id": 1174,
-                    "interval": "",
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "hideEmpty": true,
-                        "hideZero": true,
-                        "max": true,
-                        "min": true,
-                        "rightSide": false,
-                        "show": true,
-                        "sort": "avg",
-                        "sortDesc": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": true,
-                    "linewidth": 2,
-                    "links": [
-                        {
-                            "title": "Detailed descriptions about metrics",
-                            "url": "https://www.percona.com/doc/percona-monitoring-and-management/dashboard.mysql-overview.html#mysql-internal-memory-overview"
-                        }
-                    ],
-                    "maxPerRow": 12,
-                    "nullPointMode": "null",
-                    "options": {
-                        "dataLinks": [
-                            {
-                                "title": "MySQL Instance Summary - ${__series.labels.service_name}",
-                                "url": "/graph/d/mysql-instance-summary/mysql-instance-summary?var-service_name=${__field.labels.service_name}&$__url_time_range"
-                            }
-                        ]
-                    },
-                    "paceLength": 10,
-                    "percentage": false,
-                    "pointradius": 5,
-                    "points": false,
-                    "renderer": "flot",
-                    "repeat": null,
-                    "repeatDirection": "h",
-                    "repeatIteration": 1575029453398,
-                    "repeatPanelId": 50,
-                    "seriesOverrides": [
-                        {
-                            "alias": "System Memory",
-                            "fill": 0,
-                            "stack": false
-                        }
-                    ],
-                    "spaceLength": 10,
-                    "stack": true,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "expr": "(max_over_time(mysql_global_status_innodb_page_size{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_innodb_page_size{service_name=~\"$service_name\"}[5m])) * on (service_name) (max_over_time(mysql_global_status_buffer_pool_pages{service_name=~\"$service_name\",state=\"data\"}[$interval]) or\nmax_over_time(mysql_global_status_buffer_pool_pages{service_name=~\"$service_name\",state=\"data\"}[5m]))",
-                            "format": "time_series",
-                            "hide": false,
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "InnoDB Buffer Pool Data",
-                            "refId": "A",
-                            "step": 20
-                        },
-                        {
-                            "expr": "max_over_time(mysql_global_variables_innodb_log_buffer_size{service_name=~\"$service_name\"}[$interval]) or \nmax_over_time(mysql_global_variables_innodb_log_buffer_size{service_name=~\"$service_name\"}[5m])",
-                            "format": "time_series",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "InnoDB Log Buffer Size",
-                            "refId": "D",
-                            "step": 20
-                        },
-                        {
-                            "expr": "max_over_time(mysql_global_variables_innodb_additional_mem_pool_size{service_name=~\"$service_name\"}[$interval]) or \nmax_over_time(mysql_global_variables_innodb_additional_mem_pool_size{service_name=~\"$service_name\"}[5m])",
-                            "format": "time_series",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "InnoDB Additional Memory Pool Size",
-                            "refId": "H",
-                            "step": 40
-                        },
-                        {
-                            "expr": "max_over_time(mysql_global_status_innodb_mem_dictionary{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_innodb_mem_dictionary{service_name=~\"$service_name\"}[5m])",
-                            "format": "time_series",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "InnoDB Dictionary Size",
-                            "refId": "F",
-                            "step": 20
-                        },
-                        {
-                            "expr": "max_over_time(mysql_global_variables_key_buffer_size{service_name=~\"$service_name\"}[$interval]) or \nmax_over_time(mysql_global_variables_key_buffer_size{service_name=~\"$service_name\"}[5m])",
-                            "format": "time_series",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Key Buffer Size",
-                            "refId": "B",
-                            "step": 20
-                        },
-                        {
-                            "expr": "max_over_time(mysql_global_variables_query_cache_size{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_variables_query_cache_size{service_name=~\"$service_name\"}[5m])",
-                            "format": "time_series",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Query Cache Size",
-                            "refId": "C",
-                            "step": 20
-                        },
-                        {
-                            "expr": "max_over_time(mysql_global_status_innodb_mem_adaptive_hash{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_innodb_mem_adaptive_hash{service_name=~\"$service_name\"}[5m])",
-                            "format": "time_series",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Adaptive Hash Index Size",
-                            "refId": "E",
-                            "step": 20
-                        },
-                        {
-                            "expr": "max_over_time(mysql_global_variables_tokudb_cache_size{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_variables_tokudb_cache_size{service_name=~\"$service_name\"}[5m])",
-                            "format": "time_series",
-                            "hide": false,
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "TokuDB Cache Size",
-                            "refId": "I",
-                            "step": 20
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeRegions": [],
-                    "timeShift": null,
-                    "title": "$service_name - MySQL Internal Memory Overview",
-                    "tooltip": {
-                        "msResolution": false,
-                        "shared": true,
-                        "sort": 0,
-                        "value_type": "individual"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "decimals": 2,
-                            "format": "bytes",
-                            "label": "",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "label": null,
-                            "logBase": 1,
-                            "max": null,
-                            "min": null,
-                            "show": false
-                        }
-                    ],
-                    "yaxis": {
-                        "align": false,
-                        "alignLevel": null
-                    }
-                },
-                {
-                    "aliasColors": {},
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "datasource": "Prometheus",
-                    "decimals": 0,
-                    "description": "***System Memory***: Total Memory for the system.\\\n***InnoDB Buffer Pool Data***: InnoDB maintains a storage area called the buffer pool for caching data and indexes in memory.\\\n***TokuDB Cache Size***: Similar in function to the InnoDB Buffer Pool,  TokuDB will allocate 50% of the installed RAM for its own cache.\\\n***Key Buffer Size***: Index blocks for MYISAM tables are buffered and are shared by all threads. key_buffer_size is the size of the buffer used for index blocks.\\\n***Adaptive Hash Index Size***: When InnoDB notices that some index values are being accessed very frequently, it builds a hash index for them in memory on top of B-Tree indexes.\\\n ***Query Cache Size***: The query cache stores the text of a SELECT statement together with the corresponding result that was sent to the client. The query cache has huge scalability problems in that only one thread can do an operation in the query cache at the same time.\\\n***InnoDB Dictionary Size***: The data dictionary is InnoDB \u2018s internal catalog of tables. InnoDB stores the data dictionary on disk, and loads entries into memory while the server is running.\\\n***InnoDB Log Buffer Size***: The MySQL InnoDB log buffer allows transactions to run without having to write the log to disk before the transactions commit.",
-                    "editable": true,
-                    "error": false,
-                    "fill": 6,
-                    "fillGradient": 0,
-                    "grid": {},
-                    "gridPos": {
-                        "h": 8,
-                        "w": 8,
-                        "x": 16,
-                        "y": 120
-                    },
-                    "id": 1175,
-                    "interval": "",
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "hideEmpty": true,
-                        "hideZero": true,
-                        "max": true,
-                        "min": true,
-                        "rightSide": false,
-                        "show": true,
-                        "sort": "avg",
-                        "sortDesc": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": true,
-                    "linewidth": 2,
-                    "links": [
-                        {
-                            "title": "Detailed descriptions about metrics",
-                            "url": "https://www.percona.com/doc/percona-monitoring-and-management/dashboard.mysql-overview.html#mysql-internal-memory-overview"
-                        }
-                    ],
-                    "maxPerRow": 12,
-                    "nullPointMode": "null",
-                    "options": {
-                        "dataLinks": [
-                            {
-                                "title": "MySQL Instance Summary - ${__series.labels.service_name}",
-                                "url": "/graph/d/mysql-instance-summary/mysql-instance-summary?var-service_name=${__field.labels.service_name}&$__url_time_range"
-                            }
-                        ]
-                    },
-                    "paceLength": 10,
-                    "percentage": false,
-                    "pointradius": 5,
-                    "points": false,
-                    "renderer": "flot",
-                    "repeat": null,
-                    "repeatDirection": "h",
-                    "repeatIteration": 1575029453398,
-                    "repeatPanelId": 50,
-                    "seriesOverrides": [
-                        {
-                            "alias": "System Memory",
-                            "fill": 0,
-                            "stack": false
-                        }
-                    ],
-                    "spaceLength": 10,
-                    "stack": true,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "expr": "(max_over_time(mysql_global_status_innodb_page_size{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_innodb_page_size{service_name=~\"$service_name\"}[5m])) * on (service_name) (max_over_time(mysql_global_status_buffer_pool_pages{service_name=~\"$service_name\",state=\"data\"}[$interval]) or\nmax_over_time(mysql_global_status_buffer_pool_pages{service_name=~\"$service_name\",state=\"data\"}[5m]))",
-                            "format": "time_series",
-                            "hide": false,
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "InnoDB Buffer Pool Data",
-                            "refId": "A",
-                            "step": 20
-                        },
-                        {
-                            "expr": "max_over_time(mysql_global_variables_innodb_log_buffer_size{service_name=~\"$service_name\"}[$interval]) or \nmax_over_time(mysql_global_variables_innodb_log_buffer_size{service_name=~\"$service_name\"}[5m])",
-                            "format": "time_series",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "InnoDB Log Buffer Size",
-                            "refId": "D",
-                            "step": 20
-                        },
-                        {
-                            "expr": "max_over_time(mysql_global_variables_innodb_additional_mem_pool_size{service_name=~\"$service_name\"}[$interval]) or \nmax_over_time(mysql_global_variables_innodb_additional_mem_pool_size{service_name=~\"$service_name\"}[5m])",
-                            "format": "time_series",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "InnoDB Additional Memory Pool Size",
-                            "refId": "H",
-                            "step": 40
-                        },
-                        {
-                            "expr": "max_over_time(mysql_global_status_innodb_mem_dictionary{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_innodb_mem_dictionary{service_name=~\"$service_name\"}[5m])",
-                            "format": "time_series",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "InnoDB Dictionary Size",
-                            "refId": "F",
-                            "step": 20
-                        },
-                        {
-                            "expr": "max_over_time(mysql_global_variables_key_buffer_size{service_name=~\"$service_name\"}[$interval]) or \nmax_over_time(mysql_global_variables_key_buffer_size{service_name=~\"$service_name\"}[5m])",
-                            "format": "time_series",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Key Buffer Size",
-                            "refId": "B",
-                            "step": 20
-                        },
-                        {
-                            "expr": "max_over_time(mysql_global_variables_query_cache_size{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_variables_query_cache_size{service_name=~\"$service_name\"}[5m])",
-                            "format": "time_series",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Query Cache Size",
-                            "refId": "C",
-                            "step": 20
-                        },
-                        {
-                            "expr": "max_over_time(mysql_global_status_innodb_mem_adaptive_hash{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_innodb_mem_adaptive_hash{service_name=~\"$service_name\"}[5m])",
-                            "format": "time_series",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Adaptive Hash Index Size",
-                            "refId": "E",
-                            "step": 20
-                        },
-                        {
-                            "expr": "max_over_time(mysql_global_variables_tokudb_cache_size{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_variables_tokudb_cache_size{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (max_over_time(mysql_global_variables_tokudb_cache_size{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_variables_tokudb_cache_size{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -3172,10 +2790,11 @@
                     "grid": {},
                     "gridPos": {
                         "h": 8,
-                        "w": 8,
+                        "w": 24,
                         "x": 0,
-                        "y": 129
+                        "y": 28
                     },
+                    "hiddenSeries": false,
                     "id": 14,
                     "legend": {
                         "alignAsTable": true,
@@ -3227,255 +2846,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "topk(5, rate(mysql_global_status_commands_total{service_name=~\"$service_name\"}[$interval])>0) or \nirate(mysql_global_status_commands_total{service_name=~\"$service_name\"}[5m])>0",
-                            "format": "time_series",
-                            "hide": false,
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Com_{{ command }}",
-                            "metric": "",
-                            "refId": "B",
-                            "step": 20
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeRegions": [],
-                    "timeShift": null,
-                    "title": "$service_name Top Command Counters",
-                    "tooltip": {
-                        "msResolution": false,
-                        "shared": true,
-                        "sort": 0,
-                        "value_type": "individual"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "decimals": 2,
-                            "format": "short",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": false
-                        }
-                    ],
-                    "yaxis": {
-                        "align": false,
-                        "alignLevel": null
-                    }
-                },
-                {
-                    "aliasColors": {},
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "datasource": "Prometheus",
-                    "decimals": 2,
-                    "description": "**Top Command Counters**\n\nThe Com_{{xxx}} statement counter variables indicate the number of times each xxx statement has been executed. There is one status variable for each type of statement. For example, Com_delete and Com_update count [``DELETE``](https://dev.mysql.com/doc/refman/5.7/en/delete.html) and [``UPDATE``](https://dev.mysql.com/doc/refman/5.7/en/update.html) statements, respectively. Com_delete_multi and Com_update_multi are similar but apply to [``DELETE``](https://dev.mysql.com/doc/refman/5.7/en/delete.html) and [``UPDATE``](https://dev.mysql.com/doc/refman/5.7/en/update.html) statements that use multiple-table syntax.",
-                    "editable": true,
-                    "error": false,
-                    "fill": 2,
-                    "fillGradient": 0,
-                    "grid": {},
-                    "gridPos": {
-                        "h": 8,
-                        "w": 8,
-                        "x": 8,
-                        "y": 129
-                    },
-                    "id": 1176,
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "hideEmpty": false,
-                        "hideZero": false,
-                        "max": true,
-                        "min": true,
-                        "rightSide": false,
-                        "show": true,
-                        "sort": "avg",
-                        "sortDesc": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": true,
-                    "linewidth": 2,
-                    "links": [
-                        {
-                            "title": "Server Status Variables (Com_xxx)",
-                            "url": "https://dev.mysql.com/doc/refman/5.7/en/server-status-variables.html#statvar_Com_xxx"
-                        }
-                    ],
-                    "maxPerRow": 12,
-                    "nullPointMode": "null as zero",
-                    "options": {
-                        "dataLinks": [
-                            {
-                                "targetBlank": true,
-                                "title": "Command/Handler counters Compare",
-                                "url": "/graph/d/mysql-commandhandler-compare/mysql-command-handler-counters-compare?var-service_name=${__field.labels.service_name}&$__url_time_range"
-                            }
-                        ]
-                    },
-                    "paceLength": 10,
-                    "percentage": false,
-                    "pointradius": 5,
-                    "points": false,
-                    "renderer": "flot",
-                    "repeat": null,
-                    "repeatDirection": "h",
-                    "repeatIteration": 1575029453398,
-                    "repeatPanelId": 14,
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": false,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "calculatedInterval": "2m",
-                            "datasourceErrors": {},
-                            "errors": {},
-                            "expr": "topk(5, rate(mysql_global_status_commands_total{service_name=~\"$service_name\"}[$interval])>0) or \nirate(mysql_global_status_commands_total{service_name=~\"$service_name\"}[5m])>0",
-                            "format": "time_series",
-                            "hide": false,
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Com_{{ command }}",
-                            "metric": "",
-                            "refId": "B",
-                            "step": 20
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeRegions": [],
-                    "timeShift": null,
-                    "title": "$service_name Top Command Counters",
-                    "tooltip": {
-                        "msResolution": false,
-                        "shared": true,
-                        "sort": 0,
-                        "value_type": "individual"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "decimals": 2,
-                            "format": "short",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": false
-                        }
-                    ],
-                    "yaxis": {
-                        "align": false,
-                        "alignLevel": null
-                    }
-                },
-                {
-                    "aliasColors": {},
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "datasource": "Prometheus",
-                    "decimals": 2,
-                    "description": "**Top Command Counters**\n\nThe Com_{{xxx}} statement counter variables indicate the number of times each xxx statement has been executed. There is one status variable for each type of statement. For example, Com_delete and Com_update count [``DELETE``](https://dev.mysql.com/doc/refman/5.7/en/delete.html) and [``UPDATE``](https://dev.mysql.com/doc/refman/5.7/en/update.html) statements, respectively. Com_delete_multi and Com_update_multi are similar but apply to [``DELETE``](https://dev.mysql.com/doc/refman/5.7/en/delete.html) and [``UPDATE``](https://dev.mysql.com/doc/refman/5.7/en/update.html) statements that use multiple-table syntax.",
-                    "editable": true,
-                    "error": false,
-                    "fill": 2,
-                    "fillGradient": 0,
-                    "grid": {},
-                    "gridPos": {
-                        "h": 8,
-                        "w": 8,
-                        "x": 16,
-                        "y": 129
-                    },
-                    "id": 1177,
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "hideEmpty": false,
-                        "hideZero": false,
-                        "max": true,
-                        "min": true,
-                        "rightSide": false,
-                        "show": true,
-                        "sort": "avg",
-                        "sortDesc": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": true,
-                    "linewidth": 2,
-                    "links": [
-                        {
-                            "title": "Server Status Variables (Com_xxx)",
-                            "url": "https://dev.mysql.com/doc/refman/5.7/en/server-status-variables.html#statvar_Com_xxx"
-                        }
-                    ],
-                    "maxPerRow": 12,
-                    "nullPointMode": "null as zero",
-                    "options": {
-                        "dataLinks": [
-                            {
-                                "targetBlank": true,
-                                "title": "Command/Handler counters Compare",
-                                "url": "/graph/d/mysql-commandhandler-compare/mysql-command-handler-counters-compare?var-service_name=${__field.labels.service_name}&$__url_time_range"
-                            }
-                        ]
-                    },
-                    "paceLength": 10,
-                    "percentage": false,
-                    "pointradius": 5,
-                    "points": false,
-                    "renderer": "flot",
-                    "repeat": null,
-                    "repeatDirection": "h",
-                    "repeatIteration": 1575029453398,
-                    "repeatPanelId": 14,
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": false,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "calculatedInterval": "2m",
-                            "datasourceErrors": {},
-                            "errors": {},
-                            "expr": "topk(5, rate(mysql_global_status_commands_total{service_name=~\"$service_name\"}[$interval])>0) or \nirate(mysql_global_status_commands_total{service_name=~\"$service_name\"}[5m])>0",
+                            "expr": "topk(5, avg by (service_name,command) (rate(mysql_global_status_commands_total{service_name=~\"$service_name\"}[$interval]))>0) or \navg by (service_name,command) (irate(mysql_global_status_commands_total{service_name=~\"$service_name\"}[5m]))>0",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -3542,10 +2913,11 @@
                     "grid": {},
                     "gridPos": {
                         "h": 8,
-                        "w": 8,
+                        "w": 24,
                         "x": 0,
-                        "y": 137
+                        "y": 36
                     },
+                    "hiddenSeries": false,
                     "id": 39,
                     "interval": "",
                     "legend": {
@@ -3590,239 +2962,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "topk(5, increase(mysql_global_status_commands_total{service_name=~\"$service_name\"}[1h])>0)",
-                            "format": "time_series",
-                            "interval": "1h",
-                            "intervalFactor": 1,
-                            "legendFormat": "Com_{{ command }}",
-                            "metric": "",
-                            "refId": "A",
-                            "step": 3600
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": "24h",
-                    "timeRegions": [],
-                    "timeShift": null,
-                    "title": "$service_name - Top Command Counters Hourly",
-                    "tooltip": {
-                        "msResolution": false,
-                        "shared": true,
-                        "sort": 0,
-                        "value_type": "individual"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "decimals": 2,
-                            "format": "short",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": false
-                        }
-                    ],
-                    "yaxis": {
-                        "align": false,
-                        "alignLevel": null
-                    }
-                },
-                {
-                    "aliasColors": {},
-                    "bars": true,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "datasource": "Prometheus",
-                    "decimals": 2,
-                    "description": "**Top Command Counters Hourly**\n\nThe Com_{{xxx}} statement counter variables indicate the number of times each xxx statement has been executed. There is one status variable for each type of statement. For example, Com_delete and Com_update count [``DELETE``](https://dev.mysql.com/doc/refman/5.7/en/delete.html) and [``UPDATE``](https://dev.mysql.com/doc/refman/5.7/en/update.html) statements, respectively. Com_delete_multi and Com_update_multi are similar but apply to [``DELETE``](https://dev.mysql.com/doc/refman/5.7/en/delete.html) and [``UPDATE``](https://dev.mysql.com/doc/refman/5.7/en/update.html) statements that use multiple-table syntax.",
-                    "editable": true,
-                    "error": false,
-                    "fill": 6,
-                    "fillGradient": 0,
-                    "grid": {},
-                    "gridPos": {
-                        "h": 8,
-                        "w": 8,
-                        "x": 8,
-                        "y": 137
-                    },
-                    "id": 1178,
-                    "interval": "",
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "max": true,
-                        "min": true,
-                        "rightSide": false,
-                        "show": true,
-                        "sort": "avg",
-                        "sortDesc": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": false,
-                    "linewidth": 2,
-                    "links": [
-                        {
-                            "title": "Server Status Variables (Com_xxx)",
-                            "url": "https://dev.mysql.com/doc/refman/5.7/en/server-status-variables.html#statvar_Com_xxx"
-                        }
-                    ],
-                    "maxPerRow": 12,
-                    "nullPointMode": "null",
-                    "options": {
-                        "dataLinks": []
-                    },
-                    "paceLength": 10,
-                    "percentage": false,
-                    "pointradius": 5,
-                    "points": false,
-                    "renderer": "flot",
-                    "repeat": null,
-                    "repeatDirection": "h",
-                    "repeatIteration": 1575029453398,
-                    "repeatPanelId": 39,
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": true,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "calculatedInterval": "2m",
-                            "datasourceErrors": {},
-                            "errors": {},
-                            "expr": "topk(5, increase(mysql_global_status_commands_total{service_name=~\"$service_name\"}[1h])>0)",
-                            "format": "time_series",
-                            "interval": "1h",
-                            "intervalFactor": 1,
-                            "legendFormat": "Com_{{ command }}",
-                            "metric": "",
-                            "refId": "A",
-                            "step": 3600
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": "24h",
-                    "timeRegions": [],
-                    "timeShift": null,
-                    "title": "$service_name - Top Command Counters Hourly",
-                    "tooltip": {
-                        "msResolution": false,
-                        "shared": true,
-                        "sort": 0,
-                        "value_type": "individual"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "decimals": 2,
-                            "format": "short",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": false
-                        }
-                    ],
-                    "yaxis": {
-                        "align": false,
-                        "alignLevel": null
-                    }
-                },
-                {
-                    "aliasColors": {},
-                    "bars": true,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "datasource": "Prometheus",
-                    "decimals": 2,
-                    "description": "**Top Command Counters Hourly**\n\nThe Com_{{xxx}} statement counter variables indicate the number of times each xxx statement has been executed. There is one status variable for each type of statement. For example, Com_delete and Com_update count [``DELETE``](https://dev.mysql.com/doc/refman/5.7/en/delete.html) and [``UPDATE``](https://dev.mysql.com/doc/refman/5.7/en/update.html) statements, respectively. Com_delete_multi and Com_update_multi are similar but apply to [``DELETE``](https://dev.mysql.com/doc/refman/5.7/en/delete.html) and [``UPDATE``](https://dev.mysql.com/doc/refman/5.7/en/update.html) statements that use multiple-table syntax.",
-                    "editable": true,
-                    "error": false,
-                    "fill": 6,
-                    "fillGradient": 0,
-                    "grid": {},
-                    "gridPos": {
-                        "h": 8,
-                        "w": 8,
-                        "x": 16,
-                        "y": 137
-                    },
-                    "id": 1179,
-                    "interval": "",
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "max": true,
-                        "min": true,
-                        "rightSide": false,
-                        "show": true,
-                        "sort": "avg",
-                        "sortDesc": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": false,
-                    "linewidth": 2,
-                    "links": [
-                        {
-                            "title": "Server Status Variables (Com_xxx)",
-                            "url": "https://dev.mysql.com/doc/refman/5.7/en/server-status-variables.html#statvar_Com_xxx"
-                        }
-                    ],
-                    "maxPerRow": 12,
-                    "nullPointMode": "null",
-                    "options": {
-                        "dataLinks": []
-                    },
-                    "paceLength": 10,
-                    "percentage": false,
-                    "pointradius": 5,
-                    "points": false,
-                    "renderer": "flot",
-                    "repeat": null,
-                    "repeatDirection": "h",
-                    "repeatIteration": 1575029453398,
-                    "repeatPanelId": 39,
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": true,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "calculatedInterval": "2m",
-                            "datasourceErrors": {},
-                            "errors": {},
-                            "expr": "topk(5, increase(mysql_global_status_commands_total{service_name=~\"$service_name\"}[1h])>0)",
+                            "expr": "topk(5, avg by (service_name,command) (increase(mysql_global_status_commands_total{service_name=~\"$service_name\"}[1h]))>0)",
                             "format": "time_series",
                             "interval": "1h",
                             "intervalFactor": 1,
@@ -3888,10 +3028,11 @@
                     "grid": {},
                     "gridPos": {
                         "h": 8,
-                        "w": 8,
+                        "w": 24,
                         "x": 0,
-                        "y": 145
+                        "y": 44
                     },
+                    "hiddenSeries": false,
                     "id": 8,
                     "legend": {
                         "alignAsTable": true,
@@ -3937,241 +3078,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "rate(mysql_global_status_handlers_total{service_name=~\"$service_name\", handler!~\"commit|rollback|savepoint.*|prepare\"}[$interval]) or \nirate(mysql_global_status_handlers_total{service_name=~\"$service_name\", handler!~\"commit|rollback|savepoint.*|prepare\"}[5m])",
-                            "format": "time_series",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "{{ handler }}",
-                            "metric": "",
-                            "refId": "J",
-                            "step": 20
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeRegions": [],
-                    "timeShift": null,
-                    "title": "$service_name - MySQL Handlers",
-                    "tooltip": {
-                        "msResolution": false,
-                        "shared": true,
-                        "sort": 0,
-                        "value_type": "individual"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "decimals": 2,
-                            "format": "short",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": false
-                        }
-                    ],
-                    "yaxis": {
-                        "align": false,
-                        "alignLevel": null
-                    }
-                },
-                {
-                    "aliasColors": {},
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "datasource": "Prometheus",
-                    "decimals": 2,
-                    "description": "**MySQL Handlers**\n\nHandler statistics are internal statistics on how MySQL is selecting, updating, inserting, and modifying rows, tables, and indexes.\n\nThis is in fact the layer between the Storage Engine and MySQL.\n\n* `read_rnd_next` is incremented when the server performs a full table scan and this is a counter you don't really want to see with a high value.\n* `read_key` is incremented when a read is done with an index.\n* `read_next` is incremented when the storage engine is asked to 'read the next index entry'. A high value means a lot of index scans are being done.",
-                    "editable": true,
-                    "error": false,
-                    "fill": 2,
-                    "fillGradient": 0,
-                    "grid": {},
-                    "gridPos": {
-                        "h": 8,
-                        "w": 8,
-                        "x": 8,
-                        "y": 145
-                    },
-                    "id": 1180,
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "hideZero": true,
-                        "max": true,
-                        "min": true,
-                        "rightSide": false,
-                        "show": true,
-                        "sort": "avg",
-                        "sortDesc": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": true,
-                    "linewidth": 2,
-                    "links": [],
-                    "maxPerRow": 12,
-                    "nullPointMode": "null",
-                    "options": {
-                        "dataLinks": [
-                            {
-                                "targetBlank": true,
-                                "title": "Command/Handler counters Compare",
-                                "url": "/graph/d/mysql-commandhandler-compare/mysql-command-handler-counters-compare?var-service_name=${__field.labels.service_name}&$__url_time_range"
-                            }
-                        ]
-                    },
-                    "paceLength": 10,
-                    "percentage": false,
-                    "pointradius": 5,
-                    "points": false,
-                    "renderer": "flot",
-                    "repeat": null,
-                    "repeatDirection": "h",
-                    "repeatIteration": 1575029453398,
-                    "repeatPanelId": 8,
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": false,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "calculatedInterval": "2m",
-                            "datasourceErrors": {},
-                            "errors": {},
-                            "expr": "rate(mysql_global_status_handlers_total{service_name=~\"$service_name\", handler!~\"commit|rollback|savepoint.*|prepare\"}[$interval]) or \nirate(mysql_global_status_handlers_total{service_name=~\"$service_name\", handler!~\"commit|rollback|savepoint.*|prepare\"}[5m])",
-                            "format": "time_series",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "{{ handler }}",
-                            "metric": "",
-                            "refId": "J",
-                            "step": 20
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeRegions": [],
-                    "timeShift": null,
-                    "title": "$service_name - MySQL Handlers",
-                    "tooltip": {
-                        "msResolution": false,
-                        "shared": true,
-                        "sort": 0,
-                        "value_type": "individual"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "decimals": 2,
-                            "format": "short",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": false
-                        }
-                    ],
-                    "yaxis": {
-                        "align": false,
-                        "alignLevel": null
-                    }
-                },
-                {
-                    "aliasColors": {},
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "datasource": "Prometheus",
-                    "decimals": 2,
-                    "description": "**MySQL Handlers**\n\nHandler statistics are internal statistics on how MySQL is selecting, updating, inserting, and modifying rows, tables, and indexes.\n\nThis is in fact the layer between the Storage Engine and MySQL.\n\n* `read_rnd_next` is incremented when the server performs a full table scan and this is a counter you don't really want to see with a high value.\n* `read_key` is incremented when a read is done with an index.\n* `read_next` is incremented when the storage engine is asked to 'read the next index entry'. A high value means a lot of index scans are being done.",
-                    "editable": true,
-                    "error": false,
-                    "fill": 2,
-                    "fillGradient": 0,
-                    "grid": {},
-                    "gridPos": {
-                        "h": 8,
-                        "w": 8,
-                        "x": 16,
-                        "y": 145
-                    },
-                    "id": 1181,
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "hideZero": true,
-                        "max": true,
-                        "min": true,
-                        "rightSide": false,
-                        "show": true,
-                        "sort": "avg",
-                        "sortDesc": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": true,
-                    "linewidth": 2,
-                    "links": [],
-                    "maxPerRow": 12,
-                    "nullPointMode": "null",
-                    "options": {
-                        "dataLinks": [
-                            {
-                                "targetBlank": true,
-                                "title": "Command/Handler counters Compare",
-                                "url": "/graph/d/mysql-commandhandler-compare/mysql-command-handler-counters-compare?var-service_name=${__field.labels.service_name}&$__url_time_range"
-                            }
-                        ]
-                    },
-                    "paceLength": 10,
-                    "percentage": false,
-                    "pointradius": 5,
-                    "points": false,
-                    "renderer": "flot",
-                    "repeat": null,
-                    "repeatDirection": "h",
-                    "repeatIteration": 1575029453398,
-                    "repeatPanelId": 8,
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": false,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "calculatedInterval": "2m",
-                            "datasourceErrors": {},
-                            "errors": {},
-                            "expr": "rate(mysql_global_status_handlers_total{service_name=~\"$service_name\", handler!~\"commit|rollback|savepoint.*|prepare\"}[$interval]) or \nirate(mysql_global_status_handlers_total{service_name=~\"$service_name\", handler!~\"commit|rollback|savepoint.*|prepare\"}[5m])",
+                            "expr": "avg by (service_name,handler) (rate(mysql_global_status_handlers_total{service_name=~\"$service_name\", handler!~\"commit|rollback|savepoint.*|prepare\"}[$interval]) or \nirate(mysql_global_status_handlers_total{service_name=~\"$service_name\", handler!~\"commit|rollback|savepoint.*|prepare\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4236,10 +3143,11 @@
                     "grid": {},
                     "gridPos": {
                         "h": 8,
-                        "w": 8,
+                        "w": 24,
                         "x": 0,
-                        "y": 153
+                        "y": 52
                     },
+                    "hiddenSeries": false,
                     "id": 28,
                     "interval": "",
                     "legend": {
@@ -4286,241 +3194,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "rate(mysql_global_status_handlers_total{service_name=~\"$service_name\", handler=~\"commit|rollback|savepoint.*|prepare\"}[$interval]) or \nirate(mysql_global_status_handlers_total{service_name=~\"$service_name\", handler=~\"commit|rollback|savepoint.*|prepare\"}[5m])",
-                            "format": "time_series",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "{{ handler }}",
-                            "metric": "",
-                            "refId": "A",
-                            "step": 20
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeRegions": [],
-                    "timeShift": null,
-                    "title": "$service_name - MySQL Transaction Handlers",
-                    "tooltip": {
-                        "msResolution": false,
-                        "shared": true,
-                        "sort": 0,
-                        "value_type": "individual"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "decimals": 2,
-                            "format": "short",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": false
-                        }
-                    ],
-                    "yaxis": {
-                        "align": false,
-                        "alignLevel": null
-                    }
-                },
-                {
-                    "aliasColors": {},
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "datasource": "Prometheus",
-                    "decimals": 2,
-                    "editable": true,
-                    "error": false,
-                    "fill": 2,
-                    "fillGradient": 0,
-                    "grid": {},
-                    "gridPos": {
-                        "h": 8,
-                        "w": 8,
-                        "x": 8,
-                        "y": 153
-                    },
-                    "id": 1182,
-                    "interval": "",
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "hideZero": true,
-                        "max": true,
-                        "min": true,
-                        "rightSide": false,
-                        "show": true,
-                        "sort": "avg",
-                        "sortDesc": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": true,
-                    "linewidth": 2,
-                    "links": [],
-                    "maxPerRow": 12,
-                    "nullPointMode": "null",
-                    "options": {
-                        "dataLinks": [
-                            {
-                                "targetBlank": true,
-                                "title": "Command/Handler counters Compare",
-                                "url": "/graph/d/mysql-commandhandler-compare/mysql-command-handler-counters-compare?var-service_name=${__field.labels.service_name}&$__url_time_range"
-                            }
-                        ]
-                    },
-                    "paceLength": 10,
-                    "percentage": false,
-                    "pointradius": 5,
-                    "points": false,
-                    "renderer": "flot",
-                    "repeat": null,
-                    "repeatDirection": "h",
-                    "repeatIteration": 1575029453398,
-                    "repeatPanelId": 28,
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": false,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "calculatedInterval": "2m",
-                            "datasourceErrors": {},
-                            "errors": {},
-                            "expr": "rate(mysql_global_status_handlers_total{service_name=~\"$service_name\", handler=~\"commit|rollback|savepoint.*|prepare\"}[$interval]) or \nirate(mysql_global_status_handlers_total{service_name=~\"$service_name\", handler=~\"commit|rollback|savepoint.*|prepare\"}[5m])",
-                            "format": "time_series",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "{{ handler }}",
-                            "metric": "",
-                            "refId": "A",
-                            "step": 20
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeRegions": [],
-                    "timeShift": null,
-                    "title": "$service_name - MySQL Transaction Handlers",
-                    "tooltip": {
-                        "msResolution": false,
-                        "shared": true,
-                        "sort": 0,
-                        "value_type": "individual"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "decimals": 2,
-                            "format": "short",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": false
-                        }
-                    ],
-                    "yaxis": {
-                        "align": false,
-                        "alignLevel": null
-                    }
-                },
-                {
-                    "aliasColors": {},
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "datasource": "Prometheus",
-                    "decimals": 2,
-                    "editable": true,
-                    "error": false,
-                    "fill": 2,
-                    "fillGradient": 0,
-                    "grid": {},
-                    "gridPos": {
-                        "h": 8,
-                        "w": 8,
-                        "x": 16,
-                        "y": 153
-                    },
-                    "id": 1183,
-                    "interval": "",
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "hideZero": true,
-                        "max": true,
-                        "min": true,
-                        "rightSide": false,
-                        "show": true,
-                        "sort": "avg",
-                        "sortDesc": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": true,
-                    "linewidth": 2,
-                    "links": [],
-                    "maxPerRow": 12,
-                    "nullPointMode": "null",
-                    "options": {
-                        "dataLinks": [
-                            {
-                                "targetBlank": true,
-                                "title": "Command/Handler counters Compare",
-                                "url": "/graph/d/mysql-commandhandler-compare/mysql-command-handler-counters-compare?var-service_name=${__field.labels.service_name}&$__url_time_range"
-                            }
-                        ]
-                    },
-                    "paceLength": 10,
-                    "percentage": false,
-                    "pointradius": 5,
-                    "points": false,
-                    "renderer": "flot",
-                    "repeat": null,
-                    "repeatDirection": "h",
-                    "repeatIteration": 1575029453398,
-                    "repeatPanelId": 28,
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": false,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "calculatedInterval": "2m",
-                            "datasourceErrors": {},
-                            "errors": {},
-                            "expr": "rate(mysql_global_status_handlers_total{service_name=~\"$service_name\", handler=~\"commit|rollback|savepoint.*|prepare\"}[$interval]) or \nirate(mysql_global_status_handlers_total{service_name=~\"$service_name\", handler=~\"commit|rollback|savepoint.*|prepare\"}[5m])",
+                            "expr": "avg by (service_name,handler) (rate(mysql_global_status_handlers_total{service_name=~\"$service_name\", handler=~\"commit|rollback|savepoint.*|prepare\"}[$interval]) or \nirate(mysql_global_status_handlers_total{service_name=~\"$service_name\", handler=~\"commit|rollback|savepoint.*|prepare\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4585,10 +3259,11 @@
                     "grid": {},
                     "gridPos": {
                         "h": 8,
-                        "w": 8,
+                        "w": 24,
                         "x": 0,
-                        "y": 161
+                        "y": 60
                     },
+                    "hiddenSeries": false,
                     "id": 40,
                     "legend": {
                         "alignAsTable": true,
@@ -4634,241 +3309,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "max_over_time(mysql_info_schema_threads{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_info_schema_threads{service_name=~\"$service_name\"}[5m])",
-                            "format": "time_series",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "{{ state }}",
-                            "metric": "",
-                            "refId": "A",
-                            "step": 20
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeRegions": [],
-                    "timeShift": null,
-                    "title": "$service_name - Process States",
-                    "tooltip": {
-                        "msResolution": false,
-                        "shared": true,
-                        "sort": 0,
-                        "value_type": "individual"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "decimals": 2,
-                            "format": "short",
-                            "label": "",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": true
-                        }
-                    ],
-                    "yaxis": {
-                        "align": false,
-                        "alignLevel": null
-                    }
-                },
-                {
-                    "aliasColors": {},
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "datasource": "Prometheus",
-                    "decimals": 2,
-                    "editable": true,
-                    "error": false,
-                    "fill": 0,
-                    "fillGradient": 0,
-                    "grid": {},
-                    "gridPos": {
-                        "h": 8,
-                        "w": 8,
-                        "x": 8,
-                        "y": 161
-                    },
-                    "id": 1184,
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "hideZero": true,
-                        "max": true,
-                        "min": false,
-                        "rightSide": false,
-                        "show": true,
-                        "sort": "avg",
-                        "sortDesc": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": true,
-                    "linewidth": 2,
-                    "links": [],
-                    "maxPerRow": 12,
-                    "nullPointMode": "null as zero",
-                    "options": {
-                        "dataLinks": [
-                            {
-                                "targetBlank": true,
-                                "title": "MySQL Instance Summary - ${__series.labels.service_name}",
-                                "url": "/graph/d/mysql-instance-summary/mysql-instance-summary?var-service_name=${__field.labels.service_name}&$__url_time_range\n"
-                            }
-                        ]
-                    },
-                    "paceLength": 10,
-                    "percentage": false,
-                    "pointradius": 5,
-                    "points": false,
-                    "renderer": "flot",
-                    "repeat": null,
-                    "repeatDirection": "h",
-                    "repeatIteration": 1575029453398,
-                    "repeatPanelId": 40,
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": false,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "calculatedInterval": "2m",
-                            "datasourceErrors": {},
-                            "errors": {},
-                            "expr": "max_over_time(mysql_info_schema_threads{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_info_schema_threads{service_name=~\"$service_name\"}[5m])",
-                            "format": "time_series",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "{{ state }}",
-                            "metric": "",
-                            "refId": "A",
-                            "step": 20
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeRegions": [],
-                    "timeShift": null,
-                    "title": "$service_name - Process States",
-                    "tooltip": {
-                        "msResolution": false,
-                        "shared": true,
-                        "sort": 0,
-                        "value_type": "individual"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "decimals": 2,
-                            "format": "short",
-                            "label": "",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": true
-                        }
-                    ],
-                    "yaxis": {
-                        "align": false,
-                        "alignLevel": null
-                    }
-                },
-                {
-                    "aliasColors": {},
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "datasource": "Prometheus",
-                    "decimals": 2,
-                    "editable": true,
-                    "error": false,
-                    "fill": 0,
-                    "fillGradient": 0,
-                    "grid": {},
-                    "gridPos": {
-                        "h": 8,
-                        "w": 8,
-                        "x": 16,
-                        "y": 161
-                    },
-                    "id": 1185,
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "hideZero": true,
-                        "max": true,
-                        "min": false,
-                        "rightSide": false,
-                        "show": true,
-                        "sort": "avg",
-                        "sortDesc": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": true,
-                    "linewidth": 2,
-                    "links": [],
-                    "maxPerRow": 12,
-                    "nullPointMode": "null as zero",
-                    "options": {
-                        "dataLinks": [
-                            {
-                                "targetBlank": true,
-                                "title": "MySQL Instance Summary - ${__series.labels.service_name}",
-                                "url": "/graph/d/mysql-instance-summary/mysql-instance-summary?var-service_name=${__field.labels.service_name}&$__url_time_range\n"
-                            }
-                        ]
-                    },
-                    "paceLength": 10,
-                    "percentage": false,
-                    "pointradius": 5,
-                    "points": false,
-                    "renderer": "flot",
-                    "repeat": null,
-                    "repeatDirection": "h",
-                    "repeatIteration": 1575029453398,
-                    "repeatPanelId": 40,
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": false,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "calculatedInterval": "2m",
-                            "datasourceErrors": {},
-                            "errors": {},
-                            "expr": "max_over_time(mysql_info_schema_threads{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_info_schema_threads{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name,state) (max_over_time(mysql_info_schema_threads{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_info_schema_threads{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4934,10 +3375,11 @@
                     "grid": {},
                     "gridPos": {
                         "h": 8,
-                        "w": 8,
+                        "w": 24,
                         "x": 0,
-                        "y": 169
+                        "y": 68
                     },
+                    "hiddenSeries": false,
                     "id": 49,
                     "legend": {
                         "alignAsTable": true,
@@ -4977,229 +3419,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "topk(5, avg_over_time(mysql_info_schema_threads{service_name=~\"$service_name\"}[1h]))",
-                            "format": "time_series",
-                            "interval": "1h",
-                            "intervalFactor": 1,
-                            "legendFormat": "{{ state }}",
-                            "metric": "",
-                            "refId": "A",
-                            "step": 3600
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": "24h",
-                    "timeRegions": [],
-                    "timeShift": null,
-                    "title": "T$service_name - Top 5 Process States Hourly",
-                    "tooltip": {
-                        "msResolution": false,
-                        "shared": true,
-                        "sort": 0,
-                        "value_type": "individual"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "decimals": 2,
-                            "format": "short",
-                            "label": "",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": true
-                        }
-                    ],
-                    "yaxis": {
-                        "align": false,
-                        "alignLevel": null
-                    }
-                },
-                {
-                    "aliasColors": {},
-                    "bars": true,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "datasource": "Prometheus",
-                    "decimals": 2,
-                    "editable": true,
-                    "error": false,
-                    "fill": 6,
-                    "fillGradient": 0,
-                    "grid": {},
-                    "gridPos": {
-                        "h": 8,
-                        "w": 8,
-                        "x": 8,
-                        "y": 169
-                    },
-                    "id": 1186,
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "hideZero": true,
-                        "max": true,
-                        "min": true,
-                        "rightSide": false,
-                        "show": true,
-                        "sort": "avg",
-                        "sortDesc": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": false,
-                    "linewidth": 2,
-                    "links": [],
-                    "maxPerRow": 12,
-                    "nullPointMode": "null",
-                    "options": {
-                        "dataLinks": []
-                    },
-                    "paceLength": 10,
-                    "percentage": false,
-                    "pointradius": 5,
-                    "points": false,
-                    "renderer": "flot",
-                    "repeat": null,
-                    "repeatDirection": "h",
-                    "repeatIteration": 1575029453398,
-                    "repeatPanelId": 49,
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": true,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "calculatedInterval": "2m",
-                            "datasourceErrors": {},
-                            "errors": {},
-                            "expr": "topk(5, avg_over_time(mysql_info_schema_threads{service_name=~\"$service_name\"}[1h]))",
-                            "format": "time_series",
-                            "interval": "1h",
-                            "intervalFactor": 1,
-                            "legendFormat": "{{ state }}",
-                            "metric": "",
-                            "refId": "A",
-                            "step": 3600
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": "24h",
-                    "timeRegions": [],
-                    "timeShift": null,
-                    "title": "T$service_name - Top 5 Process States Hourly",
-                    "tooltip": {
-                        "msResolution": false,
-                        "shared": true,
-                        "sort": 0,
-                        "value_type": "individual"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "decimals": 2,
-                            "format": "short",
-                            "label": "",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": true
-                        },
-                        {
-                            "format": "short",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": true
-                        }
-                    ],
-                    "yaxis": {
-                        "align": false,
-                        "alignLevel": null
-                    }
-                },
-                {
-                    "aliasColors": {},
-                    "bars": true,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "datasource": "Prometheus",
-                    "decimals": 2,
-                    "editable": true,
-                    "error": false,
-                    "fill": 6,
-                    "fillGradient": 0,
-                    "grid": {},
-                    "gridPos": {
-                        "h": 8,
-                        "w": 8,
-                        "x": 16,
-                        "y": 169
-                    },
-                    "id": 1187,
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "hideZero": true,
-                        "max": true,
-                        "min": true,
-                        "rightSide": false,
-                        "show": true,
-                        "sort": "avg",
-                        "sortDesc": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": false,
-                    "linewidth": 2,
-                    "links": [],
-                    "maxPerRow": 12,
-                    "nullPointMode": "null",
-                    "options": {
-                        "dataLinks": []
-                    },
-                    "paceLength": 10,
-                    "percentage": false,
-                    "pointradius": 5,
-                    "points": false,
-                    "renderer": "flot",
-                    "repeat": null,
-                    "repeatDirection": "h",
-                    "repeatIteration": 1575029453398,
-                    "repeatPanelId": 49,
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": true,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "calculatedInterval": "2m",
-                            "datasourceErrors": {},
-                            "errors": {},
-                            "expr": "topk(5, avg_over_time(mysql_info_schema_threads{service_name=~\"$service_name\"}[1h]))",
+                            "expr": "topk(5, avg by (service_name,state) (avg_over_time(mysql_info_schema_threads{service_name=~\"$service_name\"}[1h])))",
                             "format": "time_series",
                             "interval": "1h",
                             "intervalFactor": 1,
@@ -5331,7 +3551,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "max_over_time(mysql_global_status_qcache_free_memory{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_qcache_free_memory{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (max_over_time(mysql_global_status_qcache_free_memory{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_qcache_free_memory{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -5344,7 +3564,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "max_over_time(mysql_global_variables_query_cache_size{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_variables_query_cache_size{service_name=~\"$service_name\"}[5m]) ",
+                            "expr": "avg by (service_name) (max_over_time(mysql_global_variables_query_cache_size{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_variables_query_cache_size{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -5460,7 +3680,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "rate(mysql_global_status_qcache_lowmem_prunes{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_qcache_lowmem_prunes{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (rate(mysql_global_status_qcache_lowmem_prunes{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_qcache_lowmem_prunes{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -5473,7 +3693,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "max_over_time(mysql_global_status_qcache_queries_in_cache{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_qcache_queries_in_cache{service_name=~\"$service_name\"}[5m]) ",
+                            "expr": "avg by (service_name) (max_over_time(mysql_global_status_qcache_queries_in_cache{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_qcache_queries_in_cache{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -5556,7 +3776,7 @@
                         "h": 8,
                         "w": 24,
                         "x": 0,
-                        "y": 60
+                        "y": 30
                     },
                     "hiddenSeries": false,
                     "id": 43,
@@ -5603,7 +3823,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "rate(mysql_global_status_opened_files{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_opened_files{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (rate(mysql_global_status_opened_files{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_opened_files{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -5670,7 +3890,7 @@
                         "h": 8,
                         "w": 24,
                         "x": 0,
-                        "y": 68
+                        "y": 38
                     },
                     "hiddenSeries": false,
                     "id": 41,
@@ -5717,7 +3937,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "max_over_time(mysql_global_status_open_files{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_open_files{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (max_over_time(mysql_global_status_open_files{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_open_files{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -5730,7 +3950,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "max_over_time(mysql_global_variables_open_files_limit{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_variables_open_files_limit{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (max_over_time(mysql_global_variables_open_files_limit{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_variables_open_files_limit{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -5740,7 +3960,7 @@
                             "step": 20
                         },
                         {
-                            "expr": "max_over_time(mysql_global_status_innodb_num_open_files{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_innodb_num_open_files{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (max_over_time(mysql_global_status_innodb_num_open_files{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_innodb_num_open_files{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -5823,7 +4043,7 @@
                         "h": 8,
                         "w": 24,
                         "x": 0,
-                        "y": 61
+                        "y": 31
                     },
                     "hiddenSeries": false,
                     "id": 44,
@@ -5880,7 +4100,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "rate(mysql_global_status_opened_tables{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_opened_tables{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (rate(mysql_global_status_opened_tables{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_opened_tables{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -5890,7 +4110,7 @@
                             "step": 20
                         },
                         {
-                            "expr": "rate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (rate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -5899,7 +4119,7 @@
                             "step": 20
                         },
                         {
-                            "expr": "rate(mysql_global_status_table_open_cache_misses{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_table_open_cache_misses{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (rate(mysql_global_status_table_open_cache_misses{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_table_open_cache_misses{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -5908,7 +4128,7 @@
                             "step": 20
                         },
                         {
-                            "expr": "rate(mysql_global_status_table_open_cache_overflows{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_table_open_cache_overflows{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (rate(mysql_global_status_table_open_cache_overflows{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_table_open_cache_overflows{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -5917,7 +4137,7 @@
                             "step": 20
                         },
                         {
-                            "expr": "(rate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\"}[5m]))/\n((rate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\"}[5m]))+\n(rate(mysql_global_status_table_open_cache_misses{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_table_open_cache_misses{service_name=~\"$service_name\"}[5m])))",
+                            "expr": "avg by (service_name) ((rate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\"}[5m]))/\n((rate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_table_open_cache_hits{service_name=~\"$service_name\"}[5m]))+\n(rate(mysql_global_status_table_open_cache_misses{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_table_open_cache_misses{service_name=~\"$service_name\"}[5m]))))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -5986,7 +4206,7 @@
                         "h": 8,
                         "w": 24,
                         "x": 0,
-                        "y": 69
+                        "y": 39
                     },
                     "hiddenSeries": false,
                     "id": 42,
@@ -6038,7 +4258,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "max_over_time(mysql_global_status_open_tables{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_open_tables{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (max_over_time(mysql_global_status_open_tables{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_open_tables{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -6051,7 +4271,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "max_over_time(mysql_global_variables_table_open_cache{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_variables_table_open_cache{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (max_over_time(mysql_global_variables_table_open_cache{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_variables_table_open_cache{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -6135,7 +4355,7 @@
                         "h": 8,
                         "w": 24,
                         "x": 0,
-                        "y": 62
+                        "y": 32
                     },
                     "hiddenSeries": false,
                     "id": 54,
@@ -6192,7 +4412,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "max_over_time(mysql_global_status_open_table_definitions{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_open_table_definitions{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (max_over_time(mysql_global_status_open_table_definitions{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_open_table_definitions{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -6205,7 +4425,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "max_over_time(mysql_global_variables_table_definition_cache{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_variables_table_definition_cache{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (max_over_time(mysql_global_variables_table_definition_cache{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_variables_table_definition_cache{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -6215,7 +4435,7 @@
                             "step": 20
                         },
                         {
-                            "expr": "rate(mysql_global_status_opened_table_definitions{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_opened_table_definitions{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name) (rate(mysql_global_status_opened_table_definitions{service_name=~\"$service_name\"}[$interval]) or \nirate(mysql_global_status_opened_table_definitions{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
