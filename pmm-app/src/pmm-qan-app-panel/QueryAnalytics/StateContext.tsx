@@ -73,7 +73,7 @@ class ContextActions {
     urlParams.columns = JSON.parse(query.get('columns')) || DEFAULT_COLUMNS;
     urlParams.labels = ContextActions.setFilters(query);
     urlParams.pageNumber = 1;
-    urlParams.pageNumber = 10;
+    urlParams.pageSize = 10;
     urlParams.orderBy = query.get('order_by') || 'load';
     urlParams.queryId = query.get('filter_by');
     urlParams.querySelected = !!query.get('filter_by');
