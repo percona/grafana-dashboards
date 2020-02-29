@@ -18,6 +18,8 @@ const ROW_NUMBER_COLUMN_WIDTH = 30;
 
 export const getDefaultColumns = (groupBy, pageNumber, pageSize, columns) => {
   const mainMetricColumnWidth = Math.max(TABLE_X_SCROLL - columns * COLUMN_WIDTH - ROW_NUMBER_COLUMN_WIDTH, MAIN_METRIC_MIN_WIDTH);
+  // @ts-ignore
+  const groupByLabel = GROUP_BY_OPTIONS.find(({ value }) => value === groupBy).label;
   return [
     {
       title: '#',
@@ -33,7 +35,7 @@ export const getDefaultColumns = (groupBy, pageNumber, pageSize, columns) => {
       dataIndex: 'mainMetric',
       fixed: 'left',
       width: mainMetricColumnWidth,
-      title: () => `Group by ${GROUP_BY_OPTIONS.find(({ value }) => value === groupBy).label}`,
+      title: () => `Group by ${groupByLabel}`,
       ellipsis: true,
       className: 'overview-main-column',
       render: (text, record) => {

@@ -13,7 +13,7 @@ const PAGE_SIZE_OPTIONS = ['10', '50', '100'];
 const QueryAnalyticsContainer = () => {
   const {
     dispatch,
-    state: { pageNumber, pageSize, querySelected, groupBy },
+    state: { pageNumber, pageSize, querySelected },
   } = useContext(StateContext);
   const [total, setTotal] = useState(30);
 
