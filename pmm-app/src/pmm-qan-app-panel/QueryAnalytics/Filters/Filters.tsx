@@ -99,6 +99,7 @@ interface GroupInterface {
 
 const FILTERS_BODY_HEIGHT = 600;
 export const Filters = ({ dispatch, groups, form, labels, filters }) => {
+  // @ts-ignore
   const [width, height] = useWindowSize();
   const [filtersBodyHeight, setFiltersBodyHeight] = useState(FILTERS_BODY_HEIGHT);
   const [filter, setFilter] = useState('');

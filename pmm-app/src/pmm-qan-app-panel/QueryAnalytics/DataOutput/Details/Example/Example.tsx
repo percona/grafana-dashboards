@@ -10,7 +10,7 @@ const getExample = (example: string): string =>
 
 const Example = props => {
   const { queryId, groupBy, from, to, labels, tables } = props;
-  const [examples, setExamples] = useState([]);
+  const [examples, setExamples] = useState<any[]>([]);
   useEffect(() => {
     (async () => {
       try {

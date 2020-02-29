@@ -6,36 +6,27 @@ const initialState = {} as any;
 export const StateContext = React.createContext(initialState);
 
 const DEFAULT_COLUMNS = ['load', 'num_queries', 'query_time'];
+const FILTERS_NAMES = [
+  'environment',
+  'cluster',
+  'replication_set',
+  'database',
+  'schema',
+  'node_name',
+  'service_name',
+  'client_host',
+  'username',
+  'service_type',
+  'node_type',
+  'city',
+  'az',
+];
 
 class ContextActions {
-  selectedVariables?: {};
-  columns?: any[];
-  filterBy: any;
-  labels: any;
-  from: any;
-  to: any;
-  constructor(query) {
-    this.parseURL(query);
-  }
+  constructor() {}
 
   static setFilters(query) {
-    const filtersListNames = [
-      'environment',
-      'cluster',
-      'replication_set',
-      'database',
-      'schema',
-      'node_name',
-      'service_name',
-      'client_host',
-      'username',
-      'service_type',
-      'node_type',
-      'city',
-      'az',
-    ];
-
-    return filtersListNames.reduce((result, filterName) => {
+    return FILTERS_NAMES.reduce((result, filterName) => {
       const filters = query.getAll(`var-${filterName}`);
       if (!filters.length) {
         return result;
@@ -71,12 +62,23 @@ class ContextActions {
     return `${window.location.pathname}?${[columnsQuery, filterByQuery, labels, orderBy, groupBy].filter(Boolean).join('&')}`;
   }
 
-  private parseURL(query) {
-    this.selectedVariables = ContextActions.setFilters(query);
-    this.columns = DEFAULT_COLUMNS;
-    this.filterBy = query.get('filter_by');
-    this.from = query.get('from') || 'now-12h';
-    this.to = query.get('to') || 'now';
+  static parseURL(query) {
+    const urlParams = {} as any;
+    urlParams.from = ParseQueryParamDate.transform(query.get('from') || 'now-12h', 'from')
+      .utc()
+      .format('YYYY-MM-DDTHH:mm:ssZ');
+    urlParams.to = ParseQueryParamDate.transform(query.get('to') || 'now', 'to')
+      .utc()
+      .format('YYYY-MM-DDTHH:mm:ssZ');
+    urlParams.columns = JSON.parse(query.get('columns')) || DEFAULT_COLUMNS;
+    urlParams.labels = ContextActions.setFilters(query);
+    urlParams.pageNumber = 1;
+    urlParams.pageNumber = 10;
+    urlParams.orderBy = query.get('order_by') || 'load';
+    urlParams.queryId = query.get('filter_by');
+    urlParams.querySelected = !!query.get('filter_by');
+    urlParams.groupBy = query.get('group_by') || 'queryid';
+    return urlParams;
   }
 
   static setLabels(filters) {
@@ -97,13 +99,6 @@ class ContextActions {
 
 export const UrlParametersProvider = ({ children }) => {
   const query = new URLSearchParams(window.location.search);
-
-  const from = ParseQueryParamDate.transform(query.get('from') || 'now-12h', 'from')
-    .utc()
-    .format('YYYY-MM-DDTHH:mm:ssZ');
-  const to = ParseQueryParamDate.transform(query.get('to') || 'now', 'to')
-    .utc()
-    .format('YYYY-MM-DDTHH:mm:ssZ');
   const [state, dispatch] = useReducer(
     (state, action) => {
       let columns;
@@ -180,18 +175,7 @@ export const UrlParametersProvider = ({ children }) => {
       history.pushState({}, 'test', newUrl);
       return newState;
     },
-    {
-      columns: JSON.parse(query.get('columns')) || DEFAULT_COLUMNS,
-      labels: ContextActions.setFilters(query),
-      pageNumber: 1,
-      pageSize: 10,
-      orderBy: query.get('order_by') || 'load',
-      queryId: query.get('filter_by'),
-      querySelected: !!query.get('filter_by'),
-      groupBy: query.get('group_by') || 'queryid',
-      from: from,
-      to: to,
-    }
+    { ...ContextActions.parseURL(query) }
   );
 
   return <StateContext.Provider value={{ state, dispatch }}>{children}</StateContext.Provider>;
