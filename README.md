@@ -1,8 +1,16 @@
 ## Grafana dashboards for MySQL and MongoDB monitoring using Prometheus [![Build Status](https://travis-ci.org/percona/grafana-dashboards.svg?branch=master)](https://travis-ci.org/percona/grafana-dashboards)[![CLA assistant](https://cla-assistant.percona.com/readme/badge/percona/grafana-dashboards)](https://cla-assistant.percona.com/percona/grafana-dashboards)
 
 This is a set of Grafana dashboards for database and system monitoring using Prometheus datasource.
-
- * Amazon RDS OS metrics (CloudWatch datasource)
+ 
+ 
+ * Compare System Parameters
+ * CPU Utilization Details (Cores)
+ * Disk Performance
+ * Disk Space
+ * Network Overview
+ * NUMA Overview
+ * System Overview
+ * Amazon RDS / Aurora MySQL metrics (CloudWatch datasource)
  * Cross Server Graphs
  * Disk Performance
  * Disk Space
@@ -13,25 +21,38 @@ This is a set of Grafana dashboards for database and system monitoring using Pro
  * MongoDB WiredTiger
  * MongoDB MMAPv1
  * MongoDB InMemory
+ * MySQL Amazon Aurora Metrics
+ * MySQL MyRocks Metrics
  * MySQL InnoDB Metrics
  * MySQL InnoDB Metrics Advanced
  * MySQL InnoDB Compression
  * MySQL MyISAM/Aria Metrics
  * MySQL Overview
  * MySQL Performance Schema
+ * MySQL Performance Schema Wait Event Analyses
  * MySQL Query Response Time
  * MySQL Replication
  * MySQL Table Statistics
- * MySQL TokuDB Graphs
+ * MySQL TokuDB Metrics
  * MySQL User Statistics
  * MySQL Command Handler Counters Compare
+ * PostgreSQL Overview
+ * ProxySQL Overview
  * PXC/Galera Cluster Overview
  * PXC/Galera Graphs
+ * Advanced Data Exploration
+ * Cross Server Graphs
+ * Home Dashboard
  * Prometheus
- * ProxySQL Overview
+ * Prometheus Exporter Status
+ * Prometheus Exporters Overview
  * Summary Dashboard
- * System Overview
  * Trends Dashboard
+ 
+ * _PMM Add Instance
+ * _PMM Amazon RDS and Remote Instances
+ * _PMM Query Analytics Settings
+ * _PMM System Summary
 
 These dashboards are also a part of [Percona Monitoring and Management](https://www.percona.com/doc/percona-monitoring-and-management/index.html) project.
 
