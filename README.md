@@ -48,7 +48,6 @@ This is a set of Grafana dashboards for database and system monitoring using Pro
  * Prometheus Exporters Overview
  * Summary Dashboard
  * Trends Dashboard
- 
  * _PMM Add Instance
  * _PMM Amazon RDS and Remote Instances
  * _PMM Query Analytics Settings
