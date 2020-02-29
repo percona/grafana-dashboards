@@ -78,7 +78,7 @@ const Styling = {
     height: 50px;
   `,
   showAllButton: css`
-    padding: 0;
+    padding: 0 !important;
     height: auto;
   `,
   title: css`
@@ -86,9 +86,9 @@ const Styling = {
     margin-right: 15px;
   `,
   resetButton: css`
-    padding: 0;
+    padding: 0 !important;
     height: auto;
-    margin-left: auto;
+    margin-left: auto !important;
   `,
 };
 
