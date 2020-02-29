@@ -4,11 +4,7 @@ import './OverviewTable.scss';
 import { StateContext } from '../../StateContext';
 import { getDefaultColumns, getOverviewColumn, TABLE_X_SCROLL, TABLE_Y_SCROLL } from './Columns';
 import OverviewTableService from './OverviewTable.service';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { fas } from '@fortawesome/free-solid-svg-icons';
-
-library.add(fas);
+import Spinner from '../../../../react-plugins-deps/components/Spinner/Spinner';
 
 interface RowInterface {
   dimension?: string;
@@ -106,7 +102,7 @@ const OverviewTable = props => {
       loading={
         loading
           ? {
-              indicator: <i className="fa fa-spinner fa-spin spinner" style={{ color: 'white', fontSize: '36px' }}></i>,
+              indicator: <Spinner size={'large'} />,
             }
           : false
       }
