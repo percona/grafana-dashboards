@@ -47,12 +47,20 @@ const ManageColumns = props => {
   }, [props.currentMetric]);
   // @ts-ignore
   return (
-    <div className={!props.onlyAdd ? 'manage-columns' : ''} onClick={e => e.stopPropagation()}>
+    <div className={!props.onlyAdd ? 'manage-columns' : 'add-columns'} onClick={e => e.stopPropagation()}>
       <Select
         optionLabelProp="label"
         showSearch={true}
         style={{ width: props.width || '160px' }}
-        placeholder={!props.onlyAdd ? props.placeholder && METRIC_CATALOGUE[props.placeholder].humanizeName : 'Add column'}
+        placeholder={
+          !props.onlyAdd ? (
+            props.placeholder && METRIC_CATALOGUE[props.placeholder].humanizeName
+          ) : (
+            <div style={{ fontSize: '16px' }}>
+              <i className={'fa fa-plus-circle'} style={{ marginRight: '5px' }}></i> <span> Add column</span>
+            </div>
+          )
+        }
         onChange={changeColumn}
         dropdownMatchSelectWidth={false}
         value={undefined}
