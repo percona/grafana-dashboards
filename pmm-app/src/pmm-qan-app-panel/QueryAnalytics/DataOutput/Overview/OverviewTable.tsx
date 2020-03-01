@@ -1,10 +1,10 @@
-import { Table } from 'antd';
+import { Spin, Table } from 'antd';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import './OverviewTable.scss';
 import { StateContext } from '../../StateContext';
 import { getDefaultColumns, getOverviewColumn, TABLE_X_SCROLL, TABLE_Y_SCROLL } from './Columns';
 import OverviewTableService from './OverviewTable.service';
-import Spinner from '../../../../react-plugins-deps/components/Spinner/Spinner';
+import '../../../../react-plugins-deps/components/Spinner/Spinner';
 
 interface RowInterface {
   dimension?: string;
@@ -99,13 +99,7 @@ const OverviewTable = props => {
         }
         return '';
       }}
-      loading={
-        loading
-          ? {
-              indicator: <Spinner size={'large'} />,
-            }
-          : false
-      }
+      loading={loading}
     />
   );
 };
