@@ -1,4 +1,4 @@
-import { Spin, Table } from 'antd';
+import { Table } from 'antd';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import './OverviewTable.scss';
 import { StateContext } from '../../StateContext';
