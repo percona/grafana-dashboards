@@ -68,7 +68,7 @@ export const FILTERS_GROUPS = [
 const Styling = {
   filtersWrapper: css`
     border: 1px solid rgb(40, 40, 40);
-    padding: 5px 10px;
+    padding: 5px 16px;
     overflow-y: scroll;
   `,
   filtersHeader: css`
