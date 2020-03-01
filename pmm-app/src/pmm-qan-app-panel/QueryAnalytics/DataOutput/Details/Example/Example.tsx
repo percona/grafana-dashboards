@@ -29,7 +29,16 @@ const Example = props => {
     })();
   }, [queryId]);
 
-  return <pre>{examples && examples.length && examples.map(example => example.example).map(getExample)}</pre>;
+  return (
+    <pre>
+      {examples &&
+        examples.length &&
+        examples
+          .map(example => example.example)
+          .filter(Boolean)
+          .map(getExample)}
+    </pre>
+  );
 };
 
 export default Example;
