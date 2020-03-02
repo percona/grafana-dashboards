@@ -1575,7 +1575,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "node_memory_MemTotal_bytes{node_name=~\"$node_name\"}",
+                    "expr": "avg by (node_name) (node_memory_MemTotal_bytes{node_name=~\"$node_name\"})",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1655,6 +1655,1494 @@
                     "to": "null"
                 }
             ],
+            "sparkline": {
+                "fillColor": "rgba(31, 118, 189, 0.18)",
+                "full": false,
+                "lineColor": "rgb(31, 120, 193)",
+                "show": true
+            },
+            "tableColumn": "",
+            "targets": [
+                {
+                    "expr": "sum(process_open_fds{node_name=~\"$node_name\"})",
+                    "format": "time_series",
+                    "hide": true,
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "",
+                    "refId": "A",
+                    "step": 300
+                },
+                {
+                    "expr": "sum(sum by (agent_type) (process_open_fds{node_name=~\"$node_name\"}) or sum by (agent_type) (label_replace(label_replace(process_open_fds{job=~\"rds.*\"},\"agent_type\", \"rds_exporter\", \"job\", \"rds_exporter_(.*)\"),\"node_name\",\"pmm-server\",\"\",\"\"))  * count by (agent_type) (label_replace(process_open_fds{instance=~\"$node_name\",job=\"prometheus\"},\"agent_type\", \"rds_exporter\", \"\", \"\")))",
+                    "refId": "B"
+                }
+            ],
+            "thresholds": "512,800",
+            "title": "File Descriptors Used",
+            "type": "singlestat",
+            "valueFontSize": "50%",
+            "valueMaps": [
+                {
+                    "op": "=",
+                    "text": "N/A",
+                    "value": "null"
+                }
+            ],
+            "valueName": "current"
+        },
+        {
+            "collapsed": false,
+            "datasource": null,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 29
+            },
+            "id": 2264,
+            "panels": [],
+            "repeat": null,
+            "repeatIteration": 1583151565652,
+            "repeatPanelId": 2220,
+            "title": "",
+            "type": "row"
+        },
+        {
+            "content": "$node_name",
+            "datasource": null,
+            "gridPos": {
+                "h": 4,
+                "w": 5,
+                "x": 0,
+                "y": 30
+            },
+            "height": "95",
+            "id": 2265,
+            "links": [
+                {
+                    "targetBlank": true,
+                    "title": "Understanding Prometheus Exporters",
+                    "url": "https://www.percona.com/blog/2018/02/20/understand-prometheus-exporters-percona-monitoring-management-pmm/"
+                },
+                {
+                    "targetBlank": true,
+                    "title": "Exporters and integrations",
+                    "url": "https://prometheus.io/docs/instrumenting/exporters/"
+                },
+                {
+                    "targetBlank": true,
+                    "title": "System Overview",
+                    "url": "/graph/d/node-instance-summary/node-summary?$__url_time_range&$__all_variables"
+                }
+            ],
+            "mode": "markdown",
+            "options": {},
+            "repeatIteration": 1583151565652,
+            "repeatPanelId": 162,
+            "repeatedByRow": true,
+            "title": "Node name",
+            "type": "text"
+        },
+        {
+            "cacheTimeout": null,
+            "colorBackground": false,
+            "colorValue": true,
+            "colors": [
+                "#299c46",
+                "rgba(237, 129, 40, 0.89)",
+                "#d44a3a"
+            ],
+            "datasource": "Prometheus",
+            "decimals": 2,
+            "description": "Show the CPU usage as a percentage for all Exporters on a per-host basis. An Exporter is a software library that provides metrics to PMM.\n\nSee also:",
+            "format": "percent",
+            "gauge": {
+                "maxValue": 100,
+                "minValue": 0,
+                "show": false,
+                "thresholdLabels": false,
+                "thresholdMarkers": true
+            },
+            "gridPos": {
+                "h": 2,
+                "w": 4,
+                "x": 5,
+                "y": 30
+            },
+            "id": 2266,
+            "interval": null,
+            "links": [
+                {
+                    "targetBlank": true,
+                    "title": "Understanding Prometheus Exporters",
+                    "url": "https://www.percona.com/blog/2018/02/20/understand-prometheus-exporters-percona-monitoring-management-pmm/"
+                },
+                {
+                    "targetBlank": true,
+                    "title": "Exporters and integrations",
+                    "url": "https://prometheus.io/docs/instrumenting/exporters/"
+                },
+                {
+                    "targetBlank": true,
+                    "title": "Prometheus Exporter Status",
+                    "url": "/graph/d/prometheus-status/prometheus-exporter-status?$__url_time_range&$__all_variables"
+                }
+            ],
+            "mappingType": 1,
+            "mappingTypes": [
+                {
+                    "name": "value to text",
+                    "value": 1
+                },
+                {
+                    "name": "range to text",
+                    "value": 2
+                }
+            ],
+            "maxDataPoints": 100,
+            "nullPointMode": "connected",
+            "nullText": null,
+            "options": {},
+            "postfix": "",
+            "postfixFontSize": "50%",
+            "prefix": "",
+            "prefixFontSize": "50%",
+            "rangeMaps": [
+                {
+                    "from": "null",
+                    "text": "N/A",
+                    "to": "null"
+                }
+            ],
+            "repeatIteration": 1583151565652,
+            "repeatPanelId": 2228,
+            "repeatedByRow": true,
+            "sparkline": {
+                "fillColor": "rgba(31, 118, 189, 0.18)",
+                "full": false,
+                "lineColor": "rgb(31, 120, 193)",
+                "show": true,
+                "ymax": 100,
+                "ymin": 0
+            },
+            "tableColumn": "",
+            "targets": [
+                {
+                    "expr": "(sum(rate(process_cpu_seconds_total{job=~\".*exporter.*\",node_name=~\"$node_name\"}[$interval]) or irate(process_cpu_seconds_total{job=~\".*exporter.*\",node_name=~\"$node_name\"}[5m]) or\nlabel_replace(rate(process_cpu_seconds_total{job=~\"rds.*\"}[$interval]),\"node_name\",\"pmm-server\",\"\",\"\") or\nlabel_replace(rate(process_cpu_seconds_total{job=~\"rds.*\"}[5m]),\"node_name\",\"pmm-server\",\"\",\"\")) by (node_name)) / \ncount(node_cpu_seconds_total{job=~\".*exporter.*\",node_name=~\"$node_name\"}) by (node_name) * 100 or\nsum by (node_name) ((max_over_time(node_cpu_average{node_name=~\"$node_name\", mode=\"total\"}[$interval]) or \nmax_over_time(node_cpu_average{node_name=~\"$node_name\", mode=\"total\"}[5m])))",
+                    "refId": "B"
+                }
+            ],
+            "thresholds": "5,10",
+            "title": "CPU  Used",
+            "type": "singlestat",
+            "valueFontSize": "50%",
+            "valueMaps": [
+                {
+                    "op": "=",
+                    "text": "N/A",
+                    "value": "null"
+                }
+            ],
+            "valueName": "current"
+        },
+        {
+            "cacheTimeout": null,
+            "colorBackground": false,
+            "colorValue": true,
+            "colors": [
+                "rgba(50, 172, 45, 0.97)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(245, 54, 54, 0.9)"
+            ],
+            "datasource": "Prometheus",
+            "decimals": 2,
+            "description": "Shows total Memory Used by Exporters on a per-host basis. An Exporter is a software library that provides metrics to PMM.\n\nSee also:",
+            "editable": true,
+            "error": false,
+            "format": "bytes",
+            "gauge": {
+                "maxValue": 100,
+                "minValue": 0,
+                "show": false,
+                "thresholdLabels": false,
+                "thresholdMarkers": true
+            },
+            "gridPos": {
+                "h": 2,
+                "w": 4,
+                "x": 9,
+                "y": 30
+            },
+            "height": "50",
+            "id": 2267,
+            "interval": "$interval",
+            "links": [
+                {
+                    "targetBlank": true,
+                    "title": "Understanding Prometheus Exporters",
+                    "url": "https://www.percona.com/blog/2018/02/20/understand-prometheus-exporters-percona-monitoring-management-pmm/"
+                },
+                {
+                    "targetBlank": true,
+                    "title": "Exporters and integrations",
+                    "url": "https://prometheus.io/docs/instrumenting/exporters/"
+                },
+                {
+                    "targetBlank": true,
+                    "title": "Prometheus Exporter Status",
+                    "url": "/graph/d/prometheus-status/prometheus-exporter-status?$__url_time_range&$__all_variables"
+                }
+            ],
+            "mappingType": 1,
+            "mappingTypes": [
+                {
+                    "name": "value to text",
+                    "value": 1
+                },
+                {
+                    "name": "range to text",
+                    "value": 2
+                }
+            ],
+            "maxDataPoints": 100,
+            "nullPointMode": "connected",
+            "nullText": null,
+            "options": {},
+            "postfix": "",
+            "postfixFontSize": "50%",
+            "prefix": "",
+            "prefixFontSize": "50%",
+            "rangeMaps": [
+                {
+                    "from": "null",
+                    "text": "N/A",
+                    "to": "null"
+                }
+            ],
+            "repeatIteration": 1583151565652,
+            "repeatPanelId": 163,
+            "repeatedByRow": true,
+            "sparkline": {
+                "fillColor": "rgba(31, 118, 189, 0.18)",
+                "full": false,
+                "lineColor": "rgb(31, 120, 193)",
+                "show": true
+            },
+            "tableColumn": "",
+            "targets": [
+                {
+                    "expr": "sum(\nmax_over_time(process_resident_memory_bytes{job=~\".*exporter.*\",job!~\"rds.*\",node_name=~\"$node_name\"}[$interval]) or max_over_time(process_resident_memory_bytes{job=~\".*exporter.*\",job!~\"rds.*\",node_name=~\"$node_name\"}[5m]) or\n(sum by (node_name) (label_replace(max_over_time(process_resident_memory_bytes{job=~\"rds.*\"}[$interval]),\"node_name\",\"pmm-server\",\"\",\"\") or\nlabel_replace(max_over_time(process_resident_memory_bytes{job=~\"rds.*\"}[5m]),\"node_name\",\"pmm-server\",\"\",\"\"))) * count by (node_name) (label_replace(process_resident_memory_bytes{instance=~\"$node_name\",job=\"prometheus\"},\"node_name\", \"pmm-server\", \"\", \"\"))\n) by (node_name)",
+                    "hide": false,
+                    "interval": "$interval",
+                    "refId": "B"
+                }
+            ],
+            "thresholds": "100000000,200000000",
+            "title": "Mem Used",
+            "type": "singlestat",
+            "valueFontSize": "50%",
+            "valueMaps": [],
+            "valueName": "current"
+        },
+        {
+            "cacheTimeout": null,
+            "colorBackground": false,
+            "colorValue": true,
+            "colors": [
+                "rgba(50, 172, 45, 0.97)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(245, 54, 54, 0.9)"
+            ],
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "description": "Shows the number of Exporters running on a per-host basis. An Exporter is a software library that provides metrics to PMM.\n\nSee also:",
+            "editable": true,
+            "error": false,
+            "format": "short",
+            "gauge": {
+                "maxValue": 100,
+                "minValue": 0,
+                "show": false,
+                "thresholdLabels": false,
+                "thresholdMarkers": true
+            },
+            "gridPos": {
+                "h": 2,
+                "w": 4,
+                "x": 13,
+                "y": 30
+            },
+            "height": "50",
+            "id": 2268,
+            "interval": "$interval",
+            "links": [
+                {
+                    "targetBlank": true,
+                    "title": "Understanding Prometheus Exporters",
+                    "url": "https://www.percona.com/blog/2018/02/20/understand-prometheus-exporters-percona-monitoring-management-pmm/"
+                },
+                {
+                    "targetBlank": true,
+                    "title": "Exporters and integrations",
+                    "url": "https://prometheus.io/docs/instrumenting/exporters/"
+                },
+                {
+                    "targetBlank": true,
+                    "title": "Prometheus Exporter Status",
+                    "url": "/graph/d/prometheus-status/prometheus-exporter-status?$__url_time_range&$__all_variables"
+                }
+            ],
+            "mappingType": 1,
+            "mappingTypes": [
+                {
+                    "name": "value to text",
+                    "value": 1
+                },
+                {
+                    "name": "range to text",
+                    "value": 2
+                }
+            ],
+            "maxDataPoints": 100,
+            "nullPointMode": "connected",
+            "nullText": null,
+            "options": {},
+            "postfix": "",
+            "postfixFontSize": "50%",
+            "prefix": "",
+            "prefixFontSize": "80%",
+            "rangeMaps": [
+                {
+                    "from": "null",
+                    "text": "N/A",
+                    "to": "null"
+                }
+            ],
+            "repeatIteration": 1583151565652,
+            "repeatPanelId": 314,
+            "repeatedByRow": true,
+            "sparkline": {
+                "fillColor": "rgba(31, 118, 189, 0.18)",
+                "full": false,
+                "lineColor": "rgb(31, 120, 193)",
+                "show": true
+            },
+            "tableColumn": "",
+            "targets": [
+                {
+                    "calculatedInterval": "10m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "count(process_open_fds{job=~\".*exporter.*\",node_name=~\"$node_name\"}) ",
+                    "format": "time_series",
+                    "hide": true,
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "",
+                    "metric": "node_mem",
+                    "refId": "A",
+                    "step": 300
+                },
+                {
+                    "expr": "sum(count by (agent_type) (process_cpu_seconds_total{node_name=~\"$node_name\"}) or count by (agent_type) (label_replace(label_replace(process_cpu_seconds_total{job=~\"rds.*\"},\"agent_type\", \"rds_exporter\", \"job\", \"rds_exporter_(.*)\"),\"node_name\",\"pmm-server\",\"\",\"\"))  * count by (agent_type) (label_replace(process_resident_memory_bytes{instance=~\"$node_name\",job=\"prometheus\"},\"agent_type\", \"rds_exporter\", \"\", \"\")))",
+                    "refId": "B"
+                }
+            ],
+            "thresholds": "512,800",
+            "title": "Exporters Running",
+            "type": "singlestat",
+            "valueFontSize": "50%",
+            "valueMaps": [],
+            "valueName": "current"
+        },
+        {
+            "columns": [],
+            "datasource": null,
+            "fontSize": "100%",
+            "gridPos": {
+                "h": 4,
+                "w": 7,
+                "x": 17,
+                "y": 30
+            },
+            "id": 2269,
+            "links": [],
+            "options": {},
+            "pageSize": null,
+            "repeatIteration": 1583151565652,
+            "repeatPanelId": 2246,
+            "repeatedByRow": true,
+            "scroll": true,
+            "showHeader": true,
+            "sort": {
+                "col": 2,
+                "desc": true
+            },
+            "styles": [
+                {
+                    "alias": "Exporters",
+                    "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                    "pattern": "agent_type",
+                    "type": "string"
+                },
+                {
+                    "alias": "Amount",
+                    "colorMode": null,
+                    "colors": [
+                        "rgba(245, 54, 54, 0.9)",
+                        "rgba(237, 129, 40, 0.89)",
+                        "rgba(50, 172, 45, 0.97)"
+                    ],
+                    "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                    "decimals": 0,
+                    "mappingType": 1,
+                    "pattern": "Value",
+                    "thresholds": [],
+                    "type": "number",
+                    "unit": "short"
+                },
+                {
+                    "alias": "",
+                    "colorMode": null,
+                    "colors": [
+                        "rgba(245, 54, 54, 0.9)",
+                        "rgba(237, 129, 40, 0.89)",
+                        "rgba(50, 172, 45, 0.97)"
+                    ],
+                    "decimals": 2,
+                    "pattern": "/.*/",
+                    "thresholds": [],
+                    "type": "hidden",
+                    "unit": "short"
+                }
+            ],
+            "targets": [
+                {
+                    "expr": "sum by (agent_type) (count by (agent_type) (process_cpu_seconds_total{node_name=~\"$node_name\"}) or count by (agent_type) (label_replace(label_replace(process_cpu_seconds_total{job=~\"rds.*\"},\"agent_type\", \"rds_exporter\", \"job\", \"rds_exporter_(.*)\"),\"node_name\",\"pmm-server\",\"\",\"\"))  * count by (agent_type) (label_replace(process_resident_memory_bytes{instance=~\"$node_name\",job=\"prometheus\"},\"agent_type\", \"rds_exporter\", \"\", \"\")))",
+                    "format": "table",
+                    "hide": false,
+                    "instant": true,
+                    "refId": "C"
+                }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "",
+            "transform": "table",
+            "type": "table"
+        },
+        {
+            "cacheTimeout": null,
+            "colorBackground": false,
+            "colorValue": false,
+            "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+            ],
+            "datasource": "Prometheus",
+            "description": "Shows the total number of virtual CPUs on the host. An Exporter is a software library that provides metrics to PMM.\n\nSee also:",
+            "editable": true,
+            "error": false,
+            "format": "none",
+            "gauge": {
+                "maxValue": 100,
+                "minValue": 0,
+                "show": false,
+                "thresholdLabels": false,
+                "thresholdMarkers": true
+            },
+            "gridPos": {
+                "h": 2,
+                "w": 4,
+                "x": 5,
+                "y": 32
+            },
+            "height": "50",
+            "id": 2270,
+            "interval": "$interval",
+            "links": [
+                {
+                    "targetBlank": true,
+                    "title": "Understanding Prometheus Exporters",
+                    "url": "https://www.percona.com/blog/2018/02/20/understand-prometheus-exporters-percona-monitoring-management-pmm/"
+                },
+                {
+                    "targetBlank": true,
+                    "title": "Exporters and integrations",
+                    "url": "https://prometheus.io/docs/instrumenting/exporters/"
+                }
+            ],
+            "mappingType": 1,
+            "mappingTypes": [
+                {
+                    "name": "value to text",
+                    "value": 1
+                },
+                {
+                    "name": "range to text",
+                    "value": 2
+                }
+            ],
+            "maxDataPoints": 100,
+            "nullPointMode": "connected",
+            "nullText": null,
+            "options": {},
+            "postfix": "",
+            "postfixFontSize": "50%",
+            "prefix": "",
+            "prefixFontSize": "80%",
+            "rangeMaps": [
+                {
+                    "from": "null",
+                    "text": "N/A",
+                    "to": "null"
+                }
+            ],
+            "repeatIteration": 1583151565652,
+            "repeatPanelId": 25,
+            "repeatedByRow": true,
+            "sparkline": {
+                "fillColor": "rgba(31, 118, 189, 0.18)",
+                "full": false,
+                "lineColor": "rgb(31, 120, 193)",
+                "show": true
+            },
+            "tableColumn": "",
+            "targets": [
+                {
+                    "expr": "(count(node_cpu_seconds_total{node_name=~\"$node_name\",mode=~\"user\"}) or \n(1-absent(node_cpu_seconds_total{node_name=~\"$node_name\",mode=~\"user\"}))) + sum(rdsosmetrics_General_numVCPUs{node_name=~\"$node_name\"} or up * 0)",
+                    "format": "time_series",
+                    "instant": true,
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "",
+                    "refId": "A",
+                    "step": 300
+                }
+            ],
+            "thresholds": "",
+            "title": "Virtual CPUs",
+            "type": "singlestat",
+            "valueFontSize": "50%",
+            "valueMaps": [
+                {
+                    "op": "=",
+                    "text": "N/A",
+                    "value": "null"
+                }
+            ],
+            "valueName": "current"
+        },
+        {
+            "cacheTimeout": null,
+            "colorBackground": false,
+            "colorValue": false,
+            "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+            ],
+            "datasource": "Prometheus",
+            "decimals": 2,
+            "description": "Shows the total amount of RAM of the host. An Exporter is a software library that provides metrics to PMM.\n\nSee also:",
+            "editable": true,
+            "error": false,
+            "format": "bytes",
+            "gauge": {
+                "maxValue": 100,
+                "minValue": 0,
+                "show": false,
+                "thresholdLabels": false,
+                "thresholdMarkers": true
+            },
+            "gridPos": {
+                "h": 2,
+                "w": 4,
+                "x": 9,
+                "y": 32
+            },
+            "height": "50",
+            "id": 2271,
+            "interval": "$interval",
+            "links": [
+                {
+                    "targetBlank": true,
+                    "title": "Understanding Prometheus Exporters",
+                    "url": "https://www.percona.com/blog/2018/02/20/understand-prometheus-exporters-percona-monitoring-management-pmm/"
+                },
+                {
+                    "targetBlank": true,
+                    "title": "Exporters and integrations",
+                    "url": "https://prometheus.io/docs/instrumenting/exporters/"
+                }
+            ],
+            "mappingType": 1,
+            "mappingTypes": [
+                {
+                    "name": "value to text",
+                    "value": 1
+                },
+                {
+                    "name": "range to text",
+                    "value": 2
+                }
+            ],
+            "maxDataPoints": 100,
+            "nullPointMode": "connected",
+            "nullText": null,
+            "options": {},
+            "postfix": "",
+            "postfixFontSize": "30%",
+            "prefix": "",
+            "prefixFontSize": "30%",
+            "rangeMaps": [
+                {
+                    "from": "null",
+                    "text": "N/A",
+                    "to": "null"
+                }
+            ],
+            "repeatIteration": 1583151565652,
+            "repeatPanelId": 26,
+            "repeatedByRow": true,
+            "sparkline": {
+                "fillColor": "rgba(31, 118, 189, 0.18)",
+                "full": false,
+                "lineColor": "rgb(31, 120, 193)",
+                "show": true
+            },
+            "tableColumn": "",
+            "targets": [
+                {
+                    "expr": "avg by (node_name) (node_memory_MemTotal_bytes{node_name=~\"$node_name\"})",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "",
+                    "refId": "A",
+                    "step": 300
+                }
+            ],
+            "thresholds": "",
+            "title": "RAM",
+            "type": "singlestat",
+            "valueFontSize": "50%",
+            "valueMaps": [
+                {
+                    "op": "=",
+                    "text": "N/A",
+                    "value": "null"
+                }
+            ],
+            "valueName": "current"
+        },
+        {
+            "cacheTimeout": null,
+            "colorBackground": false,
+            "colorValue": true,
+            "colors": [
+                "rgba(50, 172, 45, 0.97)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(245, 54, 54, 0.9)"
+            ],
+            "datasource": "Prometheus",
+            "decimals": null,
+            "description": "",
+            "editable": true,
+            "error": false,
+            "format": "short",
+            "gauge": {
+                "maxValue": 100,
+                "minValue": 0,
+                "show": false,
+                "thresholdLabels": false,
+                "thresholdMarkers": true
+            },
+            "gridPos": {
+                "h": 2,
+                "w": 4,
+                "x": 13,
+                "y": 32
+            },
+            "height": "50",
+            "id": 2272,
+            "interval": "$interval",
+            "links": [],
+            "mappingType": 1,
+            "mappingTypes": [
+                {
+                    "name": "value to text",
+                    "value": 1
+                },
+                {
+                    "name": "range to text",
+                    "value": 2
+                }
+            ],
+            "maxDataPoints": 100,
+            "nullPointMode": "connected",
+            "nullText": null,
+            "options": {},
+            "postfix": "",
+            "postfixFontSize": "50%",
+            "prefix": "",
+            "prefixFontSize": "80%",
+            "rangeMaps": [
+                {
+                    "from": "null",
+                    "text": "N/A",
+                    "to": "null"
+                }
+            ],
+            "repeatIteration": 1583151565652,
+            "repeatPanelId": 2263,
+            "repeatedByRow": true,
+            "sparkline": {
+                "fillColor": "rgba(31, 118, 189, 0.18)",
+                "full": false,
+                "lineColor": "rgb(31, 120, 193)",
+                "show": true
+            },
+            "tableColumn": "",
+            "targets": [
+                {
+                    "expr": "sum(process_open_fds{node_name=~\"$node_name\"})",
+                    "format": "time_series",
+                    "hide": true,
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "",
+                    "refId": "A",
+                    "step": 300
+                },
+                {
+                    "expr": "sum(sum by (agent_type) (process_open_fds{node_name=~\"$node_name\"}) or sum by (agent_type) (label_replace(label_replace(process_open_fds{job=~\"rds.*\"},\"agent_type\", \"rds_exporter\", \"job\", \"rds_exporter_(.*)\"),\"node_name\",\"pmm-server\",\"\",\"\"))  * count by (agent_type) (label_replace(process_open_fds{instance=~\"$node_name\",job=\"prometheus\"},\"agent_type\", \"rds_exporter\", \"\", \"\")))",
+                    "refId": "B"
+                }
+            ],
+            "thresholds": "512,800",
+            "title": "File Descriptors Used",
+            "type": "singlestat",
+            "valueFontSize": "50%",
+            "valueMaps": [
+                {
+                    "op": "=",
+                    "text": "N/A",
+                    "value": "null"
+                }
+            ],
+            "valueName": "current"
+        },
+        {
+            "collapsed": false,
+            "datasource": null,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 34
+            },
+            "id": 2273,
+            "panels": [],
+            "repeat": null,
+            "repeatIteration": 1583151565652,
+            "repeatPanelId": 2220,
+            "title": "",
+            "type": "row"
+        },
+        {
+            "content": "$node_name",
+            "datasource": null,
+            "gridPos": {
+                "h": 4,
+                "w": 5,
+                "x": 0,
+                "y": 35
+            },
+            "height": "95",
+            "id": 2274,
+            "links": [
+                {
+                    "targetBlank": true,
+                    "title": "Understanding Prometheus Exporters",
+                    "url": "https://www.percona.com/blog/2018/02/20/understand-prometheus-exporters-percona-monitoring-management-pmm/"
+                },
+                {
+                    "targetBlank": true,
+                    "title": "Exporters and integrations",
+                    "url": "https://prometheus.io/docs/instrumenting/exporters/"
+                },
+                {
+                    "targetBlank": true,
+                    "title": "System Overview",
+                    "url": "/graph/d/node-instance-summary/node-summary?$__url_time_range&$__all_variables"
+                }
+            ],
+            "mode": "markdown",
+            "options": {},
+            "repeatIteration": 1583151565652,
+            "repeatPanelId": 162,
+            "repeatedByRow": true,
+            "title": "Node name",
+            "type": "text"
+        },
+        {
+            "cacheTimeout": null,
+            "colorBackground": false,
+            "colorValue": true,
+            "colors": [
+                "#299c46",
+                "rgba(237, 129, 40, 0.89)",
+                "#d44a3a"
+            ],
+            "datasource": "Prometheus",
+            "decimals": 2,
+            "description": "Show the CPU usage as a percentage for all Exporters on a per-host basis. An Exporter is a software library that provides metrics to PMM.\n\nSee also:",
+            "format": "percent",
+            "gauge": {
+                "maxValue": 100,
+                "minValue": 0,
+                "show": false,
+                "thresholdLabels": false,
+                "thresholdMarkers": true
+            },
+            "gridPos": {
+                "h": 2,
+                "w": 4,
+                "x": 5,
+                "y": 35
+            },
+            "id": 2275,
+            "interval": null,
+            "links": [
+                {
+                    "targetBlank": true,
+                    "title": "Understanding Prometheus Exporters",
+                    "url": "https://www.percona.com/blog/2018/02/20/understand-prometheus-exporters-percona-monitoring-management-pmm/"
+                },
+                {
+                    "targetBlank": true,
+                    "title": "Exporters and integrations",
+                    "url": "https://prometheus.io/docs/instrumenting/exporters/"
+                },
+                {
+                    "targetBlank": true,
+                    "title": "Prometheus Exporter Status",
+                    "url": "/graph/d/prometheus-status/prometheus-exporter-status?$__url_time_range&$__all_variables"
+                }
+            ],
+            "mappingType": 1,
+            "mappingTypes": [
+                {
+                    "name": "value to text",
+                    "value": 1
+                },
+                {
+                    "name": "range to text",
+                    "value": 2
+                }
+            ],
+            "maxDataPoints": 100,
+            "nullPointMode": "connected",
+            "nullText": null,
+            "options": {},
+            "postfix": "",
+            "postfixFontSize": "50%",
+            "prefix": "",
+            "prefixFontSize": "50%",
+            "rangeMaps": [
+                {
+                    "from": "null",
+                    "text": "N/A",
+                    "to": "null"
+                }
+            ],
+            "repeatIteration": 1583151565652,
+            "repeatPanelId": 2228,
+            "repeatedByRow": true,
+            "sparkline": {
+                "fillColor": "rgba(31, 118, 189, 0.18)",
+                "full": false,
+                "lineColor": "rgb(31, 120, 193)",
+                "show": true,
+                "ymax": 100,
+                "ymin": 0
+            },
+            "tableColumn": "",
+            "targets": [
+                {
+                    "expr": "(sum(rate(process_cpu_seconds_total{job=~\".*exporter.*\",node_name=~\"$node_name\"}[$interval]) or irate(process_cpu_seconds_total{job=~\".*exporter.*\",node_name=~\"$node_name\"}[5m]) or\nlabel_replace(rate(process_cpu_seconds_total{job=~\"rds.*\"}[$interval]),\"node_name\",\"pmm-server\",\"\",\"\") or\nlabel_replace(rate(process_cpu_seconds_total{job=~\"rds.*\"}[5m]),\"node_name\",\"pmm-server\",\"\",\"\")) by (node_name)) / \ncount(node_cpu_seconds_total{job=~\".*exporter.*\",node_name=~\"$node_name\"}) by (node_name) * 100 or\nsum by (node_name) ((max_over_time(node_cpu_average{node_name=~\"$node_name\", mode=\"total\"}[$interval]) or \nmax_over_time(node_cpu_average{node_name=~\"$node_name\", mode=\"total\"}[5m])))",
+                    "refId": "B"
+                }
+            ],
+            "thresholds": "5,10",
+            "title": "CPU  Used",
+            "type": "singlestat",
+            "valueFontSize": "50%",
+            "valueMaps": [
+                {
+                    "op": "=",
+                    "text": "N/A",
+                    "value": "null"
+                }
+            ],
+            "valueName": "current"
+        },
+        {
+            "cacheTimeout": null,
+            "colorBackground": false,
+            "colorValue": true,
+            "colors": [
+                "rgba(50, 172, 45, 0.97)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(245, 54, 54, 0.9)"
+            ],
+            "datasource": "Prometheus",
+            "decimals": 2,
+            "description": "Shows total Memory Used by Exporters on a per-host basis. An Exporter is a software library that provides metrics to PMM.\n\nSee also:",
+            "editable": true,
+            "error": false,
+            "format": "bytes",
+            "gauge": {
+                "maxValue": 100,
+                "minValue": 0,
+                "show": false,
+                "thresholdLabels": false,
+                "thresholdMarkers": true
+            },
+            "gridPos": {
+                "h": 2,
+                "w": 4,
+                "x": 9,
+                "y": 35
+            },
+            "height": "50",
+            "id": 2276,
+            "interval": "$interval",
+            "links": [
+                {
+                    "targetBlank": true,
+                    "title": "Understanding Prometheus Exporters",
+                    "url": "https://www.percona.com/blog/2018/02/20/understand-prometheus-exporters-percona-monitoring-management-pmm/"
+                },
+                {
+                    "targetBlank": true,
+                    "title": "Exporters and integrations",
+                    "url": "https://prometheus.io/docs/instrumenting/exporters/"
+                },
+                {
+                    "targetBlank": true,
+                    "title": "Prometheus Exporter Status",
+                    "url": "/graph/d/prometheus-status/prometheus-exporter-status?$__url_time_range&$__all_variables"
+                }
+            ],
+            "mappingType": 1,
+            "mappingTypes": [
+                {
+                    "name": "value to text",
+                    "value": 1
+                },
+                {
+                    "name": "range to text",
+                    "value": 2
+                }
+            ],
+            "maxDataPoints": 100,
+            "nullPointMode": "connected",
+            "nullText": null,
+            "options": {},
+            "postfix": "",
+            "postfixFontSize": "50%",
+            "prefix": "",
+            "prefixFontSize": "50%",
+            "rangeMaps": [
+                {
+                    "from": "null",
+                    "text": "N/A",
+                    "to": "null"
+                }
+            ],
+            "repeatIteration": 1583151565652,
+            "repeatPanelId": 163,
+            "repeatedByRow": true,
+            "sparkline": {
+                "fillColor": "rgba(31, 118, 189, 0.18)",
+                "full": false,
+                "lineColor": "rgb(31, 120, 193)",
+                "show": true
+            },
+            "tableColumn": "",
+            "targets": [
+                {
+                    "expr": "sum(\nmax_over_time(process_resident_memory_bytes{job=~\".*exporter.*\",job!~\"rds.*\",node_name=~\"$node_name\"}[$interval]) or max_over_time(process_resident_memory_bytes{job=~\".*exporter.*\",job!~\"rds.*\",node_name=~\"$node_name\"}[5m]) or\n(sum by (node_name) (label_replace(max_over_time(process_resident_memory_bytes{job=~\"rds.*\"}[$interval]),\"node_name\",\"pmm-server\",\"\",\"\") or\nlabel_replace(max_over_time(process_resident_memory_bytes{job=~\"rds.*\"}[5m]),\"node_name\",\"pmm-server\",\"\",\"\"))) * count by (node_name) (label_replace(process_resident_memory_bytes{instance=~\"$node_name\",job=\"prometheus\"},\"node_name\", \"pmm-server\", \"\", \"\"))\n) by (node_name)",
+                    "hide": false,
+                    "interval": "$interval",
+                    "refId": "B"
+                }
+            ],
+            "thresholds": "100000000,200000000",
+            "title": "Mem Used",
+            "type": "singlestat",
+            "valueFontSize": "50%",
+            "valueMaps": [],
+            "valueName": "current"
+        },
+        {
+            "cacheTimeout": null,
+            "colorBackground": false,
+            "colorValue": true,
+            "colors": [
+                "rgba(50, 172, 45, 0.97)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(245, 54, 54, 0.9)"
+            ],
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "description": "Shows the number of Exporters running on a per-host basis. An Exporter is a software library that provides metrics to PMM.\n\nSee also:",
+            "editable": true,
+            "error": false,
+            "format": "short",
+            "gauge": {
+                "maxValue": 100,
+                "minValue": 0,
+                "show": false,
+                "thresholdLabels": false,
+                "thresholdMarkers": true
+            },
+            "gridPos": {
+                "h": 2,
+                "w": 4,
+                "x": 13,
+                "y": 35
+            },
+            "height": "50",
+            "id": 2277,
+            "interval": "$interval",
+            "links": [
+                {
+                    "targetBlank": true,
+                    "title": "Understanding Prometheus Exporters",
+                    "url": "https://www.percona.com/blog/2018/02/20/understand-prometheus-exporters-percona-monitoring-management-pmm/"
+                },
+                {
+                    "targetBlank": true,
+                    "title": "Exporters and integrations",
+                    "url": "https://prometheus.io/docs/instrumenting/exporters/"
+                },
+                {
+                    "targetBlank": true,
+                    "title": "Prometheus Exporter Status",
+                    "url": "/graph/d/prometheus-status/prometheus-exporter-status?$__url_time_range&$__all_variables"
+                }
+            ],
+            "mappingType": 1,
+            "mappingTypes": [
+                {
+                    "name": "value to text",
+                    "value": 1
+                },
+                {
+                    "name": "range to text",
+                    "value": 2
+                }
+            ],
+            "maxDataPoints": 100,
+            "nullPointMode": "connected",
+            "nullText": null,
+            "options": {},
+            "postfix": "",
+            "postfixFontSize": "50%",
+            "prefix": "",
+            "prefixFontSize": "80%",
+            "rangeMaps": [
+                {
+                    "from": "null",
+                    "text": "N/A",
+                    "to": "null"
+                }
+            ],
+            "repeatIteration": 1583151565652,
+            "repeatPanelId": 314,
+            "repeatedByRow": true,
+            "sparkline": {
+                "fillColor": "rgba(31, 118, 189, 0.18)",
+                "full": false,
+                "lineColor": "rgb(31, 120, 193)",
+                "show": true
+            },
+            "tableColumn": "",
+            "targets": [
+                {
+                    "calculatedInterval": "10m",
+                    "datasourceErrors": {},
+                    "errors": {},
+                    "expr": "count(process_open_fds{job=~\".*exporter.*\",node_name=~\"$node_name\"}) ",
+                    "format": "time_series",
+                    "hide": true,
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "",
+                    "metric": "node_mem",
+                    "refId": "A",
+                    "step": 300
+                },
+                {
+                    "expr": "sum(count by (agent_type) (process_cpu_seconds_total{node_name=~\"$node_name\"}) or count by (agent_type) (label_replace(label_replace(process_cpu_seconds_total{job=~\"rds.*\"},\"agent_type\", \"rds_exporter\", \"job\", \"rds_exporter_(.*)\"),\"node_name\",\"pmm-server\",\"\",\"\"))  * count by (agent_type) (label_replace(process_resident_memory_bytes{instance=~\"$node_name\",job=\"prometheus\"},\"agent_type\", \"rds_exporter\", \"\", \"\")))",
+                    "refId": "B"
+                }
+            ],
+            "thresholds": "512,800",
+            "title": "Exporters Running",
+            "type": "singlestat",
+            "valueFontSize": "50%",
+            "valueMaps": [],
+            "valueName": "current"
+        },
+        {
+            "columns": [],
+            "datasource": null,
+            "fontSize": "100%",
+            "gridPos": {
+                "h": 4,
+                "w": 7,
+                "x": 17,
+                "y": 35
+            },
+            "id": 2278,
+            "links": [],
+            "options": {},
+            "pageSize": null,
+            "repeatIteration": 1583151565652,
+            "repeatPanelId": 2246,
+            "repeatedByRow": true,
+            "scroll": true,
+            "showHeader": true,
+            "sort": {
+                "col": 2,
+                "desc": true
+            },
+            "styles": [
+                {
+                    "alias": "Exporters",
+                    "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                    "pattern": "agent_type",
+                    "type": "string"
+                },
+                {
+                    "alias": "Amount",
+                    "colorMode": null,
+                    "colors": [
+                        "rgba(245, 54, 54, 0.9)",
+                        "rgba(237, 129, 40, 0.89)",
+                        "rgba(50, 172, 45, 0.97)"
+                    ],
+                    "dateFormat": "YYYY-MM-DD HH:mm:ss",
+                    "decimals": 0,
+                    "mappingType": 1,
+                    "pattern": "Value",
+                    "thresholds": [],
+                    "type": "number",
+                    "unit": "short"
+                },
+                {
+                    "alias": "",
+                    "colorMode": null,
+                    "colors": [
+                        "rgba(245, 54, 54, 0.9)",
+                        "rgba(237, 129, 40, 0.89)",
+                        "rgba(50, 172, 45, 0.97)"
+                    ],
+                    "decimals": 2,
+                    "pattern": "/.*/",
+                    "thresholds": [],
+                    "type": "hidden",
+                    "unit": "short"
+                }
+            ],
+            "targets": [
+                {
+                    "expr": "sum by (agent_type) (count by (agent_type) (process_cpu_seconds_total{node_name=~\"$node_name\"}) or count by (agent_type) (label_replace(label_replace(process_cpu_seconds_total{job=~\"rds.*\"},\"agent_type\", \"rds_exporter\", \"job\", \"rds_exporter_(.*)\"),\"node_name\",\"pmm-server\",\"\",\"\"))  * count by (agent_type) (label_replace(process_resident_memory_bytes{instance=~\"$node_name\",job=\"prometheus\"},\"agent_type\", \"rds_exporter\", \"\", \"\")))",
+                    "format": "table",
+                    "hide": false,
+                    "instant": true,
+                    "refId": "C"
+                }
+            ],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "",
+            "transform": "table",
+            "type": "table"
+        },
+        {
+            "cacheTimeout": null,
+            "colorBackground": false,
+            "colorValue": false,
+            "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+            ],
+            "datasource": "Prometheus",
+            "description": "Shows the total number of virtual CPUs on the host. An Exporter is a software library that provides metrics to PMM.\n\nSee also:",
+            "editable": true,
+            "error": false,
+            "format": "none",
+            "gauge": {
+                "maxValue": 100,
+                "minValue": 0,
+                "show": false,
+                "thresholdLabels": false,
+                "thresholdMarkers": true
+            },
+            "gridPos": {
+                "h": 2,
+                "w": 4,
+                "x": 5,
+                "y": 37
+            },
+            "height": "50",
+            "id": 2279,
+            "interval": "$interval",
+            "links": [
+                {
+                    "targetBlank": true,
+                    "title": "Understanding Prometheus Exporters",
+                    "url": "https://www.percona.com/blog/2018/02/20/understand-prometheus-exporters-percona-monitoring-management-pmm/"
+                },
+                {
+                    "targetBlank": true,
+                    "title": "Exporters and integrations",
+                    "url": "https://prometheus.io/docs/instrumenting/exporters/"
+                }
+            ],
+            "mappingType": 1,
+            "mappingTypes": [
+                {
+                    "name": "value to text",
+                    "value": 1
+                },
+                {
+                    "name": "range to text",
+                    "value": 2
+                }
+            ],
+            "maxDataPoints": 100,
+            "nullPointMode": "connected",
+            "nullText": null,
+            "options": {},
+            "postfix": "",
+            "postfixFontSize": "50%",
+            "prefix": "",
+            "prefixFontSize": "80%",
+            "rangeMaps": [
+                {
+                    "from": "null",
+                    "text": "N/A",
+                    "to": "null"
+                }
+            ],
+            "repeatIteration": 1583151565652,
+            "repeatPanelId": 25,
+            "repeatedByRow": true,
+            "sparkline": {
+                "fillColor": "rgba(31, 118, 189, 0.18)",
+                "full": false,
+                "lineColor": "rgb(31, 120, 193)",
+                "show": true
+            },
+            "tableColumn": "",
+            "targets": [
+                {
+                    "expr": "(count(node_cpu_seconds_total{node_name=~\"$node_name\",mode=~\"user\"}) or \n(1-absent(node_cpu_seconds_total{node_name=~\"$node_name\",mode=~\"user\"}))) + sum(rdsosmetrics_General_numVCPUs{node_name=~\"$node_name\"} or up * 0)",
+                    "format": "time_series",
+                    "instant": true,
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "",
+                    "refId": "A",
+                    "step": 300
+                }
+            ],
+            "thresholds": "",
+            "title": "Virtual CPUs",
+            "type": "singlestat",
+            "valueFontSize": "50%",
+            "valueMaps": [
+                {
+                    "op": "=",
+                    "text": "N/A",
+                    "value": "null"
+                }
+            ],
+            "valueName": "current"
+        },
+        {
+            "cacheTimeout": null,
+            "colorBackground": false,
+            "colorValue": false,
+            "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+            ],
+            "datasource": "Prometheus",
+            "decimals": 2,
+            "description": "Shows the total amount of RAM of the host. An Exporter is a software library that provides metrics to PMM.\n\nSee also:",
+            "editable": true,
+            "error": false,
+            "format": "bytes",
+            "gauge": {
+                "maxValue": 100,
+                "minValue": 0,
+                "show": false,
+                "thresholdLabels": false,
+                "thresholdMarkers": true
+            },
+            "gridPos": {
+                "h": 2,
+                "w": 4,
+                "x": 9,
+                "y": 37
+            },
+            "height": "50",
+            "id": 2280,
+            "interval": "$interval",
+            "links": [
+                {
+                    "targetBlank": true,
+                    "title": "Understanding Prometheus Exporters",
+                    "url": "https://www.percona.com/blog/2018/02/20/understand-prometheus-exporters-percona-monitoring-management-pmm/"
+                },
+                {
+                    "targetBlank": true,
+                    "title": "Exporters and integrations",
+                    "url": "https://prometheus.io/docs/instrumenting/exporters/"
+                }
+            ],
+            "mappingType": 1,
+            "mappingTypes": [
+                {
+                    "name": "value to text",
+                    "value": 1
+                },
+                {
+                    "name": "range to text",
+                    "value": 2
+                }
+            ],
+            "maxDataPoints": 100,
+            "nullPointMode": "connected",
+            "nullText": null,
+            "options": {},
+            "postfix": "",
+            "postfixFontSize": "30%",
+            "prefix": "",
+            "prefixFontSize": "30%",
+            "rangeMaps": [
+                {
+                    "from": "null",
+                    "text": "N/A",
+                    "to": "null"
+                }
+            ],
+            "repeatIteration": 1583151565652,
+            "repeatPanelId": 26,
+            "repeatedByRow": true,
+            "sparkline": {
+                "fillColor": "rgba(31, 118, 189, 0.18)",
+                "full": false,
+                "lineColor": "rgb(31, 120, 193)",
+                "show": true
+            },
+            "tableColumn": "",
+            "targets": [
+                {
+                    "expr": "avg by (node_name) (node_memory_MemTotal_bytes{node_name=~\"$node_name\"})",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "",
+                    "refId": "A",
+                    "step": 300
+                }
+            ],
+            "thresholds": "",
+            "title": "RAM",
+            "type": "singlestat",
+            "valueFontSize": "50%",
+            "valueMaps": [
+                {
+                    "op": "=",
+                    "text": "N/A",
+                    "value": "null"
+                }
+            ],
+            "valueName": "current"
+        },
+        {
+            "cacheTimeout": null,
+            "colorBackground": false,
+            "colorValue": true,
+            "colors": [
+                "rgba(50, 172, 45, 0.97)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(245, 54, 54, 0.9)"
+            ],
+            "datasource": "Prometheus",
+            "decimals": null,
+            "description": "",
+            "editable": true,
+            "error": false,
+            "format": "short",
+            "gauge": {
+                "maxValue": 100,
+                "minValue": 0,
+                "show": false,
+                "thresholdLabels": false,
+                "thresholdMarkers": true
+            },
+            "gridPos": {
+                "h": 2,
+                "w": 4,
+                "x": 13,
+                "y": 37
+            },
+            "height": "50",
+            "id": 2281,
+            "interval": "$interval",
+            "links": [],
+            "mappingType": 1,
+            "mappingTypes": [
+                {
+                    "name": "value to text",
+                    "value": 1
+                },
+                {
+                    "name": "range to text",
+                    "value": 2
+                }
+            ],
+            "maxDataPoints": 100,
+            "nullPointMode": "connected",
+            "nullText": null,
+            "options": {},
+            "postfix": "",
+            "postfixFontSize": "50%",
+            "prefix": "",
+            "prefixFontSize": "80%",
+            "rangeMaps": [
+                {
+                    "from": "null",
+                    "text": "N/A",
+                    "to": "null"
+                }
+            ],
+            "repeatIteration": 1583151565652,
+            "repeatPanelId": 2263,
+            "repeatedByRow": true,
             "sparkline": {
                 "fillColor": "rgba(31, 118, 189, 0.18)",
                 "full": false,
