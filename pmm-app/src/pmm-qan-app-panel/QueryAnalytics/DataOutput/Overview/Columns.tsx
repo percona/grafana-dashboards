@@ -47,7 +47,7 @@ export const getDefaultColumns = (groupBy, pageNumber, pageSize, columns) => {
               overflow: 'hidden',
               textOverflow: 'ellipsis',
               whiteSpace: 'nowrap',
-              maxWidth: mainMetricColumnWidth,
+              maxWidth: mainMetricColumnWidth - 40,
             }}
           >
             {record.fingerprint || record.dimension || 'TOTAL'}
@@ -95,7 +95,7 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
       ].filter(element => element.value);
 
       // @ts-ignore
-      const polygonChartProps = { width: COLUMN_WIDTH * 1.5 - MAIN_METRIC_VALUE_WIDTH, data: item.sparkline };
+      const polygonChartProps = { width: COLUMN_WIDTH * 1.2 - MAIN_METRIC_VALUE_WIDTH, data: item.sparkline };
       return (
         <div className={'overview-content-column'}>
           {columnIndex === 0 && <PolygonChart {...polygonChartProps} />}
