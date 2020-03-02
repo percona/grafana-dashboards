@@ -822,7 +822,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "rate(process_cpu_seconds_total{job=\"prometheus\"}[$interval]) or irate(process_cpu_seconds_total{job=\"prometheus\"}[5m])",
+                            "expr": "avg by (node_name) (rate(process_cpu_seconds_total{job=\"prometheus\"}[$interval]) or irate(process_cpu_seconds_total{job=\"prometheus\"}[5m]))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -833,7 +833,7 @@
                             "step": 60
                         },
                         {
-                            "expr": "count(node_cpu_seconds_total{mode=\"user\", node_name=\"pmm-server\"})",
+                            "expr": "count(avg by (service_name) (node_cpu_seconds_total{mode=\"user\", node_name=\"pmm-server\"}))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -842,7 +842,7 @@
                             "step": 40
                         },
                         {
-                            "expr": "count(node_cpu_seconds_total{mode=\"user\", node_name=\"pmm-server\"})*0.75",
+                            "expr": "count(avg by (service_name) (node_cpu_seconds_total{mode=\"user\", node_name=\"pmm-server\"}))*0.75",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -986,7 +986,7 @@
                             "step": 60
                         },
                         {
-                            "expr": "node_memory_MemTotal_bytes{node_name=\"pmm-server\"}",
+                            "expr": "avg by (node_name) (node_memory_MemTotal_bytes{node_name=\"pmm-server\"})",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -1085,7 +1085,8 @@
                             "alias": "Total Disk Space",
                             "color": "#bf1b00",
                             "fill": 0,
-                            "stack": false
+                            "stack": false,
+                            "zindex": 3
                         }
                     ],
                     "spaceLength": 10,
@@ -1093,7 +1094,16 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "(node_filesystem_size_bytes{node_name=\"pmm-server\",mountpoint=\"/srv\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"} or \nnode_filesystem_size_bytes{node_name=\"pmm-server\",mountpoint=\"/\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"} ) - \n(node_filesystem_free_bytes{node_name=\"pmm-server\",mountpoint=\"/srv\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"} or \nnode_filesystem_free_bytes{node_name=\"pmm-server\",mountpoint=\"/\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"})",
+                            "expr": "avg by (node_name) (node_filesystem_size_bytes{node_name=\"pmm-server\",mountpoint=\"/srv\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"} or \nnode_filesystem_size_bytes{node_name=\"pmm-server\",mountpoint=\"/\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"})",
+                            "format": "time_series",
+                            "hide": false,
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Total Disk Space",
+                            "refId": "C"
+                        },
+                        {
+                            "expr": "avg by (node_name) ((node_filesystem_size_bytes{node_name=\"pmm-server\",mountpoint=\"/srv\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"} or \nnode_filesystem_size_bytes{node_name=\"pmm-server\",mountpoint=\"/\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"} ) - \n(node_filesystem_free_bytes{node_name=\"pmm-server\",mountpoint=\"/srv\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"} or \nnode_filesystem_free_bytes{node_name=\"pmm-server\",mountpoint=\"/\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1101,22 +1111,13 @@
                             "refId": "A"
                         },
                         {
-                            "expr": "node_filesystem_free_bytes{node_name=\"pmm-server\", mountpoint=\"/srv\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"} or \nnode_filesystem_free_bytes{node_name=\"pmm-server\", mountpoint=\"/\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}",
+                            "expr": "avg by (node_name) (node_filesystem_free_bytes{node_name=\"pmm-server\", mountpoint=\"/srv\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"} or \nnode_filesystem_free_bytes{node_name=\"pmm-server\", mountpoint=\"/\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"})",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
                             "intervalFactor": 1,
                             "legendFormat": "Free Disk Space",
                             "refId": "B"
-                        },
-                        {
-                            "expr": "node_filesystem_size_bytes{node_name=\"pmm-server\",mountpoint=\"/srv\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"} or \nnode_filesystem_size_bytes{node_name=\"pmm-server\",mountpoint=\"/\",fstype!~\"rootfs|selinuxfs|autofs|rpc_pipefs|tmpfs\"}",
-                            "format": "time_series",
-                            "hide": false,
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Total Disk Space",
-                            "refId": "C"
                         }
                     ],
                     "thresholds": [],
@@ -1242,7 +1243,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "rate(prometheus_tsdb_compaction_chunk_range_seconds_sum[6h])/rate(prometheus_tsdb_compaction_chunk_range_seconds_count[6h])",
+                            "expr": "avg by (node_name) (rate(prometheus_tsdb_compaction_chunk_range_seconds_sum[6h])/rate(prometheus_tsdb_compaction_chunk_range_seconds_count[6h]))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -1327,7 +1328,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "rate(prometheus_tsdb_compaction_chunk_samples_sum[6h])/rate(prometheus_tsdb_compaction_chunk_samples_count[6h])",
+                            "expr": "avg by (node_name) (rate(prometheus_tsdb_compaction_chunk_samples_sum[6h])/rate(prometheus_tsdb_compaction_chunk_samples_count[6h]))",
                             "format": "time_series",
                             "intervalFactor": 2,
                             "legendFormat": "series",
@@ -1410,7 +1411,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "rate(prometheus_tsdb_compaction_chunk_size_bytes_sum[6h])/rate(prometheus_tsdb_compaction_chunk_size_bytes_count[6h])",
+                            "expr": "avg by (node_name) (rate(prometheus_tsdb_compaction_chunk_size_bytes_sum[6h])/rate(prometheus_tsdb_compaction_chunk_size_bytes_count[6h]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 2,
@@ -1495,7 +1496,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "(rate(prometheus_tsdb_compaction_chunk_size_bytes_sum[6h])/rate(prometheus_tsdb_compaction_chunk_size_bytes_count[6h]))/\n(rate(prometheus_tsdb_compaction_chunk_samples_sum[6h])/rate(prometheus_tsdb_compaction_chunk_samples_count[6h]))",
+                            "expr": "avg by (node_name) ((rate(prometheus_tsdb_compaction_chunk_size_bytes_sum[6h])/rate(prometheus_tsdb_compaction_chunk_size_bytes_count[6h]))/\n(rate(prometheus_tsdb_compaction_chunk_samples_sum[6h])/rate(prometheus_tsdb_compaction_chunk_samples_count[6h])))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1580,7 +1581,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "rate(prometheus_tsdb_wal_fsync_duration_seconds_sum[6h])/rate(prometheus_tsdb_wal_fsync_duration_seconds_count[6h])",
+                            "expr": "avg by (node_name) (rate(prometheus_tsdb_wal_fsync_duration_seconds_sum[6h])/rate(prometheus_tsdb_wal_fsync_duration_seconds_count[6h]))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "",
@@ -1665,7 +1666,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "prometheus_tsdb_blocks_loaded",
+                            "expr": "avg by (node_name) (prometheus_tsdb_blocks_loaded)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1750,7 +1751,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "prometheus_tsdb_head_max_time - prometheus_tsdb_head_min_time",
+                            "expr": "avg by (node_name) (prometheus_tsdb_head_max_time - prometheus_tsdb_head_min_time)",
                             "format": "time_series",
                             "hide": false,
                             "interval": "",
@@ -1835,7 +1836,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "rate(prometheus_tsdb_compaction_chunk_size_bytes_sum[6h])/\nrate(prometheus_tsdb_compaction_chunk_size_bytes_count[6h])*\n(max_over_time(prometheus_tsdb_head_chunks[$interval]) or max_over_time(prometheus_tsdb_head_chunks[5m]))",
+                            "expr": "avg by (node_name) (rate(prometheus_tsdb_compaction_chunk_size_bytes_sum[6h])/\nrate(prometheus_tsdb_compaction_chunk_size_bytes_count[6h])*\n(max_over_time(prometheus_tsdb_head_chunks[$interval]) or max_over_time(prometheus_tsdb_head_chunks[5m])))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 2,
@@ -1920,7 +1921,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "rate(prometheus_tsdb_head_gc_duration_seconds_sum[6h])/rate(prometheus_tsdb_head_gc_duration_seconds_count[6h])",
+                            "expr": "avg by (node_name) (rate(prometheus_tsdb_head_gc_duration_seconds_sum[6h])/rate(prometheus_tsdb_head_gc_duration_seconds_count[6h]))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "",
@@ -2005,7 +2006,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "rate(prometheus_tsdb_compaction_duration_seconds_sum[6h])/rate(prometheus_tsdb_compaction_duration_seconds_count[6h])",
+                            "expr": "avg by (node_name) (rate(prometheus_tsdb_compaction_duration_seconds_sum[6h])/rate(prometheus_tsdb_compaction_duration_seconds_count[6h]))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "",
@@ -2485,6 +2486,7 @@
                         "y": 29
                     },
                     "height": "250px",
+                    "hiddenSeries": false,
                     "id": 107,
                     "legend": {
                         "alignAsTable": true,
@@ -4367,7 +4369,7 @@
                     "lines": true,
                     "linewidth": 1,
                     "links": [],
-                    "nullPointMode": "null",
+                    "nullPointMode": "null as zero",
                     "options": {
                         "dataLinks": []
                     },
@@ -5079,7 +5081,7 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "(node_memory_MemAvailable_bytes{node_name=\"pmm-server\"} or (node_memory_MemFree_bytes{node_name=\"pmm-server\"} + node_memory_Buffers_bytes{node_name=\"pmm-server\"} + node_memory_Cached_bytes{node_name=\"pmm-server\"})) / node_memory_MemTotal_bytes{node_name=\"pmm-server\"} * 100",
+                            "expr": "avg by (node_name) ((node_memory_MemAvailable_bytes{node_name=\"pmm-server\"} or (node_memory_MemFree_bytes{node_name=\"pmm-server\"} + node_memory_Buffers_bytes{node_name=\"pmm-server\"} + node_memory_Cached_bytes{node_name=\"pmm-server\"})) / node_memory_MemTotal_bytes{node_name=\"pmm-server\"} * 100)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -5178,7 +5180,7 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "rate(node_vmstat_pgpgin{node_name=\"pmm-server\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=\"pmm-server\"}[5m]) * 1024",
+                            "expr": "avg by (node_name) (rate(node_vmstat_pgpgin{node_name=\"pmm-server\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=\"pmm-server\"}[5m]) * 1024)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -5264,7 +5266,7 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "rate(node_vmstat_pgpgout{node_name=\"pmm-server\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=\"pmm-server\"}[5m]) * 1024",
+                            "expr": "avg by (node_name) (rate(node_vmstat_pgpgout{node_name=\"pmm-server\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=\"pmm-server\"}[5m]) * 1024)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -5350,7 +5352,7 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "(sum(rate(node_network_receive_bytes_total{node_name=\"pmm-server\", device!=\"lo\"}[$interval]) or irate(node_network_receive_bytes_total{node_name=\"pmm-server\", device!=\"lo\"}[5m]))) + (sum(rate(node_network_transmit_bytes_total{node_name=\"pmm-server\", device!=\"lo\"}[$interval]) or irate(node_network_transmit_bytes_total{node_name=\"pmm-server\", device!=\"lo\"}[5m])))",
+                            "expr": "avg by (node_name) ((sum(rate(node_network_receive_bytes_total{node_name=\"pmm-server\", device!=\"lo\"}[$interval]) or irate(node_network_receive_bytes_total{node_name=\"pmm-server\", device!=\"lo\"}[5m]))) + (sum(rate(node_network_transmit_bytes_total{node_name=\"pmm-server\", device!=\"lo\"}[$interval]) or irate(node_network_transmit_bytes_total{node_name=\"pmm-server\", device!=\"lo\"}[5m]))))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -5437,7 +5439,7 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "node_time_seconds{node_name=\"pmm-server\"} - node_boot_time_seconds{node_name=\"pmm-server\"}",
+                            "expr": "avg by (node_name) (node_time_seconds{node_name=\"pmm-server\"} - node_boot_time_seconds{node_name=\"pmm-server\"})",
                             "format": "time_series",
                             "interval": "5m",
                             "intervalFactor": 1,
@@ -5477,7 +5479,7 @@
                         "h": 3,
                         "w": 24,
                         "x": 0,
-                        "y": 15
+                        "y": 17
                     },
                     "id": 84,
                     "links": [],
