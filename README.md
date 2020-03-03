@@ -3,8 +3,8 @@
 This is a set of Grafana dashboards for database and system monitoring using Prometheus datasource.
  
  
- * Amazon RDS / Aurora MySQL metrics (CloudWatch datasource)
  * Advanced Data Exploration
+ * Amazon RDS / Aurora MySQL metrics (CloudWatch datasource)
  * Compare System Parameters
  * CPU Utilization Details (Cores)
  * Cross Server Graphs
@@ -49,6 +49,8 @@ This is a set of Grafana dashboards for database and system monitoring using Pro
  * _PMM Amazon RDS and Remote Instances
  * _PMM Query Analytics Settings
  * _PMM System Summary
+
+
 
 These dashboards are also a part of [Percona Monitoring and Management](https://www.percona.com/doc/percona-monitoring-and-management/index.html) project.
 
