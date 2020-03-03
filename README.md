@@ -3,30 +3,28 @@
 This is a set of Grafana dashboards for database and system monitoring using Prometheus datasource.
  
  
+ * Amazon RDS / Aurora MySQL metrics (CloudWatch datasource)
+ * Advanced Data Exploration
  * Compare System Parameters
  * CPU Utilization Details (Cores)
- * Disk Performance
- * Disk Space
- * Network Overview
- * NUMA Overview
- * System Overview
- * Amazon RDS / Aurora MySQL metrics (CloudWatch datasource)
  * Cross Server Graphs
  * Disk Performance
  * Disk Space
+ * Home Dashboard
  * MongoDB Cluster Summary
+ * MongoDB InMemory
+ * MongoDB MMAPv1
  * MongoDB Overview
  * MongoDB ReplSet
  * MongoDB RocksDB
  * MongoDB WiredTiger
- * MongoDB MMAPv1
- * MongoDB InMemory
  * MySQL Amazon Aurora Metrics
- * MySQL MyRocks Metrics
+ * MySQL Command Handler Counters Compare
  * MySQL InnoDB Metrics
  * MySQL InnoDB Metrics Advanced
  * MySQL InnoDB Compression
  * MySQL MyISAM/Aria Metrics
+ * MySQL MyRocks Metrics
  * MySQL Overview
  * MySQL Performance Schema
  * MySQL Performance Schema Wait Event Analyses
@@ -35,18 +33,17 @@ This is a set of Grafana dashboards for database and system monitoring using Pro
  * MySQL Table Statistics
  * MySQL TokuDB Metrics
  * MySQL User Statistics
- * MySQL Command Handler Counters Compare
+ * Network Overview
+ * NUMA Overview
  * PostgreSQL Overview
  * ProxySQL Overview
- * PXC/Galera Cluster Overview
- * PXC/Galera Graphs
- * Advanced Data Exploration
- * Cross Server Graphs
- * Home Dashboard
  * Prometheus
  * Prometheus Exporter Status
  * Prometheus Exporters Overview
+ * PXC/Galera Cluster Overview
+ * PXC/Galera Graphs
  * Summary Dashboard
+ * System Overview
  * Trends Dashboard
  * _PMM Add Instance
  * _PMM Amazon RDS and Remote Instances
