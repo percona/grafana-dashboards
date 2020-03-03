@@ -169,6 +169,7 @@
                 "x": 0,
                 "y": 3
             },
+            "hiddenSeries": false,
             "id": 42,
             "legend": {
                 "alignAsTable": true,
@@ -206,7 +207,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "scalar(count(proxysql_connection_pool_status{node_name=\"$proxysql\", hostgroup=\"$node_namegroup\"}))",
+                    "expr": "scalar(count(proxysql_connection_pool_status{node_name=~\"$proxysql\", hostgroup=~\"$hostgroup\"}))",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Size",
@@ -292,6 +293,7 @@
                 "x": 0,
                 "y": 8
             },
+            "hiddenSeries": false,
             "id": 55,
             "legend": {
                 "alignAsTable": true,
@@ -325,7 +327,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "max_over_time(proxysql_mysql_status_client_connections_connected{node_name=\"$proxysql\"}[$interval]) or \nmax_over_time(proxysql_mysql_status_client_connections_connected{node_name=\"$proxysql\"}[5m])",
+                    "expr": "avg by (node_name) (max_over_time(proxysql_mysql_status_client_connections_connected{node_name=\"$proxysql\"}[$interval]) or \nmax_over_time(proxysql_mysql_status_client_connections_connected{node_name=\"$proxysql\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -395,6 +397,7 @@
                 "x": 12,
                 "y": 8
             },
+            "hiddenSeries": false,
             "id": 56,
             "legend": {
                 "alignAsTable": true,
@@ -428,7 +431,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(proxysql_mysql_status_questions{node_name=\"$proxysql\"}[$interval]) or irate(proxysql_mysql_status_questions{node_name=\"$proxysql\"}[5m])",
+                    "expr": "avg by (node_name) (rate(proxysql_mysql_status_questions{node_name=\"$proxysql\"}[$interval]) or irate(proxysql_mysql_status_questions{node_name=\"$proxysql\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -498,6 +501,7 @@
                 "x": 0,
                 "y": 16
             },
+            "hiddenSeries": false,
             "id": 51,
             "legend": {
                 "alignAsTable": true,
@@ -531,7 +535,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "max_over_time(proxysql_connection_pool_conn_used{node_name=\"$proxysql\", hostgroup=~\"$node_namegroup\"}[$interval]) or\nmax_over_time(proxysql_connection_pool_conn_used{node_name=\"$proxysql\", hostgroup=~\"$node_namegroup\"}[5m]) ",
+                    "expr": "avg by (node_name,endpoint) (max_over_time(proxysql_connection_pool_conn_used{node_name=\"$proxysql\", hostgroup=~\"$hostgroup\"}[$interval]) or\nmax_over_time(proxysql_connection_pool_conn_used{node_name=\"$proxysql\", hostgroup=~\"$hostgroup\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -601,6 +605,7 @@
                 "x": 12,
                 "y": 16
             },
+            "hiddenSeries": false,
             "id": 52,
             "legend": {
                 "alignAsTable": true,
@@ -634,7 +639,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(proxysql_connection_pool_conn_err{node_name=\"$proxysql\", hostgroup=~\"$node_namegroup\"}[$interval]) or irate(proxysql_connection_pool_conn_err{node_name=\"$proxysql\", hostgroup=~\"$node_namegroup\"}[5m])",
+                    "expr": "avg by (node_name,endpoint) (rate(proxysql_connection_pool_conn_err{node_name=\"$proxysql\", hostgroup=~\"$hostgroup\"}[$interval]) or irate(proxysql_connection_pool_conn_err{node_name=\"$proxysql\", hostgroup=~\"$hostgroup\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -704,6 +709,7 @@
                 "x": 0,
                 "y": 24
             },
+            "hiddenSeries": false,
             "id": 76,
             "legend": {
                 "alignAsTable": true,
@@ -737,7 +743,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "max_over_time(proxysql_processlist_client_connection_list{node_name=\"$proxysql\"}[$interval]) or max_over_time(proxysql_processlist_client_connection_list{node_name=\"$proxysql\"}[5m]) ",
+                    "expr": "avg by (node_name,client_host) (max_over_time(proxysql_processlist_client_connection_list{node_name=~\"$proxysql\"}[$interval]) or max_over_time(proxysql_processlist_client_connection_list{node_name=~\"$proxysql\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -804,6 +810,7 @@
                 "x": 12,
                 "y": 24
             },
+            "hiddenSeries": false,
             "id": 1001,
             "interval": "",
             "legend": {
@@ -836,7 +843,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "max_over_time(proxysql_processlist_detailed_client_connection_count{node_name=\"$proxysql\",hostgroup=~\"$node_namegroup\"}[$interval]) or max_over_time(proxysql_processlist_detailed_client_connection_count{node_name=\"$proxysql\",hostgroup=~\"$node_namegroup\"}[5m])",
+                    "expr": "avg by (node_name,user) (max_over_time(proxysql_processlist_detailed_client_connection_count{node_name=~\"$proxysql\",hostgroup=~\"$hostgroup\"}[$interval]) or max_over_time(proxysql_processlist_detailed_client_connection_count{node_name=~\"$proxysql\",hostgroup=~\"$hostgroup\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "legendFormat": "{{user}}",
@@ -1032,7 +1039,7 @@
             ],
             "targets": [
                 {
-                    "expr": "proxysql_connection_pool_status{node_name=\"$proxysql\", hostgroup=~\"$node_namegroup\"}",
+                    "expr": "avg by (node_name,endpoint) (proxysql_connection_pool_status{node_name=\"$proxysql\", hostgroup=~\"$hostgroup\"})",
                     "format": "table",
                     "instant": true,
                     "interval": "5m",
@@ -1081,6 +1088,7 @@
                 "x": 0,
                 "y": 41
             },
+            "hiddenSeries": false,
             "id": 2,
             "legend": {
                 "alignAsTable": true,
@@ -1112,7 +1120,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "rate(proxysql_connection_pool_queries{node_name=\"$proxysql\", hostgroup=~\"$node_namegroup\"}[$interval]) or irate(proxysql_connection_pool_queries{node_name=\"$proxysql\", hostgroup=~\"$node_namegroup\"}[5m])",
+                    "expr": "avg by (node_name,endpoint) (rate(proxysql_connection_pool_queries{node_name=\"$proxysql\", hostgroup=~\"$hostgroup\"}[$interval]) or irate(proxysql_connection_pool_queries{node_name=\"$proxysql\", hostgroup=~\"$hostgroup\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1179,6 +1187,7 @@
                 "x": 12,
                 "y": 41
             },
+            "hiddenSeries": false,
             "id": 59,
             "legend": {
                 "alignAsTable": true,
@@ -1218,7 +1227,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "(rate(proxysql_mysql_status_query_processor_time_nsec{node_name=\"$proxysql\"}[$interval]) or irate(proxysql_mysql_status_query_processor_time_nsec{node_name=\"$proxysql\"}[5m]))/(rate(proxysql_mysql_status_questions{node_name=\"$proxysql\"}[$interval]) or irate(proxysql_mysql_status_questions{node_name=\"$proxysql\"}[5m]))",
+                    "expr": "avg by (node_name) ((rate(proxysql_mysql_status_query_processor_time_nsec{node_name=\"$proxysql\"}[$interval]) or irate(proxysql_mysql_status_query_processor_time_nsec{node_name=\"$proxysql\"}[5m]))/(rate(proxysql_mysql_status_questions{node_name=\"$proxysql\"}[$interval]) or irate(proxysql_mysql_status_questions{node_name=\"$proxysql\"}[5m])))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "",
@@ -1228,7 +1237,7 @@
                     "step": 10
                 },
                 {
-                    "expr": "(rate(proxysql_mysql_status_query_processor_time_nsec{node_name=\"$proxysql\"}[$interval]) or irate(proxysql_mysql_status_query_processor_time_nsec{node_name=\"$proxysql\"}[5m]))",
+                    "expr": "avg by (node_name) ((rate(proxysql_mysql_status_query_processor_time_nsec{node_name=\"$proxysql\"}[$interval]) or irate(proxysql_mysql_status_query_processor_time_nsec{node_name=\"$proxysql\"}[5m])))",
                     "format": "time_series",
                     "hide": true,
                     "intervalFactor": 1,
@@ -1237,8 +1246,9 @@
                     "step": 1
                 },
                 {
-                    "expr": "(rate(proxysql_mysql_status_questions{node_name=\"$proxysql\"}[$interval]) or irate(proxysql_mysql_status_questions{node_name=\"$proxysql\"}[5m]))",
+                    "expr": "avg by (node_name) ((rate(proxysql_mysql_status_questions{node_name=\"$proxysql\"}[$interval]) or irate(proxysql_mysql_status_questions{node_name=\"$proxysql\"}[5m])))",
                     "format": "time_series",
+                    "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Questions",
                     "refId": "C",
@@ -1321,6 +1331,7 @@
                 "x": 0,
                 "y": 50
             },
+            "hiddenSeries": false,
             "id": 60,
             "legend": {
                 "alignAsTable": true,
@@ -1354,7 +1365,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "max_over_time(proxysql_connection_pool_conn_free{node_name=\"$proxysql\", hostgroup=~\"$node_namegroup\"}[$interval]) or max_over_time(proxysql_connection_pool_conn_free{node_name=\"$proxysql\", hostgroup=~\"$node_namegroup\"}[5m])",
+                    "expr": "avg by (node_name,endpoint) (max_over_time(proxysql_connection_pool_conn_free{node_name=\"$proxysql\", hostgroup=~\"$hostgroup\"}[$interval]) or max_over_time(proxysql_connection_pool_conn_free{node_name=\"$proxysql\", hostgroup=~\"$hostgroup\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1424,6 +1435,7 @@
                 "x": 12,
                 "y": 50
             },
+            "hiddenSeries": false,
             "id": 50,
             "legend": {
                 "alignAsTable": true,
@@ -1457,7 +1469,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "max_over_time(proxysql_connection_pool_latency_us{node_name=\"$proxysql\", hostgroup=~\"$node_namegroup\"}[$interval]) or \nmax_over_time(proxysql_connection_pool_latency_us{node_name=\"$proxysql\", hostgroup=~\"$node_namegroup\"}[5m])",
+                    "expr": "avg by (node_name,endpoint) (max_over_time(proxysql_connection_pool_latency_us{node_name=\"$proxysql\", hostgroup=~\"$hostgroup\"}[$interval]) or \nmax_over_time(proxysql_connection_pool_latency_us{node_name=\"$proxysql\", hostgroup=~\"$hostgroup\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1539,6 +1551,7 @@
                 "x": 0,
                 "y": 59
             },
+            "hiddenSeries": false,
             "id": 62,
             "legend": {
                 "alignAsTable": true,
@@ -1574,7 +1587,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "max_over_time(proxysql_mysql_status_query_cache_memory_bytes{node_name=\"$proxysql\"}[$interval]) or max_over_time(proxysql_mysql_status_query_cache_memory_bytes{node_name=\"$proxysql\"}[5m])",
+                    "expr": "avg by (node_name) (max_over_time(proxysql_mysql_status_query_cache_memory_bytes{node_name=\"$proxysql\"}[$interval]) or max_over_time(proxysql_mysql_status_query_cache_memory_bytes{node_name=\"$proxysql\"}[5m]))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -1584,7 +1597,7 @@
                     "step": 10
                 },
                 {
-                    "expr": "(max_over_time(proxysql_mysql_status_query_cache_memory_bytes{node_name=\"$proxysql\"}[$interval]) or max_over_time(proxysql_mysql_status_query_cache_memory_bytes{node_name=\"$proxysql\"}[5m]))/\n(max_over_time(proxysql_mysql_status_query_cache_entries{node_name=\"$proxysql\"}[$interval]) or\nmax_over_time(proxysql_mysql_status_query_cache_entries{node_name=\"$proxysql\"}[5m]))",
+                    "expr": "avg by (node_name) ((max_over_time(proxysql_mysql_status_query_cache_memory_bytes{node_name=\"$proxysql\"}[$interval]) or max_over_time(proxysql_mysql_status_query_cache_memory_bytes{node_name=\"$proxysql\"}[5m]))/\n(max_over_time(proxysql_mysql_status_query_cache_entries{node_name=\"$proxysql\"}[$interval]) or\nmax_over_time(proxysql_mysql_status_query_cache_entries{node_name=\"$proxysql\"}[5m])))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1654,6 +1667,7 @@
                 "x": 12,
                 "y": 59
             },
+            "hiddenSeries": false,
             "id": 53,
             "legend": {
                 "alignAsTable": true,
@@ -1692,7 +1706,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "((rate(proxysql_mysql_status_query_cache_count_get_ok{node_name=\"$proxysql\"}[$interval]) + rate(proxysql_mysql_status_query_cache_count_get_ok{node_name=\"$proxysql\"}[$interval])) or (irate(proxysql_mysql_status_query_cache_count_get_ok{node_name=\"$proxysql\"}[5m]) + irate(proxysql_mysql_status_query_cache_count_get_ok{node_name=\"$proxysql\"}[5m]))/(rate(proxysql_mysql_status_query_cache_count_get{node_name=\"$proxysql\"}[$interval]) + rate(proxysql_mysql_status_query_cache_count_get{node_name=\"$proxysql\"}[$interval])) or (irate(proxysql_mysql_status_query_cache_count_get{node_name=\"$proxysql\"}[5m]) + irate(proxysql_mysql_status_query_cache_count_get{node_name=\"$proxysql\"}[5m])))        ",
+                    "expr": "avg by (node_name) (((rate(proxysql_mysql_status_query_cache_count_get_ok{node_name=\"$proxysql\"}[$interval]) + rate(proxysql_mysql_status_query_cache_count_get_ok{node_name=\"$proxysql\"}[$interval])) or (irate(proxysql_mysql_status_query_cache_count_get_ok{node_name=\"$proxysql\"}[5m]) + irate(proxysql_mysql_status_query_cache_count_get_ok{node_name=\"$proxysql\"}[5m]))/(rate(proxysql_mysql_status_query_cache_count_get{node_name=\"$proxysql\"}[$interval]) + rate(proxysql_mysql_status_query_cache_count_get{node_name=\"$proxysql\"}[$interval])) or (irate(proxysql_mysql_status_query_cache_count_get{node_name=\"$proxysql\"}[5m]) + irate(proxysql_mysql_status_query_cache_count_get{node_name=\"$proxysql\"}[5m]))))        ",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1702,10 +1716,10 @@
                     "step": 60
                 },
                 {
-                    "expr": "((rate(proxysql_mysql_status_query_cache_bytes_out{node_name=\"$proxysql\"}[$interval]) + rate(proxysql_mysql_status_query_cache_bytes_out{node_name=\"$proxysql\"}[$interval])) or (irate(proxysql_mysql_status_query_cache_bytes_out{node_name=\"$proxysql\"}[5m]) + irate(proxysql_mysql_status_query_cache_bytes_out{node_name=\"$proxysql\"}[5m]))/(rate(proxysql_mysql_status_query_cache_bytes_in{node_name=\"$proxysql\"}[$interval]) + rate(proxysql_mysql_status_query_cache_bytes_in{node_name=\"$proxysql\"}[$interval])) or (irate(proxysql_mysql_status_query_cache_bytes_in{node_name=\"$proxysql\"}[5m]) + irate(proxysql_mysql_status_query_cache_bytes_in{node_name=\"$proxysql\"}[5m])))        ",
+                    "expr": "avg by (node_name) (((rate(proxysql_mysql_status_query_cache_bytes_out{node_name=\"$proxysql\"}[$interval]) + rate(proxysql_mysql_status_query_cache_bytes_out{node_name=\"$proxysql\"}[$interval])) or (irate(proxysql_mysql_status_query_cache_bytes_out{node_name=\"$proxysql\"}[5m]) + irate(proxysql_mysql_status_query_cache_bytes_out{node_name=\"$proxysql\"}[5m]))/(rate(proxysql_mysql_status_query_cache_bytes_in{node_name=\"$proxysql\"}[$interval]) + rate(proxysql_mysql_status_query_cache_bytes_in{node_name=\"$proxysql\"}[$interval])) or (irate(proxysql_mysql_status_query_cache_bytes_in{node_name=\"$proxysql\"}[5m]) + irate(proxysql_mysql_status_query_cache_bytes_in{node_name=\"$proxysql\"}[5m]))))        ",
                     "format": "time_series",
-                    "interval": "",
-                    "intervalFactor": 2,
+                    "interval": "$interval",
+                    "intervalFactor": 1,
                     "legendFormat": "Insert VS read efficiency (high is good)",
                     "refId": "B",
                     "step": 20
@@ -1787,6 +1801,7 @@
                 "x": 0,
                 "y": 68
             },
+            "hiddenSeries": false,
             "id": 65,
             "legend": {
                 "alignAsTable": true,
@@ -1820,7 +1835,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "(rate(proxysql_connection_pool_bytes_data_recv{node_name=\"$proxysql\", hostgroup=~\"$node_namegroup\"}[$interval]) + rate(proxysql_connection_pool_bytes_data_sent{node_name=\"$proxysql\", hostgroup=~\"$node_namegroup\"}[$interval])) or (irate(proxysql_connection_pool_bytes_data_recv{node_name=\"$proxysql\", hostgroup=~\"$node_namegroup\"}[5m]) + irate(proxysql_connection_pool_bytes_data_sent{node_name=\"$proxysql\", hostgroup=~\"$node_namegroup\"}[5m]))",
+                    "expr": "avg by (node_name,endpoint) ((rate(proxysql_connection_pool_bytes_data_recv{node_name=\"$proxysql\", hostgroup=~\"$hostgroup\"}[$interval]) + rate(proxysql_connection_pool_bytes_data_sent{node_name=\"$proxysql\", hostgroup=~\"$hostgroup\"}[$interval])) or (irate(proxysql_connection_pool_bytes_data_recv{node_name=\"$proxysql\", hostgroup=~\"$hostgroup\"}[5m]) + irate(proxysql_connection_pool_bytes_data_sent{node_name=\"$proxysql\", hostgroup=~\"$hostgroup\"}[5m])))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1887,6 +1902,7 @@
                 "x": 12,
                 "y": 68
             },
+            "hiddenSeries": false,
             "id": 61,
             "legend": {
                 "alignAsTable": true,
@@ -1922,7 +1938,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "max_over_time(proxysql_mysql_status_mirror_concurrency{node_name=\"$proxysql\"}[$interval]) or max_over_time(proxysql_mysql_status_mirror_concurrency{node_name=\"$proxysql\"}[5m]) ",
+                    "expr": "avg by (node_name) (max_over_time(proxysql_mysql_status_mirror_concurrency{node_name=\"$proxysql\"}[$interval]) or max_over_time(proxysql_mysql_status_mirror_concurrency{node_name=\"$proxysql\"}[5m]))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -1932,7 +1948,7 @@
                     "step": 10
                 },
                 {
-                    "expr": "max_over_time(proxysql_mysql_status_mirror_queue_length{node_name=\"$proxysql\"}[$interval]) or \nmax_over_time(proxysql_mysql_status_mirror_queue_length{node_name=\"$proxysql\"}[5m])",
+                    "expr": "avg by (node_name) (max_over_time(proxysql_mysql_status_mirror_queue_length{node_name=\"$proxysql\"}[$interval]) or \nmax_over_time(proxysql_mysql_status_mirror_queue_length{node_name=\"$proxysql\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2014,6 +2030,7 @@
                 "x": 0,
                 "y": 77
             },
+            "hiddenSeries": false,
             "id": 66,
             "legend": {
                 "alignAsTable": true,
@@ -2045,7 +2062,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "proxysql_mysql_status_query_cache_memory_bytes{node_name=\"$proxysql\"}",
+                    "expr": "avg by (node_name) (proxysql_mysql_status_query_cache_memory_bytes{node_name=\"$proxysql\"})",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2054,7 +2071,7 @@
                     "step": 20
                 },
                 {
-                    "expr": "proxysql_mysql_status_sqlite3_memory_bytes{node_name=\"$proxysql\"}",
+                    "expr": "avg by (node_name) (proxysql_mysql_status_sqlite3_memory_bytes{node_name=\"$proxysql\"})",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2063,7 +2080,7 @@
                     "step": 20
                 },
                 {
-                    "expr": "proxysql_mysql_status_connpool_memory_bytes{node_name=\"$proxysql\"}",
+                    "expr": "avg by (node_name) (proxysql_mysql_status_connpool_memory_bytes{node_name=\"$proxysql\"})",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2130,6 +2147,7 @@
                 "x": 0,
                 "y": 85
             },
+            "hiddenSeries": false,
             "id": 1002,
             "interval": "",
             "legend": {
@@ -2162,7 +2180,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "max_over_time(proxysql_stats_memory_auth_memory{node_name=\"$proxysql\"}[$interval]) or max_over_time(proxysql_stats_memory_auth_memory{node_name=\"$proxysql\"}[5m])",
+                    "expr": "avg by (node_name) (max_over_time(proxysql_stats_memory_auth_memory{node_name=\"$proxysql\"}[$interval]) or max_over_time(proxysql_stats_memory_auth_memory{node_name=\"$proxysql\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2171,7 +2189,7 @@
                     "step": 20
                 },
                 {
-                    "expr": "max_over_time(proxysql_stats_memory_jemalloc_active{node_name=\"$proxysql\"}[$interval]) or max_over_time(proxysql_stats_memory_jemalloc_active{node_name=\"$proxysql\"}[5m])",
+                    "expr": "avg by (node_name) (max_over_time(proxysql_stats_memory_jemalloc_active{node_name=\"$proxysql\"}[$interval]) or max_over_time(proxysql_stats_memory_jemalloc_active{node_name=\"$proxysql\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2180,7 +2198,7 @@
                     "step": 20
                 },
                 {
-                    "expr": "max_over_time(proxysql_stats_memory_jemalloc_allocated{node_name=\"$proxysql\"}[$interval]) or max_over_time(proxysql_stats_memory_jemalloc_allocated{node_name=\"$proxysql\"}[5m])",
+                    "expr": "avg by (node_name) (max_over_time(proxysql_stats_memory_jemalloc_allocated{node_name=\"$proxysql\"}[$interval]) or max_over_time(proxysql_stats_memory_jemalloc_allocated{node_name=\"$proxysql\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2190,55 +2208,55 @@
                     "step": 20
                 },
                 {
-                    "expr": "max_over_time(proxysql_stats_memory_jemalloc_mapped{node_name=\"$proxysql\"}[$interval]) or max_over_time(proxysql_stats_memory_jemalloc_mapped{node_name=\"$proxysql\"}[5m])",
+                    "expr": "avg by (node_name) (max_over_time(proxysql_stats_memory_jemalloc_mapped{node_name=\"$proxysql\"}[$interval]) or max_over_time(proxysql_stats_memory_jemalloc_mapped{node_name=\"$proxysql\"}[5m]))",
                     "interval": "$interval",
                     "legendFormat": "Extents mapped by the Allocator",
                     "refId": "D"
                 },
                 {
-                    "expr": "max_over_time(proxysql_stats_memory_jemalloc_metadata{node_name=\"$proxysql\"}[$interval]) or max_over_time(proxysql_stats_memory_jemalloc_metadata{node_name=\"$proxysql\"}[5m])",
+                    "expr": "avg by (node_name) (max_over_time(proxysql_stats_memory_jemalloc_metadata{node_name=\"$proxysql\"}[$interval]) or max_over_time(proxysql_stats_memory_jemalloc_metadata{node_name=\"$proxysql\"}[5m]))",
                     "interval": "$interval",
                     "legendFormat": "Dedicated to Metadata",
                     "refId": "E"
                 },
                 {
-                    "expr": "max_over_time(proxysql_stats_memory_jemalloc_resident{node_name=\"$proxysql\"}[$interval]) or max_over_time(proxysql_stats_memory_jemalloc_resident{node_name=\"$proxysql\"}[5m])",
+                    "expr": "avg by (node_name) (max_over_time(proxysql_stats_memory_jemalloc_resident{node_name=\"$proxysql\"}[$interval]) or max_over_time(proxysql_stats_memory_jemalloc_resident{node_name=\"$proxysql\"}[5m]))",
                     "interval": "$interval",
                     "legendFormat": "Physically Resident Data pages Mapped by the Allocator",
                     "refId": "F"
                 },
                 {
-                    "expr": "max_over_time(proxysql_stats_memory_jemalloc_retained{node_name=\"$proxysql\"}[$interval]) or max_over_time(proxysql_stats_memory_jemalloc_retained{node_name=\"$proxysql\"}[5m])",
+                    "expr": "avg by (node_name) (max_over_time(proxysql_stats_memory_jemalloc_retained{node_name=\"$proxysql\"}[$interval]) or max_over_time(proxysql_stats_memory_jemalloc_retained{node_name=\"$proxysql\"}[5m]))",
                     "interval": "$interval",
                     "legendFormat": "Retained Memory",
                     "refId": "I"
                 },
                 {
-                    "expr": "max_over_time(proxysql_stats_memory_query_digest_memory{node_name=\"$proxysql\"}[$interval]) or max_over_time(proxysql_stats_memory_query_digest_memory{node_name=\"$proxysql\"}[5m])",
+                    "expr": "avg by (node_name) (max_over_time(proxysql_stats_memory_query_digest_memory{node_name=\"$proxysql\"}[$interval]) or max_over_time(proxysql_stats_memory_query_digest_memory{node_name=\"$proxysql\"}[5m]))",
                     "interval": "$interval",
                     "legendFormat": "Memory Used to Store Data",
                     "refId": "H"
                 },
                 {
-                    "expr": "max_over_time(proxysql_stats_memory_sqlite3_memory_bytes{node_name=\"$proxysql\"}[$interval]) or max_over_time(proxysql_stats_memory_sqlite3_memory_bytes{node_name=\"$proxysql\"}[5m])",
+                    "expr": "avg by (node_name) (max_over_time(proxysql_stats_memory_sqlite3_memory_bytes{node_name=\"$proxysql\"}[$interval]) or max_over_time(proxysql_stats_memory_sqlite3_memory_bytes{node_name=\"$proxysql\"}[5m]))",
                     "interval": "$interval",
                     "legendFormat": "Used by the Embedded SQLite",
                     "refId": "G"
                 },
                 {
-                    "expr": "max_over_time(proxysql_stats_memory_stack_memory_mysql_threads{node_name=\"$proxysql\"}[$interval]) or max_over_time(proxysql_stats_memory_stack_memory_mysql_threads{node_name=\"$proxysql\"}[5m])",
+                    "expr": "avg by (node_name) (max_over_time(proxysql_stats_memory_stack_memory_mysql_threads{node_name=\"$proxysql\"}[$interval]) or max_over_time(proxysql_stats_memory_stack_memory_mysql_threads{node_name=\"$proxysql\"}[5m]))",
                     "interval": "$interval",
                     "legendFormat": "Stack Memory for Mysql Threads",
                     "refId": "J"
                 },
                 {
-                    "expr": "max_over_time(proxysql_stats_memory_stack_memory_admin_threads{node_name=\"$proxysql\"}[$interval]) or max_over_time(proxysql_stats_memory_stack_memory_admin_threads{node_name=\"$proxysql\"}[5m])",
+                    "expr": "avg by (node_name) (max_over_time(proxysql_stats_memory_stack_memory_admin_threads{node_name=\"$proxysql\"}[$interval]) or max_over_time(proxysql_stats_memory_stack_memory_admin_threads{node_name=\"$proxysql\"}[5m]))",
                     "interval": "$interval",
                     "legendFormat": "Stack Memory for Admin Threads",
                     "refId": "K"
                 },
                 {
-                    "expr": "max_over_time(proxysql_stats_memory_stack_memory_cluster_threads{node_name=\"$proxysql\"}[$interval]) or max_over_time(proxysql_stats_memory_stack_memory_cluster_threads{node_name=\"$proxysql\"}[5m])",
+                    "expr": "avg by (node_name) (max_over_time(proxysql_stats_memory_stack_memory_cluster_threads{node_name=\"$proxysql\"}[$interval]) or max_over_time(proxysql_stats_memory_stack_memory_cluster_threads{node_name=\"$proxysql\"}[5m]))",
                     "interval": "$interval",
                     "legendFormat": "Stack Memory for Cluster Threads",
                     "refId": "L"
@@ -2288,7 +2306,7 @@
         }
     ],
     "refresh": "1m",
-    "schemaVersion": 20,
+    "schemaVersion": 21,
     "style": "dark",
     "tags": [
         "Percona",
