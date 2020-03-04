@@ -47,13 +47,13 @@ const dataRetentionValues: MetricsResolutionInterface[] = [
   },
   {
     hr: '5s',
-    mr: '30s',
-    lr: '300s',
+    mr: '10s',
+    lr: '60s',
   },
   {
-    hr: '5s',
+    hr: '1s',
     mr: '5s',
-    lr: '60s',
+    lr: '30s',
   },
 ];
 
