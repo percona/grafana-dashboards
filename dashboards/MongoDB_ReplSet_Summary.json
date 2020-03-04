@@ -159,7 +159,7 @@
                 "thresholdMarkers": true
             },
             "gridPos": {
-                "h": 3,
+                "h": 2,
                 "w": 6,
                 "x": 0,
                 "y": 2
@@ -205,7 +205,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "mongodb_mongod_replset_my_state{service_name=~\"$service_name\"}",
+                    "expr": "avg by (service_name) (mongodb_mongod_replset_my_state{service_name=~\"$service_name\"})",
                     "format": "time_series",
                     "interval": "5m",
                     "intervalFactor": 1,
@@ -297,7 +297,7 @@
                 "thresholdMarkers": true
             },
             "gridPos": {
-                "h": 3,
+                "h": 2,
                 "w": 4,
                 "x": 6,
                 "y": 2
@@ -342,7 +342,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "mongodb_mongod_replset_number_of_members{service_name=~\"$service_name\"}",
+                    "expr": "avg by (service_name) (mongodb_mongod_replset_number_of_members{service_name=~\"$service_name\"})",
                     "interval": "5m",
                     "intervalFactor": 1,
                     "legendFormat": "",
@@ -383,7 +383,7 @@
                 "thresholdMarkers": true
             },
             "gridPos": {
-                "h": 3,
+                "h": 2,
                 "w": 4,
                 "x": 10,
                 "y": 2
@@ -428,7 +428,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "time() - mongodb_mongod_replset_member_election_date{service_name=~\"$service_name\"}",
+                    "expr": "time() - avg by (service_name) (mongodb_mongod_replset_member_election_date{service_name=~\"$service_name\"})",
                     "format": "time_series",
                     "interval": "5m",
                     "intervalFactor": 1,
@@ -469,7 +469,7 @@
                 "thresholdMarkers": true
             },
             "gridPos": {
-                "h": 3,
+                "h": 2,
                 "w": 4,
                 "x": 14,
                 "y": 2
@@ -514,7 +514,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "(max(mongodb_mongod_replset_member_optime_date{state=\"PRIMARY\", set=\"$replset\"}) - min(mongodb_mongod_replset_member_optime_date{state=\"SECONDARY\"} * on (name) group_left mongodb_mongod_replset_my_name{service_name=~\"$service_name\"})) or vector(0)",
+                    "expr": "avg by (service_name) ((max(mongodb_mongod_replset_member_optime_date{state=\"PRIMARY\", set=\"$replset\"})) - avg by (service_name) (min(mongodb_mongod_replset_member_optime_date{state=\"SECONDARY\"}) * on (name) group_left avg by (service_name) (mongodb_mongod_replset_my_name{service_name=~\"$service_name\"}))) or vector(0)",
                     "interval": "5m",
                     "intervalFactor": 1,
                     "legendFormat": "",
@@ -554,7 +554,7 @@
                 "thresholdMarkers": true
             },
             "gridPos": {
-                "h": 3,
+                "h": 2,
                 "w": 6,
                 "x": 18,
                 "y": 2
@@ -599,7 +599,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "mongodb_mongod_storage_engine{service_name=~\"$service_name\"}",
+                    "expr": "avg by (service_name,engine) (mongodb_mongod_storage_engine{service_name=~\"$service_name\"})",
                     "interval": "5m",
                     "intervalFactor": 1,
                     "legendFormat": "{{ engine }}",
@@ -640,8 +640,9 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 5
+                "y": 4
             },
+            "hiddenSeries": false,
             "id": 63,
             "legend": {
                 "alignAsTable": true,
@@ -671,12 +672,18 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(mongodb_mongod_op_counters_repl_total{service_name=~\"$service_name\", type!~\"(command|getmore|query)\"}[$interval]) or irate(mongodb_mongod_op_counters_repl_total{service_name=~\"$service_name\", type!~\"(command|getmore|query)\"}[5m])",
+                    "expr": "avg by (service_name,type) (rate(mongodb_op_counters_repl_total{service_name=~\"$service_name\", type!~\"(command|getmore|query)\"}[$interval]) or irate(mongodb_op_counters_repl_total{service_name=~\"$service_name\", type!~\"(command|getmore|query)\"}[5m]))",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "{{type}}",
                     "refId": "A",
                     "step": 300
+                },
+                {
+                    "expr": "avg by (service_name,type) (rate(mongodb_mongod_op_counters_repl_total{service_name=~\"$service_name\", type!~\"(command|getmore|query)\"}[$interval]) or irate(mongodb_mongod_op_counters_repl_total{service_name=~\"$service_name\", type!~\"(command|getmore|query)\"}[5m]))",
+                    "interval": "$interval",
+                    "legendFormat": "{{type}}",
+                    "refId": "B"
                 }
             ],
             "thresholds": [],
@@ -751,8 +758,9 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 5
+                "y": 4
             },
+            "hiddenSeries": false,
             "id": 27,
             "legend": {
                 "alignAsTable": true,
@@ -782,7 +790,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "time()-mongodb_mongod_replset_oplog_tail_timestamp{service_name=~\"$service_name\"}",
+                    "expr": "time()-avg by (service_name) (mongodb_mongod_replset_oplog_tail_timestamp{service_name=~\"$service_name\"})",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -792,7 +800,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "mongodb_mongod_replset_oplog_head_timestamp{service_name=~\"$service_name\"}-mongodb_mongod_replset_oplog_tail_timestamp{service_name=~\"$service_name\"}",
+                    "expr": "avg by (service_name) (mongodb_mongod_replset_oplog_head_timestamp{service_name=~\"$service_name\"}-mongodb_mongod_replset_oplog_tail_timestamp{service_name=~\"$service_name\"})",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -874,8 +882,9 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 13
+                "y": 12
             },
+            "hiddenSeries": false,
             "id": 14,
             "legend": {
                 "alignAsTable": true,
@@ -906,7 +915,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "(max(mongodb_mongod_replset_member_optime_date{state=\"PRIMARY\", set=\"$replset\"}) - min(mongodb_mongod_replset_member_optime_date{state=\"SECONDARY\"} * on (name) group_left mongodb_mongod_replset_my_name{service_name=~\"$service_name\"})) or vector(0)",
+                    "expr": "avg by (service_name) ((max(mongodb_mongod_replset_member_optime_date{state=\"PRIMARY\", set=\"$replset\"})) - avg by (service_name) (min(mongodb_mongod_replset_member_optime_date{state=\"SECONDARY\"}) * on (name) group_left avg by (service_name) (mongodb_mongod_replset_my_name{service_name=~\"$service_name\"}))) or vector(0)",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Lag",
@@ -986,8 +995,9 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 13
+                "y": 12
             },
+            "hiddenSeries": false,
             "id": 12,
             "legend": {
                 "alignAsTable": true,
@@ -1097,8 +1107,9 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 21
+                "y": 20
             },
+            "hiddenSeries": false,
             "id": 76,
             "legend": {
                 "alignAsTable": true,
@@ -1131,12 +1142,12 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "mongodb_mongod_replset_member_uptime{service_name=~\"$service_name\"}\n* on (name) group_right(state) (max_over_time(mongodb_mongod_replset_my_name[$interval]) or max_over_time(mongodb_mongod_replset_my_name[5m]))",
+                    "expr": "avg by (service_name,state,name) (mongodb_mongod_replset_member_uptime{service_name=~\"$service_name\"})\n* on (name) group_right(state) (avg by (service_name,state,name) (max_over_time(mongodb_mongod_replset_my_name[$interval]) or max_over_time(mongodb_mongod_replset_my_name[5m])))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
-                    "legendFormat": "{{ instance }} - {{state}}",
+                    "legendFormat": "{{ service_name }} - {{state}}",
                     "metric": "",
                     "refId": "J",
                     "step": 300
@@ -1214,8 +1225,9 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 21
+                "y": 20
             },
+            "hiddenSeries": false,
             "id": 75,
             "legend": {
                 "alignAsTable": true,
@@ -1247,11 +1259,11 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "time() - max(mongodb_mongod_replset_member_last_heartbeat{service_name=~\"$service_name\"}) by (name) * on (name) group_right mongodb_mongod_replset_my_name",
+                    "expr": "time() - avg by (service_name) (max(mongodb_mongod_replset_member_last_heartbeat{service_name=~\"$service_name\"}) by (name)) * on (name) group_right avg by (service_name) (mongodb_mongod_replset_my_name{service_name=~\"$service_name\"})",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
-                    "legendFormat": "{{instance}}",
+                    "legendFormat": "{{service_name}}",
                     "metric": "",
                     "refId": "J",
                     "step": 300
@@ -1329,8 +1341,9 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 29
+                "y": 28
             },
+            "hiddenSeries": false,
             "id": 13,
             "legend": {
                 "alignAsTable": true,
@@ -1362,12 +1375,12 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "mongodb_mongod_replset_member_ping_ms{service_name=~\"$service_name\"}\n* on (name) group_right(state) (max_over_time(mongodb_mongod_replset_my_name[$interval]) or max_over_time(mongodb_mongod_replset_my_name[5m]))",
+                    "expr": "avg by (service_name,name,state) (mongodb_mongod_replset_member_ping_ms{service_name=~\"$service_name\"})\n* on (name) group_right(state) avg by (service_name,state,name) ((max_over_time(mongodb_mongod_replset_my_name[$interval]) or max_over_time(mongodb_mongod_replset_my_name[5m])))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
-                    "legendFormat": "{{instance}}",
+                    "legendFormat": "{{service_name}} - {{name}} - {{state}}",
                     "refId": "A",
                     "step": 300
                 }
@@ -1444,8 +1457,9 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 29
+                "y": 28
             },
+            "hiddenSeries": false,
             "id": 79,
             "legend": {
                 "alignAsTable": true,
@@ -1477,10 +1491,10 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(mongodb_mongod_metrics_repl_network_getmores_total_milliseconds{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_metrics_repl_network_getmores_total_milliseconds{service_name=~\"$service_name\"}[5m])",
+                    "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_repl_network_getmores_total_milliseconds{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_metrics_repl_network_getmores_total_milliseconds{service_name=~\"$service_name\"}[5m]))",
                     "interval": "$interval",
                     "intervalFactor": 1,
-                    "legendFormat": "{{instance}}",
+                    "legendFormat": "{{service_name}}",
                     "refId": "A",
                     "step": 300
                 }
@@ -1557,8 +1571,9 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 37
+                "y": 36
             },
+            "hiddenSeries": false,
             "id": 81,
             "legend": {
                 "alignAsTable": true,
@@ -1590,7 +1605,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(mongodb_mongod_metrics_repl_preload_docs_num_total{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_metrics_repl_preload_docs_num_total{service_name=~\"$service_name\"}[5m])",
+                    "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_repl_preload_docs_num_total{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_metrics_repl_preload_docs_num_total{service_name=~\"$service_name\"}[5m]))",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Document Preload",
@@ -1599,7 +1614,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mongodb_mongod_metrics_repl_preload_indexes_num_total{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_metrics_repl_preload_indexes_num_total{service_name=~\"$service_name\"}[5m])",
+                    "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_repl_preload_indexes_num_total{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_metrics_repl_preload_indexes_num_total{service_name=~\"$service_name\"}[5m]))",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Index Preload",
@@ -1608,7 +1623,8 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mongodb_mongod_metrics_repl_apply_ops_total{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_metrics_repl_apply_ops_total{service_name=~\"$service_name\"}[5m])",
+                    "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_repl_apply_ops_total{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_metrics_repl_apply_ops_total{service_name=~\"$service_name\"}[5m]))",
+                    "interval": "$interval",
                     "intervalFactor": 2,
                     "legendFormat": "Batch Apply",
                     "refId": "C",
@@ -1687,8 +1703,9 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 37
+                "y": 36
             },
+            "hiddenSeries": false,
             "id": 84,
             "legend": {
                 "alignAsTable": true,
@@ -1720,7 +1737,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(mongodb_mongod_metrics_repl_preload_docs_total_milliseconds{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_metrics_repl_preload_docs_total_milliseconds{service_name=~\"$service_name\"}[5m])",
+                    "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_repl_preload_docs_total_milliseconds{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_metrics_repl_preload_docs_total_milliseconds{service_name=~\"$service_name\"}[5m]))",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Document Preload",
@@ -1728,7 +1745,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mongodb_mongod_metrics_repl_preload_indexes_total_milliseconds{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_metrics_repl_preload_indexes_total_milliseconds{service_name=~\"$service_name\"}[5m])",
+                    "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_repl_preload_indexes_total_milliseconds{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_metrics_repl_preload_indexes_total_milliseconds{service_name=~\"$service_name\"}[5m]))",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Index Preload",
@@ -1737,7 +1754,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "rate(mongodb_mongod_metrics_repl_apply_batches_total_milliseconds{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_metrics_repl_apply_batches_total_milliseconds{service_name=~\"$service_name\"}[5m])",
+                    "expr": "avg by (service_name) (rate(mongodb_mongod_metrics_repl_apply_batches_total_milliseconds{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_metrics_repl_apply_batches_total_milliseconds{service_name=~\"$service_name\"}[5m]))",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Batch Apply",
@@ -1818,8 +1835,9 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 45
+                "y": 44
             },
+            "hiddenSeries": false,
             "id": 85,
             "legend": {
                 "alignAsTable": true,
@@ -1851,7 +1869,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "mongodb_mongod_metrics_repl_buffer_count{service_name=~\"$service_name\"}",
+                    "expr": "avg by (service_name) (mongodb_mongod_metrics_repl_buffer_count{service_name=~\"$service_name\"})",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Current",
@@ -1931,8 +1949,9 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 45
+                "y": 44
             },
+            "hiddenSeries": false,
             "id": 80,
             "legend": {
                 "alignAsTable": true,
@@ -1964,7 +1983,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "mongodb_mongod_metrics_repl_buffer_size_bytes{service_name=~\"$service_name\"}",
+                    "expr": "avg by (service_name) (mongodb_mongod_metrics_repl_buffer_size_bytes{service_name=~\"$service_name\"})",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Used",
@@ -1972,7 +1991,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "mongodb_mongod_metrics_repl_buffer_max_size_bytes{service_name=~\"$service_name\"}",
+                    "expr": "avg by (service_name) (mongodb_mongod_metrics_repl_buffer_max_size_bytes{service_name=~\"$service_name\"})",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Max",
@@ -2035,7 +2054,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 53
+                "y": 52
             },
             "id": 1009,
             "panels": [
@@ -2105,7 +2124,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "mongodb_instance_uptime_seconds{service_name=~\"$service_name\"}",
+                            "expr": "avg by (service_name) (mongodb_instance_uptime_seconds{service_name=~\"$service_name\"})",
                             "interval": "$interval",
                             "refId": "A"
                         }
@@ -2276,7 +2295,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"command\"}[$interval]) / rate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"command\"}[$interval]) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"command\"}[5m]) / irate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"command\"}[5m])",
+                            "expr": "avg by (service_name) (rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"command\"}[$interval]) / rate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"command\"}[$interval]) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"command\"}[5m]) / irate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"command\"}[5m]))",
                             "interval": "$interval",
                             "refId": "A"
                         }
@@ -2342,6 +2361,7 @@
                         "y": 56
                     },
                     "height": "250px",
+                    "hiddenSeries": false,
                     "id": 1012,
                     "legend": {
                         "alignAsTable": true,
@@ -2374,7 +2394,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "max_over_time(mongodb_mongod_connections{service_name=~\"$service_name\", state=\"current\"}[$interval]) or \nmax_over_time(mongodb_mongod_connections{service_name=~\"$service_name\", state=\"current\"}[5m]) or\nmax_over_time(mongodb_mongos_connections{service_name=~\"$service_name\", state=\"current\"}[$interval]) or\nmax_over_time(mongodb_mongos_connections{service_name=~\"$service_name\", state=\"current\"}[5m]) or\nmax_over_time(mongodb_connections{service_name=~\"$service_name\", state=\"current\"}[$interval]) or\nmax_over_time(mongodb_connections{service_name=~\"$service_name\", state=\"current\"}[5m])",
+                            "expr": "avg by (service_name) (max_over_time(mongodb_mongod_connections{service_name=~\"$service_name\", state=\"current\"}[$interval]) or \nmax_over_time(mongodb_mongod_connections{service_name=~\"$service_name\", state=\"current\"}[5m]) or\nmax_over_time(mongodb_mongos_connections{service_name=~\"$service_name\", state=\"current\"}[$interval]) or\nmax_over_time(mongodb_mongos_connections{service_name=~\"$service_name\", state=\"current\"}[5m]) or\nmax_over_time(mongodb_connections{service_name=~\"$service_name\", state=\"current\"}[$interval]) or\nmax_over_time(mongodb_connections{service_name=~\"$service_name\", state=\"current\"}[5m]))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -2459,6 +2479,7 @@
                         "y": 56
                     },
                     "height": "250px",
+                    "hiddenSeries": false,
                     "id": 1013,
                     "legend": {
                         "alignAsTable": true,
@@ -2492,7 +2513,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "max_over_time(mongodb_mongod_metrics_cursor_open{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mongodb_mongod_metrics_cursor_open{service_name=~\"$service_name\"}[5m]) or\nmax_over_time(mongodb_mongod_cursors{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mongodb_mongod_cursors{service_name=~\"$service_name\"}[5m]) or\nmax_over_time(mongodb_mongos_metrics_cursor_open{service_name=~\"$service_name\"}[$interval]) or \nmax_over_time(mongodb_mongos_metrics_cursor_open{service_name=~\"$service_name\"}[5m]) or\nmax_over_time(mongodb_mongos_cursors{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mongodb_mongos_cursors{service_name=~\"$service_name\"}[5m])",
+                            "expr": "avg by (service_name,state) (max_over_time(mongodb_mongod_metrics_cursor_open{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mongodb_mongod_metrics_cursor_open{service_name=~\"$service_name\"}[5m]) or\nmax_over_time(mongodb_mongod_cursors{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mongodb_mongod_cursors{service_name=~\"$service_name\"}[5m]) or\nmax_over_time(mongodb_mongos_metrics_cursor_open{service_name=~\"$service_name\"}[$interval]) or \nmax_over_time(mongodb_mongos_metrics_cursor_open{service_name=~\"$service_name\"}[5m]) or\nmax_over_time(mongodb_mongos_cursors{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mongodb_mongos_cursors{service_name=~\"$service_name\"}[5m]))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -2561,7 +2582,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 54
+                "y": 53
             },
             "id": 291,
             "panels": [
@@ -2635,7 +2656,7 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "(node_time_seconds{node_name=~\"$node_name\"} - node_boot_time_seconds{node_name=~\"$node_name\"}) or (time() - node_boot_time_seconds{node_name=~\"$node_name\"})",
+                            "expr": "avg by (node_name) ((node_time_seconds{node_name=~\"$node_name\"} - node_boot_time_seconds{node_name=~\"$node_name\"}) or (time() - node_boot_time_seconds{node_name=~\"$node_name\"}))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "5m",
@@ -2718,7 +2739,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "avg_over_time(node_load1{node_name=~\"$node_name\"}[$interval]) or avg_over_time(node_load1{node_name=~\"$node_name\"}[5m])",
+                            "expr": "avg by (node_name) (avg_over_time(node_load1{node_name=~\"$node_name\"}[$interval]) or avg_over_time(node_load1{node_name=~\"$node_name\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2804,7 +2825,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "node_memory_MemTotal_bytes{node_name=~\"$node_name\"}",
+                            "expr": "avg by (node_name) (node_memory_MemTotal_bytes{node_name=~\"$node_name\"})",
                             "format": "time_series",
                             "interval": "5m",
                             "intervalFactor": 1,
@@ -2891,7 +2912,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "(node_memory_MemAvailable_bytes{node_name=~\"$node_name\"} or (node_memory_MemFree_bytes{node_name=~\"$node_name\"} + node_memory_Buffers_bytes{node_name=~\"$node_name\"} + node_memory_Cached_bytes{node_name=~\"$node_name\"})) / node_memory_MemTotal_bytes{node_name=~\"$node_name\"} * 100",
+                            "expr": "avg by (node_name) ((node_memory_MemAvailable_bytes{node_name=~\"$node_name\"} or (node_memory_MemFree_bytes{node_name=~\"$node_name\"} + node_memory_Buffers_bytes{node_name=~\"$node_name\"} + node_memory_Cached_bytes{node_name=~\"$node_name\"})) / node_memory_MemTotal_bytes{node_name=~\"$node_name\"}) * 100",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2978,7 +2999,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "node_memory_MemTotal_bytes{node_name=~\"$node_name\"}+node_memory_SwapTotal_bytes{node_name=~\"$node_name\"}",
+                            "expr": "avg by (node_name) (node_memory_MemTotal_bytes{node_name=~\"$node_name\"}+node_memory_SwapTotal_bytes{node_name=~\"$node_name\"})",
                             "format": "time_series",
                             "interval": "5m",
                             "intervalFactor": 1,
@@ -3072,7 +3093,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "sum(avg(node_filesystem_size_bytes{node_name=~\"$node_name\",fstype=~\"(ext.|xfs|vfat|)\"}) without (mountpoint)) without (device,fstype)",
+                            "expr": "avg by (node_name) (sum(avg(node_filesystem_size_bytes{node_name=~\"$node_name\",fstype=~\"(ext.|xfs|vfat|)\"}) without (mountpoint)) without (device,fstype))",
                             "format": "time_series",
                             "interval": "5m",
                             "intervalFactor": 1,
@@ -3240,6 +3261,7 @@
                         "y": 57
                     },
                     "height": "",
+                    "hiddenSeries": false,
                     "id": 337,
                     "legend": {
                         "alignAsTable": true,
@@ -3368,6 +3390,7 @@
                         "x": 12,
                         "y": 57
                     },
+                    "hiddenSeries": false,
                     "id": 339,
                     "legend": {
                         "alignAsTable": true,
@@ -3412,7 +3435,7 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "(avg_over_time(node_procs_running{node_name=~\"$node_name\"}[$interval])-1) / scalar(count(node_cpu_seconds_total{mode=\"user\", node_name=~\"$node_name\"})) or (avg_over_time(node_procs_running{node_name=~\"$node_name\"}[5m])-1) / scalar(count(node_cpu_seconds_total{mode=\"user\", node_name=~\"$node_name\"}))",
+                            "expr": "avg by (node_name) ((avg_over_time(node_procs_running{node_name=~\"$node_name\"}[$interval])-1) / scalar(count(node_cpu_seconds_total{mode=\"user\", node_name=~\"$node_name\"})) or (avg_over_time(node_procs_running{node_name=~\"$node_name\"}[5m])-1) / scalar(count(node_cpu_seconds_total{mode=\"user\", node_name=~\"$node_name\"})))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -3502,6 +3525,7 @@
                         "x": 0,
                         "y": 65
                     },
+                    "hiddenSeries": false,
                     "id": 341,
                     "legend": {
                         "alignAsTable": true,
@@ -3557,7 +3581,7 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "rate(node_vmstat_pgpgin{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=\"$node_name\"}[5m]) * 1024",
+                            "expr": "avg by (node_name) (rate(node_vmstat_pgpgin{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=\"$node_name\"}[5m]) * 1024)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3571,7 +3595,7 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "(rate(node_vmstat_pgpgout{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=\"$node_name\"}[5m]) * 1024)",
+                            "expr": "avg by (node_name) ((rate(node_vmstat_pgpgout{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=\"$node_name\"}[5m]) * 1024))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3582,7 +3606,7 @@
                             "target": ""
                         },
                         {
-                            "expr": "(rate(node_vmstat_pgpgin{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=\"$node_name\"}[5m]) * 1024 ) + (rate(node_vmstat_pgpgout{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=\"$node_name\"}[5m]) * 1024)",
+                            "expr": "avg by (node_name) ((rate(node_vmstat_pgpgin{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgin{node_name=\"$node_name\"}[5m]) * 1024 ) + (rate(node_vmstat_pgpgout{node_name=\"$node_name\"}[$interval]) * 1024 or irate(node_vmstat_pgpgout{node_name=\"$node_name\"}[5m]) * 1024))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3590,7 +3614,7 @@
                             "refId": "C"
                         },
                         {
-                            "expr": "rate(node_vmstat_pswpin{node_name=\"$node_name\"}[$interval]) * 4096 or irate(node_vmstat_pswpin{node_name=\"$node_name\"}[5m]) * 4096",
+                            "expr": "avg by (node_name) (rate(node_vmstat_pswpin{node_name=\"$node_name\"}[$interval]) * 4096 or irate(node_vmstat_pswpin{node_name=\"$node_name\"}[5m]) * 4096)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3598,7 +3622,7 @@
                             "refId": "D"
                         },
                         {
-                            "expr": "rate(node_vmstat_pswpout{node_name=\"$node_name\"}[$interval]) * 4096 or irate(node_vmstat_pswpout{node_name=\"$node_name\"}[5m]) * 4096",
+                            "expr": "avg by (node_name) (rate(node_vmstat_pswpout{node_name=\"$node_name\"}[$interval]) * 4096 or irate(node_vmstat_pswpout{node_name=\"$node_name\"}[5m]) * 4096)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3666,6 +3690,7 @@
                         "x": 12,
                         "y": 65
                     },
+                    "hiddenSeries": false,
                     "id": 343,
                     "legend": {
                         "alignAsTable": true,
@@ -3706,7 +3731,7 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "sum(rate(node_network_receive_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[$interval])) or sum(irate(node_network_receive_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[5m])) or sum(max_over_time(rdsosmetrics_network_rx{node_name=\"$node_name\"}[$interval])) or sum(max_over_time(rdsosmetrics_network_rx{node_name=\"$node_name\"}[5m])) ",
+                            "expr": "avg by (node_name) (sum(rate(node_network_receive_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[$interval])) or sum(irate(node_network_receive_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[5m])) or sum(max_over_time(rdsosmetrics_network_rx{node_name=\"$node_name\"}[$interval])) or sum(max_over_time(rdsosmetrics_network_rx{node_name=\"$node_name\"}[5m])))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3720,7 +3745,7 @@
                             "calculatedInterval": "2s",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "sum(rate(node_network_transmit_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[$interval])) or sum(irate(node_network_transmit_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[5m])) or\nsum(max_over_time(rdsosmetrics_network_tx{node_name=\"$node_name\"}[$interval])) or sum(max_over_time(rdsosmetrics_network_tx{node_name=\"$node_name\"}[5m]))",
+                            "expr": "avg by (node_name) (sum(rate(node_network_transmit_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[$interval])) or sum(irate(node_network_transmit_bytes_total{node_name=\"$node_name\", device!=\"lo\"}[5m])) or\nsum(max_over_time(rdsosmetrics_network_tx{node_name=\"$node_name\"}[$interval])) or sum(max_over_time(rdsosmetrics_network_tx{node_name=\"$node_name\"}[5m])))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -3779,7 +3804,7 @@
         }
     ],
     "refresh": "1m",
-    "schemaVersion": 20,
+    "schemaVersion": 21,
     "style": "dark",
     "tags": [
         "MongoDB_HA",
