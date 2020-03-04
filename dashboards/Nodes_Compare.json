@@ -1846,7 +1846,7 @@
                     "grid": {},
                     "gridPos": {
                         "h": 8,
-                        "w": 24,
+                        "w": 12,
                         "x": 0,
                         "y": 30
                     },
@@ -1989,6 +1989,169 @@
                 },
                 {
                     "aliasColors": {
+                        "Buffers": "#bf1b00",
+                        "Free": "#9ac48a",
+                        "Slab": "#E5A8E2",
+                        "Swap": "#E24D42",
+                        "Used": "#1f78c1"
+                    },
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": 2,
+                    "editable": true,
+                    "error": false,
+                    "fill": 4,
+                    "fillGradient": 0,
+                    "grid": {},
+                    "gridPos": {
+                        "h": 8,
+                        "w": 12,
+                        "x": 12,
+                        "y": 30
+                    },
+                    "hiddenSeries": false,
+                    "id": 1410,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "show": true,
+                        "sort": null,
+                        "sortDesc": null,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [
+                        {
+                            "targetBlank": true,
+                            "title": "System Overview",
+                            "url": "/graph/d/node-instance-summary/node-summary?$__url_time_range&$__all_variables&panelId=34&fullscreen"
+                        }
+                    ],
+                    "maxPerRow": 6,
+                    "nullPointMode": "connected",
+                    "options": {
+                        "dataLinks": [
+                            {
+                                "targetBlank": true,
+                                "title": "Memory Details - ${__series.labels.node_name}",
+                                "url": "/graph/d/node-memory/memory-details?var-node_name=${__field.labels.node_name}&$__url_time_range"
+                            }
+                        ]
+                    },
+                    "paceLength": 10,
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "repeat": null,
+                    "repeatIteration": 1583343195030,
+                    "repeatPanelId": 17,
+                    "seriesOverrides": [
+                        {
+                            "alias": "Cached",
+                            "color": "#1f78c1"
+                        },
+                        {
+                            "alias": "Free",
+                            "color": "#508642"
+                        },
+                        {
+                            "alias": "Used",
+                            "color": "#eab839"
+                        },
+                        {
+                            "alias": "Buffers",
+                            "color": "#a352cc"
+                        }
+                    ],
+                    "spaceLength": 10,
+                    "stack": true,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "expr": "avg by (node_name) (max(node_memory_MemTotal_bytes{node_name=~\"$node_name\"}) - (max(node_memory_MemFree_bytes{node_name=~\"$node_name\"}) + max(node_memory_Buffers_bytes{node_name=~\"$node_name\"}) + (max(node_memory_Cached_bytes{node_name=~\"$node_name\"}))))",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Used",
+                            "refId": "A"
+                        },
+                        {
+                            "expr": "avg by (node_name) (max_over_time(node_memory_MemFree_bytes{node_name=~\"$node_name\"}[$interval]) or\nmax_over_time(node_memory_MemFree_bytes{node_name=~\"$node_name\"}[5m]))",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Free",
+                            "refId": "B"
+                        },
+                        {
+                            "expr": "avg by (node_name) (max_over_time(node_memory_Buffers_bytes{node_name=~\"$node_name\"}[$interval]) or\nmax_over_time(node_memory_Buffers_bytes{node_name=~\"$node_name\"}[5m]))",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Buffers",
+                            "refId": "C"
+                        },
+                        {
+                            "expr": "avg by (node_name) (max(node_memory_Cached_bytes{node_name=~\"$node_name\"}))",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Cached",
+                            "refId": "D"
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeRegions": [],
+                    "timeShift": null,
+                    "title": "$node_name - Memory  Usage",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "decimals": 2,
+                            "format": "bytes",
+                            "label": "GB",
+                            "logBase": 1,
+                            "max": null,
+                            "min": "0",
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": false
+                        }
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
+                },
+                {
+                    "aliasColors": {
                         "Used": "#bf1b00"
                     },
                     "bars": false,
@@ -2003,7 +2166,7 @@
                     "grid": {},
                     "gridPos": {
                         "h": 8,
-                        "w": 24,
+                        "w": 12,
                         "x": 0,
                         "y": 38
                     },
@@ -2049,6 +2212,169 @@
                     "points": false,
                     "renderer": "flot",
                     "repeat": "node_name",
+                    "seriesOverrides": [
+                        {
+                            "alias": "Used",
+                            "color": "#eab839"
+                        },
+                        {
+                            "alias": "Free",
+                            "color": "#508642"
+                        },
+                        {
+                            "alias": "Total",
+                            "color": "#bf1b00",
+                            "fill": 0,
+                            "stack": false
+                        }
+                    ],
+                    "spaceLength": 10,
+                    "stack": true,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "calculatedInterval": "2s",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "avg by (node_name) ((max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$node_name\"}[5m])) -\n(max_over_time(node_memory_SwapFree_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_SwapFree_bytes{node_name=~\"$node_name\"}[5m])))",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Used",
+                            "metric": "",
+                            "refId": "A",
+                            "step": 300,
+                            "target": ""
+                        },
+                        {
+                            "calculatedInterval": "2s",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "avg by (node_name) (max_over_time(node_memory_SwapFree_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_SwapFree_bytes{node_name=~\"$node_name\"}[5m]))",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Free",
+                            "metric": "",
+                            "refId": "B",
+                            "step": 300,
+                            "target": ""
+                        },
+                        {
+                            "expr": "avg by (node_name) (max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_SwapTotal_bytes{node_name=~\"$node_name\"}[5m]))",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Total",
+                            "refId": "C"
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeRegions": [],
+                    "timeShift": null,
+                    "title": "$node_name - Swap Usage",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "decimals": 2,
+                            "format": "bytes",
+                            "label": "",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        },
+                        {
+                            "format": "bytes",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": false
+                        }
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
+                },
+                {
+                    "aliasColors": {
+                        "Used": "#bf1b00"
+                    },
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": 2,
+                    "editable": true,
+                    "error": false,
+                    "fill": 6,
+                    "fillGradient": 0,
+                    "grid": {},
+                    "gridPos": {
+                        "h": 8,
+                        "w": 12,
+                        "x": 12,
+                        "y": 38
+                    },
+                    "hiddenSeries": false,
+                    "id": 1411,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "hideEmpty": false,
+                        "max": true,
+                        "min": true,
+                        "rightSide": false,
+                        "show": true,
+                        "sort": null,
+                        "sortDesc": null,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [
+                        {
+                            "targetBlank": true,
+                            "title": "System Overview",
+                            "url": "/graph/d/node-instance-summary/node-summary?$__url_time_range&$__all_variables"
+                        }
+                    ],
+                    "maxPerRow": 6,
+                    "nullPointMode": "null",
+                    "options": {
+                        "dataLinks": [
+                            {
+                                "targetBlank": true,
+                                "title": "Memory Details - ${__series.labels.node_name}",
+                                "url": "/graph/d/node-memory/memory-details?var-node_name=${__field.labels.node_name}&$__url_time_range"
+                            }
+                        ]
+                    },
+                    "paceLength": 10,
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "repeat": null,
+                    "repeatIteration": 1583343195030,
+                    "repeatPanelId": 95,
                     "seriesOverrides": [
                         {
                             "alias": "Used",
@@ -2159,7 +2485,7 @@
                     "fillGradient": 0,
                     "gridPos": {
                         "h": 8,
-                        "w": 24,
+                        "w": 12,
                         "x": 0,
                         "y": 46
                     },
@@ -2201,6 +2527,125 @@
                     "points": false,
                     "renderer": "flot",
                     "repeat": "node_name",
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "expr": "avg by (node_name) (rate(node_vmstat_pswpin{node_name=~\"$node_name\"}[$interval]) * 4096 or irate(node_vmstat_pswpin{node_name=~\"$node_name\"}[5m]) * 4096)",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Swap In (Reads)",
+                            "refId": "A"
+                        },
+                        {
+                            "expr": "avg by (node_name) (rate(node_vmstat_pswpout{node_name=~\"$node_name\"}[$interval]) * 4096 or irate(node_vmstat_pswpout{node_name=~\"$node_name\"}[5m]) * 4096)",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Swap Out (Writes)",
+                            "refId": "B"
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeRegions": [],
+                    "timeShift": null,
+                    "title": "$node_name - Swap Activity",
+                    "tooltip": {
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "decimals": 2,
+                            "format": "Bps",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": "0",
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": false
+                        }
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
+                },
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": 2,
+                    "fill": 1,
+                    "fillGradient": 0,
+                    "gridPos": {
+                        "h": 8,
+                        "w": 12,
+                        "x": 12,
+                        "y": 46
+                    },
+                    "hiddenSeries": false,
+                    "id": 1412,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "show": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [
+                        {
+                            "targetBlank": true,
+                            "title": "System Overview",
+                            "url": "/graph/d/node-instance-summary/node-summary?$__url_time_range&$__all_variables"
+                        }
+                    ],
+                    "maxPerRow": 6,
+                    "nullPointMode": "null",
+                    "options": {
+                        "dataLinks": [
+                            {
+                                "targetBlank": true,
+                                "title": "Memory Details - ${__series.labels.node_name}",
+                                "url": "/graph/d/node-memory/memory-details?var-node_name=${__field.labels.node_name}&$__url_time_range"
+                            }
+                        ]
+                    },
+                    "paceLength": 10,
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "repeat": null,
+                    "repeatIteration": 1583343195030,
+                    "repeatPanelId": 108,
                     "seriesOverrides": [],
                     "spaceLength": 10,
                     "stack": false,
@@ -2416,7 +2861,7 @@
                         "y": 31
                     },
                     "hiddenSeries": false,
-                    "id": 1394,
+                    "id": 1408,
                     "legend": {
                         "alignAsTable": true,
                         "avg": true,
@@ -2455,7 +2900,7 @@
                     "renderer": "flot",
                     "repeat": null,
                     "repeatDirection": "h",
-                    "repeatIteration": 1582803555977,
+                    "repeatIteration": 1583343195030,
                     "repeatPanelId": 9,
                     "seriesOverrides": [],
                     "spaceLength": 10,
@@ -2651,7 +3096,7 @@
                         "y": 39
                     },
                     "hiddenSeries": false,
-                    "id": 1395,
+                    "id": 1409,
                     "legend": {
                         "alignAsTable": true,
                         "avg": true,
@@ -2689,7 +3134,7 @@
                     "points": false,
                     "renderer": "flot",
                     "repeat": null,
-                    "repeatIteration": 1582803555977,
+                    "repeatIteration": 1583343195030,
                     "repeatPanelId": 156,
                     "seriesOverrides": [],
                     "spaceLength": 10,
