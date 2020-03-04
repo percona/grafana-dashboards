@@ -207,13 +207,13 @@ const SettingsPart = props => {
                     }
                   />
                   <FormElement
-                    label={'Call home'}
+                    label={'Telemetry'}
                     type={'horizontal'}
                     tooltip={
                       <PluginTooltip
                         links={[
                           {
-                            url: 'https://www.percona.com/doc/percona-monitoring-and-management/2.x/glossary-terminology.html#Telemetry',
+                            url: 'https://www.percona.com/doc/percona-monitoring-and-management/2.x/glossary-terminology.html#telemetry',
                             text: 'Read more',
                           },
                         ]}
