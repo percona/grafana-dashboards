@@ -208,6 +208,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
         return item.map(element => `${paramKey}=${element}`).join('&');
       })
       .join('&');
+    // @ts-ignore
     history.pushState({}, null, `${host}?${query}`);
   }
 
