@@ -199,7 +199,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
         value: existedParams[filter],
       };
     });
-    templateVariables[0].variableSrv.variableUpdated(templateVariables[0], true);
+    templateVariables[0].variableSrv.variableUpdated(templateVariables[0]);
 
     // After grafana variables updated, generate  url for all variables, or they will be lost
     const query = Object.keys(existedParams)
@@ -208,9 +208,8 @@ export class PanelCtrl extends MetricsPanelCtrl {
         return item.map(element => `${paramKey}=${element}`).join('&');
       })
       .join('&');
-    const url = `${host}?${query}`;
     // @ts-ignore
-    history.pushState({}, null, url);
+    history.pushState({}, null, `${host}?${query}`);
   }
 
   private retrieveDashboardURLParams(): string[] {
@@ -282,13 +281,8 @@ export class PanelCtrl extends MetricsPanelCtrl {
   }
 
   private resetUrl($scope) {
-    const filters = $scope.qanParams.filters;
     const data = Object.assign({}, $scope.qanParams);
-    delete data.filters;
     const query = this.encodeData(data);
-    $scope.url =
-      $scope.qanParams.type && $scope.qanParams.queryID
-        ? `/qan/profile/report/${$scope.qanParams.type}?${query}&${filters}&timestamp=${+new Date()}`
-        : `/qan/profile/?${query}&${filters}&timestamp=${+new Date()}`;
+    $scope.url = $scope.qanParams.filter_by ? `/qan/profile/details/${$scope.qanParams.filter_by}?${query}` : `/qan/profile/?${query}`;
   }
 }
