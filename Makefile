@@ -9,7 +9,13 @@ build:
 	cd pmm-app && npm i && npm run build && cd ..
 
 coverage:
-	cd pmm-app && npm i && npm run coverage && npm run build && cd ..
+	cd pmm-app && npm run coverage && cd ..
+
+e2e:
+	cd pmm-app && docker-compose up -d
+	cd pmm-app && docker-compose -f ./selenoid-docker-compose.yaml up -d
+	cd pmm-app && npm i -g codeceptjs
+	cd pmm-app && codeceptjs run --steps
 
 pack:
 	tar czf pmm-app.tar.gz pmm-app
@@ -32,7 +38,7 @@ disable:
 enable:
 	curl -X POST --retry-delay 5 --retry 5 'http://admin:admin@localhost/graph/api/plugins/pmm-app/settings' -d 'enabled=true'
 
-test: coverage build pack disable install enable
+test: e2e pack disable install enable
 
 clean:
 	rm -r pmm-app/dist/
