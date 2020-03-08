@@ -1,22 +1,36 @@
-selenoid:
-  image: aerokube/selenoid
-  container_name: selenoid_server
-  volumes:
-    - './:/etc/selenoid'
-    - '/var/run/docker.sock:/var/run/docker.sock'
-    - './video:/opt/selenoid/video'
-  environment:
-    - OVERRIDE_VIDEO_OUTPUT_DIR=${PWD}/video
-  command: ['-conf', '/etc/selenoid/browsers.json', '-video-output-dir', '/opt/selenoid/video']
-  ports:
-    - '4444:4444'
-  links:
-    - pmm-server
-    - pmm-server:pmm
-selenoid-ui:
-  image: 'aerokube/selenoid-ui'
-  links:
-    - selenoid
-  ports:
-    - '8080:8080'
-  command: ['--selenoid-uri', 'http://selenoid:4444']
+version: '3'
+services:
+  codecept:
+    image: codeception/codeceptjs
+    container_name: codecept
+    volumes:
+      - '/Users/lunaticus/Documents/Work/Percona/grafana-dashboards/pmm-app/:/tests/'
+    external_links:
+      - 'selenoid_server'
+      - 'selenoid_server:selenoid'
+      - 'pmm-server'
+      - 'pmm-server:pmm'
+    depends_on:
+      - selenoid
+  selenoid:
+    image: aerokube/selenoid
+    container_name: selenoid_server
+    volumes:
+      - './:/etc/selenoid'
+      - '/var/run/docker.sock:/var/run/docker.sock'
+      - './video:/opt/selenoid/video'
+    environment:
+      - OVERRIDE_VIDEO_OUTPUT_DIR=${PWD}/video
+    command: ['-conf', '/etc/selenoid/browsers.json', '-video-output-dir', '/opt/selenoid/video']
+    ports:
+      - '4444:4444'
+    external_links:
+      - 'pmm-server'
+      - 'pmm-server:pmm'
+  selenoid-ui:
+    image: 'aerokube/selenoid-ui'
+    links:
+      - selenoid
+    ports:
+      - '8080:8080'
+    command: ['--selenoid-uri', 'http://selenoid:4444']
