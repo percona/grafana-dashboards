@@ -13,8 +13,7 @@ coverage:
 
 e2e:
 	cd pmm-app && docker-compose up -d
-	cd pmm-app && docker-compose -f ./selenoid-docker-compose.yaml up -d
-	cd pmm-app && npm i -g codeceptjs
+	cd pmm-app && bash ./selenium.sh
 	cd pmm-app && codeceptjs run --steps
 
 pack:
