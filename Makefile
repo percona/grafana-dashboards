@@ -14,7 +14,6 @@ coverage:
 e2e:
 	cd pmm-app && docker-compose up -d
 	cd pmm-app && bash ./selenium.sh
-	cd pmm-app && codeceptjs run --steps
 
 pack:
 	tar czf pmm-app.tar.gz pmm-app
@@ -37,7 +36,7 @@ disable:
 enable:
 	curl -X POST --retry-delay 5 --retry 5 'http://admin:admin@localhost/graph/api/plugins/pmm-app/settings' -d 'enabled=true'
 
-test: e2e pack disable install enable
+test: build coverage e2e pack disable install enable
 
 clean:
 	rm -r pmm-app/dist/

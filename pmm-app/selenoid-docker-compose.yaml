@@ -4,7 +4,7 @@ services:
     image: codeception/codeceptjs
     container_name: codecept
     environment:
-      - CODECEPT_ARGS=--verbose
+      - CODECEPT_ARGS=--steps --debug
     volumes:
       - './:/tests/'
     links:
@@ -30,14 +30,5 @@ services:
       - '4444:4444'
     extra_hosts:
       - pmm-server:${PMM_SRV_ADDR}
-    network_mode: bridge
-
-  selenoid-ui:
-    image: 'aerokube/selenoid-ui'
-    links:
-      - selenoid:selenoid
-    ports:
-      - '8080:8080'
-    command: ['--selenoid-uri', 'http://selenoid:4444']
     network_mode: bridge
 
