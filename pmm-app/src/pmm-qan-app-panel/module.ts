@@ -21,6 +21,7 @@ const filtersList = [
   'var-service_name',
   'var-service_type',
   'var-username',
+  'var-schema',
 ];
 
 export class PanelCtrl extends MetricsPanelCtrl {
