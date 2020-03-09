@@ -12,6 +12,8 @@ services:
       - 29000:9000
       - 9933:9933
     restart: always
+    network_mode: bridge
+
   ch:
     image: yandex/clickhouse-server
     container_name: ch-server
@@ -21,6 +23,7 @@ services:
         hard: 262144
     ports:
       - 9000:9000
+    network_mode: bridge
 
   pmm-client:
     container_name: pmm-client
@@ -44,6 +47,7 @@ services:
       "
     volumes:
       - logs-directory:/var/log/mysql
+    network_mode: bridge
 
   ps:
     image: percona/percona-server:latest
@@ -54,6 +58,7 @@ services:
       - 3306:3306
     volumes:
       - logs-directory:/var/log/mysql
+    network_mode: bridge
 
   postgres:
     image: postgres
@@ -62,6 +67,7 @@ services:
       - POSTGRES_PASSWORD=secret
     ports:
       - '5432:5432'
+    network_mode: bridge
 
   mongo:
     image: mongo
@@ -70,6 +76,7 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=secret
     ports:
       - '27017:27017'
+    network_mode: bridge
 
   sysbench-ps:
     container_name: sysbench-ps
@@ -116,6 +123,7 @@ services:
               /usr/share/sysbench/tests/include/oltp_legacy/select.lua \
               run
       "
+    network_mode: bridge
 
   sysbench-pstpcc:
     image: perconalab/sysbench
@@ -135,6 +143,7 @@ services:
          ./tpcc.lua --mysql-host=ps --mysql-port=3306 --mysql-user=root --mysql-password=secret --mysql-db=sbtest --time=300 --threads=64 --report-interval=1 --tables=10 --scale=100 --db-driver=mysql prepare
          ./tpcc.lua --mysql-host=ps --mysql-port=3306 --mysql-user=root --mysql-password=secret --mysql-db=sbtest --time=300 --threads=64 --report-interval=1 --tables=10 --scale=100 --db-driver=mysql run
       "
+    network_mode: bridge
 
 volumes:
   logs-directory:

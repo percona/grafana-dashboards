@@ -13,6 +13,7 @@ services:
       - pmm-server:${PMM_SRV_ADDR}
     depends_on:
       - selenoid
+    network_mode: bridge
 
   selenoid:
     image: aerokube/selenoid
@@ -21,6 +22,7 @@ services:
       - './:/etc/selenoid'
       - '/var/run/docker.sock:/var/run/docker.sock'
       - './video:/opt/selenoid/video'
+      - './logs:/opt/selenoid/logs'
     environment:
       - OVERRIDE_VIDEO_OUTPUT_DIR=${PWD}/video
     command: ['-conf', '/etc/selenoid/browsers.json', '-video-output-dir', '/opt/selenoid/video']
@@ -28,6 +30,7 @@ services:
       - '4444:4444'
     extra_hosts:
       - pmm-server:${PMM_SRV_ADDR}
+    network_mode: bridge
 
   selenoid-ui:
     image: 'aerokube/selenoid-ui'
@@ -36,3 +39,5 @@ services:
     ports:
       - '8080:8080'
     command: ['--selenoid-uri', 'http://selenoid:4444']
+    network_mode: bridge
+
