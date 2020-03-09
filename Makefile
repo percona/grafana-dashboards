@@ -12,6 +12,7 @@ coverage:
 	cd pmm-app && npm run coverage && cd ..
 
 e2e:
+	mkdir pmm-app/logs
 	cd pmm-app && docker-compose up -d
 	cd pmm-app && bash ./selenium.sh
 
