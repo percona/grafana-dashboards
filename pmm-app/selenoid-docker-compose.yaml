@@ -3,15 +3,17 @@ services:
   codecept:
     image: codeception/codeceptjs
     container_name: codecept
+    environment:
+      - CODECEPT_ARGS=--verbose
     volumes:
-      - '/Users/lunaticus/Documents/Work/Percona/grafana-dashboards/pmm-app/:/tests/'
-    external_links:
-      - 'selenoid_server'
-      - 'selenoid_server:selenoid'
-      - 'pmm-server'
-      - 'pmm-server:pmm'
+      - '~/git/work/percona/grafana-dashboards/pmm-app/:/tests/'
+    links:
+      - 'selenoid'
+    extra_hosts:
+      - pmm-server:${PMM_SRV_ADDR}
     depends_on:
       - selenoid
+
   selenoid:
     image: aerokube/selenoid
     container_name: selenoid_server
@@ -24,13 +26,13 @@ services:
     command: ['-conf', '/etc/selenoid/browsers.json', '-video-output-dir', '/opt/selenoid/video']
     ports:
       - '4444:4444'
-    external_links:
-      - 'pmm-server'
-      - 'pmm-server:pmm'
+    extra_hosts:
+      - pmm-server:${PMM_SRV_ADDR}
+
   selenoid-ui:
     image: 'aerokube/selenoid-ui'
     links:
-      - selenoid
+      - selenoid:selenoid
     ports:
       - '8080:8080'
     command: ['--selenoid-uri', 'http://selenoid:4444']
