@@ -31,6 +31,7 @@ module.exports = {
         for (let i in this.metrics) {
             I.seeElement(this.graphsLocator(this.metrics[i]));
         }
+        // TODO: This element may exist, so this part should be reconsidered or test is unstable
         I.seeNumberOfVisibleElements(this.fields.notAvailableMetrics, 8);
     }
 };

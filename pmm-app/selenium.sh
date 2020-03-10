@@ -13,5 +13,5 @@ sed "s|%PMM_SRV_ADDR%|${PMM_SRV_ADDR}|g" browsers.json.template > browsers.json
 
 mkdir ./video ./logs || true
 
-docker-compose -f selenoid-docker-compose.yaml up
+docker-compose -f selenoid-docker-compose.yaml up -d
 

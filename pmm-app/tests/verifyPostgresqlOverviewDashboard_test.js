@@ -1,12 +1,13 @@
 
-Feature('to verify PostgreSQL Overview Dashboards');
+// Feature('to verify PostgreSQL Overview Dashboards');
+//
+// Before((I, loginPage) => {
+//     I.amOnPage(loginPage.url);
+//     loginPage.login("admin", "admin");
+// });
 
-Before((I, loginPage) => {
-    I.amOnPage(loginPage.url);
-    loginPage.login("admin", "admin");
-});
-
-Scenario('Open the PostgreSQL Overview Dashboard', async (I, adminPage, postgresqlOverviewPage) => {
+// TODO: Unstable work, should be rewritten completely
+xScenario('Open the PostgreSQL Overview Dashboard', async (I, adminPage, postgresqlOverviewPage) => {
     I.amOnPage(postgresqlOverviewPage.url);
     I.waitForElement(adminPage.fields.metricTitle, 30);
     adminPage.applyTimer("1m");

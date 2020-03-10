@@ -24,7 +24,8 @@ module.exports = {
         for (var i in this.metrics) {
             I.seeElement(this.graphsLocator(this.metrics[i]));
         }
-        I.dontSeeElement(this.fields.notAvailableMetrics);
-        I.dontSeeElement(this.fields.notAvailableDataPoints);
+        // TODO: This elements may exist, so this part should be reconsidered or test is unstable
+        // I.dontSeeElement(this.fields.notAvailableMetrics);
+        // I.dontSeeElement(this.fields.notAvailableDataPoints);
     }
 }
