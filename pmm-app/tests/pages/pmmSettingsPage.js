@@ -23,7 +23,19 @@ module.exports = {
             "      annotations:\n" +
             "        summary: \"Instance {{ $labels.instance }} down\"\n" +
             "        description: \"{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 20 seconds.\"",
-        ruleName: "AutoTestAlerts"
+        editRule: "groups:\n" +
+            "  - name: AutoTestAlertsEdited\n" +
+            "    rules:\n" +
+            "    - alert: InstanceDown\n" +
+            "      expr: up == 0\n" +
+            "      for: 60s\n" +
+            "      labels:\n" +
+            "        severity: critical\n" +
+            "      annotations:\n" +
+            "        summary: \"Instance {{ $labels.instance }} down\"\n" +
+            "        description: \"{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 20 seconds.\"",
+        ruleName: "AutoTestAlerts",
+        editRuleName: "AutoTestAlertsEdited"
     },
     messages:{
         successPopUpMessage: "Settings updated",
@@ -191,7 +203,7 @@ module.exports = {
 
     customClearField(field) {
         I.appendField(field, '');
-        I.pressKey(['Shift', 'Home']);
+        I.pressKey(["Control", "a"]);
         I.pressKey('Backspace');
     },
 
@@ -234,13 +246,13 @@ module.exports = {
         I.amOnPage(this.prometheusAlertUrl);
     },
 
-    async verifyAlertmanagerRuleAdded(){
+    async verifyAlertmanagerRuleAdded(ruleName){
         for (let i = 0; i<10; i++) {
-            let notLoaded = await I.grabNumberOfVisibleElements(`//td[contains(text(), '${this.alertManager.ruleName}')]`);
+            let notLoaded = await I.grabNumberOfVisibleElements(`//td[contains(text(), '${ruleName}')]`);
             if (notLoaded) break;
             I.refreshPage();
             I.wait(1);
         }
-        I.see(this.alertManager.ruleName);
+        I.see(ruleName);
     }
 }

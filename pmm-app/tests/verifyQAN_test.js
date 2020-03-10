@@ -47,3 +47,51 @@ Scenario('Open the QAN Dashboard and verify pagination', async (I, adminPage, qa
     //qanPage.checkServerList();
     // I.switchTo();
 });
+
+Scenario('Open the QAN Dashboard and verify Tables tab in Query Details for Database=postgres filter', async (I, adminPage, qanPage) => {
+    I.amOnPage(qanPage.url);
+    await I.waitForElement(qanPage.fields.iframe, 60);
+    adminPage.applyTimer("5m");
+    await I.switchTo(qanPage.fields.iframe); // switch to first iframe
+    qanPage.waitForQANPageLoaded();
+    qanPage.applyFilter("postgres");
+    qanPage._selectDetails(2);
+    qanPage.selectSectionInDetails(qanPage.fields.tablesTabInDetails);
+    await qanPage.verifyDetailsSectionDataExists(qanPage.tabs.tablesTab);
+});
+
+Scenario('Open the QAN Dashboard and verify Tables tab in Query Details for Environment=pgsql-dev filter', async (I, adminPage, qanPage) => {
+    I.amOnPage(qanPage.url);
+    await I.waitForElement(qanPage.fields.iframe, 60);
+    adminPage.applyTimer("5m");
+    await I.switchTo(qanPage.fields.iframe); // switch to first iframe
+    qanPage.waitForQANPageLoaded();
+    qanPage.applyFilter("pgsql-dev");
+    qanPage._selectDetails(2);
+    qanPage.selectSectionInDetails(qanPage.fields.tablesTabInDetails);
+    await qanPage.verifyDetailsSectionDataExists(qanPage.tabs.tablesTab);
+});
+
+Scenario('Open the QAN Dashboard and verify Explain tab in Query Details for Database=postgres filter', async (I, adminPage, qanPage) => {
+    I.amOnPage(qanPage.url);
+    await I.waitForElement(qanPage.fields.iframe, 60);
+    adminPage.applyTimer("5m");
+    await I.switchTo(qanPage.fields.iframe); // switch to first iframe
+    qanPage.waitForQANPageLoaded();
+    qanPage.applyFilter("postgres");
+    qanPage._selectDetails(2);
+    qanPage.selectSectionInDetails(qanPage.fields.explainTabInDetails);
+    await qanPage.verifyDetailsSectionDataExists(qanPage.tabs.explainTab);
+});
+
+Scenario('Open the QAN Dashboard and verify Explain tab in Query Details for Environment=pgsql-dev filter', async (I, adminPage, qanPage) => {
+    I.amOnPage(qanPage.url);
+    await I.waitForElement(qanPage.fields.iframe, 60);
+    adminPage.applyTimer("5m");
+    await I.switchTo(qanPage.fields.iframe); // switch to first iframe
+    qanPage.waitForQANPageLoaded();
+    qanPage.applyFilter("pgsql-dev");
+    qanPage._selectDetails(2);
+    qanPage.selectSectionInDetails(qanPage.fields.explainTabInDetails);
+    await qanPage.verifyDetailsSectionDataExists(qanPage.tabs.explainTab);
+});

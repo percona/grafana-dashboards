@@ -8,6 +8,10 @@ module.exports = {
     tableHeader: [
         "Query", "Load", "Query Count", "Query Time"
     ],
+    tabs:{
+        tablesTab:["//div[@class='card-body']//pre", "//button[@id='copyQueryExample']"],
+        explainTab:["//div[@id='classicPanel']//span"]
+    },
     serverList: ["PMM Server PostgreSQL", "PGSQL_", "PXC_NODE", "mysql"],
     fields : {
         table: "//table/tr[2]",
@@ -27,7 +31,13 @@ module.exports = {
         hundred: "//div[@id='a305c6a9fc9e']",
         iframe: "//div[@class='panel-content']//iframe",
         filterSelection: "(//div[@class='chips']//button)",
-        resultsPerPageDropDown: "//div[@class='results-per-page']/ng-select"
+        resultsPerPageDropDown: "//div[@class='results-per-page']/ng-select",
+        tablesTabInDetails: "//a[@id='tables']",
+        explainTabInDetails: "//a[@id='explain']",
+        classicSectionContents: "//div[@id='classicPanel']//span",
+        tablesTabContents: "//div[@class='card-body']//pre",
+        copyQueryButton: "//button[@id='copyQueryExample']"
+
     },
 
     filterGroupLocator (filterName) {
@@ -99,7 +109,9 @@ module.exports = {
     },
 
     applyFilter(filterValue){
-        I.click("//section[@class='aside__filter-group']//span[contains(text(), '" + filterValue + "')]/../span[@class='checkbox-container__checkmark']");
+        let filterLocator = "//section[@class='aside__filter-group']//span[contains(text(), '" + filterValue + "')]/../span[@class='checkbox-container__checkmark']";
+        I.waitForElement(filterLocator, 30);
+        I.click(filterLocator);
         I.waitForVisible(this.fields.table, 30);
     },
 
@@ -125,8 +137,28 @@ module.exports = {
 
     _selectDetails(row) {
         I.click("//table/tr["+ (row + 1) + "]//td[2]");
+        this.waitForDetailsSection();
+    },
+
+    selectSectionInDetails(section) {
+        I.waitForElement(section, 30);
+        I.click(section);
+    },
+
+    waitForTabContentsLoaded(tabElements) {
+        for (let i in tabElements) {
+            I.waitForVisible(tabElements[i], 30);
+        }
+    },
+
+    waitForDetailsSection(){
         I.waitForVisible(this.fields.detailsTable, 30);
-        I.seeElement(this.fields.detailsTable);
+    },
+
+    async verifyDetailsSectionDataExists(tabElements) {
+        this.waitForTabContentsLoaded(tabElements);
+        let detailsText = await I.grabTextFrom(tabElements[0]);
+        assert.equal(detailsText.length > 0, true, `Empty Section in Details`);
     },
 
     async verifyDataSet(row){
