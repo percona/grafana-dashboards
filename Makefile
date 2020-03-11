@@ -12,7 +12,7 @@ coverage:
 	cd pmm-app && npm run coverage && cd ..
 
 e2e:
-	mkdir pmm-app/logs
+	mkdir -pv pmm-app/logs pmm-app/video || true
 	cd pmm-app && docker-compose up -d
 	cd pmm-app && bash ./selenium.sh
 	npm i -g codeceptjs

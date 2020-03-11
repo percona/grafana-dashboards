@@ -6,8 +6,8 @@ services:
     volumes:
       - './:/etc/selenoid'
       - '/var/run/docker.sock:/var/run/docker.sock'
-      - './video:/opt/selenoid/video'
-      - './logs:/opt/selenoid/logs'
+      - 'video-directory:/opt/selenoid/video'
+      - 'logs-directory:/opt/selenoid/logs'
     environment:
       - OVERRIDE_VIDEO_OUTPUT_DIR=${PWD}/video
     command: ['-conf', '/etc/selenoid/browsers.json', '-video-output-dir', '/opt/selenoid/video']
@@ -23,3 +23,15 @@ services:
     ports:
       - '8080:8080'
     command: ['--selenoid-uri', 'http://selenoid:4444']
+
+volumes:
+  logs-directory:
+    driver_opts:
+      type: volume
+      device: ${PWD}/logs
+      o: bind
+  video-directory:
+    driver_opts:
+      type: volume
+      device: ${PWD}/video
+      o: bind
