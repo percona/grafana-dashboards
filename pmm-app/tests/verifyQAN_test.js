@@ -10,7 +10,7 @@ Scenario('Open the QAN Dashboard and verify Filter groups exist', async (I, admi
     await I.waitForElement(qanPage.fields.iframe, 60);
     await I.switchTo(qanPage.fields.iframe); // switch to first iframe
     qanPage.waitForQANPageLoaded();
-    await qanPage.changeResultsPerPage(50);
+    await qanPage.changeResultsPerPage(10);
     qanPage.checkFilterGroups();
 });
 
@@ -60,7 +60,7 @@ Scenario('Open the QAN Dashboard and verify Tables tab in Query Details for Data
     await qanPage.verifyDetailsSectionDataExists(qanPage.tabs.tablesTab);
 });
 
-Scenario('Open the QAN Dashboard and verify Tables tab in Query Details for Environment=pgsql-dev filter', async (I, adminPage, qanPage) => {
+xScenario('Open the QAN Dashboard and verify Tables tab in Query Details for Environment=pgsql-dev filter', async (I, adminPage, qanPage) => {
     I.amOnPage(qanPage.url);
     await I.waitForElement(qanPage.fields.iframe, 60);
     adminPage.applyTimer("5m");
@@ -84,7 +84,7 @@ Scenario('Open the QAN Dashboard and verify Explain tab in Query Details for Dat
     await qanPage.verifyDetailsSectionDataExists(qanPage.tabs.explainTab);
 });
 
-Scenario('Open the QAN Dashboard and verify Explain tab in Query Details for Environment=pgsql-dev filter', async (I, adminPage, qanPage) => {
+xScenario('Open the QAN Dashboard and verify Explain tab in Query Details for Environment=pgsql-dev filter', async (I, adminPage, qanPage) => {
     I.amOnPage(qanPage.url);
     await I.waitForElement(qanPage.fields.iframe, 60);
     adminPage.applyTimer("5m");

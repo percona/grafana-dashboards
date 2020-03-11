@@ -1,7 +1,8 @@
 
 Feature("Test Dashboards inside the Insights Folder");
 
-Scenario('Open Advanced Exploration, Prometheus Page', async (I, loginPage, adminPage, advancedDataExplorationPage, prometheusPage, crossServerGraphsPage) => {
+// TODO
+xScenario('Open Advanced Exploration, Prometheus Page', async (I, loginPage, adminPage, advancedDataExplorationPage, prometheusPage, crossServerGraphsPage) => {
     I.amOnPage(loginPage.url);
     loginPage.login("admin", "admin");
 
