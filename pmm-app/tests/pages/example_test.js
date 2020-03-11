@@ -1,4 +1,6 @@
 Feature('My First Test');
 
-xScenario('test something', (I) => {
+Scenario('test something', (I) => {
+    I.amOnPage('/graph/login');
+    I.see('Log In');
 });
