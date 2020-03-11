@@ -16,7 +16,7 @@ e2e:
 	cd pmm-app && docker-compose up -d
 	cd pmm-app && bash ./selenium.sh
 	npm i -g codeceptjs
-	cd pmm-app && codeceptjs run-multiple --all --steps --grep '(?=.*)^(?!.*@visual-test)'
+	cd pmm-app && codeceptjs run-multiple parallel --all --steps --grep '(?=.*)^(?!.*@visual-test)'
 
 pack:
 	tar czf pmm-app.tar.gz pmm-app

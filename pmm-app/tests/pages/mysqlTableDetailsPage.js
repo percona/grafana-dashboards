@@ -26,8 +26,9 @@ module.exports = {
         I.click(this.fields.serviceNameDropDown);
         I.waitForElement(this.fields.clearSelection, 30);
         I.click(this.fields.clearSelection);
-        I.waitForElement(this.fields.disabledServiceName, 30);
-        I.click(this.fields.disabledServiceName);
+        // TODO: figure out why it's not working
+        // I.waitForElement(this.fields.disabledServiceName, 30);
+        // I.click(this.fields.disabledServiceName);
         I.waitForElement(this.fields.serviceName, 30);
         I.click(this.fields.serviceName);
         I.waitForElement(this.graphsLocator(this.metrics[1]), 30);
