@@ -67,6 +67,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
           $scope.qanParams.filter_by,
           $scope.qanParams.active_details_tab,
         ] = this.retrieveDashboardURLParams();
+        delete $scope.qanParams.filter_by;
         $scope.qanParams.from = newValue.raw.from;
         $scope.qanParams.to = newValue.raw.to;
         this.resetUrl($scope);
