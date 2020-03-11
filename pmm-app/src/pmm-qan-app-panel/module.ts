@@ -301,7 +301,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
     const query = this.encodeData(data);
 
     $scope.url = $scope.qanParams.filter_by
-        ? `/qan/profile/details/${$scope.qanParams.filter_by}?${query}&timestamp=${+new Date()}&${filters}`
-        : `/qan/profile/?${query}&timestamp=${+new Date()}&${filters}`;
+      ? `/qan/profile/details/${$scope.qanParams.filter_by}?${query}&timestamp=${+new Date()}&${filters}`
+      : `/qan/profile/?${query}&timestamp=${+new Date()}&${filters}`;
   }
 }
