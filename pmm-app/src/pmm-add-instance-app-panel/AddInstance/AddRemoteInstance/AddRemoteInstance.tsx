@@ -70,6 +70,12 @@ const getAdditionalOptions = (type, form) => {
         <>
           <CheckboxField form={form} label={'Use performance schema'} name="qan_mysql_perfschema" />
           <span className="description"></span>
+
+          <CheckboxField form={form} label={'Disable Basic Metrics'} name="disable_basic_metrics" />
+          <span className="description"></span>
+
+          <CheckboxField form={form} label={'Disable Enhanced Metrics'} name="disable_enhanced_metrics" />
+          <span className="description"></span>
         </>
       );
     case 'MongoDB':
