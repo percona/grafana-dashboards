@@ -65,13 +65,15 @@ const ManageColumns = props => {
         dropdownMatchSelectWidth={false}
         value={undefined}
         showArrow={false}
+        className={`${props.onlyAdd ? 'add' : 'manage'}-columns-selector`}
+        dropdownClassName={`${props.onlyAdd ? 'add' : 'manage'}-columns-selector-dropdown`}
         dropdownRender={menu => (
           <div style={{ width: 400 }} className={'add-column-wrapper'}>
             {menu}
             <Divider style={{ margin: '4px 0' }} />
             {!props.onlyAdd && (
               <div style={{ padding: '4px 8px', cursor: 'pointer' }} onMouseDown={e => e.preventDefault()} onClick={removeColumn}>
-                <Icon type="minus" /> Remove column
+                <Icon type="minus" style={{marginRight:'4px'}}/>Remove column
               </div>
             )}
           </div>
