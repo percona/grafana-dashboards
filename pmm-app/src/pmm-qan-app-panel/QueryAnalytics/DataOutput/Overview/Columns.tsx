@@ -105,7 +105,7 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
             overlayClassName={'overview-column-toolkit'}
             title={
               <div>
-                <div style={{ padding: '10px', paddingLeft: '20px', fontSize: '14px' }}>{metric.humanizeName}</div>
+                <div style={{ padding: '10px', paddingLeft: '30px', fontSize: '14px' }}>{metric.humanizeName}</div>
                 <Divider style={{ background: '#363434', margin: '0' }} />
                 <div style={{ paddingLeft: '20px', paddingRight: '20px' }}>
                   {tooltipData.map((item, index, list) => {
