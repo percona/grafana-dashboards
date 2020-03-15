@@ -104,13 +104,33 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
             placement="left"
             overlayClassName={'overview-column-toolkit'}
             title={
-              <>
-                <span>{metric.humanizeName}</span>
-                <Divider />
-                <List size="small" dataSource={tooltipData} renderItem={item => <List.Item>{`${item.header} : ${item.value}`}</List.Item>} />
+              <div>
+                <div style={{ padding: '10px', paddingLeft: '20px', fontSize: '14px' }}>{metric.humanizeName}</div>
+                <Divider style={{ background: '#363434', margin: '0' }} />
+                <div style={{ paddingLeft: '20px', paddingRight: '20px' }}>
+                  {tooltipData.map((item, index, list) => {
+                    return (
+                      <div style={{ marginTop: '15px', marginBottom: '15px' }}>
+                        <span style={{ margin: '10px' }}>{`${item.header} : ${item.value}`}</span>
+                        {list.length === index + 1 ? null : <Divider style={{ background: '#A9A9A9', margin: '0' }} />}
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <Divider style={{ background: '#666666', margin: '0' }} />
                 {metricName === 'query_time' && <LatencyChart {...{ data: stats }} />}
-                <List size="small" dataSource={latencyTooltipData} renderItem={item => <List.Item>{`${item.header} : ${item.value}`}</List.Item>} />
-              </>
+                <div style={{ paddingLeft: '20px', paddingRight: '20px', paddingBottom: '10px' }}>
+                  {latencyTooltipData.map((item, index, list) => {
+                    return (
+                      <div style={{ marginTop: '15px', marginBottom: '15px' }}>
+                        <span style={{ margin: '10px' }}>{`${item.header} : ${item.value}`}</span>
+                        {list.length === index + 1 ? null : <Divider style={{ background: '#A9A9A9', margin: '0' }} />}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
             }
           >
             <span className="summarize" style={{ marginLeft: 'auto' }}>

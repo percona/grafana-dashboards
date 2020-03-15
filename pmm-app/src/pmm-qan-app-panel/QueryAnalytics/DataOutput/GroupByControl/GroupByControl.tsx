@@ -31,9 +31,16 @@ export const GroupByControl = () => {
   return (
     <>
       <h5 style={{ margin: '3px', marginRight: '15px' }}>Group by</h5>
-      <Select optionLabelProp="label" defaultValue={groupBy} style={{ width: '120px' }} onChange={setGroupBy}>
+      <Select
+        optionLabelProp="label"
+        defaultValue={groupBy}
+        style={{ width: '120px' }}
+        onChange={setGroupBy}
+        className={'group-by-selector'}
+        dropdownClassName={'group-by-selector-dropdown'}
+      >
         {GROUP_BY_OPTIONS.map(option => (
-          <Option value={option.value} label={option.label}>
+          <Option value={option.value} label={option.label} cc-access-attribute={option.label}>
             {option.label}
           </Option>
         ))}

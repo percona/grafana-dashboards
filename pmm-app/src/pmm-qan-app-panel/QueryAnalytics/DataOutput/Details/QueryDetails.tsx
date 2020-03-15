@@ -52,14 +52,14 @@ const QueryDetails = () => {
       <div className="details-tabs">
         <Divider />
         <Tabs defaultActiveKey="1" onChange={() => {}} tabPosition={'left'}>
-          <TabPane tab="Details" key="1">
+          <TabPane tab={<span>{'Details'}</span>} key="1">
             <div className="details-table">
               <div className="details-table-content">
                 <Metrics {...MetricsProps} />
               </div>
             </div>
           </TabPane>
-          <TabPane tab="Examples" key="2">
+          <TabPane tab={<span>{'Examples'}</span>} key="2">
             <Example {...MetricsProps} />
           </TabPane>
           <TabPane

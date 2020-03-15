@@ -2,26 +2,11 @@ const I = actor();
 const assert = require('assert');
 module.exports = {
   url: 'graph/d/pmm-qan/pmm-query-analytics',
-  filterGroups: [
-    'Environment',
-    'Cluster',
-    'Replication Set',
-    'Database',
-    'Node Name',
-    'Service Name',
-    'User Name',
-    'Node Type',
-    'Service Type',
-  ],
+  filterGroups: ['Environment', 'Cluster', 'Replication Set', 'Database', 'Node Name', 'Service Name', 'User Name', 'Node Type', 'Service Type'],
   tableHeader: ['Query', 'Load', 'Query Count', 'Query Time'],
   tabs: {
     tablesTab: ["//div[@class='card-body']//pre", "//button[@id='copyQueryExample']"],
     explainTab: ["//div[@id='classicPanel']//span"],
-  },
-  urlParts: {
-    queryCountWithoutErrors: 'num_queries_with_errors',
-    lockTime: 'lock_time',
-    pmmManaged: 'var-database=local',
   },
   serverList: ['PMM Server PostgreSQL', 'PGSQL_', 'PXC_NODE', 'mysql'],
   fields: {
@@ -36,9 +21,6 @@ module.exports = {
     pmmVersion: '//footer/small',
     paginationArrow: "(//ul[@class='ngx-pagination']/li)[last()]",
     addColumn: "//button[@class='add-column-btn']",
-    qanMainMetric: "//div[@class='ng-value-container'][div//span[text() = '",
-    searchForColumn: "//input[@placeholder='Type to search']",
-    searchResult: "//span[@class='pmm-select__option' and text()='",
     total: "//span[contains(text(), 'TOTAL')]",
     columns: '//tbody//app-qan-table-header-cell',
     fifty: "//div[@id='ad0800a556c8']/span",
@@ -61,6 +43,11 @@ module.exports = {
     filterCheckboxes: '.checkbox-container__checkmark',
     newQANAddColumn: "//span[contains(text(), 'Add column')]",
     newQANMetricDropDown: '.ant-select-dropdown-menu-item',
+    newQANColumnSearchField: "div[style*='display: block;'] input"
+    groupBySelector: '.group-by-selector',
+    addColumnsSelector: '.add-columns-selector',
+    manageColumnsSelector: '.manage-columns-selector',
+    removeColumnButton: "//div[text()='Remove column']",
     newQANColumnSearchField: "div[style*='display: block;'] input",
     resultsPerPageValue: '.ant-select-selection-selected-value',
     nextPage: '.ant-pagination-next',
@@ -85,6 +72,7 @@ module.exports = {
   },
 
   tableHeaderLocator(tableHeader) {
+    return "//ng-select//span[contains(@class, 'ng-value-label') and contains(text(), '" + tableHeader + "')]";
     return (
       "//ng-select//span[contains(@class, 'ng-value-label') and contains(text(), '" + tableHeader + "')]"
     );
@@ -139,21 +127,17 @@ module.exports = {
     // }
   },
 
-  waitForFiltersLoad() {
-    I.waitForVisible(this.filterGroupLocator(this.filterGroups[8]), 30);
-  },
-
   checkFilterGroups() {
-    this.waitForFiltersLoad();
+    I.waitForVisible(this.filterGroupLocator(this.filterGroups[8]), 30);
     for (let i = 0; i < this.filterGroups.length; i++) {
       I.seeElement(this.filterGroupLocator(this.filterGroups[i]));
     }
   },
 
   async changeResultsPerPage(count) {
-    const numOfElementsResults = await I.grabNumberOfVisibleElements(this.fields.resultsPerPageDropDown);
-    if (numOfElementsResults === 0) {
-      for (let i = 0; i < 5; i++) {
+    let numOfElements = await I.grabNumberOfVisibleElements(this.fields.resultsPerPageDropDown);
+    if ((numOfElements = 0)) {
+      for (var i = 0; i < 5; i++) {
         I.pressKey('PageDown');
         I.wait(2);
       }
@@ -165,75 +149,34 @@ module.exports = {
     this.waitForQANPageLoaded();
   },
 
-  getFilterLocator(filterValue) {
-    const filterLocator =
-      "//section[@class='aside__filter-group']//span[contains(text(), '" +
-      filterValue +
-      "')]/../span[@class='checkbox-container__checkmark']";
-    return filterLocator;
-  },
-
-  async verifyFilterExists(filterValue) {
-    const locator = this.getFilterLocator(filterValue);
-    I.waitForVisible(locator, 30);
-  },
-
   applyFilter(filterValue) {
-    const filterLocator = this.getFilterLocator(filterValue);
+    let filterLocator =
+      "//section[@class='aside__filter-group']//span[contains(text(), '" + filterValue + "')]/../span[@class='checkbox-container__checkmark']";
     I.waitForElement(filterLocator, 30);
     I.click(filterLocator);
     I.waitForVisible(this.fields.table, 30);
   },
 
-  async expandAllFilter() {
-    for (let i = 0; i < 4; i++) {
-      // eslint-disable-next-line max-len
-      let numOfElementsFilterCount = await I.grabNumberOfVisibleElements(
-        this.filterGroupCountSelector(this.filterGroups[i])
-      );
-      if (numOfElementsFilterCount === 1) {
-        // eslint-disable-next-line max-len
-        I.click(this.filterGroupCountSelector(this.filterGroups[i]));
-        // eslint-disable-next-line max-len
-        I.waitForVisible(
-          "//section[@class='aside__filter-group']//span[contains(text(), '" +
-            this.filterGroups[i] +
-            "')]/../button[contains(text(), 'Show top 5')]"
-        );
-      }
-    }
-  },
-
   async _getData(row, column) {
-    const percentage = await I.grabTextFrom(
-      "//table//tr[@ng-reflect-router-link='details/," +
-        (row - 1) +
-        "']//app-qan-table-cell[" +
-        column +
-        ']//div[1]//div[3]'
+    let percentage = await I.grabTextFrom(
+      "//table//tr[@ng-reflect-router-link='details/," + (row - 1) + "']//app-qan-table-cell[" + column + ']//div[1]//div[3]'
     );
-    const value = await I.grabTextFrom(
-      "//table//tr[@ng-reflect-router-link='details/," +
-        (row - 1) +
-        "']//app-qan-table-cell[" +
-        column +
-        ']//div[1]//div[2]'
+    let value = await I.grabTextFrom(
+      "//table//tr[@ng-reflect-router-link='details/," + (row - 1) + "']//app-qan-table-cell[" + column + ']//div[1]//div[2]'
     );
 
     return { percentage: percentage, val: value };
   },
 
   async getDetailsData(row) {
-    const percentage = await I.grabTextFrom(
-      '//app-details-table//app-details-row[' + row + ']//div[3]//span[2]'
-    );
-    const value = await I.grabTextFrom('//app-details-table//app-details-row[' + row + ']//div[3]//span[1]');
+    let percentage = await I.grabTextFrom('//app-details-table//app-details-row[' + row + ']//div[3]//span[2]');
+    let value = await I.grabTextFrom('//app-details-table//app-details-row[' + row + ']//div[3]//span[1]');
     return { percentage: percentage, val: value };
   },
 
   waitForQANPageLoaded() {
     I.waitForVisible(this.fields.table, 30);
-    I.waitForInvisible(this.fields.spinnerLocator, 30);
+    I.waitForClickable(this.fields.nextPageNavigation, 30);
   },
 
   async _selectDetails(row) {
@@ -266,98 +209,129 @@ module.exports = {
 
   async verifyDetailsSectionDataExists(tabElements) {
     this.waitForTabContentsLoaded(tabElements);
-    const detailsText = await I.grabTextFrom(tabElements[0]);
+    let detailsText = await I.grabTextFrom(tabElements[0]);
     assert.equal(detailsText.length > 0, true, `Empty Section in Details`);
   },
 
   async verifyDataSet(row) {
-    const queryCountData = await this._getData(row, 2);
+    var queryCountData = await this._getData(row, 2);
     console.log('Query Count Data values ' + queryCountData.percentage + ' & ' + queryCountData.val);
-    const queryTimeData = await this._getData(row, 3);
+    var queryTimeData = await this._getData(row, 3);
     console.log('Query Time Data values ' + queryTimeData.percentage + ' & ' + queryTimeData.val);
     this._selectDetails(row);
-    const detailsQueryCountData = await this.getDetailsData(1);
-    console.log(
-      'Query Count Details Values ' + detailsQueryCountData.percentage + ' & ' + detailsQueryCountData.val
-    );
-    let detailsQueryTimeData;
+    var detailsQueryCountData = await this.getDetailsData(1);
+    console.log('Query Count Details Values ' + detailsQueryCountData.percentage + ' & ' + detailsQueryCountData.val);
     if (row === 1) {
-      detailsQueryTimeData = await this.getDetailsData(3);
-      console.log(
-        'Query Count Details Values ' + detailsQueryCountData.percentage + ' & ' + detailsQueryCountData.val
-      );
+      var detailsQueryTimeData = await this.getDetailsData(3);
+      console.log('Query Count Details Values ' + detailsQueryCountData.percentage + ' & ' + detailsQueryCountData.val);
     } else {
-      detailsQueryTimeData = await this.getDetailsData(2);
-      console.log(
-        'Query Count Details Values ' + detailsQueryCountData.percentage + ' & ' + detailsQueryCountData.val
-      );
+      var detailsQueryTimeData = await this.getDetailsData(2);
+      console.log('Query Count Details Values ' + detailsQueryCountData.percentage + ' & ' + detailsQueryCountData.val);
     }
     assert.equal(
       detailsQueryCountData.percentage.indexOf(queryCountData.percentage) > -1,
       true,
-      "Details Query Count Percentage Doesn't Match expected " +
-        detailsQueryCountData.percentage +
-        ' to contain ' +
-        queryCountData.percentage
+      "Details Query Count Percentage Doesn't Match expected " + detailsQueryCountData.percentage + ' to contain ' + queryCountData.percentage
     );
     assert.equal(
       detailsQueryCountData.val.indexOf(queryCountData.val) > -1,
       true,
-      "Details Query Count Value Doesn't Match expected " +
-        detailsQueryCountData.val +
-        ' to contain ' +
-        queryCountData.val
+      "Details Query Count Value Doesn't Match expected " + detailsQueryCountData.val + ' to contain ' + queryCountData.val
     );
     assert.equal(
       detailsQueryTimeData.percentage.indexOf(queryTimeData.percentage) > -1,
       true,
-      "Details Query Time Percentage Doesn't Match expected " +
-        detailsQueryTimeData.percentage +
-        ' to contain ' +
-        queryTimeData.percentage
+      "Details Query Time Percentage Doesn't Match expected " + detailsQueryTimeData.percentage + ' to contain ' + queryTimeData.percentage
     );
     assert.equal(
       detailsQueryTimeData.val.indexOf(queryTimeData.val) > -1,
       true,
-      "Details Query Time value Doesn't Match expected " +
-        detailsQueryTimeData.val +
-        ' to contain ' +
-        queryTimeData.val
+      "Details Query Time value Doesn't Match expected " + detailsQueryTimeData.val + ' to contain ' + queryTimeData.val
     );
   },
 
-  addColumnToQAN(columnName) {
-    const columnNameLocator = this.fields.searchResult + columnName + "']";
-    I.click(this.fields.addColumn);
-    I.waitForVisible(this.fields.searchForColumn, 30);
-    I.fillField(this.fields.searchForColumn, columnName);
-    I.waitForVisible(columnNameLocator, 30);
-    I.click(columnNameLocator);
-    this.waitForQANPageLoaded();
-  },
-
-  changeMetricTo(metricToReplace, newMetric) {
-    const currentMetric = this.fields.qanMainMetric + metricToReplace + "']]";
-    const metricToSelect = this.fields.searchResult + newMetric + "']";
-    I.click(currentMetric);
-    I.waitForVisible(this.fields.searchForColumn, 30);
-    I.fillField(this.fields.searchForColumn, newMetric);
-    I.click(metricToSelect);
-    this.waitForQANPageLoaded();
-  },
-
   async clearFilters() {
-    const numOfElementsFilters = await I.grabNumberOfVisibleElements(this.fields.filterSelection);
-    for (let i = 1; i <= numOfElementsFilters; i++) {
+    let numOfElements = await I.grabNumberOfVisibleElements(this.fields.filterSelection);
+    for (let i = 1; i <= numOfElements; i++) {
       I.click(this.fields.filterSelection + '[' + i + ']');
       I.waitForInvisible(this.fields.detailsTable, 30);
     }
   },
-
-  verifyURLContains(urlPart) {
-    I.waitInUrl('tz=browser&theme=dark', 30);
-    I.seeInCurrentUrl(urlPart);
+  changeGroupBy(groupBy) {
+    I.waitForElement(this.fields.groupBySelector, 30);
+    I.click(this.fields.groupBySelector);
+    I.click(`//ul/li[@label='${groupBy}']`);
   },
+  groupByIs(groupBy) {
+    I.waitForElement(`//span[text()='Group by ${groupBy}']`, 30);
+    I.seeElement(`//span[text()='Group by ${groupBy}']`);
+  },
+  addColumn(columnName) {
+    I.waitForElement(this.fields.addColumnsSelector, 30);
+    I.click(this.fields.addColumnsSelector);
+    I.click(`//ul/li[@label='${columnName}']`);
+  },
+  changeColumn(oldColumnName, columnName) {
+    const oldColumnSelector = `//div[text()='${oldColumnName}']`;
+    const newColumnSelector = `//li[text()='${columnName}']`;
+    I.waitForElement(oldColumnSelector, 30);
+    I.click(oldColumnSelector);
+    I.waitForElement(newColumnSelector, 30);
+    I.click(newColumnSelector);
+  },
+  removeColumn(columnName) {
+    const addColumnSelector = `//div[text()='${columnName}']`;
+    I.waitForElement(addColumnSelector, 30);
+    I.click(addColumnSelector);
+    I.waitForElement(this.fields.removeColumnButton, 30);
+    I.click(this.fields.removeColumnButton);
+  },
+  async searchFilters(searchString) {
+    I.waitForElement(`//input[@placeholder='Filters search...']`, 30);
+    I.fillField(`//input[@placeholder='Filters search...']`, searchString);
+  },
+  async checkFiltersMatchSearch(searchString) {
+    const remainingFilters = await I.grabTextFrom('.checkbox-container__label-text');
+    assert.equal(remainingFilters.every(filter => filter.includes(searchString)), true, `Remain only correct filters`);
+  },
+
+  async getSelectedFilters() {
+    const selectedFilters = `//div[@class='overview-filters']//input[@type='checkbox'][@value='']/following-sibling::span`;
+    I.waitForElement(`//div[@class='overview-filters']//input[@type='checkbox']`, 30);
+    const remainingFilters = await I.grabTextFrom(selectedFilters);
+    console.log(remainingFilters);
+  },
+  resetFilters() {
+    const resetFiltersButtonLocator = '#reset-all-filters';
+    I.waitForElement(resetFiltersButtonLocator, 30);
+    I.click(resetFiltersButtonLocator);
+  },
+  selectFilter() {},
+  paginationGoNext() {
+    I.waitForElement(`//li[@title='Next Page']`, 30);
+    I.click(`//li[@title='Next Page']`);
+  },
+  paginationGoPrevious() {
+    I.waitForElement(`//li[@title='Previous Page']`, 30);
+    I.click(`//li[@title='Previous Page']`);
+  },
+  paginationGoLast() {},
+  paginationGoFirst() {},
+  selectTableRow(rowNumber) {
+    const rowSelector = `//tr[@data-row-key='${rowNumber}']`;
+    I.waitForElement(rowSelector, 30);
+    I.click(rowSelector);
+  },
+  showTooltip(rowNumber, dataColumnNumber) {
+    const tooltipSelector = `//tr[@data-row-key='${rowNumber}']/td[${dataColumnNumber + 2}]//span[@class='summarize']`;
+    I.waitForElement(tooltipSelector, 30);
+    I.moveCursorTo(tooltipSelector);
+  },
+  selectDetailsTab(tabName) {
+    const tabSelector = `//div[@role='tab']/span[text()='${tabName}']`
+    I.waitForElement(tabSelector, 30);
+    I.click(tabSelector);
+  }
 
   waitForNewQANPageLoaded() {
     I.waitForElement(this.fields.newQANPanelContent, 30);
