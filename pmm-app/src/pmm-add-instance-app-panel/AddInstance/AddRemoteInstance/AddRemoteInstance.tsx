@@ -56,7 +56,7 @@ export const getInstanceData = (instanceType, credentials) => {
   return instance;
 };
 
-const getAdditionalOptions = (type, form) => {
+const getAdditionalOptions = (type, remoteInstanceCredentials, form) => {
   switch (type) {
     case 'PostgreSQL':
       return (
@@ -66,18 +66,27 @@ const getAdditionalOptions = (type, form) => {
         </>
       );
     case 'MySQL':
+      if (remoteInstanceCredentials.isRDS) {
+        return (
+          <>
+            <CheckboxField form={form} label={'Use performance schema'} name="qan_mysql_perfschema" />
+            <span className="description"></span>
+
+            <CheckboxField form={form} label={'Disable Basic Metrics'} name="disable_basic_metrics" />
+            <span className="description"></span>
+
+            <CheckboxField form={form} label={'Disable Enhanced Metrics'} name="disable_enhanced_metrics" />
+            <span className="description"></span>
+          </>
+        );
+      }
       return (
         <>
           <CheckboxField form={form} label={'Use performance schema'} name="qan_mysql_perfschema" />
           <span className="description"></span>
-
-          <CheckboxField form={form} label={'Disable Basic Metrics'} name="disable_basic_metrics" />
-          <span className="description"></span>
-
-          <CheckboxField form={form} label={'Disable Enhanced Metrics'} name="disable_enhanced_metrics" />
-          <span className="description"></span>
         </>
       );
+
     case 'MongoDB':
       return (
         <>
@@ -243,7 +252,7 @@ key2:value2"
                 data-cy="add-account-username"
               />
               <span className="description"></span>
-              {getAdditionalOptions(instanceType, form)}
+              {getAdditionalOptions(instanceType, remoteInstanceCredentials, form)}
             </div>
 
             <div className="add-instance-form__submit-block">
