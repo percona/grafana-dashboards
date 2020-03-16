@@ -86,7 +86,6 @@ const getAdditionalOptions = (type, remoteInstanceCredentials, form) => {
           <span className="description"></span>
         </>
       );
-
     case 'MongoDB':
       return (
         <>
