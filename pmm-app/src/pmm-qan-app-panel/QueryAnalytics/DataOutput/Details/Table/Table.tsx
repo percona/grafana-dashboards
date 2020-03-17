@@ -59,7 +59,7 @@ const TableCreate = props => {
     showCreateTableAction(example);
   }, [example]);
 
-  return <div>{errorText || <pre>{showCreateTable}</pre>}</div>;
+  return <div>{errorText ? <pre>{errorText}</pre> : <pre>{showCreateTable}</pre>}</div>;
 };
 
 export default TableCreate;

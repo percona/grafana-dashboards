@@ -73,7 +73,8 @@ const ManageColumns = props => {
             <Divider style={{ margin: '4px 0' }} />
             {!props.onlyAdd && (
               <div style={{ padding: '4px 8px', cursor: 'pointer' }} onMouseDown={e => e.preventDefault()} onClick={removeColumn}>
-                <Icon type="minus" style={{marginRight:'4px'}}/>Remove column
+                <Icon type="minus" style={{ marginRight: '4px' }} />
+                Remove column
               </div>
             )}
           </div>
