@@ -37,7 +37,7 @@ pipeline {
                     sh '''
                         sg docker -c "
                             export CHROME_VERSION=${params.CHROME_VERSION}"
-                            ./pmm-app/selenium.sh
+                            make e2e
                         "
                     '''
                     stash includes: 'results/docker/TAG', name: 'IMAGE'
