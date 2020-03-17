@@ -5,11 +5,64 @@ import ExplainService from './Explain.service';
 import ExampleService from '../Example/Example.service';
 
 const ExplainContainer = props => {
-  const { queryId, groupBy, from, to, labels, tables } = props;
+  const { queryId, groupBy, from, to, labels, tables,databaseType } = props;
   const [traditionalExplain, setTraditionalExplain] = useState(null);
   const [jsonExplain, setJsonExplain] = useState({});
+  const [errorText, setErrorText] = useState('');
+  const [example, setExample] = useState({});
 
-  // TODO: implement explain
+  const startExplainActions = example => {
+    // Because we getting here only for mysql
+    switch (databaseType) {
+      case 'mysql':
+        console.log('Example: ', example);
+        if (!('example' in example) || example.example === '') {
+          setErrorText('Cannot display query explain without query example at this time.');
+          return;
+        }
+        setErrorText('');
+        getExplain(example);
+        break;
+      default:
+        setErrorText('Not implemented yet :(');
+        return;
+    }
+  };
+
+  const getExplain = example => {
+    (async () => {
+      try {
+        const { action_id } = await ExplainService.getTraditionalExplain({
+          database: example.schema,
+          query: example.example,
+          service_id: example.service_id,
+        });
+        const explain = await ExplainService.getActionResult({
+          action_id,
+        });
+        setTraditionalExplain(explain.output);
+      } catch (e) {
+        //TODO: add error handling
+      }
+    })();
+
+    (async () => {
+      try {
+        const { action_id } = await ExplainService.getTraditionalExplainJSON({
+          database: example.schema,
+          query: example.example,
+          service_id: example.service_id,
+        });
+        const explain = await ExplainService.getActionResult({
+          action_id,
+        });
+        setJsonExplain(JSON.parse(explain.output));
+      } catch (e) {
+        //TODO: add error handling
+      }
+    })();
+  };
+
   useEffect(() => {
     (async () => {
       try {
@@ -22,44 +75,18 @@ const ExplainContainer = props => {
           tables,
         });
         const queryExample = result['query_examples'][0];
-        (async () => {
-          try {
-            const { action_id } = await ExplainService.getTraditionalExplain({
-              database: queryExample.schema,
-              query: queryExample.example,
-              service_id: queryExample.service_id,
-            });
-            const explain = await ExplainService.getActionResult({
-              action_id,
-            });
-            setTraditionalExplain(explain.output);
-          } catch (e) {
-            //TODO: add error handling
-          }
-        })();
-
-        (async () => {
-          try {
-            const { action_id } = await ExplainService.getTraditionalExplainJSON({
-              database: queryExample.schema,
-              query: queryExample.example,
-              service_id: queryExample.service_id,
-            });
-            const explain = await ExplainService.getActionResult({
-              action_id,
-            });
-            setJsonExplain(JSON.parse(explain.output));
-          } catch (e) {
-            //TODO: add error handling
-          }
-        })();
+        setExample(queryExample);
       } catch (e) {
         //TODO: add error handling
       }
     })();
   }, [queryId]);
 
-  return <Explain json={jsonExplain} classic={traditionalExplain} />;
+  useEffect(() => {
+    startExplainActions(example);
+  }, [example]);
+
+  return errorText || <Explain json={jsonExplain} classic={traditionalExplain} />;
 };
 
 export default ExplainContainer;
