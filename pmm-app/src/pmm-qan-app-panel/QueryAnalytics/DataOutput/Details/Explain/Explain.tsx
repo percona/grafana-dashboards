@@ -4,6 +4,8 @@ import { ReactJSON } from '../../../../../react-plugins-deps/components/ReactJSO
 
 const { Panel } = Collapse;
 
+
+
 const customPanelStyle = {
   background: '#1f1d1d',
   marginBottom: 10,
