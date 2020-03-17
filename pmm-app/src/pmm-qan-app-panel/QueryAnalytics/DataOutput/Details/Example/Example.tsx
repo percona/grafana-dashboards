@@ -31,12 +31,12 @@ const Example = props => {
 
   return (
     <pre>
-      {examples &&
-        examples.length &&
-        examples
-          .map(example => example.example)
-          .filter(Boolean)
-          .map(getExample)}
+      {examples && examples.length
+        ? examples
+            .map(example => example.example)
+            .filter(Boolean)
+            .map(getExample)
+        : 'Sorry, no examples found for this query'}
     </pre>
   );
 };
