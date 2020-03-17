@@ -27,6 +27,7 @@ const QueryDetails = () => {
     groupBy,
     from,
     to,
+    databaseType
   };
 
   useEffect(() => {
