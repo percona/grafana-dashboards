@@ -8,10 +8,10 @@ pipeline {
         label 'large-amazon'
     }
     parameters {
-        booleanParam(
-            defaultValue: false,
+        choice(
+            choices: [ 'test', 'e2e' ],
             description: 'Run UI tests?',
-            name: 'UI_TESTS')
+            name: 'RUN_TEST')
         string(
             defaultValue: '80.0',
             description: 'Google Chrome version',
@@ -32,17 +32,15 @@ pipeline {
             }
         }
         stage('UI tests') {
-            if (params.UI_TESTS == true) {
-                steps {
-                    sh '''
-                        sg docker -c "
-                            export CHROME_VERSION=${params.CHROME_VERSION}"
-                            make e2e
-                        "
-                    '''
-                    stash includes: 'results/docker/TAG', name: 'IMAGE'
-                    archiveArtifacts 'results/docker/TAG'
-                }
+            steps {
+                sh """
+                    sg docker -c "
+                        export CHROME_VERSION=${params.CHROME_VERSION}"
+                        make ${params.RUN_TEST}
+                    "
+                """
+                stash includes: 'results/docker/TAG', name: 'IMAGE'
+                archiveArtifacts 'results/docker/TAG'
             }
         }
     }
