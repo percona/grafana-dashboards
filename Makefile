@@ -6,25 +6,30 @@ all: build pack disable install enable
 	tput bel
 
 build:
-	cd pmm-app && npm i && npm run build && cd ..
+	cd pmm-app \
+	&& npm i \
+	&& npm run build
 
 coverage:
-	cd pmm-app && npm run coverage && cd ..
+	cd pmm-app \
+	&& npm run coverage
 
 e2e:
-	mkdir -pv pmm-app/logs pmm-app/video || true
-	cd pmm-app && docker-compose up -d
-	cd pmm-app && bash ./selenium.sh
-	npm i -g codeceptjs
-	cd pmm-app && codeceptjs run-multiple parallel --all --steps --grep '(?=.*)^(?!.*@visual-test)'
+	cd pmm-app \
+	&& mkdir -pv logs video || true \
+	&& docker-compose up -d \
+	&& bash ./selenium.sh \
+	&& npm i -g codeceptjs \
+	&& codeceptjs run-multiple parallel --all --steps --grep '(?=.*)^(?!.*@visual-test)'
 
 pack:
 	tar czf pmm-app.tar.gz pmm-app
 
 release:
-	cd pmm-app && npm version
-	cd pmm-app && npm i
-	cd pmm-app && npm run build
+	cd pmm-app \
+	&& npm version \
+	&& npm i \
+	&& npm run build
 
 install:
 	docker exec pmm-server supervisorctl stop grafana
