@@ -5,7 +5,7 @@ import ExplainService from './Explain.service';
 import ExampleService from '../Example/Example.service';
 
 const ExplainContainer = props => {
-  const { queryId, groupBy, from, to, labels, tables,databaseType } = props;
+  const { queryId, groupBy, from, to, labels, tables, databaseType } = props;
   const [traditionalExplain, setTraditionalExplain] = useState(null);
   const [jsonExplain, setJsonExplain] = useState({});
   const [errorText, setErrorText] = useState('');
@@ -85,7 +85,7 @@ const ExplainContainer = props => {
     startExplainActions(example);
   }, [example]);
 
-  return errorText || <Explain json={jsonExplain} classic={traditionalExplain} />;
+  return errorText ? <pre>{errorText}</pre> : <Explain json={jsonExplain} classic={traditionalExplain} />;
 };
 
 export default ExplainContainer;
