@@ -12,7 +12,6 @@ const ExplainContainer = props => {
   const [example, setExample] = useState({});
 
   const startExplainActions = example => {
-    // Because we getting here only for mysql
     switch (databaseType) {
       case 'mysql':
         console.log('Example: ', example);
