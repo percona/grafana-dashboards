@@ -22,23 +22,14 @@ const Example = props => {
           labels,
           tables,
         });
-        setExamples(result['query_examples']);
+        setExamples(result['query_examples'].map(example => example.example).filter(Boolean));
       } catch (e) {
         //TODO: add error handling
       }
     })();
   }, [queryId]);
 
-  return (
-    <pre>
-      {examples && examples.length
-        ? examples
-            .map(example => example.example)
-            .filter(Boolean)
-            .map(getExample)
-        : 'Sorry, no examples found for this query'}
-    </pre>
-  );
+  return <pre>{examples && examples.length ? examples.map(getExample) : 'Sorry, no examples found for this query'}</pre>;
 };
 
 export default Example;

@@ -6,8 +6,45 @@ import ManageColumns from '../ManageColumns/ManageColumns';
 import './OverviewTable.scss';
 import { METRIC_CATALOGUE } from '../MetricCatalogue';
 import Tooltip from 'antd/es/tooltip';
-import { Divider, List } from 'antd';
+import { Divider } from 'antd';
 import { GROUP_BY_OPTIONS } from '../GroupByControl/GroupByControl';
+import { css } from 'emotion';
+
+const Styling = {
+  rowNumber: css`
+    word-wrap: normal;
+    word-break: normal;
+  `,
+  mainMetric: mainMetricColumnWidth => css`
+    word-wrap: break-word !important;
+    word-break: break-word !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    max-width: ${mainMetricColumnWidth - 40}px !important;
+  `,
+  tooltipHeader: css`
+    padding: 10px;
+    padding-left: 30px;
+    font-size: 14px;
+  `,
+  metricsWrapper: css`
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+    padding-bottom: 10px !important;
+  `,
+  singleMetricWrapper: css`
+    margin-top: 15px !important;
+    margin-bottom: 15px !important;
+  `,
+  metricName: css`
+    margin-left: 10px !important;
+  `,
+  metricsListDivider: css`
+    background: #a9a9a9 !important;
+    margin: 0 !important;
+  `,
+};
 
 const MAIN_METRIC_MIN_WIDTH = 470;
 const MAIN_METRIC_VALUE_WIDTH = 90;
@@ -27,9 +64,7 @@ export const getDefaultColumns = (groupBy, pageNumber, pageSize, columns) => {
       key: 'rowNumber',
       fixed: 'left',
       width: ROW_NUMBER_COLUMN_WIDTH,
-      render: (text, record, index) => (
-        <div style={{ wordWrap: 'normal', wordBreak: 'normal' }}>{index === 0 ? '' : (pageNumber - 1) * pageSize + index}</div>
-      ),
+      render: (text, record, index) => <div className={Styling.rowNumber}>{index === 0 ? '' : (pageNumber - 1) * pageSize + index}</div>,
     },
     {
       dataIndex: 'mainMetric',
@@ -39,20 +74,7 @@ export const getDefaultColumns = (groupBy, pageNumber, pageSize, columns) => {
       ellipsis: true,
       className: 'overview-main-column',
       render: (text, record) => {
-        return (
-          <div
-            style={{
-              wordWrap: 'break-word',
-              wordBreak: 'break-word',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap',
-              maxWidth: mainMetricColumnWidth - 40,
-            }}
-          >
-            {record.fingerprint || record.dimension || 'TOTAL'}
-          </div>
-        );
+        return <div className={Styling.mainMetric(mainMetricColumnWidth)}>{record.fingerprint || record.dimension || 'TOTAL'}</div>;
       },
     },
   ];
@@ -96,6 +118,20 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
 
       // @ts-ignore
       const polygonChartProps = { width: COLUMN_WIDTH * 1.2 - MAIN_METRIC_VALUE_WIDTH, data: item.sparkline };
+      const MetricsList = ({data}) => {
+        return (
+          <div className={Styling.metricsWrapper}>
+            {data.map((item, index, list) => {
+              return (
+                <div className={Styling.singleMetricWrapper}>
+                  <span className={Styling.metricName}>{`${item.header} : ${item.value}`}</span>
+                  {list.length === index + 1 ? null : <Divider className={Styling.metricsListDivider} />}
+                </div>
+              );
+            })}
+          </div>
+        );
+      };
       return (
         <div className={'overview-content-column'}>
           {columnIndex === 0 && <PolygonChart {...polygonChartProps} />}
@@ -105,31 +141,12 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
             overlayClassName={'overview-column-toolkit'}
             title={
               <div>
-                <div style={{ padding: '10px', paddingLeft: '30px', fontSize: '14px' }}>{metric.humanizeName}</div>
+                <div className={Styling.tooltipHeader}>{metric.humanizeName}</div>
                 <Divider style={{ background: '#363434', margin: '0' }} />
-                <div style={{ paddingLeft: '20px', paddingRight: '20px' }}>
-                  {tooltipData.map((item, index, list) => {
-                    return (
-                      <div style={{ marginTop: '15px', marginBottom: '15px' }}>
-                        <span style={{ margin: '10px' }}>{`${item.header} : ${item.value}`}</span>
-                        {list.length === index + 1 ? null : <Divider style={{ background: '#A9A9A9', margin: '0' }} />}
-                      </div>
-                    );
-                  })}
-                </div>
-
+                <MetricsList data={tooltipData} />
                 <Divider style={{ background: '#666666', margin: '0' }} />
                 {metricName === 'query_time' && <LatencyChart {...{ data: stats }} />}
-                <div style={{ paddingLeft: '20px', paddingRight: '20px', paddingBottom: '10px' }}>
-                  {latencyTooltipData.map((item, index, list) => {
-                    return (
-                      <div style={{ marginTop: '15px', marginBottom: '15px' }}>
-                        <span style={{ margin: '10px' }}>{`${item.header} : ${item.value}`}</span>
-                        {list.length === index + 1 ? null : <Divider style={{ background: '#A9A9A9', margin: '0' }} />}
-                      </div>
-                    );
-                  })}
-                </div>
+                <MetricsList data={latencyTooltipData} />
               </div>
             }
           >
