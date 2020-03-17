@@ -4,7 +4,11 @@ set -ex
 
 CHROME_VERSION=${CHROME_VERSION:-80.0}
 
-echo "Warning: you must have permission to run docker."
+if ! docker version &> /dev/null ; then
+    echo "Warning: you must have permission to run docker." 1>&2
+    exit 1
+fi
+
 docker pull selenoid/vnc_chrome:${CHROME_VERSION}
 docker pull selenoid/video-recorder:latest-release
 docker pull aerokube/selenoid-ui
@@ -27,8 +31,6 @@ cat > browsers.json << EOF
   }
 }
 EOF
-
-mkdir ./video ./logs || true
 
 docker-compose -f selenoid-docker-compose.yaml up -d
 
