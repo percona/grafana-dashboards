@@ -88,11 +88,10 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
   } else if (orderBy === `-${metricName}`) {
     sortOrder = 'descend';
   }
-
   return {
     sorter: true,
     key: metricName,
-    defaultSortOrder: sortOrder,
+    sortOrder: sortOrder,
     width: columnIndex === 0 ? COLUMN_WIDTH * 1.5 : COLUMN_WIDTH,
     title: () => <ManageColumns placeholder={metricName} currentMetric={metric} width={'100%'} />,
     render: (text, item) => {
@@ -118,7 +117,7 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
 
       // @ts-ignore
       const polygonChartProps = { width: COLUMN_WIDTH * 1.2 - MAIN_METRIC_VALUE_WIDTH, data: item.sparkline };
-      const MetricsList = ({data}) => {
+      const MetricsList = ({ data }) => {
         return (
           <div className={Styling.metricsWrapper}>
             {data.map((item, index, list) => {
