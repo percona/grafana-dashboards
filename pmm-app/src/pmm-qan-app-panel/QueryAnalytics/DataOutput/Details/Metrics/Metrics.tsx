@@ -8,11 +8,39 @@ import PolygonChart from '../../../../../react-plugins-deps/components/PolygonCh
 import { Humanize } from '../../../../../react-plugins-deps/components/helpers/Humanization';
 import LatencyChart from '../../../../../react-plugins-deps/components/LatencyChart/LatencyChart';
 import { processMetrics } from '../../../../../react-plugins-deps/components/helpers/processMetrics';
+import { css } from 'emotion';
 
-const metricColumnsStyle = {
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
+const Styling = {
+  metricColumn: css`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  `,
+  metricTooltip: css`
+    text-align: center;
+  `,
+  metricTooltipIcon: css`
+    margin-left: 5px;
+  `,
+  sum: css`
+    margin-right: 10px;
+    min-width: 65px;
+    display: inline-block;
+  `,
+  percentOfTotal: css`
+    color: #26afe1;
+    margin-left: 5px;
+    min-width: 90px;
+    display: inline-block;
+  `,
+  complexMetric: css`
+    color: #268b40;
+    min-width: 90px;
+    display: inline-block;
+  `,
+  perQueryStats: css`
+    margin-right: 10px;
+  `,
 };
 
 const columns = [
@@ -21,10 +49,10 @@ const columns = [
     width: '20%',
     render: (text, item) => {
       return (
-        <span style={{ textAlign: 'center' }}>
+        <span className={Styling.metricTooltip}>
           {item.name}
           <Tooltip title={item.tooltip} placement={'leftTop'}>
-            <Icon type="question-circle" style={{ marginLeft: '5px' }} />
+            <Icon type="question-circle" className={Styling.metricTooltipIcon} />
           </Tooltip>
         </span>
       );
@@ -41,7 +69,7 @@ const columns = [
         ykey: 'metric',
       };
       return (
-        <div style={metricColumnsStyle}>
+        <div className={Styling.metricColumn}>
           {<span>{(item.isRate ? Humanize.transform(item.metric.rate, item.pipeTypes['ratePipe']) : '0') + ` ${item.units}`}</span>}
           {item.sparkline && <PolygonChart {...polygonChartProps} />}
         </div>
@@ -55,20 +83,10 @@ const columns = [
       return (
         <>
           <div>
-            {item.isSum && (
-              <span style={{ marginRight: '10px', minWidth: '65px', display: 'inline-block' }}>
-                {Humanize.transform(item.metric.sum, item.pipeTypes['sumPipe']) || 0}
-              </span>
-            )}
-            {
-              <span
-                style={{ marginLeft: '5px', color: '#26afe1', minWidth: '90px', display: 'inline-block' }}
-              >{`${item.percentOfTotal}% of total`}</span>
-            }
+            {item.isSum && <span className={Styling.sum}>{Humanize.transform(item.metric.sum, item.pipeTypes['sumPipe']) || 0}</span>}
+            {<span className={Styling.percentOfTotal}>{`${item.percentOfTotal}% of total`}</span>}
           </div>
-          {item.complexMetric ? (
-            <div>{<span style={{ color: '#268b40', minWidth: '90px', display: 'inline-block' }}>{item.complexMetric}</span>}</div>
-          ) : null}
+          {item.complexMetric ? <div>{<span className={Styling.complexMetric}>{item.complexMetric}</span>}</div> : null}
         </>
       );
     },
@@ -81,8 +99,8 @@ const columns = [
         data: item.metric,
       };
       return (
-        <div style={metricColumnsStyle}>
-          <span style={{ marginRight: '10px' }}>
+        <div className={Styling.metricColumn}>
+          <span className={Styling.perQueryStats}>
             {Humanize.transform(item.metric.avg, item.pipeTypes['perQueryStatsPipe']) || (+item.metric.sum / +item.queryCount).toFixed(2) || '0'}
           </span>
           {item.isLatencyChart && <LatencyChart {...latencyChartProps} />}

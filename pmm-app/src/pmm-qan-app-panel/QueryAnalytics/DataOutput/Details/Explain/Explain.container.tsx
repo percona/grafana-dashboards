@@ -14,7 +14,6 @@ const ExplainContainer = props => {
   const startExplainActions = example => {
     switch (databaseType) {
       case 'mysql':
-        console.log('Example: ', example);
         if (!('example' in example) || example.example === '') {
           setErrorText('Cannot display query explain without query example at this time.');
           return;
