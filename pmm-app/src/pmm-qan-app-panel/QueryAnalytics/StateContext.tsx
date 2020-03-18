@@ -175,9 +175,19 @@ export const UrlParametersProvider = ({ children }) => {
           delete newState.queryId;
           break;
         case 'CHANGE_SORT':
+          let newOrderBy = '';
+
+          if (action.payload.orderBy === state.orderBy) {
+            newOrderBy = `-${action.payload.orderBy}`;
+          } else if (`-${action.payload.orderBy}` === state.orderBy) {
+            newOrderBy = `${action.payload.orderBy}`;
+          } else {
+            newOrderBy = action.payload.orderBy;
+          }
+
           newState = {
             ...state,
-            orderBy: action.payload.orderBy,
+            orderBy: newOrderBy,
           };
           delete newState.queryId;
           break;
@@ -189,7 +199,6 @@ export const UrlParametersProvider = ({ children }) => {
           delete newState.queryId;
           break;
       }
-
       ContextActions.refreshGrafanaVariables(newState);
       const newUrl = ContextActions.generateURL(newState);
       history.pushState({}, 'test', newUrl);
