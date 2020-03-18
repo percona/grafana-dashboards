@@ -3,13 +3,34 @@ import QueryDetails from './Details/QueryDetails';
 import React, { useCallback, useContext, useState } from 'react';
 import Split from 'react-split';
 import { StateContext } from '../StateContext';
-import './QueryAnalyticsContainer.scss';
 import { Pagination } from 'antd';
 import ManageColumns from './ManageColumns/ManageColumns';
 import { GroupByControl } from './GroupByControl/GroupByControl';
+import { css } from 'emotion';
 
 const PAGE_SIZE_OPTIONS = ['10', '50', '100'];
 
+const Styling = {
+  overviewWrapper: css`
+    display: flex;
+    align-items: flex-end;
+    padding: 5px 0px;
+    height: 50px;
+  `,
+  overviewHeader: css`
+    margin: 3px;
+    margin-right: 40px;
+  `,
+  splitterWrapper: css`
+    height: 800px;
+  `,
+  paginationWrapper: css`
+    margin-left: auto;
+  `,
+  manageColumnsWrapper: css`
+    margin-left: 10px;
+  `,
+};
 const QueryAnalyticsContainer = () => {
   const {
     dispatch,
@@ -41,10 +62,10 @@ const QueryAnalyticsContainer = () => {
 
   return (
     <div style={{ width: `${(size || 1500) - 260}px` }}>
-      <div className={'filters-header'} style={{ padding: '5px 0px', height: '50px' }}>
-        <h5 style={{ margin: '3px', marginRight: '40px' }}>Queries overview</h5>
+      <div className={Styling.overviewWrapper}>
+        <h5 className={Styling.overviewHeader}>Queries overview</h5>
         <GroupByControl />
-        <div style={{ marginLeft: 'auto' }}>
+        <div className={Styling.paginationWrapper}>
           <Pagination
             showSizeChanger={true}
             pageSizeOptions={PAGE_SIZE_OPTIONS}
@@ -58,7 +79,7 @@ const QueryAnalyticsContainer = () => {
             onChange={changePageNumber}
           />
         </div>
-        <div style={{ marginLeft: '10px' }}>
+        <div className={Styling.manageColumnsWrapper}>
           <ManageColumns onlyAdd={true} />
         </div>
       </div>
@@ -68,13 +89,11 @@ const QueryAnalyticsContainer = () => {
         <Split
           sizes={[70, 30]}
           minSize={100}
-          gutterSize={10}
           direction="vertical"
           cursor="row-resize"
-          className={'splitter-wrapper'}
-          elementStyle={(dimension, size, gutterSize) => {
-            return { height: `calc(${size}% - ${gutterSize}px)`, 'overflow-y': `scroll` };
-          }}
+          className={Styling.splitterWrapper}
+          elementStyle={(dimension, size, gutterSize) => ({ height: `calc(${size}% - ${gutterSize}px)`, 'overflow-y': `scroll` })}
+          gutterStyle={() => ({ backgroundColor: '#626262', cursor: 'ns-resize', height: '10px' })}
         >
           <OverviewTable setTotal={setTotal} />
           <QueryDetails />
