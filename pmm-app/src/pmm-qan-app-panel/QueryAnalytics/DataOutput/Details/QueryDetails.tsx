@@ -47,6 +47,7 @@ const QueryDetails = () => {
       }
     })();
   }, [queryId]);
+  
   return (
     <div className={'query-analytics-details-grid'} id={'query-analytics-details'}>
       <Fingerprint query={HARDCODED_FINGERPRINT} controlSum={HARDCODED_CONTROL_SUM} groupBy={groupBy} />

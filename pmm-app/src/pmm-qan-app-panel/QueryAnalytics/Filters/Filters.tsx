@@ -68,14 +68,14 @@ export const FILTERS_GROUPS = [
 const Styling = {
   filtersWrapper: css`
     border: 1px solid rgb(40, 40, 40);
-    padding: 5px 16px;
+    padding: 5px 16px !important;
     overflow-y: scroll;
   `,
   filtersHeader: css`
     display: flex;
     align-items: flex-end;
-    padding: 5px 0px;
-    height: 50px;
+    padding: 5px 0px !important;
+    height: 50px !important;
   `,
   showAllButton: css`
     padding: 0 !important;

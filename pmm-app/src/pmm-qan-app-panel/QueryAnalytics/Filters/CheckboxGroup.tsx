@@ -24,6 +24,22 @@ const Styling = {
     display: flex;
     justify-content: flex-end;
   `,
+  filterHeaderWrapper: css`
+    display: flex;
+    justify-items: space-between;
+    margin-bottom: 0 !important;
+    margin-top: 20px !important;
+  `,
+  filterHeader: css`
+    margin-right: auto;
+  `,
+  divider: css`
+    margin-top: 0 !important;
+    margin-bottom: 5px !important;
+  `,
+  showModeSwitcher: css`
+    cursor: pointer;
+  `,
 };
 
 export const CheckboxGroup = ({ form, name, items, group, showAll, filter, labels }) => {
@@ -62,14 +78,14 @@ export const CheckboxGroup = ({ form, name, items, group, showAll, filter, label
     });
   return itemsList.length ? (
     <div>
-      <p style={{ display: 'flex', justifyItems: 'space-between', marginBottom: '0', marginTop: '20px' }}>
-        <span style={{ marginRight: 'auto' }}>{name}</span>
+      <p className={Styling.filterHeaderWrapper}>
+        <span className={Styling.filterHeader}>{name}</span>
         {items.length > TOP_LIMIT ? (
           <span
             onClick={() => {
               setShowTop(!showTop);
             }}
-            style={{ cursor: 'pointer' }}
+            className={Styling.showModeSwitcher}
           >
             {showTop ? `Show all (${items.length})` : `Show top ${TOP_LIMIT}`}
           </span>
@@ -77,7 +93,7 @@ export const CheckboxGroup = ({ form, name, items, group, showAll, filter, label
           <span></span>
         )}
       </p>
-      <Divider style={{ marginTop: '0', marginBottom: '5px' }}></Divider>
+      <Divider className={Styling.divider}></Divider>
       {itemsList}
     </div>
   ) : null;

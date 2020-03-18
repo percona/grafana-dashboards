@@ -1,5 +1,7 @@
 import React, { useReducer } from 'react';
 import { ParseQueryParamDate } from '../../react-plugins-deps/components/helpers/time-parameters-parser';
+import { DataSourceApi } from '@grafana/data';
+import { getDataSourceSrv } from '@grafana/runtime';
 
 const initialState = {} as any;
 
@@ -39,6 +41,22 @@ class ContextActions {
       result[filterName] = filters;
       return result;
     }, {});
+  }
+
+  static refreshGrafanaVariables(state) {
+    let dataSource: DataSourceApi = (getDataSourceSrv() as unknown) as DataSourceApi;
+    const templateVariables = dataSource.templateSrv.variables;
+    FILTERS_NAMES.forEach(filter => {
+      const variables = _.find(templateVariables, { name: filter.replace('var-', '') });
+      if (!variables) {
+        return;
+      }
+      variables.current = {
+        text: state.labels[filter] || ['All'],
+        value: state.labels[filter] || ['All'],
+      };
+    });
+    templateVariables[0].variableSrv.variableUpdated(templateVariables[0]);
   }
 
   static generateURL(state) {
@@ -171,6 +189,8 @@ export const UrlParametersProvider = ({ children }) => {
           delete newState.queryId;
           break;
       }
+
+      ContextActions.refreshGrafanaVariables(newState);
       const newUrl = ContextActions.generateURL(newState);
       history.pushState({}, 'test', newUrl);
       return newState;
