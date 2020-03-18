@@ -6,6 +6,9 @@ const getExample = (example: string): string =>
   sqlFormatter
     .format(example.toLowerCase())
     .replace('explain', 'EXPLAIN ')
+    .replace('select', 'SELECT ')
+    .replace('from', 'FROM ')
+    .replace('where', 'WHERE ')
     .replace('  ', ' ');
 
 const Example = props => {
