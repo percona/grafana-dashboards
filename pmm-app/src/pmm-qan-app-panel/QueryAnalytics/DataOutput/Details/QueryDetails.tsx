@@ -47,7 +47,7 @@ const QueryDetails = () => {
       }
     })();
   }, [queryId]);
-  
+
   return (
     <div className={'query-analytics-details-grid'} id={'query-analytics-details'}>
       <Fingerprint query={HARDCODED_FINGERPRINT} controlSum={HARDCODED_CONTROL_SUM} groupBy={groupBy} />
@@ -55,11 +55,7 @@ const QueryDetails = () => {
         <Divider />
         <Tabs defaultActiveKey="1" onChange={() => {}} tabPosition={'left'}>
           <TabPane tab={<span>{'Details'}</span>} key="1">
-            <div className="details-table">
-              <div className="details-table-content">
-                <Metrics {...MetricsProps} />
-              </div>
-            </div>
+            <Metrics {...MetricsProps} />
           </TabPane>
           <TabPane tab={<span>{'Examples'}</span>} key="2">
             <Example {...MetricsProps} />
