@@ -22,16 +22,10 @@ const OverviewTable = props => {
   const [loading, setLoading] = useState(false);
 
   const onTableChange = useCallback((pagination, filters, sorter) => {
-    let orderBy = '';
-    if (sorter.order === 'ascend') {
-      orderBy = sorter.columnKey;
-    } else if (sorter.order === 'descend') {
-      orderBy = `-${sorter.columnKey}`;
-    }
     dispatch({
       type: 'CHANGE_SORT',
       payload: {
-        orderBy: orderBy,
+        orderBy: sorter.columnKey,
       },
     });
   }, []);
@@ -80,7 +74,7 @@ const OverviewTable = props => {
       }
     };
     updateInstances().then(() => {});
-  }, [columns, pageNumber, pageSize, groupBy, labels]);
+  }, [columns, pageNumber, pageSize, groupBy, labels, orderBy]);
   // @ts-ignore
 
   return (
