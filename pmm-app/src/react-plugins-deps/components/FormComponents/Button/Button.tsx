@@ -1,8 +1,17 @@
 import { Button } from 'antd';
 import React from 'react';
-import './Button.scss';
 import { ButtonHTMLType } from 'antd/es/button/button';
+import { css } from 'emotion';
 
+const Styling = {
+  button: css`
+    color: white !important;
+    background-color: #212327 !important;
+    border-radius: 0px !important;
+    border: 1px solid #212327 !important;
+    height: 36px !important;
+  `,
+};
 interface ButtonElementInterface {
   loading?: boolean;
   disabled?: boolean;
@@ -19,14 +28,7 @@ const ButtonElement = ({
   htmlType = 'submit',
 }: ButtonElementInterface) => {
   return (
-    <Button
-      onClick={onClick || (() => {})}
-      type="primary"
-      htmlType={htmlType}
-      loading={loading}
-      disabled={disabled}
-      className="instance-id-submit-button"
-    >
+    <Button onClick={onClick || (() => {})} type="primary" htmlType={htmlType} loading={loading} disabled={disabled} className={Styling.button}>
       {text}
     </Button>
   );
