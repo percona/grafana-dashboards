@@ -27,8 +27,8 @@ node_load1: {type: gauge}
 node_memory_Buffers_bytes: {type: gauge}
 node_memory_Cached_bytes: {type: gauge}
 node_memory_MemAvailable_bytes: {type: gauge}
-node_memory_free_bytes: {type: gauge}
-node_memory_total_bytes: {type: gauge}
+node_memory_MemFree_bytes: {type: gauge}
+node_memory_MemTotal_bytes: {type: gauge}
 node_network_receive_bytes_total: {type: counter, group_by: device}
 node_network_transmit_bytes_total: {type: counter, group_by: device}
 """)
