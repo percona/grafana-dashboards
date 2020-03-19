@@ -195,6 +195,7 @@ export const UrlParametersProvider = ({ children }) => {
           newState = {
             ...state,
             groupBy: action.payload.groupBy,
+            querySelected: false,
           };
           delete newState.queryId;
           break;
