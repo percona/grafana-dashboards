@@ -73,8 +73,10 @@ export const getDefaultColumns = (groupBy, pageNumber, pageSize, columns) => {
       title: () => `Group by ${groupByLabel}`,
       ellipsis: true,
       className: 'overview-main-column',
-      render: (text, record) => {
-        return <div className={Styling.mainMetric(mainMetricColumnWidth)}>{record.fingerprint || record.dimension || 'TOTAL'}</div>;
+      render: (text, record, index) => {
+        return (
+          <div className={Styling.mainMetric(mainMetricColumnWidth)}>{index === 0 ? 'TOTAL' : record.fingerprint || record.dimension || 'N/A'}</div>
+        );
       },
     },
   ];
