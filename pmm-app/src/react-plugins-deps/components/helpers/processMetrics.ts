@@ -15,6 +15,23 @@ const getSparkline = (sparklines, metricName) => {
   });
 };
 
+const sortDetails = (a, b) => {
+  const order = ['num_queries', 'num_queries_with_errors', 'num_queries_with_warnings', 'query_time', 'lock_time', 'rows_sent', 'rows_examined', ''];
+
+  let indA = order.indexOf(a['metricName']);
+  let indB = order.indexOf(b['metricName']);
+
+  if (indA === -1) {
+    indA = order.length - 1;
+  }
+
+  if (indB === -1) {
+    indB = order.length - 1;
+  }
+
+  return indA < indB ? -1 : 1;
+};
+
 export const processMetrics = (metricsCatalogue, metrics) => {
   if (!metrics.metrics) {
     metrics.metrics = metrics.totals;
@@ -22,6 +39,7 @@ export const processMetrics = (metricsCatalogue, metrics) => {
   const metricsList = Object.keys(metrics.metrics);
   return metricsList
     .filter(metric => Object.keys(metrics.metrics[metric]).length !== 0 && metrics.totals[metric])
+    .sort(sortDetails)
     .map(metricName => {
       const metric = metrics.metrics[metricName];
       const sparkline = getSparkline(metrics.sparkline, metricName);
