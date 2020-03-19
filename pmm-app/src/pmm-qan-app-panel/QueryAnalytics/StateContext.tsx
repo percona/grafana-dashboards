@@ -1,7 +1,7 @@
 import React, { useReducer } from 'react';
 import { ParseQueryParamDate } from '../../react-plugins-deps/components/helpers/time-parameters-parser';
-import { DataSourceApi } from '@grafana/data';
 import { getDataSourceSrv } from '@grafana/runtime';
+import _ from 'lodash';
 
 const initialState = {} as any;
 
@@ -44,7 +44,8 @@ class ContextActions {
   }
 
   static refreshGrafanaVariables(state) {
-    let dataSource: DataSourceApi = (getDataSourceSrv() as unknown) as DataSourceApi;
+    const dataSource = getDataSourceSrv();
+    // @ts-ignore
     const templateVariables = dataSource.templateSrv.variables;
     FILTERS_NAMES.forEach(filter => {
       const variables = _.find(templateVariables, { name: filter.replace('var-', '') });
