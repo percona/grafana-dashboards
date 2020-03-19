@@ -11,7 +11,7 @@ const Styling = {
     display: grid;
     grid-template-areas: 'filtername percentagearea';
     grid-template-rows: 30px;
-    grid-template-columns: 160px auto;
+    grid-template-columns: 150px auto;
     grid-gap: 10px;
     height: auto;
     margin: 0;
