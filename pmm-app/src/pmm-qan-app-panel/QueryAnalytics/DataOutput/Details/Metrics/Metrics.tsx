@@ -65,7 +65,7 @@ const columns = [
       // @ts-ignore
       const polygonChartProps = {
         data: item.sparkline,
-        width: 285,
+        width: 210,
         ykey: 'metric',
       };
       return (
