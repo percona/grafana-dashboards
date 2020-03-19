@@ -137,25 +137,31 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
       return (
         <div className={'overview-content-column'}>
           {columnIndex === 0 && <PolygonChart {...polygonChartProps} />}
-          <Tooltip
-            getPopupContainer={() => document.querySelector('#antd') || document.body}
-            placement="left"
-            overlayClassName={'overview-column-toolkit'}
-            title={
-              <div>
-                <div className={Styling.tooltipHeader}>{metric.humanizeName}</div>
-                <Divider style={{ background: '#363434', margin: '0' }} />
-                <MetricsList data={tooltipData} />
-                <Divider style={{ background: '#666666', margin: '0' }} />
-                {metricName === 'query_time' && <LatencyChart {...{ data: stats }} />}
-                <MetricsList data={latencyTooltipData} />
-              </div>
-            }
-          >
+          {statPerSec !== undefined ? (
+            <Tooltip
+              getPopupContainer={() => document.querySelector('#antd') || document.body}
+              placement="left"
+              overlayClassName={'overview-column-toolkit'}
+              title={
+                <div>
+                  <div className={Styling.tooltipHeader}>{metric.humanizeName}</div>
+                  <Divider style={{ background: '#363434', margin: '0' }} />
+                  <MetricsList data={tooltipData} />
+                  <Divider style={{ background: '#666666', margin: '0' }} />
+                  {metricName === 'query_time' && <LatencyChart {...{ data: stats }} />}
+                  <MetricsList data={latencyTooltipData} />
+                </div>
+              }
+            >
+              <span className="summarize" style={{ marginLeft: 'auto' }}>
+                {statPerSec !== undefined ? `${Humanize.transform(statPerSec, 'number')} ${metric.units}` : 'n/a'}
+              </span>
+            </Tooltip>
+          ) : (
             <span className="summarize" style={{ marginLeft: 'auto' }}>
-              {statPerSec ? `${Humanize.transform(statPerSec, 'number')} ${metric.units}` : 'n/a'}
+              n/a
             </span>
-          </Tooltip>
+          )}
         </div>
       );
     },
