@@ -98,9 +98,10 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
     title: () => <ManageColumns placeholder={metricName} currentMetric={metric} width={'100%'} />,
     render: (text, item) => {
       const stats = item.metrics[metricName].stats;
+      const statPerSec = stats.qps || stats.sum_per_sec;
       // @ts-ignore
       const tooltipData = [
-        { header: 'Per sec', value: Humanize.transform(stats.qps || stats.sum_per_sec, 'number') },
+        { header: 'Per sec', value: Humanize.transform(statPerSec, 'number') },
         { header: 'Sum', value: stats.sum && Humanize.transform(stats.sum, metric.pipeTypes.sumPipe) },
         { header: 'From total', value: ((stats.sum_per_sec / totalValues.metrics[metricName].stats.sum_per_sec) * 100).toFixed(2) + ' %' },
       ].filter(tooltip => tooltip.value);
@@ -152,7 +153,7 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
             }
           >
             <span className="summarize" style={{ marginLeft: 'auto' }}>
-              {Humanize.transform(stats.qps || stats.sum_per_sec, 'number')} {metric.units}
+              {statPerSec ? `${Humanize.transform(statPerSec, 'number')} ${metric.units}` : 'n/a'}
             </span>
           </Tooltip>
         </div>
