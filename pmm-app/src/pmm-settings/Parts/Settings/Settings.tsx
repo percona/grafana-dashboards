@@ -16,11 +16,6 @@ import { css } from 'emotion';
 
 const { Panel } = Collapse;
 
-const dataRetentionOptions = [
-  { value: 'h', label: 'Hours' },
-  { value: 'm', label: 'Minutes' },
-  { value: 's', label: 'Seconds' },
-];
 const marks = {
   0: 'Low',
   1: 'Medium',
@@ -161,7 +156,7 @@ const SettingsPart = props => {
           <form onSubmit={handleSubmit}>
             <>
               <FormElement
-                label={'Metrics resolution'}
+                label="Metrics resolution"
                 tooltip={
                   <PluginTooltip
                     links={[
@@ -170,7 +165,7 @@ const SettingsPart = props => {
                         text: 'Read more',
                       },
                     ]}
-                    text={'This setting defines how frequently the data will be collected'}
+                    text="This setting defines how frequently the data will be collected"
                   />
                 }
                 element={
@@ -178,7 +173,7 @@ const SettingsPart = props => {
                     marks={marks}
                     form={form}
                     defaultValue={2}
-                    name={'metrics_resolutions_slider'}
+                    name="metrics_resolutions_slider"
                     tipFormatter={value => {
                       const values = dataRetentionValues[value];
                       return `high: ${values.hr}, medium: ${values.mr}, low: ${values.lr}`;
@@ -189,7 +184,7 @@ const SettingsPart = props => {
               <Collapse bordered={false} defaultActiveKey={['1']} onChange={() => {}} className={style.collapse}>
                 <Panel header="Advanced settings " key="1" className={style.panel}>
                   <FormElement
-                    label={'Data retention (In Days)'}
+                    label="Data retention (In Days)"
                     tooltip={
                       <PluginTooltip
                         links={[
@@ -198,24 +193,21 @@ const SettingsPart = props => {
                             text: 'Read more',
                           },
                         ]}
-                        text={'This is the value for how long data will be stored'}
+                        text="This is the value for how long data will be stored"
                       />
                     }
                     element={
                       <InputField
-                        name={'data_retention_count'}
-                        validate={Validators.compose(
-                          Validators.range(1, 3650),
-                          Validators.required
-                        )}
+                        name="data_retention_count"
+                        validate={Validators.compose(Validators.range(1, 3650), Validators.required)}
                         form={form}
                         wrapperStyle={{ width: '100%' }}
                       />
                     }
                   />
                   <FormElement
-                    label={'Telemetry'}
-                    type={'horizontal'}
+                    label="Telemetry"
+                    type="horizontal"
                     tooltip={
                       <PluginTooltip
                         links={[
@@ -224,14 +216,14 @@ const SettingsPart = props => {
                             text: 'Read more',
                           },
                         ]}
-                        text={'Option to send usage data back to Percona to let us make product better'}
+                        text="Option to send usage data back to Percona to let us make product better"
                       />
                     }
-                    element={<ToggleField form={form} name={'telemetry_enabled'} />}
+                    element={<ToggleField form={form} name="telemetry_enabled" />}
                   />
                   <FormElement
-                    label={'Check for updates'}
-                    type={'horizontal'}
+                    label="Check for updates"
+                    type="horizontal"
                     tooltip={
                       <PluginTooltip
                         links={[
@@ -240,14 +232,14 @@ const SettingsPart = props => {
                             text: 'Read more',
                           },
                         ]}
-                        text={'Option to check new versions and ability to update PMM from UI'}
+                        text="Option to check new versions and ability to update PMM from UI"
                       />
                     }
-                    element={<ToggleField form={form} name={'updates_disabled'} disabled={true} />}
+                    element={<ToggleField form={form} name="updates_disabled" disabled={true} />}
                   />
                 </Panel>
               </Collapse>
-              <ButtonElement loading={loading} text={'Apply changes'} />
+              <ButtonElement loading={loading} text="Apply changes" />
             </>
           </form>
         );

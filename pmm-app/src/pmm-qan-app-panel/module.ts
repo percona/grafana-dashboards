@@ -25,7 +25,7 @@ const filtersList = [
 ];
 
 export class PanelCtrl extends MetricsPanelCtrl {
-  static template = `<iframe ng-src="{{trustSrc(url)}}" id="iframe-qan" style="width: 100%; height: 400px; border: 0;" scrolling="no" />`;
+  static template = '<iframe ng-src="{{trustSrc(url)}}" id="iframe-qan" style="width: 100%; height: 400px; border: 0;" scrolling="no" />';
 
   /** @ngInject */
   constructor($scope, $injector, templateSrv, $sce) {
@@ -104,7 +104,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
       frame.height(`${h + 100}px`);
       panel.height(`${h + 150}px`);
 
-      panelContent.height(`inherit`);
+      panelContent.height('inherit');
       panelContent[0].style.padding = '0 0 10px';
     };
     // init url

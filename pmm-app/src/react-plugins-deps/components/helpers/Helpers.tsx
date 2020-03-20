@@ -1,4 +1,4 @@
-import {Icon, Tooltip} from 'antd';
+import { Icon, Tooltip } from 'antd';
 import React from 'react';
 
 interface Link {

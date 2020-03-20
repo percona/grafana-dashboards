@@ -42,7 +42,7 @@ const UploadSSH = props => {
           <form onSubmit={handleSubmit}>
             <>
               <FormElement
-                label={'SSH key'}
+                label="SSH key"
                 tooltip={
                   <PluginTooltip
                     links={[
@@ -51,13 +51,13 @@ const UploadSSH = props => {
                         text: 'Read more',
                       },
                     ]}
-                    text={'Public SSH key to let you login into the server using SSH.'}
+                    text="Public SSH key to let you login into the server using SSH."
                   />
                 }
-                element={<TextAreaField name={'ssh_key'} form={form} placeholder="Enter ssh key" style={{ width: '100%' }} />}
-                alignLabel={'top'}
+                element={<TextAreaField name="ssh_key" form={form} placeholder="Enter ssh key" style={{ width: '100%' }} />}
+                alignLabel="top"
               />
-              <ButtonElement loading={loading} text={'Apply SSH key'} />
+              <ButtonElement loading={loading} text="Apply SSH key" />
             </>
           </form>
         );
