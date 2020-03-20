@@ -5,23 +5,34 @@
       "url": "{PMM_URL_HERE}",
       "browser": "chrome",
       "windowSize": "2560x1600",
-      "user": "pmm_qa",
-      "key": "{SAUCE_USER_KEY}",
-      "host": "ondemand.saucelabs.com",
+      "host": "localhost",
+      "port": 4444,
+      "path": "/wd/hub",
       "desiredCapabilities": {
-        "screenResolution": "2560x1600",
-        "ignoreHTTPSErrors": true,
         "acceptInsecureCerts": true,
         "chromeOptions": {
-          "args": [ "--disable-gpu", "--window-size=2560x1600", "--no-sandbox" ]
+          "args": ["--disable-gpu", "--window-size=2560x1600", "--no-sandbox" ]
+        },
+        "selenoidOptions": {
+          "enableVNC": true,
+          "browserName": "chrome",
+          "version": "80.0",
+          "enableVideo": true,
+          "enableLog": true,
+          "screenResolution": "2560x1600x24"
         }
       }
     },
-    "SauceHelper": {
-      "require": "codeceptjs-saucehelper"
+    "SelenoidHelper": {
+      "require": "./tests/helper/selenoid_helper.js"
     },
-    "FileSystem": {},
-    "REST": {}
+    "ResembleHelper" : {
+      "require": "codeceptjs-resemblehelper",
+      "screenshotFolder": "./tests/output/",
+      "baseFolder": "./tests/screenshots/base/",
+      "diffFolder": "./tests/screenshots/diff/"
+    },
+    "FileSystem": {}
   },
   "include": {
     "loginPage": "./tests/pages/loginPage.js",
@@ -37,8 +48,13 @@
   },
   "multiple": {
     "parallel": {
-      "chunks": 2,
+      "chunks": 3,
       "browsers": ["chrome"]
+    }
+  },
+  "plugins": {
+    "autoDelay": {
+      "enabled": true
     }
   },
   "mocha": {
