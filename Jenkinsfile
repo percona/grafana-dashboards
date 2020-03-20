@@ -46,9 +46,6 @@ pipeline {
         stage('UI tests') {
             steps {
                 sh """
-                    fi
-                """
-                sh """
                     sg docker -c "
                         export CHROME_VERSION=${params.CHROME_VERSION}
                         export NVM_DIR="\${HOME}/.nvm"
