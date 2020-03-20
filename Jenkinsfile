@@ -10,10 +10,10 @@ pipeline {
     parameters {
         choice(
             choices: [ 'test', 'e2e' ],
-            description: 'Run UI tests?',
+            description: 'Select test to run',
             name: 'RUN_TEST')
-        string(
-            defaultValue: '80.0',
+        choice(
+            choices: [ '80.0' ],
             description: 'Google Chrome version',
             name: 'CHROME_VERSION')
     }
@@ -28,19 +28,19 @@ pipeline {
                         "
                     """
                 }
-                slackSend channel: '#pmm-ci', color: '#FFFF00', message: "[${JOB_NAME}]: build started - ${BUILD_URL}"
+                // slackSend channel: '#pmm-ci', color: '#FFFF00', message: "[${JOB_NAME}]: build started - ${BUILD_URL}"
             }
         }
         stage('UI tests') {
             steps {
                 sh """
                     sg docker -c "
-                        export CHROME_VERSION=${params.CHROME_VERSION}"
+                        export CHROME_VERSION=${params.CHROME_VERSION}
                         make ${params.RUN_TEST}
                     "
                 """
-                stash includes: 'results/docker/TAG', name: 'IMAGE'
-                archiveArtifacts 'results/docker/TAG'
+                // stash includes: 'results/docker/TAG', name: 'IMAGE'
+                // archiveArtifacts 'results/docker/TAG'
             }
         }
     }
@@ -48,12 +48,9 @@ pipeline {
         always {
             script {
                 if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {
-                    unstash 'IMAGE'
-                    def IMAGE = sh(returnStdout: true, script: "cat results/docker/TAG").trim()
-                    def CLIENT_IMAGE = sh(returnStdout: true, script: "cat results/docker/CLIENT_TAG").trim()
-                    slackSend channel: '#pmm-ci', color: '#00FF00', message: "[${JOB_NAME}]: build finished - ${IMAGE}"
+                    // slackSend channel: '#pmm-ci', color: '#00FF00', message: "[${JOB_NAME}]: build finished - ${IMAGE}"
                 } else {
-                    slackSend channel: '#pmm-ci', color: '#FF0000', message: "[${JOB_NAME}]: build ${currentBuild.result}"
+                    // slackSend channel: '#pmm-ci', color: '#FF0000', message: "[${JOB_NAME}]: build ${currentBuild.result}"
                 }
             }
             sh 'sudo make clean'
