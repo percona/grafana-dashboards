@@ -39,6 +39,16 @@ pipeline {
                             sudo docker-compose --version
                         fi
                     '''
+                    sh """
+                       export NVM_DIR=/usr/local/nvm
+                       if [[ ! -r \${NVM_DIR}/nvm.sh ]]; then
+                          [ -s "\${NVM_DIR}/nvm.sh" ] && source "\${NVM_DIR}/nvm.sh"
+                          sudo curl -o - https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+                       fi
+
+                       sudo nvm install ${params.NODEJS_VERSION}
+                       sudo nvm use ${params.NODEJS_VERSION}
+                    """
                 }
                 // slackSend channel: '#pmm-ci', color: '#FFFF00', message: "[${JOB_NAME}]: build started - ${BUILD_URL}"
             }
@@ -48,16 +58,9 @@ pipeline {
                 sh """
                     sg docker -c "
                         export CHROME_VERSION=${params.CHROME_VERSION}
-                        export NVM_DIR="\${HOME}/.nvm"
+                        export NVM_DIR=/usr/local/nvm
+                        source "\${NVM_DIR}/nvm.sh"
 
-                        if [[ ! -r \${HOME}/.nvm/nvm.sh ]]; then
-                            curl -o - https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
-                            [ -s "\${NVM_DIR}/nvm.sh" ] && source "\${NVM_DIR}/nvm.sh"
-                            nvm install ${params.NODEJS_VERSION}
-                        fi
-
-                        [ -s "\${NVM_DIR}/nvm.sh" ] && source "\${NVM_DIR}/nvm.sh"
-                        nvm use ${params.NODEJS_VERSION}
                         make ${params.RUN_TEST}
                     "
                 """
