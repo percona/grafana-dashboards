@@ -44,7 +44,7 @@ pipeline {
                        [[ ! -d \${NVM_DIR} ]] && sudo mkdir -p \${NVM_DIR}
                        if [[ ! -r \${NVM_DIR}/nvm.sh ]]; then
                           [ -s "\${NVM_DIR}/nvm.sh" ] && source "\${NVM_DIR}/nvm.sh"
-                          sudo curl -o - https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+                          curl -o - https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | sudo bash
                        fi
 
                        sudo nvm install ${params.NODEJS_VERSION}
