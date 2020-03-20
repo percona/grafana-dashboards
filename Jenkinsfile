@@ -72,7 +72,6 @@ pipeline {
                     // slackSend channel: '#pmm-ci', color: '#FF0000', message: "[${JOB_NAME}]: build ${currentBuild.result}"
                 }
             }
-            sh 'sudo make clean'
             deleteDir()
         }
     }
