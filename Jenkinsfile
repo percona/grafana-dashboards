@@ -28,11 +28,20 @@ pipeline {
                         "
                     """
                     sh '''
-                        if ! [[ -x $(command -v docker-compose) ]]; then
+                        if [[ ! -x $(command -v docker-compose) ]]; then
                             sudo curl -L https://github.com/docker/compose/releases/download/1.21.0/docker-compose-`uname -s`-`uname -m` | sudo tee /usr/local/bin/docker-compose > /dev/null
                             sudo chmod +x /usr/local/bin/docker-compose
                             sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
                             sudo docker-compose --version
+                        fi
+                    '''
+                    sh '''
+                        if [[ ! -x ${HOME}/.nvm/nvm.sh ]]; then
+                            curl -o - https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+                            export NVM_DIR="$HOME/.nvm"
+                            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+                            nvm install 12.14
+                            nvm use 12.14
                         fi
                     '''
                 }
@@ -44,6 +53,8 @@ pipeline {
                 sh """
                     sg docker -c "
                         export CHROME_VERSION=${params.CHROME_VERSION}
+                        export NVM_DIR="$HOME/.nvm"
+                        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
                         make ${params.RUN_TEST}
                     "
                 """
