@@ -16,6 +16,10 @@ pipeline {
             choices: [ '80.0' ],
             description: 'Google Chrome version',
             name: 'CHROME_VERSION')
+        choice(
+            choices: [ '12.14' ],
+            description: 'Node.js version',
+            name: 'NODEJS_VERSION')
     }
     stages {
         stage('Prepare') {
@@ -35,15 +39,15 @@ pipeline {
                             sudo docker-compose --version
                         fi
                     '''
-                    sh '''
-                        if [[ ! -x ${HOME}/.nvm/nvm.sh ]]; then
+                    sh """
+                        if [[ ! -x \${HOME}/.nvm/nvm.sh ]]; then
                             curl -o - https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
-                            export NVM_DIR="$HOME/.nvm"
-                            [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
-                            nvm install 12.14
-                            nvm use 12.14
+                            export NVM_DIR="\${HOME}/.nvm"
+                            [ -s "\${NVM_DIR}/nvm.sh" ] && source "\${NVM_DIR}/nvm.sh"
+                            nvm install ${params.NODEJS_VERSION}
+                            nvm use ${params.NODEJS_VERSION}
                         fi
-                    '''
+                    """
                 }
                 // slackSend channel: '#pmm-ci', color: '#FFFF00', message: "[${JOB_NAME}]: build started - ${BUILD_URL}"
             }
@@ -53,8 +57,9 @@ pipeline {
                 sh """
                     sg docker -c "
                         export CHROME_VERSION=${params.CHROME_VERSION}
-                        export NVM_DIR="$HOME/.nvm"
-                        [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
+                        export NVM_DIR="\${HOME}/.nvm"
+                        [ -s "\${NVM_DIR}/nvm.sh" ] && source "\${NVM_DIR}/nvm.sh"
+                        nvm use ${params.NODEJS_VERSION}
                         make ${params.RUN_TEST}
                     "
                 """
