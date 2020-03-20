@@ -69,7 +69,7 @@ def main():
 
     dbs = [x['name'] for x in client.get_list_database()]
     if TRENDING_DB not in dbs:
-        client.create_database(TRENDING_DB, if_not_exists=True)
+        client.create_database(TRENDING_DB)
         print '[%s] Database created.' % (TRENDING_DB,)
 
     # Create new CQ
@@ -78,7 +78,7 @@ def main():
     for interval in INTERVALS:
         # Create retention
         if interval not in retentions:
-            client.create_retention_policy('"%s"' % (interval,), 'INF', '1', TRENDING_DB)
+            client.create_retention_policy('%s' % (interval,), 'INF', '1', TRENDING_DB)
             print '[%s] Retention policy "%s" created.' % (TRENDING_DB, interval)
 
         for metric, data in METRICS.iteritems():
