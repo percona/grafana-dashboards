@@ -46,18 +46,19 @@ pipeline {
         stage('UI tests') {
             steps {
                 sh """
-                    if [[ ! -x \${HOME}/.nvm/nvm.sh ]]; then
-                        curl -o - https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
-                        export NVM_DIR="\${HOME}/.nvm"
-                        [ -s "\${NVM_DIR}/nvm.sh" ] && source "\${NVM_DIR}/nvm.sh"
-                        nvm install ${params.NODEJS_VERSION}
-                        nvm use ${params.NODEJS_VERSION}
                     fi
                 """
                 sh """
                     sg docker -c "
                         export CHROME_VERSION=${params.CHROME_VERSION}
                         export NVM_DIR="\${HOME}/.nvm"
+
+                        if [[ ! -r \${HOME}/.nvm/nvm.sh ]]; then
+                            curl -o - https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+                            [ -s "\${NVM_DIR}/nvm.sh" ] && source "\${NVM_DIR}/nvm.sh"
+                            nvm install ${params.NODEJS_VERSION}
+                        fi
+
                         [ -s "\${NVM_DIR}/nvm.sh" ] && source "\${NVM_DIR}/nvm.sh"
                         nvm use ${params.NODEJS_VERSION}
                         make ${params.RUN_TEST}
