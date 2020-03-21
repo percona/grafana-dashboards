@@ -63,13 +63,26 @@ const InstancesTable = props => {
             type = 'mysql';
             break;
         }
-        return <a onClick={() => onSelectInstance({ type, credentials: { ...{ ...element, ...credentials }, isRDS: true } })}>Start monitoring</a>;
+        return (
+          <a
+            onClick={() => onSelectInstance({ type, credentials: { ...{ ...element, ...credentials }, isRDS: true } })}
+          >
+            Start monitoring
+          </a>
+        );
       },
     },
   ];
 
   return instances && instances.length ? (
-    <Table dataSource={instances} pagination={false} bordered={false} columns={columns} rowClassName={() => 'discovery-table-row'} size="small" />
+    <Table
+      dataSource={instances}
+      pagination={false}
+      bordered={false}
+      columns={columns}
+      rowClassName={() => 'discovery-table-row'}
+      size="small"
+    />
   ) : null;
 };
 

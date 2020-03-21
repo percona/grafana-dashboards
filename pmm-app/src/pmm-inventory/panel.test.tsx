@@ -30,7 +30,12 @@ describe('Inventory tables', () => {
     const response = {
       pmm_agent: [{ agent_id: 'pmm-server', runs_on_node_id: 'pmm-server', connected: true }],
       node_exporter: [
-        { agent_id: '/agent_id/262189d8-e10f-41c2-b0ae-73cc76be6968', pmm_agent_id: 'pmm-server', status: 'RUNNING', listen_port: 42000 },
+        {
+          agent_id: '/agent_id/262189d8-e10f-41c2-b0ae-73cc76be6968',
+          pmm_agent_id: 'pmm-server',
+          status: 'RUNNING',
+          listen_port: 42000,
+        },
       ],
       postgres_exporter: [
         {

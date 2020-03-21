@@ -97,7 +97,10 @@ const validateInstanceForm = values => {
   return errors;
 };
 const AddRemoteInstance = props => {
-  const { instanceType, remoteInstanceCredentials, discoverName } = getInstanceData(props.instance.type, props.instance.credentials);
+  const { instanceType, remoteInstanceCredentials, discoverName } = getInstanceData(
+    props.instance.type,
+    props.instance.credentials
+  );
   const [loading, setLoading] = useState<boolean>(false);
   const initialValues = { ...remoteInstanceCredentials };
   if (instanceType === 'MySQL') {
@@ -172,7 +175,13 @@ const AddRemoteInstance = props => {
             <div className="add-instance-panel">
               <h6>Main details</h6>
               <span></span>
-              <InputField form={form} name="address" placeholder="Hostname" required={true} readonly={remoteInstanceCredentials.isRDS} />
+              <InputField
+                form={form}
+                name="address"
+                placeholder="Hostname"
+                required={true}
+                readonly={remoteInstanceCredentials.isRDS}
+              />
               <span className="description">Public DNS hostname of your instance</span>
               <InputField form={form} name="service_name" placeholder="Service name (default: Hostname)" />
               <span className="description">Service name to use.</span>
@@ -230,7 +239,12 @@ key2:value2"
               <CheckboxField form={form} label="Use TLS for database connections" name="tls" />
 
               <span className="description"></span>
-              <CheckboxField form={form} label="Skip TLS certificate and hostname validation" name="tls_skip_verify" data-cy="add-account-username" />
+              <CheckboxField
+                form={form}
+                label="Skip TLS certificate and hostname validation"
+                name="tls_skip_verify"
+                data-cy="add-account-username"
+              />
               <span className="description"></span>
               {getAdditionalOptions(instanceType, form)}
             </div>

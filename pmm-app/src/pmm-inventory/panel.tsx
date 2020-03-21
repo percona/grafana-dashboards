@@ -6,7 +6,8 @@ import Styling from '../react-plugins-deps/components/helpers/styling';
 
 const { TabPane } = Tabs;
 
-const getCustomLabels = customLabels => customLabels.map(label => <span key={label.key}>{`${label.key}: ${label.value}`}</span>);
+const getCustomLabels = customLabels =>
+  customLabels.map(label => <span key={label.key}>{`${label.key}: ${label.value}`}</span>);
 
 export const servicesColumns = [
   {

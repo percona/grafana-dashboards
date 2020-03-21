@@ -63,7 +63,9 @@ const AlertManager = props => {
                   <PluginTooltip
                     links={[
                       {
-                        url: 'https://percona.com/doc/percona-monitoring-and-management/2.x/faq.html#how-to-integrate-alertmanager-with-pmm',
+                        url:
+                          'https://percona.com/doc/percona-monitoring-and-management' +
+                          '2.x/faq.html#how-to-integrate-alertmanager-with-pmm',
                         text: 'How to integrate Alertmanager with PMM',
                       },
                       {
@@ -74,7 +76,9 @@ const AlertManager = props => {
                     text="The URL of the external Alertmanager to use"
                   />
                 }
-                element={<InputField form={form} name="alert_manager_url" placeholder="Enter URL" style={{ width: '100%' }} />}
+                element={
+                  <InputField form={form} name="alert_manager_url" placeholder="Enter URL" style={{ width: '100%' }} />
+                }
               />
               <FormElement
                 label="Alertmanager rules"
@@ -82,7 +86,9 @@ const AlertManager = props => {
                   <PluginTooltip
                     links={[
                       {
-                        url: 'https://percona.com/doc/percona-monitoring-and-management/2.x/faq.html#how-to-integrate-alertmanager-with-pmm',
+                        url:
+                          'https://percona.com/doc/percona-monitoring-and-management/' +
+                          '2.x/faq.html#how-to-integrate-alertmanager-with-pmm',
                         text: 'How to integrate Alertmanager with PMM',
                       },
                       {
@@ -93,7 +99,14 @@ const AlertManager = props => {
                     text="Alerting rules in the YAML configuration format"
                   />
                 }
-                element={<TextAreaField form={form} name="alert_manager_rules" placeholder="Alertmanager rules" style={{ width: '100%' }} />}
+                element={
+                  <TextAreaField
+                    form={form}
+                    name="alert_manager_rules"
+                    placeholder="Alertmanager rules"
+                    style={{ width: '100%' }}
+                  />
+                }
                 alignLabel="top"
               />
               <ButtonElement loading={loading} text="Apply Alertmanager settings" />

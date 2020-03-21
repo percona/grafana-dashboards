@@ -6,7 +6,8 @@ const Diagnostics = () => {
     <>
       <Row style={{ color: 'white', marginBottom: '10px' }} align="middle">
         <Col span={24}>
-          You can download server logs to make the problem detection simpler. Please include this file if you are submitting a bug report.
+          You can download server logs to make the problem detection simpler. Please include this file if you are
+          submitting a bug report.
         </Col>
       </Row>
       <Row style={{ color: 'white', marginBottom: '10px' }} align="middle">

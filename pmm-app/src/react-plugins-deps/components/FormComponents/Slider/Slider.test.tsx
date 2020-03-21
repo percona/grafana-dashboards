@@ -18,7 +18,9 @@ describe('Slider field test', () => {
         2: 'High',
       };
 
-      const component = renderer.create(<SliderField marks={marks} form={form} defaultValue={2} name="metrics_resolutions_slider" />);
+      const component = renderer.create(
+        <SliderField marks={marks} form={form} defaultValue={2} name="metrics_resolutions_slider" />
+      );
       const tree = component.toJSON();
       expect(tree).toMatchSnapshot();
     });

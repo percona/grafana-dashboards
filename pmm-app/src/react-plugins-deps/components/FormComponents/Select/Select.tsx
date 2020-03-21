@@ -17,7 +17,15 @@ interface SelectFieldInterface {
   options?: any;
   defaultValue?: any;
 }
-export const SelectField = ({ name, placeholder, required, form, options, style, defaultValue }: SelectFieldInterface) => {
+export const SelectField = ({
+  name,
+  placeholder,
+  required,
+  form,
+  options,
+  style,
+  defaultValue,
+}: SelectFieldInterface) => {
   const { input } = useField(name, form);
   return (
     <span className="fields__select-field" style={style || {}}>

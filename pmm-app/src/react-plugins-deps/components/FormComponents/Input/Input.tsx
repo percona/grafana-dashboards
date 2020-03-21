@@ -18,7 +18,16 @@ interface InputFieldInterface {
   validate?: any;
 }
 
-export const InputField = ({ name, placeholder = '', required, form, style, wrapperStyle, readonly, validate }: InputFieldInterface) => {
+export const InputField = ({
+  name,
+  placeholder = '',
+  required,
+  form,
+  style,
+  wrapperStyle,
+  readonly,
+  validate,
+}: InputFieldInterface) => {
   // // @ts-ignore
   const { input, meta } = useField(name, form, validate);
   return (

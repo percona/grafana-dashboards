@@ -85,8 +85,12 @@ export class PanelCtrl extends MetricsPanelCtrl {
     const perfectScrollContainers = elem[0].ownerDocument.getElementsByClassName('ps') as any;
     const rightScrollbarContainers = elem[0].ownerDocument.getElementsByClassName('ps__thumb-y') as any;
 
-    [].forEach.call(perfectScrollContainers, (container: HTMLElement) => container.setAttribute('style', 'overflow: auto !important'));
-    [].forEach.call(rightScrollbarContainers, (container: HTMLElement) => container.setAttribute('style', 'display: none !important'));
+    [].forEach.call(perfectScrollContainers, (container: HTMLElement) =>
+      container.setAttribute('style', 'overflow: auto !important')
+    );
+    [].forEach.call(rightScrollbarContainers, (container: HTMLElement) =>
+      container.setAttribute('style', 'display: none !important')
+    );
   }
 
   private fixMenuVisibility(elem): void | boolean {

@@ -15,7 +15,15 @@ export const SliderField = ({ name, marks: marks, form, style, defaultValue, tip
   const { input } = useField(name, form);
   return (
     <span className="fields__Slider-field" style={style || {}}>
-      <Slider {...input} marks={marks} max={2} step={null} included={false} defaultValue={defaultValue} tipFormatter={tipFormatter} />
+      <Slider
+        {...input}
+        marks={marks}
+        max={2}
+        step={null}
+        included={false}
+        defaultValue={defaultValue}
+        tipFormatter={tipFormatter}
+      />
     </span>
   );
 };

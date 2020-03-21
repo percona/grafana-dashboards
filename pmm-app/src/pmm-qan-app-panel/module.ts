@@ -24,8 +24,10 @@ const filtersList = [
   'var-schema',
 ];
 
+const iframeStyle = 'width: 100%; height: 400px; border: 0;';
+
 export class PanelCtrl extends MetricsPanelCtrl {
-  static template = '<iframe ng-src="{{trustSrc(url)}}" id="iframe-qan" style="width: 100%; height: 400px; border: 0;" scrolling="no" />';
+  static template = `<iframe ng-src="{{trustSrc(url)}}" id="iframe-qan" style=${iframeStyle} scrolling="no" />`;
 
   /** @ngInject */
   constructor($scope, $injector, templateSrv, $sce) {
@@ -158,8 +160,12 @@ export class PanelCtrl extends MetricsPanelCtrl {
     const perfectScrollContainers = elem[0].ownerDocument.getElementsByClassName('ps') as any;
     const rightScrollbarContainers = elem[0].ownerDocument.getElementsByClassName('ps__thumb-y') as any;
 
-    [].forEach.call(perfectScrollContainers, (container: HTMLElement) => container.setAttribute('style', 'overflow: auto !important'));
-    [].forEach.call(rightScrollbarContainers, (container: HTMLElement) => container.setAttribute('style', 'display: none !important'));
+    [].forEach.call(perfectScrollContainers, (container: HTMLElement) =>
+      container.setAttribute('style', 'overflow: auto !important')
+    );
+    [].forEach.call(rightScrollbarContainers, (container: HTMLElement) =>
+      container.setAttribute('style', 'display: none !important')
+    );
   }
 
   private fixMenuVisibility(elem): void | boolean {
@@ -224,7 +230,9 @@ export class PanelCtrl extends MetricsPanelCtrl {
     const orderBy = currentURL.searchParams.get('order_by') ? currentURL.searchParams.get('order_by') : '';
     const groupBy = currentURL.searchParams.get('group_by') ? currentURL.searchParams.get('group_by') : '';
     const filterBy = currentURL.searchParams.get('filter_by') ? currentURL.searchParams.get('filter_by') : '';
-    const activeDetailsTab = currentURL.searchParams.get('active_details_tab') ? currentURL.searchParams.get('active_details_tab') : '';
+    const activeDetailsTab = currentURL.searchParams.get('active_details_tab')
+      ? currentURL.searchParams.get('active_details_tab')
+      : '';
     const type = currentURL.searchParams.get('type') ? currentURL.searchParams.get('type') : '';
     // @ts-ignore
     return [id, type, search, filters, mainMetric, columns, orderBy, groupBy, filterBy, activeDetailsTab];

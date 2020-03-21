@@ -61,7 +61,11 @@ export const getMetricsResolutionValues = metricsResolutions => {
   let metricsIndex = 0;
 
   dataRetentionValues.forEach((resolution, index) => {
-    if (resolution.hr === metricsResolutions.hr && resolution.mr === metricsResolutions.mr && resolution.lr === metricsResolutions.lr) {
+    if (
+      resolution.hr === metricsResolutions.hr &&
+      resolution.mr === metricsResolutions.mr &&
+      resolution.lr === metricsResolutions.lr
+    ) {
       metricsIndex = index;
     }
   });
@@ -147,7 +151,9 @@ const SettingsPart = props => {
                   <PluginTooltip
                     links={[
                       {
-                        url: 'https://www.percona.com/doc/percona-monitoring-and-management/2.x/faq.html#what-resolution-is-used-for-metrics',
+                        url:
+                          'https://www.percona.com/doc/percona-monitoring-and-management/' +
+                          '2.x/faq.html#what-resolution-is-used-for-metrics',
                         text: 'Read more',
                       },
                     ]}
@@ -175,7 +181,9 @@ const SettingsPart = props => {
                       <PluginTooltip
                         links={[
                           {
-                            url: 'https://www.percona.com/doc/percona-monitoring-and-management/2.x/faq.html#how-to-control-data-retention-for-pmm',
+                            url:
+                              'https://www.percona.com/doc/percona-monitoring-and-management/' +
+                              '2.x/faq.html#how-to-control-data-retention-for-pmm',
                             text: 'Read more',
                           },
                         ]}
@@ -198,7 +206,9 @@ const SettingsPart = props => {
                       <PluginTooltip
                         links={[
                           {
-                            url: 'https://www.percona.com/doc/percona-monitoring-and-management/2.x/glossary-terminology.html#telemetry',
+                            url:
+                              'https://www.percona.com/doc/percona-monitoring-and-management/' +
+                              '2.x/glossary-terminology.html#telemetry',
                             text: 'Read more',
                           },
                         ]}
@@ -214,7 +224,9 @@ const SettingsPart = props => {
                       <PluginTooltip
                         links={[
                           {
-                            url: 'https://www.percona.com/doc/percona-monitoring-and-management/2.x/glossary-terminology.html#PMM-Version',
+                            url:
+                              'https://www.percona.com/doc/percona-monitoring-and-management/' +
+                              '2.x/glossary-terminology.html#PMM-Version',
                             text: 'Read more',
                           },
                         ]}
