@@ -11,11 +11,26 @@ interface SliderFieldInterface {
   marks?: any;
   tipFormatter: any;
 }
-export const SliderField = ({ name, marks: marks, form, style, defaultValue, tipFormatter }: SliderFieldInterface) => {
+export const SliderField = ({
+  name,
+  marks: marks,
+  form,
+  style,
+  defaultValue,
+  tipFormatter,
+}: SliderFieldInterface) => {
   const { input } = useField(name, form);
   return (
-    <span className={'fields__Slider-field'} style={style || {}}>
-      <Slider {...input} marks={marks} max={2} step={null} included={false} defaultValue={defaultValue} tipFormatter={tipFormatter} />
+    <span className="fields__Slider-field" style={style || {}}>
+      <Slider
+        {...input}
+        marks={marks}
+        max={2}
+        step={null}
+        included={false}
+        defaultValue={defaultValue}
+        tipFormatter={tipFormatter}
+      />
     </span>
   );
 };

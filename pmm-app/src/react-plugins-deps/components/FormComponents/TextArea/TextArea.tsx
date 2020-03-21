@@ -12,18 +12,26 @@ interface TextAreaFieldInterface {
   form?: any;
   style?: any;
 }
-export const TextAreaField = ({ name, prefix, placeholder, label, required, form, style }: TextAreaFieldInterface) => {
+export const TextAreaField = ({
+  name,
+  prefix,
+  placeholder,
+  label,
+  required,
+  form,
+  style,
+}: TextAreaFieldInterface) => {
   const { input, meta } = useField(name, form);
   return (
-    <div className={'text-area-field-wrapper'}>
+    <div className="text-area-field-wrapper">
       <textarea
         {...input}
         rows={5}
         className="input-field input-field--textarea input-field--dark"
         style={style}
         placeholder={placeholder}
-      ></textarea>
-      {meta.error && meta.touched && <span className={'error-message'}>{meta.error}</span>}
+      />
+      {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
     </div>
   );
 };

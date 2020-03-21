@@ -24,8 +24,10 @@ const filtersList = [
   'var-schema',
 ];
 
+const style = 'width: 100%; height: 400px; border: 0;';
+
 export class PanelCtrl extends MetricsPanelCtrl {
-  static template = `<iframe ng-src="{{trustSrc(url)}}" id="iframe-qan" style="width: 100%; height: 400px; border: 0;" scrolling="no" />`;
+  static template = `<iframe ng-src="{{trustSrc(url)}}" id="iframe-qan" style=${style} scrolling="no" />`;
 
   /** @ngInject */
   constructor($scope, $injector, templateSrv, $sce) {
@@ -104,7 +106,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
       frame.height(`${h + 100}px`);
       panel.height(`${h + 150}px`);
 
-      panelContent.height(`inherit`);
+      panelContent.height('inherit');
       panelContent[0].style.padding = '0 0 10px';
     };
     // init url
@@ -140,7 +142,9 @@ export class PanelCtrl extends MetricsPanelCtrl {
         false
       );
 
-      frame.contents().bind('DOMSubtreeModified', () => setTimeout(() => $scope.ctrl.calculatePanelHeight(), 10));
+      frame
+        .contents()
+        .bind('DOMSubtreeModified', () => setTimeout(() => $scope.ctrl.calculatePanelHeight(), 10));
     });
   }
 
@@ -158,8 +162,12 @@ export class PanelCtrl extends MetricsPanelCtrl {
     const perfectScrollContainers = elem[0].ownerDocument.getElementsByClassName('ps') as any;
     const rightScrollbarContainers = elem[0].ownerDocument.getElementsByClassName('ps__thumb-y') as any;
 
-    [].forEach.call(perfectScrollContainers, (container: HTMLElement) => container.setAttribute('style', 'overflow: auto !important'));
-    [].forEach.call(rightScrollbarContainers, (container: HTMLElement) => container.setAttribute('style', 'display: none !important'));
+    [].forEach.call(perfectScrollContainers, (container: HTMLElement) =>
+      container.setAttribute('style', 'overflow: auto !important')
+    );
+    [].forEach.call(rightScrollbarContainers, (container: HTMLElement) =>
+      container.setAttribute('style', 'display: none !important')
+    );
   }
 
   private fixMenuVisibility(elem): void | boolean {
@@ -219,12 +227,16 @@ export class PanelCtrl extends MetricsPanelCtrl {
     const id = currentURL.searchParams.get('queryID') ? currentURL.searchParams.get('queryID') : '';
     const search = currentURL.searchParams.get('search') ? currentURL.searchParams.get('search') : '';
     const filters = this.retrieveFiltersFromVarParams(currentURL);
-    const mainMetric = currentURL.searchParams.get('main_metric') ? currentURL.searchParams.get('main_metric') : '';
+    const mainMetric = currentURL.searchParams.get('main_metric')
+      ? currentURL.searchParams.get('main_metric')
+      : '';
     const columns = currentURL.searchParams.get('columns') ? currentURL.searchParams.get('columns') : '';
     const orderBy = currentURL.searchParams.get('order_by') ? currentURL.searchParams.get('order_by') : '';
     const groupBy = currentURL.searchParams.get('group_by') ? currentURL.searchParams.get('group_by') : '';
     const filterBy = currentURL.searchParams.get('filter_by') ? currentURL.searchParams.get('filter_by') : '';
-    const activeDetailsTab = currentURL.searchParams.get('active_details_tab') ? currentURL.searchParams.get('active_details_tab') : '';
+    const activeDetailsTab = currentURL.searchParams.get('active_details_tab')
+      ? currentURL.searchParams.get('active_details_tab')
+      : '';
     const type = currentURL.searchParams.get('type') ? currentURL.searchParams.get('type') : '';
     // @ts-ignore
     return [id, type, search, filters, mainMetric, columns, orderBy, groupBy, filterBy, activeDetailsTab];

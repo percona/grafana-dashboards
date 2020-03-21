@@ -22,8 +22,6 @@ class ApiRequest {
         if (axios.isCancel(e)) {
           throw e;
         } else {
-          // eslint-disable-next-line no-console
-          console.error(e);
           showErrorNotification({ message: e.message });
         }
       });
@@ -34,10 +32,7 @@ class ApiRequest {
       .post<T>(path, body)
       .then((response): T => response.data)
       .catch((e): void => {
-        // eslint-disable-next-line no-console
-        // const errorText = get(e, 'response.data.message', e.message);
         showErrorNotification({ message: e.response.data.message });
-        // Notify.error(errorText);
         throw e;
       });
   }
@@ -47,8 +42,6 @@ class ApiRequest {
       .delete<T>(path)
       .then((response): T => response.data)
       .catch((e): void => {
-        // eslint-disable-next-line no-console
-        console.error(e);
         // Notify.error(e.message);
       });
   }
@@ -58,8 +51,6 @@ class ApiRequest {
       .patch<T>(path, body)
       .then((response): T => response.data)
       .catch((e): void => {
-        // eslint-disable-next-line no-console
-        console.error(e);
         // Notify.error(e.message);
       });
   }

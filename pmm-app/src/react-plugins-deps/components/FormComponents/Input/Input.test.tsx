@@ -9,12 +9,10 @@ xdescribe('Input field test', () => {
   it('Input renders correct without props', () => {
     renderHook(() => {
       const { form } = useForm({
-        onSubmit: values => {
-          console.log(values);
-        },
+        onSubmit: () => {},
       });
 
-      const component = renderer.create(<InputField form={form} name={'test-field'} />);
+      const component = renderer.create(<InputField form={form} name="test-field" />);
       const tree = component.toJSON();
       expect(tree).toMatchSnapshot();
     });
