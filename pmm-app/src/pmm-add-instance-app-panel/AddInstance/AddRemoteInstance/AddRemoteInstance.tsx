@@ -61,7 +61,11 @@ const getAdditionalOptions = (type, form) => {
     case 'PostgreSQL':
       return (
         <>
-          <CheckboxField form={form} label="Use Pg Stat Statements" name="qan_postgresql_pgstatements_agent" />
+          <CheckboxField
+            form={form}
+            label="Use Pg Stat Statements"
+            name="qan_postgresql_pgstatements_agent"
+          />
           <span className="description"></span>
         </>
       );

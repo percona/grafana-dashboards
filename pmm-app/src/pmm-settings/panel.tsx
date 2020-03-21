@@ -46,7 +46,12 @@ const SettingsPanel = () => {
           render={(): ReactElement => {
             // @ts-ignore
             return (
-              <Collapse bordered={false} defaultActiveKey={['1']} onChange={() => {}} style={customCollapseStyle}>
+              <Collapse
+                bordered={false}
+                defaultActiveKey={['1']}
+                onChange={() => {}}
+                style={customCollapseStyle}
+              >
                 <Panel header="Settings" key="1" style={customPanelStyle}>
                   <SettingsPart settings={settings} />
                 </Panel>

@@ -12,7 +12,15 @@ interface TextAreaFieldInterface {
   form?: any;
   style?: any;
 }
-export const TextAreaField = ({ name, prefix, placeholder, label, required, form, style }: TextAreaFieldInterface) => {
+export const TextAreaField = ({
+  name,
+  prefix,
+  placeholder,
+  label,
+  required,
+  form,
+  style,
+}: TextAreaFieldInterface) => {
   const { input, meta } = useField(name, form);
   return (
     <div className="text-area-field-wrapper">

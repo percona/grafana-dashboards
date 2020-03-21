@@ -24,10 +24,10 @@ const filtersList = [
   'var-schema',
 ];
 
-const iframeStyle = 'width: 100%; height: 400px; border: 0;';
+const style = 'width: 100%; height: 400px; border: 0;';
 
 export class PanelCtrl extends MetricsPanelCtrl {
-  static template = `<iframe ng-src="{{trustSrc(url)}}" id="iframe-qan" style=${iframeStyle} scrolling="no" />`;
+  static template = `<iframe ng-src="{{trustSrc(url)}}" id="iframe-qan" style=${style} scrolling="no" />`;
 
   /** @ngInject */
   constructor($scope, $injector, templateSrv, $sce) {
@@ -142,7 +142,9 @@ export class PanelCtrl extends MetricsPanelCtrl {
         false
       );
 
-      frame.contents().bind('DOMSubtreeModified', () => setTimeout(() => $scope.ctrl.calculatePanelHeight(), 10));
+      frame
+        .contents()
+        .bind('DOMSubtreeModified', () => setTimeout(() => $scope.ctrl.calculatePanelHeight(), 10));
     });
   }
 
@@ -225,7 +227,9 @@ export class PanelCtrl extends MetricsPanelCtrl {
     const id = currentURL.searchParams.get('queryID') ? currentURL.searchParams.get('queryID') : '';
     const search = currentURL.searchParams.get('search') ? currentURL.searchParams.get('search') : '';
     const filters = this.retrieveFiltersFromVarParams(currentURL);
-    const mainMetric = currentURL.searchParams.get('main_metric') ? currentURL.searchParams.get('main_metric') : '';
+    const mainMetric = currentURL.searchParams.get('main_metric')
+      ? currentURL.searchParams.get('main_metric')
+      : '';
     const columns = currentURL.searchParams.get('columns') ? currentURL.searchParams.get('columns') : '';
     const orderBy = currentURL.searchParams.get('order_by') ? currentURL.searchParams.get('order_by') : '';
     const groupBy = currentURL.searchParams.get('group_by') ? currentURL.searchParams.get('group_by') : '';

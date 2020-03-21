@@ -40,7 +40,11 @@ const DiscoveryPanel = (props: DiscoverySearchPanelInterface) => {
           {loading && <Spin size="large" />}
         </div>
         {!loading && (
-          <InstancesTable instances={instances} onSelectInstance={props.onSelectInstance} credentials={credentials} />
+          <InstancesTable
+            instances={instances}
+            onSelectInstance={props.onSelectInstance}
+            credentials={credentials}
+          />
         )}
       </div>
     </>

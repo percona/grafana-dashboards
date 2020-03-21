@@ -45,7 +45,15 @@ export const servicesColumns = [
     dataIndex: 'age',
     key: 'age',
     render: (text, element) => {
-      const mainColumns = ['service_id', 'type', 'service_name', 'custom_labels', 'node_id', 'address', 'port'];
+      const mainColumns = [
+        'service_id',
+        'type',
+        'service_name',
+        'custom_labels',
+        'node_id',
+        'address',
+        'port',
+      ];
       const labels = Object.keys(element).filter(label => !mainColumns.includes(label));
       return (
         <div className="other-details-wrapper">
@@ -144,7 +152,9 @@ const Services = () => {
     })();
   }, []);
 
-  return <Table dataSource={data} columns={servicesColumns} pagination={false} bordered={true} loading={loading} />;
+  return (
+    <Table dataSource={data} columns={servicesColumns} pagination={false} bordered={true} loading={loading} />
+  );
 };
 
 const Agents = () => {
@@ -163,7 +173,9 @@ const Agents = () => {
     })();
   }, []);
 
-  return <Table dataSource={data} columns={agentsColumns} pagination={false} bordered={true} loading={loading} />;
+  return (
+    <Table dataSource={data} columns={agentsColumns} pagination={false} bordered={true} loading={loading} />
+  );
 };
 
 const Nodes = () => {
@@ -182,7 +194,9 @@ const Nodes = () => {
     })();
   }, []);
 
-  return <Table dataSource={data} columns={nodesColumns} pagination={false} bordered={true} loading={loading} />;
+  return (
+    <Table dataSource={data} columns={nodesColumns} pagination={false} bordered={true} loading={loading} />
+  );
 };
 
 const InventoryPanel = () => {

@@ -67,7 +67,9 @@ export class PanelCtrl extends MetricsPanelCtrl {
     frame.on('load', () => {
       $scope.ctrl.calculatePanelHeight();
       frame.contents().bind('click', () => setTimeout(() => $scope.ctrl.calculatePanelHeight(), 10));
-      frame.contents().bind('DOMSubtreeModified', () => setTimeout(() => $scope.ctrl.calculatePanelHeight(), 10));
+      frame
+        .contents()
+        .bind('DOMSubtreeModified', () => setTimeout(() => $scope.ctrl.calculatePanelHeight(), 10));
     });
   }
 

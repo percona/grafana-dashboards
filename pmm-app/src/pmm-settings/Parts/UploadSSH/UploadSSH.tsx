@@ -55,7 +55,12 @@ const UploadSSH = props => {
                   />
                 }
                 element={
-                  <TextAreaField name="ssh_key" form={form} placeholder="Enter ssh key" style={{ width: '100%' }} />
+                  <TextAreaField
+                    name="ssh_key"
+                    form={form}
+                    placeholder="Enter ssh key"
+                    style={{ width: '100%' }}
+                  />
                 }
                 alignLabel="top"
               />

@@ -173,7 +173,12 @@ const SettingsPart = props => {
                   />
                 }
               />
-              <Collapse bordered={false} defaultActiveKey={['1']} onChange={() => {}} className={style.collapse}>
+              <Collapse
+                bordered={false}
+                defaultActiveKey={['1']}
+                onChange={() => {}}
+                className={style.collapse}
+              >
                 <Panel header="Advanced settings " key="1" className={style.panel}>
                   <FormElement
                     label="Data retention (In Days)"

@@ -77,7 +77,12 @@ const AlertManager = props => {
                   />
                 }
                 element={
-                  <InputField form={form} name="alert_manager_url" placeholder="Enter URL" style={{ width: '100%' }} />
+                  <InputField
+                    form={form}
+                    name="alert_manager_url"
+                    placeholder="Enter URL"
+                    style={{ width: '100%' }}
+                  />
                 }
               />
               <FormElement
