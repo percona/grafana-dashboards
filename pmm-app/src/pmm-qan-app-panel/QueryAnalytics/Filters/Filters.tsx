@@ -121,12 +121,12 @@ export const Filters = ({ dispatch, groups, form, labels, filters }) => {
       <div className={Styling.filtersHeader}>
         <h5 className={Styling.title}>Filters</h5>
         <Button type="link" className={Styling.showAllButton} onClick={showSetAll.bind(null, !showAll)}>
-          {showAll ? `Show Selected` : `Show All`}
+          {showAll ? 'Show Selected' : 'Show All'}
         </Button>
         <Button
           type="link"
           className={Styling.resetButton}
-          id={'reset-all-filters'}
+          id="reset-all-filters"
           onClick={() => {
             dispatch({ type: 'RESET_LABELS' });
             form.reset();
@@ -150,6 +150,7 @@ export const Filters = ({ dispatch, groups, form, labels, filters }) => {
             const { name, dataKey } = group;
             return (
               <CheckboxGroup
+                key={name}
                 {...{
                   form,
                   name,

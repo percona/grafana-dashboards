@@ -92,7 +92,10 @@ const QueryAnalyticsContainer = () => {
           direction="vertical"
           cursor="row-resize"
           className={Styling.splitterWrapper}
-          elementStyle={(dimension, size, gutterSize) => ({ height: `calc(${size}% - ${gutterSize}px)`, 'overflow-y': `scroll` })}
+          elementStyle={(dimension, size, gutterSize) => ({
+            height: `calc(${size}% - ${gutterSize}px)`,
+            'overflow-y': 'scroll',
+          })}
           gutterStyle={() => ({ backgroundColor: '#626262', cursor: 'ns-resize', height: '10px' })}
         >
           <OverviewTable setTotal={setTotal} />

@@ -14,12 +14,24 @@ interface CheckboxFieldInterface {
   disabled?: boolean;
 }
 
-export const CheckboxField = ({ name, label, required, form, disabled = false, ...rest }: CheckboxFieldInterface) => {
+export const CheckboxField = ({
+  name,
+  label,
+  required,
+  form,
+  disabled = false,
+  ...rest
+}: CheckboxFieldInterface) => {
   const field = useField(name, form);
 
   return (
     <label className="checkbox-container checkbox-container--main">
-      <input {...field.input} type="checkbox" checked={rest.checked || field.input.value} disabled={disabled} />
+      <input
+        {...field.input}
+        type="checkbox"
+        checked={rest.checked || field.input.value}
+        disabled={disabled}
+      />
       <span className="checkbox-container__checkmark"></span>
       <Text className="checkbox-container__label-text" ellipsis={true}>
         {label}

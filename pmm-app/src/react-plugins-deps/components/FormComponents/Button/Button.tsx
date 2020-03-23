@@ -28,7 +28,14 @@ const ButtonElement = ({
   htmlType = 'submit',
 }: ButtonElementInterface) => {
   return (
-    <Button onClick={onClick || (() => {})} type="primary" htmlType={htmlType} loading={loading} disabled={disabled} className={Styling.button}>
+    <Button
+      onClick={onClick || (() => {})}
+      type="primary"
+      htmlType={htmlType}
+      loading={loading}
+      disabled={disabled}
+      className={Styling.button}
+    >
       {text}
     </Button>
   );

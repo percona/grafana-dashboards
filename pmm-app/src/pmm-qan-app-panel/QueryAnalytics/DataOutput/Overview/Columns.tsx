@@ -54,7 +54,10 @@ const COLUMN_WIDTH = 250;
 const ROW_NUMBER_COLUMN_WIDTH = 30;
 
 export const getDefaultColumns = (groupBy, pageNumber, pageSize, columns) => {
-  const mainMetricColumnWidth = Math.max(TABLE_X_SCROLL - columns * COLUMN_WIDTH - ROW_NUMBER_COLUMN_WIDTH, MAIN_METRIC_MIN_WIDTH);
+  const mainMetricColumnWidth = Math.max(
+    TABLE_X_SCROLL - columns * COLUMN_WIDTH - ROW_NUMBER_COLUMN_WIDTH,
+    MAIN_METRIC_MIN_WIDTH
+  );
   // @ts-ignore
   const groupByLabel = GROUP_BY_OPTIONS.find(({ value }) => value === groupBy).label;
   return [
@@ -64,7 +67,9 @@ export const getDefaultColumns = (groupBy, pageNumber, pageSize, columns) => {
       key: 'rowNumber',
       fixed: 'left',
       width: ROW_NUMBER_COLUMN_WIDTH,
-      render: (text, record, index) => <div className={Styling.rowNumber}>{index === 0 ? '' : (pageNumber - 1) * pageSize + index}</div>,
+      render: (text, record, index) => (
+        <div className={Styling.rowNumber}>{index === 0 ? '' : (pageNumber - 1) * pageSize + index}</div>
+      ),
     },
     {
       dataIndex: 'mainMetric',
@@ -75,7 +80,9 @@ export const getDefaultColumns = (groupBy, pageNumber, pageSize, columns) => {
       className: 'overview-main-column',
       render: (text, record, index) => {
         return (
-          <div className={Styling.mainMetric(mainMetricColumnWidth)}>{index === 0 ? 'TOTAL' : record.fingerprint || record.dimension || 'N/A'}</div>
+          <div className={Styling.mainMetric(mainMetricColumnWidth)}>
+            {index === 0 ? 'TOTAL' : record.fingerprint || record.dimension || 'N/A'}
+          </div>
         );
       },
     },
@@ -95,7 +102,7 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
     key: metricName,
     sortOrder: sortOrder,
     width: columnIndex === 0 ? COLUMN_WIDTH * 1.5 : COLUMN_WIDTH,
-    title: () => <ManageColumns placeholder={metricName} currentMetric={metric} width={'100%'} />,
+    title: () => <ManageColumns placeholder={metricName} currentMetric={metric} width="100%" />,
     render: (text, item) => {
       const stats = item.metrics[metricName].stats;
       const statPerSec = stats.qps || stats.sum_per_sec;
@@ -103,7 +110,11 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
       const tooltipData = [
         { header: 'Per sec', value: Humanize.transform(statPerSec, 'number') },
         { header: 'Sum', value: stats.sum && Humanize.transform(stats.sum, metric.pipeTypes.sumPipe) },
-        { header: 'From total', value: ((stats.sum_per_sec / totalValues.metrics[metricName].stats.sum_per_sec) * 100).toFixed(2) + ' %' },
+        {
+          header: 'From total',
+          value:
+            ((stats.sum_per_sec / totalValues.metrics[metricName].stats.sum_per_sec) * 100).toFixed(2) + ' %',
+        },
       ].filter(tooltip => tooltip.value);
 
       const minStr = `${Humanize.transform(stats.min)}`;
@@ -125,6 +136,7 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
           <div className={Styling.metricsWrapper}>
             {data.map((item, index, list) => {
               return (
+                // eslint-disable-next-line react/jsx-key
                 <div className={Styling.singleMetricWrapper}>
                   <span className={Styling.metricName}>{`${item.header} : ${item.value}`}</span>
                   {list.length === index + 1 ? null : <Divider className={Styling.metricsListDivider} />}
@@ -135,13 +147,13 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
         );
       };
       return (
-        <div className={'overview-content-column'}>
+        <div className="overview-content-column">
           {columnIndex === 0 && <PolygonChart {...polygonChartProps} />}
           {statPerSec !== undefined ? (
             <Tooltip
               getPopupContainer={() => document.querySelector('#antd') || document.body}
               placement="left"
-              overlayClassName={'overview-column-toolkit'}
+              overlayClassName="overview-column-toolkit"
               title={
                 <div>
                   <div className={Styling.tooltipHeader}>{metric.humanizeName}</div>
@@ -154,7 +166,9 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
               }
             >
               <span className="summarize" style={{ marginLeft: 'auto' }}>
-                {statPerSec !== undefined ? `${Humanize.transform(statPerSec, 'number')} ${metric.units}` : 'n/a'}
+                {statPerSec !== undefined
+                  ? `${Humanize.transform(statPerSec, 'number')} ${metric.units}`
+                  : 'n/a'}
               </span>
             </Tooltip>
           ) : (
