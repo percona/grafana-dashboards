@@ -15,7 +15,7 @@ docker pull aerokube/selenoid-ui
 
 export PMM_SRV_ADDR=$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' pmm-server)
 
-cat > browsers.json << EOF
+cat > pr.browsers.json << EOF
 {
   \"chrome\": {
     \"default\": \"${CHROME_VERSION}\",
