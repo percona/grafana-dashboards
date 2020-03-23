@@ -60,7 +60,7 @@ pipeline {
                     sg docker -c "
                         export CHROME_VERSION=${params.CHROME_VERSION}
                         export NVM_DIR=/usr/local/nvm
-                        source "\${NVM_DIR}/nvm.sh"
+                        source \"\${NVM_DIR}/nvm.sh\"
 
                         make ${params.RUN_TEST}
                     "
