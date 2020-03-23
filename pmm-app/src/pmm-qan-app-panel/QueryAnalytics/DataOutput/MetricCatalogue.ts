@@ -37,7 +37,9 @@ export const METRIC_CATALOGUE = {
   },
   blk_read_time: {
     humanizeName: 'Reading Blocks Time',
-    tooltipText: 'Total time the statement spent reading blocks, in milliseconds (if track_io_timing is enabled, otherwise zero)',
+    tooltipText:
+      'Total time the statement spent reading blocks, in' +
+      ' milliseconds (if track_io_timing is enabled, otherwise zero)',
     simpleName: 'blk_read_time',
     metricRelation: () => '',
     units: Units.PER_SEC,
@@ -51,7 +53,9 @@ export const METRIC_CATALOGUE = {
   },
   blk_write_time: {
     humanizeName: 'Writing Blocks Time',
-    tooltipText: 'Total time the statement spent writing blocks, in milliseconds (if track_io_timing is enabled, otherwise zero)',
+    tooltipText:
+      'Total time the statement spent writing blocks, in' +
+      ' milliseconds (if track_io_timing is enabled, otherwise zero)',
     simpleName: 'blk_write_time',
     metricRelation: () => '',
     units: Units.PER_SEC,
@@ -464,7 +468,8 @@ export const METRIC_CATALOGUE = {
   innodb_queue_wait: {
     humanizeName: 'Innodb Queue Wait',
     tooltipText:
-      'Shows how long( in seconds) the query spent either waiting to' + ' enter the InnoDB queue or inside that queue waiting for + execution',
+      'Shows how long( in seconds) the query spent either waiting to' +
+      ' enter the InnoDB queue or inside that queue waiting for + execution',
     simpleName: 'innodb_queue_wait',
     metricRelation: data => {
       const mainMetric = _.get(data, ['innodb_queue_wait', 'avg']);

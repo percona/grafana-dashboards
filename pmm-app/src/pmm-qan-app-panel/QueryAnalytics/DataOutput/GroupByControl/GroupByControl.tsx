@@ -36,11 +36,11 @@ export const GroupByControl = () => {
         defaultValue={groupBy}
         style={{ width: '120px' }}
         onChange={setGroupBy}
-        className={'group-by-selector'}
-        dropdownClassName={'group-by-selector-dropdown'}
+        className="group-by-selector"
+        dropdownClassName="group-by-selector-dropdown"
       >
         {GROUP_BY_OPTIONS.map(option => (
-          <Option value={option.value} label={option.label} cc-access-attribute={option.label}>
+          <Option value={option.value} label={option.label} key={option.value}>
             {option.label}
           </Option>
         ))}

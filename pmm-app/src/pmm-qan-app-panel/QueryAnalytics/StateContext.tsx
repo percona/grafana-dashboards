@@ -78,7 +78,9 @@ class ContextActions {
     const filterByQuery = state.queryId ? `filter_by=${state.queryId}` : '';
     const orderBy = state.orderBy ? `order_by=${state.orderBy}` : '';
     // TODO: replace crutch with right redirect
-    return `${window.location.pathname}?${[columnsQuery, filterByQuery, labels, orderBy, groupBy].filter(Boolean).join('&')}`;
+    return `${window.location.pathname}?${[columnsQuery, filterByQuery, labels, orderBy, groupBy]
+      .filter(Boolean)
+      .join('&')}`;
   }
 
   static parseURL(query) {
@@ -147,7 +149,10 @@ export const UrlParametersProvider = ({ children }) => {
           newState = {
             ...state,
             columns: columns,
-            orderBy: action.payload.oldColumn.simpleName === action.payload.orderBy ? columns[0] : action.payload.orderBy,
+            orderBy:
+              action.payload.oldColumn.simpleName === action.payload.orderBy
+                ? columns[0]
+                : action.payload.orderBy,
           };
           break;
 

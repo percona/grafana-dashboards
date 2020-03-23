@@ -11,7 +11,7 @@ const SettingsPanel = () => {
   useEffect(() => Styling.addPluginPanelClass(), []);
   return (
     <UrlParametersProvider>
-      <div className={'query-analytics-grid'} id={'antd'}>
+      <div className="query-analytics-grid" id="antd">
         <div className="overview-filters" id="query-analytics-filters">
           <FiltersContainer />
         </div>
