@@ -47,3 +47,8 @@ test: build e2e coverage pack disable install enable
 
 clean:
 	rm -r pmm-app/dist/
+
+docker_clean:
+	docker-compose stop \
+	&& docker-compose rm -f \
+	&& docker system prune -f

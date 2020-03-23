@@ -78,6 +78,9 @@ pipeline {
                     onlyIfSuccessful: false
                 }
             }
+            sh '''
+               make docker_clean
+            '''
             deleteDir()
         }
     }
