@@ -32,7 +32,11 @@ const Example = props => {
     })();
   }, [queryId]);
 
-  return <pre>{examples && examples.length ? examples.map(getExample) : 'Sorry, no examples found for this query'}</pre>;
+  return (
+    <pre>
+      {examples && examples.length ? examples.map(getExample) : 'Sorry, no examples found for this query'}
+    </pre>
+  );
 };
 
 export default Example;

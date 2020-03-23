@@ -58,7 +58,7 @@ export const CheckboxGroup = ({ form, name, items, group, showAll, filter, label
       // If there is no value - disable checkbox and hide percent
       const isValue = item.hasOwnProperty('main_metric_percent');
       return (
-        <div className={Styling.label}>
+        <div className={Styling.label} key={`${group}:${item.value}`}>
           <span className={Styling.filterName}>
             <CheckboxField
               form={form}

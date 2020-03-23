@@ -27,6 +27,7 @@ class LatencyChart extends Component<any, LatencyChartState> {
     this.setState({ tooltip: this.dataTooltip });
   }
   drawChart(data) {
+    // eslint-disable-next-line react/no-string-refs
     const chart = d3.select(this.refs.graphContainer);
     chart.selectAll('*').remove();
 
@@ -101,7 +102,14 @@ class LatencyChart extends Component<any, LatencyChartState> {
     }
   }
   render() {
-    return <div className={'d3-bar-chart-container app-tooltip'} ref={'graphContainer'} data-tooltip={this.state.tooltip}></div>;
+    /* eslint-disable react/no-string-refs */
+    return (
+      <div
+        className="d3-bar-chart-container app-tooltip"
+        ref="graphContainer"
+        data-tooltip={this.state.tooltip}
+      />
+    );
   }
 }
 

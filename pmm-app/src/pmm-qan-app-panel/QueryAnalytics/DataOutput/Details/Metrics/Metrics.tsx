@@ -51,7 +51,7 @@ const columns = [
       return (
         <span className={Styling.metricTooltip}>
           {item.name}
-          <Tooltip title={item.tooltip} placement={'leftTop'}>
+          <Tooltip title={item.tooltip} placement="leftTop">
             <Icon type="question-circle" className={Styling.metricTooltipIcon} />
           </Tooltip>
         </span>
@@ -70,7 +70,10 @@ const columns = [
       };
       return (
         <div className={Styling.metricColumn}>
-          {<span>{(item.isRate ? Humanize.transform(item.metric.rate, item.pipeTypes['ratePipe']) : '0') + ` ${item.units}`}</span>}
+          <span>
+            {(item.isRate ? Humanize.transform(item.metric.rate, item.pipeTypes['ratePipe']) : '0') +
+              ` ${item.units}`}
+          </span>
           {item.sparkline && <PolygonChart {...polygonChartProps} />}
         </div>
       );
@@ -83,10 +86,18 @@ const columns = [
       return (
         <>
           <div>
-            {item.isSum && <span className={Styling.sum}>{Humanize.transform(item.metric.sum, item.pipeTypes['sumPipe']) || 0}</span>}
-            {<span className={Styling.percentOfTotal}>{`${item.percentOfTotal}% of total`}</span>}
+            {item.isSum && (
+              <span className={Styling.sum}>
+                {Humanize.transform(item.metric.sum, item.pipeTypes['sumPipe']) || 0}
+              </span>
+            )}
+            <span className={Styling.percentOfTotal}>{`${item.percentOfTotal}% of total`}</span>
           </div>
-          {item.complexMetric ? <div>{<span className={Styling.complexMetric}>{item.complexMetric}</span>}</div> : null}
+          {item.complexMetric ? (
+            <div>
+              <span className={Styling.complexMetric}>{item.complexMetric}</span>
+            </div>
+          ) : null}
         </>
       );
     },
@@ -101,7 +112,9 @@ const columns = [
       return (
         <div className={Styling.metricColumn}>
           <span className={Styling.perQueryStats}>
-            {Humanize.transform(item.metric.avg, item.pipeTypes['perQueryStatsPipe']) || (+item.metric.sum / +item.queryCount).toFixed(2) || '0'}
+            {Humanize.transform(item.metric.avg, item.pipeTypes['perQueryStatsPipe']) ||
+              (+item.metric.sum / +item.queryCount).toFixed(2) ||
+              '0'}
           </span>
           {item.isLatencyChart && <LatencyChart {...latencyChartProps} />}
         </div>
@@ -133,7 +146,7 @@ const Metrics = props => {
     getMetrics();
   }, [queryId]);
 
-  return <Table dataSource={metrics} columns={columns} pagination={false} size={'small'} bordered={true} />;
+  return <Table dataSource={metrics} columns={columns} pagination={false} size="small" bordered={true} />;
 };
 
 export default Metrics;

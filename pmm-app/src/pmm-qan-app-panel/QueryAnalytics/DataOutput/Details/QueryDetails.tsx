@@ -12,7 +12,8 @@ import Tooltip from 'antd/es/tooltip';
 
 const { TabPane } = Tabs;
 
-const HARDCODED_FINGERPRINT = 'COLLSTATS sbtest3 clusterTime,collStats,hash,id,keyId,lsid,mode,scale,signature';
+const HARDCODED_FINGERPRINT =
+  'COLLSTATS sbtest3 clusterTime,collStats,hash,id,keyId,lsid,mode,scale,signature';
 const HARDCODED_CONTROL_SUM = '4675a0d6d2e18bdce08b7c7aa83f88ff';
 const QueryDetails = () => {
   const {
@@ -49,21 +50,21 @@ const QueryDetails = () => {
   }, [queryId]);
 
   return (
-    <div className={'query-analytics-details-grid'} id={'query-analytics-details'}>
+    <div className="query-analytics-details-grid" id="query-analytics-details">
       <Fingerprint query={HARDCODED_FINGERPRINT} controlSum={HARDCODED_CONTROL_SUM} groupBy={groupBy} />
       <div className="details-tabs">
         <Divider />
-        <Tabs defaultActiveKey="1" onChange={() => {}} tabPosition={'left'}>
-          <TabPane tab={<span>{'Details'}</span>} key="1">
+        <Tabs defaultActiveKey="1" onChange={() => {}} tabPosition="left">
+          <TabPane tab={<span>Details</span>} key="1">
             <Metrics {...MetricsProps} />
           </TabPane>
-          <TabPane tab={<span>{'Examples'}</span>} key="2">
+          <TabPane tab={<span>Examples</span>} key="2">
             <Example {...MetricsProps} />
           </TabPane>
           <TabPane
             tab={
-              <Tooltip title={'Available for MySQL'} placement={'leftTop'}>
-                {'Explain'}
+              <Tooltip title="Available for MySQL" placement="leftTop">
+                Explain
               </Tooltip>
             }
             key="3"
@@ -73,8 +74,8 @@ const QueryDetails = () => {
           </TabPane>
           <TabPane
             tab={
-              <Tooltip title={'Available for MySQL'} placement={'leftTop'}>
-                {'Tables'}
+              <Tooltip title="Available for MySQL" placement="leftTop">
+                Tables
               </Tooltip>
             }
             key="4"

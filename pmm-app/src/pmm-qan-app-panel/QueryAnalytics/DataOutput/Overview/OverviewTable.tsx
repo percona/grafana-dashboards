@@ -82,7 +82,7 @@ const OverviewTable = props => {
       dataSource={data.rows}
       onChange={onTableChange}
       columns={data.columns}
-      size={'small'}
+      size="small"
       bordered={true}
       pagination={false}
       scroll={{ y: TABLE_Y_SCROLL, x: TABLE_X_SCROLL }}
