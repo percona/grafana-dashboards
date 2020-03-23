@@ -64,8 +64,6 @@ pipeline {
                         make ${params.RUN_TEST}
                     "
                 """
-                // stash includes: 'results/docker/TAG', name: 'IMAGE'
-                // archiveArtifacts 'results/docker/TAG'
             }
         }
     }
@@ -76,6 +74,8 @@ pipeline {
                     // slackSend channel: '#pmm-ci', color: '#00FF00', message: "[${JOB_NAME}]: build finished - ${IMAGE}"
                 } else {
                     // slackSend channel: '#pmm-ci', color: '#FF0000', message: "[${JOB_NAME}]: build ${currentBuild.result}"
+                    archiveArtifacts 'pmm-app/video/*.mp4'
+                    onlyIfSuccessful: false
                 }
             }
             deleteDir()
