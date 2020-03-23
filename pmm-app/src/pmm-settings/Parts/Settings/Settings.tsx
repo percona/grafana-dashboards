@@ -77,6 +77,20 @@ const SECONDS = 60;
 const MINUTES = 60;
 const HOURS = 24;
 const SECONDS_IN_DAY = SECONDS * MINUTES * HOURS;
+const MINUTES_IN_HOUR = MINUTES * HOURS;
+
+const transformToDays = (count, units) => {
+  switch (units) {
+    case 'h':
+      return count / HOURS;
+    case 'm':
+      return count / MINUTES_IN_HOUR;
+    case 's':
+      return count / SECONDS_IN_DAY;
+    default:
+      return '';
+  }
+};
 
 interface MetricsResolutionInterface {
   lr: string;
@@ -133,8 +147,7 @@ const SettingsPart = props => {
           form.initialize({
             ...settings,
             ...{
-              data_retention_count: count,
-              data_retention_units: units,
+              data_retention_count: transformToDays(count, units),
               metrics_resolutions_slider: sliderValue,
               updates_disabled: !settings.updates_disabled,
             },
