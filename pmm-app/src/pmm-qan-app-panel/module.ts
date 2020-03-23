@@ -27,7 +27,7 @@ const filtersList = [
 const style = 'width: 100%; height: 400px; border: 0;';
 
 export class PanelCtrl extends MetricsPanelCtrl {
-  static template = `<iframe ng-src="{{trustSrc(url)}}" id="iframe-qan" style=${style} scrolling="no" />`;
+  static template = `<iframe ng-src="{{trustSrc(url)}}" id="iframe-qan" style="${style}" scrolling="no" />`;
 
   /** @ngInject */
   constructor($scope, $injector, templateSrv, $sce) {
