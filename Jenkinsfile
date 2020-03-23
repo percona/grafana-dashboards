@@ -79,7 +79,7 @@ pipeline {
                 }
             }
             sh '''
-               make docker_clean
+               sg docker -c "make docker_clean"
             '''
             deleteDir()
         }
