@@ -12,7 +12,9 @@ const TableCreate = props => {
     switch (databaseType) {
       case 'mysql':
         if (!('example' in example) || example.example === '' || !example.schema || !example.table_name) {
-          setErrorText('Cannot display table info without query example, schema or table name at this moment.');
+          setErrorText(
+            'Cannot display table info without query example, schema or table name at this moment.'
+          );
           return;
         }
         setErrorText('');

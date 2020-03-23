@@ -195,7 +195,13 @@ describe('Filters test', () => {
     });
 
     const component = renderer.create(
-      <Filters groups={FILTERS_GROUPS} filters={MOCK_FILTERS} labels={{}} dispatch={() => {}} form={result.current.form} />
+      <Filters
+        groups={FILTERS_GROUPS}
+        filters={MOCK_FILTERS}
+        labels={{}}
+        dispatch={() => {}}
+        form={result.current.form}
+      />
     );
 
     const tree = component.toJSON();

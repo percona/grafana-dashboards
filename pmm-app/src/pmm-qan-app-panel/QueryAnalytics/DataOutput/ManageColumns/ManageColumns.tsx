@@ -13,7 +13,9 @@ const ManageColumns = props => {
   } = useContext(StateContext);
   const [availableColumns, setAvailableColumns] = useState(Object.values(METRIC_CATALOGUE));
   useEffect(() => {
-    setAvailableColumns(Object.values(METRIC_CATALOGUE).filter(metric => !columns.find(item => item === metric.simpleName)));
+    setAvailableColumns(
+      Object.values(METRIC_CATALOGUE).filter(metric => !columns.find(item => item === metric.simpleName))
+    );
   }, [columns]);
   const changeColumn = useCallback(
     column => {
@@ -57,7 +59,7 @@ const ManageColumns = props => {
             props.placeholder && METRIC_CATALOGUE[props.placeholder].humanizeName
           ) : (
             <div style={{ fontSize: '16px' }}>
-              <i className={'fa fa-plus-circle'} style={{ marginRight: '5px' }}></i> <span> Add column</span>
+              <i className="fa fa-plus-circle" style={{ marginRight: '5px' }}></i> <span> Add column</span>
             </div>
           )
         }
@@ -68,11 +70,15 @@ const ManageColumns = props => {
         className={`${props.onlyAdd ? 'add' : 'manage'}-columns-selector`}
         dropdownClassName={`${props.onlyAdd ? 'add' : 'manage'}-columns-selector-dropdown`}
         dropdownRender={menu => (
-          <div style={{ width: 400 }} className={'add-column-wrapper'}>
+          <div style={{ width: 400 }} className="add-column-wrapper">
             {menu}
             <Divider style={{ margin: '4px 0' }} />
             {!props.onlyAdd && (
-              <div style={{ padding: '4px 8px', cursor: 'pointer' }} onMouseDown={e => e.preventDefault()} onClick={removeColumn}>
+              <div
+                style={{ padding: '4px 8px', cursor: 'pointer' }}
+                onMouseDown={e => e.preventDefault()}
+                onClick={removeColumn}
+              >
                 <Icon type="minus" style={{ marginRight: '4px' }} />
                 Remove column
               </div>

@@ -5,4 +5,6 @@ import { Spin } from 'antd';
 
 library.add(fas);
 
-Spin.setDefaultIndicator(<i className="fa fa-spinner fa-spin spinner" style={{ color: 'rgb(211,211,211)', fontSize: '36px' }}></i>);
+Spin.setDefaultIndicator(
+  <i className="fa fa-spinner fa-spin spinner" style={{ color: 'rgb(211,211,211)', fontSize: '36px' }}></i>
+);

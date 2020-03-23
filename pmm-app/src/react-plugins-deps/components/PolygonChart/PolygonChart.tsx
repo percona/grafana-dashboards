@@ -64,10 +64,12 @@ class PolygonChart extends Component {
   }
 
   drawPolygonChart() {
+    // eslint-disable-next-line react/no-string-refs
     d3.select(this.refs.graphContainer)
       .selectAll('*')
       .remove();
     const svg = d3
+      // eslint-disable-next-line react/no-string-refs
       .select(this.refs.graphContainer)
       .append('svg')
       .attr('class', 'axis')
@@ -119,12 +121,15 @@ class PolygonChart extends Component {
       .attr('y', 8);
 
     // const bisectDate = bisector((d, x) => +moment.utc(d[this.xkey]).isBefore(x)).right;
-
+    //
     // svg.on('mousemove', () => {
     //   const coords = mouse(currentEvent.currentTarget);
     //   const mouseDate = moment.utc(scaleX.invert(coords[0]));
     //
-    //   const indexOfStartPoint = Math.min(Math.max(bisectDate(this.appLoadPolygonChart, mouseDate), 0), this.appLoadPolygonChart.length - 1);
+    //   const indexOfStartPoint = Math.min(
+    //     Math.max(bisectDate(this.appLoadPolygonChart, mouseDate), 0),
+    //     this.appLoadPolygonChart.length - 1
+    //   );
     //   const hoveredPoint = this.appLoadPolygonChart[indexOfStartPoint];
     //   const endPoint = this.appLoadPolygonChart[indexOfStartPoint - 1];
     //   const focusPointsRange = [hoveredPoint, endPoint];
@@ -139,10 +144,15 @@ class PolygonChart extends Component {
     //   const load = this.humanize.transform(value, this.measurement);
     //   const dateToShow = this.dateFormat.transform(moment(endPoint[this.xkey]).utc());
     //
-    //   const isTimeBased = this.metricName.endsWith('_time') || this.metricName.endsWith('_wait') || this.metricName === 'load';
+    //   const isTimeBased =
+    //     this.metricName.endsWith('_time')
+    //     || this.metricName.endsWith('_wait')
+    //     || this.metricName === 'load';
     //
     //   focusBar.attr('d', areaBar(activeArea));
-    //   this.dataTooltip = !value ? `NA at ${dateToShow}` : `${load} ${isTimeBased ? '' : '/ sec'} at ${dateToShow}`;
+    //   this.dataTooltip = !value
+    //     ? `NA at ${dateToShow}`
+    //     : `${load} ${isTimeBased ? '' : '/ sec'} at ${dateToShow}`;
     // });
     // svg.on('mouseover', () => focusG.style('display', null));
     // svg.on('mouseout', () => focusG.style('display', 'none'));
@@ -157,7 +167,8 @@ class PolygonChart extends Component {
       .call(xAxis);
   }
   render() {
-    return <div className={'d3-bar-chart-container'} ref={'graphContainer'}></div>;
+    // eslint-disable-next-line react/no-string-refs
+    return <div className="d3-bar-chart-container" ref="graphContainer"></div>;
   }
 }
 
