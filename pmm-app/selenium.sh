@@ -15,17 +15,17 @@ docker pull aerokube/selenoid-ui
 
 export PMM_SRV_ADDR=$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' pmm-server)
 
-cat > browsers.json << EOF
+cat > pr.browsers.json << EOF
 {
-  \"chrome\": {
-    \"default\": \"${CHROME_VERSION}\",
-    \"versions\": {
-      \"${CHROME_VERSION}\": {
-        \"image\": \"selenoid/vnc_chrome:${CHROME_VERSION}\",
-        \"port\": \"4444\",
-        \"tmpfs\": {\"/tmp\":\"size=1024m\"},
-        \"shmSize\" : 1073741824,
-        \"hosts\" : [ \"pmm-server:${PMM_SRV_ADDR}\" ]
+  "chrome": {
+    "default": "${CHROME_VERSION}",
+    "versions": {
+      "${CHROME_VERSION}": {
+        "image": "selenoid/vnc_chrome:${CHROME_VERSION}",
+        "port": "4444",
+        "tmpfs": {"/tmp":"size=1024m"},
+        "shmSize" : 1073741824,
+        "hosts" : [ "pmm-server:${PMM_SRV_ADDR}" ]
       }
     }
   }

@@ -47,11 +47,11 @@ pipeline {
                           curl -o - https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | sudo -E bash
                        fi
 
-                       sudo nvm install ${params.NODEJS_VERSION}
-                       sudo nvm use ${params.NODEJS_VERSION}
+                       sudo -E bash -c \"source \${NVM_DIR}/nvm.sh; nvm install ${params.NODEJS_VERSION}\"
+                       sudo -E bash -c \"source \${NVM_DIR}/nvm.sh; nvm use ${params.NODEJS_VERSION}\"
                     """
                 }
-                // slackSend channel: '#pmm-ci', color: '#FFFF00', message: "[${JOB_NAME}]: build started - ${BUILD_URL}"
+                slackSend channel: '#pmm-ci', color: '#FFFF00', message: "[${JOB_NAME}]: tests started - ${BUILD_URL}"
             }
         }
         stage('UI tests') {
@@ -59,14 +59,11 @@ pipeline {
                 sh """
                     sg docker -c "
                         export CHROME_VERSION=${params.CHROME_VERSION}
-                        export NVM_DIR=/usr/local/nvm
-                        source "\${NVM_DIR}/nvm.sh"
+                        source \"/usr/local/nvm/nvm.sh\"
 
                         make ${params.RUN_TEST}
                     "
                 """
-                // stash includes: 'results/docker/TAG', name: 'IMAGE'
-                // archiveArtifacts 'results/docker/TAG'
             }
         }
     }
@@ -74,11 +71,16 @@ pipeline {
         always {
             script {
                 if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {
-                    // slackSend channel: '#pmm-ci', color: '#00FF00', message: "[${JOB_NAME}]: build finished - ${IMAGE}"
+                    slackSend channel: '#pmm-ci', color: '#00FF00', message: "[${JOB_NAME}]: build finished - ${IMAGE}"
                 } else {
-                    // slackSend channel: '#pmm-ci', color: '#FF0000', message: "[${JOB_NAME}]: build ${currentBuild.result}"
+                    slackSend channel: '#pmm-ci', color: '#FF0000', message: "[${JOB_NAME}]: build ${currentBuild.result}"
+                    archiveArtifacts 'pmm-app/video/*.mp4'
+                    onlyIfSuccessful: false
                 }
             }
+            sh '''
+               sg docker -c "make docker_clean"
+            '''
             deleteDir()
         }
     }

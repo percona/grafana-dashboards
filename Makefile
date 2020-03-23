@@ -19,8 +19,11 @@ e2e:
 	&& mkdir -pv logs video || true \
 	&& docker-compose up -d \
 	&& bash ./selenium.sh \
-	&& npm i -g codeceptjs \
-	&& codeceptjs run-multiple parallel --all --steps --grep '(?=.*)^(?!.*@visual-test)'
+	&& npm run e2e
+
+codecov:
+	cd pmm-app \
+	&& npm run codecov
 
 pack:
 	tar czf pmm-app.tar.gz pmm-app
@@ -44,7 +47,12 @@ disable:
 enable:
 	curl -X POST --retry-delay 5 --retry 5 'http://admin:admin@localhost/graph/api/plugins/pmm-app/settings' -d 'enabled=true'
 
-test: build e2e coverage pack disable install enable
+test: build e2e coverage codecov pack disable install enable
 
 clean:
 	rm -r pmm-app/dist/
+
+docker_clean:
+	docker-compose stop \
+	&& docker-compose rm -f \
+	&& docker system prune -f
