@@ -19,8 +19,7 @@ e2e:
 	&& mkdir -pv logs video || true \
 	&& docker-compose up -d \
 	&& bash ./selenium.sh \
-	&& npm i -g codeceptjs \
-	&& codeceptjs run-multiple parallel --all --steps --grep '(?=.*)^(?!.*@visual-test)'
+	&& npm run e2e
 
 pack:
 	tar czf pmm-app.tar.gz pmm-app
