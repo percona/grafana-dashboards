@@ -47,8 +47,8 @@ pipeline {
                           curl -o - https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | sudo -E bash
                        fi
 
-                       sudo nvm install ${params.NODEJS_VERSION}
-                       sudo nvm use ${params.NODEJS_VERSION}
+                       sudo -E bash -c \"source $NVM_DIR/nvm.sh; nvm install ${params.NODEJS_VERSION}\"
+                       sudo -E bash -c \"source $NVM_DIR/nvm.sh; nvm use ${params.NODEJS_VERSION}\"
                     """
                 }
                 // slackSend channel: '#pmm-ci', color: '#FFFF00', message: "[${JOB_NAME}]: build started - ${BUILD_URL}"
