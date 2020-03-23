@@ -34,19 +34,24 @@ const SettingsPanel = () => {
   useEffect(() => {
     (async () => {
       Styling.addPluginPanelClass();
-      const { settings } = await SettingsService.getSettings();
-      updateSettings(settings);
+      const response = await SettingsService.getSettings();
+      updateSettings(response.settings);
     })();
   }, []);
   return (
-    <div id={'antd'}>
-      <div className={'app-theme-dark pmm-settings-panel'} style={{ width: '100%' }}>
+    <div id="antd">
+      <div className="app-theme-dark pmm-settings-panel" style={{ width: '100%' }}>
         <FormFinal
           onSubmit={() => {}}
           render={(): ReactElement => {
             // @ts-ignore
             return (
-              <Collapse bordered={false} defaultActiveKey={['1']} onChange={() => {}} style={customCollapseStyle}>
+              <Collapse
+                bordered={false}
+                defaultActiveKey={['1']}
+                onChange={() => {}}
+                style={customCollapseStyle}
+              >
                 <Panel header="Settings" key="1" style={customPanelStyle}>
                   <SettingsPart settings={settings} />
                 </Panel>

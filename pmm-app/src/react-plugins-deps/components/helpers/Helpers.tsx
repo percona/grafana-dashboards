@@ -1,4 +1,4 @@
-import {Icon, Tooltip} from 'antd';
+import { Icon, Tooltip } from 'antd';
 import React from 'react';
 
 interface Link {
@@ -21,7 +21,12 @@ export const PluginTooltip = ({ text, links }: PluginTooltipInterface) => {
           {links.map(link => {
             return (
               <>
-                <a style={{ color: 'white', textDecoration: 'underline' }} href={link.url || ''} target="_blank" rel="noopener noreferrer">
+                <a
+                  style={{ color: 'white', textDecoration: 'underline' }}
+                  href={link.url || ''}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   {link.text || 'Read more'}
                 </a>
                 <br />
