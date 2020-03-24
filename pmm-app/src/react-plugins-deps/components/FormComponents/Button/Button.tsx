@@ -11,7 +11,13 @@ interface ButtonElementInterface {
   htmlType?: ButtonHTMLType;
 }
 
-const ButtonElement = ({ loading = false, disabled = false, onClick, text, htmlType = 'submit' }: ButtonElementInterface) => {
+const ButtonElement = ({
+  loading = false,
+  disabled = false,
+  onClick,
+  text,
+  htmlType = 'submit',
+}: ButtonElementInterface) => {
   return (
     <Button
       onClick={onClick || (() => {})}

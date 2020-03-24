@@ -20,7 +20,7 @@ const DiscoveryPanel = (props: DiscoverySearchPanelInterface) => {
           aws_access_key: credentials.aws_access_key,
           aws_secret_key: credentials.aws_secret_key,
         });
-        setInstances(result['rds_instances']);
+        setInstances(result.rds_instances);
         startLoading(false);
       } catch (e) {
         startLoading(false);
@@ -34,12 +34,18 @@ const DiscoveryPanel = (props: DiscoverySearchPanelInterface) => {
 
   return (
     <>
-      <div className={'form-wrapper'}>
+      <div className="form-wrapper">
         <CredentialsForm onSetCredentials={setCredentials} />
-        <div className={'spinner-wrapper'} style={{ width: '100%' }}>
+        <div className="spinner-wrapper" style={{ width: '100%' }}>
           {loading && <Spin size="large" />}
         </div>
-        {!loading && <InstancesTable instances={instances} onSelectInstance={props.onSelectInstance} credentials={credentials} />}
+        {!loading && (
+          <InstancesTable
+            instances={instances}
+            onSelectInstance={props.onSelectInstance}
+            credentials={credentials}
+          />
+        )}
       </div>
     </>
   );

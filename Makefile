@@ -6,18 +6,33 @@ all: build pack disable install enable
 	tput bel
 
 build:
-	cd pmm-app && npm i && npm run build && cd ..
+	cd pmm-app \
+	&& npm i \
+	&& npm run build
 
 coverage:
-	cd pmm-app && npm i && npm run coverage && npm run build && cd ..
+	cd pmm-app \
+	&& npm run coverage
+
+e2e:
+	cd pmm-app \
+	&& mkdir -pv logs video || true \
+	&& docker-compose up -d \
+	&& bash ./selenium.sh \
+	&& npm run e2e
+
+codecov:
+	cd pmm-app \
+	&& npm run codecov
 
 pack:
 	tar czf pmm-app.tar.gz pmm-app
 
 release:
-	cd pmm-app && npm version
-	cd pmm-app && npm i
-	cd pmm-app && npm run build
+	cd pmm-app \
+	&& npm version \
+	&& npm i \
+	&& npm run build
 
 install:
 	docker exec pmm-server supervisorctl stop grafana
@@ -32,7 +47,12 @@ disable:
 enable:
 	curl -X POST --retry-delay 5 --retry 5 'http://admin:admin@localhost/graph/api/plugins/pmm-app/settings' -d 'enabled=true'
 
-test: coverage build pack disable install enable
+test: build e2e coverage codecov pack disable install enable
 
 clean:
 	rm -r pmm-app/dist/
+
+docker_clean:
+	docker-compose stop \
+	&& docker-compose rm -f \
+	&& docker system prune -f

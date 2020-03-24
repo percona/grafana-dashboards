@@ -18,11 +18,20 @@ interface InputFieldInterface {
   validate?: any;
 }
 
-export const InputField = ({ name, placeholder = '', required, form, style, wrapperStyle, readonly, validate }: InputFieldInterface) => {
+export const InputField = ({
+  name,
+  placeholder = '',
+  required,
+  form,
+  style,
+  wrapperStyle,
+  readonly,
+  validate,
+}: InputFieldInterface) => {
   // // @ts-ignore
   const { input, meta } = useField(name, form, validate);
   return (
-    <div className={'input-field-wrapper'} style={wrapperStyle || {}}>
+    <div className="input-field-wrapper" style={wrapperStyle || {}}>
       <input
         {...input}
         type="text"
@@ -32,7 +41,7 @@ export const InputField = ({ name, placeholder = '', required, form, style, wrap
         readOnly={readonly}
         className="input-field input-field--dark"
       />
-      {meta.error && meta.touched && <span className={'error-message'}>{meta.error}</span>}
+      {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
     </div>
   );
 };

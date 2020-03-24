@@ -7,7 +7,7 @@ import { CheckboxField } from '../../../react-plugins-deps/components/FormCompon
 import { Form as FormFinal } from 'react-final-form';
 import { useForm } from 'react-final-form-hooks';
 import { PasswordField } from '../../../react-plugins-deps/components/FormComponents/Password/Password';
-import AddRemoteInstanceService from 'pmm-add-instance-app-panel/AddInstance/AddRemoteInstance/AddRemoteInstanceService';
+import AddRemoteInstanceService from './AddRemoteInstanceService';
 import Validators from '../../../react-plugins-deps/components/validators/validators';
 
 interface InstanceData {
@@ -61,7 +61,11 @@ const getAdditionalOptions = (type, remoteInstanceCredentials, form) => {
     case 'PostgreSQL':
       return (
         <>
-          <CheckboxField form={form} label={'Use Pg Stat Statements'} name="qan_postgresql_pgstatements_agent" />
+          <CheckboxField
+            form={form}
+            label="Use Pg Stat Statements"
+            name="qan_postgresql_pgstatements_agent"
+          />
           <span className="description"></span>
         </>
       );
@@ -82,14 +86,14 @@ const getAdditionalOptions = (type, remoteInstanceCredentials, form) => {
       }
       return (
         <>
-          <CheckboxField form={form} label={'Use performance schema'} name="qan_mysql_perfschema" />
+          <CheckboxField form={form} label="Use performance schema" name="qan_mysql_perfschema" />
           <span className="description"></span>
         </>
       );
     case 'MongoDB':
       return (
         <>
-          <CheckboxField form={form} label={'Use QAN MongoDB Profiler'} name="qan_mongodb_profiler" />
+          <CheckboxField form={form} label="Use QAN MongoDB Profiler" name="qan_mongodb_profiler" />
           <span className="description"></span>
         </>
       );
@@ -111,7 +115,10 @@ const validateInstanceForm = values => {
   return errors;
 };
 const AddRemoteInstance = props => {
-  const { instanceType, remoteInstanceCredentials, discoverName } = getInstanceData(props.instance.type, props.instance.credentials);
+  const { instanceType, remoteInstanceCredentials, discoverName } = getInstanceData(
+    props.instance.type,
+    props.instance.credentials
+  );
   const [loading, setLoading] = useState<boolean>(false);
   const initialValues = { ...remoteInstanceCredentials };
   if (instanceType === 'MySQL') {
@@ -122,7 +129,7 @@ const AddRemoteInstance = props => {
     const currentUrl = `${window.parent.location}`;
     const newURL = currentUrl.split('/graph/d/').shift() + '/graph/d/pmm-inventory/';
 
-    const data = Object.assign({}, values);
+    const data = { ...values };
     if (values.custom_labels) {
       data.custom_labels = data.custom_labels
         .split(/[\n\s]/)
@@ -175,9 +182,9 @@ const AddRemoteInstance = props => {
       onSubmit={() => {}}
       render={(): ReactElement => {
         const { form, handleSubmit } = useForm({
-          onSubmit: onSubmit,
+          onSubmit,
+          initialValues,
           validate: validateInstanceForm,
-          initialValues: initialValues,
         });
         // @ts-ignore
         return (
@@ -186,7 +193,13 @@ const AddRemoteInstance = props => {
             <div className="add-instance-panel">
               <h6>Main details</h6>
               <span></span>
-              <InputField form={form} name="address" placeholder="Hostname" required={true} readonly={remoteInstanceCredentials.isRDS} />
+              <InputField
+                form={form}
+                name="address"
+                placeholder="Hostname"
+                required={true}
+                readonly={remoteInstanceCredentials.isRDS}
+              />
               <span className="description">Public DNS hostname of your instance</span>
               <InputField form={form} name="service_name" placeholder="Service name (default: Hostname)" />
               <span className="description">Service name to use.</span>
@@ -237,16 +250,16 @@ key2:value2"
             <div className="add-instance-panel">
               <h6>Additional options</h6>
               <span></span>
-              <CheckboxField form={form} label={'Skip connection check'} name="skip_connection_check" />
+              <CheckboxField form={form} label="Skip connection check" name="skip_connection_check" />
 
               <span className="description"></span>
 
-              <CheckboxField form={form} label={'Use TLS for database connections'} name="tls" />
+              <CheckboxField form={form} label="Use TLS for database connections" name="tls" />
 
               <span className="description"></span>
               <CheckboxField
                 form={form}
-                label={'Skip TLS certificate and hostname validation'}
+                label="Skip TLS certificate and hostname validation"
                 name="tls_skip_verify"
                 data-cy="add-account-username"
               />

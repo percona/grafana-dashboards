@@ -60,14 +60,16 @@ export class PanelCtrl extends MetricsPanelCtrl {
       frame.height(`${h + 100}px`);
       panel.height(`${h + 150}px`);
 
-      panelContent.height(`inherit`);
+      panelContent.height('inherit');
       panelContent[0].style.padding = '0 0 10px';
     };
 
     frame.on('load', () => {
       $scope.ctrl.calculatePanelHeight();
       frame.contents().bind('click', () => setTimeout(() => $scope.ctrl.calculatePanelHeight(), 10));
-      frame.contents().bind('DOMSubtreeModified', () => setTimeout(() => $scope.ctrl.calculatePanelHeight(), 10));
+      frame
+        .contents()
+        .bind('DOMSubtreeModified', () => setTimeout(() => $scope.ctrl.calculatePanelHeight(), 10));
     });
   }
 
@@ -85,8 +87,12 @@ export class PanelCtrl extends MetricsPanelCtrl {
     const perfectScrollContainers = elem[0].ownerDocument.getElementsByClassName('ps') as any;
     const rightScrollbarContainers = elem[0].ownerDocument.getElementsByClassName('ps__thumb-y') as any;
 
-    [].forEach.call(perfectScrollContainers, (container: HTMLElement) => container.setAttribute('style', 'overflow: auto !important'));
-    [].forEach.call(rightScrollbarContainers, (container: HTMLElement) => container.setAttribute('style', 'display: none !important'));
+    [].forEach.call(perfectScrollContainers, (container: HTMLElement) =>
+      container.setAttribute('style', 'overflow: auto !important')
+    );
+    [].forEach.call(rightScrollbarContainers, (container: HTMLElement) =>
+      container.setAttribute('style', 'display: none !important')
+    );
   }
 
   private fixMenuVisibility(elem): void | boolean {
