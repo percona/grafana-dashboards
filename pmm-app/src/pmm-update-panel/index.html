@@ -1,136 +1,132 @@
 <style>
-    #pmm-update-widget {
-        position: relative;
-        height: inherit;
-        padding-top: 5px;
-    }
+  #pmm-update-widget {
+    position: relative;
+    height: inherit;
+    padding-top: 5px;
+  }
 
-    #pmm-update-widget p {
-        margin-bottom: 0;
-    }
+  #pmm-update-widget p {
+    margin-bottom: 0;
+  }
 
-    #pmm-update-widget .version {
-        font-size: 14px;
-        margin-bottom: 7px;
-    }
+  #pmm-update-widget .version {
+    font-size: 14px;
+    margin-bottom: 7px;
+  }
 
-    #pmm-update-widget .check-update-button {
-        position: relative;
-        display: flex;
-        align-items: center;
-        margin-left: auto;
-        font-size: 16px;
-        color: #27b4e7;
-        border-radius: 50%;
-        background-color: transparent;
-        border: none;
-    }
+  #pmm-update-widget .check-update-button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    font-size: 16px;
+    color: #27b4e7;
+    border-radius: 50%;
+    background-color: transparent;
+    border: none;
+  }
 
-    #pmm-update-widget .update-button {
-        width: 100%;
-        margin-top: 5px;
-        margin-bottom: 5px;
-        background: #292929 none;
-        box-sizing: border-box;
-    }
+  #pmm-update-widget .update-button {
+    width: 100%;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    background: #292929 none;
+    box-sizing: border-box;
+  }
 
-    #pmm-update-widget .update-button:disabled {
-        border: 2px solid #292929;
-        background: transparent;
-    }
+  #pmm-update-widget .update-button:disabled {
+    border: 2px solid #292929;
+    background: transparent;
+  }
 
-    #available_version {
-        display: flex;
-    }
+  #available_version {
+    display: flex;
+  }
 
-    section.state {
-        height: 65px;
-        /*margin-bottom: 10px;*/
-        margin: 10px 0;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        box-sizing: border-box;
-        border: 2px solid #292929;
-    }
+  section.state {
+    height: 65px;
+    /*margin-bottom: 10px;*/
+    margin: 10px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    border: 2px solid #292929;
+  }
 
-    section.available-version {
-        margin-top: 5px;
-        display: flex;
-        justify-content: flex-start;
-        align-items: flex-start;
-    }
+  section.available-version {
+    margin-top: 5px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
 
-    footer {
-        position: absolute;
-        bottom: 0;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-    }
+  footer {
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
 
-    .no-update-text {
-        font-size: 12px;
-    }
+  .no-update-text {
+    font-size: 12px;
+  }
 
-    .pmm-link,
-    .pmm-link:hover {
-        color: #27b4e7;
-    }
+  .pmm-link,
+  .pmm-link:hover {
+    color: #27b4e7;
+  }
 
-    .pmm-link:hover {
-        text-decoration: underline;
-    }
+  .pmm-link:hover {
+    text-decoration: underline;
+  }
 
-    @media (max-width: 1281px) {
-        #pmm-update-widget h2 {
-            font-size: 1.55rem;
-            margin-bottom: 0.1rem;
-        }
+  @media (max-width: 1281px) {
+    #pmm-update-widget h2 {
+      font-size: 1.55rem;
+      margin-bottom: 0.1rem;
     }
-
+  }
 </style>
 <div id="pmm-update-widget">
-    <header>
-        <h2 class="update-title">Updates</h2>
-        <p class="version" id="current_version" ng-click="displayFullCurrentVersion($scope)">Current version:
-            <span>{{version}} <em>{{currentReleaseDate}}</em></span>
-        </p>
-    </header>
-    <section class="state" ng-if="isDefaultView">
-        <div class="state-inner">
-            <p class="text-center">No updates are available</p>
-            <p class="text-center">PMM checks for updates once a day</p>
-        </div>
-    </section>
-    <section class="state" ng-if="!isUpdateAvailable && !isDefaultView && !forceUpdate">
-        <p class="text-center">You are up to date</p>
-    </section>
-    <section class="available-version" ng-if="isUpdateAvailable && !isDefaultView">
-        <div id="available_version" ng-click="displayFullAvailableVersion($scope)">
-            <p>Available version:&nbsp;</p>
-            <div class="version">
-                <p>{{nextVersion}} <em>{{newReleaseDate}}</em></p>
-                <a ng-if="newsLink" href="{{ newsLink }}"
-                   class="text-primary pmm-link" target="_blank">What's new?</a>
-            </div>
-        </div>
-    </section>
-    <button class="btn btn-secondary btn-block update-button"
-            ng-if="isUpdateAvailable || forceUpdate"
-            ng-click="update()"
-            ng-disabled="disableUpdate">
-        <span>
-            <i class="fa fa-download"></i>
-            Update to {{nextVersion}}
-        </span>
+  <header>
+    <h2 class="update-title">Updates</h2>
+    <p class="version" id="current_version" ng-click="displayFullCurrentVersion($scope)">
+      Current version:
+      <span>{{version}} <em>{{currentReleaseDate}}</em></span>
+    </p>
+  </header>
+  <section class="state" ng-if="isDefaultView">
+    <div class="state-inner">
+      <p class="text-center">No updates are available</p>
+      <p class="text-center">PMM checks for updates once a day</p>
+    </div>
+  </section>
+  <section class="state" ng-if="!isUpdateAvailable && !isDefaultView && !forceUpdate">
+    <p class="text-center">You are up to date</p>
+  </section>
+  <section class="available-version" ng-if="isUpdateAvailable && !isDefaultView">
+    <div id="available_version" ng-click="displayFullAvailableVersion($scope)">
+      <p>Available version:&nbsp;</p>
+      <div class="version">
+        <p>{{nextVersion}} <em>{{newReleaseDate}}</em></p>
+        <a ng-if="newsLink" href="{{ newsLink }}" class="text-primary pmm-link" target="_blank">What's new?</a>
+      </div>
+    </div>
+  </section>
+  <button class="btn btn-secondary btn-block update-button" ng-if="isUpdateAvailable || forceUpdate" ng-click="update()" ng-disabled="disableUpdate">
+    <span>
+      <i class="fa fa-download"></i>
+      Update to {{nextVersion}}
+    </span>
+  </button>
+  <footer>
+    <p>Last check: {{lastCheckDate}}</p>
+    <button ng-click="checkForUpdate($event)" class="check-update-button">
+      <i class="fa fa-spin fa-refresh" id="refresh"></i>
     </button>
-    <footer>
-        <p>Last check: {{lastCheckDate}}</p>
-        <button ng-click="checkForUpdate($event)" class="check-update-button">
-            <i class="fa fa-spin fa-refresh" id="refresh"></i>
-        </button>
-    </footer>
+  </footer>
 </div>

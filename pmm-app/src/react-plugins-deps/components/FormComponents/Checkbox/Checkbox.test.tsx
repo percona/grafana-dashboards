@@ -9,12 +9,10 @@ describe('Checkbox field test', () => {
   it('Checkbox renders correct without props', () => {
     renderHook(() => {
       const { form } = useForm({
-        onSubmit: values => {
-          console.log(values);
-        },
+        onSubmit: () => {},
       });
 
-      const component = renderer.create(<CheckboxField form={form} name={'test-field'} />);
+      const component = renderer.create(<CheckboxField form={form} name="test-field" />);
       const tree = component.toJSON();
       expect(tree).toMatchSnapshot();
     });

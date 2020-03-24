@@ -141,10 +141,13 @@
 //       // const load = this.humanize.transform(value, this.measurement);
 //       // const dateToShow = this.dateFormat.transform(moment(endPoint[this.xkey]).utc());
 //       //
-//       // const isTimeBased = this.metricName.endsWith('_time') || this.metricName.endsWith('_wait') || this.metricName === 'load';
+//       // const isTimeBased = this.metricName.endsWith('_time')
+//       // || this.metricName.endsWith('_wait') || this.metricName === 'load';
 //       //
 //       // focusBar.attr('d', areaBar(activeArea));
-//       // this.dataTooltip = !value ? `NA at ${dateToShow}` : `${load} ${isTimeBased ? '' : '/ sec'} at ${dateToShow}`;
+//       // this.dataTooltip = !value
+//       // ? `NA at ${dateToShow}`
+//       // : `${load} ${isTimeBased ? '' : '/ sec'} at ${dateToShow}`;
 //     });
 //     svg.on('mouseover', () => focusG.style('display', null));
 //     svg.on('mouseout', () => focusG.style('display', 'none'));

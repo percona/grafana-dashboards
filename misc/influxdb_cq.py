@@ -16,21 +16,21 @@ mysql_global_status_bytes_received: {type: counter}
 mysql_global_status_bytes_sent: {type: counter}
 mysql_global_status_connections: {type: counter}
 mysql_global_status_queries: {type: counter}
-node_cpu: {type: counter, group_by: 'mode, cpu'}
-node_disk_bytes_read: {type: counter, group_by: device}
-node_disk_bytes_written: {type: counter, group_by: device}
-node_disk_reads_completed: {type: counter, group_by: device}
-node_disk_writes_completed: {type: counter, group_by: device}
-node_filesystem_avail: {type: gauge, group_by: 'mountpoint, fstype, device'}
-node_filesystem_size: {type: gauge, group_by: 'mountpoint, fstype, device'}
+node_cpu_seconds_total: {type: counter, group_by: 'mode, cpu'}
+node_disk_read_bytes_total: {type: counter, group_by: device}
+node_disk_written_bytes_total: {type: counter, group_by: device}
+node_disk_reads_completed_total: {type: counter, group_by: device}
+node_disk_writes_completed_total: {type: counter, group_by: device}
+node_filesystem_avail_bytes: {type: gauge, group_by: 'mountpoint, fstype, device'}
+node_filesystem_size_bytes: {type: gauge, group_by: 'mountpoint, fstype, device'}
 node_load1: {type: gauge}
-node_memory_Buffers: {type: gauge}
-node_memory_Cached: {type: gauge}
-node_memory_MemAvailable: {type: gauge}
-node_memory_MemFree: {type: gauge}
-node_memory_MemTotal: {type: gauge}
-node_network_receive_bytes: {type: counter, group_by: device}
-node_network_transmit_bytes: {type: counter, group_by: device}
+node_memory_Buffers_bytes: {type: gauge}
+node_memory_Cached_bytes: {type: gauge}
+node_memory_MemAvailable_bytes: {type: gauge}
+node_memory_MemFree_bytes: {type: gauge}
+node_memory_MemTotal_bytes: {type: gauge}
+node_network_receive_bytes_total: {type: counter, group_by: device}
+node_network_transmit_bytes_total: {type: counter, group_by: device}
 """)
 
 
@@ -69,7 +69,7 @@ def main():
 
     dbs = [x['name'] for x in client.get_list_database()]
     if TRENDING_DB not in dbs:
-        client.create_database(TRENDING_DB, if_not_exists=True)
+        client.create_database(TRENDING_DB)
         print '[%s] Database created.' % (TRENDING_DB,)
 
     # Create new CQ
@@ -78,7 +78,7 @@ def main():
     for interval in INTERVALS:
         # Create retention
         if interval not in retentions:
-            client.create_retention_policy('"%s"' % (interval,), 'INF', '1', TRENDING_DB)
+            client.create_retention_policy('%s' % (interval,), 'INF', '1', TRENDING_DB)
             print '[%s] Retention policy "%s" created.' % (TRENDING_DB, interval)
 
         for metric, data in METRICS.iteritems():

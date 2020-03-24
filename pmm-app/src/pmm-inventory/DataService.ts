@@ -17,7 +17,9 @@ export class CommonModel {
   constructor(params, type) {
     const { custom_labels, ...rest } = params;
     this.custom_labels =
-      custom_labels && Object.keys(custom_labels).length ? Object.entries(custom_labels).map(item => new CustomLabelsModel(item)) : [];
+      custom_labels && Object.keys(custom_labels).length
+        ? Object.entries(custom_labels).map(item => new CustomLabelsModel(item))
+        : [];
     this.type = type;
     this.isDeleted = false;
     Object.keys(rest).forEach(param => {
