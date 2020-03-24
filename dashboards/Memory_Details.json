@@ -216,7 +216,7 @@
                 "show": true,
                 "sideWidth": 350,
                 "sort": "avg",
-                "sortDesc": true,
+                "sortDesc": false,
                 "total": false,
                 "values": true
             },
@@ -1215,7 +1215,7 @@
                         "h": 8,
                         "w": 24,
                         "x": 0,
-                        "y": 15
+                        "y": 39
                     },
                     "hiddenSeries": false,
                     "id": 24,
@@ -1422,13 +1422,13 @@
                     "datasource": "Prometheus",
                     "decimals": 0,
                     "description": "**Total** total size of vmalloc memory area\n\n**Used** amount of vmalloc area which is used\n\n**Chunk** largest contiguous block of vmalloc area which is free",
-                    "fill": 2,
+                    "fill": 6,
                     "fillGradient": 0,
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 23
+                        "y": 47
                     },
                     "hiddenSeries": false,
                     "id": 70,
@@ -1442,7 +1442,7 @@
                         "show": true,
                         "sideWidth": null,
                         "sort": "avg",
-                        "sortDesc": true,
+                        "sortDesc": false,
                         "total": false,
                         "values": true
                     },
@@ -1462,7 +1462,8 @@
                         {
                             "alias": "Total",
                             "color": "#bf1b00",
-                            "fill": 0
+                            "fill": 0,
+                            "stack": false
                         },
                         {
                             "alias": "Used",
@@ -1484,16 +1485,6 @@
                             "step": 240
                         },
                         {
-                            "expr": "avg by (node_name) (max_over_time(node_memory_VmallocTotal_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_VmallocTotal_bytes{node_name=~\"$node_name\"}[5m]))",
-                            "format": "time_series",
-                            "hide": false,
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Total",
-                            "refId": "I",
-                            "step": 240
-                        },
-                        {
                             "expr": "avg by (node_name) (max_over_time(node_memory_VmallocUsed_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_VmallocUsed_bytes{node_name=~\"$node_name\"}[5m]))",
                             "format": "time_series",
                             "hide": false,
@@ -1501,6 +1492,16 @@
                             "intervalFactor": 1,
                             "legendFormat": "Used",
                             "refId": "O",
+                            "step": 240
+                        },
+                        {
+                            "expr": "avg by (node_name) (max_over_time(node_memory_VmallocTotal_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_VmallocTotal_bytes{node_name=~\"$node_name\"}[5m]))",
+                            "format": "time_series",
+                            "hide": false,
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Total",
+                            "refId": "I",
                             "step": 240
                         }
                     ],
@@ -1578,7 +1579,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 23
+                        "y": 47
                     },
                     "hiddenSeries": false,
                     "id": 138,
@@ -1592,7 +1593,7 @@
                         "show": true,
                         "sideWidth": 350,
                         "sort": "avg",
-                        "sortDesc": true,
+                        "sortDesc": false,
                         "total": false,
                         "values": true
                     },
@@ -1720,7 +1721,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 31
+                        "y": 55
                     },
                     "hiddenSeries": false,
                     "id": 160,
@@ -1734,7 +1735,7 @@
                         "show": true,
                         "sideWidth": 350,
                         "sort": "avg",
-                        "sortDesc": true,
+                        "sortDesc": false,
                         "total": false,
                         "values": true
                     },
@@ -1844,7 +1845,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 31
+                        "y": 55
                     },
                     "hiddenSeries": false,
                     "id": 135,
@@ -1982,7 +1983,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 39
+                        "y": 63
                     },
                     "hiddenSeries": false,
                     "id": 129,
@@ -2109,13 +2110,13 @@
                     "datasource": "Prometheus",
                     "decimals": 0,
                     "description": "**Slab** in-kernel data structures cache\n**SReclaimable** Part of Slab, that might be reclaimed, such as caches\n **SUnreclaim** Part of Slab, that cannot be reclaimed on memory pressure",
-                    "fill": 2,
+                    "fill": 6,
                     "fillGradient": 0,
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 39
+                        "y": 63
                     },
                     "hiddenSeries": false,
                     "id": 242,
@@ -2129,7 +2130,7 @@
                         "show": true,
                         "sideWidth": 350,
                         "sort": "avg",
-                        "sortDesc": true,
+                        "sortDesc": false,
                         "total": false,
                         "values": true
                     },
@@ -2150,7 +2151,6 @@
                             "alias": "Total",
                             "color": "#bf1b00",
                             "fill": 0,
-                            "points": true,
                             "stack": false
                         }
                     ],
@@ -2158,15 +2158,6 @@
                     "stack": true,
                     "steppedLine": false,
                     "targets": [
-                        {
-                            "expr": "avg by (node_name) (max_over_time(node_memory_Slab_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_Slab_bytes{node_name=~\"$node_name\"}[5m]))",
-                            "format": "time_series",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Total",
-                            "refId": "A",
-                            "step": 240
-                        },
                         {
                             "expr": "avg by (node_name) (max_over_time(node_memory_SReclaimable_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_SReclaimable_bytes{node_name=~\"$node_name\"}[5m]))",
                             "format": "time_series",
@@ -2182,6 +2173,15 @@
                             "intervalFactor": 1,
                             "legendFormat": "SUnreclaim",
                             "refId": "C"
+                        },
+                        {
+                            "expr": "avg by (node_name) (max_over_time(node_memory_Slab_bytes{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_Slab_bytes{node_name=~\"$node_name\"}[5m]))",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Total",
+                            "refId": "A",
+                            "step": 240
                         }
                     ],
                     "thresholds": [],
@@ -2258,7 +2258,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 47
+                        "y": 71
                     },
                     "hiddenSeries": false,
                     "id": 128,
@@ -2397,7 +2397,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 47
+                        "y": 71
                     },
                     "hiddenSeries": false,
                     "id": 159,
@@ -2411,7 +2411,7 @@
                         "show": true,
                         "sideWidth": 350,
                         "sort": "avg",
-                        "sortDesc": true,
+                        "sortDesc": false,
                         "total": false,
                         "values": true
                     },
@@ -2523,7 +2523,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 55
+                        "y": 79
                     },
                     "hiddenSeries": false,
                     "id": 132,
@@ -2642,7 +2642,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 55
+                        "y": 79
                     },
                     "hiddenSeries": false,
                     "id": 137,
@@ -2771,7 +2771,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 63
+                        "y": 87
                     },
                     "hiddenSeries": false,
                     "id": 71,
@@ -2900,13 +2900,13 @@
                     "datasource": "Prometheus",
                     "decimals": 0,
                     "description": "**Total** Number of hugepages being allocated by the kernel (Defined with vm.nr_hugepages)\n\n**Free** The number of hugepages not being allocated by a process\n\n**Surp**  The number of hugepages in the pool above the value in vm.nr_hugepages. The maximum number of surplus hugepages is controlled by vm.nr_overcommit_hugepages.\n\n**Rsvd**  The number of  huge pages for which a commitment to allocate from the pool has been made, but no allocation has yet been made",
-                    "fill": 2,
+                    "fill": 6,
                     "fillGradient": 0,
                     "gridPos": {
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 63
+                        "y": 87
                     },
                     "hiddenSeries": false,
                     "id": 140,
@@ -2921,12 +2921,12 @@
                         "show": true,
                         "sideWidth": null,
                         "sort": "avg",
-                        "sortDesc": true,
+                        "sortDesc": false,
                         "total": false,
                         "values": true
                     },
                     "lines": true,
-                    "linewidth": 1,
+                    "linewidth": 2,
                     "links": [],
                     "maxPerRow": 6,
                     "nullPointMode": "null",
@@ -3076,7 +3076,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 16
+                        "y": 40
                     },
                     "hiddenSeries": false,
                     "id": 186,
@@ -3197,7 +3197,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 16
+                        "y": 40
                     },
                     "hiddenSeries": false,
                     "id": 248,
@@ -3324,7 +3324,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 24
+                        "y": 48
                     },
                     "hiddenSeries": false,
                     "id": 228,
@@ -3459,7 +3459,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 24
+                        "y": 48
                     },
                     "hiddenSeries": false,
                     "id": 185,
@@ -3603,7 +3603,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 32
+                        "y": 56
                     },
                     "hiddenSeries": false,
                     "id": 214,
@@ -3735,7 +3735,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 32
+                        "y": 56
                     },
                     "hiddenSeries": false,
                     "id": 245,
@@ -3749,7 +3749,7 @@
                         "show": true,
                         "sideWidth": 350,
                         "sort": "avg",
-                        "sortDesc": true,
+                        "sortDesc": false,
                         "total": false,
                         "values": true
                     },
@@ -3906,7 +3906,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 40
+                        "y": 64
                     },
                     "hiddenSeries": false,
                     "id": 209,
@@ -3920,7 +3920,7 @@
                         "show": true,
                         "sideWidth": 350,
                         "sort": "avg",
-                        "sortDesc": true,
+                        "sortDesc": false,
                         "total": false,
                         "values": true
                     },
@@ -4029,7 +4029,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 40
+                        "y": 64
                     },
                     "hiddenSeries": false,
                     "id": 218,
@@ -4043,7 +4043,7 @@
                         "show": true,
                         "sideWidth": 350,
                         "sort": "avg",
-                        "sortDesc": true,
+                        "sortDesc": false,
                         "total": false,
                         "values": true
                     },
@@ -4153,7 +4153,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 48
+                        "y": 72
                     },
                     "hiddenSeries": false,
                     "id": 204,
@@ -4305,7 +4305,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 48
+                        "y": 72
                     },
                     "hiddenSeries": false,
                     "id": 246,
@@ -4319,7 +4319,7 @@
                         "show": true,
                         "sideWidth": 350,
                         "sort": "avg",
-                        "sortDesc": true,
+                        "sortDesc": false,
                         "total": false,
                         "values": true
                     },
@@ -4429,7 +4429,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 56
+                        "y": 80
                     },
                     "hiddenSeries": false,
                     "id": 212,
@@ -4443,7 +4443,7 @@
                         "show": true,
                         "sideWidth": 350,
                         "sort": "avg",
-                        "sortDesc": true,
+                        "sortDesc": false,
                         "total": false,
                         "values": true
                     },
@@ -4552,7 +4552,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 56
+                        "y": 80
                     },
                     "hiddenSeries": false,
                     "id": 188,
@@ -4711,7 +4711,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 17
+                        "y": 41
                     },
                     "hiddenSeries": false,
                     "id": 201,
@@ -4855,7 +4855,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 17
+                        "y": 41
                     },
                     "hiddenSeries": false,
                     "id": 256,
@@ -4999,7 +4999,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 25
+                        "y": 49
                     },
                     "hiddenSeries": false,
                     "id": 257,
@@ -5143,7 +5143,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 25
+                        "y": 49
                     },
                     "hiddenSeries": false,
                     "id": 258,
@@ -5269,7 +5269,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 33
+                        "y": 57
                     },
                     "hiddenSeries": false,
                     "id": 252,
@@ -5407,7 +5407,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 33
+                        "y": 57
                     },
                     "hiddenSeries": false,
                     "id": 259,

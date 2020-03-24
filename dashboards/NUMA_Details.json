@@ -179,7 +179,7 @@
                 "min": true,
                 "show": true,
                 "sort": "avg",
-                "sortDesc": true,
+                "sortDesc": false,
                 "total": false,
                 "values": true
             },
@@ -200,14 +200,11 @@
                     "alias": "Total",
                     "color": "#bf1b00",
                     "fill": 0,
-                    "points": true,
-                    "stack": false,
-                    "zindex": 3
+                    "stack": false
                 },
                 {
                     "alias": "Free",
-                    "color": "#508642",
-                    "zindex": -1
+                    "color": "#508642"
                 },
                 {
                     "alias": "Used",
@@ -557,7 +554,7 @@
             "datasource": "Prometheus",
             "decimals": 2,
             "description": "Memory successfully allocated on this node as intended.",
-            "fill": 2,
+            "fill": 6,
             "fillGradient": 0,
             "gridPos": {
                 "h": 8,
@@ -575,7 +572,7 @@
                 "min": true,
                 "show": true,
                 "sort": "avg",
-                "sortDesc": true,
+                "sortDesc": false,
                 "total": false,
                 "values": true
             },
@@ -1067,7 +1064,7 @@
                 "rightSide": false,
                 "show": true,
                 "sort": "avg",
-                "sortDesc": true,
+                "sortDesc": false,
                 "total": false,
                 "values": true
             },
@@ -1188,7 +1185,7 @@
                 "rightSide": false,
                 "show": true,
                 "sort": "avg",
-                "sortDesc": true,
+                "sortDesc": false,
                 "total": false,
                 "values": true
             },
@@ -1220,14 +1217,6 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "sum by (node) (max_over_time(node_memory_numa_HugePages_Total{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_numa_HugePages_Total{node_name=~\"$node_name\"}[5m]))",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Total",
-                    "refId": "A"
-                },
-                {
                     "expr": "sum by (node) (max_over_time(node_memory_numa_HugePages_Free{node_name=~\"$node_name\"}[$interval]) or \nmax_over_time(node_memory_numa_HugePages_Free{node_name=~\"$node_name\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
@@ -1242,6 +1231,14 @@
                     "intervalFactor": 1,
                     "legendFormat": "Surplus",
                     "refId": "C"
+                },
+                {
+                    "expr": "sum by (node) (max_over_time(node_memory_numa_HugePages_Total{node_name=~\"$node_name\"}[$interval]) or max_over_time(node_memory_numa_HugePages_Total{node_name=~\"$node_name\"}[5m]))",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Total",
+                    "refId": "A"
                 }
             ],
             "thresholds": [],
@@ -1294,7 +1291,7 @@
             "datasource": "Prometheus",
             "decimals": 2,
             "description": "Memory allocated on a node while a process was running on it.",
-            "fill": 2,
+            "fill": 6,
             "fillGradient": 0,
             "gridPos": {
                 "h": 8,
@@ -1312,7 +1309,7 @@
                 "min": true,
                 "show": true,
                 "sort": "avg",
-                "sortDesc": true,
+                "sortDesc": false,
                 "total": false,
                 "values": true
             },
@@ -1434,7 +1431,7 @@
                 "min": true,
                 "show": true,
                 "sort": "avg",
-                "sortDesc": true,
+                "sortDesc": false,
                 "total": false,
                 "values": true
             },
@@ -1476,20 +1473,20 @@
                     "refId": "A"
                 },
                 {
-                    "expr": "sum(avg by (node_name) (rate(node_memory_numa_other_node_total{node_name=~\"$node_name\", node=\"$node\"}[$interval]))) or\nsum(avg by (node_name) (irate(node_memory_numa_other_node_total{node_name=~\"$node_name\", node=\"$node\"}[5m])))",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Total",
-                    "refId": "B"
-                },
-                {
                     "expr": "sum(avg by (node_name) (rate(node_memory_numa_other_node_total{node_name=~\"$node_name\", node=\"$node\"}[$interval]))) or\nsum(avg by (node_name) (irate(node_memory_numa_other_node_total{node_name=~\"$node_name\", node=\"$node\"}[5m]))) * 100 /\n(sum(avg by (node_name) (rate(node_memory_numa_other_node_total{node_name=~\"$node_name\", node=\"$node\"}[$interval]))) or\nsum(avg by (node_name) (irate(node_memory_numa_other_node_total{node_name=~\"$node_name\", node=\"$node\"}[5m]))) + \nsum(avg by (node_name) (rate(node_memory_numa_local_node_total{node_name=~\"$node_name\"}[$interval]))) or\nsum(avg by (node_name) (irate(node_memory_numa_local_node_total{node_name=~\"$node_name\"}[$interval]))))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "Total remote processes rate",
                     "refId": "C"
+                },
+                {
+                    "expr": "sum(avg by (node_name) (rate(node_memory_numa_other_node_total{node_name=~\"$node_name\", node=\"$node\"}[$interval]))) or\nsum(avg by (node_name) (irate(node_memory_numa_other_node_total{node_name=~\"$node_name\", node=\"$node\"}[5m])))",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Total",
+                    "refId": "B"
                 }
             ],
             "thresholds": [],
@@ -1564,7 +1561,7 @@
                 "rightSide": false,
                 "show": true,
                 "sort": "avg",
-                "sortDesc": true,
+                "sortDesc": false,
                 "total": false,
                 "values": true
             },
@@ -1584,6 +1581,7 @@
                 {
                     "alias": "Total",
                     "color": "#bf1b00",
+                    "fill": 0,
                     "stack": false
                 }
             ],
@@ -1591,14 +1589,6 @@
             "stack": true,
             "steppedLine": false,
             "targets": [
-                {
-                    "expr": "sum(avg_over_time(node_memory_numa_Slab{node_name=~\"$node_name\"}[$interval]) or avg_over_time(node_memory_numa_Slab{node_name=~\"$node_name\"}[5m]))",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Total",
-                    "refId": "A"
-                },
                 {
                     "expr": "sum(avg_over_time(node_memory_numa_SReclaimable{node_name=~\"$node_name\"}[$interval]) or avg_over_time(node_memory_numa_SReclaimable{node_name=~\"$node_name\"}[5m]))",
                     "format": "time_series",
@@ -1614,6 +1604,14 @@
                     "intervalFactor": 1,
                     "legendFormat": "Unreclaim",
                     "refId": "C"
+                },
+                {
+                    "expr": "sum(avg_over_time(node_memory_numa_Slab{node_name=~\"$node_name\"}[$interval]) or avg_over_time(node_memory_numa_Slab{node_name=~\"$node_name\"}[5m]))",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "Total",
+                    "refId": "A"
                 }
             ],
             "thresholds": [],
@@ -1697,7 +1695,7 @@
                         "min": true,
                         "show": true,
                         "sort": "avg",
-                        "sortDesc": true,
+                        "sortDesc": false,
                         "total": false,
                         "values": true
                     },
@@ -1718,7 +1716,6 @@
                             "alias": "Total",
                             "color": "#bf1b00",
                             "fill": 0,
-                            "points": true,
                             "stack": false
                         },
                         {
@@ -1735,14 +1732,6 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "avg by (node_name) (avg_over_time(node_memory_numa_MemTotal{node_name=~\"$node_name\", node=\"$node\"}[$interval]) or avg_over_time(node_memory_numa_MemTotal{node_name=~\"$node_name\", node=\"$node\"}[5m]))",
-                            "format": "time_series",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Total",
-                            "refId": "C"
-                        },
-                        {
                             "expr": "avg by (node_name) (avg_over_time(node_memory_numa_MemFree{node_name=~\"$node_name\", node=\"$node\"}[$interval]) or avg_over_time(node_memory_numa_MemFree{node_name=~\"$node_name\", node=\"$node\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
@@ -1757,6 +1746,14 @@
                             "intervalFactor": 1,
                             "legendFormat": "Used",
                             "refId": "B"
+                        },
+                        {
+                            "expr": "avg by (node_name) (avg_over_time(node_memory_numa_MemTotal{node_name=~\"$node_name\", node=\"$node\"}[$interval]) or avg_over_time(node_memory_numa_MemTotal{node_name=~\"$node_name\", node=\"$node\"}[5m]))",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Total",
+                            "refId": "C"
                         }
                     ],
                     "thresholds": [],
@@ -2515,7 +2512,7 @@
                         "rightSide": false,
                         "show": true,
                         "sort": "avg",
-                        "sortDesc": true,
+                        "sortDesc": false,
                         "total": false,
                         "values": true
                     },
@@ -2543,14 +2540,6 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "sum by (node) (max_over_time(node_memory_numa_Shmem{node_name=~\"$node_name\", node=\"$node\"}[$interval]) or max_over_time(node_memory_numa_Shmem{node_name=~\"$node_name\", node=\"$node\"}[5m]))",
-                            "format": "time_series",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Total",
-                            "refId": "A"
-                        },
-                        {
                             "expr": "sum by (node) (max_over_time(node_memory_numa_ShmemHugePages{node_name=~\"$node_name\", node=\"$node\"}[$interval]) or max_over_time(node_memory_numa_ShmemHugePages{node_name=~\"$node_name\", node=\"$node\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
@@ -2565,6 +2554,14 @@
                             "intervalFactor": 1,
                             "legendFormat": "PmdMapped",
                             "refId": "C"
+                        },
+                        {
+                            "expr": "sum by (node) (max_over_time(node_memory_numa_Shmem{node_name=~\"$node_name\", node=\"$node\"}[$interval]) or max_over_time(node_memory_numa_Shmem{node_name=~\"$node_name\", node=\"$node\"}[5m]))",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Total",
+                            "refId": "A"
                         }
                     ],
                     "thresholds": [],
@@ -2636,7 +2633,7 @@
                         "rightSide": false,
                         "show": true,
                         "sort": "avg",
-                        "sortDesc": true,
+                        "sortDesc": false,
                         "total": false,
                         "values": true
                     },
@@ -2668,14 +2665,6 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "sum by (node) (max_over_time(node_memory_numa_HugePages_Total{node_name=~\"$node_name\", node=\"$node\"}[$interval]) or max_over_time(node_memory_numa_HugePages_Total{node_name=~\"$node_name\", node=\"$node\"}[5m]))",
-                            "format": "time_series",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Total",
-                            "refId": "A"
-                        },
-                        {
                             "expr": "sum by (node) (max_over_time(node_memory_numa_HugePages_Free{node_name=~\"$node_name\", node=\"$node\"}[$interval]) or max_over_time(node_memory_numa_HugePages_Free{node_name=~\"$node_name\", node=\"$node\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
@@ -2690,6 +2679,14 @@
                             "intervalFactor": 1,
                             "legendFormat": "Surplus",
                             "refId": "C"
+                        },
+                        {
+                            "expr": "sum by (node) (max_over_time(node_memory_numa_HugePages_Total{node_name=~\"$node_name\", node=\"$node\"}[$interval]) or max_over_time(node_memory_numa_HugePages_Total{node_name=~\"$node_name\", node=\"$node\"}[5m]))",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Total",
+                            "refId": "A"
                         }
                     ],
                     "thresholds": [],
@@ -2959,7 +2956,7 @@
                         "rightSide": false,
                         "show": true,
                         "sort": "avg",
-                        "sortDesc": true,
+                        "sortDesc": false,
                         "total": false,
                         "values": true
                     },
@@ -2979,7 +2976,7 @@
                         {
                             "alias": "Total",
                             "color": "#bf1b00",
-                            "points": true,
+                            "fill": 0,
                             "stack": false
                         }
                     ],
@@ -2987,14 +2984,6 @@
                     "stack": true,
                     "steppedLine": false,
                     "targets": [
-                        {
-                            "expr": "avg by (node_name) (avg_over_time(node_memory_numa_Slab{node_name=~\"$node_name\", node=\"$node\"}[$interval]) or avg_over_time(node_memory_numa_Slab{node_name=~\"$node_name\", node=\"$node\"}[5m]))",
-                            "format": "time_series",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "Total",
-                            "refId": "A"
-                        },
                         {
                             "expr": "avg by (node_name) (avg_over_time(node_memory_numa_SReclaimable{node_name=~\"$node_name\", node=\"$node\"}[$interval]) or avg_over_time(node_memory_numa_SReclaimable{node_name=~\"$node_name\", node=\"$node\"}[5m]))",
                             "format": "time_series",
@@ -3010,6 +2999,14 @@
                             "intervalFactor": 1,
                             "legendFormat": "Unreclaim",
                             "refId": "C"
+                        },
+                        {
+                            "expr": "avg by (node_name) (avg_over_time(node_memory_numa_Slab{node_name=~\"$node_name\", node=\"$node\"}[$interval]) or avg_over_time(node_memory_numa_Slab{node_name=~\"$node_name\", node=\"$node\"}[5m]))",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Total",
+                            "refId": "A"
                         }
                     ],
                     "thresholds": [],
@@ -3222,7 +3219,7 @@
                 "y": 72
             },
             "hiddenSeries": false,
-            "id": 1018,
+            "id": 1022,
             "legend": {
                 "alignAsTable": true,
                 "avg": true,
@@ -3249,7 +3246,7 @@
             "renderer": "flot",
             "repeat": null,
             "repeatDirection": "v",
-            "repeatIteration": 1583399563110,
+            "repeatIteration": 1583939028891,
             "repeatPanelId": 51,
             "seriesOverrides": [],
             "spaceLength": 10,
@@ -3324,7 +3321,7 @@
                 "y": 80
             },
             "hiddenSeries": false,
-            "id": 1019,
+            "id": 1023,
             "legend": {
                 "alignAsTable": true,
                 "avg": true,
@@ -3351,7 +3348,7 @@
             "renderer": "flot",
             "repeat": null,
             "repeatDirection": "v",
-            "repeatIteration": 1583399563110,
+            "repeatIteration": 1583939028891,
             "repeatPanelId": 51,
             "seriesOverrides": [],
             "spaceLength": 10,
@@ -4113,5 +4110,5 @@
     "timezone": "browser",
     "title": "NUMA Details",
     "uid": "node-memory-numa",
-    "version": 4
+    "version": 1
 }
