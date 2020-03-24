@@ -6,7 +6,8 @@ import Styling from '../react-plugins-deps/components/helpers/styling';
 
 const { TabPane } = Tabs;
 
-const getCustomLabels = customLabels => customLabels.map(label => <span>{`${label.key}: ${label.value}`}</span>);
+const getCustomLabels = customLabels =>
+  customLabels.map(label => <span key={label.key}>{`${label.key}: ${label.value}`}</span>);
 
 export const servicesColumns = [
   {
@@ -44,10 +45,18 @@ export const servicesColumns = [
     dataIndex: 'age',
     key: 'age',
     render: (text, element) => {
-      const mainColumns = ['service_id', 'type', 'service_name', 'custom_labels', 'node_id', 'address', 'port'];
+      const mainColumns = [
+        'service_id',
+        'type',
+        'service_name',
+        'custom_labels',
+        'node_id',
+        'address',
+        'port',
+      ];
       const labels = Object.keys(element).filter(label => !mainColumns.includes(label));
       return (
-        <div className={'other-details-wrapper'}>
+        <div className="other-details-wrapper">
           {labels.map(label => (element[label] ? <span>{`${label}: ${element[label]}`}</span> : null))}
           {element.custom_labels && getCustomLabels(element.custom_labels)}
         </div>
@@ -74,9 +83,9 @@ export const agentsColumns = [
       const mainColumns = ['agent_id', 'type', 'isDeleted', 'service_ids', 'custom_labels'];
       const labels = Object.keys(element).filter(label => !mainColumns.includes(label));
       return (
-        <div className={'other-details-wrapper'}>
+        <div className="other-details-wrapper">
           {labels.map(label => (element[label] ? <span>{`${label}: ${element[label]}`}</span> : null))}
-          {element.username ? <span>{`password: ******`}</span> : null}
+          {element.username ? <span>password: ******</span> : null}
           {/* TODO: know more about isString*/}
           {element.service_ids && element.service_ids.length ? (
             <>
@@ -118,7 +127,7 @@ export const nodesColumns = [
       const mainColumns = ['node_id', 'node_name', 'address', 'custom_labels', 'type', 'isDeleted'];
       const labels = Object.keys(element).filter(label => !mainColumns.includes(label));
       return (
-        <div className={'other-details-wrapper'}>
+        <div className="other-details-wrapper">
           {labels.map(label => (element[label] ? <span>{`${label}: ${element[label]}`}</span> : null))}
           {element.custom_labels && getCustomLabels(element.custom_labels)}
         </div>
@@ -143,7 +152,9 @@ const Services = () => {
     })();
   }, []);
 
-  return <Table dataSource={data} columns={servicesColumns} pagination={false} bordered loading={loading} />;
+  return (
+    <Table dataSource={data} columns={servicesColumns} pagination={false} bordered={true} loading={loading} />
+  );
 };
 
 const Agents = () => {
@@ -162,7 +173,9 @@ const Agents = () => {
     })();
   }, []);
 
-  return <Table dataSource={data} columns={agentsColumns} pagination={false} bordered loading={loading} />;
+  return (
+    <Table dataSource={data} columns={agentsColumns} pagination={false} bordered={true} loading={loading} />
+  );
 };
 
 const Nodes = () => {
@@ -181,13 +194,15 @@ const Nodes = () => {
     })();
   }, []);
 
-  return <Table dataSource={data} columns={nodesColumns} pagination={false} bordered loading={loading} />;
+  return (
+    <Table dataSource={data} columns={nodesColumns} pagination={false} bordered={true} loading={loading} />
+  );
 };
 
 const InventoryPanel = () => {
   useEffect(() => Styling.addPluginPanelClass(), []);
   return (
-    <div id={'antd'} style={{ width: '100%' }}>
+    <div id="antd" style={{ width: '100%' }}>
       <Tabs defaultActiveKey="1">
         <TabPane tab="Services" key="1">
           <Services />

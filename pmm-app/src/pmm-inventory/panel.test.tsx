@@ -30,7 +30,12 @@ describe('Inventory tables', () => {
     const response = {
       pmm_agent: [{ agent_id: 'pmm-server', runs_on_node_id: 'pmm-server', connected: true }],
       node_exporter: [
-        { agent_id: '/agent_id/262189d8-e10f-41c2-b0ae-73cc76be6968', pmm_agent_id: 'pmm-server', status: 'RUNNING', listen_port: 42000 },
+        {
+          agent_id: '/agent_id/262189d8-e10f-41c2-b0ae-73cc76be6968',
+          pmm_agent_id: 'pmm-server',
+          status: 'RUNNING',
+          listen_port: 42000,
+        },
       ],
       postgres_exporter: [
         {
@@ -55,7 +60,13 @@ describe('Inventory tables', () => {
 
     act(() => {
       render(
-        <Table dataSource={InventoryDataService.generateStructure(response)} columns={agentsColumns} pagination={false} bordered loading={false} />,
+        <Table
+          dataSource={InventoryDataService.generateStructure(response)}
+          columns={agentsColumns}
+          pagination={false}
+          bordered={true}
+          loading={false}
+        />,
         container
       );
     });
@@ -77,7 +88,13 @@ describe('Inventory tables', () => {
     };
     act(() => {
       render(
-        <Table dataSource={InventoryDataService.generateStructure(response)} columns={servicesColumns} pagination={false} bordered loading={false} />,
+        <Table
+          dataSource={InventoryDataService.generateStructure(response)}
+          columns={servicesColumns}
+          pagination={false}
+          bordered={true}
+          loading={false}
+        />,
         container
       );
     });
@@ -94,7 +111,13 @@ describe('Inventory tables', () => {
     };
     act(() => {
       render(
-        <Table dataSource={InventoryDataService.generateStructure(response)} columns={nodesColumns} pagination={false} bordered loading={false} />,
+        <Table
+          dataSource={InventoryDataService.generateStructure(response)}
+          columns={nodesColumns}
+          pagination={false}
+          bordered={true}
+          loading={false}
+        />,
         container
       );
     });

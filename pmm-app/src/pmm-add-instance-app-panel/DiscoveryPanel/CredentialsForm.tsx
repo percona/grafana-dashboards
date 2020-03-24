@@ -4,6 +4,9 @@ import { useForm } from 'react-final-form-hooks';
 import { InputField } from '../../react-plugins-deps/components/FormComponents/Input/Input';
 import { PasswordField } from '../../react-plugins-deps/components/FormComponents/Password/Password';
 
+const SECURITY_CREDENTIALS_DOC_LINK =
+  'https://www.percona.com/doc/percona-monitoring-and-management/' +
+  '2.x/install/aws.html#pmm-server-aws-running-instance';
 const CredentialsForm = props => {
   return (
     <FormFinal
@@ -41,7 +44,7 @@ const CredentialsForm = props => {
               </button>
             </div>
             <div>
-              <a href="https://www.percona.com/doc/percona-monitoring-and-management/2.x/install/aws.html#pmm-server-aws-running-instance">
+              <a href={SECURITY_CREDENTIALS_DOC_LINK}>
                 Where do I get the security credentials for my Amazon RDS DB instance
               </a>
             </div>

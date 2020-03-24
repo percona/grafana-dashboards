@@ -3,7 +3,9 @@ import Validators from './validators';
 
 describe('validatePort test', () => {
   it('return error string when value is 0', () => {
-    expect(Validators.validatePort(0)).toEqual('Port should be a number and between the range of 0 and 65535');
+    expect(Validators.validatePort(0)).toEqual(
+      'Port should be a number and between the range of 0 and 65535'
+    );
   });
 
   it('return empty string when value in the middle of range', () => {
@@ -67,10 +69,7 @@ describe('Validate range test', () => {
 describe('Validators compose', () => {
   it('return correct validation error when value is undefined', () => {
     const rangeValidator = Validators.range(0, 100);
-    const validate = Validators.compose(
-      rangeValidator,
-      Validators.required
-    );
+    const validate = Validators.compose(rangeValidator, Validators.required);
     expect(validate(undefined)).toEqual('Required field');
   });
 
@@ -79,10 +78,7 @@ describe('Validators compose', () => {
     const to = 100;
     const errorMessage = `Value should be in range from ${from} to ${to}`;
     const rangeValidator = Validators.range(from, to);
-    const validate = Validators.compose(
-      rangeValidator,
-      Validators.required
-    );
+    const validate = Validators.compose(rangeValidator, Validators.required);
     expect(validate(120)).toEqual(errorMessage);
   });
 });

@@ -1,6 +1,6 @@
 import { apiRequest } from './api';
 import axios from 'axios';
-jest.mock('axios'); //Add this on top of your test file.
+jest.mock('axios');
 jest.mock('../../../react-plugins-deps/components/helpers/notification-manager', () => () => ({}));
 
 describe('GET tests', () => {

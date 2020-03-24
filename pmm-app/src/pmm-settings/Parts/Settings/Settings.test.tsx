@@ -22,7 +22,6 @@ describe('Settings Part test', () => {
         }}
       />
     );
-    // const tree = component.toJSON();
     const result = renderer.getRenderOutput();
     expect(result).toMatchSnapshot();
   });
