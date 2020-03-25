@@ -16,10 +16,10 @@ class selenoidHelper extends Helper {
   _failed(test, error) {
     const sessionId = this._getSessionId();
     const config = this._getConfig();
-    let testDataObj = {};
+    const testDataObj = {};
     testDataObj['sessionid'] = sessionId;
     testDataObj['testName'] = test.title;
-    let testData = JSON.stringify(testDataObj);
+    const testData = JSON.stringify(testDataObj);
     if (!fs.existsSync(this.resultFilesFolder + 'selenoid/')) {
       fs.mkdirSync(this.resultFilesFolder + 'selenoid/');
     }

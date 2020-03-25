@@ -1,5 +1,5 @@
 const { I } = inject();
-let assert = require('assert');
+const assert = require('assert');
 
 module.exports = {
   // insert your locators and methods here
@@ -31,7 +31,7 @@ module.exports = {
   async upgradePMM() {
     I.waitForElement(this.fields.triggerUpdate, 180);
     I.seeElement(this.fields.triggerUpdate);
-    let available_version = await I.grabTextFrom(this.fields.availableVersion);
+    const available_version = await I.grabTextFrom(this.fields.availableVersion);
     I.click(this.fields.triggerUpdate);
     I.waitForElement(this.fields.updateProgressModal, 30);
     I.waitForText('Update in progress', 30, this.fields.updateProgressModal);

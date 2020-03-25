@@ -1,5 +1,5 @@
 const { I, pmmInventoryPage } = inject();
-let assert = require('assert');
+const assert = require('assert');
 module.exports = {
   // insert your locators and methods here
   // setting locators
@@ -32,8 +32,8 @@ module.exports = {
   },
 
   async verifyAgentHasStatusRunning(service_name, version) {
-    let agentLinkLocator;
-    let serviceId = await this.getServiceId(service_name);
+    const agentLinkLocator;
+    const serviceId = await this.getServiceId(service_name);
     if (version == 'old') {
       agentLinkLocator = this.fields.agentsLinkOld;
     } else {
@@ -42,7 +42,7 @@ module.exports = {
     I.click(agentLinkLocator);
     I.waitForElement(this.fields.pmmAgentLocator, 60);
     I.waitForElement(this.fields.inventoryTable, 60);
-    let numberOfServices = await I.grabNumberOfVisibleElements(
+    const numberOfServices = await I.grabNumberOfVisibleElements(
       "//span[contains(text(), '" +
         serviceId +
         "')]/following-sibling::span[contains(text(),'status: RUNNING')]"
@@ -55,14 +55,14 @@ module.exports = {
   },
 
   async getServiceId(serviceName) {
-    let serviceIdLocator = this.fields.serviceIdLocatorPrefix + serviceName + "')]/preceding-sibling::td[2]";
-    let matchedServices = await I.grabNumberOfVisibleElements(serviceIdLocator);
+    const serviceIdLocator = this.fields.serviceIdLocatorPrefix + serviceName + "')]/preceding-sibling::td[2]";
+    const matchedServices = await I.grabNumberOfVisibleElements(serviceIdLocator);
     await assert.equal(
       matchedServices,
       1,
       'There must be only one entry for the newly added service with name ' + serviceName
     );
-    let serviceId = await I.grabTextFrom(serviceIdLocator);
+    const serviceId = await I.grabTextFrom(serviceIdLocator);
     return serviceId;
   },
 };

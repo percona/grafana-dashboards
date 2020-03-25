@@ -8,8 +8,8 @@ Before((I, loginPage) => {
 xScenario(
   'Open Remote Instance Page and Add mysql instances @pmm-pre-update',
   async (I, remoteInstancesPage, pmmInventoryPage) => {
-    let mysql_service_name = 'mysql_remote_test';
-    let version = 'old';
+    const mysql_service_name = 'mysql_remote_test';
+    const version = 'old';
     I.amOnPage(remoteInstancesPage.url);
     remoteInstancesPage.waitUntilOldRemoteInstancesPageLoaded();
     remoteInstancesPage.openAddRemoteMySQLPage();
@@ -23,8 +23,8 @@ xScenario(
 xScenario(
   'Verify is the remote instances are in Running Status @pmm-post-update',
   async (I, adminPage, remoteInstancesPage, pmmInventoryPage) => {
-    let mysql_service_name = 'mysql_remote_test';
-    let version = 'new';
+    const mysql_service_name = 'mysql_remote_test';
+    const version = 'new';
     I.amOnPage(pmmInventoryPage.url);
     pmmInventoryPage.verifyMySQLRemoteServiceIsDisplayed(mysql_service_name);
     await pmmInventoryPage.verifyAgentHasStatusRunning(mysql_service_name, version);
@@ -34,8 +34,8 @@ xScenario(
 xScenario(
   'Open Remote Instance Page and Add mysql instances PMM Latest',
   async (I, adminPage, remoteInstancesPage, pmmInventoryPage) => {
-    let mysql_service_name = 'mysql_remote_new';
-    let version = 'new';
+    const mysql_service_name = 'mysql_remote_new';
+    const version = 'new';
     I.amOnPage(remoteInstancesPage.url);
     remoteInstancesPage.waitUntilNewRemoteInstancesPageLoaded();
     remoteInstancesPage.openAddRemoteMySQLPage();

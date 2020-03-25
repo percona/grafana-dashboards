@@ -1,5 +1,5 @@
 const { I } = inject();
-let assert = require('assert');
+const assert = require('assert');
 module.exports = {
   // insert your locators and methods here
   // setting locators
@@ -120,7 +120,7 @@ module.exports = {
 
   async verifySectionHeaders() {
     for (let i = 0; i < this.sectionHeaderList.length; i++) {
-      let elementText = await I.grabTextFrom(this.fields.sectionHeader);
+      const elementText = await I.grabTextFrom(this.fields.sectionHeader);
       assert.equal(
         elementText[i],
         this.sectionHeaderList[i],
@@ -135,15 +135,15 @@ module.exports = {
   },
 
   async expandSection(sectionName, expectedContentLocatorText) {
-    let sectionExpandLocator = this.fields.sectionHeader + `[contains(text(), '${sectionName}')]`;
-    let contentLocator =
+    const sectionExpandLocator = this.fields.sectionHeader + `[contains(text(), '${sectionName}')]`;
+    const contentLocator =
       sectionExpandLocator + `/following-sibling::div//span[text()='${expectedContentLocatorText}']`;
     I.click(sectionExpandLocator);
     await this.waitForButton(contentLocator, expectedContentLocatorText);
   },
 
   collapseSection(sectionName) {
-    let sectionHeaderLocator = this.fields.sectionHeader + `[contains(text(), '${sectionName}')]`;
+    const sectionHeaderLocator = this.fields.sectionHeader + `[contains(text(), '${sectionName}')]`;
     I.click(sectionHeaderLocator);
     I.waitForInvisible(this.fields.applyButton, 30);
   },
@@ -153,7 +153,7 @@ module.exports = {
   },
 
   async verifySectionExpanded(contentLocator, contentLocatorText) {
-    let textInside = await I.grabTextFrom(contentLocator);
+    const textInside = await I.grabTextFrom(contentLocator);
     assert.equal(
       textInside,
       contentLocatorText,
@@ -170,7 +170,7 @@ module.exports = {
   },
 
   async verifyPopUpMessage(validationMessage) {
-    let alertText = await I.grabTextFrom(this.fields.popUpTitle);
+    const alertText = await I.grabTextFrom(this.fields.popUpTitle);
     assert.equal(
       alertText.toString().split(',')[0],
       validationMessage,
@@ -180,7 +180,7 @@ module.exports = {
   },
 
   async verifyMessage(validationMessage) {
-    let validationText = await I.grabTextFrom(this.fields.validationMessage);
+    const validationText = await I.grabTextFrom(this.fields.validationMessage);
     assert.equal(
       validationText.toString().split(',')[0],
       validationMessage,
@@ -212,7 +212,7 @@ module.exports = {
   async verifyResolutionIsApplied(resolution) {
     I.refreshPage();
     this.waitForPmmSettingsPageLoaded();
-    let selectedResolutionText = await I.grabTextFrom(this.fields.selectedResolution);
+    const selectedResolutionText = await I.grabTextFrom(this.fields.selectedResolution);
 
     assert.equal(
       selectedResolutionText,
@@ -249,7 +249,7 @@ module.exports = {
 
   async verifyDataRetentionValueApplied(seconds) {
     this.waitForPmmSettingsPageLoaded();
-    let selectedTimeValue = await I.grabAttributeFrom(this.fields.dataRetentionCount, 'value');
+    const selectedTimeValue = await I.grabAttributeFrom(this.fields.dataRetentionCount, 'value');
     assert.equal(
       selectedTimeValue,
       seconds,
@@ -277,7 +277,7 @@ module.exports = {
 
   async verifyAlertmanagerRuleAdded(ruleName) {
     for (let i = 0; i < 10; i++) {
-      let notLoaded = await I.grabNumberOfVisibleElements(`//td[contains(text(), '${ruleName}')]`);
+      const notLoaded = await I.grabNumberOfVisibleElements(`//td[contains(text(), '${ruleName}')]`);
       if (notLoaded) {
         break;
       }

@@ -7,7 +7,7 @@ Before((I, loginPage, pmmSettingsPage) => {
 });
 
 Scenario('Open PMM Settings page and verify changing Metrics Resolution', async (I, pmmSettingsPage) => {
-  let resolutionToApply = 'Low';
+  const resolutionToApply = 'Low';
   pmmSettingsPage.waitForPmmSettingsPageLoaded();
   await pmmSettingsPage.selectMetricsResolution(resolutionToApply);
   await pmmSettingsPage.verifySuccessfulPopUp(pmmSettingsPage.messages.successPopUpMessage);
@@ -15,7 +15,7 @@ Scenario('Open PMM Settings page and verify changing Metrics Resolution', async 
 });
 
 xScenario('Open PMM Settings page and verify changing Data Retention', async (I, pmmSettingsPage) => {
-  let dataRetentionValue = '1';
+  const dataRetentionValue = '1';
   pmmSettingsPage.waitForPmmSettingsPageLoaded();
   pmmSettingsPage.changeDataRetentionValueTo(dataRetentionValue);
   await pmmSettingsPage.verifySuccessfulPopUp(pmmSettingsPage.messages.successPopUpMessage);
@@ -23,8 +23,8 @@ xScenario('Open PMM Settings page and verify changing Data Retention', async (I,
 });
 
 Scenario('Open PMM Settings page and verify adding Alertmanager Rule', async (I, pmmSettingsPage) => {
-  let scheme = 'http://';
-  let sectionNameToExpand = 'Alertmanager integration';
+  const scheme = 'http://';
+  const sectionNameToExpand = 'Alertmanager integration';
   pmmSettingsPage.waitForPmmSettingsPageLoaded();
   pmmSettingsPage.collapseDefaultSection();
   await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.sectionButtonText.addAlert);
@@ -38,8 +38,8 @@ Scenario('Open PMM Settings page and verify adding Alertmanager Rule', async (I,
 });
 
 xScenario('Open PMM Settings page and verify Editing Alertmanager Rule', async (I, pmmSettingsPage) => {
-  let scheme = 'http://';
-  let sectionNameToExpand = 'Alertmanager integration';
+  const scheme = 'http://';
+  const sectionNameToExpand = 'Alertmanager integration';
   pmmSettingsPage.waitForPmmSettingsPageLoaded();
   pmmSettingsPage.collapseDefaultSection();
   await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.sectionButtonText.addAlert);
@@ -53,7 +53,7 @@ xScenario('Open PMM Settings page and verify Editing Alertmanager Rule', async (
 });
 
 Scenario('Open PMM Settings page and verify clearing Alertmanager Rule', async (I, pmmSettingsPage) => {
-  let sectionNameToExpand = 'Alertmanager integration';
+  const sectionNameToExpand = 'Alertmanager integration';
   pmmSettingsPage.waitForPmmSettingsPageLoaded();
   pmmSettingsPage.collapseDefaultSection();
   await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.sectionButtonText.addAlert);

@@ -45,7 +45,7 @@ Scenario('Verify QAN pagination @not-pr-pipeline', async (I, adminPage, qanPage)
 xScenario(
   'Verify Tables tab in Query Details for Database=postgres filter @not-pr-pipeline',
   async (I, adminPage, qanPage) => {
-    let filterToApply = 'postgres';
+    const filterToApply = 'postgres';
     qanPage.waitForQANPageLoaded();
     qanPage.applyFilter(filterToApply);
     qanPage._selectDetails(2);
@@ -57,7 +57,7 @@ xScenario(
 Scenario(
   'Verify Tables tab in Query Details for Environment=pgsql-dev filter @not-pr-pipeline',
   async (I, adminPage, qanPage) => {
-    let filterToApply = 'pgsql-dev';
+    const filterToApply = 'pgsql-dev';
     qanPage.waitForQANPageLoaded();
     qanPage.applyFilter(filterToApply);
     qanPage._selectDetails(2);
@@ -69,7 +69,7 @@ Scenario(
 xScenario(
   'Verify Explain tab in Query Details for Database=postgres filter @not-pr-pipeline',
   async (I, adminPage, qanPage) => {
-    let filterToApply = 'postgres';
+    const filterToApply = 'postgres';
     qanPage.waitForQANPageLoaded();
     qanPage.applyFilter(filterToApply);
     qanPage._selectDetails(2);
@@ -81,7 +81,7 @@ xScenario(
 Scenario(
   'Verify Explain tab in Query Details for Environment=pgsql-dev filter @not-pr-pipeline',
   async (I, adminPage, qanPage) => {
-    let filterToApply = 'pgsql-dev';
+    const filterToApply = 'pgsql-dev';
     qanPage.waitForQANPageLoaded();
     qanPage.applyFilter(filterToApply);
     qanPage._selectDetails(2);
@@ -91,7 +91,7 @@ Scenario(
 );
 
 Scenario('Verify adding new Column reflects in URL @not-pr-pipeline', async (I, adminPage, qanPage) => {
-  let columnName = 'Query Count with errors';
+  const columnName = 'Query Count with errors';
   qanPage.waitForQANPageLoaded();
   qanPage.addColumnToQAN(columnName);
   qanPage.verifyURLContains(qanPage.urlParts.queryCountWithoutErrors);
@@ -100,7 +100,7 @@ Scenario('Verify adding new Column reflects in URL @not-pr-pipeline', async (I, 
 Scenario(
   'Verify adding new Database Filter reflects in URL @not-pr-pipeline',
   async (I, adminPage, qanPage) => {
-    let filterToApply = 'local';
+    const filterToApply = 'local';
     qanPage.waitForQANPageLoaded();
     I.wait(2);
     qanPage.applyFilter(filterToApply);
@@ -109,8 +109,8 @@ Scenario(
 );
 
 Scenario('Verify Main Metric change reflects in URL @not-pr-pipeline', async (I, adminPage, qanPage) => {
-  let metricToReplace = 'Load';
-  let newMetricName = 'Lock Time';
+  const metricToReplace = 'Load';
+  const newMetricName = 'Lock Time';
   qanPage.waitForQANPageLoaded();
   qanPage.changeMetricTo(metricToReplace, newMetricName);
   qanPage.verifyURLContains(qanPage.urlParts.lockTime);

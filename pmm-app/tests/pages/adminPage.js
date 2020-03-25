@@ -1,5 +1,5 @@
 const { I } = inject();
-let assert = require('assert');
+const assert = require('assert');
 module.exports = {
   // insert your locators and methods here
   // setting locators
@@ -26,7 +26,7 @@ module.exports = {
     I.waitForVisible(this.prepareDashboardLocator(dashboardName), 30);
     I.wait(5);
     I.click(this.prepareDashboardLocator(dashboardName));
-    let numOfElements = await I.grabNumberOfVisibleElements(this.fields.discardChanges);
+    const numOfElements = await I.grabNumberOfVisibleElements(this.fields.discardChanges);
     if (numOfElements > 0) {
       I.click('Discard');
     }
@@ -79,9 +79,9 @@ module.exports = {
   },
 
   async grabReportNameWithNA(number) {
-    let numOfElements = await I.grabNumberOfVisibleElements(this.fields.reportTitleWithNA);
+    const numOfElements = await I.grabNumberOfVisibleElements(this.fields.reportTitleWithNA);
     if (numOfElements > number) {
-      let reportTitle = await I.grabTextFrom(this.fields.reportTitleWithNA);
+      const reportTitle = await I.grabTextFrom(this.fields.reportTitleWithNA);
       assert.equal(
         numOfElements > number,
         false,
