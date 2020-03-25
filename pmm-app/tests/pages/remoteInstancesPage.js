@@ -4,8 +4,8 @@ module.exports = {
 
     accessKey: process.env.AWS_ACCESS_KEY_ID,
     secretKey: process.env.AWS_SECRET_ACCESS_KEY,
-    usernameRDSMySQL: process.env.pmm-dev-mysql-remote-user,
-    passwordRDSMySQL: process.env.pmm-dev-remote-password,
+    usernameRDSMySQL: process.env.AWS_MYSQL_USER,
+    passwordRDSMySQL: process.env.AWS_MYSQL_PASSWORD,
 
     // insert your locators and methods here
     // setting locators

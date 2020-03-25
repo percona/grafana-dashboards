@@ -25,7 +25,7 @@ Scenario('Open the ProxySQL Instance Summary Dashboard and verify Metrics are pr
     adminPage.peformPageDown(2);
     await dashboardPage.verifyMetricsExistence(dashboardPage.proxysqlInstanceSummaryDashboard.metrics);
     await dashboardPage.verifyThereAreNoGraphsWithNA();
-    await dashboardPage.verifyThereAreNoGraphsWithoutData(3);
+    await dashboardPage.verifyThereAreNoGraphsWithoutData(8);
 });
 
 Scenario('Open the PXCGalera Cluster Summary Dashboard and verify Metrics are present and graphs are displayed',
