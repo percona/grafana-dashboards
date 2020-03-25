@@ -6,7 +6,7 @@ Before((I, loginPage) => {
 });
 
 Scenario(
-  'Verify Discovery and adding AWS RDS MySQL 5.6 instance for monitoring',
+  'Verify Discovery and adding AWS RDS MySQL 5.6 instance for monitoring @not-pr-pipeline',
   async (I, remoteInstancesPage, pmmInventoryPage) => {
     const instanceIdToMonitor = 'rds-mysql56';
     I.amOnPage(remoteInstancesPage.url);
