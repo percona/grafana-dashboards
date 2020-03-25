@@ -58,7 +58,6 @@ pipeline {
             steps {
                 sh """
                     sg docker -c "
-                        export CHROME_VERSION=${params.CHROME_VERSION}
                         source \"/usr/local/nvm/nvm.sh\"
 
                         make release
@@ -82,7 +81,6 @@ pipeline {
             steps {
                 sh """
                     sg docker -c "
-                        export CHROME_VERSION=${params.CHROME_VERSION}
                         source \"/usr/local/nvm/nvm.sh\"
 
                         make generate_coverage
