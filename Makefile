@@ -26,6 +26,8 @@ release:
 	&& npm i \
 	&& npm run build
 
+generate_coverage: coverage codecov
+
 test: release e2e coverage codecov
 
 clean:

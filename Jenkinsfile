@@ -54,14 +54,38 @@ pipeline {
                 slackSend channel: '#pmm-ci', color: '#FFFF00', message: "[${JOB_NAME}]: tests started - ${BUILD_URL}"
             }
         }
-        stage('UI tests') {
+        stage('Build') {
             steps {
                 sh """
                     sg docker -c "
                         export CHROME_VERSION=${params.CHROME_VERSION}
                         source \"/usr/local/nvm/nvm.sh\"
 
-                        make ${params.RUN_TEST}
+                        make release
+                    "
+                """
+            }
+        }
+        stage('e2e tests') {
+            steps {
+                sh """
+                    sg docker -c "
+                        export CHROME_VERSION=${params.CHROME_VERSION}
+                        source \"/usr/local/nvm/nvm.sh\"
+
+                        make e2e
+                    "
+                """
+            }
+        }
+        stage('Generate code coverage') {
+            steps {
+                sh """
+                    sg docker -c "
+                        export CHROME_VERSION=${params.CHROME_VERSION}
+                        source \"/usr/local/nvm/nvm.sh\"
+
+                        make generate_coverage
                     "
                 """
             }
