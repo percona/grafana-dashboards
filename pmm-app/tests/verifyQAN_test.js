@@ -9,18 +9,21 @@ Before(async (I, loginPage, qanPage, adminPage) => {
   await I.switchTo(qanPage.fields.iframe);
 });
 
-Scenario('Verify QAN Filter groups exist', async (I, adminPage, qanPage) => {
+Scenario('Verify QAN Filter groups exist @not-pr-pipeline', async (I, adminPage, qanPage) => {
   qanPage.waitForQANPageLoaded();
   await qanPage.changeResultsPerPage(50);
   qanPage.checkFilterGroups();
 });
 
-Scenario('Verify QAN Query Details section opened when user selects Query', async (I, adminPage, qanPage) => {
-  qanPage.waitForQANPageLoaded();
-  qanPage._selectDetails(2);
-});
+Scenario(
+  'Verify QAN Query Details section opened when user selects Query @not-pr-pipeline',
+  async (I, adminPage, qanPage) => {
+    qanPage.waitForQANPageLoaded();
+    qanPage._selectDetails(2);
+  }
+);
 
-xScenario('Verify data in Table and Query Details', async (I, adminPage, qanPage) => {
+xScenario('Verify data in Table and Query Details @not-pr-pipeline', async (I, adminPage, qanPage) => {
   I.amOnPage(qanPage.url);
   await I.waitForElement(qanPage.fields.iframe, 60);
   adminPage.applyTimer('5m');
@@ -32,7 +35,7 @@ xScenario('Verify data in Table and Query Details', async (I, adminPage, qanPage
   await qanPage.clearFilters();
 });
 
-Scenario('Verify QAN pagination', async (I, adminPage, qanPage) => {
+Scenario('Verify QAN pagination @not-pr-pipeline', async (I, adminPage, qanPage) => {
   qanPage.waitForQANPageLoaded();
   qanPage.checkPagination();
   await qanPage.checkSparkLines();
@@ -40,7 +43,7 @@ Scenario('Verify QAN pagination', async (I, adminPage, qanPage) => {
 });
 
 xScenario(
-  'Verify Tables tab in Query Details for Database=postgres filter',
+  'Verify Tables tab in Query Details for Database=postgres filter @not-pr-pipeline',
   async (I, adminPage, qanPage) => {
     let filterToApply = 'postgres';
     qanPage.waitForQANPageLoaded();
@@ -52,7 +55,7 @@ xScenario(
 );
 
 Scenario(
-  'Verify Tables tab in Query Details for Environment=pgsql-dev filter',
+  'Verify Tables tab in Query Details for Environment=pgsql-dev filter @not-pr-pipeline',
   async (I, adminPage, qanPage) => {
     let filterToApply = 'pgsql-dev';
     qanPage.waitForQANPageLoaded();
@@ -64,7 +67,7 @@ Scenario(
 );
 
 xScenario(
-  'Verify Explain tab in Query Details for Database=postgres filter',
+  'Verify Explain tab in Query Details for Database=postgres filter @not-pr-pipeline',
   async (I, adminPage, qanPage) => {
     let filterToApply = 'postgres';
     qanPage.waitForQANPageLoaded();
@@ -76,7 +79,7 @@ xScenario(
 );
 
 Scenario(
-  'Verify Explain tab in Query Details for Environment=pgsql-dev filter',
+  'Verify Explain tab in Query Details for Environment=pgsql-dev filter @not-pr-pipeline',
   async (I, adminPage, qanPage) => {
     let filterToApply = 'pgsql-dev';
     qanPage.waitForQANPageLoaded();
@@ -87,22 +90,25 @@ Scenario(
   }
 );
 
-Scenario('Verify adding new Column reflects in URL', async (I, adminPage, qanPage) => {
+Scenario('Verify adding new Column reflects in URL @not-pr-pipeline', async (I, adminPage, qanPage) => {
   let columnName = 'Query Count with errors';
   qanPage.waitForQANPageLoaded();
   qanPage.addColumnToQAN(columnName);
   qanPage.verifyURLContains(qanPage.urlParts.queryCountWithoutErrors);
 });
 
-Scenario('Verify adding new Database Filter reflects in URL', async (I, adminPage, qanPage) => {
-  let filterToApply = 'local';
-  qanPage.waitForQANPageLoaded();
-  I.wait(2);
-  qanPage.applyFilter(filterToApply);
-  qanPage.verifyURLContains(qanPage.urlParts.pmmManaged);
-});
+Scenario(
+  'Verify adding new Database Filter reflects in URL @not-pr-pipeline',
+  async (I, adminPage, qanPage) => {
+    let filterToApply = 'local';
+    qanPage.waitForQANPageLoaded();
+    I.wait(2);
+    qanPage.applyFilter(filterToApply);
+    qanPage.verifyURLContains(qanPage.urlParts.pmmManaged);
+  }
+);
 
-Scenario('Verify Main Metric change reflects in URL', async (I, adminPage, qanPage) => {
+Scenario('Verify Main Metric change reflects in URL @not-pr-pipeline', async (I, adminPage, qanPage) => {
   let metricToReplace = 'Load';
   let newMetricName = 'Lock Time';
   qanPage.waitForQANPageLoaded();
