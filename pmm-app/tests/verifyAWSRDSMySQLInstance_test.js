@@ -1,4 +1,4 @@
-Feature('To verify monitoried AWS RDS Db instance');
+Feature('Monitoring AWS RDS MySQL DB');
 
 Before((I, loginPage) => {
   I.amOnPage(loginPage.url);
@@ -6,7 +6,7 @@ Before((I, loginPage) => {
 });
 
 Scenario(
-  'Open Remote Instances Page and verify Discovery and Adding AWS RDS MySQL 5.6 instance @not-pr-pipeline',
+  'Verify Discovery and adding AWS RDS MySQL 5.6 instance for monitoring',
   async (I, remoteInstancesPage, pmmInventoryPage) => {
     let instanceIdToMonitor = 'rds-mysql56';
     I.amOnPage(remoteInstancesPage.url);
@@ -23,7 +23,7 @@ Scenario(
 );
 
 Scenario(
-  'Open Inventory Page and verify AWS RDS MySQL 5.6 instance has status running @pmm-post-update @not-pr-pipeline',
+  'Verify AWS RDS MySQL 5.6 instance has status running @pmm-post-update',
   async (I, remoteInstancesPage, pmmInventoryPage) => {
     let serviceName = 'rds-mysql56';
     I.amOnPage(pmmInventoryPage.url);
@@ -33,7 +33,7 @@ Scenario(
 );
 
 Scenario(
-  'Verify QAN Filters contain AWS RDS MySQL 5.6 after it was added for monitoring @not-pr-pipeline',
+  'Verify QAN Filters contain AWS RDS MySQL 5.6 after it was added for monitoring',
   async (I, qanPage, adminPage) => {
     let environment = 'RDS MySQL 5.6';
     let filter = qanPage.getFilterLocator(environment);
@@ -47,7 +47,7 @@ Scenario(
 );
 
 xScenario(
-  'Verify MySQL Instances Overview Dashboard for AWS RDS MySQL 5.6 data after it was added for monitoring @not-pr-pipeline',
+  'Verify MySQL Instances Overview Dashboard for AWS RDS MySQL 5.6 data after it was added for monitoring',
   async (I, remoteInstancesPage, dashboardPage) => {
     I.amOnPage(remoteInstancesPage.dashboardMySQLOverviewWithFilters);
     dashboardPage.waitForDashboardOpened();
