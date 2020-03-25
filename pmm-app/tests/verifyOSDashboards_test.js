@@ -5,7 +5,7 @@ Before((I, loginPage) => {
     loginPage.login("admin", "admin");
 });
 
-Scenario('Open the Node Summary Dashboard and verify Metrics are present and graphs are displayed',
+Scenario('Open the Node Summary Dashboard and verify Metrics are present and graphs are displayed @not-pr-pipeline',
         async (I, dashboardPage, adminPage) => {
     I.amOnPage(dashboardPage.nodeSummaryDashboard.url);
     dashboardPage.waitForDashboardOpened();
@@ -16,7 +16,7 @@ Scenario('Open the Node Summary Dashboard and verify Metrics are present and gra
     await dashboardPage.verifyThereAreNoGraphsWithoutData(1);
 });
 
-Scenario('Open the Nodes Compare Dashboard and verify Metrics are present and graphs are displayed',
+Scenario('Open the Nodes Compare Dashboard and verify Metrics are present and graphs are displayed @not-pr-pipeline',
         async (I, adminPage, dashboardPage) => {
     I.amOnPage(dashboardPage.nodesCompareDashboard.url);
     dashboardPage.waitForDashboardOpened();
