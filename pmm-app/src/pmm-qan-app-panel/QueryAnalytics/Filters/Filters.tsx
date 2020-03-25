@@ -128,6 +128,7 @@ export const Filters = ({ dispatch, groups, form, labels, filters }) => {
           className={Styling.resetButton}
           id="reset-all-filters"
           onClick={() => {
+            setFilter('');
             dispatch({ type: 'RESET_LABELS' });
             form.reset();
           }}

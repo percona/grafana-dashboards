@@ -44,15 +44,16 @@ const Styling = {
 
 export const CheckboxGroup = ({ form, name, items, group, showAll, filter, labels }) => {
   const [showTop, setShowTop] = useState(false);
-  const data = showTop ? items.slice(0, TOP_LIMIT) : items;
-  const itemsList = data
+  const filteredData = items
     .filter(item => item.value)
     .filter(item => {
       if (!showAll) {
         return item.checked;
       }
       return true;
-    })
+    });
+
+  const itemsList = (showTop ? filteredData.slice(0, TOP_LIMIT) : filteredData)
     .filter(item => item.value.toLowerCase().includes(filter.toLowerCase()))
     .map(item => {
       // If there is no value - disable checkbox and hide percent
@@ -80,14 +81,14 @@ export const CheckboxGroup = ({ form, name, items, group, showAll, filter, label
     <div>
       <p className={Styling.filterHeaderWrapper}>
         <span className={Styling.filterHeader}>{name}</span>
-        {items.length > TOP_LIMIT ? (
+        {filteredData.length > TOP_LIMIT ? (
           <span
             onClick={() => {
               setShowTop(!showTop);
             }}
             className={Styling.showModeSwitcher}
           >
-            {showTop ? `Show all (${items.length})` : `Show top ${TOP_LIMIT}`}
+            {showTop ? `Show all (${filteredData.length})` : `Show top ${TOP_LIMIT}`}
           </span>
         ) : (
           <span></span>
