@@ -278,7 +278,9 @@ module.exports = {
   async verifyAlertmanagerRuleAdded(ruleName) {
     for (let i = 0; i < 10; i++) {
       let notLoaded = await I.grabNumberOfVisibleElements(`//td[contains(text(), '${ruleName}')]`);
-      if (notLoaded) break;
+      if (notLoaded) {
+        break;
+      }
       I.refreshPage();
       I.wait(1);
     }

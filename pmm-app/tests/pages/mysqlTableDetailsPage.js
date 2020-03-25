@@ -22,8 +22,11 @@ module.exports = {
   ],
 
   graphsLocator(metricName) {
-    return
-    "//span[text()='" + metricName + "']//ancestor::grafana-panel//span[contains(text(), 'No data to show')]";
+    return (
+      "//span[text()='" +
+      metricName +
+      "']//ancestor::grafana-panel//span[contains(text(), 'No data to show')]"
+    );
   },
 
   verifyNoDataShow() {

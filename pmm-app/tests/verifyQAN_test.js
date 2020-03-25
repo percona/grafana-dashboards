@@ -37,8 +37,6 @@ Scenario('Verify QAN pagination', async (I, adminPage, qanPage) => {
   qanPage.checkPagination();
   await qanPage.checkSparkLines();
   qanPage.checkTableHeaders();
-  //qanPage.checkServerList();
-  // I.switchTo();
 });
 
 xScenario(

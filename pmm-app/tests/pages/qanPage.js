@@ -197,7 +197,7 @@ module.exports = {
   async verifyDetailsSectionDataExists(tabElements) {
     this.waitForTabContentsLoaded(tabElements);
     let detailsText = await I.grabTextFrom(tabElements[0]);
-    assert.equal(detailsText.length > 0, true, `Empty Section in Details`);
+    assert.equal(detailsText.length > 0, true, 'Empty Section in Details');
   },
 
   async verifyDataSet(row) {
