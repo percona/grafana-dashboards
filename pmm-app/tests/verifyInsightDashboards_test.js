@@ -11,7 +11,7 @@ Scenario('Open Advanced Exploration Dashboard and verify Metrics are present and
     dashboardPage.waitForDashboardOpened();
     dashboardPage.verifyMetricsExistence(dashboardPage.advancedDataExplorationDashboard.metrics);
     await dashboardPage.verifyThereAreNoGraphsWithNA();
-    await dashboardPage.verifyThereAreNoGraphsWithoutData();
+    await dashboardPage.verifyThereAreNoGraphsWithoutData(1);
 });
 
 Scenario('Open Prometheus Dashboard and verify Metrics are present and graphs are displayed',
@@ -39,6 +39,6 @@ Scenario('Open the Prometheus Exporters Overview Dashboard and verify Metrics ar
     I.amOnPage(dashboardPage.prometheusExporterOverviewDashboard.url);
     dashboardPage.waitForDashboardOpened();
     dashboardPage.verifyMetricsExistence(dashboardPage.prometheusExporterOverviewDashboard.metrics);
-    await dashboardPage.verifyThereAreNoGraphsWithNA();
+    await dashboardPage.verifyThereAreNoGraphsWithNA(3);
     await dashboardPage.verifyThereAreNoGraphsWithoutData();
 });
