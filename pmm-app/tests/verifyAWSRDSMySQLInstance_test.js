@@ -5,7 +5,7 @@ Before((I, loginPage) => {
     loginPage.login("admin", "admin");
 });
 
-Scenario('Open Remote Instances Page and verify Discovery and Adding AWS RDS MySQL 5.6 remote instance', async (I, remoteInstancesPage, pmmInventoryPage) => {
+Scenario('Open Remote Instances Page and verify Discovery and Adding AWS RDS MySQL 5.6 instance', async (I, remoteInstancesPage, pmmInventoryPage) => {
     let instanceIdToMonitor = "rds-mysql56";
     I.amOnPage(remoteInstancesPage.url);
     remoteInstancesPage.waitUntilNewRemoteInstancesPageLoaded()
