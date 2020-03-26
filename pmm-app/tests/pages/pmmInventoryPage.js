@@ -1,5 +1,5 @@
-let { I, pmmInventoryPage } = inject();
-const assert = require('assert');
+const { I, pmmInventoryPage } = inject();
+let assert = require('assert');
 module.exports = {
   // insert your locators and methods here
   // setting locators
