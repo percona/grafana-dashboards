@@ -117,17 +117,14 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
         },
       ].filter(tooltip => tooltip.value);
 
-      const minStr = `${Humanize.transform(stats.min)}`;
-      const maxStr = `${Humanize.transform(stats.max)}`;
-      const avgStr = `${Humanize.transform(stats.avg)}`;
-      const p99Str = `${stats.p99 ? `${Humanize.transform(stats.p99)}` : ''}`;
-
       const latencyTooltipData = [
-        { header: '⌜ Min', value: minStr },
-        { header: '⌟ Max', value: maxStr },
-        { header: '◦ Avg', value: avgStr },
-        { header: '• 99%', value: p99Str },
-      ].filter(element => element.value);
+        { header: '⌜ Min', value: stats.min },
+        { header: '⌟ Max', value: stats.max },
+        { header: '◦ Avg', value: stats.avg },
+        { header: '• 99%', value: stats.p99 },
+      ]
+        .filter(element => element.value)
+        .map(({ header, value }) => ({ header: header, value: Humanize.transform(value) }));
 
       // @ts-ignore
       const polygonChartProps = { width: COLUMN_WIDTH * 1.2 - MAIN_METRIC_VALUE_WIDTH, data: item.sparkline };
@@ -159,9 +156,13 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
                   <div className={Styling.tooltipHeader}>{metric.humanizeName}</div>
                   <Divider style={{ background: '#363434', margin: '0' }} />
                   <MetricsList data={tooltipData} />
-                  <Divider style={{ background: '#666666', margin: '0' }} />
-                  {metricName === 'query_time' && <LatencyChart {...{ data: stats }} />}
-                  <MetricsList data={latencyTooltipData} />
+                  {latencyTooltipData.length ? (
+                    <>
+                      <Divider style={{ background: '#666666', margin: '0' }} />
+                      {metricName === 'query_time' && <LatencyChart {...{ data: stats }} />}
+                      <MetricsList data={latencyTooltipData} />
+                    </>
+                  ) : null}
                 </div>
               }
             >
