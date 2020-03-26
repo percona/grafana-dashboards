@@ -12,14 +12,19 @@ const ExplainContainer = props => {
   const [example, setExample] = useState({});
 
   const startExplainActions = example => {
+    if (!('example' in example) || example.example === '') {
+      setErrorText('Cannot display query explain without query example at this time.');
+      return;
+    }
+
     switch (databaseType) {
       case 'mysql':
-        if (!('example' in example) || example.example === '') {
-          setErrorText('Cannot display query explain without query example at this time.');
-          return;
-        }
         setErrorText('');
-        getExplain(example);
+        getMysqlExplain(example);
+        break;
+      case 'mongo':
+        setErrorText('');
+        getMongoExplain(example);
         break;
       default:
         setErrorText('Not implemented yet :(');
@@ -27,10 +32,28 @@ const ExplainContainer = props => {
     }
   };
 
-  const getExplain = example => {
+  const getMongoExplain = example => {
     (async () => {
       try {
-        const { action_id } = await ExplainService.getTraditionalExplain({
+        const { action_id } = await ExplainService.getTraditionalExplainJSONMongo({
+          pmm_agent_id: example.pmm_agent_id,
+          service_id: example.service_id,
+          query: example.example,
+        });
+        const explain = await ExplainService.getActionResult({
+          action_id,
+        });
+        setTraditionalExplain(explain.output);
+      } catch (e) {
+        //TODO: add error handling
+      }
+    })();
+  };
+
+  const getMysqlExplain = example => {
+    (async () => {
+      try {
+        const { action_id } = await ExplainService.getTraditionalExplainMysql({
           database: example.schema,
           query: example.example,
           service_id: example.service_id,
@@ -46,7 +69,7 @@ const ExplainContainer = props => {
 
     (async () => {
       try {
-        const { action_id } = await ExplainService.getTraditionalExplainJSON({
+        const { action_id } = await ExplainService.getTraditionalExplainJSONMysql({
           database: example.schema,
           query: example.example,
           service_id: example.service_id,
