@@ -91,7 +91,9 @@ const columns = [
                 {Humanize.transform(item.metric.sum, item.pipeTypes['sumPipe']) || 0}
               </span>
             )}
-            <span className={Styling.percentOfTotal}>{`${item.percentOfTotal}% of total`}</span>
+            {item.percentOfTotal ? (
+              <span className={Styling.percentOfTotal}>{`${item.percentOfTotal}% of total`}</span>
+            ) : null}
           </div>
           {item.complexMetric ? (
             <div>
