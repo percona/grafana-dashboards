@@ -1,7 +1,7 @@
 import { apiRequestManagement } from '../../../../../react-plugins-deps/components/helpers/api';
 
 class ExplainService {
-  static getTraditionalExplainJSON({ database, service_id, query }) {
+  static getTraditionalExplainJSONMysql({ database, service_id, query }) {
     const body = {
       database,
       service_id,
@@ -9,13 +9,22 @@ class ExplainService {
     };
     return apiRequestManagement.post<any, any>('/Actions/StartMySQLExplainJSON', body);
   }
-  static getTraditionalExplain({ database, service_id, query }) {
+  static getTraditionalExplainMysql({ database, service_id, query }) {
     const body = {
       database,
       service_id,
       query,
     };
     return apiRequestManagement.post<any, any>('/Actions/StartMySQLExplain', body);
+  }
+
+  static getTraditionalExplainJSONMongo({ pmm_agent_id, service_id, query }) {
+    const body = {
+      pmm_agent_id,
+      service_id,
+      query,
+    };
+    return apiRequestManagement.post<any, any>('/Actions/StartMongoDBExplain', body);
   }
 
   static getActionResult({ action_id }) {
