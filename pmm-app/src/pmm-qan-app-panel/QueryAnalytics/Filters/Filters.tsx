@@ -143,6 +143,7 @@ export const Filters = ({ dispatch, groups, form, labels, filters }) => {
             setFilter(e.target.value);
             e.stopPropagation();
           }}
+          value={filter}
           style={{ width: '100%' }}
         />
         {groups

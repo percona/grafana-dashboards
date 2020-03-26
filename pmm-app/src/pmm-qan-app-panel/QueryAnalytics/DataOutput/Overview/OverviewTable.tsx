@@ -77,6 +77,8 @@ const OverviewTable = props => {
   }, [columns, pageNumber, pageSize, groupBy, labels, orderBy]);
   // @ts-ignore
 
+  const container = document.querySelector('.table-wrapper');
+  const height = container && container.clientHeight;
   return (
     <Table
       dataSource={data.rows}
@@ -85,7 +87,7 @@ const OverviewTable = props => {
       size="small"
       bordered={true}
       pagination={false}
-      scroll={{ y: TABLE_Y_SCROLL, x: TABLE_X_SCROLL }}
+      scroll={{ y: Math.max(+height - 30, TABLE_Y_SCROLL), x: TABLE_X_SCROLL }}
       onRow={onRowClick}
       rowClassName={record => {
         if (querySelected) {
