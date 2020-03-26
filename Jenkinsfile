@@ -7,6 +7,14 @@ pipeline {
     agent {
         label 'large-amazon'
     }
+    environment {
+        MYSQL_HOST=credentials('mysql-remote-host')
+        MYSQL_USER=credentials('mysql-remote-user')
+        MYSQL_PASSWORD=credentials('mysql-remote-password')
+        AWS_MYSQL_USER=credentials('pmm-dev-mysql-remote-user')
+        AWS_MYSQL_PASSWORD=credentials('pmm-dev-remote-password')
+        AWS_MYSQL57_HOST=credentials('pmm-dev-mysql57-remote-host')
+    }
     parameters {
         choice(
             choices: [ 'test', 'e2e' ],
