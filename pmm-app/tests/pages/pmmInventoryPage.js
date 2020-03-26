@@ -1,5 +1,5 @@
-const { I, pmmInventoryPage } = inject();
-let assert = require('assert');
+const { I } = inject();
+const assert = require('assert');
 module.exports = {
   // insert your locators and methods here
   // setting locators
@@ -18,21 +18,21 @@ module.exports = {
   },
 
   verifyOldMySQLRemoteServiceIsDisplayed(serviceName) {
-    I.waitForElement(pmmInventoryPage.fields.iframe, 60);
-    I.switchTo(pmmInventoryPage.fields.iframe);
-    I.waitForVisible(pmmInventoryPage.fields.inventoryTableColumn, 30);
+    I.waitForElement(this.fields.iframe, 60);
+    I.switchTo(this.fields.iframe);
+    I.waitForVisible(this.fields.inventoryTableColumn, 30);
     I.scrollPageToBottom();
-    I.see(serviceName, pmmInventoryPage.fields.inventoryTableColumn);
+    I.see(serviceName, this.fields.inventoryTableColumn);
   },
 
   verifyMySQLRemoteServiceIsDisplayed(serviceName) {
-    I.waitForVisible(pmmInventoryPage.fields.inventoryTableColumn, 30);
+    I.waitForVisible(this.fields.inventoryTableColumn, 30);
     I.scrollPageToBottom();
-    I.see(serviceName, pmmInventoryPage.fields.inventoryTableColumn);
+    I.see(serviceName, this.fields.inventoryTableColumn);
   },
 
   async verifyAgentHasStatusRunning(service_name, version) {
-    const agentLinkLocator;
+    let agentLinkLocator;
     const serviceId = await this.getServiceId(service_name);
     if (version == 'old') {
       agentLinkLocator = this.fields.agentsLinkOld;
