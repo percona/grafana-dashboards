@@ -37,7 +37,6 @@ const QueryAnalyticsContainer = () => {
     state: { pageNumber, pageSize, querySelected },
   } = useContext(StateContext);
   const [total, setTotal] = useState(30);
-
   const changePageNumber = useCallback(pageNumber => {
     dispatch({
       type: 'CHANGE_PAGE',
@@ -84,7 +83,9 @@ const QueryAnalyticsContainer = () => {
         </div>
       </div>
       {!querySelected ? (
-        <OverviewTable setTotal={setTotal} />
+        <div className={'table-wrapper'}>
+          <OverviewTable setTotal={setTotal} />
+        </div>
       ) : (
         <Split
           sizes={[70, 30]}
@@ -92,13 +93,17 @@ const QueryAnalyticsContainer = () => {
           direction="vertical"
           cursor="row-resize"
           className={Styling.splitterWrapper}
-          elementStyle={(dimension, size, gutterSize) => ({
-            height: `calc(${size}% - ${gutterSize}px)`,
-            'overflow-y': 'scroll',
-          })}
+          elementStyle={(dimension, size, gutterSize) => {
+            return {
+              height: `calc(${size}% - ${gutterSize}px)`,
+              'overflow-y': 'scroll',
+            };
+          }}
           gutterStyle={() => ({ backgroundColor: '#626262', cursor: 'ns-resize', height: '10px' })}
         >
-          <OverviewTable setTotal={setTotal} />
+          <div className={'table-wrapper'}>
+            <OverviewTable setTotal={setTotal} />
+          </div>
           <QueryDetails />
         </Split>
       )}
