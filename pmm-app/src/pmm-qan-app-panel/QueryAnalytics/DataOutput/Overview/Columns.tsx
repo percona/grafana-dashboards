@@ -49,7 +49,7 @@ const Styling = {
 const MAIN_METRIC_MIN_WIDTH = 470;
 const MAIN_METRIC_VALUE_WIDTH = 90;
 export const TABLE_X_SCROLL = 1250;
-export const TABLE_Y_SCROLL = 450;
+export const TABLE_Y_SCROLL = 300;
 const COLUMN_WIDTH = 250;
 const ROW_NUMBER_COLUMN_WIDTH = 30;
 
