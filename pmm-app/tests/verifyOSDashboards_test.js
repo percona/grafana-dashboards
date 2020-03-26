@@ -1,12 +1,13 @@
-Feature("Test Dashboards inside the OS Folder");
+Feature('Test Dashboards inside the OS Folder');
 
 Before((I, loginPage) => {
-    I.amOnPage(loginPage.url);
-    loginPage.login("admin", "admin");
+  I.amOnPage(loginPage.url);
+  loginPage.login('admin', 'admin');
 });
 
-Scenario('Open the Node Summary Dashboard and verify Metrics are present and graphs are displayed',
-        async (I, dashboardPage, adminPage) => {
+Scenario(
+  'Open the Node Summary Dashboard and verify Metrics are present and graphs are displayed @not-pr-pipeline',
+  async (I, dashboardPage, adminPage) => {
     I.amOnPage(dashboardPage.nodeSummaryDashboard.url);
     dashboardPage.waitForDashboardOpened();
     I.click(adminPage.fields.metricTitle);
@@ -14,14 +15,17 @@ Scenario('Open the Node Summary Dashboard and verify Metrics are present and gra
     dashboardPage.verifyMetricsExistence(dashboardPage.nodeSummaryDashboard.metrics);
     await dashboardPage.verifyThereAreNoGraphsWithNA();
     await dashboardPage.verifyThereAreNoGraphsWithoutData(1);
-});
+  }
+);
 
-Scenario('Open the Nodes Compare Dashboard and verify Metrics are present and graphs are displayed',
-        async (I, adminPage, dashboardPage) => {
+Scenario(
+  'Open the Nodes Compare Dashboard and verify Metrics are present and graphs are displayed @not-pr-pipeline',
+  async (I, adminPage, dashboardPage) => {
     I.amOnPage(dashboardPage.nodesCompareDashboard.url);
     dashboardPage.waitForDashboardOpened();
     await dashboardPage.expandEachDashboardRow();
     dashboardPage.verifyMetricsExistence(dashboardPage.nodesCompareDashboard.metrics);
     await dashboardPage.verifyThereAreNoGraphsWithNA(1);
     await dashboardPage.verifyThereAreNoGraphsWithoutData(19);
-});
+  }
+);

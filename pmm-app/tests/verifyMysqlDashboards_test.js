@@ -1,12 +1,13 @@
 Feature('Test Dashboards inside the MySQL Folder');
 
 Before((I, loginPage) => {
-    I.amOnPage(loginPage.url);
-    loginPage.login("admin", "admin");
+  I.amOnPage(loginPage.url);
+  loginPage.login('admin', 'admin');
 });
 
-Scenario('Open the MySQL Overview Dashboard and verify Metrics are present and graphs are displayed',
-        async (I, adminPage, dashboardPage) => {
+Scenario(
+  'Open the MySQL Overview Dashboard and verify Metrics are present and graphs are displayed @not-pr-pipeline',
+  async (I, adminPage, dashboardPage) => {
     I.amOnPage(dashboardPage.mysqlInstanceSummaryDashboard.url);
     dashboardPage.waitForDashboardOpened();
     await dashboardPage.expandEachDashboardRow();
@@ -15,10 +16,12 @@ Scenario('Open the MySQL Overview Dashboard and verify Metrics are present and g
     dashboardPage.verifyMetricsExistence(dashboardPage.mysqlInstanceSummaryDashboard.metrics);
     await dashboardPage.verifyThereAreNoGraphsWithNA();
     await dashboardPage.verifyThereAreNoGraphsWithoutData(3);
-});
+  }
+);
 
-Scenario('Open the ProxySQL Instance Summary Dashboard and verify Metrics are present and graphs are displayed',
-        async (I, adminPage, dashboardPage) => {
+Scenario(
+  'Open the ProxySQL Instance Summary Dashboard and verify Metrics are present and graphs are displayed @not-pr-pipeline',
+  async (I, adminPage, dashboardPage) => {
     I.amOnPage(dashboardPage.proxysqlInstanceSummaryDashboard.url);
     dashboardPage.waitForDashboardOpened();
     I.click(adminPage.fields.metricTitle);
@@ -26,10 +29,12 @@ Scenario('Open the ProxySQL Instance Summary Dashboard and verify Metrics are pr
     await dashboardPage.verifyMetricsExistence(dashboardPage.proxysqlInstanceSummaryDashboard.metrics);
     await dashboardPage.verifyThereAreNoGraphsWithNA();
     await dashboardPage.verifyThereAreNoGraphsWithoutData(8);
-});
+  }
+);
 
-Scenario('Open the PXCGalera Cluster Summary Dashboard and verify Metrics are present and graphs are displayed',
-        async (I, adminPage, dashboardPage) => {
+Scenario(
+  'Open the PXCGalera Cluster Summary Dashboard and verify Metrics are present and graphs are displayed @not-pr-pipeline',
+  async (I, adminPage, dashboardPage) => {
     I.amOnPage(dashboardPage.pxcGaleraClusterSummaryDashboard.url);
     dashboardPage.waitForDashboardOpened();
     I.click(adminPage.fields.metricTitle);
@@ -37,12 +42,15 @@ Scenario('Open the PXCGalera Cluster Summary Dashboard and verify Metrics are pr
     dashboardPage.verifyMetricsExistence(dashboardPage.pxcGaleraClusterSummaryDashboard.metrics);
     await dashboardPage.verifyThereAreNoGraphsWithNA();
     await dashboardPage.verifyThereAreNoGraphsWithoutData();
-});
+  }
+);
 
-Scenario('Open the MySQL Table Details Dashboard and verify Disable Tablestats Report shows no Data',
-            async (I, adminPage, mysqlTableDetailsPage) => {
+Scenario(
+  'Open the MySQL Table Details Dashboard and verify Disable Tablestats Report shows no Data @not-pr-pipeline',
+  async (I, adminPage, mysqlTableDetailsPage) => {
     I.amOnPage(mysqlTableDetailsPage.url);
     I.waitForElement(adminPage.fields.metricTitle, 30);
-    adminPage.applyTimer("1m");
+    adminPage.applyTimer('1m');
     mysqlTableDetailsPage.verifyNoDataShow();
-});
+  }
+);
