@@ -27,8 +27,8 @@ const sortDetails = (a, b) => {
     '',
   ];
 
-  let indA = order.indexOf(a['metricName']);
-  let indB = order.indexOf(b['metricName']);
+  let indA = order.indexOf(a);
+  let indB = order.indexOf(b);
 
   if (indA === -1) {
     indA = order.length - 1;
@@ -42,34 +42,33 @@ const sortDetails = (a, b) => {
 };
 
 export const processMetrics = (metricsCatalogue, metrics) => {
-  if (!metrics.metrics) {
-    metrics.metrics = metrics.totals;
-  }
-  const metricsList = Object.keys(metrics.metrics);
-  return metricsList
-    .filter(metric => Object.keys(metrics.metrics[metric]).length !== 0 && metrics.totals[metric])
-    .sort(sortDetails)
-    .map(metricName => {
-      const metric = metrics.metrics[metricName];
-      const sparkline = getSparkline(metrics.sparkline, metricName);
-      const total = metrics.totals[metricName];
+  return (
+    Object.entries(metrics.metrics ? metrics.metrics : metrics.totals)
+      .filter(metricData => Object.keys(metricData[1]).length)
+      .filter(metricData => !(metricData[1]['cnt'] !== 0 && metricData[1]['sum'] === undefined))
+      .sort(sortDetails)
+      .map(metricData => {
+        const [metricName] = metricData;
+        const metric = metrics.metrics[metricName];
+        const sparkline = getSparkline(metrics.sparkline, metricName);
+        const total = metrics.totals[metricName];
 
-      return {
-        name: metricsCatalogue[metricName].humanizeName,
-        tooltip: metricsCatalogue[metricName].tooltipText,
-        pipeTypes: metricsCatalogue[metricName].pipeTypes,
-        units: metricsCatalogue[metricName].units,
-        complexMetric: metricsCatalogue[metricName].metricRelation(metrics.metrics),
-        sparkline: sparkline,
-        metric: metric,
-        total: total,
-        queryCount: metrics.metrics['num_queries'].sum,
-        percentOfTotal: getPercentOfTotal(metric, total),
-        isRate: metric.rate >= 0,
-        isSum: metric.sum >= 0,
-        isStats: metric.avg >= 0,
-        isLatencyChart: metric.min && metric.max,
-      };
-    })
-    .filter(item => item.percentOfTotal);
+        return {
+          name: metricsCatalogue[metricName].humanizeName,
+          tooltip: metricsCatalogue[metricName].tooltipText,
+          pipeTypes: metricsCatalogue[metricName].pipeTypes,
+          units: metricsCatalogue[metricName].units,
+          complexMetric: metricsCatalogue[metricName].metricRelation(metrics.metrics),
+          sparkline: sparkline,
+          metric: metric,
+          total: total,
+          queryCount: metrics.metrics['num_queries'].sum,
+          percentOfTotal: getPercentOfTotal(metric, total),
+          isRate: metric.rate >= 0,
+          isSum: metric.sum >= 0,
+          isStats: metric.avg >= 0,
+          isLatencyChart: metric.min && metric.max,
+        };
+      })
+  );
 };
