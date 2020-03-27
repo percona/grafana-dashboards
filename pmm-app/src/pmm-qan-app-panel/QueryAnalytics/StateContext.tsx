@@ -140,7 +140,7 @@ export const UrlParametersProvider = ({ children }) => {
           newState = { ...state, labels: {}, pageNumber: 1 };
           break;
         case 'SELECT_QUERY':
-          newState = { ...state, queryId: action.payload.queryId, querySelected: true };
+          newState = { ...state, queryId: action.payload.queryId || 'TOTAL', querySelected: true };
           break;
         case 'ADD_COLUMN':
           columns = state.columns.slice();
