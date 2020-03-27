@@ -3,7 +3,7 @@ import { apiRequestQAN } from '../../../../../react-plugins-deps/components/help
 class MetricsService {
   static getMetrics({ filterBy, groupBy, labels = [], from, to, tables = [] }) {
     const body = {
-      filter_by: filterBy,
+      filter_by: filterBy === 'TOTAL' ? '' : filterBy,
       group_by: groupBy,
       labels: labels,
       period_start_from: from,

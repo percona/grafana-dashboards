@@ -42,27 +42,28 @@ const sortDetails = (a, b) => {
 };
 
 export const processMetrics = (metricsCatalogue, metrics) => {
+  const data = metrics.metrics ? metrics.metrics : metrics.totals;
   return (
-    Object.entries(metrics.metrics ? metrics.metrics : metrics.totals)
+    Object.entries(data)
       .filter(metricData => Object.keys(metricData[1]).length)
       .filter(metricData => !(metricData[1]['cnt'] !== 0 && metricData[1]['sum'] === undefined))
       .sort(sortDetails)
       .map(metricData => {
+        console.log('third step', metricData);
         const [metricName] = metricData;
-        const metric = metrics.metrics[metricName];
+        const metric = data[metricName];
         const sparkline = getSparkline(metrics.sparkline, metricName);
         const total = metrics.totals[metricName];
-
         return {
           name: metricsCatalogue[metricName].humanizeName,
           tooltip: metricsCatalogue[metricName].tooltipText,
           pipeTypes: metricsCatalogue[metricName].pipeTypes,
           units: metricsCatalogue[metricName].units,
-          complexMetric: metricsCatalogue[metricName].metricRelation(metrics.metrics),
+          complexMetric: metricsCatalogue[metricName].metricRelation(data),
           sparkline: sparkline,
           metric: metric,
           total: total,
-          queryCount: metrics.metrics['num_queries'].sum,
+          queryCount: data['num_queries'].sum,
           percentOfTotal: getPercentOfTotal(metric, total),
           isRate: metric.rate >= 0,
           isSum: metric.sum >= 0,
