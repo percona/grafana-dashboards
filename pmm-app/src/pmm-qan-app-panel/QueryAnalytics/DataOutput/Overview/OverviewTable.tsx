@@ -92,7 +92,7 @@ const OverviewTable = props => {
       rowClassName={record => {
         if (querySelected) {
           if (!record.dimension && queryId === 'TOTAL') {
-            return 'selected-overview-row'
+            return 'selected-overview-row';
           }
           return record.dimension === queryId ? 'selected-overview-row' : '';
         }
