@@ -84,7 +84,7 @@ const QueryAnalyticsContainer = () => {
         </div>
       </div>
       {!querySelected ? (
-        <div className={'table-wrapper'}>
+        <div className="table-wrapper">
           <OverviewTable setTotal={setTotal} />
         </div>
       ) : (
@@ -102,7 +102,7 @@ const QueryAnalyticsContainer = () => {
           }}
           gutterStyle={() => ({ backgroundColor: '#626262', cursor: 'ns-resize', height: '10px' })}
         >
-          <div className={'table-wrapper'}>
+          <div className="table-wrapper">
             <OverviewTable setTotal={setTotal} />
           </div>
           <QueryDetails />

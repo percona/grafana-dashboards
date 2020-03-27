@@ -220,7 +220,7 @@ export const UrlParametersProvider = ({ children }) => {
       history.pushState({}, 'test', newUrl);
       return newState;
     },
-    { ...ContextActions.parseURL(query)}
+    { ...ContextActions.parseURL(query) }
   );
   return <StateContext.Provider value={{ state, dispatch }}>{children}</StateContext.Provider>;
 };
