@@ -73,9 +73,10 @@ const Styling = {
   `,
   filtersHeader: css`
     display: flex;
-    align-items: flex-end;
+    align-items: baseline;
     padding: 5px 0px !important;
     height: 50px !important;
+    padding-top: 15px !important;
   `,
   showAllButton: css`
     padding: 0 !important;
