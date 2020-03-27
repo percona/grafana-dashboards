@@ -11,13 +11,14 @@ import { css } from 'emotion';
 const PAGE_SIZE_OPTIONS = ['10', '50', '100'];
 
 const Styling = {
-  overviewWrapper: css`
+  overviewHeader: css`
     display: flex;
-    align-items: flex-end;
+    align-items: baseline;
     padding: 5px 0px;
     height: 50px;
+    padding-top: 15px;
   `,
-  overviewHeader: css`
+  overviewTitle: css`
     margin: 3px;
     margin-right: 40px;
   `,
@@ -61,8 +62,8 @@ const QueryAnalyticsContainer = () => {
 
   return (
     <div style={{ width: `${(size || 1500) - 260}px` }}>
-      <div className={Styling.overviewWrapper}>
-        <h5 className={Styling.overviewHeader}>Queries overview</h5>
+      <div className={Styling.overviewHeader}>
+        <h5 className={Styling.overviewTitle}>Queries overview</h5>
         <GroupByControl />
         <div className={Styling.paginationWrapper}>
           <Pagination
