@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import { ParseQueryParamDate } from '../../react-plugins-deps/components/helpers/time-parameters-parser';
 import { getDataSourceSrv } from '@grafana/runtime';
 import _ from 'lodash';
@@ -77,8 +77,10 @@ class ContextActions {
     const groupBy = state.groupBy ? `group_by=${state.groupBy}` : '';
     const filterByQuery = state.queryId ? `filter_by=${state.queryId}` : '';
     const orderBy = state.orderBy ? `order_by=${state.orderBy}` : '';
+    const from = state.rawTime.from ? `from=${state.rawTime.from}` : '';
+    const to = state.rawTime.to ? `to=${state.rawTime.to}` : '';
     // TODO: replace crutch with right redirect
-    return `${window.location.pathname}?${[columnsQuery, filterByQuery, labels, orderBy, groupBy]
+    return `${window.location.pathname}?${[columnsQuery, filterByQuery, labels, orderBy, groupBy, from, to]
       .filter(Boolean)
       .join('&')}`;
   }
@@ -120,6 +122,12 @@ class ContextActions {
 
 export const UrlParametersProvider = ({ children }) => {
   const query = new URLSearchParams(window.location.search);
+  const [rawTime, setRawTime] = useState({ from: query.get('from'), to: query.get('to') });
+
+  useEffect(() => {
+    setRawTime({ from: query.get('from'), to: query.get('to') });
+  }, [window.location.search]);
+
   const [state, dispatch] = useReducer(
     (state, action) => {
       let columns;
@@ -207,12 +215,12 @@ export const UrlParametersProvider = ({ children }) => {
           break;
       }
       ContextActions.refreshGrafanaVariables(newState);
+      newState.rawTime = rawTime;
       const newUrl = ContextActions.generateURL(newState);
       history.pushState({}, 'test', newUrl);
       return newState;
     },
-    { ...ContextActions.parseURL(query) }
+    { ...ContextActions.parseURL(query)}
   );
-
   return <StateContext.Provider value={{ state, dispatch }}>{children}</StateContext.Provider>;
 };
