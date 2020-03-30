@@ -86,8 +86,8 @@ pipeline {
             }
         }
         stage('Generate code coverage') {
-            withCredentials([string(credentialsId: 'CODECOV_GRAFANA_DASHBOARDS_TOKEN', variable: 'CODECOV_GRAFANA_DASHBOARDS_TOKEN')]) {
-                steps {
+            steps {
+                withCredentials([string(credentialsId: 'CODECOV_GRAFANA_DASHBOARDS_TOKEN', variable: 'CODECOV_GRAFANA_DASHBOARDS_TOKEN')]) {
                     sh """
                         sg docker -c "
                             export CODECOV_TOKEN=\"${CODECOV_GRAFANA_DASHBOARDS_TOKEN}\"
