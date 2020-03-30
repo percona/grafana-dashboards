@@ -73,29 +73,33 @@ pipeline {
                 """
             }
         }
-        stage('e2e tests') {
-            steps {
-                sh """
-                    sg docker -c "
-                        export CHROME_VERSION=${params.CHROME_VERSION}
-                        source \"/usr/local/nvm/nvm.sh\"
+        stage('Tests') {
+            parallel {
+                stage('e2e tests') {
+                    steps {
+                        sh """
+                            sg docker -c "
+                                export CHROME_VERSION=${params.CHROME_VERSION}
+                                source \"/usr/local/nvm/nvm.sh\"
 
-                        make e2e
-                    "
-                """
-            }
-        }
-        stage('Generate code coverage') {
-            steps {
-                withCredentials([string(credentialsId: 'CODECOV_GRAFANA_DASHBOARDS_TOKEN', variable: 'CODECOV_GRAFANA_DASHBOARDS_TOKEN')]) {
-                    sh """
-                        sg docker -c "
-                            export CODECOV_TOKEN=\"${CODECOV_GRAFANA_DASHBOARDS_TOKEN}\"
-                            source \"/usr/local/nvm/nvm.sh\"
+                                make e2e
+                            "
+                        """
+                    }
+                }
+                stage('Generate code coverage') {
+                    steps {
+                        withCredentials([string(credentialsId: 'CODECOV_GRAFANA_DASHBOARDS_TOKEN', variable: 'CODECOV_GRAFANA_DASHBOARDS_TOKEN')]) {
+                            sh """
+                                sg docker -c "
+                                    export CODECOV_TOKEN=\"${CODECOV_GRAFANA_DASHBOARDS_TOKEN}\"
+                                    source \"/usr/local/nvm/nvm.sh\"
 
-                            make generate_coverage
-                        "
-                    """
+                                    make generate_coverage
+                                "
+                            """
+                        }
+                    }
                 }
             }
         }
