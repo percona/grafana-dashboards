@@ -63,10 +63,12 @@ const columns = [
     width: '35%',
     render: (text, item) => {
       // @ts-ignore
+      console.log(item);
       const polygonChartProps = {
         data: item.sparkline,
         width: 210,
         ykey: 'metric',
+        metricName: item.metricName,
       };
       return (
         <div className={Styling.metricColumn}>
