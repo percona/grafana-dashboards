@@ -153,7 +153,7 @@ Before((I, loginPage) => {
   loginPage.login('admin', 'admin');
 });
 
-Scenario('Open the QAN Dashboard and show tooltip', async (I, adminPage, qanPage) => {
+xScenario('Open the QAN Dashboard and show tooltip', async (I, adminPage, qanPage) => {
   I.amOnPage(qanPage.url);
   qanPage.showTooltip(4, 1);
   I.wait(5);
