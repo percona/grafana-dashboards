@@ -43,7 +43,7 @@ const ExplainContainer = props => {
         const explain = await ExplainService.getActionResult({
           action_id,
         });
-        setTraditionalExplain(explain.output);
+        setJsonExplain(explain.output);
       } catch (e) {
         //TODO: add error handling
       }
