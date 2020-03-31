@@ -130,7 +130,11 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
         .map(({ header, value }) => ({ header: header, value: Humanize.transform(value) }));
 
       // @ts-ignore
-      const polygonChartProps = { width: COLUMN_WIDTH * 1.2 - MAIN_METRIC_VALUE_WIDTH, data: item.sparkline };
+      const polygonChartProps = {
+        width: COLUMN_WIDTH * 1.2 - MAIN_METRIC_VALUE_WIDTH,
+        data: item.sparkline,
+        metricName: metricName,
+      };
       const MetricsList = ({ data }) => {
         return (
           <div className={Styling.metricsWrapper}>

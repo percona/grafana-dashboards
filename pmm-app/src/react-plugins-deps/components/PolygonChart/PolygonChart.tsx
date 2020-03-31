@@ -4,12 +4,14 @@ import React, { Component } from 'react';
 import * as d3 from 'd3';
 import { area, axisBottom, curveStepAfter, scaleLinear } from 'd3';
 import * as moment from 'moment';
+import { Humanize } from '../helpers/Humanization';
 
 interface PolygonChartInterface {
   data?: any;
   ykey?: any;
   width?: any;
   height?: any;
+  metricName?: any;
 }
 
 class PolygonChart extends Component {
@@ -29,10 +31,15 @@ class PolygonChart extends Component {
     this.width = props.width || 300;
     this.height = props.height || 30;
     this.appLoadPolygonChart = props.data || [];
+    this.metricName = props.metricName;
+    this.state = {
+      tooltip: '',
+    };
   }
 
   componentDidMount() {
     this.drawPolygonChart();
+    this.setState({ tooltip: this.dataTooltip });
   }
   findHighestY(array) {
     const values = array.map(data => +data[this.ykey] || 0);
@@ -101,7 +108,8 @@ class PolygonChart extends Component {
       .y1(d => d.y);
 
     const g = svg.append('g');
-    const focusG = svg.append('g').style('display', 'none');
+    const focusG = svg.append('g');
+    // .style('display', 'none');
 
     g.append('path')
       .attr('d', areaBar(this.data))
@@ -110,8 +118,8 @@ class PolygonChart extends Component {
     const focusBar = focusG
       .append('path')
       .attr('class', 'active-rect')
-      .style('fill', 'white')
-      .on('mouseout', () => focusG.style('display', 'none'));
+      .style('fill', 'white');
+    // .on('mouseout', () => focusG.style('display', 'none'));
 
     focusBar
       .append('text')
@@ -120,42 +128,41 @@ class PolygonChart extends Component {
       .attr('x', 1)
       .attr('y', 8);
 
-    // const bisectDate = bisector((d, x) => +moment.utc(d[this.xkey]).isBefore(x)).right;
-    //
-    // svg.on('mousemove', () => {
-    //   const coords = mouse(currentEvent.currentTarget);
-    //   const mouseDate = moment.utc(scaleX.invert(coords[0]));
-    //
-    //   const indexOfStartPoint = Math.min(
-    //     Math.max(bisectDate(this.appLoadPolygonChart, mouseDate), 0),
-    //     this.appLoadPolygonChart.length - 1
-    //   );
-    //   const hoveredPoint = this.appLoadPolygonChart[indexOfStartPoint];
-    //   const endPoint = this.appLoadPolygonChart[indexOfStartPoint - 1];
-    //   const focusPointsRange = [hoveredPoint, endPoint];
-    //   const activeArea: any = focusPointsRange.map(
-    //     item =>
-    //       new Object({
-    //         x: scaleX(moment.utc(item[this.xkey])) || 0,
-    //         y: scaleY(endPoint[this.ykey] || 0) + this.margin,
-    //       })
-    //   );
-    //   const value = endPoint[this.ykey] === undefined ? 0 : endPoint[this.ykey];
-    //   const load = this.humanize.transform(value, this.measurement);
-    //   const dateToShow = this.dateFormat.transform(moment(endPoint[this.xkey]).utc());
-    //
-    //   const isTimeBased =
-    //     this.metricName.endsWith('_time')
-    //     || this.metricName.endsWith('_wait')
-    //     || this.metricName === 'load';
-    //
-    //   focusBar.attr('d', areaBar(activeArea));
-    //   this.dataTooltip = !value
-    //     ? `NA at ${dateToShow}`
-    //     : `${load} ${isTimeBased ? '' : '/ sec'} at ${dateToShow}`;
-    // });
-    // svg.on('mouseover', () => focusG.style('display', null));
-    // svg.on('mouseout', () => focusG.style('display', 'none'));
+    const bisectDate = d3.bisector((d, x) => +moment.utc(d[this.xkey]).isBefore(x)).right;
+
+    svg.on('mousemove', (d, i) => {
+      const coords = d3.mouse(d3.event.currentTarget);
+      const mouseDate = moment.utc(scaleX.invert(coords[0]));
+
+      const indexOfStartPoint = Math.min(
+        Math.max(bisectDate(this.appLoadPolygonChart, mouseDate), 0),
+        this.appLoadPolygonChart.length - 1
+      );
+      const hoveredPoint = this.appLoadPolygonChart[indexOfStartPoint];
+      const endPoint = this.appLoadPolygonChart[indexOfStartPoint - 1];
+      const focusPointsRange = [hoveredPoint, endPoint];
+      const activeArea: any = focusPointsRange.map(
+        item =>
+          new Object({
+            x: scaleX(moment.utc(item[this.xkey])) || 0,
+            y: scaleY(endPoint[this.ykey] || 0) + this.margin,
+          })
+      );
+      const value = endPoint[this.ykey] === undefined ? 0 : endPoint[this.ykey];
+      const load = Humanize.transform(value);
+      const dateToShow = moment(endPoint[this.xkey]).format('YYYY-MM-DD HH:mm:ss');
+
+      const isTimeBased =
+        this.metricName.endsWith('_time') || this.metricName.endsWith('_wait') || this.metricName === 'load';
+
+      focusBar.attr('d', areaBar(activeArea));
+      this.dataTooltip = !value
+        ? `NA at ${dateToShow}`
+        : `${load} ${isTimeBased ? '' : '/ sec'} at ${dateToShow}`;
+      this.setState({ tooltip: this.dataTooltip });
+    });
+    svg.on('mouseover', () => focusG.style('display', null));
+    svg.on('mouseout', () => focusG.style('display', 'none'));
 
     // Create X axis
     const xAxis = axisBottom(scaleX);
@@ -167,8 +174,14 @@ class PolygonChart extends Component {
       .call(xAxis);
   }
   render() {
-    // eslint-disable-next-line react/no-string-refs
-    return <div className="d3-bar-chart-container" ref="graphContainer"></div>;
+    return (
+      /* eslint-disable react/no-string-refs */
+      <div
+        ref="graphContainer"
+        className="d3-bar-chart-container app-tooltip"
+        data-tooltip={this.state.tooltip}
+      ></div>
+    );
   }
 }
 

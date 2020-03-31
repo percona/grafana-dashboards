@@ -42,10 +42,17 @@ const sortDetails = (a, b) => {
 };
 
 export const processMetrics = (metricsCatalogue, metrics) => {
+  // @ts-ignore
   const data = metrics.metrics ? metrics.metrics : metrics.totals;
   return Object.entries(data)
-    .filter(metricData => Object.keys(metricData[1]).length)
-    .filter(metricData => !(metricData[1]['cnt'] !== 0 && metricData[1]['sum'] === undefined))
+    .filter(metricData => {
+      // @ts-ignore
+      return Object.keys(metricData[1]).length;
+    })
+    .filter(metricData => {
+      // @ts-ignore
+      return !(metricData[1]['cnt'] !== 0 && metricData[1]['sum'] === undefined);
+    })
     .sort(sortDetails)
     .map(metricData => {
       const [metricName] = metricData;
@@ -67,6 +74,7 @@ export const processMetrics = (metricsCatalogue, metrics) => {
         isSum: metric.sum >= 0,
         isStats: metric.avg >= 0,
         isLatencyChart: metric.min && metric.max,
+        metricName: metricName,
       };
     });
 };
