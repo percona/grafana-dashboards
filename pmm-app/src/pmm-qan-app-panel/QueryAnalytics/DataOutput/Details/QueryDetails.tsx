@@ -5,10 +5,10 @@ import Fingerprint from './Fingerprint';
 import Explain from './Explain/Explain.container';
 import Example from './Example/Example';
 import Metrics from './Metrics/Metrics';
-import TableCreate from './Table/Table';
 import { StateContext } from '../../StateContext';
 import ExampleService from './Example/Example.service';
 import Tooltip from 'antd/es/tooltip';
+import TableCreateContainer from './Table/TableContainer';
 
 const { TabPane } = Tabs;
 
@@ -79,9 +79,9 @@ const QueryDetails = () => {
               </Tooltip>
             }
             key="4"
-            disabled={databaseType === 'postgresql'}
+            // disabled={databaseType === 'postgresql'}
           >
-            <TableCreate {...MetricsProps} />
+            <TableCreateContainer {...MetricsProps} />
           </TabPane>
         </Tabs>
       </div>
