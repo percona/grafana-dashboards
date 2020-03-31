@@ -61,7 +61,7 @@ const QueryAnalyticsContainer = () => {
   const size = container && container.clientWidth;
 
   return (
-    <div style={{ width: `${(size || 1500) - 260}px` }}>
+    <div style={{ width: `${(size || 1500) - 260}px`, height: '100%', overflowY: 'scroll' }}>
       <div className={Styling.overviewHeader}>
         <h5 className={Styling.overviewTitle}>Queries overview</h5>
         <GroupByControl />
