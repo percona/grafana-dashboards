@@ -78,7 +78,7 @@ const OverviewTable = props => {
   // @ts-ignore
 
   const container = document.querySelector('.table-wrapper');
-  const height = container && container.clientHeight;
+  const height = +((container && container.clientHeight) || 0);
   return (
     <Table
       dataSource={data.rows}
@@ -87,7 +87,7 @@ const OverviewTable = props => {
       size="small"
       bordered={true}
       pagination={false}
-      scroll={{ y: Math.max(+height - 30, TABLE_Y_SCROLL), x: TABLE_X_SCROLL }}
+      scroll={{ y: Math.max(height - 30, TABLE_Y_SCROLL), x: TABLE_X_SCROLL }}
       onRow={onRowClick}
       rowClassName={record => {
         if (querySelected) {
