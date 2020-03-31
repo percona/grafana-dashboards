@@ -41,33 +41,16 @@ class PolygonChart extends Component {
     this.drawPolygonChart();
     this.setState({ tooltip: this.dataTooltip });
   }
-  findHighestY(array) {
+
+  findYRange(array) {
     const values = array.map(data => +data[this.ykey] || 0);
-    return Math.max(...values);
+    return [Math.max(...values) || 1, Math.min(...values) || 0];
   }
 
-  findMinY(array) {
-    const values = array.map(data => +data[this.ykey] || 0);
-    const minVal = Math.min(...values);
-    const maxVal = Math.max(...values);
-
-    // We need it to show chart on the middle if the value is constant.
-    if (minVal === maxVal) {
-      return minVal;
-    }
-    return 0;
-  }
-
-  findHighestX(array) {
+  findXRange(array) {
     const values = array.map(data => +moment.utc(data[this.xkey]) || 0);
 
-    return Math.max(...values);
-  }
-
-  findMinX(array) {
-    const values = array.map(data => +moment.utc(data[this.xkey]) || 0);
-
-    return Math.min(...values);
+    return [Math.max(...values), Math.min(...values)];
   }
 
   drawPolygonChart() {
@@ -87,17 +70,17 @@ class PolygonChart extends Component {
     const yAxisLength = this.height - 2 * this.margin;
 
     const scaleX = scaleLinear()
-      .domain([this.findMinX(this.appLoadPolygonChart), this.findHighestX(this.appLoadPolygonChart)])
+      .domain(this.findXRange(this.appLoadPolygonChart))
       .range([0, xAxisLength]);
 
     const scaleY = scaleLinear()
-      .domain([this.findHighestY(this.appLoadPolygonChart), this.findMinY(this.appLoadPolygonChart)])
+      .domain(this.findYRange(this.appLoadPolygonChart))
       .range([0, yAxisLength]);
 
     this.data = this.appLoadPolygonChart.map(item => {
       return new Object({
         x: scaleX(moment.utc(item['timestamp'])),
-        y: scaleY(item[this.ykey] || 0) + this.margin || 0,
+        y: scaleY(item[this.ykey] === 'NaN' ? 0 : item[this.ykey] || 0) + this.margin || 0,
       });
     });
 
