@@ -97,7 +97,7 @@ class ContextActions {
     urlParams.labels = ContextActions.setFilters(query);
     urlParams.pageNumber = 1;
     urlParams.pageSize = 10;
-    urlParams.orderBy = query.get('order_by') || 'load';
+    urlParams.orderBy = query.get('order_by') || `-${urlParams.columns[0]}`;
     urlParams.queryId = query.get('filter_by');
     urlParams.querySelected = !!query.get('filter_by');
     urlParams.groupBy = query.get('group_by') || 'queryid';
@@ -158,9 +158,9 @@ export const UrlParametersProvider = ({ children }) => {
             ...state,
             columns: columns,
             orderBy:
-              action.payload.oldColumn.simpleName === action.payload.orderBy
-                ? columns[0]
-                : action.payload.orderBy,
+              action.payload.oldColumn.simpleName === state.orderBy.replace('-', '')
+                ? `-${columns[0]}`
+                : state.orderBy,
           };
           break;
 
@@ -170,7 +170,8 @@ export const UrlParametersProvider = ({ children }) => {
           newState = {
             ...state,
             columns: columns,
-            orderBy: action.payload.column === action.payload.orderBy ? columns[0] : action.payload.orderBy,
+            orderBy:
+              action.payload.column === state.orderBy.replace('-', '') ? `-${columns[0]}` : state.orderBy,
           };
           break;
         case 'CHANGE_PAGE':
