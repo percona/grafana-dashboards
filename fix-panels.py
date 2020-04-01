@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# Grafana dashboard importer script.
+# Script sets correct names for plugins folders.
 
 import json
 import os
