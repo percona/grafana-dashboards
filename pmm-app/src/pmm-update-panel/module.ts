@@ -83,6 +83,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
     const escKeyCode = 'Escape';
     // @ts-ignore
     body.addEventListener('click', event => {
+      // @ts-ignore
       if ($(event.target).hasClass('modal-backdrop') && $scope.canBeReloaded) {
         location.reload(true);
       }
