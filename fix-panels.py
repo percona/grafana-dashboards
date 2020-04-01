@@ -25,7 +25,7 @@ def rename_panels():
                         print '    * Renaming panel'
                         shutil.copytree(os.path.join(GRAFANA_PLUGINS_DR, panel), os.path.join(GRAFANA_PLUGINS_DR, panel_params['id']))
                     if (panel != panel_params['id']):
-                        print '    * Removing leftovers'
+                        print '    * Cleaning up leftovers'
                         shutil.rmtree(os.path.join(GRAFANA_PLUGINS_DR, panel))
 
 print "Grafana database directory: %s" % (GRAFANA_PLUGINS_DR,)
