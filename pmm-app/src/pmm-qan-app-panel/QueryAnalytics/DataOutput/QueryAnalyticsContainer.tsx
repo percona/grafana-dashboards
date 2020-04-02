@@ -95,12 +95,18 @@ const QueryAnalyticsContainer = () => {
             'overflow-y': 'scroll',
           };
         }}
-        gutterStyle={() => ({ backgroundColor: '#626262', cursor: 'ns-resize', height: '10px' })}
+        gutterStyle={() => ({
+          backgroundColor: '#626262',
+          cursor: 'ns-resize',
+          height: '10px',
+          display: querySelected ? '' : 'none',
+        })}
       >
         <div className="table-wrapper">
           <OverviewTable setTotal={setTotal} />
         </div>
-        {querySelected ? <QueryDetails /> : null}
+        <QueryDetails />
+        {/*{querySelected ? <QueryDetails /> : null}*/}
       </Split>
     </div>
   );
