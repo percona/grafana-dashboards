@@ -13,6 +13,7 @@ e2e:
 	cd pmm-app \
 	&& mkdir -pv logs video || true \
 	&& docker-compose up -d \
+	&& bash ./cypress-start.sh \
 	&& npm run e2e
 
 codecov:
