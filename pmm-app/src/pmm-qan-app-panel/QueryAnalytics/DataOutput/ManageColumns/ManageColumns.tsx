@@ -70,7 +70,14 @@ const ManageColumns = props => {
         className={`${props.onlyAdd ? 'add' : 'manage'}-columns-selector`}
         dropdownClassName={`${props.onlyAdd ? 'add' : 'manage'}-columns-selector-dropdown`}
         dropdownRender={menu => (
-          <div style={{ width: 400 }} className="add-column-wrapper">
+          <div
+            style={{
+              width: 400,
+              backgroundColor: 'rgba(47, 47, 50, 0.5)',
+              boxShadow: 'rgba(255, 255, 255, 0.1) -1px -1px 0px 0px, rgba(0, 0, 0, 0.3) 1px 1px 0px 0px',
+            }}
+            className="add-column-wrapper"
+          >
             {menu}
             <Divider style={{ margin: '4px 0' }} />
             {!props.onlyAdd && (
