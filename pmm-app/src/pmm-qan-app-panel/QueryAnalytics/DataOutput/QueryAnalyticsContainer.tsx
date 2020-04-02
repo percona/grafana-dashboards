@@ -83,31 +83,25 @@ const QueryAnalyticsContainer = () => {
           <ManageColumns onlyAdd={true} />
         </div>
       </div>
-      {!querySelected ? (
+      <Split
+        sizes={[70, 30]}
+        minSize={100}
+        direction="vertical"
+        cursor="row-resize"
+        className={Styling.splitterWrapper}
+        elementStyle={(dimension, size, gutterSize) => {
+          return {
+            height: `calc(${size}% - ${gutterSize}px)`,
+            'overflow-y': 'scroll',
+          };
+        }}
+        gutterStyle={() => ({ backgroundColor: '#626262', cursor: 'ns-resize', height: '10px' })}
+      >
         <div className="table-wrapper">
           <OverviewTable setTotal={setTotal} />
         </div>
-      ) : (
-        <Split
-          sizes={[70, 30]}
-          minSize={100}
-          direction="vertical"
-          cursor="row-resize"
-          className={Styling.splitterWrapper}
-          elementStyle={(dimension, size, gutterSize) => {
-            return {
-              height: `calc(${size}% - ${gutterSize}px)`,
-              'overflow-y': 'scroll',
-            };
-          }}
-          gutterStyle={() => ({ backgroundColor: '#626262', cursor: 'ns-resize', height: '10px' })}
-        >
-          <div className="table-wrapper">
-            <OverviewTable setTotal={setTotal} />
-          </div>
-          <QueryDetails />
-        </Split>
-      )}
+        {querySelected ? <QueryDetails /> : null}
+      </Split>
     </div>
   );
 };
