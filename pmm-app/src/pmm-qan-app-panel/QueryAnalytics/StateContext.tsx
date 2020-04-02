@@ -197,7 +197,7 @@ export const UrlParametersProvider = ({ children }) => {
           } else if (`-${action.payload.orderBy}` === state.orderBy) {
             newOrderBy = `${action.payload.orderBy}`;
           } else {
-            newOrderBy = action.payload.orderBy;
+            newOrderBy = `-${action.payload.orderBy}`;
           }
 
           newState = {
