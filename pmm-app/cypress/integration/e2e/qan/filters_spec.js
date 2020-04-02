@@ -3,6 +3,7 @@ import QANPage, { FILTER_VALUES } from '../../../page-ojbects/pages/QANPage'
 
 describe('QAN Filters Tests', () => {
 	beforeEach(() => {
+		cy.log(Cypress.config().baseUrl)
 		cy.restLogin(username, password)
 		cy.visit(qanUrl)
 	})

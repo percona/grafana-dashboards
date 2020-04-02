@@ -52,7 +52,7 @@ Cypress.Commands.add('login', (username, password) =>{
 })
 
 Cypress.Commands.add('restLogin', (username, password) => {
-	cy.request('POST', `${baseUrl}graph/login`, {user: `${username}`, password: `${password}`, email: ""})
+	cy.request('POST', `/graph/login`, {user: `${username}`, password: `${password}`, email: ""})
 		.then(response => {
 			expect(response.body).to.have.property('message', 'Logged in')
 	})
