@@ -104,6 +104,7 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
     sorter: true,
     key: metricName,
     sortOrder: sortOrder,
+    sortDirections: ['descend', 'ascend'],
     width: columnIndex === 0 ? COLUMN_WIDTH * 1.5 : metricLength * LETTER_AVERAGE_SIZE + EMPTY_COLUMN_WIDTH,
     title: () => <ManageColumns placeholder={metricName} currentMetric={metric} width="100%" />,
     render: (text, item) => {
