@@ -135,7 +135,7 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
 
       // @ts-ignore
       const polygonChartProps = {
-        width: COLUMN_WIDTH * 1.2 - MAIN_METRIC_VALUE_WIDTH,
+        // width: COLUMN_WIDTH * 1.2 - MAIN_METRIC_VALUE_WIDTH,
         data: item.sparkline,
         metricName: metricName,
       };
