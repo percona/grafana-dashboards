@@ -112,7 +112,10 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
       const statPerSec = stats.qps || stats.sum_per_sec;
       // @ts-ignore
       const tooltipData = [
-        { header: 'Per sec', value: Humanize.transform(statPerSec, 'number') },
+        {
+          header: metricName.includes('_time') ? 'Per query' : 'Per sec',
+          value: Humanize.transform(statPerSec, 'number'),
+        },
         { header: 'Sum', value: stats.sum && Humanize.transform(stats.sum, metric.pipeTypes.sumPipe) },
         {
           header: 'From total',
