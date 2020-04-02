@@ -2,9 +2,7 @@ version: '3'
 services:
   pmm-server:
     container_name: pmm-server
-    image: perconalab/pmm-server:dev-latest
-    volumes:
-        - "./:/var/lib/grafana/plugins"
+    image: perconalab/pmm-server-fb:PR-572-e1cfb7f
     ports:
       - 80:80
       - 443:443
@@ -141,6 +139,16 @@ services:
          ./tpcc.lua --mysql-host=ps --mysql-port=3306 --mysql-user=root --mysql-password=secret --mysql-db=sbtest --time=300 --threads=64 --report-interval=1 --tables=10 --scale=100 --db-driver=mysql run
       "
     network_mode: bridge
+  cypress:
+    image: "cypress/included:3.4.0"
+    depends_on:
+      - pmm-server
+    environment:
+      - CYPRESS_baseUrl=http://server:80
+    working_dir: /e2e
+    network_mode: bridge
+    volumes:
+      - ./:/e2e
 
 volumes:
   logs-directory:
