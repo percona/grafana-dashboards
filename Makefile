@@ -14,7 +14,7 @@ e2e:
 	&& mkdir -pv logs video || true \
 	&& docker-compose up -d \
 	&& bash ./cypress-start.sh \
-	&& npm run e2e
+	&& npm run after:tests
 
 codecov:
 	cd pmm-app \

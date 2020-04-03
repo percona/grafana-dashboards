@@ -6,5 +6,5 @@ export CYPRESS_BASE_URL=$(docker inspect --format='{{range .NetworkSettings.Netw
 
 echo $CYPRESS_BASE_URL
 
-docker-compose -f cypress-docker-compose.yaml up --exit-code-from cypress
+docker-compose -f cypress-docker-compose.yaml up
 

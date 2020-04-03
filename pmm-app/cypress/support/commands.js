@@ -25,14 +25,13 @@
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
 import { addMatchImageSnapshotCommand } from 'cypress-image-snapshot/command'
-import { baseUrl, password } from '../../config'
 addMatchImageSnapshotCommand()
 
 Cypress.Commands.add('isVisible', selector => {
 	cy.get(selector).should('be.visible')
 })
 
-Cypress.Commands.add('isNotVisible', selector => {
+Cypress.Commands.add('notPresent', selector => {
 	cy.get(selector).should('not.exist')
 })
 
