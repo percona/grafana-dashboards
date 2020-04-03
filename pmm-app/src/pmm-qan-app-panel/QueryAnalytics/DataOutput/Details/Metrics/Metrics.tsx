@@ -130,9 +130,12 @@ const Metrics = props => {
   const { queryId, groupBy, from, to, labels, tables } = props;
 
   const [metrics, setMetrics] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     const getMetrics = async () => {
       try {
+        setLoading(true);
         const result = await MetricsService.getMetrics({
           filterBy: queryId,
           groupBy,
@@ -142,14 +145,25 @@ const Metrics = props => {
           tables,
         });
         setMetrics(processMetrics(METRIC_CATALOGUE, result));
+        setLoading(false);
       } catch (e) {
+        setLoading(false);
         //TODO: add error handling
       }
     };
     getMetrics();
   }, [queryId]);
 
-  return <Table dataSource={metrics} columns={columns} pagination={false} size="small" bordered={true} />;
+  return (
+    <Table
+      dataSource={metrics}
+      columns={columns}
+      pagination={false}
+      size="small"
+      bordered={true}
+      loading={loading}
+    />
+  );
 };
 
 export default Metrics;
