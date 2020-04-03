@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import Explain from './Explain';
 import ExplainService from './Explain.service';
 import ExampleService from '../Example/Example.service';
+import { Spin } from 'antd';
 
 const ExplainContainer = props => {
   const { queryId, groupBy, from, to, labels, tables, databaseType } = props;
@@ -10,13 +11,13 @@ const ExplainContainer = props => {
   const [jsonExplain, setJsonExplain] = useState({});
   const [errorText, setErrorText] = useState('');
   const [example, setExample] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const startExplainActions = example => {
     if (!('example' in example) || example.example === '') {
       setErrorText('Cannot display query explain without query example at this time.');
       return;
     }
-
     switch (databaseType) {
       case 'mysql':
         setErrorText('');
@@ -35,6 +36,7 @@ const ExplainContainer = props => {
   const getMongoExplain = example => {
     (async () => {
       try {
+        setLoading(true);
         const { action_id } = await ExplainService.getTraditionalExplainJSONMongo({
           pmm_agent_id: example.pmm_agent_id,
           service_id: example.service_id,
@@ -44,13 +46,16 @@ const ExplainContainer = props => {
           action_id,
         });
         setJsonExplain(explain.output);
+        setLoading(false);
       } catch (e) {
+        setLoading(false);
         //TODO: add error handling
       }
     })();
   };
 
   const getMysqlExplain = example => {
+    setLoading(true);
     (async () => {
       try {
         const { action_id } = await ExplainService.getTraditionalExplainMysql({
@@ -62,7 +67,10 @@ const ExplainContainer = props => {
           action_id,
         });
         setTraditionalExplain(explain.output);
+        setLoading(false);
       } catch (e) {
+        setLoading(false);
+
         //TODO: add error handling
       }
     })();
@@ -78,7 +86,9 @@ const ExplainContainer = props => {
           action_id,
         });
         setJsonExplain(JSON.parse(explain.output));
+        setLoading(false);
       } catch (e) {
+        setLoading(false);
         //TODO: add error handling
       }
     })();
@@ -107,7 +117,11 @@ const ExplainContainer = props => {
     startExplainActions(example);
   }, [example]);
 
-  return errorText ? <pre>{errorText}</pre> : <Explain json={jsonExplain} classic={traditionalExplain} />;
+  return (
+    <Spin spinning={loading}>
+      errorText ? <pre>{errorText}</pre> : <Explain json={jsonExplain} classic={traditionalExplain} />
+    </Spin>
+  );
 };
 
 export default ExplainContainer;
