@@ -73,27 +73,34 @@ pipeline {
                 """
             }
         }
-        stage('e2e tests') {
-            steps {
-                sh """
-                    sg docker -c "
-                        export CHROME_VERSION=${params.CHROME_VERSION}
-                        source \"/usr/local/nvm/nvm.sh\"
+        stage('Tests') {
+            parallel {
+                stage('e2e tests') {
+                    steps {
+                        sh """
+                            sg docker -c "
+                                export CHROME_VERSION=${params.CHROME_VERSION}
+                                source \"/usr/local/nvm/nvm.sh\"
 
-                        make e2e
-                    "
-                """
-            }
-        }
-        stage('Generate code coverage') {
-            steps {
-                sh """
-                    sg docker -c "
-                        source \"/usr/local/nvm/nvm.sh\"
+                                make e2e
+                            "
+                        """
+                    }
+                }
+                stage('Generate code coverage') {
+                    steps {
+                        withCredentials([string(credentialsId: 'CODECOV_GRAFANA_DASHBOARDS_TOKEN', variable: 'CODECOV_GRAFANA_DASHBOARDS_TOKEN')]) {
+                            sh """
+                                sg docker -c "
+                                    export CODECOV_TOKEN=\"${CODECOV_GRAFANA_DASHBOARDS_TOKEN}\"
+                                    source \"/usr/local/nvm/nvm.sh\"
 
-                        make generate_coverage
-                    "
-                """
+                                    make generate_coverage
+                                "
+                            """
+                        }
+                    }
+                }
             }
         }
     }
@@ -101,7 +108,7 @@ pipeline {
         always {
             script {
                 if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {
-                    slackSend channel: '#pmm-ci', color: '#00FF00', message: "[${JOB_NAME}]: build finished - ${IMAGE}"
+                    slackSend channel: '#pmm-ci', color: '#00FF00', message: "[${JOB_NAME}]: build finished"
                 } else {
                     slackSend channel: '#pmm-ci', color: '#FF0000', message: "[${JOB_NAME}]: build ${currentBuild.result}"
                     archiveArtifacts 'pmm-app/video/*.mp4'
