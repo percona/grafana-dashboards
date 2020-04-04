@@ -27,8 +27,8 @@ const sortDetails = (a, b) => {
     '',
   ];
 
-  let indA = order.indexOf(a);
-  let indB = order.indexOf(b);
+  let indA = order.indexOf(a[0]);
+  let indB = order.indexOf(b[0]);
 
   if (indA === -1) {
     indA = order.length - 1;
