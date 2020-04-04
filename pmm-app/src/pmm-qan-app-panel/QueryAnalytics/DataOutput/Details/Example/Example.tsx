@@ -1,15 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ExampleService from './Example.service';
-import sqlFormatter from 'sql-formatter';
-
-const getExample = (example: string): string =>
-  sqlFormatter
-    .format(example.toLowerCase())
-    .replace('explain', 'EXPLAIN ')
-    .replace('select', 'SELECT ')
-    .replace('from', 'FROM ')
-    .replace('where', 'WHERE ')
-    .replace('  ', ' ');
+import Highlight from 'react-highlight.js';
+const getExample = (example: string): any => <Highlight language="sql">{example}</Highlight>;
 
 const Example = props => {
   const { queryId, groupBy, from, to, labels, tables } = props;
@@ -33,9 +25,9 @@ const Example = props => {
   }, [queryId]);
 
   return (
-    <pre>
+    <div>
       {examples && examples.length ? examples.map(getExample) : 'Sorry, no examples found for this query'}
-    </pre>
+    </div>
   );
 };
 
