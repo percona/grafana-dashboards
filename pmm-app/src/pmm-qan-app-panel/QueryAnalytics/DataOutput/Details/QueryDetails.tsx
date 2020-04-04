@@ -12,12 +12,9 @@ import TableCreateContainer from './Table/TableContainer';
 
 const { TabPane } = Tabs;
 
-const HARDCODED_FINGERPRINT =
-  'COLLSTATS sbtest3 clusterTime,collStats,hash,id,keyId,lsid,mode,scale,signature';
-const HARDCODED_CONTROL_SUM = '4675a0d6d2e18bdce08b7c7aa83f88ff';
 const QueryDetails = () => {
   const {
-    state: { queryId, groupBy, from, to },
+    state: { queryId, groupBy, from, to, fingerprint, controlSum },
   } = useContext(StateContext);
   const [databaseType, setDatabaseType] = useState('');
 
@@ -51,7 +48,7 @@ const QueryDetails = () => {
 
   return (
     <div className="query-analytics-details-grid" id="query-analytics-details">
-      <Fingerprint query={HARDCODED_FINGERPRINT} controlSum={HARDCODED_CONTROL_SUM} groupBy={groupBy} />
+      <Fingerprint query={fingerprint} controlSum={controlSum} groupBy={groupBy} />
       <div className="details-tabs">
         <Divider />
         <Tabs defaultActiveKey="1" onChange={() => {}} tabPosition="left">

@@ -214,6 +214,12 @@ export const UrlParametersProvider = ({ children }) => {
           };
           delete newState.queryId;
           break;
+        case 'SET_FINGERPRINT':
+          newState = {
+            ...state,
+            fingerprint: action.payload.fingerprint,
+          };
+          break;
       }
       ContextActions.refreshGrafanaVariables(newState);
       newState.rawTime = rawTime;
