@@ -119,7 +119,7 @@ const ExplainContainer = props => {
 
   return (
     <Spin spinning={loading}>
-      errorText ? <pre>{errorText}</pre> : <Explain json={jsonExplain} classic={traditionalExplain} />
+      {errorText ? <pre>{errorText}</pre> : <Explain json={jsonExplain} classic={traditionalExplain} />}
     </Spin>
   );
 };
