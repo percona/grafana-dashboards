@@ -1,5 +1,5 @@
 import { Table } from 'antd';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { METRIC_CATALOGUE } from '../../MetricCatalogue';
 import Icon from 'antd/es/icon';
 import Tooltip from 'antd/es/tooltip';
@@ -9,6 +9,7 @@ import { Humanize } from '../../../../../react-plugins-deps/components/helpers/H
 import LatencyChart from '../../../../../react-plugins-deps/components/LatencyChart/LatencyChart';
 import { processMetrics } from '../../../../../react-plugins-deps/components/helpers/processMetrics';
 import { css } from 'emotion';
+import { StateContext } from '../../../StateContext';
 
 const Styling = {
   metricColumn: css`
@@ -127,6 +128,7 @@ const columns = [
 ];
 
 const Metrics = props => {
+  const { dispatch } = useContext(StateContext);
   const { queryId, groupBy, from, to, labels, tables } = props;
 
   const [metrics, setMetrics] = useState<any[]>([]);
@@ -145,6 +147,13 @@ const Metrics = props => {
           tables,
         });
         setMetrics(processMetrics(METRIC_CATALOGUE, result));
+
+        dispatch({
+          type: 'SET_FINGERPRINT',
+          payload: {
+            fingerprint: groupBy === 'queryid'  ? result.fingerprint : queryId;
+          },
+        });
         setLoading(false);
       } catch (e) {
         setLoading(false);
