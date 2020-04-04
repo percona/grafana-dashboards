@@ -1,6 +1,6 @@
 import OverviewTable from './Overview/OverviewTable';
 import QueryDetails from './Details/QueryDetails';
-import React, { useCallback, useContext, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import Split from 'react-split';
 import { StateContext } from '../StateContext';
 import { Pagination } from 'antd';
@@ -56,6 +56,13 @@ const QueryAnalyticsContainer = () => {
     });
   }, []);
 
+  useEffect(() => {
+    if (!querySelected) return;
+    const gutter = document.querySelector('.gutter');
+    if (gutter) {
+      gutter.style.display = '';
+    }
+  }, [querySelected]);
   // TODO: replace with something more elegant & fast
   const container = document.querySelector('#antd');
   const size = container && container.clientWidth;
@@ -95,18 +102,19 @@ const QueryAnalyticsContainer = () => {
             'overflow-y': 'scroll',
           };
         }}
-        gutterStyle={() => ({
-          backgroundColor: '#626262',
-          cursor: 'ns-resize',
-          height: '10px',
-          display: querySelected ? '' : 'none',
-        })}
+        gutterStyle={() => {
+          return {
+            backgroundColor: '#626262',
+            cursor: 'ns-resize',
+            height: '10px',
+            display: querySelected ? '' : 'none',
+          };
+        }}
       >
         <div className="table-wrapper">
           <OverviewTable setTotal={setTotal} />
         </div>
-        <QueryDetails />
-        {/*{querySelected ? <QueryDetails /> : null}*/}
+        {querySelected ? <QueryDetails /> : <div></div>}
       </Split>
     </div>
   );
