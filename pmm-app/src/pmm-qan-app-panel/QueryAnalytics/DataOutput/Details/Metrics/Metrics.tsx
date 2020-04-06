@@ -5,6 +5,7 @@ import Icon from 'antd/es/icon';
 import Tooltip from 'antd/es/tooltip';
 import MetricsService from './Metrics.service';
 import PolygonChart from '../../../../../react-plugins-deps/components/PolygonChart/PolygonChart';
+import TimeDistributionChart from '../../../../../react-plugins-deps/components/TimeDistributionChart/TimeDistributionChart';
 import { Humanize } from '../../../../../react-plugins-deps/components/helpers/Humanization';
 import LatencyChart from '../../../../../react-plugins-deps/components/LatencyChart/LatencyChart';
 import { processMetrics } from '../../../../../react-plugins-deps/components/helpers/processMetrics';
@@ -151,7 +152,7 @@ const Metrics = props => {
         dispatch({
           type: 'SET_FINGERPRINT',
           payload: {
-            fingerprint: groupBy === 'queryid'  ? result.fingerprint : queryId;
+            fingerprint: groupBy === 'queryid' ? result.fingerprint : queryId,
           },
         });
         setLoading(false);
@@ -164,14 +165,18 @@ const Metrics = props => {
   }, [queryId]);
 
   return (
-    <Table
-      dataSource={metrics}
-      columns={columns}
-      pagination={false}
-      size="small"
-      bordered={true}
-      loading={loading}
-    />
+    <div>
+      <TimeDistributionChart data={metrics} />
+      <h4>Metrics</h4>
+      <Table
+        dataSource={metrics}
+        columns={columns}
+        pagination={false}
+        size="small"
+        bordered={true}
+        loading={loading}
+      />
+    </div>
   );
 };
 
