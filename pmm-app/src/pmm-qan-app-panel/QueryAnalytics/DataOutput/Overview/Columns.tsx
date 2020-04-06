@@ -170,7 +170,9 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
                   {latencyTooltipData.length ? (
                     <>
                       <Divider style={{ background: '#666666', margin: '0' }} />
-                      {metricName === 'query_time' && <LatencyChart {...{ data: stats }} />}
+                      {metricName === 'query_time' && (
+                        <LatencyChart {...{ data: stats }} className={'latency-chart-container'} />
+                      )}
                       <MetricsList data={latencyTooltipData} />
                     </>
                   ) : null}
