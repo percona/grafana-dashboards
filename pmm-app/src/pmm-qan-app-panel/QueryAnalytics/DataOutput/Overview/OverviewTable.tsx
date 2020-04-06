@@ -45,7 +45,6 @@ const OverviewTable = props => {
     },
     [data.rows]
   );
-
   useEffect(() => {
     const updateInstances = async () => {
       try {
@@ -74,7 +73,7 @@ const OverviewTable = props => {
       }
     };
     updateInstances().then(() => {});
-  }, [columns, pageNumber, pageSize, groupBy, labels, orderBy]);
+  }, [columns, pageNumber, pageSize, groupBy, labels, orderBy, from, to]);
   // @ts-ignore
 
   const container = document.querySelector('.table-wrapper');

@@ -86,6 +86,7 @@ class ContextActions {
   }
 
   static parseURL(query) {
+    console.log('parse URL');
     const urlParams = {} as any;
     urlParams.from = ParseQueryParamDate.transform(query.get('from') || 'now-12h', 'from')
       .utc()
@@ -101,6 +102,7 @@ class ContextActions {
     urlParams.queryId = query.get('filter_by');
     urlParams.querySelected = !!query.get('filter_by');
     urlParams.groupBy = query.get('group_by') || 'queryid';
+    console.log(urlParams);
     return urlParams;
   }
 
@@ -123,7 +125,6 @@ class ContextActions {
 export const UrlParametersProvider = ({ children }) => {
   const query = new URLSearchParams(window.location.search);
   const [rawTime, setRawTime] = useState({ from: query.get('from'), to: query.get('to') });
-
   useEffect(() => {
     setRawTime({ from: query.get('from'), to: query.get('to') });
   }, [window.location.search]);
@@ -220,6 +221,12 @@ export const UrlParametersProvider = ({ children }) => {
             fingerprint: action.payload.fingerprint,
           };
           break;
+        case 'UPDATE_TIME_RANGE':
+          newState = {
+            ...state,
+            from: action.payload.from,
+            to: action.payload.to,
+          };
       }
       ContextActions.refreshGrafanaVariables(newState);
       newState.rawTime = rawTime;
@@ -229,5 +236,17 @@ export const UrlParametersProvider = ({ children }) => {
     },
     { ...ContextActions.parseURL(query) }
   );
+
+  useEffect(() => {
+    const { from, to } = { ...ContextActions.parseURL(query) };
+    dispatch({
+      type: 'UPDATE_TIME_RANGE',
+      payload: {
+        from: from,
+        to: to,
+      },
+    });
+  }, [rawTime]);
+
   return <StateContext.Provider value={{ state, dispatch }}>{children}</StateContext.Provider>;
 };
