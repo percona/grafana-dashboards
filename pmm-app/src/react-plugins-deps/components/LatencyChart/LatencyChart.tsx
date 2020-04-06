@@ -15,7 +15,7 @@ class LatencyChart extends Component<any, LatencyChartState> {
   private dataTooltip: string | undefined;
   constructor(props: any) {
     super(props as any);
-    this.width = 150;
+    this.width = 200;
     this.data = props.data || [];
     this.state = {
       tooltip: '',
@@ -105,7 +105,7 @@ class LatencyChart extends Component<any, LatencyChartState> {
     /* eslint-disable react/no-string-refs */
     return (
       <div
-        className="d3-bar-chart-container app-tooltip"
+        className={`${this.props.className || ''} d3-bar-chart-container app-tooltip`}
         ref="graphContainer"
         data-tooltip={this.state.tooltip}
       />
