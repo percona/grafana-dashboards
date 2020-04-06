@@ -45,7 +45,7 @@ const Styling = {
 export const CheckboxGroup = ({ form, name, items, group, showAll, filter, labels }) => {
   const [showTop, setShowTop] = useState(false);
   const filteredData = items
-    .filter(item => item.value)
+    .filter(item => item.value && item.hasOwnProperty('main_metric_percent'))
     .filter(item => {
       if (!showAll) {
         return item.checked;
@@ -56,8 +56,6 @@ export const CheckboxGroup = ({ form, name, items, group, showAll, filter, label
   const itemsList = (showTop ? filteredData.slice(0, TOP_LIMIT) : filteredData)
     .filter(item => item.value.toLowerCase().includes(filter.toLowerCase()))
     .map(item => {
-      // If there is no value - disable checkbox and hide percent
-      const isValue = item.hasOwnProperty('main_metric_percent');
       return (
         <div className={Styling.label} key={`${group}:${item.value}`}>
           <span className={Styling.filterName}>
@@ -66,14 +64,11 @@ export const CheckboxGroup = ({ form, name, items, group, showAll, filter, label
               name={`${group}:${item.value}`}
               label={item.value}
               checked={labels && labels[group] && labels[group].includes(item.value)}
-              disabled={!isValue}
             />
           </span>
-          {isValue ? (
-            <span className={Styling.percentage}>
-              <span>{Humanize.transform(item.main_metric_percent, 'percent')}</span>
-            </span>
-          ) : null}
+          <span className={Styling.percentage}>
+            <span>{Humanize.transform(item.main_metric_percent, 'percent')}</span>
+          </span>
         </div>
       );
     });
