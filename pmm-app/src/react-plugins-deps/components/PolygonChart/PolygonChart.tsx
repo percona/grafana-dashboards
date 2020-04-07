@@ -69,18 +69,22 @@ class PolygonChart extends Component {
     const xAxisLength = this.width - 2 * this.margin;
     const yAxisLength = this.height - 2 * this.margin;
 
+    const [maxX, minX] = this.findXRange(this.appLoadPolygonChart);
     const scaleX = scaleLinear()
-      .domain(this.findXRange(this.appLoadPolygonChart))
+      .domain([maxX, minX])
       .range([0, xAxisLength]);
 
+    const [maxY, minY] = this.findYRange(this.appLoadPolygonChart);
     const scaleY = scaleLinear()
-      .domain(this.findYRange(this.appLoadPolygonChart))
+      .domain([maxY, minY])
       .range([0, yAxisLength]);
 
     this.data = this.appLoadPolygonChart.map(item => {
       return new Object({
         x: scaleX(moment.utc(item['timestamp'])),
-        y: scaleY(item[this.ykey] === 'NaN' ? 0 : item[this.ykey] || 0) + this.margin || 0,
+        y:
+          scaleY(item[this.ykey] === 'NaN' ? 0 : Math.max(maxY / 30, item[this.ykey]) || 0) + this.margin ||
+          0,
       });
     });
 
@@ -128,7 +132,9 @@ class PolygonChart extends Component {
         item =>
           new Object({
             x: scaleX(moment.utc(item[this.xkey])) || 0,
-            y: scaleY(endPoint[this.ykey] || 0) + this.margin,
+            y:
+              scaleY(item[this.ykey] === 'NaN' ? 0 : Math.max(maxY / 30, item[this.ykey]) || 0) +
+                this.margin || 0,
           })
       );
       const value = endPoint[this.ykey] === undefined ? 0 : endPoint[this.ykey];
