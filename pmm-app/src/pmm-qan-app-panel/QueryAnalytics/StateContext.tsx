@@ -240,12 +240,12 @@ export const UrlParametersProvider = ({ children }) => {
   );
 
   useEffect(() => {
-    const { from, to } = { ...ContextActions.parseURL(query) };
+    const state = ContextActions.parseURL(query);
     dispatch({
       type: 'UPDATE_TIME_RANGE',
       payload: {
-        from: from,
-        to: to,
+        from: state.from,
+        to: state.to,
       },
     });
   }, [rawTime]);

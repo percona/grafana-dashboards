@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import ExampleService from '../Example/Example.service';
-import TableService from './Table.service';
 import TableCreate from './Table';
 import { Spin, Tabs } from 'antd';
 
@@ -9,7 +8,7 @@ const { TabPane } = Tabs;
 const TableCreateContainer = props => {
   const { queryId, groupBy, from, to, labels, tables, databaseType } = props;
 
-  const [example, setExample] = useState({});
+  const [example, setExample] = useState<any>({});
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -34,7 +33,6 @@ const TableCreateContainer = props => {
     })();
   }, [queryId]);
 
-  // return <div>{errorText ? <pre>{errorText}</pre> : <pre>{showCreateTable}</pre>}</div>;
   return (
     <Spin spinning={loading}>
       {example && example.tables ? (
