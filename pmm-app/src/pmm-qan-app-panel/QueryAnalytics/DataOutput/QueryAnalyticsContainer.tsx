@@ -57,7 +57,9 @@ const QueryAnalyticsContainer = () => {
   }, []);
 
   useEffect(() => {
-    if (!querySelected) return;
+    if (!querySelected) {
+      return;
+    }
     const gutter = document.querySelector('.gutter');
     if (gutter) {
       gutter.style.display = '';
