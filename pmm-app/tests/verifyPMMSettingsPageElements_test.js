@@ -1,8 +1,8 @@
 Feature('PMM Settings Page Elements and Validations');
 
-Before(async (I, loginPage, pmmSettingsPage) => {
-  I.amOnPage(loginPage.url);
-  loginPage.login('admin', 'admin');
+Before(async (I, pmmSettingsPage) => {
+  I.Authorize();
+
   I.amOnPage(pmmSettingsPage.url);
 });
 

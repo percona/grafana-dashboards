@@ -1,8 +1,8 @@
 Feature('to verify PMM server Upgrade works via UI');
 
-Before((I, loginPage) => {
-  I.amOnPage(loginPage.url);
-  loginPage.login('admin', 'admin');
+Before((I) => {
+  I.Authorize();
+
 });
 
 Scenario(

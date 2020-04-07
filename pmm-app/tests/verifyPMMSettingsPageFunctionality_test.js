@@ -1,8 +1,7 @@
 Feature('PMM Settings Page Functionality');
 
-Before((I, loginPage, pmmSettingsPage) => {
-  I.amOnPage(loginPage.url);
-  loginPage.login('admin', 'admin');
+Before((I, pmmSettingsPage) => {
+  I.Authorize();
   I.amOnPage(pmmSettingsPage.url);
 });
 
@@ -52,7 +51,7 @@ xScenario('Open PMM Settings page and verify Editing Alertmanager Rule', async (
   await pmmSettingsPage.verifyAlertmanagerRuleAdded(pmmSettingsPage.alertManager.editRuleName);
 });
 
-Scenario('Open PMM Settings page and verify clearing Alertmanager Rule', async (I, pmmSettingsPage) => {
+xScenario('Open PMM Settings page and verify clearing Alertmanager Rule', async (I, pmmSettingsPage) => {
   const sectionNameToExpand = 'Alertmanager integration';
   pmmSettingsPage.waitForPmmSettingsPageLoaded();
   pmmSettingsPage.collapseDefaultSection();

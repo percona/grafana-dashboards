@@ -1,8 +1,8 @@
 Feature('QAN Dashboard');
 
-Before(async (I, loginPage, qanPage, adminPage) => {
-  I.amOnPage(loginPage.url);
-  loginPage.login('admin', 'admin');
+Before(async (I, qanPage, adminPage) => {
+  I.Authorize();
+
   I.amOnPage(qanPage.url);
   await I.waitForElement(qanPage.fields.iframe, 60);
   adminPage.applyTimer('5m');

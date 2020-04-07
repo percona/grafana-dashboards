@@ -1,8 +1,8 @@
 Feature('Test Dashboards inside the MongoDB Folder');
 
-Before((I, loginPage) => {
-  I.amOnPage(loginPage.url);
-  loginPage.login('admin', 'admin');
+Before((I) => {
+  I.Authorize();
+
 });
 
 Scenario(
