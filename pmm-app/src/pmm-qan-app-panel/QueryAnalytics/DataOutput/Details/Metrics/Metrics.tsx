@@ -5,6 +5,7 @@ import Icon from 'antd/es/icon';
 import Tooltip from 'antd/es/tooltip';
 import MetricsService from './Metrics.service';
 import PolygonChart from '../../../../../react-plugins-deps/components/PolygonChart/PolygonChart';
+// eslint-disable-next-line max-len
 import TimeDistributionChart from '../../../../../react-plugins-deps/components/TimeDistributionChart/TimeDistributionChart';
 import { Humanize } from '../../../../../react-plugins-deps/components/helpers/Humanization';
 import LatencyChart from '../../../../../react-plugins-deps/components/LatencyChart/LatencyChart';
