@@ -13,7 +13,6 @@ e2e:
 	cd pmm-app \
 	&& mkdir -pv logs video || true \
 	&& docker-compose up -d \
-	&& bash ./selenium.sh \
 	&& npm run e2e
 
 codecov:
