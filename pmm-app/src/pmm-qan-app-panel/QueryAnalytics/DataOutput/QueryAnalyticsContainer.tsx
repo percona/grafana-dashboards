@@ -60,7 +60,7 @@ const QueryAnalyticsContainer = () => {
     if (!querySelected) {
       return;
     }
-    const gutter = document.querySelector('.gutter');
+    const gutter = document.querySelector('.gutter') as HTMLElement;
     if (gutter) {
       gutter.style.display = '';
     }
