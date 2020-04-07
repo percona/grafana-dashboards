@@ -6,7 +6,6 @@ const TableCreate = props => {
   const [showCreateTable, setShowCreateTable] = useState('');
   const [errorText, setErrorText] = useState('');
 
-  console.log(props, 'inside');
   const showCreateTableAction = example => {
     if (!('example' in example) || example.example === '' || !schema || !tableName) {
       setErrorText('Cannot display table info without query example, schema or table name at this moment.');
@@ -24,7 +23,7 @@ const TableCreate = props => {
   };
 
   const getMySQL = async example => {
-    const { action_id } = await TableService.getShowCreateTableMySql({
+    const { action_id } = await TableService.getShowCreateTableMySQL({
       database: example.schema,
       table_name: example.tableName,
       service_id: example.service_id,
