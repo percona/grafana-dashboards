@@ -3,7 +3,6 @@ Feature('PMM Settings Page Functionality');
 Before((I, loginPage, pmmSettingsPage) => {
   I.amOnPage(loginPage.url);
   loginPage.login('admin', 'admin');
-  console.log('-------after login')
   I.amOnPage(pmmSettingsPage.url);
 });
 

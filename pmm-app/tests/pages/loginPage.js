@@ -13,8 +13,7 @@ module.exports = {
 
   // introducing methods
   async login(username, password) {
-    // let client = this.helpers['Playwright'].browser;
-    // await I.sendPostRequest('graph/login', { email: '', user: 'admin', password: 'admin' });
-    // console.log(client);
+    I.Authorize();
+    I.wait(1);
   },
 };
