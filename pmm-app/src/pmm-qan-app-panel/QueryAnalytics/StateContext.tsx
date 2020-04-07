@@ -86,7 +86,6 @@ class ContextActions {
   }
 
   static parseURL(query) {
-    console.log('parse URL');
     const urlParams = {} as any;
     urlParams.from = ParseQueryParamDate.transform(query.get('from') || 'now-12h', 'from')
       .utc()
@@ -102,7 +101,6 @@ class ContextActions {
     urlParams.queryId = query.get('filter_by');
     urlParams.querySelected = !!query.get('filter_by');
     urlParams.groupBy = query.get('group_by') || 'queryid';
-    console.log(urlParams);
     return urlParams;
   }
 
@@ -181,6 +179,7 @@ export const UrlParametersProvider = ({ children }) => {
             pageNumber: action.payload.pageNumber,
           };
           delete newState.queryId;
+          delete newState.querySelected;
           break;
         case 'CHANGE_PAGE_SIZE':
           newState = {
@@ -189,6 +188,7 @@ export const UrlParametersProvider = ({ children }) => {
             pageNumber: 1,
           };
           delete newState.queryId;
+          delete newState.querySelected;
           break;
         case 'CHANGE_SORT':
           let newOrderBy = '';
@@ -206,6 +206,7 @@ export const UrlParametersProvider = ({ children }) => {
             orderBy: newOrderBy,
           };
           delete newState.queryId;
+          delete newState.querySelected;
           break;
         case 'CHANGE_GROUP_BY':
           newState = {
@@ -214,6 +215,7 @@ export const UrlParametersProvider = ({ children }) => {
             querySelected: false,
           };
           delete newState.queryId;
+          delete newState.querySelected;
           break;
         case 'SET_FINGERPRINT':
           newState = {

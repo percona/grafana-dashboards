@@ -27,7 +27,9 @@ const Explain = ({ json, classic }) => {
   const [data, setData] = useState({ columns: [], rows: [] });
 
   useEffect(() => {
-    if (!classic) return;
+    if (!classic) {
+      return;
+    }
 
     const [header, ...data] = classic.split('\n');
     const headerList = header
