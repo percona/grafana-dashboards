@@ -9,7 +9,7 @@ Before(async (I, qanPage, adminPage) => {
   await I.switchTo(qanPage.fields.iframe);
 });
 
-Scenario('Verify QAN Filter groups exist @not-pr-pipeline', async (I, adminPage, qanPage) => {
+Scenario('Verify QAN Filter groups exist @not-pr-pipeline', async (I, qanPage) => {
   qanPage.waitForQANPageLoaded();
   await qanPage.changeResultsPerPage(50);
   qanPage.checkFilterGroups();
@@ -17,13 +17,13 @@ Scenario('Verify QAN Filter groups exist @not-pr-pipeline', async (I, adminPage,
 
 Scenario(
   'Verify QAN Query Details section opened when user selects Query @not-pr-pipeline',
-  async (I, adminPage, qanPage) => {
+  async (I, qanPage) => {
     qanPage.waitForQANPageLoaded();
     qanPage._selectDetails(2);
   }
 );
 
-xScenario('Verify data in Table and Query Details @not-pr-pipeline', async (I, adminPage, qanPage) => {
+xScenario('Verify data in Table and Query Details @not-pr-pipeline', async (I, qanPage) => {
   I.amOnPage(qanPage.url);
   await I.waitForElement(qanPage.fields.iframe, 60);
   adminPage.applyTimer('5m');
@@ -35,7 +35,7 @@ xScenario('Verify data in Table and Query Details @not-pr-pipeline', async (I, a
   await qanPage.clearFilters();
 });
 
-Scenario('Verify QAN pagination @not-pr-pipeline', async (I, adminPage, qanPage) => {
+Scenario('Verify QAN pagination @not-pr-pipeline', async (I, qanPage) => {
   qanPage.waitForQANPageLoaded();
   qanPage.checkPagination();
   await qanPage.checkSparkLines();
@@ -44,7 +44,7 @@ Scenario('Verify QAN pagination @not-pr-pipeline', async (I, adminPage, qanPage)
 
 xScenario(
   'Verify Tables tab in Query Details for Database=postgres filter @not-pr-pipeline',
-  async (I, adminPage, qanPage) => {
+  async (I, qanPage) => {
     const filterToApply = 'postgres';
     qanPage.waitForQANPageLoaded();
     qanPage.applyFilter(filterToApply);
@@ -56,7 +56,7 @@ xScenario(
 
 Scenario(
   'Verify Tables tab in Query Details for Environment=pgsql-dev filter @not-pr-pipeline',
-  async (I, adminPage, qanPage) => {
+  async (I, qanPage) => {
     const filterToApply = 'pgsql-dev';
     qanPage.waitForQANPageLoaded();
     qanPage.applyFilter(filterToApply);
@@ -68,7 +68,7 @@ Scenario(
 
 xScenario(
   'Verify Explain tab in Query Details for Database=postgres filter @not-pr-pipeline',
-  async (I, adminPage, qanPage) => {
+  async (I, qanPage) => {
     const filterToApply = 'postgres';
     qanPage.waitForQANPageLoaded();
     qanPage.applyFilter(filterToApply);
@@ -80,7 +80,7 @@ xScenario(
 
 Scenario(
   'Verify Explain tab in Query Details for Environment=pgsql-dev filter @not-pr-pipeline',
-  async (I, adminPage, qanPage) => {
+  async (I, qanPage) => {
     const filterToApply = 'pgsql-dev';
     qanPage.waitForQANPageLoaded();
     qanPage.applyFilter(filterToApply);
@@ -99,7 +99,7 @@ Scenario('Verify adding new Column reflects in URL @not-pr-pipeline', async (I, 
 
 Scenario(
   'Verify adding new Database Filter reflects in URL @not-pr-pipeline',
-  async (I, adminPage, qanPage) => {
+  async (I, qanPage) => {
     const filterToApply = 'local';
     qanPage.waitForQANPageLoaded();
     I.wait(2);
@@ -108,7 +108,7 @@ Scenario(
   }
 );
 
-Scenario('Verify Main Metric change reflects in URL @not-pr-pipeline', async (I, adminPage, qanPage) => {
+Scenario('Verify Main Metric change reflects in URL @not-pr-pipeline', async (I, qanPage) => {
   const metricToReplace = 'Load';
   const newMetricName = 'Lock Time';
   qanPage.waitForQANPageLoaded();

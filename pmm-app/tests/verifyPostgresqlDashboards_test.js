@@ -7,7 +7,7 @@ Before((I) => {
 
 Scenario(
   'Open the PostgreSQL Instance Summary Dashboard and verify Metrics are present and graphs are displayed @not-pr-pipeline',
-  async (I, adminPage, dashboardPage) => {
+  async (I, dashboardPage) => {
     I.amOnPage(dashboardPage.postgresqlInstanceSummaryDashboard.url);
     dashboardPage.waitForDashboardOpened();
     await dashboardPage.expandEachDashboardRow();

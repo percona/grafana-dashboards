@@ -22,7 +22,7 @@ xScenario(
 
 xScenario(
   'Verify is the remote instances are in Running Status @pmm-post-update',
-  async (I, adminPage, remoteInstancesPage, pmmInventoryPage) => {
+  async (I, remoteInstancesPage, pmmInventoryPage) => {
     const mysql_service_name = 'mysql_remote_test';
     const version = 'new';
     I.amOnPage(pmmInventoryPage.url);
@@ -33,7 +33,7 @@ xScenario(
 
 xScenario(
   'Open Remote Instance Page and Add mysql instances PMM Latest',
-  async (I, adminPage, remoteInstancesPage, pmmInventoryPage) => {
+  async (I, remoteInstancesPage, pmmInventoryPage) => {
     const mysql_service_name = 'mysql_remote_new';
     const version = 'new';
     I.amOnPage(remoteInstancesPage.url);
