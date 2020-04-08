@@ -106,6 +106,10 @@ pipeline {
     }
     post {
         always {
+            sh '''
+               sg docker -c "make docker_clean"
+               sudo chmod 777 -R pmm-app/
+            '''
             script {
                 if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {
                     slackSend channel: '#pmm-ci', color: '#00FF00', message: "[${JOB_NAME}]: build finished"
@@ -113,11 +117,9 @@ pipeline {
                     slackSend channel: '#pmm-ci', color: '#FF0000', message: "[${JOB_NAME}]: build ${currentBuild.result}"
                     archiveArtifacts 'pmm-app/video/*.mp4'
                     onlyIfSuccessful: false
+                    archiveArtifacts artifacts: 'pmm-app/tests/output/parallel_chunk*/*.png'
                 }
             }
-            sh '''
-               sg docker -c "make docker_clean"
-            '''
             deleteDir()
         }
     }
