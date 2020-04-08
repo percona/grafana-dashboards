@@ -2,7 +2,6 @@ Feature('Monitoring AWS RDS MySQL DB');
 
 Before((I) => {
   I.Authorize();
-
 });
 
 xScenario(

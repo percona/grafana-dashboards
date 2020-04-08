@@ -46,7 +46,7 @@ Scenario('Open PMM Settings page and verify Diagnostics Section Elements', async
   pmmSettingsPage.verifyDiagnosticsElements();
 });
 
-Scenario(
+xScenario(
   'Open PMM Settings page and verify validation for empty Data Retention value',
   async (I, pmmSettingsPage) => {
     const dataRetentionValue = '';
