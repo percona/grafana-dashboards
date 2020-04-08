@@ -1,28 +1,12 @@
 const { Helper } = codeceptjs;
 
 class Grafana extends Helper {
-  // before/after hooks
-  /**
-   * @protected
-   */
-  _before() {
-    // remove if not used
-  }
-
-  /**
-   * @protected
-   */
-  _after() {
-    // remove if not used
-  }
-
-  // add custom methods here
-  // If you need to access other helpers
-  // use: this.helpers['helperName']
-
   async Authorize() {
     const { browserContext } = this.helpers.Playwright;
-    await browserContext.setExtraHTTPHeaders({ Authorization: 'Basic YWRtaW46YWRtaW4=' });
+    const basicAuthEncoded = Buffer.from(
+      `${this.config.username || 'admin'}:${this.config.password || 'admin'}`
+    ).toString('base64');
+    await browserContext.setExtraHTTPHeaders({ Authorization: `Basic ${basicAuthEncoded}` });
   }
 }
 
