@@ -1,6 +1,6 @@
 Feature('PMM Settings Page Functionality');
 
-Before((I, pmmSettingsPage) => {
+Before( async (I, pmmSettingsPage) => {
   I.Authorize();
   I.amOnPage(pmmSettingsPage.url);
 });

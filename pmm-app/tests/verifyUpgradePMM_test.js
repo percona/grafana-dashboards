@@ -1,6 +1,6 @@
 Feature('to verify PMM server Upgrade works via UI');
 
-Before((I) => {
+Before( async (I) => {
   I.Authorize();
 
 });

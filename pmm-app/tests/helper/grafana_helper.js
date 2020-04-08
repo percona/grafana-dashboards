@@ -22,7 +22,7 @@ class Grafana extends Helper {
 
   async Authorize() {
     const { browserContext } = this.helpers.Playwright;
-    browserContext.setExtraHTTPHeaders({ Authorization: 'Basic YWRtaW46YWRtaW4=' });
+    await browserContext.setExtraHTTPHeaders({ Authorization: 'Basic YWRtaW46YWRtaW4=' });
   }
 }
 

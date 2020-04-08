@@ -1,6 +1,6 @@
 Feature('Monitoring AWS RDS MySQL DB');
 
-Before((I) => {
+Before( async (I) => {
   I.Authorize();
 });
 

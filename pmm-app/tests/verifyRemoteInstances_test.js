@@ -1,6 +1,6 @@
 Feature('to verify monitoried Remote Db instances');
 
-Before((I) => {
+Before( async (I) => {
   I.Authorize();
 
 });

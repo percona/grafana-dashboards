@@ -1,6 +1,6 @@
 Feature('Test Dashboards inside the MySQL Folder');
 
-Before((I) => {
+Before( async (I) => {
   I.Authorize();
 
 });
