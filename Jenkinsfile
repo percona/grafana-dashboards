@@ -106,18 +106,26 @@ pipeline {
     }
     post {
         always {
+            sh '''
+               sg docker -c "make docker_clean"
+               sudo chmod 755 -R pmm-app/tests/
+            '''
             script {
                 if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {
                     slackSend channel: '#pmm-ci', color: '#00FF00', message: "[${JOB_NAME}]: build finished"
+                    junit 'pmm-app/tests/output/parallel_chunk*/chrome_report.xml'
+                    publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'pmm-app/tests/output/', reportFiles: 'parallel_chunk1_*/result.html, parallel_chunk2_*/result.html, parallel_chunk3_*/result.html', reportName: 'HTML Report', reportTitles: ''])
+                    archiveArtifacts artifacts: 'pmm-app/tests/output/parallel_chunk*/result.html'
                 } else {
                     slackSend channel: '#pmm-ci', color: '#FF0000', message: "[${JOB_NAME}]: build ${currentBuild.result}"
                     archiveArtifacts 'pmm-app/video/*.mp4'
                     onlyIfSuccessful: false
+                    junit 'pmm-app/tests/output/parallel_chunk*/chrome_report.xml'
+                    publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'pmm-app/tests/output/', reportFiles: 'parallel_chunk1_*/result.html, parallel_chunk2_*/result.html, parallel_chunk3_*/result.html', reportName: 'HTML Report', reportTitles: ''])
+                    archiveArtifacts artifacts: 'pmm-app/tests/output/parallel_chunk*/result.html'
+                    archiveArtifacts artifacts: 'pmm-app/tests/output/parallel_chunk*/*.png'
                 }
             }
-            sh '''
-               sg docker -c "make docker_clean"
-            '''
             deleteDir()
         }
     }
