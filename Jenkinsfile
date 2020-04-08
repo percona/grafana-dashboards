@@ -108,7 +108,7 @@ pipeline {
         always {
             sh '''
                sg docker -c "make docker_clean"
-               sudo chmod 755 -R pmm-app/tests/
+               sudo chmod 777 -R pmm-app/
             '''
             script {
                 if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {
