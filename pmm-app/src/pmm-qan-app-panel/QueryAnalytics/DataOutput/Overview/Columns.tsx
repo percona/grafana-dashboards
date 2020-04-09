@@ -88,11 +88,9 @@ export const getDefaultColumns = (groupBy, pageNumber, pageSize, columns) => {
   ];
 };
 
-const LETTER_AVERAGE_SIZE = 8;
-const EMPTY_COLUMN_WIDTH = 65;
+const FIXED_COLUMN_WIDTH = 120;
 export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy) => {
   const metric = METRIC_CATALOGUE[metricName];
-  const metricLength = metric.humanizeName.length;
   let sortOrder: boolean | string = false;
   if (orderBy === metricName) {
     sortOrder = 'ascend';
@@ -104,7 +102,7 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
     key: metricName,
     sortOrder: sortOrder,
     sortDirections: ['descend', 'ascend'],
-    width: columnIndex === 0 ? COLUMN_WIDTH * 1.5 : metricLength * LETTER_AVERAGE_SIZE + EMPTY_COLUMN_WIDTH,
+    width: columnIndex === 0 ? COLUMN_WIDTH * 1.5 : FIXED_COLUMN_WIDTH,
     title: () => <ManageColumns placeholder={metricName} currentMetric={metric} width="100%" />,
     render: (text, item) => {
       const stats = item.metrics[metricName].stats;
