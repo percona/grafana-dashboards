@@ -1,8 +1,8 @@
 Feature('PMM Settings Page Elements and Validations');
 
-Before(async (I, loginPage, pmmSettingsPage) => {
-  I.amOnPage(loginPage.url);
-  loginPage.login('admin', 'admin');
+Before(async (I, pmmSettingsPage) => {
+  I.Authorize();
+
   I.amOnPage(pmmSettingsPage.url);
 });
 
@@ -46,7 +46,7 @@ Scenario('Open PMM Settings page and verify Diagnostics Section Elements', async
   pmmSettingsPage.verifyDiagnosticsElements();
 });
 
-Scenario(
+xScenario(
   'Open PMM Settings page and verify validation for empty Data Retention value',
   async (I, pmmSettingsPage) => {
     const dataRetentionValue = '';

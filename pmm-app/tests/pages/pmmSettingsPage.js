@@ -3,7 +3,7 @@ const assert = require('assert');
 module.exports = {
   // insert your locators and methods here
   // setting locators
-  url: '/graph/d/pmm-settings/pmm-settings',
+  url: 'graph/d/pmm-settings/pmm-settings',
   prometheusAlertUrl: '/prometheus/alerts',
   diagnosticsText:
     'You can download server logs to make the problem detection simpler. ' +

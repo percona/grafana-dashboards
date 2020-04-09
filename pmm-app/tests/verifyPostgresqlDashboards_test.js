@@ -1,13 +1,13 @@
 Feature('Test Dashboards inside the PostgreSQL Folder');
 
-Before((I, loginPage) => {
-  I.amOnPage(loginPage.url);
-  loginPage.login('admin', 'admin');
+Before( async (I) => {
+  I.Authorize();
+
 });
 
 Scenario(
   'Open the PostgreSQL Instance Summary Dashboard and verify Metrics are present and graphs are displayed @not-pr-pipeline',
-  async (I, adminPage, dashboardPage) => {
+  async (I, dashboardPage) => {
     I.amOnPage(dashboardPage.postgresqlInstanceSummaryDashboard.url);
     dashboardPage.waitForDashboardOpened();
     await dashboardPage.expandEachDashboardRow();
