@@ -65,7 +65,7 @@ const Chart = ({
 
     const [maxX, minX] = findXRange(appLoadPolygonChart);
     const scaleX = scaleLinear()
-      .domain([maxX, minX])
+      .domain([minX, maxX])
       .range([0, xAxisLength]);
 
     const [maxY, minY] = findYRange(appLoadPolygonChart);
@@ -124,7 +124,7 @@ const Chart = ({
         item =>
           new Object({
             x: scaleX(moment.utc(item[xkey])) || 0,
-            y: scaleY(item[ykey] === 'NaN' ? 0 : Math.max(maxY / 30, item[ykey]) || 0) + margin || 0,
+            y: scaleY(endPoint[ykey] === 'NaN' ? 0 : Math.max(maxY / 30, endPoint[ykey]) || 0) + margin || 0,
           })
       );
       const value = endPoint[ykey] === undefined ? 0 : endPoint[ykey];
