@@ -114,12 +114,18 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
         {
           header: metricName.includes('_time') ? 'Per query' : 'Per sec',
           value: Humanize.transform(statPerSec, 'number'),
+          key: 'qps',
         },
-        { header: 'Sum', value: stats.sum && Humanize.transform(stats.sum, metric.pipeTypes.sumPipe) },
+        {
+          header: 'Sum',
+          value: stats.sum && Humanize.transform(stats.sum, metric.pipeTypes.sumPipe),
+          key: 'sum',
+        },
         {
           header: 'From total',
           value:
             ((stats.sum_per_sec / totalValues.metrics[metricName].stats.sum_per_sec) * 100).toFixed(2) + ' %',
+          key: 'from-total',
         },
       ].filter(tooltip => tooltip.value);
 
@@ -140,11 +146,11 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
       };
       const MetricsList = ({ data }) => {
         return (
-          <div className={Styling.metricsWrapper}>
+          <div className={Styling.metricsWrapper} data-qa={'metrics-list'}>
             {data.map((item, index, list) => {
               return (
                 // eslint-disable-next-line react/jsx-key
-                <div className={Styling.singleMetricWrapper}>
+                <div className={Styling.singleMetricWrapper} data-qa={item.key || ''}>
                   <span className={Styling.metricName}>{`${item.header} : ${item.value}`}</span>
                   {list.length === index + 1 ? null : <Divider className={Styling.metricsListDivider} />}
                 </div>
