@@ -38,6 +38,11 @@ module.exports = {
     manageColumnsSelector: '.manage-columns-selector',
     removeColumnButton: "//div[text()='Remove column']",
   },
+  elements: {
+    metricTooltip: '.ant-tooltip-content',
+    latencyChart: '.latency-chart-container',
+    resetAllButton: '#reset-all-filters',
+  },
 
   filterGroupLocator(filterName) {
     return "//div[@class='filter-group__title']//span[contains(text(), '" + filterName + "')]";
