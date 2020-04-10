@@ -146,7 +146,7 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
       };
       const MetricsList = ({ data }) => {
         return (
-          <div className={Styling.metricsWrapper} data-qa={'metrics-list'}>
+          <div className={Styling.metricsWrapper} data-qa="metrics-list">
             {data.map((item, index, list) => {
               return (
                 // eslint-disable-next-line react/jsx-key
