@@ -24,7 +24,7 @@ export const METRIC_CATALOGUE = {
       if (!mainMetric || !divider) {
         return '';
       }
-      return `${Humanize.transform(mainMetric / divider)} per row sent`;
+      return `${Humanize.transform(mainMetric / divider, 'size')} per row sent`;
     },
     units: Units.PER_SEC,
     pipeTypes: {
