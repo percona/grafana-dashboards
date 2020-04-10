@@ -181,12 +181,12 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
               <span className="summarize" style={{ marginLeft: 'auto', cursor: 'help' }}>
                 {statPerSec !== undefined
                   ? `${Humanize.transform(statPerSec, 'number')} ${metric.units}`
-                  : 'n/a'}
+                  : `< 0.01 ${metric.units}`}
               </span>
             </Tooltip>
           ) : (
             <span className="summarize" style={{ marginLeft: 'auto' }}>
-              n/a
+              {`< 0.01 ${metric.units}`}
             </span>
           )}
         </div>

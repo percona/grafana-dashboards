@@ -5,6 +5,7 @@ import * as d3 from 'd3';
 import { area, axisBottom, curveStepAfter, scaleLinear } from 'd3';
 import * as moment from 'moment';
 import { Humanize } from '../helpers/Humanization';
+import './PolygonChart.scss';
 
 interface PolygonChartInterface {
   data?: any;
