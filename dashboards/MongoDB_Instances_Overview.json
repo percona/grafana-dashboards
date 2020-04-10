@@ -924,7 +924,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "max(rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"command\"}[$interval]) / \nrate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"command\"}[$interval]) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"command\"}[5m]) / \nirate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"command\"}[5m])\n)",
+                    "expr": "max(rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"command\"}[$interval]) / \n(rate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"command\"}[$interval]) > 0) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"command\"}[5m]) / \n(irate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"command\"}[5m]) > 0)\n)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2064,7 +2064,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "topk(5,avg by (service_name) ((rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"command\"}[$interval]) / \nrate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"command\"}[$interval]) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"command\"}[5m]) / \nirate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"command\"}[5m])\n)))",
+                            "expr": "topk(5,avg by (service_name) ((rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"command\"}[$interval]) / \n(rate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"command\"}[$interval]) > 0) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"command\"}[5m]) / \n(irate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"command\"}[5m]) > 0)\n)))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -2074,7 +2074,7 @@
                             "step": 300
                         },
                         {
-                            "expr": "avg(rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"command\"}[$interval]) / \nrate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"command\"}[$interval]) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"command\"}[5m]) / \nirate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"command\"}[5m])\n)",
+                            "expr": "avg(rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"command\"}[$interval]) / \n(rate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"command\"}[$interval]) > 0) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"command\"}[5m]) / \n(irate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"command\"}[5m]) > 0)\n)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2215,7 +2215,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "avg by (service_name) (rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"command\"}[$interval]) / \nrate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"command\"}[$interval]) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"command\"}[5m]) / \nirate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"command\"}[5m]))\n",
+                            "expr": "avg by (service_name) (rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"command\"}[$interval]) / \n(rate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"command\"}[$interval]) > 0) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"command\"}[5m]) / \n(irate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"command\"}[5m]) > 0))\n",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2304,7 +2304,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "topk(5,avg by (service_name) ((rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"read\"}[$interval]) / \nrate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"read\"}[$interval]) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"read\"}[5m]) / \nirate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"read\"}[5m])\n)))",
+                            "expr": "topk(5,avg by (service_name) ((rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"read\"}[$interval]) / \n(rate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"read\"}[$interval]) > 0) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"read\"}[5m]) / \n(irate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"read\"}[5m]) > 0)\n)))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -2314,7 +2314,7 @@
                             "step": 300
                         },
                         {
-                            "expr": "avg(rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"read\"}[$interval]) / \nrate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"read\"}[$interval]) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"read\"}[5m]) / \nirate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"read\"}[5m])\n)",
+                            "expr": "avg(rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"read\"}[$interval]) / \n(rate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"read\"}[$interval]) > 0) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"read\"}[5m]) / \n(irate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"read\"}[5m]) > 0)\n)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2455,7 +2455,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "avg by (service_name) (rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"read\"}[$interval]) / \nrate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"read\"}[$interval]) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"read\"}[5m]) / \nirate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"read\"}[5m]))\n",
+                            "expr": "avg by (service_name) (rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"read\"}[$interval]) / \n(rate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"read\"}[$interval]) > 0) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"read\"}[5m]) / \n(irate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"read\"}[5m]) > 0))\n",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2544,7 +2544,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "topk(5,avg by (service_name) ((rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"write\"}[$interval]) / \nrate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"write\"}[$interval]) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"write\"}[5m]) / \nirate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"write\"}[5m])\n)))",
+                            "expr": "topk(5,avg by (service_name) ((rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"write\"}[$interval]) / \n(rate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"write\"}[$interval]) > 0) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"write\"}[5m]) / \n(irate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"write\"}[5m]) > 0)\n)))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -2554,7 +2554,7 @@
                             "step": 300
                         },
                         {
-                            "expr": "avg(rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"write\"}[$interval]) / \nrate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"write\"}[$interval]) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"write\"}[5m]) / \nirate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"write\"}[5m])\n)",
+                            "expr": "avg(rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"write\"}[$interval]) / \n(rate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"write\"}[$interval]) > 0) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"write\"}[5m]) / \n(irate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"write\"}[5m]) > 0)\n)",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2695,7 +2695,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "avg by (service_name) (rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"write\"}[$interval]) / \nrate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"write\"}[$interval]) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"write\"}[5m]) / \nirate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"write\"}[5m]))\n",
+                            "expr": "avg by (service_name) (rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"write\"}[$interval]) / \n(rate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"write\"}[$interval]) > 0) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"write\"}[5m]) / \n(irate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"write\"}[5m]) > 0))\n",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
