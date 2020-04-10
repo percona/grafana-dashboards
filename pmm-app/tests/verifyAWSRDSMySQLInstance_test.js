@@ -1,8 +1,7 @@
 Feature('Monitoring AWS RDS MySQL DB');
 
-Before((I, loginPage) => {
-  I.amOnPage(loginPage.url);
-  loginPage.login('admin', 'admin');
+Before( async (I) => {
+  I.Authorize();
 });
 
 xScenario(

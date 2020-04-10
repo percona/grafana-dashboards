@@ -1,8 +1,8 @@
 Feature('Test Dashboards inside the MySQL Folder');
 
-Before((I, loginPage) => {
-  I.amOnPage(loginPage.url);
-  loginPage.login('admin', 'admin');
+Before( async (I) => {
+  I.Authorize();
+
 });
 
 Scenario(

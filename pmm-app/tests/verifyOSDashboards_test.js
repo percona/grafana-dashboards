@@ -1,8 +1,8 @@
 Feature('Test Dashboards inside the OS Folder');
 
-Before((I, loginPage) => {
-  I.amOnPage(loginPage.url);
-  loginPage.login('admin', 'admin');
+Before( async (I) => {
+  I.Authorize();
+
 });
 
 Scenario(
@@ -20,7 +20,7 @@ Scenario(
 
 Scenario(
   'Open the Nodes Compare Dashboard and verify Metrics are present and graphs are displayed @not-pr-pipeline',
-  async (I, adminPage, dashboardPage) => {
+  async (I, dashboardPage) => {
     I.amOnPage(dashboardPage.nodesCompareDashboard.url);
     dashboardPage.waitForDashboardOpened();
     await dashboardPage.expandEachDashboardRow();
