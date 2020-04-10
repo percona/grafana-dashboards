@@ -55,7 +55,7 @@ const TimeDistributionChart = ({ data }) => {
     })
     .sort((a, b) => a.value - b.value);
 
-  if (currentPercent < PERCENT_COUNT) {
+  if (currentPercent < PERCENT_COUNT || timeMetrics.length === 0) {
     normalizedTimeMetrics.push({
       name: 'Unknown',
       value: currentPercent,

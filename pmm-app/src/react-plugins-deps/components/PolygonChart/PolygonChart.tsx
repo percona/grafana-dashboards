@@ -29,7 +29,22 @@ const Chart = ({
   margin = 0;
   width = width || 300;
   height = height || 30;
-  appLoadPolygonChart = data || [];
+  appLoadPolygonChart = [...data] || [];
+
+  const getAdditionalPoint = (last, previous) =>
+    new Date(
+      (+moment.utc(last) || 0) - ((+moment.utc(previous) || 0) - (+moment.utc(last) || 0))
+    ).toISOString();
+
+  // Adding additional point for display purposes
+  // TODO: replace it with something better
+  appLoadPolygonChart.push({
+    point: appLoadPolygonChart[appLoadPolygonChart.length - 1].point + 1,
+    timestamp: getAdditionalPoint(
+      appLoadPolygonChart[appLoadPolygonChart.length - 1].timestamp,
+      appLoadPolygonChart[appLoadPolygonChart.length - 2].timestamp
+    ),
+  });
 
   const [tooltip, setTooltip] = useState('');
   const isMetricExists = metric => metric === 'NaN' || metric === undefined || metric === '';
