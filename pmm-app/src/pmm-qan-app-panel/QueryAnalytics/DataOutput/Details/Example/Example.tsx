@@ -1,10 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import ExampleService from './Example.service';
 import Highlight from 'react-highlight.js';
-const getExample = (example: string): any => <Highlight language="sql">{example}</Highlight>;
+import { ReactJSON } from '../../../../../react-plugins-deps/components/ReactJSON/ReactJSON';
+
+const getExample = databaseType => (example: string): any => {
+  if (databaseType === 'mongo') {
+    return <ReactJSON json={example} />;
+  }
+
+  return <Highlight language="sql">{example}</Highlight>;
+};
 
 const Example = props => {
-  const { queryId, groupBy, from, to, labels, tables } = props;
+  const { queryId, groupBy, from, to, labels, tables, databaseType } = props;
   const [examples, setExamples] = useState<any[]>([]);
   useEffect(() => {
     (async () => {
@@ -26,7 +34,9 @@ const Example = props => {
 
   return (
     <div>
-      {examples && examples.length ? examples.map(getExample) : 'Sorry, no examples found for this query'}
+      {examples && examples.length
+        ? examples.map(getExample(databaseType))
+        : 'Sorry, no examples found for this query'}
     </div>
   );
 };
