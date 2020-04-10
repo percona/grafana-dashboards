@@ -52,7 +52,6 @@ export const CheckboxGroup = ({ form, name, items, group, showAll, filter, label
       }
       return true;
     });
-
   const itemsList = (showTop ? filteredData.slice(0, TOP_LIMIT) : filteredData)
     .filter(item => item.value.toLowerCase().includes(filter.toLowerCase()))
     .map(item => {
@@ -61,7 +60,9 @@ export const CheckboxGroup = ({ form, name, items, group, showAll, filter, label
           <span className={Styling.filterName}>
             <CheckboxField
               form={form}
-              name={`${group}:${item.value}`}
+              // TODO: using '--' because final form think that it is a nested fields
+              //  need to replace it with something better
+              name={`${group}:${item.value.replace(/\./gi, '--')}`}
               label={item.value}
               checked={labels && labels[group] && labels[group].includes(item.value)}
             />
