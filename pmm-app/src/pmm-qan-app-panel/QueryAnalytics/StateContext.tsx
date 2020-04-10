@@ -110,7 +110,8 @@ class ContextActions {
       .filter(filter => filters[filter])
       .forEach(filter => {
         const [group, value] = filter.split(':');
-        // TODO: using '--' because final form think that it is a nested fields, need to replace it with something better
+        // TODO: using '--' because final form think that it is a nested fields
+        //  need to replace it with something better
         if (labels[group]) {
           labels[group].push(value.replace(/\-\-/gi, '.'));
         } else {
