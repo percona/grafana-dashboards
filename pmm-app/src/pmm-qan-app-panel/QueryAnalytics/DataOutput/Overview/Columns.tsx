@@ -22,6 +22,7 @@ const Styling = {
     text-overflow: ellipsis !important;
     white-space: nowrap !important;
     max-width: ${mainMetricColumnWidth - 40}px !important;
+    color: rgb(50, 179, 227);
   `,
   tooltipHeader: css`
     padding: 10px;
@@ -52,7 +53,7 @@ export const TABLE_Y_SCROLL = 300;
 const COLUMN_WIDTH = 250;
 const ROW_NUMBER_COLUMN_WIDTH = 30;
 
-export const getDefaultColumns = (groupBy, pageNumber, pageSize, columns) => {
+export const getDefaultColumns = (groupBy, pageNumber, pageSize, columns, onCell) => {
   const mainMetricColumnWidth = Math.max(
     TABLE_X_SCROLL - columns * COLUMN_WIDTH - ROW_NUMBER_COLUMN_WIDTH,
     MAIN_METRIC_MIN_WIDTH
@@ -77,6 +78,7 @@ export const getDefaultColumns = (groupBy, pageNumber, pageSize, columns) => {
       title: () => `Group by ${groupByLabel}`,
       ellipsis: true,
       className: 'overview-main-column',
+      onCell: onCell,
       render: (text, record, index) => {
         return (
           <div className={Styling.mainMetric(mainMetricColumnWidth)}>
@@ -176,7 +178,7 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
                 </div>
               }
             >
-              <span className="summarize" style={{ marginLeft: 'auto' }}>
+              <span className="summarize" style={{ marginLeft: 'auto', cursor: 'help' }}>
                 {statPerSec !== undefined
                   ? `${Humanize.transform(statPerSec, 'number')} ${metric.units}`
                   : 'n/a'}
