@@ -32,6 +32,8 @@ const Chart = ({
   appLoadPolygonChart = data || [];
 
   const [tooltip, setTooltip] = useState('');
+  const isMetricExists = metric => metric === 'NaN' || metric === undefined || metric === '';
+
   const findYRange = function(array) {
     const values = array.map(data => +data[ykey] || 0);
     return [Math.max(...values) || 1, Math.min(...values) || 0];
@@ -76,7 +78,7 @@ const Chart = ({
     data = appLoadPolygonChart.map(item => {
       return new Object({
         x: scaleX(moment.utc(item['timestamp'])),
-        y: scaleY(item[ykey] === 'NaN' ? 0 : Math.max(maxY / 30, item[ykey]) || 0) + margin || 0,
+        y: scaleY(isMetricExists(item[ykey]) ? 0 : Math.max(maxY / 15, item[ykey])) + margin || 0,
       });
     });
 
@@ -124,10 +126,12 @@ const Chart = ({
         item =>
           new Object({
             x: scaleX(moment.utc(item[xkey])) || 0,
-            y: scaleY(endPoint[ykey] === 'NaN' ? 0 : Math.max(maxY / 30, endPoint[ykey]) || 0) + margin || 0,
+            y:
+              scaleY(isMetricExists(endPoint[ykey]) ? 0 : Math.max(maxY / 15, endPoint[ykey]) || 0) +
+                margin || 0,
           })
       );
-      const value = endPoint[ykey] === undefined ? 0 : endPoint[ykey];
+      const value = isMetricExists(endPoint[ykey]) ? 0 : endPoint[ykey];
       const load = Humanize.transform(value);
       const dateToShow = moment(endPoint[xkey]).format('YYYY-MM-DD HH:mm:ss');
 
