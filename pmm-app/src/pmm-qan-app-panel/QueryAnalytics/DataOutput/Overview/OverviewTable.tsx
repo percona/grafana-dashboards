@@ -30,14 +30,14 @@ const OverviewTable = props => {
     });
   }, []);
 
-  const onRowClick = useCallback(
+  const onCell = useCallback(
     (record, rowIndex) => {
       return {
         onClick: () => {
           dispatch({
             type: 'SELECT_QUERY',
             payload: {
-              queryId: data.rows[rowIndex].dimension,
+              queryId: record.dimension,
             },
           });
         },
@@ -62,9 +62,13 @@ const OverviewTable = props => {
         });
 
         props.setTotal(result.total_rows);
-        const calculatedColumns = getDefaultColumns(groupBy, pageNumber, pageSize, columns.length).concat(
-          columns.map((key, index) => getOverviewColumn(key, index, result.rows[0], orderBy))
-        );
+        const calculatedColumns = getDefaultColumns(
+          groupBy,
+          pageNumber,
+          pageSize,
+          columns.length,
+          onCell
+        ).concat(columns.map((key, index) => getOverviewColumn(key, index, result.rows[0], orderBy)));
         // @ts-ignore
         setData({ rows: result.rows, columns: calculatedColumns });
         setLoading(false);
@@ -87,7 +91,6 @@ const OverviewTable = props => {
       bordered={true}
       pagination={false}
       scroll={{ y: Math.max(height - 30, TABLE_Y_SCROLL), x: TABLE_X_SCROLL }}
-      onRow={onRowClick}
       rowClassName={record => {
         if (querySelected) {
           if (!record.dimension && queryId === 'TOTAL') {
