@@ -3540,7 +3540,7 @@
                     "target": ""
                 },
                 {
-                    "expr": "avg by (node_name) (rate(node_netstat_Tcp_RetransSegs{node_name=~\"$node_name\"}[$interval])/rate(node_netstat_Tcp_OutSegs{node_name=~\"$node_name\"}[$interval]) or irate(node_netstat_Tcp_RetransSegs{node_name=~\"$node_name\"}[5m])/irate(node_netstat_Tcp_OutSegsSegs{node_name=~\"$node_name\"}[5m]))",
+                    "expr": "avg by (node_name) (rate(node_netstat_Tcp_RetransSegs{node_name=~\"$node_name\"}[$interval])/(rate(node_netstat_Tcp_OutSegs{node_name=~\"$node_name\"}[$interval]) > 0) or irate(node_netstat_Tcp_RetransSegs{node_name=~\"$node_name\"}[5m])/(irate(node_netstat_Tcp_OutSegsSegs{node_name=~\"$node_name\"}[5m]) > 0))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
