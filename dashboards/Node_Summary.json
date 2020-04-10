@@ -2787,7 +2787,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "avg by (node_name) ((sum(rate(node_disk_read_time_seconds_total{node_name=~\"$node_name\"}[$interval])) / sum(rate(node_disk_reads_completed_total{node_name=~\"$node_name\"}[$interval]))) or (sum(irate(node_disk_read_time_seconds_total{node_name=~\"$node_name\"}[5m])) / sum(irate(node_disk_reads_completed_total{node_name=~\"$node_name\"}[5m])))\nor avg_over_time(aws_rds_read_latency_average{node_name=~\"$node_name\"}[$interval])/1000 or avg_over_time(aws_rds_read_latency_average{node_name=~\"$node_name\"}[5m])/1000 or\navg_over_time(rdsosmetrics_diskIO_readLatency{node_name=~\"$node_name\"}[$interval])/1000 or avg_over_time(rdsosmetrics_diskIO_readLatency{node_name=~\"$node_name\"}[5m])/1000)",
+                    "expr": "avg by (node_name) ((sum(rate(node_disk_read_time_seconds_total{node_name=~\"$node_name\"}[$interval])) / sum(rate(node_disk_reads_completed_total{node_name=~\"$node_name\"}[$interval]) > 0 )) or (sum(irate(node_disk_read_time_seconds_total{node_name=~\"$node_name\"}[5m])) / \nsum(irate(node_disk_reads_completed_total{node_name=~\"$node_name\"}[5m]) > 0 ))\nor avg_over_time(aws_rds_read_latency_average{node_name=~\"$node_name\"}[$interval])/1000 or avg_over_time(aws_rds_read_latency_average{node_name=~\"$node_name\"}[5m])/1000 or\navg_over_time(rdsosmetrics_diskIO_readLatency{node_name=~\"$node_name\"}[$interval])/1000 or avg_over_time(rdsosmetrics_diskIO_readLatency{node_name=~\"$node_name\"}[5m])/1000)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2795,7 +2795,7 @@
                     "refId": "A"
                 },
                 {
-                    "expr": "avg by (node_name) ((sum(rate(node_disk_write_time_seconds_total{node_name=~\"$node_name\"}[$interval])) / sum(rate(node_disk_writes_completed_total{node_name=~\"$node_name\"}[$interval]))) or (sum(irate(node_disk_write_time_seconds_total{node_name=~\"$node_name\"}[5m])) / sum(irate(node_disk_writes_completed_total{node_name=~\"$node_name\"}[5m])))\nor (avg_over_time(aws_rds_write_latency_average{node_name=~\"$node_name\"}[$interval])/1000 or avg_over_time(aws_rds_write_latency_average{node_name=~\"$node_name\"}[5m])/1000) or\n(avg_over_time(rdsosmetrics_diskIO_writeLatency{node_name=~\"$node_name\"}[$interval]) or avg_over_time(rdsosmetrics_diskIO_writeLatency{node_name=~\"$node_name\"}[5m]))/1000)",
+                    "expr": "avg by (node_name) ((sum(rate(node_disk_write_time_seconds_total{node_name=~\"$node_name\"}[$interval])) / sum(rate(node_disk_writes_completed_total{node_name=~\"$node_name\"}[$interval]) > 0 )) or (sum(irate(node_disk_write_time_seconds_total{node_name=~\"$node_name\"}[5m])) / \nsum(irate(node_disk_writes_completed_total{node_name=~\"$node_name\"}[5m]) > 0 ))\nor (avg_over_time(aws_rds_write_latency_average{node_name=~\"$node_name\"}[$interval])/1000 or avg_over_time(aws_rds_write_latency_average{node_name=~\"$node_name\"}[5m])/1000) or\n(avg_over_time(rdsosmetrics_diskIO_writeLatency{node_name=~\"$node_name\"}[$interval]) or avg_over_time(rdsosmetrics_diskIO_writeLatency{node_name=~\"$node_name\"}[5m]))/1000)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2803,7 +2803,7 @@
                     "refId": "B"
                 },
                 {
-                    "expr": "avg by (node_name) ((sum(rate(node_disk_read_time_seconds_total{node_name=~\"$node_name\"}[1h])) / sum(rate(node_disk_reads_completed_total{node_name=~\"$node_name\"}[1h])))\nor avg_over_time(aws_rds_read_latency_average{node_name=~\"$node_name\"}[1h])/1000 or avg_over_time(aws_rds_read_latency_average{node_name=~\"$node_name\"}[1h])/1000 or\navg_over_time(rdsosmetrics_diskIO_readLatency{node_name=~\"$node_name\"}[1h])/1000 or avg_over_time(rdsosmetrics_diskIO_readLatency{node_name=~\"$node_name\"}[1h])/1000)",
+                    "expr": "avg by (node_name) ((sum(rate(node_disk_read_time_seconds_total{node_name=~\"$node_name\"}[1h])) / sum(rate(node_disk_reads_completed_total{node_name=~\"$node_name\"}[1h]) > 0 ))\nor avg_over_time(aws_rds_read_latency_average{node_name=~\"$node_name\"}[1h])/1000 or avg_over_time(aws_rds_read_latency_average{node_name=~\"$node_name\"}[1h])/1000 or\navg_over_time(rdsosmetrics_diskIO_readLatency{node_name=~\"$node_name\"}[1h])/1000 or avg_over_time(rdsosmetrics_diskIO_readLatency{node_name=~\"$node_name\"}[1h])/1000)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2811,7 +2811,7 @@
                     "refId": "C"
                 },
                 {
-                    "expr": "avg by (node_name) ((sum(rate(node_disk_write_time_seconds_total{node_name=~\"$node_name\"}[1h])) / sum(rate(node_disk_writes_completed_total{node_name=~\"$node_name\"}[1h]))) \nor (avg_over_time(aws_rds_write_latency_average{node_name=~\"$node_name\"}[$interval])/1000 or avg_over_time(aws_rds_write_latency_average{node_name=~\"$node_name\"}[1h])/1000) or\n(avg_over_time(rdsosmetrics_diskIO_writeLatency{node_name=~\"$node_name\"}[$interval])/1000 or avg_over_time(rdsosmetrics_diskIO_writeLatency{node_name=~\"$node_name\"}[1h])/1000))",
+                    "expr": "avg by (node_name) ((sum(rate(node_disk_write_time_seconds_total{node_name=~\"$node_name\"}[1h])) / sum(rate(node_disk_writes_completed_total{node_name=~\"$node_name\"}[1h]) > 0 )) \nor (avg_over_time(aws_rds_write_latency_average{node_name=~\"$node_name\"}[$interval])/1000 or avg_over_time(aws_rds_write_latency_average{node_name=~\"$node_name\"}[1h])/1000) or\n(avg_over_time(rdsosmetrics_diskIO_writeLatency{node_name=~\"$node_name\"}[$interval])/1000 or avg_over_time(rdsosmetrics_diskIO_writeLatency{node_name=~\"$node_name\"}[1h])/1000))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
