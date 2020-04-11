@@ -42,6 +42,9 @@ module.exports = {
     metricTooltip: '.ant-tooltip-content',
     latencyChart: '.latency-chart-container',
     resetAllButton: '#reset-all-filters',
+    timeRangePickerButton: '.time-picker-button-select',
+    selectedOverviewRow: 'tr.selected-overview-row',
+    detailsSection: '#query-analytics-details',
   },
 
   filterGroupLocator(filterName) {
