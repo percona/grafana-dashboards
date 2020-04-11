@@ -136,9 +136,13 @@ export const UrlParametersProvider = ({ children }) => {
       switch (action.type) {
         case 'SET_LABELS':
           newState = { ...state, labels: ContextActions.setLabels(action.payload.labels), pageNumber: 1 };
+          delete newState.queryId;
+          delete newState.querySelected;
           break;
         case 'RESET_LABELS':
           newState = { ...state, labels: {}, pageNumber: 1 };
+          delete newState.queryId;
+          delete newState.querySelected;
           break;
         case 'SELECT_QUERY':
           newState = { ...state, queryId: action.payload.queryId || 'TOTAL', querySelected: true };
