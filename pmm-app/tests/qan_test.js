@@ -175,6 +175,7 @@ xScenario('Open the QAN Dashboard and check work of button "reset all" @new-qan'
   I.amOnPage(qanPage.url);
   I.waitForElement(filterCheckboxSelector, 30);
   I.checkOption(filterCheckboxSelector);
+  I.waitForResponse('http://localhost/v0/qan/Filters/Get', 10);
   I.click(qanPage.elements.resetAllButton);
   I.dontSeeCheckboxIsChecked(filterCheckboxSelector);
 });
@@ -226,16 +227,11 @@ xScenario('Open the QAN Dashboard and verify that the metric value matches the "
 });
 
 xScenario('Open the QAN Dashboard and check that changing the time range clears the selected row. @new-qan', async (I, adminPage, qanPage) => {
-  function getRandomIntInclusive(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
   const numOfRows = await I.grabNumberOfVisibleElements('ant-table-scroll .ant-table-tbody tr');
-  const randomTableRow = getRandomIntInclusive(1, numOfRows);
+  const randomTableRow = qanPage.helpers.getRandomIntInclusive(1, numOfRows);
   const randomTableRowSelector = `.ant-table-scroll .ant-table-tbody tr:nth-child(${randomTableRow}) .overview-main-column div`;
   const numOfTimeRangeOptions = await I.grabNumberOfVisibleElements('.gf-form-select-box__option');
-  const randomTimeRangeOption = getRandomIntInclusive(1, numOfTimeRangeOptions);
+  const randomTimeRangeOption = qanPage.helpers.getRandomIntInclusive(1, numOfTimeRangeOptions);
 
   I.amOnPage(qanPage.url);
   I.waitForElement(randomTableRowSelector, 30);
@@ -244,4 +240,20 @@ xScenario('Open the QAN Dashboard and check that changing the time range clears 
   I.click(`.gf-form-select-box__option:nth-child(${randomTimeRangeOption})`);
   I.dontSeeElement(qanPage.elements.selectedOverviewRow);
   I.dontSeeElement(qanPage.elements.detailsSection);
+});
+
+xScenario('Open the QAN Dashboard and check that changing the time range resets current page to the first. @new-qan', async (I, adminPage, qanPage) => {
+  const numOfPages = await I.grabNumberOfVisibleElements('.ant-pagination-item');
+  const randomPage = qanPage.helpers.getRandomIntInclusive(1, numOfPages);
+  const randomPageSelector = `.ant-pagination-item[title = '${randomPage}']`;
+  const numOfTimeRangeOptions = await I.grabNumberOfVisibleElements('.gf-form-select-box__option');
+  const randomTimeRangeOption = qanPage.helpers.getRandomIntInclusive(1, numOfTimeRangeOptions);
+
+  I.amOnPage(qanPage.url);
+  I.waitForElement(randomPageSelector, 30);
+  I.forceClick(randomPageSelector);
+  I.click(qanPage.elements.timeRangePickerButton);
+  I.click(`.gf-form-select-box__option:nth-child(${randomTimeRangeOption})`);
+  I.waitForResponse('http://localhost/v0/qan/GetReport', 10);
+  I.seeElement('.ant-pagination-item-active[title="1"]');
 });
