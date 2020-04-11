@@ -48,7 +48,7 @@ export const GroupByControl = () => {
         style={{ width: '120px' }}
         onChange={setGroupBy}
         className="group-by-selector"
-        data-qa={'group-by'}
+        data-qa="group-by"
         dropdownClassName="group-by-selector-dropdown"
       >
         {GROUP_BY_OPTIONS.map(option => (
