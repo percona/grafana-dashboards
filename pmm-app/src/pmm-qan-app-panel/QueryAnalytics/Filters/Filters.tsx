@@ -176,20 +176,20 @@ const FiltersContainer = () => {
   const [groups, setGroups] = useState<GroupInterface[]>([]);
   const {
     dispatch,
-    state: { labels = {}, from, to },
+    state: { labels = {}, from, to, columns },
   } = useContext(StateContext);
 
   useEffect(() => {
     (async () => {
       try {
-        const result = await FiltersService.getQueryOverviewFiltersList(labels, from, to);
+        const result = await FiltersService.getQueryOverviewFiltersList(labels, from, to, columns[0]);
         setFilters(result);
         setGroups(FILTERS_GROUPS);
       } catch (e) {
         //TODO: add error handling
       }
     })();
-  }, [labels, from, to]);
+  }, [labels, from, to, columns]);
 
   return (
     <FormFinal
