@@ -72,8 +72,7 @@ const QueryAnalyticsContainer = () => {
   return (
     <div style={{ width: `${(size || 1500) - 260}px`, height: '100%', overflowY: 'scroll' }}>
       <div className={Styling.overviewHeader}>
-        <h5 className={Styling.overviewTitle}>Queries overview</h5>
-        <GroupByControl />
+        <h5 className={Styling.overviewTitle}>Overview</h5>
         <div className={Styling.paginationWrapper}>
           <Pagination
             showSizeChanger={true}

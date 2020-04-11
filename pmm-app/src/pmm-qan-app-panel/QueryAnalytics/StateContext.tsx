@@ -250,13 +250,13 @@ export const UrlParametersProvider = ({ children }) => {
 
   useEffect(() => {
     const state = ContextActions.parseURL(query);
-    dispatch({
-      type: 'UPDATE_TIME_RANGE',
-      payload: {
-        from: state.from,
-        to: state.to,
-      },
-    });
+    // dispatch({
+    //   type: 'UPDATE_TIME_RANGE',
+    //   payload: {
+    //     from: state.from,
+    //     to: state.to,
+    //   },
+    // });
   }, [rawTime]);
 
   return <StateContext.Provider value={{ state, dispatch }}>{children}</StateContext.Provider>;

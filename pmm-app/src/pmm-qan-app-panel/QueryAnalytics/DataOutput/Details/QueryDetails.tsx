@@ -60,7 +60,7 @@ const QueryDetails = () => {
           </TabPane>
           <TabPane
             tab={
-              <Tooltip title="Available for MySQL" placement="leftTop">
+              <Tooltip title="Available for MySQL only" placement="leftTop">
                 Explain
               </Tooltip>
             }
@@ -69,15 +69,7 @@ const QueryDetails = () => {
           >
             <Explain {...MetricsProps} />
           </TabPane>
-          <TabPane
-            tab={
-              <Tooltip title="Available for MySQL" placement="leftTop">
-                Tables
-              </Tooltip>
-            }
-            key="4"
-            // disabled={databaseType === 'postgresql'}
-          >
+          <TabPane tab={<span>Tables</span>} key="4">
             <TableCreateContainer {...MetricsProps} />
           </TabPane>
         </Tabs>
