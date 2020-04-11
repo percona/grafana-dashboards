@@ -5,7 +5,6 @@ import Split from 'react-split';
 import { StateContext } from '../StateContext';
 import { Pagination } from 'antd';
 import ManageColumns from './ManageColumns/ManageColumns';
-import { GroupByControl } from './GroupByControl/GroupByControl';
 import { css } from 'emotion';
 
 const PAGE_SIZE_OPTIONS = ['10', '50', '100'];

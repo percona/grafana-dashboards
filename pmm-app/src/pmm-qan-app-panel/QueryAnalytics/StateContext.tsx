@@ -249,7 +249,7 @@ export const UrlParametersProvider = ({ children }) => {
   );
 
   useEffect(() => {
-    const state = ContextActions.parseURL(query);
+    // const state = ContextActions.parseURL(query);
     // dispatch({
     //   type: 'UPDATE_TIME_RANGE',
     //   payload: {
