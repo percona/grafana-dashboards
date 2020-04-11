@@ -165,7 +165,7 @@ xScenario('Open the QAN Dashboard and show tooltip @new-qan', async (I, adminPag
 Scenario('Open the QAN Dashboard and check existence of filters @new-qan', async (I, adminPage, qanPage) => {
   const filterCheckboxSelector = '#query-analytics-filters input[type="checkbox"]';
   I.amOnPage(qanPage.url);
-  I.waitForElement(filterCheckboxSelector, 5);
+  I.waitForElement(filterCheckboxSelector, 30);
   I.seeElementInDOM(filterCheckboxSelector);
 
 });
@@ -173,7 +173,7 @@ Scenario('Open the QAN Dashboard and check existence of filters @new-qan', async
 Scenario('Open the QAN Dashboard and check work of button "reset all" @new-qan', async (I, adminPage, qanPage) => {
   const filterCheckboxSelector = '#query-analytics-filters input[type="checkbox"]';
   I.amOnPage(qanPage.url);
-  I.waitForElement(filterCheckboxSelector, 5);
+  I.waitForElement(filterCheckboxSelector, 30);
   I.checkOption(filterCheckboxSelector);
   I.click(qanPage.elements.resetAllButton);
   I.dontSeeCheckboxIsChecked(filterCheckboxSelector);
@@ -195,7 +195,7 @@ Scenario('Open the QAN Dashboard, add a column and make sure that this option no
 Scenario('Open the QAN Dashboard and verify that hovering over a time metric displays a tooltip with a graph @new-qan', async (I, adminPage, qanPage) => {
   const queryTimeColumn = '.ant-table-tbody tr:first-child td:last-child';
   I.amOnPage(qanPage.url);
-  I.waitForElement(`${queryTimeColumn} .summarize`, 10);
+  I.waitForElement(`${queryTimeColumn} .summarize`, 30);
   I.scrollTo(queryTimeColumn);
   I.moveCursorTo(`${queryTimeColumn} .summarize`);
   I.seeElement(qanPage.elements.metricTooltip);
@@ -205,7 +205,7 @@ Scenario('Open the QAN Dashboard and verify that hovering over a time metric dis
 Scenario('Open the QAN Dashboard and verify that hovering over a non-time metric displays a tooltip without a graph @new-qan', async (I, adminPage, qanPage) => {
   const queryCountColumn = '.ant-table-tbody tr:first-child td:nth-child(4)';
   I.amOnPage(qanPage.url);
-  I.waitForElement(`${queryCountColumn} .summarize`, 10);
+  I.waitForElement(`${queryCountColumn} .summarize`, 30);
   I.scrollTo(queryCountColumn);
   I.moveCursorTo(`${queryCountColumn} .summarize`);
   I.seeElement(qanPage.elements.metricTooltip);
@@ -215,10 +215,10 @@ Scenario('Open the QAN Dashboard and verify that hovering over a non-time metric
 Scenario('Open the QAN Dashboard and verify that the metric value matches the "Per sec" value in the tooltip. @new-qan', async (I, adminPage, qanPage) => {
   const queryCountColumn = '.ant-table-tbody tr:first-child td:nth-child(4)';
   I.amOnPage(qanPage.url);
-  I.waitForElement(`${queryCountColumn} .summarize`, 10);
+  I.waitForElement(`${queryCountColumn} .summarize`, 30);
   I.scrollTo(queryCountColumn);
   I.moveCursorTo(`${queryCountColumn} .summarize`);
-  I.waitForElement(qanPage.elements.metricTooltip, 2);
+  I.waitForElement(qanPage.elements.metricTooltip, 5);
   I.seeElement(qanPage.elements.metricTooltip);
   let qpsMetricValue = await I.grabTextFrom(`${queryCountColumn} .summarize`);
   let qpsTooltipValue = await I.grabTextFrom('[data-qa="metrics-list"] [data-qa="qps"] span');
