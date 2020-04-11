@@ -1,7 +1,18 @@
 import { StateContext } from '../../StateContext';
 import React, { useCallback, useContext } from 'react';
 import { Select } from 'antd';
+import { css } from 'emotion';
 
+const Styling = {
+  groupByWrapper: css`
+    display: flex;
+    align-items: center;
+  `,
+  groupByHeader: css`
+    margin: 0 !important;
+    margin-right: 15px !important;
+  `,
+};
 const { Option } = Select;
 
 export const GROUP_BY_OPTIONS = [
@@ -29,14 +40,15 @@ export const GroupByControl = () => {
   }, []);
 
   return (
-    <>
-      <h5 style={{ margin: '3px', marginRight: '15px' }}>Group by</h5>
+    <div className={Styling.groupByWrapper}>
+      <h5 className={Styling.groupByHeader}>Group by</h5>
       <Select
         optionLabelProp="label"
         defaultValue={groupBy}
         style={{ width: '120px' }}
         onChange={setGroupBy}
         className="group-by-selector"
+        data-qa={'group-by'}
         dropdownClassName="group-by-selector-dropdown"
       >
         {GROUP_BY_OPTIONS.map(option => (
@@ -45,6 +57,6 @@ export const GroupByControl = () => {
           </Option>
         ))}
       </Select>
-    </>
+    </div>
   );
 };

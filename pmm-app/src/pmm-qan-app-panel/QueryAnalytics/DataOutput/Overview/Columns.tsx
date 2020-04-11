@@ -7,7 +7,7 @@ import './OverviewTable.scss';
 import { METRIC_CATALOGUE } from '../MetricCatalogue';
 import Tooltip from 'antd/es/tooltip';
 import { Divider } from 'antd';
-import { GROUP_BY_OPTIONS } from '../GroupByControl/GroupByControl';
+import { GROUP_BY_OPTIONS, GroupByControl } from '../GroupByControl/GroupByControl';
 import { css } from 'emotion';
 
 const Styling = {
@@ -75,7 +75,9 @@ export const getDefaultColumns = (groupBy, pageNumber, pageSize, columns, onCell
       dataIndex: 'mainMetric',
       fixed: 'left',
       width: mainMetricColumnWidth,
-      title: () => `Group by ${groupByLabel}`,
+      title: () => {
+        return <GroupByControl />;
+      },
       ellipsis: true,
       className: 'overview-main-column',
       onCell: onCell,
