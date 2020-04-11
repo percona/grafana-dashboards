@@ -231,6 +231,9 @@ export const UrlParametersProvider = ({ children }) => {
             from: action.payload.from,
             to: action.payload.to,
           };
+          delete newState.queryId;
+          delete newState.querySelected;
+          break;
       }
       ContextActions.refreshGrafanaVariables(newState);
       newState.rawTime = rawTime;
