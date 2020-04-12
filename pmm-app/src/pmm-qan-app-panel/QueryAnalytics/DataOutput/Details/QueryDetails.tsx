@@ -14,7 +14,7 @@ const { TabPane } = Tabs;
 
 const QueryDetails = () => {
   const {
-    state: { queryId, groupBy, from, to, fingerprint, controlSum },
+    panelState: { queryId, groupBy, from, to, fingerprint, controlSum },
   } = useContext(StateContext);
   const [databaseType, setDatabaseType] = useState('');
 

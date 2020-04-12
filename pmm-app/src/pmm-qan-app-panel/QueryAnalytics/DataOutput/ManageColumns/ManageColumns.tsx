@@ -8,8 +8,8 @@ const { Option } = Select;
 
 const ManageColumns = props => {
   const {
-    dispatch,
-    state: { columns },
+    contextActions,
+    panelState: { columns },
   } = useContext(StateContext);
   const [availableColumns, setAvailableColumns] = useState(Object.values(METRIC_CATALOGUE));
   useEffect(() => {
@@ -20,33 +20,20 @@ const ManageColumns = props => {
   const changeColumn = useCallback(
     column => {
       if (props.onlyAdd) {
-        dispatch({
-          type: 'ADD_COLUMN',
-          payload: {
-            column: column,
-          },
-        });
+        contextActions.addColumn(column);
       } else {
-        dispatch({
-          type: 'REPLACE_COLUMN',
-          payload: {
-            column: column,
-            oldColumn: props.currentMetric,
-          },
+        contextActions.changeColumn({
+          column: column,
+          oldColumn: props.currentMetric,
         });
       }
     },
     [props.currentMetric, props.onlyAdd]
   );
 
-  const removeColumn = useCallback(() => {
-    dispatch({
-      type: 'REMOVE_COLUMN',
-      payload: {
-        column: props.currentMetric,
-      },
-    });
-  }, [props.currentMetric]);
+  const removeColumn = useCallback(() => contextActions.removeColumn(props.currentMetric), [
+    props.currentMetric,
+  ]);
   // @ts-ignore
   return (
     <div className={!props.onlyAdd ? 'manage-columns' : 'add-columns'} onClick={e => e.stopPropagation()}>

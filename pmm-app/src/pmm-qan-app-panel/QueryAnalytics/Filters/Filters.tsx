@@ -99,7 +99,7 @@ interface GroupInterface {
 }
 
 const FILTERS_BODY_HEIGHT = 600;
-export const Filters = ({ dispatch, groups, form, labels, filters }) => {
+export const Filters = ({ contextActions, groups, form, labels, filters }) => {
   // @ts-ignore
   const [width, height] = useWindowSize();
   const [filtersBodyHeight, setFiltersBodyHeight] = useState(FILTERS_BODY_HEIGHT);
@@ -130,7 +130,7 @@ export const Filters = ({ dispatch, groups, form, labels, filters }) => {
           id="reset-all-filters"
           onClick={() => {
             setFilter('');
-            dispatch({ type: 'RESET_LABELS' });
+            contextActions.resetLabels();
             form.reset();
           }}
         >
@@ -175,8 +175,8 @@ const FiltersContainer = () => {
   const [filters, setFilters] = useState({});
   const [groups, setGroups] = useState<GroupInterface[]>([]);
   const {
-    dispatch,
-    state: { labels = {}, from, to, columns },
+    contextActions,
+    panelState: { labels = {}, from, to, columns },
   } = useContext(StateContext);
 
   useEffect(() => {
@@ -205,14 +205,15 @@ const FiltersContainer = () => {
           <form
             onSubmit={handleSubmit}
             className="add-instance-form app-theme-dark"
-            onChange={e => {
-              dispatch({
-                type: 'SET_LABELS',
-                payload: { labels: form.getState().values },
-              });
-            }}
+            onChange={e => contextActions.setLabels(form.getState().values)}
           >
-            <Filters dispatch={dispatch} form={form} groups={groups} labels={labels} filters={filters} />
+            <Filters
+              contextActions={contextActions}
+              form={form}
+              groups={groups}
+              labels={labels}
+              filters={filters}
+            />
           </form>
         );
       }}
