@@ -15,32 +15,32 @@ interface DataInterface {
 }
 const OverviewTable = props => {
   const {
-    dispatch,
-    state: { labels, columns, pageNumber, pageSize, orderBy, from, to, groupBy, queryId, querySelected },
+    contextActions,
+    panelState: {
+      labels,
+      columns,
+      pageNumber,
+      pageSize,
+      orderBy,
+      from,
+      to,
+      groupBy,
+      queryId,
+      querySelected,
+      rawTime,
+    },
   } = useContext(StateContext);
   const [data, setData] = useState<DataInterface>({ rows: [], columns: [] });
   const [loading, setLoading] = useState(false);
 
   const onTableChange = useCallback((pagination, filters, sorter) => {
-    dispatch({
-      type: 'CHANGE_SORT',
-      payload: {
-        orderBy: sorter.columnKey,
-      },
-    });
+    contextActions.changeSort(sorter.columnKey);
   }, []);
 
   const onCell = useCallback(
     (record, rowIndex) => {
       return {
-        onClick: () => {
-          dispatch({
-            type: 'SELECT_QUERY',
-            payload: {
-              queryId: record.dimension,
-            },
-          });
-        },
+        onClick: () => contextActions.selectQuery(record.dimension),
       };
     },
     [data.rows]
@@ -77,7 +77,7 @@ const OverviewTable = props => {
       }
     };
     updateInstances().then(() => {});
-  }, [columns, pageNumber, pageSize, groupBy, labels, orderBy, from, to]);
+  }, [columns, pageNumber, pageSize, groupBy, labels, orderBy, from, to, rawTime]);
   // @ts-ignore
 
   const container = document.querySelector('.table-wrapper');

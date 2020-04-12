@@ -26,17 +26,12 @@ export const GROUP_BY_OPTIONS = [
 
 export const GroupByControl = () => {
   const {
-    dispatch,
-    state: { groupBy },
+    contextActions,
+    panelState: { groupBy },
   } = useContext(StateContext);
 
   const setGroupBy = useCallback(value => {
-    dispatch({
-      type: 'CHANGE_GROUP_BY',
-      payload: {
-        groupBy: value,
-      },
-    });
+    contextActions.changeGroupBy(value);
   }, []);
 
   return (

@@ -130,7 +130,7 @@ const columns = [
 ];
 
 const Metrics = props => {
-  const { dispatch } = useContext(StateContext);
+  const { contextActions } = useContext(StateContext);
   const { queryId, groupBy, from, to, labels, tables } = props;
 
   const [metrics, setMetrics] = useState<any[]>([]);
@@ -149,13 +149,7 @@ const Metrics = props => {
           tables,
         });
         setMetrics(processMetrics(METRIC_CATALOGUE, result));
-
-        dispatch({
-          type: 'SET_FINGERPRINT',
-          payload: {
-            fingerprint: groupBy === 'queryid' ? result.fingerprint : queryId,
-          },
-        });
+        contextActions.setFingerprint(groupBy === 'queryid' ? result.fingerprint : queryId);
         setLoading(false);
       } catch (e) {
         setLoading(false);
