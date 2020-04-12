@@ -77,8 +77,8 @@ class ContextActions {
     const groupBy = state.groupBy ? `group_by=${state.groupBy}` : '';
     const filterByQuery = state.queryId ? `filter_by=${state.queryId}` : '';
     const orderBy = state.orderBy ? `order_by=${state.orderBy}` : '';
-    const from = state.rawTime.from ? `from=${state.rawTime.from}` : '';
-    const to = state.rawTime.to ? `to=${state.rawTime.to}` : '';
+    const from = state.rawTime && state.rawTime.from ? `from=${state.rawTime.from}` : '';
+    const to = state.rawTime && state.rawTime.to ? `to=${state.rawTime.to}` : '';
     // TODO: replace crutch with right redirect
     return `${window.location.pathname}?${[columnsQuery, filterByQuery, labels, orderBy, groupBy, from, to]
       .filter(Boolean)
@@ -93,10 +93,10 @@ class ContextActions {
     urlParams.to = ParseQueryParamDate.transform(query.get('to') || 'now', 'to')
       .utc()
       .format('YYYY-MM-DDTHH:mm:ssZ');
-    urlParams.rawTime = {
-      from: query.get('from'),
-      to: query.get('to'),
-    };
+    // urlParams.rawTime = {
+    //   from: query.get('from'),
+    //   to: query.get('to'),
+    // };
     urlParams.columns = JSON.parse(query.get('columns')) || DEFAULT_COLUMNS;
     urlParams.labels = ContextActions.setFilters(query);
     urlParams.pageNumber = 1;
@@ -240,13 +240,14 @@ const actions = {
   refresh: value => state => {},
 };
 
-export const UrlParametersProvider = ({ children }) => {
+export const UrlParametersProvider = ({ grafanaProps, children }) => {
   const query = new URLSearchParams(window.location.search);
-  const [panelState, setContext] = useState({ ...ContextActions.parseURL(query) });
-
-  const wrapAction = key => value => {
-    return setContext(actions[key](value));
-  };
+  const rawTime = { ...grafanaProps.timeRange.raw };
+  const from = grafanaProps.timeRange.from.utc().format('YYYY-MM-DDTHH:mm:ssZ');
+  const to = grafanaProps.timeRange.to.utc().format('YYYY-MM-DDTHH:mm:ssZ');
+  const [panelState, setContext] = useState({
+    ...ContextActions.parseURL(query),
+  });
 
   useEffect(() => {
     ContextActions.refreshGrafanaVariables(panelState);
@@ -254,10 +255,18 @@ export const UrlParametersProvider = ({ children }) => {
     history.pushState({}, 'test', newUrl);
   }, [panelState]);
 
+  const wrapAction = key => value => {
+    return setContext(actions[key](value));
+  };
+
+  useEffect(() => {
+    setContext({ ...panelState, from, to, rawTime });
+  }, [from, to]);
+
   return (
     <StateContext.Provider
       value={{
-        panelState,
+        panelState: panelState,
         contextActions: Object.keys(actions).reduce((actions, key) => {
           actions[key] = wrapAction(key);
           return actions;
