@@ -33,26 +33,16 @@ const Styling = {
 };
 const QueryAnalyticsContainer = () => {
   const {
-    dispatch,
-    state: { pageNumber, pageSize, querySelected },
+    contextActions,
+    panelState: { pageNumber, pageSize, querySelected },
   } = useContext(StateContext);
   const [total, setTotal] = useState(30);
   const changePageNumber = useCallback(pageNumber => {
-    dispatch({
-      type: 'CHANGE_PAGE',
-      payload: {
-        pageNumber,
-      },
-    });
+    contextActions.changePage(pageNumber);
   }, []);
 
   const changePageSize = useCallback((current, pageSize) => {
-    dispatch({
-      type: 'CHANGE_PAGE_SIZE',
-      payload: {
-        pageSize,
-      },
-    });
+    contextActions.changePageSize(pageSize);
   }, []);
 
   useEffect(() => {

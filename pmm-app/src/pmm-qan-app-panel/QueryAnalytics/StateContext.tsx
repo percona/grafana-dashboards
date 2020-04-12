@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ParseQueryParamDate } from '../../react-plugins-deps/components/helpers/time-parameters-parser';
 import { getDataSourceSrv } from '@grafana/runtime';
 import _ from 'lodash';
@@ -93,6 +93,10 @@ class ContextActions {
     urlParams.to = ParseQueryParamDate.transform(query.get('to') || 'now', 'to')
       .utc()
       .format('YYYY-MM-DDTHH:mm:ssZ');
+    urlParams.rawTime = {
+      from: query.get('from'),
+      to: query.get('to'),
+    };
     urlParams.columns = JSON.parse(query.get('columns')) || DEFAULT_COLUMNS;
     urlParams.labels = ContextActions.setFilters(query);
     urlParams.pageNumber = 1;
@@ -101,6 +105,7 @@ class ContextActions {
     urlParams.queryId = query.get('filter_by');
     urlParams.querySelected = !!query.get('filter_by');
     urlParams.groupBy = query.get('group_by') || 'queryid';
+    // console.log(Object.assign({}, urlParams));
     return urlParams;
   }
 
@@ -122,142 +127,144 @@ class ContextActions {
   }
 }
 
+const actions = {
+  setLabels: value => state => {
+    const newState = { ...state, labels: ContextActions.setLabels(value), pageNumber: 1 };
+    delete newState.queryId;
+    delete newState.querySelected;
+    return newState;
+  },
+  resetLabels: value => state => {
+    const newState = { ...state, labels: {}, pageNumber: 1 };
+    delete newState.queryId;
+    delete newState.querySelected;
+    return newState;
+  },
+  selectQuery: value => state => {
+    return { ...state, queryId: value || 'TOTAL', querySelected: true };
+  },
+  addColumn: value => state => {
+    const columns = state.columns.slice();
+    columns.push(value);
+    const newState = {
+      ...state,
+      columns: columns,
+    };
+    return newState;
+  },
+  changeColumn: value => state => {
+    const columns = state.columns.slice();
+    columns[columns.indexOf(value.oldColumn.simpleName)] = value.column;
+    const newState = {
+      ...state,
+      columns: columns,
+      orderBy:
+        value.oldColumn.simpleName === state.orderBy.replace('-', '') ? `-${columns[0]}` : state.orderBy,
+    };
+    return newState;
+  },
+  removeColumn: value => state => {
+    const columns = state.columns.slice();
+    columns.splice(columns.indexOf(value.column.simpleName), 1);
+    const newState = {
+      ...state,
+      columns: columns,
+      orderBy: value.column === state.orderBy.replace('-', '') ? `-${columns[0]}` : state.orderBy,
+    };
+    return newState;
+  },
+  changePage: value => state => {
+    const newState = {
+      ...state,
+      pageNumber: value,
+    };
+    delete newState.queryId;
+    delete newState.querySelected;
+    return newState;
+  },
+  changePageSize: value => state => {
+    const newState = {
+      ...state,
+      pageSize: value,
+      pageNumber: 1,
+    };
+    delete newState.queryId;
+    delete newState.querySelected;
+    return newState;
+  },
+  changeSort: value => state => {
+    let newOrderBy = '';
+
+    if (value === state.orderBy) {
+      newOrderBy = `-${value}`;
+    } else if (`-${value}` === state.orderBy) {
+      newOrderBy = `${value}`;
+    } else {
+      newOrderBy = `-${value}`;
+    }
+
+    const newState = {
+      ...state,
+      orderBy: newOrderBy,
+    };
+    delete newState.queryId;
+    delete newState.querySelected;
+    return newState;
+  },
+  changeGroupBy: value => state => {
+    const newState = {
+      ...state,
+      groupBy: value,
+      querySelected: false,
+    };
+    delete newState.queryId;
+    delete newState.querySelected;
+    return newState;
+  },
+  setFingerprint: value => state => {
+    return {
+      ...state,
+      fingerprint: value,
+    };
+  },
+  updateTimeRange: value => state => {
+    const newState = {
+      ...state,
+      from: value.from,
+      to: value.to,
+    };
+    delete newState.queryId;
+    delete newState.querySelected;
+    return newState;
+  },
+  refresh: value => state => {},
+};
+
 export const UrlParametersProvider = ({ children }) => {
   const query = new URLSearchParams(window.location.search);
-  const [rawTime, setRawTime] = useState({ from: query.get('from'), to: query.get('to') });
+  const [panelState, setContext] = useState({ ...ContextActions.parseURL(query) });
+
+  const wrapAction = key => value => {
+    return setContext(actions[key](value));
+  };
+
   useEffect(() => {
-    setRawTime({ from: query.get('from'), to: query.get('to') });
-  }, [window.location.search]);
+    ContextActions.refreshGrafanaVariables(panelState);
+    const newUrl = ContextActions.generateURL(panelState);
+    history.pushState({}, 'test', newUrl);
+  }, [panelState]);
 
-  const [state, dispatch] = useReducer(
-    (state, action) => {
-      let columns;
-      let newState;
-      switch (action.type) {
-        case 'SET_LABELS':
-          newState = { ...state, labels: ContextActions.setLabels(action.payload.labels), pageNumber: 1 };
-          delete newState.queryId;
-          delete newState.querySelected;
-          break;
-        case 'RESET_LABELS':
-          newState = { ...state, labels: {}, pageNumber: 1 };
-          delete newState.queryId;
-          delete newState.querySelected;
-          break;
-        case 'SELECT_QUERY':
-          newState = { ...state, queryId: action.payload.queryId || 'TOTAL', querySelected: true };
-          break;
-        case 'ADD_COLUMN':
-          columns = state.columns.slice();
-          columns.push(action.payload.column);
-          newState = {
-            ...state,
-            columns: columns,
-          };
-          break;
-
-        case 'REPLACE_COLUMN':
-          columns = state.columns.slice();
-          columns[columns.indexOf(action.payload.oldColumn.simpleName)] = action.payload.column;
-          newState = {
-            ...state,
-            columns: columns,
-            orderBy:
-              action.payload.oldColumn.simpleName === state.orderBy.replace('-', '')
-                ? `-${columns[0]}`
-                : state.orderBy,
-          };
-          break;
-
-        case 'REMOVE_COLUMN':
-          columns = state.columns.slice();
-          columns.splice(columns.indexOf(action.payload.column.simpleName), 1);
-          newState = {
-            ...state,
-            columns: columns,
-            orderBy:
-              action.payload.column === state.orderBy.replace('-', '') ? `-${columns[0]}` : state.orderBy,
-          };
-          break;
-        case 'CHANGE_PAGE':
-          newState = {
-            ...state,
-            pageNumber: action.payload.pageNumber,
-          };
-          delete newState.queryId;
-          delete newState.querySelected;
-          break;
-        case 'CHANGE_PAGE_SIZE':
-          newState = {
-            ...state,
-            pageSize: action.payload.pageSize,
-            pageNumber: 1,
-          };
-          delete newState.queryId;
-          delete newState.querySelected;
-          break;
-        case 'CHANGE_SORT':
-          let newOrderBy = '';
-
-          if (action.payload.orderBy === state.orderBy) {
-            newOrderBy = `-${action.payload.orderBy}`;
-          } else if (`-${action.payload.orderBy}` === state.orderBy) {
-            newOrderBy = `${action.payload.orderBy}`;
-          } else {
-            newOrderBy = `-${action.payload.orderBy}`;
-          }
-
-          newState = {
-            ...state,
-            orderBy: newOrderBy,
-          };
-          delete newState.queryId;
-          delete newState.querySelected;
-          break;
-        case 'CHANGE_GROUP_BY':
-          newState = {
-            ...state,
-            groupBy: action.payload.groupBy,
-            querySelected: false,
-          };
-          delete newState.queryId;
-          delete newState.querySelected;
-          break;
-        case 'SET_FINGERPRINT':
-          newState = {
-            ...state,
-            fingerprint: action.payload.fingerprint,
-          };
-          break;
-        case 'UPDATE_TIME_RANGE':
-          newState = {
-            ...state,
-            from: action.payload.from,
-            to: action.payload.to,
-          };
-          delete newState.queryId;
-          delete newState.querySelected;
-          break;
-      }
-      ContextActions.refreshGrafanaVariables(newState);
-      newState.rawTime = rawTime;
-      const newUrl = ContextActions.generateURL(newState);
-      history.pushState({}, 'test', newUrl);
-      return newState;
-    },
-    { ...ContextActions.parseURL(query) }
+  return (
+    <StateContext.Provider
+      value={{
+        panelState,
+        contextActions: Object.keys(actions).reduce((actions, key) => {
+          actions[key] = wrapAction(key);
+          return actions;
+        }, {}),
+      }}
+    >
+      {children}
+    </StateContext.Provider>
   );
-
-  useEffect(() => {
-    // const state = ContextActions.parseURL(query);
-    // dispatch({
-    //   type: 'UPDATE_TIME_RANGE',
-    //   payload: {
-    //     from: state.from,
-    //     to: state.to,
-    //   },
-    // });
-  }, [rawTime]);
-
-  return <StateContext.Provider value={{ state, dispatch }}>{children}</StateContext.Provider>;
 };
