@@ -8,10 +8,10 @@ import FiltersContainer from './QueryAnalytics/Filters/Filters';
 import QueryAnalyticsContainer from './QueryAnalytics/DataOutput/QueryAnalyticsContainer';
 import Styling from '../react-plugins-deps/components/helpers/styling';
 
-const SettingsPanel = () => {
+const QueryAnalyticsPanel = props => {
   useEffect(() => Styling.addPluginPanelClass(), []);
   return (
-    <UrlParametersProvider>
+    <UrlParametersProvider grafanaProps={props}>
       <div className="query-analytics-grid" id="antd">
         <div className="overview-filters" id="query-analytics-filters">
           <FiltersContainer />
@@ -24,4 +24,4 @@ const SettingsPanel = () => {
   );
 };
 
-export default SettingsPanel;
+export default QueryAnalyticsPanel;
