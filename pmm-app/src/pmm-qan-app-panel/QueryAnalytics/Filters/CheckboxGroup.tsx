@@ -45,7 +45,7 @@ const Styling = {
 export const CheckboxGroup = ({ form, name, items, group, showAll, filter, labels }) => {
   const [showTop, setShowTop] = useState(false);
   const filteredData = items
-    .filter(item => item.value && item.hasOwnProperty('main_metric_percent'))
+    .filter(item => item.hasOwnProperty('main_metric_percent'))
     .filter(item => {
       if (!showAll) {
         return item.checked;
@@ -53,17 +53,22 @@ export const CheckboxGroup = ({ form, name, items, group, showAll, filter, label
       return true;
     });
   const itemsList = (showTop ? filteredData.slice(0, TOP_LIMIT) : filteredData)
-    .filter(item => item.value.toLowerCase().includes(filter.toLowerCase()))
+    .filter(item => {
+      if (!item.value) {
+        return 'n/a'.includes(filter.toLowerCase());
+      }
+      return item.value.toLowerCase().includes(filter.toLowerCase());
+    })
     .map(item => {
       return (
-        <div className={Styling.label} key={`${group}:${item.value}`}>
+        <div className={Styling.label} key={`${group}:${item.value || ''}`}>
           <span className={Styling.filterName}>
             <CheckboxField
               form={form}
               // TODO: using '--' because final form think that it is a nested fields
               //  need to replace it with something better
-              name={`${group}:${item.value.replace(/\./gi, '--')}`}
-              label={item.value}
+              name={`${group}:${item.value ? item.value.replace(/\./gi, '--') : ''}`}
+              label={item.value || 'n/a'}
               checked={labels && labels[group] && labels[group].includes(item.value)}
             />
           </span>
