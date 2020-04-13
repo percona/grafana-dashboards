@@ -1692,8 +1692,8 @@
             "dashLength": 10,
             "dashes": false,
             "datasource": "Prometheus",
-            "decimals": 0,
-            "fill": 1,
+            "decimals": 2,
+            "fill": 2,
             "fillGradient": 0,
             "gridPos": {
                 "h": 8,
@@ -1716,7 +1716,7 @@
                 "values": true
             },
             "lines": true,
-            "linewidth": 1,
+            "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
             "options": {
@@ -1728,11 +1728,11 @@
             "renderer": "flot",
             "seriesOverrides": [],
             "spaceLength": 10,
-            "stack": true,
+            "stack": false,
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(pg_stat_database_temp_files{service_name=~\"$service_name\",datname!~\"template.*\"}[$interval]) or\n irate(pg_stat_database_temp_files{service_name=~\"$service_name\",datname!~\"template.*\"}[5m])",
+                    "expr": "avg by (service_name,datname) (max_over_time(pg_stat_database_temp_files{service_name=~\"$service_name\",datname!~\"template.*\"}[$interval]) or \nmax_over_time(pg_stat_database_temp_files{service_name=~\"$service_name\",datname!~\"template.*\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1760,7 +1760,7 @@
             },
             "yaxes": [
                 {
-                    "decimals": 0,
+                    "decimals": 2,
                     "format": "short",
                     "label": null,
                     "logBase": 1,
@@ -1789,7 +1789,7 @@
             "dashes": false,
             "datasource": "Prometheus",
             "decimals": 2,
-            "fill": 1,
+            "fill": 2,
             "fillGradient": 0,
             "gridPos": {
                 "h": 8,
@@ -1812,7 +1812,7 @@
                 "values": true
             },
             "lines": true,
-            "linewidth": 1,
+            "linewidth": 2,
             "links": [],
             "nullPointMode": "null",
             "options": {
@@ -1834,13 +1834,22 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "rate(pg_stat_database_temp_bytes{service_name=~\"$service_name\",datname!~\"template.*\"}[$interval]) or\nirate(pg_stat_database_temp_bytes{service_name=~\"$service_name\",datname!~\"template.*\"}[5m])",
+                    "expr": "avg by (service_name,datname) (max_over_time(pg_stat_database_temp_bytes{service_name=~\"$service_name\",datname!~\"template.*\"}[$interval]) or \nmax_over_time(pg_stat_database_temp_bytes{service_name=~\"$service_name\",datname!~\"template.*\"}[5m]))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
-                    "legendFormat": "increase {{datname}}",
+                    "legendFormat": "{{datname}}",
                     "refId": "A"
+                },
+                {
+                    "expr": "rate(pg_stat_database_temp_bytes{service_name=~\"$service_name\",datname!~\"template.*\"}[$interval]) or\nirate(pg_stat_database_temp_bytes{service_name=~\"$service_name\",datname!~\"template.*\"}[5m])",
+                    "format": "time_series",
+                    "hide": true,
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "increase {{datname}}",
+                    "refId": "B"
                 }
             ],
             "thresholds": [],
@@ -1886,13 +1895,212 @@
             }
         },
         {
+            "aliasColors": {},
+            "bars": true,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "fill": 2,
+            "fillGradient": 0,
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 0,
+                "y": 50
+            },
+            "hiddenSeries": false,
+            "id": 1003,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": false,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "null",
+            "options": {
+                "dataLinks": []
+            },
+            "percentage": false,
+            "pointradius": 1,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": true,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "max by (service_name,datname) (increase(pg_stat_database_temp_files{service_name=~\"$service_name\",datname!~\"template.*\"}[$interval]))",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{datname}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "Temp Files Activity",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 0,
+                    "format": "short",
+                    "label": "",
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {},
+            "bars": true,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "Prometheus",
+            "decimals": 2,
+            "fill": 2,
+            "fillGradient": 0,
+            "gridPos": {
+                "h": 8,
+                "w": 12,
+                "x": 12,
+                "y": 50
+            },
+            "hiddenSeries": false,
+            "id": 1004,
+            "legend": {
+                "alignAsTable": true,
+                "avg": true,
+                "current": false,
+                "max": true,
+                "min": true,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
+                "total": false,
+                "values": true
+            },
+            "lines": false,
+            "linewidth": 2,
+            "links": [],
+            "nullPointMode": "null",
+            "options": {
+                "dataLinks": []
+            },
+            "percentage": false,
+            "pointradius": 5,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [
+                {
+                    "alias": "increase *",
+                    "bars": true,
+                    "lines": false
+                }
+            ],
+            "spaceLength": 10,
+            "stack": true,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "avg by (service_name,datname) (rate(pg_stat_database_temp_bytes{service_name=~\"$service_name\",datname!~\"template.*\"}[$interval]) or \nrate(pg_stat_database_temp_bytes{service_name=~\"$service_name\",datname!~\"template.*\"}[5m]))",
+                    "format": "time_series",
+                    "hide": false,
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{datname}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "Temp Files Utilization",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "decimals": 2,
+                    "format": "bytes",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
             "collapsed": false,
             "datasource": null,
             "gridPos": {
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 50
+                "y": 58
             },
             "id": 82,
             "panels": [],
@@ -1915,7 +2123,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 51
+                "y": 59
             },
             "hiddenSeries": false,
             "id": 3,
@@ -2113,7 +2321,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 51
+                "y": 59
             },
             "hiddenSeries": false,
             "id": 61,
@@ -2249,7 +2457,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 59
+                "y": 67
             },
             "id": 84,
             "panels": [],
@@ -2269,7 +2477,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 60
+                "y": 68
             },
             "hiddenSeries": false,
             "id": 50,
@@ -2382,7 +2590,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 60
+                "y": 68
             },
             "hiddenSeries": false,
             "id": 2,
@@ -2732,7 +2940,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 68
+                "y": 76
             },
             "id": 72,
             "panels": [],
@@ -2753,7 +2961,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 69
+                "y": 77
             },
             "hiddenSeries": false,
             "id": 28,
@@ -2894,7 +3102,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 69
+                "y": 77
             },
             "hiddenSeries": false,
             "id": 14,
@@ -2993,7 +3201,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 77
+                "y": 85
             },
             "hiddenSeries": false,
             "id": 22,
@@ -3099,7 +3307,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 85
+                "y": 93
             },
             "id": 60,
             "panels": [
@@ -3130,7 +3338,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 86
+                "y": 94
             },
             "id": 291,
             "panels": [
