@@ -165,11 +165,11 @@ const actions = {
   },
   removeColumn: value => state => {
     const columns = state.columns.slice();
-    columns.splice(columns.indexOf(value.column.simpleName), 1);
+    columns.splice(columns.indexOf(value.simpleName), 1);
     const newState = {
       ...state,
       columns: columns,
-      orderBy: value.column === state.orderBy.replace('-', '') ? `-${columns[0]}` : state.orderBy,
+      orderBy: value.simpleName === state.orderBy.replace('-', '') ? `-${columns[0]}` : state.orderBy,
     };
     return newState;
   },
