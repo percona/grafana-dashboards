@@ -205,48 +205,28 @@ xScenario('Open the QAN Dashboard and verify that the metric value matches the "
   assert.equal(qpsMetricValue.replace(/[^0-9.]/g,""), qpsTooltipValue.replace(/[^0-9.]/g,""));
 });
 
-xScenario('Open the QAN Dashboard and check that changing the time range clears the selected row. @new-qan', async (I, qanPage) => {
-  const tableRowSelector = '.ant-table-scroll .ant-table-tbody tr:first-of-type .overview-main-column div';
-
-  I.waitForElement(tableRowSelector, 30);
-  I.forceClick(tableRowSelector);
-  I.click(qanPage.elements.timeRangePickerButton);
-  I.click('.gf-form-select-box__option:nth-child(2)');
+xScenario('Open the QAN Dashboard and check that changing the time range clears the selected row. @new-qan', async (I, qanPage, adminPage) => {
+  I.waitForElement(qanPage.elements.tableRowSelector, 30);
+  I.forceClick(qanPage.elements.tableRowSelector);
+  adminPage.applyTimeRange('Last 3 hours');
+  I.dontSeeElement(qanPage.elements.selectedOverviewRow);
+  I.dontSeeElement(qanPage.elements.detailsSection);
 });
 
-xScenario('Open the QAN Dashboard and check that changing the time range resets current page to the first. @new-qan', async (I, qanPage) => {
-  const numOfPages = await I.grabNumberOfVisibleElements('.ant-pagination-item');
-  const randomPage = qanPage.helpers.getRandomIntInclusive(1, numOfPages);
-  const randomPageSelector = `.ant-pagination-item[title = '${randomPage}']`;
-  const numOfTimeRangeOptions = await I.grabNumberOfVisibleElements('.gf-form-select-box__option');
-  const randomTimeRangeOption = qanPage.helpers.getRandomIntInclusive(1, numOfTimeRangeOptions);
-
-  I.waitForElement(randomPageSelector, 30);
-  I.click(randomPageSelector);
-  I.click(qanPage.elements.timeRangePickerButton);
-  I.click(`.gf-form-select-box__option:nth-child(${randomTimeRangeOption})`);
-  I.waitForResponse('http://localhost/v0/qan/GetReport', 10);
-  I.seeElement('.ant-pagination-item-active[title="1"]');
+xScenario('Open the QAN Dashboard and check that changing the time range resets current page to the first. @new-qan', async (I, qanPage, adminPage) => {
+  qanPage.paginationGoTo(2);
+  adminPage.applyTimeRange('Last 3 hours');
+  qanPage.waitForResponsePath('/v0/qan/GetReport');
+  qanPage.verifySelectedPageIs(1);
 });
 
-xScenario('Open the QAN Dashboard and check that changing the time range updates the overview table and URL. @new-qan', async (I, qanPage) => {
+Scenario('Open the QAN Dashboard and check that changing the time range updates the overview table and URL. @new-qan', async (I, qanPage, adminPage) => {
   I.amOnPage(qanPage.url + '?from=now-12h&to=now');
-  I.wait(30);
-  const url = require('url');
-  const urlBeforeChanging = await I.grabCurrentUrl();
-  const { query: {from: beforeFrom, to: beforeTo} } = url.parse(urlBeforeChanging, true);
-
-  I.click(qanPage.elements.timeRangePickerButton);
-  const numOfTimeRangeOptions = await I.grabNumberOfVisibleElements('.gf-form-select-box__option');
-  const randomTimeRangeOption = qanPage.helpers.getRandomIntInclusive(1, numOfTimeRangeOptions);
-  const randomTimeRangeOptionSelector = `.gf-form-select-box__option:nth-child(${randomTimeRangeOption})`;
-  I.waitForElement(randomTimeRangeOptionSelector, 10);
-  I.click(randomTimeRangeOptionSelector);
-  I.waitForResponse('http://localhost/v0/qan/GetReport', 10);
-
-  const urlAfterChanging = await I.grabCurrentUrl();
-  const { query: {from: afterFrom, to: afterTo} } = url.parse(urlAfterChanging, true);
-
-  assert.notEqual((beforeFrom === afterFrom) && (beforeTo ===afterTo),true);
+  qanPage.waitForQANPageLoaded();
+  I.seeInCurrentUrl('from=now-12h&to=now');
+  adminPage.applyTimeRange('Last 3 hours');
+  qanPage.waitForResponsePath('/v0/qan/GetReport');
+  qanPage.waitForQANPageLoaded();
+  I.seeInCurrentUrl('from=now-3h&to=now');
 });
 

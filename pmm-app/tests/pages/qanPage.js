@@ -10,7 +10,7 @@ module.exports = {
   },
   serverList: ['PMM Server PostgreSQL', 'PGSQL_', 'PXC_NODE', 'mysql'],
   fields: {
-    table: '//table/tr[2]',
+    table: '//table//tr[2]',
     detailsTable: '//app-details-table//app-details-row[1]',
     filter: "//app-qan-filter//div[@class='ps-content']",
     filterCheckboxSelector: '#query-analytics-filters input[type="checkbox"]',
@@ -47,6 +47,7 @@ module.exports = {
     timeRangePickerButton: '.time-picker-button-select',
     selectedOverviewRow: 'tr.selected-overview-row',
     detailsSection: '#query-analytics-details',
+    tableRowSelector: '.ant-table-scroll .ant-table-tbody tr:first-of-type .overview-main-column div',
   },
   helpers: {
     getRandomIntInclusive: function (min, max) {
@@ -156,6 +157,13 @@ module.exports = {
     I.waitForVisible(this.fields.table, 30);
     I.waitForClickable(this.fields.nextPageNavigation, 30);
   },
+  waitForResponsePath(path) {
+    I.waitForResponse(request => {
+      const url = require('url');
+      const { pathname } = url.parse(request.url(), true);
+      return path === pathname;
+    }, 10);
+  },
 
   _selectDetails(row) {
     I.click('//table/tr[' + (row + 1) + ']//td[2]');
@@ -227,6 +235,9 @@ module.exports = {
     I.click(this.fields.addColumnSelector);
     I.dontSeeElement(`//ul/li[@label='${columnName}']`);
   },
+  async verifySelectedPageIs (pageNumber) {
+    I.seeElement(`.ant-pagination-item-active[title="${pageNumber}"]`);
+  },
   async clearFilters() {
     let numOfElements = await I.grabNumberOfVisibleElements(this.fields.filterSelection);
     for (let i = 1; i <= numOfElements; i++) {
@@ -285,7 +296,7 @@ module.exports = {
   selectFilter(filterCheckboxSelector) {
     I.waitForElement(filterCheckboxSelector, 30);
     I.checkOption(filterCheckboxSelector);
-    I.waitForResponse('http://localhost/v0/qan/Filters/Get', 10);
+    this.waitForResponsePath('/v0/qan/Filters/Get');
   },
   paginationGoNext() {
     I.waitForElement(`//li[@title='Next Page']`, 30);
@@ -301,6 +312,11 @@ module.exports = {
     const rowSelector = `//tr[@data-row-key='${rowNumber}']`;
     I.waitForElement(rowSelector, 30);
     I.click(rowSelector);
+  },
+  paginationGoTo(pageNumber){
+    const pageSelector = `.ant-pagination-item[title = '${pageNumber}']`;
+    I.waitForElement(pageSelector, 30);
+    I.click(pageSelector);
   },
   showTooltip(rowNumber, dataColumnNumber) {
     const tooltipSelector = this.summarizeLocator(rowNumber, dataColumnNumber);

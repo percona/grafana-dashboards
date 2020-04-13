@@ -5,7 +5,7 @@ Before(async (I, qanPage, adminPage) => {
 
   I.amOnPage(qanPage.url);
   await I.waitForElement(qanPage.fields.iframe, 60);
-  adminPage.applyTimer('5m');
+  adminPage.applyTimeRange('Last 5 minutes');
   await I.switchTo(qanPage.fields.iframe);
 });
 
@@ -26,7 +26,7 @@ Scenario(
 xScenario('Verify data in Table and Query Details @not-pr-pipeline', async (I, qanPage) => {
   I.amOnPage(qanPage.url);
   await I.waitForElement(qanPage.fields.iframe, 60);
-  adminPage.applyTimer('5m');
+  adminPage.applyTimeRange('Last 5 minutes');
   await I.switchTo(qanPage.fields.iframe); // switch to first iframe
   I.wait(10);
   qanPage.applyFilter('ps');

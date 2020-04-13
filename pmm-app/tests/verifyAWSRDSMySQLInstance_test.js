@@ -38,7 +38,7 @@ xScenario(
     const filter = qanPage.getFilterLocator(environment);
     I.amOnPage(qanPage.url);
     await I.waitForElement(qanPage.fields.iframe, 60);
-    adminPage.applyTimer('5m');
+    adminPage.applyTimeRange('Last 5 minutes');
     await I.switchTo(qanPage.fields.iframe);
     qanPage.waitForQANPageLoaded();
     I.seeElement(filter);
