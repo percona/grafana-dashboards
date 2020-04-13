@@ -4,7 +4,7 @@ import Highlight from 'react-highlight.js';
 import { ReactJSON } from '../../../../../react-plugins-deps/components/ReactJSON/ReactJSON';
 
 const getExample = databaseType => (example: string): any => {
-  if (databaseType === 'mongo') {
+  if (databaseType === 'mongodb') {
     return <ReactJSON json={example} />;
   }
 
