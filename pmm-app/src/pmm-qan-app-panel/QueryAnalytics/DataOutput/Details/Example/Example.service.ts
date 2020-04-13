@@ -5,7 +5,13 @@ class ExampleService {
     const data = {
       filter_by: filterBy,
       group_by: groupBy,
-      labels: labels,
+      labels:
+        Object.keys(labels).map(key => {
+          return {
+            key: key,
+            value: labels[key],
+          };
+        }) || [],
       period_start_from: from,
       period_start_to: to,
       tables: tables,
