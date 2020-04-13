@@ -13,6 +13,7 @@ module.exports = {
     table: '//table/tr[2]',
     detailsTable: '//app-details-table//app-details-row[1]',
     filter: "//app-qan-filter//div[@class='ps-content']",
+    filterCheckboxSelector: '#query-analytics-filters input[type="checkbox"]',
     search: '//app-qan-search//input',
     pagination: "//ul[@role='navigation']",
     nextPageNavigation: "//ul[@role='navigation']//li[last()]",
@@ -34,11 +35,12 @@ module.exports = {
     tablesTabContents: "//div[@class='card-body']//pre",
     copyQueryButton: "//button[@id='copyQueryExample']",
     groupBySelector: '.group-by-selector',
-    addColumnsSelector: '.add-columns-selector',
+    addColumnSelector: '.add-columns-selector',
     manageColumnsSelector: '.manage-columns-selector',
     removeColumnButton: "//div[text()='Remove column']",
   },
   elements: {
+    addColumnFirstElementSelector: 'ul.ant-select-dropdown-menu li:first-child',
     metricTooltip: '.ant-tooltip-content',
     latencyChart: '.latency-chart-container',
     resetAllButton: '#reset-all-filters',
@@ -60,6 +62,10 @@ module.exports = {
 
   tableHeaderLocator(tableHeader) {
     return "//ng-select//span[contains(@class, 'ng-value-label') and contains(text(), '" + tableHeader + "')]";
+  },
+
+  summarizeLocator(rowNumber, dataColumnNumber) {
+    return `.ant-table-tbody tr:nth-child(${rowNumber}) td:nth-child(${dataColumnNumber + 2}) .summarize`;
   },
 
   checkPagination() {
@@ -213,7 +219,14 @@ module.exports = {
       "Details Query Time value Doesn't Match expected " + detailsQueryTimeData.val + ' to contain ' + queryTimeData.val
     );
   },
-
+  async verifyFiltersSectionIsPresent() {
+    I.waitForElement(this.fields.filterCheckboxSelector, 30);
+    I.seeElement(this.fields.filterCheckboxSelector);
+  },
+  async verifyColumnIsNotAvailable(columnName) {
+    I.click(this.fields.addColumnSelector);
+    I.dontSeeElement(`//ul/li[@label='${columnName}']`);
+  },
   async clearFilters() {
     let numOfElements = await I.grabNumberOfVisibleElements(this.fields.filterSelection);
     for (let i = 1; i <= numOfElements; i++) {
@@ -231,8 +244,8 @@ module.exports = {
     I.seeElement(`//span[text()='Group by ${groupBy}']`);
   },
   addColumn(columnName) {
-    I.waitForElement(this.fields.addColumnsSelector, 30);
-    I.click(this.fields.addColumnsSelector);
+    I.waitForElement(this.fields.addColumnSelector, 30);
+    I.click(this.fields.addColumnSelector);
     I.click(`//ul/li[@label='${columnName}']`);
   },
   changeColumn(oldColumnName, columnName) {
@@ -265,12 +278,15 @@ module.exports = {
     const remainingFilters = await I.grabTextFrom(selectedFilters);
     console.log(remainingFilters);
   },
-  resetFilters() {
-    const resetFiltersButtonLocator = '#reset-all-filters';
-    I.waitForElement(resetFiltersButtonLocator, 30);
-    I.click(resetFiltersButtonLocator);
+  resetAllFilters() {
+    I.waitForElement(this.elements.resetAllButton, 30);
+    I.click(this.elements.resetAllButton);
   },
-  selectFilter() {},
+  selectFilter(filterCheckboxSelector) {
+    I.waitForElement(filterCheckboxSelector, 30);
+    I.checkOption(filterCheckboxSelector);
+    I.waitForResponse('http://localhost/v0/qan/Filters/Get', 10);
+  },
   paginationGoNext() {
     I.waitForElement(`//li[@title='Next Page']`, 30);
     I.click(`//li[@title='Next Page']`);
@@ -287,9 +303,12 @@ module.exports = {
     I.click(rowSelector);
   },
   showTooltip(rowNumber, dataColumnNumber) {
-    const tooltipSelector = `//tr[@data-row-key='${rowNumber}']/td[${dataColumnNumber + 2}]//span[@class='summarize']`;
+    const tooltipSelector = this.summarizeLocator(rowNumber, dataColumnNumber);
     I.waitForElement(tooltipSelector, 30);
+    I.scrollTo(tooltipSelector);
     I.moveCursorTo(tooltipSelector);
+    I.waitForElement(this.elements.metricTooltip, 5);
+    I.seeElement(this.elements.metricTooltip);
   },
   selectDetailsTab(tabName) {
     const tabSelector = `//div[@role='tab']/span[text()='${tabName}']`

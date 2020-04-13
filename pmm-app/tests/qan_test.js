@@ -150,8 +150,9 @@ xScenario('Open the QAN Dashboard and check Details -> Tables', async (I, adminP
 
 Feature('To verify and test the QAN Dashboard query details tooltip');
 
-Before((I) => {
-  I.Authorize()
+Before((I, qanPage) => {
+  I.Authorize();
+  I.amOnPage(qanPage.url);
 });
 
 xScenario('Open the QAN Dashboard and show tooltip @new-qan', async (I, adminPage, qanPage) => {
@@ -162,94 +163,64 @@ xScenario('Open the QAN Dashboard and show tooltip @new-qan', async (I, adminPag
   // TODO: check changes in url
 });
 
-Scenario('Open the QAN Dashboard and check existence of filters @new-qan', async (I, adminPage, qanPage) => {
-  const filterCheckboxSelector = '#query-analytics-filters input[type="checkbox"]';
-  I.amOnPage(qanPage.url);
-  I.waitForElement(filterCheckboxSelector, 30);
-  I.seeElementInDOM(filterCheckboxSelector);
-
+xScenario('Open the QAN Dashboard and check existence of filters @new-qan', async (I, qanPage) => {
+  qanPage.verifyFiltersSectionIsPresent();
 });
 
-Scenario('Open the QAN Dashboard and check work of button "reset all" @new-qan', async (I, adminPage, qanPage) => {
-  const filterCheckboxSelector = '#query-analytics-filters input[type="checkbox"]';
-  I.amOnPage(qanPage.url);
-  I.waitForElement(filterCheckboxSelector, 30);
-  I.checkOption(filterCheckboxSelector);
-  I.waitForResponse('http://localhost/v0/qan/Filters/Get', 10);
-  I.click(qanPage.elements.resetAllButton);
-  I.dontSeeCheckboxIsChecked(filterCheckboxSelector);
+xScenario('Open the QAN Dashboard and check work of button "reset all" @new-qan', async (I, qanPage) => {
+  qanPage.selectFilter(qanPage.fields.filterCheckboxSelector);
+  qanPage.resetAllFilters();
+  I.dontSeeCheckboxIsChecked(qanPage.fields.filterCheckboxSelector);
 });
 
-Scenario('Open the QAN Dashboard, add a column and make sure that this option not available anymore @new-qan', async (I, adminPage, qanPage) => {
-  const addColumnDropdownFirstElement = 'ul.ant-select-dropdown-menu li:first-child';
-  I.amOnPage(qanPage.url);
-  I.waitForElement(qanPage.fields.addColumnsSelector, 30);
-  I.click(qanPage.fields.addColumnsSelector);
-  let labelName = await I.grabAttributeFrom(addColumnDropdownFirstElement, 'label');
-  let selectedLabel = `ul.ant-select-dropdown-menu li[label='${labelName}']`;
-  I.seeElement(selectedLabel);
-  I.click(addColumnDropdownFirstElement);
-  I.click(qanPage.fields.addColumnsSelector);
-  I.dontSeeElement(selectedLabel);
+xScenario('Open the QAN Dashboard, add a column and make sure that this option not available anymore @new-qan', async (I, qanPage) => {
+  qanPage.addColumn('Bytes Sent');
+  qanPage.verifyColumnIsNotAvailable('Bytes Sent');
 });
 
-Scenario('Open the QAN Dashboard and verify that hovering over a time metric displays a tooltip with a graph @new-qan', async (I, adminPage, qanPage) => {
-  const queryTimeColumn = '.ant-table-tbody tr:first-child td:last-child';
-  I.amOnPage(qanPage.url);
-  I.waitForElement(`${queryTimeColumn} .summarize`, 30);
-  I.scrollTo(queryTimeColumn);
-  I.moveCursorTo(`${queryTimeColumn} .summarize`);
-  I.seeElement(qanPage.elements.metricTooltip);
+xScenario('Open the QAN Dashboard and verify that hovering over a time metric displays a tooltip with a graph @new-qan', async (I, qanPage) => {
+  const ROW_NUMBER = 1;
+  const QUERY_TIME_COLUMN_NUMBER = 3;
+
+  qanPage.showTooltip(ROW_NUMBER, QUERY_TIME_COLUMN_NUMBER);
   I.seeElement(qanPage.elements.latencyChart);
 });
 
-Scenario('Open the QAN Dashboard and verify that hovering over a non-time metric displays a tooltip without a graph @new-qan', async (I, adminPage, qanPage) => {
-  const queryCountColumn = '.ant-table-tbody tr:first-child td:nth-child(4)';
-  I.amOnPage(qanPage.url);
-  I.waitForElement(`${queryCountColumn} .summarize`, 30);
-  I.scrollTo(queryCountColumn);
-  I.moveCursorTo(`${queryCountColumn} .summarize`);
-  I.seeElement(qanPage.elements.metricTooltip);
+xScenario('Open the QAN Dashboard and verify that hovering over a non-time metric displays a tooltip without a graph @new-qan', async (I, qanPage) => {
+  const ROW_NUMBER = 1;
+  const QUERY_COUNT_COLUMN_NUMBER = 2;
+
+  qanPage.showTooltip(ROW_NUMBER, QUERY_COUNT_COLUMN_NUMBER);
   I.dontSeeElement(qanPage.elements.latencyChart);
 });
 
-Scenario('Open the QAN Dashboard and verify that the metric value matches the "Per sec" value in the tooltip. @new-qan', async (I, adminPage, qanPage) => {
-  const queryCountColumn = '.ant-table-tbody tr:first-child td:nth-child(4)';
-  I.amOnPage(qanPage.url);
-  I.waitForElement(`${queryCountColumn} .summarize`, 30);
-  I.scrollTo(queryCountColumn);
-  I.moveCursorTo(`${queryCountColumn} .summarize`);
-  I.waitForElement(qanPage.elements.metricTooltip, 5);
-  I.seeElement(qanPage.elements.metricTooltip);
-  let qpsMetricValue = await I.grabTextFrom(`${queryCountColumn} .summarize`);
+xScenario('Open the QAN Dashboard and verify that the metric value matches the "Per sec" value in the tooltip. @new-qan', async (I, qanPage) => {
+  const ROW_NUMBER = 1;
+  const QUERY_COUNT_COLUMN_NUMBER = 2;
+  const queryCountColumnSelector = qanPage.summarizeLocator(ROW_NUMBER, QUERY_COUNT_COLUMN_NUMBER);
+
+  qanPage.showTooltip(ROW_NUMBER, QUERY_COUNT_COLUMN_NUMBER);
+  let qpsMetricValue = await I.grabTextFrom(queryCountColumnSelector);
   let qpsTooltipValue = await I.grabTextFrom('[data-qa="metrics-list"] [data-qa="qps"] span');
   assert.equal(qpsMetricValue.replace(/[^0-9.]/g,""), qpsTooltipValue.replace(/[^0-9.]/g,""));
 });
 
-Scenario('Open the QAN Dashboard and check that changing the time range clears the selected row. @new-qan', async (I, adminPage, qanPage) => {
-  const numOfRows = await I.grabNumberOfVisibleElements('ant-table-scroll .ant-table-tbody tr');
-  const randomTableRow = qanPage.helpers.getRandomIntInclusive(1, numOfRows);
-  const randomTableRowSelector = `.ant-table-scroll .ant-table-tbody tr:nth-child(${randomTableRow}) .overview-main-column div`;
-  const numOfTimeRangeOptions = await I.grabNumberOfVisibleElements('.gf-form-select-box__option');
-  const randomTimeRangeOption = qanPage.helpers.getRandomIntInclusive(1, numOfTimeRangeOptions);
+xScenario('Open the QAN Dashboard and check that changing the time range clears the selected row. @new-qan', async (I, qanPage) => {
+  const tableRowSelector = '.ant-table-scroll .ant-table-tbody tr:first-of-type .overview-main-column div';
 
-  I.amOnPage(qanPage.url);
-  I.waitForElement(randomTableRowSelector, 30);
-  I.forceClick(randomTableRowSelector);
+  I.waitForElement(tableRowSelector, 30);
+  I.forceClick(tableRowSelector);
   I.click(qanPage.elements.timeRangePickerButton);
-  I.click(`.gf-form-select-box__option:nth-child(${randomTimeRangeOption})`);
-  I.dontSeeElement(qanPage.elements.selectedOverviewRow);
-  I.dontSeeElement(qanPage.elements.detailsSection);
+  I.click('.gf-form-select-box__option:nth-child(2)');
 });
 
-Scenario('Open the QAN Dashboard and check that changing the time range resets current page to the first. @new-qan', async (I, adminPage, qanPage) => {
+xScenario('Open the QAN Dashboard and check that changing the time range resets current page to the first. @new-qan', async (I, qanPage) => {
   const numOfPages = await I.grabNumberOfVisibleElements('.ant-pagination-item');
   const randomPage = qanPage.helpers.getRandomIntInclusive(1, numOfPages);
   const randomPageSelector = `.ant-pagination-item[title = '${randomPage}']`;
   const numOfTimeRangeOptions = await I.grabNumberOfVisibleElements('.gf-form-select-box__option');
   const randomTimeRangeOption = qanPage.helpers.getRandomIntInclusive(1, numOfTimeRangeOptions);
 
-  I.amOnPage(qanPage.url);
   I.waitForElement(randomPageSelector, 30);
   I.click(randomPageSelector);
   I.click(qanPage.elements.timeRangePickerButton);
@@ -258,7 +229,7 @@ Scenario('Open the QAN Dashboard and check that changing the time range resets c
   I.seeElement('.ant-pagination-item-active[title="1"]');
 });
 
-Scenario('Open the QAN Dashboard and check that changing the time range updates the overview table and URL. @new-qan', async (I, adminPage, qanPage) => {
+xScenario('Open the QAN Dashboard and check that changing the time range updates the overview table and URL. @new-qan', async (I, qanPage) => {
   I.amOnPage(qanPage.url + '?from=now-12h&to=now');
   I.wait(30);
   const url = require('url');
@@ -278,3 +249,4 @@ Scenario('Open the QAN Dashboard and check that changing the time range updates 
 
   assert.notEqual((beforeFrom === afterFrom) && (beforeTo ===afterTo),true);
 });
+
