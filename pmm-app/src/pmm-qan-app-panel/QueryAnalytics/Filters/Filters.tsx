@@ -105,6 +105,12 @@ export const Filters = ({ contextActions, groups, form, labels, filters }) => {
   const [filtersBodyHeight, setFiltersBodyHeight] = useState(FILTERS_BODY_HEIGHT);
   const [filter, setFilter] = useState('');
   const [showAll, showSetAll] = useState(true);
+  const checkboxesSelected = groups
+    .map(group => filters[group.dataKey])
+    .filter(Boolean)
+    .map(item => item.name)
+    .flat()
+    .some(item => item.checked);
 
   // TODO: replace with something more elegant & fast
   useEffect(() => {
@@ -121,7 +127,12 @@ export const Filters = ({ contextActions, groups, form, labels, filters }) => {
     <div>
       <div className={Styling.filtersHeader}>
         <h5 className={Styling.title}>Filters</h5>
-        <Button type="link" className={Styling.showAllButton} onClick={showSetAll.bind(null, !showAll)}>
+        <Button
+          type="link"
+          className={Styling.showAllButton}
+          onClick={showSetAll.bind(null, !showAll)}
+          disabled={!checkboxesSelected}
+        >
           {showAll ? 'Show Selected' : 'Show All'}
         </Button>
         <Button
@@ -130,9 +141,11 @@ export const Filters = ({ contextActions, groups, form, labels, filters }) => {
           id="reset-all-filters"
           onClick={() => {
             setFilter('');
+            showSetAll(true);
             contextActions.resetLabels();
             form.reset();
           }}
+          disabled={!checkboxesSelected}
         >
           Reset All
         </Button>
