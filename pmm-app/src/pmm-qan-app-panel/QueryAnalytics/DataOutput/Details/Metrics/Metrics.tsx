@@ -132,7 +132,6 @@ const columns = [
 const Metrics = props => {
   const { contextActions } = useContext(StateContext);
   const { queryId, groupBy, from, to, labels, tables } = props;
-
   const [metrics, setMetrics] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 

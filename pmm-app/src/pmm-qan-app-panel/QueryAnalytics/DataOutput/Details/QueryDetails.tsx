@@ -14,12 +14,12 @@ const { TabPane } = Tabs;
 
 const QueryDetails = () => {
   const {
-    panelState: { queryId, groupBy, from, to, fingerprint, controlSum },
+    panelState: { queryId, groupBy, from, to, fingerprint, controlSum, labels },
   } = useContext(StateContext);
   const [databaseType, setDatabaseType] = useState('');
 
   const MetricsProps = {
-    labels: [],
+    labels: labels,
     tables: [],
     queryId: queryId || '',
     groupBy,
