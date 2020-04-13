@@ -163,22 +163,22 @@ xScenario('Open the QAN Dashboard and show tooltip @new-qan', async (I, adminPag
   // TODO: check changes in url
 });
 
-xScenario('Open the QAN Dashboard and check existence of filters @new-qan', async (I, qanPage) => {
+Scenario('Open the QAN Dashboard and check existence of filters @new-qan', async (I, qanPage) => {
   qanPage.verifyFiltersSectionIsPresent();
 });
 
-xScenario('Open the QAN Dashboard and check work of button "reset all" @new-qan', async (I, qanPage) => {
+Scenario('Open the QAN Dashboard and check work of button "reset all" @new-qan', async (I, qanPage) => {
   qanPage.selectFilter(qanPage.fields.filterCheckboxSelector);
   qanPage.resetAllFilters();
   I.dontSeeCheckboxIsChecked(qanPage.fields.filterCheckboxSelector);
 });
 
-xScenario('Open the QAN Dashboard, add a column and make sure that this option not available anymore @new-qan', async (I, qanPage) => {
+Scenario('Open the QAN Dashboard, add a column and make sure that this option not available anymore @new-qan', async (I, qanPage) => {
   qanPage.addColumn('Bytes Sent');
   qanPage.verifyColumnIsNotAvailable('Bytes Sent');
 });
 
-xScenario('Open the QAN Dashboard and verify that hovering over a time metric displays a tooltip with a graph @new-qan', async (I, qanPage) => {
+Scenario('Open the QAN Dashboard and verify that hovering over a time metric displays a tooltip with a graph @new-qan', async (I, qanPage) => {
   const ROW_NUMBER = 1;
   const QUERY_TIME_COLUMN_NUMBER = 3;
 
@@ -186,7 +186,7 @@ xScenario('Open the QAN Dashboard and verify that hovering over a time metric di
   I.seeElement(qanPage.elements.latencyChart);
 });
 
-xScenario('Open the QAN Dashboard and verify that hovering over a non-time metric displays a tooltip without a graph @new-qan', async (I, qanPage) => {
+Scenario('Open the QAN Dashboard and verify that hovering over a non-time metric displays a tooltip without a graph @new-qan', async (I, qanPage) => {
   const ROW_NUMBER = 1;
   const QUERY_COUNT_COLUMN_NUMBER = 2;
 
@@ -194,7 +194,7 @@ xScenario('Open the QAN Dashboard and verify that hovering over a non-time metri
   I.dontSeeElement(qanPage.elements.latencyChart);
 });
 
-xScenario('Open the QAN Dashboard and verify that the metric value matches the "Per sec" value in the tooltip. @new-qan', async (I, qanPage) => {
+Scenario('Open the QAN Dashboard and verify that the metric value matches the "Per sec" value in the tooltip. @new-qan', async (I, qanPage) => {
   const ROW_NUMBER = 1;
   const QUERY_COUNT_COLUMN_NUMBER = 2;
   const queryCountColumnSelector = qanPage.summarizeLocator(ROW_NUMBER, QUERY_COUNT_COLUMN_NUMBER);
@@ -205,7 +205,7 @@ xScenario('Open the QAN Dashboard and verify that the metric value matches the "
   assert.equal(qpsMetricValue.replace(/[^0-9.]/g,""), qpsTooltipValue.replace(/[^0-9.]/g,""));
 });
 
-xScenario('Open the QAN Dashboard and check that changing the time range clears the selected row. @new-qan', async (I, qanPage, adminPage) => {
+Scenario('Open the QAN Dashboard and check that changing the time range clears the selected row. @new-qan', async (I, qanPage, adminPage) => {
   I.waitForElement(qanPage.elements.tableRowSelector, 30);
   I.forceClick(qanPage.elements.tableRowSelector);
   adminPage.applyTimeRange('Last 3 hours');
@@ -213,7 +213,7 @@ xScenario('Open the QAN Dashboard and check that changing the time range clears 
   I.dontSeeElement(qanPage.elements.detailsSection);
 });
 
-xScenario('Open the QAN Dashboard and check that changing the time range resets current page to the first. @new-qan', async (I, qanPage, adminPage) => {
+Scenario('Open the QAN Dashboard and check that changing the time range resets current page to the first. @new-qan', async (I, qanPage, adminPage) => {
   qanPage.paginationGoTo(2);
   adminPage.applyTimeRange('Last 3 hours');
   qanPage.waitForResponsePath('/v0/qan/GetReport');
