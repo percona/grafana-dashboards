@@ -99,7 +99,7 @@ const parseURL = query => ({
   labels: setFilters(query),
   pageNumber: 1,
   pageSize: 10,
-  orderBy: query.get('order_by') || `-${( JSON.parse(query.get('columns')) || DEFAULT_COLUMNS)[0]}`,
+  orderBy: query.get('order_by') || `-${(JSON.parse(query.get('columns')) || DEFAULT_COLUMNS)[0]}`,
   queryId: query.get('filter_by'),
   querySelected: !!query.get('filter_by'),
   groupBy: query.get('group_by') || 'queryid',
@@ -226,6 +226,7 @@ export const UrlParametersProvider = ({ grafanaProps, children }) => {
   const to = grafanaProps.timeRange.to.utc().format('YYYY-MM-DDTHH:mm:ssZ');
   const [panelState, setContext] = useState({
     ...parseURL(query),
+    rawTime,
   });
 
   useEffect(() => {
