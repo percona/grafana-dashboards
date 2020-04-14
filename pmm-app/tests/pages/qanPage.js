@@ -65,6 +65,9 @@ module.exports = {
   overviewMetricCellValueLocator(rowNumber, dataColumnNumber) {
     return `.ant-table-tbody tr:nth-child(${rowNumber}) td:nth-child(${dataColumnNumber + 2}) .summarize`;
   },
+  overviewMetricSortingLocator(сolumnNumber) {
+    return `th.ant-table-column-has-actions:nth-child(${сolumnNumber + 2}) div[title="Sort"]`;
+  },
 
   checkPagination() {
     I.waitForElement(this.fields.nextPageNavigation, 30);
@@ -258,6 +261,32 @@ module.exports = {
   groupByIs(groupBy) {
     I.waitForElement(`[data-qa="group-by"] [title="${groupBy}"]`, 30);
     I.seeElement(`[data-qa="group-by"] [title="${groupBy}"]`);
+  },
+  changeSorting(columnNumber, sortDirection = 'down') {
+    const sortingBlockSelector = this.overviewMetricSortingLocator(columnNumber);
+    I.waitForElement(sortingBlockSelector, 30);
+    I.scrollTo(sortingBlockSelector);
+    I.forceClick(sortingBlockSelector);
+    if (sortDirection === 'up') {
+      I.forceClick(sortingBlockSelector);
+    }
+    I.wait(5);
+  },
+  checkSortingIs(columnNumber, sortDirection) {
+    const sortingBlockSelector = this.overviewMetricSortingLocator(columnNumber);
+    switch(sortDirection) {
+      case 'up':
+        I.seeElement(`${sortingBlockSelector} i[aria-label="icon: caret-up"].on`);
+        break;
+      case 'down':
+        I.seeElement(`${sortingBlockSelector} i[aria-label="icon: caret-down"].on`);
+        break;
+      case '':
+        I.saveScreenshot('checkSorting.png');
+        I.dontSeeElement(`${sortingBlockSelector} i[aria-label="icon: caret-up"].on`)
+        I.dontSeeElement(`${sortingBlockSelector} i[aria-label="icon: caret-down"].on`);
+        break;
+    }
   },
   addColumn(columnName) {
     I.waitForElement(this.fields.addColumnSelector, 30);

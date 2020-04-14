@@ -237,3 +237,16 @@ Scenario('Open the QAN Dashboard and check that changing the time range doesn\'t
   qanPage.groupByIs('Client Host');
 });
 
+Scenario('Open the QAN Dashboard and check that changing the time range doesn\'t reset sorting. @new-qan', async (I, qanPage, adminPage) => {
+  qanPage.changeSorting(3, 'up');
+  adminPage.applyTimeRange('Last 24 hours');
+  qanPage.checkSortingIs(3, 'up');
+});
+
+Scenario('Open the QAN Dashboard and check that sorting works correctly after sorting by another column. @new-qan', async (I, qanPage, adminPage) => {
+  qanPage.changeSorting(3, 'up');
+  qanPage.checkSortingIs(3, 'up');
+  qanPage.changeSorting(1, 'down');
+  qanPage.checkSortingIs(1, 'down');
+  qanPage.checkSortingIs(3, '');
+});
