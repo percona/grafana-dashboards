@@ -250,14 +250,14 @@ module.exports = {
       I.waitForInvisible(this.fields.detailsTable, 30);
     }
   },
-  changeGroupBy(groupBy) {
+  changeGroupBy(groupBy= 'Client Host') {
     I.waitForElement(this.fields.groupBySelector, 30);
-    I.click(this.fields.groupBySelector);
+    I.forceClick(this.fields.groupBySelector);
     I.click(`//ul/li[@label='${groupBy}']`);
   },
   groupByIs(groupBy) {
-    I.waitForElement(`//span[text()='Group by ${groupBy}']`, 30);
-    I.seeElement(`//span[text()='Group by ${groupBy}']`);
+    I.waitForElement(`[data-qa="group-by"] [title="${groupBy}"]`, 30);
+    I.seeElement(`[data-qa="group-by"] [title="${groupBy}"]`);
   },
   addColumn(columnName) {
     I.waitForElement(this.fields.addColumnSelector, 30);

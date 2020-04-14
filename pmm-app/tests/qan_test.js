@@ -231,3 +231,9 @@ Scenario('Open the QAN Dashboard and check that changing the time range updates 
   I.seeInCurrentUrl(TIME_RANGE_QUERY_PARAMS_AFTER);
 });
 
+Scenario('Open the QAN Dashboard and check that changing the time range doesn\'t clear "Group by". @new-qan', async (I, qanPage, adminPage) => {
+  qanPage.changeGroupBy('Client Host');
+  adminPage.applyTimeRange('Last 24 hours');
+  qanPage.groupByIs('Client Host');
+});
+
