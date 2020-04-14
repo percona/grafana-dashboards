@@ -164,7 +164,7 @@ xScenario('Open the QAN Dashboard and show tooltip @new-qan', async (I, adminPag
 });
 
 Scenario('Open the QAN Dashboard and check existence of filters @new-qan', async (I, qanPage) => {
-  qanPage.verifyFiltersSectionIsPresent();
+  await qanPage.verifyFiltersSectionIsPresent();
 });
 
 Scenario('Open the QAN Dashboard and check work of button "reset all" @new-qan', async (I, qanPage) => {
@@ -174,8 +174,10 @@ Scenario('Open the QAN Dashboard and check work of button "reset all" @new-qan',
 });
 
 Scenario('Open the QAN Dashboard, add a column and make sure that this option not available anymore @new-qan', async (I, qanPage) => {
-  qanPage.addColumn('Bytes Sent');
-  qanPage.verifyColumnIsNotAvailable('Bytes Sent');
+  const COLUMN_NAME = 'Bytes Sent';
+
+  qanPage.addColumn(COLUMN_NAME);
+  await qanPage.verifyColumnIsNotAvailable(COLUMN_NAME);
 });
 
 Scenario('Open the QAN Dashboard and verify that hovering over a time metric displays a tooltip with a graph @new-qan', async (I, qanPage) => {
@@ -197,12 +199,8 @@ Scenario('Open the QAN Dashboard and verify that hovering over a non-time metric
 Scenario('Open the QAN Dashboard and verify that the metric value matches the "Per sec" value in the tooltip. @new-qan', async (I, qanPage) => {
   const ROW_NUMBER = 1;
   const QUERY_COUNT_COLUMN_NUMBER = 2;
-  const queryCountColumnSelector = qanPage.summarizeLocator(ROW_NUMBER, QUERY_COUNT_COLUMN_NUMBER);
 
-  qanPage.showTooltip(ROW_NUMBER, QUERY_COUNT_COLUMN_NUMBER);
-  let qpsMetricValue = await I.grabTextFrom(queryCountColumnSelector);
-  let qpsTooltipValue = await I.grabTextFrom('[data-qa="metrics-list"] [data-qa="qps"] span');
-  assert.equal(qpsMetricValue.replace(/[^0-9.]/g,""), qpsTooltipValue.replace(/[^0-9.]/g,""));
+  qanPage.verifyMetricsMatch(ROW_NUMBER, QUERY_COUNT_COLUMN_NUMBER);
 });
 
 Scenario('Open the QAN Dashboard and check that changing the time range clears the selected row. @new-qan', async (I, qanPage, adminPage) => {
@@ -216,17 +214,20 @@ Scenario('Open the QAN Dashboard and check that changing the time range clears t
 Scenario('Open the QAN Dashboard and check that changing the time range resets current page to the first. @new-qan', async (I, qanPage, adminPage) => {
   qanPage.paginationGoTo(2);
   adminPage.applyTimeRange('Last 3 hours');
-  qanPage.waitForResponsePath('/v0/qan/GetReport');
-  qanPage.verifySelectedPageIs(1);
+  qanPage.waitForResponsePath(qanPage.requests.getReportPath);
+  await qanPage.verifySelectedPageIs(1);
 });
 
 Scenario('Open the QAN Dashboard and check that changing the time range updates the overview table and URL. @new-qan', async (I, qanPage, adminPage) => {
-  I.amOnPage(qanPage.url + '?from=now-12h&to=now');
+  const TIME_RANGE_QUERY_PARAMS_BEFORE = 'from=now-12h&to=now';
+  const TIME_RANGE_QUERY_PARAMS_AFTER = 'from=now-3h&to=now';
+
+  I.amOnPage(`${qanPage.url}?${TIME_RANGE_QUERY_PARAMS_BEFORE}`);
   qanPage.waitForQANPageLoaded();
-  I.seeInCurrentUrl('from=now-12h&to=now');
+  I.seeInCurrentUrl(TIME_RANGE_QUERY_PARAMS_BEFORE);
   adminPage.applyTimeRange('Last 3 hours');
-  qanPage.waitForResponsePath('/v0/qan/GetReport');
+  qanPage.waitForResponsePath(qanPage.requests.getReportPath);
   qanPage.waitForQANPageLoaded();
-  I.seeInCurrentUrl('from=now-3h&to=now');
+  I.seeInCurrentUrl(TIME_RANGE_QUERY_PARAMS_AFTER);
 });
 

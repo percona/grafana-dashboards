@@ -48,8 +48,12 @@ module.exports = {
     selectedOverviewRow: 'tr.selected-overview-row',
     detailsSection: '#query-analytics-details',
     tableRowSelector: '.ant-table-scroll .ant-table-tbody tr:first-of-type .overview-main-column div',
+    qpsTooltipValueSelector: '[data-qa="metrics-list"] [data-qa="qps"] span',
   },
-
+  requests: {
+    getReportPath: '/v0/qan/GetReport',
+    getFiltersPath: '/v0/qan/Filters/Get',
+  },
   filterGroupLocator(filterName) {
     return "//div[@class='filter-group__title']//span[contains(text(), '" + filterName + "')]";
   },
@@ -58,7 +62,7 @@ module.exports = {
     return "//ng-select//span[contains(@class, 'ng-value-label') and contains(text(), '" + tableHeader + "')]";
   },
 
-  summarizeLocator(rowNumber, dataColumnNumber) {
+  overviewMetricCellValueLocator(rowNumber, dataColumnNumber) {
     return `.ant-table-tbody tr:nth-child(${rowNumber}) td:nth-child(${dataColumnNumber + 2}) .summarize`;
   },
 
@@ -231,6 +235,14 @@ module.exports = {
   async verifySelectedPageIs (pageNumber) {
     I.seeElement(`.ant-pagination-item-active[title="${pageNumber}"]`);
   },
+  async verifyMetricsMatch(rowNumber, dataColumnNumber) {
+    const cellSelector = this.overviewMetricCellValueLocator(rowNumber, dataColumnNumber);
+
+    this.showTooltip(rowNumber, dataColumnNumber);
+    let qpsMetricValue = await I.grabTextFrom(cellSelector);
+    let qpsTooltipValue = await I.grabTextFrom(this.qpsTooltipValueSelector);
+    assert.equal(qpsMetricValue.replace(/[^0-9.]/g,""), qpsTooltipValue.replace(/[^0-9.]/g,""));
+  },
   async clearFilters() {
     let numOfElements = await I.grabNumberOfVisibleElements(this.fields.filterSelection);
     for (let i = 1; i <= numOfElements; i++) {
@@ -289,7 +301,7 @@ module.exports = {
   selectFilter(filterCheckboxSelector) {
     I.waitForElement(filterCheckboxSelector, 30);
     I.checkOption(filterCheckboxSelector);
-    this.waitForResponsePath('/v0/qan/Filters/Get');
+    this.waitForResponsePath(getFiltersPath);
   },
   paginationGoNext() {
     I.waitForElement(`//li[@title='Next Page']`, 30);
@@ -312,7 +324,7 @@ module.exports = {
     I.click(pageSelector);
   },
   showTooltip(rowNumber, dataColumnNumber) {
-    const tooltipSelector = this.summarizeLocator(rowNumber, dataColumnNumber);
+    const tooltipSelector = this.overviewMetricCellValueLocator(rowNumber, dataColumnNumber);
     I.waitForElement(tooltipSelector, 30);
     I.scrollTo(tooltipSelector);
     I.moveCursorTo(tooltipSelector);
