@@ -196,6 +196,7 @@ const actions = {
     const newState = {
       ...state,
       orderBy: newOrderBy,
+      pageNumber: 1,
     };
     delete newState.queryId;
     delete newState.querySelected;
@@ -206,6 +207,7 @@ const actions = {
       ...state,
       groupBy: value,
       querySelected: false,
+      pageNumber: 1,
     };
     delete newState.queryId;
     delete newState.querySelected;
@@ -240,7 +242,10 @@ export const UrlParametersProvider = ({ grafanaProps, children }) => {
   };
 
   useEffect(() => {
-    setContext({ ...panelState, from, to, rawTime });
+    const newState = { ...panelState, from, to, rawTime, pageNumber: 1 };
+    delete newState.queryId;
+    delete newState.querySelected;
+    setContext(newState);
   }, [from, to]);
 
   return (
