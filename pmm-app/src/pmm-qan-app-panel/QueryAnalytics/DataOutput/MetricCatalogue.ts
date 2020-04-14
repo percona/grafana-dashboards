@@ -221,20 +221,6 @@ export const METRIC_CATALOGUE = {
       perQueryStatsPipe: 'number',
     },
   },
-  count: {
-    humanizeName: 'Query Count',
-    tooltipText: 'Count',
-    simpleName: 'count',
-    units: Units.QPS,
-    metricRelation: () => '',
-    pipeTypes: {
-      ratePipe: 'number',
-      sumPipe: 'number',
-      subSumPipe: 'percent',
-      sparklineType: 'number',
-      perQueryStatsPipe: 'number',
-    },
-  },
   num_queries_with_errors: {
     humanizeName: 'Query Count with errors',
     tooltipText: 'Query Count with errors',
