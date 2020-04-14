@@ -51,7 +51,7 @@ const MAIN_METRIC_MIN_WIDTH = 470;
 export const TABLE_X_SCROLL = 1250;
 export const TABLE_Y_SCROLL = 300;
 const COLUMN_WIDTH = 250;
-const ROW_NUMBER_COLUMN_WIDTH = 30;
+const ROW_NUMBER_COLUMN_WIDTH = 35;
 
 export const getDefaultColumns = (groupBy, pageNumber, pageSize, columns, onCell) => {
   const mainMetricColumnWidth = Math.max(
@@ -106,7 +106,7 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
     key: metricName,
     sortOrder: sortOrder,
     sortDirections: ['descend', 'ascend'],
-    width: columnIndex === 0 ? COLUMN_WIDTH * 1.5 : FIXED_COLUMN_WIDTH,
+    width: columnIndex === 0 ? COLUMN_WIDTH * 1.8 : FIXED_COLUMN_WIDTH,
     title: () => <ManageColumns placeholder={metricName} currentMetric={metric} width="100%" />,
     render: (text, item) => {
       const stats = item.metrics[metricName].stats;
