@@ -24,7 +24,11 @@ const Fingerprint = props => {
   const currentGroupBy = GROUP_BY_OPTIONS.filter(option => option.value === props.groupBy)[0];
   return (
     <div className={Styling.fingerprintWrapper} id="query-id">
-      <h4>{props.query === 'TOTAL' ? 'TOTAL' : `${currentGroupBy.data.label}: ${props.query}`}</h4>
+      <h4>
+        {props.query === 'TOTAL' || props.query === undefined
+          ? 'TOTAL'
+          : `${currentGroupBy.data.label}: ${props.query}`}
+      </h4>
       <h5 className={Styling.controlSum}>{props.controlSum}</h5>
     </div>
   );
