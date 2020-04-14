@@ -49,13 +49,6 @@ module.exports = {
     detailsSection: '#query-analytics-details',
     tableRowSelector: '.ant-table-scroll .ant-table-tbody tr:first-of-type .overview-main-column div',
   },
-  helpers: {
-    getRandomIntInclusive: function (min, max) {
-      min = Math.ceil(min);
-      max = Math.floor(max);
-      return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-  },
 
   filterGroupLocator(filterName) {
     return "//div[@class='filter-group__title']//span[contains(text(), '" + filterName + "')]";
