@@ -161,6 +161,7 @@
                 "#d44a3a"
             ],
             "datasource": null,
+            "description": "",
             "format": "none",
             "gauge": {
                 "maxValue": 100,
@@ -213,7 +214,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "count(count by (node_name) (up{node_name=~\"$node_name\"})) or vector(0)",
+                    "expr": "count(count by (node_name) (up{node_name=~\"$node_name\",az=~\"$region\"})) or vector(0)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -224,7 +225,7 @@
             "thresholds": "100",
             "timeFrom": null,
             "timeShift": null,
-            "title": "Hosts",
+            "title": "Nodes",
             "type": "singlestat",
             "valueFontSize": "50%",
             "valueMaps": [
@@ -311,7 +312,7 @@
             "thresholds": "3600,86400",
             "timeFrom": null,
             "timeShift": null,
-            "title": "Min Host Uptime",
+            "title": "Min Node Uptime",
             "type": "singlestat",
             "valueFontSize": "50%",
             "valueMaps": [
@@ -385,7 +386,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "count(mysql_global_status_uptime{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"} or \nmongodb_mongos_instance_uptime_seconds{region=~\"$region\",node_type=~\"$node_type\",node_name=~\"$node_name\"} or \npg_up{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"} or \npostgresql_up{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"})",
+                    "expr": "count(mysql_global_status_uptime{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\"} or \nmongodb_mongos_instance_uptime_seconds{az=~\"$region\",node_type=~\"$node_type\",node_name=~\"$node_name\"} or \npg_up{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\"} or \npostgresql_up{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\"})",
                     "format": "time_series",
                     "intervalFactor": 1,
                     "legendFormat": "",
@@ -472,21 +473,12 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "min(mysql_global_status_uptime{node_name=~\"$node_name\"} or mongodb_mongos_instance_uptime_seconds{node_name=~\"$node_name\"})",
+                    "expr": "min by () (mysql_global_status_uptime{node_name=~\"$node_name\"} or \nmongodb_instance_uptime_seconds {node_name=~\"$node_name\"} or \n(time() - process_start_time_seconds{node_name=~\"$node_name\",job=~\"postgres_exporter.*\"}))",
                     "format": "time_series",
                     "hide": false,
                     "intervalFactor": 1,
                     "legendFormat": "",
                     "refId": "A"
-                },
-                {
-                    "expr": "min(mysql_global_status_uptime{node_name=~\"$node_name\"})",
-                    "format": "time_series",
-                    "hide": true,
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "",
-                    "refId": "B"
                 }
             ],
             "thresholds": "3600,86400",
@@ -566,7 +558,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "(count(node_cpu_seconds_total{node_name=~\"$node_name\",mode=~\"user\",region=~\"$region\",node_type=~\"$node_type\"}) or \n(1-absent(node_cpu_seconds_total{node_name=~\"$node_name\",mode=~\"user\",region=~\"$region\",node_type=~\"$node_type\"}))) + \nsum(rdsosmetrics_General_numVCPUs{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"} or up * 0)",
+                    "expr": "(count(node_cpu_seconds_total{node_name=~\"$node_name\",mode=~\"user\",az=~\"$region\",node_type=~\"$node_type\"}) or \n(1-absent(node_cpu_seconds_total{node_name=~\"$node_name\",mode=~\"user\",az=~\"$region\",node_type=~\"$node_type\"}))) + \nsum(rdsosmetrics_General_numVCPUs{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\"} or up * 0)",
                     "format": "time_series",
                     "intervalFactor": 1,
                     "refId": "A"
@@ -651,7 +643,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "sum by () (node_memory_MemTotal_bytes{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"})",
+                    "expr": "sum by () (node_memory_MemTotal_bytes{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\"})",
                     "format": "time_series",
                     "intervalFactor": 1,
                     "legendFormat": "",
@@ -737,7 +729,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "sum by () (node_memory_MemTotal_bytes{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"}+node_memory_SwapTotal_bytes{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"})",
+                    "expr": "sum by () (node_memory_MemTotal_bytes{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\"}+node_memory_SwapTotal_bytes{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\"})",
                     "format": "time_series",
                     "intervalFactor": 1,
                     "legendFormat": "",
@@ -878,7 +870,7 @@
                         {
                             "alias": "Region",
                             "dateFormat": "YYYY-MM-DD HH:mm:ss",
-                            "pattern": "region",
+                            "pattern": "az",
                             "type": "string"
                         },
                         {
@@ -914,7 +906,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "count(node_load1{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"}) by (region)",
+                            "expr": "count(node_load1{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\"}) by (az)",
                             "format": "table",
                             "instant": true,
                             "interval": "$interval",
@@ -989,7 +981,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "count(node_load1{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"}) by (node_type)",
+                            "expr": "count(node_load1{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\"}) by (node_type)",
                             "format": "table",
                             "instant": true,
                             "interval": "$interval",
@@ -1084,7 +1076,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "node_load1{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"}",
+                            "expr": "node_load1{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\"}",
                             "format": "table",
                             "instant": true,
                             "interval": "$interval",
@@ -1098,6 +1090,63 @@
                     "type": "table"
                 },
                 {
+                    "circleMaxSize": "2",
+                    "circleMinSize": "1",
+                    "colors": [
+                        "rgba(245, 54, 54, 0.9)",
+                        "rgba(237, 129, 40, 0.89)",
+                        "rgba(50, 172, 45, 0.97)"
+                    ],
+                    "datasource": null,
+                    "decimals": 0,
+                    "description": "",
+                    "esGeoPoint": "",
+                    "esLocationName": "",
+                    "esMetric": "Count",
+                    "gridPos": {
+                        "h": 9,
+                        "w": 24,
+                        "x": 0,
+                        "y": 12
+                    },
+                    "hideEmpty": false,
+                    "hideZero": false,
+                    "id": 1001,
+                    "initialZoom": "2",
+                    "locationData": "countries",
+                    "mapCenter": "Europe",
+                    "mapCenterLatitude": 46,
+                    "mapCenterLongitude": 14,
+                    "maxDataPoints": 1,
+                    "mouseWheelZoom": false,
+                    "options": {},
+                    "showLegend": false,
+                    "stickyLabels": true,
+                    "tableQueryOptions": {
+                        "geohashField": "geohash",
+                        "latitudeField": "latitude",
+                        "longitudeField": "longitude",
+                        "metricField": "metric",
+                        "queryType": "geohash"
+                    },
+                    "targets": [
+                        {
+                            "expr": "count by (az) (sum by (node_name,az) (up{node_type=~\"generic|remote_rds|container|remote\",agent_type=\"node_exporter\",az=~\"$region\",node_name=~\"$node_name\"}))",
+                            "interval": "$interval",
+                            "legendFormat": "{{az}}",
+                            "refId": "A"
+                        }
+                    ],
+                    "thresholds": "0,5",
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Regions",
+                    "type": "grafana-worldmap-panel",
+                    "unitPlural": "",
+                    "unitSingle": "",
+                    "valueName": "current"
+                },
+                {
                     "columns": [],
                     "datasource": null,
                     "fontSize": "100%",
@@ -1105,7 +1154,7 @@
                         "h": 10,
                         "w": 8,
                         "x": 0,
-                        "y": 12
+                        "y": 21
                     },
                     "id": 380,
                     "links": [],
@@ -1190,7 +1239,7 @@
                         "h": 10,
                         "w": 16,
                         "x": 8,
-                        "y": 12
+                        "y": 21
                     },
                     "id": 379,
                     "links": [],
@@ -1200,6 +1249,7 @@
                         "columnAutoSize": true,
                         "columns": "",
                         "defaultClickThrough": "",
+                        "defaultClickThroughNewTab": false,
                         "defaultClickThroughSanitize": false,
                         "displayLimit": 100,
                         "fontAutoScale": true,
@@ -1211,7 +1261,7 @@
                         "globalOperatorName": "avg",
                         "globalUnitFormat": "none",
                         "gradientEnabled": true,
-                        "hexagonSortByDirection": "asc",
+                        "hexagonSortByDirection": 1,
                         "hexagonSortByField": "name",
                         "maxMetrics": 0,
                         "polygonBorderColor": "black",
@@ -1226,9 +1276,9 @@
                         "tooltipDisplayTextTriggeredEmpty": "OK",
                         "tooltipFontSize": 12,
                         "tooltipFontType": "Roboto",
-                        "tooltipPrimarySortDirection": "desc",
+                        "tooltipPrimarySortDirection": 2,
                         "tooltipPrimarySortField": "name",
-                        "tooltipSecondarySortDirection": "desc",
+                        "tooltipSecondarySortDirection": 2,
                         "tooltipSecondarySortField": "name",
                         "tooltipTimestampEnabled": false
                     },
@@ -1426,7 +1476,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "max(clamp_max(sum by (node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode!=\"idle\",mode!=\"iowait\",mode!=\"steal\"}[$interval]),1)) or \n(irate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode!=\"idle\",mode!=\"iowait\",mode!=\"steal\"}[5m])) )*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"total\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"total\"}[5m])),100))",
+                    "expr": "max(clamp_max(sum by (node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\",mode!=\"idle\",mode!=\"iowait\",mode!=\"steal\"}[$interval]),1)) or \n(irate(node_cpu_seconds_total{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\",mode!=\"idle\",mode!=\"iowait\",mode!=\"steal\"}[5m])) )*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\", mode=\"total\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\", mode=\"total\"}[5m])),100))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1513,7 +1563,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "max(clamp_max(sum by (node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode=\"steal\"}[$interval]),1)) or \n(irate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode=\"steal\"}[5m])) )*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"steal\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"steal\"}[5m])),100))",
+                    "expr": "max(clamp_max(sum by (node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\",mode=\"steal\"}[$interval]),1)) or \n(irate(node_cpu_seconds_total{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\",mode=\"steal\"}[5m])) )*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\", mode=\"steal\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\", mode=\"steal\"}[5m])),100))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1601,7 +1651,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "max(clamp_max(sum by (node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode=\"iowait\"}[$interval]),1)) or \n(irate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode=\"iowait\"}[5m])))*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"iowait\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"iowait\"}[5m])) or max_over_time(rdsosmetrics_cpuUtilization_wait{node_name=~\"$node_name\"}[$interval]) or max_over_time(rdsosmetrics_cpuUtilization_wait{node_name=~\"$node_name\"}[5m]),100))",
+                    "expr": "max(clamp_max(sum by (node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\",mode=\"iowait\"}[$interval]),1)) or \n(irate(node_cpu_seconds_total{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\",mode=\"iowait\"}[5m])))*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\", mode=\"iowait\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\", mode=\"iowait\"}[5m])) or max_over_time(rdsosmetrics_cpuUtilization_wait{node_name=~\"$node_name\"}[$interval]) or max_over_time(rdsosmetrics_cpuUtilization_wait{node_name=~\"$node_name\"}[5m]),100))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1859,7 +1909,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "max by () (max_over_time(node_load1{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"}[$interval]) or \nmax_over_time(node_load1{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"}[5m]))",
+                    "expr": "max by () (max_over_time(node_load1{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\"}[$interval]) or \nmax_over_time(node_load1{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2142,7 +2192,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "topk(5,avg by (node_name) (sum by (node_name) ( avg by (mode,node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",\nnode_type=~\"$node_type\",mode!=\"idle\",mode!=\"steal\",mode!=\"iowait\"}[$interval]),1)) or \n(clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode!=\"idle\",mode!=\"steal\",mode!=\"iowait\"}[5m]),1)) ) )*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"total\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"total\"}[5m]))))",
+                            "expr": "topk(5,avg by (node_name) (sum by (node_name) ( avg by (mode,node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",az=~\"$region\",\nnode_type=~\"$node_type\",mode!=\"idle\",mode!=\"steal\",mode!=\"iowait\"}[$interval]),1)) or \n(clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\",mode!=\"idle\",mode!=\"steal\",mode!=\"iowait\"}[5m]),1)) ) )*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\", mode=\"total\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\", mode=\"total\"}[5m]))))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -2151,7 +2201,7 @@
                             "refId": "A"
                         },
                         {
-                            "expr": "avg by () (sum by (node_name) ( avg by (mode,node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",\nnode_type=~\"$node_type\",mode!=\"idle\",mode!=\"steal\",mode!=\"iowait\"}[$interval]),1)) or \n(clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode!=\"idle\",mode!=\"steal\",mode!=\"iowait\"}[5m]),1)) ) )*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"total\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"total\"}[5m])))",
+                            "expr": "avg by () (sum by (node_name) ( avg by (mode,node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",az=~\"$region\",\nnode_type=~\"$node_type\",mode!=\"idle\",mode!=\"steal\",mode!=\"iowait\"}[$interval]),1)) or \n(clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\",mode!=\"idle\",mode!=\"steal\",mode!=\"iowait\"}[5m]),1)) ) )*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\", mode=\"total\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\", mode=\"total\"}[5m])))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -2316,7 +2366,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "avg by (node_name) (clamp_max(sum by (node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode!=\"idle\",mode!=\"iowait\",mode!=\"steal\"}[$interval]),1)) or \n(irate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode!=\"idle\",mode!=\"iowait\",mode!=\"steal\"}[5m])) )*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"total\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"total\"}[5m])),100))",
+                            "expr": "avg by (node_name) (clamp_max(sum by (node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\",mode!=\"idle\",mode!=\"iowait\",mode!=\"steal\"}[$interval]),1)) or \n(irate(node_cpu_seconds_total{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\",mode!=\"idle\",mode!=\"iowait\",mode!=\"steal\"}[5m])) )*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\", mode=\"total\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\", mode=\"total\"}[5m])),100))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2408,7 +2458,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "topk(5,avg by (node_name) (sum by (node_name) ( avg by (mode,node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",\nnode_type=~\"$node_type\",mode=\"steal\"}[$interval]),1)) or \n(clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode=\"steal\"}[5m]),1)) ) )*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"steal\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"steal\"}[5m]))))",
+                            "expr": "topk(5,avg by (node_name) (sum by (node_name) ( avg by (mode,node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",az=~\"$region\",\nnode_type=~\"$node_type\",mode=\"steal\"}[$interval]),1)) or \n(clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\",mode=\"steal\"}[5m]),1)) ) )*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\", mode=\"steal\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\", mode=\"steal\"}[5m]))))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -2417,7 +2467,7 @@
                             "refId": "A"
                         },
                         {
-                            "expr": "avg by () (sum by (node_name) ( avg by (mode,node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",\nnode_type=~\"$node_type\",mode=\"steal\"}[$interval]),1)) or \n(clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode=\"steal\"}[5m]),1)) ) )*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"steal\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"steal\"}[5m])))",
+                            "expr": "avg by () (sum by (node_name) ( avg by (mode,node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",az=~\"$region\",\nnode_type=~\"$node_type\",mode=\"steal\"}[$interval]),1)) or \n(clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\",mode=\"steal\"}[5m]),1)) ) )*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\", mode=\"steal\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\", mode=\"steal\"}[5m])))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -2582,7 +2632,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "avg by (node_name) (clamp_max(sum by (node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode=\"steal\"}[$interval]),1)) or \n(irate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode=\"steal\"}[5m])) )*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"steal\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"steal\"}[5m])),100))",
+                            "expr": "avg by (node_name) (clamp_max(sum by (node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\",mode=\"steal\"}[$interval]),1)) or \n(irate(node_cpu_seconds_total{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\",mode=\"steal\"}[5m])) )*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\", mode=\"steal\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\", mode=\"steal\"}[5m])),100))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -2674,7 +2724,7 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "expr": "topk(5,avg by (node_name) (sum by (node_name) ( avg by (mode,node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",\nnode_type=~\"$node_type\",mode=\"iowait\"}[$interval]),1)) or \n(clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode=\"iowait\"}[5m]),1)) ) )*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"iowait\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"iowait\"}[5m])) or \nmax_over_time(rdsosmetrics_cpuUtilization_wait{node_name=~\"$node_name\"}[$interval]) or max_over_time(rdsosmetrics_cpuUtilization_wait{node_name=~\"$node_name\"}[5m])))",
+                            "expr": "topk(5,avg by (node_name) (sum by (node_name) ( avg by (mode,node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",az=~\"$region\",\nnode_type=~\"$node_type\",mode=\"iowait\"}[$interval]),1)) or \n(clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\",mode=\"iowait\"}[5m]),1)) ) )*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\", mode=\"iowait\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\", mode=\"iowait\"}[5m])) or \nmax_over_time(rdsosmetrics_cpuUtilization_wait{node_name=~\"$node_name\"}[$interval]) or max_over_time(rdsosmetrics_cpuUtilization_wait{node_name=~\"$node_name\"}[5m])))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -2683,7 +2733,7 @@
                             "refId": "A"
                         },
                         {
-                            "expr": "avg((sum by (node_name) ( avg by (mode,node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",\nnode_type=~\"$node_type\",mode=\"iowait\"}[$interval]),1)) or \n(clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode=\"iowait\"}[5m]),1)) ) )*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"iowait\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"iowait\"}[5m])) or \nmax_over_time(rdsosmetrics_cpuUtilization_wait{node_name=~\"$node_name\"}[$interval]) or max_over_time(rdsosmetrics_cpuUtilization_wait{node_name=~\"$node_name\"}[5m])))",
+                            "expr": "avg((sum by (node_name) ( avg by (mode,node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",az=~\"$region\",\nnode_type=~\"$node_type\",mode=\"iowait\"}[$interval]),1)) or \n(clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\",mode=\"iowait\"}[5m]),1)) ) )*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\", mode=\"iowait\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\", mode=\"iowait\"}[5m])) or \nmax_over_time(rdsosmetrics_cpuUtilization_wait{node_name=~\"$node_name\"}[$interval]) or max_over_time(rdsosmetrics_cpuUtilization_wait{node_name=~\"$node_name\"}[5m])))",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -2848,7 +2898,7 @@
                     ],
                     "targets": [
                         {
-                            "expr": "avg by (node_name) ((sum by (node_name) ( avg by (mode,node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",\nnode_type=~\"$node_type\",mode=\"iowait\"}[$interval]),1)) or \n(clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\",mode=\"iowait\"}[5m]),1)) ) )*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"iowait\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\", mode=\"iowait\"}[5m])) or \nmax_over_time(rdsosmetrics_cpuUtilization_wait{node_name=~\"$node_name\"}[$interval]) or max_over_time(rdsosmetrics_cpuUtilization_wait{node_name=~\"$node_name\"}[5m])))",
+                            "expr": "avg by (node_name) ((sum by (node_name) ( avg by (mode,node_name) ((clamp_max(rate(node_cpu_seconds_total{node_name=~\"$node_name\",az=~\"$region\",\nnode_type=~\"$node_type\",mode=\"iowait\"}[$interval]),1)) or \n(clamp_max(irate(node_cpu_seconds_total{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\",mode=\"iowait\"}[5m]),1)) ) )*100 or \n(avg_over_time(node_cpu_average{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\", mode=\"iowait\"}[$interval]) or \navg_over_time(node_cpu_average{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\", mode=\"iowait\"}[5m])) or \nmax_over_time(rdsosmetrics_cpuUtilization_wait{node_name=~\"$node_name\"}[$interval]) or max_over_time(rdsosmetrics_cpuUtilization_wait{node_name=~\"$node_name\"}[5m])))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4172,7 +4222,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "clamp_max(min by () ((node_memory_MemAvailable_bytes{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"} or \n(node_memory_MemFree_bytes{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"} + node_memory_Buffers_bytes{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"} + \nnode_memory_Cached_bytes{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"})) / node_memory_MemTotal_bytes{node_name=~\"$node_name\",region=~\"$region\",node_type=~\"$node_type\"}) * 100,100)",
+                    "expr": "clamp_max(min by () ((node_memory_MemAvailable_bytes{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\"} or \n(node_memory_MemFree_bytes{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\"} + node_memory_Buffers_bytes{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\"} + \nnode_memory_Cached_bytes{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\"})) / node_memory_MemTotal_bytes{node_name=~\"$node_name\",az=~\"$region\",node_type=~\"$node_type\"}) * 100,100)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -6773,6 +6823,7 @@
                         "columnAutoSize": true,
                         "columns": 4,
                         "defaultClickThrough": "",
+                        "defaultClickThroughNewTab": false,
                         "defaultClickThroughSanitize": true,
                         "displayLimit": 100,
                         "fontAutoScale": true,
@@ -6784,7 +6835,7 @@
                         "globalOperatorName": "current",
                         "globalUnitFormat": "short",
                         "gradientEnabled": true,
-                        "hexagonSortByDirection": "asc",
+                        "hexagonSortByDirection": 1,
                         "hexagonSortByField": "name",
                         "maxMetrics": 0,
                         "polygonBorderColor": "black",
@@ -6799,9 +6850,9 @@
                         "tooltipDisplayTextTriggeredEmpty": "OK",
                         "tooltipFontSize": 12,
                         "tooltipFontType": "Roboto",
-                        "tooltipPrimarySortDirection": "desc",
+                        "tooltipPrimarySortDirection": 2,
                         "tooltipPrimarySortField": "thresholdLevel",
-                        "tooltipSecondarySortDirection": "desc",
+                        "tooltipSecondarySortDirection": 2,
                         "tooltipSecondarySortField": "value",
                         "tooltipTimestampEnabled": true
                     },
@@ -7126,6 +7177,7 @@
                         "columnAutoSize": true,
                         "columns": 4,
                         "defaultClickThrough": "",
+                        "defaultClickThroughNewTab": false,
                         "defaultClickThroughSanitize": true,
                         "displayLimit": 100,
                         "fontAutoScale": true,
@@ -7137,7 +7189,7 @@
                         "globalOperatorName": "current",
                         "globalUnitFormat": "short",
                         "gradientEnabled": true,
-                        "hexagonSortByDirection": "asc",
+                        "hexagonSortByDirection": 1,
                         "hexagonSortByField": "name",
                         "maxMetrics": 0,
                         "polygonBorderColor": "black",
@@ -7152,9 +7204,9 @@
                         "tooltipDisplayTextTriggeredEmpty": "OK",
                         "tooltipFontSize": 12,
                         "tooltipFontType": "Roboto",
-                        "tooltipPrimarySortDirection": "desc",
+                        "tooltipPrimarySortDirection": 2,
                         "tooltipPrimarySortField": "thresholdLevel",
-                        "tooltipSecondarySortDirection": "desc",
+                        "tooltipSecondarySortDirection": 2,
                         "tooltipSecondarySortField": "value",
                         "tooltipTimestampEnabled": true
                     },
@@ -7485,6 +7537,7 @@
                         "columnAutoSize": true,
                         "columns": 4,
                         "defaultClickThrough": "",
+                        "defaultClickThroughNewTab": false,
                         "defaultClickThroughSanitize": true,
                         "displayLimit": 100,
                         "fontAutoScale": true,
@@ -7496,7 +7549,7 @@
                         "globalOperatorName": "current",
                         "globalUnitFormat": "Bps",
                         "gradientEnabled": true,
-                        "hexagonSortByDirection": "asc",
+                        "hexagonSortByDirection": 1,
                         "hexagonSortByField": "name",
                         "maxMetrics": 0,
                         "polygonBorderColor": "black",
@@ -7511,9 +7564,9 @@
                         "tooltipDisplayTextTriggeredEmpty": "OK",
                         "tooltipFontSize": 12,
                         "tooltipFontType": "Roboto",
-                        "tooltipPrimarySortDirection": "desc",
+                        "tooltipPrimarySortDirection": 2,
                         "tooltipPrimarySortField": "thresholdLevel",
-                        "tooltipSecondarySortDirection": "desc",
+                        "tooltipSecondarySortDirection": 2,
                         "tooltipSecondarySortField": "value",
                         "tooltipTimestampEnabled": true
                     },
@@ -9864,10 +9917,10 @@
             },
             {
                 "allFormat": "glob",
-                "allValue": null,
+                "allValue": ".*",
                 "current": {},
                 "datasource": "Prometheus",
-                "definition": "label_values(up{node_type=~\"generic|remote_rds|container|remote\"}, region)",
+                "definition": "label_values(up{node_type=~\"generic|remote_rds|container|remote\",agent_type=\"node_exporter\"}, az)",
                 "hide": 0,
                 "includeAll": true,
                 "label": "Region",
@@ -9875,7 +9928,7 @@
                 "multiFormat": "regex values",
                 "name": "region",
                 "options": [],
-                "query": "label_values(up{node_type=~\"generic|remote_rds|container|remote\"}, region)",
+                "query": "label_values(up{node_type=~\"generic|remote_rds|container|remote\",agent_type=\"node_exporter\"}, az)",
                 "refresh": 2,
                 "refresh_on_load": false,
                 "regex": "",
@@ -9889,10 +9942,10 @@
             },
             {
                 "allFormat": "glob",
-                "allValue": null,
+                "allValue": "",
                 "current": {},
                 "datasource": "Prometheus",
-                "definition": "label_values(up{region=~\"$region|\"}, node_type)",
+                "definition": "label_values(up{az=~\"$region\"}, node_type)",
                 "hide": 0,
                 "includeAll": true,
                 "label": "Type",
@@ -9900,7 +9953,7 @@
                 "multiFormat": "regex values",
                 "name": "node_type",
                 "options": [],
-                "query": "label_values(up{region=~\"$region|\"}, node_type)",
+                "query": "label_values(up{az=~\"$region\"}, node_type)",
                 "refresh": 2,
                 "refresh_on_load": false,
                 "regex": "",
@@ -9917,7 +9970,7 @@
                 "allValue": null,
                 "current": {},
                 "datasource": "Prometheus",
-                "definition": "label_values(up{region=~\"$region|\",node_type=~\"$node_type\"}, node_name)",
+                "definition": "label_values(up{az=~\"$region\",node_type=~\"$node_type\"}, node_name)",
                 "hide": 0,
                 "includeAll": true,
                 "label": "Node Names",
@@ -9925,7 +9978,7 @@
                 "multiFormat": "regex values",
                 "name": "node_name",
                 "options": [],
-                "query": "label_values(up{region=~\"$region|\",node_type=~\"$node_type\"}, node_name)",
+                "query": "label_values(up{az=~\"$region\",node_type=~\"$node_type\"}, node_name)",
                 "refresh": 2,
                 "refresh_on_load": false,
                 "regex": "",
