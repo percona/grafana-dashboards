@@ -5,7 +5,7 @@ import { ReactJSON } from '../../../../../react-plugins-deps/components/ReactJSO
 
 const getExample = databaseType => (example: string): any => {
   if (databaseType === 'mongodb') {
-    return <ReactJSON json={example} />;
+    return <ReactJSON json={JSON.parse(example)} />;
   }
 
   return <Highlight language="sql">{example}</Highlight>;
