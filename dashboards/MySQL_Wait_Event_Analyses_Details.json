@@ -425,7 +425,7 @@
             "steppedLine": true,
             "targets": [
                 {
-                    "expr": "avg by (service_name,event_name) (rate(mysql_perf_schema_events_waits_seconds_total{service_name=~\"$service_name\",event_name=~\"$event\"}[$interval])/rate(mysql_perf_schema_events_waits_total{service_name=~\"$service_name\",event_name=~\"$event\"}[$interval]) or irate(mysql_perf_schema_events_waits_seconds_total{service_name=~\"$service_name\",service_name=~\"$service_name\",event_name=~\"$event\"}[5m])/irate(mysql_perf_schema_events_waits_total{service_name=~\"$service_name\",service_name=~\"$service_name\",event_name=~\"$event\"}[5m]))",
+                    "expr": "avg by (service_name,event_name) (rate(mysql_perf_schema_events_waits_seconds_total{service_name=~\"$service_name\",event_name=~\"$event\"}[$interval])/(rate(mysql_perf_schema_events_waits_total{service_name=~\"$service_name\",event_name=~\"$event\"}[$interval]) > 0) or irate(mysql_perf_schema_events_waits_seconds_total{service_name=~\"$service_name\",service_name=~\"$service_name\",event_name=~\"$event\"}[5m])/(irate(mysql_perf_schema_events_waits_total{service_name=~\"$service_name\",service_name=~\"$service_name\",event_name=~\"$event\"}[5m]) > 0))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
