@@ -50,6 +50,9 @@ const ManageColumns = props => {
             </div>
           )
         }
+        filterOption={(value, option) => {
+          return option.props.label.toLowerCase().includes(value.toLowerCase());
+        }}
         onChange={changeColumn}
         dropdownMatchSelectWidth={false}
         value={undefined}
