@@ -2481,7 +2481,7 @@
                     "tableColumn": "",
                     "targets": [
                         {
-                            "expr": "avg by (service_name) (rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"command\"}[$interval]) / rate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"command\"}[$interval]) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"command\"}[5m]) / irate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"command\"}[5m]))",
+                            "expr": "avg by (service_name) (rate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"command\"}[$interval]) / (rate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"command\"}[$interval]) > 0) or\nirate(mongodb_mongod_op_latencies_latency_total{service_name=~\"$service_name\",type=\"command\"}[5m]) / (irate(mongodb_mongod_op_latencies_ops_total{service_name=~\"$service_name\",type=\"command\"}[5m]) > 0))",
                             "interval": "$interval",
                             "refId": "A"
                         }
