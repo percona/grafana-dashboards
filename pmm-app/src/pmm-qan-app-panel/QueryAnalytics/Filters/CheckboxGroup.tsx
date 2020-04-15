@@ -43,7 +43,7 @@ const Styling = {
 };
 
 export const CheckboxGroup = ({ form, name, items, group, showAll, filter, labels }) => {
-  const [showTop, setShowTop] = useState(false);
+  const [showTop, setShowTop] = useState(true);
   const filteredData = items
     .filter(item => item.hasOwnProperty('main_metric_percent'))
     .filter(item => {
@@ -53,6 +53,12 @@ export const CheckboxGroup = ({ form, name, items, group, showAll, filter, label
       return true;
     });
   const itemsList = (showTop ? filteredData.slice(0, TOP_LIMIT) : filteredData)
+    .filter((item, index, list) => {
+      if (!item.value && list.length === 1) {
+        return false;
+      }
+      return true;
+    })
     .filter(item => {
       if (!item.value) {
         return 'n/a'.includes(filter.toLowerCase());
