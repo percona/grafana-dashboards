@@ -32,6 +32,8 @@ const Styling = {
   `,
   filterHeader: css`
     margin-right: auto;
+    font-weight: 700;
+    font-size: 14px;
   `,
   divider: css`
     margin-top: 0 !important;
