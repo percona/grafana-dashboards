@@ -151,7 +151,7 @@ const Chart = ({
       const dateToShow = moment(endPoint[xkey]).format('YYYY-MM-DD HH:mm:ss');
 
       const isTimeBased =
-        metricName.endsWith('_time') || metricNamez.endsWith('_wait') || metricName === 'load';
+        metricName.endsWith('_time') || metricName.endsWith('_wait') || metricName === 'load';
       const load = Humanize.transform(value, isTimeBased ? 'time' : 'number');
 
       focusBar.attr('d', areaBar(activeArea));
