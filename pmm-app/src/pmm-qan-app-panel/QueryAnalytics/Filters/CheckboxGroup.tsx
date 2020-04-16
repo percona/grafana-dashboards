@@ -47,7 +47,7 @@ const Styling = {
 export const CheckboxGroup = ({ form, name, items, group, showAll, filter: searchFilterBy, labels }) => {
   const [showTop, setShowTop] = useState(true);
   const filteredData = items
-    .filter(item => item.hasOwnProperty('main_metric_percent'))
+    // .filter(item => item.hasOwnProperty('main_metric_percent'))
     .filter(item => {
       if (!showAll) {
         return item.checked;
@@ -71,6 +71,7 @@ export const CheckboxGroup = ({ form, name, items, group, showAll, filter: searc
       );
     })
     .map(item => {
+      const valueExists = item.hasOwnProperty('main_metric_percent');
       return (
         <div className={Styling.label} key={`${group}:${item.value || ''}`}>
           <span className={Styling.filterName}>
@@ -81,10 +82,11 @@ export const CheckboxGroup = ({ form, name, items, group, showAll, filter: searc
               name={`${group}:${item.value ? item.value.replace(/\./gi, '--') : ''}`}
               label={item.value || 'n/a'}
               checked={labels && labels[group] && labels[group].includes(item.value)}
+              disabled={!valueExists}
             />
           </span>
           <span className={Styling.percentage}>
-            <span>{Humanize.transform(item.main_metric_percent, 'percent')}</span>
+            <span>{valueExists ? Humanize.transform(item.main_metric_percent, 'percent') : null}</span>
           </span>
         </div>
       );
