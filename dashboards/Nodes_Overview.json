@@ -1134,7 +1134,7 @@
                     },
                     "targets": [
                         {
-                            "expr": "count by (region) (sum by (node_name,region) (label_replace(up{node_type=~\"generic|remote_rds|container|remote\",region=~\"$region\",node_name=~\"$node_name\"},\"region\", \"$1\", \"region\", \"(.*)-(.*)-(.*)\")))",
+                            "expr": "count by (region) (\nsum by (node_name,region) (label_replace(label_replace(up{node_type=~\"generic|remote_rds|container|remote\",region=~\"$region\",node_name=~\"$node_name\"},\"region\", \"$2\", \"region\", \"(.*) (..)\"),\"region\", \"$1\", \"region\", \"(..)-(.*)\")\n))",
                             "interval": "$interval",
                             "legendFormat": "{{region}}",
                             "refId": "A"
