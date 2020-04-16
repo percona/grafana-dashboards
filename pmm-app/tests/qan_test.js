@@ -1,3 +1,5 @@
+const assert = require('assert');
+
 Feature('To verify and test the QAN Dashboard');
 
 Before((I, loginPage, qanPage) => {
@@ -8,7 +10,7 @@ Before((I, loginPage, qanPage) => {
 xScenario('Open the QAN Dashboard and change groupBy', async (I, adminPage, qanPage) => {
   I.amOnPage(qanPage.url);
   qanPage.changeGroupBy('Database');
-  qanPage.groupByIs('Database');
+  qanPage.verifyGroupByIs('Database');
   // TODO: check changes in url
 });
 
@@ -148,15 +150,110 @@ xScenario('Open the QAN Dashboard and check Details -> Tables', async (I, adminP
 
 Feature('To verify and test the QAN Dashboard query details tooltip');
 
-Before((I, loginPage) => {
-  I.amOnPage(loginPage.url);
-  loginPage.login('admin', 'admin');
+Before((I, qanPage) => {
+  I.Authorize();
+  I.amOnPage(qanPage.url);
 });
 
-xScenario('Open the QAN Dashboard and show tooltip', async (I, adminPage, qanPage) => {
+xScenario('Open the QAN Dashboard and show tooltip @new-qan', async (I, adminPage, qanPage) => {
   I.amOnPage(qanPage.url);
   qanPage.showTooltip(4, 1);
   I.wait(5);
   I.see('dasdadadad');
   // TODO: check changes in url
+});
+
+Scenario('Open the QAN Dashboard and check existence of filters @new-qan', async (I, qanPage) => {
+  await qanPage.verifyFiltersSectionIsPresent();
+});
+
+Scenario('Open the QAN Dashboard and check work of button "reset all" @new-qan', async (I, qanPage) => {
+  qanPage.selectFilter(qanPage.fields.filterCheckboxSelector);
+  qanPage.resetAllFilters();
+  I.dontSeeCheckboxIsChecked(qanPage.fields.filterCheckboxSelector);
+});
+
+Scenario('Open the QAN Dashboard, add a column and make sure that this option not available anymore @new-qan', async (I, qanPage) => {
+  const COLUMN_NAME = 'Bytes Sent';
+
+  qanPage.addColumn(COLUMN_NAME);
+  await qanPage.verifyColumnIsNotAvailable(COLUMN_NAME);
+});
+
+Scenario('Open the QAN Dashboard and verify that hovering over a time metric displays a tooltip with a graph @new-qan', async (I, qanPage) => {
+  const ROW_NUMBER = 1;
+  const QUERY_TIME_COLUMN_NUMBER = 3;
+
+  qanPage.showTooltip(ROW_NUMBER, QUERY_TIME_COLUMN_NUMBER);
+  I.seeElement(qanPage.elements.latencyChart);
+});
+
+Scenario('Open the QAN Dashboard and verify that hovering over a non-time metric displays a tooltip without a graph @new-qan', async (I, qanPage) => {
+  const ROW_NUMBER = 1;
+  const QUERY_COUNT_COLUMN_NUMBER = 2;
+
+  qanPage.showTooltip(ROW_NUMBER, QUERY_COUNT_COLUMN_NUMBER);
+  I.dontSeeElement(qanPage.elements.latencyChart);
+});
+
+Scenario('Open the QAN Dashboard and verify that the metric value matches the "Per sec" value in the tooltip. @new-qan', async (I, qanPage) => {
+  const ROW_NUMBER = 1;
+  const QUERY_COUNT_COLUMN_NUMBER = 2;
+
+  qanPage.verifyMetricsMatch(ROW_NUMBER, QUERY_COUNT_COLUMN_NUMBER);
+});
+
+Scenario('Open the QAN Dashboard and check that changing the time range clears the selected row. @new-qan', async (I, qanPage, adminPage) => {
+  I.waitForElement(qanPage.elements.tableRowSelector, 30);
+  I.forceClick(qanPage.elements.tableRowSelector);
+  adminPage.applyTimeRange('Last 3 hours');
+  I.dontSeeElement(qanPage.elements.selectedOverviewRow);
+  I.dontSeeElement(qanPage.elements.detailsSection);
+});
+
+Scenario('Open the QAN Dashboard and check that changing the time range resets current page to the first. @new-qan', async (I, qanPage, adminPage) => {
+  qanPage.paginationGoTo(2);
+  adminPage.applyTimeRange('Last 3 hours');
+  qanPage.waitForResponsePath(qanPage.requests.getReportPath);
+  await qanPage.verifySelectedPageIs(1);
+});
+
+Scenario('Open the QAN Dashboard and check that changing the time range updates the overview table and URL. @new-qan', async (I, qanPage, adminPage) => {
+  const TIME_RANGE_QUERY_PARAMS_BEFORE = 'from=now-12h&to=now';
+  const TIME_RANGE_QUERY_PARAMS_AFTER = 'from=now-3h&to=now';
+
+  I.amOnPage(`${qanPage.url}?${TIME_RANGE_QUERY_PARAMS_BEFORE}`);
+  qanPage.waitForQANPageLoaded();
+  I.seeInCurrentUrl(TIME_RANGE_QUERY_PARAMS_BEFORE);
+  adminPage.applyTimeRange('Last 3 hours');
+  qanPage.waitForResponsePath(qanPage.requests.getReportPath);
+  qanPage.waitForQANPageLoaded();
+  I.seeInCurrentUrl(TIME_RANGE_QUERY_PARAMS_AFTER);
+});
+
+Scenario('Open the QAN Dashboard and check that changing the time range doesn\'t clear "Group by". @new-qan', async (I, qanPage, adminPage) => {
+  qanPage.changeGroupBy('Client Host');
+  adminPage.applyTimeRange('Last 24 hours');
+  qanPage.verifyGroupByIs('Client Host');
+});
+
+Scenario('Open the QAN Dashboard and check that changing the time range doesn\'t reset sorting. @new-qan', async (I, qanPage, adminPage) => {
+  qanPage.changeSorting(3, 'up');
+  adminPage.applyTimeRange('Last 24 hours');
+  qanPage.verifySortingIs(3, 'up');
+});
+
+Scenario('Open the QAN Dashboard and check that sorting works correctly after sorting by another column. @new-qan', async (I, qanPage, adminPage) => {
+  qanPage.changeSorting(3, 'up');
+  qanPage.verifySortingIs(3, 'up');
+  qanPage.changeSorting(1, 'down');
+  qanPage.verifySortingIs(1, 'down');
+  qanPage.verifySortingIs(3, '');
+});
+
+Scenario('Open the QAN Dashboard and check that the data in the graph of the main metric is in chronological order. @new-qan', async (I, qanPage, adminPage) => {
+  const graphSelector = qanPage.mainMetricGraphLocator(1);
+  const dateValueBefore = await qanPage.getMainMetricGraphValue(graphSelector, 0);
+  const dateValueAfter = await qanPage.getMainMetricGraphValue(graphSelector, 100);
+  await qanPage.verifyChronologicalOrderDateTime(dateValueBefore, dateValueAfter);
 });
