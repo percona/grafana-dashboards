@@ -3,9 +3,9 @@ Feature('QAN Dashboard');
 Before(async (I, qanPage, adminPage) => {
   I.Authorize();
 
-  I.amOnPage(`${qanPage.url}?from=now-5m&to=now`);
-  // TODO: these two elements should be changed once new QAN is merged
+  I.amOnPage(qanPage.url);
   await I.waitForElement(qanPage.fields.iframe, 60);
+  adminPage.applyTimeRange('Last 5 minutes');
   await I.switchTo(qanPage.fields.iframe);
 });
 
@@ -26,7 +26,7 @@ Scenario(
 xScenario('Verify data in Table and Query Details', async (I, adminPage, qanPage) => {
   I.amOnPage(qanPage.url);
   await I.waitForElement(qanPage.fields.iframe, 60);
-  adminPage.applyTimer('5m');
+  adminPage.applyTimeRange('Last 5 minutes');
   await I.switchTo(qanPage.fields.iframe); // switch to first iframe
   I.wait(10);
   qanPage.applyFilter('ps');
@@ -56,15 +56,14 @@ xScenario(
   }
 );
 
-xScenario(
+Scenario(
   'Verify Tables tab in Query Details for Environment=pgsql-dev filter @not-pr-pipeline',
   async (I, adminPage, qanPage) => {
     const filterToApply = 'pgsql-dev';
     qanPage.waitForQANPageLoaded();
     await qanPage.expandAllFilter();
     qanPage.applyFilter(filterToApply);
-    qanPage.waitForQANPageLoaded();
-    await qanPage._selectDetails(2);
+    qanPage._selectDetails(2);
     qanPage.selectSectionInDetails(qanPage.fields.tablesTabInDetails);
     await qanPage.verifyDetailsSectionDataExists(qanPage.tabs.tablesTab);
   }
@@ -89,8 +88,7 @@ Scenario(
     qanPage.waitForQANPageLoaded();
     await qanPage.expandAllFilter();
     qanPage.applyFilter(filterToApply);
-    qanPage.waitForQANPageLoaded();
-    await qanPage._selectDetails(2);
+    qanPage._selectDetails(2);
     qanPage.selectSectionInDetails(qanPage.fields.explainTabInDetails);
     await qanPage.verifyDetailsSectionDataExists(qanPage.tabs.explainTab);
   }
