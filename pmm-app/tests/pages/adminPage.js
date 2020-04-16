@@ -42,11 +42,12 @@ module.exports = {
     return "(//div[contains(text(), '" + dashboardName + "')])[1]";
   },
 
-  applyTimer(timeDiff) {
+  applyTimeRange(timeRange = 'Last 5 minutes') {
+    const timeRangeSelector = `//div[contains(text(), '${timeRange}')]`;
+    I.waitForElement(this.fields.timePickerMenu, 30);
     I.click(this.fields.timePickerMenu);
-    I.waitForVisible("//div[contains(text(), 'Last 5 minutes')]", 30);
-    I.click("//div[contains(text(), 'Last 5 minutes')]");
-    I.wait(5);
+    I.waitForVisible(timeRangeSelector, 30);
+    I.click(timeRangeSelector);
   },
 
   viewMetric(metricName) {
