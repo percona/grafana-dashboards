@@ -250,3 +250,10 @@ Scenario('Open the QAN Dashboard and check that sorting works correctly after so
   qanPage.verifySortingIs(1, 'down');
   qanPage.verifySortingIs(3, '');
 });
+
+Scenario('Open the QAN Dashboard and check that the data in the graph of the main metric is in chronological order. @new-qan', async (I, qanPage, adminPage) => {
+  const graphSelector = qanPage.mainMetricGraphLocator(1);
+  const dateValueBefore = await qanPage.getMainMetricGraphValue(graphSelector, 0);
+  const dateValueAfter = await qanPage.getMainMetricGraphValue(graphSelector, 100);
+  await qanPage.verifyChronologicalOrderDateTime(dateValueBefore, dateValueAfter);
+});

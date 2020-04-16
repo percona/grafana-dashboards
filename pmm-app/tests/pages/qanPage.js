@@ -1,3 +1,4 @@
+const moment = require('moment');
 const I = actor();
 const assert = require('assert');
 module.exports = {
@@ -65,8 +66,13 @@ module.exports = {
   overviewMetricCellValueLocator(rowNumber, dataColumnNumber) {
     return `.ant-table-tbody tr:nth-child(${rowNumber}) td:nth-child(${dataColumnNumber + 2}) .summarize`;
   },
+
   overviewMetricSortingLocator(сolumnNumber) {
     return `th.ant-table-column-has-actions:nth-child(${сolumnNumber + 2}) div[title="Sort"]`;
+  },
+
+  mainMetricGraphLocator(rowNumber) {
+    return `.ant-table-tbody tr:nth-child(${rowNumber}) .d3-bar-chart-container`;
   },
 
   checkPagination() {
@@ -322,6 +328,22 @@ module.exports = {
     I.waitForElement(`//div[@class='overview-filters']//input[@type='checkbox']`, 30);
     const remainingFilters = await I.grabTextFrom(selectedFilters);
     console.log(remainingFilters);
+  },
+  async getMainMetricGraphValue(graphSelector, xInPercent) {
+    const axisSelector = `${graphSelector} .axis`;
+    I.waitForElement(axisSelector, 30);
+    I.scrollTo(axisSelector, xInPercent, 0 );
+    I.moveCursorTo(axisSelector, xInPercent, 0 );
+    const tooltipStringValue = await I.grabAttributeFrom(graphSelector, 'data-tooltip');
+    return tooltipStringValue.substr(-19, 19);
+  },
+  async getTimestamp(dateTime) {
+    return moment(dateTime).format('x');
+  },
+  async verifyChronologicalOrderDateTime(dateTimeBefore, dateTimeAfter) {
+    const timestampBefore = await this.getTimestamp(dateTimeBefore);
+    const timestampAfter = await this.getTimestamp(dateTimeAfter);
+    assert.equal(timestampAfter > timestampBefore, true);
   },
   resetAllFilters() {
     I.waitForElement(this.elements.resetAllButton, 30);
