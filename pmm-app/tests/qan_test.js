@@ -10,7 +10,7 @@ Before((I, loginPage, qanPage) => {
 xScenario('Open the QAN Dashboard and change groupBy', async (I, adminPage, qanPage) => {
   I.amOnPage(qanPage.url);
   qanPage.changeGroupBy('Database');
-  qanPage.groupByIs('Database');
+  qanPage.verifyGroupByIs('Database');
   // TODO: check changes in url
 });
 
@@ -234,19 +234,19 @@ Scenario('Open the QAN Dashboard and check that changing the time range updates 
 Scenario('Open the QAN Dashboard and check that changing the time range doesn\'t clear "Group by". @new-qan', async (I, qanPage, adminPage) => {
   qanPage.changeGroupBy('Client Host');
   adminPage.applyTimeRange('Last 24 hours');
-  qanPage.groupByIs('Client Host');
+  qanPage.verifyGroupByIs('Client Host');
 });
 
 Scenario('Open the QAN Dashboard and check that changing the time range doesn\'t reset sorting. @new-qan', async (I, qanPage, adminPage) => {
   qanPage.changeSorting(3, 'up');
   adminPage.applyTimeRange('Last 24 hours');
-  qanPage.checkSortingIs(3, 'up');
+  qanPage.verifySortingIs(3, 'up');
 });
 
 Scenario('Open the QAN Dashboard and check that sorting works correctly after sorting by another column. @new-qan', async (I, qanPage, adminPage) => {
   qanPage.changeSorting(3, 'up');
-  qanPage.checkSortingIs(3, 'up');
+  qanPage.verifySortingIs(3, 'up');
   qanPage.changeSorting(1, 'down');
-  qanPage.checkSortingIs(1, 'down');
-  qanPage.checkSortingIs(3, '');
+  qanPage.verifySortingIs(1, 'down');
+  qanPage.verifySortingIs(3, '');
 });

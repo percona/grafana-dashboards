@@ -258,7 +258,7 @@ module.exports = {
     I.forceClick(this.fields.groupBySelector);
     I.click(`//ul/li[@label='${groupBy}']`);
   },
-  groupByIs(groupBy) {
+  verifyGroupByIs(groupBy) {
     I.waitForElement(`[data-qa="group-by"] [title="${groupBy}"]`, 30);
     I.seeElement(`[data-qa="group-by"] [title="${groupBy}"]`);
   },
@@ -268,11 +268,12 @@ module.exports = {
     I.scrollTo(sortingBlockSelector);
     I.forceClick(sortingBlockSelector);
     if (sortDirection === 'up') {
+      I.wait(5);
       I.forceClick(sortingBlockSelector);
     }
     I.wait(5);
   },
-  checkSortingIs(columnNumber, sortDirection) {
+  verifySortingIs(columnNumber, sortDirection) {
     const sortingBlockSelector = this.overviewMetricSortingLocator(columnNumber);
     switch(sortDirection) {
       case 'up':
@@ -282,7 +283,6 @@ module.exports = {
         I.seeElement(`${sortingBlockSelector} i[aria-label="icon: caret-down"].on`);
         break;
       case '':
-        I.saveScreenshot('checkSorting.png');
         I.dontSeeElement(`${sortingBlockSelector} i[aria-label="icon: caret-up"].on`)
         I.dontSeeElement(`${sortingBlockSelector} i[aria-label="icon: caret-down"].on`);
         break;
