@@ -95,6 +95,7 @@ export const getDefaultColumns = (groupBy, pageNumber, pageSize, columns, onCell
 const FIXED_COLUMN_WIDTH = 120;
 export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy) => {
   const metric = METRIC_CATALOGUE[metricName];
+  const isTimeMetric = metricName.endsWith('_time');
   let sortOrder: boolean | string = false;
   if (orderBy === metricName) {
     sortOrder = 'ascend';
@@ -114,8 +115,10 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
       // @ts-ignore
       const tooltipData = [
         {
-          header: metricName.includes('_time') ? 'Per query' : 'Per sec',
-          value: Humanize.transform(statPerSec, 'number'),
+          header: isTimeMetric ? 'Per query' : 'Per sec',
+          value: isTimeMetric
+            ? Humanize.transform(stats.avg, 'time')
+            : Humanize.transform(statPerSec, 'number'),
           key: 'qps',
         },
         {
@@ -142,7 +145,6 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
 
       // @ts-ignore
       const polygonChartProps = {
-        // width: COLUMN_WIDTH * 1.2 - MAIN_METRIC_VALUE_WIDTH,
         data: item.sparkline,
         metricName: metricName,
       };
@@ -161,42 +163,48 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
           </div>
         );
       };
+      const isMetricExist =
+        (isTimeMetric && stats.avg !== undefined) || (!isTimeMetric && statPerSec !== undefined);
+      const MetricTooltip = () => {
+        return (
+          <div>
+            <div className={Styling.tooltipHeader}>{metric.humanizeName}</div>
+            <Divider style={{ background: '#363434', margin: '0' }} />
+            <MetricsList data={tooltipData} />
+            {latencyTooltipData.length ? (
+              <>
+                <Divider style={{ background: '#666666', margin: '0' }} />
+                {metricName === 'query_time' && (
+                  <LatencyChart {...{ data: stats }} className="latency-chart-container" />
+                )}
+                <MetricsList data={latencyTooltipData} />
+              </>
+            ) : null}
+          </div>
+        );
+      };
       return (
         <div className="overview-content-column">
-          {columnIndex === 0 && <PolygonChart {...polygonChartProps} />}
-          {statPerSec !== undefined ? (
-            <Tooltip
-              getPopupContainer={() => document.querySelector('#antd') || document.body}
-              placement="left"
-              overlayClassName="overview-column-toolkit"
-              title={
-                <div>
-                  <div className={Styling.tooltipHeader}>{metric.humanizeName}</div>
-                  <Divider style={{ background: '#363434', margin: '0' }} />
-                  <MetricsList data={tooltipData} />
-                  {latencyTooltipData.length ? (
-                    <>
-                      <Divider style={{ background: '#666666', margin: '0' }} />
-                      {metricName === 'query_time' && (
-                        <LatencyChart {...{ data: stats }} className="latency-chart-container" />
-                      )}
-                      <MetricsList data={latencyTooltipData} />
-                    </>
-                  ) : null}
-                </div>
-              }
-            >
-              <span className="summarize" style={{ marginLeft: 'auto', cursor: 'help' }}>
-                {statPerSec !== undefined
-                  ? `${Humanize.transform(statPerSec, 'number')} ${metric.units}`
-                  : 'N/A'}
+          <div style={{ marginRight: 'auto' }}>
+            {columnIndex === 0 && <PolygonChart {...polygonChartProps} />}
+          </div>
+          <Tooltip
+            getPopupContainer={() => document.querySelector('#antd') || document.body}
+            placement="left"
+            overlayClassName="overview-column-tooltip"
+            title={isMetricExist ? <MetricTooltip /> : null}
+          >
+            {isTimeMetric ? (
+              <span className="summarize" style={{ marginLeft: 'auto', cursor: isMetricExist ? 'help' : '' }}>
+                {isMetricExist ? `${Humanize.transform(stats.avg, 'time')}` : 'N/A'}
               </span>
-            </Tooltip>
-          ) : (
-            <span className="summarize" style={{ marginLeft: 'auto' }}>
-              N/A
-            </span>
-          )}
+            ) : null}
+            {!isTimeMetric ? (
+              <span className="summarize" style={{ marginLeft: 'auto', cursor: isMetricExist ? 'help' : '' }}>
+                {isMetricExist ? `${Humanize.transform(statPerSec, 'number')} ${metric.units}` : 'N/A'}
+              </span>
+            ) : null}
+          </Tooltip>
         </div>
       );
     },
