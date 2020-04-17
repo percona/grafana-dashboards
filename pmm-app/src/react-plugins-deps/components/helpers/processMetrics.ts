@@ -10,7 +10,7 @@ const getSparkline = (sparklines, metricName) => {
       point: sparkline.point,
       time_frame: sparkline.time_frame,
       timestamp: sparkline.timestamp,
-      metric: key ? sparkline[key] : '',
+      [key]: sparkline[key],
     };
   });
 };
