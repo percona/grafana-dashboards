@@ -192,16 +192,32 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
             getPopupContainer={() => document.querySelector('#antd') || document.body}
             placement="left"
             overlayClassName="overview-column-tooltip"
-            title={isMetricExist ? <MetricTooltip /> : null}
+            title={
+              (stats.avg && stats.avg !== 'NaN') || (statPerSec && statPerSec !== 'NaN') ? (
+                <MetricTooltip />
+              ) : null
+            }
           >
             {isTimeMetric ? (
-              <span className="summarize" style={{ marginLeft: 'auto', cursor: isMetricExist ? 'help' : '' }}>
-                {isMetricExist ? `${Humanize.transform(stats.avg, 'time')}` : 'N/A'}
+              <span
+                className="summarize"
+                style={{ marginLeft: 'auto', cursor: stats.avg && stats.avg !== 'NaN' ? 'help' : '' }}
+              >
+                {stats.avg === undefined ? `${Humanize.transform(Number.MIN_VALUE, 'time')}` : null}
+                {stats.avg === null || stats.avg === 'NaN' ? 'N/A' : null}
+                {stats.avg && stats.avg !== 'NaN' ? `${Humanize.transform(stats.avg, 'time')}` : null}
               </span>
             ) : null}
             {!isTimeMetric ? (
-              <span className="summarize" style={{ marginLeft: 'auto', cursor: isMetricExist ? 'help' : '' }}>
-                {isMetricExist ? `${Humanize.transform(statPerSec, 'number')} ${metric.units}` : 'N/A'}
+              <span
+                className="summarize"
+                style={{ marginLeft: 'auto', cursor: statPerSec && statPerSec !== 'NaN' ? 'help' : '' }}
+              >
+                {statPerSec === undefined
+                  ? `${Humanize.transform(Number.MIN_VALUE, 'time')} ${metric.units}`
+                  : null}
+                {statPerSec === null || statPerSec === 'NaN' ? 'N/A' : null}
+                {statPerSec && statPerSec !== 'NaN' ? `${Humanize.transform(statPerSec, 'time')}` : null}
               </span>
             ) : null}
           </Tooltip>
