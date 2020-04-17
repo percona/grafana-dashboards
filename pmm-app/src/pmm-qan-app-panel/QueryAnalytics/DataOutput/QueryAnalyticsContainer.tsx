@@ -45,15 +45,6 @@ const QueryAnalyticsContainer = () => {
     contextActions.changePageSize(pageSize);
   }, []);
 
-  useEffect(() => {
-    if (!querySelected) {
-      return;
-    }
-    const gutter = document.querySelector('.gutter') as HTMLElement;
-    if (gutter) {
-      gutter.style.display = '';
-    }
-  }, [querySelected]);
   // TODO: replace with something more elegant & fast
   const container = document.querySelector('#antd');
   const size = container && container.clientWidth;
@@ -80,32 +71,39 @@ const QueryAnalyticsContainer = () => {
           <ManageColumns onlyAdd={true} />
         </div>
       </div>
-      <Split
-        sizes={[70, 30]}
-        minSize={100}
-        direction="vertical"
-        cursor="row-resize"
-        className={Styling.splitterWrapper}
-        elementStyle={(dimension, size, gutterSize) => {
-          return {
-            height: `calc(${size}% - ${gutterSize}px)`,
-            'overflow-y': 'scroll',
-          };
-        }}
-        gutterStyle={() => {
-          return {
-            backgroundColor: '#626262',
-            cursor: 'ns-resize',
-            height: '10px',
-            display: querySelected ? '' : 'none',
-          };
-        }}
-      >
-        <div className="table-wrapper">
+
+      {!querySelected ? (
+        <div className="table-wrapper" style={{ minHeight: '600px' }}>
           <OverviewTable setTotal={setTotal} />
         </div>
-        {querySelected ? <QueryDetails /> : <div></div>}
-      </Split>
+      ) : (
+        <Split
+          sizes={[70, 30]}
+          minSize={100}
+          direction="vertical"
+          cursor="row-resize"
+          className={Styling.splitterWrapper}
+          elementStyle={(dimension, size, gutterSize) => {
+            return {
+              height: `calc(${size}% - ${gutterSize}px)`,
+              'overflow-y': 'scroll',
+            };
+          }}
+          gutterStyle={() => {
+            return {
+              backgroundColor: '#626262',
+              cursor: 'ns-resize',
+              height: '10px',
+              // display: querySelected ? '' : 'none',
+            };
+          }}
+        >
+          <div className="table-wrapper">
+            <OverviewTable setTotal={setTotal} />
+          </div>
+          <QueryDetails />
+        </Split>
+      )}
     </div>
   );
 };
