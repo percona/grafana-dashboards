@@ -1,6 +1,6 @@
 import OverviewTable from './Overview/OverviewTable';
 import QueryDetails from './Details/QueryDetails';
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import Split from 'react-split';
 import { StateContext } from '../StateContext';
 import { Pagination } from 'antd';
