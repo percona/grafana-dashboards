@@ -214,10 +214,12 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
                 style={{ marginLeft: 'auto', cursor: statPerSec && statPerSec !== 'NaN' ? 'help' : '' }}
               >
                 {statPerSec === undefined
-                  ? `${Humanize.transform(Number.MIN_VALUE, 'time')} ${metric.units}`
+                  ? `${Humanize.transform(Number.MIN_VALUE, 'number')} ${metric.units}`
                   : null}
                 {statPerSec === null || statPerSec === 'NaN' ? 'N/A' : null}
-                {statPerSec && statPerSec !== 'NaN' ? `${Humanize.transform(statPerSec, 'time')}` : null}
+                {statPerSec && statPerSec !== 'NaN'
+                  ? `${Humanize.transform(statPerSec, 'number')} ${metric.units}`
+                  : null}
               </span>
             ) : null}
           </Tooltip>
