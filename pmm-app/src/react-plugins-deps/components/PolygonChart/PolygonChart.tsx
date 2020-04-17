@@ -15,18 +15,24 @@ interface PolygonChartInterface {
   metricName?: any;
 }
 
-const Chart = ({
-  appLoadPolygonChart,
-  margin,
-  height,
-  width,
-  metricName,
-  ykey,
-  xkey,
-  data,
-}: PolygonChartInterface) => {
-  xkey = 'timestamp';
-  ykey = ykey || 'load';
+const getMetricSparklineKey = metricName => {
+  switch (metricName) {
+    case 'load':
+      return 'load';
+    case 'num_queries':
+      return 'num_queries_per_sec';
+    case 'num_queries_with_warnings':
+      return 'num_queries_with_warnings_per_sec';
+    case 'num_queries_with_errors':
+      return 'num_queries_with_errors_per_sec';
+    default:
+      return `m_${metricName}_sum_per_sec`;
+  }
+};
+
+const Chart = ({ appLoadPolygonChart, margin, height, width, metricName, data }: PolygonChartInterface) => {
+  const xkey = 'timestamp';
+  const ykey = getMetricSparklineKey(metricName);
   margin = 0;
   width = width || 300;
   height = height || 30;
