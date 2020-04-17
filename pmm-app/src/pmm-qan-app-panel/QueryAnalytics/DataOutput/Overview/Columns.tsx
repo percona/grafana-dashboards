@@ -163,8 +163,7 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
           </div>
         );
       };
-      const isMetricExist =
-        (isTimeMetric && stats.avg !== undefined) || (!isTimeMetric && statPerSec !== undefined);
+
       const MetricTooltip = () => {
         return (
           <div>
