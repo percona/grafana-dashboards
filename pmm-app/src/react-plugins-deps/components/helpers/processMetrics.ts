@@ -5,7 +5,7 @@ const getPercentOfTotal = (current, total) => {
 
 const getSparkline = (sparklines, metricName) => {
   return sparklines.map(sparkline => {
-    const key = Object.keys(sparkline).find(sparklineKey => sparklineKey.includes(metricName));
+    const key = Object.keys(sparkline).find(sparklineKey => sparklineKey.includes(metricName)) as string;
     return {
       point: sparkline.point,
       time_frame: sparkline.time_frame,
