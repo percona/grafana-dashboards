@@ -72,7 +72,7 @@ const ManageColumns = props => {
           >
             {menu}
             <Divider style={{ margin: '4px 0' }} />
-            {!props.onlyAdd && (
+            {!props.onlyAdd && columns.length > 1 && (
               <div
                 style={{ padding: '4px 8px', cursor: 'pointer' }}
                 onMouseDown={e => e.preventDefault()}
