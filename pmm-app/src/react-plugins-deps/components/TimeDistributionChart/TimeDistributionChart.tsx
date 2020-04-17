@@ -57,7 +57,7 @@ const TimeDistributionChart = ({ data }) => {
 
   if (currentPercent < PERCENT_COUNT || timeMetrics.length === 0) {
     normalizedTimeMetrics.push({
-      name: 'Unknown',
+      name: 'Other',
       value: currentPercent,
       description: Humanize.transform(currentPercent / PERCENT_COUNT, 'percent'),
       color: 'gray',
