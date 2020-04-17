@@ -243,8 +243,9 @@ export const UrlParametersProvider = ({ grafanaProps, children }) => {
 
   useEffect(() => {
     const newState = { ...panelState, from, to, rawTime, pageNumber: 1 };
-    delete newState.queryId;
-    delete newState.querySelected;
+    // TODO: fix query deletion after reload
+    // delete newState.queryId;
+    // delete newState.querySelected;
     setContext(newState);
   }, [from, to]);
 
