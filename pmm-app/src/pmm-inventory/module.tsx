@@ -1,4 +1,4 @@
-import { PanelPlugin } from '@grafana/ui';
+import { PanelPlugin } from '@grafana/data';
 import '../react-plugins-deps/styles.scss';
 import '../react-plugins-deps/style.less';
 import './panel.scss';

@@ -1,12 +1,14 @@
+import React from 'react';
+import { Table } from 'antd';
+import { render, unmountComponentAtNode } from 'react-dom';
+import { act } from 'react-test-renderer';
 import { InventoryDataService } from './DataService';
 import { agentsColumns, nodesColumns, servicesColumns } from './panel';
-import { Table } from 'antd';
-import React from 'react';
-import renderer, { act } from 'react-test-renderer';
-import { render, unmountComponentAtNode } from 'react-dom';
+
 jest.mock('../react-plugins-deps/components/helpers/notification-manager', () => () => ({
   showErrorNotification: () => {},
 }));
+
 describe('Inventory tables', () => {
   let container = null;
   beforeEach(() => {
@@ -62,6 +64,7 @@ describe('Inventory tables', () => {
       render(
         <Table
           dataSource={InventoryDataService.generateStructure(response)}
+          rowKey={rec => rec[rec.key]}
           columns={agentsColumns}
           pagination={false}
           bordered={true}
