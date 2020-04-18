@@ -3,7 +3,17 @@ const I = actor();
 const assert = require('assert');
 module.exports = {
   url: 'graph/d/pmm-qan/pmm-query-analytics',
-  filterGroups: ['Environment', 'Cluster', 'Replication Set', 'Database', 'Node Name', 'Service Name', 'User Name', 'Node Type', 'Service Type'],
+  filterGroups: [
+    'Environment',
+    'Cluster',
+    'Replication Set',
+    'Database',
+    'Node Name',
+    'Service Name',
+    'User Name',
+    'Node Type',
+    'Service Type',
+  ],
   tableHeader: ['Query', 'Load', 'Query Count', 'Query Time'],
   tabs: {
     tablesTab: ["//div[@class='card-body']//pre", "//button[@id='copyQueryExample']"],
@@ -55,13 +65,6 @@ module.exports = {
     getReportPath: '/v0/qan/GetReport',
     getFiltersPath: '/v0/qan/Filters/Get',
   },
-  filterGroupLocator(filterName) {
-    return "//div[@class='filter-group__title']//span[contains(text(), '" + filterName + "')]";
-  },
-
-  tableHeaderLocator(tableHeader) {
-    return "//ng-select//span[contains(@class, 'ng-value-label') and contains(text(), '" + tableHeader + "')]";
-  },
 
   overviewMetricCellValueLocator(rowNumber, dataColumnNumber) {
     return `.ant-table-tbody tr:nth-child(${rowNumber}) td:nth-child(${dataColumnNumber + 2}) .summarize`;
@@ -73,90 +76,6 @@ module.exports = {
 
   mainMetricGraphLocator(rowNumber) {
     return `.ant-table-tbody tr:nth-child(${rowNumber}) .d3-bar-chart-container`;
-  },
-
-  checkPagination() {
-    I.waitForElement(this.fields.nextPageNavigation, 30);
-    I.click(this.fields.nextPageNavigation);
-    this.waitForQANPageLoaded();
-    I.waitForVisible(this.fields.nextPageNavigation, 30);
-    this._selectDetails(2);
-    I.seeElement(this.fields.nextPageNavigation);
-    I.click(this.fields.previousPageNavigation);
-    I.waitForVisible(this.fields.previousPageNavigation, 30);
-  },
-
-  checkServerList() {
-    I.click('//table//tr//th[2]//ng-select/div');
-    I.waitForElement("//table//tr//th[2]//ng-dropdown-panel//div//span[contains(text(), 'Server')]");
-    I.click("//table//tr//th[2]//ng-dropdown-panel//div//span[contains(text(), 'Server')]");
-    I.wait(5);
-    for (let i = 0; i < this.serverList.length; i++) {
-      I.seeElement("//table/tr/td[2]//span[contains(text(), '" + this.serverList[i] + "')]");
-    }
-  },
-
-  checkTableHeaders() {
-    for (let i = 0; i < this.tableHeader.length; i++) {
-      I.seeElement(this.tableHeaderLocator(this.tableHeader[i]));
-    }
-  },
-
-  async checkSparkLines() {
-    I.seeNumberOfVisibleElements('//table//tr//app-qan-table-cell[1]//div[1]//div[1]', 11);
-    // await I.screenshotElement("(//table//tr//app-qan-table-cell[1]//div[1]//div[1])[1]", "sparkline_qan");
-    // I.seeVisualDiff("sparkline_qan.png", {tolerance: 50, prepareBaseImage: true});
-    // for (let i = 0; i < 11; i++) {
-    //     await I.screenshotElement("(//table//tr//app-qan-table-cell[1]//div[1]//div[1])[" + (i+1) +"]", "sparkline_qan");
-    //     I.seeVisualDiff("sparkline_qan.png", {tolerance: 50, prepareBaseImage: false});
-    // }
-  },
-
-  checkFilterGroups() {
-    I.waitForVisible(this.filterGroupLocator(this.filterGroups[8]), 30);
-    for (let i = 0; i < this.filterGroups.length; i++) {
-      I.seeElement(this.filterGroupLocator(this.filterGroups[i]));
-    }
-  },
-
-  async changeResultsPerPage(count) {
-    let numOfElements = await I.grabNumberOfVisibleElements(this.fields.resultsPerPageDropDown);
-    if ((numOfElements = 0)) {
-      for (var i = 0; i < 5; i++) {
-        I.pressKey('PageDown');
-        I.wait(2);
-      }
-    }
-    I.waitForVisible(this.fields.resultsPerPageDropDown, 30);
-    I.click(this.fields.resultsPerPageDropDown);
-    I.waitForVisible("//ng-select//span[contains(text(), '" + count + "')]", 30);
-    I.click("//ng-select//span[contains(text(), '" + count + "')]");
-    this.waitForQANPageLoaded();
-  },
-
-  applyFilter(filterValue) {
-    let filterLocator =
-      "//section[@class='aside__filter-group']//span[contains(text(), '" + filterValue + "')]/../span[@class='checkbox-container__checkmark']";
-    I.waitForElement(filterLocator, 30);
-    I.click(filterLocator);
-    I.waitForVisible(this.fields.table, 30);
-  },
-
-  async _getData(row, column) {
-    let percentage = await I.grabTextFrom(
-      "//table//tr[@ng-reflect-router-link='details/," + (row - 1) + "']//app-qan-table-cell[" + column + ']//div[1]//div[3]'
-    );
-    let value = await I.grabTextFrom(
-      "//table//tr[@ng-reflect-router-link='details/," + (row - 1) + "']//app-qan-table-cell[" + column + ']//div[1]//div[2]'
-    );
-
-    return { percentage: percentage, val: value };
-  },
-
-  async getDetailsData(row) {
-    let percentage = await I.grabTextFrom('//app-details-table//app-details-row[' + row + ']//div[3]//span[2]');
-    let value = await I.grabTextFrom('//app-details-table//app-details-row[' + row + ']//div[3]//span[1]');
-    return { percentage: percentage, val: value };
   },
 
   waitForQANPageLoaded() {
@@ -171,68 +90,6 @@ module.exports = {
     }, 10);
   },
 
-  _selectDetails(row) {
-    I.click('//table/tr[' + (row + 1) + ']//td[2]');
-    this.waitForDetailsSection();
-  },
-
-  selectSectionInDetails(section) {
-    I.waitForElement(section, 30);
-    I.click(section);
-  },
-
-  waitForTabContentsLoaded(tabElements) {
-    for (let i in tabElements) {
-      I.waitForVisible(tabElements[i], 30);
-    }
-  },
-
-  waitForDetailsSection() {
-    I.waitForVisible(this.fields.detailsTable, 30);
-  },
-
-  async verifyDetailsSectionDataExists(tabElements) {
-    this.waitForTabContentsLoaded(tabElements);
-    let detailsText = await I.grabTextFrom(tabElements[0]);
-    assert.equal(detailsText.length > 0, true, `Empty Section in Details`);
-  },
-
-  async verifyDataSet(row) {
-    var queryCountData = await this._getData(row, 2);
-    console.log('Query Count Data values ' + queryCountData.percentage + ' & ' + queryCountData.val);
-    var queryTimeData = await this._getData(row, 3);
-    console.log('Query Time Data values ' + queryTimeData.percentage + ' & ' + queryTimeData.val);
-    this._selectDetails(row);
-    var detailsQueryCountData = await this.getDetailsData(1);
-    console.log('Query Count Details Values ' + detailsQueryCountData.percentage + ' & ' + detailsQueryCountData.val);
-    if (row === 1) {
-      var detailsQueryTimeData = await this.getDetailsData(3);
-      console.log('Query Count Details Values ' + detailsQueryCountData.percentage + ' & ' + detailsQueryCountData.val);
-    } else {
-      var detailsQueryTimeData = await this.getDetailsData(2);
-      console.log('Query Count Details Values ' + detailsQueryCountData.percentage + ' & ' + detailsQueryCountData.val);
-    }
-    assert.equal(
-      detailsQueryCountData.percentage.indexOf(queryCountData.percentage) > -1,
-      true,
-      "Details Query Count Percentage Doesn't Match expected " + detailsQueryCountData.percentage + ' to contain ' + queryCountData.percentage
-    );
-    assert.equal(
-      detailsQueryCountData.val.indexOf(queryCountData.val) > -1,
-      true,
-      "Details Query Count Value Doesn't Match expected " + detailsQueryCountData.val + ' to contain ' + queryCountData.val
-    );
-    assert.equal(
-      detailsQueryTimeData.percentage.indexOf(queryTimeData.percentage) > -1,
-      true,
-      "Details Query Time Percentage Doesn't Match expected " + detailsQueryTimeData.percentage + ' to contain ' + queryTimeData.percentage
-    );
-    assert.equal(
-      detailsQueryTimeData.val.indexOf(queryTimeData.val) > -1,
-      true,
-      "Details Query Time value Doesn't Match expected " + detailsQueryTimeData.val + ' to contain ' + queryTimeData.val
-    );
-  },
   async verifyFiltersSectionIsPresent() {
     I.waitForElement(this.fields.filterCheckboxSelector, 30);
     I.seeElement(this.fields.filterCheckboxSelector);
@@ -241,7 +98,7 @@ module.exports = {
     I.click(this.fields.addColumnSelector);
     I.dontSeeElement(`//ul/li[@label='${columnName}']`);
   },
-  async verifySelectedPageIs (pageNumber) {
+  async verifySelectedPageIs(pageNumber) {
     I.seeElement(`.ant-pagination-item-active[title="${pageNumber}"]`);
   },
   async verifyMetricsMatch(rowNumber, dataColumnNumber) {
@@ -250,16 +107,10 @@ module.exports = {
     this.showTooltip(rowNumber, dataColumnNumber);
     let qpsMetricValue = await I.grabTextFrom(cellSelector);
     let qpsTooltipValue = await I.grabTextFrom(this.qpsTooltipValueSelector);
-    assert.equal(qpsMetricValue.replace(/[^0-9.]/g,""), qpsTooltipValue.replace(/[^0-9.]/g,""));
+    assert.equal(qpsMetricValue.replace(/[^0-9.]/g, ''), qpsTooltipValue.replace(/[^0-9.]/g, ''));
   },
-  async clearFilters() {
-    let numOfElements = await I.grabNumberOfVisibleElements(this.fields.filterSelection);
-    for (let i = 1; i <= numOfElements; i++) {
-      I.click(this.fields.filterSelection + '[' + i + ']');
-      I.waitForInvisible(this.fields.detailsTable, 30);
-    }
-  },
-  changeGroupBy(groupBy= 'Client Host') {
+
+  changeGroupBy(groupBy = 'Client Host') {
     I.waitForElement(this.fields.groupBySelector, 30);
     I.forceClick(this.fields.groupBySelector);
     I.click(`//ul/li[@label='${groupBy}']`);
@@ -281,7 +132,7 @@ module.exports = {
   },
   verifySortingIs(columnNumber, sortDirection) {
     const sortingBlockSelector = this.overviewMetricSortingLocator(columnNumber);
-    switch(sortDirection) {
+    switch (sortDirection) {
       case 'up':
         I.seeElement(`${sortingBlockSelector} i[aria-label="icon: caret-up"].on`);
         break;
@@ -289,7 +140,7 @@ module.exports = {
         I.seeElement(`${sortingBlockSelector} i[aria-label="icon: caret-down"].on`);
         break;
       case '':
-        I.dontSeeElement(`${sortingBlockSelector} i[aria-label="icon: caret-up"].on`)
+        I.dontSeeElement(`${sortingBlockSelector} i[aria-label="icon: caret-up"].on`);
         I.dontSeeElement(`${sortingBlockSelector} i[aria-label="icon: caret-down"].on`);
         break;
     }
@@ -320,7 +171,11 @@ module.exports = {
   },
   async checkFiltersMatchSearch(searchString) {
     const remainingFilters = await I.grabTextFrom('.checkbox-container__label-text');
-    assert.equal(remainingFilters.every(filter => filter.includes(searchString)), true, `Remain only correct filters`);
+    assert.equal(
+      remainingFilters.every(filter => filter.includes(searchString)),
+      true,
+      `Remain only correct filters`
+    );
   },
 
   async getSelectedFilters() {
@@ -332,8 +187,8 @@ module.exports = {
   async getMainMetricGraphValue(graphSelector, xInPercent) {
     const axisSelector = `${graphSelector} .axis`;
     I.waitForElement(axisSelector, 30);
-    I.scrollTo(axisSelector, xInPercent, 0 );
-    I.moveCursorTo(axisSelector, xInPercent, 0 );
+    I.scrollTo(axisSelector, xInPercent, 0);
+    I.moveCursorTo(axisSelector, xInPercent, 0);
     const tooltipStringValue = await I.grabAttributeFrom(graphSelector, 'data-tooltip');
     return tooltipStringValue.substr(-19, 19);
   },
@@ -369,7 +224,7 @@ module.exports = {
     I.waitForElement(rowSelector, 30);
     I.click(rowSelector);
   },
-  paginationGoTo(pageNumber){
+  paginationGoTo(pageNumber) {
     const pageSelector = `.ant-pagination-item[title = '${pageNumber}']`;
     I.waitForElement(pageSelector, 30);
     I.click(pageSelector);
@@ -383,8 +238,8 @@ module.exports = {
     I.seeElement(this.elements.metricTooltip);
   },
   selectDetailsTab(tabName) {
-    const tabSelector = `//div[@role='tab']/span[text()='${tabName}']`
+    const tabSelector = `//div[@role='tab']/span[text()='${tabName}']`;
     I.waitForElement(tabSelector, 30);
     I.click(tabSelector);
-  }
+  },
 };
