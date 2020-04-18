@@ -57,7 +57,9 @@ export const servicesColumns = [
       const labels = Object.keys(element).filter(label => !mainColumns.includes(label));
       return (
         <div className="other-details-wrapper">
-          {labels.map(label => (element[label] ? <span>{`${label}: ${element[label]}`}</span> : null))}
+          {labels.map((label, key) =>
+            element[label] ? <span key={key}>{`${label}: ${element[label]}`}</span> : null
+          )}
           {element.custom_labels && getCustomLabels(element.custom_labels)}
         </div>
       );
@@ -84,7 +86,9 @@ export const agentsColumns = [
       const labels = Object.keys(element).filter(label => !mainColumns.includes(label));
       return (
         <div className="other-details-wrapper">
-          {labels.map(label => (element[label] ? <span>{`${label}: ${element[label]}`}</span> : null))}
+          {labels.map((label, key) =>
+            element[label] ? <span key={key}>{`${label}: ${element[label]}`}</span> : null
+          )}
           {element.username ? <span>password: ******</span> : null}
           {/* TODO: know more about isString*/}
           {element.service_ids && element.service_ids.length ? (
@@ -128,7 +132,9 @@ export const nodesColumns = [
       const labels = Object.keys(element).filter(label => !mainColumns.includes(label));
       return (
         <div className="other-details-wrapper">
-          {labels.map(label => (element[label] ? <span>{`${label}: ${element[label]}`}</span> : null))}
+          {labels.map((label, key) =>
+            element[label] ? <span key={key}>{`${label}: ${element[label]}`}</span> : null
+          )}
           {element.custom_labels && getCustomLabels(element.custom_labels)}
         </div>
       );

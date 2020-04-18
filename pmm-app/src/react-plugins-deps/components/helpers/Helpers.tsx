@@ -18,9 +18,9 @@ export const PluginTooltip = ({ text, links }: PluginTooltipInterface) => {
       title={
         <>
           {text} <br />
-          {links.map(link => {
+          {links.map((link, key) => {
             return (
-              <>
+              <div key={key}>
                 <a
                   style={{ color: 'white', textDecoration: 'underline' }}
                   href={link.url || ''}
@@ -30,7 +30,7 @@ export const PluginTooltip = ({ text, links }: PluginTooltipInterface) => {
                   {link.text || 'Read more'}
                 </a>
                 <br />
-              </>
+              </div>
             );
           })}
         </>

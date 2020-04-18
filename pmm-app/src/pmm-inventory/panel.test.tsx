@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table } from 'antd';
 import { render, unmountComponentAtNode } from 'react-dom';
-import { act } from 'react-test-renderer';
+import { act } from 'react-dom/test-utils';
 import { InventoryDataService } from './DataService';
 import { agentsColumns, nodesColumns, servicesColumns } from './panel';
 
