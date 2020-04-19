@@ -30,7 +30,7 @@ export class CheckPanel extends PureComponent<Props> {
       >
         <div className={styles.PanelWrapper}>
           <div className={styles.TitleBar}>
-            <div className={styles.Title}>{title ? title : 'Failed Checks'}</div>
+            <div className={styles.Title}>{title || 'Failed Checks'}</div>
             <div className={styles.LastRun}>
               <span className={styles.Clickable}>Last run: 2 hours ago</span>
             </div>

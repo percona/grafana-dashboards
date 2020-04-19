@@ -16,6 +16,7 @@ export const columns: Column[] = [
     dataIndex: 'failed',
     key: 'failed',
     render: Failed,
+    width: 200,
   },
   {
     title: 'Details',

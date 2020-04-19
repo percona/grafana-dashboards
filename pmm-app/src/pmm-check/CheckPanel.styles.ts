@@ -6,7 +6,7 @@ export const PanelWrapper = css`
 
 export const TitleBar = css`
   display: flex;
-  padding: 0.5em 1em;
+  padding: 0.5em;
   align-items: baseline;
 `;
 
