@@ -1,22 +1,13 @@
 import React from 'react';
-import { css } from 'emotion';
 import cx from 'classnames';
-
-const List = css`
-  list-style-type: none;
-`;
-
-const Disk = css`
-  font-size: 1em;
-  padding-right: 0.5em;
-`;
+import * as styles from './Details.styles';
 
 export const Details = (details: string[]) => {
   return (
-    <ul className={cx('bullet-list', List)}>
+    <ul className={cx('bullet-list', styles.List)}>
       {details.map(detail => (
         <li key={detail}>
-          <span className={Disk}>&#8858;</span>
+          <span className={styles.Disk}>&#8858;</span>
           {detail}
         </li>
       ))}
