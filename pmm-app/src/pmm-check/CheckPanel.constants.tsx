@@ -1,8 +1,8 @@
+import { Details, Failed } from './components';
 import { SimpleOptions, Column } from './types';
 
 export const defaults: SimpleOptions = {
-  text: 'The default text!',
-  count: 5,
+  title: 'Failed Checks',
 };
 
 export const columns: Column[] = [
@@ -15,11 +15,13 @@ export const columns: Column[] = [
     title: 'No of Failed Checks',
     dataIndex: 'failed',
     key: 'failed',
+    render: Failed,
   },
   {
     title: 'Details',
     dataIndex: 'details',
     key: 'details',
+    render: Details,
   },
 ];
 
