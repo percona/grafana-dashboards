@@ -12,13 +12,15 @@ const THEME_JSON_VIEW = {
   base06: '#bfbfbf',
   base07: '#bfbfbf',
   base08: '#bfbfbf',
-  base09: 'white',
+  base09: '#c2a5cf',
   base0A: 'white',
-  base0B: 'white',
+  base0B: '#bc6630',
   base0C: 'white',
   base0D: 'white',
   base0E: 'white',
   base0F: 'white',
 };
 
-export const ReactJSON = ({ json = {} }) => <ReactJson src={json} theme={THEME_JSON_VIEW} />;
+export const ReactJSON = ({ json = {} }) => (
+  <ReactJson src={json} theme={THEME_JSON_VIEW} displayDataTypes={false} />
+);
