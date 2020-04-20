@@ -5,7 +5,7 @@ Before((I, qanPage) => {
   I.amOnPage(qanPage.url);
 });
 
-Scenario(
+xScenario(
   'Open the QAN Dashboard and check that changing the time range clears the selected row. @new-qan',
   async (I, qanPage, adminPage) => {
     I.waitForElement(qanPage.elements.tableRowSelector, 30);
