@@ -5,7 +5,7 @@ import * as styles from './Failed.styles';
 
 interface TooltipTextProps {
   sum: number;
-  data: number[];
+  data: [number, number, number];
 }
 
 const TooltipText: FC<TooltipTextProps> = ({ sum, data }) => {
@@ -26,7 +26,7 @@ const TooltipText: FC<TooltipTextProps> = ({ sum, data }) => {
   );
 };
 
-export const Failed = (failed: number[]) => {
+export const Failed = (failed: [number, number, number]) => {
   const sum = failed.reduce((acc, val) => acc + val, 0);
   return (
     <div>
