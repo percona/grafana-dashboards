@@ -26,7 +26,7 @@ xScenario(
   'PMM-T125 Verify user is able to Show only selected filter values and Show All filter values @new-qan ',
   async (I, adminPage, qanPage) => {}
 );
-Scenario('PMM-T126 Open the QAN Dashboard and check work of button "reset all" @new-qan', async (I, qanPage) => {
+xScenario('PMM-T126 Open the QAN Dashboard and check work of button "reset all" @new-qan', async (I, qanPage) => {
   qanPage.selectFilter(qanPage.fields.filterCheckboxSelector);
   qanPage.resetAllFilters();
   I.dontSeeCheckboxIsChecked(qanPage.fields.filterCheckboxSelector);
