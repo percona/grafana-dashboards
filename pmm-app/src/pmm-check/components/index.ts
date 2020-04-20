@@ -1,2 +1,2 @@
-export { Details } from './Details';
-export { Failed } from './Failed';
+export { Details } from './Details/Details';
+export { Failed } from './Failed/Failed';

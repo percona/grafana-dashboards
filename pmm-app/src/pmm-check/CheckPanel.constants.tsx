@@ -1,11 +1,19 @@
 import { Details, Failed } from './components';
-import { SimpleOptions, Column } from './types';
+import { SimpleOptions, Column, SeverityMap } from './types';
 
-export const defaults: SimpleOptions = {
+export const BASER_URL = '/alertmanager/api/v2';
+
+export const DEFAULTS: SimpleOptions = {
   title: 'Failed Checks',
 };
 
-export const columns: Column[] = [
+export const SEVERITY: SeverityMap = {
+  error: 'Critical',
+  warning: 'Major',
+  info: 'Trivial',
+};
+
+export const COLUMNS: Column[] = [
   {
     title: 'Service name',
     dataIndex: 'name',
@@ -26,7 +34,7 @@ export const columns: Column[] = [
   },
 ];
 
-export const dataSource = [
+export const DATA_SOURCE = [
   {
     key: '1',
     name: 'sandbox-mysql.acme.com',

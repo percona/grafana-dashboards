@@ -9,3 +9,11 @@ export interface Column {
   render?: (text: any, record: Record<string, any>) => React.ReactNode;
   width?: number;
 }
+
+export enum Severity {
+  error = 'error',
+  warning = 'warning',
+  info = 'info',
+}
+
+export type SeverityMap = Record<Severity, string>;

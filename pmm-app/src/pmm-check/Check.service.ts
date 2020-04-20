@@ -1,10 +1,13 @@
 import { apiRequest } from '../react-plugins-deps/components/helpers/api';
+import { BASER_URL } from './CheckPanel.constants';
+
+const makeApiUrl: (segment: string) => string = segment => `${BASER_URL}/${segment}`;
 
 /**
- * Just a service-like object to store the API methods
+ * A service-like object to store the API methods
  */
 export const CheckService = {
-  async getAlerts() {
-    return apiRequest.post<any, any>('/v1/Settings/Get', {});
+  async getActiveAlerts() {
+    return apiRequest.get<string, any>(makeApiUrl('alerts'), { params: { filter: 'node_name=pmm-server' } });
   },
 };
