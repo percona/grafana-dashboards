@@ -56,6 +56,8 @@ These dashboards are also a part of [Percona Monitoring and Management](https://
 
 Live demo is available at https://pmmdemo.percona.com/graph/
 
+We're looking forward to the new contributors. Detailed information in [CONTRIBUTING.md](CONTRIBUTING.md)
+
 ### Setup instructions
 
 #### Add datasource in Grafana
