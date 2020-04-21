@@ -15,3 +15,7 @@ Note: the queries below should be run inside of a PMM Server docker container.
 - Query only active alerts: `curl -u admin:admin http://127.0.0.1/alertmanager/api/v2/alerts?active=true`
 
 - Query alerts with a specific filter: `curl -u admin:admin http://127.0.0.1/alertmanager/api/v2/alerts?filter='node_name=pmm-server'`
+
+## Test quirks
+
+Occasionally, the tests may fail due to an unknown reason related to jest cache. The workaround would be to clean the cache by running `npx jest --clearCache`.

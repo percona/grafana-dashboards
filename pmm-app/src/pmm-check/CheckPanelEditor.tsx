@@ -13,9 +13,9 @@ export class CheckPanelEditor extends PureComponent<PanelEditorProps<SimpleOptio
 
     return (
       <div className="section gf-form-group">
-        <h5 className="section-heading">Display</h5>
+        <h5 className="section-heading">Panel Options</h5>
         <FormField
-          label="Text"
+          label="Title"
           labelWidth={5}
           inputWidth={20}
           type="text"

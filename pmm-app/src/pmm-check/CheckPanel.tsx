@@ -1,20 +1,41 @@
 import React, { PureComponent } from 'react';
-import { Table } from 'antd';
+import { Table, Button } from 'antd';
 import { PanelProps } from '@grafana/data';
-import { SimpleOptions } from './types';
+import { SimpleOptions, ActiveCheck } from './types';
 import { CheckService } from './Check.service';
-import { COLUMNS, DATA_SOURCE } from './CheckPanel.constants';
+import { COLUMNS } from './CheckPanel.constants';
 import * as styles from './CheckPanel.styles';
 import '../react-plugins-deps/styles.scss';
 import '../react-plugins-deps/style.less';
 import './CheckPanel.scss';
 
-interface Props extends PanelProps<SimpleOptions> {}
+interface CheckPanelProps extends PanelProps<SimpleOptions> {}
 
-export class CheckPanel extends PureComponent<Props> {
-  async componentDidMount() {
-    const result = await CheckService.getActiveAlerts();
-    console.log(result);
+interface CheckPanelState {
+  dataSource?: ActiveCheck[];
+  loading: boolean;
+}
+
+export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> {
+  state = {
+    dataSource: undefined,
+    loading: false,
+  };
+
+  componentDidMount() {
+    this.fetchAlerts();
+  }
+
+  async fetchAlerts() {
+    this.setState({ loading: true });
+    try {
+      const dataSource = await CheckService.getActiveAlerts();
+      this.setState({ dataSource });
+    } catch (err) {
+      console.error(err);
+    } finally {
+      this.setState({ loading: false });
+    }
   }
 
   render() {
@@ -38,10 +59,10 @@ export class CheckPanel extends PureComponent<Props> {
           <div className={styles.TitleBar}>
             <div className={styles.Title}>{title || 'Failed Checks'}</div>
             <div className={styles.LastRun}>
-              <span className={styles.Clickable}>Last run: 2 hours ago</span>
+              <Button onClick={() => this.fetchAlerts()}>Refresh</Button>
             </div>
           </div>
-          <Table dataSource={DATA_SOURCE} columns={COLUMNS} size="middle" pagination={false} bordered />
+          <Table {...this.state} columns={COLUMNS} size="middle" pagination={false} bordered />
         </div>
       </div>
     );
