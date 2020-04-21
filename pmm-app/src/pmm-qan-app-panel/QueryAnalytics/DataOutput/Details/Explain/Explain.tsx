@@ -35,12 +35,14 @@ const Explain = ({ json, classic }) => {
     const headerList = header
       .split('|')
       .map(e => e.trim())
+      .filter(Boolean)
       .map((title, index) => ({ title: title, key: title, dataIndex: title }));
 
     const rowsList = data.map(item =>
       item
         .split('|')
         .map(e => e.trim())
+        .filter(Boolean)
         .reduce((acc, item, index) => {
           acc[headerList[index].title] = item;
           return acc;
