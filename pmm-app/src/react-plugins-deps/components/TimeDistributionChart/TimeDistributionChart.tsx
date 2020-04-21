@@ -43,7 +43,6 @@ const TimeDistributionChart = ({ data }) => {
       } = metric;
 
       const percentage = sum / (totalValue / PERCENT_COUNT);
-      totalValue = totalValue - metricName;
       const value = Math.max(percentage, 1);
       currentPercent -= percentage;
       return {
