@@ -5,7 +5,7 @@ import Diagnostics from './Parts/Diagnostics/Diagnostics';
 import SettingsPart from './Parts/Settings/Settings';
 import AlertManager from './Parts/AlertManager/AlertManager';
 import SettingsService from './Settings.service';
-import { Form as FormFinal } from 'react-final-form';
+import { Form } from 'react-final-form';
 import Styling from '../react-plugins-deps/components/helpers/styling';
 
 const { Panel } = Collapse;
@@ -41,7 +41,7 @@ const SettingsPanel = () => {
   return (
     <div id="antd">
       <div className="app-theme-dark pmm-settings-panel" style={{ width: '100%' }}>
-        <FormFinal
+        <Form
           onSubmit={() => {}}
           render={(): ReactElement => {
             // @ts-ignore

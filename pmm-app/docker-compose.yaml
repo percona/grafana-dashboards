@@ -1,17 +1,17 @@
-version: '3'
+version: "3"
 services:
   pmm-server:
     container_name: pmm-server
     image: perconalab/pmm-server:dev-latest
     volumes:
-      - './:/var/lib/grafana/plugins'
+      - "./dist:/var/lib/grafana/plugins/pmm-app/dist"
     ports:
       - 80:80
       - 443:443
       - 29000:9000
       - 9933:9933
     restart: always
-    network_mode: bridge
+
   ch:
     image: yandex/clickhouse-server
     container_name: ch-server
@@ -21,7 +21,7 @@ services:
         hard: 262144
     ports:
       - 9000:9000
-    network_mode: bridge
+
   pmm-client:
     container_name: pmm-client
     image: centos
@@ -44,7 +44,6 @@ services:
       "
     volumes:
       - logs-directory:/var/log/mysql
-    network_mode: bridge
 
   ps:
     image: percona/percona-server:latest
@@ -55,7 +54,6 @@ services:
       - 3306:3306
     volumes:
       - logs-directory:/var/log/mysql
-    network_mode: bridge
 
   postgres:
     image: postgres
@@ -63,8 +61,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=secret
     ports:
-      - '5432:5432'
-    network_mode: bridge
+      - "5432:5432"
 
   mongo:
     image: mongo
@@ -72,8 +69,7 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=mongo
       - MONGO_INITDB_ROOT_PASSWORD=secret
     ports:
-      - '27017:27017'
-    network_mode: bridge
+      - "27017:27017"
 
   sysbench-ps:
     container_name: sysbench-ps
@@ -120,8 +116,6 @@ services:
               /usr/share/sysbench/tests/include/oltp_legacy/select.lua \
               run
       "
-    network_mode: bridge
-
   sysbench-pstpcc:
     image: perconalab/sysbench
     depends_on:
@@ -140,8 +134,6 @@ services:
          ./tpcc.lua --mysql-host=ps --mysql-port=3306 --mysql-user=root --mysql-password=secret --mysql-db=sbtest --time=300 --threads=64 --report-interval=1 --tables=10 --scale=100 --db-driver=mysql prepare
          ./tpcc.lua --mysql-host=ps --mysql-port=3306 --mysql-user=root --mysql-password=secret --mysql-db=sbtest --time=300 --threads=64 --report-interval=1 --tables=10 --scale=100 --db-driver=mysql run
       "
-    network_mode: bridge
-
 volumes:
   logs-directory:
     driver_opts:

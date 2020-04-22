@@ -1,16 +1,11 @@
 import axios, { AxiosInstance } from 'axios';
 import { showErrorNotification } from './notification-manager';
 
-// eslint-disable-next-line no-undef
-
 class ApiRequest {
   axiosInstance: AxiosInstance;
 
   constructor() {
     this.axiosInstance = axios;
-    //     .create({
-    //   baseURL: '',
-    // });
   }
 
   async get<T, B>(path: string, query?: { params: B; cancelToken?: any }): Promise<void | T> {

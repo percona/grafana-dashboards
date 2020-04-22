@@ -1,6 +1,6 @@
 import { apiRequest } from '../react-plugins-deps/components/helpers/api';
 
-class InventoryService {
+export class InventoryService {
   static async getAgents(body) {
     return apiRequest.post<any, any>('/v1/inventory/Agents/List', body);
   }
@@ -11,5 +11,3 @@ class InventoryService {
     return apiRequest.post<any, any>('/v1/inventory/Nodes/List', body);
   }
 }
-
-export default InventoryService;
