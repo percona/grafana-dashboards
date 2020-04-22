@@ -13,12 +13,12 @@ const TIME_METRICS = [
 ];
 
 const METRICS_COLORS = {
-  lock_time: 'green',
-  blk_read_time: 'yellow',
-  blk_write_time: 'deepskyblue',
-  innodb_io_r_wait: 'salad',
-  innodb_queue_wait: 'purple',
-  innodb_rec_lock_wait: 'red',
+  lock_time: '#be1818',
+  blk_read_time: '#4e378c',
+  blk_write_time: '#fcc200',
+  innodb_io_r_wait: '#3c3c3c',
+  innodb_queue_wait: '#7e4291',
+  innodb_rec_lock_wait: '#e97e03',
 };
 
 const PERCENT_COUNT = 100;
@@ -52,7 +52,7 @@ const TimeDistributionChart = ({ data }) => {
         color: METRICS_COLORS[metricName],
       };
     })
-    .sort((a, b) => a.value - b.value);
+    .sort((a, b) => b.value - a.value);
 
   if (currentPercent < PERCENT_COUNT || timeMetrics.length === 0) {
     normalizedTimeMetrics.push({

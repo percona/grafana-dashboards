@@ -131,7 +131,7 @@ const columns = [
 
 const Metrics = props => {
   const { contextActions } = useContext(StateContext);
-  const { queryId, groupBy, from, to, labels, tables } = props;
+  const { queryId, groupBy, from, to, labels, tables, databaseType } = props;
   const [metrics, setMetrics] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -160,7 +160,7 @@ const Metrics = props => {
 
   return (
     <div>
-      <TimeDistributionChart data={metrics} />
+      {databaseType === 'postgresql' ? null : <TimeDistributionChart data={metrics} />}
       <h4>Metrics</h4>
       <Table
         dataSource={metrics}
