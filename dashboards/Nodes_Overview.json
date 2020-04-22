@@ -161,6 +161,7 @@
                 "#d44a3a"
             ],
             "datasource": null,
+            "description": "",
             "format": "none",
             "gauge": {
                 "maxValue": 100,
@@ -213,7 +214,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "count(count by (node_name) (up{node_name=~\"$node_name\"})) or vector(0)",
+                    "expr": "count(count by (node_name) (up{node_name=~\"$node_name\",region=~\"$region\"})) or vector(0)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -224,7 +225,7 @@
             "thresholds": "100",
             "timeFrom": null,
             "timeShift": null,
-            "title": "Hosts",
+            "title": "Nodes",
             "type": "singlestat",
             "valueFontSize": "50%",
             "valueMaps": [
@@ -311,7 +312,7 @@
             "thresholds": "3600,86400",
             "timeFrom": null,
             "timeShift": null,
-            "title": "Min Host Uptime",
+            "title": "Min Node Uptime",
             "type": "singlestat",
             "valueFontSize": "50%",
             "valueMaps": [
@@ -472,21 +473,12 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "min(mysql_global_status_uptime{node_name=~\"$node_name\"} or mongodb_mongos_instance_uptime_seconds{node_name=~\"$node_name\"})",
+                    "expr": "min by () (mysql_global_status_uptime{node_name=~\"$node_name\"} or \nmongodb_instance_uptime_seconds {node_name=~\"$node_name\"} or \n(time() - process_start_time_seconds{node_name=~\"$node_name\",job=~\"postgres_exporter.*\"}))",
                     "format": "time_series",
                     "hide": false,
                     "intervalFactor": 1,
                     "legendFormat": "",
                     "refId": "A"
-                },
-                {
-                    "expr": "min(mysql_global_status_uptime{node_name=~\"$node_name\"})",
-                    "format": "time_series",
-                    "hide": true,
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "",
-                    "refId": "B"
                 }
             ],
             "thresholds": "3600,86400",
@@ -865,6 +857,7 @@
                         "y": 6
                     },
                     "id": 64,
+                    "interval": "",
                     "links": [],
                     "options": {},
                     "pageSize": null,
@@ -879,6 +872,8 @@
                             "alias": "Region",
                             "dateFormat": "YYYY-MM-DD HH:mm:ss",
                             "pattern": "region",
+                            "preserveFormat": false,
+                            "sanitize": false,
                             "type": "string"
                         },
                         {
@@ -1098,6 +1093,63 @@
                     "type": "table"
                 },
                 {
+                    "circleMaxSize": "2",
+                    "circleMinSize": "1",
+                    "colors": [
+                        "rgba(245, 54, 54, 0.9)",
+                        "rgba(237, 129, 40, 0.89)",
+                        "rgba(50, 172, 45, 0.97)"
+                    ],
+                    "datasource": null,
+                    "decimals": 0,
+                    "description": "",
+                    "esGeoPoint": "",
+                    "esLocationName": "",
+                    "esMetric": "Count",
+                    "gridPos": {
+                        "h": 9,
+                        "w": 24,
+                        "x": 0,
+                        "y": 12
+                    },
+                    "hideEmpty": false,
+                    "hideZero": false,
+                    "id": 1001,
+                    "initialZoom": "2",
+                    "locationData": "countries",
+                    "mapCenter": "Europe",
+                    "mapCenterLatitude": 46,
+                    "mapCenterLongitude": 14,
+                    "maxDataPoints": 1,
+                    "mouseWheelZoom": false,
+                    "options": {},
+                    "showLegend": false,
+                    "stickyLabels": true,
+                    "tableQueryOptions": {
+                        "geohashField": "geohash",
+                        "latitudeField": "latitude",
+                        "longitudeField": "longitude",
+                        "metricField": "metric",
+                        "queryType": "geohash"
+                    },
+                    "targets": [
+                        {
+                            "expr": "count by (region) (\nsum by (node_name,region) (label_replace(label_replace(up{node_type=~\"generic|remote_rds|container|remote\",region=~\"$region\",node_name=~\"$node_name\"},\"region\", \"$2\", \"region\", \"(.*) (..)\"),\"region\", \"$1\", \"region\", \"(..)-(.*)\")\n))",
+                            "interval": "$interval",
+                            "legendFormat": "{{region}}",
+                            "refId": "A"
+                        }
+                    ],
+                    "thresholds": "0,5",
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Regions",
+                    "type": "grafana-worldmap-panel",
+                    "unitPlural": "",
+                    "unitSingle": "",
+                    "valueName": "current"
+                },
+                {
                     "columns": [],
                     "datasource": null,
                     "fontSize": "100%",
@@ -1105,7 +1157,7 @@
                         "h": 10,
                         "w": 8,
                         "x": 0,
-                        "y": 12
+                        "y": 21
                     },
                     "id": 380,
                     "links": [],
@@ -1190,7 +1242,7 @@
                         "h": 10,
                         "w": 16,
                         "x": 8,
-                        "y": 12
+                        "y": 21
                     },
                     "id": 379,
                     "links": [],
@@ -1200,6 +1252,7 @@
                         "columnAutoSize": true,
                         "columns": "",
                         "defaultClickThrough": "",
+                        "defaultClickThroughNewTab": false,
                         "defaultClickThroughSanitize": false,
                         "displayLimit": 100,
                         "fontAutoScale": true,
@@ -1211,7 +1264,7 @@
                         "globalOperatorName": "avg",
                         "globalUnitFormat": "none",
                         "gradientEnabled": true,
-                        "hexagonSortByDirection": "asc",
+                        "hexagonSortByDirection": 1,
                         "hexagonSortByField": "name",
                         "maxMetrics": 0,
                         "polygonBorderColor": "black",
@@ -1226,9 +1279,9 @@
                         "tooltipDisplayTextTriggeredEmpty": "OK",
                         "tooltipFontSize": 12,
                         "tooltipFontType": "Roboto",
-                        "tooltipPrimarySortDirection": "desc",
+                        "tooltipPrimarySortDirection": 2,
                         "tooltipPrimarySortField": "name",
-                        "tooltipSecondarySortDirection": "desc",
+                        "tooltipSecondarySortDirection": 2,
                         "tooltipSecondarySortField": "name",
                         "tooltipTimestampEnabled": false
                     },
@@ -6773,6 +6826,7 @@
                         "columnAutoSize": true,
                         "columns": 4,
                         "defaultClickThrough": "",
+                        "defaultClickThroughNewTab": false,
                         "defaultClickThroughSanitize": true,
                         "displayLimit": 100,
                         "fontAutoScale": true,
@@ -6784,7 +6838,7 @@
                         "globalOperatorName": "current",
                         "globalUnitFormat": "short",
                         "gradientEnabled": true,
-                        "hexagonSortByDirection": "asc",
+                        "hexagonSortByDirection": 1,
                         "hexagonSortByField": "name",
                         "maxMetrics": 0,
                         "polygonBorderColor": "black",
@@ -6799,9 +6853,9 @@
                         "tooltipDisplayTextTriggeredEmpty": "OK",
                         "tooltipFontSize": 12,
                         "tooltipFontType": "Roboto",
-                        "tooltipPrimarySortDirection": "desc",
+                        "tooltipPrimarySortDirection": 2,
                         "tooltipPrimarySortField": "thresholdLevel",
-                        "tooltipSecondarySortDirection": "desc",
+                        "tooltipSecondarySortDirection": 2,
                         "tooltipSecondarySortField": "value",
                         "tooltipTimestampEnabled": true
                     },
@@ -7126,6 +7180,7 @@
                         "columnAutoSize": true,
                         "columns": 4,
                         "defaultClickThrough": "",
+                        "defaultClickThroughNewTab": false,
                         "defaultClickThroughSanitize": true,
                         "displayLimit": 100,
                         "fontAutoScale": true,
@@ -7137,7 +7192,7 @@
                         "globalOperatorName": "current",
                         "globalUnitFormat": "short",
                         "gradientEnabled": true,
-                        "hexagonSortByDirection": "asc",
+                        "hexagonSortByDirection": 1,
                         "hexagonSortByField": "name",
                         "maxMetrics": 0,
                         "polygonBorderColor": "black",
@@ -7152,9 +7207,9 @@
                         "tooltipDisplayTextTriggeredEmpty": "OK",
                         "tooltipFontSize": 12,
                         "tooltipFontType": "Roboto",
-                        "tooltipPrimarySortDirection": "desc",
+                        "tooltipPrimarySortDirection": 2,
                         "tooltipPrimarySortField": "thresholdLevel",
-                        "tooltipSecondarySortDirection": "desc",
+                        "tooltipSecondarySortDirection": 2,
                         "tooltipSecondarySortField": "value",
                         "tooltipTimestampEnabled": true
                     },
@@ -7485,6 +7540,7 @@
                         "columnAutoSize": true,
                         "columns": 4,
                         "defaultClickThrough": "",
+                        "defaultClickThroughNewTab": false,
                         "defaultClickThroughSanitize": true,
                         "displayLimit": 100,
                         "fontAutoScale": true,
@@ -7496,7 +7552,7 @@
                         "globalOperatorName": "current",
                         "globalUnitFormat": "Bps",
                         "gradientEnabled": true,
-                        "hexagonSortByDirection": "asc",
+                        "hexagonSortByDirection": 1,
                         "hexagonSortByField": "name",
                         "maxMetrics": 0,
                         "polygonBorderColor": "black",
@@ -7511,9 +7567,9 @@
                         "tooltipDisplayTextTriggeredEmpty": "OK",
                         "tooltipFontSize": 12,
                         "tooltipFontType": "Roboto",
-                        "tooltipPrimarySortDirection": "desc",
+                        "tooltipPrimarySortDirection": 2,
                         "tooltipPrimarySortField": "thresholdLevel",
-                        "tooltipSecondarySortDirection": "desc",
+                        "tooltipSecondarySortDirection": 2,
                         "tooltipSecondarySortField": "value",
                         "tooltipTimestampEnabled": true
                     },
@@ -9864,10 +9920,10 @@
             },
             {
                 "allFormat": "glob",
-                "allValue": null,
+                "allValue": ".*",
                 "current": {},
                 "datasource": "Prometheus",
-                "definition": "label_values(up{node_type=~\"generic|remote_rds|container|remote\"}, region)",
+                "definition": "label_values(node_load1{node_type=~\"generic|remote_rds|container|remote\"}, region)",
                 "hide": 0,
                 "includeAll": true,
                 "label": "Region",
@@ -9875,7 +9931,7 @@
                 "multiFormat": "regex values",
                 "name": "region",
                 "options": [],
-                "query": "label_values(up{node_type=~\"generic|remote_rds|container|remote\"}, region)",
+                "query": "label_values(node_load1{node_type=~\"generic|remote_rds|container|remote\"}, region)",
                 "refresh": 2,
                 "refresh_on_load": false,
                 "regex": "",
@@ -9889,10 +9945,10 @@
             },
             {
                 "allFormat": "glob",
-                "allValue": null,
+                "allValue": "",
                 "current": {},
                 "datasource": "Prometheus",
-                "definition": "label_values(up{region=~\"$region|\"}, node_type)",
+                "definition": "label_values(up{region=~\"$region\"}, node_type)",
                 "hide": 0,
                 "includeAll": true,
                 "label": "Type",
@@ -9900,7 +9956,7 @@
                 "multiFormat": "regex values",
                 "name": "node_type",
                 "options": [],
-                "query": "label_values(up{region=~\"$region|\"}, node_type)",
+                "query": "label_values(up{region=~\"$region\"}, node_type)",
                 "refresh": 2,
                 "refresh_on_load": false,
                 "regex": "",
@@ -9917,7 +9973,7 @@
                 "allValue": null,
                 "current": {},
                 "datasource": "Prometheus",
-                "definition": "label_values(up{region=~\"$region|\",node_type=~\"$node_type\"}, node_name)",
+                "definition": "label_values(up{region=~\"$region\",node_type=~\"$node_type\"}, node_name)",
                 "hide": 0,
                 "includeAll": true,
                 "label": "Node Names",
@@ -9925,7 +9981,7 @@
                 "multiFormat": "regex values",
                 "name": "node_name",
                 "options": [],
-                "query": "label_values(up{region=~\"$region|\",node_type=~\"$node_type\"}, node_name)",
+                "query": "label_values(up{region=~\"$region\",node_type=~\"$node_type\"}, node_name)",
                 "refresh": 2,
                 "refresh_on_load": false,
                 "regex": "",
