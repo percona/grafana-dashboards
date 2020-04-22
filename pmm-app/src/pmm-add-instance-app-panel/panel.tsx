@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
+import { Button } from 'antd';
+import { createBrowserHistory } from 'history';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import AddRemoteInstance from './AddInstance/AddRemoteInstance/AddRemoteInstance';
 import DiscoveryPanel from './DiscoveryPanel/DiscoveryPanel';
-import '../react-plugins-deps/styles.scss';
-import '../react-plugins-deps/style.less';
 import AddInstance from './AddInstance/AddInstance';
-import { Button } from 'antd';
-import './panel.scss';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-import { createBrowserHistory } from 'history';
 import Styling from '../react-plugins-deps/components/helpers/styling';
+import './panel.scss';
+import '../react-plugins-deps/style.less';
+import '../react-plugins-deps/styles.scss';
 
 const history = createBrowserHistory({});
 const AddInstancePanel = props => {

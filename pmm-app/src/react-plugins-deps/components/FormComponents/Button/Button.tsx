@@ -1,7 +1,8 @@
 import { Button } from 'antd';
 import React from 'react';
 import './Button.scss';
-import { ButtonHTMLType } from 'antd/es/button/button';
+
+type ButtonHTMLType = 'submit' | 'button' | 'reset';
 
 interface ButtonElementInterface {
   loading?: boolean;
