@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react';
 import { FormField } from '@grafana/ui';
 import { PanelEditorProps } from '@grafana/data';
-import { SimpleOptions } from './types';
+import { CheckPanelOptions } from './types';
 
-export class CheckPanelEditor extends PureComponent<PanelEditorProps<SimpleOptions>> {
+export class CheckPanelEditor extends PureComponent<PanelEditorProps<CheckPanelOptions>> {
   onTitleChanged = ({ target }: any) => {
     this.props.onOptionsChange({ ...this.props.options, title: target.value });
   };

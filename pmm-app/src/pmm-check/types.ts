@@ -1,4 +1,4 @@
-export interface SimpleOptions {
+export interface CheckPanelOptions {
   title: string;
 }
 

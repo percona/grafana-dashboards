@@ -1,7 +1,6 @@
 import { apiRequest } from '../react-plugins-deps/components/helpers/api';
 import { BASER_URL } from './CheckPanel.constants';
 import { ActiveCheck, Alert, FailedChecks } from './types';
-// import stub from './stub.json';
 
 export const makeApiUrl: (segment: string) => string = segment => `${BASER_URL}/${segment}`;
 

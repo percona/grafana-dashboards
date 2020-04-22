@@ -1,9 +1,9 @@
 import { Details, Failed } from './components';
-import { SimpleOptions, Column, SeverityMap } from './types';
+import { CheckPanelOptions, Column, SeverityMap } from './types';
 
 export const BASER_URL = '/alertmanager/api/v2';
 
-export const DEFAULTS: SimpleOptions = {
+export const DEFAULTS: CheckPanelOptions = {
   title: 'Failed Checks',
 };
 

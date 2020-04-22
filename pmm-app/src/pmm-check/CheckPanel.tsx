@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Table, Button } from 'antd';
 import { PanelProps } from '@grafana/data';
-import { SimpleOptions, ActiveCheck } from './types';
+import { CheckPanelOptions, ActiveCheck } from './types';
 import { CheckService } from './Check.service';
 import { COLUMNS } from './CheckPanel.constants';
 import * as styles from './CheckPanel.styles';
@@ -9,7 +9,7 @@ import '../react-plugins-deps/styles.scss';
 import '../react-plugins-deps/style.less';
 import './CheckPanel.scss';
 
-interface CheckPanelProps extends PanelProps<SimpleOptions> {}
+interface CheckPanelProps extends PanelProps<CheckPanelOptions> {}
 
 interface CheckPanelState {
   dataSource?: ActiveCheck[];
@@ -26,7 +26,7 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
     this.fetchAlerts();
   }
 
-  async fetchAlerts() {
+  fetchAlerts = async () => {
     this.setState({ loading: true });
     try {
       const dataSource = await CheckService.getActiveAlerts();
@@ -36,7 +36,7 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
     } finally {
       this.setState({ loading: false });
     }
-  }
+  };
 
   render() {
     const {
@@ -59,7 +59,7 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
           <div className={styles.TitleBar}>
             <div className={styles.Title}>{title || 'Failed Checks'}</div>
             <div className={styles.LastRun}>
-              <Button onClick={() => this.fetchAlerts()}>Refresh</Button>
+              <Button onClick={this.fetchAlerts}>Refresh</Button>
             </div>
           </div>
           <Table {...this.state} columns={COLUMNS} size="middle" pagination={false} bordered />
