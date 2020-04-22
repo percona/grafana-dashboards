@@ -241,13 +241,20 @@ export const UrlParametersProvider = ({ grafanaProps, children }) => {
     return setContext(actions[key](value));
   };
 
+  const [isFirstLoad, setFirstLoad] = useState(true);
   useEffect(() => {
+    if (isFirstLoad) {
+      return;
+    }
     const newState = { ...panelState, from, to, rawTime, pageNumber: 1 };
-    // TODO: fix query deletion after reload
-    // delete newState.queryId;
-    // delete newState.querySelected;
+    delete newState.queryId;
+    delete newState.querySelected;
     setContext(newState);
-  }, [from, to]);
+  }, [rawTime.from, rawTime.to]);
+
+  useEffect(() => {
+    setFirstLoad(false);
+  }, []);
 
   return (
     <StateContext.Provider
