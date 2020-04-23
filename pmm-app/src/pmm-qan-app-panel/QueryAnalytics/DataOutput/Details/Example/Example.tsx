@@ -2,35 +2,20 @@ import React, { useEffect, useState } from 'react';
 import ExampleService from './Example.service';
 import Highlight from 'react-highlight.js';
 import { ReactJSON } from '../../../../../react-plugins-deps/components/ReactJSON/ReactJSON';
+import { useExamples } from './Example.hooks';
+import { useDatabaseType } from '../Details.hooks';
 
-const getExample = databaseType => (example: string): any => {
+const getExample = databaseType => (example: any): any => {
   if (databaseType === 'mongodb') {
-    return <ReactJSON json={JSON.parse(example)} />;
+    return <ReactJSON json={JSON.parse(example.example)} />;
   }
 
-  return <Highlight language="sql">{example}</Highlight>;
+  return <Highlight language="sql">{example.example}</Highlight>;
 };
 
 const Example = props => {
-  const { queryId, groupBy, from, to, labels, tables, databaseType } = props;
-  const [examples, setExamples] = useState<any[]>([]);
-  useEffect(() => {
-    (async () => {
-      try {
-        const result = await ExampleService.getExample({
-          filterBy: queryId,
-          groupBy,
-          from,
-          to,
-          labels,
-          tables,
-        });
-        setExamples(result['query_examples'].map(example => example.example).filter(Boolean));
-      } catch (e) {
-        //TODO: add error handling
-      }
-    })();
-  }, [queryId]);
+  const [examples] = useExamples();
+  const databaseType = useDatabaseType();
 
   return (
     <div>

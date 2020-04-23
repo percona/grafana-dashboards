@@ -2,49 +2,27 @@ import React, { useEffect, useState } from 'react';
 import ExampleService from '../Example/Example.service';
 import TableCreate from './Table';
 import { Spin, Tabs } from 'antd';
+import { useExamples } from '../Example/Example.hooks';
+import { useDatabaseType } from '../Details.hooks';
 
 const { TabPane } = Tabs;
 
 const TableCreateContainer = props => {
-  const { queryId, groupBy, from, to, labels, tables, databaseType } = props;
-
-  const [example, setExample] = useState<any>({});
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        setLoading(true);
-        const result = await ExampleService.getExample({
-          filterBy: queryId,
-          groupBy,
-          from,
-          to,
-          labels,
-          tables,
-        });
-        const queryExample = result['query_examples'][0];
-        setExample(queryExample);
-        setLoading(false);
-      } catch (e) {
-        setLoading(false);
-        //TODO: add error handling
-      }
-    })();
-  }, [queryId]);
+  const [examples, loading] = useExamples();
+  const databaseType = useDatabaseType();
 
   return (
     <Spin spinning={loading}>
-      {example && example.tables ? (
+      {examples.length && examples[0].tables ? (
         <Tabs defaultActiveKey="1" onChange={() => {}} tabPosition="top">
-          {example.tables.map((table, index) => {
+          {examples[0].tables.map((table, index) => {
             return (
               <TabPane tab={<span>{table}</span>} key={index}>
                 <TableCreate
                   tableName={table}
-                  example={example}
+                  example={examples[0]}
                   databaseType={databaseType}
-                  schema={example.schema}
+                  schema={examples[0].schema}
                 />
               </TabPane>
             );

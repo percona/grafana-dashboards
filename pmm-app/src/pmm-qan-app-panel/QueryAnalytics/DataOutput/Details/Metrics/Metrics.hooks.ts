@@ -12,7 +12,6 @@ export const useMetricsDetails = () => {
   const [metrics, setMetrics] = useState([]);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
-    console.log('get metrics');
     const getMetrics = async () => {
       try {
         setLoading(true);
