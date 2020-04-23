@@ -211,7 +211,13 @@ const FiltersContainer = () => {
         const { form, handleSubmit } = useForm({
           onSubmit: () => {},
           validate: () => undefined,
-          initialValues: {},
+          initialValues: Object.entries(labels).reduce((acc, data) => {
+            const [key, values] = data;
+            values.forEach(value => {
+              acc[`${key}:${value || 'na'}`] = true;
+            });
+            return acc;
+          }, {}),
         });
         // @ts-ignore
         return (
