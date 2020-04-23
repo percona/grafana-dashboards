@@ -31,7 +31,7 @@ const setFilters = query =>
       return result;
     }
 
-    if (filters[0] === 'All' || filters[0] === '') {
+    if (filters[0] === 'All') {
       return result;
     }
 
@@ -66,7 +66,7 @@ const generateURL = state => {
       .map(key => {
         // @ts-ignore
         const variables = labels[key];
-        return variables.map(variable => `var-${key}=${variable}`).join('&');
+        return variables.map(variable => `var-${key}=${variable === 'na' ? '' : variable}`).join('&');
       })
       .filter(Boolean)
       .join('&');
@@ -113,9 +113,9 @@ const setLabels = filters =>
       // TODO: using '--' because final form think that it is a nested fields
       //  need to replace it with something better
       if (labels[group]) {
-        labels[group].push(value.replace(/\-\-/gi, '.'));
+        labels[group].push(value.replace(/\-\-/gi, '.').replace('na', ''));
       } else {
-        labels[group] = [value.replace(/\-\-/gi, '.')];
+        labels[group] = [value.replace(/\-\-/gi, '.').replace('na', '')];
       }
       return labels;
     }, {});
