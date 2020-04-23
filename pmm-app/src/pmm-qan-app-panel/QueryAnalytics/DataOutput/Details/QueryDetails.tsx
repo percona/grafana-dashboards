@@ -31,7 +31,7 @@ const QueryDetails = () => {
           <TabPane tab={<span>Details</span>} key={TabKeys.Details}>
             <Metrics />
           </TabPane>
-          <TabPane tab={<span>Examples</span>} key={TabKeys.Examples}>
+          <TabPane tab={<span>Examples</span>} key={TabKeys.Examples} disabled={queryId === 'TOTAL'}>
             <Example />
           </TabPane>
           <TabPane
@@ -41,11 +41,11 @@ const QueryDetails = () => {
               </Tooltip>
             }
             key={TabKeys.Explain}
-            disabled={databaseType === DATABASE.postgresql}
+            disabled={databaseType === DATABASE.postgresql || queryId === 'TOTAL'}
           >
             <Explain />
           </TabPane>
-          <TabPane tab={<span>Tables</span>} key={TabKeys.Tables}>
+          <TabPane tab={<span>Tables</span>} key={TabKeys.Tables} disabled={queryId === 'TOTAL'}>
             <TableCreateContainer />
           </TabPane>
         </Tabs>
