@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import ExampleService from './Example.service';
 import { StateContext } from '../../../StateContext';
 
-export const useExamples = () => {
+export const useExamples = (): [any[], boolean] => {
   const {
     panelState: { queryId, groupBy, from, to, labels },
   } = useContext(StateContext);

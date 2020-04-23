@@ -15,19 +15,10 @@ const { TabPane } = Tabs;
 
 const QueryDetails = () => {
   const {
-    panelState: { queryId, groupBy, from, to, fingerprint, controlSum, labels },
+    panelState: { queryId, groupBy, fingerprint, controlSum },
   } = useContext(StateContext);
   const databaseType = useDatabaseType();
   const [activeTab, setActiveTab] = useState(TabKeys.Details);
-  const MetricsProps = {
-    labels: labels,
-    tables: [],
-    queryId: queryId || '',
-    groupBy,
-    from,
-    to,
-    databaseType,
-  };
 
   useEffect(() => setActiveTab(TabKeys.Details), [queryId]);
 
@@ -41,7 +32,7 @@ const QueryDetails = () => {
             <Metrics />
           </TabPane>
           <TabPane tab={<span>Examples</span>} key={TabKeys.Examples}>
-            <Example {...MetricsProps} />
+            <Example />
           </TabPane>
           <TabPane
             tab={
@@ -52,10 +43,10 @@ const QueryDetails = () => {
             key={TabKeys.Explain}
             disabled={databaseType === DATABASE.postgresql}
           >
-            <Explain {...MetricsProps} />
+            <Explain />
           </TabPane>
           <TabPane tab={<span>Tables</span>} key={TabKeys.Tables}>
-            <TableCreateContainer {...MetricsProps} />
+            <TableCreateContainer />
           </TabPane>
         </Tabs>
       </div>

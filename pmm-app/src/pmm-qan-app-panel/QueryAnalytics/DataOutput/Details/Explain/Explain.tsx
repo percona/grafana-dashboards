@@ -1,27 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Collapse, Table } from 'antd';
 import { ReactJSON } from '../../../../../react-plugins-deps/components/ReactJSON/ReactJSON';
-import { css } from 'emotion';
-const { Panel } = Collapse;
+import { Styling } from './Explain.styles';
 
-const Styling = {
-  collapse: css`
-    background: #1f1d1d !important;
-    margin-bottom: 10 !important;
-    border: 1 !important;
-    border-color: white !important;
-    color: white !important;
-    text-color: white !important;
-  `,
-  panel: css`
-    background: transparent !important;
-    margin-bottom: 10 !important;
-    border: 1 !important;
-    border-color: black !important;
-    color: white !important;
-    text-color: white !important;
-  `,
-};
+const { Panel } = Collapse;
 
 const Explain = ({ json, classic }) => {
   const [data, setData] = useState({ columns: [], rows: [] });

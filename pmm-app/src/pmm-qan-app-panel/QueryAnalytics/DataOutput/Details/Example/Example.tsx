@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import ExampleService from './Example.service';
+import React from 'react';
 import Highlight from 'react-highlight.js';
 import { ReactJSON } from '../../../../../react-plugins-deps/components/ReactJSON/ReactJSON';
 import { useExamples } from './Example.hooks';
 import { useDatabaseType } from '../Details.hooks';
+import { DATABASE } from '../Details.constants';
 
 const getExample = databaseType => (example: any): any => {
-  if (databaseType === 'mongodb') {
+  if (databaseType === DATABASE.mongodb) {
     return <ReactJSON json={JSON.parse(example.example)} />;
   }
 
   return <Highlight language="sql">{example.example}</Highlight>;
 };
 
-const Example = props => {
+const Example = () => {
   const [examples] = useExamples();
   const databaseType = useDatabaseType();
 
