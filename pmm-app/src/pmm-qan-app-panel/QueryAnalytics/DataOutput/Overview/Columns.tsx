@@ -202,7 +202,7 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
                 className="summarize"
                 style={{ marginLeft: 'auto', cursor: stats.avg && stats.avg !== 'NaN' ? 'help' : '' }}
               >
-                {stats.avg === undefined ? `${Humanize.transform(Number.MIN_VALUE, 'time')}` : null}
+                {stats.avg === undefined ? `${Humanize.transform(0, 'time')}` : null}
                 {stats.avg === null || stats.avg === 'NaN' ? 'N/A' : null}
                 {stats.avg && stats.avg !== 'NaN' ? `${Humanize.transform(stats.avg, 'time')}` : null}
               </span>
@@ -212,9 +212,7 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
                 className="summarize"
                 style={{ marginLeft: 'auto', cursor: statPerSec && statPerSec !== 'NaN' ? 'help' : '' }}
               >
-                {statPerSec === undefined
-                  ? `${Humanize.transform(Number.MIN_VALUE, 'number')} ${metric.units}`
-                  : null}
+                {statPerSec === undefined ? `0 ${metric.units}` : null}
                 {statPerSec === null || statPerSec === 'NaN' ? 'N/A' : null}
                 {statPerSec && statPerSec !== 'NaN'
                   ? `${Humanize.transform(statPerSec, 'number')} ${metric.units}`
