@@ -56,7 +56,7 @@ export const CheckboxGroup = ({ form, name, items, group, showAll, filter: searc
     });
   const itemsList = (showTop ? filteredData.slice(0, TOP_LIMIT) : filteredData)
     .filter((item, index, list) => {
-      if (!item.value && list.length === 1) {
+      if (showAll && !item.value && list.length === 1) {
         return false;
       }
       return true;
@@ -79,9 +79,8 @@ export const CheckboxGroup = ({ form, name, items, group, showAll, filter: searc
               form={form}
               // TODO: using '--' because final form think that it is a nested fields
               //  need to replace it with something better
-              name={`${group}:${item.value ? item.value.replace(/\./gi, '--') : ''}`}
+              name={`${group}:${item.value ? item.value.replace(/\./gi, '--') : 'na'}`}
               label={item.value || 'n/a'}
-              checked={labels && labels[group] && labels[group].includes(item.value)}
               disabled={!valueExists}
             />
           </span>
