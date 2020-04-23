@@ -245,6 +245,22 @@ const SettingsPart = props => {
                     }
                     element={<ToggleField name="updates_disabled" disabled />}
                   />
+                  <FormElement
+                    label="Security Threat Tool"
+                    type="horizontal"
+                    tooltip={
+                      <PluginTooltip
+                        links={[
+                          {
+                            url: 'https://www.percona.com/doc/percona-monitoring-and-management/',
+                            text: 'Read more',
+                          },
+                        ]}
+                        text="Security Threat Tool"
+                      />
+                    }
+                    element={<ToggleField name="stt_enabled" />}
+                  />
                 </Panel>
               </Collapse>
               <ButtonElement loading={loading} text="Apply changes" />

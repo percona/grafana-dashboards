@@ -14,7 +14,6 @@ export const ToggleField = ({ name, disabled }: ToggleInterface) => {
     <Switch
       onChange={input.onChange}
       checked={Boolean(input.value)}
-      defaultChecked
       className="toggle-field"
       disabled={disabled}
     />
