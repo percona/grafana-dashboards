@@ -46,7 +46,7 @@ make
 
     Example: from dbazhenov:PMM-5053_dbazhenov_tooltip to percona:PMM-2.0
 
-10.    Your Pull Request must pass three tests: Codacy,Jenkins CI, and Contributor License Agreement.
+10.    Your Pull Request must pass three tests: Codacy, Jenkins CI, and Contributor License Agreement.
 
     You need to open the Contributor License Agreement page, read it, and confirm it. 
 
