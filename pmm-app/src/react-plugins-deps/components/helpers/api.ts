@@ -9,6 +9,20 @@ class ApiRequest {
     });
   }
 
+  async get<T, B>(path: string, query?: { params: B; cancelToken?: any }): Promise<void | T> {
+    return this.axiosInstance
+      .get<T>(path, query)
+      .then((response): T => response.data)
+      .catch((e): void => {
+        showErrorNotification({ message: e.message });
+        if (axios.isCancel(e)) {
+          throw e;
+        } else {
+          showErrorNotification({ message: e.message });
+        }
+      });
+  }
+
   async post<T, B>(path: string, body: {}): Promise<void | T> {
     // @ts-ignore
     return this.axiosInstance
