@@ -10,6 +10,7 @@ class ApiRequest {
   }
 
   async get<T, B>(path: string, query?: { params: B; cancelToken?: any }): Promise<void | T> {
+    // @ts-ignore
     return this.axiosInstance
       .get<T>(path, query)
       .then((response): T => response.data)

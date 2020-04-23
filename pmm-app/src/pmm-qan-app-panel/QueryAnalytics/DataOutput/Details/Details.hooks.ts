@@ -4,7 +4,7 @@ import { StateContext } from '../../StateContext';
 
 export const useDatabaseType = () => {
   const {
-    panelState: { queryId, groupBy, from, to, fingerprint, controlSum, labels },
+    panelState: { queryId, groupBy, from, to, labels },
   } = useContext(StateContext);
   const [databaseType, setDatabaseType] = useState('');
   useEffect(() => {
