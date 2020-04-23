@@ -9,7 +9,7 @@ export const makeApiUrl: (segment: string) => string = segment => `${BASER_URL}/
  */
 export const CheckService = {
   async getActiveAlerts(): Promise<ActiveCheck[] | undefined> {
-    const data = await apiRequest.get<Alert[], any>(makeApiUrl('alerts'), {
+    const data = await apiRequest.post<Alert[], any>(makeApiUrl('alerts'), {
       // TODO(atymchuk): add `filter: 'stt_check=1'` once API is ready
       params: { active: true, silenced: false },
     });
