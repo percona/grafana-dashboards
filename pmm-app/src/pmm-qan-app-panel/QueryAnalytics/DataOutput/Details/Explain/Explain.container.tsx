@@ -23,7 +23,7 @@ const ExplainContainer = props => {
         setErrorText('');
         getMysqlExplain(example);
         break;
-      case 'mongo':
+      case 'mongodb':
         setErrorText('');
         getMongoExplain(example);
         break;

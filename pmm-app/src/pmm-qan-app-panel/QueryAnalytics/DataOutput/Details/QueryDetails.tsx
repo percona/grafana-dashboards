@@ -12,12 +12,19 @@ import TableCreateContainer from './Table/TableContainer';
 
 const { TabPane } = Tabs;
 
+const TabKeys = {
+  Details: 'Details',
+  Examples: 'Examples',
+  Explain: 'Explain',
+  Tables: 'Tables',
+};
+
 const QueryDetails = () => {
   const {
     panelState: { queryId, groupBy, from, to, fingerprint, controlSum, labels },
   } = useContext(StateContext);
   const [databaseType, setDatabaseType] = useState('');
-
+  const [activeTab, setActiveTab] = useState(TabKeys.Details);
   const MetricsProps = {
     labels: labels,
     tables: [],
@@ -29,6 +36,7 @@ const QueryDetails = () => {
   };
 
   useEffect(() => {
+    setActiveTab(TabKeys.Details);
     (async () => {
       try {
         const result = await ExampleService.getExample({
@@ -51,11 +59,11 @@ const QueryDetails = () => {
       <Fingerprint query={fingerprint} controlSum={controlSum} groupBy={groupBy} />
       <div className="details-tabs">
         <Divider />
-        <Tabs defaultActiveKey="1" onChange={() => {}} tabPosition="left">
-          <TabPane tab={<span>Details</span>} key="1">
+        <Tabs activeKey={activeTab} onChange={setActiveTab} tabPosition="top">
+          <TabPane tab={<span>Details</span>} key={TabKeys.Details}>
             <Metrics {...MetricsProps} />
           </TabPane>
-          <TabPane tab={<span>Examples</span>} key="2">
+          <TabPane tab={<span>Examples</span>} key={TabKeys.Examples}>
             <Example {...MetricsProps} />
           </TabPane>
           <TabPane
@@ -64,12 +72,12 @@ const QueryDetails = () => {
                 Explain
               </Tooltip>
             }
-            key="3"
+            key={TabKeys.Explain}
             disabled={databaseType === 'postgresql'}
           >
             <Explain {...MetricsProps} />
           </TabPane>
-          <TabPane tab={<span>Tables</span>} key="4">
+          <TabPane tab={<span>Tables</span>} key={TabKeys.Tables}>
             <TableCreateContainer {...MetricsProps} />
           </TabPane>
         </Tabs>
