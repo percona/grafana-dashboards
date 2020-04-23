@@ -4,13 +4,13 @@ import MetricsService from './Metrics.service';
 import { processMetrics } from '../../../../../react-plugins-deps/components/helpers/processMetrics';
 import { METRIC_CATALOGUE } from '../../MetricCatalogue';
 
-export const useMetricsDetails = () => {
+export const useMetricsDetails = (): [any[], boolean] => {
   const {
     contextActions,
     panelState: { queryId, groupBy, from, to, labels },
   } = useContext(StateContext);
-  const [metrics, setMetrics] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [metrics, setMetrics] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
   useEffect(() => {
     const getMetrics = async () => {
       try {

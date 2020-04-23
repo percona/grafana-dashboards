@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import ExampleService from '../Example/Example.service';
+import React from 'react';
 import TableCreate from './Table';
 import { Spin, Tabs } from 'antd';
 import { useExamples } from '../Example/Example.hooks';
@@ -7,7 +6,7 @@ import { useDatabaseType } from '../Details.hooks';
 
 const { TabPane } = Tabs;
 
-const TableCreateContainer = props => {
+const TableCreateContainer = () => {
   const [examples, loading] = useExamples();
   const databaseType = useDatabaseType();
 
