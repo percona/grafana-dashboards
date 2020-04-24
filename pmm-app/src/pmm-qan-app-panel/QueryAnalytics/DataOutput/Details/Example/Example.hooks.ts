@@ -20,7 +20,7 @@ export const useExamples = (): [any[], boolean] => {
           to,
           labels,
         });
-        setExamples(result['query_examples'].filter(example => example.example));
+        setExamples(result['query_examples']);
         setLoading(false);
       } catch (e) {
         setLoading(false);

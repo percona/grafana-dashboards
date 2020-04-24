@@ -10,9 +10,8 @@ class TableService {
     return apiRequestManagement.post<any, any>('/Actions/StartMySQLShowCreateTable', body);
   }
 
-  static getShowCreateTablePostgreSQL({ database, service_id, table_name }) {
+  static getShowCreateTablePostgreSQL({ service_id, table_name }) {
     const body = {
-      database,
       service_id,
       table_name,
     };
