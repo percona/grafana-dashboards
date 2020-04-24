@@ -1,13 +1,13 @@
 import { ActiveCheck, FailedChecks } from '../types';
-import data from '../stub.json';
 import { Alert } from '../types';
+import { alertsStub } from './stubs';
 
 /**
  * A mock version of CheckService
  */
 export const CheckService = {
   async getActiveAlerts(): Promise<ActiveCheck[] | undefined> {
-    return processData(data as Alert[]);
+    return processData(alertsStub as Alert[]);
   },
 };
 
