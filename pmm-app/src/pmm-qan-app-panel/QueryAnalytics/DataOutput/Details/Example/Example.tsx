@@ -19,9 +19,11 @@ const Example = () => {
 
   return (
     <div>
-      {examples && examples.length
-        ? examples.map(getExample(databaseType))
-        : 'Sorry, no examples found for this query'}
+      {examples && examples.filter(example => example.example).length ? (
+        examples.filter(example => example.example).map(getExample(databaseType))
+      ) : (
+        <pre>Sorry, no examples found for this query</pre>
+      )}
     </div>
   );
 };

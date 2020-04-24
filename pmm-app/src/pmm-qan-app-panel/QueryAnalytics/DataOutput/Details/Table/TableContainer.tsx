@@ -29,7 +29,7 @@ const TableCreateContainer = () => {
         </Tabs>
       ) : (
         <div>
-          <pre>Sorry, no tables found =(</pre>
+          <pre> Cannot display table info without query example at this moment. </pre>
         </div>
       )}
     </Spin>
