@@ -2,11 +2,11 @@ import { Table } from 'antd';
 import React from 'react';
 import Icon from 'antd/es/icon';
 import Tooltip from 'antd/es/tooltip';
-import PolygonChart from '../../../../react-plugins-deps/components/PolygonChart/PolygonChart';
+import PolygonChart from '../../../../react-plugins-deps/components/Elements/Charts/PolygonChart/PolygonChart';
 // eslint-disable-next-line max-len
-import TimeDistributionChart from '../../../../react-plugins-deps/components/TimeDistributionChart/TimeDistributionChart';
+import TimeDistributionChart from '../../../../react-plugins-deps/components/Elements/Charts/TimeDistributionChart/TimeDistributionChart';
 import { Humanize } from '../../../../react-plugins-deps/components/helpers/Humanization';
-import LatencyChart from '../../../../react-plugins-deps/components/LatencyChart/LatencyChart';
+import LatencyChart from '../../../../react-plugins-deps/components/Elements/Charts/LatencyChart/LatencyChart';
 import { Styling } from './Metrics.styles';
 import { useMetricsDetails } from './Metrics.hooks';
 import { useDatabaseType } from '../Details.hooks';

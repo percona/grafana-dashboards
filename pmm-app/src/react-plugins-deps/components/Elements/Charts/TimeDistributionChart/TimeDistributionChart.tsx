@@ -1,7 +1,7 @@
 import React from 'react';
 import HSBar from 'react-horizontal-stacked-bar-chart';
-import { Humanize } from '../helpers/Humanization';
-import { DATABASE } from '../../../pmm-qan-app-panel/components/Details/Details.constants';
+import { Humanize } from '../../../helpers/Humanization';
+import { DATABASE } from '../../../../../pmm-qan-app-panel/components/Details/Details.constants';
 
 const TIME_METRICS = [
   'lock_time',
