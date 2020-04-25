@@ -2,7 +2,7 @@ import { Table } from 'antd';
 import React, { useCallback, useContext } from 'react';
 import './OverviewTable.scss';
 import { QueryAnalyticsProvider } from '../../panel/QueryAnalyticsProvider';
-import '../../../react-plugins-deps/components/Spinner/Spinner';
+import '../../../react-plugins-deps/components/Elements/Spinner/Spinner';
 import { useOverviewTable } from './OverviewTable.hooks';
 import { SELECTED_ROW_CLASS, TABLE_X_SCROLL, TABLE_Y_SCROLL } from './OverviewTable.constants';
 

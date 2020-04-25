@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CheckboxField } from '../../../react-plugins-deps/components/FormComponents/Checkbox/Checkbox';
+import { CheckboxField } from '../../../react-plugins-deps/components/Form/Checkbox/Checkbox';
 import { Humanize } from '../../../react-plugins-deps/components/helpers/Humanization';
 import { Divider } from 'antd';
 import { css } from 'emotion';

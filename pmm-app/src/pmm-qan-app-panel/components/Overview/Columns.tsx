@@ -1,6 +1,6 @@
 import React from 'react';
-import PolygonChart from 'react-plugins-deps/components/PolygonChart/PolygonChart';
-import LatencyChart from 'react-plugins-deps/components/LatencyChart/LatencyChart';
+import PolygonChart from 'react-plugins-deps/components/Elements/Charts/PolygonChart/PolygonChart';
+import LatencyChart from 'react-plugins-deps/components/Elements/Charts/LatencyChart/LatencyChart';
 import { Humanize } from 'react-plugins-deps/components/helpers/Humanization';
 import ManageColumns from '../ManageColumns/ManageColumns';
 import './OverviewTable.scss';
@@ -16,7 +16,7 @@ import {
   TABLE_X_SCROLL,
 } from './OverviewTable.constants';
 import { METRIC_CATALOGUE } from '../../panel/QueryAnalytics.constants';
-import { QueryTooltip } from '../../../react-plugins-deps/components/QueryTooltip/QueryTooltip';
+import { QueryTooltip } from '../../../react-plugins-deps/components/Elements/QueryTooltip/QueryTooltip';
 
 const Styling = {
   rowNumber: css`

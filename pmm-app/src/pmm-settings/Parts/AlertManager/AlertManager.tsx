@@ -1,11 +1,11 @@
-import { InputField } from '../../../react-plugins-deps/components/FormComponents/Input/Input';
-import { TextAreaField } from '../../../react-plugins-deps/components/FormComponents/TextArea/TextArea';
+import { InputField } from '../../../react-plugins-deps/components/Form/Input/Input';
+import { TextAreaField } from '../../../react-plugins-deps/components/Form/TextArea/TextArea';
 import React, { ReactElement, useEffect, useState } from 'react';
-import ButtonElement from '../../../react-plugins-deps/components/FormComponents/Button/Button';
+import ButtonElement from '../../../react-plugins-deps/components/Form/Button/Button';
 import { Form as FormFinal } from 'react-final-form';
 import SettingsService from '../../Settings.service';
 import { showSuccessNotification } from '../../../react-plugins-deps/components/helpers/notification-manager';
-import { FormElement } from '../../../react-plugins-deps/components/FormComponents/FormElement/FormElement';
+import { FormElement } from '../../../react-plugins-deps/components/Form/FormElement/FormElement';
 import { PluginTooltip } from '../../../react-plugins-deps/components/helpers/Helpers';
 import { css } from 'emotion';
 
