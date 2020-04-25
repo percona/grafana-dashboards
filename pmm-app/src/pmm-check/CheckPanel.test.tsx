@@ -4,7 +4,7 @@ import { mount, ReactWrapper } from 'enzyme';
 import { CheckPanel, CheckPanelProps, CheckPanelState } from './CheckPanel';
 import { activeCheckStub } from './__mocks__/stubs';
 
-jest.mock('../react-plugins-deps/components/helpers/notification-manager');
+jest.mock('../react-plugins-deps/helpers/notification-manager');
 
 jest.mock('./Check.service');
 

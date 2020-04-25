@@ -1,4 +1,4 @@
-import { apiRequestSettings } from '../react-plugins-deps/components/helpers/api';
+import { apiRequestSettings } from '../react-plugins-deps/helpers/api';
 
 class SettingsService {
   static async getSettings() {

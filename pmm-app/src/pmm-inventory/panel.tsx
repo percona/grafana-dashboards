@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Tabs } from 'antd';
 import { AgentsTab, NodesTab, ServicesTab } from './Tabs';
-import Styling from '../react-plugins-deps/components/helpers/styling';
+import Styling from '../react-plugins-deps/helpers/styling';
 
 const { TabPane } = Tabs;
 

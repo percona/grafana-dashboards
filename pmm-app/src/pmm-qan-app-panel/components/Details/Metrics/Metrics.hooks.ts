@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { QueryAnalyticsProvider } from '../../../panel/QueryAnalyticsProvider';
 import MetricsService from './Metrics.service';
-import { processMetrics } from '../../../../react-plugins-deps/components/helpers/processMetrics';
+import { processMetrics } from '../../../../react-plugins-deps/helpers/processMetrics';
 import { METRIC_CATALOGUE } from '../../../panel/QueryAnalytics.constants';
 
 export const useMetricsDetails = (): [any[], boolean] => {

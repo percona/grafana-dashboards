@@ -1,4 +1,4 @@
-import { apiRequestQAN } from '../../../react-plugins-deps/components/helpers/api';
+import { apiRequestQAN } from '../../../react-plugins-deps/helpers/api';
 
 class FiltersService {
   static async getQueryOverviewFiltersList(paramLabels, from, to, mainMetric) {

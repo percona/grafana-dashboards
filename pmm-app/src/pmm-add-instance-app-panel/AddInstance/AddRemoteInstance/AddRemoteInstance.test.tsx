@@ -1,6 +1,6 @@
 import { getInstanceData } from './AddRemoteInstance';
 
-jest.mock('../../../react-plugins-deps/components/helpers/notification-manager', () => () => ({
+jest.mock('../../../react-plugins-deps/helpers/notification-manager', () => () => ({
   showErrorNotification: () => {},
 }));
 

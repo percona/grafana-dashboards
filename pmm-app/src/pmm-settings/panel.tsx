@@ -6,7 +6,7 @@ import SettingsPart from './Parts/Settings/Settings';
 import AlertManager from './Parts/AlertManager/AlertManager';
 import SettingsService from './Settings.service';
 import { Form } from 'react-final-form';
-import Styling from '../react-plugins-deps/components/helpers/styling';
+import Styling from '../react-plugins-deps/helpers/styling';
 
 const { Panel } = Collapse;
 

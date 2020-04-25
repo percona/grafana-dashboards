@@ -1,4 +1,4 @@
-import { apiRequest } from '../react-plugins-deps/components/helpers/api';
+import { apiRequest } from '../react-plugins-deps/helpers/api';
 import { BASER_URL } from './CheckPanel.constants';
 import { ActiveCheck, Alert, FailedChecks } from './types';
 

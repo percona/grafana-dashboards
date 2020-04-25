@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import AddRemoteInstance from './AddInstance/AddRemoteInstance/AddRemoteInstance';
 import DiscoveryPanel from './DiscoveryPanel/DiscoveryPanel';
 import AddInstance from './AddInstance/AddInstance';
-import Styling from '../react-plugins-deps/components/helpers/styling';
+import Styling from '../react-plugins-deps/helpers/styling';
 import './panel.scss';
 import '../react-plugins-deps/style.less';
 import '../react-plugins-deps/styles.scss';

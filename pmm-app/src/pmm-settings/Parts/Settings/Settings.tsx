@@ -1,15 +1,15 @@
 import React, { ReactElement, useEffect, useState } from 'react';
 import { Collapse } from 'antd';
 import { Form as FormFinal } from 'react-final-form';
-import { PluginTooltip } from '../../../react-plugins-deps/components/helpers/Helpers';
+import { PluginTooltip } from '../../../react-plugins-deps/helpers/Helpers';
 import SettingsService from '../../Settings.service';
-import { showSuccessNotification } from '../../../react-plugins-deps/components/helpers/notification-manager';
+import { showSuccessNotification } from '../../../react-plugins-deps/helpers/notification-manager';
 import { SliderField } from '../../../react-plugins-deps/components/Form/Slider/Slider';
 import { ToggleField } from '../../../react-plugins-deps/components/Form/Toggle/Toggle';
 import { InputField } from '../../../react-plugins-deps/components/Form/Input/Input';
 import ButtonElement from '../../../react-plugins-deps/components/Form/Button/Button';
 import './Settings.scss';
-import Validators from '../../../react-plugins-deps/components/helpers/validators';
+import Validators from '../../../react-plugins-deps/helpers/validators';
 import { FormElement } from '../../../react-plugins-deps/components/Form/FormElement/FormElement';
 import { css } from 'emotion';
 

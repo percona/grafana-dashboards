@@ -5,7 +5,7 @@ import { act } from 'react-dom/test-utils';
 import { InventoryDataService } from './DataService';
 import { agentsColumns, nodesColumns, servicesColumns } from './panel.constants';
 
-jest.mock('../react-plugins-deps/components/helpers/notification-manager', () => () => ({
+jest.mock('../react-plugins-deps/helpers/notification-manager', () => () => ({
   showErrorNotification: () => {},
 }));
 
