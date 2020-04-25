@@ -1,5 +1,5 @@
 import React from 'react';
-import { useField } from 'react-final-form-hooks';
+import { useField } from 'react-final-form';
 import './Input.scss';
 interface InputFieldInterface {
   required?: boolean;
@@ -8,7 +8,6 @@ interface InputFieldInterface {
   label?: string;
   prefix?: string;
   placeholder?: string;
-  form: any;
   style?: any;
   wrapperStyle?: any;
   text?: string;
@@ -22,14 +21,13 @@ export const InputField = ({
   name,
   placeholder = '',
   required,
-  form,
   style,
   wrapperStyle,
   readonly,
   validate,
 }: InputFieldInterface) => {
   // // @ts-ignore
-  const { input, meta } = useField(name, form, validate);
+  const { input, meta } = useField(name, { validate });
   return (
     <div className="input-field-wrapper" style={wrapperStyle || {}}>
       <input

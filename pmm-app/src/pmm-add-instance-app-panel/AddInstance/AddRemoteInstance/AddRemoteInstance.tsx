@@ -5,7 +5,6 @@ import { TextAreaField } from '../../../react-plugins-deps/components/FormCompon
 import { CheckboxField } from '../../../react-plugins-deps/components/FormComponents/Checkbox/Checkbox';
 
 import { Form as FormFinal } from 'react-final-form';
-import { useForm } from 'react-final-form-hooks';
 import { PasswordField } from '../../../react-plugins-deps/components/FormComponents/Password/Password';
 import AddRemoteInstanceService from './AddRemoteInstanceService';
 import Validators from '../../../react-plugins-deps/components/validators/validators';
@@ -56,16 +55,12 @@ export const getInstanceData = (instanceType, credentials) => {
   return instance;
 };
 
-const getAdditionalOptions = (type, remoteInstanceCredentials, form) => {
+const getAdditionalOptions = (type, remoteInstanceCredentials) => {
   switch (type) {
     case 'PostgreSQL':
       return (
         <>
-          <CheckboxField
-            form={form}
-            label="Use Pg Stat Statements"
-            name="qan_postgresql_pgstatements_agent"
-          />
+          <CheckboxField label="Use Pg Stat Statements" name="qan_postgresql_pgstatements_agent" />
           <span className="description"></span>
         </>
       );
@@ -73,27 +68,27 @@ const getAdditionalOptions = (type, remoteInstanceCredentials, form) => {
       if (remoteInstanceCredentials.isRDS) {
         return (
           <>
-            <CheckboxField form={form} label="Use performance schema" name="qan_mysql_perfschema" />
+            <CheckboxField label="Use performance schema" name="qan_mysql_perfschema" />
             <span className="description"></span>
 
-            <CheckboxField form={form} label="Disable Basic Metrics" name="disable_basic_metrics" />
+            <CheckboxField label="Disable Basic Metrics" name="disable_basic_metrics" />
             <span className="description"></span>
 
-            <CheckboxField form={form} label="Disable Enhanced Metrics" name="disable_enhanced_metrics" />
+            <CheckboxField label="Disable Enhanced Metrics" name="disable_enhanced_metrics" />
             <span className="description"></span>
           </>
         );
       }
       return (
         <>
-          <CheckboxField form={form} label="Use performance schema" name="qan_mysql_perfschema" />
+          <CheckboxField label="Use performance schema" name="qan_mysql_perfschema" />
           <span className="description"></span>
         </>
       );
     case 'MongoDB':
       return (
         <>
-          <CheckboxField form={form} label="Use QAN MongoDB Profiler" name="qan_mongodb_profiler" />
+          <CheckboxField label="Use QAN MongoDB Profiler" name="qan_mongodb_profiler" />
           <span className="description"></span>
         </>
       );
@@ -179,13 +174,10 @@ const AddRemoteInstance = props => {
   // @ts-ignore
   return (
     <FormFinal
-      onSubmit={() => {}}
-      render={(): ReactElement => {
-        const { form, handleSubmit } = useForm({
-          onSubmit,
-          initialValues,
-          validate: validateInstanceForm,
-        });
+      onSubmit={onSubmit}
+      initialValues={initialValues}
+      validate={validateInstanceForm}
+      render={({ form, handleSubmit }): ReactElement => {
         // @ts-ignore
         return (
           <form onSubmit={handleSubmit} className="add-instance-form app-theme-dark">
@@ -194,17 +186,15 @@ const AddRemoteInstance = props => {
               <h6>Main details</h6>
               <span></span>
               <InputField
-                form={form}
                 name="address"
                 placeholder="Hostname"
                 required={true}
                 readonly={remoteInstanceCredentials.isRDS}
               />
               <span className="description">Public DNS hostname of your instance</span>
-              <InputField form={form} name="service_name" placeholder="Service name (default: Hostname)" />
+              <InputField name="service_name" placeholder="Service name (default: Hostname)" />
               <span className="description">Service name to use.</span>
               <InputField
-                form={form}
                 name="port"
                 placeholder={`Port (default: ${remoteInstanceCredentials.port} )`}
                 required={true}
@@ -213,7 +203,7 @@ const AddRemoteInstance = props => {
               <span className="description">Port your service is listening on</span>
             </div>
             <div className="add-instance-panel">
-              <InputField form={form} name="username" placeholder="Username" required={true} />
+              <InputField name="username" placeholder="Username" required={true} />
               <span className="description">Your database user name</span>
 
               <PasswordField form={form} name="password" placeholder="Password" required={true} />
@@ -222,23 +212,22 @@ const AddRemoteInstance = props => {
             <div className="add-instance-panel">
               <h6>Labels</h6>
               <span></span>
-              <InputField form={form} name="environment" placeholder="Environment" />
+              <InputField name="environment" placeholder="Environment" />
               <span className="description"></span>
 
-              <InputField form={form} name="region" required={initialValues.isRDS} placeholder="Region" />
+              <InputField name="region" required={initialValues.isRDS} placeholder="Region" />
               <span className="description">Region</span>
 
-              <InputField form={form} name="az" placeholder="Availability Zone" />
+              <InputField name="az" placeholder="Availability Zone" />
               <span className="description">Availability Zone</span>
 
-              <InputField form={form} name="replication_set" placeholder="Replication set" />
+              <InputField name="replication_set" placeholder="Replication set" />
               <span className="description"></span>
 
-              <InputField form={form} name="cluster" placeholder="Cluster" />
+              <InputField name="cluster" placeholder="Cluster" />
               <span className="description"></span>
 
               <TextAreaField
-                form={form}
                 name="custom_labels"
                 placeholder="Custom labels
 Format:
@@ -250,21 +239,20 @@ key2:value2"
             <div className="add-instance-panel">
               <h6>Additional options</h6>
               <span></span>
-              <CheckboxField form={form} label="Skip connection check" name="skip_connection_check" />
+              <CheckboxField label="Skip connection check" name="skip_connection_check" />
 
               <span className="description"></span>
 
-              <CheckboxField form={form} label="Use TLS for database connections" name="tls" />
+              <CheckboxField label="Use TLS for database connections" name="tls" />
 
               <span className="description"></span>
               <CheckboxField
-                form={form}
                 label="Skip TLS certificate and hostname validation"
                 name="tls_skip_verify"
                 data-cy="add-account-username"
               />
               <span className="description"></span>
-              {getAdditionalOptions(instanceType, remoteInstanceCredentials, form)}
+              {getAdditionalOptions(instanceType, remoteInstanceCredentials)}
             </div>
 
             <div className="add-instance-form__submit-block">
