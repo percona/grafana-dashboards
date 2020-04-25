@@ -6,7 +6,7 @@ import { useForm } from 'react-final-form-hooks';
 import { Form as FormFinal } from 'react-final-form';
 import Search from 'antd/lib/input/Search';
 import { CheckboxGroup } from './CheckboxGroup';
-import useWindowSize from 'react-plugins-deps/components/helpers/WindowSize.hooks';
+import useWindowSize from 'react-plugins-deps/helpers/WindowSize.hooks';
 import ScrollArea from 'react-scrollbar';
 import { css } from 'emotion';
 

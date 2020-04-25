@@ -1,4 +1,4 @@
-import { apiRequestManagement } from '../../../../react-plugins-deps/components/helpers/api';
+import { apiRequestManagement } from '../../../../react-plugins-deps/helpers/api';
 
 class TableService {
   static getShowCreateTableMySQL({ database, service_id, table_name }) {

@@ -1,7 +1,7 @@
 import React from 'react';
 import PolygonChart from 'react-plugins-deps/components/Elements/Charts/PolygonChart/PolygonChart';
 import LatencyChart from 'react-plugins-deps/components/Elements/Charts/LatencyChart/LatencyChart';
-import { Humanize } from 'react-plugins-deps/components/helpers/Humanization';
+import { Humanize } from 'react-plugins-deps/helpers/Humanization';
 import ManageColumns from '../ManageColumns/ManageColumns';
 import './OverviewTable.scss';
 import Tooltip from 'antd/es/tooltip';
