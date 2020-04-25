@@ -54,9 +54,16 @@ const Styling = {
   `,
 };
 
+// TODO: calculate table width right and remove it
+const MAGIC_WIDTH_FIX = 17;
+
 export const getDefaultColumns = (groupBy, pageNumber, pageSize, columns, onCell) => {
   const mainMetricColumnWidth = Math.max(
-    TABLE_X_SCROLL - columns * COLUMN_WIDTH - ROW_NUMBER_COLUMN_WIDTH,
+    TABLE_X_SCROLL -
+      (columns - 1) * FIXED_COLUMN_WIDTH -
+      COLUMN_WIDTH * 1.8 -
+      ROW_NUMBER_COLUMN_WIDTH +
+      MAGIC_WIDTH_FIX,
     MAIN_METRIC_MIN_WIDTH
   );
   // @ts-ignore
