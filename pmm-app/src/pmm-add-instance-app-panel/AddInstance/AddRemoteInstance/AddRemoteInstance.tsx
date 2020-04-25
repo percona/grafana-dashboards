@@ -206,7 +206,7 @@ const AddRemoteInstance = props => {
               <InputField name="username" placeholder="Username" required={true} />
               <span className="description">Your database user name</span>
 
-              <PasswordField form={form} name="password" placeholder="Password" required={true} />
+              <PasswordField name="password" placeholder="Password" required={true} />
               <span className="description">Your database password</span>
             </div>
             <div className="add-instance-panel">

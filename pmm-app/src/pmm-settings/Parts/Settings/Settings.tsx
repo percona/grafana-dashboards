@@ -1,7 +1,6 @@
 import React, { ReactElement, useEffect, useState } from 'react';
 import { Collapse } from 'antd';
 import { Form as FormFinal } from 'react-final-form';
-import { useForm } from 'react-final-form-hooks';
 import { PluginTooltip } from '../../../react-plugins-deps/components/helpers/Helpers';
 import SettingsService from '../../Settings.service';
 import { showSuccessNotification } from '../../../react-plugins-deps/components/helpers/notification-manager';
@@ -130,13 +129,8 @@ const SettingsPart = props => {
 
   return (
     <FormFinal
-      onSubmit={() => {}}
-      render={(): ReactElement => {
-        const { form, handleSubmit } = useForm({
-          onSubmit,
-          validate: () => undefined,
-        });
-
+      onSubmit={onSubmit}
+      render={({ form, handleSubmit }): ReactElement => {
         useEffect(() => {
           if (!settings.data_retention && !settings.metrics_resolutions) {
             return;
@@ -176,7 +170,6 @@ const SettingsPart = props => {
                 element={
                   <SliderField
                     marks={marks}
-                    form={form}
                     defaultValue={2}
                     name="metrics_resolutions_slider"
                     tipFormatter={value => {
@@ -212,7 +205,6 @@ const SettingsPart = props => {
                       <InputField
                         name="data_retention_count"
                         validate={Validators.compose(Validators.range(1, 3650), Validators.required)}
-                        form={form}
                         wrapperStyle={{ width: '100%' }}
                       />
                     }
@@ -233,7 +225,7 @@ const SettingsPart = props => {
                         text="Option to send usage data back to Percona to let us make product better"
                       />
                     }
-                    element={<ToggleField form={form} name="telemetry_enabled" />}
+                    element={<ToggleField name="telemetry_enabled" />}
                   />
                   <FormElement
                     label="Check for updates"
@@ -251,7 +243,7 @@ const SettingsPart = props => {
                         text="Option to check new versions and ability to update PMM from UI"
                       />
                     }
-                    element={<ToggleField form={form} name="updates_disabled" disabled={true} />}
+                    element={<ToggleField name="updates_disabled" disabled={true} />}
                   />
                 </Panel>
               </Collapse>

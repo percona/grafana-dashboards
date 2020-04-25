@@ -10,11 +10,7 @@ interface TextAreaFieldInterface {
   placeholder?: string;
   style?: any;
 }
-export const TextAreaField = ({
-  name,
-  placeholder,
-  style,
-}: TextAreaFieldInterface) => {
+export const TextAreaField = ({ name, placeholder, style }: TextAreaFieldInterface) => {
   const { input, meta } = useField(name);
   return (
     <div className="text-area-field-wrapper">
