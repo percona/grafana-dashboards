@@ -1,5 +1,6 @@
 import React from 'react';
 import { css } from 'emotion';
+import { QueryTooltip } from '../../../react-plugins-deps/components/QueryTooltip/QueryTooltip';
 
 const GROUP_BY_OPTIONS = [
   { value: 'queryid', data: { label: 'Query' } },
@@ -19,17 +20,35 @@ const Styling = {
   controlSum: css`
     color: gray;
   `,
+  fingerprintView: css`
+    display: flex;
+    align-items: baseline;
+  `,
+  fingerprint: css`
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 600px;
+    overflow: hidden;
+    color: #32b3e3 !important;
+    cursor: help;
+  `,
 };
 const Fingerprint = props => {
   const currentGroupBy = GROUP_BY_OPTIONS.filter(option => option.value === props.groupBy)[0];
+  const isTotal = props.query === 'TOTAL' || props.query === undefined;
   return (
     <div className={Styling.fingerprintWrapper} id="query-id">
-      <h4>
-        {props.query === 'TOTAL' || props.query === undefined
-          ? 'TOTAL'
-          : `${currentGroupBy.data.label}: ${props.query}`}
-      </h4>
-      <h5 className={Styling.controlSum}>{props.controlSum}</h5>
+      <div className={Styling.fingerprintView}>
+        <h4>{!isTotal ? `${currentGroupBy.data.label}:` : 'TOTAL'}</h4>
+        &nbsp;
+        {!isTotal ? (
+          <div>
+            <QueryTooltip query={props.query} show={props.groupBy === 'queryid'}>
+              <h5 className={Styling.fingerprint}>{props.query}</h5>
+            </QueryTooltip>
+          </div>
+        ) : null}
+      </div>
     </div>
   );
 };
