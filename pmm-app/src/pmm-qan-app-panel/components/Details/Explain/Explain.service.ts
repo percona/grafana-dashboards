@@ -1,4 +1,4 @@
-import { apiRequestManagement } from '../../../../react-plugins-deps/components/helpers/api';
+import { apiRequestManagement } from '../../../../react-plugins-deps/helpers/api';
 
 class ExplainService {
   static getTraditionalExplainJSONMysql({ database, service_id, query }) {
