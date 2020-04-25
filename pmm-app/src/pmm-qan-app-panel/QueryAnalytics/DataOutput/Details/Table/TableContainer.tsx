@@ -12,7 +12,7 @@ const TableCreateContainer = () => {
 
   return (
     <Spin spinning={loading}>
-      {examples.length && examples[0].tables ? (
+      {examples && examples.length && examples[0].tables ? (
         <Tabs defaultActiveKey="1" onChange={() => {}} tabPosition="top">
           {examples[0].tables.map((table, index) => {
             return (
