@@ -54,7 +54,7 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
       <div
         id="antd"
         className="check-panel"
-        data-testid="db-check-panel"
+        data-qa="db-check-panel"
         style={{
           position: 'relative',
           width,

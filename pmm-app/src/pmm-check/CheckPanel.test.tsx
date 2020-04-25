@@ -25,7 +25,7 @@ describe('CheckPanel::', () => {
     // Check for the panel title passed as component prop
     expect(
       root
-        .find('[data-testid="db-check-panel"] > div > div > div')
+        .find('[data-qa="db-check-panel"] > div > div > div')
         .at(0)
         .text()
     ).toEqual('DB CHECKS');
@@ -36,7 +36,7 @@ describe('CheckPanel::', () => {
     expect(root.state('dataSource')).toEqual(activeCheckStub);
     expect(root.state().loading).toEqual(false);
 
-    const table = root.find('[data-testid="db-check-panel"]').find(Table);
+    const table = root.find('[data-qa="db-check-panel"]').find(Table);
     // Check the table is rendered
     expect(table.length).toEqual(1);
 
