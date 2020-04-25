@@ -16,6 +16,7 @@ import {
   TABLE_X_SCROLL,
 } from './OverviewTable.constants';
 import { METRIC_CATALOGUE } from '../../panel/QueryAnalytics.constants';
+import { QueryTooltip } from '../../../react-plugins-deps/components/QueryTooltip/QueryTooltip';
 
 const Styling = {
   rowNumber: css`
@@ -88,9 +89,11 @@ export const getDefaultColumns = (groupBy, pageNumber, pageSize, columns, onCell
       onCell: onCell,
       render: (text, record, index) => {
         return (
-          <div className={Styling.mainMetric(mainMetricColumnWidth)}>
-            {index === 0 ? 'TOTAL' : record.fingerprint || record.dimension || 'N/A'}
-          </div>
+          <QueryTooltip query={record.fingerprint} show={index !== 0 && record.fingerprint}>
+            <div className={Styling.mainMetric(mainMetricColumnWidth)}>
+              {index === 0 ? 'TOTAL' : record.fingerprint || record.dimension || 'N/A'}
+            </div>
+          </QueryTooltip>
         );
       },
     },
