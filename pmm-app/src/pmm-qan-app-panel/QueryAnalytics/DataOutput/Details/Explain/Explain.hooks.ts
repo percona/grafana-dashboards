@@ -94,6 +94,10 @@ export const useExplain = (): [any, any, boolean, string] => {
   };
 
   useEffect(() => {
+    if (!examples) {
+      return;
+    }
+
     const notEmptyExample = examples.filter(example => example.example);
     if (!notEmptyExample.length || !databaseType) {
       return;
