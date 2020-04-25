@@ -9,8 +9,8 @@ export const QueryTooltip = ({ query, children, show = true }) => {
   };
   return show ? (
     <Tooltip
-      placement="top"
-      mouseEnterDelay={0.2}
+      placement="left"
+      mouseEnterDelay={0.5}
       overlayClassName="query-tooltip"
       title={() => <TooltipContent />}
     >
