@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
 import { scaleLog } from 'd3';
-import { Humanize } from '../helpers/Humanization';
+import { Humanize } from '../../../helpers/Humanization';
 
 interface LatencyChartState {
   tooltip: string | undefined;

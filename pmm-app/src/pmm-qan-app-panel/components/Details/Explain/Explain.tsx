@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Collapse, Table } from 'antd';
-import { ReactJSON } from '../../../../react-plugins-deps/components/ReactJSON/ReactJSON';
+import { ReactJSON } from '../../../../react-plugins-deps/components/Elements/ReactJSON/ReactJSON';
 import { Styling } from './Explain.styles';
 
 const { Panel } = Collapse;

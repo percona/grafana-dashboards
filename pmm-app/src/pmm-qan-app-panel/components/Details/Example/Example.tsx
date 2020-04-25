@@ -1,6 +1,6 @@
 import React from 'react';
 import Highlight from 'react-highlight.js';
-import { ReactJSON } from '../../../../react-plugins-deps/components/ReactJSON/ReactJSON';
+import { ReactJSON } from '../../../../react-plugins-deps/components/Elements/ReactJSON/ReactJSON';
 import { useExamples } from './Example.hooks';
 import { useDatabaseType } from '../Details.hooks';
 import { DATABASE } from '../Details.constants';
