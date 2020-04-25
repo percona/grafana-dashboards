@@ -8,7 +8,6 @@ import TimeDistributionChart from '../../../../react-plugins-deps/components/Tim
 import { Humanize } from '../../../../react-plugins-deps/components/helpers/Humanization';
 import LatencyChart from '../../../../react-plugins-deps/components/LatencyChart/LatencyChart';
 import { Styling } from './Metrics.styles';
-import { DATABASE } from '../Details.constants';
 import { useMetricsDetails } from './Metrics.hooks';
 import { useDatabaseType } from '../Details.hooks';
 
@@ -108,7 +107,7 @@ const Metrics = () => {
 
   return (
     <div>
-      {databaseType === DATABASE.postgresql ? null : <TimeDistributionChart data={metrics} />}
+      <TimeDistributionChart data={metrics} databaseType={databaseType} />
       <h4>Metrics</h4>
       <Table
         dataSource={metrics}

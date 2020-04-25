@@ -1,6 +1,7 @@
 import React from 'react';
 import HSBar from 'react-horizontal-stacked-bar-chart';
 import { Humanize } from '../helpers/Humanization';
+import { DATABASE } from '../../../pmm-qan-app-panel/components/Details/Details.constants';
 
 const TIME_METRICS = [
   'lock_time',
@@ -23,13 +24,18 @@ const METRICS_COLORS = {
 
 const PERCENT_COUNT = 100;
 
-const TimeDistributionChart = ({ data }) => {
+const TimeDistributionChart = ({ data, databaseType }) => {
   let totalValue = 0;
   const timeMetrics = data.filter(metric => {
     if (metric.metricName === 'query_time') {
       totalValue = metric.metric.sum;
       return false;
     }
+
+    if (databaseType === DATABASE.postgresql) {
+      return false;
+    }
+
     return TIME_METRICS.includes(metric.metricName);
   });
   let currentPercent = PERCENT_COUNT;
