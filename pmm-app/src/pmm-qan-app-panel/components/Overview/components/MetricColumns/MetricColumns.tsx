@@ -115,7 +115,6 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
           </div>
         );
       };
-
       return (
         <div className="overview-content-column">
           <div style={{ marginRight: 'auto' }}>
@@ -131,11 +130,8 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
               ) : null
             }
           >
-            {isTimeMetric ? (
-              <TimeMetric value={stats.avg} />
-            ) : (
-              <NonTimeMetric value={statPerSec} units={metric.units} />
-            )}
+            {isTimeMetric ? <TimeMetric value={stats.avg} /> : null}
+            {!isTimeMetric ? <NonTimeMetric value={statPerSec} units={metric.units} /> : null}
           </Tooltip>
         </div>
       );
