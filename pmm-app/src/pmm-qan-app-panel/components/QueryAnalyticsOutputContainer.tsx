@@ -62,7 +62,7 @@ const QueryAnalyticsOutputContainer = () => {
         <h5 className={Styling.overviewTitle}>Overview</h5>
         <div className={Styling.paginationWrapper}>
           <Pagination
-            showSizeChanger={true}
+            showSizeChanger
             pageSizeOptions={PAGE_SIZE_OPTIONS}
             defaultCurrent={1}
             defaultPageSize={10}
@@ -75,7 +75,7 @@ const QueryAnalyticsOutputContainer = () => {
           />
         </div>
         <div className={Styling.manageColumnsWrapper}>
-          <ManageColumns onlyAdd={true} />
+          <ManageColumns onlyAdd />
         </div>
       </div>
 

@@ -4,7 +4,7 @@ import ManageColumns from '../../../ManageColumns/ManageColumns';
 import { Humanize } from '../../../../../react-plugins-deps/helpers/Humanization';
 import { Styling } from './MetricColumn.styles';
 import { Divider } from 'antd';
-import { LatencyChart, PolygonChart } from '../../../../../react-plugins-deps/components/Elements/Charts';
+import { Latency, Sparkline } from '../../../../../react-plugins-deps/components/Elements/Charts';
 import Tooltip from 'antd/es/tooltip';
 import React from 'react';
 import './MetricColumns.scss';
@@ -104,7 +104,7 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
               <>
                 <Divider style={{ background: '#666666', margin: '0' }} />
                 {metricName === 'query_time' && (
-                  <LatencyChart {...{ data: stats }} className="latency-chart-container" />
+                  <Latency {...{ data: stats }} className="latency-chart-container" />
                 )}
                 <MetricsList data={latencyTooltipData} />
               </>
@@ -115,7 +115,7 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
       return (
         <div className="overview-content-column">
           <div style={{ marginRight: 'auto' }}>
-            {columnIndex === 0 && <PolygonChart {...polygonChartProps} />}
+            {columnIndex === 0 && <Sparkline {...polygonChartProps} />}
           </div>
           <Tooltip
             getPopupContainer={() => document.querySelector('#antd') || document.body}

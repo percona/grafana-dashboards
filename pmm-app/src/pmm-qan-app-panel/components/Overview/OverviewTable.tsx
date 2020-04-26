@@ -26,7 +26,7 @@ const OverviewTable = props => {
       onChange={onTableChange}
       columns={data.columns}
       size="small"
-      bordered={true}
+      bordered
       pagination={false}
       scroll={{ y: Math.max(height - 30, TABLE_Y_SCROLL), x: TABLE_X_SCROLL }}
       rowClassName={record => {

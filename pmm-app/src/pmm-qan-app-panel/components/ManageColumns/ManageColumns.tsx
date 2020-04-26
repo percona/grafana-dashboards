@@ -39,7 +39,7 @@ const ManageColumns = props => {
     <div className={!props.onlyAdd ? 'manage-columns' : 'add-columns'} onClick={e => e.stopPropagation()}>
       <Select
         optionLabelProp="label"
-        showSearch={true}
+        showSearch
         style={{ width: props.width || '160px' }}
         placeholder={
           !props.onlyAdd ? (
