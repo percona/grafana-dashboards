@@ -1,13 +1,13 @@
 import React from 'react';
-import { useField } from 'react-final-form-hooks';
+import { useField } from 'react-final-form';
 
-export const PasswordField = ({ name, placeholder = '', required, form, ...rest }) => {
+export const PasswordField = ({ name, placeholder = '', required }) => {
   // @ts-ignore
-  const field = useField(name, form);
+  const { input } = useField(name);
   return (
     <input
       type="password"
-      {...field.input}
+      {...input}
       required={required}
       placeholder={`${required ? '*' : ''}${placeholder}`}
       className="input-field input-field--dark"

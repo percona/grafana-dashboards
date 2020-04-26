@@ -3,11 +3,11 @@ import { TextAreaField } from '../../../react-plugins-deps/components/FormCompon
 import React, { ReactElement, useEffect, useState } from 'react';
 import ButtonElement from '../../../react-plugins-deps/components/FormComponents/Button/Button';
 import { Form as FormFinal } from 'react-final-form';
-import { useForm } from 'react-final-form-hooks';
 import SettingsService from '../../Settings.service';
 import { showSuccessNotification } from '../../../react-plugins-deps/components/helpers/notification-manager';
 import { FormElement } from '../../../react-plugins-deps/components/FormComponents/FormElement/FormElement';
 import { PluginTooltip } from '../../../react-plugins-deps/components/helpers/Helpers';
+import { css } from 'emotion';
 
 interface AlertManagerSettingsInterface {
   alert_manager_url: string;
@@ -16,40 +16,43 @@ interface AlertManagerSettingsInterface {
   remove_alert_manager_rules?: boolean;
 }
 
+const Styling = {
+  textAreaWidth: css`
+    width: 100%;
+  `,
+};
+
 const AlertManager = props => {
   const [loading, setLoading] = useState(false);
+  const onSubmit = async (values: AlertManagerSettingsInterface): Promise<void> => {
+    const settings: AlertManagerSettingsInterface = {
+      alert_manager_url: values.alert_manager_url || '',
+      alert_manager_rules: values.alert_manager_rules || '',
+    };
+
+    if (!values.alert_manager_url) {
+      settings.remove_alert_manager_url = true;
+    }
+
+    if (!values.alert_manager_rules) {
+      settings.remove_alert_manager_rules = true;
+    }
+
+    setLoading(true);
+    try {
+      await SettingsService.setSettings(settings);
+      setLoading(false);
+      showSuccessNotification({
+        message: 'Alert manager settings updated',
+      });
+    } catch (e) {
+      setLoading(false);
+    }
+  };
   return (
     <FormFinal
-      onSubmit={() => {}}
-      render={(): ReactElement => {
-        const { form, handleSubmit } = useForm({
-          onSubmit: async (values: AlertManagerSettingsInterface): Promise<void> => {
-            const settings: AlertManagerSettingsInterface = {
-              alert_manager_url: values.alert_manager_url || '',
-              alert_manager_rules: values.alert_manager_rules || '',
-            };
-
-            if (!values.alert_manager_url) {
-              settings.remove_alert_manager_url = true;
-            }
-
-            if (!values.alert_manager_rules) {
-              settings.remove_alert_manager_rules = true;
-            }
-
-            setLoading(true);
-            try {
-              await SettingsService.setSettings(settings);
-              setLoading(false);
-              showSuccessNotification({
-                message: 'Alert manager settings updated',
-              });
-            } catch (e) {
-              setLoading(false);
-            }
-          },
-          validate: () => undefined,
-        });
+      onSubmit={onSubmit}
+      render={({ form, handleSubmit }): ReactElement => {
         useEffect(() => {
           form.initialize(props.settings);
         }, [props.settings]);
@@ -78,10 +81,9 @@ const AlertManager = props => {
                 }
                 element={
                   <InputField
-                    form={form}
                     name="alert_manager_url"
                     placeholder="Enter URL"
-                    style={{ width: '100%' }}
+                    className={Styling.textAreaWidth}
                   />
                 }
               />
@@ -106,10 +108,9 @@ const AlertManager = props => {
                 }
                 element={
                   <TextAreaField
-                    form={form}
                     name="alert_manager_rules"
                     placeholder="Alertmanager rules"
-                    style={{ width: '100%' }}
+                    className={Styling.textAreaWidth}
                   />
                 }
                 alignLabel="top"
