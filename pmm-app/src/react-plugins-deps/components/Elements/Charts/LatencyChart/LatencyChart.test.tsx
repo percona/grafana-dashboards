@@ -1,5 +1,5 @@
 // Just a stub test
-import LatencyChart from './LatencyChart';
+import { LatencyChart } from './LatencyChart';
 import React from 'react';
 import renderer from 'react-test-renderer';
 

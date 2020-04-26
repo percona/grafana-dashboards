@@ -4,10 +4,7 @@ import ManageColumns from '../../../ManageColumns/ManageColumns';
 import { Humanize } from '../../../../../react-plugins-deps/helpers/Humanization';
 import { Styling } from './MetricColumn.styles';
 import { Divider } from 'antd';
-// eslint-disable-next-line max-len
-import LatencyChart from '../../../../../react-plugins-deps/components/Elements/Charts/LatencyChart/LatencyChart';
-// eslint-disable-next-line max-len
-import PolygonChart from '../../../../../react-plugins-deps/components/Elements/Charts/PolygonChart/PolygonChart';
+import { LatencyChart, PolygonChart } from '../../../../../react-plugins-deps/components/Elements/Charts';
 import Tooltip from 'antd/es/tooltip';
 import React from 'react';
 import './MetricColumns.scss';

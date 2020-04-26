@@ -30,7 +30,14 @@ const getMetricSparklineKey = metricName => {
   }
 };
 
-const Chart = ({ appLoadPolygonChart, margin, height, width, metricName, data }: PolygonChartInterface) => {
+export const PolygonChart = ({
+  appLoadPolygonChart,
+  margin,
+  height,
+  width,
+  metricName,
+  data,
+}: PolygonChartInterface) => {
   const xkey = 'timestamp';
   const ykey = getMetricSparklineKey(metricName);
   margin = 0;
@@ -184,5 +191,3 @@ const Chart = ({ appLoadPolygonChart, margin, height, width, metricName, data }:
     <div ref={ref} className="d3-bar-chart-container app-tooltip" data-tooltip={tooltip}></div>
   );
 };
-
-export default Chart;
