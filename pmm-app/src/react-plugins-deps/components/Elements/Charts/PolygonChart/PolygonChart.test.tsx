@@ -1,8 +1,7 @@
 // Just a stub test
-import LatencyChart from './LatencyChart';
 import React from 'react';
 import renderer from 'react-test-renderer';
-import PolygonChart from './PolygonChart';
+import { PolygonChart } from './PolygonChart';
 
 const MOCK_SPARKLINE = [
   {

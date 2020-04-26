@@ -2,29 +2,9 @@ import React from 'react';
 import HSBar from 'react-horizontal-stacked-bar-chart';
 import { Humanize } from '../../../../helpers/Humanization';
 import { DATABASE } from '../../../../../pmm-qan-app-panel/components/Details/Details.constants';
+import { METRICS_COLORS, PERCENT_COUNT, TIME_METRICS } from './TimeDistributionChart.constants';
 
-const TIME_METRICS = [
-  'lock_time',
-  'query_time',
-  'blk_read_time',
-  'blk_write_time',
-  'innodb_io_r_wait',
-  'innodb_queue_wait',
-  'innodb_rec_lock_wait',
-];
-
-const METRICS_COLORS = {
-  lock_time: '#be1818',
-  blk_read_time: '#4e378c',
-  blk_write_time: '#fcc200',
-  innodb_io_r_wait: '#3c3c3c',
-  innodb_queue_wait: '#7e4291',
-  innodb_rec_lock_wait: '#e97e03',
-};
-
-const PERCENT_COUNT = 100;
-
-const TimeDistributionChart = ({ data, databaseType }) => {
+export const getMetricDistribution = (data, databaseType) => {
   let totalValue = 0;
   const timeMetrics = data.filter(metric => {
     if (metric.metricName === 'query_time') {
@@ -69,6 +49,11 @@ const TimeDistributionChart = ({ data, databaseType }) => {
     });
   }
 
+  return normalizedTimeMetrics;
+};
+
+export const TimeDistributionChart = ({ data, databaseType }) => {
+  const normalizedTimeMetrics = getMetricDistribution(data, databaseType);
   return (
     <>
       <h4>Query time distribution</h4>
@@ -76,5 +61,3 @@ const TimeDistributionChart = ({ data, databaseType }) => {
     </>
   );
 };
-
-export default TimeDistributionChart;
