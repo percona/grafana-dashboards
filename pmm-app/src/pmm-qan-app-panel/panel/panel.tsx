@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import '../panel.scss';
 import '../../react-plugins-deps/styles.scss';
 import '../../react-plugins-deps/style.less';
-import { UrlParametersProvider } from './QueryAnalyticsProvider';
+import { UrlParametersProvider } from './panel.provider';
 
 import FiltersContainer from '../components/Filters/Filters';
 import QueryAnalyticsOutputContainer from '../components/QueryAnalyticsOutputContainer';
