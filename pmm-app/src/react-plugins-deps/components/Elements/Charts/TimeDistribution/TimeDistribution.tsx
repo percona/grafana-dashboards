@@ -2,7 +2,7 @@ import React from 'react';
 import HSBar from 'react-horizontal-stacked-bar-chart';
 import { Humanize } from '../../../../helpers/Humanization';
 import { DATABASE } from '../../../../../pmm-qan-app-panel/components/Details/Details.constants';
-import { METRICS_COLORS, PERCENT_COUNT, TIME_METRICS } from './TimeDistributionChart.constants';
+import { METRICS_COLORS, PERCENT_COUNT, TIME_METRICS } from './TimeDistribution.constants';
 
 export const getMetricDistribution = (data, databaseType) => {
   let totalValue = 0;
@@ -52,7 +52,7 @@ export const getMetricDistribution = (data, databaseType) => {
   return normalizedTimeMetrics;
 };
 
-export const TimeDistributionChart = ({ data, databaseType }) => {
+export const TimeDistribution = ({ data, databaseType }) => {
   const normalizedTimeMetrics = getMetricDistribution(data, databaseType);
   return (
     <>

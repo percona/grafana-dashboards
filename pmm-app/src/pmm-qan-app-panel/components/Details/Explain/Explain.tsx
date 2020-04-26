@@ -18,7 +18,7 @@ const Explain = ({ json, classic }) => {
       .split('|')
       .map(e => e.trim())
       .filter(Boolean)
-      .map((title, index) => ({ title: title, key: title, dataIndex: title }));
+      .map(title => ({ title: title, key: title, dataIndex: title }));
 
     const rowsList = data.map(item =>
       item
@@ -37,13 +37,7 @@ const Explain = ({ json, classic }) => {
     <div>
       <Collapse bordered={false} defaultActiveKey={['1', '2']} className={Styling.collapse}>
         <Panel header="Classic" key="1" className={Styling.panel}>
-          <Table
-            dataSource={data.rows}
-            columns={data.columns}
-            pagination={false}
-            size="small"
-            bordered={true}
-          />
+          <Table dataSource={data.rows} columns={data.columns} pagination={false} size="small" bordered />
         </Panel>
         <Panel header="JSON" key="2" className={Styling.panel}>
           <ReactJSON json={json} />

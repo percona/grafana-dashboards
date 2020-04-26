@@ -1,5 +1,5 @@
 import renderer from 'react-test-renderer';
-import { TimeDistributionChart, getMetricDistribution } from './TimeDistributionChart';
+import { TimeDistribution, getMetricDistribution } from './TimeDistribution';
 import React from 'react';
 
 const MOCK_METRICS = [
@@ -4454,7 +4454,7 @@ describe('TimeDistributionChart chart test', () => {
       databaseType: 'mysql',
     };
 
-    const component = renderer.create(<TimeDistributionChart {...TimeDistributionChartProps} />);
+    const component = renderer.create(<TimeDistribution {...TimeDistributionChartProps} />);
     const tree = component.toJSON();
     expect(tree).toMatchSnapshot();
   });
@@ -4465,7 +4465,7 @@ describe('TimeDistributionChart chart test', () => {
       databaseType: 'postgresql',
     };
 
-    const component = renderer.create(<TimeDistributionChart {...TimeDistributionChartProps} />);
+    const component = renderer.create(<TimeDistribution {...TimeDistributionChartProps} />);
     const tree = component.toJSON();
     expect(tree).toMatchSnapshot();
   });
@@ -4476,7 +4476,7 @@ describe('TimeDistributionChart chart test', () => {
       databaseType: 'mongodb',
     };
 
-    const component = renderer.create(<TimeDistributionChart {...TimeDistributionChartProps} />);
+    const component = renderer.create(<TimeDistribution {...TimeDistributionChartProps} />);
     const tree = component.toJSON();
     expect(tree).toMatchSnapshot();
   });

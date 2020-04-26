@@ -2,10 +2,9 @@ import React, { ReactElement, useContext, useEffect, useState } from 'react';
 import { Button } from 'antd';
 import { PanelProvider } from '../../panel/panel.provider';
 import FiltersService from './Filters.service';
-import { useForm } from 'react-final-form-hooks';
 import { Form as FormFinal } from 'react-final-form';
 import Search from 'antd/lib/input/Search';
-import { CheckboxGroup } from './components/CheckboxGroup';
+import { CheckboxGroup } from './components/CheckboxGroup/CheckboxGroup';
 import useWindowSize from 'react-plugins-deps/helpers/WindowSize.hooks';
 import ScrollArea from 'react-scrollbar';
 import { FILTERS_BODY_HEIGHT, FILTERS_GROUPS } from './Filters.constants';
@@ -81,7 +80,6 @@ export const Filters = ({ contextActions, groups, form, labels, filters }) => {
               <CheckboxGroup
                 key={name}
                 {...{
-                  form,
                   name,
                   items: filters[dataKey].name,
                   group: dataKey,
@@ -120,19 +118,15 @@ const FiltersContainer = () => {
   return (
     <FormFinal
       onSubmit={() => {}}
-      render={(): ReactElement => {
-        const { form, handleSubmit } = useForm({
-          onSubmit: () => {},
-          validate: () => undefined,
-          initialValues: Object.entries(labels).reduce((acc, data) => {
-            const [key, values] = data;
-            Array.isArray(values) &&
-              values.forEach(value => {
-                acc[`${key}:${value || 'na'}`] = true;
-              });
-            return acc;
-          }, {}),
-        });
+      initialValues={Object.entries(labels).reduce((acc, data) => {
+        const [key, values] = data;
+        Array.isArray(values) &&
+          values.forEach(value => {
+            acc[`${key}:${value || 'na'}`] = true;
+          });
+        return acc;
+      }, {})}
+      render={({ form, handleSubmit }): ReactElement => {
         // @ts-ignore
         return (
           <form

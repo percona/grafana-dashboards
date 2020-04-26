@@ -1,7 +1,7 @@
 // Just a stub test
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { PolygonChart } from './PolygonChart';
+import { Sparkline } from './Sparkline';
 
 const MOCK_SPARKLINE = [
   {
@@ -733,7 +733,7 @@ describe('Polygon chart test', () => {
       ykey: 'metric',
     };
 
-    const component = renderer.create(<PolygonChart {...polygonChartProps} />);
+    const component = renderer.create(<Sparkline {...polygonChartProps} />);
     const tree = component.toJSON();
     expect(tree).toMatchSnapshot();
   });
