@@ -188,7 +188,7 @@ const AddRemoteInstance = props => {
               <InputField
                 name="address"
                 placeholder="Hostname"
-                required={true}
+                required
                 readonly={remoteInstanceCredentials.isRDS}
               />
               <span className="description">Public DNS hostname of your instance</span>
@@ -197,16 +197,16 @@ const AddRemoteInstance = props => {
               <InputField
                 name="port"
                 placeholder={`Port (default: ${remoteInstanceCredentials.port} )`}
-                required={true}
+                required
                 readonly={remoteInstanceCredentials.isRDS}
               />
               <span className="description">Port your service is listening on</span>
             </div>
             <div className="add-instance-panel">
-              <InputField name="username" placeholder="Username" required={true} />
+              <InputField name="username" placeholder="Username" required />
               <span className="description">Your database user name</span>
 
-              <PasswordField name="password" placeholder="Password" required={true} />
+              <PasswordField name="password" placeholder="Password" required />
               <span className="description">Your database password</span>
             </div>
             <div className="add-instance-panel">

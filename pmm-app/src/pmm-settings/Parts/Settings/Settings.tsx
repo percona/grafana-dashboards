@@ -243,7 +243,7 @@ const SettingsPart = props => {
                         text="Option to check new versions and ability to update PMM from UI"
                       />
                     }
-                    element={<ToggleField name="updates_disabled" disabled={true} />}
+                    element={<ToggleField name="updates_disabled" disabled />}
                   />
                 </Panel>
               </Collapse>

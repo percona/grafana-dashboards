@@ -23,14 +23,14 @@ const CredentialsForm = props => {
               <InputField
                 name="aws_access_key"
                 placeholder="AMAZON_RDS_ACCESS_KEY_ID"
-                required={true}
+                required
                 wrapperStyle={{ paddingRight: '10px' }}
               />
               <PasswordField
                 name="aws_secret_key"
                 data-cy="add-account-username"
                 placeholder="AMAZON_RDS_SECRET_ACCESS_KEY"
-                required={true}
+                required
               />
               <button className="button button--dark" id="addInstance">
                 Discover

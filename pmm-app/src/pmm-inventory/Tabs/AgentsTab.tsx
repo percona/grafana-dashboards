@@ -20,7 +20,5 @@ export const AgentsTab = () => {
     })();
   }, []);
 
-  return (
-    <Table dataSource={data} columns={agentsColumns} pagination={false} bordered={true} loading={loading} />
-  );
+  return <Table dataSource={data} columns={agentsColumns} pagination={false} bordered loading={loading} />;
 };

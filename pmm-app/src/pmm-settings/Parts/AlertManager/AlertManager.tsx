@@ -7,6 +7,7 @@ import SettingsService from '../../Settings.service';
 import { showSuccessNotification } from '../../../react-plugins-deps/components/helpers/notification-manager';
 import { FormElement } from '../../../react-plugins-deps/components/FormComponents/FormElement/FormElement';
 import { PluginTooltip } from '../../../react-plugins-deps/components/helpers/Helpers';
+import { css } from 'emotion';
 
 interface AlertManagerSettingsInterface {
   alert_manager_url: string;
@@ -14,6 +15,12 @@ interface AlertManagerSettingsInterface {
   remove_alert_manager_url?: boolean;
   remove_alert_manager_rules?: boolean;
 }
+
+const Styling = {
+  textAreaWidth: css`
+    width: 100%;
+  `,
+};
 
 const AlertManager = props => {
   const [loading, setLoading] = useState(false);
@@ -73,7 +80,11 @@ const AlertManager = props => {
                   />
                 }
                 element={
-                  <InputField name="alert_manager_url" placeholder="Enter URL" style={{ width: '100%' }} />
+                  <InputField
+                    name="alert_manager_url"
+                    placeholder="Enter URL"
+                    className={Styling.textAreaWidth}
+                  />
                 }
               />
               <FormElement
@@ -99,7 +110,7 @@ const AlertManager = props => {
                   <TextAreaField
                     name="alert_manager_rules"
                     placeholder="Alertmanager rules"
-                    style={{ width: '100%' }}
+                    className={Styling.textAreaWidth}
                   />
                 }
                 alignLabel="top"
