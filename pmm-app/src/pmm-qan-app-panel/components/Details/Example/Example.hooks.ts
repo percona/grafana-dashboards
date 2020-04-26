@@ -1,11 +1,11 @@
 import { useContext, useEffect, useState } from 'react';
 import ExampleService from './Example.service';
-import { QueryAnalyticsProvider } from '../../../panel/QueryAnalyticsProvider';
+import { PanelProvider } from '../../../panel/panel.provider';
 
 export const useExamples = (): [any[], boolean] => {
   const {
     panelState: { queryId, groupBy, from, to, labels },
-  } = useContext(QueryAnalyticsProvider);
+  } = useContext(PanelProvider);
   const [examples, setExamples] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 

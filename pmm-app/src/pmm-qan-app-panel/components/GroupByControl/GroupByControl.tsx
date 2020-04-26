@@ -1,4 +1,4 @@
-import { QueryAnalyticsProvider } from '../../panel/QueryAnalyticsProvider';
+import { PanelProvider } from '../../panel/panel.provider';
 import React, { useCallback, useContext } from 'react';
 import { Select } from 'antd';
 import { css } from 'emotion';
@@ -28,7 +28,7 @@ export const GroupByControl = () => {
   const {
     contextActions,
     panelState: { groupBy },
-  } = useContext(QueryAnalyticsProvider);
+  } = useContext(PanelProvider);
 
   const setGroupBy = useCallback(value => {
     contextActions.changeGroupBy(value);

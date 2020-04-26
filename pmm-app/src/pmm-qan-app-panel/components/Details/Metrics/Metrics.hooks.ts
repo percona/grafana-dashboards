@@ -1,14 +1,14 @@
 import { useContext, useEffect, useState } from 'react';
-import { QueryAnalyticsProvider } from '../../../panel/QueryAnalyticsProvider';
+import { PanelProvider } from '../../../panel/panel.provider';
 import MetricsService from './Metrics.service';
 import { processMetrics } from '../../../../react-plugins-deps/helpers/processMetrics';
-import { METRIC_CATALOGUE } from '../../../panel/QueryAnalytics.constants';
+import { METRIC_CATALOGUE } from '../../../panel/panel.constants';
 
 export const useMetricsDetails = (): [any[], boolean] => {
   const {
     contextActions,
     panelState: { queryId, groupBy, from, to, labels },
-  } = useContext(QueryAnalyticsProvider);
+  } = useContext(PanelProvider);
   const [metrics, setMetrics] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   useEffect(() => {

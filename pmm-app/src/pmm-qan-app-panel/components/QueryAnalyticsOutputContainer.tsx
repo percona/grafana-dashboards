@@ -1,8 +1,8 @@
 import OverviewTable from './Overview/OverviewTable';
-import QueryDetails from './Details/QueryDetails';
+import Details from './Details/Details';
 import React, { useCallback, useContext, useState } from 'react';
 import Split from 'react-split';
-import { QueryAnalyticsProvider } from '../panel/QueryAnalyticsProvider';
+import { PanelProvider } from '../panel/panel.provider';
 import { Pagination } from 'antd';
 import ManageColumns from './ManageColumns/ManageColumns';
 import { css } from 'emotion';
@@ -35,7 +35,7 @@ const QueryAnalyticsOutputContainer = () => {
   const {
     contextActions,
     panelState: { pageNumber, pageSize, querySelected },
-  } = useContext(QueryAnalyticsProvider);
+  } = useContext(PanelProvider);
   const [total, setTotal] = useState(30);
   const changePageNumber = useCallback(pageNumber => {
     contextActions.changePage(pageNumber);
@@ -50,7 +50,14 @@ const QueryAnalyticsOutputContainer = () => {
   const size = container && container.clientWidth;
 
   return (
-    <div style={{ width: `${(size || 1500) - 260}px`, height: '100%', overflowY: 'scroll' }}>
+    <div
+      style={{
+        width: `${(size || 1500) - 260}px`,
+        height: '100%',
+        overflowY: 'scroll',
+        position: 'relative',
+      }}
+    >
       <div className={Styling.overviewHeader}>
         <h5 className={Styling.overviewTitle}>Overview</h5>
         <div className={Styling.paginationWrapper}>
@@ -73,7 +80,7 @@ const QueryAnalyticsOutputContainer = () => {
       </div>
 
       {!querySelected ? (
-        <div className="table-wrapper" style={{ minHeight: '600px' }}>
+        <div className="table-wrapper" style={{ minHeight: '600px', position: 'relative' }}>
           <OverviewTable setTotal={setTotal} />
         </div>
       ) : (
@@ -93,7 +100,7 @@ const QueryAnalyticsOutputContainer = () => {
           <div className="table-wrapper">
             <OverviewTable setTotal={setTotal} />
           </div>
-          <QueryDetails />
+          <Details />
         </Split>
       )}
     </div>

@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { ParseQueryParamDate } from '../../react-plugins-deps/helpers/time-parameters-parser';
 import { getDataSourceSrv } from '@grafana/runtime';
 import { find } from 'lodash';
-import { DEFAULT_COLUMNS, FILTERS_NAMES } from './QueryAnalytics.constants';
+import { DEFAULT_COLUMNS, FILTERS_NAMES } from './panel.constants';
 
 const initialState = {} as any;
 
-export const QueryAnalyticsProvider = React.createContext(initialState);
+export const PanelProvider = React.createContext(initialState);
 
 const setFilters = query =>
   FILTERS_NAMES.reduce((result, filterName) => {
@@ -241,7 +241,7 @@ export const UrlParametersProvider = ({ grafanaProps, children }) => {
   }, []);
 
   return (
-    <QueryAnalyticsProvider.Provider
+    <PanelProvider.Provider
       value={{
         panelState: panelState,
         contextActions: Object.keys(actions).reduce((actions, key) => {
@@ -251,6 +251,6 @@ export const UrlParametersProvider = ({ grafanaProps, children }) => {
       }}
     >
       {children}
-    </QueryAnalyticsProvider.Provider>
+    </PanelProvider.Provider>
   );
 };

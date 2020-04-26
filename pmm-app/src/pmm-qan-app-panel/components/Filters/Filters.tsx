@@ -1,104 +1,17 @@
 import React, { ReactElement, useContext, useEffect, useState } from 'react';
 import { Button } from 'antd';
-import { QueryAnalyticsProvider } from '../../panel/QueryAnalyticsProvider';
+import { PanelProvider } from '../../panel/panel.provider';
 import FiltersService from './Filters.service';
 import { useForm } from 'react-final-form-hooks';
 import { Form as FormFinal } from 'react-final-form';
 import Search from 'antd/lib/input/Search';
-import { CheckboxGroup } from './CheckboxGroup';
+import { CheckboxGroup } from './components/CheckboxGroup';
 import useWindowSize from 'react-plugins-deps/helpers/WindowSize.hooks';
 import ScrollArea from 'react-scrollbar';
-import { css } from 'emotion';
+import { FILTERS_BODY_HEIGHT, FILTERS_GROUPS } from './Filters.constants';
+import { Styling } from './Filters.styles';
+import { GroupInterface } from './Filters.types';
 
-export const FILTERS_GROUPS = [
-  {
-    name: 'Environment',
-    dataKey: 'environment',
-  },
-  {
-    name: 'Cluster',
-    dataKey: 'cluster',
-  },
-  {
-    name: 'Replication Set',
-    dataKey: 'replication_set',
-  },
-  {
-    name: 'Database',
-    dataKey: 'database',
-  },
-  {
-    name: 'Schema',
-    dataKey: 'schema',
-  },
-  {
-    name: 'Node Name',
-    dataKey: 'node_name',
-  },
-  {
-    name: 'Service Name',
-    dataKey: 'service_name',
-  },
-  {
-    name: 'Client Host',
-    dataKey: 'client_host',
-  },
-  {
-    name: 'User Name',
-    dataKey: 'username',
-  },
-  {
-    name: 'Service Type',
-    dataKey: 'service_type',
-  },
-  {
-    name: 'Node Type',
-    dataKey: 'node_type',
-  },
-  {
-    name: 'City',
-    dataKey: 'city',
-  },
-  {
-    name: 'Availability Zone',
-    dataKey: 'az',
-  },
-];
-
-const Styling = {
-  filtersWrapper: css`
-    border: 1px solid rgb(40, 40, 40);
-    padding: 5px 16px !important;
-    overflow-y: scroll;
-  `,
-  filtersHeader: css`
-    display: flex;
-    align-items: baseline;
-    padding: 5px 0px !important;
-    height: 50px !important;
-    padding-top: 15px !important;
-  `,
-  showAllButton: css`
-    padding: 0 !important;
-    height: auto;
-  `,
-  title: css`
-    margin: 3px;
-    margin-right: 15px;
-  `,
-  resetButton: css`
-    padding: 0 !important;
-    height: auto;
-    margin-left: auto !important;
-  `,
-};
-
-interface GroupInterface {
-  dataKey: string;
-  name: string;
-}
-
-const FILTERS_BODY_HEIGHT = 600;
 export const Filters = ({ contextActions, groups, form, labels, filters }) => {
   // @ts-ignore
   const [width, height] = useWindowSize();
@@ -190,7 +103,7 @@ const FiltersContainer = () => {
   const {
     contextActions,
     panelState: { labels = {}, from, to, columns },
-  } = useContext(QueryAnalyticsProvider);
+  } = useContext(PanelProvider);
 
   useEffect(() => {
     (async () => {

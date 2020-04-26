@@ -1,14 +1,13 @@
 import { useContext, useEffect, useState } from 'react';
 import ExampleService from './Example/Example.service';
-import { QueryAnalyticsProvider } from '../../panel/QueryAnalyticsProvider';
+import { PanelProvider } from '../../panel/panel.provider';
 
 export const useDatabaseType = () => {
   const {
     panelState: { queryId, groupBy, from, to, labels },
-  } = useContext(QueryAnalyticsProvider);
+  } = useContext(PanelProvider);
   const [databaseType, setDatabaseType] = useState('');
   useEffect(() => {
-    // setActiveTab(TabKeys.Details);
     (async () => {
       try {
         const result = await ExampleService.getExample({
