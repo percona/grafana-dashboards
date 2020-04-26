@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Divider, Tabs } from 'antd';
-import './QueryDetails.scss';
-import Fingerprint from './Fingerprint';
+import './Details.scss';
+import Fingerprint from './Fingerprint/Fingerprint';
 import Explain from './Explain/Explain.container';
 import Example from './Example/Example';
 import Metrics from './Metrics/Metrics';
-import { QueryAnalyticsProvider } from '../../panel/QueryAnalyticsProvider';
+import { PanelProvider } from '../../panel/panel.provider';
 import Tooltip from 'antd/es/tooltip';
 import TableCreateContainer from './Table/TableContainer';
 import { useDatabaseType } from './Details.hooks';
@@ -13,10 +13,10 @@ import { DATABASE, TabKeys } from './Details.constants';
 
 const { TabPane } = Tabs;
 
-const QueryDetails = () => {
+const Details = () => {
   const {
     panelState: { queryId, groupBy, fingerprint, controlSum },
-  } = useContext(QueryAnalyticsProvider);
+  } = useContext(PanelProvider);
   const databaseType = useDatabaseType();
   const [activeTab, setActiveTab] = useState(TabKeys.Details);
 
@@ -54,4 +54,4 @@ const QueryDetails = () => {
   );
 };
 
-export default QueryDetails;
+export default Details;

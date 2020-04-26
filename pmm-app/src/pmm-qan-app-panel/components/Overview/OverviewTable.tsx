@@ -1,17 +1,17 @@
 import { Table } from 'antd';
 import React, { useCallback, useContext } from 'react';
 import './OverviewTable.scss';
-import { QueryAnalyticsProvider } from '../../panel/QueryAnalyticsProvider';
+import { PanelProvider } from '../../panel/panel.provider';
 import '../../../react-plugins-deps/components/Elements/Spinner/Spinner';
 import { useOverviewTable } from './OverviewTable.hooks';
-import { SELECTED_ROW_CLASS, TABLE_X_SCROLL, TABLE_Y_SCROLL } from './OverviewTable.constants';
+import { TABLE_X_SCROLL, TABLE_Y_SCROLL } from './OverviewTable.constants';
 
 const OverviewTable = props => {
   const [data, loading] = useOverviewTable(props.setTotal);
   const {
     contextActions,
     panelState: { queryId, querySelected },
-  } = useContext(QueryAnalyticsProvider);
+  } = useContext(PanelProvider);
 
   const onTableChange = useCallback((pagination, filters, sorter) => {
     contextActions.changeSort(sorter.columnKey);
@@ -33,7 +33,7 @@ const OverviewTable = props => {
         if (querySelected) {
           const isTotalSelected = !record.dimension && queryId === 'TOTAL';
           if (isTotalSelected || record.dimension === queryId) {
-            return SELECTED_ROW_CLASS;
+            return 'selected-overview-row';
           }
         }
         return '';

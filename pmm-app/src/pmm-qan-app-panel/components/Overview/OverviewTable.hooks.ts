@@ -1,14 +1,15 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
 import OverviewTableService from './OverviewTable.service';
-import { getDefaultColumns, getOverviewColumn } from './Columns';
-import { QueryAnalyticsProvider } from '../../panel/QueryAnalyticsProvider';
+import { PanelProvider } from '../../panel/panel.provider';
 import { DataInterface } from './OverviewTable.types';
+import { getOverviewColumn } from './components/MetricColumns/MetricColumns';
+import { getDefaultColumns } from './components/DefaultColumns/DefaultColumns';
 
 export const useOverviewTable = (setTotal): [DataInterface, boolean] => {
   const {
     contextActions,
     panelState: { labels, columns, pageNumber, pageSize, orderBy, from, to, groupBy, rawTime },
-  } = useContext(QueryAnalyticsProvider);
+  } = useContext(PanelProvider);
   const [data, setData] = useState<DataInterface>({ rows: [], columns: [] });
   const [loading, setLoading] = useState(false);
 
@@ -38,15 +39,14 @@ export const useOverviewTable = (setTotal): [DataInterface, boolean] => {
         });
 
         setTotal(result.total_rows);
-        const calculatedColumns = getDefaultColumns(
-          groupBy,
-          pageNumber,
-          pageSize,
-          columns.length,
-          onCell
-        ).concat(columns.map((key, index) => getOverviewColumn(key, index, result.rows[0], orderBy)));
+        const defaultColumns = getDefaultColumns(groupBy, pageNumber, pageSize, columns.length, onCell);
+
+        const metricsColumns = columns.map((key, index) =>
+          getOverviewColumn(key, index, result.rows[0], orderBy)
+        );
+
         // @ts-ignore
-        setData({ rows: result.rows, columns: calculatedColumns });
+        setData({ rows: result.rows, columns: [...defaultColumns, ...metricsColumns] });
         setLoading(false);
       } catch (e) {
         setLoading(false);

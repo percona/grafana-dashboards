@@ -1,8 +1,8 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { Divider, Icon, Select } from 'antd';
-import { QueryAnalyticsProvider } from '../../panel/QueryAnalyticsProvider';
+import { PanelProvider } from '../../panel/panel.provider';
 import './ManageColumns.less';
-import { METRIC_CATALOGUE } from '../../panel/QueryAnalytics.constants';
+import { METRIC_CATALOGUE } from '../../panel/panel.constants';
 
 const { Option } = Select;
 
@@ -10,7 +10,7 @@ const ManageColumns = props => {
   const {
     contextActions,
     panelState: { columns },
-  } = useContext(QueryAnalyticsProvider);
+  } = useContext(PanelProvider);
   const [availableColumns, setAvailableColumns] = useState(Object.values(METRIC_CATALOGUE));
   useEffect(() => {
     setAvailableColumns(

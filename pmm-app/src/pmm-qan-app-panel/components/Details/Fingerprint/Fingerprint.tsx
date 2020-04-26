@@ -1,6 +1,6 @@
 import React from 'react';
 import { css } from 'emotion';
-import { QueryTooltip } from '../../../react-plugins-deps/components/Elements/QueryTooltip/QueryTooltip';
+import { QueryTooltip } from '../../../../react-plugins-deps/components/Elements/QueryTooltip/QueryTooltip';
 
 const GROUP_BY_OPTIONS = [
   { value: 'queryid', data: { label: 'Query' } },
