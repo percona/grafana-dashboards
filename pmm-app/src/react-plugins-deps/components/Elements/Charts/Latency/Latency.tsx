@@ -8,7 +8,7 @@ interface LatencyChartState {
   tooltip: string | undefined;
 }
 
-export class LatencyChart extends Component<any, LatencyChartState> {
+export class Latency extends Component<any, LatencyChartState> {
   private width: number;
   private data: any[] | any;
   private measurement: string | undefined;

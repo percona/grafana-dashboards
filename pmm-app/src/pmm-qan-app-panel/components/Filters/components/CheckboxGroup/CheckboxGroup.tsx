@@ -1,59 +1,19 @@
 import React, { useState } from 'react';
-import { CheckboxField } from '../../../../react-plugins-deps/components/Form/Checkbox/Checkbox';
-import { Humanize } from '../../../../react-plugins-deps/helpers/Humanization';
+import { CheckboxField } from '../../../../../react-plugins-deps/components/Form/Checkbox/Checkbox';
+import { Humanize } from '../../../../../react-plugins-deps/helpers/Humanization';
 import { Divider } from 'antd';
-import { css } from 'emotion';
+import { Styling } from './CheckboxGroup.styles';
 
 const TOP_LIMIT = 5;
 
-const Styling = {
-  label: css`
-    display: grid;
-    grid-template-areas: 'filtername percentagearea';
-    grid-template-rows: 30px;
-    grid-template-columns: 150px auto;
-    grid-gap: 10px;
-    height: auto;
-    margin: 0;
-  `,
-  filterName: css`
-    grid-area: filtername;
-  `,
-  percentage: css`
-    grid-area: percentagearea;
-    display: flex;
-    justify-content: flex-end;
-  `,
-  filterHeaderWrapper: css`
-    display: flex;
-    justify-items: space-between;
-    margin-bottom: 0 !important;
-    margin-top: 20px !important;
-  `,
-  filterHeader: css`
-    margin-right: auto;
-    font-weight: 700;
-    font-size: 14px;
-  `,
-  divider: css`
-    margin-top: 0 !important;
-    margin-bottom: 5px !important;
-  `,
-  showModeSwitcher: css`
-    cursor: pointer;
-  `,
-};
-
-export const CheckboxGroup = ({ form, name, items, group, showAll, filter: searchFilterBy, labels }) => {
+export const CheckboxGroup = ({ name, items, group, showAll, filter: searchFilterBy }) => {
   const [showTop, setShowTop] = useState(true);
-  const filteredData = items
-    // .filter(item => item.hasOwnProperty('main_metric_percent'))
-    .filter(item => {
-      if (!showAll) {
-        return item.checked;
-      }
-      return true;
-    });
+  const filteredData = items.filter(item => {
+    if (!showAll) {
+      return item.checked;
+    }
+    return true;
+  });
   const itemsList = (showTop ? filteredData.slice(0, TOP_LIMIT) : filteredData)
     .filter((item, index, list) => {
       if (showAll && !item.value && list.length === 1) {
@@ -76,7 +36,6 @@ export const CheckboxGroup = ({ form, name, items, group, showAll, filter: searc
         <div className={Styling.label} key={`${group}:${item.value || ''}`}>
           <span className={Styling.filterName}>
             <CheckboxField
-              form={form}
               // TODO: using '--' because final form think that it is a nested fields
               //  need to replace it with something better
               name={`${group}:${item.value ? item.value.replace(/\./gi, '--') : 'na'}`}
@@ -95,12 +54,7 @@ export const CheckboxGroup = ({ form, name, items, group, showAll, filter: searc
       <p className={Styling.filterHeaderWrapper}>
         <span className={Styling.filterHeader}>{name}</span>
         {filteredData.length > TOP_LIMIT ? (
-          <span
-            onClick={() => {
-              setShowTop(!showTop);
-            }}
-            className={Styling.showModeSwitcher}
-          >
+          <span onClick={() => setShowTop(!showTop)} className={Styling.showModeSwitcher}>
             {showTop ? `Show all (${filteredData.length})` : `Show top ${TOP_LIMIT}`}
           </span>
         ) : (

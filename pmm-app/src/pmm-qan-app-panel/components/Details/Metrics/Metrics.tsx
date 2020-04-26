@@ -3,9 +3,9 @@ import React from 'react';
 import Icon from 'antd/es/icon';
 import Tooltip from 'antd/es/tooltip';
 import {
-  PolygonChart,
-  TimeDistributionChart,
-  LatencyChart,
+  Sparkline,
+  TimeDistribution,
+  Latency,
 } from '../../../../react-plugins-deps/components/Elements/Charts';
 import { Humanize } from '../../../../react-plugins-deps/helpers/Humanization';
 import { Styling } from './Metrics.styles';
@@ -37,7 +37,7 @@ const rateColumn = (text, item) => {
         {(item.isRate ? Humanize.transform(item.metric.rate, item.pipeTypes['ratePipe']) : '0') +
           ` ${item.units}`}
       </span>
-      {item.sparkline && <PolygonChart {...polygonChartProps} />}
+      {item.sparkline && <Sparkline {...polygonChartProps} />}
     </div>
   );
 };
@@ -75,7 +75,7 @@ const perQueryStatsColumn = (text, item) => {
           (+item.metric.sum / +item.queryCount).toFixed(2) ||
           '0'}
       </span>
-      {item.isLatencyChart && <LatencyChart {...latencyChartProps} />}
+      {item.isLatencyChart && <Latency {...latencyChartProps} />}
     </div>
   );
 };
@@ -108,14 +108,14 @@ const Metrics = () => {
 
   return (
     <div>
-      <TimeDistributionChart data={metrics} databaseType={databaseType} />
+      <TimeDistribution data={metrics} databaseType={databaseType} />
       <h4>Metrics</h4>
       <Table
         dataSource={metrics}
         columns={columns}
         pagination={false}
         size="small"
-        bordered={true}
+        bordered
         loading={loading}
       />
     </div>

@@ -1,25 +1,7 @@
 import { Button } from 'antd';
 import React from 'react';
-type ButtonHTMLType = 'submit' | 'button' | 'reset';
-import { css } from 'emotion';
-
-const Styling = {
-  button: css`
-    color: white !important;
-    background-color: #212327 !important;
-    border-radius: 0px !important;
-    border: 1px solid #212327 !important;
-    height: 36px !important;
-  `,
-};
-
-interface ButtonElementInterface {
-  loading?: boolean;
-  disabled?: boolean;
-  onClick?: (event: any) => void;
-  text: string;
-  htmlType?: ButtonHTMLType;
-}
+import { ButtonElementInterface } from './Button.types';
+import { Styling } from './Button.styles';
 
 const ButtonElement = ({
   loading = false,

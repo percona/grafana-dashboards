@@ -5,15 +5,8 @@ import * as d3 from 'd3';
 import { area, axisBottom, curveStepAfter, scaleLinear } from 'd3';
 import * as moment from 'moment';
 import { Humanize } from '../../../../helpers/Humanization';
-import './PolygonChart.scss';
-
-interface PolygonChartInterface {
-  data?: any;
-  ykey?: any;
-  width?: any;
-  height?: any;
-  metricName?: any;
-}
+import './Sparkline.scss';
+import { PolygonChartInterface } from './Sparkline.types';
 
 const getMetricSparklineKey = metricName => {
   switch (metricName) {
@@ -30,7 +23,7 @@ const getMetricSparklineKey = metricName => {
   }
 };
 
-export const PolygonChart = ({
+export const Sparkline = ({
   appLoadPolygonChart,
   margin,
   height,
@@ -79,7 +72,7 @@ export const PolygonChart = ({
   useEffect(() => {
     drawGraph(ref);
   });
-  const drawGraph = element => {
+  const drawGraph = () => {
     d3.select(ref.current)
       .selectAll('*')
       .remove();

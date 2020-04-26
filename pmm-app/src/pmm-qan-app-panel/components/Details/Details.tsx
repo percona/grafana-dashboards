@@ -27,7 +27,7 @@ const Details = () => {
       <Fingerprint query={fingerprint} controlSum={controlSum} groupBy={groupBy} />
       <div className="details-tabs">
         <Divider />
-        <Tabs activeKey={activeTab} onChange={setActiveTab} tabPosition="top" destroyInactiveTabPane={true}>
+        <Tabs activeKey={activeTab} onChange={setActiveTab} tabPosition="top" destroyInactiveTabPane>
           <TabPane tab={<span>Details</span>} key={TabKeys.Details}>
             <Metrics />
           </TabPane>
