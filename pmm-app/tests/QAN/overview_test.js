@@ -119,9 +119,13 @@ xScenario(
   'PMM-T202 Verify user is able to see correct values on sparkline after sorting @new-qan ',
   async (I, adminPage, qanPage) => {}
 );
-xScenario(
-  'PMM-T203 Verify user is able to search for columns by typing @new-qan ',
-  async (I, adminPage, qanPage) => {}
+Scenario(
+  'PMM-T203 Verify that columns are searchable by typing @new-qan',
+  async (I, adminPage, qanPage) => {
+      qanPage.openMetricsSelect('Load');
+      qanPage.searchMetrics('Bytes');
+      await qanPage.checkMetricsListMatchesSearch('Bytes');
+  }
 );
 xScenario('PMM-T207 Verify cursor of query name in query table @new-qan ', async (I, adminPage, qanPage) => {});
 xScenario(

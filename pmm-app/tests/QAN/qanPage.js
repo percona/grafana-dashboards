@@ -125,9 +125,7 @@ module.exports = {
   },
 
   async verifyColumnIsNotRemovable(columnName) {
-    const lastColumnSelector = this.manageColumnLocator(columnName);
-    I.waitForElement(lastColumnSelector, 30);
-    I.click(lastColumnSelector);
+    this.openMetricsSelect(columnName);
     I.dontSeeElement(this.fields.removeColumnButton, 30);
   },
 
@@ -184,9 +182,7 @@ module.exports = {
     I.wait(5);
   },
   removeColumn(columnName) {
-    const columnSelector = this.manageColumnLocator(columnName);
-    I.waitForElement(columnSelector, 30);
-    I.click(columnSelector);
+    this.openMetricsSelect(columnName);
     I.waitForElement(this.fields.removeColumnButton, 30);
     I.click(this.fields.removeColumnButton);
     // TODO: replace 'wait' with 'wait for' until overview table will be reloaded
@@ -203,6 +199,23 @@ module.exports = {
       true,
       `Remain only correct filters`
     );
+  },
+  async searchMetrics(searchString) {
+    I.waitForElement('.ant-select-open', 30);
+    I.fillField('.ant-select-open input', searchString);
+  },
+  async checkMetricsListMatchesSearch(searchString) {
+    const remainingMetrics = await I.grabTextFrom('.ant-select-dropdown-menu-item');
+    assert.equal(
+        remainingMetrics.every(filter => filter.includes(searchString)),
+        true,
+        `Remain only correct metrics`
+    );
+  },
+  openMetricsSelect(columnName){
+    const columnSelector = this.manageColumnLocator(columnName);
+    I.waitForElement(columnSelector, 30);
+    I.click(columnSelector);
   },
 
   async getSelectedFilters() {
