@@ -2,7 +2,6 @@
 import { Filters } from './Filters';
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { useForm } from 'react-final-form-hooks';
 import { renderHook } from '@testing-library/react-hooks';
 import { FILTERS_GROUPS } from './Filters.constants';
 
