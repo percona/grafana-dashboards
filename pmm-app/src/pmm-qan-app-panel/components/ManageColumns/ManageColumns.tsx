@@ -3,6 +3,8 @@ import { Divider, Icon, Select } from 'antd';
 import { PanelProvider } from '../../panel/panel.provider';
 import './ManageColumns.less';
 import { METRIC_CATALOGUE } from '../../panel/panel.constants';
+import Tooltip from 'antd/es/tooltip';
+import { Styling } from '../Details/Metrics/Metrics.styles';
 
 const { Option } = Select;
 
@@ -43,7 +45,12 @@ const ManageColumns = props => {
         style={{ width: props.width || '160px' }}
         placeholder={
           !props.onlyAdd ? (
-            props.placeholder && METRIC_CATALOGUE[props.placeholder].humanizeName
+            <Tooltip
+              title={props.placeholder && METRIC_CATALOGUE[props.placeholder].humanizeName}
+              placement="topLeft"
+            >
+              <span>{props.placeholder && METRIC_CATALOGUE[props.placeholder].humanizeName}</span>{' '}
+            </Tooltip>
           ) : (
             <div style={{ fontSize: '16px' }}>
               <i className="fa fa-plus-circle" style={{ marginRight: '5px' }}></i> <span> Add column</span>
