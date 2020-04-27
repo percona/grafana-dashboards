@@ -58,10 +58,6 @@ Scenario(
   }
 );
 
-xScenario('Open the QAN Dashboard and change column', async (I, adminPage, qanPage) => {});
-
-xScenario('Verify that you cant remove last column from QAN', async (I, adminPage, qanPage) => {});
-
 Scenario(
   'PMM-T132 Verify that the column in the overview table can be changed @new-qan',
   async (I, adminPage, qanPage) => {
@@ -85,7 +81,7 @@ Scenario(
   }
 );
 Scenario(
-  'PMM-T135 Verify user is not able to add duplicate metric to the overview column @new-qan',
+  'PMM-T135 Verify that a duplicate of the metric cannot be added to the overview table @new-qan',
   async (I, qanPage) => {
     const COLUMN_NAME = 'Bytes Sent';
 
@@ -136,10 +132,16 @@ xScenario(
   'PMM-T219 Verify that user is able to scroll up/down clicking the scrollbar buttons @new-qan ',
   async (I, adminPage, qanPage) => {}
 );
+
 xScenario(
-  "PMM-T220 Verify that last column can't be removed from Overview table @new-qan ",
-  async (I, adminPage, qanPage) => {}
+  "PMM-T220 Verify that the last column cannot be removed from the overview table @new-qan",
+  async (I, adminPage, qanPage) => {
+      qanPage.removeColumn('Query Time');
+      qanPage.removeColumn('Query Count');
+      qanPage.verifyColumnIsNotRemovable('Load');
+  }
 );
+
 xScenario('PMM-T222 Verify `Add column` dropdown @new-qan ', async (I, adminPage, qanPage) => {});
 xScenario(
   'PMM-T223 Verify time metrics are AVG per query (not per second) @new-qan ',

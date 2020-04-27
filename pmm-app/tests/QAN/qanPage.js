@@ -124,6 +124,13 @@ module.exports = {
     I.dontSeeElement(columnSelector);
   },
 
+  async verifyColumnIsNotRemovable(columnName) {
+    const lastColumnSelector = this.manageColumnLocator(columnName);
+    I.waitForElement(lastColumnSelector, 30);
+    I.click(lastColumnSelector);
+    I.dontSeeElement(this.fields.removeColumnButton, 30);
+  },
+
   changeGroupBy(groupBy = 'Client Host') {
     I.waitForElement(this.fields.groupBySelector, 30);
     I.forceClick(this.fields.groupBySelector);
