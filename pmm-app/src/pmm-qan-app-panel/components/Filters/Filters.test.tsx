@@ -186,21 +186,13 @@ const MOCK_FILTERS = {
 };
 describe('Filters test', () => {
   it('Renders correct with right props', () => {
-    const { result } = renderHook(() => {
-      return useForm({
-        onSubmit: values => {
-          console.log(values);
-        },
-      });
-    });
-
     const component = renderer.create(
       <Filters
         groups={FILTERS_GROUPS}
         filters={MOCK_FILTERS}
+        form={{ reset: () => {} }}
         labels={{}}
         dispatch={() => {}}
-        form={result.current.form}
       />
     );
 
