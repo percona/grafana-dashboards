@@ -4,15 +4,11 @@ import { Humanize } from '../../../../helpers/Humanization';
 import { DATABASE } from '../../../../../pmm-qan-app-panel/components/Details/Details.constants';
 import { METRICS_COLORS, PERCENT_COUNT, TIME_METRICS } from './TimeDistribution.constants';
 
-export const getMetricDistribution = (data, databaseType) => {
+export const getMetricDistribution = data => {
   let totalValue = 0;
   const timeMetrics = data.filter(metric => {
     if (metric.metricName === 'query_time') {
       totalValue = metric.metric.sum;
-      return false;
-    }
-
-    if (databaseType === DATABASE.postgresql) {
       return false;
     }
 
@@ -53,7 +49,10 @@ export const getMetricDistribution = (data, databaseType) => {
 };
 
 export const TimeDistribution = ({ data, databaseType }) => {
-  const normalizedTimeMetrics = getMetricDistribution(data, databaseType);
+  if (databaseType !== DATABASE.mysql) {
+    return null;
+  }
+  const normalizedTimeMetrics = getMetricDistribution(data);
   return (
     <>
       <h4>Query time distribution</h4>
