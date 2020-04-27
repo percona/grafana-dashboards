@@ -252,7 +252,9 @@ const SettingsPart = props => {
                       <PluginTooltip
                         links={[
                           {
-                            url: 'https://www.percona.com/doc/percona-monitoring-and-management/2.x/manage/server-admin-gui.html#stt',
+                            url:
+                              // eslint-disable-next-line max-len
+                              'https://www.percona.com/doc/percona-monitoring-and-management/2.x/manage/server-admin-gui.html#stt',
                             text: 'Read more',
                           },
                         ]}
