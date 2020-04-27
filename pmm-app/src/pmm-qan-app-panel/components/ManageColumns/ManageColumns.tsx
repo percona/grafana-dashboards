@@ -4,7 +4,6 @@ import { PanelProvider } from '../../panel/panel.provider';
 import './ManageColumns.less';
 import { METRIC_CATALOGUE } from '../../panel/panel.constants';
 import Tooltip from 'antd/es/tooltip';
-import { Styling } from '../Details/Metrics/Metrics.styles';
 
 const { Option } = Select;
 
