@@ -15,6 +15,7 @@ const { TabPane } = Tabs;
 
 const Details = () => {
   const {
+    contextActions: { closeDetails },
     panelState: { queryId, groupBy, fingerprint, controlSum },
   } = useContext(PanelProvider);
   const databaseType = useDatabaseType();
@@ -24,7 +25,12 @@ const Details = () => {
 
   return (
     <div className="query-analytics-details-grid" id="query-analytics-details">
-      <Fingerprint query={fingerprint} controlSum={controlSum} groupBy={groupBy} />
+      <Fingerprint
+        query={fingerprint}
+        controlSum={controlSum}
+        groupBy={groupBy}
+        closeDetails={closeDetails}
+      />
       <div className="details-tabs">
         <Divider />
         <Tabs activeKey={activeTab} onChange={setActiveTab} tabPosition="top" destroyInactiveTabPane>

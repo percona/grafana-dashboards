@@ -2,6 +2,7 @@ import React from 'react';
 import { QueryTooltip } from '../../../../react-plugins-deps/components/Elements/QueryTooltip/QueryTooltip';
 import { GROUP_BY_OPTIONS } from './Fingerprint.constants';
 import { Styling } from './Fingerprint.styles';
+import { CloseOutlined } from '@ant-design/icons';
 
 const Fingerprint = props => {
   const currentGroupBy = GROUP_BY_OPTIONS.filter(option => option.value === props.groupBy)[0];
@@ -19,6 +20,7 @@ const Fingerprint = props => {
           </div>
         ) : null}
       </div>
+      <CloseOutlined style={{ marginLeft: 'auto' }} onClick={props.closeDetails} />
     </div>
   );
 };
