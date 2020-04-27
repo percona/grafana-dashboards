@@ -197,6 +197,14 @@ const actions = {
     delete newState.querySelected;
     return newState;
   },
+  closeDetails: value => state => {
+    const newState = {
+      ...state,
+    };
+    delete newState.queryId;
+    delete newState.querySelected;
+    return newState;
+  },
   setFingerprint: value => state => {
     return {
       ...state,
