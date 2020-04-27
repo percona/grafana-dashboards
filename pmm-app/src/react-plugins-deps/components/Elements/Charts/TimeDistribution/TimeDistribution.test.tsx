@@ -4467,7 +4467,7 @@ describe('TimeDistributionChart chart test', () => {
 
     const component = renderer.create(<TimeDistribution {...TimeDistributionChartProps} />);
     const tree = component.toJSON();
-    expect(tree).toMatchSnapshot();
+    expect(tree).toEqual(null);
   });
 
   it('Renders correct for mongodb', () => {
@@ -4478,6 +4478,6 @@ describe('TimeDistributionChart chart test', () => {
 
     const component = renderer.create(<TimeDistribution {...TimeDistributionChartProps} />);
     const tree = component.toJSON();
-    expect(tree).toMatchSnapshot();
+    expect(tree).toEqual(null);
   });
 });
