@@ -252,11 +252,11 @@ const SettingsPart = props => {
                       <PluginTooltip
                         links={[
                           {
-                            url: 'https://www.percona.com/doc/percona-monitoring-and-management/',
+                            url: 'https://www.percona.com/doc/percona-monitoring-and-management/2.x/manage/server-admin-gui.html#stt',
                             text: 'Read more',
                           },
                         ]}
-                        text="Security Threat Tool"
+                        text="Option to activate Security Threat Tool and get recent checks from Perona."
                       />
                     }
                     element={<ToggleField name="stt_enabled" />}
