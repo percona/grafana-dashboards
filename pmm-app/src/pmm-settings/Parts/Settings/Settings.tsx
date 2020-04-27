@@ -258,7 +258,7 @@ const SettingsPart = props => {
                             text: 'Read more',
                           },
                         ]}
-                        text="Option to activate Security Threat Tool and get recent checks from Perona."
+                        text="Enable Security Threat Tool and get updated checks from Percona"
                       />
                     }
                     element={<ToggleField name="stt_enabled" />}
