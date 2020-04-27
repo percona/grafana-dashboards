@@ -58,23 +58,31 @@ Scenario(
   }
 );
 
-xScenario('Open the QAN Dashboard and remove column', async (I, adminPage, qanPage) => {});
-
 xScenario('Open the QAN Dashboard and change column', async (I, adminPage, qanPage) => {});
 
 xScenario('Verify that you cant remove last column from QAN', async (I, adminPage, qanPage) => {});
 
-xScenario(
-  'PMM-T132 Verify user is able to change metric in the overview table @new-qan ',
-  async (I, adminPage, qanPage) => {}
+Scenario(
+  'PMM-T132 Verify that the column in the overview table can be changed @new-qan',
+  async (I, adminPage, qanPage) => {
+      qanPage.changeColumn('Query Time', 'Bytes Sent');
+      qanPage.verifyColumnIsNotPresent('Query Time');
+      qanPage.verifyColumnIsPresent('Bytes Sent');
+  }
 );
-xScenario(
-  'PMM-T133 Verify user is able to add metric to the overview table @new-qan ',
-  async (I, adminPage, qanPage) => {}
+Scenario(
+  'PMM-T133 Verify that the column can be added to the overview table @new-qan',
+  async (I, adminPage, qanPage) => {
+      qanPage.addColumn('Bytes Sent');
+      qanPage.verifyColumnIsPresent('Bytes Sent');
+  }
 );
-xScenario(
-  'PMM-T134 Verify user is able to remove metric from the overview table @new-qan ',
-  async (I, adminPage, qanPage) => {}
+Scenario(
+  'PMM-T134 Verify that the column can be removed from the overview table @new-qan',
+  async (I, adminPage, qanPage) => {
+      qanPage.removeColumn('Query Time');
+      qanPage.verifyColumnIsNotPresent('Query Time');
+  }
 );
 Scenario(
   'PMM-T135 Verify user is not able to add duplicate metric to the overview column @new-qan',
