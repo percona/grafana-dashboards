@@ -1,6 +1,7 @@
 import React from 'react';
-import { useField } from 'react-final-form-hooks';
+import { useField } from 'react-final-form';
 import './Input.scss';
+import cx from 'classnames';
 interface InputFieldInterface {
   required?: boolean;
   name: string;
@@ -8,7 +9,6 @@ interface InputFieldInterface {
   label?: string;
   prefix?: string;
   placeholder?: string;
-  form: any;
   style?: any;
   wrapperStyle?: any;
   text?: string;
@@ -16,20 +16,21 @@ interface InputFieldInterface {
   defaultValue?: any;
   readonly?: boolean;
   validate?: any;
+  className?: any;
 }
 
 export const InputField = ({
   name,
   placeholder = '',
   required,
-  form,
   style,
   wrapperStyle,
   readonly,
   validate,
+  className,
 }: InputFieldInterface) => {
   // // @ts-ignore
-  const { input, meta } = useField(name, form, validate);
+  const { input, meta } = useField(name, { validate });
   return (
     <div className="input-field-wrapper" style={wrapperStyle || {}}>
       <input
@@ -39,7 +40,7 @@ export const InputField = ({
         placeholder={`${required ? '*' : ''}${placeholder}`}
         style={style || {}}
         readOnly={readonly}
-        className="input-field input-field--dark"
+        className={cx('input-field input-field--dark', className)}
       />
       {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
     </div>

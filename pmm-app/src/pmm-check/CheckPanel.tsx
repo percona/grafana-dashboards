@@ -9,9 +9,9 @@ import '../react-plugins-deps/styles.scss';
 import '../react-plugins-deps/style.less';
 import './CheckPanel.scss';
 
-interface CheckPanelProps extends PanelProps<CheckPanelOptions> {}
+export interface CheckPanelProps extends PanelProps<CheckPanelOptions> {}
 
-interface CheckPanelState {
+export interface CheckPanelState {
   dataSource?: ActiveCheck[];
   loading: boolean;
 }
@@ -22,11 +22,16 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
     loading: false,
   };
 
+  constructor(props) {
+    super(props);
+    this.fetchAlerts = this.fetchAlerts.bind(this);
+  }
+
   componentDidMount() {
     this.fetchAlerts();
   }
 
-  fetchAlerts = async () => {
+  async fetchAlerts() {
     this.setState({ loading: true });
     try {
       const dataSource = await CheckService.getActiveAlerts();
@@ -36,7 +41,7 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
     } finally {
       this.setState({ loading: false });
     }
-  };
+  }
 
   render() {
     const {
@@ -49,6 +54,7 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
       <div
         id="antd"
         className="check-panel"
+        data-qa="db-check-panel"
         style={{
           position: 'relative',
           width,

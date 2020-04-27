@@ -1,11 +1,10 @@
 import React from 'react';
-import { useField } from 'react-final-form-hooks';
+import { useField } from 'react-final-form';
 import { Slider } from 'antd';
 import './Slider.scss';
 
 interface SliderFieldInterface {
   name: string;
-  form?: any;
   style?: any;
   defaultValue?: any;
   marks?: any;
@@ -14,12 +13,11 @@ interface SliderFieldInterface {
 export const SliderField = ({
   name,
   marks: marks,
-  form,
   style,
   defaultValue,
   tipFormatter,
 }: SliderFieldInterface) => {
-  const { input } = useField(name, form);
+  const { input } = useField(name);
   return (
     <span className="fields__Slider-field" style={style || {}}>
       <Slider

@@ -20,7 +20,5 @@ export const NodesTab = () => {
     })();
   }, []);
 
-  return (
-    <Table dataSource={data} columns={nodesColumns} pagination={false} bordered={true} loading={loading} />
-  );
+  return <Table dataSource={data} columns={nodesColumns} pagination={false} bordered loading={loading} />;
 };

@@ -3,7 +3,6 @@ import { TextAreaField } from '../../../react-plugins-deps/components/FormCompon
 import React, { ReactElement, useEffect, useState } from 'react';
 import ButtonElement from '../../../react-plugins-deps/components/FormComponents/Button/Button';
 import { Form as FormFinal } from 'react-final-form';
-import { useForm } from 'react-final-form-hooks';
 import SettingsService from '../../Settings.service';
 import { showSuccessNotification } from '../../../react-plugins-deps/components/helpers/notification-manager';
 import { FormElement } from '../../../react-plugins-deps/components/FormComponents/FormElement/FormElement';
@@ -15,26 +14,23 @@ interface UploadSSHInterface {
 const UploadSSH = props => {
   const [loading, setLoading] = useState(false);
   // @ts-ignore
+  const onSubmit = async (values: UploadSSHInterface) => {
+    const settings = {
+      ssh_key: values.ssh_key,
+    };
+    setLoading(true);
+    try {
+      await SettingsService.setSettings(settings);
+      setLoading(false);
+      showSuccessNotification({ message: 'SSH key updated' });
+    } catch (e) {
+      setLoading(false);
+    }
+  };
   return (
     <FormFinal
-      onSubmit={() => {}}
-      render={(): ReactElement => {
-        const { form, handleSubmit } = useForm({
-          onSubmit: async (values: UploadSSHInterface) => {
-            const settings = {
-              ssh_key: values.ssh_key,
-            };
-            setLoading(true);
-            try {
-              await SettingsService.setSettings(settings);
-              setLoading(false);
-              showSuccessNotification({ message: 'SSH key updated' });
-            } catch (e) {
-              setLoading(false);
-            }
-          },
-          validate: () => undefined,
-        });
+      onSubmit={onSubmit}
+      render={({ form, handleSubmit }): ReactElement => {
         useEffect(() => {
           form.initialize(props.settings);
         }, [props.settings]);
@@ -55,12 +51,7 @@ const UploadSSH = props => {
                   />
                 }
                 element={
-                  <TextAreaField
-                    name="ssh_key"
-                    form={form}
-                    placeholder="Enter ssh key"
-                    style={{ width: '100%' }}
-                  />
+                  <TextAreaField name="ssh_key" placeholder="Enter ssh key" style={{ width: '100%' }} />
                 }
                 alignLabel="top"
               />
