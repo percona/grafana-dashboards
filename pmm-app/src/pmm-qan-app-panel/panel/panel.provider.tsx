@@ -97,9 +97,9 @@ const setLabels = filters =>
       // TODO: using '--' because final form think that it is a nested fields
       //  need to replace it with something better
       if (labels[group]) {
-        labels[group].push(value.replace(/\-\-/gi, '.').replace('na', ''));
+        labels[group].push(value.replace(/\-\-/gi, '.').replace(/^na$/, ''));
       } else {
-        labels[group] = [value.replace(/\-\-/gi, '.').replace('na', '')];
+        labels[group] = [value.replace(/\-\-/gi, '.').replace(/^na$/, '')];
       }
       return labels;
     }, {});
