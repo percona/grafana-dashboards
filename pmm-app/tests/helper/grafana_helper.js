@@ -37,7 +37,7 @@ class Grafana extends Helper {
 
     fs.rename(
     this.resultFilesFolder + videoFileName,
-   this.resultFilesFolder + "video/" + videoFileName,
+    this.resultFilesFolder + "video/" + videoFileName,
     function (err) {
       if (err) throw err
       console.log('Failed Video Saved in output video folder');

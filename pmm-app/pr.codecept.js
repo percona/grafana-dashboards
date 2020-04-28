@@ -2,7 +2,7 @@ exports.config = {
   output: 'tests/output',
   helpers: {
     Playwright: {
-      url: '{PMM_URL}',
+      url: 'http://localhost/',
       restart: true,
       browser: 'chromium',
       windowSize: "2560x1600",
