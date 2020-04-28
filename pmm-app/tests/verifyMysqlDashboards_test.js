@@ -1,8 +1,7 @@
 Feature('Test Dashboards inside the MySQL Folder');
 
-Before( async (I) => {
-  I.Authorize();
-
+Before(async (I, dashboardPage) => {
+  await I.Authorize();
 });
 
 Scenario(
@@ -12,7 +11,7 @@ Scenario(
     dashboardPage.waitForDashboardOpened();
     await dashboardPage.expandEachDashboardRow();
     I.click(adminPage.fields.metricTitle);
-    adminPage.peformPageDown(2);
+    adminPage.peformPageDown(5);
     dashboardPage.verifyMetricsExistence(dashboardPage.mysqlInstanceSummaryDashboard.metrics);
     await dashboardPage.verifyThereAreNoGraphsWithNA();
     await dashboardPage.verifyThereAreNoGraphsWithoutData(3);
@@ -25,20 +24,19 @@ Scenario(
     I.amOnPage(dashboardPage.proxysqlInstanceSummaryDashboard.url);
     dashboardPage.waitForDashboardOpened();
     I.click(adminPage.fields.metricTitle);
-    adminPage.peformPageDown(2);
+    adminPage.peformPageDown(5);
     await dashboardPage.verifyMetricsExistence(dashboardPage.proxysqlInstanceSummaryDashboard.metrics);
     await dashboardPage.verifyThereAreNoGraphsWithNA();
     await dashboardPage.verifyThereAreNoGraphsWithoutData(8);
   }
 );
-
 Scenario(
   'Open the PXCGalera Cluster Summary Dashboard and verify Metrics are present and graphs are displayed @not-pr-pipeline',
   async (I, adminPage, dashboardPage) => {
     I.amOnPage(dashboardPage.pxcGaleraClusterSummaryDashboard.url);
     dashboardPage.waitForDashboardOpened();
     I.click(adminPage.fields.metricTitle);
-    adminPage.peformPageDown(1);
+    adminPage.peformPageDown(5);
     dashboardPage.verifyMetricsExistence(dashboardPage.pxcGaleraClusterSummaryDashboard.metrics);
     await dashboardPage.verifyThereAreNoGraphsWithNA();
     await dashboardPage.verifyThereAreNoGraphsWithoutData();
