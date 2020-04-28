@@ -122,7 +122,7 @@ const FiltersContainer = () => {
         const [key, values] = data;
         Array.isArray(values) &&
           values.forEach(value => {
-            acc[`${key}:${value || 'na'}`] = true;
+            acc[`${key}:${value.replace(/\./gi, '--') || 'na'}`] = true;
           });
         return acc;
       }, {})}
