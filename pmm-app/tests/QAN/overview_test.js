@@ -105,9 +105,13 @@ xScenario(
   'PMM-T183 Verify user is able change `group by` section in overview @new-qan ',
   async (I, adminPage, qanPage) => {}
 );
-xScenario(
-  'PMM-T187 Verify highlighting of selected element in overview @new-qan ',
-  async (I, adminPage, qanPage) => {}
+
+Scenario(
+  'PMM-T187 Verify that the selected row in the overview table is highlighted @new-qan',
+  async (I, adminPage, qanPage) => {
+      qanPage.selectRow('2');
+      qanPage.verifyRowIsSelected('2');
+  }
 );
 xScenario('PMM-T194 Verify scrolling through the overview table @new-qan ', async (I, adminPage, qanPage) => {});
 xScenario('PMM-T198 Verify 4 types of values in overview table @new-qan ', async (I, adminPage, qanPage) => {});

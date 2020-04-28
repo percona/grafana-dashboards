@@ -82,6 +82,10 @@ module.exports = {
     return `//span[text()='${columnName}']`;
   },
 
+  overviewRowLocator(rowNumber) {
+    return `.table-wrapper .ant-table-content tr[data-row-key="${rowNumber}"]`;
+  },
+
   waitForQANPageLoaded() {
     I.waitForVisible(this.fields.table, 30);
     I.waitForClickable(this.fields.nextPageNavigation, 30);
@@ -127,6 +131,10 @@ module.exports = {
   async verifyColumnIsNotRemovable(columnName) {
     this.openMetricsSelect(columnName);
     I.dontSeeElement(this.fields.removeColumnButton, 30);
+  },
+  async verifyRowIsSelected(rowNumber) {
+    const rowSelector = this.overviewRowLocator(rowNumber);
+    I.seeCssPropertiesOnElements(`${rowSelector}.selected-overview-row`, {'background-color': "rgb(35, 70, 130)"});
   },
 
   changeGroupBy(groupBy = 'Client Host') {
@@ -248,6 +256,13 @@ module.exports = {
     I.waitForElement(filterCheckboxSelector, 30);
     I.checkOption(filterCheckboxSelector);
     this.waitForResponsePath(getFiltersPath);
+  },
+  selectRow(rowNumber) {
+    const rowSelector = this.overviewRowLocator(rowNumber);
+    I.waitForElement(rowSelector, 60);
+    I.forceClick(rowSelector);
+    // TODO: replace 'wait' with 'wait for' until overview table will be reloaded
+    I.wait(5);
   },
   paginationGoNext() {
     I.waitForElement(`//li[@title='Next Page']`, 30);
