@@ -1,5 +1,5 @@
 import React from 'react';
-import { useField } from 'react-final-form-hooks';
+import { useField } from 'react-final-form';
 import { Select } from 'antd';
 import './Select.scss';
 
@@ -11,7 +11,6 @@ interface SelectFieldInterface {
   label?: string;
   prefix?: string;
   placeholder?: string;
-  form?: any;
   style?: any;
   text?: string;
   options?: any;
@@ -21,12 +20,11 @@ export const SelectField = ({
   name,
   placeholder,
   required,
-  form,
   options,
   style,
   defaultValue,
 }: SelectFieldInterface) => {
-  const { input } = useField(name, form);
+  const { input } = useField(name);
   return (
     <span className="fields__select-field" style={style || {}}>
       <Select {...input} defaultValue={defaultValue} style={{ width: '100%', height: '40px' }}>

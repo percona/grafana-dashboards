@@ -1,17 +1,15 @@
 import React from 'react';
-import { useField } from 'react-final-form-hooks';
 import './Checkbox.scss';
-// import { useField } from 'react-final-form';
+import { useField } from 'react-final-form';
 interface CheckboxFieldInterface {
   required?: boolean;
   name: string;
   'data-cy'?: string;
-  form: any;
   label?: string;
   checked?: boolean;
 }
-export const CheckboxField = ({ name, label, required, form, ...rest }: CheckboxFieldInterface) => {
-  const field = useField(name, form);
+export const CheckboxField = ({ name, label, required }: CheckboxFieldInterface) => {
+  const field = useField(name);
 
   return (
     <label className="checkbox-container checkbox-container--main">

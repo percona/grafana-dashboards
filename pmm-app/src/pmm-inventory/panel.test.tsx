@@ -67,7 +67,7 @@ describe('Inventory tables', () => {
           rowKey={rec => rec[rec.key]}
           columns={agentsColumns}
           pagination={false}
-          bordered={true}
+          bordered
           loading={false}
         />,
         container
@@ -95,7 +95,7 @@ describe('Inventory tables', () => {
           dataSource={InventoryDataService.generateStructure(response)}
           columns={servicesColumns}
           pagination={false}
-          bordered={true}
+          bordered
           loading={false}
         />,
         container
@@ -118,7 +118,7 @@ describe('Inventory tables', () => {
           dataSource={InventoryDataService.generateStructure(response)}
           columns={nodesColumns}
           pagination={false}
-          bordered={true}
+          bordered
           loading={false}
         />,
         container

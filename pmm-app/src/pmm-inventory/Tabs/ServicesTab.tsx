@@ -20,7 +20,5 @@ export const ServicesTab = () => {
     })();
   }, []);
 
-  return (
-    <Table dataSource={data} columns={servicesColumns} pagination={false} bordered={true} loading={loading} />
-  );
+  return <Table dataSource={data} columns={servicesColumns} pagination={false} bordered loading={loading} />;
 };

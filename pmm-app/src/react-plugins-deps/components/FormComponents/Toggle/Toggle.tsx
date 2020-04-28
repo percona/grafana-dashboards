@@ -1,21 +1,20 @@
 import { Switch } from 'antd';
 import React from 'react';
-import { useField } from 'react-final-form-hooks';
+import { useField } from 'react-final-form';
 import './Toggle.scss';
 
 interface ToggleInterface {
   name: string;
-  form: any;
   disabled?: boolean;
 }
-export const ToggleField = ({ name, form, disabled }: ToggleInterface) => {
+export const ToggleField = ({ name, disabled }: ToggleInterface) => {
   // @ts-ignore
-  const { input } = useField(name, form);
+  const { input } = useField(name);
   return (
     <Switch
       onChange={input.onChange}
       checked={Boolean(input.value)}
-      defaultChecked={true}
+      defaultChecked
       className="toggle-field"
       disabled={disabled}
     />
