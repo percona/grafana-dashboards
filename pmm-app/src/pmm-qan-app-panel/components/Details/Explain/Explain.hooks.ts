@@ -69,7 +69,6 @@ export const useExplain = (): [any, any, boolean, string] => {
         setLoading(false);
       } catch (e) {
         setLoading(false);
-
         //TODO: add error handling
       }
     })();
@@ -102,7 +101,8 @@ export const useExplain = (): [any, any, boolean, string] => {
     if (!notEmptyExample.length || !databaseType) {
       return;
     }
-    startExplainActions(notEmptyExample);
+
+    startExplainActions(notEmptyExample[0]);
   }, [examples, databaseType]);
 
   return [jsonExplain, traditionalExplain, loading, errorText];
