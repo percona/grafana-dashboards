@@ -1,6 +1,6 @@
 Feature('Test Dashboards inside the Insights Folder');
 
-Before( async (I) => {
+Before(async (I) => {
   I.Authorize();
 
 });
@@ -24,7 +24,7 @@ Scenario(
     await dashboardPage.expandEachDashboardRow();
     dashboardPage.verifyMetricsExistence(dashboardPage.prometheusDashboard.metrics);
     await dashboardPage.verifyThereAreNoGraphsWithNA(9);
-    await dashboardPage.verifyThereAreNoGraphsWithoutData();
+    await dashboardPage.verifyThereAreNoGraphsWithoutData(1);
   }
 );
 

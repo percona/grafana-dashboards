@@ -5,9 +5,10 @@ exports.config = {
       url: 'http://localhost/',
       restart: true,
       browser: 'chromium',
+      windowSize: "2560x1600",
       waitForNavigation: 'networkidle0',
       chromium: {
-        args: ['--no-sandbox', '--window-size=1680,1240', '--disable-gpu'],
+        args: ['--no-sandbox', '--window-size=2560,1600', '--disable-gpu'],
       },
     },
     Grafana: {
@@ -25,7 +26,7 @@ exports.config = {
     amiInstanceSetupPage: './tests/pages/amiInstanceSetupPage.js',
     pmmSettingsPage: './tests/pages/pmmSettingsPage.js',
     mysqlTableDetailsPage: './tests/pages/mysqlTableDetailsPage.js',
-    dashboardPage: './tests/pages/dashboardPage.js',
+    dashboardPage: './tests/pages/dashboardPage.js'
   },
   multiple: {
     parallel: {

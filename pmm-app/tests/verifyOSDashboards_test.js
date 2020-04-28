@@ -1,13 +1,11 @@
 Feature('Test Dashboards inside the OS Folder');
 
 Before( async (I) => {
-  I.Authorize();
+  await I.Authorize();
 
 });
 
-Scenario(
-  'Open the Node Summary Dashboard and verify Metrics are present and graphs are displayed @not-pr-pipeline',
-  async (I, dashboardPage, adminPage) => {
+Scenario('Open the Node Summary Dashboard and verify Metrics are present and graphs are displayed @not-pr-pipeline', async (I, dashboardPage, adminPage) => {
     I.amOnPage(dashboardPage.nodeSummaryDashboard.url);
     dashboardPage.waitForDashboardOpened();
     I.click(adminPage.fields.metricTitle);
@@ -18,9 +16,7 @@ Scenario(
   }
 );
 
-Scenario(
-  'Open the Nodes Compare Dashboard and verify Metrics are present and graphs are displayed @not-pr-pipeline',
-  async (I, dashboardPage) => {
+Scenario('Open the Nodes Compare Dashboard and verify Metrics are present and graphs are displayed @not-pr-pipeline', async (I, dashboardPage) => {
     I.amOnPage(dashboardPage.nodesCompareDashboard.url);
     dashboardPage.waitForDashboardOpened();
     await dashboardPage.expandEachDashboardRow();

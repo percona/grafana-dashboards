@@ -1,4 +1,4 @@
-const { I } = inject();
+const I = actor();
 const assert = require('assert');
 
 module.exports = {
@@ -321,19 +321,19 @@ module.exports = {
   },
 
   async verifyThereAreNoGraphsWithNA(acceptableNACount = 0) {
-    const numberOfNAElements = await I.grabNumberOfVisibleElements(this.fields.notAvailableMetrics);
+    let numberOfNAElements = await I.grabNumberOfVisibleElements(this.fields.notAvailableMetrics);
     console.log('number of N/A elements is = ' + numberOfNAElements);
     if (numberOfNAElements > acceptableNACount) {
-      const titles = await this.grabFailedReportTitles(this.fields.reportTitleWithNA);
+      let titles = await this.grabFailedReportTitles(this.fields.reportTitleWithNA);
       await this.printFailedReportNames(acceptableNACount, numberOfNAElements, titles);
     }
   },
 
   async verifyThereAreNoGraphsWithoutData(acceptableNoDataCount = 0) {
-    const numberOfNoDataElements = await I.grabNumberOfVisibleElements(this.fields.notAvailableDataPoints);
+    let numberOfNoDataElements = await I.grabNumberOfVisibleElements(this.fields.notAvailableDataPoints);
     console.log('number of No Data elements is = ' + numberOfNoDataElements);
     if (numberOfNoDataElements > acceptableNoDataCount) {
-      const titles = await this.grabFailedReportTitles(this.fields.reportTitleWithNoData);
+      let titles = await this.grabFailedReportTitles(this.fields.reportTitleWithNoData);
       await this.printFailedReportNames(acceptableNoDataCount, numberOfNoDataElements, titles);
     }
   },
@@ -352,13 +352,13 @@ module.exports = {
   },
 
   async grabFailedReportTitles(selector) {
-    const reportNames = await I.grabTextFrom(selector);
+    let reportNames = await I.grabTextFrom(selector);
     return reportNames;
   },
 
   async expandEachDashboardRow(halfToExpand) {
-    const sectionsToExpand;
-    const sections = await I.grabTextFrom(this.fields.collapsedDashboardRow);
+    let sectionsToExpand;
+    let sections = await I.grabTextFrom(this.fields.collapsedDashboardRow);
     if (halfToExpand == 1) {
       sectionsToExpand = sections.slice(0, sections.length / 2);
     } else if (halfToExpand == 2) {
@@ -370,19 +370,20 @@ module.exports = {
   },
 
   async expandRows(sectionsToExpand) {
-    const sections;
+    let sections;
     if (typeof sectionsToExpand === 'string') {
       sections = [sectionsToExpand];
     } else {
       sections = sectionsToExpand;
     }
     for (let i = 0; i < sections.length; i++) {
-      const sectionName = sections[i].toString().split('(');
-      const rowToExpand = `${this.fields.collapsedDashboardRow}[contains(text(), '${sectionName[0]}')]`;
+      let sectionName = sections[i].toString().split('(');
+      let rowToExpand = `${this.fields.collapsedDashboardRow}[contains(text(), '${sectionName[0]}')]`;
       I.click(rowToExpand);
       I.wait(0.5);
     }
   },
+
   waitForDashboardOpened() {
     I.waitForElement(this.fields.metricTitle, 30);
   },
