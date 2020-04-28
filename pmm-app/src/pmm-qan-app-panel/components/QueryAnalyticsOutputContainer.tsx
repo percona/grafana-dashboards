@@ -85,7 +85,7 @@ const QueryAnalyticsOutputContainer = () => {
         </div>
       ) : (
         <Split
-          sizes={[70, 30]}
+          sizes={[40, 60]}
           minSize={100}
           direction="vertical"
           cursor="row-resize"
