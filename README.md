@@ -1,3 +1,8 @@
+> Note: [PMM2 is out!](https://www.percona.com/blog/2019/09/19/percona-monitoring-and-management-pmm-2-ga-is-now-available/)   
+> Please see https://github.com/percona/grafana-dashboards/tree/PMM-2.0 for this repository details  
+ 
+---
+  
 ## Grafana dashboards for MySQL and MongoDB monitoring using Prometheus [![Build Status](https://travis-ci.org/percona/grafana-dashboards.svg?branch=master)](https://travis-ci.org/percona/grafana-dashboards)[![CLA assistant](https://cla-assistant.percona.com/readme/badge/percona/grafana-dashboards)](https://cla-assistant.percona.com/percona/grafana-dashboards)
 
 This is a set of Grafana dashboards for database and system monitoring using Prometheus datasource.
