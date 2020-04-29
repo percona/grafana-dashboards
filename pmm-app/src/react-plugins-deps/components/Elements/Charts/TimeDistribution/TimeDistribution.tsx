@@ -1,7 +1,8 @@
 import React from 'react';
 import HSBar from 'react-horizontal-stacked-bar-chart';
 import { Humanize } from '../../../../helpers/Humanization';
-import { DATABASE } from '../../../../../pmm-qan-app-panel/components/Details/Details.constants';
+// eslint-disable-next-line max-len
+import { DATABASE } from '../../../../../pmm-qan-app-panel/components/DataOutput/components/Details/Details.constants';
 import { METRICS_COLORS, PERCENT_COUNT, TIME_METRICS } from './TimeDistribution.constants';
 
 export const getMetricDistribution = data => {

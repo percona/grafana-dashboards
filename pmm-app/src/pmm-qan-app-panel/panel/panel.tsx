@@ -5,7 +5,7 @@ import '../../react-plugins-deps/style.less';
 import { UrlParametersProvider } from './panel.provider';
 
 import FiltersContainer from '../components/Filters/Filters';
-import QueryAnalyticsOutputContainer from '../components/QueryAnalyticsOutputContainer';
+import DataOutput from '../components/DataOutput/DataOutput';
 import Styling from '../../react-plugins-deps/helpers/styling';
 
 const QueryAnalyticsPanel = props => {
@@ -17,7 +17,7 @@ const QueryAnalyticsPanel = props => {
           <FiltersContainer />
         </div>
         <div id="query-analytics-data">
-          <QueryAnalyticsOutputContainer />
+          <DataOutput />
         </div>
       </div>
     </UrlParametersProvider>
