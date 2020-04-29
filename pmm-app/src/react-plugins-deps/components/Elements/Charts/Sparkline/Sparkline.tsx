@@ -158,7 +158,7 @@ export const Sparkline = ({
 
       const isTimeBased =
         metricName.endsWith('_time') || metricName.endsWith('_wait') || metricName === 'load';
-      const load = Humanize.transform(value, isTimeBased ? 'time' : 'number');
+      const load = Humanize.transform(value, 'number');
 
       focusBar.attr('d', areaBar(activeArea));
       const dataTooltip = !value
