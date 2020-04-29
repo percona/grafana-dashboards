@@ -8,10 +8,10 @@ import { PanelProvider } from '../../../../../panel/panel.provider';
 
 const getExample = databaseType => (example: any): any => {
   if (databaseType === DATABASE.mongodb) {
-    return <ReactJSON json={JSON.parse(example)} />;
+    return <ReactJSON json={JSON.parse(example.example)} />;
   }
 
-  return <Highlight language="sql">{example}</Highlight>;
+  return <Highlight language="sql">{example.example}</Highlight>;
 };
 
 const Example = () => {
