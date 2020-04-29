@@ -49,6 +49,7 @@ const QueryAnalyticsOutputContainer = () => {
   const container = document.querySelector('#antd');
   const size = container && container.clientWidth;
 
+  const [reload, setReload] = useState<object>({});
   return (
     <div
       style={{
@@ -80,16 +81,18 @@ const QueryAnalyticsOutputContainer = () => {
       </div>
 
       {!querySelected ? (
-        <div className="table-wrapper" style={{ minHeight: '600px', position: 'relative' }}>
+        <div className="table-wrapper" style={{ minHeight: '1000px', position: 'relative' }}>
           <OverviewTable setTotal={setTotal} />
         </div>
       ) : (
         <Split
           sizes={[40, 60]}
-          minSize={100}
+          minSize={250}
           direction="vertical"
           cursor="row-resize"
           className={Styling.splitterWrapper}
+          // TODO: optimize resize behavior
+          onDragEnd={() => setReload({})}
           elementStyle={(dimension, size, gutterSize) => {
             return {
               height: `calc(${size}% - ${gutterSize}px)`,
@@ -98,7 +101,7 @@ const QueryAnalyticsOutputContainer = () => {
           }}
         >
           <div className="table-wrapper">
-            <OverviewTable setTotal={setTotal} />
+            <OverviewTable setTotal={setTotal} reload={reload} />
           </div>
           <Details />
         </Split>
