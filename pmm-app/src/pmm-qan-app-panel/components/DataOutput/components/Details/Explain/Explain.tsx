@@ -36,12 +36,17 @@ const Explain = ({ json, classic }) => {
   return (
     <div>
       <Collapse bordered={false} defaultActiveKey={['1', '2']} className={Styling.collapse}>
-        <Panel header="Classic" key="1" className={Styling.panel}>
-          <Table dataSource={data.rows} columns={data.columns} pagination={false} size="small" bordered />
-        </Panel>
-        <Panel header="JSON" key="2" className={Styling.panel}>
-          <ReactJSON json={json} />
-        </Panel>
+        {data.rows.length ? (
+          <Panel header="Classic" key="1" className={Styling.panel}>
+            <Table dataSource={data.rows} columns={data.columns} pagination={false} size="small" bordered />
+          </Panel>
+        ) : null}
+        {json ? (
+          <Panel header="JSON" key="2" className={Styling.panel}>
+            <ReactJSON json={json} />
+          </Panel>
+        ) : null}
+        {!data.rows.length && !json ? <p>No explains found</p> : null}
       </Collapse>
     </div>
   );
