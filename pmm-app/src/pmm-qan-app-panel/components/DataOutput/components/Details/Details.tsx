@@ -20,7 +20,7 @@ const Details = () => {
   const databaseType = useDatabaseType();
   const [activeTab, setActiveTab] = useState(TabKeys.Details);
   const showTablesTab = databaseType !== DATABASE.mongodb;
-  const showExplainTab = databaseType === DATABASE.postgresql;
+  const showExplainTab = databaseType !== DATABASE.postgresql;
   useEffect(() => setActiveTab(TabKeys.Details), [queryId]);
 
   return (
