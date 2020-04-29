@@ -68,12 +68,13 @@ const perQueryStatsColumn = (text, item) => {
   const latencyChartProps = {
     data: item.metric,
   };
+
   return (
     <div className={Styling.metricColumn}>
       <span className={Styling.perQueryStats}>
-        {Humanize.transform(item.metric.avg, item.pipeTypes['perQueryStatsPipe']) ||
-          (+item.metric.sum / +item.queryCount).toFixed(2) ||
-          '0'}
+        {item.metric.avg
+          ? Humanize.transform(item.metric.avg, item.pipeTypes['perQueryStatsPipe'])
+          : (+item.metric.sum / +item.queryCount).toFixed(2) || '0'}
       </span>
       {item.isLatencyChart && <Latency {...latencyChartProps} />}
     </div>
