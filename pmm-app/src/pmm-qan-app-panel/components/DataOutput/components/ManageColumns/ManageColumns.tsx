@@ -35,6 +35,45 @@ const ManageColumns = props => {
   const removeColumn = useCallback(() => contextActions.removeColumn(props.currentMetric), [
     props.currentMetric,
   ]);
+
+  const Placeholder = () => {
+    return !props.onlyAdd ? (
+      <Tooltip
+        title={props.placeholder && METRIC_CATALOGUE[props.placeholder].humanizeName}
+        placement="topLeft"
+      >
+        <span>{props.placeholder && METRIC_CATALOGUE[props.placeholder].humanizeName}</span>{' '}
+      </Tooltip>
+    ) : (
+      <div style={{ fontSize: '16px' }}>
+        <i className="fa fa-plus-circle" style={{ marginRight: '5px' }}></i> <span> Add column</span>
+      </div>
+    );
+  };
+
+  const dropdownRender = menu => (
+    <div
+      style={{
+        width: 400,
+        backgroundColor: 'rgba(47, 47, 50, 0.5)',
+        boxShadow: 'rgba(255, 255, 255, 0.1) -1px -1px 0px 0px, rgba(0, 0, 0, 0.3) 1px 1px 0px 0px',
+      }}
+      className="add-column-wrapper"
+    >
+      {menu}
+      <Divider style={{ margin: '4px 0' }} />
+      {!props.onlyAdd && columns.length > 1 && (
+        <div
+          style={{ padding: '4px 8px', cursor: 'pointer' }}
+          onMouseDown={e => e.preventDefault()}
+          onClick={removeColumn}
+        >
+          <Icon type="minus" style={{ marginRight: '4px' }} />
+          Remove column
+        </div>
+      )}
+    </div>
+  );
   // @ts-ignore
   return (
     <div className={!props.onlyAdd ? 'manage-columns' : 'add-columns'} onClick={e => e.stopPropagation()}>
@@ -42,20 +81,7 @@ const ManageColumns = props => {
         optionLabelProp="label"
         showSearch
         style={{ width: props.width || '160px' }}
-        placeholder={
-          !props.onlyAdd ? (
-            <Tooltip
-              title={props.placeholder && METRIC_CATALOGUE[props.placeholder].humanizeName}
-              placement="topLeft"
-            >
-              <span>{props.placeholder && METRIC_CATALOGUE[props.placeholder].humanizeName}</span>{' '}
-            </Tooltip>
-          ) : (
-            <div style={{ fontSize: '16px' }}>
-              <i className="fa fa-plus-circle" style={{ marginRight: '5px' }}></i> <span> Add column</span>
-            </div>
-          )
-        }
+        placeholder={<Placeholder />}
         filterOption={(value, option) => {
           return String(option.props.label)
             .toLowerCase()
@@ -67,29 +93,7 @@ const ManageColumns = props => {
         showArrow={false}
         className={`${props.onlyAdd ? 'add' : 'manage'}-columns-selector`}
         dropdownClassName={`${props.onlyAdd ? 'add' : 'manage'}-columns-selector-dropdown`}
-        dropdownRender={menu => (
-          <div
-            style={{
-              width: 400,
-              backgroundColor: 'rgba(47, 47, 50, 0.5)',
-              boxShadow: 'rgba(255, 255, 255, 0.1) -1px -1px 0px 0px, rgba(0, 0, 0, 0.3) 1px 1px 0px 0px',
-            }}
-            className="add-column-wrapper"
-          >
-            {menu}
-            <Divider style={{ margin: '4px 0' }} />
-            {!props.onlyAdd && columns.length > 1 && (
-              <div
-                style={{ padding: '4px 8px', cursor: 'pointer' }}
-                onMouseDown={e => e.preventDefault()}
-                onClick={removeColumn}
-              >
-                <Icon type="minus" style={{ marginRight: '4px' }} />
-                Remove column
-              </div>
-            )}
-          </div>
-        )}
+        dropdownRender={dropdownRender}
       >
         {availableColumns.map(item => (
           <Option key={item.simpleName} label={item.humanizeName}>
