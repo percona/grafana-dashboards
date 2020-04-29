@@ -1,5 +1,4 @@
 const Helper = codecept_helper;
-const { saveVideo } = require('playwright-video');
 const fs = require('fs');
 
 class Grafana extends Helper {
@@ -42,7 +41,6 @@ class Grafana extends Helper {
   //     if (err) throw err
   //     console.log('Failed Video Saved in output video folder');
   //   });
-  }
 }
 
 module.exports = Grafana;
