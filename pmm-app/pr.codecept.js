@@ -8,6 +8,7 @@ exports.config = {
       windowSize: "2560x1600",
       waitForNavigation: 'networkidle0',
       chromium: {
+        ignoreHTTPSErrors: true,
         args: ['--no-sandbox', '--window-size=2560,1600', '--disable-gpu'],
       },
     },
