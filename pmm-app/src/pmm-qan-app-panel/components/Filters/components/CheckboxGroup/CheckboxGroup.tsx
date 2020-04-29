@@ -40,7 +40,7 @@ export const CheckboxGroup = ({ name, items, group, showAll, filter: searchFilte
               //  need to replace it with something better
               name={`${group}:${item.value ? item.value.replace(/\./gi, '--') : 'na'}`}
               label={item.value || 'n/a'}
-              checked={item.checked}
+              // checked={item.checked}
               disabled={!valueExists}
             />
           </span>
