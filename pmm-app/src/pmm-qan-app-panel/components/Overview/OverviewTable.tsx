@@ -1,25 +1,30 @@
 import { Table } from 'antd';
-import React, { useCallback, useContext } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import './OverviewTable.scss';
 import { PanelProvider } from '../../panel/panel.provider';
 import '../../../react-plugins-deps/components/Elements/Spinner/Spinner';
 import { useOverviewTable } from './OverviewTable.hooks';
-import { TABLE_X_SCROLL, TABLE_Y_SCROLL } from './OverviewTable.constants';
+import { TABLE_X_SCROLL } from './OverviewTable.constants';
 
 const OverviewTable = props => {
   const [data, loading] = useOverviewTable(props.setTotal);
+  const [height, setHeight] = useState(400);
   const {
     contextActions,
     panelState: { queryId, querySelected },
   } = useContext(PanelProvider);
 
+  useEffect(() => {
+    // @ts-ignore
+    const container = document.querySelector('.table-wrapper');
+    setHeight(+((container && container.clientHeight) || 0));
+    console.log('reload');
+  }, [props.reload]);
+
   const onTableChange = useCallback((pagination, filters, sorter) => {
     contextActions.changeSort(sorter.columnKey);
   }, []);
 
-  // @ts-ignore
-  const container = document.querySelector('.table-wrapper');
-  const height = +((container && container.clientHeight) || 0);
   return (
     <Table
       dataSource={data.rows}
@@ -28,7 +33,7 @@ const OverviewTable = props => {
       size="small"
       bordered
       pagination={false}
-      scroll={{ y: Math.max(height - 30, TABLE_Y_SCROLL), x: TABLE_X_SCROLL }}
+      scroll={{ y: height - 50, x: TABLE_X_SCROLL }}
       rowClassName={record => {
         if (querySelected) {
           const isTotalSelected = !record.dimension && queryId === 'TOTAL';
