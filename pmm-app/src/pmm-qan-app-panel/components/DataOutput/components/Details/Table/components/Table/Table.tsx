@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import TableService from './Table.service';
-import { DATABASE } from '../Details.constants';
+import { DATABASE } from '../../../Details.constants';
+import { useActionResult } from '../../TableContainer.hooks';
 
 // TODO: refactor example parameters passing
 const TableCreate = props => {
   const { schema, tableName, databaseType, example } = props;
-  const [showCreateTable, setShowCreateTable] = useState('');
   const [errorText, setErrorText] = useState('');
+  const [showCreateTable, setActionId] = useActionResult();
 
   const showCreateTableAction = example => {
     setErrorText('');
     switch (databaseType) {
       case DATABASE.mysql:
-        if (!('example' in example) || example.example === '' || !schema || !tableName) {
+        if (!schema || !tableName) {
           setErrorText(
             'Cannot display table info without query example, schema or table name at this moment.'
           );
@@ -38,10 +39,7 @@ const TableCreate = props => {
       table_name: tableName,
       service_id: example.service_id,
     });
-    const table = await TableService.getActionResult({
-      action_id,
-    });
-    setShowCreateTable(table.output);
+    setActionId(action_id as string);
   };
 
   const getPostgreSQL = async example => {
@@ -49,10 +47,7 @@ const TableCreate = props => {
       table_name: tableName,
       service_id: example.service_id,
     });
-    const table = await TableService.getActionResult({
-      action_id,
-    });
-    setShowCreateTable(table.output);
+    setActionId(action_id as string);
   };
 
   useEffect(() => {
