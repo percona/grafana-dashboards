@@ -9,11 +9,11 @@ class Grafana extends Helper {
     this.resultFilesFolder = global.output_dir + "/";
   }
 
-  async _before(test) {
-    const { page } = this.helpers.Playwright;
-    let videoFileName = test.title.replace(/\s/g, '_') + ".mp4";
-    await saveVideo(page, this.resultFilesFolder + videoFileName);
-  }
+  // async _before(test) {
+  //   const { page } = this.helpers.Playwright;
+  //   let videoFileName = test.title.replace(/\s/g, '_') + ".mp4";
+  //   await saveVideo(page, this.resultFilesFolder + videoFileName);
+  // }
 
   async Authorize() {
     const { browserContext } = this.helpers.Playwright;
@@ -29,20 +29,20 @@ class Grafana extends Helper {
    * @param error
    * @private
    */
-  _failed(test, error) {
-    let videoFileName = test.title.replace(/\s/g, '_') + ".mp4";
-    if (!fs.existsSync(this.resultFilesFolder + "video/")){
-      fs.mkdirSync(this.resultFilesFolder + "video/");
-    }
-
-    fs.rename(
-        this.resultFilesFolder + videoFileName,
-        this.resultFilesFolder + "video/" + videoFileName,
-        function (err) {
-          if (err) throw err
-          console.log('Failed Video Saved in output video folder');
-        });
-  }
+  // _failed(test, error) {
+  //   let videoFileName = test.title.replace(/\s/g, '_') + ".mp4";
+  //   if (!fs.existsSync(this.resultFilesFolder + "video/")){
+  //     fs.mkdirSync(this.resultFilesFolder + "video/");
+  //   }
+  //
+  //   fs.rename(
+  //       this.resultFilesFolder + videoFileName,
+  //       this.resultFilesFolder + "video/" + videoFileName,
+  //       function (err) {
+  //         if (err) throw err
+  //         console.log('Failed Video Saved in output video folder');
+  //       });
+  // }
 }
 
 module.exports = Grafana;
