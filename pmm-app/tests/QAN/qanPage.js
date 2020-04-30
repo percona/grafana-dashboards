@@ -111,6 +111,10 @@ module.exports = {
     return `.ant-table-tbody tr:nth-child(${rowNumber}) .d3-bar-chart-container`;
   },
 
+  manageColumnLocator(columnName) {
+    return `//span[text()='${columnName}']`;
+  },
+
   waitForQANPageLoaded() {
     I.waitForVisible(this.fields.table, 30);
     I.waitForClickable(this.fields.nextPageNavigation, 30);
@@ -141,6 +145,21 @@ module.exports = {
     let qpsMetricValue = await I.grabTextFrom(cellSelector);
     let qpsTooltipValue = await I.grabTextFrom(this.qpsTooltipValueSelector);
     assert.equal(qpsMetricValue.replace(/[^0-9.]/g, ''), qpsTooltipValue.replace(/[^0-9.]/g, ''));
+  },
+
+  async verifyColumnIsPresent(columnName) {
+    const columnSelector = this.manageColumnLocator(columnName);
+    I.seeElement(columnSelector);
+  },
+
+  async verifyColumnIsNotPresent(columnName) {
+    const columnSelector = this.manageColumnLocator(columnName);
+    I.dontSeeElement(columnSelector);
+  },
+
+  async verifyColumnIsNotRemovable(columnName) {
+    this.openMetricsSelect(columnName);
+    I.dontSeeElement(this.fields.removeColumnButton, 30);
   },
 
   changeGroupBy(groupBy = 'Client Host') {
@@ -182,21 +201,25 @@ module.exports = {
     I.waitForElement(this.fields.addColumnSelector, 30);
     I.click(this.fields.addColumnSelector);
     I.click(`//ul/li[@label='${columnName}']`);
+    // TODO: replace 'wait' with 'wait for' until overview table will be reloaded
+    I.wait(5);
   },
   changeColumn(oldColumnName, columnName) {
-    const oldColumnSelector = `//div[text()='${oldColumnName}']`;
+    const oldColumnSelector = `//span[text()='${oldColumnName}']`;
     const newColumnSelector = `//li[text()='${columnName}']`;
     I.waitForElement(oldColumnSelector, 30);
     I.click(oldColumnSelector);
     I.waitForElement(newColumnSelector, 30);
     I.click(newColumnSelector);
+    // TODO: replace 'wait' with 'wait for' until overview table will be reloaded
+    I.wait(5);
   },
   removeColumn(columnName) {
-    const addColumnSelector = `//div[text()='${columnName}']`;
-    I.waitForElement(addColumnSelector, 30);
-    I.click(addColumnSelector);
+    this.openMetricsSelect(columnName);
     I.waitForElement(this.fields.removeColumnButton, 30);
     I.click(this.fields.removeColumnButton);
+    // TODO: replace 'wait' with 'wait for' until overview table will be reloaded
+    I.wait(5);
   },
   async searchFilters(searchString) {
     I.waitForElement(`//input[@placeholder='Filters search...']`, 30);
@@ -209,6 +232,23 @@ module.exports = {
       true,
       `Remain only correct filters`
     );
+  },
+  async searchMetrics(searchString) {
+    I.waitForElement('.ant-select-open', 30);
+    I.fillField('.ant-select-open input', searchString);
+  },
+  async checkMetricsListMatchesSearch(searchString) {
+    const remainingMetrics = await I.grabTextFrom('.ant-select-dropdown-menu-item');
+    assert.equal(
+        remainingMetrics.every(filter => filter.includes(searchString)),
+        true,
+        `Remain only correct metrics`
+    );
+  },
+  openMetricsSelect(columnName){
+    const columnSelector = this.manageColumnLocator(columnName);
+    I.waitForElement(columnSelector, 30);
+    I.click(columnSelector);
   },
 
   async getSelectedFilters() {

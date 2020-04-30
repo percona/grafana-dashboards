@@ -58,26 +58,30 @@ Scenario(
   }
 );
 
-xScenario('Open the QAN Dashboard and remove column', async (I, adminPage, qanPage) => {});
-
-xScenario('Open the QAN Dashboard and change column', async (I, adminPage, qanPage) => {});
-
-xScenario('Verify that you cant remove last column from QAN', async (I, adminPage, qanPage) => {});
-
-xScenario(
-  'PMM-T132 Verify user is able to change metric in the overview table @new-qan ',
-  async (I, adminPage, qanPage) => {}
-);
-xScenario(
-  'PMM-T133 Verify user is able to add metric to the overview table @new-qan ',
-  async (I, adminPage, qanPage) => {}
-);
-xScenario(
-  'PMM-T134 Verify user is able to remove metric from the overview table @new-qan ',
-  async (I, adminPage, qanPage) => {}
+Scenario(
+  'PMM-T132 Verify that the column in the overview table can be changed @new-qan',
+  async (I, adminPage, qanPage) => {
+      qanPage.changeColumn('Query Time', 'Bytes Sent');
+      qanPage.verifyColumnIsNotPresent('Query Time');
+      qanPage.verifyColumnIsPresent('Bytes Sent');
+  }
 );
 Scenario(
-  'PMM-T135 Verify user is not able to add duplicate metric to the overview column @new-qan',
+  'PMM-T133 Verify that the column can be added to the overview table @new-qan',
+  async (I, adminPage, qanPage) => {
+      qanPage.addColumn('Bytes Sent');
+      qanPage.verifyColumnIsPresent('Bytes Sent');
+  }
+);
+Scenario(
+  'PMM-T134 Verify that the column can be removed from the overview table @new-qan',
+  async (I, adminPage, qanPage) => {
+      qanPage.removeColumn('Query Time');
+      qanPage.verifyColumnIsNotPresent('Query Time');
+  }
+);
+Scenario(
+  'PMM-T135 Verify that a duplicate of the metric cannot be added to the overview table @new-qan',
   async (I, qanPage) => {
     const COLUMN_NAME = 'Bytes Sent';
 
@@ -115,9 +119,13 @@ xScenario(
   'PMM-T202 Verify user is able to see correct values on sparkline after sorting @new-qan ',
   async (I, adminPage, qanPage) => {}
 );
-xScenario(
-  'PMM-T203 Verify user is able to search for columns by typing @new-qan ',
-  async (I, adminPage, qanPage) => {}
+Scenario(
+  'PMM-T203 Verify that columns are searchable by typing @new-qan',
+  async (I, adminPage, qanPage) => {
+      qanPage.openMetricsSelect('Load');
+      qanPage.searchMetrics('Bytes');
+      await qanPage.checkMetricsListMatchesSearch('Bytes');
+  }
 );
 xScenario('PMM-T207 Verify cursor of query name in query table @new-qan ', async (I, adminPage, qanPage) => {});
 xScenario(
@@ -128,10 +136,16 @@ xScenario(
   'PMM-T219 Verify that user is able to scroll up/down clicking the scrollbar buttons @new-qan ',
   async (I, adminPage, qanPage) => {}
 );
+
 xScenario(
-  "PMM-T220 Verify that last column can't be removed from Overview table @new-qan ",
-  async (I, adminPage, qanPage) => {}
+  "PMM-T220 Verify that the last column cannot be removed from the overview table @new-qan",
+  async (I, adminPage, qanPage) => {
+      qanPage.removeColumn('Query Time');
+      qanPage.removeColumn('Query Count');
+      qanPage.verifyColumnIsNotRemovable('Load');
+  }
 );
+
 xScenario('PMM-T222 Verify `Add column` dropdown @new-qan ', async (I, adminPage, qanPage) => {});
 xScenario(
   'PMM-T223 Verify time metrics are AVG per query (not per second) @new-qan ',
