@@ -41,7 +41,7 @@ export const processData = (data: Alert[]): ActiveCheck[] => {
         if (val.severity === 'warning') {
           acc[1]++;
         }
-        if (val.severity === 'info') {
+        if (val.severity === 'notice') {
           acc[2]++;
         }
         return acc;
