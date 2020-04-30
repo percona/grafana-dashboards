@@ -23,9 +23,7 @@ module.exports = {
 
   graphsLocator(metricName) {
     return (
-      "//span[text()='" +
-      metricName +
-      "']//ancestor::grafana-panel//span[contains(text(), 'No data to show')]"
+      "//span[text()='" + metricName + "']//ancestor::grafana-panel//span[contains(text(), 'No data to show')]"
     );
   },
 
@@ -38,9 +36,10 @@ module.exports = {
     I.click(this.fields.disabledServiceName);
     I.waitForElement(this.fields.serviceName, 30);
     I.click(this.fields.serviceName);
-    I.waitForElement(this.graphsLocator(this.metrics[1]), 30);
+    I.waitForVisible(this.graphsLocator(this.metrics[0]), 30);
+    I.waitForVisible(this.graphsLocator(this.metrics[1]), 30);
+    I.waitForVisible(this.graphsLocator(this.metrics[2]), 30);
     for (let i in this.metrics) {
-      I.waitForElement(this.graphsLocator(this.metrics[i], 30));
       I.seeElement(this.graphsLocator(this.metrics[i]));
     }
   },
