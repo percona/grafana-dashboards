@@ -1,6 +1,7 @@
 const { I, adminPage, pmmInventoryPage } = inject();
 
 module.exports = {
+
   accessKey: process.env.AWS_ACCESS_KEY_ID,
   secretKey: process.env.AWS_SECRET_ACCESS_KEY,
   usernameRDSMySQL: process.env.AWS_MYSQL_USER,
@@ -42,7 +43,7 @@ module.exports = {
     addAWSRDSMySQLbtn: "//a[contains(text(), ' Add an AWS RDS MySQL or Aurora MySQL Instance')]",
     accessKeyInput: "//input[@name='aws_access_key']",
     secretKeyInput: "//input[@name='aws_secret_key']",
-    discoverBtn: '#addInstance',
+    discoverBtn: "#addInstance",
     discoveryResults: "//tbody[@class='ant-table-tbody']",
     discoveryRowWithId: "//tr/td[text()='",
     startMonitoring: '/following-sibling::td/a',
@@ -76,7 +77,7 @@ module.exports = {
     I.fillField(this.fields.serviceName, serviceName);
     I.fillField(this.fields.userName, process.env.REMOTE_MYSQL_USER);
     I.fillField(this.fields.password, process.env.REMOTE_MYSQL_PASSWORD);
-    I.fillField(this.fields.environment, 'Remote Node MySQL');
+    I.fillField(this.fields.environment, "Remote Node MySQL");
     I.scrollPageToBottom();
     adminPage.peformPageDown(1);
   },
@@ -101,40 +102,41 @@ module.exports = {
   },
 
   createRemoteMySQL(serviceName, version) {
-    if (version == 'old') {
+    if (version == "old") {
       this.createOldRemoteMySQL(serviceName);
-    } else if (version == 'new') {
+    } else if (version == "new") {
       this.createNewRemoteMySQL(serviceName);
     }
     return pmmInventoryPage;
+
   },
 
-  openAddAWSRDSMySQLPage() {
+  openAddAWSRDSMySQLPage () {
     I.click(this.fields.addAWSRDSMySQLbtn);
     I.waitForVisible(this.fields.accessKeyInput, 30);
     I.waitForVisible(this.fields.secretKeyInput, 30);
     I.waitForClickable(this.fields.discoverBtn, 30);
   },
 
-  discoverRDS() {
+  discoverRDS () {
     I.fillField(this.fields.accessKeyInput, this.accessKey);
     I.fillField(this.fields.secretKeyInput, this.secretKey);
     I.click(this.fields.discoverBtn);
     this.waitForDiscovery();
   },
 
-  waitForDiscovery() {
+  waitForDiscovery () {
     I.waitForVisible(this.fields.discoveryResults, 30);
   },
 
-  verifyInstanceIsDiscovered(instanceIdToMonitor) {
-    const instanceIdLocator = `${this.fields.discoveryRowWithId}${instanceIdToMonitor}']`;
+  verifyInstanceIsDiscovered (instanceIdToMonitor) {
+    let instanceIdLocator = `${this.fields.discoveryRowWithId}${instanceIdToMonitor}']`;
     I.seeElement(instanceIdLocator);
   },
 
   startMonitoringOfInstance(instanceIdToMonitor) {
-    const instanceIdLocator = `${this.fields.discoveryRowWithId}${instanceIdToMonitor}']`;
-    const startMonitoringInstanceBtn = `${instanceIdLocator}${this.fields.startMonitoring}`;
+    let instanceIdLocator = `${this.fields.discoveryRowWithId}${instanceIdToMonitor}']`;
+    let startMonitoringInstanceBtn = `${instanceIdLocator}${this.fields.startMonitoring}`;
     I.waitForVisible(instanceIdLocator, 30);
     I.click(startMonitoringInstanceBtn);
   },
@@ -151,5 +153,5 @@ module.exports = {
     I.fillField(this.fields.cluster, 'rds56-cluster');
     I.fillField(this.fields.replicationSet, 'rds56-replication');
     I.scrollPageToBottom();
-  },
-};
+  }
+}
