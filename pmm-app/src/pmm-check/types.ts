@@ -13,7 +13,7 @@ export interface Column {
 export enum Severity {
   error = 'error',
   warning = 'warning',
-  info = 'info',
+  notice = 'notice',
 }
 
 export type SeverityMap = Record<Severity, string>;
