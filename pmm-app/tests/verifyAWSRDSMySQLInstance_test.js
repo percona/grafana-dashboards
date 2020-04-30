@@ -26,7 +26,7 @@ xScenario('Verify AWS RDS MySQL 5.6 instance has status running @pmm-post-update
     await pmmInventoryPage.verifyAgentHasStatusRunning(serviceName);
 });
 
-Scenario('Verify QAN Filters contain AWS RDS MySQL 5.6 after it was added for monitoring @not-pr-pipeline', async (I, qanPage, adminPage) => {
+xScenario('Verify QAN Filters contain AWS RDS MySQL 5.6 after it was added for monitoring @not-pr-pipeline', async (I, qanPage, adminPage) => {
     let environment = 'RDS MySQL 5.6';
     let filter = qanPage.getFilterLocator(environment);
     I.amOnPage(qanPage.url);
