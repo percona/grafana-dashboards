@@ -40,6 +40,7 @@ module.exports = {
     I.click(this.fields.serviceName);
     I.waitForElement(this.graphsLocator(this.metrics[1]), 30);
     for (let i in this.metrics) {
+      I.waitForElement(this.graphsLocator(this.metrics[i], 30));
       I.seeElement(this.graphsLocator(this.metrics[i]));
     }
   },
