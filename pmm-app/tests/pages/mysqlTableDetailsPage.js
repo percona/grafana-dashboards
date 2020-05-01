@@ -40,7 +40,6 @@ module.exports = {
     I.waitForVisible(this.graphsLocator(this.metrics[1]), 30);
     I.waitForVisible(this.graphsLocator(this.metrics[2]), 30);
     for (let i in this.metrics) {
-      I.waitForElement(this.graphsLocator(this.metrics[i], 30));
       I.seeElement(this.graphsLocator(this.metrics[i]));
     }
   },

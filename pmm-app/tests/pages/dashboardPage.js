@@ -1,4 +1,4 @@
-const I = actor();
+const { I } = inject();
 const assert = require('assert');
 
 module.exports = {
