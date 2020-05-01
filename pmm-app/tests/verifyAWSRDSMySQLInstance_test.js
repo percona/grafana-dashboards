@@ -7,7 +7,7 @@ Before(async I => {
 Scenario(
   'Verify Discovery and adding AWS RDS MySQL 5.6 instance for monitoring @not-pr-pipeline',
   async (I, remoteInstancesPage, pmmInventoryPage) => {
-    let instanceIdToMonitor = 'rds-mysql56';
+    const instanceIdToMonitor = 'rds-mysql56';
     I.amOnPage(remoteInstancesPage.url);
     remoteInstancesPage.waitUntilNewRemoteInstancesPageLoaded().openAddAWSRDSMySQLPage();
     remoteInstancesPage.discoverRDS();
@@ -23,7 +23,7 @@ Scenario(
 xScenario(
   'Verify AWS RDS MySQL 5.6 instance has status running @pmm-post-update @not-pr-pipeline',
   async (I, remoteInstancesPage, pmmInventoryPage) => {
-    let serviceName = 'rds-mysql56';
+    const serviceName = 'rds-mysql56';
     I.amOnPage(pmmInventoryPage.url);
     pmmInventoryPage.verifyMySQLRemoteServiceIsDisplayed(serviceName);
     await pmmInventoryPage.verifyAgentHasStatusRunning(serviceName);
@@ -32,8 +32,8 @@ xScenario(
 xScenario(
   'Verify QAN Filters contain AWS RDS MySQL 5.6 after it was added for monitoring @not-pr-pipeline',
   async (I, qanPage, adminPage) => {
-    let environment = 'RDS MySQL 5.6';
-    let filter = qanPage.getFilterLocator(environment);
+    const environment = 'RDS MySQL 5.6';
+    const filter = qanPage.getFilterLocator(environment);
     I.amOnPage(qanPage.url);
     await I.waitForElement(qanPage.fields.iframe, 60);
     adminPage.applyTimer('5m');

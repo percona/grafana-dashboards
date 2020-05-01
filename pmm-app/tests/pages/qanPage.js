@@ -115,7 +115,7 @@ module.exports = {
   },
 
   async changeResultsPerPage(count) {
-    let numOfElements = await I.grabNumberOfVisibleElements(this.fields.resultsPerPageDropDown);
+    const numOfElements = await I.grabNumberOfVisibleElements(this.fields.resultsPerPageDropDown);
     if ((numOfElements = 0)) {
       for (var i = 0; i < 5; i++) {
         I.pressKey('PageDown');
@@ -130,7 +130,7 @@ module.exports = {
   },
 
   getFilterLocator(filterValue) {
-    let filterLocator =
+    const filterLocator =
      "//section[@class='aside__filter-group']//span[contains(text(), '" +
      filterValue +
      "')]/../span[@class='checkbox-container__checkmark']";
@@ -138,7 +138,7 @@ module.exports = {
   },
 
   applyFilter(filterValue){
-    let filterLocator = this.getFilterLocator(filterValue);
+    const filterLocator = this.getFilterLocator(filterValue);
     I.waitForElement(filterLocator, 30);
     I.click(filterLocator);
     I.waitForVisible(this.fields.table, 30);
@@ -147,7 +147,7 @@ module.exports = {
   async expandAllFilter() {
     for (let i = 0; i < 4; i++) {
       // eslint-disable-next-line max-len
-      let numOfElements = await I.grabNumberOfVisibleElements("//section[@class='aside__filter-group']//span[contains(text(), '" + this.filterGroups[i] + "')]/../button[contains(text(), 'See all')]");
+      const numOfElements = await I.grabNumberOfVisibleElements("//section[@class='aside__filter-group']//span[contains(text(), '" + this.filterGroups[i] + "')]/../button[contains(text(), 'See all')]");
       if (numOfElements === 1) {
         // eslint-disable-next-line max-len
         I.click("//section[@class='aside__filter-group']//span[contains(text(), '" + this.filterGroups[i] + "')]/../button[contains(text(), 'See all')]");
@@ -158,15 +158,15 @@ module.exports = {
   },
 
   async _getData(row, column) {
-    let percentage = await I.grabTextFrom("//table//tr[@ng-reflect-router-link='details/," + (row - 1) + "']//app-qan-table-cell[" + column +"]//div[1]//div[3]");
-    let value = await I.grabTextFrom("//table//tr[@ng-reflect-router-link='details/," + (row - 1) + "']//app-qan-table-cell[" + column +"]//div[1]//div[2]");
+    const percentage = await I.grabTextFrom("//table//tr[@ng-reflect-router-link='details/," + (row - 1) + "']//app-qan-table-cell[" + column +"]//div[1]//div[3]");
+    const value = await I.grabTextFrom("//table//tr[@ng-reflect-router-link='details/," + (row - 1) + "']//app-qan-table-cell[" + column +"]//div[1]//div[2]");
 
     return { percentage: percentage, val: value };
   },
 
   async getDetailsData(row) {
-    let percentage = await I.grabTextFrom("//app-details-table//app-details-row[" + row +"]//div[3]//span[2]");
-    let value = await I.grabTextFrom("//app-details-table//app-details-row[" + row +"]//div[3]//span[1]");
+    const percentage = await I.grabTextFrom("//app-details-table//app-details-row[" + row +"]//div[3]//span[2]");
+    const value = await I.grabTextFrom("//app-details-table//app-details-row[" + row +"]//div[3]//span[1]");
     return { percentage: percentage, val: value };
   },
 
@@ -197,7 +197,7 @@ module.exports = {
 
   async verifyDetailsSectionDataExists(tabElements) {
     this.waitForTabContentsLoaded(tabElements);
-    let detailsText = await I.grabTextFrom(tabElements[0]);
+    const detailsText = await I.grabTextFrom(tabElements[0]);
     assert.equal(detailsText.length > 0, true, `Empty Section in Details`);
   },
 
@@ -227,7 +227,7 @@ module.exports = {
   },
 
   async clearFilters(){
-    let numOfElements = await I.grabNumberOfVisibleElements(this.fields.filterSelection);
+    const numOfElements = await I.grabNumberOfVisibleElements(this.fields.filterSelection);
     for (let i = 1; i <= numOfElements; i++) {
       I.click(this.fields.filterSelection + "[" + i + "]");
       I.waitForInvisible(this.fields.detailsTable, 30);
@@ -235,7 +235,7 @@ module.exports = {
   },
 
   addColumnToQAN(columnName) {
-    let columnNameLocator = this.fields.searchResult + columnName + "']";
+    const columnNameLocator = this.fields.searchResult + columnName + "']";
     I.click(this.fields.addColumn);
     I.waitForVisible(this.fields.searchForColumn, 30);
     I.fillField(this.fields.searchForColumn, columnName);
@@ -245,8 +245,8 @@ module.exports = {
   },
 
   changeMetricTo(metricToReplace, newMetric) {
-    let currentMetric = this.fields.qanMainMetric + metricToReplace + "']]";
-    let metricToSelect = this.fields.searchResult + newMetric + "']";
+    const currentMetric = this.fields.qanMainMetric + metricToReplace + "']]";
+    const metricToSelect = this.fields.searchResult + newMetric + "']";
     I.click(currentMetric);
     I.waitForVisible(this.fields.searchForColumn, 30);
     I.fillField(this.fields.searchForColumn, newMetric);
