@@ -81,7 +81,7 @@ export const alertsStub = [
       node_name: 'pmm-server',
       service_name: 'sandbox-mysql.acme.com',
       node_type: 'generic',
-      severity: 'info',
+      severity: 'notice',
     },
   },
   {
