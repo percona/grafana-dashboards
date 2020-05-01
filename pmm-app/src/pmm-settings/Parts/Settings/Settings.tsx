@@ -126,7 +126,6 @@ const SettingsPart = props => {
       setLoading(false);
     }
   };
-
   return (
     <FormFinal
       onSubmit={onSubmit}
@@ -147,7 +146,6 @@ const SettingsPart = props => {
             },
           });
         }, [settings]);
-
         // @ts-ignore
         return (
           <form onSubmit={handleSubmit}>
@@ -225,7 +223,9 @@ const SettingsPart = props => {
                         text="Option to send usage data back to Percona to let us make product better"
                       />
                     }
-                    element={<ToggleField name="telemetry_enabled" />}
+                    element={
+                      <ToggleField name="telemetry_enabled" disabled={form.getState().values.stt_enabled} />
+                    }
                   />
                   <FormElement
                     label="Check for updates"
@@ -261,7 +261,9 @@ const SettingsPart = props => {
                         text="Enable Security Threat Tool and get updated checks from Percona"
                       />
                     }
-                    element={<ToggleField name="stt_enabled" />}
+                    element={
+                      <ToggleField name="stt_enabled" disabled={!form.getState().values.telemetry_enabled} />
+                    }
                   />
                 </Panel>
               </Collapse>
