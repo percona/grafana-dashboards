@@ -153,10 +153,12 @@ module.exports = {
   async expandAllFilter() {
     for (let i = 0; i < 4; i++) {
       // eslint-disable-next-line max-len
-      const numOfElementsFilterCount = await I.grabNumberOfVisibleElements(filterGroupCountSelector(this.filterGroups[i]));
+      let numOfElementsFilterCount = await I.grabNumberOfVisibleElements(
+        this.filterGroupCountSelector(this.filterGroups[i])
+      );
       if (numOfElementsFilterCount === 1) {
         // eslint-disable-next-line max-len
-        I.click(filterGroupCountSelector(this.filterGroups[i]));
+        I.click(this.filterGroupCountSelector(this.filterGroups[i]));
         // eslint-disable-next-line max-len
         I.waitForVisible("//section[@class='aside__filter-group']//span[contains(text(), '" + this.filterGroups[i] + "')]/../button[contains(text(), 'Show top 5')]");
       }
