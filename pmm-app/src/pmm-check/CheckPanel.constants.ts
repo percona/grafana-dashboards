@@ -10,7 +10,7 @@ export const DEFAULTS: CheckPanelOptions = {
 export const SEVERITY: SeverityMap = {
   error: 'Critical',
   warning: 'Major',
-  info: 'Trivial',
+  notice: 'Trivial',
 };
 
 export const COLUMNS: Column[] = [
