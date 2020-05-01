@@ -59,3 +59,25 @@ xScenario('Open PMM Settings page and verify clearing Alertmanager Rule', async 
   pmmSettingsPage.addAlertmanagerRule('', '');
   await pmmSettingsPage.verifySuccessfulPopUp(pmmSettingsPage.messages.successAlertmanagerMessage);
 });
+
+Scenario(
+    'Verify user can see correct tooltip for STT',
+    async (I, pmmSettingsPage) => {
+      pmmSettingsPage.waitForPmmSettingsPageLoaded();
+      I.moveCursorTo(pmmSettingsPage.fields.sttLabelTooltipLocator);
+      await pmmSettingsPage.verifyTooltip(pmmSettingsPage.tooltips.stt);
+    }
+);
+
+Scenario(
+    'Verify user can enable STT if Telemetry is enabled',
+    async (I, pmmSettingsPage) => {
+      pmmSettingsPage.waitForPmmSettingsPageLoaded();
+      pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelector, 'disabled');
+      I.click(pmmSettingsPage.fields.sttSwitchSelector);
+      I.click(pmmSettingsPage.fields.applyButton);
+      await pmmSettingsPage.verifySuccessfulPopUp(pmmSettingsPage.messages.successPopUpMessage);
+      I.refreshPage();
+      pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelector, 'enabled');
+    }
+);

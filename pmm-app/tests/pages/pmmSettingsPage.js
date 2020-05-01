@@ -56,6 +56,15 @@ module.exports = {
     'Alertmanager integration',
     'Diagnostics',
   ],
+
+  tooltips : {
+    stt: {
+      text: "Enable Security Threat Tool and get updated checks from Percona",
+      link: "https://www.percona.com/doc/percona-monitoring-and-management/2.x/manage/server-admin-gui.html#stt"
+    },
+
+  },
+
   sectionButtonText: {
     applyChanges: 'Apply changes',
     applySSHKey: 'Apply SSH key',
@@ -82,14 +91,15 @@ module.exports = {
     popUpTitle: "//div[@class='alert-title']",
     validationMessage: "//span[@class='error-message']",
     selectedResolution: "//span[@class='ant-slider-mark-text ant-slider-mark-text-active']",
+    sttSwitchSelector: "//strong[text()='Security Threat Tool']/parent::div/following-sibling::div/button",
+    sttLabelTooltipLocator: "//strong[text()='Security Threat Tool']/following-sibling::span/i",
+    tooltipLocator: ".ant-tooltip-inner"
   },
 
   waitForPmmSettingsPageLoaded() {
     I.waitForVisible(this.fields.applyButton, 30);
-    I.waitForClickable(this.fields.applyButton, 30);
     I.waitForVisible(this.fields.sectionHeader, 30);
     I.waitForVisible(this.fields.callHomeSwitch, 30);
-    I.waitForClickable(this.fields.callHomeSwitch, 30);
   },
 
   verifySettingsSectionElements() {
@@ -100,6 +110,7 @@ module.exports = {
     I.see('Telemetry', this.fields.sectionRow);
     I.seeElement(this.fields.callHomeSwitch);
     I.see('Check for updates', this.fields.sectionRow);
+    I.seeElement(this.fields.sttSwitchSelector);
   },
 
   verifySSHKeyDetailsSectionElements() {
@@ -285,5 +296,23 @@ module.exports = {
       I.wait(1);
     }
     I.see(ruleName);
+  },
+
+  async verifyTooltip(tooltipObj) {
+    I.see(tooltipObj.text, this.fields.tooltipLocator);
+    I.seeAttributesOnElements(`${this.fields.tooltipLocator} > div > a`, {href: tooltipObj.link});
+  },
+
+  verifySwitch(switchSelector, expectedSwitchState= 'enabled') {
+    let expectedSwitch;
+    switch (expectedSwitchState){
+      case 'enabled':
+        expectedSwitch = {'aria-checked':'true'};
+        break;
+      case 'disabled':
+        expectedSwitch = {'aria-checked':'false'};
+        break;
+    }
+    I.seeAttributesOnElements(switchSelector, expectedSwitch);
   },
 };
