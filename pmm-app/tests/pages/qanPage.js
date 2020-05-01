@@ -117,7 +117,7 @@ module.exports = {
   async changeResultsPerPage(count) {
     const numOfElements = await I.grabNumberOfVisibleElements(this.fields.resultsPerPageDropDown);
     if ((numOfElements = 0)) {
-      for (var i = 0; i < 5; i++) {
+      for (let i = 0; i < 5; i++) {
         I.pressKey('PageDown');
         I.wait(2);
       }
@@ -202,20 +202,21 @@ module.exports = {
   },
 
   async verifyDataSet(row){
-    var queryCountData = await this._getData(row, 2);
+    const queryCountData = await this._getData(row, 2);
     console.log("Query Count Data values " + queryCountData.percentage + " & " + queryCountData.val);
-    var queryTimeData = await this._getData(row, 3);
+    const queryTimeData = await this._getData(row, 3);
     console.log("Query Time Data values " + queryTimeData.percentage + " & " + queryTimeData.val);
     this._selectDetails(row);
-    var detailsQueryCountData = await this.getDetailsData(1);
+    const detailsQueryCountData = await this.getDetailsData(1);
     console.log("Query Count Details Values " + detailsQueryCountData.percentage  + " & " +  detailsQueryCountData.val);
+    let detailsQueryTimeData;
     if (row === 1) {
-      var detailsQueryTimeData = await this.getDetailsData(3);
+      detailsQueryTimeData = await this.getDetailsData(3);
       console.log("Query Count Details Values " + detailsQueryCountData.percentage  + " & " +  detailsQueryCountData.val);
     }
     else
     {
-      var detailsQueryTimeData = await this.getDetailsData(2);
+      detailsQueryTimeData = await this.getDetailsData(2);
       console.log(
         'Query Count Details Values ' + detailsQueryCountData.percentage + ' & ' + detailsQueryCountData.val
       );

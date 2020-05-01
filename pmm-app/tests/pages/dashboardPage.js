@@ -324,7 +324,7 @@ module.exports = {
     const numberOfNAElements = await I.grabNumberOfVisibleElements(this.fields.notAvailableMetrics);
     console.log('number of N/A elements is = ' + numberOfNAElements);
     if (numberOfNAElements > acceptableNACount) {
-      let titles = await this.grabFailedReportTitles(this.fields.reportTitleWithNA);
+      const titles = await this.grabFailedReportTitles(this.fields.reportTitleWithNA);
       await this.printFailedReportNames(acceptableNACount, numberOfNAElements, titles);
     }
   },
@@ -333,7 +333,7 @@ module.exports = {
     const numberOfNoDataElements = await I.grabNumberOfVisibleElements(this.fields.notAvailableDataPoints);
     console.log('number of No Data elements is = ' + numberOfNoDataElements);
     if (numberOfNoDataElements > acceptableNoDataCount) {
-      let titles = await this.grabFailedReportTitles(this.fields.reportTitleWithNoData);
+      const titles = await this.grabFailedReportTitles(this.fields.reportTitleWithNoData);
       await this.printFailedReportNames(acceptableNoDataCount, numberOfNoDataElements, titles);
     }
   },
