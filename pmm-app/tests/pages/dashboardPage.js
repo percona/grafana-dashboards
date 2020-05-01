@@ -321,19 +321,19 @@ module.exports = {
   },
 
   async verifyThereAreNoGraphsWithNA(acceptableNACount = 0) {
-    let numberOfNAElements = await I.grabNumberOfVisibleElements(this.fields.notAvailableMetrics);
+    const numberOfNAElements = await I.grabNumberOfVisibleElements(this.fields.notAvailableMetrics);
     console.log('number of N/A elements is = ' + numberOfNAElements);
     if (numberOfNAElements > acceptableNACount) {
-      let titles = await this.grabFailedReportTitles(this.fields.reportTitleWithNA);
+      const titles = await this.grabFailedReportTitles(this.fields.reportTitleWithNA);
       await this.printFailedReportNames(acceptableNACount, numberOfNAElements, titles);
     }
   },
 
   async verifyThereAreNoGraphsWithoutData(acceptableNoDataCount = 0) {
-    let numberOfNoDataElements = await I.grabNumberOfVisibleElements(this.fields.notAvailableDataPoints);
+    const numberOfNoDataElements = await I.grabNumberOfVisibleElements(this.fields.notAvailableDataPoints);
     console.log('number of No Data elements is = ' + numberOfNoDataElements);
     if (numberOfNoDataElements > acceptableNoDataCount) {
-      let titles = await this.grabFailedReportTitles(this.fields.reportTitleWithNoData);
+      const titles = await this.grabFailedReportTitles(this.fields.reportTitleWithNoData);
       await this.printFailedReportNames(acceptableNoDataCount, numberOfNoDataElements, titles);
     }
   },
@@ -352,13 +352,13 @@ module.exports = {
   },
 
   async grabFailedReportTitles(selector) {
-    let reportNames = await I.grabTextFrom(selector);
+    const reportNames = await I.grabTextFrom(selector);
     return reportNames;
   },
 
   async expandEachDashboardRow(halfToExpand) {
     let sectionsToExpand;
-    let sections = await I.grabTextFrom(this.fields.collapsedDashboardRow);
+    const sections = await I.grabTextFrom(this.fields.collapsedDashboardRow);
     if (halfToExpand == 1) {
       sectionsToExpand = sections.slice(0, sections.length / 2);
     } else if (halfToExpand == 2) {
@@ -377,8 +377,8 @@ module.exports = {
       sections = sectionsToExpand;
     }
     for (let i = 0; i < sections.length; i++) {
-      let sectionName = sections[i].toString().split('(');
-      let rowToExpand = `${this.fields.collapsedDashboardRow}[contains(text(), '${sectionName[0]}')]`;
+      const sectionName = sections[i].toString().split('(');
+      const rowToExpand = `${this.fields.collapsedDashboardRow}[contains(text(), '${sectionName[0]}')]`;
       I.click(rowToExpand);
       I.wait(0.5);
     }
