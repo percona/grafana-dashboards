@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import ExampleService from './Example/Example.service';
 import { PanelProvider } from '../../../../panel/panel.provider';
+import DetailsService from './Details.service';
 
 export const useDatabaseType = () => {
   const {
@@ -26,4 +27,27 @@ export const useDatabaseType = () => {
   }, [queryId]);
 
   return databaseType;
+};
+
+export const useActionResult = (): [any, any] => {
+  const [result, setResult] = useState<any>();
+  const [action_id, setActionId] = useState<any>();
+  let intervalId;
+  useEffect(() => {
+    if (!action_id) {
+      return;
+    }
+    const getData = async () => {
+      const result = await DetailsService.getActionResult({
+        action_id,
+      });
+      if (result.done) {
+        clearInterval(intervalId);
+        setResult(result.output);
+      }
+    };
+    intervalId = setInterval(getData, 300);
+  }, [action_id]);
+
+  return [result, setActionId];
 };
