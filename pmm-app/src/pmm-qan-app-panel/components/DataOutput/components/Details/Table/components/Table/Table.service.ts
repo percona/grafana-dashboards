@@ -3,7 +3,7 @@ import { apiRequestManagement } from '../../../../../../../../react-plugins-deps
 class TableService {
   static getShowCreateTableMySQL({ database, service_id, table_name }) {
     const body = {
-      database,
+      // database,
       service_id,
       table_name,
     };
@@ -43,13 +43,6 @@ class TableService {
       table_name,
     };
     return apiRequestManagement.post<any, any>('/Actions/StartPostgreSQLShowIndex', body);
-  }
-
-  static getActionResult({ action_id }) {
-    const body = {
-      action_id,
-    };
-    return apiRequestManagement.post<any, any>('/Actions/Get', body);
   }
 }
 

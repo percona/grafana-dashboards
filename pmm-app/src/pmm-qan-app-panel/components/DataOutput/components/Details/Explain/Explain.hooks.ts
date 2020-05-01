@@ -1,17 +1,18 @@
 import ExplainService from './Explain.service';
 import { useEffect, useState } from 'react';
-import { useDatabaseType } from '../Details.hooks';
+import { useActionResult, useDatabaseType } from '../Details.hooks';
 import { useExamples } from '../Example/Example.hooks';
 import { DATABASE } from '../Details.constants';
 
 export const useExplain = (): [any, any, boolean, string] => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [traditionalExplain, setTraditionalExplain] = useState(null);
-  const [jsonExplain, setJsonExplain] = useState({});
+  // const [traditionalExplain, setTraditionalExplain] = useState(null);
+  // const [jsonExplain, setJsonExplain] = useState({});
   const [errorText, setErrorText] = useState('');
   const databaseType = useDatabaseType();
   const [examples] = useExamples();
-
+  const [traditionalExplain, setActionIdTraditional] = useActionResult();
+  const [jsonExplain, setActionIdJSON] = useActionResult();
   const startExplainActions = example => {
     if (!('example' in example) || example.example === '') {
       setErrorText('Cannot display query explain without query example at this time.');
@@ -41,10 +42,7 @@ export const useExplain = (): [any, any, boolean, string] => {
           service_id: example.service_id,
           query: example.example,
         });
-        const explain = await ExplainService.getActionResult({
-          action_id,
-        });
-        setJsonExplain(explain.output);
+        setActionIdJSON(action_id);
         setLoading(false);
       } catch (e) {
         setLoading(false);
@@ -62,10 +60,7 @@ export const useExplain = (): [any, any, boolean, string] => {
           query: example.example,
           service_id: example.service_id,
         });
-        const explain = await ExplainService.getActionResult({
-          action_id,
-        });
-        setTraditionalExplain(explain.output);
+        setActionIdTraditional(action_id);
         setLoading(false);
       } catch (e) {
         setLoading(false);
@@ -80,10 +75,7 @@ export const useExplain = (): [any, any, boolean, string] => {
           query: example.example,
           service_id: example.service_id,
         });
-        const explain = await ExplainService.getActionResult({
-          action_id,
-        });
-        setJsonExplain(JSON.parse(explain.output));
+        setActionIdJSON(action_id);
         setLoading(false);
       } catch (e) {
         setLoading(false);

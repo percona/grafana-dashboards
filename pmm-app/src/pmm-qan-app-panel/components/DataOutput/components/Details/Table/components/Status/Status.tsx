@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { DATABASE } from '../../../Details.constants';
 import StatusService from './Status.service';
 import { Table } from 'antd';
-import { useActionResult } from '../../TableContainer.hooks';
+import { useActionResult } from '../../../Details.hooks';
 
 export const Status = props => {
   const { schema, tableName, databaseType, example } = props;
@@ -14,7 +14,7 @@ export const Status = props => {
     setErrorText('');
     switch (databaseType) {
       case DATABASE.mysql:
-        if (!('example' in example) || example.example === '' || !schema || !tableName) {
+        if (!tableName) {
           setErrorText(
             'Cannot display status info without query example, schema or table name at this moment.'
           );

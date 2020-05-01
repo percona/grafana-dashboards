@@ -1,25 +1,24 @@
+import { useExamples } from '../Example/Example.hooks';
+import { useExplain } from '../Explain/Explain.hooks';
 import { useEffect, useState } from 'react';
-import TableService from './components/Table/Table.service';
+import { DATABASE } from '../Details.constants';
 
-export const useActionResult = (): [any, any] => {
-  const [result, setResult] = useState<any>();
-  const [action_id, setActionId] = useState<any>();
-  let intervalId;
+export const useTables = databaseType => {
+  const [examples] = useExamples();
+  const [jsonExplain] = useExplain();
+  const [tables, setTables] = useState([]);
+
   useEffect(() => {
-    if (!action_id) {
-      return;
+    if (databaseType === DATABASE.mysql) {
+      setTables([JSON.parse(jsonExplain).query_block.table.table_name]);
     }
-    const getData = async () => {
-      const result = await TableService.getActionResult({
-        action_id,
-      });
-      if (result.done) {
-        clearInterval(intervalId);
-        setResult(result.output);
-      }
-    };
-    intervalId = setInterval(getData, 200);
-  }, [action_id]);
+  }, [jsonExplain]);
 
-  return [result, setActionId];
+  useEffect(() => {
+    if (databaseType === DATABASE.postgresql) {
+      setTables(examples[0].tables);
+    }
+  }, [examples]);
+
+  return tables;
 };

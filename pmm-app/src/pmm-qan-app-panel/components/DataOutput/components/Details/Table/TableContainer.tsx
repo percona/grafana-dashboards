@@ -7,6 +7,7 @@ import { Styling } from '../Explain/Explain.styles';
 import { Indexes } from './components/Indexes/Indexes';
 import { Status } from './components/Status/Status';
 import { DATABASE } from '../Details.constants';
+import { useTables } from './TableContainer.hooks';
 
 const { TabPane } = Tabs;
 const { Panel } = Collapse;
@@ -14,12 +15,13 @@ const { Panel } = Collapse;
 const TableCreateContainer = () => {
   const [examples, loading] = useExamples();
   const databaseType = useDatabaseType();
-
+  const tables = useTables(databaseType);
+  console.log(tables);
   return (
     <Spin spinning={loading}>
-      {examples && examples.length && examples[0].tables ? (
+      {tables.length ? (
         <Tabs defaultActiveKey="1" onChange={() => {}} tabPosition="top">
-          {examples[0].tables.map((table, index) => {
+          {tables.map((table, index) => {
             return (
               <TabPane tab={<span>{table}</span>} key={index}>
                 <Collapse bordered={false} defaultActiveKey={['1']} className={Styling.collapse}>

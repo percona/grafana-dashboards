@@ -2,19 +2,19 @@ import React, { useEffect, useState } from 'react';
 import { DATABASE } from '../../../Details.constants';
 import IndexesService from './Indexes.service';
 import { Table } from 'antd';
-import { useActionResult } from '../../TableContainer.hooks';
+import { useActionResult } from '../../../Details.hooks';
 
 export const Indexes = props => {
-  const { schema, tableName, databaseType, example } = props;
-  // const [indexes, setIndexes] = useState('');
+  const { tableName, databaseType, example } = props;
   const [data, setData] = useState({ columns: [], rows: [] });
   const [errorText, setErrorText] = useState('');
   const [indexes, setActionId] = useActionResult();
+
   const getIndexes = example => {
     setErrorText('');
     switch (databaseType) {
       case DATABASE.mysql:
-        if (!('example' in example) || example.example === '' || !schema || !tableName) {
+        if (!tableName) {
           setErrorText(
             'Cannot display indexes info without query example, schema or table name at this moment.'
           );
@@ -39,10 +39,6 @@ export const Indexes = props => {
       service_id: example.service_id,
     });
     setActionId(action_id as string);
-    // const table = await IndexesService.getActionResult({
-    //   action_id,
-    // });
-    // setIndexes(table.output);
   };
 
   const getPostgreSQL = async example => {
@@ -51,10 +47,6 @@ export const Indexes = props => {
       service_id: example.service_id,
     });
     setActionId(action_id as string);
-    // const table = await IndexesService.getActionResult({
-    //   action_id,
-    // });
-    // setIndexes(table.output);
   };
 
   useEffect(() => {

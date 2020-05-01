@@ -7,7 +7,7 @@ class StatusService {
       service_id,
       table_name,
     };
-    return apiRequestManagement.post<any, any>('/Actions/StartMySQLShowTableStatusAction', body);
+    return apiRequestManagement.post<any, any>('/Actions/StartMySQLShowTableStatus', body);
   }
 
   static getActionResult({ action_id }) {
