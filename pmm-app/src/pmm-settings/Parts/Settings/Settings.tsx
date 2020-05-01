@@ -102,6 +102,8 @@ interface SettingsInterface {
   metrics_resolutions: MetricsResolutionInterface;
   disable_telemetry?: boolean;
   enable_telemetry?: boolean;
+  disable_stt?: boolean;
+  enable_stt?: boolean;
 }
 
 const SettingsPart = props => {
@@ -116,7 +118,8 @@ const SettingsPart = props => {
 
     updatedSettings.disable_telemetry = !values.telemetry_enabled;
     updatedSettings.enable_telemetry = values.telemetry_enabled;
-
+    updatedSettings.disable_stt = !values.stt_enabled;
+    updatedSettings.enable_stt = values.stt_enabled;
     setLoading(true);
     try {
       await SettingsService.setSettings(updatedSettings);
