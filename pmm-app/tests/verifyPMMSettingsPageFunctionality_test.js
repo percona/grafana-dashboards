@@ -61,7 +61,7 @@ xScenario('Open PMM Settings page and verify clearing Alertmanager Rule', async 
 });
 
 Scenario(
-    'Verify user can see correct tooltip for STT',
+    'PMM-T253 Verify user can see correct tooltip for STT',
     async (I, pmmSettingsPage) => {
       pmmSettingsPage.waitForPmmSettingsPageLoaded();
       I.moveCursorTo(pmmSettingsPage.fields.sttLabelTooltipLocator);
@@ -70,7 +70,7 @@ Scenario(
 );
 
 Scenario(
-    'Verify user can enable STT if Telemetry is enabled',
+    'PMM-T253 Verify user can enable STT if Telemetry is enabled',
     async (I, pmmSettingsPage) => {
       pmmSettingsPage.waitForPmmSettingsPageLoaded();
       pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelector, 'disabled');
