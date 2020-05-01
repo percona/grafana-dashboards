@@ -25,6 +25,7 @@ Scenario(
   async (I, adminPage, dashboardPage) => {
     I.amOnPage(dashboardPage.proxysqlInstanceSummaryDashboard.url);
     dashboardPage.waitForDashboardOpened();
+    adminPage.applyTimer('5m');
     I.click(adminPage.fields.metricTitle);
     adminPage.peformPageDown(5);
     await dashboardPage.verifyMetricsExistence(dashboardPage.proxysqlInstanceSummaryDashboard.metrics);
