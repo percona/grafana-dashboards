@@ -89,9 +89,12 @@ Scenario(
     await qanPage.verifyColumnIsNotAvailable(COLUMN_NAME);
   }
 );
-xScenario(
-  'PMM-T156 Verify queries are sorted by Load by default sorting from max to min @new-qan ',
-  async (I, adminPage, qanPage) => {}
+Scenario(
+  'PMM-T156 Verify that by default, queries are sorted by Load, from max to min @new-qan',
+  async (I, adminPage, qanPage) => {
+      qanPage.waitForDownloadOverviewTable();
+      qanPage.verifySortingIs(1, 'down');
+  }
 );
 xScenario(
   'PMM-T177 Verify user do not see empty space on the page bottom if there was no query selected @visual @new-qan ',
@@ -101,13 +104,20 @@ xScenario(
   'PMM-T178 Verify user is able to scroll horizontally by dragging horizontal scroll @visual @new-qan ',
   async (I, adminPage, qanPage) => {}
 );
-xScenario(
-  'PMM-T183 Verify user is able change `group by` section in overview @new-qan ',
-  async (I, adminPage, qanPage) => {}
+Scenario(
+  'PMM-T183 Verify that "Group by" in the overview table can be changed @new-qan',
+  async (I, adminPage, qanPage) => {
+      qanPage.changeGroupBy('Database');
+      qanPage.verifyGroupByIs('Database');
+  }
 );
-xScenario(
-  'PMM-T187 Verify highlighting of selected element in overview @new-qan ',
-  async (I, adminPage, qanPage) => {}
+
+Scenario(
+  'PMM-T187 Verify that the selected row in the overview table is highlighted @new-qan',
+  async (I, adminPage, qanPage) => {
+      qanPage.selectRow('2');
+      qanPage.verifyRowIsSelected('2');
+  }
 );
 xScenario('PMM-T194 Verify scrolling through the overview table @new-qan ', async (I, adminPage, qanPage) => {});
 xScenario('PMM-T198 Verify 4 types of values in overview table @new-qan ', async (I, adminPage, qanPage) => {});
