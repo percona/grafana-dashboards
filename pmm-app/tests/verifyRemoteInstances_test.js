@@ -1,46 +1,71 @@
 Feature('to verify monitoried Remote Db instances');
 
-Before(async (I) => {
+Before(async I => {
   I.Authorize();
 });
 
-xScenario(
-  'Open Remote Instance Page and Add mysql instances @pmm-pre-update',
-  async (I, remoteInstancesPage, pmmInventoryPage) => {
-    const mysql_service_name = 'mysql_remote_test';
-    const version = 'old';
-    I.amOnPage(remoteInstancesPage.url);
-    remoteInstancesPage.waitUntilOldRemoteInstancesPageLoaded();
-    remoteInstancesPage.openAddRemoteMySQLPage();
-    remoteInstancesPage.fillRemoteMySQLFields(mysql_service_name);
-    remoteInstancesPage.createRemoteMySQL(mysql_service_name, version);
-    pmmInventoryPage.verifyOldMySQLRemoteServiceIsDisplayed(mysql_service_name);
-    await pmmInventoryPage.verifyAgentHasStatusRunning(mysql_service_name, version);
-  }
-);
-
-xScenario(
-  'Verify is the remote instances are in Running Status @pmm-post-update',
-  async (I, remoteInstancesPage, pmmInventoryPage) => {
-    const mysql_service_name = 'mysql_remote_test';
-    const version = 'new';
-    I.amOnPage(pmmInventoryPage.url);
-    pmmInventoryPage.verifyMySQLRemoteServiceIsDisplayed(mysql_service_name);
-    await pmmInventoryPage.verifyAgentHasStatusRunning(mysql_service_name, version);
-  }
-);
-
-xScenario(
-  'Open Remote Instance Page and Add mysql instances PMM Latest',
-  async (I, remoteInstancesPage, pmmInventoryPage) => {
+Scenario(
+  'Verify Remote MySQL Instance Addition',
+  async (I, adminPage, remoteInstancesPage, pmmInventoryPage) => {
     const mysql_service_name = 'mysql_remote_new';
-    const version = 'new';
     I.amOnPage(remoteInstancesPage.url);
-    remoteInstancesPage.waitUntilNewRemoteInstancesPageLoaded();
-    remoteInstancesPage.openAddRemoteMySQLPage();
-    remoteInstancesPage.fillRemoteMySQLFields(mysql_service_name);
-    remoteInstancesPage.createRemoteMySQL(mysql_service_name, version);
-    pmmInventoryPage.verifyMySQLRemoteServiceIsDisplayed(mysql_service_name);
-    await pmmInventoryPage.verifyAgentHasStatusRunning(mysql_service_name, version);
+    remoteInstancesPage.waitUntilRemoteInstancesPageLoaded();
+    remoteInstancesPage.openAddRemotePage('mysql');
+    remoteInstancesPage.fillRemoteFields(mysql_service_name);
+    remoteInstancesPage.createRemoteInstance(mysql_service_name);
+    pmmInventoryPage.verifyRemoteServiceIsDisplayed(mysql_service_name);
+    await pmmInventoryPage.verifyAgentHasStatusRunning(mysql_service_name);
+  }
+);
+
+Scenario(
+  'Verify is the remote instances are in Running Status @pmm-post-update',
+  async (I, adminPage, remoteInstancesPage, pmmInventoryPage) => {
+    const mysql_service_name = 'mysql_remote_new';
+    I.amOnPage(pmmInventoryPage.url);
+    pmmInventoryPage.verifyRemoteServiceIsDisplayed(mysql_service_name);
+    await pmmInventoryPage.verifyAgentHasStatusRunning(mysql_service_name);
+  }
+);
+
+xScenario(
+  'Verify Remote MongoDB Instance Addition',
+  async (I, adminPage, remoteInstancesPage, pmmInventoryPage) => {
+    const mongodb_service_name = 'mongodb_remote_new';
+    I.amOnPage(remoteInstancesPage.url);
+    remoteInstancesPage.waitUntilRemoteInstancesPageLoaded();
+    remoteInstancesPage.openAddRemotePage('mongodb');
+    remoteInstancesPage.fillRemoteFields(mongodb_service_name);
+    remoteInstancesPage.createRemoteInstance(mongodb_service_name);
+    pmmInventoryPage.verifyRemoteServiceIsDisplayed(mongodb_service_name);
+    await pmmInventoryPage.verifyAgentHasStatusRunning(mongodb_service_name);
+  }
+);
+
+xScenario(
+  'Verify Remote PostgreSQL Instance Addition',
+  async (I, adminPage, remoteInstancesPage, pmmInventoryPage) => {
+    const postgresql_service_name = 'postgresql_remote_new';
+    I.amOnPage(remoteInstancesPage.url);
+    remoteInstancesPage.waitUntilRemoteInstancesPageLoaded();
+    remoteInstancesPage.openAddRemotePage('postgresql');
+    remoteInstancesPage.fillRemoteFields(postgresql_service_name);
+    remoteInstancesPage.createRemoteInstance(postgresql_service_name);
+    pmmInventoryPage.verifyRemoteServiceIsDisplayed(postgresql_service_name);
+    await pmmInventoryPage.verifyAgentHasStatusRunning(postgresql_service_name);
+  }
+);
+
+xScenario(
+  'Verify Remote ProxySQL Instance Addition',
+  async (I, adminPage, remoteInstancesPage, pmmInventoryPage) => {
+    const proxysql_service_name = 'proxysql_remote_new';
+    I.amOnPage(remoteInstancesPage.url);
+    remoteInstancesPage.waitUntilRemoteInstancesPageLoaded();
+    remoteInstancesPage.openAddRemotePage('proxysql');
+    remoteInstancesPage.fillRemoteFields(proxysql_service_name);
+    remoteInstancesPage.createRemoteInstance(proxysql_service_name);
+    pmmInventoryPage.verifyRemoteServiceIsDisplayed(proxysql_service_name);
+    await pmmInventoryPage.verifyAgentHasStatusRunning(proxysql_service_name);
   }
 );
