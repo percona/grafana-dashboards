@@ -88,6 +88,8 @@ module.exports = {
     detailsSection: '#query-analytics-details',
     tableRowSelector: '.ant-table-scroll .ant-table-tbody tr:first-of-type .overview-main-column div',
     qpsTooltipValueSelector: '[data-qa="metrics-list"] [data-qa="qps"] span',
+    spinBlur: 'div.ant-spin-blur',
+    spinner: 'i.fa-spinner',
   },
   requests: {
     getReportPath: '/v0/qan/GetReport',
@@ -132,10 +134,21 @@ module.exports = {
     return `//span[text()='${columnName}']`;
   },
 
+  overviewRowLocator(rowNumber) {
+    return `.table-wrapper .ant-table-content tr[data-row-key="${rowNumber}"]`;
+  },
+
   waitForQANPageLoaded() {
     I.waitForVisible(this.fields.table, 30);
     I.waitForClickable(this.fields.nextPageNavigation, 30);
   },
+
+  waitForDownloadOverviewTable() {
+    this.waitForResponsePath(this.requests.getReportPath);
+    I.waitForInvisible(this.elements.spinBlur, 30);
+    I.dontSeeElement(this.elements.spinner);
+  },
+
   waitForResponsePath(path) {
     I.waitForResponse(request => {
       const url = require('url');
@@ -178,6 +191,10 @@ module.exports = {
     this.openMetricsSelect(columnName);
     I.dontSeeElement(this.fields.removeColumnButton, 30);
   },
+  async verifyRowIsSelected(rowNumber) {
+    const rowSelector = this.overviewRowLocator(rowNumber);
+    I.seeCssPropertiesOnElements(`${rowSelector}.selected-overview-row`, {'background-color': "rgb(35, 70, 130)"});
+  },
 
   changeGroupBy(groupBy = 'Client Host') {
     I.waitForElement(this.fields.groupBySelector, 30);
@@ -218,8 +235,7 @@ module.exports = {
     I.waitForElement(this.fields.addColumnSelector, 30);
     I.click(this.fields.addColumnSelector);
     I.click(`//ul/li[@label='${columnName}']`);
-    // TODO: replace 'wait' with 'wait for' until overview table will be reloaded
-    I.wait(5);
+    this.waitForDownloadOverviewTable();
   },
   changeColumn(oldColumnName, columnName) {
     const oldColumnSelector = `//span[text()='${oldColumnName}']`;
@@ -228,15 +244,13 @@ module.exports = {
     I.click(oldColumnSelector);
     I.waitForElement(newColumnSelector, 30);
     I.click(newColumnSelector);
-    // TODO: replace 'wait' with 'wait for' until overview table will be reloaded
-    I.wait(5);
+    this.waitForDownloadOverviewTable();
   },
   removeColumn(columnName) {
     this.openMetricsSelect(columnName);
     I.waitForElement(this.fields.removeColumnButton, 30);
     I.click(this.fields.removeColumnButton);
-    // TODO: replace 'wait' with 'wait for' until overview table will be reloaded
-    I.wait(5);
+    this.waitForDownloadOverviewTable();
   },
   async searchFilters(searchString) {
     I.waitForElement(`//input[@placeholder='Filters search...']`, 30);
@@ -297,7 +311,13 @@ module.exports = {
   selectFilter(filterCheckboxSelector) {
     I.waitForElement(filterCheckboxSelector, 30);
     I.checkOption(filterCheckboxSelector);
-    this.waitForResponsePath(getFiltersPath);
+    this.waitForResponsePath(this.requests.getFiltersPath);
+  },
+  selectRow(rowNumber) {
+    const rowSelector = this.overviewRowLocator(rowNumber);
+    I.waitForElement(rowSelector, 60);
+    I.forceClick(rowSelector);
+    this.waitForDownloadOverviewTable();
   },
   paginationGoNext() {
     I.waitForElement(`//li[@title='Next Page']`, 30);
