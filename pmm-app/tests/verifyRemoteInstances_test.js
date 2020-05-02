@@ -5,7 +5,7 @@ Before(async I => {
 });
 
 Scenario(
-  'Verify Remote MySQL Instance Addition',
+  'Verify Remote MySQL Instance Addition @not-pr-pipeline',
   async (I, adminPage, remoteInstancesPage, pmmInventoryPage) => {
     const mysql_service_name = 'mysql_remote_new';
     I.amOnPage(remoteInstancesPage.url);
@@ -19,7 +19,7 @@ Scenario(
 );
 
 Scenario(
-  'Verify is the remote instances are in Running Status @pmm-post-update',
+  'Verify is the remote instances are in Running Status @pmm-post-update @not-pr-pipeline',
   async (I, adminPage, remoteInstancesPage, pmmInventoryPage) => {
     const mysql_service_name = 'mysql_remote_new';
     I.amOnPage(pmmInventoryPage.url);
