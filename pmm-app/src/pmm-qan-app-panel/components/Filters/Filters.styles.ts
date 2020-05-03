@@ -1,10 +1,11 @@
 import { css } from 'emotion';
 
 export const Styling = {
-  filtersWrapper: css`
+  getFiltersWrapper: height => css`
     border: 1px solid rgb(40, 40, 40);
     padding: 5px 16px !important;
     overflow-y: scroll;
+    height: ${height}px;
   `,
   filtersHeader: css`
     display: flex;

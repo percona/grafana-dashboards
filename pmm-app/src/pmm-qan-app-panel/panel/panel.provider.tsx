@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ParseQueryParamDate } from '../../react-plugins-deps/helpers/time-parameters-parser';
 import { getDataSourceSrv } from '@grafana/runtime';
-import { find } from 'lodash';
+import { find, omit } from 'lodash';
 import { DEFAULT_COLUMNS, FILTERS_NAMES } from './panel.constants';
 
 const initialState = {} as any;
@@ -106,16 +106,10 @@ const setLabels = filters =>
 
 const actions = {
   setLabels: value => state => {
-    const newState = { ...state, labels: setLabels(value), pageNumber: 1 };
-    delete newState.queryId;
-    delete newState.querySelected;
-    return newState;
+    return omit({ ...state, labels: setLabels(value), pageNumber: 1 }, ['queryId', 'querySelected']);
   },
   resetLabels: value => state => {
-    const newState = { ...state, labels: {}, pageNumber: 1 };
-    delete newState.queryId;
-    delete newState.querySelected;
-    return newState;
+    return omit({ ...state, labels: {}, pageNumber: 1 }, ['queryId', 'querySelected']);
   },
   selectQuery: value => state => {
     return { ...state, queryId: value || 'TOTAL', querySelected: true };
@@ -148,23 +142,23 @@ const actions = {
     };
   },
   changePage: value => state => {
-    const newState = {
-      ...state,
-      pageNumber: value,
-    };
-    delete newState.queryId;
-    delete newState.querySelected;
-    return newState;
+    return omit(
+      {
+        ...state,
+        pageNumber: value,
+      },
+      ['queryId', 'querySelected']
+    );
   },
   changePageSize: value => state => {
-    const newState = {
-      ...state,
-      pageSize: value,
-      pageNumber: 1,
-    };
-    delete newState.queryId;
-    delete newState.querySelected;
-    return newState;
+    return omit(
+      {
+        ...state,
+        pageSize: value,
+        pageNumber: 1,
+      },
+      ['queryId', 'querySelected']
+    );
   },
   changeSort: value => state => {
     let newOrderBy = '';
@@ -177,33 +171,33 @@ const actions = {
       newOrderBy = `-${value}`;
     }
 
-    const newState = {
-      ...state,
-      orderBy: newOrderBy,
-      pageNumber: 1,
-    };
-    delete newState.queryId;
-    delete newState.querySelected;
-    return newState;
+    return omit(
+      {
+        ...state,
+        orderBy: newOrderBy,
+        pageNumber: 1,
+      },
+      ['queryId', 'querySelected']
+    );
   },
   changeGroupBy: value => state => {
-    const newState = {
-      ...state,
-      groupBy: value,
-      querySelected: false,
-      pageNumber: 1,
-    };
-    delete newState.queryId;
-    delete newState.querySelected;
-    return newState;
+    return omit(
+      {
+        ...state,
+        groupBy: value,
+        querySelected: false,
+        pageNumber: 1,
+      },
+      ['queryId', 'querySelected']
+    );
   },
   closeDetails: value => state => {
-    const newState = {
-      ...state,
-    };
-    delete newState.queryId;
-    delete newState.querySelected;
-    return newState;
+    return omit(
+      {
+        ...state,
+      },
+      ['queryId', 'querySelected']
+    );
   },
   setFingerprint: value => state => {
     return {

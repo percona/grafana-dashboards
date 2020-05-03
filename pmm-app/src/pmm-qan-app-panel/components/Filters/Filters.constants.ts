@@ -1,4 +1,6 @@
 export const FILTERS_BODY_HEIGHT = 600;
+export const FILTERS_HEADER_SIZE = 50;
+export const FILTERS_MARGIN_BOTTOM = 20;
 
 export const FILTERS_GROUPS = [
   {
