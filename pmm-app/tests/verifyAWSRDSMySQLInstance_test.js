@@ -31,7 +31,7 @@ Scenario(
   }
 );
 
-Scenario(
+xScenario(
   'Verify QAN Filters contain AWS RDS MySQL 5.6 after it was added for monitoring @not-pr-pipeline',
   async (I, qanPage, adminPage) => {
     const environment = 'RDS MySQL 5.6';
