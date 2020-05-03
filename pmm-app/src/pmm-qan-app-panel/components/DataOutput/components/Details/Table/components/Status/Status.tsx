@@ -5,7 +5,7 @@ import { Table } from 'antd';
 import { useActionResult } from '../../../Details.hooks';
 
 export const Status = props => {
-  const { schema, tableName, databaseType, example } = props;
+  const { tableName, databaseType, example } = props;
   const [data, setData] = useState({ columns: [], rows: [] });
   const [errorText, setErrorText] = useState('');
   const [status, setActionId] = useActionResult();
@@ -44,19 +44,19 @@ export const Status = props => {
     }
     const [header, ...data] = JSON.parse(status);
     const headerList = header
-      .map(e => e.trim())
+      .map(e => (e ? String(e).trim() : ''))
       .filter(Boolean)
       .map(title => ({ title: title, key: title, dataIndex: title }));
 
-    const rowsList = data.map(item =>
-      item
-        .map(e => (e ? e.trim() : ''))
+    const rowsList = data.map(item => {
+      return item
+        .map(e => (e ? String(e).trim() : ''))
         .filter(Boolean)
         .reduce((acc, item, index) => {
           acc[headerList[index].title] = item;
           return acc;
-        }, {})
-    );
+        }, {});
+    });
     setData({ columns: headerList, rows: rowsList });
   }, [status]);
 
@@ -65,7 +65,14 @@ export const Status = props => {
       {errorText ? (
         <pre>{errorText}</pre>
       ) : (
-        <Table dataSource={data.rows} columns={data.columns} pagination={false} size="small" bordered />
+        <Table
+          dataSource={data.rows}
+          columns={data.columns}
+          scroll={{ x: '90%' }}
+          pagination={false}
+          size="small"
+          bordered
+        />
       )}
     </div>
   );

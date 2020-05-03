@@ -79,7 +79,14 @@ export const Indexes = props => {
       {errorText ? (
         <pre>{errorText}</pre>
       ) : (
-        <Table dataSource={data.rows} columns={data.columns} pagination={false} size="small" bordered />
+        <Table
+          dataSource={data.rows}
+          columns={data.columns}
+          scroll={{ x: '90%' }}
+          pagination={false}
+          size="small"
+          bordered
+        />
       )}
     </div>
   );

@@ -7,8 +7,9 @@ import Example from './Example/Example';
 import Metrics from './Metrics/Metrics';
 import { PanelProvider } from '../../../../panel/panel.provider';
 import TableCreateContainer from './Table/TableContainer';
-import { useDatabaseType } from './Details.hooks';
+import { useDetailsState } from './Details.hooks';
 import { DATABASE, TabKeys } from './Details.constants';
+import { DetailsContentProvider, DetailsProvider } from './Details.provider';
 
 const { TabPane } = Tabs;
 
@@ -17,7 +18,11 @@ const Details = () => {
     contextActions: { closeDetails },
     panelState: { queryId, groupBy, fingerprint, controlSum },
   } = useContext(PanelProvider);
-  const databaseType = useDatabaseType();
+  const {
+    detailsState: { databaseType },
+  } = useContext(DetailsProvider);
+
+  useDetailsState();
   const [activeTab, setActiveTab] = useState(TabKeys.Details);
   const showTablesTab = databaseType !== DATABASE.mongodb;
   const showExplainTab = databaseType !== DATABASE.postgresql;
@@ -56,4 +61,10 @@ const Details = () => {
   );
 };
 
-export default Details;
+export default () => {
+  return (
+    <DetailsContentProvider>
+      <Details />
+    </DetailsContentProvider>
+  );
+};
