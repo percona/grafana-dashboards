@@ -1,27 +1,26 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import TableCreate from './components/Table/Table';
 import { Collapse, Spin, Tabs } from 'antd';
-import { useExamples } from '../Example/Example.hooks';
-import { useDatabaseType } from '../Details.hooks';
 import { Styling } from '../Explain/Explain.styles';
 import { Indexes } from './components/Indexes/Indexes';
 import { Status } from './components/Status/Status';
 import { DATABASE } from '../Details.constants';
-import { useTables } from './TableContainer.hooks';
+import { DetailsProvider } from '../Details.provider';
 
 const { TabPane } = Tabs;
 const { Panel } = Collapse;
 
 const TableCreateContainer = () => {
-  const [examples, loading] = useExamples();
-  const databaseType = useDatabaseType();
-  const tables = useTables(databaseType);
-  console.log(tables);
+  const {
+    detailsState: { databaseType, examples, tables },
+  } = useContext(DetailsProvider);
+  console.log(tables, '------');
   return (
-    <Spin spinning={loading}>
+    <Spin spinning={false}>
       {tables.length ? (
         <Tabs defaultActiveKey="1" onChange={() => {}} tabPosition="top">
           {tables.map((table, index) => {
+            console.log(tables, 'table');
             return (
               <TabPane tab={<span>{table}</span>} key={index}>
                 <Collapse bordered={false} defaultActiveKey={['1']} className={Styling.collapse}>

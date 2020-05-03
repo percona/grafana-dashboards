@@ -1,10 +1,9 @@
 import React, { useContext } from 'react';
 import Highlight from 'react-highlight.js';
 import { ReactJSON } from '../../../../../../react-plugins-deps/components/Elements/ReactJSON/ReactJSON';
-import { useExamples } from './Example.hooks';
-import { useDatabaseType } from '../Details.hooks';
 import { DATABASE } from '../Details.constants';
 import { PanelProvider } from '../../../../../panel/panel.provider';
+import { DetailsProvider } from '../Details.provider';
 
 const getExample = databaseType => (example: any): any => {
   if (databaseType === DATABASE.mongodb) {
@@ -18,8 +17,9 @@ const Example = () => {
   const {
     panelState: { fingerprint },
   } = useContext(PanelProvider);
-  const databaseType = useDatabaseType();
-  let [examples] = useExamples();
+  const {
+    detailsState: { databaseType, examples },
+  } = useContext(DetailsProvider);
   return (
     <div>
       {databaseType === DATABASE.postgresql ? (
