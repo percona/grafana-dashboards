@@ -102,6 +102,8 @@ interface SettingsInterface {
   metrics_resolutions: MetricsResolutionInterface;
   disable_telemetry?: boolean;
   enable_telemetry?: boolean;
+  disable_stt?: boolean;
+  enable_stt?: boolean;
 }
 
 const SettingsPart = props => {
@@ -116,7 +118,8 @@ const SettingsPart = props => {
 
     updatedSettings.disable_telemetry = !values.telemetry_enabled;
     updatedSettings.enable_telemetry = values.telemetry_enabled;
-
+    updatedSettings.disable_stt = !values.stt_enabled;
+    updatedSettings.enable_stt = values.stt_enabled;
     setLoading(true);
     try {
       await SettingsService.setSettings(updatedSettings);
@@ -126,7 +129,6 @@ const SettingsPart = props => {
       setLoading(false);
     }
   };
-
   return (
     <FormFinal
       onSubmit={onSubmit}
@@ -147,7 +149,6 @@ const SettingsPart = props => {
             },
           });
         }, [settings]);
-
         // @ts-ignore
         return (
           <form onSubmit={handleSubmit}>
@@ -225,7 +226,9 @@ const SettingsPart = props => {
                         text="Option to send usage data back to Percona to let us make product better"
                       />
                     }
-                    element={<ToggleField name="telemetry_enabled" />}
+                    element={
+                      <ToggleField name="telemetry_enabled" disabled={form.getState().values.stt_enabled} />
+                    }
                   />
                   <FormElement
                     label="Check for updates"
@@ -244,6 +247,26 @@ const SettingsPart = props => {
                       />
                     }
                     element={<ToggleField name="updates_disabled" disabled />}
+                  />
+                  <FormElement
+                    label="Security Threat Tool"
+                    type="horizontal"
+                    tooltip={
+                      <PluginTooltip
+                        links={[
+                          {
+                            url:
+                              // eslint-disable-next-line max-len
+                              'https://www.percona.com/doc/percona-monitoring-and-management/2.x/manage/server-admin-gui.html#stt',
+                            text: 'Read more',
+                          },
+                        ]}
+                        text="Enable Security Threat Tool and get updated checks from Percona"
+                      />
+                    }
+                    element={
+                      <ToggleField name="stt_enabled" disabled={!form.getState().values.telemetry_enabled} />
+                    }
                   />
                 </Panel>
               </Collapse>
