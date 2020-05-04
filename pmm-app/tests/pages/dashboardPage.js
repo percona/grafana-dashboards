@@ -357,7 +357,7 @@ module.exports = {
   },
 
   async expandEachDashboardRow(halfToExpand) {
-    const sectionsToExpand;
+    let sectionsToExpand;
     const sections = await I.grabTextFrom(this.fields.collapsedDashboardRow);
     if (halfToExpand == 1) {
       sectionsToExpand = sections.slice(0, sections.length / 2);
@@ -370,7 +370,7 @@ module.exports = {
   },
 
   async expandRows(sectionsToExpand) {
-    const sections;
+    let sections;
     if (typeof sectionsToExpand === 'string') {
       sections = [sectionsToExpand];
     } else {
@@ -383,6 +383,7 @@ module.exports = {
       I.wait(0.5);
     }
   },
+
   waitForDashboardOpened() {
     I.waitForElement(this.fields.metricTitle, 30);
   },
