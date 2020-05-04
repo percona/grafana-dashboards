@@ -1,38 +1,16 @@
 import { PanelProvider } from '../../../../../../panel/panel.provider';
-import React, { useCallback, useContext } from 'react';
+import React, { useContext } from 'react';
 import { Select } from 'antd';
-import { css } from 'emotion';
+import { Styling } from './GroupByControl.styles';
+import { GROUP_BY_OPTIONS } from './GroupByControl.types';
 
-const Styling = {
-  groupByWrapper: css`
-    display: flex;
-    align-items: center;
-  `,
-  groupByHeader: css`
-    margin: 0 !important;
-    margin-right: 15px !important;
-  `,
-};
 const { Option } = Select;
-
-export const GROUP_BY_OPTIONS = [
-  { value: 'queryid', label: 'Query' },
-  { value: 'service_name', label: 'Service Name' },
-  { value: 'database', label: 'Database' },
-  { value: 'schema', label: 'Schema' },
-  { value: 'username', label: 'User Name' },
-  { value: 'client_host', label: 'Client Host' },
-];
 
 export const GroupByControl = () => {
   const {
     contextActions,
     panelState: { groupBy },
   } = useContext(PanelProvider);
-
-  const setGroupBy = useCallback(value => {
-    contextActions.changeGroupBy(value);
-  }, []);
 
   return (
     <div className={Styling.groupByWrapper}>
@@ -41,7 +19,7 @@ export const GroupByControl = () => {
         optionLabelProp="label"
         defaultValue={groupBy}
         style={{ width: '120px' }}
-        onChange={setGroupBy}
+        onChange={contextActions.changeGroupBy}
         className="group-by-selector"
         data-qa="group-by"
         dropdownClassName="group-by-selector-dropdown"
