@@ -1,4 +1,4 @@
-const { I } = inject();
+const { I, pmmInventoryPage } = inject();
 const assert = require('assert');
 module.exports = {
   // insert your locators and methods here
@@ -18,27 +18,22 @@ module.exports = {
   },
 
   verifyOldMySQLRemoteServiceIsDisplayed(serviceName) {
-    I.waitForElement(this.fields.iframe, 60);
-    I.switchTo(this.fields.iframe);
-    I.waitForVisible(this.fields.inventoryTableColumn, 30);
+    I.waitForElement(pmmInventoryPage.fields.iframe, 60);
+    I.switchTo(pmmInventoryPage.fields.iframe);
+    I.waitForVisible(pmmInventoryPage.fields.inventoryTableColumn, 30);
     I.scrollPageToBottom();
-    I.see(serviceName, this.fields.inventoryTableColumn);
+    I.see(serviceName, pmmInventoryPage.fields.inventoryTableColumn);
   },
 
-  verifyMySQLRemoteServiceIsDisplayed(serviceName) {
-    I.waitForVisible(this.fields.inventoryTableColumn, 30);
+  verifyRemoteServiceIsDisplayed(serviceName) {
+    I.waitForVisible(pmmInventoryPage.fields.inventoryTableColumn, 30);
     I.scrollPageToBottom();
-    I.see(serviceName, this.fields.inventoryTableColumn);
+    I.see(serviceName, pmmInventoryPage.fields.inventoryTableColumn);
   },
 
-  async verifyAgentHasStatusRunning(service_name, version) {
-    let agentLinkLocator;
+  async verifyAgentHasStatusRunning(service_name) {
     const serviceId = await this.getServiceId(service_name);
-    if (version == 'old') {
-      agentLinkLocator = this.fields.agentsLinkOld;
-    } else {
-      agentLinkLocator = this.fields.agentsLink;
-    }
+    const agentLinkLocator = this.fields.agentsLink;
     I.click(agentLinkLocator);
     I.waitForElement(this.fields.pmmAgentLocator, 60);
     I.waitForElement(this.fields.inventoryTable, 60);
@@ -47,15 +42,25 @@ module.exports = {
         serviceId +
         "')]/following-sibling::span[contains(text(),'status: RUNNING')]"
     );
-    assert.equal(
-      numberOfServices,
-      2,
-      ' Service ID must have only 2 Agents running for different services' + serviceId
-    );
+    if (
+      service_name === 'rds-mysql56' ||
+      service_name === 'mongodb_remote_new' ||
+      service_name === 'postgresql_remote_new' ||
+      service_name === 'mysql_remote_new'
+    ) {
+      assert.equal(
+        numberOfServices,
+        2,
+        ' Service ID must have only 2 Agents running for different services' + serviceId
+      );
+    } else {
+      assert.equal(numberOfServices, 1, ' Service ID must have only 1 Agent running' + serviceId);
+    }
   },
 
   async getServiceId(serviceName) {
-    const serviceIdLocator = this.fields.serviceIdLocatorPrefix + serviceName + "')]/preceding-sibling::td[2]";
+    const serviceIdLocator =
+      this.fields.serviceIdLocatorPrefix + serviceName + "')]/preceding-sibling::td[2]";
     const matchedServices = await I.grabNumberOfVisibleElements(serviceIdLocator);
     await assert.equal(
       matchedServices,

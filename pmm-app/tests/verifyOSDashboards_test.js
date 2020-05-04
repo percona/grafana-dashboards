@@ -1,8 +1,7 @@
 Feature('Test Dashboards inside the OS Folder');
 
-Before( async (I) => {
+Before(async (I) => {
   I.Authorize();
-
 });
 
 Scenario(

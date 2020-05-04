@@ -2,7 +2,6 @@ Feature('Test Dashboards inside the PostgreSQL Folder');
 
 Before( async (I) => {
   I.Authorize();
-
 });
 
 Scenario(
