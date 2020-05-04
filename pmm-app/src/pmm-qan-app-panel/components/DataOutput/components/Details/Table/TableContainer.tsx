@@ -20,7 +20,6 @@ const TableCreateContainer = () => {
       {tables.length ? (
         <Tabs defaultActiveKey="1" onChange={() => {}} tabPosition="top">
           {tables.map((table, index) => {
-            console.log(tables, 'table');
             return (
               <TabPane tab={<span>{table}</span>} key={index}>
                 <Collapse bordered={false} defaultActiveKey={['1']} className={Styling.collapse}>

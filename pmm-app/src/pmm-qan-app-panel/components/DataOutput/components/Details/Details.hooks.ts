@@ -122,6 +122,7 @@ export const useExplain = (): [any, any, boolean, string] => {
 
   return [jsonExplain, traditionalExplain, loading, errorText];
 };
+
 export const useDetailsState = () => {
   const {
     panelState: { queryId, groupBy, from, to, labels },
