@@ -66,6 +66,12 @@ module.exports = {
     );
   },
 
+  filterGroupCountSelector(groupName) {
+    return (
+        "//section[@class='aside__filter-group']//span[contains(text(), '" + groupName + "')]/../button[contains(text(), 'See all')]"
+    );
+  },
+
   checkPagination() {
     I.waitForElement(this.fields.nextPageNavigation, 30);
     I.click(this.fields.nextPageNavigation);
@@ -115,8 +121,8 @@ module.exports = {
   },
 
   async changeResultsPerPage(count) {
-    const numOfElements = await I.grabNumberOfVisibleElements(this.fields.resultsPerPageDropDown);
-    if ((numOfElements = 0)) {
+    const numOfElementsResults = await I.grabNumberOfVisibleElements(this.fields.resultsPerPageDropDown);
+    if (numOfElementsResults === 0) {
       for (let i = 0; i < 5; i++) {
         I.pressKey('PageDown');
         I.wait(2);
@@ -147,10 +153,12 @@ module.exports = {
   async expandAllFilter() {
     for (let i = 0; i < 4; i++) {
       // eslint-disable-next-line max-len
-      const numOfElements = await I.grabNumberOfVisibleElements("//section[@class='aside__filter-group']//span[contains(text(), '" + this.filterGroups[i] + "')]/../button[contains(text(), 'See all')]");
-      if (numOfElements === 1) {
+      let numOfElementsFilterCount = await I.grabNumberOfVisibleElements(
+        this.filterGroupCountSelector(this.filterGroups[i])
+      );
+      if (numOfElementsFilterCount === 1) {
         // eslint-disable-next-line max-len
-        I.click("//section[@class='aside__filter-group']//span[contains(text(), '" + this.filterGroups[i] + "')]/../button[contains(text(), 'See all')]");
+        I.click(this.filterGroupCountSelector(this.filterGroups[i]));
         // eslint-disable-next-line max-len
         I.waitForVisible("//section[@class='aside__filter-group']//span[contains(text(), '" + this.filterGroups[i] + "')]/../button[contains(text(), 'Show top 5')]");
       }
@@ -228,8 +236,8 @@ module.exports = {
   },
 
   async clearFilters(){
-    const numOfElements = await I.grabNumberOfVisibleElements(this.fields.filterSelection);
-    for (let i = 1; i <= numOfElements; i++) {
+    const numOfElementsFilters = await I.grabNumberOfVisibleElements(this.fields.filterSelection);
+    for (let i = 1; i <= numOfElementsFilters; i++) {
       I.click(this.fields.filterSelection + "[" + i + "]");
       I.waitForInvisible(this.fields.detailsTable, 30);
     }
