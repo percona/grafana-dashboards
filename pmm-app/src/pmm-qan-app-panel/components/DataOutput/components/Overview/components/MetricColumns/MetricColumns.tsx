@@ -8,6 +8,7 @@ import { Latency, Sparkline } from '../../../../../../../react-plugins-deps/comp
 import Tooltip from 'antd/es/tooltip';
 import React from 'react';
 import './MetricColumns.scss';
+
 const TimeMetric = ({ value }) => (
   <span className="summarize" style={{ marginLeft: 'auto', cursor: value && value !== 'NaN' ? 'help' : '' }}>
     {value === undefined ? `${Humanize.transform(0, 'time')}` : null}

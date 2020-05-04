@@ -13,8 +13,9 @@ import { QueryTooltip } from '../../../../../../../react-plugins-deps/components
 import React from 'react';
 import './DefaultColumns.scss';
 const MAGIC_WIDTH_FIX = 17;
-export const getDefaultColumns = (groupBy, pageNumber, pageSize, columns, onCell) => {
-  const mainMetricColumnWidth = Math.max(
+
+const getMainColumnWidth = columns => {
+  return Math.max(
     TABLE_X_SCROLL -
       (columns - 1) * FIXED_COLUMN_WIDTH -
       COLUMN_WIDTH * 1.8 -
@@ -22,6 +23,10 @@ export const getDefaultColumns = (groupBy, pageNumber, pageSize, columns, onCell
       MAGIC_WIDTH_FIX,
     MAIN_METRIC_MIN_WIDTH
   );
+};
+
+export const getDefaultColumns = (groupBy, pageNumber, pageSize, columns, onCell) => {
+  const mainMetricColumnWidth = getMainColumnWidth(columns);
   // @ts-ignore
   return [
     {
