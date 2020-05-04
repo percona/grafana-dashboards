@@ -1,38 +1,38 @@
 Feature('Monitoring AWS RDS MySQL DB');
 
-Before( async (I) => {
+Before(async I => {
   I.Authorize();
 });
 
-xScenario(
-  'Verify Discovery and adding AWS RDS MySQL 5.6 instance for monitoring',
+Scenario(
+  'Verify Discovery and adding AWS RDS MySQL 5.6 instance for monitoring @not-pr-pipeline',
   async (I, remoteInstancesPage, pmmInventoryPage) => {
     const instanceIdToMonitor = 'rds-mysql56';
     I.amOnPage(remoteInstancesPage.url);
-    remoteInstancesPage.waitUntilNewRemoteInstancesPageLoaded().openAddAWSRDSMySQLPage();
+    remoteInstancesPage.waitUntilRemoteInstancesPageLoaded().openAddAWSRDSMySQLPage();
     remoteInstancesPage.discoverRDS();
     remoteInstancesPage.verifyInstanceIsDiscovered(instanceIdToMonitor);
     remoteInstancesPage.startMonitoringOfInstance(instanceIdToMonitor);
     remoteInstancesPage.verifyAddInstancePageOpened();
     remoteInstancesPage.fillRemoteRDSMySQLFields();
-    remoteInstancesPage.createNewRemoteMySQL();
-    pmmInventoryPage.verifyMySQLRemoteServiceIsDisplayed(instanceIdToMonitor);
+    remoteInstancesPage.createRemoteInstance();
+    pmmInventoryPage.verifyRemoteServiceIsDisplayed(instanceIdToMonitor);
     await pmmInventoryPage.verifyAgentHasStatusRunning(instanceIdToMonitor);
   }
 );
 
-xScenario(
-  'Verify AWS RDS MySQL 5.6 instance has status running @pmm-post-update',
+Scenario(
+  'Verify AWS RDS MySQL 5.6 instance has status running @pmm-post-update @not-pr-pipeline',
   async (I, remoteInstancesPage, pmmInventoryPage) => {
     const serviceName = 'rds-mysql56';
     I.amOnPage(pmmInventoryPage.url);
-    pmmInventoryPage.verifyMySQLRemoteServiceIsDisplayed(serviceName);
+    pmmInventoryPage.verifyRemoteServiceIsDisplayed(serviceName);
     await pmmInventoryPage.verifyAgentHasStatusRunning(serviceName);
   }
 );
 
 xScenario(
-  'Verify QAN Filters contain AWS RDS MySQL 5.6 after it was added for monitoring',
+  'Verify QAN Filters contain AWS RDS MySQL 5.6 after it was added for monitoring @not-pr-pipeline',
   async (I, qanPage, adminPage) => {
     const environment = 'RDS MySQL 5.6';
     const filter = qanPage.getFilterLocator(environment);
@@ -41,6 +41,7 @@ xScenario(
     adminPage.applyTimer('5m');
     await I.switchTo(qanPage.fields.iframe);
     qanPage.waitForQANPageLoaded();
+    await qanPage.expandAllFilter();
     I.seeElement(filter);
   }
 );
