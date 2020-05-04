@@ -147,8 +147,22 @@ def add_links(dashboard):
                             'type': 'link',
                             'url': '/graph/d/node-instance-compare/nodes-compare'
                         }
+                        print "OS Compare link has been added."
                         dashboard['links'].append(add_item)
-                    elif 'MySQL' in dashboard['tags']:
+                    elif 'PXC' in dashboard['tags']:
+                        add_item = {
+                            'icon': 'bolt',
+                            'includeVars': True,
+                            'keepTime': True,
+                            'tags': [ tag ],
+                            'targetBlank': False,
+                            'title': 'Compare',
+                            'type': 'link',
+                            'url': '/graph/d/pxc-nodes-compare/pxc-galera-nodes-compare'
+                        }
+                        print "PXC Compare link has been added."
+                        dashboard['links'].append(add_item)
+                    elif 'MySQL' in dashboard['tags'] or 'MySQL_HA' in dashboard['tags']:
                         add_item = {
                             'icon': 'bolt',
                             'includeVars': True,
@@ -159,8 +173,9 @@ def add_links(dashboard):
                             'type': 'link',
                             'url': '/graph/d/mysql-instance-compare/mysql-instances-compare'
                         }
+                        print "MySQL Compare link has been added."
                         dashboard['links'].append(add_item)
-                    elif 'MongoDB' in dashboard['tags']:
+                    elif 'MongoDB' in dashboard['tags'] or 'MongoDB_HA' in dashboard['tags']:
                         add_item = {
                             'icon': 'bolt',
                             'includeVars': True,
@@ -171,6 +186,7 @@ def add_links(dashboard):
                             'type': 'link',
                             'url': '/graph/d/mongodb-instance-compare/mongodb-instances-compare'
                         }
+                        print "MongoDB Compare link has been added."
                         dashboard['links'].append(add_item)
                     elif 'PostgreSQL' in dashboard['tags']:
                         add_item = {
@@ -183,6 +199,7 @@ def add_links(dashboard):
                             'type': 'link',
                             'url': '/graph/d/postgresql-instance-compare/postgresql-instances-compare'
                         }
+                        print "PostgreSQL Compare link has been added."
                         dashboard['links'].append(add_item)
                 else:
                     if (tag in dashboard['tags'] or tag in ['Services','PMM',service_tag]) and tag not in ['Compare','Home','MySQL_HA','MongoDB_HA']:
@@ -391,9 +408,10 @@ def add_annotation(dashboard):
                 'hide': False,
                 'iconColor': "#e0752d",
                 'limit': 100,
+                'matchAny': True,
                 'name': "PMM Annotations",
                 'showIn': 0,
-                'tags': [ tag, '$host', '$service'],
+                'tags': [ tag, '$node_name', '$service_name'],
                 'type': "tags"
             }
             dashboard['annotations']['list'].append(add_item)
