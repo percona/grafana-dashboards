@@ -23,7 +23,7 @@ module.exports = {
 
   graphsLocator(metricName) {
     return (
-      "//span[text()='" + metricName + "']//ancestor::grafana-panel//span[contains(text(), 'No data to show')]"
+      "//span[text()='" + metricName + "']//ancestor::div[contains(@class, 'panel-container')]//span[contains(text(), 'No data to show')]"
     );
   },
 
