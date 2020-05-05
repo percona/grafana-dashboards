@@ -9,6 +9,7 @@ jest.mock('../react-plugins-deps/components/helpers/notification-manager');
 describe('CheckService::', () => {
   it('should properly convert Alerts to ActiveChecks', () => {
     const activeChecks = processData(alertsStub as Alert[]);
+    console.log('stub', activeChecks);
     expect(activeChecks).toEqual(activeCheckStub);
   });
 
