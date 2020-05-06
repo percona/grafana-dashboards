@@ -2,19 +2,22 @@ import { ActiveCheck } from '../types';
 
 export const activeCheckStub: ActiveCheck[] = [
   {
-    details: ['The root password is empty', 'MySQL 5.1 is not the latest major version'],
+    details: [
+      'root password is empty: The root password is empty',
+      'MySQL is outdated: MySQL 5.1 is not the latest major version',
+    ],
     failed: [1, 0, 1],
     key: '0',
     name: 'sandbox-mysql.acme.com',
   },
   {
-    details: ['PMM Server is not the latest major version'],
+    details: ['pmm-server is outdated: PMM Server is not the latest major version'],
     failed: [0, 1, 0],
     key: '1',
     name: 'pmm-server-postgresql',
   },
   {
-    details: ['MongoDB admin password does not meet the complexity requirement'],
+    details: ['MongoDB password is weak: MongoDB admin password does not meet the complexity requirement'],
     failed: [0, 1, 0],
     key: '2',
     name: 'mongodb-inst-rpl-1',
