@@ -5,6 +5,7 @@ import { CheckPanelOptions, ActiveCheck } from './types';
 import { CheckService } from './Check.service';
 import { COLUMNS } from './CheckPanel.constants';
 import * as styles from './CheckPanel.styles';
+import Styling from '../react-plugins-deps/components/helpers/styling';
 import '../react-plugins-deps/styles.scss';
 import '../react-plugins-deps/style.less';
 import './CheckPanel.scss';
@@ -28,6 +29,7 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
   }
 
   componentDidMount() {
+    Styling.addPluginPanelClass();
     this.fetchAlerts();
   }
 
