@@ -158,16 +158,18 @@ export const useDetailsState = () => {
 
     if (databaseType === DATABASE.mysql) {
       const parsedJSON = JSON.parse(jsonExplain);
-      contextActions.setTables([
-        get(parsedJSON, 'query_block.table.table_name') ||
-          get(parsedJSON, 'query_block.ordering_operation.grouping_operation.table.table_name'),
-      ]);
+      contextActions.setTables(
+        [
+          get(parsedJSON, 'query_block.table.table_name') ||
+            get(parsedJSON, 'query_block.ordering_operation.grouping_operation.table.table_name'),
+        ].filter(Boolean)
+      );
     }
   }, [jsonExplain]);
 
   useEffect(() => {
     if (databaseType === DATABASE.postgresql && examples) {
-      contextActions.setTables(examples[0].tables);
+      contextActions.setTables(examples[0].tables || []);
     }
   }, [examples, databaseType]);
 

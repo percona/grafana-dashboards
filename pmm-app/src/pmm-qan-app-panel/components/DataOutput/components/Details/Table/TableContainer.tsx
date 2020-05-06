@@ -14,7 +14,6 @@ const TableCreateContainer = () => {
   const {
     detailsState: { databaseType, examples, tables },
   } = useContext(DetailsProvider);
-  console.log(tables, '------');
   return (
     <Spin spinning={false}>
       {tables.length ? (

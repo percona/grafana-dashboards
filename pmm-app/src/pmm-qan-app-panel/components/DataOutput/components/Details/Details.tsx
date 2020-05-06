@@ -42,15 +42,17 @@ const Details = () => {
           <TabPane tab={<span>Details</span>} key={TabKeys.Details}>
             <Metrics />
           </TabPane>
-          <TabPane tab={<span>Examples</span>} key={TabKeys.Examples} disabled={queryId === 'TOTAL'}>
-            <Example />
-          </TabPane>
-          {showExplainTab ? (
+          {groupBy === 'queryid' ? (
+            <TabPane tab={<span>Examples</span>} key={TabKeys.Examples} disabled={queryId === 'TOTAL'}>
+              <Example />
+            </TabPane>
+          ) : null}
+          {groupBy === 'queryid' && showExplainTab ? (
             <TabPane tab={<span>Explain</span>} key={TabKeys.Explain} disabled={queryId === 'TOTAL'}>
               <Explain />
             </TabPane>
           ) : null}
-          {showTablesTab ? (
+          {groupBy === 'queryid' && showTablesTab ? (
             <TabPane tab={<span>Tables</span>} key={TabKeys.Tables} disabled={queryId === 'TOTAL'}>
               <TableCreateContainer />
             </TabPane>
