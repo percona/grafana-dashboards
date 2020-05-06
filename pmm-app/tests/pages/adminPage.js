@@ -6,12 +6,12 @@ module.exports = {
   url: 'graph/d/pmm-home/home-dashboard?orgId=1',
   fields: {
     navigation: "//i[contains(@class, 'navbar-page-btn__search')]",
-    timePickerMenu: "//div[@class='time-picker-buttons']//div//span[@class='select-button-value']",
+    timePickerMenu: "//button[contains(@aria-label,'TimePicker')]",
     fromTime: '(//input[@input-datetime])[1]',
     applyCustomTimer: '//button[@ng-click="ctrl.applyCustom();"]',
     backToDashboard: "//button[@ng-click='ctrl.close()']",
     discardChanges: "//button[@ng-click='ctrl.discard()']",
-    metricTitle: "//span[@class='panel-title']",
+    metricTitle: "//div[@class='panel-title']",
     reportTitleWithNA:
       "//span[contains(text(), 'N/A')]//ancestor::div[contains(@class,'panel-container')]//span[contains(@class,'panel-title-text')]",
   },
@@ -44,8 +44,8 @@ module.exports = {
 
   applyTimer(timeDiff) {
     I.click(this.fields.timePickerMenu);
-    I.waitForVisible("//div[contains(text(), 'Last 5 minutes')]", 30);
-    I.click("//div[contains(text(), 'Last 5 minutes')]");
+    I.waitForVisible("//span[contains(text(), 'Last 5 minutes')]", 30);
+    I.click("//span[contains(text(), 'Last 5 minutes')]");
     I.wait(5);
   },
 
