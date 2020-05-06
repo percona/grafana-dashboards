@@ -278,7 +278,7 @@ export const METRIC_CATALOGUE = {
         return '';
       }
 
-      return `${Humanize.transform(mainMetric / divider)} per row sent`;
+      return `${Humanize.transform(mainMetric / divider, 'number')} per row sent`;
     },
     units: Units.PER_SEC,
     pipeTypes: {

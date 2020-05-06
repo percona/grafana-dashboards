@@ -18,7 +18,6 @@ const OverviewTable = props => {
     // @ts-ignore
     const container = document.querySelector('.table-wrapper');
     setHeight(+((container && container.clientHeight) || 0));
-    console.log('reload');
   }, [props.reload]);
 
   const onTableChange = useCallback((pagination, filters, sorter) => {

@@ -12,7 +12,7 @@ const ExplainContainer = () => {
   return (
     <Spin spinning={false}>
       {!classicExplain && jsonExplain ? (
-        <pre>Cannot display query explain without query example at this time.</pre>
+        <pre>Cannot display query explain without query explain at this time.</pre>
       ) : (
         <Explain json={jsonExplain} classic={classicExplain} />
       )}
