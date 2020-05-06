@@ -8,6 +8,7 @@ import * as styles from './CheckPanel.styles';
 import '../react-plugins-deps/styles.scss';
 import '../react-plugins-deps/style.less';
 import './CheckPanel.scss';
+import Styling from '../react-plugins-deps/components/helpers/styling';
 
 export interface CheckPanelProps extends PanelProps<CheckPanelOptions> {}
 
@@ -28,6 +29,7 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
   }
 
   componentDidMount() {
+    Styling.addPluginPanelClass();
     this.fetchAlerts();
   }
 
