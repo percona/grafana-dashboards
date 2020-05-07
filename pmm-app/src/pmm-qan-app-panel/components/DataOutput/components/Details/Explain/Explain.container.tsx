@@ -1,14 +1,8 @@
 import * as React from 'react';
-import { useContext } from 'react';
 import Explain from './Explain';
 import { Spin } from 'antd';
-import { DetailsProvider } from '../Details.provider';
 
-const ExplainContainer = () => {
-  const {
-    detailsState: { classicExplain, jsonExplain },
-  } = useContext(DetailsProvider);
-
+const ExplainContainer = ({ classicExplain, jsonExplain }) => {
   return (
     <Spin spinning={false}>
       {!classicExplain && jsonExplain ? (
