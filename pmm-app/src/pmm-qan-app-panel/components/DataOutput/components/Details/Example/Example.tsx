@@ -2,16 +2,26 @@ import React from 'react';
 import Highlight from 'react-highlight.js';
 import { ReactJSON } from '../../../../../../react-plugins-deps/components/Elements/ReactJSON/ReactJSON';
 import { DATABASE } from '../Details.constants';
+import { DatabasesType } from '../Details.types';
 
 const getExample = databaseType => (example: any): any => {
   if (databaseType === DATABASE.mongodb) {
-    return <ReactJSON json={JSON.parse(example)} />;
+    return <ReactJSON key={example} json={JSON.parse(example)} />;
   }
-
-  return <Highlight language="sql">{example}</Highlight>;
+  return (
+    <Highlight key={example} language="sql">
+      {example}
+    </Highlight>
+  );
 };
 
-const Example = ({ fingerprint, databaseType, examples }) => {
+interface ExampleInterface {
+  fingerprint: string;
+  databaseType: DatabasesType;
+  // TODO: update examples interface
+  examples: any[];
+}
+const Example = ({ fingerprint, databaseType, examples }: ExampleInterface) => {
   return (
     <div>
       {databaseType === DATABASE.postgresql ? (

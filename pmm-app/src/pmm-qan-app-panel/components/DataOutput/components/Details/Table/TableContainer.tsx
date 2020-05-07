@@ -1,19 +1,15 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import TableCreate from './components/Table/Table';
 import { Collapse, Spin, Tabs } from 'antd';
 import { Styling } from '../Explain/Explain.styles';
 import { Indexes } from './components/Indexes/Indexes';
 import { Status } from './components/Status/Status';
 import { DATABASE } from '../Details.constants';
-import { DetailsProvider } from '../Details.provider';
 
 const { TabPane } = Tabs;
 const { Panel } = Collapse;
 
-const TableCreateContainer = () => {
-  const {
-    detailsState: { databaseType, examples, tables },
-  } = useContext(DetailsProvider);
+const TableCreateContainer = ({ databaseType, examples, tables }) => {
   return (
     <Spin spinning={false}>
       {tables.length ? (

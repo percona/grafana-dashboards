@@ -1,7 +1,6 @@
 import { Table } from 'antd';
-import React, { useContext } from 'react';
-import Icon from 'antd/es/icon';
-import Tooltip from 'antd/es/tooltip';
+import React from 'react';
+import { Icon, Tooltip } from 'antd';
 import {
   Latency,
   Sparkline,
@@ -10,7 +9,6 @@ import {
 import { Humanize } from '../../../../../../react-plugins-deps/helpers/Humanization';
 import { Styling } from './Metrics.styles';
 import { useMetricsDetails } from './Metrics.hooks';
-import { DetailsProvider } from '../Details.provider';
 
 const mainColumn = (text, item) => {
   return (
@@ -103,11 +101,8 @@ const columns = [
   },
 ];
 
-const Metrics = ({databaseType}) => {
+const Metrics = ({ databaseType }) => {
   const [metrics, loading] = useMetricsDetails();
-  // const {
-  //   detailsState: { databaseType },
-  // } = useContext(DetailsProvider);
 
   return (
     <div>

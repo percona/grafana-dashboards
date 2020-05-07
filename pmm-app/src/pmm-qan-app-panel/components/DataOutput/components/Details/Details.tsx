@@ -19,7 +19,7 @@ const Details = () => {
     panelState: { queryId, groupBy, fingerprint, controlSum },
   } = useContext(PanelProvider);
   const {
-    detailsState: { databaseType, classicExplain, jsonExplain, examples },
+    detailsState: { databaseType, classicExplain, jsonExplain, examples, tables },
   } = useContext(DetailsProvider);
 
   useDetailsState();
@@ -54,7 +54,7 @@ const Details = () => {
           ) : null}
           {groupBy === 'queryid' && showTablesTab ? (
             <TabPane tab={<span>Tables</span>} key={TabKeys.Tables} disabled={queryId === 'TOTAL'}>
-              <TableCreateContainer />
+              <TableCreateContainer databaseType={databaseType} examples={examples} tables={tables} />
             </TabPane>
           ) : null}
         </Tabs>
