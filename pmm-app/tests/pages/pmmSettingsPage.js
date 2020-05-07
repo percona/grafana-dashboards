@@ -299,8 +299,8 @@ module.exports = {
   },
 
   async verifyTooltip(tooltipObj) {
-    I.see(tooltipObj.text, this.fields.tooltipLocator);
-    I.seeAttributesOnElements(`${this.fields.tooltipLocator} > div > a`, {href: tooltipObj.link});
+    I.see(tooltipObj.text, this.fields.tooltipSelector);
+    I.seeAttributesOnElements(`${this.fields.tooltipSelector} > div > a`, {href: tooltipObj.link});
   },
 
   verifySwitch(switchSelector, expectedSwitchState= 'on') {
