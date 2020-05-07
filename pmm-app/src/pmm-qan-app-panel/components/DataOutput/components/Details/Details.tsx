@@ -19,7 +19,7 @@ const Details = () => {
     panelState: { queryId, groupBy, fingerprint, controlSum },
   } = useContext(PanelProvider);
   const {
-    detailsState: { databaseType },
+    detailsState: { databaseType, classicExplain, jsonExplain, examples },
   } = useContext(DetailsProvider);
 
   useDetailsState();
@@ -40,16 +40,16 @@ const Details = () => {
         <Divider />
         <Tabs activeKey={activeTab} onChange={setActiveTab} tabPosition="top" destroyInactiveTabPane>
           <TabPane tab={<span>Details</span>} key={TabKeys.Details}>
-            <Metrics />
+            <Metrics databaseType={databaseType} />
           </TabPane>
           {groupBy === 'queryid' ? (
             <TabPane tab={<span>Examples</span>} key={TabKeys.Examples} disabled={queryId === 'TOTAL'}>
-              <Example />
+              <Example fingerprint={fingerprint} databaseType={databaseType} examples={examples} />
             </TabPane>
           ) : null}
           {groupBy === 'queryid' && showExplainTab ? (
             <TabPane tab={<span>Explain</span>} key={TabKeys.Explain} disabled={queryId === 'TOTAL'}>
-              <Explain />
+              <Explain classicExplain={classicExplain} jsonExplain={jsonExplain} />
             </TabPane>
           ) : null}
           {groupBy === 'queryid' && showTablesTab ? (

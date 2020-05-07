@@ -103,11 +103,11 @@ const columns = [
   },
 ];
 
-const Metrics = () => {
+const Metrics = ({databaseType}) => {
   const [metrics, loading] = useMetricsDetails();
-  const {
-    detailsState: { databaseType },
-  } = useContext(DetailsProvider);
+  // const {
+  //   detailsState: { databaseType },
+  // } = useContext(DetailsProvider);
 
   return (
     <div>
