@@ -64,7 +64,7 @@ Scenario(
     'PMM-T253 Verify user can see correct tooltip for STT',
     async (I, pmmSettingsPage) => {
       pmmSettingsPage.waitForPmmSettingsPageLoaded();
-      I.moveCursorTo(pmmSettingsPage.fields.sttLabelTooltipLocator);
+      I.moveCursorTo(pmmSettingsPage.fields.sttLabelTooltipSelector);
       await pmmSettingsPage.verifyTooltip(pmmSettingsPage.tooltips.stt);
     }
 );

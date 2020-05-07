@@ -93,8 +93,8 @@ module.exports = {
     selectedResolution: "//span[@class='ant-slider-mark-text ant-slider-mark-text-active']",
     sttSwitchSelector: "//strong[text()='Security Threat Tool']/parent::div/following-sibling::div/button",
     telemetrySwitchSelector: "//strong[text()='Telemetry']/parent::div/following-sibling::div/button",
-    sttLabelTooltipLocator: "//strong[text()='Security Threat Tool']/following-sibling::span/i",
-    tooltipLocator: ".ant-tooltip-inner"
+    sttLabelTooltipSelector: "//strong[text()='Security Threat Tool']/following-sibling::span/i",
+    tooltipSelector: ".ant-tooltip-inner"
   },
 
   waitForPmmSettingsPageLoaded() {
