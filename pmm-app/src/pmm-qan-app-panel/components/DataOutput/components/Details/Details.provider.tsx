@@ -1,17 +1,6 @@
 import React, { useState } from 'react';
+import { Details } from './Details.types';
 
-interface DetailsState {
-  examples?: any;
-  jsonExplain?: any;
-  classicExplain?: any;
-  tables?: any;
-  databaseType?: 'mysql' | 'postgresql' | 'mongodb';
-}
-
-interface Details {
-  contextActions: any;
-  detailsState: DetailsState;
-}
 const initialState = { detailsState: { tables: [] } } as Details;
 
 export const DetailsProvider = React.createContext(initialState);
