@@ -21,7 +21,6 @@ export const useMetricsDetails = (): [any[], boolean] => {
           from,
           to,
           labels,
-          // tables,
         });
         setMetrics(processMetrics(METRIC_CATALOGUE, result));
         contextActions.setFingerprint(groupBy === 'queryid' ? result.fingerprint : queryId);

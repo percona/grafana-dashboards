@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Collapse, Table } from 'antd';
 import { ReactJSON } from '../../../../../../react-plugins-deps/components/Elements/ReactJSON/ReactJSON';
 import { Styling } from './Explain.styles';
+import { processClassicExplain } from '../Details.tools';
 
 const { Panel } = Collapse;
 
@@ -12,25 +13,7 @@ const Explain = ({ json, classic }) => {
     if (!classic) {
       return;
     }
-
-    const [header, ...data] = classic.split('\n');
-    const headerList = header
-      .split('|')
-      .map(e => e.trim())
-      .filter(Boolean)
-      .map(title => ({ title: title, key: title, dataIndex: title }));
-
-    const rowsList = data.map(item =>
-      item
-        .split('|')
-        .map(e => e.trim())
-        .filter(Boolean)
-        .reduce((acc, item, index) => {
-          acc[headerList[index].title] = item;
-          return acc;
-        }, {})
-    );
-    setData({ columns: headerList, rows: rowsList });
+    setData(processClassicExplain(classic));
   }, [classic]);
 
   return (

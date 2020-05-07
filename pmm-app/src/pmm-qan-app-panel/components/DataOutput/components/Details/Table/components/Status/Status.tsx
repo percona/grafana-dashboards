@@ -3,6 +3,7 @@ import { DATABASE } from '../../../Details.constants';
 import StatusService from './Status.service';
 import { Table } from 'antd';
 import { useActionResult } from '../../../Details.hooks';
+import { processTableData } from '../../../Details.tools';
 
 export const Status = props => {
   const { tableName, databaseType, example } = props;
@@ -42,22 +43,7 @@ export const Status = props => {
     if (!status) {
       return;
     }
-    const [header, ...data] = JSON.parse(status);
-    const headerList = header
-      .map(e => (e ? String(e).trim() : ''))
-      .filter(Boolean)
-      .map(title => ({ title: title, key: title, dataIndex: title }));
-
-    const rowsList = data.map(item => {
-      return item
-        .map(e => (e ? String(e).trim() : ''))
-        .filter(Boolean)
-        .reduce((acc, item, index) => {
-          acc[headerList[index].title] = item;
-          return acc;
-        }, {});
-    });
-    setData({ columns: headerList, rows: rowsList });
+    setData(processTableData(status));
   }, [status]);
 
   return (
