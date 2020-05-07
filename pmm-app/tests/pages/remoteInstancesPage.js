@@ -156,11 +156,11 @@ module.exports = {
     this.waitForDiscovery();
   },
 
-  waitForDiscovery() {
+  waitForDiscovery () {
     I.waitForVisible(this.fields.discoveryResults, 30);
   },
 
-  verifyInstanceIsDiscovered(instanceIdToMonitor) {
+  verifyInstanceIsDiscovered (instanceIdToMonitor) {
     const instanceIdLocator = `${this.fields.discoveryRowWithId}${instanceIdToMonitor}']`;
     I.seeElement(instanceIdLocator);
   },
@@ -185,4 +185,4 @@ module.exports = {
     I.fillField(this.fields.replicationSet, 'rds56-replication');
     I.scrollPageToBottom();
   },
-};
+}
