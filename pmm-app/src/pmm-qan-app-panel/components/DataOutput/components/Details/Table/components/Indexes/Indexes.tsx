@@ -3,6 +3,7 @@ import { DATABASE } from '../../../Details.constants';
 import IndexesService from './Indexes.service';
 import { Table } from 'antd';
 import { useActionResult } from '../../../Details.hooks';
+import { processTableData } from '../../../Details.tools';
 
 export const Indexes = props => {
   const { tableName, databaseType, example } = props;
@@ -57,21 +58,7 @@ export const Indexes = props => {
     if (!indexes) {
       return;
     }
-    const [header, ...data] = JSON.parse(indexes);
-    const headerList = header
-      .map(e => (e ? e.trim() : e))
-      .filter(Boolean)
-      .map(title => ({ title: title, key: title, dataIndex: title }));
-    const rowsList = data.map(item =>
-      item
-        .map(e => (e ? e.trim() : 'NULL'))
-        .filter(Boolean)
-        .reduce((acc, item, index) => {
-          acc[headerList[index].title] = item;
-          return acc;
-        }, {})
-    );
-    setData({ columns: headerList, rows: rowsList });
+    setData(processTableData(indexes));
   }, [indexes]);
 
   return (
