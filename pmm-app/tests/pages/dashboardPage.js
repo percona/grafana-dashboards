@@ -299,7 +299,7 @@ module.exports = {
   fields: {
     notAvailableMetrics: "//span[contains(text(), 'N/A')]",
     notAvailableDataPoints: "//div[contains(text(),'No data')]",
-    metricTitle: "//span[@class='panel-title']",
+    metricTitle: "//div[@class='panel-title']",
     reportTitleWithNA:
       "//span[contains(text(), 'N/A')]//ancestor::div[contains(@class,'panel-container')]//span[contains(@class,'panel-title-text')]",
     reportTitleWithNoData:

@@ -48,7 +48,7 @@ export const processData = (data: Alert[]): ActiveCheck[] => {
       },
       [0, 0, 0] as FailedChecks
     );
-    const details = value.map(val => val.description);
+    const details = value.map(val => `${val.summary}${val.description ? `: ${val.description}` : ''}`);
     return { key: String(i), name, failed, details };
   });
 };

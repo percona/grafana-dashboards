@@ -79,73 +79,76 @@ export class PanelCtrl extends MetricsPanelCtrl {
   }
 
   link($scope, elem, $location, $window) {
-    const frame = elem.find('iframe');
-    const panel = elem.find('div.panel-container');
-    const panelContent = elem.find('div.panel-content');
-    // TODO: investigate this workaround. Inside $window - CtrlPanel
-    const window = $window.$injector.get('$window');
-    panel.css({
-      'background-color': 'transparent',
-      border: 'none',
-    });
-
-    this.disableGrafanaPerfectScroll(elem);
-    this.fixMenuVisibility(elem);
-
-    $scope.ctrl.calculatePanelHeight = () => {
-      const h =
-        frame
-          .contents()
-          .find('body')
-          .height() || 400;
-      const documentH = elem && elem[0] ? elem[0].ownerDocument.height : h;
-
-      $scope.ctrl.containerHeight = documentH;
-      $scope.ctrl.height = documentH - 100;
-
-      frame.height(`${h + 100}px`);
-      panel.height(`${h + 150}px`);
-
-      panelContent.height('inherit');
-      panelContent[0].style.padding = '0 0 10px';
-    };
-    // init url
-    // updated url
-    $scope.$watch('qanParams', this.resetUrl.bind(this, $scope), true);
-    [
-      $scope.qanParams.queryID,
-      $scope.qanParams.type,
-      $scope.qanParams.search,
-      $scope.qanParams.filters,
-      $scope.qanParams.main_metric,
-      $scope.qanParams.columns,
-      $scope.qanParams.order_by,
-      $scope.qanParams.group_by,
-      $scope.qanParams.filter_by,
-      $scope.qanParams.active_details_tab,
-    ] = this.retrieveDashboardURLParams();
-
-    frame.on('load', () => {
-      setTimeout(() => $scope.ctrl.calculatePanelHeight(), 10);
-
-      frame.contents().bind('updateUrl', event => {
-        const [type, params] = this.retrieveIFrameURLParams(event.currentTarget.URL);
-        this.reloadQuery(window, $scope, type, params);
-        setTimeout(() => $scope.ctrl.calculatePanelHeight(), 10);
+    setTimeout(() => {
+      elem = elem.closest('.react-grid-item');
+      const frame = elem.find('iframe');
+      const panel = elem.find('div.panel-container');
+      const panelContent = elem.find('div.panel-content');
+      // TODO: investigate this workaround. Inside $window - CtrlPanel
+      const window = $window.$injector.get('$window');
+      panel.css({
+        'background-color': 'transparent',
+        border: 'none',
       });
 
-      frame.contents().bind(
-        'showSuccessNotification',
-        () => {
-          AppEvents.emit('alert-success', ['Content has been copied to clipboard']);
-        },
-        false
-      );
+      this.disableGrafanaPerfectScroll(elem);
+      this.fixMenuVisibility(elem);
 
-      frame
-        .contents()
-        .bind('DOMSubtreeModified', () => setTimeout(() => $scope.ctrl.calculatePanelHeight(), 10));
-    });
+      $scope.ctrl.calculatePanelHeight = () => {
+        const h =
+          frame
+            .contents()
+            .find('body')
+            .height() || 400;
+        const documentH = elem && elem[0] ? elem[0].ownerDocument.height : h;
+
+        $scope.ctrl.containerHeight = documentH;
+        $scope.ctrl.height = documentH - 100;
+
+        frame.height(`${h + 100}px`);
+        panel.height(`${h + 150}px`);
+
+        panelContent.height('inherit');
+        panelContent[0].style.padding = '0 0 10px';
+      };
+      // init url
+      // updated url
+      $scope.$watch('qanParams', this.resetUrl.bind(this, $scope), true);
+      [
+        $scope.qanParams.queryID,
+        $scope.qanParams.type,
+        $scope.qanParams.search,
+        $scope.qanParams.filters,
+        $scope.qanParams.main_metric,
+        $scope.qanParams.columns,
+        $scope.qanParams.order_by,
+        $scope.qanParams.group_by,
+        $scope.qanParams.filter_by,
+        $scope.qanParams.active_details_tab,
+      ] = this.retrieveDashboardURLParams();
+
+      frame.on('load', () => {
+        setTimeout(() => $scope.ctrl.calculatePanelHeight(), 10);
+
+        frame.contents().bind('updateUrl', event => {
+          const [type, params] = this.retrieveIFrameURLParams(event.currentTarget.URL);
+          this.reloadQuery(window, $scope, type, params);
+          setTimeout(() => $scope.ctrl.calculatePanelHeight(), 10);
+        });
+
+        frame.contents().bind(
+          'showSuccessNotification',
+          () => {
+            AppEvents.emit('alert-success', ['Content has been copied to clipboard']);
+          },
+          false
+        );
+
+        frame
+          .contents()
+          .bind('DOMSubtreeModified', () => setTimeout(() => $scope.ctrl.calculatePanelHeight(), 10));
+      });
+    }, 100);
   }
 
   /**
