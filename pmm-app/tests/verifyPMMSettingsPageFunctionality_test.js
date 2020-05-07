@@ -79,5 +79,9 @@ Scenario(
       await pmmSettingsPage.verifySuccessfulPopUp(pmmSettingsPage.messages.successPopUpMessage);
       I.refreshPage();
       pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelector, 'enabled');
+      I.click(pmmSettingsPage.fields.sttSwitchSelector);
+      pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelector, 'off');
+      I.click(pmmSettingsPage.fields.applyButton);
+      await pmmSettingsPage.verifySuccessfulPopUp(pmmSettingsPage.messages.successPopUpMessage);
     }
 );

@@ -92,6 +92,7 @@ module.exports = {
     validationMessage: "//span[@class='error-message']",
     selectedResolution: "//span[@class='ant-slider-mark-text ant-slider-mark-text-active']",
     sttSwitchSelector: "//strong[text()='Security Threat Tool']/parent::div/following-sibling::div/button",
+    telemetrySwitchSelector: "//strong[text()='Telemetry']/parent::div/following-sibling::div/button",
     sttLabelTooltipLocator: "//strong[text()='Security Threat Tool']/following-sibling::span/i",
     tooltipLocator: ".ant-tooltip-inner"
   },
@@ -139,7 +140,6 @@ module.exports = {
       );
     }
   },
-
   async waitForButton(contentLocator, contentLocatorText) {
     I.waitForVisible(contentLocator, 30);
     I.waitForEnabled(contentLocator, 30);
@@ -303,16 +303,25 @@ module.exports = {
     I.seeAttributesOnElements(`${this.fields.tooltipLocator} > div > a`, {href: tooltipObj.link});
   },
 
-  verifySwitch(switchSelector, expectedSwitchState= 'enabled') {
+  verifySwitch(switchSelector, expectedSwitchState= 'on') {
     let expectedSwitch;
     switch (expectedSwitchState){
-      case 'enabled':
+      case 'on':
         expectedSwitch = {'aria-checked':'true'};
         break;
-      case 'disabled':
+      case 'off':
         expectedSwitch = {'aria-checked':'false'};
         break;
     }
-    I.seeAttributesOnElements(switchSelector, expectedSwitch);
   },
+
+  verifySwitchStateIs(switchSelector, enabled = true) {
+    switchSelector = switchSelector+'[@disabled]';
+    if (!enabled) {
+      I.seeElement(switchSelector);
+    } else {
+      I.dontSeeElement(switchSelector)
+    }
+  },
+
 };
