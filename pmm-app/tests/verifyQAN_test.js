@@ -63,7 +63,8 @@ Scenario(
     qanPage.waitForQANPageLoaded();
     await qanPage.expandAllFilter();
     qanPage.applyFilter(filterToApply);
-    qanPage._selectDetails(2);
+    qanPage.waitForQANPageLoaded();
+    await qanPage._selectDetails(2);
     qanPage.selectSectionInDetails(qanPage.fields.tablesTabInDetails);
     await qanPage.verifyDetailsSectionDataExists(qanPage.tabs.tablesTab);
   }
@@ -88,7 +89,8 @@ Scenario(
     qanPage.waitForQANPageLoaded();
     await qanPage.expandAllFilter();
     qanPage.applyFilter(filterToApply);
-    qanPage._selectDetails(2);
+    qanPage.waitForQANPageLoaded();
+    await qanPage._selectDetails(2);
     qanPage.selectSectionInDetails(qanPage.fields.explainTabInDetails);
     await qanPage.verifyDetailsSectionDataExists(qanPage.tabs.explainTab);
   }
