@@ -183,8 +183,16 @@ module.exports = {
     I.waitForInvisible(this.fields.spinnerLocator, 30);
   },
 
-  _selectDetails(row) {
-    I.click('//table/tr[' + (row + 1) + ']//td[2]');
+  async _selectDetails(row) {
+    const rowSelector = '//table/tr[' + (row + 1) + ']//td[2]';
+    I.click(rowSelector);
+    this.waitForQANPageLoaded();
+    const numb = await I.grabNumberOfVisibleElements(this.fields.detailsTable);
+    if (numb == 0) {
+      I.waitForElement(rowSelector, 30);
+      I.click(rowSelector);
+      this.waitForQANPageLoaded();
+    }
     this.waitForDetailsSection();
   },
 

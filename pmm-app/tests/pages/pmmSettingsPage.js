@@ -56,6 +56,15 @@ module.exports = {
     'Alertmanager integration',
     'Diagnostics',
   ],
+
+  tooltips : {
+    stt: {
+      text: "Enable Security Threat Tool and get updated checks from Percona",
+      link: "https://www.percona.com/doc/percona-monitoring-and-management/2.x/manage/server-admin-gui.html#stt"
+    },
+
+  },
+
   sectionButtonText: {
     applyChanges: 'Apply changes',
     applySSHKey: 'Apply SSH key',
@@ -82,14 +91,16 @@ module.exports = {
     popUpTitle: "//div[@class='alert-title']",
     validationMessage: "//span[@class='error-message']",
     selectedResolution: "//span[@class='ant-slider-mark-text ant-slider-mark-text-active']",
+    sttSwitchSelector: "//strong[text()='Security Threat Tool']/parent::div/following-sibling::div/button",
+    telemetrySwitchSelector: "//strong[text()='Telemetry']/parent::div/following-sibling::div/button",
+    sttLabelTooltipSelector: "//strong[text()='Security Threat Tool']/following-sibling::span/i",
+    tooltipSelector: ".ant-tooltip-inner"
   },
 
   waitForPmmSettingsPageLoaded() {
     I.waitForVisible(this.fields.applyButton, 30);
-    I.waitForClickable(this.fields.applyButton, 30);
     I.waitForVisible(this.fields.sectionHeader, 30);
     I.waitForVisible(this.fields.callHomeSwitch, 30);
-    I.waitForClickable(this.fields.callHomeSwitch, 30);
   },
 
   verifySettingsSectionElements() {
@@ -100,6 +111,7 @@ module.exports = {
     I.see('Telemetry', this.fields.sectionRow);
     I.seeElement(this.fields.callHomeSwitch);
     I.see('Check for updates', this.fields.sectionRow);
+    I.seeElement(this.fields.sttSwitchSelector);
   },
 
   verifySSHKeyDetailsSectionElements() {
@@ -128,7 +140,6 @@ module.exports = {
       );
     }
   },
-
   async waitForButton(contentLocator, contentLocatorText) {
     I.waitForVisible(contentLocator, 30);
     I.waitForEnabled(contentLocator, 30);
@@ -286,4 +297,31 @@ module.exports = {
     }
     I.see(ruleName);
   },
+
+  async verifyTooltip(tooltipObj) {
+    I.see(tooltipObj.text, this.fields.tooltipSelector);
+    I.seeAttributesOnElements(`${this.fields.tooltipSelector} > div > a`, {href: tooltipObj.link});
+  },
+
+  verifySwitch(switchSelector, expectedSwitchState= 'on') {
+    let expectedSwitch;
+    switch (expectedSwitchState){
+      case 'on':
+        expectedSwitch = {'aria-checked':'true'};
+        break;
+      case 'off':
+        expectedSwitch = {'aria-checked':'false'};
+        break;
+    }
+  },
+
+  verifySwitchStateIs(switchSelector, enabled = true) {
+    switchSelector = switchSelector+'[@disabled]';
+    if (!enabled) {
+      I.seeElement(switchSelector);
+    } else {
+      I.dontSeeElement(switchSelector)
+    }
+  },
+
 };
