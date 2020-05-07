@@ -269,7 +269,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "count(node_memory_MemTotal{})",
+                    "expr": "count(node_memory_MemTotal_bytes{})",
                     "format": "time_series",
                     "instant": true,
                     "interval": "5m",
@@ -521,7 +521,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "avg by () ((sum by (instance,cpu) ( (clamp_max(rate(node_cpu{instance=~\"$host\",mode!='idle',mode!=\"iowait\"}[$interval]),1)) or  \n(clamp_max(irate(node_cpu{instance=~\"$host\",mode!='idle',mode!=\"iowait\"}[5m]),1)) ))*100 or \nsum by () (avg_over_time(node_cpu_average{instance=~\"$host\",mode!=\"idle\", mode!=\"total\",mode!=\"idle\"}[$interval]) or \navg_over_time(node_cpu_average{instance=~\"$host\",mode!=\"idle\",mode!=\"total\",mode!=\"idle\"}[5m])))",
+                    "expr": "avg by () ((sum by (instance,cpu) ( (clamp_max(rate(node_cpu_seconds_total{instance=~\"$host\",mode!='idle',mode!=\"iowait\"}[$interval]),1)) or  \n(clamp_max(irate(node_cpu_seconds_total{instance=~\"$host\",mode!='idle',mode!=\"iowait\"}[5m]),1)) ))*100 or \nsum by () (avg_over_time(node_cpu_average{instance=~\"$host\",mode!=\"idle\", mode!=\"total\",mode!=\"idle\"}[$interval]) or \navg_over_time(node_cpu_average{instance=~\"$host\",mode!=\"idle\",mode!=\"total\",mode!=\"idle\"}[5m])))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -615,7 +615,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "avg by () ((node_memory_MemAvailable{instance=~\"$host\"} or (node_memory_MemFree{instance=~\"$host\"} + node_memory_Buffers{instance=~\"$host\"} + node_memory_Cached{instance=~\"$host\"})) / node_memory_MemTotal{instance=~\"$host\"}) * 100",
+                    "expr": "avg by () ((node_memory_MemAvailable{instance=~\"$host\"} or (node_memory_MemFree_bytes{instance=~\"$host\"} + node_memory_Buffers_bytes{instance=~\"$host\"} + node_memory_Cached_bytes{instance=~\"$host\"})) / node_memory_MemTotal_bytes{instance=~\"$host\"}) * 100",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -907,7 +907,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "sum(rate(node_network_receive_bytes{instance=~\"$host\",device!=\"lo\"}[$interval]) \nor irate(node_network_receive_bytes{instance=~\"$host\",device!=\"lo\"}[5m]) \nor max_over_time(rdsosmetrics_network_rx{instance=~\"$host\"}[$interval]) \nor max_over_time(rdsosmetrics_network_rx{instance=~\"$host\"}[5m]))\n+\nsum(rate(node_network_transmit_bytes{instance=~\"$host\",device!=\"lo\"}[$interval]) \nor irate(node_network_transmit_bytes{instance=~\"$host\",device!=\"lo\"}[5m])\nor max_over_time(rdsosmetrics_network_tx{instance=~\"$host\"}[$interval]) \nor max_over_time(rdsosmetrics_network_tx{instance=~\"$host\"}[5m]))",
+                    "expr": "sum(rate(node_network_receive_bytes_total{instance=~\"$host\",device!=\"lo\"}[$interval]) \nor irate(node_network_receive_bytes_total{instance=~\"$host\",device!=\"lo\"}[5m]) \nor max_over_time(rdsosmetrics_network_rx{instance=~\"$host\"}[$interval]) \nor max_over_time(rdsosmetrics_network_rx{instance=~\"$host\"}[5m]))\n+\nsum(rate(node_network_transmit_bytes_total{instance=~\"$host\",device!=\"lo\"}[$interval]) \nor irate(node_network_transmit_bytes_total{instance=~\"$host\",device!=\"lo\"}[5m])\nor max_over_time(rdsosmetrics_network_tx{instance=~\"$host\"}[$interval]) \nor max_over_time(rdsosmetrics_network_tx{instance=~\"$host\"}[5m]))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1190,7 +1190,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "(count(node_cpu{instance=~\"$host\",mode=~\"user\"}) or (1-absent(node_cpu{instance=~\"$host\",mode=~\"user\"}))) + sum(rdsosmetrics_General_numVCPUs{instance=~\"$host\"} or up * 0)",
+                    "expr": "(count(node_cpu_seconds_total{instance=~\"$host\",mode=~\"user\"}) or (1-absent(node_cpu_seconds_total{instance=~\"$host\",mode=~\"user\"}))) + sum(rdsosmetrics_General_numVCPUs{instance=~\"$host\"} or up * 0)",
                     "format": "time_series",
                     "instant": true,
                     "interval": "$interval",
@@ -1278,7 +1278,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "sum by () (node_memory_MemTotal{instance=~\"$host\"})",
+                    "expr": "sum by () (node_memory_MemTotal_bytes{instance=~\"$host\"})",
                     "format": "time_series",
                     "instant": true,
                     "interval": "5m",
@@ -1366,7 +1366,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "avg(node_time{instance=~\"$host\"} - node_boot_time{instance=~\"$host\"})",
+                    "expr": "avg(node_time{instance=~\"$host\"} - node_boot_time_seconds{instance=~\"$host\"})",
                     "format": "time_series",
                     "instant": true,
                     "interval": "5m",
@@ -1597,7 +1597,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "clamp_max(avg by (instance) \n(sum by (cpu) ( (clamp_max(rate(node_cpu{instance=~\"$host\",mode!='idle',mode!=\"iowait\"}[$interval]),1)) or\n(clamp_max(irate(node_cpu{instance=~\"$host\",mode!='idle',mode!=\"iowait\"}[5m]),1)) )),1) *100 or\nsum by () (\navg_over_time(node_cpu_average{instance=~\"$host\",mode!=\"idle\", mode!=\"total\",job=\"rds-enhanced\"}[$interval]) or \navg_over_time(node_cpu_average{instance=~\"$host\",mode!=\"idle\", mode!=\"total\",job=\"rds-enhanced\"}[5m]))",
+                    "expr": "clamp_max(avg by (instance) \n(sum by (cpu) ( (clamp_max(rate(node_cpu_seconds_total{instance=~\"$host\",mode!='idle',mode!=\"iowait\"}[$interval]),1)) or\n(clamp_max(irate(node_cpu_seconds_total{instance=~\"$host\",mode!='idle',mode!=\"iowait\"}[5m]),1)) )),1) *100 or\nsum by () (\navg_over_time(node_cpu_average{instance=~\"$host\",mode!=\"idle\", mode!=\"total\",job=\"rds-enhanced\"}[$interval]) or \navg_over_time(node_cpu_average{instance=~\"$host\",mode!=\"idle\", mode!=\"total\",job=\"rds-enhanced\"}[5m]))",
                     "format": "time_series",
                     "hide": false,
                     "interval": "$interval",
@@ -1692,7 +1692,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "(node_memory_MemAvailable{instance=~\"$host\"} or \n(node_memory_MemFree{instance=~\"$host\"} + node_memory_Buffers{instance=~\"$host\"} + node_memory_Cached{instance=~\"$host\"})) / \nnode_memory_MemTotal{instance=~\"$host\"} * 100",
+                    "expr": "(node_memory_MemAvailable{instance=~\"$host\"} or \n(node_memory_MemFree_bytes{instance=~\"$host\"} + node_memory_Buffers_bytes{instance=~\"$host\"} + node_memory_Cached_bytes{instance=~\"$host\"})) / \nnode_memory_MemTotal_bytes{instance=~\"$host\"} * 100",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1978,7 +1978,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "(sum(rate(node_network_receive_bytes{instance=~\"$host\", device!=\"lo\"}[$interval]) or\nirate(node_network_receive_bytes{instance=~\"$host\", device!=\"lo\"}[5m])) or \nsum(max_over_time(rdsosmetrics_network_rx{instance=~\"$host\"}[$interval])) or \nsum(max_over_time(rdsosmetrics_network_rx{instance=~\"$host\"}[5m]))) + \n(sum(rate(node_network_transmit_bytes{instance=~\"$host\", device!=\"lo\"}[$interval]) or \nirate(node_network_transmit_bytes{instance=~\"$host\", device!=\"lo\"}[5m])) or \nsum(max_over_time(rdsosmetrics_network_tx{instance=~\"$host\"}[$interval])) or \nsum(max_over_time(rdsosmetrics_network_tx{instance=~\"$host\"}[5m]))) ",
+                    "expr": "(sum(rate(node_network_receive_bytes_total{instance=~\"$host\", device!=\"lo\"}[$interval]) or\nirate(node_network_receive_bytes_total{instance=~\"$host\", device!=\"lo\"}[5m])) or \nsum(max_over_time(rdsosmetrics_network_rx{instance=~\"$host\"}[$interval])) or \nsum(max_over_time(rdsosmetrics_network_rx{instance=~\"$host\"}[5m]))) + \n(sum(rate(node_network_transmit_bytes_total{instance=~\"$host\", device!=\"lo\"}[$interval]) or \nirate(node_network_transmit_bytes_total{instance=~\"$host\", device!=\"lo\"}[5m])) or \nsum(max_over_time(rdsosmetrics_network_tx{instance=~\"$host\"}[$interval])) or \nsum(max_over_time(rdsosmetrics_network_tx{instance=~\"$host\"}[5m]))) ",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -2270,7 +2270,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "(count(node_cpu{instance=~\"$host\",mode=~\"user\"}) or (1-absent(node_cpu{instance=~\"$host\",mode=~\"user\"}))) + \nsum(rdsosmetrics_General_numVCPUs{instance=~\"$host\"} or up * 0)",
+                    "expr": "(count(node_cpu_seconds_total{instance=~\"$host\",mode=~\"user\"}) or (1-absent(node_cpu_seconds_total{instance=~\"$host\",mode=~\"user\"}))) + \nsum(rdsosmetrics_General_numVCPUs{instance=~\"$host\"} or up * 0)",
                     "format": "time_series",
                     "instant": true,
                     "interval": "5m",
@@ -2363,7 +2363,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "node_memory_MemTotal{instance=~\"$host\"}",
+                    "expr": "node_memory_MemTotal_bytes{instance=~\"$host\"}",
                     "format": "time_series",
                     "interval": "5m",
                     "intervalFactor": 1,
@@ -2452,7 +2452,7 @@
                     "calculatedInterval": "10m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "node_time{instance=~\"$host\"} - node_boot_time{instance=~\"$host\"}",
+                    "expr": "node_time{instance=~\"$host\"} - node_boot_time_seconds{instance=~\"$host\"}",
                     "format": "time_series",
                     "interval": "5m",
                     "intervalFactor": 1,

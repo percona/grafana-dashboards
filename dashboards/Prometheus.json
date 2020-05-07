@@ -229,7 +229,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "(sum(rate(process_cpu_seconds_total{job=\"prometheus\"}[$interval])) by () or sum(irate(process_cpu_seconds_total{job=\"prometheus\"}[5m])) by ()) / count(node_cpu{mode=\"user\", instance=\"pmm-server\"})*100",
+                    "expr": "(sum(rate(process_cpu_seconds_total{job=\"prometheus\"}[$interval])) by () or sum(irate(process_cpu_seconds_total{job=\"prometheus\"}[5m])) by ()) / count(node_cpu_seconds_total{mode=\"user\", instance=\"pmm-server\"})*100",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -314,7 +314,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "100*sum(go_memstats_alloc_bytes{job=\"prometheus\"}+go_memstats_stack_inuse_bytes{job=\"prometheus\"}) by () / \nsum(node_memory_MemTotal{instance=\"pmm-server\"}) by ()",
+                    "expr": "100*sum(go_memstats_alloc_bytes{job=\"prometheus\"}+go_memstats_stack_inuse_bytes{job=\"prometheus\"}) by () / \nsum(node_memory_MemTotal_bytes{instance=\"pmm-server\"}) by ()",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -820,7 +820,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "(sum(rate(prometheus_tsdb_head_samples_appended_total[15m])) by () *10800*3) / ((sum(node_memory_MemTotal{instance=\"pmm-server\"}) by ()-419430400)*0.35)*100",
+                    "expr": "(sum(rate(prometheus_tsdb_head_samples_appended_total[15m])) by () *10800*3) / ((sum(node_memory_MemTotal_bytes{instance=\"pmm-server\"}) by ()-419430400)*0.35)*100",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -916,7 +916,7 @@
                             "step": 60
                         },
                         {
-                            "expr": "count(node_cpu{mode=\"user\", instance=\"pmm-server\"})",
+                            "expr": "count(node_cpu_seconds_total{mode=\"user\", instance=\"pmm-server\"})",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -925,7 +925,7 @@
                             "step": 40
                         },
                         {
-                            "expr": "count(node_cpu{mode=\"user\", instance=\"pmm-server\"})*0.75",
+                            "expr": "count(node_cpu_seconds_total{mode=\"user\", instance=\"pmm-server\"})*0.75",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1063,7 +1063,7 @@
                             "step": 60
                         },
                         {
-                            "expr": "node_memory_MemTotal{instance=\"pmm-server\"}",
+                            "expr": "node_memory_MemTotal_bytes{instance=\"pmm-server\"}",
                             "format": "time_series",
                             "hide": false,
                             "interval": "$interval",
@@ -4640,7 +4640,7 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "clamp_max(avg by (instance) (sum by (mode) ( (clamp_max(rate(node_cpu{instance=\"pmm-server\",mode!='idle',mode!=\"iowait\"}[$interval]),1)) or  (clamp_max(irate(node_cpu{instance=\"pmm-server\",mode!='idle',mode!=\"iowait\"}[5m]),1)) )),1) *100",
+                            "expr": "clamp_max(avg by (instance) (sum by (mode) ( (clamp_max(rate(node_cpu_seconds_total{instance=\"pmm-server\",mode!='idle',mode!=\"iowait\"}[$interval]),1)) or  (clamp_max(irate(node_cpu_seconds_total{instance=\"pmm-server\",mode!='idle',mode!=\"iowait\"}[5m]),1)) )),1) *100",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4728,7 +4728,7 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "(node_memory_MemAvailable{instance=\"pmm-server\"} or (node_memory_MemFree{instance=\"pmm-server\"} + node_memory_Buffers{instance=\"pmm-server\"} + node_memory_Cached{instance=\"pmm-server\"})) / node_memory_MemTotal{instance=\"pmm-server\"} * 100",
+                            "expr": "(node_memory_MemAvailable{instance=\"pmm-server\"} or (node_memory_MemFree_bytes{instance=\"pmm-server\"} + node_memory_Buffers_bytes{instance=\"pmm-server\"} + node_memory_Cached_bytes{instance=\"pmm-server\"})) / node_memory_MemTotal_bytes{instance=\"pmm-server\"} * 100",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -4997,7 +4997,7 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "(sum(rate(node_network_receive_bytes{instance=\"pmm-server\", device!=\"lo\"}[$interval]) or irate(node_network_receive_bytes{instance=\"pmm-server\", device!=\"lo\"}[5m]))) + (sum(rate(node_network_transmit_bytes{instance=\"pmm-server\", device!=\"lo\"}[$interval]) or irate(node_network_transmit_bytes{instance=\"pmm-server\", device!=\"lo\"}[5m])))",
+                            "expr": "(sum(rate(node_network_receive_bytes_total{instance=\"pmm-server\", device!=\"lo\"}[$interval]) or irate(node_network_receive_bytes_total{instance=\"pmm-server\", device!=\"lo\"}[5m]))) + (sum(rate(node_network_transmit_bytes_total{instance=\"pmm-server\", device!=\"lo\"}[$interval]) or irate(node_network_transmit_bytes_total{instance=\"pmm-server\", device!=\"lo\"}[5m])))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -5083,7 +5083,7 @@
                             "calculatedInterval": "10m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "node_time{instance=\"pmm-server\"} - node_boot_time{instance=\"pmm-server\"}",
+                            "expr": "node_time{instance=\"pmm-server\"} - node_boot_time_seconds{instance=\"pmm-server\"}",
                             "format": "time_series",
                             "interval": "5m",
                             "intervalFactor": 1,

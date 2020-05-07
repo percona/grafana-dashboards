@@ -229,7 +229,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "avg((sum(rate(process_cpu_seconds_total{job!=\"prometheus\",job!=\"grafana\",instance=~\"$host\"}[$interval])) by (instance) or sum(irate(process_cpu_seconds_total{job!=\"prometheus\",instance=~\"$host\"}[5m])) by (instance)) / count(node_cpu{mode=\"user\",instance=~\"$host\"}) by (instance)) by ()*100",
+                    "expr": "avg((sum(rate(process_cpu_seconds_total{job!=\"prometheus\",job!=\"grafana\",instance=~\"$host\"}[$interval])) by (instance) or sum(irate(process_cpu_seconds_total{job!=\"prometheus\",instance=~\"$host\"}[5m])) by (instance)) / count(node_cpu_seconds_total{mode=\"user\",instance=~\"$host\"}) by (instance)) by ()*100",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -618,7 +618,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "(sum(rate(process_cpu_seconds_total{instance=~\"$host\",job!=\"prometheus\",job!=\"grafana\"}[$interval])) by (instance) or sum(irate(process_cpu_seconds_total{instance=~\"$host\",job!=\"prometheus\",job!=\"grafana\"}[5m])) by (instance)) / count(node_cpu{mode=\"user\", instance=~\"$host\"}) by (instance) *100",
+                    "expr": "(sum(rate(process_cpu_seconds_total{instance=~\"$host\",job!=\"prometheus\",job!=\"grafana\"}[$interval])) by (instance) or sum(irate(process_cpu_seconds_total{instance=~\"$host\",job!=\"prometheus\",job!=\"grafana\"}[5m])) by (instance)) / count(node_cpu_seconds_total{mode=\"user\", instance=~\"$host\"}) by (instance) *100",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1130,7 +1130,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "((sum(rate(process_cpu_seconds_total{instance=~\"$host\",job!=\"prometheus\",job!=\"grafana\"}[$interval])) by (instance) \nor sum(irate(process_cpu_seconds_total{instance=~\"$host\",job!=\"prometheus\",job!=\"grafana\"}[5m])) by (instance)) \n/ count(node_cpu{instance=~\"$host\",mode=\"user\"}) by (instance)*100) or \nsum by () ((max_over_time(node_cpu_average{instance=~\"$host\", mode=\"total\"}[$interval]) or max_over_time(node_cpu_average{instance=~\"$host\", mode=\"total\"}[5m])))",
+                    "expr": "((sum(rate(process_cpu_seconds_total{instance=~\"$host\",job!=\"prometheus\",job!=\"grafana\"}[$interval])) by (instance) \nor sum(irate(process_cpu_seconds_total{instance=~\"$host\",job!=\"prometheus\",job!=\"grafana\"}[5m])) by (instance)) \n/ count(node_cpu_seconds_total{instance=~\"$host\",mode=\"user\"}) by (instance)*100) or \nsum by () ((max_over_time(node_cpu_average{instance=~\"$host\", mode=\"total\"}[$interval]) or max_over_time(node_cpu_average{instance=~\"$host\", mode=\"total\"}[5m])))",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1448,7 +1448,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "node_memory_MemTotal{instance=~\"$host\"}",
+                    "expr": "node_memory_MemTotal_bytes{instance=~\"$host\"}",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1547,7 +1547,7 @@
             "tableColumn": "",
             "targets": [
                 {
-                    "expr": "(count(node_cpu{instance=~\"$host\",mode=~\"user\"}) or (1-absent(node_cpu{instance=~\"$host\",mode=~\"user\"}))) + sum(rdsosmetrics_General_numVCPUs{instance=~\"$host\"} or up * 0)",
+                    "expr": "(count(node_cpu_seconds_total{instance=~\"$host\",mode=~\"user\"}) or (1-absent(node_cpu_seconds_total{instance=~\"$host\",mode=~\"user\"}))) + sum(rdsosmetrics_General_numVCPUs{instance=~\"$host\"} or up * 0)",
                     "format": "time_series",
                     "instant": true,
                     "interval": "$interval",
