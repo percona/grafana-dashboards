@@ -52,6 +52,7 @@ module.exports = {
     discoveryResults: "//tbody[@class='ant-table-tbody']",
     discoveryRowWithId: "//tr/td[text()='",
     startMonitoring: '/following-sibling::td/a',
+    disableEnhancedMetrics: "//input[@name='disable_enhanced_metrics']/following-sibling::span[2]",
   },
 
   waitUntilRemoteInstancesPageLoaded() {
@@ -185,4 +186,8 @@ module.exports = {
     I.fillField(this.fields.replicationSet, 'rds56-replication');
     I.scrollPageToBottom();
   },
+
+  selectDisabledEnhancedMetrics() {
+    I.click(this.fields.disableEnhancedMetrics);
+  }
 };

@@ -55,3 +55,20 @@ xScenario(
     dashboardPage.verifyThereIsNoGraphsWithNA();
   }
 );
+
+Scenario(
+  'PMM-T138 - Verify disabling enhanced metrics for RDS',
+  async (I, remoteInstancesPage, dashboardPage) => {
+    let instanceIdToMonitor = "rds-mysql56";
+    I.amOnPage(remoteInstancesPage.url);
+    remoteInstancesPage.waitUntilRemoteInstancesPageLoaded().openAddAWSRDSMySQLPage();
+    remoteInstancesPage.discoverRDS();
+    remoteInstancesPage.startMonitoringOfInstance(instanceIdToMonitor);
+    remoteInstancesPage.verifyAddInstancePageOpened();
+    remoteInstancesPage.fillRemoteRDSMySQLFields();
+    remoteInstancesPage.selectDisabledEnhancedMetrics();
+    remoteInstancesPage.createRemoteInstance();
+    pmmInventoryPage.verifyRemoteServiceIsDisplayed(instanceIdToMonitor);
+
+  }
+);
