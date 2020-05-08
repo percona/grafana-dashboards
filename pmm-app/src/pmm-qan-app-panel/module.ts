@@ -79,8 +79,19 @@ export class PanelCtrl extends MetricsPanelCtrl {
   }
 
   link($scope, elem, $location, $window) {
-    setTimeout(() => {
+    const waitForEl = function(callback) {
+      if (elem.closest('.react-grid-item').length) {
+        callback();
+      } else {
+        setTimeout(function() {
+          waitForEl(callback);
+        }, 100);
+      }
+    };
+
+    waitForEl(() => {
       elem = elem.closest('.react-grid-item');
+
       const frame = elem.find('iframe');
       const panel = elem.find('div.panel-container');
       const panelContent = elem.find('div.panel-content');
@@ -148,7 +159,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
           .contents()
           .bind('DOMSubtreeModified', () => setTimeout(() => $scope.ctrl.calculatePanelHeight(), 10));
       });
-    }, 100);
+    });
   }
 
   /**
