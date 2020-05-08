@@ -56,7 +56,7 @@ xScenario(
   }
 );
 
-Scenario(
+xScenario(
   'Verify Tables tab in Query Details for Environment=pgsql-dev filter @not-pr-pipeline',
   async (I, adminPage, qanPage) => {
     const filterToApply = 'pgsql-dev';
