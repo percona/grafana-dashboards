@@ -42,10 +42,10 @@ module.exports = {
     return "(//div[contains(text(), '" + dashboardName + "')])[1]";
   },
 
-  applyTimer(timeDiff) {
+  applyTimer(timeDiff = "Last 5 minutes") {
     I.click(this.fields.timePickerMenu);
     I.waitForVisible("//span[contains(text(), 'Last 5 minutes')]", 30);
-    I.click("//span[contains(text(), 'Last 5 minutes')]");
+    I.click("//span[contains(text(), '" + timeDiff + "')]");
     I.wait(5);
   },
 
