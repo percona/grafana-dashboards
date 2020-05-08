@@ -1,6 +1,6 @@
 Feature('Test Dashboards inside the OS Folder');
 
-Before(async (I) => {
+Before(async I => {
   I.Authorize();
 });
 
@@ -29,26 +29,32 @@ Scenario(
   }
 );
 
-Scenario('PMM-T165: Verify Annotation with Default Options', async (I, dashboardPage, adminPage) => {
-  const annotationTitle = 'pmm-annotate-without-tags';
-  I.amOnPage(dashboardPage.nodeSummaryDashboard.url);
-  dashboardPage.waitForDashboardOpened();
-  adminPage.applyTimer('Last 15 minutes');
-  dashboardPage.verifyAnnotationsLoaded('pmm-annotate-without-tags', 1);
-  I.seeElement(dashboardPage.annotationText(annotationTitle));
-});
+Scenario(
+  'PMM-T165: Verify Annotation with Default Options @not-pr-pipeline',
+  async (I, dashboardPage, adminPage) => {
+    const annotationTitle = 'pmm-annotate-without-tags';
+    I.amOnPage(dashboardPage.nodeSummaryDashboard.url);
+    dashboardPage.waitForDashboardOpened();
+    adminPage.applyTimer('Last 15 minutes');
+    dashboardPage.verifyAnnotationsLoaded('pmm-annotate-without-tags', 1);
+    I.seeElement(dashboardPage.annotationText(annotationTitle));
+  }
+);
 
-Scenario('PMM-T166: Verify adding annotation with specified tags', async (I, dashboardPage, adminPage) => {
-  const annotationTitle2 = 'pmm-annotate-tags';
-  const annotationTag1 = 'pmm-testing-tag1';
-  const annotationTag2 = 'pmm-testing-tag2';
-  const defaultAnnotation = 'pmm_annotation';
-  I.amOnPage(dashboardPage.nodeSummaryDashboard.url);
-  dashboardPage.waitForDashboardOpened();
-  adminPage.applyTimer('Last 15 minutes');
-  dashboardPage.verifyAnnotationsLoaded('pmm-annotate-tags', 2);
-  I.seeElement(dashboardPage.annotationText(annotationTitle2));
-  I.seeElement(dashboardPage.annotationTagText(annotationTag1));
-  I.seeElement(dashboardPage.annotationTagText(annotationTag2));
-  I.seeElement(dashboardPage.annotationTagText(defaultAnnotation));
-});
+Scenario(
+  'PMM-T166: Verify adding annotation with specified tags @not-pr-pipeline',
+  async (I, dashboardPage, adminPage) => {
+    const annotationTitle2 = 'pmm-annotate-tags';
+    const annotationTag1 = 'pmm-testing-tag1';
+    const annotationTag2 = 'pmm-testing-tag2';
+    const defaultAnnotation = 'pmm_annotation';
+    I.amOnPage(dashboardPage.nodeSummaryDashboard.url);
+    dashboardPage.waitForDashboardOpened();
+    adminPage.applyTimer('Last 15 minutes');
+    dashboardPage.verifyAnnotationsLoaded('pmm-annotate-tags', 2);
+    I.seeElement(dashboardPage.annotationText(annotationTitle2));
+    I.seeElement(dashboardPage.annotationTagText(annotationTag1));
+    I.seeElement(dashboardPage.annotationTagText(annotationTag2));
+    I.seeElement(dashboardPage.annotationTagText(defaultAnnotation));
+  }
+);
