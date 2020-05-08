@@ -138,7 +138,7 @@ xScenario(
   }
 );
 
-Scenario(
+xScenario(
   'Open PMM Settings page and verify validation for Alertmanager URL without scheme',
   async (I, pmmSettingsPage) => {
     const urlWithoutScheme = 'invalid_url';
