@@ -170,7 +170,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
         delete $scope.qanParams.filter_by;
         this.resetUrl($scope);
       };
-      refreshButton.addEventListener('click', refreshHandle);
+      refreshButton && refreshButton.addEventListener('click', refreshHandle);
 
       frame.on('load', () => {
         setTimeout(() => $scope.ctrl.calculatePanelHeight(), 10);
