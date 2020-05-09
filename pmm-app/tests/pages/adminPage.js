@@ -47,6 +47,7 @@ module.exports = {
     I.waitForVisible("//span[contains(text(), 'Last 5 minutes')]", 30);
     I.click("//span[contains(text(), '" + timeDiff + "')]");
     I.wait(5);
+    I.waitForVisible("//span[contains(text(), '" + timeDiff + "')]", 30);
   },
 
   viewMetric(metricName) {
