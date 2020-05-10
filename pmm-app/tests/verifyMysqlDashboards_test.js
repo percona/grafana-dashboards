@@ -23,9 +23,8 @@ Scenario(
   // eslint-disable-next-line max-len
   'Open the ProxySQL Instance Summary Dashboard and verify Metrics are present and graphs are displayed @not-pr-pipeline',
   async (I, adminPage, dashboardPage) => {
-    I.amOnPage(dashboardPage.proxysqlInstanceSummaryDashboard.url);
+    I.amOnPage(dashboardPage.proxysqlInstanceSummaryDashboard.url + "?from=now-5m&to=now");
     dashboardPage.waitForDashboardOpened();
-    adminPage.applyTimer();
     I.click(adminPage.fields.metricTitle);
     adminPage.peformPageDown(5);
     await dashboardPage.verifyMetricsExistence(dashboardPage.proxysqlInstanceSummaryDashboard.metrics);
@@ -38,7 +37,7 @@ Scenario(
   // eslint-disable-next-line max-len
   'Open the PXCGalera Cluster Summary Dashboard and verify Metrics are present and graphs are displayed @not-pr-pipeline',
   async (I, adminPage, dashboardPage) => {
-    I.amOnPage(dashboardPage.pxcGaleraClusterSummaryDashboard.url);
+    I.amOnPage(dashboardPage.pxcGaleraClusterSummaryDashboard.url + "?from=now-5m&to=now");
     dashboardPage.waitForDashboardOpened();
     I.click(adminPage.fields.metricTitle);
     adminPage.peformPageDown(5);
