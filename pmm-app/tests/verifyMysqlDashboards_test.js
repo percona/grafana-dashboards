@@ -43,7 +43,7 @@ Scenario(
     adminPage.peformPageDown(5);
     dashboardPage.verifyMetricsExistence(dashboardPage.pxcGaleraClusterSummaryDashboard.metrics);
     await dashboardPage.verifyThereAreNoGraphsWithNA();
-    await dashboardPage.verifyThereAreNoGraphsWithoutData();
+    await dashboardPage.verifyThereAreNoGraphsWithoutData(2);
   }
 ).retry(2);
 
