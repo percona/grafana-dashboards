@@ -38,7 +38,7 @@ Scenario(
   // eslint-disable-next-line max-len
   'Open the PXCGalera Cluster Summary Dashboard and verify Metrics are present and graphs are displayed @not-pr-pipeline',
   async (I, adminPage, dashboardPage) => {
-    I.amOnPage(dashboardPage.pxcGaleraClusterSummaryDashboard.url);
+    I.amOnPage(dashboardPage.pxcGaleraClusterSummaryDashboard.url + "?from=now-5m&to=now");
     dashboardPage.waitForDashboardOpened();
     I.click(adminPage.fields.metricTitle);
     adminPage.peformPageDown(5);

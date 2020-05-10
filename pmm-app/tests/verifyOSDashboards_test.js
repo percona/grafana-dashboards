@@ -33,9 +33,8 @@ Scenario(
   'PMM-T165: Verify Annotation with Default Options @not-pr-pipeline',
   async (I, dashboardPage, adminPage) => {
     const annotationTitle = 'pmm-annotate-without-tags';
-    I.amOnPage(dashboardPage.nodeSummaryDashboard.url);
+    I.amOnPage(dashboardPage.nodeSummaryDashboard.url + "?from=now-15m&to=now");
     dashboardPage.waitForDashboardOpened();
-    adminPage.applyTimer('Last 15 minutes');
     dashboardPage.verifyAnnotationsLoaded('pmm-annotate-without-tags', 1);
     I.seeElement(dashboardPage.annotationText(annotationTitle));
   }
@@ -48,9 +47,8 @@ Scenario(
     const annotationTag1 = 'pmm-testing-tag1';
     const annotationTag2 = 'pmm-testing-tag2';
     const defaultAnnotation = 'pmm_annotation';
-    I.amOnPage(dashboardPage.nodeSummaryDashboard.url);
+    I.amOnPage(dashboardPage.nodeSummaryDashboard.url + "?from=now-15m&to=now");
     dashboardPage.waitForDashboardOpened();
-    adminPage.applyTimer('Last 15 minutes');
     dashboardPage.verifyAnnotationsLoaded('pmm-annotate-tags', 2);
     I.seeElement(dashboardPage.annotationText(annotationTitle2));
     I.seeElement(dashboardPage.annotationTagText(annotationTag1));
