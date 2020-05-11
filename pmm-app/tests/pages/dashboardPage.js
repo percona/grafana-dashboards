@@ -311,15 +311,15 @@ module.exports = {
   },
 
   annotationLocator(annotationNumber) {
-    return "(//div[contains(@class,'events_marker')])[" + annotationNumber + "]";
+    return `(//div[contains(@class,'events_marker')])[${annotationNumber}]`;
   },
 
   annotationTagText(tagValue) {
-    return "//span[contains(text(),  '" + tagValue + "')]";
+    return `//span[contains(text(),  '${tagValue}')]`;
   },
 
   annotationText(annotationTitle) {
-    return "//div[contains(text(), '" + annotationTitle + "')]";
+    return `//div[contains(text(), '${annotationTitle}')]`;
   },
 
   verifyAnnotationsLoaded(title, annotationNumber) {
