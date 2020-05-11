@@ -47,22 +47,11 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
 
   render() {
     const {
-      width,
-      height,
       options: { title },
     } = this.props;
 
     return (
-      <div
-        id="antd"
-        className="check-panel"
-        data-qa="db-check-panel"
-        style={{
-          position: 'relative',
-          width,
-          height,
-        }}
-      >
+      <div id="antd" className="check-panel" data-qa="db-check-panel">
         <div className={styles.PanelWrapper}>
           <div className={styles.TitleBar}>
             <div className={styles.Title}>{title || 'Failed Checks'}</div>

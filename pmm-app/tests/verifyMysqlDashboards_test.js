@@ -19,7 +19,7 @@ Scenario(
   }
 );
 
-Scenario(
+xScenario(
   // eslint-disable-next-line max-len
   'Open the ProxySQL Instance Summary Dashboard and verify Metrics are present and graphs are displayed @not-pr-pipeline',
   async (I, adminPage, dashboardPage) => {
