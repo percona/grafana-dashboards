@@ -57,6 +57,11 @@ export class PanelCtrl extends MetricsPanelCtrl {
         if (!newValue) {
           return;
         }
+
+        if ($scope.qanParams.from === newValue.raw.from && $scope.qanParams.to === newValue.raw.to) {
+          return;
+        }
+
         [
           $scope.qanParams.queryID,
           $scope.qanParams.type,
@@ -124,7 +129,28 @@ export class PanelCtrl extends MetricsPanelCtrl {
       };
       // init url
       // updated url
-      $scope.$watch('qanParams', this.resetUrl.bind(this, $scope), true);
+      $scope.$watch(
+        'qanParams',
+        () => {
+          [
+            $scope.qanParams.queryID,
+            $scope.qanParams.type,
+            $scope.qanParams.search,
+            $scope.qanParams.filters,
+            $scope.qanParams.main_metric,
+            $scope.qanParams.columns,
+            $scope.qanParams.order_by,
+            $scope.qanParams.group_by,
+            $scope.qanParams.filter_by,
+            $scope.qanParams.active_details_tab,
+          ] = this.retrieveDashboardURLParams();
+          // delete $scope.qanParams.filter_by;
+          // $scope.qanParams.from = newValue.raw.from;
+          // $scope.qanParams.to = newValue.raw.to;
+          this.resetUrl($scope);
+        },
+        true
+      );
       [
         $scope.qanParams.queryID,
         $scope.qanParams.type,
@@ -137,6 +163,25 @@ export class PanelCtrl extends MetricsPanelCtrl {
         $scope.qanParams.filter_by,
         $scope.qanParams.active_details_tab,
       ] = this.retrieveDashboardURLParams();
+
+      const refreshButton = document.querySelector('.refresh-picker-buttons button');
+      const refreshHandle = () => {
+        [
+          $scope.qanParams.queryID,
+          $scope.qanParams.type,
+          $scope.qanParams.search,
+          $scope.qanParams.filters,
+          $scope.qanParams.main_metric,
+          $scope.qanParams.columns,
+          $scope.qanParams.order_by,
+          $scope.qanParams.group_by,
+          $scope.qanParams.filter_by,
+          $scope.qanParams.active_details_tab,
+        ] = this.retrieveDashboardURLParams();
+        delete $scope.qanParams.filter_by;
+        this.resetUrl($scope);
+      };
+      refreshButton && refreshButton.addEventListener('click', refreshHandle);
 
       frame.on('load', () => {
         setTimeout(() => $scope.ctrl.calculatePanelHeight(), 10);
