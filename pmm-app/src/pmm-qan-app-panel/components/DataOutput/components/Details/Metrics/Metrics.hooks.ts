@@ -7,7 +7,7 @@ import { METRIC_CATALOGUE } from '../../../../../panel/panel.constants';
 export const useMetricsDetails = (): [any[], boolean] => {
   const {
     contextActions,
-    panelState: { queryId, groupBy, from, to, labels },
+    panelState: { queryId, groupBy, from, to, labels, totals },
   } = useContext(PanelProvider);
   const [metrics, setMetrics] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -21,6 +21,7 @@ export const useMetricsDetails = (): [any[], boolean] => {
           from,
           to,
           labels,
+          totals,
         });
         setMetrics(processMetrics(METRIC_CATALOGUE, result));
         contextActions.setFingerprint(groupBy === 'queryid' ? result.fingerprint : queryId);
@@ -31,7 +32,7 @@ export const useMetricsDetails = (): [any[], boolean] => {
       }
     };
     getMetrics();
-  }, [queryId]);
+  }, [queryId, totals]);
 
   return [metrics, loading];
 };

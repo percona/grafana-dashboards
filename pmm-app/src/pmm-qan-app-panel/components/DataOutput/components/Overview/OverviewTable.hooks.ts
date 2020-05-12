@@ -16,7 +16,9 @@ export const useOverviewTable = (setTotal): [DataInterface, boolean] => {
   const onCell = useCallback(
     (record, rowIndex) => {
       return {
-        onClick: () => contextActions.selectQuery(record.dimension),
+        onClick: () => {
+          contextActions.selectQuery(record.dimension, rowIndex === 0);
+        },
       };
     },
     [data.rows]

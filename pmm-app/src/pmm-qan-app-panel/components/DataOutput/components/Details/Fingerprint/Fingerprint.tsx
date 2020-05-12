@@ -7,16 +7,15 @@ import { CloseOutlined } from '@ant-design/icons';
 
 const Fingerprint = props => {
   const currentGroupBy = GROUP_BY_OPTIONS.filter(option => option.value === props.groupBy)[0];
-  const isTotal = props.query === 'TOTAL' || props.query === undefined;
   return (
     <div className={Styling.fingerprintWrapper} id="query-id">
       <div className={Styling.fingerprintView}>
-        <h4>{!isTotal ? `${currentGroupBy.data.label}:` : 'TOTAL'}</h4>
+        <h4>{!props.totals ? `${currentGroupBy.data.label}:` : 'TOTAL'}</h4>
         &nbsp;
-        {!isTotal ? (
+        {!props.totals ? (
           <div>
             <QueryTooltip query={props.query} show={props.groupBy === 'queryid'}>
-              <h5 className={Styling.fingerprint}>{props.query}</h5>
+              <h5 className={Styling.fingerprint}>{props.query || 'N/A'}</h5>
             </QueryTooltip>
           </div>
         ) : null}

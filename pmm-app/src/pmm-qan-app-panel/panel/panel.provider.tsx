@@ -60,6 +60,8 @@ const generateURL = state => {
   const urlOrderBy = orderBy ? `order_by=${orderBy}` : '';
   const urlFrom = state.rawTime && state.rawTime.from ? `from=${state.rawTime.from}` : '';
   const urlTo = state.rawTime && state.rawTime.to ? `to=${state.rawTime.to}` : '';
+  const totals = `totals=${state.totals}`;
+  const querySelected = state.querySelected ? `query_selected=${state.querySelected}` : '';
   // TODO: replace crutch with right redirect
   return `${window.location.pathname}?${[
     urlColumnsQuery,
@@ -69,6 +71,8 @@ const generateURL = state => {
     urlGroupBy,
     urlFrom,
     urlTo,
+    totals,
+    querySelected,
   ]
     .filter(Boolean)
     .join('&')}`;
@@ -85,7 +89,8 @@ const parseURL = query => ({
   pageSize: 10,
   orderBy: query.get('order_by') || `-${(JSON.parse(query.get('columns')) || DEFAULT_COLUMNS)[0]}`,
   queryId: query.get('filter_by'),
-  querySelected: !!query.get('filter_by'),
+  totals: query.get('totals') === 'true',
+  querySelected: !!query.get('filter_by') || query.get('query_selected') === 'true',
   groupBy: query.get('group_by') || 'queryid',
 });
 
@@ -111,8 +116,8 @@ const actions = {
   resetLabels: value => state => {
     return omit({ ...state, labels: {}, pageNumber: 1 }, ['queryId', 'querySelected']);
   },
-  selectQuery: value => state => {
-    return { ...state, queryId: value || 'TOTAL', querySelected: true };
+  selectQuery: (value, totals) => state => {
+    return { ...state, queryId: value, querySelected: true, totals: totals };
   },
   addColumn: value => state => {
     const columns = [...state.columns];
@@ -223,8 +228,8 @@ export const UrlParametersProvider = ({ grafanaProps, children }) => {
     history.pushState({}, 'test', newUrl);
   }, [panelState]);
 
-  const wrapAction = key => value => {
-    return setContext(actions[key](value));
+  const wrapAction = key => (...value) => {
+    return setContext(actions[key](...value));
   };
 
   const [isFirstLoad, setFirstLoad] = useState(true);
