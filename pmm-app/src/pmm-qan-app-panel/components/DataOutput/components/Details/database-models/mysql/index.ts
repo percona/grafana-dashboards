@@ -44,7 +44,7 @@ export class Mysql extends GenericDatabase {
     setActionId(action_id as string);
   }
 
-  private async getExplainJSON({ example, setActionId }) {
+  async getExplainJSON({ example, setActionId }) {
     try {
       const { action_id } = await MysqlDatabaseService.getTraditionalExplainJSONMysql({
         database: example.schema,
@@ -59,7 +59,7 @@ export class Mysql extends GenericDatabase {
     }
   }
 
-  private async getExplainTraditional({ example, setActionId }) {
+  async getExplainTraditional({ example, setActionId }) {
     try {
       const { action_id } = await MysqlDatabaseService.getTraditionalExplainMysql({
         database: example.schema,

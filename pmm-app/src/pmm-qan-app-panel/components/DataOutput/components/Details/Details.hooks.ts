@@ -4,7 +4,7 @@ import { DetailsProvider } from './Details.provider';
 import { DATABASE } from './Details.constants';
 import { get } from 'lodash';
 import DetailsService from './Details.service';
-import { databaseFactory } from './Table/database-models';
+import { databaseFactory } from './database-models';
 
 export const useActionResult = (): [any, any] => {
   const [result, setResult] = useState<any>();
@@ -29,8 +29,7 @@ export const useActionResult = (): [any, any] => {
   return [result, setActionId];
 };
 
-export const useExplain = (): [any, any, boolean, string] => {
-  const [loading, setLoading] = useState<boolean>(false);
+export const useExplain = (): [any, any, string] => {
   const [errorText, setErrorText] = useState('');
   const {
     detailsState: { databaseType, examples },
@@ -56,7 +55,7 @@ export const useExplain = (): [any, any, boolean, string] => {
     });
   }, [examples, databaseType]);
 
-  return [jsonExplain, traditionalExplain, loading, errorText];
+  return [jsonExplain, traditionalExplain, errorText];
 };
 
 export const useDetailsState = () => {

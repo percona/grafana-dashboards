@@ -1,4 +1,4 @@
-import { apiRequestManagement } from '../../../../../../../../react-plugins-deps/helpers/api';
+import { apiRequestManagement } from '../../../../../../../react-plugins-deps/helpers/api';
 
 export default class PostgresqlDatabaseService {
   static getPostgreSQLIndex({ service_id, table_name }) {

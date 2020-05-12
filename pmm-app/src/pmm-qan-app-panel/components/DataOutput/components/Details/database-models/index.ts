@@ -1,4 +1,4 @@
-import { DATABASE } from '../../Details.constants';
+import { DATABASE } from '../Details.constants';
 import { Mysql } from './mysql';
 import { PostgreSQL } from './postgresql';
 import { Mongodb } from './mongodb';

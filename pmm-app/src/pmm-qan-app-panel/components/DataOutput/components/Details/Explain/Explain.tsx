@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Collapse, Table } from 'antd';
 import { ReactJSON } from '../../../../../../react-plugins-deps/components/Elements/ReactJSON/ReactJSON';
 import { Styling } from './Explain.styles';
-import { processClassicExplain } from '../Details.tools';
+import { processClassicExplain } from './Explain.tools';
 
 const { Panel } = Collapse;
 
@@ -29,7 +29,7 @@ const Explain = ({ json, classic }) => {
             <ReactJSON json={JSON.parse(json)} />
           </Panel>
         ) : null}
-        {!data.rows.length && !json ? <p>No explains found</p> : null}
+        {!data.rows.length && !json ? <pre>No explains found</pre> : null}
       </Collapse>
     </div>
   );
