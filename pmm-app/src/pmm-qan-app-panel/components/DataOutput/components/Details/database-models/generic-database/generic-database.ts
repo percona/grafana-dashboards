@@ -4,26 +4,26 @@ export class GenericDatabase {
   constructor() {}
 
   getShowCreateTables({ example, tableName, setErrorText, setActionId }) {
-    throw new Error('Not available in superclass');
+    console.error('Not implemented');
   }
 
   async getIndexes({ example, tableName, setErrorText, setActionId }) {
-    throw new Error('Not available in superclass');
+    console.error('Not implemented');
   }
 
   getStatuses({ example, tableName, setErrorText, setActionId }) {
-    throw new Error('Not available in superclass');
+    console.error('Not implemented');
   }
 
   async getExplainJSON({ example, setActionId }) {
-    throw new Error('Not available in superclass');
+    console.error('Not implemented');
   }
 
   async getExplainTraditional({ example, setActionId }) {
-    throw new Error('Not available in superclass');
+    console.error('Not implemented');
   }
 
   getExplains({ example, setActionIdTraditional, setActionIdJSON, setErrorText }) {
-    throw new Error('Not implemented');
+    console.error('Not implemented');
   }
 }

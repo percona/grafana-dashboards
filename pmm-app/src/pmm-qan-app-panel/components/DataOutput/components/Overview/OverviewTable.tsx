@@ -42,7 +42,7 @@ const OverviewTable = props => {
               return '';
             }
 
-            if (!queryId) {
+            if (!record.dimension && !queryId) {
               return 'selected-overview-row';
             }
 
