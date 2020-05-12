@@ -42,7 +42,7 @@ describe('Example tab page render test', () => {
       examples: [
         {
           example:
-          // eslint-disable-next-line max-len
+            // eslint-disable-next-line max-len
             '{"ns":"admin.system.version","op":"command","command":{"collStats":"system.version","scale":{"$numberInt":"1"},"lsid":{"id":{"$binary":{"base64":"7bcIiWGnQ7eH3G+AfVMdEA==","subType":"04"}}},"$clusterTime":{"clusterTime":{"$timestamp":{"t":1588860655,"i":1}},"signature":{"hash":{"$binary":{"base64":"AAAAAAAAAAAAAAAAAAAAAAAAAAA=","subType":"00"}},"keyId":{"$numberLong":"0"}}},"$db":"admin","$readPreference":{"mode":"primaryPreferred"}}}',
           example_format: 'EXAMPLE',
           example_type: 'RANDOM',
