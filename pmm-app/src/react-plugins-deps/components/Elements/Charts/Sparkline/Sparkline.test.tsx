@@ -3,6 +3,8 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { Sparkline } from './Sparkline';
 
+jest.mock('react-tooltip');
+
 const MOCK_SPARKLINE = [
   {
     time_frame: 360,

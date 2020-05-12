@@ -182,14 +182,13 @@ export const Sparkline = ({
 
   return (
     <>
-      /* eslint-disable react/no-string-refs */
-      <div
-        ref={ref}
-        className="d3-bar-chart-container app-tooltip"
-        data-tooltip={tooltip}
-        data-tip="hello world"
-      ></div>
-      <ReactTooltip />
+      <div ref={ref} className="d3-bar-chart-container" data-tip={tooltip}></div>
+      <ReactTooltip
+        className="sparkline-tooltip"
+        place="bottom"
+        backgroundColor="#3274d9"
+        arrowColor="#3274d9"
+      />
     </>
   );
 };
