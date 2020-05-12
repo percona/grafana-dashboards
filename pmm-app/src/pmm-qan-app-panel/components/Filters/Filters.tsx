@@ -33,7 +33,7 @@ export const Filters = ({ contextActions, form, labels, filters }) => {
     const filtersHeight = filtersWrapperElement
       ? height - filtersWrapperElement.getBoundingClientRect().y - FILTERS_HEADER_SIZE - FILTERS_MARGIN_BOTTOM
       : FILTERS_BODY_HEIGHT;
-    setFiltersBodyHeight(filtersHeight);
+    setFiltersBodyHeight(Math.max(filtersHeight, FILTERS_BODY_HEIGHT));
   }, [height]);
 
   return (
