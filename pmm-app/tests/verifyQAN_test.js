@@ -3,9 +3,8 @@ Feature('QAN Dashboard');
 Before(async (I, qanPage, adminPage) => {
   I.Authorize();
 
-  I.amOnPage(qanPage.url);
+  I.amOnPage(qanPage.url + "?from=now-5m&to=now");
   await I.waitForElement(qanPage.fields.iframe, 60);
-  adminPage.applyTimer('5m');
   await I.switchTo(qanPage.fields.iframe);
 });
 
@@ -56,14 +55,15 @@ xScenario(
   }
 );
 
-Scenario(
+xScenario(
   'Verify Tables tab in Query Details for Environment=pgsql-dev filter @not-pr-pipeline',
   async (I, adminPage, qanPage) => {
     const filterToApply = 'pgsql-dev';
     qanPage.waitForQANPageLoaded();
     await qanPage.expandAllFilter();
     qanPage.applyFilter(filterToApply);
-    qanPage._selectDetails(2);
+    qanPage.waitForQANPageLoaded();
+    await qanPage._selectDetails(2);
     qanPage.selectSectionInDetails(qanPage.fields.tablesTabInDetails);
     await qanPage.verifyDetailsSectionDataExists(qanPage.tabs.tablesTab);
   }
@@ -88,7 +88,8 @@ Scenario(
     qanPage.waitForQANPageLoaded();
     await qanPage.expandAllFilter();
     qanPage.applyFilter(filterToApply);
-    qanPage._selectDetails(2);
+    qanPage.waitForQANPageLoaded();
+    await qanPage._selectDetails(2);
     qanPage.selectSectionInDetails(qanPage.fields.explainTabInDetails);
     await qanPage.verifyDetailsSectionDataExists(qanPage.tabs.explainTab);
   }

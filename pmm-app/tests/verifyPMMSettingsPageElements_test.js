@@ -2,7 +2,6 @@ Feature('PMM Settings Page Elements and Validations');
 
 Before(async (I, pmmSettingsPage) => {
   I.Authorize();
-
   I.amOnPage(pmmSettingsPage.url);
 });
 
@@ -139,7 +138,7 @@ xScenario(
   }
 );
 
-Scenario(
+xScenario(
   'Open PMM Settings page and verify validation for Alertmanager URL without scheme',
   async (I, pmmSettingsPage) => {
     const urlWithoutScheme = 'invalid_url';
@@ -180,4 +179,24 @@ Scenario(
     pmmSettingsPage.addAlertmanagerRule('', rule);
     await pmmSettingsPage.verifyValidationPopUp(pmmSettingsPage.messages.invalidAlertmanagerRulesMessage);
   }
+);
+
+Scenario(
+    'PMM-T254 Verify validation for STT and Telemetry switches ',
+    async (I, pmmSettingsPage) => {
+        pmmSettingsPage.waitForPmmSettingsPageLoaded();
+        pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.telemetrySwitchSelector, 'on');
+        pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelector, 'off');
+        I.click(pmmSettingsPage.fields.telemetrySwitchSelector);
+        pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.telemetrySwitchSelector, 'off');
+        pmmSettingsPage.verifySwitchStateIs(pmmSettingsPage.fields.sttSwitchSelector, false);
+        I.click(pmmSettingsPage.fields.telemetrySwitchSelector);
+        pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.telemetrySwitchSelector, 'on');
+        pmmSettingsPage.verifySwitchStateIs(pmmSettingsPage.fields.sttSwitchSelector, true);
+        I.click(pmmSettingsPage.fields.sttSwitchSelector);
+        pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelector, 'on');
+        pmmSettingsPage.verifySwitchStateIs(pmmSettingsPage.fields.sttSwitchSelector, true);
+        pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.telemetrySwitchSelector, 'on');
+        pmmSettingsPage.verifySwitchStateIs(pmmSettingsPage.fields.telemetrySwitchSelector, false);
+    }
 );

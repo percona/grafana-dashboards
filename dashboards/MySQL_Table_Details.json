@@ -133,7 +133,6 @@
             "id": 999,
             "isRootDashboard": false,
             "links": [],
-            "options": {},
             "targets": [
                 {
                     "expr": "",
@@ -184,17 +183,17 @@
             "hideTimeOverride": true,
             "id": 49,
             "links": [],
-            "options": {},
             "pageSize": null,
             "scroll": false,
             "showHeader": true,
             "sort": {
-                "col": 1,
+                "col": 4,
                 "desc": true
             },
             "styles": [
                 {
                     "alias": "",
+                    "align": "auto",
                     "colorMode": null,
                     "colors": [
                         "rgba(245, 54, 54, 0.9)",
@@ -206,7 +205,7 @@
                     "mappingType": 1,
                     "pattern": "Time",
                     "thresholds": [],
-                    "type": "date",
+                    "type": "hidden",
                     "unit": "short"
                 },
                 {
@@ -226,12 +225,12 @@
             ],
             "targets": [
                 {
-                    "expr": "topk(10, avg by (service_name,schema,table) (sum(mysql_info_schema_table_rows{service_name=~\"$service_name\"}) by (schema, table))) > 0",
+                    "expr": "topk(10, avg by (service_name,schema,table) (sum(mysql_info_schema_table_rows{service_name=~\"$service_name\"}) by (service_name, schema, table))) > 0",
                     "format": "table",
-                    "instant": false,
+                    "instant": true,
                     "interval": "5m",
                     "intervalFactor": 1,
-                    "legendFormat": "{{ schema }}.{{ table }}",
+                    "legendFormat": "{{service_name}}.{{ schema }}.{{ table }}",
                     "refId": "A",
                     "step": 300
                 }
@@ -262,17 +261,17 @@
             "hideTimeOverride": true,
             "id": 51,
             "links": [],
-            "options": {},
             "pageSize": null,
             "scroll": false,
             "showHeader": true,
             "sort": {
-                "col": 1,
+                "col": 4,
                 "desc": true
             },
             "styles": [
                 {
                     "alias": "",
+                    "align": "auto",
                     "colorMode": null,
                     "colors": [
                         "rgba(245, 54, 54, 0.9)",
@@ -284,7 +283,7 @@
                     "mappingType": 1,
                     "pattern": "Time",
                     "thresholds": [],
-                    "type": "date",
+                    "type": "hidden",
                     "unit": "short"
                 },
                 {
@@ -304,11 +303,12 @@
             ],
             "targets": [
                 {
-                    "expr": "topk(10, avg by (service_name,schema,table) (sum(mysql_info_schema_table_size{service_name=~\"$service_name\", component!=\"data_free\"}) by (schema, table))) > 0",
+                    "expr": "topk(10, avg by (service_name,schema,table) (sum(mysql_info_schema_table_size{service_name=~\"$service_name\", component!=\"data_free\"}) by (schema, table,service_name))) > 0",
                     "format": "table",
+                    "instant": true,
                     "interval": "5m",
                     "intervalFactor": 1,
-                    "legendFormat": "{{ schema }}.{{ table }}",
+                    "legendFormat": "{{service_name}}.{{ schema }}.{{ table }}",
                     "refId": "A",
                     "step": 300
                 }
@@ -329,8 +329,8 @@
             },
             "id": 56,
             "panels": [],
-            "repeat": null,
-            "title": "Pie",
+            "repeat": "service_name",
+            "title": "Size - $service_name",
             "type": "row"
         },
         {
@@ -342,6 +342,7 @@
             "dashes": false,
             "datasource": "Prometheus",
             "decimals": 2,
+            "description": "",
             "editable": true,
             "error": false,
             "fill": 2,
@@ -417,7 +418,7 @@
             "timeFrom": null,
             "timeRegions": [],
             "timeShift": null,
-            "title": "Total Database Size",
+            "title": "Total Databases Size - $service_name",
             "tooltip": {
                 "msResolution": false,
                 "shared": true,
@@ -462,6 +463,7 @@
                 }
             ],
             "datasource": "Prometheus",
+            "description": "",
             "editable": true,
             "error": false,
             "fontSize": "100%",
@@ -475,17 +477,17 @@
             "hideTimeOverride": true,
             "id": 50,
             "links": [],
-            "options": {},
             "pageSize": null,
             "scroll": false,
             "showHeader": true,
             "sort": {
-                "col": 1,
+                "col": 4,
                 "desc": true
             },
             "styles": [
                 {
                     "alias": "",
+                    "align": "auto",
                     "colorMode": null,
                     "colors": [
                         "rgba(245, 54, 54, 0.9)",
@@ -497,7 +499,7 @@
                     "mappingType": 1,
                     "pattern": "Time",
                     "thresholds": [],
-                    "type": "date",
+                    "type": "hidden",
                     "unit": "short"
                 },
                 {
@@ -517,8 +519,9 @@
             ],
             "targets": [
                 {
-                    "expr": "topk(5, avg by (service_name,schema,table) (sum(mysql_info_schema_table_size{service_name=~\"$service_name\", component=\"data_free\"}) by (schema, table))) > 0",
+                    "expr": "topk(5, avg by (service_name,schema,table) (sum(mysql_info_schema_table_size{service_name=~\"$service_name\", component=\"data_free\"}) by (schema, table, service_name)))",
                     "format": "table",
+                    "instant": true,
                     "interval": "5m",
                     "intervalFactor": 1,
                     "legendFormat": "{{ schema }}.{{ table }}",
@@ -527,7 +530,7 @@
                 }
             ],
             "timeFrom": "5m",
-            "title": "Most Fragmented Tables by Freeable Size",
+            "title": "Most Fragmented Tables by Freeable Size - $service_name",
             "transform": "table",
             "type": "table"
         },
@@ -538,7 +541,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 19
+                "y": 38
             },
             "id": 57,
             "panels": [],
@@ -555,13 +558,12 @@
                 "h": 2,
                 "w": 24,
                 "x": 0,
-                "y": 20
+                "y": 39
             },
             "height": "50px",
             "id": 44,
             "links": [],
             "mode": "markdown",
-            "options": {},
             "style": {},
             "title": "",
             "transparent": true,
@@ -574,12 +576,12 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 22
+                "y": 41
             },
             "id": 58,
             "panels": [],
             "repeat": null,
-            "title": "Rows read",
+            "title": "Rows Read",
             "type": "row"
         },
         {
@@ -598,7 +600,7 @@
                 "h": 8,
                 "w": 24,
                 "x": 0,
-                "y": 23
+                "y": 42
             },
             "hiddenSeries": false,
             "id": 48,
@@ -641,7 +643,7 @@
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
-                    "legendFormat": "{{ schema }}.{{ table }}",
+                    "legendFormat": "{{service_name}} - {{ schema }}.{{ table }}",
                     "metric": "",
                     "refId": "A",
                     "step": 300
@@ -695,7 +697,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 31
+                "y": 50
             },
             "id": 59,
             "panels": [],
@@ -719,7 +721,7 @@
                 "h": 8,
                 "w": 24,
                 "x": 0,
-                "y": 32
+                "y": 51
             },
             "hiddenSeries": false,
             "id": 42,
@@ -764,7 +766,7 @@
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
-                    "legendFormat": "{{ schema }}.{{ table }}",
+                    "legendFormat": "{{service_name}} - {{ schema }}.{{ table }}",
                     "metric": "",
                     "refId": "A",
                     "step": 300
@@ -818,7 +820,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 40
+                "y": 59
             },
             "id": 60,
             "panels": [],
@@ -841,23 +843,23 @@
                 "h": 7,
                 "w": 24,
                 "x": 0,
-                "y": 41
+                "y": 60
             },
             "height": "",
             "hideTimeOverride": true,
             "id": 53,
             "links": [],
-            "options": {},
             "pageSize": null,
             "scroll": false,
             "showHeader": true,
             "sort": {
-                "col": 21,
+                "col": 4,
                 "desc": true
             },
             "styles": [
                 {
                     "alias": "",
+                    "align": "auto",
                     "colorMode": null,
                     "colors": [
                         "rgba(245, 54, 54, 0.9)",
@@ -874,6 +876,7 @@
                 },
                 {
                     "alias": "",
+                    "align": "auto",
                     "colorMode": null,
                     "colors": [
                         "rgba(245, 54, 54, 0.9)",
@@ -885,11 +888,12 @@
                     "mappingType": 1,
                     "pattern": "Time",
                     "thresholds": [],
-                    "type": "date",
+                    "type": "hidden",
                     "unit": "short"
                 },
                 {
                     "alias": "",
+                    "align": "auto",
                     "colorMode": null,
                     "colors": [
                         "rgba(245, 54, 54, 0.9)",
@@ -906,6 +910,7 @@
                 },
                 {
                     "alias": "",
+                    "align": "auto",
                     "colorMode": null,
                     "colors": [
                         "rgba(245, 54, 54, 0.9)",
@@ -922,6 +927,7 @@
                 },
                 {
                     "alias": "",
+                    "align": "auto",
                     "colorMode": null,
                     "colors": [
                         "rgba(245, 54, 54, 0.9)",
@@ -938,6 +944,7 @@
                 },
                 {
                     "alias": "",
+                    "align": "auto",
                     "colorMode": null,
                     "colors": [
                         "rgba(245, 54, 54, 0.9)",
@@ -954,6 +961,7 @@
                 },
                 {
                     "alias": "",
+                    "align": "auto",
                     "colorMode": null,
                     "colors": [
                         "rgba(245, 54, 54, 0.9)",
@@ -970,6 +978,7 @@
                 },
                 {
                     "alias": "",
+                    "align": "auto",
                     "colorMode": null,
                     "colors": [
                         "rgba(245, 54, 54, 0.9)",
@@ -986,6 +995,7 @@
                 },
                 {
                     "alias": "",
+                    "align": "auto",
                     "colorMode": null,
                     "colors": [
                         "rgba(245, 54, 54, 0.9)",
@@ -1002,6 +1012,7 @@
                 },
                 {
                     "alias": "",
+                    "align": "auto",
                     "colorMode": null,
                     "colors": [
                         "rgba(245, 54, 54, 0.9)",
@@ -1018,6 +1029,7 @@
                 },
                 {
                     "alias": "",
+                    "align": "auto",
                     "colorMode": null,
                     "colors": [
                         "rgba(245, 54, 54, 0.9)",
@@ -1034,6 +1046,7 @@
                 },
                 {
                     "alias": "",
+                    "align": "auto",
                     "colorMode": null,
                     "colors": [
                         "rgba(245, 54, 54, 0.9)",
@@ -1050,6 +1063,7 @@
                 },
                 {
                     "alias": "",
+                    "align": "auto",
                     "colorMode": null,
                     "colors": [
                         "rgba(245, 54, 54, 0.9)",
@@ -1066,6 +1080,7 @@
                 },
                 {
                     "alias": "",
+                    "align": "auto",
                     "colorMode": null,
                     "colors": [
                         "rgba(245, 54, 54, 0.9)",
@@ -1102,6 +1117,7 @@
                 {
                     "expr": "topk(10, avg by (service_name,schema,table) (mysql_info_schema_auto_increment_column{service_name=~\"$service_name\"} / mysql_info_schema_auto_increment_column_max{service_name=~\"$service_name\"}))",
                     "format": "table",
+                    "instant": true,
                     "interval": "5m",
                     "intervalFactor": 1,
                     "legendFormat": "{{ schema }}.{{ table }}",
@@ -1121,7 +1137,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 48
+                "y": 67
             },
             "id": 293,
             "panels": [
@@ -1152,7 +1168,7 @@
                         "h": 2,
                         "w": 3,
                         "x": 0,
-                        "y": 49
+                        "y": 76
                     },
                     "height": "125px",
                     "id": 295,
@@ -1172,7 +1188,6 @@
                     "maxDataPoints": 100,
                     "nullPointMode": "connected",
                     "nullText": null,
-                    "options": {},
                     "postfix": "s",
                     "postfixFontSize": "50%",
                     "prefix": "",
@@ -1220,12 +1235,11 @@
                         "h": 2,
                         "w": 3,
                         "x": 3,
-                        "y": 49
+                        "y": 76
                     },
                     "id": 297,
                     "links": [],
                     "mode": "html",
-                    "options": {},
                     "timeFrom": null,
                     "timeShift": null,
                     "title": "Version",
@@ -1257,7 +1271,7 @@
                         "h": 2,
                         "w": 3,
                         "x": 6,
-                        "y": 49
+                        "y": 76
                     },
                     "height": "125px",
                     "id": 299,
@@ -1283,7 +1297,6 @@
                     "maxDataPoints": 100,
                     "nullPointMode": "connected",
                     "nullText": null,
-                    "options": {},
                     "postfix": "",
                     "postfixFontSize": "50%",
                     "prefix": "",
@@ -1349,7 +1362,7 @@
                         "h": 2,
                         "w": 3,
                         "x": 9,
-                        "y": 49
+                        "y": 76
                     },
                     "id": 316,
                     "interval": null,
@@ -1368,7 +1381,6 @@
                     "maxDataPoints": 100,
                     "nullPointMode": "connected",
                     "nullText": null,
-                    "options": {},
                     "postfix": "",
                     "postfixFontSize": "50%",
                     "prefix": "",
@@ -1441,7 +1453,7 @@
                         "h": 2,
                         "w": 3,
                         "x": 12,
-                        "y": 49
+                        "y": 76
                     },
                     "id": 317,
                     "interval": null,
@@ -1460,7 +1472,6 @@
                     "maxDataPoints": 100,
                     "nullPointMode": "connected",
                     "nullText": null,
-                    "options": {},
                     "postfix": "",
                     "postfixFontSize": "50%",
                     "prefix": "",
@@ -1533,7 +1544,7 @@
                         "h": 2,
                         "w": 3,
                         "x": 15,
-                        "y": 49
+                        "y": 76
                     },
                     "id": 318,
                     "interval": null,
@@ -1552,7 +1563,6 @@
                     "maxDataPoints": 100,
                     "nullPointMode": "connected",
                     "nullText": null,
-                    "options": {},
                     "postfix": "",
                     "postfixFontSize": "50%",
                     "prefix": "",
@@ -1625,7 +1635,7 @@
                         "h": 2,
                         "w": 3,
                         "x": 18,
-                        "y": 49
+                        "y": 76
                     },
                     "id": 319,
                     "interval": null,
@@ -1644,7 +1654,6 @@
                     "maxDataPoints": 100,
                     "nullPointMode": "connected",
                     "nullText": null,
-                    "options": {},
                     "postfix": "",
                     "postfixFontSize": "50%",
                     "prefix": "",
@@ -1700,12 +1709,11 @@
                         "h": 2,
                         "w": 3,
                         "x": 21,
-                        "y": 49
+                        "y": 76
                     },
                     "id": 1000,
                     "links": [],
                     "mode": "html",
-                    "options": {},
                     "timeFrom": null,
                     "timeShift": null,
                     "title": "Service",
@@ -1728,7 +1736,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 51
+                        "y": 78
                     },
                     "height": "250px",
                     "hiddenSeries": false,
@@ -1878,7 +1886,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 51
+                        "y": 78
                     },
                     "hiddenSeries": false,
                     "id": 303,
@@ -2027,7 +2035,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 59
+                        "y": 86
                     },
                     "hiddenSeries": false,
                     "id": 309,
@@ -2134,7 +2142,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 59
+                        "y": 86
                     },
                     "hiddenSeries": false,
                     "id": 307,
@@ -2247,7 +2255,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 67
+                        "y": 94
                     },
                     "hiddenSeries": false,
                     "id": 311,
@@ -2354,7 +2362,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 12,
-                        "y": 67
+                        "y": 94
                     },
                     "hiddenSeries": false,
                     "id": 305,
@@ -2462,7 +2470,8 @@
                     }
                 }
             ],
-            "title": "MySQL Summary",
+            "repeat": "service_name",
+            "title": "MySQL Summary - $service_name",
             "type": "row"
         },
         {
@@ -2472,7 +2481,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 49
+                "y": 135
             },
             "id": 291,
             "panels": [
@@ -2523,7 +2532,6 @@
                     "maxDataPoints": 100,
                     "nullPointMode": "connected",
                     "nullText": null,
-                    "options": {},
                     "postfix": "s",
                     "postfixFontSize": "50%",
                     "prefix": "",
@@ -2608,7 +2616,6 @@
                     "maxDataPoints": 100,
                     "nullPointMode": "connected",
                     "nullText": null,
-                    "options": {},
                     "postfix": "",
                     "postfixFontSize": "50%",
                     "prefix": "",
@@ -2697,7 +2704,6 @@
                     "maxDataPoints": 100,
                     "nullPointMode": "connected",
                     "nullText": null,
-                    "options": {},
                     "postfix": "",
                     "postfixFontSize": "50%",
                     "prefix": "",
@@ -2782,7 +2788,6 @@
                     "maxDataPoints": 100,
                     "nullPointMode": "connected",
                     "nullText": null,
-                    "options": {},
                     "postfix": "",
                     "postfixFontSize": "50%",
                     "prefix": "",
@@ -2871,7 +2876,6 @@
                     "maxDataPoints": 100,
                     "nullPointMode": "connected",
                     "nullText": null,
-                    "options": {},
                     "postfix": "",
                     "postfixFontSize": "50%",
                     "prefix": "",
@@ -2965,7 +2969,6 @@
                     "maxDataPoints": 100,
                     "nullPointMode": "connected",
                     "nullText": null,
-                    "options": {},
                     "postfix": "",
                     "postfixFontSize": "50%",
                     "prefix": "",
@@ -3050,7 +3053,6 @@
                     "maxDataPoints": 100,
                     "nullPointMode": "connected",
                     "nullText": null,
-                    "options": {},
                     "postfix": "",
                     "postfixFontSize": "50%",
                     "prefix": "",
@@ -3107,7 +3109,6 @@
                     "id": 387,
                     "links": [],
                     "mode": "html",
-                    "options": {},
                     "targets": [
                         {
                             "calculatedInterval": "10m",
@@ -3697,12 +3698,13 @@
                     }
                 }
             ],
-            "title": "Node Summary",
+            "repeat": "node_name",
+            "title": "Node Summary - $node_name",
             "type": "row"
         }
     ],
     "refresh": "1m",
-    "schemaVersion": 21,
+    "schemaVersion": 22,
     "style": "dark",
     "tags": [
         "MySQL",
@@ -3778,6 +3780,7 @@
                 "definition": "label_values(mysql_up{service_name=~\"$service_name\"}, node_name)",
                 "hide": 2,
                 "includeAll": false,
+                "index": -1,
                 "label": "Node Name",
                 "multi": false,
                 "multiFormat": "regex values",
@@ -3802,6 +3805,7 @@
                 "definition": "label_values(mysql_up, service_name)",
                 "hide": 0,
                 "includeAll": true,
+                "index": -1,
                 "label": "Service Name",
                 "multi": true,
                 "name": "service_name",
@@ -3824,6 +3828,7 @@
                 "definition": "query_result(mysql_version_info{service_name=~\"$service_name\"})",
                 "hide": 2,
                 "includeAll": false,
+                "index": -1,
                 "label": null,
                 "multi": false,
                 "name": "version",
@@ -3846,6 +3851,7 @@
                 "definition": "label_values(mysql_up{service_name=~\"$service_name\"}, service_name)",
                 "hide": 2,
                 "includeAll": false,
+                "index": -1,
                 "label": "Service Name",
                 "multi": false,
                 "name": "crop_service",
@@ -3869,6 +3875,7 @@
                 "definition": "label_values(mysql_up{node_name=\"$node_name\"},node_name)",
                 "hide": 2,
                 "includeAll": false,
+                "index": -1,
                 "label": "Crop Node Name",
                 "multi": false,
                 "multiFormat": "regex values",
@@ -3893,6 +3900,7 @@
                 "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
                 "hide": 2,
                 "includeAll": true,
+                "index": -1,
                 "label": "Environment",
                 "multi": true,
                 "name": "environment",
@@ -3915,6 +3923,7 @@
                 "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, cluster)",
                 "hide": 2,
                 "includeAll": true,
+                "index": -1,
                 "label": "Cluster",
                 "multi": true,
                 "name": "cluster",
@@ -3937,6 +3946,7 @@
                 "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, replication_set)",
                 "hide": 2,
                 "includeAll": true,
+                "index": -1,
                 "label": "Replication Set",
                 "multi": true,
                 "name": "replication_set",
@@ -3959,6 +3969,7 @@
                 "definition": "label_values(pg_stat_database_tup_fetched{service_name=~\"$service_name\",datname!~\"template.*|postgres\"},datname)",
                 "hide": 2,
                 "includeAll": true,
+                "index": -1,
                 "label": "Database",
                 "multi": true,
                 "name": "database",
@@ -3981,6 +3992,7 @@
                 "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, node_type)",
                 "hide": 2,
                 "includeAll": true,
+                "index": -1,
                 "label": "Type",
                 "multi": true,
                 "name": "node_type",
@@ -4003,6 +4015,7 @@
                 "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, service_type)",
                 "hide": 2,
                 "includeAll": true,
+                "index": -1,
                 "label": "Type",
                 "multi": true,
                 "name": "service_type",
@@ -4025,6 +4038,7 @@
                 "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, schema)",
                 "hide": 2,
                 "includeAll": true,
+                "index": -1,
                 "label": "Schema",
                 "multi": true,
                 "name": "schema",

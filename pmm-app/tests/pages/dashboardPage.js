@@ -307,6 +307,25 @@ module.exports = {
     otherReportTitleWithNoData:
       "//span[contains(text(),'No Data')]//ancestor::div[contains(@class,'panel-container')]//span[contains(@class,'panel-title-text')]",
     collapsedDashboardRow: "//div[@class='dashboard-row dashboard-row--collapsed']/a",
+    annotationMarker: "(//div[contains(@class,'events_marker')])",
+  },
+
+  annotationLocator(annotationNumber) {
+    return `(//div[contains(@class,'events_marker')])[${annotationNumber}]`;
+  },
+
+  annotationTagText(tagValue) {
+    return `//span[contains(text(),  '${tagValue}')]`;
+  },
+
+  annotationText(annotationTitle) {
+    return `//div[contains(text(), '${annotationTitle}')]`;
+  },
+
+  verifyAnnotationsLoaded(title, annotationNumber) {
+    I.waitForElement(this.fields.annotationMarker, 30);
+    I.moveCursorTo(this.annotationLocator(annotationNumber));
+    I.waitForVisible(this.annotationText(title), 30);
   },
 
   // introducing methods
