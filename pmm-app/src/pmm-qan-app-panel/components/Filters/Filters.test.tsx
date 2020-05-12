@@ -13,6 +13,11 @@ jest.mock('react-scrollbar', () => () => {
 });
 
 jest.mock('../../../react-plugins-deps/helpers/notification-manager', () => () => ({}));
+jest.mock('typescript-api', () => {
+  return {
+    FiltersApi: () => ({ get: jest.fn() }),
+  };
+});
 
 const MOCK_FILTERS = {
   az: {
