@@ -11,7 +11,7 @@ const OverviewTable = props => {
   const [height, setHeight] = useState(400);
   const {
     contextActions,
-    panelState: { queryId, querySelected },
+    panelState: { queryId, querySelected, totals },
   } = useContext(PanelProvider);
 
   useEffect(() => {
@@ -33,13 +33,25 @@ const OverviewTable = props => {
       bordered
       pagination={false}
       scroll={{ y: height - 50, x: TABLE_X_SCROLL }}
-      rowClassName={record => {
+      rowClassName={(record, index) => {
         if (querySelected) {
-          const isTotalSelected = !record.dimension && queryId === 'TOTAL';
-          if (isTotalSelected || record.dimension === queryId) {
-            return 'selected-overview-row';
+          if (index === 0) {
+            return totals ? 'selected-overview-row' : '';
+          } else {
+            if (totals) {
+              return '';
+            }
+
+            if (!queryId) {
+              return 'selected-overview-row';
+            }
+
+            if (record.dimension === queryId) {
+              return 'selected-overview-row';
+            }
           }
         }
+
         return '';
       }}
       loading={loading}

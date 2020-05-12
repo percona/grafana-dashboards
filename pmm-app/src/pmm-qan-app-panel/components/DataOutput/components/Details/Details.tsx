@@ -16,7 +16,7 @@ const { TabPane } = Tabs;
 const Details = () => {
   const {
     contextActions: { closeDetails },
-    panelState: { queryId, groupBy, fingerprint, controlSum },
+    panelState: { queryId, groupBy, fingerprint, controlSum, totals },
   } = useContext(PanelProvider);
   const {
     detailsState: { databaseType, classicExplain, jsonExplain, examples, tables },
@@ -31,6 +31,7 @@ const Details = () => {
   return (
     <div className="query-analytics-details-grid" id="query-analytics-details">
       <Fingerprint
+        totals={totals}
         query={fingerprint}
         controlSum={controlSum}
         groupBy={groupBy}
