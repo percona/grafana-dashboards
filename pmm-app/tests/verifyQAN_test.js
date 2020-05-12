@@ -3,9 +3,8 @@ Feature('QAN Dashboard');
 Before(async (I, qanPage, adminPage) => {
   I.Authorize();
 
-  I.amOnPage(qanPage.url);
+  I.amOnPage(qanPage.url + "?from=now-5m&to=now");
   await I.waitForElement(qanPage.fields.iframe, 60);
-  adminPage.applyTimer('5m');
   await I.switchTo(qanPage.fields.iframe);
 });
 
