@@ -7,6 +7,7 @@ import * as moment from 'moment';
 import { Humanize } from '../../../../helpers/Humanization';
 import './Sparkline.scss';
 import { PolygonChartInterface } from './Sparkline.types';
+import ReactTooltip from 'react-tooltip';
 
 const getMetricSparklineKey = metricName => {
   switch (metricName) {
@@ -180,7 +181,15 @@ export const Sparkline = ({
   };
 
   return (
-    /* eslint-disable react/no-string-refs */
-    <div ref={ref} className="d3-bar-chart-container app-tooltip" data-tooltip={tooltip}></div>
+    <>
+      /* eslint-disable react/no-string-refs */
+      <div
+        ref={ref}
+        className="d3-bar-chart-container app-tooltip"
+        data-tooltip={tooltip}
+        data-tip="hello world"
+      ></div>
+      <ReactTooltip />
+    </>
   );
 };
