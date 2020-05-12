@@ -15,6 +15,7 @@ module.exports = {
     nodesLinkOld: "//a[contains(text(), 'Nodes')]",
     pmmAgentLocator: "//table//td[contains(text(), 'PMM Agent')]",
     serviceIdLocatorPrefix: "//table//tr/td[3][contains(text(),'",
+    pmmServicesLocator: "//div[@role='tab'][contains(text(),'Services')]",
   },
 
   verifyOldMySQLRemoteServiceIsDisplayed(serviceName) {
@@ -56,6 +57,27 @@ module.exports = {
     } else {
       assert.equal(numberOfServices, 1, ' Service ID must have only 1 Agent running' + serviceId);
     }
+  },
+
+  async verifyEnhancedMetricsDisabledFlag(serviceName) {
+    let servicesLink = this.fields.pmmServicesLocator; 
+    const agentLinkLocator = this.fields.agentsLink;
+    I.click(servicesLink);
+    let nodeId = await this.getNodeId(serviceName);
+    I.click(agentLinkLocator);
+    let enhancedMetricsDisabled = await I.grabNumberOfVisibleElements(
+      "//span[contains(text(), '" +
+        nodeId +
+        "')]/following-sibling::span[contains(text(),'enhanced_metrics_disabled: true')]"
+    );
+    assert.equal(enhancedMetricsDisabled, 1, ' Enhanced metrics disabled flag must be true for ' + nodeId);
+  },
+
+  async getNodeId(serviceName)
+  {
+    const nodeIdLocator = this.fields.serviceIdLocatorPrefix + serviceName + "')]/following-sibling::td[1]";
+    const nodeId = await I.grabTextFrom(nodeIdLocator);
+    return nodeId;
   },
 
   async getServiceId(serviceName) {

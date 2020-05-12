@@ -5,7 +5,7 @@ Before(async I => {
 });
 
 Scenario(
-  'Verify Discovery and adding AWS RDS MySQL 5.6 instance for monitoring @not-pr-pipeline',
+  'PMM-T138 - Verify disabling enhanced metrics for RDS',
   async (I, remoteInstancesPage, pmmInventoryPage) => {
     const instanceIdToMonitor = 'rds-mysql56';
     I.amOnPage(remoteInstancesPage.url);
@@ -15,9 +15,10 @@ Scenario(
     remoteInstancesPage.startMonitoringOfInstance(instanceIdToMonitor);
     remoteInstancesPage.verifyAddInstancePageOpened();
     remoteInstancesPage.fillRemoteRDSMySQLFields();
-    remoteInstancesPage.createRemoteInstance();
+    remoteInstancesPage.createRemoteInstance(instanceIdToMonitor);
     pmmInventoryPage.verifyRemoteServiceIsDisplayed(instanceIdToMonitor);
     await pmmInventoryPage.verifyAgentHasStatusRunning(instanceIdToMonitor);
+    await pmmInventoryPage.verifyAgentEnhancedMetrics(instanceIdToMonitor);
   }
 );
 
@@ -53,22 +54,5 @@ xScenario(
     dashboardPage.waitForDashboardOpened();
     await dashboardPage.expandEachDashboardRow();
     dashboardPage.verifyThereIsNoGraphsWithNA();
-  }
-);
-
-Scenario(
-  'PMM-T138 - Verify disabling enhanced metrics for RDS',
-  async (I, remoteInstancesPage, dashboardPage) => {
-    let instanceIdToMonitor = "rds-mysql56";
-    I.amOnPage(remoteInstancesPage.url);
-    remoteInstancesPage.waitUntilRemoteInstancesPageLoaded().openAddAWSRDSMySQLPage();
-    remoteInstancesPage.discoverRDS();
-    remoteInstancesPage.startMonitoringOfInstance(instanceIdToMonitor);
-    remoteInstancesPage.verifyAddInstancePageOpened();
-    remoteInstancesPage.fillRemoteRDSMySQLFields();
-    remoteInstancesPage.selectDisabledEnhancedMetrics();
-    remoteInstancesPage.createRemoteInstance();
-    pmmInventoryPage.verifyRemoteServiceIsDisplayed(instanceIdToMonitor);
-
   }
 );

@@ -136,6 +136,9 @@ module.exports = {
         I.click(this.fields.useTLS);
         I.click(this.fields.usePgStatStatements);
         break;
+      case 'rds-mysql56':
+        I.click(this.fields.disableEnhancedMetrics);
+        break;
     }
     I.click(this.fields.addService);
     I.waitForVisible(pmmInventoryPage.fields.agentsLink, 30);
@@ -187,7 +190,4 @@ module.exports = {
     I.scrollPageToBottom();
   },
 
-  selectDisabledEnhancedMetrics() {
-    I.click(this.fields.disableEnhancedMetrics);
-  }
 };
