@@ -12,7 +12,9 @@ export const useFilters = () => {
     (async () => {
       try {
         const result = await FiltersService.getQueryOverviewFiltersList(labels, from, to, columns[0]);
-        setFilters(result);
+        if (result) {
+          setFilters(result);
+        }
         // setGroups(FILTERS_GROUPS);
       } catch (e) {
         //TODO: add error handling
