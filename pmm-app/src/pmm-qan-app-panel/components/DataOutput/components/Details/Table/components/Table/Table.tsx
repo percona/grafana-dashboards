@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useActionResult } from '../../../Details.hooks';
-import { databaseFactory } from '../../database-models';
+import { databaseFactory } from '../../../database-models';
 
 // TODO: refactor example parameters passing
 

@@ -6,7 +6,7 @@ export class Mongodb extends GenericDatabase {
     super();
   }
 
-  private async getExplainJSON({ example, setActionId }) {
+  async getExplainJSON({ example, setActionId }) {
     try {
       // setLoading(true);
       const { action_id } = await MongoDBService.getTraditionalExplainJSONMongo({

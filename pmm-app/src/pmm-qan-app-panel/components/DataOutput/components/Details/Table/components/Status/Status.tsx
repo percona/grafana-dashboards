@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Table } from 'antd';
 import { useActionResult } from '../../../Details.hooks';
-import { processTableData } from '../../../Details.tools';
-import { databaseFactory } from '../../database-models';
+import { databaseFactory } from '../../../database-models';
+import { processTableData } from '../../TableContainer.tools';
 
 export const Status = props => {
   const { tableName, databaseType, example } = props;
