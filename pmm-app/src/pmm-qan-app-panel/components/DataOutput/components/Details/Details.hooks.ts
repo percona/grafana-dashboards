@@ -4,6 +4,7 @@ import { DetailsProvider } from './Details.provider';
 import { DATABASE } from './Details.constants';
 import { get } from 'lodash';
 import DetailsService from './Details.service';
+import { databaseFactory } from './Table/database-models';
 
 export const useActionResult = (): [any, any] => {
   const [result, setResult] = useState<any>();
@@ -36,76 +37,6 @@ export const useExplain = (): [any, any, boolean, string] => {
   } = useContext(DetailsProvider);
   const [traditionalExplain, setActionIdTraditional] = useActionResult();
   const [jsonExplain, setActionIdJSON] = useActionResult();
-  const startExplainActions = example => {
-    if (!('example' in example) || example.example === '') {
-      setErrorText('Cannot display query explain without query example at this time.');
-      return;
-    }
-    switch (databaseType) {
-      case DATABASE.mysql:
-        setErrorText('');
-        getMysqlExplain(example);
-        break;
-      case DATABASE.mongodb:
-        setErrorText('');
-        getMongoExplain(example);
-        break;
-      default:
-        setErrorText('Not implemented yet :(');
-        return;
-    }
-  };
-
-  const getMongoExplain = example => {
-    (async () => {
-      try {
-        setLoading(true);
-        const { action_id } = await DetailsService.getTraditionalExplainJSONMongo({
-          pmm_agent_id: example.pmm_agent_id,
-          service_id: example.service_id,
-          query: example.example,
-        });
-        setActionIdJSON(action_id);
-        setLoading(false);
-      } catch (e) {
-        setLoading(false);
-        //TODO: add error handling
-      }
-    })();
-  };
-
-  const getMysqlExplain = example => {
-    setLoading(true);
-    (async () => {
-      try {
-        const { action_id } = await DetailsService.getTraditionalExplainMysql({
-          database: example.schema,
-          query: example.example,
-          service_id: example.service_id,
-        });
-        setActionIdTraditional(action_id);
-        setLoading(false);
-      } catch (e) {
-        setLoading(false);
-        //TODO: add error handling
-      }
-    })();
-
-    (async () => {
-      try {
-        const { action_id } = await DetailsService.getTraditionalExplainJSONMysql({
-          database: example.schema,
-          query: example.example,
-          service_id: example.service_id,
-        });
-        setActionIdJSON(action_id);
-        setLoading(false);
-      } catch (e) {
-        setLoading(false);
-        //TODO: add error handling
-      }
-    })();
-  };
 
   useEffect(() => {
     if (!examples) {
@@ -116,8 +47,13 @@ export const useExplain = (): [any, any, boolean, string] => {
     if (!notEmptyExample.length || !databaseType) {
       return;
     }
-
-    startExplainActions(notEmptyExample[0]);
+    const database = databaseFactory(databaseType);
+    database.getExplains({
+      example: notEmptyExample[0],
+      setActionIdTraditional,
+      setActionIdJSON,
+      setErrorText,
+    });
   }, [examples, databaseType]);
 
   return [jsonExplain, traditionalExplain, loading, errorText];
@@ -152,11 +88,7 @@ export const useDetailsState = () => {
   }, [queryId]);
 
   useEffect(() => {
-    if (!jsonExplain) {
-      return;
-    }
-
-    if (databaseType === DATABASE.mysql) {
+    if (databaseType === DATABASE.mysql && jsonExplain) {
       const parsedJSON = JSON.parse(jsonExplain);
       contextActions.setTables(
         [
@@ -165,13 +97,11 @@ export const useDetailsState = () => {
         ].filter(Boolean)
       );
     }
-  }, [jsonExplain]);
 
-  useEffect(() => {
     if (databaseType === DATABASE.postgresql && examples) {
       contextActions.setTables(examples[0].tables || []);
     }
-  }, [examples, databaseType]);
+  }, [examples, jsonExplain, databaseType]);
 
   useEffect(() => {
     contextActions.setExplainJSON(jsonExplain);

@@ -1,4 +1,4 @@
-import { GenericDatabase } from '../generic-database';
+import { GenericDatabase } from '../generic-database/generic-database';
 import PostgresqlDatabaseService from './service';
 
 export class PostgreSQL extends GenericDatabase {
