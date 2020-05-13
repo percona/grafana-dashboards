@@ -3,7 +3,7 @@ import Highlight from 'react-highlight.js';
 import React from 'react';
 import './QueryTooltip.scss';
 
-export const QueryTooltip = ({ query, children, show = true }) => {
+export const QueryTooltip = ({ query, children, show = false }) => {
   const TooltipContent = () => {
     return <Highlight language="sql">{query}</Highlight>;
   };
