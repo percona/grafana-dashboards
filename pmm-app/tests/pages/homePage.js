@@ -44,4 +44,11 @@ module.exports = {
       'Update operation failed'
     );
   },
+
+    async verifyVisibleService(serviceName) {
+    I.scrollPageToBottom();
+    let serviceExists = I.grabNumberOfVisibleElements(
+      "//div[@class='react-grid-item']/descendant::p[contains(text(),'" + serviceName + "')]");
+    assert.equal(serviceExists, 1, 'The service "' + serviceName + '" not found');
+  },
 };
