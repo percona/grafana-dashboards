@@ -10,17 +10,30 @@ export const useActionResult = (): [any, any] => {
   const [result, setResult] = useState<any>();
   const [action_id, setActionId] = useState<any>();
   let intervalId;
+  // 9 seconds, long enough
+  let counter = 30;
   useEffect(() => {
     if (!action_id) {
       return;
     }
     const getData = async () => {
-      const result = await DetailsService.getActionResult({
-        action_id,
-      });
-      if (result.done) {
+      if (counter === 0) {
         clearInterval(intervalId);
-        setResult(result.output);
+        return;
+      }
+      counter--;
+
+      try {
+        const result = await DetailsService.getActionResult({
+          action_id: action_id,
+        });
+
+        if (result.done) {
+          clearInterval(intervalId);
+          setResult(result.output);
+        }
+      } catch (e) {
+        clearInterval(intervalId);
       }
     };
     intervalId = setInterval(getData, 300);
