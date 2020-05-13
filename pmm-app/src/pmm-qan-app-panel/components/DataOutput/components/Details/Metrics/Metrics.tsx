@@ -25,7 +25,6 @@ const rateColumn = (text, item) => {
   // @ts-ignore
   const polygonChartProps = {
     data: item.sparkline,
-    width: 210,
     ykey: 'metric',
     metricName: item.metricName,
   };
