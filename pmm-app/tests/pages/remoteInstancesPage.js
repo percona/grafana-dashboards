@@ -53,6 +53,7 @@ module.exports = {
     discoveryRowWithId: "//tr/td[text()='",
     startMonitoring: '/following-sibling::td/a',
     disableEnhancedMetrics: "//input[@name='disable_enhanced_metrics']/following-sibling::span[2]",
+    disableBasicMetrics: "//input[@name='disable_basic_metrics']/following-sibling::span[2]",
   },
 
   waitUntilRemoteInstancesPageLoaded() {
@@ -138,6 +139,7 @@ module.exports = {
         break;
       case 'rds-mysql56':
         I.click(this.fields.disableEnhancedMetrics);
+        I.click(this.fields.disableBasicMetrics);
         break;
     }
     I.click(this.fields.addService);

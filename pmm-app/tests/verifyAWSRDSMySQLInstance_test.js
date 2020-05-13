@@ -5,7 +5,7 @@ Before(async I => {
 });
 
 Scenario(
-  'PMM-T138 - Verify disabling enhanced metrics for RDS @not-pr-pipeline',
+  'PMM-T138 - Verify disabling enhanced metrics for RDS, PMM-T139 - Verify disabling basic metrics for RDS @not-pr-pipeline',
   async (I, remoteInstancesPage, pmmInventoryPage) => {
     const instanceIdToMonitor = 'rds-mysql56';
     I.amOnPage(remoteInstancesPage.url);
@@ -18,7 +18,7 @@ Scenario(
     remoteInstancesPage.createRemoteInstance(instanceIdToMonitor);
     pmmInventoryPage.verifyRemoteServiceIsDisplayed(instanceIdToMonitor);
     await pmmInventoryPage.verifyAgentHasStatusRunning(instanceIdToMonitor);
-    await pmmInventoryPage.verifyAgentEnhancedMetrics(instanceIdToMonitor);
+    await pmmInventoryPage.verifyMetricsFlags(instanceIdToMonitor);
   }
 );
 
