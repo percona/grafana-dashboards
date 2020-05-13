@@ -12,7 +12,7 @@ const { Panel } = Collapse;
 const TableCreateContainer = ({ databaseType, examples, tables }) => {
   return (
     <Spin spinning={false}>
-      {tables.length ? (
+      {tables && tables.length ? (
         <Tabs defaultActiveKey="1" onChange={() => {}} tabPosition="top">
           {tables.map((table, index) => {
             return (
