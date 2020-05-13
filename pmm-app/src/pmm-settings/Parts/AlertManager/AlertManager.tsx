@@ -8,6 +8,7 @@ import { showSuccessNotification } from '../../../react-plugins-deps/components/
 import { FormElement } from '../../../react-plugins-deps/components/FormComponents/FormElement/FormElement';
 import { PluginTooltip } from '../../../react-plugins-deps/components/helpers/Helpers';
 import { css } from 'emotion';
+import { GUI_DOC_URL } from '../../panel.constants';
 
 interface AlertManagerSettingsInterface {
   alert_manager_url: string;
@@ -66,9 +67,7 @@ const AlertManager = props => {
                   <PluginTooltip
                     links={[
                       {
-                        url:
-                          'https://percona.com/doc/percona-monitoring-and-management' +
-                          '2.x/faq.html#how-to-integrate-alertmanager-with-pmm',
+                        url: `${GUI_DOC_URL}#prometheus-alertmanager-integration`,
                         text: 'How to integrate Alertmanager with PMM',
                       },
                     ]}
@@ -89,9 +88,7 @@ const AlertManager = props => {
                   <PluginTooltip
                     links={[
                       {
-                        url:
-                          'https://percona.com/doc/percona-monitoring-and-management/' +
-                          '2.x/faq.html#how-to-integrate-alertmanager-with-pmm',
+                        url: `${GUI_DOC_URL}#prometheus-alertmanager-integration`,
                         text: 'How to integrate Alertmanager with PMM',
                       },
                     ]}
@@ -101,7 +98,7 @@ const AlertManager = props => {
                 element={
                   <TextAreaField
                     name="alert_manager_rules"
-                    placeholder="Alertmanager rules"
+                    placeholder="Alerting rules"
                     className={Styling.textAreaWidth}
                   />
                 }
