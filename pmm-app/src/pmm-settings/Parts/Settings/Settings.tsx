@@ -12,6 +12,7 @@ import './Settings.scss';
 import Validators from '../../../react-plugins-deps/components/validators/validators';
 import { FormElement } from '../../../react-plugins-deps/components/FormComponents/FormElement/FormElement';
 import { css } from 'emotion';
+import { GUI_DOC_URL } from '../../panel.constants';
 
 const { Panel } = Collapse;
 
@@ -159,9 +160,7 @@ const SettingsPart = props => {
                   <PluginTooltip
                     links={[
                       {
-                        url:
-                          'https://www.percona.com/doc/percona-monitoring-and-management' +
-                          '/2.x/manage/server-admin-gui.html#server-admin-gui-metrics-resolution',
+                        url: `${GUI_DOC_URL}#server-admin-gui-metrics-resolution`,
                         text: 'Read more',
                       },
                     ]}
@@ -217,9 +216,7 @@ const SettingsPart = props => {
                       <PluginTooltip
                         links={[
                           {
-                            url:
-                              'https://www.percona.com/doc/percona-monitoring-and-management' +
-                              '/2.x/manage/server-admin-gui.html#server-admin-gui-telemetry',
+                            url: `${GUI_DOC_URL}#server-admin-gui-telemetry`,
                             text: 'Read more',
                           },
                         ]}
@@ -237,9 +234,7 @@ const SettingsPart = props => {
                       <PluginTooltip
                         links={[
                           {
-                            url:
-                              'https://www.percona.com/doc/percona-monitoring-and-management' +
-                              '/2.x/manage/server-admin-gui.html#check-for-updates',
+                            url: `${GUI_DOC_URL}#check-for-updates`,
                             text: 'Read more',
                           },
                         ]}
@@ -255,10 +250,7 @@ const SettingsPart = props => {
                       <PluginTooltip
                         links={[
                           {
-                            url:
-                              // eslint-disable-next-line max-len
-                              'https://www.percona.com/doc/percona-monitoring-and-management' +
-                              '/2.x/manage/server-admin-gui.html#security-threat-tool',
+                            url: `${GUI_DOC_URL}#security-threat-tool`,
                             text: 'Read more',
                           },
                         ]}

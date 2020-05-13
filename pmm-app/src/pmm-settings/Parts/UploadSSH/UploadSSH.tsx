@@ -6,6 +6,7 @@ import { Form as FormFinal } from 'react-final-form';
 import SettingsService from '../../Settings.service';
 import { showSuccessNotification } from '../../../react-plugins-deps/components/helpers/notification-manager';
 import { FormElement } from '../../../react-plugins-deps/components/FormComponents/FormElement/FormElement';
+import { GUI_DOC_URL } from '../../panel.constants';
 
 interface UploadSSHInterface {
   ssh_key: string;
@@ -43,9 +44,7 @@ const UploadSSH = props => {
                   <PluginTooltip
                     links={[
                       {
-                        url:
-                          'https://www.percona.com/doc/percona-monitoring-and-management' +
-                          '/2.x/manage/server-admin-gui.html#ssh-key-details',
+                        url: `${GUI_DOC_URL}#ssh-key-details`,
                         text: 'Read more',
                       },
                     ]}
