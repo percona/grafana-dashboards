@@ -1,5 +1,5 @@
 import React, { ReactElement, useContext, useEffect, useState } from 'react';
-import { Button } from 'antd';
+import { Button, Spin } from 'antd';
 import { PanelProvider } from '../../panel/panel.provider';
 import { Form as FormFinal } from 'react-final-form';
 import Search from 'antd/lib/input/Search';
@@ -99,7 +99,7 @@ const FiltersContainer = () => {
     contextActions,
     panelState: { labels = {} },
   } = useContext(PanelProvider);
-  const filters = useFilters();
+  const { filters, loading } = useFilters();
   const initialValues = useInitialFilterValues();
 
   return (
@@ -109,13 +109,15 @@ const FiltersContainer = () => {
       render={({ form, handleSubmit }): ReactElement => {
         // @ts-ignore
         return (
-          <form
-            onSubmit={handleSubmit}
-            className="app-theme-dark"
-            onChange={() => contextActions.setLabels(form.getState().values)}
-          >
-            <Filters contextActions={contextActions} form={form} labels={labels} filters={filters} />
-          </form>
+          <Spin spinning={loading}>
+            <form
+              onSubmit={handleSubmit}
+              className="app-theme-dark"
+              onChange={() => contextActions.setLabels(form.getState().values)}
+            >
+              <Filters contextActions={contextActions} form={form} labels={labels} filters={filters} />
+            </form>
+          </Spin>
         );
       }}
     />
