@@ -160,8 +160,8 @@ const SettingsPart = props => {
                     links={[
                       {
                         url:
-                          'https://www.percona.com/doc/percona-monitoring-and-management/' +
-                          '2.x/faq.html#what-resolution-is-used-for-metrics',
+                          'https://www.percona.com/doc/percona-monitoring-and-management' +
+                          '/2.x/manage/server-admin-gui.html#server-admin-gui-metrics-resolution',
                         text: 'Read more',
                       },
                     ]}
@@ -218,8 +218,8 @@ const SettingsPart = props => {
                         links={[
                           {
                             url:
-                              'https://www.percona.com/doc/percona-monitoring-and-management/' +
-                              '2.x/glossary-terminology.html#telemetry',
+                              'https://www.percona.com/doc/percona-monitoring-and-management' +
+                              '/2.x/manage/server-admin-gui.html#server-admin-gui-telemetry',
                             text: 'Read more',
                           },
                         ]}
@@ -238,8 +238,8 @@ const SettingsPart = props => {
                         links={[
                           {
                             url:
-                              'https://www.percona.com/doc/percona-monitoring-and-management/' +
-                              '2.x/glossary-terminology.html#PMM-Version',
+                              'https://www.percona.com/doc/percona-monitoring-and-management' +
+                              '/2.x/manage/server-admin-gui.html#check-for-updates',
                             text: 'Read more',
                           },
                         ]}
@@ -257,7 +257,8 @@ const SettingsPart = props => {
                           {
                             url:
                               // eslint-disable-next-line max-len
-                              'https://www.percona.com/doc/percona-monitoring-and-management/2.x/manage/server-admin-gui.html#stt',
+                              'https://www.percona.com/doc/percona-monitoring-and-management' +
+                              '/2.x/manage/server-admin-gui.html#security-threat-tool',
                             text: 'Read more',
                           },
                         ]}

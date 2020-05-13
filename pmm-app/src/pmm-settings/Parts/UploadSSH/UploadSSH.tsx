@@ -43,7 +43,9 @@ const UploadSSH = props => {
                   <PluginTooltip
                     links={[
                       {
-                        url: '#',
+                        url:
+                          'https://www.percona.com/doc/percona-monitoring-and-management' +
+                          '/2.x/manage/server-admin-gui.html#ssh-key-details',
                         text: 'Read more',
                       },
                     ]}

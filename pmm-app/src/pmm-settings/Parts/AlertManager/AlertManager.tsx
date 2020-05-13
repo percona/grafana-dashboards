@@ -71,10 +71,6 @@ const AlertManager = props => {
                           '2.x/faq.html#how-to-integrate-alertmanager-with-pmm',
                         text: 'How to integrate Alertmanager with PMM',
                       },
-                      {
-                        url: 'https://prometheus.io/docs/alerting/alertmanager/',
-                        text: 'Prometheus Alertmanager',
-                      },
                     ]}
                     text="The URL of the external Alertmanager to use"
                   />
@@ -88,7 +84,7 @@ const AlertManager = props => {
                 }
               />
               <FormElement
-                label="Alertmanager rules"
+                label="Prometheus Alerting rules"
                 tooltip={
                   <PluginTooltip
                     links={[
@@ -97,10 +93,6 @@ const AlertManager = props => {
                           'https://percona.com/doc/percona-monitoring-and-management/' +
                           '2.x/faq.html#how-to-integrate-alertmanager-with-pmm',
                         text: 'How to integrate Alertmanager with PMM',
-                      },
-                      {
-                        url: 'https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/',
-                        text: 'Prometheus alerting rules',
                       },
                     ]}
                     text="Alerting rules in the YAML configuration format"
