@@ -4,23 +4,29 @@ import FiltersService from './Filters.service';
 
 export const useFilters = () => {
   const [filters, setFilters] = useState({});
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
   const {
     panelState: { labels = {}, from, to, columns },
   } = useContext(PanelProvider);
 
   useEffect(() => {
+    setLoading(true);
     (async () => {
       try {
         const result = await FiltersService.getQueryOverviewFiltersList(labels, from, to, columns[0]);
         setFilters(result);
         // setGroups(FILTERS_GROUPS);
+        setLoading(false);
       } catch (e) {
+        setLoading(false);
+        setError(true);
         //TODO: add error handling
       }
     })();
   }, [labels, from, to, columns]);
 
-  return filters;
+  return { filters, loading, error };
 };
 
 export const useInitialFilterValues = () => {
