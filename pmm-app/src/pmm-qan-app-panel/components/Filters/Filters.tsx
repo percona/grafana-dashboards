@@ -111,7 +111,7 @@ const FiltersContainer = () => {
         return (
           <form
             onSubmit={handleSubmit}
-            className="add-instance-form app-theme-dark"
+            className="app-theme-dark"
             onChange={() => contextActions.setLabels(form.getState().values)}
           >
             <Filters contextActions={contextActions} form={form} labels={labels} filters={filters} />
