@@ -237,11 +237,16 @@ export const UrlParametersProvider = ({ grafanaProps, children }) => {
     if (isFirstLoad) {
       return;
     }
-    const newState = { ...panelState, from, to, rawTime, pageNumber: 1 };
-    delete newState.queryId;
-    delete newState.querySelected;
+    const newState = { ...panelState, from, to, rawTime };
+
+    if (panelState.rawTime.from !== rawTime.from || panelState.rawTime.to !== rawTime.to) {
+      newState.pageNumber = 1;
+      delete newState.queryId;
+      delete newState.querySelected;
+    }
+
     setContext(newState);
-  }, [rawTime.from, rawTime.to]);
+  }, [from, to]);
 
   useEffect(() => {
     setFirstLoad(false);
