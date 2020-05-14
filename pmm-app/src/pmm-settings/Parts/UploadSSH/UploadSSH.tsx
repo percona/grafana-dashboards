@@ -6,6 +6,7 @@ import { Form as FormFinal } from 'react-final-form';
 import SettingsService from '../../Settings.service';
 import { showSuccessNotification } from '../../../react-plugins-deps/components/helpers/notification-manager';
 import { FormElement } from '../../../react-plugins-deps/components/FormComponents/FormElement/FormElement';
+import { GUI_DOC_URL } from '../../panel.constants';
 
 interface UploadSSHInterface {
   ssh_key: string;
@@ -43,7 +44,7 @@ const UploadSSH = props => {
                   <PluginTooltip
                     links={[
                       {
-                        url: '#',
+                        url: `${GUI_DOC_URL}#ssh-key-details`,
                         text: 'Read more',
                       },
                     ]}
