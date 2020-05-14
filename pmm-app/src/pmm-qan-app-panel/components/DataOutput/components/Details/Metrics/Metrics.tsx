@@ -104,7 +104,7 @@ const Metrics = ({ databaseType }) => {
   const [metrics, loading] = useMetricsDetails();
 
   return (
-    <div>
+    <div className="metrics-wrapper">
       <TimeDistribution data={metrics} databaseType={databaseType} />
       <h4>Metrics</h4>
       <Table

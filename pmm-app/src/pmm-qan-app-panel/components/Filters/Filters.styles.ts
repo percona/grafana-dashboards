@@ -21,6 +21,7 @@ export const Styling = {
   title: css`
     margin: 3px;
     margin-right: 15px;
+    color: rgba(255, 255, 255, 0.8) !important;
   `,
   resetButton: css`
     padding: 0 !important;

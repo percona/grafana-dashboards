@@ -8,5 +8,6 @@ export const Styling = {
   groupByHeader: css`
     margin: 0 !important;
     margin-right: 15px !important;
+    color: rgba(255, 255, 255, 0.8);
   `,
 };

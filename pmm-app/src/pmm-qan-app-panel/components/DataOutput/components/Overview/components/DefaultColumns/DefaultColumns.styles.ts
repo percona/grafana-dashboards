@@ -12,5 +12,5 @@ export const mainMetric = mainMetricColumnWidth => css`
   text-overflow: ellipsis !important;
   white-space: nowrap !important;
   max-width: ${mainMetricColumnWidth - 40}px !important;
-  color: rgb(50, 179, 227);
+  color: #32b3e3;
 `;
