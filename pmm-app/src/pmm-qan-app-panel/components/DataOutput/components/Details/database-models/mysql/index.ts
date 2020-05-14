@@ -12,6 +12,7 @@ export class Mysql extends GenericDatabase {
       return;
     }
     const { action_id } = await MysqlDatabaseService.getShowCreateTableMySQL({
+      database: example.schema,
       table_name: tableName,
       service_id: example.service_id,
     });
