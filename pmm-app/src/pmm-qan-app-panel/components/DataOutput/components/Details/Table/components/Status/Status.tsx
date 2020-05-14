@@ -27,7 +27,7 @@ export const Status = props => {
     <div>
       {errorText ? (
         <pre>{errorText}</pre>
-      ) : (
+      ) : data.rows.length ? (
         <Table
           dataSource={data.rows}
           columns={data.columns}
@@ -36,6 +36,8 @@ export const Status = props => {
           size="small"
           bordered
         />
+      ) : (
+        <pre> No data found</pre>
       )}
     </div>
   );

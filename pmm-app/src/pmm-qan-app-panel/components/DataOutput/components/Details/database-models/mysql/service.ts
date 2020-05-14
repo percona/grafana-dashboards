@@ -1,8 +1,9 @@
 import { apiRequestManagement } from '../../../../../../../react-plugins-deps/helpers/api';
 
 export default class MysqlDatabaseService {
-  static getShowCreateTableMySQL({ service_id, table_name }) {
+  static getShowCreateTableMySQL({ database, service_id, table_name }) {
     const body = {
+      database,
       service_id,
       table_name,
     };

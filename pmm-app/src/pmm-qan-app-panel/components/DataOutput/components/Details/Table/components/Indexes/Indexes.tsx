@@ -27,7 +27,7 @@ export const Indexes = props => {
     <div>
       {errorText ? (
         <pre>{errorText}</pre>
-      ) : (
+      ) : data.rows.length > 1 ? (
         <Table
           dataSource={data.rows}
           columns={data.columns}
@@ -36,6 +36,8 @@ export const Indexes = props => {
           size="small"
           bordered
         />
+      ) : (
+        <pre> No data found</pre>
       )}
     </div>
   );
