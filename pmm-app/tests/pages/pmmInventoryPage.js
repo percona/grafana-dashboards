@@ -62,21 +62,20 @@ module.exports = {
   async verifyMetricsFlags(serviceName) {
     let servicesLink = this.fields.pmmServicesLocator; 
     const agentLinkLocator = this.fields.agentsLink;
+    I.waitForElement(servicesLink,20);
     I.click(servicesLink);
     let nodeId = await this.getNodeId(serviceName);
     I.click(agentLinkLocator);
-    let flagExists = await I.grabNumberOfVisibleElements(
+    let flagExists = 
       "//span[contains(text(), '" +
-        nodeId +
-        "')]/following-sibling::span[contains(text(),'enhanced_metrics_disabled: true')]"
-    );
-    assert.equal(flagExists, 1, ' Enhanced metrics disabled flag must be true for ' + nodeId);
-    flagExists = await I.grabNumberOfVisibleElements(
-      "//span[contains(text(), '" +
-        nodeId +
+       nodeId +
+        "')]/following-sibling::span[contains(text(),'enhanced_metrics_disabled: true')]";
+    I.seeElement(flagExists);
+    flagExists = 
+     "//span[contains(text(), '" +
+       nodeId +
         "')]/following-sibling::span[contains(text(),'basic_metrics_disabled: true')]"
-    );
-    assert.equal(flagExists, 1, ' Basic metrics disabled flag must be true for ' + nodeId);
+    I.seeElement(flagExists);
   },
 
   async getNodeId(serviceName)

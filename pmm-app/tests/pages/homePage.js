@@ -47,8 +47,7 @@ module.exports = {
 
     async verifyVisibleService(serviceName) {
     I.scrollPageToBottom();
-    let serviceExists = I.grabNumberOfVisibleElements(
-      "//div[@class='react-grid-item']/descendant::p[contains(text(),'" + serviceName + "')]");
-    assert.equal(serviceExists, 1, 'The service "' + serviceName + '" not found');
+    let serviceExists = "//div[@class='react-grid-item']/descendant::p[contains(text(),'" + serviceName + "')]";
+    I.seeElement(serviceExists);
   },
 };
