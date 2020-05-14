@@ -143,6 +143,12 @@ module.exports = {
     return filterLocator;
   },
 
+  async verifyFilterExists(filterValue)
+  {
+    const filterLocator = "//input[@name='node_name:" + filterValue + "']";
+    I.waitForVisible(filterLocator, 30);
+  },
+
   applyFilter(filterValue){
     const filterLocator = this.getFilterLocator(filterValue);
     I.waitForElement(filterLocator, 30);
