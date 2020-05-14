@@ -60,7 +60,7 @@ module.exports = {
   tooltips : {
     stt: {
       text: "Enable Security Threat Tool and get updated checks from Percona",
-      link: "https://www.percona.com/doc/percona-monitoring-and-management/2.x/manage/server-admin-gui.html#stt"
+      link: "https://www.percona.com/doc/percona-monitoring-and-management/2.x/manage/server-admin-gui.html#security-threat-tool"
     },
 
   },
@@ -83,7 +83,7 @@ module.exports = {
     addSSHKeyButton: "//span[text()='Apply SSH key']/parent::button",
     sshKeyInput: "//textarea[@name='ssh_key' and @placeholder='Enter ssh key']",
     alertURLInput: "//input[@name='alert_manager_url' and @placeholder='Enter URL']",
-    alertRulesInput: "//textarea[@name='alert_manager_rules' and @placeholder='Alertmanager rules']",
+    alertRulesInput: "//textarea[@name='alert_manager_rules' and @placeholder='Alerting rules']",
     addAlertRuleButton: "//span[text()='Apply Alertmanager settings']/parent::button",
     downloadLogsButton: "//a[@class='ant-btn' and @href='/logs.zip']",
     metricsResolution: "//div[@class='ant-slider-mark']/span[text()='",
@@ -101,6 +101,7 @@ module.exports = {
     I.waitForVisible(this.fields.applyButton, 30);
     I.waitForVisible(this.fields.sectionHeader, 30);
     I.waitForVisible(this.fields.callHomeSwitch, 30);
+    I.waitForVisible(this.fields.sttSwitchSelector, 30);
   },
 
   verifySettingsSectionElements() {
@@ -121,7 +122,7 @@ module.exports = {
 
   verifyAlertmanagerSectionElements() {
     I.see('Alertmanager URL', this.fields.sectionRow);
-    I.see('Alertmanager rules', this.fields.sectionRow);
+    I.see('Prometheus Alerting rules', this.fields.sectionRow);
     I.seeElement(this.fields.alertURLInput);
     I.seeElement(this.fields.alertRulesInput);
   },
@@ -286,6 +287,17 @@ module.exports = {
     I.amOnPage(this.prometheusAlertUrl);
   },
 
+  async enableSTT(){
+    this.waitForPmmSettingsPageLoaded();
+    const disabledStt = await I.grabNumberOfVisibleElements(this.fields.sttSwitchSelector + `[@aria-checked='false']`);
+    if (disabledStt) {
+      I.click(this.fields.sttSwitchSelector);
+      this.verifySwitch(this.fields.sttSwitchSelector, 'on')
+      I.click(this.fields.applyButton);
+      await this.verifySuccessfulPopUp(this.messages.successPopUpMessage);
+    }
+  },
+
   async verifyAlertmanagerRuleAdded(ruleName) {
     for (let i = 0; i < 10; i++) {
       const notLoaded = await I.grabNumberOfVisibleElements(`//td[contains(text(), '${ruleName}')]`);
@@ -308,15 +320,17 @@ module.exports = {
     switch (expectedSwitchState){
       case 'on':
         expectedSwitch = {'aria-checked':'true'};
+        I.seeAttributesOnElements(switchSelector, expectedSwitch);
         break;
       case 'off':
         expectedSwitch = {'aria-checked':'false'};
+        I.seeAttributesOnElements(switchSelector, expectedSwitch);
         break;
     }
   },
 
   verifySwitchStateIs(switchSelector, enabled = true) {
-    switchSelector = switchSelector+'[@disabled]';
+    switchSelector = switchSelector + '[@disabled]';
     if (!enabled) {
       I.seeElement(switchSelector);
     } else {
