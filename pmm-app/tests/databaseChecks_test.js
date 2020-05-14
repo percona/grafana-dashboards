@@ -1,4 +1,4 @@
-Feature('Database Failed Checks');
+Feature('Database Failed Checks ');
 
 Before( async (I, pmmSettingsPage) => {
     I.Authorize();
