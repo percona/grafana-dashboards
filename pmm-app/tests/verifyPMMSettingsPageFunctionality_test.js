@@ -72,13 +72,9 @@ Scenario(
 Scenario(
     'PMM-T253 Verify user can enable STT if Telemetry is enabled',
     async (I, pmmSettingsPage) => {
-      pmmSettingsPage.waitForPmmSettingsPageLoaded();
-      pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelector, 'disabled');
-      I.click(pmmSettingsPage.fields.sttSwitchSelector);
-      I.click(pmmSettingsPage.fields.applyButton);
-      await pmmSettingsPage.verifySuccessfulPopUp(pmmSettingsPage.messages.successPopUpMessage);
+      await pmmSettingsPage.enableSTT();
       I.refreshPage();
-      pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelector, 'enabled');
+      pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelector, 'on');
       I.click(pmmSettingsPage.fields.sttSwitchSelector);
       pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelector, 'off');
       I.click(pmmSettingsPage.fields.applyButton);

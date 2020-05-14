@@ -14,9 +14,21 @@ module.exports = {
     metricTitle: "//div[@class='panel-title']",
     reportTitleWithNA:
       "//span[contains(text(), 'N/A')]//ancestor::div[contains(@class,'panel-container')]//span[contains(@class,'panel-title-text')]",
+    failedChecksPanelSelector: "//div[@aria-label='Panel header title item Failed security checks']/../following-sibling::div//panel-plugin-singlestat",
+    pmmDropdownMenuSelector: "//a[@data-toggle='dropdown']/span[text()='PMM']",
+
   },
 
   // introducing methods
+  dropdownMenuItemLocator(title) {
+    return (`//ul/li/a[text()='${title}']`)
+  },
+
+  selectItemFromPMMDropdown(title){
+    I.click(this.fields.pmmDropdownMenuSelector);
+    I.click(this.dropdownMenuItemLocator(title));
+  },
+
   async navigateToDashboard(folderName, dashboardName) {
     I.waitForElement(this.fields.navigation, 30);
     I.click(this.fields.navigation);
