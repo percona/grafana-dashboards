@@ -17,6 +17,7 @@ export const Styling = {
     grid-area: percentagearea;
     display: flex;
     justify-content: flex-end;
+    color: rgba(255, 255, 255, 0.8);
   `,
   filterHeaderWrapper: css`
     display: flex;
@@ -28,10 +29,13 @@ export const Styling = {
     margin-right: auto;
     font-weight: 700;
     font-size: 14px;
+    color: rgba(255, 255, 255, 0.8);
   `,
   divider: css`
     margin-top: 0 !important;
     margin-bottom: 5px !important;
+    height: 6px !important;
+    background-color: #3d3d3d !important;
   `,
   showModeSwitcher: css`
     cursor: pointer;

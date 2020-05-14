@@ -44,10 +44,12 @@ const ManageColumns = props => {
         title={props.placeholder && METRIC_CATALOGUE[props.placeholder].humanizeName}
         placement="topLeft"
       >
-        <span>{props.placeholder && METRIC_CATALOGUE[props.placeholder].humanizeName}</span>{' '}
+        <span style={{ color: '#03DAC5' }}>
+          {props.placeholder && METRIC_CATALOGUE[props.placeholder].humanizeName}
+        </span>
       </Tooltip>
     ) : (
-      <div style={{ fontSize: '16px' }}>
+      <div style={{ fontSize: '16px', color: '#32B3E3' }}>
         <i className="fa fa-plus-circle" style={{ marginRight: '5px' }}></i> <span> Add column</span>
       </div>
     );

@@ -25,37 +25,39 @@ const OverviewTable = props => {
   }, []);
 
   return (
-    <Table
-      dataSource={data.rows}
-      onChange={onTableChange}
-      columns={data.columns}
-      size="small"
-      bordered
-      pagination={false}
-      scroll={{ y: height - 50, x: TABLE_X_SCROLL }}
-      rowClassName={(record, index) => {
-        if (querySelected) {
-          if (index === 0) {
-            return totals ? 'selected-overview-row' : '';
-          } else {
-            if (totals) {
-              return '';
-            }
+    <div>
+      <Table
+        dataSource={data.rows}
+        onChange={onTableChange}
+        columns={data.columns}
+        size="small"
+        bordered
+        pagination={false}
+        scroll={{ y: height - 100, x: TABLE_X_SCROLL }}
+        rowClassName={(record, index) => {
+          if (querySelected) {
+            if (index === 0) {
+              return totals ? 'selected-overview-row' : '';
+            } else {
+              if (totals) {
+                return '';
+              }
 
-            if (!record.dimension && !queryId) {
-              return 'selected-overview-row';
-            }
+              if (!record.dimension && !queryId) {
+                return 'selected-overview-row';
+              }
 
-            if (record.dimension === queryId) {
-              return 'selected-overview-row';
+              if (record.dimension === queryId) {
+                return 'selected-overview-row';
+              }
             }
           }
-        }
 
-        return '';
-      }}
-      loading={loading}
-    />
+          return '';
+        }}
+        loading={loading}
+      />
+    </div>
   );
 };
 

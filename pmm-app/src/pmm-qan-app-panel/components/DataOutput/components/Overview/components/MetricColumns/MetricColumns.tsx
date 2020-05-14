@@ -10,14 +10,28 @@ import React from 'react';
 import './MetricColumns.scss';
 
 const TimeMetric = ({ value }) => (
-  <span className="summarize" style={{ marginLeft: 'auto', cursor: value && value !== 'NaN' ? 'help' : '' }}>
+  <span
+    className="summarize"
+    style={{
+      marginLeft: 'auto',
+      cursor: value && value !== 'NaN' ? 'help' : '',
+      color: 'rgba(255,255,255,0.8)',
+    }}
+  >
     {value === undefined ? `${Humanize.transform(0, 'time')}` : null}
     {value === null || value === 'NaN' ? 'N/A' : null}
     {value && value !== 'NaN' ? `${Humanize.transform(value, 'time')}` : null}
   </span>
 );
 const NonTimeMetric = ({ value, units }) => (
-  <span className="summarize" style={{ marginLeft: 'auto', cursor: value && value !== 'NaN' ? 'help' : '' }}>
+  <span
+    className="summarize"
+    style={{
+      marginLeft: 'auto',
+      cursor: value && value !== 'NaN' ? 'help' : '',
+      color: 'rgba(255,255,255,0.8)',
+    }}
+  >
     {value === undefined ? `0 ${units}` : null}
     {value === null || value === 'NaN' ? 'N/A' : null}
     {value && value !== 'NaN' ? `${Humanize.transform(value, 'number')} ${units}` : null}

@@ -11,15 +11,16 @@ export const Styling = {
   overviewTitle: css`
     margin: 3px;
     margin-right: 40px;
+    color: rgba(255, 255, 255, 0.8);
   `,
   splitterWrapper: css`
     height: 800px;
   `,
   paginationWrapper: css`
-    margin-left: auto;
+    // margin-left: auto;
   `,
   manageColumnsWrapper: css`
-    margin-left: 10px;
+    margin-left: auto;
   `,
   tableWrapper: css`
     min-height: 1000px;

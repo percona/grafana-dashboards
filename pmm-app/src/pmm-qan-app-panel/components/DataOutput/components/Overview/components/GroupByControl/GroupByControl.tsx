@@ -3,6 +3,7 @@ import React, { useContext } from 'react';
 import { Select } from 'antd';
 import { Styling } from './GroupByControl.styles';
 import { GROUP_BY_OPTIONS } from './GroupByControl.types';
+import './GroupByControl.scss';
 
 const { Option } = Select;
 

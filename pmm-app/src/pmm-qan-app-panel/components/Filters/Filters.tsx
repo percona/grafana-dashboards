@@ -65,13 +65,13 @@ export const Filters = ({ contextActions, form, labels, filters }) => {
       </div>
       <ScrollArea className={Styling.getFiltersWrapper(filtersBodyHeight)}>
         <Search
-          placeholder="Filters search..."
+          placeholder="Search..."
           onChange={e => {
             setFilter(e.target.value);
             e.stopPropagation();
           }}
           value={filter}
-          style={{ width: '100%' }}
+          style={{ width: '100%', border: '1px solid rgba(255,255,255,0.8)' }}
         />
         {FILTERS_GROUPS.filter(group => filters[group.dataKey]).map(group => {
           const { name, dataKey } = group;

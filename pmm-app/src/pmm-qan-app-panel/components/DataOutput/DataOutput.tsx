@@ -41,20 +41,6 @@ const DataOutput = () => {
     <div className={Styling.getContainerWrapper(size)}>
       <div className={Styling.overviewHeader}>
         <h5 className={Styling.overviewTitle}>Overview</h5>
-        <div className={Styling.paginationWrapper}>
-          <Pagination
-            showSizeChanger
-            pageSizeOptions={PAGE_SIZE_OPTIONS}
-            defaultCurrent={DEFAULT_PAGE_NUMBER}
-            defaultPageSize={DEFAULT_PAGE_SIZE}
-            showTotal={renderShowTotal}
-            current={pageNumber}
-            pageSize={pageSize}
-            total={total}
-            onShowSizeChange={changePageSize}
-            onChange={changePageNumber}
-          />
-        </div>
         <div className={Styling.manageColumnsWrapper}>
           <ManageColumns onlyAdd />
         </div>
@@ -63,6 +49,22 @@ const DataOutput = () => {
       {!querySelected ? (
         <div className={cx('table-wrapper', Styling.tableWrapper)}>
           <OverviewTable setTotal={setTotal} />
+          <div className={Styling.overviewHeader}>
+            <div className={Styling.paginationWrapper}>
+              <Pagination
+                showSizeChanger
+                pageSizeOptions={PAGE_SIZE_OPTIONS}
+                defaultCurrent={DEFAULT_PAGE_NUMBER}
+                defaultPageSize={DEFAULT_PAGE_SIZE}
+                showTotal={renderShowTotal}
+                current={pageNumber}
+                pageSize={pageSize}
+                total={total}
+                onShowSizeChange={changePageSize}
+                onChange={changePageNumber}
+              />
+            </div>
+          </div>
         </div>
       ) : (
         <Split
@@ -81,7 +83,25 @@ const DataOutput = () => {
           }}
         >
           <div className="table-wrapper">
-            <OverviewTable setTotal={setTotal} reload={reload} />
+            <div>
+              <OverviewTable setTotal={setTotal} reload={reload} />
+              <div className={Styling.overviewHeader}>
+                <div className={Styling.paginationWrapper}>
+                  <Pagination
+                    showSizeChanger
+                    pageSizeOptions={PAGE_SIZE_OPTIONS}
+                    defaultCurrent={DEFAULT_PAGE_NUMBER}
+                    defaultPageSize={DEFAULT_PAGE_SIZE}
+                    showTotal={renderShowTotal}
+                    current={pageNumber}
+                    pageSize={pageSize}
+                    total={total}
+                    onShowSizeChange={changePageSize}
+                    onChange={changePageNumber}
+                  />
+                </div>
+              </div>
+            </div>
           </div>
           <Details />
         </Split>
