@@ -28,7 +28,6 @@ exports.config = {
     pmmSettingsPage: './tests/pages/pmmSettingsPage.js',
     mysqlTableDetailsPage: './tests/pages/mysqlTableDetailsPage.js',
     dashboardPage: './tests/pages/dashboardPage.js',
-    overviewPage: './tests/pages/overviewPage.js',
   },
   multiple: {
     parallel: {

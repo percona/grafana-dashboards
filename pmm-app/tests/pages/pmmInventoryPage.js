@@ -60,7 +60,7 @@ module.exports = {
   },
 
   async verifyMetricsFlags(serviceName) {
-    let servicesLink = this.fields.pmmServicesLocator; 
+    const servicesLink = this.fields.pmmServicesLocator; 
     const agentLinkLocator = this.fields.agentsLink;
     I.waitForElement(servicesLink,20);
     I.click(servicesLink);
