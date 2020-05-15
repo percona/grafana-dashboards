@@ -64,7 +64,7 @@ module.exports = {
     const agentLinkLocator = this.fields.agentsLink;
     I.waitForElement(servicesLink,20);
     I.click(servicesLink);
-    let nodeId = await this.getNodeId(serviceName);
+    const nodeId = await this.getNodeId(serviceName);
     I.click(agentLinkLocator);
     let flagExists = 
       "//span[contains(text(), '" +
@@ -81,8 +81,7 @@ module.exports = {
   async getNodeId(serviceName)
   {
     const nodeIdLocator = this.fields.serviceIdLocatorPrefix + serviceName + "')]/following-sibling::td[1]";
-    const nodeId = await I.grabTextFrom(nodeIdLocator);
-    return nodeId;
+    return await I.grabTextFrom(nodeIdLocator);
   },
 
   async getServiceId(serviceName) {
