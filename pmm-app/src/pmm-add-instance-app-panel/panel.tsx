@@ -14,7 +14,6 @@ const history = createBrowserHistory({});
 const AddInstancePanel = props => {
   useEffect(() => Styling.addPluginPanelClass(), []);
 
-  // @ts-ignore
   const urlParams = new URLSearchParams(window.location.search);
   const instanceType = urlParams.get('instance_type') || '';
   const availableInstanceTypes = ['rds', 'postgresql', 'mysql', 'proxysql', 'mongodb', 'proxysql'];
@@ -28,6 +27,7 @@ const AddInstancePanel = props => {
     selectInstance(instance);
     history.push(url.pathname + url.search);
   };
+
   return (
     <div className="app-theme-dark content-wrapper antd" id="antd">
       {!selectedInstance.type ? <AddInstance onSelectInstanceType={setSelectedInstance} /> : null}
@@ -47,7 +47,7 @@ const AddInstancePanel = props => {
   );
 };
 
-const Wrapper = () => {
+const AddPanel = () => {
   return (
     <Router history={history}>
       <Route path="*" component={AddInstancePanel} />
@@ -55,7 +55,4 @@ const Wrapper = () => {
   );
 };
 
-const AddPanel = () => {
-  return Wrapper();
-};
 export default AddPanel;
