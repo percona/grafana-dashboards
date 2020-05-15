@@ -45,10 +45,11 @@ module.exports = {
     );
   },
 
-    async verifyVisibleService(serviceName) {
+  async verifyVisibleService(serviceName) {
     I.scrollPageToBottom();
-    const serviceExists = "//div[@class='react-grid-item']/descendant::p[contains(text(),'" + serviceName + "')]";
-    I.waitForElement(serviceExists,20)
+    const serviceExists =
+      "//div[@class='react-grid-item']/descendant::p[contains(text(),'" + serviceName + "')]";
+    I.waitForElement(serviceExists, 20);
     I.seeElement(serviceExists);
   },
 };
