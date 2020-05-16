@@ -6,9 +6,8 @@ export class Mysql extends GenericDatabase {
     super();
   }
 
-  async getShowCreateTables({ example, tableName, setErrorText, setActionId }) {
+  async getShowCreateTables({ example, tableName, setActionId }) {
     if (!tableName) {
-      setErrorText('Cannot display table info without query example, schema or table name at this moment.');
       return;
     }
     const { action_id } = await MysqlDatabaseService.getShowCreateTableMySQL({
@@ -19,9 +18,8 @@ export class Mysql extends GenericDatabase {
     setActionId(action_id as string);
   }
 
-  async getIndexes({ example, tableName, setErrorText, setActionId }) {
+  async getIndexes({ example, tableName, setActionId }) {
     if (!tableName) {
-      setErrorText('Cannot display indexes info without query example, schema or table name at this moment.');
       return;
     }
     const { action_id } = await MysqlDatabaseService.getMysqlIndex({
@@ -32,9 +30,8 @@ export class Mysql extends GenericDatabase {
     setActionId(action_id as string);
   }
 
-  async getStatuses({ example, tableName, setErrorText, setActionId }) {
+  async getStatuses({ example, tableName, setActionId }) {
     if (!tableName) {
-      setErrorText('Cannot display status info without query example, schema or table name at this moment.');
       return;
     }
     const { action_id } = await MysqlDatabaseService.getMysqlTableStatus({

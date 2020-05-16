@@ -3,15 +3,15 @@
 export class GenericDatabase {
   constructor() {}
 
-  getShowCreateTables({ example, tableName, setErrorText, setActionId }) {
+  getShowCreateTables({ example, tableName, setActionId }) {
     console.error('Not implemented');
   }
 
-  async getIndexes({ example, tableName, setErrorText, setActionId }) {
+  async getIndexes({ example, tableName, setActionId }) {
     console.error('Not implemented');
   }
 
-  getStatuses({ example, tableName, setErrorText, setActionId }) {
+  getStatuses({ example, tableName, setActionId }) {
     console.error('Not implemented');
   }
 

@@ -1,21 +1,30 @@
-import React, { useEffect, useState } from 'react';
-import { useActionResult } from '../../../Details.hooks';
+import React, { useEffect } from 'react';
+import { useActionResult_with_errors } from '../../../Details.hooks';
 import { databaseFactory } from '../../../database-models';
+import { Spin } from 'antd';
 
 // TODO: refactor example parameters passing
 
 const TableCreate = props => {
   const { tableName, databaseType, example } = props;
-  const [errorText, setErrorText] = useState('');
-  const [showCreateTable, setActionId] = useActionResult();
+  const [showCreateTable, setActionId] = useActionResult_with_errors();
 
   useEffect(() => {
-    setErrorText('');
     const database = databaseFactory(databaseType);
-    database.getShowCreateTables({ example, tableName, setErrorText, setActionId });
+    database.getShowCreateTables({ example, tableName, setActionId });
   }, [databaseType]);
 
-  return <div>{errorText ? <pre>{errorText}</pre> : <pre>{showCreateTable}</pre>}</div>;
+  return (
+    <Spin spinning={showCreateTable.loading}>
+      <div>
+        {showCreateTable.loading ? (
+          <pre>{showCreateTable.loading}</pre>
+        ) : (
+          <pre>{showCreateTable.error || showCreateTable.value}</pre>
+        )}
+      </div>
+    </Spin>
+  );
 };
 
 export default TableCreate;

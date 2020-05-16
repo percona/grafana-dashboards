@@ -6,9 +6,9 @@ export class PostgreSQL extends GenericDatabase {
     super();
   }
 
-  async getShowCreateTables({ example, tableName, setErrorText, setActionId }) {
+  async getShowCreateTables({ example, tableName, setActionId }) {
     if (!tableName) {
-      setErrorText('Cannot display table info without query example, schema or table name at this moment.');
+      // setErrorText('Cannot display table info without query example, schema or table name at this moment.');
       return;
     }
     const { action_id } = await PostgresqlDatabaseService.getShowCreateTablePostgreSQL({
@@ -18,9 +18,8 @@ export class PostgreSQL extends GenericDatabase {
     setActionId(action_id as string);
   }
 
-  async getIndexes({ example, tableName, setErrorText, setActionId }) {
+  async getIndexes({ example, tableName, setActionId }) {
     if (!tableName) {
-      setErrorText('Cannot display indexes info without table name at this moment.');
       return;
     }
     const { action_id } = await PostgresqlDatabaseService.getPostgreSQLIndex({

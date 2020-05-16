@@ -12,6 +12,8 @@ import { GroupByControl } from '../GroupByControl/GroupByControl';
 import { QueryTooltip } from '../../../../../../../react-plugins-deps/components/Elements/QueryTooltip/QueryTooltip';
 import React from 'react';
 import './DefaultColumns.scss';
+import { Icon } from 'antd';
+
 const MAGIC_WIDTH_FIX = 17;
 
 const getMainColumnWidth = columns => {
@@ -49,11 +51,16 @@ export const getDefaultColumns = (groupBy, pageNumber, pageSize, columns, onCell
       onCell: onCell,
       render: (text, record, index) => {
         return (
-          <QueryTooltip query={record.fingerprint} show={index !== 0 && record.fingerprint}>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
             <div className={mainMetric(mainMetricColumnWidth)}>
               {index === 0 ? 'TOTAL' : record.fingerprint || record.dimension || 'N/A'}
             </div>
-          </QueryTooltip>
+            {index !== 0 && record.fingerprint ? (
+              <QueryTooltip query={record.fingerprint}>
+                <Icon type="question-circle" style={{ marginLeft: 'auto' }} />
+              </QueryTooltip>
+            ) : null}
+          </div>
         );
       },
     },
