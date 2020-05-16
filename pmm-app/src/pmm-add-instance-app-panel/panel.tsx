@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from 'antd';
 import { createBrowserHistory } from 'history';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { Router, Route } from 'react-router-dom';
 import AddRemoteInstance from './AddInstance/AddRemoteInstance/AddRemoteInstance';
 import DiscoveryPanel from './DiscoveryPanel/DiscoveryPanel';
 import AddInstance from './AddInstance/AddInstance';
@@ -10,7 +10,7 @@ import './panel.scss';
 import '../react-plugins-deps/style.less';
 import '../react-plugins-deps/styles.scss';
 
-const history = createBrowserHistory({});
+const history = createBrowserHistory();
 const AddInstancePanel = props => {
   useEffect(() => Styling.addPluginPanelClass(), []);
 
