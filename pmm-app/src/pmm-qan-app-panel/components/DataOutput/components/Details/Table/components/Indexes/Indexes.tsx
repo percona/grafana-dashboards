@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Spin, Table } from 'antd';
-import { useActionResult_with_errors } from '../../../Details.hooks';
+import { useActionResult } from '../../../Details.hooks';
 import { databaseFactory } from '../../../database-models';
 import { processTableData } from '../../TableContainer.tools';
 
 export const Indexes = props => {
   const { tableName, databaseType, example } = props;
   const [data, setData] = useState<{ columns: any[]; rows: any[] }>({ columns: [], rows: [] });
-  const [indexes, setActionId] = useActionResult_with_errors();
+  const [indexes, setActionId] = useActionResult();
 
   useEffect(() => {
     const database = databaseFactory(databaseType);

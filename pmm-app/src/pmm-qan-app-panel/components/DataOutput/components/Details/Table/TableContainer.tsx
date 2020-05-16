@@ -51,7 +51,7 @@ const TableCreateContainer = ({ databaseType, examples, tables }) => {
         </Tabs>
       ) : (
         <div>
-          <pre> Cannot display table info without query example at this moment. </pre>
+          <pre> Couldn&apos;t get tables info neither from example nor explain </pre>
         </div>
       )}
     </Spin>

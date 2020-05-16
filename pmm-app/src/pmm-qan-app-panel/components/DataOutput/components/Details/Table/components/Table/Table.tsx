@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useActionResult_with_errors } from '../../../Details.hooks';
+import { useActionResult } from '../../../Details.hooks';
 import { databaseFactory } from '../../../database-models';
 import { Spin } from 'antd';
 
@@ -7,7 +7,7 @@ import { Spin } from 'antd';
 
 const TableCreate = props => {
   const { tableName, databaseType, example } = props;
-  const [showCreateTable, setActionId] = useActionResult_with_errors();
+  const [showCreateTable, setActionId] = useActionResult();
 
   useEffect(() => {
     const database = databaseFactory(databaseType);

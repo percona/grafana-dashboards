@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { Dispatch, useContext, useEffect, useState } from 'react';
 import { PanelProvider } from '../../../../panel/panel.provider';
 import { DetailsProvider } from './Details.provider';
 import { DATABASE } from './Details.constants';
@@ -6,47 +6,16 @@ import { get } from 'lodash';
 import DetailsService from './Details.service';
 import { databaseFactory } from './database-models';
 
-export const useActionResult = (): [any, any] => {
-  const [result, setResult] = useState<any>();
-  const [action_id, setActionId] = useState<any>();
-  let intervalId;
-  // 9 seconds, long enough
-  let counter = 30;
-  useEffect(() => {
-    if (!action_id) {
-      return;
-    }
-    const getData = async () => {
-      if (counter === 0) {
-        clearInterval(intervalId);
-        return;
-      }
-      counter--;
-
-      try {
-        const result = await DetailsService.getActionResult({
-          action_id: action_id,
-        });
-
-        if (result.done) {
-          clearInterval(intervalId);
-          setResult(result.output);
-        }
-      } catch (e) {
-        clearInterval(intervalId);
-      }
-    };
-    intervalId = setInterval(getData, 300);
-  }, [action_id]);
-
-  return [result, setActionId];
-};
-
-export const useActionResult_with_errors = (): [any, any] => {
+interface ActionResult {
+  value: any;
+  loading: boolean;
+  error: string;
+}
+export const useActionResult = (): [ActionResult, Dispatch<string>] => {
   const [result, setResult] = useState<any>();
   const [action_id, setActionId] = useState<any>();
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState('');
   let intervalId;
   // 9 seconds, long enough
   let counter = 30;
@@ -144,8 +113,8 @@ export const useDetailsState = () => {
   }, [queryId]);
 
   useEffect(() => {
-    if (databaseType === DATABASE.mysql && jsonExplain) {
-      const parsedJSON = JSON.parse(jsonExplain);
+    if (databaseType === DATABASE.mysql && jsonExplain.value) {
+      const parsedJSON = JSON.parse(jsonExplain.value);
       contextActions.setTables(
         [
           get(parsedJSON, 'query_block.table.table_name') ||
@@ -157,10 +126,13 @@ export const useDetailsState = () => {
     if (databaseType === DATABASE.postgresql && examples) {
       contextActions.setTables(examples[0].tables || []);
     }
-  }, [examples, jsonExplain, databaseType]);
+  }, [examples, jsonExplain.value, databaseType]);
 
   useEffect(() => {
     contextActions.setExplainJSON(jsonExplain);
+  }, [jsonExplain.value, jsonExplain.loading, jsonExplain.error]);
+
+  useEffect(() => {
     contextActions.setExplainClassic(traditionalExplain);
-  }, [jsonExplain, traditionalExplain]);
+  }, [traditionalExplain.value, traditionalExplain.loading, traditionalExplain.error]);
 };
