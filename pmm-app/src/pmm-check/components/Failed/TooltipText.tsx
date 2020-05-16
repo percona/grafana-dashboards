@@ -1,9 +1,10 @@
 import React, { FC } from 'react';
+import { FailedChecks } from 'pmm-check/types';
 import * as styles from './Failed.styles';
 
 interface TooltipTextProps {
   sum: number;
-  data: [number, number, number];
+  data: FailedChecks;
 }
 
 export const TooltipText: FC<TooltipTextProps> = ({ sum, data }) => {

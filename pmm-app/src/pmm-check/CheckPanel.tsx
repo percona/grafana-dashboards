@@ -1,35 +1,38 @@
 import React, { PureComponent } from 'react';
-import { Table, Button } from 'antd';
 import { PanelProps } from '@grafana/data';
-import { CheckPanelOptions, ActiveCheck } from './types';
+import { createBrowserHistory } from 'history';
+import { Router, Route } from 'react-router-dom';
+import { CheckPanelOptions, ActiveCheck, Settings } from './types';
 import { CheckService } from './Check.service';
 import { COLUMNS } from './CheckPanel.constants';
+import { Table } from './components/Table';
 import * as styles from './CheckPanel.styles';
-import Styling from '../react-plugins-deps/components/helpers/styling';
-import '../react-plugins-deps/styles.scss';
-import '../react-plugins-deps/style.less';
-import './CheckPanel.scss';
 
 export interface CheckPanelProps extends PanelProps<CheckPanelOptions> {}
 
 export interface CheckPanelState {
   dataSource?: ActiveCheck[];
   loading: boolean;
+  isSttEnabled: boolean;
 }
+
+const history = createBrowserHistory();
 
 export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> {
   state = {
     dataSource: undefined,
     loading: false,
+    isSttEnabled: false,
   };
 
   constructor(props) {
     super(props);
     this.fetchAlerts = this.fetchAlerts.bind(this);
+    this.getSettings = this.getSettings.bind(this);
   }
 
   componentDidMount() {
-    Styling.addPluginPanelClass();
+    this.getSettings();
     this.fetchAlerts();
   }
 
@@ -45,23 +48,32 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
     }
   }
 
+  async getSettings() {
+    this.setState({ loading: true });
+    try {
+      const settings = await CheckService.getSettings();
+      this.setState({ isSttEnabled: !!(settings as Settings)?.stt_enabled });
+    } catch (err) {
+      console.error(err);
+    } finally {
+      this.setState({ loading: false });
+    }
+  }
+
   render() {
     const {
       options: { title },
     } = this.props;
+    const { dataSource, isSttEnabled } = this.state;
 
     return (
-      <div id="antd" className="check-panel" data-qa="db-check-panel">
-        <div className={styles.PanelWrapper}>
-          <div className={styles.TitleBar}>
-            <div className={styles.Title}>{title || 'Failed Checks'}</div>
-            <div className={styles.LastRun}>
-              <Button onClick={this.fetchAlerts}>Refresh</Button>
-            </div>
+      <Router history={history}>
+        <Route>
+          <div className={styles.panel} data-qa="db-check-panel">
+            <Table caption={title} data={dataSource} columns={COLUMNS} isSttEnabled={isSttEnabled} />
           </div>
-          <Table {...this.state} columns={COLUMNS} size="middle" pagination={false} bordered />
-        </div>
-      </div>
+        </Route>
+      </Router>
     );
   }
 }

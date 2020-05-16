@@ -38,3 +38,14 @@ export interface Alert {
     severity: Severity;
   };
 }
+
+export interface AlertRequestParams {
+  active?: boolean;
+  silenced?: boolean;
+  filter?: string;
+}
+
+export interface Settings {
+  stt_enabled?: boolean;
+  telemetry_enabled?: boolean;
+}
