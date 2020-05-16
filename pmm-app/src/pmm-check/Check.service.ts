@@ -1,19 +1,21 @@
 import { apiRequest } from '../react-plugins-deps/components/helpers/api';
-import { BASER_URL } from './CheckPanel.constants';
-import { ActiveCheck, Alert, FailedChecks } from './types';
+import { API } from '../react-plugins-deps/core';
+import { ActiveCheck, Alert, AlertRequestParams, FailedChecks, Settings } from './types';
 
-export const makeApiUrl: (segment: string) => string = segment => `${BASER_URL}/${segment}`;
+export const makeApiUrl: (segment: string) => string = segment => `${API.ALERTMANAGER}/${segment}`;
 
 /**
  * A service-like object to store the API methods
  */
 export const CheckService = {
   async getActiveAlerts(): Promise<ActiveCheck[] | undefined> {
-    const data = await apiRequest.get<Alert[], any>(makeApiUrl('alerts'), {
-      // TODO(atymchuk): add `filter: 'stt_check=1'` once API is ready
-      params: { active: true, silenced: false },
+    const data = await apiRequest.get<Alert[], AlertRequestParams>(makeApiUrl('alerts'), {
+      params: { active: true, silenced: false, filter: 'stt_check=1' },
     });
     return Array.isArray(data) && data.length ? processData(data as Alert[]) : undefined;
+  },
+  async getSettings() {
+    return apiRequest.post<Settings, {}>(API.SETTINGS, {});
   },
 };
 

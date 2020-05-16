@@ -1,6 +1,6 @@
 import { processData, makeApiUrl } from './Check.service';
 import { Alert } from './types';
-import { BASER_URL } from './CheckPanel.constants';
+import { API } from '../react-plugins-deps/core';
 import { activeCheckStub, alertsStub } from './__mocks__/stubs';
 
 jest.mock('axios');
@@ -14,6 +14,6 @@ describe('CheckService::', () => {
 
   it('should create a url for Alertmanager', () => {
     const url = makeApiUrl('status');
-    expect(url).toEqual(`${BASER_URL}/status`);
+    expect(url).toEqual(`${API.ALERTMANAGER}/status`);
   });
 });
