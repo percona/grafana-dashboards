@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Divider, Tabs } from 'antd';
 import './Details.scss';
 import Fingerprint from './Fingerprint/Fingerprint';
-import Explain from './Explain/Explain.container';
+import Explain from './Explain/Explain';
 import Example from './Example/Example';
 import Metrics from './Metrics/Metrics';
 import { PanelProvider } from '../../../../panel/panel.provider';
