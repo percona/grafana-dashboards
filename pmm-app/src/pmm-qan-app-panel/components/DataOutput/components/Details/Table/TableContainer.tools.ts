@@ -1,4 +1,8 @@
-export const processTableData = input => {
+export const processTableData = (input): { columns: any[]; rows: any[] } => {
+  if (!input) {
+    return { columns: [], rows: [] };
+  }
+
   const [header, ...data] = JSON.parse(input);
   const headerList = header
     .map(e => (String(e) ? String(e).trim() : 'NULL'))

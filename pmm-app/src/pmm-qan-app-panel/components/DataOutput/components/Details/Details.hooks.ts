@@ -42,6 +42,50 @@ export const useActionResult = (): [any, any] => {
   return [result, setActionId];
 };
 
+export const useActionResult_with_errors = (): [any, any] => {
+  const [result, setResult] = useState<any>();
+  const [action_id, setActionId] = useState<any>();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  let intervalId;
+  // 9 seconds, long enough
+  let counter = 30;
+  useEffect(() => {
+    if (!action_id) {
+      return;
+    }
+    const getData = async () => {
+      if (counter === 0) {
+        clearInterval(intervalId);
+        return;
+      }
+      counter--;
+
+      try {
+        const result = await DetailsService.getActionResult({
+          action_id: action_id,
+        });
+        if (result.done) {
+          setLoading(false);
+          clearInterval(intervalId);
+
+          if (result.error) {
+            setError(result.error);
+          } else {
+            setResult(result.output);
+          }
+        }
+      } catch (e) {
+        clearInterval(intervalId);
+        setLoading(false);
+      }
+    };
+    intervalId = setInterval(getData, 300);
+  }, [action_id]);
+
+  return [{ value: result, loading: loading, error: error }, setActionId];
+};
+
 export const useExplain = (): [any, any, string] => {
   const [errorText, setErrorText] = useState('');
   const {
