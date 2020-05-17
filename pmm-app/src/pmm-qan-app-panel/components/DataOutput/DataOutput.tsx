@@ -15,6 +15,7 @@ const DataOutput = () => {
     panelState: { pageNumber, pageSize, querySelected },
   } = useContext(PanelProvider);
   const [total, setTotal] = useState(30);
+  const [showTotal, setShowTotal] = useState('');
   const changePageNumber = useCallback(pageNumber => {
     contextActions.changePage(pageNumber);
   }, []);
@@ -23,7 +24,10 @@ const DataOutput = () => {
     contextActions.changePageSize(pageSize);
   }, []);
 
-  const renderShowTotal = useCallback((total, range) => `${range[0]}-${range[1]} of ${total} items`, []);
+  const renderShowTotal = useCallback((total, range) => {
+    setShowTotal(`${range[0]}-${range[1]} of ${total} items`);
+    return null;
+  }, []);
 
   // TODO: replace with something more elegant & fast
   const container = document.querySelector('#antd');
@@ -71,6 +75,7 @@ const DataOutput = () => {
                   onShowSizeChange={changePageSize}
                   onChange={changePageNumber}
                 />
+                <span className={Styling.showTotal}>{showTotal}</span>
               </div>
             </div>
           </div>

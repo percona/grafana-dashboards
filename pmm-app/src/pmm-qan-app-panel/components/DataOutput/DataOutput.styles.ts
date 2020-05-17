@@ -17,7 +17,12 @@ export const Styling = {
     height: 800px;
   `,
   paginationWrapper: css`
+    display: flex;
     // margin-left: auto;
+    align-items: center;
+  `,
+  showTotal: css`
+    color: rgba(255, 255, 255, 0.8);
   `,
   manageColumnsWrapper: css`
     margin-left: auto;

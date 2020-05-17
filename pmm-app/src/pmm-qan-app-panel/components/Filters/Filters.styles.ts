@@ -17,6 +17,7 @@ export const Styling = {
     padding: 5px 0px !important;
     height: 50px !important;
     padding-top: 15px !important;
+    justify-content: space-between;
   `,
   showAllButton: css`
     padding: 0 !important;
@@ -24,12 +25,12 @@ export const Styling = {
   `,
   title: css`
     margin: 3px;
-    margin-right: 15px;
+    // margin-right: 15px;
     color: rgba(255, 255, 255, 0.8) !important;
   `,
   resetButton: css`
     padding: 0 !important;
     height: auto;
-    margin-left: auto !important;
+    // margin-left: auto !important;
   `,
 };
