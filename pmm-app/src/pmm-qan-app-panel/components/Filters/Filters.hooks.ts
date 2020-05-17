@@ -16,7 +16,6 @@ export const useFilters = () => {
       try {
         const result = await FiltersService.getQueryOverviewFiltersList(labels, from, to, columns[0]);
         setFilters(result);
-        // setGroups(FILTERS_GROUPS);
         setLoading(false);
       } catch (e) {
         setLoading(false);

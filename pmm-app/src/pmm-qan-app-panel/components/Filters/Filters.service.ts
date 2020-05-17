@@ -16,22 +16,26 @@ class FiltersService {
       period_start_to: to,
     });
 
-    Object.keys(labels).forEach(label => {
-      labels[label].name.forEach(metric => {
-        const passedVariables = paramLabels[label];
-        metric.checked =
-          passedVariables &&
-          passedVariables.some(variable => {
-            if (!metric.value) {
-              metric.value = '';
-            }
-            return variable === metric.value;
-          });
-      });
-    });
-
-    return labels;
+    return markCheckedLabels(labels, paramLabels);
   }
 }
+
+const markCheckedLabels = (labels, paramLabels) => {
+  Object.keys(labels).forEach(label => {
+    labels[label].name.forEach(metric => {
+      const passedVariables = paramLabels[label];
+      metric.checked =
+        passedVariables &&
+        passedVariables.some(variable => {
+          if (!metric.value) {
+            metric.value = '';
+          }
+          return variable === metric.value;
+        });
+    });
+  });
+
+  return labels;
+};
 
 export default FiltersService;

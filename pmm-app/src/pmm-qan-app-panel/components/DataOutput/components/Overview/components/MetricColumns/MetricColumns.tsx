@@ -38,19 +38,24 @@ const NonTimeMetric = ({ value, units }) => (
   </span>
 );
 
+const getSorting = (orderBy, metricName) => {
+  if (orderBy === metricName) {
+    return 'ascend';
+  } else if (orderBy === `-${metricName}`) {
+    return 'descend';
+  }
+
+  return false
+};
+
 export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy) => {
   const metric = METRIC_CATALOGUE[metricName];
   const isTimeMetric = metricName.endsWith('_time');
-  let sortOrder: boolean | string = false;
-  if (orderBy === metricName) {
-    sortOrder = 'ascend';
-  } else if (orderBy === `-${metricName}`) {
-    sortOrder = 'descend';
-  }
+
   return {
     sorter: true,
     key: metricName,
-    sortOrder: sortOrder,
+    sortOrder: getSorting(orderBy, metricName),
     sortDirections: ['descend', 'ascend'],
     width: columnIndex === 0 ? COLUMN_WIDTH * 1.8 : FIXED_COLUMN_WIDTH,
     title: () => <ManageColumns placeholder={metricName} currentMetric={metric} width="100%" />,

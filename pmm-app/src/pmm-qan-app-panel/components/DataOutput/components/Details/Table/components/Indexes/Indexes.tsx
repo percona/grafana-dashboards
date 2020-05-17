@@ -23,7 +23,7 @@ export const Indexes = props => {
       <Spin spinning={indexes.loading}>
         {indexes.error ? (
           <pre>{indexes.error}</pre>
-        ) : data.rows.length > 1 ? (
+        ) : data.rows.length ? (
           <Table
             dataSource={data.rows}
             columns={data.columns}
