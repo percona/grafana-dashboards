@@ -56,23 +56,5 @@ describe('CheckPanel::', () => {
     const table = root.find('[data-qa="db-check-panel"]').find(Table);
     // Check the table is rendered
     expect(table.length).toEqual(1);
-
-    // Check the first column title
-    // expect(
-    //   table
-    //     .find('thead > tr > th')
-    //     .at(0)
-    //     .text()
-    // ).toEqual('Service name');
-
-    // Check the value in first row an first column
-    // expect(
-    //   table
-    //     .find('tbody tr')
-    //     .at(0)
-    //     .find('td')
-    //     .at(0)
-    //     .text()
-    // ).toEqual('sandbox-mysql.acme.com');
   });
 });
