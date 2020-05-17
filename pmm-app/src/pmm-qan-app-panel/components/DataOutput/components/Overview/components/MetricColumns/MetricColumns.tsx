@@ -45,7 +45,7 @@ const getSorting = (orderBy, metricName) => {
     return 'descend';
   }
 
-  return false
+  return false;
 };
 
 export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy) => {

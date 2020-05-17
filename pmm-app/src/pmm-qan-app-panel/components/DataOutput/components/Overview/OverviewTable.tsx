@@ -4,7 +4,6 @@ import './OverviewTable.scss';
 import { PanelProvider } from '../../../../panel/panel.provider';
 import '../../../../../react-plugins-deps/components/Elements/Spinner/Spinner';
 import { useOverviewTable } from './OverviewTable.hooks';
-import { TABLE_X_SCROLL } from './OverviewTable.constants';
 
 const OverviewTable = props => {
   const [data, loading] = useOverviewTable(props.setTotal);
@@ -33,7 +32,7 @@ const OverviewTable = props => {
         size="small"
         bordered
         pagination={false}
-        scroll={{ y: height - 100, x: TABLE_X_SCROLL }}
+        scroll={{ y: height - 100, x: '100%' }}
         rowClassName={(record, index) => {
           if (querySelected) {
             if (index === 0) {
