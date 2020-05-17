@@ -20,7 +20,7 @@ const CheckPanelRouter: FC<CheckPanelProps> = props => {
   );
 };
 
-describe('CheckPanel::', () => {
+xdescribe('CheckPanel::', () => {
   CheckPanel.prototype.componentDidMount = jest.fn();
 
   it('should accept a title parameter and display it as a table caption', async () => {
