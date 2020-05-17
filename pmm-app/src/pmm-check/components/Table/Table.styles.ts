@@ -54,7 +54,6 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       }
     `,
     empty: css`
-      font-size: larger;
       display: flex;
       width: 100%;
       height: 160px;

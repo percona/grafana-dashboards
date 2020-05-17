@@ -14,6 +14,13 @@ export const CheckService = {
     });
     return Array.isArray(data) && data.length ? processData(data as Alert[]) : undefined;
   },
+  async getFailedChecks(): Promise<FailedChecks | undefined> {
+    const data = await apiRequest.get<Alert[], AlertRequestParams>(makeApiUrl('alerts'), {
+      params: { active: true, silenced: false, filter: 'stt_check=1' },
+    });
+    return Array.isArray(data) && data.length ? sumFailedChecks(processData(data as Alert[])) : undefined;
+  },
+
   async getSettings() {
     return apiRequest.post<Settings, {}>(API.SETTINGS, {});
   },
@@ -59,4 +66,18 @@ export const processData = (data: Alert[]): ActiveCheck[] => {
     const details = value.map(val => `${val.summary}${val.description ? `: ${val.description}` : ''}`);
     return { key: String(i), name, failed, details };
   });
+};
+
+export const sumFailedChecks = (checks: ActiveCheck[]): FailedChecks => {
+  return checks
+    .map(rec => rec.failed)
+    .reduce(
+      (acc, failed) => {
+        acc[0] += failed[0];
+        acc[1] += failed[1];
+        acc[2] += failed[2];
+        return acc;
+      },
+      [0, 0, 0]
+    );
 };
