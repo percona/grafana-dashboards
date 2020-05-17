@@ -16,7 +16,9 @@ export const Failed: FC<FailedProps> = ({ failed }) => {
         {sum} ({failed.join(' / ')})
       </span>
       <Tooltip placement="top" theme="info" content={<TooltipText sum={sum} data={failed} />}>
-        <Icon name="info-circle" />
+        <span>
+          <Icon name="info-circle" className={styles.InfoIcon} />
+        </span>
       </Tooltip>
     </div>
   );

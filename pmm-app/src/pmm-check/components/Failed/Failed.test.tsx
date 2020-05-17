@@ -1,7 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-// import { Tooltip } from 'antd';
-// import { InfoCircleOutlined } from '@ant-design/icons';
+import { Icon, Tooltip } from '@grafana/ui';
 import { Failed } from './Failed';
 
 describe('Failed::', () => {
@@ -17,9 +16,9 @@ describe('Failed::', () => {
   });
 
   it('should render inner components', () => {
-    // const root = shallow(Failed([1, 0, 1]));
-    expect(true).toEqual(true);
-    // expect(root.find(InfoCircleOutlined).length).toEqual(1);
-    // expect(root.find(Tooltip).length).toEqual(1);
+    const root = shallow(<Failed failed={[1, 0, 1]} />);
+
+    expect(root.find(Icon).length).toEqual(1);
+    expect(root.find(Tooltip).length).toEqual(1);
   });
 });

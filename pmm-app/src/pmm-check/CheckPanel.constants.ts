@@ -20,7 +20,7 @@ export const COLUMNS: Column[] = [
     key: 'name',
   },
   {
-    title: 'Failed Database Checks',
+    title: 'Failed Checks',
     dataIndex: 'failed',
     key: 'failed',
     render: Failed,

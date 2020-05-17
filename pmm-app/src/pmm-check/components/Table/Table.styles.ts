@@ -6,7 +6,6 @@ import { selectThemeVariant, stylesFactory } from '@grafana/ui';
  * NOTE: These styles may be used to create a theme for PMM
  */
 export const getStyles = stylesFactory((theme: GrafanaTheme) => {
-  console.log('theme', theme);
   const backgroundColor = selectThemeVariant(
     { light: 'rgb(247, 247, 249)', dark: 'rgb(22, 23, 25)' },
     theme.type

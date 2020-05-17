@@ -37,7 +37,7 @@ export const Table: FC<TableProps> = ({ caption, columns, data = [], isSttEnable
         )}
         {isSttEnabled && isEmpty && (
           <div className={styles.empty} data-qa="db-check-panel-table-empty">
-            No data.
+            No data
           </div>
         )}
         {isSttEnabled && !isEmpty && (

@@ -15,8 +15,7 @@ export const TooltipBody = css`
 `;
 
 export const InfoIcon = css`
-  font-size: 10px;
-  color: lightblue;
+  color: #6495ed;
 `;
 
 export const FailedDiv = css`

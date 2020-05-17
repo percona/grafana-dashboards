@@ -46,6 +46,8 @@ export interface AlertRequestParams {
 }
 
 export interface Settings {
-  stt_enabled?: boolean;
-  telemetry_enabled?: boolean;
+  settings: {
+    stt_enabled?: boolean;
+    telemetry_enabled?: boolean;
+  };
 }
