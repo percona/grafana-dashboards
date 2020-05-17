@@ -36,8 +36,8 @@ export const Filters = ({ contextActions, form, labels, filters }) => {
     setFiltersBodyHeight(Math.max(filtersHeight, FILTERS_BODY_HEIGHT));
   }, [height]);
 
-  return (
-    <div>
+  const FiltersControlPanel = () => {
+    return (
       <div className={Styling.filtersHeader}>
         <h5 className={Styling.title}>Filters</h5>
         <Button
@@ -63,6 +63,11 @@ export const Filters = ({ contextActions, form, labels, filters }) => {
           Reset All
         </Button>
       </div>
+    );
+  };
+  return (
+    <div>
+      <FiltersControlPanel />
       <ScrollArea className={Styling.getFiltersWrapper(filtersBodyHeight)}>
         <Search
           placeholder="Search..."
@@ -71,7 +76,7 @@ export const Filters = ({ contextActions, form, labels, filters }) => {
             e.stopPropagation();
           }}
           value={filter}
-          style={{ width: '100%', border: '1px solid rgba(255,255,255,0.8)' }}
+          className={Styling.filtersField}
         />
         {FILTERS_GROUPS.filter(group => filters[group.dataKey]).map(group => {
           const { name, dataKey } = group;
@@ -112,7 +117,6 @@ const FiltersContainer = () => {
           <Spin spinning={loading}>
             <form
               onSubmit={handleSubmit}
-              className="app-theme-dark"
               onChange={() => contextActions.setLabels(form.getState().values)}
             >
               <Filters contextActions={contextActions} form={form} labels={labels} filters={filters} />

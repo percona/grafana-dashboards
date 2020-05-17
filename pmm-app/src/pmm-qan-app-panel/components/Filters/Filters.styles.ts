@@ -7,6 +7,10 @@ export const Styling = {
     overflow-y: scroll;
     height: ${height}px;
   `,
+  filtersField: css`
+    width: '100%';
+    border: '1px solid rgba(255,255,255,0.8)' !important;
+  `,
   filtersHeader: css`
     display: flex;
     align-items: baseline;
