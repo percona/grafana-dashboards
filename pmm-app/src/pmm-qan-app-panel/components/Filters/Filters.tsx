@@ -115,10 +115,7 @@ const FiltersContainer = () => {
         // @ts-ignore
         return (
           <Spin spinning={loading}>
-            <form
-              onSubmit={handleSubmit}
-              onChange={() => contextActions.setLabels(form.getState().values)}
-            >
+            <form onSubmit={handleSubmit} onChange={() => contextActions.setLabels(form.getState().values)}>
               <Filters contextActions={contextActions} form={form} labels={labels} filters={filters} />
             </form>
           </Spin>

@@ -52,7 +52,7 @@ export const getDefaultColumns = (groupBy, pageNumber, pageSize, columns, onCell
       render: (text, record, index) => {
         return (
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <div className={mainMetric(mainMetricColumnWidth)}>
+            <div className={mainMetric(mainMetricColumnWidth, index === 0)}>
               {index === 0 ? 'TOTAL' : record.fingerprint || record.dimension || 'N/A'}
             </div>
             {index !== 0 && record.fingerprint ? (

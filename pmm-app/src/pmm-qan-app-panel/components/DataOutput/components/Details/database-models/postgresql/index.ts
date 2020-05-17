@@ -8,7 +8,6 @@ export class PostgreSQL extends GenericDatabase {
 
   async getShowCreateTables({ example, tableName, setActionId }) {
     if (!tableName) {
-      // setErrorText('Cannot display table info without query example, schema or table name at this moment.');
       return;
     }
     const { action_id } = await PostgresqlDatabaseService.getShowCreateTablePostgreSQL({
