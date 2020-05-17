@@ -38,6 +38,7 @@ export const Styling = {
     background-color: #3d3d3d !important;
   `,
   showModeSwitcher: css`
+    сolor: rgb(50, 179, 227);
     cursor: pointer;
   `,
 };

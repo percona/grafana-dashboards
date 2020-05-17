@@ -23,6 +23,31 @@ const OverviewTable = props => {
     contextActions.changeSort(sorter.columnKey);
   }, []);
 
+  const getRowClassName = useCallback(
+    (record, index) => {
+      if (querySelected) {
+        if (index === 0) {
+          return totals ? 'selected-overview-row' : '';
+        } else {
+          if (totals) {
+            return '';
+          }
+
+          if (!record.dimension && !queryId) {
+            return 'selected-overview-row';
+          }
+
+          if (record.dimension === queryId) {
+            return 'selected-overview-row';
+          }
+        }
+      }
+
+      return '';
+    },
+    [querySelected, totals]
+  );
+
   return (
     <div>
       <Table
@@ -33,27 +58,7 @@ const OverviewTable = props => {
         bordered
         pagination={false}
         scroll={{ y: height - 100, x: '100%' }}
-        rowClassName={(record, index) => {
-          if (querySelected) {
-            if (index === 0) {
-              return totals ? 'selected-overview-row' : '';
-            } else {
-              if (totals) {
-                return '';
-              }
-
-              if (!record.dimension && !queryId) {
-                return 'selected-overview-row';
-              }
-
-              if (record.dimension === queryId) {
-                return 'selected-overview-row';
-              }
-            }
-          }
-
-          return '';
-        }}
+        rowClassName={getRowClassName}
         loading={loading}
       />
     </div>
