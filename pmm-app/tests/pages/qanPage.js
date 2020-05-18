@@ -143,7 +143,7 @@ module.exports = {
     return filterLocator;
   },
 
-  verifyFilterExists(filterValue) {
+  async verifyFilterExists(filterValue) {
     const filterLocator = "//input[@name='service_name:" + filterValue + "']";
     I.waitForVisible(filterLocator, 30);
   },

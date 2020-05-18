@@ -20,11 +20,11 @@ Scenario(
     await pmmInventoryPage.verifyAgentHasStatusRunning(instanceIdToMonitor);
     await pmmInventoryPage.verifyMetricsFlags(instanceIdToMonitor);
     I.amOnPage(homePage.url);
-    homePage.verifyVisibleService(instanceIdToMonitor);
+    await homePage.verifyVisibleService(instanceIdToMonitor);
     I.amOnPage(dashboardPage.mySQLInstanceOverview.url);
     await dashboardPage.verifyExisitngServiceName(instanceIdToMonitor);
     I.amOnPage(qanPage.url);
-    qanPage.verifyFilterExists(instanceIdToMonitor);
+    await qanPage.verifyFilterExists(instanceIdToMonitor);
   }
 );
 

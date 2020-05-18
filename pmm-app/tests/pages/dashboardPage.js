@@ -415,6 +415,7 @@ module.exports = {
   },
 
   async verifyExisitngServiceName(serviceName) {
+    I.waitForElement(this.mySQLInstanceOverview.serviceName, 30);
     I.click(this.mySQLInstanceOverview.serviceName);
     const existingFilter =
       "//span[@class='variable-option-icon']/following-sibling::span[contains(text(), '" +
