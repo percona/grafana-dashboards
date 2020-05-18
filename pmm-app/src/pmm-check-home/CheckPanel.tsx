@@ -1,7 +1,8 @@
 import React, { PureComponent, FC } from 'react';
-import { PanelProps } from '@grafana/data';
 import { createBrowserHistory } from 'history';
 import { Router, Route } from 'react-router-dom';
+import { PanelProps } from '@grafana/data';
+import { Spinner } from '@grafana/ui';
 import { CheckPanelOptions, Settings, FailedChecks } from 'pmm-check/types';
 import { CheckService } from 'pmm-check/Check.service';
 import * as styles from './CheckPanel.styles';
@@ -12,6 +13,7 @@ export interface CheckPanelProps extends PanelProps<CheckPanelOptions> {}
 export interface CheckPanelState {
   failedChecks?: FailedChecks;
   isSttEnabled: boolean;
+  isLoading: boolean;
 }
 
 const history = createBrowserHistory();
@@ -20,6 +22,7 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
   state: CheckPanelState = {
     failedChecks: undefined,
     isSttEnabled: false,
+    isLoading: true,
   };
 
   constructor(props: CheckPanelProps) {
@@ -38,6 +41,8 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
       this.setState({ failedChecks });
     } catch (err) {
       console.error(err);
+    } finally {
+      this.setState({ isLoading: false });
     }
   }
 
@@ -47,18 +52,22 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
       this.setState({ isSttEnabled: !!resp.settings?.stt_enabled });
       if (resp.settings?.stt_enabled) {
         this.fetchAlerts();
+      } else {
+        this.setState({ isLoading: false });
       }
     } catch (err) {
+      this.setState({ isLoading: false });
       console.error(err);
     }
   }
 
   render() {
-    const { isSttEnabled, failedChecks } = this.state;
+    const { isSttEnabled, failedChecks, isLoading } = this.state;
 
     return (
       <div className={styles.panel} data-qa="db-check-panel-home">
-        <Failed failed={failedChecks} isSttEnabled={isSttEnabled} />
+        {isLoading && <Spinner />}
+        {!isLoading && <Failed failed={failedChecks} isSttEnabled={isSttEnabled} />}
       </div>
     );
   }

@@ -1,6 +1,7 @@
 import React, { PureComponent, FC } from 'react';
-import { PanelProps } from '@grafana/data';
 import { createBrowserHistory } from 'history';
+import { PanelProps } from '@grafana/data';
+import { Spinner } from '@grafana/ui';
 import { Router, Route } from 'react-router-dom';
 import { CheckPanelOptions, ActiveCheck, Settings } from './types';
 import { CheckService } from './Check.service';
@@ -12,7 +13,7 @@ export interface CheckPanelProps extends PanelProps<CheckPanelOptions> {}
 
 export interface CheckPanelState {
   dataSource?: ActiveCheck[];
-  loading: boolean;
+  isLoading: boolean;
   isSttEnabled: boolean;
 }
 
@@ -21,7 +22,7 @@ const history = createBrowserHistory();
 export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> {
   state = {
     dataSource: undefined,
-    loading: false,
+    isLoading: true,
     isSttEnabled: false,
   };
 
@@ -36,29 +37,28 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
   }
 
   async fetchAlerts() {
-    this.setState({ loading: true });
     try {
       const dataSource = await CheckService.getActiveAlerts();
       this.setState({ dataSource });
     } catch (err) {
       console.error(err);
     } finally {
-      this.setState({ loading: false });
+      this.setState({ isLoading: false });
     }
   }
 
   async getSettings() {
-    this.setState({ loading: true });
     try {
       const resp = (await CheckService.getSettings()) as Settings;
       this.setState({ isSttEnabled: !!resp.settings?.stt_enabled });
       if (resp.settings?.stt_enabled) {
         this.fetchAlerts();
+      } else {
+        this.setState({ isLoading: false });
       }
     } catch (err) {
       console.error(err);
-    } finally {
-      this.setState({ loading: false });
+      this.setState({ isLoading: false });
     }
   }
 
@@ -66,11 +66,14 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
     const {
       options: { title },
     } = this.props;
-    const { dataSource, isSttEnabled } = this.state;
+    const { dataSource, isSttEnabled, isLoading } = this.state;
 
     return (
       <div className={styles.panel} data-qa="db-check-panel">
-        <Table caption={title} data={dataSource} columns={COLUMNS} isSttEnabled={isSttEnabled} />
+        {isLoading && <Spinner />}
+        {!isLoading && (
+          <Table caption={title} data={dataSource} columns={COLUMNS} isSttEnabled={isSttEnabled} />
+        )}
       </div>
     );
   }

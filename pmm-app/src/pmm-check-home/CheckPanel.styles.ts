@@ -1,5 +1,8 @@
 import { css } from 'emotion';
 
 export const panel = css`
-  margin-top: 1em;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
 `;

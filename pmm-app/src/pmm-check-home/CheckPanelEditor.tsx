@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { FormField } from '@grafana/ui';
 import { PanelEditorProps } from '@grafana/data';
-import { CheckPanelOptions } from './types';
+import { CheckPanelOptions } from 'pmm-check/types';
 
 export class CheckPanelEditor extends PureComponent<PanelEditorProps<CheckPanelOptions>> {
   onTitleChanged = ({ target }: any) => {

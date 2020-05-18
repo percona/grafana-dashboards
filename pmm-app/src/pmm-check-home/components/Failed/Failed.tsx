@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Tooltip, Icon } from '@grafana/ui';
 import { cx } from 'emotion';
 import { FailedChecks } from 'pmm-check/types';
-import { PMM_SETTINGS_URL } from 'pmm-check/CheckPanel.constants';
+import { PMM_SETTINGS_URL, PMM_DATABASE_CHECKS_PANEL_URL } from 'pmm-check-home/CheckPanel.constants';
 import { TooltipText } from './TooltipText';
 import * as styles from './Failed.styles';
 
@@ -18,7 +18,9 @@ export const Failed: FC<FailedProps> = ({ failed = [0, 0, 0], isSttEnabled }) =>
   if (!isSttEnabled) {
     return (
       <div className={styles.Empty} data-qa="db-check-panel-settings-link">
-        Security Threat Tool is disabled. You can enable it in&nbsp;
+        Security Threat Tool is disabled.
+        <br />
+        {'Check '}
         <Link className={styles.Link} to={PMM_SETTINGS_URL}>
           PMM Settings.
         </Link>
@@ -28,7 +30,7 @@ export const Failed: FC<FailedProps> = ({ failed = [0, 0, 0], isSttEnabled }) =>
 
   if (!sum) {
     return (
-      <div>
+      <div data-qa="db-check-panel-zero-checks">
         <span className={cx(styles.FailedDiv, styles.Green)}>{sum}</span>
         <Tooltip placement="top" theme="info" content={<TooltipText sum={sum} data={failed} />}>
           <span>
@@ -41,18 +43,15 @@ export const Failed: FC<FailedProps> = ({ failed = [0, 0, 0], isSttEnabled }) =>
 
   const [critical, major, trivial] = failed;
   return (
-    <div>
-      <span className={(styles.FailedDiv, styles.LargeSize)}>
-        <span>{critical}</span>
-        <span> / </span>
-        <span>{major}</span>
-        <span> / </span>
-        <span>{trivial}</span>
-      </span>
+    <div data-qa="db-check-panel-has-checks">
       <Tooltip placement="top" theme="info" content={<TooltipText sum={sum} data={failed} />}>
-        <span>
-          <Icon name="info-circle" className={styles.InfoIcon} />
-        </span>
+        <a href={PMM_DATABASE_CHECKS_PANEL_URL} className={(styles.FailedDiv, styles.LargeSize)}>
+          <span className={styles.Critical}>{critical}</span>
+          <span> / </span>
+          <span className={styles.Major}>{major}</span>
+          <span> / </span>
+          <span className={styles.Trivial}>{trivial}</span>
+        </a>
       </Tooltip>
     </div>
   );

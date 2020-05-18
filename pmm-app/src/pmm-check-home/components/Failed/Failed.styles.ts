@@ -31,12 +31,7 @@ export const Green = css`
 `;
 
 export const Empty = css`
-  display: flex;
-  width: 100%;
-  height: 40px;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid rgb(41, 42, 45);
+  text-align: center;
 `;
 
 export const Link = css`
@@ -48,4 +43,16 @@ export const Link = css`
 
 export const LargeSize = css`
   font-size: 30px;
+`;
+
+export const Critical = css`
+  color: #e02f44;
+`;
+
+export const Major = css`
+  color: #e36526;
+`;
+
+export const Trivial = css`
+  color: rgb(87, 148, 242);
 `;
