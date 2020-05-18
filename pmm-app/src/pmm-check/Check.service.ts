@@ -22,7 +22,7 @@ export const CheckService = {
   },
 
   async getSettings() {
-    return apiRequest.post<Settings, {}>(API.SETTINGS, {});
+    return apiRequest.post<Settings, {}>(API.SETTINGS, {}, true);
   },
 };
 
