@@ -8,7 +8,7 @@ import {
   TABLE_X_SCROLL,
 } from '../../OverviewTable.constants';
 import { Icon } from 'antd';
-import { mainMetric, rowNumber, mainColumn, tooltipIcon, metricWrapper } from './DefaultColumns.styles';
+import { mainColumn, mainMetric, metricWrapper, rowNumber, tooltipIcon } from './DefaultColumns.styles';
 import { GroupByControl } from '../GroupByControl/GroupByControl';
 // eslint-disable-next-line max-len
 import { QueryTooltip } from '../../../../../../../react-plugins-deps/components/Elements/QueryTooltip/QueryTooltip';

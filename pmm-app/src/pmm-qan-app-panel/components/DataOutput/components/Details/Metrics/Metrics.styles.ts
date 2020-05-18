@@ -10,7 +10,7 @@ export const Styling = {
     text-align: center;
   `,
   metricTooltipIcon: css`
-    margin-left: 5px;
+    margin-left: auto;
   `,
   sum: css`
     margin-right: 10px;
@@ -18,7 +18,7 @@ export const Styling = {
     display: inline-block;
   `,
   percentOfTotal: css`
-    color: #26afe1;
+    color: rgba(138, 164, 255, 0.8);
     margin-left: 5px;
     min-width: 90px;
     display: inline-block;

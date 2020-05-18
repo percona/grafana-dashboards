@@ -59,7 +59,7 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
     sortDirections: ['descend', 'ascend'],
     width: columnIndex === 0 ? COLUMN_WIDTH * 1.8 : FIXED_COLUMN_WIDTH,
     title: () => <ManageColumns placeholder={metricName} currentMetric={metric} width="100%" />,
-    render: (text, item) => {
+    render: (text, item, index) => {
       const stats = item.metrics[metricName].stats;
       const statPerSec = stats.qps || stats.sum_per_sec;
       // @ts-ignore
@@ -97,6 +97,7 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
       const polygonChartProps = {
         data: item.sparkline,
         metricName: metricName,
+        color: index === 0 ? 'rgba(223, 159, 85, 0.8)' : undefined,
       };
       const MetricsList = ({ data }) => {
         return (
