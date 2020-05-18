@@ -1,4 +1,5 @@
 // TODO: calculate table width right and remove it
+import React from 'react';
 import {
   COLUMN_WIDTH,
   FIXED_COLUMN_WIDTH,
@@ -6,13 +7,11 @@ import {
   ROW_NUMBER_COLUMN_WIDTH,
   TABLE_X_SCROLL,
 } from '../../OverviewTable.constants';
-import { mainMetric, rowNumber } from './DefaultColumns.styles';
+import { Icon } from 'antd';
+import { mainMetric, rowNumber, mainColumn, tooltipIcon, metricWrapper } from './DefaultColumns.styles';
 import { GroupByControl } from '../GroupByControl/GroupByControl';
 // eslint-disable-next-line max-len
 import { QueryTooltip } from '../../../../../../../react-plugins-deps/components/Elements/QueryTooltip/QueryTooltip';
-import React from 'react';
-import './DefaultColumns.scss';
-import { Icon } from 'antd';
 
 const MAGIC_WIDTH_FIX = 17;
 
@@ -47,17 +46,17 @@ export const getDefaultColumns = (groupBy, pageNumber, pageSize, columns, onCell
       width: mainMetricColumnWidth,
       title: () => <GroupByControl />,
       ellipsis: true,
-      className: 'overview-main-column',
+      className: mainColumn,
       onCell: onCell,
       render: (text, record, index) => {
         return (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div className={metricWrapper}>
             <div className={mainMetric(mainMetricColumnWidth, index === 0)}>
               {index === 0 ? 'TOTAL' : record.fingerprint || record.dimension || 'N/A'}
             </div>
             {index !== 0 && record.fingerprint ? (
               <QueryTooltip query={record.fingerprint}>
-                <Icon type="question-circle" style={{ marginLeft: 'auto' }} />
+                <Icon type="question-circle" className={tooltipIcon} />
               </QueryTooltip>
             ) : null}
           </div>

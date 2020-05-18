@@ -5,6 +5,17 @@ export const rowNumber = css`
   word-break: normal;
 `;
 
+export const mainColumn = css`
+  cursor: pointer;
+`;
+
+export const tooltipIcon = css`
+  marginleft: 'auto';
+`;
+export const metricWrapper = css`
+  display: 'flex';
+  alignitems: 'center';
+`;
 export const mainMetric = (mainMetricColumnWidth, isTotal) => css`
   word-wrap: break-word !important;
   word-break: break-word !important;
