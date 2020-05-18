@@ -70,7 +70,11 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
 
     return (
       <div className={styles.panel} data-qa="db-check-panel">
-        {isLoading && <Spinner />}
+        {isLoading && (
+          <div className={styles.spinner}>
+            <Spinner />
+          </div>
+        )}
         {!isLoading && (
           <Table caption={title} data={dataSource} columns={COLUMNS} isSttEnabled={isSttEnabled} />
         )}
