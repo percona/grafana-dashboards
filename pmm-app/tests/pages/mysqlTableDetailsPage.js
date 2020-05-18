@@ -18,7 +18,7 @@ module.exports = {
   metrics: [
     'Largest Tables by Row Count',
     'Largest Tables by Size',
-    'Most Fragmented Tables by Freeable Size',
+    'Most Fragmented Tables by Freeable Size - ps_dts_node_1',
   ],
 
   graphsLocator(metricName) {
