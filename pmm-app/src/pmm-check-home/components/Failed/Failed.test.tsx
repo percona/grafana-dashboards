@@ -13,6 +13,12 @@ describe('Failed::', () => {
     expect(spans.at(4).text()).toEqual('1');
   });
 
+  it('should render 0 when the sum of all checks is zero', () => {
+    const root = shallow(<Failed failed={[0, 0, 0]} isSttEnabled />);
+
+    expect(root.find('div > span').text()).toEqual('0');
+  });
+
   it('should render an inner tooltip component', () => {
     const root = shallow(<Failed failed={[1, 0, 1]} isSttEnabled />);
 

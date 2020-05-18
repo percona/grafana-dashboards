@@ -1,6 +1,6 @@
 import React, { FC, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { Tooltip, Icon } from '@grafana/ui';
+import { Tooltip } from '@grafana/ui';
 import { cx } from 'emotion';
 import { FailedChecks } from 'pmm-check/types';
 import { PMM_SETTINGS_URL, PMM_DATABASE_CHECKS_PANEL_URL } from 'pmm-check-home/CheckPanel.constants';
@@ -32,11 +32,6 @@ export const Failed: FC<FailedProps> = ({ failed = [0, 0, 0], isSttEnabled }) =>
     return (
       <div data-qa="db-check-panel-zero-checks">
         <span className={cx(styles.FailedDiv, styles.Green)}>{sum}</span>
-        <Tooltip placement="top" theme="info" content={<TooltipText sum={sum} data={failed} />}>
-          <span>
-            <Icon name="info-circle" className={styles.InfoIcon} />
-          </span>
-        </Tooltip>
       </div>
     );
   }
@@ -45,7 +40,7 @@ export const Failed: FC<FailedProps> = ({ failed = [0, 0, 0], isSttEnabled }) =>
   return (
     <div data-qa="db-check-panel-has-checks">
       <Tooltip placement="top" theme="info" content={<TooltipText sum={sum} data={failed} />}>
-        <a href={PMM_DATABASE_CHECKS_PANEL_URL} className={(styles.FailedDiv, styles.LargeSize)}>
+        <a href={PMM_DATABASE_CHECKS_PANEL_URL} className={styles.FailedDiv}>
           <span className={styles.Critical}>{critical}</span>
           <span> / </span>
           <span className={styles.Major}>{major}</span>

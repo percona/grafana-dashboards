@@ -24,6 +24,7 @@ export const InfoIcon = css`
 
 export const FailedDiv = css`
   margin-right: 0.5em;
+  font-size: 30px;
 `;
 
 export const Green = css`
@@ -39,10 +40,6 @@ export const Link = css`
   &:hover {
     color: rgb(87, 148, 242);
   }
-`;
-
-export const LargeSize = css`
-  font-size: 30px;
 `;
 
 export const Critical = css`
