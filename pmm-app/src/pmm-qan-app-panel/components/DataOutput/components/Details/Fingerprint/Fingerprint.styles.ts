@@ -3,8 +3,10 @@ import { css } from 'emotion';
 export const Styling = {
   fingerprintWrapper: css`
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     margin-top: 10px;
+    align-items: center;
+    position: relative;
   `,
   controlSum: css`
     color: gray;
@@ -18,7 +20,13 @@ export const Styling = {
     text-overflow: ellipsis;
     width: 600px;
     overflow: hidden;
-    color: rgba(32, 215, 255, 0.8) !important;
+  `,
+  closeButton: css`
+    position: absolute;
+    right: 10px;
+  `,
+  tooltipIcon: css`
+    margin-left: 5px;
     cursor: help;
   `,
 };
