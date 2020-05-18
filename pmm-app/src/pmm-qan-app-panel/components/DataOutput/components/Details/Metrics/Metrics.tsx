@@ -12,8 +12,8 @@ import { useMetricsDetails } from './Metrics.hooks';
 
 const mainColumn = (text, item) => {
   return (
-    <span className={Styling.metricTooltip}>
-      {item.name}
+    <span className={Styling.metricColumn}>
+      <span>{item.name}</span>
       <Tooltip title={item.tooltip} placement="leftTop">
         <Icon type="question-circle" className={Styling.metricTooltipIcon} />
       </Tooltip>

@@ -41,13 +41,6 @@ const Explain = ({ classicExplain, jsonExplain }) => {
         </Panel>
       </Collapse>
     </div>
-    // <Spin spinning={false}>
-    //   {!classicExplain && jsonExplain ? (
-    //     <pre>Cannot display query explain without query explain at this time.</pre>
-    //   ) : (
-    //
-    //   )}
-    // </Spin>
   );
 };
 

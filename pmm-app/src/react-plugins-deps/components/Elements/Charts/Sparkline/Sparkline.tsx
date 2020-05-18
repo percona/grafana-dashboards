@@ -31,6 +31,7 @@ export const Sparkline = ({
   width,
   metricName,
   data,
+  color = 'rgba(255, 239, 168, 0.8)',
 }: PolygonChartInterface) => {
   const xkey = 'timestamp';
   const ykey = getMetricSparklineKey(metricName);
@@ -117,7 +118,7 @@ export const Sparkline = ({
 
     g.append('path')
       .attr('d', areaBar(data))
-      .style('fill', 'rgba(215, 114, 44, 0.6)');
+      .style('fill', color);
 
     const focusBar = focusG
       .append('path')

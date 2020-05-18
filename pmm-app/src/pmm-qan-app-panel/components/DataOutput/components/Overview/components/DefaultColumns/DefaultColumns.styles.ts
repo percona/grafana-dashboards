@@ -10,12 +10,13 @@ export const mainColumn = css`
 `;
 
 export const tooltipIcon = css`
-  marginleft: 'auto';
+  margin-left: auto;
 `;
 export const metricWrapper = css`
-  display: 'flex';
-  alignitems: 'center';
+  display: flex;
+  align-items: center;
 `;
+
 export const mainMetric = (mainMetricColumnWidth, isTotal) => css`
   word-wrap: break-word !important;
   word-break: break-word !important;
@@ -23,5 +24,5 @@ export const mainMetric = (mainMetricColumnWidth, isTotal) => css`
   text-overflow: ellipsis !important;
   white-space: nowrap !important;
   max-width: ${mainMetricColumnWidth - 40}px !important;
-  color: ${isTotal ? 'rgb(38, 139, 64)' : '#32b3e3'};
+  color: ${isTotal ? 'rgba(138, 164, 255, 0.8)' : 'rgba(32, 215, 255, 0.8)'};
 `;

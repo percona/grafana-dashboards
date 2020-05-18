@@ -18,7 +18,7 @@ export const Styling = {
     text-overflow: ellipsis;
     width: 600px;
     overflow: hidden;
-    color: #32b3e3 !important;
+    color: rgba(32, 215, 255, 0.8) !important;
     cursor: help;
   `,
 };
