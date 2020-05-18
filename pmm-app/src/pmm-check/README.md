@@ -1,6 +1,6 @@
 # PMM Database Checks
 
-A UI component that allows to run database checks that PMM receives from the Platform via Platform API.
+A UI component that visualizes the quantity & severity of failed database check results that PMM runs once it receives them from the Platform via Platform API.
 
 ## Links
 
@@ -12,7 +12,7 @@ A UI component that allows to run database checks that PMM receives from the Pla
 
 Note: the queries below should be run inside of a PMM Server docker container.
 
-- Query only active alerts: `curl -u admin:admin http://127.0.0.1/alertmanager/api/v2/alerts?active=true`
+- Query only active alerts: `curl -u admin:admin http://127.0.0.1/alertmanager/api/v2/alerts?active=true&silenced=false`
 
 - Query alerts with a specific filter: `curl -u admin:admin http://127.0.0.1/alertmanager/api/v2/alerts?filter='node_name=pmm-server'`
 

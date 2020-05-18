@@ -1,4 +1,4 @@
-import * as numeral from 'numeral';
+import numeral from 'numeral';
 
 class Humanize {
   static formatPercent(input) {

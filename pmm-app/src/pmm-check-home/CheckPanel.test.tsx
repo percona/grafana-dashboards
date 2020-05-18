@@ -2,13 +2,12 @@ import React, { FC } from 'react';
 import { MemoryRouter, Route } from 'react-router-dom';
 import { mount, ReactWrapper } from 'enzyme';
 import { CheckPanel, CheckPanelProps, CheckPanelState } from './CheckPanel';
-import { Table } from './components/Table';
-
-import { activeCheckStub } from './__mocks__/stubs';
+import { activeCheckStub } from 'pmm-check/__mocks__/stubs';
+import { Failed } from './components';
 
 jest.mock('../react-plugins-deps/components/helpers/notification-manager');
 
-jest.mock('./Check.service');
+jest.mock('../pmm-check/Check.service');
 
 const CheckPanelRouter: FC<CheckPanelProps> = props => {
   return (
@@ -50,11 +49,10 @@ xdescribe('CheckPanel::', () => {
     root.update();
 
     expect(root.state('dataSource')).toEqual(activeCheckStub);
-    expect(root.state().loading).toEqual(false);
     expect(root.state().isSttEnabled).toEqual(true);
 
-    const table = root.find('[data-qa="db-check-panel"]').find(Table);
+    const failed = root.find('[data-qa="db-check-panel"]').find(Failed);
     // Check the table is rendered
-    expect(table.length).toEqual(1);
+    expect(failed.length).toEqual(1);
   });
 });
