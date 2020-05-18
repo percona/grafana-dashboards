@@ -45,7 +45,7 @@ const OverviewTable = props => {
 
       return '';
     },
-    [querySelected, totals]
+    [querySelected, totals, queryId]
   );
 
   return (

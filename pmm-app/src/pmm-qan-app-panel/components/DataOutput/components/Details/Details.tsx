@@ -38,7 +38,7 @@ const Details = () => {
         closeDetails={closeDetails}
       />
       <div className="details-tabs">
-        <Divider />
+        <Divider style={{ margin: 0 }} />
         <Tabs activeKey={activeTab} onChange={setActiveTab} tabPosition="top" destroyInactiveTabPane>
           <TabPane tab={<span>Details</span>} key={TabKeys.Details}>
             <Metrics databaseType={databaseType} />

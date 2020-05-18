@@ -15,7 +15,6 @@ export const GroupByControl = () => {
 
   return (
     <div className={Styling.groupByWrapper}>
-      <h5 className={Styling.groupByHeader}>Group by</h5>
       <Select
         optionLabelProp="label"
         defaultValue={groupBy}
