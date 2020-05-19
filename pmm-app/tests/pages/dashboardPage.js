@@ -298,7 +298,7 @@ module.exports = {
   },
 
   mySQLInstanceOverview: {
-    url: 'graph/d/mysql-instance-overview/mysql-instances-overview?orgId=1&from=now-12h&to=now&refresh=1m',
+    url: 'graph/d/mysql-instance-overview/mysql-instances-overview?orgId=1&from=now-2m&to=now&refresh=1m',
     serviceName:
       "//label[contains(text(), 'Service Name')]/following-sibling::value-select-dropdown/descendant::a[@class='variable-value-link']",
   },
