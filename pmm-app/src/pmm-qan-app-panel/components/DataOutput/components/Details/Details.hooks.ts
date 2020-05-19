@@ -41,6 +41,7 @@ export const useActionResult = (): [ActionResult, Dispatch<string>] => {
           if (result.error) {
             setError(result.error);
           } else {
+            setError('');
             setResult(result.output);
           }
         }
