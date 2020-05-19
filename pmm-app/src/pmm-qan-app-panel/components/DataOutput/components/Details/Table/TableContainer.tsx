@@ -13,7 +13,7 @@ const TableCreateContainer = ({ databaseType, examples, tables }) => {
   return (
     <Spin spinning={false}>
       {tables && tables.length ? (
-        <Tabs defaultActiveKey="1" onChange={() => {}} tabPosition="top">
+        <Tabs defaultActiveKey="0" onChange={() => {}} tabPosition="top">
           {tables.map((table, index) => {
             return (
               <TabPane tab={<span>{table}</span>} key={index}>

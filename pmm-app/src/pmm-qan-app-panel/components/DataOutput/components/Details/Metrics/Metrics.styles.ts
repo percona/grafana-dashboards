@@ -18,7 +18,7 @@ export const Styling = {
     display: inline-block;
   `,
   percentOfTotal: css`
-    color: rgba(138, 164, 255, 0.8);
+    color: #8aa4ff;
     margin-left: 5px;
     min-width: 90px;
     display: inline-block;

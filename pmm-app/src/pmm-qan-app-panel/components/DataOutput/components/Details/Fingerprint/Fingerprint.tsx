@@ -20,9 +20,11 @@ const Fingerprint = props => {
             </div>
           </div>
         ) : null}
-        <QueryTooltip query={props.query} show={props.groupBy === 'queryid'}>
-          <Icon type="question-circle" className={Styling.tooltipIcon} />
-        </QueryTooltip>
+        {props.groupBy === 'queryid' && !props.totals ? (
+          <QueryTooltip query={props.query}>
+            <Icon type="question-circle" className={Styling.tooltipIcon} />
+          </QueryTooltip>
+        ) : null}
       </div>
       <CloseOutlined className={Styling.closeButton} onClick={props.closeDetails} />
     </div>
