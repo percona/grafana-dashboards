@@ -55,7 +55,7 @@ export class InventoryDataService {
   constructor() {}
 
   static generateStructure(item) {
-    const addType = Object.keys(item).map(type => new Object({ type: type, params: item[type] }));
+    const addType = Object.keys(item).map(type => new Object({ type, params: item[type] }));
     const createParams = addType.map(agent =>
       agent['params'].map(arrItem => {
         const type = inventoryTypes[agent['type']] || '';
