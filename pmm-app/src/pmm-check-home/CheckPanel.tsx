@@ -1,29 +1,28 @@
 import React, { PureComponent, FC } from 'react';
 import { createBrowserHistory } from 'history';
+import { Router, Route } from 'react-router-dom';
 import { PanelProps } from '@grafana/data';
 import { Spinner } from '@grafana/ui';
-import { Router, Route } from 'react-router-dom';
-import { CheckPanelOptions, ActiveCheck, Settings } from './types';
-import { CheckService } from './Check.service';
-import { COLUMNS } from './CheckPanel.constants';
-import { Table } from './components/Table';
+import { CheckPanelOptions, Settings, FailedChecks } from 'pmm-check/types';
+import { CheckService } from 'pmm-check/Check.service';
 import * as styles from './CheckPanel.styles';
+import { Failed } from 'pmm-check-home/components';
 
 export interface CheckPanelProps extends PanelProps<CheckPanelOptions> {}
 
 export interface CheckPanelState {
-  dataSource?: ActiveCheck[];
-  isLoading: boolean;
+  failedChecks?: FailedChecks;
   isSttEnabled: boolean;
+  isLoading: boolean;
 }
 
 const history = createBrowserHistory();
 
 export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> {
-  state = {
-    dataSource: undefined,
-    isLoading: true,
+  state: CheckPanelState = {
+    failedChecks: undefined,
     isSttEnabled: false,
+    isLoading: true,
   };
 
   constructor(props: CheckPanelProps) {
@@ -38,8 +37,8 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
 
   async fetchAlerts() {
     try {
-      const dataSource = await CheckService.getActiveAlerts();
-      this.setState({ dataSource });
+      const failedChecks = await CheckService.getFailedChecks();
+      this.setState({ failedChecks });
     } catch (err) {
       console.error(err);
     } finally {
@@ -57,27 +56,18 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
         this.setState({ isLoading: false });
       }
     } catch (err) {
-      console.error(err);
       this.setState({ isLoading: false });
+      console.error(err);
     }
   }
 
   render() {
-    const {
-      options: { title },
-    } = this.props;
-    const { dataSource, isSttEnabled, isLoading } = this.state;
+    const { isSttEnabled, failedChecks, isLoading } = this.state;
 
     return (
-      <div className={styles.panel} data-qa="db-check-panel">
-        {isLoading && (
-          <div className={styles.spinner}>
-            <Spinner />
-          </div>
-        )}
-        {!isLoading && (
-          <Table caption={title} data={dataSource} columns={COLUMNS} isSttEnabled={isSttEnabled} />
-        )}
+      <div className={styles.panel} data-qa="db-check-panel-home">
+        {isLoading && <Spinner />}
+        {!isLoading && <Failed failed={failedChecks} isSttEnabled={isSttEnabled} />}
       </div>
     );
   }
