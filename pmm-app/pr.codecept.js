@@ -12,7 +12,7 @@ exports.config = {
       waitForAction: 500,
       chromium: {
         ignoreHTTPSErrors: true,
-        args: ['--no-sandbox', '--window-size=2560,1600', '--disable-gpu'],
+        args: ['--no-sandbox', '--window-size=2560,1600', '--disable-gpu', '--disable-dev-shm-usage', '--disable-setuid-sandbox'],
       },
     },
     Grafana: {
