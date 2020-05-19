@@ -144,8 +144,8 @@ module.exports = {
   },
 
   async verifyFilterExists(filterValue) {
-    const filterLocator = "//input[@name='service_name:" + filterValue + "']";
-    I.waitForVisible(filterLocator, 30);
+    const locator = this.getFilterLocator(filterValue);
+    I.waitForVisible(locator, 30);
   },
 
   applyFilter(filterValue) {

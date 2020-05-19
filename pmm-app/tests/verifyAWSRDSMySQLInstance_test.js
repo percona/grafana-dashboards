@@ -8,6 +8,7 @@ Scenario(
   'PMM-T138 - Verify disabling enhanced metrics for RDS, PMM-T139 - Verify disabling basic metrics for RDS, PMM-T9 - Verify adding RDS instances, @not-pr-pipeline',
   async (I, remoteInstancesPage, pmmInventoryPage, homePage, qanPage, dashboardPage) => {
     const instanceIdToMonitor = 'rds-mysql56';
+    const environment = 'RDS MySQL 5.6';
     I.amOnPage(remoteInstancesPage.url);
     remoteInstancesPage.waitUntilRemoteInstancesPageLoaded().openAddAWSRDSMySQLPage();
     remoteInstancesPage.discoverRDS();
@@ -19,12 +20,11 @@ Scenario(
     pmmInventoryPage.verifyRemoteServiceIsDisplayed(instanceIdToMonitor);
     await pmmInventoryPage.verifyAgentHasStatusRunning(instanceIdToMonitor);
     await pmmInventoryPage.verifyMetricsFlags(instanceIdToMonitor);
-    I.amOnPage(homePage.url);
-    await homePage.verifyVisibleService(instanceIdToMonitor);
     I.amOnPage(dashboardPage.mySQLInstanceOverview.url);
     await dashboardPage.verifyExisitngServiceName(instanceIdToMonitor);
-    I.amOnPage(qanPage.url);
-    await qanPage.verifyFilterExists(instanceIdToMonitor);
+    I.amOnPage(qanPage.url + '?orgId=1&from=now-5m&to=now');
+    await I.switchTo(qanPage.fields.iframe);
+    await qanPage.verifyFilterExists(environment);
   }
 );
 
