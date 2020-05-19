@@ -18,7 +18,7 @@ const style = {
 };
 
 const getErrorsWrapperStyle = align => {
-  let alignLabel;
+  let alignLabel: string;
   switch (align) {
     case 'top':
       alignLabel = 'flex-start';
@@ -45,7 +45,7 @@ const HorizontalFieldLayout = ({ label, tooltip, element }) => {
     <>
       <Row align="middle">
         <Col span={8} className={style.fieldLabelColumn}>
-          <strong>{label}</strong>
+          <span>{label}</span>
           <span>{tooltip || ''}</span>
         </Col>
         <Col span={16}>{element}</Col>
@@ -59,7 +59,7 @@ const VerticalFieldLayout = ({ label, tooltip, alignLabel, element }) => {
     <>
       <Row align="middle" className={style.verticalFieldLabelRow}>
         <Col span={24} className={style.fieldLabelColumn}>
-          <strong>{label}</strong>
+          <span>{label}</span>
           <span>{tooltip || ''}</span>
         </Col>
       </Row>
