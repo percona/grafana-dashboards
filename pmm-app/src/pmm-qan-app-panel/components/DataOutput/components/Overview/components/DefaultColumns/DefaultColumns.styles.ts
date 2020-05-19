@@ -24,5 +24,5 @@ export const mainMetric = (mainMetricColumnWidth, isTotal) => css`
   text-overflow: ellipsis !important;
   white-space: nowrap !important;
   max-width: ${mainMetricColumnWidth - 40}px !important;
-  color: ${isTotal ? 'rgba(138, 164, 255, 0.8)' : 'rgba(32, 215, 255, 0.8)'};
+  color: ${isTotal ? '#8AA4FF' : 'rgba(32, 215, 255, 0.8)'};
 `;

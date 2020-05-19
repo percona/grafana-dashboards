@@ -32,8 +32,8 @@ export const Styling = {
     color: rgba(255, 255, 255, 0.8);
   `,
   divider: css`
-    margin-top: 0 !important;
-    margin-bottom: 5px !important;
+    margin-top: 3px !important;
+    margin-bottom: 12px !important;
     height: 6px !important;
     background-color: #3d3d3d !important;
   `,
