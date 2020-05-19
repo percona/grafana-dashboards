@@ -60,8 +60,8 @@ Scenario(
     async (I, databaseChecksPage) => {
         const row = 1;
         I.amOnPage(databaseChecksPage.url);
-        databaseChecksPage.verifyDatabaseChecksPageOpened(true);
         await databaseChecksPage.waitForCheckResultsToAppear();
+        databaseChecksPage.verifyDatabaseChecksPageOpened(true);
         databaseChecksPage.mouseOverInfoIcon(row);
         await databaseChecksPage.compareTooltipValues(row);
     }
@@ -71,8 +71,8 @@ Scenario(
     'PMM-T241 Verify user can see correct service name for failed checks @not-pr-pipeline',
     async (I, databaseChecksPage) => {
         I.amOnPage(databaseChecksPage.url);
-        databaseChecksPage.verifyDatabaseChecksPageOpened(true);
         await databaseChecksPage.waitForCheckResultsToAppear();
+        databaseChecksPage.verifyDatabaseChecksPageOpened(true);
         await databaseChecksPage.verifyServiceNamesExistence();
     }
 );
