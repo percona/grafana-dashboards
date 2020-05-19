@@ -20,7 +20,7 @@ Scenario(
     pmmInventoryPage.verifyRemoteServiceIsDisplayed(instanceIdToMonitor);
     await pmmInventoryPage.verifyAgentHasStatusRunning(instanceIdToMonitor);
     await pmmInventoryPage.verifyMetricsFlags(instanceIdToMonitor);
-    I.amOnPage(dashboardPage.mySQLInstanceOverview.url);
+    I.amOnPage(dashboardPage.mySQLInstanceOverview.url + '?orgId=1&from=now-2m&to=now');
     await dashboardPage.verifyExisitngServiceName(instanceIdToMonitor);
     //skipping verification of the filter in QAN. Will be fixed with new QAN tests
     /*
