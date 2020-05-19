@@ -1,4 +1,3 @@
-// Just a stub test
 import Validators from './validators';
 
 describe('validatePort test', () => {
