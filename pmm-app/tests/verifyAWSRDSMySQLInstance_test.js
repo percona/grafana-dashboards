@@ -22,7 +22,7 @@ Scenario(
     await pmmInventoryPage.verifyMetricsFlags(instanceIdToMonitor);
     I.amOnPage(dashboardPage.mySQLInstanceOverview.url);
     await dashboardPage.verifyExisitngServiceName(instanceIdToMonitor);
-    I.amOnPage(qanPage.url);
+    I.amOnPage(qanPage.url + '?orgId=1&from=now-5m&to=now');
     await I.switchTo(qanPage.fields.iframe);
     await qanPage.verifyFilterExists(environment);
   }
