@@ -106,7 +106,7 @@ const Metrics = ({ databaseType }) => {
   return (
     <div className="metrics-wrapper">
       <TimeDistribution data={metrics} databaseType={databaseType} />
-      <h4>Metrics</h4>
+      <h4 style={{ marginTop: '10px' }}>Metrics</h4>
       <Table
         dataSource={metrics}
         columns={columns}

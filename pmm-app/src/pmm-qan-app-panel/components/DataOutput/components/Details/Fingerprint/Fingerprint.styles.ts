@@ -18,7 +18,8 @@ export const Styling = {
   fingerprint: css`
     white-space: nowrap;
     text-overflow: ellipsis;
-    width: 600px;
+    min-width: 300px;
+    max-width: 600px;
     overflow: hidden;
   `,
   closeButton: css`
