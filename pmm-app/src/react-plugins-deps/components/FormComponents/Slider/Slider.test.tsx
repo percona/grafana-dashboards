@@ -1,27 +1,24 @@
-// Just a stub test
-import { SliderField } from './Slider';
 import React from 'react';
-import renderer from 'react-test-renderer';
-import { renderHook } from '@testing-library/react-hooks';
 import { Form } from 'react-final-form';
+import { shallow } from 'enzyme';
+import { SliderField } from './Slider';
 
-describe('Slider field test', () => {
+describe('Slider', () => {
   it('Slider renders correct without props', () => {
-    renderHook(() => {
-      const marks = {
-        0: 'Low',
-        1: 'Medium',
-        2: 'High',
-      };
+    const marks = {
+      0: 'Low',
+      1: 'Medium',
+      2: 'High',
+    };
 
-      const component = renderer.create(
-        <Form
-          onSubmit={() => null}
-          render={() => <SliderField marks={marks} defaultValue={2} name="metrics_resolutions_slider" />}
-        />
-      );
-      const tree = component.toJSON();
-      expect(tree).toMatchSnapshot();
-    });
+    const onSubmit = jest.fn();
+    const component = shallow(
+      <Form
+        onSubmit={onSubmit}
+        render={() => <SliderField marks={marks} name="metrics_resolutions_slider" />}
+      />
+    );
+
+    expect(component).toMatchSnapshot();
   });
 });
