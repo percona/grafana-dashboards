@@ -29,7 +29,6 @@ export const InputField = ({
   validate,
   className,
 }: InputFieldInterface) => {
-  // // @ts-ignore
   const { input, meta } = useField(name, { validate });
   return (
     <div className="input-field-wrapper" style={wrapperStyle || {}}>
