@@ -7,6 +7,9 @@ exports.config = {
       browser: 'chromium',
       windowSize: "2560x1600",
       waitForNavigation: 'networkidle0',
+      waitForTimeout: 10000,
+      getPageTimeout: 10000,
+      waitForAction: 500,
       chromium: {
         ignoreHTTPSErrors: true,
         args: ['--no-sandbox', '--window-size=2560,1600', '--disable-gpu'],
