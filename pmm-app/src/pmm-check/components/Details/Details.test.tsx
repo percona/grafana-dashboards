@@ -1,3 +1,4 @@
+import React from 'react';
 import { shallow } from 'enzyme';
 import { Details } from './Details';
 
@@ -25,7 +26,7 @@ export const DATA_SOURCE = [
 
 describe('Details::', () => {
   it('should render a list with two list items', () => {
-    const root = shallow(Details(DATA_SOURCE[0].details));
+    const root = shallow(<Details details={DATA_SOURCE[0].details} />);
 
     expect(root.find('ul').find('li').length).toEqual(2);
   });

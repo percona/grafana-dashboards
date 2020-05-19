@@ -8,7 +8,7 @@ describe('Humanize module', () => {
     expect(Humanize.formatPercent(1)).toBe('100%');
   });
 
-  xit('should return 21.5%', () => {
-    expect(Humanize.formatPercent(21.575)).toBe('21.5%');
+  it('should return 21.58%', () => {
+    expect(Humanize.formatPercent(0.21575)).toBe('21.58%');
   });
 });
