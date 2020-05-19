@@ -298,6 +298,17 @@ module.exports = {
     }
   },
 
+  async disableSTT(){
+    this.waitForPmmSettingsPageLoaded();
+    const disabledStt = await I.grabNumberOfVisibleElements(this.fields.sttSwitchSelector + `[@aria-checked='false']`);
+    if (!disabledStt) {
+      I.click(this.fields.sttSwitchSelector);
+      this.verifySwitch(this.fields.sttSwitchSelector, 'off')
+      I.click(this.fields.applyButton);
+      await this.verifySuccessfulPopUp(this.messages.successPopUpMessage);
+    }
+  },
+
   async verifyAlertmanagerRuleAdded(ruleName) {
     for (let i = 0; i < 10; i++) {
       const notLoaded = await I.grabNumberOfVisibleElements(`//td[contains(text(), '${ruleName}')]`);

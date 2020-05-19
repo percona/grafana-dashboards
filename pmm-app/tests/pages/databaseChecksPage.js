@@ -4,17 +4,22 @@ module.exports = {
   // insert your locators and methods here
   // setting locators
   url: 'graph/d/pmm-checks/pmm-database-checks',
+  messages: {
+    homePagePanelMessage:"Security Threat Tool is disabled.\nCheck PMM Settings.",
+    disabledSTTMessage: "Security Threat Tool is disabled. You can enable it in",
+  },
   fields: {
-    refreshBtnSelector: "//button/span[text()='Refresh']",
-    serviceNameHeaderSelector:"//span[@class='ant-table-column-title' and text()='Service name']",
-    detailsHeaderSelector:"//span[@class='ant-table-column-title' and text()='Details']",
-    noOfFailedChecksHeaderSelector:"//span[@class='ant-table-column-title' and text()='No of Failed Checks']",
+    dbCheckPanelSelector: "//div[@data-qa='db-check-panel']",
+    sttEnabledDBCheckPanelSelector:"//div[@data-qa='db-check-panel-home']",
+    disabledSTTMessageSelector:"//div[@data-qa='db-check-panel-settings-link']",
+    serviceNameHeaderSelector:"//table[@data-qa='db-check-panel-table']//th[text()='Service name']",
+    detailsHeaderSelector:"//table[@data-qa='db-check-panel-table']//th[text()='Details']",
+    noOfFailedChecksHeaderSelector:"//table[@data-qa='db-check-panel-table']//th[text()='Failed Checks']",
     serviceNameSelector:"//tbody/tr/td[1]",
     failedChecksRowSelector:"//tbody/tr",
-    failedChecksInfoSelector:"//tbody/tr/td[text()='mariadb-10.2']/following-sibling::td/div/span[2]",
     tooltipSelector: "//div[@class='ant-tooltip-inner']/div/div[1]",
-    totalFailedChecksTooltipSelector: "//div[@class='ant-tooltip-inner']//div[text()='Failed checks: ']",
-    failedChecksTooltipSelector: "//div[@class='ant-tooltip-inner']/div/div/div"
+    totalFailedChecksTooltipSelector: "//div[@class='popper']//div[text()='Failed checks: ']",
+    failedChecksTooltipSelector: "//div[@class='popper']/div/div/div"
   },
 
   // introducing methods
@@ -27,12 +32,26 @@ module.exports = {
       return (`//tbody/tr[${rowNumber}]/td[1]/following-sibling::td/div/span[1]`);
   },
 
-  verifyDatabaseChecksPageOpened(){
-    I.waitForVisible(this.fields.refreshBtnSelector, 30);
-    I.seeElement(this.fields.refreshBtnSelector);
-    I.seeElement(this.fields.serviceNameHeaderSelector);
-    I.seeElement(this.fields.noOfFailedChecksHeaderSelector)
-    I.seeElement(this.fields.detailsHeaderSelector)
+  verifyDatabaseChecksPageOpened(sttEnabled = false){
+    if (sttEnabled) {
+      I.waitForVisible(this.fields.dbCheckPanelSelector, 30);
+      I.waitForVisible(this.fields.serviceNameHeaderSelector, 30);
+      I.seeElement(this.fields.dbCheckPanelSelector);
+      I.dontSeeElement(this.fields.disabledSTTMessageSelector);
+      I.dontSeeElement(`${this.fields.disabledSTTMessageSelector}/a`);
+      I.seeElement(this.fields.serviceNameHeaderSelector);
+      I.seeElement(this.fields.noOfFailedChecksHeaderSelector);
+      I.seeElement(this.fields.detailsHeaderSelector);
+    } else {
+      I.waitForVisible(this.fields.dbCheckPanelSelector, 30);
+      I.waitForVisible(this.fields.serviceNameHeaderSelector, 30);
+      I.seeElement(this.fields.dbCheckPanelSelector);
+      I.see(this.messages.disabledSTTMessage ,this.fields.disabledSTTMessageSelector);
+      I.seeElement(`${this.fields.disabledSTTMessageSelector}/a`);
+      I.dontSeeElement(this.fields.serviceNameHeaderSelector);
+      I.dontSeeElement(this.fields.noOfFailedChecksHeaderSelector);
+      I.dontSeeElement(this.fields.detailsHeaderSelector);
+    }
   },
 
   async waitForCheckResultsToAppear(){
@@ -42,7 +61,8 @@ module.exports = {
       if (results > 0) {
         break
       }
-      I.click(this.fields.refreshBtnSelector);
+      I.refreshPage();
+      I.waitForVisible(this.fields.dbCheckPanelSelector, 30);
       I.wait(1);
     }
   },
@@ -53,7 +73,8 @@ module.exports = {
     let tooltipNumbers = await I.grabTextFrom(this.fields.failedChecksTooltipSelector);
     tableNumbers = tableNumbers.split(/[^0-9]+/g);
     tableNumbers.pop();
-    let detailsFromTable = `Critical – ${tableNumbers[1]},Major – ${tableNumbers[2]},Trivial – ${tableNumbers[3]}`;
+    tooltipNumbers.shift();
+    let detailsFromTable = `Critical – ${tableNumbers[1]}\nMajor – ${tableNumbers[2]}\nTrivial – ${tableNumbers[3]}`;
     assert.equal(`Failed checks: ${tableNumbers[0]}`, tooltipTotalNumber);
     assert.equal(detailsFromTable, tooltipNumbers);
   },
