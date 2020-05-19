@@ -26,7 +26,7 @@ const AddInstancePanel = props => {
   };
 
   return (
-    <div className="app-theme-dark content-wrapper antd" id="antd">
+    <div className="app-theme-dark content-wrapper antd add-instance-panel" id="antd">
       {!selectedInstance.type ? <AddInstance onSelectInstanceType={setSelectedInstance} /> : null}
       {selectedInstance.type && (
         <>
