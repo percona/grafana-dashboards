@@ -296,6 +296,13 @@ module.exports = {
       'MySQL Table Definition Cache',
     ],
   },
+
+  mySQLInstanceOverview: {
+    url: 'graph/d/mysql-instance-overview/mysql-instances-overview?orgId=1&from=now-2m&to=now&refresh=1m',
+    serviceName:
+      "//label[contains(text(), 'Service Name')]/following-sibling::value-select-dropdown/descendant::a[@class='variable-value-link']",
+  },
+
   fields: {
     notAvailableMetrics: "//span[contains(text(), 'N/A')]",
     notAvailableDataPoints: "//div[contains(text(),'No data')]",
@@ -405,5 +412,15 @@ module.exports = {
 
   waitForDashboardOpened() {
     I.waitForElement(this.fields.metricTitle, 30);
+  },
+
+  async verifyExisitngServiceName(serviceName) {
+    I.waitForElement(this.mySQLInstanceOverview.serviceName, 30);
+    I.click(this.mySQLInstanceOverview.serviceName);
+    const existingFilter =
+      "//span[@class='variable-option-icon']/following-sibling::span[contains(text(), '" +
+      serviceName +
+      "')]";
+    I.seeElement(existingFilter);
   },
 };

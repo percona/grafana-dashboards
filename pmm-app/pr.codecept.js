@@ -27,7 +27,7 @@ exports.config = {
     amiInstanceSetupPage: './tests/pages/amiInstanceSetupPage.js',
     pmmSettingsPage: './tests/pages/pmmSettingsPage.js',
     mysqlTableDetailsPage: './tests/pages/mysqlTableDetailsPage.js',
-    dashboardPage: './tests/pages/dashboardPage.js'
+    dashboardPage: './tests/pages/dashboardPage.js',
   },
   multiple: {
     parallel: {
