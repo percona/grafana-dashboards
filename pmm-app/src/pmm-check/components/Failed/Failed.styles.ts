@@ -12,11 +12,11 @@ export const TooltipHeader = css`
 
 export const TooltipBody = css`
   padding: 0em 0.5em;
+  font-weight: normal;
 `;
 
 export const InfoIcon = css`
-  font-size: 10px;
-  color: lightblue;
+  color: #6495ed;
 `;
 
 export const FailedDiv = css`

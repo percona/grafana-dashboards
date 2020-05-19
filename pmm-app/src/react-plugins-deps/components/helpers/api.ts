@@ -22,12 +22,14 @@ class ApiRequest {
       });
   }
 
-  async post<T, B>(path: string, body: B): Promise<void | T> {
+  async post<T, B>(path: string, body: B, disableNotifications = false): Promise<void | T> {
     return this.axiosInstance
       .post<T>(path, body)
       .then((response): T => response.data)
       .catch((e): void => {
-        showErrorNotification({ message: e.response.data.message });
+        if (!disableNotifications) {
+          showErrorNotification({ message: e.response.data.message });
+        }
         throw e;
       });
   }

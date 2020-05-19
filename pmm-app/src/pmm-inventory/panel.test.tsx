@@ -10,7 +10,7 @@ jest.mock('../react-plugins-deps/components/helpers/notification-manager', () =>
 }));
 
 describe('Inventory tables', () => {
-  let container = null;
+  let container: HTMLDivElement | null = null;
   beforeEach(() => {
     // setup a DOM element as a render target
     // @ts-ignore
@@ -64,7 +64,7 @@ describe('Inventory tables', () => {
       render(
         <Table
           dataSource={InventoryDataService.generateStructure(response)}
-          rowKey={rec => rec[rec.key]}
+          rowKey={rec => rec.agent_id}
           columns={agentsColumns}
           pagination={false}
           bordered
@@ -74,7 +74,7 @@ describe('Inventory tables', () => {
       );
     });
     // length is 5 because header is also tr
-    expect(container.querySelectorAll('tr').length).toEqual(5);
+    expect(container?.querySelectorAll('tr').length).toEqual(5);
   });
 
   it('Services table renders correct with right data', () => {
@@ -93,6 +93,7 @@ describe('Inventory tables', () => {
       render(
         <Table
           dataSource={InventoryDataService.generateStructure(response)}
+          rowKey={rec => rec.service_id}
           columns={servicesColumns}
           pagination={false}
           bordered
@@ -102,7 +103,7 @@ describe('Inventory tables', () => {
       );
     });
     // length is 2 because header is also tr
-    expect(container.querySelectorAll('tr').length).toEqual(2);
+    expect(container?.querySelectorAll('tr').length).toEqual(2);
   });
 
   it('Nodes table renders correct with right data', () => {
@@ -116,6 +117,7 @@ describe('Inventory tables', () => {
       render(
         <Table
           dataSource={InventoryDataService.generateStructure(response)}
+          rowKey={rec => rec.node_id}
           columns={nodesColumns}
           pagination={false}
           bordered
@@ -125,6 +127,6 @@ describe('Inventory tables', () => {
       );
     });
     // length is 3 because header is also tr
-    expect(container.querySelectorAll('tr').length).toEqual(3);
+    expect(container?.querySelectorAll('tr').length).toEqual(3);
   });
 });
