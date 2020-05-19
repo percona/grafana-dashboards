@@ -1,18 +1,19 @@
 import React, { ReactElement, useEffect, useState } from 'react';
 import { Collapse } from 'antd';
 import { Form as FormFinal } from 'react-final-form';
-import { PluginTooltip } from '../../../react-plugins-deps/components/helpers/Helpers';
-import SettingsService from '../../Settings.service';
-import { showSuccessNotification } from '../../../react-plugins-deps/components/helpers/notification-manager';
-import { SliderField } from '../../../react-plugins-deps/components/FormComponents/Slider/Slider';
-import { ToggleField } from '../../../react-plugins-deps/components/FormComponents/Toggle/Toggle';
-import { InputField } from '../../../react-plugins-deps/components/FormComponents/Input/Input';
-import ButtonElement from '../../../react-plugins-deps/components/FormComponents/Button/Button';
-import './Settings.scss';
-import Validators from '../../../react-plugins-deps/components/validators/validators';
-import { FormElement } from '../../../react-plugins-deps/components/FormComponents/FormElement/FormElement';
 import { css } from 'emotion';
+import { showSuccessNotification, PluginTooltip } from 'react-plugins-deps/components/helpers';
+import {
+  Button,
+  FormElement,
+  InputField,
+  SliderField,
+  ToggleField,
+} from 'react-plugins-deps/components/FormComponents';
+import Validators from '../../../react-plugins-deps/components/validators/validators';
+import { SettingsService } from '../../Settings.service';
 import { GUI_DOC_URL } from '../../panel.constants';
+import './Settings.scss';
 
 const { Panel } = Collapse;
 
@@ -136,6 +137,10 @@ const SettingsPart = props => {
       render={({ form, handleSubmit }): ReactElement => {
         useEffect(() => {
           if (!settings.data_retention && !settings.metrics_resolutions) {
+            form.initialize({
+              // This is the slider's default, since in controlled components defaultValue can't be used
+              metrics_resolutions_slider: 2,
+            });
             return;
           }
           const [count, units] = [settings.data_retention.slice(0, -1), settings.data_retention.slice(-1)];
@@ -170,7 +175,6 @@ const SettingsPart = props => {
                 element={
                   <SliderField
                     marks={marks}
-                    defaultValue={2}
                     name="metrics_resolutions_slider"
                     tipFormatter={value => {
                       const values = dataRetentionValues[value];
@@ -187,7 +191,7 @@ const SettingsPart = props => {
               >
                 <Panel header="Advanced settings " key="1" className={style.panel}>
                   <FormElement
-                    label="Data retention (In Days)"
+                    label="Data retention (days)"
                     tooltip={
                       <PluginTooltip
                         links={[
@@ -263,7 +267,7 @@ const SettingsPart = props => {
                   />
                 </Panel>
               </Collapse>
-              <ButtonElement loading={loading} text="Apply changes" />
+              <Button loading={loading} text="Apply changes" />
             </>
           </form>
         );

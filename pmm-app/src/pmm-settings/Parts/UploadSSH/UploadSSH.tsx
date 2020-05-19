@@ -3,7 +3,7 @@ import { TextAreaField } from '../../../react-plugins-deps/components/FormCompon
 import React, { ReactElement, useEffect, useState } from 'react';
 import ButtonElement from '../../../react-plugins-deps/components/FormComponents/Button/Button';
 import { Form as FormFinal } from 'react-final-form';
-import SettingsService from '../../Settings.service';
+import { SettingsService } from '../../Settings.service';
 import { showSuccessNotification } from '../../../react-plugins-deps/components/helpers/notification-manager';
 import { FormElement } from '../../../react-plugins-deps/components/FormComponents/FormElement/FormElement';
 import { GUI_DOC_URL } from '../../panel.constants';

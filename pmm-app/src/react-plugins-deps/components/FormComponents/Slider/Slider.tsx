@@ -12,7 +12,6 @@ interface SliderFieldInterface {
 }
 export const SliderField = ({ name, marks, style, tipFormatter }: SliderFieldInterface) => {
   const { input } = useField(name);
-  console.log('input', input.value);
   return (
     <span className="fields__Slider-field" style={style || {}}>
       <Slider {...input} marks={marks} max={2} step={null} included={false} tipFormatter={tipFormatter} />
