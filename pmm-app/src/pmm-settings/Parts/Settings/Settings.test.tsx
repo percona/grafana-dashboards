@@ -1,17 +1,14 @@
-// Just a stub test
-import SettingsPart from './Settings';
 import React from 'react';
-import ShallowRenderer from 'react-test-renderer/shallow';
-// import renderer from 'react-test-renderer';
-const renderer = new ShallowRenderer();
-jest.mock('../../../react-plugins-deps/components/helpers/notification-manager', () => () => ({
-  showErrorNotification: () => {},
-}));
+import { shallow } from 'enzyme';
+import Settings from './Settings';
+
+jest.mock('../../../react-plugins-deps/components/helpers/notification-manager');
+
 // TODO: add correct shallow renderer, we need to have something to render to 2nd level
 describe('Settings Part test', () => {
   it('Checkbox renders correct without props', () => {
-    const component = renderer.render(
-      <SettingsPart
+    const root = shallow(
+      <Settings
         settings={{
           data_retention: '24h',
           metrics_resolutions: {
@@ -22,7 +19,8 @@ describe('Settings Part test', () => {
         }}
       />
     );
-    const result = renderer.getRenderOutput();
-    expect(result).toMatchSnapshot();
+
+    expect(root).toMatchSnapshot();
+    root.unmount();
   });
 });

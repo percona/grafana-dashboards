@@ -1,4 +1,3 @@
-// Just a stub test
 import Diagnostics from './Diagnostics';
 import React from 'react';
 import renderer from 'react-test-renderer';

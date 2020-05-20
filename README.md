@@ -1,36 +1,38 @@
-## Grafana dashboards for MySQL and MongoDB monitoring using Prometheus [![Build Status](https://travis-ci.org/percona/grafana-dashboards.svg?branch=master)](https://travis-ci.org/percona/grafana-dashboards)
+[![Build Status](https://travis-ci.org/percona/grafana-dashboards.svg?branch=master)](https://travis-ci.org/percona/grafana-dashboards)
 
-This is a set of Grafana dashboards for database and system monitoring using Prometheus datasource.
+## Grafana dashboards for efficient database monitoring using Prometheus
 
- * Cross Server Graphs
- * Disk Performance
- * Disk Space
- * MongoDB Cluster Summary
- * MongoDB Overview
- * MongoDB ReplSet
- * MongoDB RocksDB
- * MongoDB WiredTiger
- * MongoDB MMAPv1
- * MongoDB InMemory
- * MySQL InnoDB Metrics
- * MySQL InnoDB Metrics Advanced
- * MySQL InnoDB Compression
- * MySQL MyISAM/Aria Metrics
- * MySQL Overview
- * MySQL Performance Schema
- * MySQL Query Response Time
- * MySQL Replication
- * MySQL Table Statistics
- * MySQL TokuDB Graphs
- * MySQL User Statistics
- * MySQL Command Handler Counters Compare
- * PXC/Galera Cluster Overview
- * PXC/Galera Graphs
- * Prometheus
- * ProxySQL Overview
- * Summary Dashboard
- * System Overview
- * Trends Dashboard
+The list of featured dashboards:
+
+- Cross Server Graphs
+- Disk Performance
+- Disk Space
+- MongoDB Cluster Summary
+- MongoDB Overview
+- MongoDB ReplSet
+- MongoDB RocksDB
+- MongoDB WiredTiger
+- MongoDB MMAPv1
+- MongoDB InMemory
+- MySQL InnoDB Metrics
+- MySQL InnoDB Metrics Advanced
+- MySQL InnoDB Compression
+- MySQL MyISAM/Aria Metrics
+- MySQL Overview
+- MySQL Performance Schema
+- MySQL Query Response Time
+- MySQL Replication
+- MySQL Table Statistics
+- MySQL TokuDB Graphs
+- MySQL User Statistics
+- MySQL Command Handler Counters Compare
+- PXC/Galera Cluster Overview
+- PXC/Galera Graphs
+- Prometheus
+- ProxySQL Overview
+- Summary Dashboard
+- System Overview
+- Trends Dashboard
 
 These dashboards are also a part of [Percona Monitoring and Management](https://www.percona.com/doc/percona-monitoring-and-management/index.html) project.
 
@@ -76,9 +78,9 @@ How you name jobs is not important. However, "Prometheus" dashboard assumes the 
 
 Here is the minimal set of options for the exporters:
 
- * node_exporter: `-collectors.enabled="diskstats,filefd,filesystem,loadavg,meminfo,netdev,stat,time,uname,vmstat"`
- * mysqld_exporter: `-collect.binlog_size=true -collect.info_schema.processlist=true`
- * mongodb_exporter: the defaults are fine.
+- node_exporter: `-collectors.enabled="diskstats,filefd,filesystem,loadavg,meminfo,netdev,stat,time,uname,vmstat"`
+- mysqld_exporter: `-collect.binlog_size=true -collect.info_schema.processlist=true`
+- mongodb_exporter: the defaults are fine.
 
 #### Edit Grafana config
 
@@ -131,10 +133,9 @@ Here is some sample graphs.
 
 ![image](assets/sample8.png)
 
-
 ## Submitting Bug Reports
 
-If you find a bug in Percona Grafana Dashboards  or one of the related projects, you should submit a report to that project's [JIRA](https://jira.percona.com) issue tracker.
+If you find a bug in Percona Grafana Dashboards or one of the related projects, you should submit a report to that project's [JIRA](https://jira.percona.com) issue tracker.
 
 Your first step should be [to search](https://jira.percona.com/issues/?jql=project%20%3D%20PMM%20AND%20component%20%3D%20%22Grafana%20Dashboards%22) the existing set of open tickets for a similar report. If you find that someone else has already reported your problem, then you can upvote that report to increase its visibility.
 
@@ -148,8 +149,7 @@ An excellent resource is [Elika Etemad's article on filing good bug reports.](ht
 
 As a general rule of thumb, please try to create bug reports that are:
 
-- *Reproducible.* Include steps to reproduce the problem.
-- *Specific.* Include as much detail as possible: which version, what environment, etc.
-- *Unique.* Do not duplicate existing tickets.
-- *Scoped to a Single Bug.* One bug per report.
-
+- _Reproducible._ Include steps to reproduce the problem.
+- _Specific._ Include as much detail as possible: which version, what environment, etc.
+- _Unique._ Do not duplicate existing tickets.
+- _Scoped to a Single Bug._ One bug per report.

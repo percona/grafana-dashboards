@@ -1,12 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Tabs } from 'antd';
 import { AgentsTab, NodesTab, ServicesTab } from './Tabs';
-import Styling from '../react-plugins-deps/components/helpers/styling';
 
 const { TabPane } = Tabs;
 
 export const InventoryPanel = () => {
-  useEffect(() => Styling.addPluginPanelClass(), []);
   return (
     <div id="antd" style={{ width: '100%' }}>
       <Tabs defaultActiveKey="1">

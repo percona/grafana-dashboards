@@ -7,8 +7,8 @@ interface ToggleInterface {
   name: string;
   disabled?: boolean;
 }
+
 export const ToggleField = ({ name, disabled }: ToggleInterface) => {
-  // @ts-ignore
   const { input } = useField(name);
   return (
     <Switch

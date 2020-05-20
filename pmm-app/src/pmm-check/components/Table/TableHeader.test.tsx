@@ -15,6 +15,8 @@ describe('TableHeader::', () => {
         .at(1)
         .prop('style')
     ).toEqual({ minWidth: '200px', width: '200px' });
+
+    root.unmount();
   });
 
   it('should render 3 column headers', () => {
@@ -29,5 +31,7 @@ describe('TableHeader::', () => {
         .at(0)
         .text()
     ).toEqual('Service name');
+
+    root.unmount();
   });
 });

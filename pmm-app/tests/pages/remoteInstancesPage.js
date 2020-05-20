@@ -52,6 +52,8 @@ module.exports = {
     discoveryResults: "//tbody[@class='ant-table-tbody']",
     discoveryRowWithId: "//tr/td[text()='",
     startMonitoring: '/following-sibling::td/a',
+    disableEnhancedMetrics: "//input[@name='disable_enhanced_metrics']/following-sibling::span[2]",
+    disableBasicMetrics: "//input[@name='disable_basic_metrics']/following-sibling::span[2]",
   },
 
   waitUntilRemoteInstancesPageLoaded() {
@@ -135,6 +137,10 @@ module.exports = {
         I.click(this.fields.useTLS);
         I.click(this.fields.usePgStatStatements);
         break;
+      case 'rds-mysql56':
+        I.click(this.fields.disableEnhancedMetrics);
+        I.click(this.fields.disableBasicMetrics);
+        break;
     }
     I.click(this.fields.addService);
     I.waitForVisible(pmmInventoryPage.fields.agentsLink, 30);
@@ -156,11 +162,11 @@ module.exports = {
     this.waitForDiscovery();
   },
 
-  waitForDiscovery () {
+  waitForDiscovery() {
     I.waitForVisible(this.fields.discoveryResults, 30);
   },
 
-  verifyInstanceIsDiscovered (instanceIdToMonitor) {
+  verifyInstanceIsDiscovered(instanceIdToMonitor) {
     const instanceIdLocator = `${this.fields.discoveryRowWithId}${instanceIdToMonitor}']`;
     I.seeElement(instanceIdLocator);
   },
@@ -185,4 +191,4 @@ module.exports = {
     I.fillField(this.fields.replicationSet, 'rds56-replication');
     I.scrollPageToBottom();
   },
-}
+};

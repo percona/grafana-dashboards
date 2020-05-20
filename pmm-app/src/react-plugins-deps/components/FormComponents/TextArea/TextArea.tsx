@@ -1,7 +1,7 @@
 import React from 'react';
 import { useField } from 'react-final-form';
+import { cx } from 'emotion';
 import './TextArea.scss';
-import cx from 'classnames';
 interface TextAreaFieldInterface {
   required?: boolean;
   name: string;

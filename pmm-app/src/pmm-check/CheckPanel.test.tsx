@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { MemoryRouter, Route } from 'react-router-dom';
 import { mount, ReactWrapper } from 'enzyme';
+import { Spinner } from '@grafana/ui';
 import { CheckPanel, CheckPanelProps, CheckPanelState } from './CheckPanel';
 import { Table } from './components/Table';
 
@@ -20,10 +21,10 @@ const CheckPanelRouter: FC<CheckPanelProps> = props => {
   );
 };
 
-xdescribe('CheckPanel::', () => {
+describe('CheckPanel::', () => {
   CheckPanel.prototype.componentDidMount = jest.fn();
 
-  it('should accept a title parameter and display it as a table caption', async () => {
+  it('should render a spinner on start', async () => {
     const props = {
       width: 1200,
       height: 450,
@@ -35,26 +36,40 @@ xdescribe('CheckPanel::', () => {
     const wrapper: ReactWrapper<CheckPanelProps, {}, any> = mount(<CheckPanelRouter {...props} />);
 
     const root = wrapper.find(CheckPanel) as ReactWrapper<CheckPanelProps, CheckPanelState, CheckPanel>;
-    root.setState({ isSttEnabled: true });
-    root.update();
 
-    // Check for the panel title passed as component prop
-    expect(
-      root
-        .find('[data-qa="db-check-panel"] [data-qa="db-check-panel-table-caption"]')
-        .at(0)
-        .text()
-    ).toEqual('DB CHECKS');
+    // Check for the spinner that is rendered on start
+    expect(root.find('[data-qa="db-check-panel"]').find(Spinner)).toHaveLength(1);
 
     await root.instance().fetchAlerts();
-    root.update();
+    wrapper.update();
 
     expect(root.state('dataSource')).toEqual(activeCheckStub);
-    expect(root.state().loading).toEqual(false);
-    expect(root.state().isSttEnabled).toEqual(true);
+    expect(root.state().isLoading).toEqual(false);
+    expect(root.state().isSttEnabled).toEqual(false);
 
-    const table = root.find('[data-qa="db-check-panel"]').find(Table);
-    // Check the table is rendered
+    wrapper.unmount();
+  });
+
+  it('should render a Table once finished loading', async () => {
+    const props = {
+      options: {
+        title: 'DB CHECKS',
+      },
+    } as CheckPanelProps;
+
+    const wrapper: ReactWrapper<CheckPanelProps, {}, any> = mount(<CheckPanelRouter {...props} />);
+
+    const root = wrapper.find(CheckPanel) as ReactWrapper<CheckPanelProps, CheckPanelState, CheckPanel>;
+
+    root.setState({ isLoading: false });
+    wrapper.update();
+
+    expect(root.state('isLoading')).toEqual(false);
+
+    const table = wrapper.find('[data-qa="db-check-panel"]').find(Table);
+    // Check if the table is rendered, the rest is tested by the Table itself
     expect(table.length).toEqual(1);
+
+    wrapper.unmount();
   });
 });
