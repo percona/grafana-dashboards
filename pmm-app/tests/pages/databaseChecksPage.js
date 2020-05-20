@@ -10,6 +10,7 @@ module.exports = {
   },
   fields: {
     dbCheckPanelSelector: "//div[@data-qa='db-check-panel']",
+    dbCheckPanelEmptySelector:"//div[@data-qa='db-check-panel-table-empty']",
     sttEnabledDBCheckPanelSelector:"//div[@data-qa='db-check-panel-home']",
     disabledSTTMessageSelector:"//div[@data-qa='db-check-panel-settings-link']",
     serviceNameHeaderSelector:"//table[@data-qa='db-check-panel-table']//th[text()='Service name']",
@@ -32,38 +33,51 @@ module.exports = {
       return (`//tbody/tr[${rowNumber}]/td[1]/following-sibling::td/div/span[1]`);
   },
 
-  verifyDatabaseChecksPageOpened(sttEnabled = false){
-    if (sttEnabled) {
-      I.waitForVisible(this.fields.dbCheckPanelSelector, 30);
-      I.waitForVisible(this.fields.serviceNameHeaderSelector, 30);
-      I.seeElement(this.fields.dbCheckPanelSelector);
-      I.dontSeeElement(this.fields.disabledSTTMessageSelector);
-      I.dontSeeElement(`${this.fields.disabledSTTMessageSelector}/a`);
-      I.seeElement(this.fields.serviceNameHeaderSelector);
-      I.seeElement(this.fields.noOfFailedChecksHeaderSelector);
-      I.seeElement(this.fields.detailsHeaderSelector);
-    } else {
-      I.waitForVisible(this.fields.dbCheckPanelSelector, 30);
-      I.waitForVisible(this.fields.serviceNameHeaderSelector, 30);
-      I.seeElement(this.fields.dbCheckPanelSelector);
-      I.see(this.messages.disabledSTTMessage ,this.fields.disabledSTTMessageSelector);
-      I.seeElement(`${this.fields.disabledSTTMessageSelector}/a`);
-      I.dontSeeElement(this.fields.serviceNameHeaderSelector);
-      I.dontSeeElement(this.fields.noOfFailedChecksHeaderSelector);
-      I.dontSeeElement(this.fields.detailsHeaderSelector);
+  verifyDatabaseChecksPageElements(stt = 'enabled'){
+    switch (stt) {
+      case 'enabled':
+        I.seeElement(this.fields.dbCheckPanelSelector);
+        I.dontSeeElement(this.fields.disabledSTTMessageSelector);
+        I.dontSeeElement(`${this.fields.disabledSTTMessageSelector}/a`);
+        I.seeElement(this.fields.serviceNameHeaderSelector);
+        I.seeElement(this.fields.noOfFailedChecksHeaderSelector);
+        I.seeElement(this.fields.detailsHeaderSelector);
+        break;
+      case 'disabled':
+        I.waitForVisible(this.fields.disabledSTTMessageSelector, 30);
+        I.seeElement(this.fields.dbCheckPanelSelector);
+        I.see(this.messages.disabledSTTMessage ,this.fields.disabledSTTMessageSelector);
+        I.seeElement(`${this.fields.disabledSTTMessageSelector}/a`);
+        I.dontSeeElement(this.fields.serviceNameHeaderSelector);
+        I.dontSeeElement(this.fields.noOfFailedChecksHeaderSelector);
+        I.dontSeeElement(this.fields.detailsHeaderSelector);
+        break;
     }
   },
 
-  async waitForCheckResultsToAppear(){
+  async waitForChecksToLoad() {
     let results;
-    for (let i = 0; i < 60; i++) {
+    for (let i = 0; i < 30; i++) {
       results = await I.grabNumberOfVisibleElements(this.fields.serviceNameSelector);
       if (results > 0) {
-        break
+        return
       }
       I.refreshPage();
       I.waitForVisible(this.fields.dbCheckPanelSelector, 30);
       I.wait(1);
+    }
+  },
+
+  async verifyDatabaseChecksPageOpened(stt = 'enabled'){
+    switch (stt) {
+      case 'enabled':
+        await this.waitForChecksToLoad();
+        I.waitForVisible(this.fields.serviceNameHeaderSelector, 30);
+        this.verifyDatabaseChecksPageElements(stt);
+        break;
+      case 'disabled':
+        this.verifyDatabaseChecksPageElements(stt);
+        break;
     }
   },
 

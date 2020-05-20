@@ -52,7 +52,7 @@ module.exports = {
   // Refreshing page until results appear
   async waitForCheckResultsToAppearInPanel() {
     let results;
-    for (let i = 0; i < 60; i++) {
+    for (let i = 0; i < 30; i++) {
       results = await I.grabNumberOfVisibleElements(this.fields.sttFailedChecksPanelSelector);
       if (results > 0) {
         break

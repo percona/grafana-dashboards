@@ -35,12 +35,14 @@ Before( async (I, pmmSettingsPage) => {
 });
 
 Scenario(
-    'PMM-T233 Verify user is able to access PMM Database Checks through UI and with URL @not-pr-pipeline',
+    'PMM-T233 PMM-T233 Verify user is able to access PMM Database Checks through UI and with URL @not-pr-pipeline',
     async (I, adminPage, databaseChecksPage) => {
         adminPage.selectItemFromPMMDropdown('PMM Database Checks');
         I.waitForVisible(databaseChecksPage.fields.dbCheckPanelSelector, 30);
+        await databaseChecksPage.verifyDatabaseChecksPageOpened();
         I.amOnPage(databaseChecksPage.url);
         I.waitForVisible(databaseChecksPage.fields.dbCheckPanelSelector, 30);
+        await databaseChecksPage.verifyDatabaseChecksPageOpened();
     }
 );
 
@@ -51,7 +53,7 @@ Scenario(
         I.waitForVisible(homePage.fields.checksPanelSelector, 30);
         await homePage.waitForCheckResultsToAppearInPanel();
         I.doubleClick(homePage.fields.sttFailedChecksPanelSelector);
-        databaseChecksPage.verifyDatabaseChecksPageOpened(true);
+        await databaseChecksPage.verifyDatabaseChecksPageOpened();
     }
 );
 
@@ -60,8 +62,7 @@ Scenario(
     async (I, databaseChecksPage) => {
         const row = 1;
         I.amOnPage(databaseChecksPage.url);
-        await databaseChecksPage.waitForCheckResultsToAppear();
-        databaseChecksPage.verifyDatabaseChecksPageOpened(true);
+        await databaseChecksPage.verifyDatabaseChecksPageOpened();
         databaseChecksPage.mouseOverInfoIcon(row);
         await databaseChecksPage.compareTooltipValues(row);
     }
@@ -71,8 +72,7 @@ Scenario(
     'PMM-T241 Verify user can see correct service name for failed checks @not-pr-pipeline',
     async (I, databaseChecksPage) => {
         I.amOnPage(databaseChecksPage.url);
-        await databaseChecksPage.waitForCheckResultsToAppear();
-        databaseChecksPage.verifyDatabaseChecksPageOpened(true);
+        await databaseChecksPage.verifyDatabaseChecksPageOpened();
         await databaseChecksPage.verifyServiceNamesExistence();
     }
 );
