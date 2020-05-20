@@ -3,7 +3,7 @@ import { TextAreaField } from '../../../react-plugins-deps/components/FormCompon
 import React, { ReactElement, useEffect, useState } from 'react';
 import ButtonElement from '../../../react-plugins-deps/components/FormComponents/Button/Button';
 import { Form as FormFinal } from 'react-final-form';
-import SettingsService from '../../Settings.service';
+import { SettingsService } from '../../Settings.service';
 import { showSuccessNotification } from '../../../react-plugins-deps/components/helpers/notification-manager';
 import { FormElement } from '../../../react-plugins-deps/components/FormComponents/FormElement/FormElement';
 import { PluginTooltip } from '../../../react-plugins-deps/components/helpers/Helpers';
@@ -57,11 +57,11 @@ const AlertManager = props => {
         useEffect(() => {
           form.initialize(props.settings);
         }, [props.settings]);
-        // @ts-ignore
         return (
           <form onSubmit={handleSubmit}>
             <>
               <FormElement
+                data-qa="form-field-am-url"
                 label="Alertmanager URL"
                 tooltip={
                   <PluginTooltip
@@ -83,6 +83,7 @@ const AlertManager = props => {
                 }
               />
               <FormElement
+                data-qa="form-field-alerting-rules"
                 label="Prometheus Alerting rules"
                 tooltip={
                   <PluginTooltip

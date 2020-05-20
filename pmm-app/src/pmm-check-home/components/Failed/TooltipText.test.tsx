@@ -12,6 +12,8 @@ describe('TooltipText::', () => {
         .at(0)
         .text()
     ).toEqual('Failed checks: 5');
+
+    root.unmount();
   });
 
   it('should render a body with failed checks detailed by severity', () => {
@@ -21,11 +23,15 @@ describe('TooltipText::', () => {
     expect(root.at(0).text()).toEqual('Critical – 1');
     expect(root.at(1).text()).toEqual('Major – 3');
     expect(root.at(2).text()).toEqual('Trivial – 1');
+
+    root.unmount();
   });
 
   it('should render nothing when the sum is zero', () => {
     const outer = shallow(<TooltipText sum={0} data={[0, 0, 0]} />);
     const root = outer.find('div');
     expect(root.length).toEqual(0);
+
+    root.unmount();
   });
 });

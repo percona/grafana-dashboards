@@ -5,27 +5,20 @@ import { act } from 'react-dom/test-utils';
 import { InventoryDataService } from './DataService';
 import { agentsColumns, nodesColumns, servicesColumns } from './panel.constants';
 
-jest.mock('../react-plugins-deps/components/helpers/notification-manager', () => () => ({
-  showErrorNotification: () => {},
-}));
+jest.mock('../react-plugins-deps/components/helpers/notification-manager');
 
 describe('Inventory tables', () => {
-  let container: HTMLDivElement | null = null;
+  let container: Element;
   beforeEach(() => {
     // setup a DOM element as a render target
-    // @ts-ignore
     container = document.createElement('div');
-    // @ts-ignore
     document.body.appendChild(container);
   });
 
   afterEach(() => {
     // cleanup on exiting
-    // @ts-ignore
     unmountComponentAtNode(container);
-    // @ts-ignore
     container.remove();
-    container = null;
   });
 
   it('Agents table renders correct with right data', () => {

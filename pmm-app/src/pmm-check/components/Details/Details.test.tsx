@@ -29,5 +29,6 @@ describe('Details::', () => {
     const root = shallow(<Details details={DATA_SOURCE[0].details} />);
 
     expect(root.find('ul').find('li').length).toEqual(2);
+    root.unmount();
   });
 });

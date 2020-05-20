@@ -1,18 +1,15 @@
-// Just a stub test
-import { InputField } from './Input';
 import React from 'react';
-import renderer from 'react-test-renderer';
-import { renderHook } from '@testing-library/react-hooks';
+import { mount } from 'enzyme';
 import { Form } from 'react-final-form';
+import { InputField } from './Input';
 
-xdescribe('Input field test', () => {
-  it('Input renders correct without props', () => {
-    renderHook(() => {
-      const component = renderer.create(
-        <Form onSubmit={() => null} render={() => <InputField name="test_field" />} />
-      );
-      const tree = component.toJSON();
-      expect(tree).toMatchSnapshot();
-    });
+describe('Input field::', () => {
+  it('Input renders without props', () => {
+    const root = mount(<Form onSubmit={jest.fn()} render={() => <InputField name="testField" />} />);
+
+    expect(root.find('input[name="testField"]')).toHaveLength(1);
+    expect(root).toMatchSnapshot();
+
+    root.unmount();
   });
 });

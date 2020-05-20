@@ -1,12 +1,11 @@
 import React, { ReactElement, useEffect, useState } from 'react';
 import { Collapse } from 'antd';
+import { Form } from 'react-final-form';
 import UploadSSH from './Parts/UploadSSH/UploadSSH';
 import Diagnostics from './Parts/Diagnostics/Diagnostics';
 import SettingsPart from './Parts/Settings/Settings';
 import AlertManager from './Parts/AlertManager/AlertManager';
-import SettingsService from './Settings.service';
-import { Form } from 'react-final-form';
-import Styling from '../react-plugins-deps/components/helpers/styling';
+import { SettingsService } from './Settings.service';
 
 const { Panel } = Collapse;
 
@@ -33,7 +32,6 @@ const SettingsPanel = () => {
 
   useEffect(() => {
     (async () => {
-      Styling.addPluginPanelClass();
       const response = await SettingsService.getSettings();
       updateSettings(response.settings);
     })();
@@ -44,7 +42,6 @@ const SettingsPanel = () => {
         <Form
           onSubmit={() => {}}
           render={(): ReactElement => {
-            // @ts-ignore
             return (
               <Collapse
                 bordered={false}
