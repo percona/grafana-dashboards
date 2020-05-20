@@ -1,4 +1,7 @@
-import { apiRequestManagement, apiRequestQAN } from '../../../../../react-plugins-deps/helpers/api';
+import {
+  apiRequestManagement,
+  apiRequestQAN,
+} from '../../../../../react-plugins-deps/components/helpers/api';
 
 class DetailsService {
   static async getExample({ filterBy, groupBy, labels = [], from, to, tables = [] }) {

@@ -1,6 +1,6 @@
 import React from 'react';
 import HSBar from 'react-horizontal-stacked-bar-chart';
-import { Humanize } from '../../../../helpers/Humanization';
+import { Humanize } from '../../../helpers/Humanization';
 // eslint-disable-next-line max-len
 import { DATABASE } from '../../../../../pmm-qan-app-panel/components/DataOutput/components/Details/Details.constants';
 import { METRICS_COLORS, PERCENT_COUNT, TIME_METRICS } from './TimeDistribution.constants';

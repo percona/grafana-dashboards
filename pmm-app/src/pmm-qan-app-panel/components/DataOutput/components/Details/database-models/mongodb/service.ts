@@ -1,4 +1,4 @@
-import { apiRequestManagement } from '../../../../../../../react-plugins-deps/helpers/api';
+import { apiRequestManagement } from '../../../../../../../react-plugins-deps/components/helpers/api';
 import { GenericDatabase } from '../generic-database/generic-database';
 
 export class MongoDBService extends GenericDatabase {

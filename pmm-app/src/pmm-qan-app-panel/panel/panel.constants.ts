@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { Humanize } from '../../react-plugins-deps/helpers/Humanization';
+import { Humanize } from '../../react-plugins-deps/components/helpers/Humanization';
 
 export const DEFAULT_COLUMNS = ['load', 'num_queries', 'query_time'];
 export const FILTERS_NAMES = [

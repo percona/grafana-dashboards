@@ -1,8 +1,14 @@
-import axios, { AxiosInstance } from 'axios';
+// @ts-nocheck
+import axios from 'axios';
 import { showErrorNotification } from './notification-manager';
 
 class ApiRequest {
-  axiosInstance: AxiosInstance;
+  axiosInstance: axios.AxiosInstance;
+
+  // readonly get;
+  // readonly post;
+  // readonly patch;
+  // readonly delete;
 
   constructor(params) {
     this.axiosInstance = axios.create({

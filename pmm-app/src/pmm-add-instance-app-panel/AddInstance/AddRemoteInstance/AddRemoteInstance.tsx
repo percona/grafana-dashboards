@@ -7,7 +7,7 @@ import { CheckboxField } from '../../../react-plugins-deps/components/Form/Check
 import { Form as FormFinal } from 'react-final-form';
 import { PasswordField } from '../../../react-plugins-deps/components/Form/Password/Password';
 import AddRemoteInstanceService from './AddRemoteInstanceService';
-import Validators from '../../../react-plugins-deps/helpers/validators';
+import Validators from '../../../react-plugins-deps/components/helpers/validators';
 
 interface InstanceData {
   instanceType?: string;
