@@ -1,13 +1,14 @@
 Feature('Monitoring AWS RDS MySQL DB');
 
-Before(async I => {
+Before(async (I) => {
   I.Authorize();
 });
 
 Scenario(
-  'Verify Discovery and adding AWS RDS MySQL 5.6 instance for monitoring @not-pr-pipeline',
-  async (I, remoteInstancesPage, pmmInventoryPage) => {
+  'PMM-T138 - Verify disabling enhanced metrics for RDS, PMM-T139 - Verify disabling basic metrics for RDS, PMM-T9 - Verify adding RDS instances, @not-pr-pipeline',
+  async (I, remoteInstancesPage, pmmInventoryPage, homePage, qanPage, dashboardPage) => {
     const instanceIdToMonitor = 'rds-mysql56';
+    const environment = 'RDS MySQL 5.6';
     I.amOnPage(remoteInstancesPage.url);
     remoteInstancesPage.waitUntilRemoteInstancesPageLoaded().openAddAWSRDSMySQLPage();
     remoteInstancesPage.discoverRDS();
@@ -15,9 +16,19 @@ Scenario(
     remoteInstancesPage.startMonitoringOfInstance(instanceIdToMonitor);
     remoteInstancesPage.verifyAddInstancePageOpened();
     remoteInstancesPage.fillRemoteRDSMySQLFields();
-    remoteInstancesPage.createRemoteInstance();
+    remoteInstancesPage.createRemoteInstance(instanceIdToMonitor);
     pmmInventoryPage.verifyRemoteServiceIsDisplayed(instanceIdToMonitor);
     await pmmInventoryPage.verifyAgentHasStatusRunning(instanceIdToMonitor);
+    await pmmInventoryPage.verifyMetricsFlags(instanceIdToMonitor);
+    //skipping verification of the filter in MySQL Instance Overview for now
+    //skipping verification of the filter in QAN. Will be fixed with new QAN tests
+    /*
+    I.amOnPage(dashboardPage.mySQLInstanceOverview.url);
+    await dashboardPage.verifyExisitngServiceName(instanceIdToMonitor);
+    I.amOnPage(qanPage.url + '?orgId=1&from=now-5m&to=now');
+    await I.switchTo(qanPage.fields.iframe);
+    await qanPage.verifyFilterExists(environment);
+    */
   }
 );
 
