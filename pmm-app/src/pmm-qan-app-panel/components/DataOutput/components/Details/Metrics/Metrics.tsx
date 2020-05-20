@@ -6,7 +6,7 @@ import {
   Sparkline,
   TimeDistribution,
 } from '../../../../../../react-plugins-deps/components/Elements/Charts';
-import { Humanize } from '../../../../../../react-plugins-deps/helpers/Humanization';
+import { Humanize } from '../../../../../../react-plugins-deps/components/helpers/Humanization';
 import { Styling } from './Metrics.styles';
 import { useMetricsDetails } from './Metrics.hooks';
 

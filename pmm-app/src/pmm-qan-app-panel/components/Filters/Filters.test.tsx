@@ -12,7 +12,7 @@ jest.mock('react-scrollbar', () => () => {
   return <div></div>;
 });
 
-jest.mock('../../../react-plugins-deps/helpers/notification-manager', () => () => ({}));
+jest.mock('../../../react-plugins-deps/components/helpers/notification-manager', () => () => ({}));
 
 const MOCK_FILTERS = {
   az: {

@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import { area, axisBottom, curveStepAfter, scaleLinear } from 'd3';
 import * as moment from 'moment';
-import { Humanize } from '../../../../helpers/Humanization';
+import { Humanize } from '../../../helpers/Humanization';
 import './Sparkline.scss';
 import { PolygonChartInterface } from './Sparkline.types';
 import ReactTooltip from 'react-tooltip';

@@ -1,4 +1,4 @@
-import { apiRequestQAN } from '../../../../../react-plugins-deps/helpers/api';
+import { apiRequestQAN } from '../../../../../react-plugins-deps/components/helpers/api';
 import { OverviewServiceInterface } from './OverviewTable.types';
 
 class OverviewTableService {

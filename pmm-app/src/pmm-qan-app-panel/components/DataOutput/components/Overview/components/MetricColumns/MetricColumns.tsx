@@ -1,7 +1,7 @@
 import { METRIC_CATALOGUE } from '../../../../../../panel/panel.constants';
 import { COLUMN_WIDTH, FIXED_COLUMN_WIDTH } from '../../OverviewTable.constants';
 import ManageColumns from '../../../ManageColumns/ManageColumns';
-import { Humanize } from '../../../../../../../react-plugins-deps/helpers/Humanization';
+import { Humanize } from '../../../../../../../react-plugins-deps/components/helpers/Humanization';
 import { Styling } from './MetricColumn.styles';
 import { Divider } from 'antd';
 import { Latency, Sparkline } from '../../../../../../../react-plugins-deps/components/Elements/Charts';

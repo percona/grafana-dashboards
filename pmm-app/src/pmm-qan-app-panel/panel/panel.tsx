@@ -6,7 +6,7 @@ import { UrlParametersProvider } from './panel.provider';
 
 import FiltersContainer from '../components/Filters/Filters';
 import DataOutput from '../components/DataOutput/DataOutput';
-import Styling from '../../react-plugins-deps/helpers/styling';
+import Styling from '../../react-plugins-deps/components/helpers/styling';
 
 const QueryAnalyticsPanel = props => {
   useEffect(() => Styling.addPluginPanelClass(), []);
