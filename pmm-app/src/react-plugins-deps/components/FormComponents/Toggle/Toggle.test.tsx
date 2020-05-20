@@ -1,15 +1,15 @@
-// Just a stub test
-import { ToggleField } from './Toggle';
 import React from 'react';
-import renderer from 'react-test-renderer';
+import { mount } from 'enzyme';
 import { Form } from 'react-final-form';
+import { ToggleField } from './Toggle';
 
-describe('Toggle field test', () => {
-  it('Toggle renders correct without props', () => {
-    const component = renderer.create(
-      <Form onSubmit={() => null} render={() => <ToggleField name="test_field" />} />
-    );
-    const tree = component.toJSON();
-    expect(tree).toMatchSnapshot();
+describe('Toggle field', () => {
+  it('Toggle renders without props', () => {
+    const root = mount(<Form onSubmit={jest.fn()} render={() => <ToggleField name="testField" />} />);
+
+    expect(root.find('button[role="switch"]')).toHaveLength(1);
+    expect(root).toMatchSnapshot();
+
+    root.unmount();
   });
 });

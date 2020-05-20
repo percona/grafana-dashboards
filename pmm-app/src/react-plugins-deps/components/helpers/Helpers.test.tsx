@@ -1,4 +1,3 @@
-// Just a stub test
 import { PluginTooltip } from './Helpers';
 import React from 'react';
 import renderer from 'react-test-renderer';
