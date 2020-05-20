@@ -58,13 +58,14 @@ module.exports = {
   async waitForChecksToLoad() {
     let results;
     for (let i = 0; i < 30; i++) {
+      I.waitForVisible(this.fields.dbCheckPanelSelector, 30);
+      I.wait(1);
       results = await I.grabNumberOfVisibleElements(this.fields.serviceNameSelector);
       if (results > 0) {
+        I.waitForVisible(this.fields.serviceNameSelector, 30);
         return
       }
       I.refreshPage();
-      I.waitForVisible(this.fields.dbCheckPanelSelector, 30);
-      I.wait(1);
     }
   },
 
