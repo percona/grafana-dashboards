@@ -76,6 +76,9 @@ pipeline {
         stage('Tests') {
             parallel {
                 stage('e2e tests') {
+                    options {
+                        timeout(time: 5, unit: "MINUTES")
+                    }
                     steps {
                         sh """
                             sg docker -c "
