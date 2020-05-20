@@ -66,6 +66,7 @@ module.exports = {
       link:
         'https://www.percona.com/doc/percona-monitoring-and-management/2.x/manage/server-admin-gui.html#security-threat-tool',
     },
+
   },
 
   sectionButtonText: {
@@ -110,6 +111,7 @@ module.exports = {
     I.waitForVisible(this.fields.applyButton, 30);
     I.waitForVisible(this.fields.sectionHeader, 30);
     I.waitForVisible(this.fields.callHomeSwitch, 30);
+    I.waitForVisible(this.fields.sttSwitchSelector, 30);
   },
 
   verifySettingsSectionElements() {
@@ -296,6 +298,28 @@ module.exports = {
     I.amOnPage(this.prometheusAlertUrl);
   },
 
+  async enableSTT(){
+    this.waitForPmmSettingsPageLoaded();
+    const disabledStt = await I.grabNumberOfVisibleElements(this.fields.sttSwitchSelector + `[@aria-checked='false']`);
+    if (disabledStt) {
+      I.click(this.fields.sttSwitchSelector);
+      this.verifySwitch(this.fields.sttSwitchSelector, 'on')
+      I.click(this.fields.applyButton);
+      await this.verifySuccessfulPopUp(this.messages.successPopUpMessage);
+    }
+  },
+
+  async disableSTT(){
+    this.waitForPmmSettingsPageLoaded();
+    const disabledStt = await I.grabNumberOfVisibleElements(this.fields.sttSwitchSelector + `[@aria-checked='false']`);
+    if (!disabledStt) {
+      I.click(this.fields.sttSwitchSelector);
+      this.verifySwitch(this.fields.sttSwitchSelector, 'off')
+      I.click(this.fields.applyButton);
+      await this.verifySuccessfulPopUp(this.messages.successPopUpMessage);
+    }
+  },
+
   async verifyAlertmanagerRuleAdded(ruleName) {
     for (let i = 0; i < 10; i++) {
       const notLoaded = await I.grabNumberOfVisibleElements(`//td[contains(text(), '${ruleName}')]`);
@@ -318,9 +342,11 @@ module.exports = {
     switch (expectedSwitchState) {
       case 'on':
         expectedSwitch = { 'aria-checked': 'true' };
+        I.seeAttributesOnElements(switchSelector, expectedSwitch);
         break;
       case 'off':
         expectedSwitch = { 'aria-checked': 'false' };
+        I.seeAttributesOnElements(switchSelector, expectedSwitch);
         break;
     }
   },
@@ -333,4 +359,5 @@ module.exports = {
       I.dontSeeElement(switchSelector);
     }
   },
+
 };
