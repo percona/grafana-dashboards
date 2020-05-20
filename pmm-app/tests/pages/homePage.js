@@ -1,4 +1,4 @@
-const { I } = inject();
+const { I, pmmSettingsPage } = inject();
 const assert = require('assert');
 
 module.exports = {
@@ -13,7 +13,7 @@ module.exports = {
       "//span[@class='panel-title-text' and contains(text(), 'Monitored DB Instances')]//../../../..//span[@class='singlestat-panel-value']",
     dashboardHeaderText: 'Percona Monitoring and Management',
     dashboardHeaderLocator: "//div[contains(@class, 'dashboard-header')]",
-    checkUpdateButton: "//button[@class='check-update-button']",
+    checkUpdateButton: "#refresh",
     triggerUpdate: "//button[@ng-click='update()']",
     updateProgressModal: "//div[@class='modal-content']",
     reloadButtonAfterUpgrade: "//button[@ng-click='reloadAfterUpdate()']",
@@ -21,6 +21,11 @@ module.exports = {
     upToDateLocator: "//section[@class='state']/p[text() = 'You are up to date']",
     availableVersion: "//div[@id='available_version']/div/p",
     currentVersion: "//p[@id='current_version']/span",
+    lastCheckSelector: "//div[@class='last-check-wrapper']",
+    sttDisabledFailedChecksPanelSelector: "//div[@data-qa='db-check-panel-settings-link']",
+    sttFailedChecksPanelSelector:"//div[@data-qa='db-check-panel-has-checks']",
+    checksPanelSelector:"//div[@data-qa='db-check-panel-home']",
+
   },
 
   // introducing methods
@@ -43,6 +48,54 @@ module.exports = {
       available_version,
       'Update operation failed'
     );
+  },
+
+  // Refreshing page until results appear
+  async waitForCheckResultsToAppearInPanel() {
+    let results;
+    let disabledSTT;
+    for (let i = 0; i < 30; i++) {
+      I.waitForVisible(this.fields.checksPanelSelector, 30);
+      I.wait(1);
+      results = await I.grabNumberOfVisibleElements(this.fields.sttFailedChecksPanelSelector);
+      disabledSTT = await I.grabNumberOfVisibleElements(this.fields.sttDisabledFailedChecksPanelSelector);
+      if (disabledSTT) {
+        I.amOnPage(pmmSettingsPage.url);
+        await pmmSettingsPage.enableSTT();
+        I.amOnPage(this.url);
+        continue
+      }
+      if (results > 0) {
+        I.waitForVisible(this.fields.sttFailedChecksPanelSelector, 30);
+        break
+      }
+      I.refreshPage();
+    }
+    assert.equal(true, results > 0, 'Checks have not appeared at Home Page');
+  },
+
+  async verifyPreUpdateWidgetIsPresent() {
+    I.waitForVisible(this.fields.pmmUpdateWidget, 60);
+    I.waitForElement(this.fields.triggerUpdate, 180);
+    I.seeElement(this.fields.availableVersion);
+    I.seeElement(this.fields.currentVersion);
+    I.seeElement(this.fields.triggerUpdate);
+    I.dontSeeElement(this.fields.upToDateLocator);
+    I.seeElement(this.fields.currentVersion);
+    I.seeElement(this.fields.checkUpdateButton);
+    I.see('Last check:',`${this.fields.checkUpdateButton}/../preceding-sibling::p`);
+    assert.notEqual(await I.grabTextFrom(this.fields.availableVersion),
+        await I.grabTextFrom(this.fields.currentVersion), 'Available and Current versions match');
+  },
+
+  verifyPostUpdateWidgetIsPresent() {
+    I.waitForVisible(this.fields.pmmUpdateWidget, 30);
+    I.dontSeeElement(this.fields.availableVersion);
+    I.dontSeeElement(this.fields.triggerUpdate);
+    I.seeElement(this.fields.upToDateLocator);
+    I.seeElement(this.fields.currentVersion);
+    I.seeElement(this.fields.checkUpdateButton);
+    I.see('Last check:' , `${this.fields.checkUpdateButton}/../preceding-sibling::p`);
   },
 
   async verifyVisibleService(serviceName) {
