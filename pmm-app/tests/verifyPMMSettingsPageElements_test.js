@@ -184,7 +184,7 @@ Scenario(
 Scenario(
     'PMM-T254 Verify validation for STT and Telemetry switches ',
     async (I, pmmSettingsPage) => {
-        pmmSettingsPage.waitForPmmSettingsPageLoaded();
+        await pmmSettingsPage.disableSTT();
         pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.telemetrySwitchSelector, 'on');
         pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelector, 'off');
         I.click(pmmSettingsPage.fields.telemetrySwitchSelector);
