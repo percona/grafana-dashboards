@@ -13,17 +13,15 @@ module.exports = {
     'Node Type',
     'Service Type',
   ],
-  tableHeader: [
-    'Query', 'Load', 'Query Count', 'Query Time'
-  ],
-  tabs:{
-    tablesTab:["//div[@class='card-body']//pre", "//button[@id='copyQueryExample']"],
-    explainTab:["//div[@id='classicPanel']//span"]
+  tableHeader: ['Query', 'Load', 'Query Count', 'Query Time'],
+  tabs: {
+    tablesTab: ["//div[@class='card-body']//pre", "//button[@id='copyQueryExample']"],
+    explainTab: ["//div[@id='classicPanel']//span"],
   },
-  urlParts:{
+  urlParts: {
     queryCountWithoutErrors: 'num_queries_with_errors',
     lockTime: 'lock_time',
-    pmmManaged: 'var-database=local'
+    pmmManaged: 'var-database=local',
   },
   serverList: ['PMM Server PostgreSQL', 'PGSQL_', 'PXC_NODE', 'mysql'],
   fields: {
@@ -53,7 +51,7 @@ module.exports = {
     classicSectionContents: "//div[@id='classicPanel']//span",
     tablesTabContents: "//div[@class='card-body']//pre",
     copyQueryButton: "//button[@id='copyQueryExample']",
-    spinnerLocator: "//i[@class='fa fa-spinner fa-spin spinner']"
+    spinnerLocator: "//i[@class='fa fa-spinner fa-spin spinner']",
   },
 
   filterGroupLocator(filterName) {
@@ -62,13 +60,15 @@ module.exports = {
 
   tableHeaderLocator(tableHeader) {
     return (
-        "//ng-select//span[contains(@class, 'ng-value-label') and contains(text(), '" + tableHeader + "')]"
+      "//ng-select//span[contains(@class, 'ng-value-label') and contains(text(), '" + tableHeader + "')]"
     );
   },
 
   filterGroupCountSelector(groupName) {
     return (
-        "//section[@class='aside__filter-group']//span[contains(text(), '" + groupName + "')]/../button[contains(text(), 'See all')]"
+      "//section[@class='aside__filter-group']//span[contains(text(), '" +
+      groupName +
+      "')]/../button[contains(text(), 'See all')]"
     );
   },
 
@@ -94,7 +94,7 @@ module.exports = {
   },
 
   checkTableHeaders() {
-    for (let i = 0; i< this.tableHeader.length; i++){
+    for (let i = 0; i < this.tableHeader.length; i++) {
       I.seeElement(this.tableHeaderLocator(this.tableHeader[i]));
     }
   },
@@ -137,13 +137,18 @@ module.exports = {
 
   getFilterLocator(filterValue) {
     const filterLocator =
-     "//section[@class='aside__filter-group']//span[contains(text(), '" +
-     filterValue +
-     "')]/../span[@class='checkbox-container__checkmark']";
+      "//section[@class='aside__filter-group']//span[contains(text(), '" +
+      filterValue +
+      "')]/../span[@class='checkbox-container__checkmark']";
     return filterLocator;
   },
 
-  applyFilter(filterValue){
+  async verifyFilterExists(filterValue) {
+    const locator = this.getFilterLocator(filterValue);
+    I.waitForVisible(locator, 30);
+  },
+
+  applyFilter(filterValue) {
     const filterLocator = this.getFilterLocator(filterValue);
     I.waitForElement(filterLocator, 30);
     I.click(filterLocator);
@@ -160,21 +165,39 @@ module.exports = {
         // eslint-disable-next-line max-len
         I.click(this.filterGroupCountSelector(this.filterGroups[i]));
         // eslint-disable-next-line max-len
-        I.waitForVisible("//section[@class='aside__filter-group']//span[contains(text(), '" + this.filterGroups[i] + "')]/../button[contains(text(), 'Show top 5')]");
+        I.waitForVisible(
+          "//section[@class='aside__filter-group']//span[contains(text(), '" +
+            this.filterGroups[i] +
+            "')]/../button[contains(text(), 'Show top 5')]"
+        );
       }
     }
   },
 
   async _getData(row, column) {
-    const percentage = await I.grabTextFrom("//table//tr[@ng-reflect-router-link='details/," + (row - 1) + "']//app-qan-table-cell[" + column +"]//div[1]//div[3]");
-    const value = await I.grabTextFrom("//table//tr[@ng-reflect-router-link='details/," + (row - 1) + "']//app-qan-table-cell[" + column +"]//div[1]//div[2]");
+    const percentage = await I.grabTextFrom(
+      "//table//tr[@ng-reflect-router-link='details/," +
+        (row - 1) +
+        "']//app-qan-table-cell[" +
+        column +
+        ']//div[1]//div[3]'
+    );
+    const value = await I.grabTextFrom(
+      "//table//tr[@ng-reflect-router-link='details/," +
+        (row - 1) +
+        "']//app-qan-table-cell[" +
+        column +
+        ']//div[1]//div[2]'
+    );
 
     return { percentage: percentage, val: value };
   },
 
   async getDetailsData(row) {
-    const percentage = await I.grabTextFrom("//app-details-table//app-details-row[" + row +"]//div[3]//span[2]");
-    const value = await I.grabTextFrom("//app-details-table//app-details-row[" + row +"]//div[3]//span[1]");
+    const percentage = await I.grabTextFrom(
+      '//app-details-table//app-details-row[' + row + ']//div[3]//span[2]'
+    );
+    const value = await I.grabTextFrom('//app-details-table//app-details-row[' + row + ']//div[3]//span[1]');
     return { percentage: percentage, val: value };
   },
 
@@ -207,7 +230,7 @@ module.exports = {
     }
   },
 
-  waitForDetailsSection(){
+  waitForDetailsSection() {
     I.waitForVisible(this.fields.detailsTable, 30);
   },
 
@@ -217,36 +240,66 @@ module.exports = {
     assert.equal(detailsText.length > 0, true, `Empty Section in Details`);
   },
 
-  async verifyDataSet(row){
+  async verifyDataSet(row) {
     const queryCountData = await this._getData(row, 2);
-    console.log("Query Count Data values " + queryCountData.percentage + " & " + queryCountData.val);
+    console.log('Query Count Data values ' + queryCountData.percentage + ' & ' + queryCountData.val);
     const queryTimeData = await this._getData(row, 3);
-    console.log("Query Time Data values " + queryTimeData.percentage + " & " + queryTimeData.val);
+    console.log('Query Time Data values ' + queryTimeData.percentage + ' & ' + queryTimeData.val);
     this._selectDetails(row);
     const detailsQueryCountData = await this.getDetailsData(1);
-    console.log("Query Count Details Values " + detailsQueryCountData.percentage  + " & " +  detailsQueryCountData.val);
+    console.log(
+      'Query Count Details Values ' + detailsQueryCountData.percentage + ' & ' + detailsQueryCountData.val
+    );
     let detailsQueryTimeData;
     if (row === 1) {
       detailsQueryTimeData = await this.getDetailsData(3);
-      console.log("Query Count Details Values " + detailsQueryCountData.percentage  + " & " +  detailsQueryCountData.val);
-    }
-    else
-    {
+      console.log(
+        'Query Count Details Values ' + detailsQueryCountData.percentage + ' & ' + detailsQueryCountData.val
+      );
+    } else {
       detailsQueryTimeData = await this.getDetailsData(2);
       console.log(
         'Query Count Details Values ' + detailsQueryCountData.percentage + ' & ' + detailsQueryCountData.val
       );
     }
-    assert.equal(detailsQueryCountData.percentage.indexOf(queryCountData.percentage) > -1, true, "Details Query Count Percentage Doesn't Match expected "  + detailsQueryCountData.percentage + " to contain " + queryCountData.percentage);
-    assert.equal(detailsQueryCountData.val.indexOf(queryCountData.val) > -1, true, "Details Query Count Value Doesn't Match expected " + detailsQueryCountData.val + " to contain " + queryCountData.val);
-    assert.equal(detailsQueryTimeData.percentage.indexOf(queryTimeData.percentage) > -1, true, "Details Query Time Percentage Doesn't Match expected " + detailsQueryTimeData.percentage + " to contain " + queryTimeData.percentage);
-    assert.equal(detailsQueryTimeData.val.indexOf(queryTimeData.val) > -1, true, "Details Query Time value Doesn't Match expected "  + detailsQueryTimeData.val + " to contain " + queryTimeData.val);
+    assert.equal(
+      detailsQueryCountData.percentage.indexOf(queryCountData.percentage) > -1,
+      true,
+      "Details Query Count Percentage Doesn't Match expected " +
+        detailsQueryCountData.percentage +
+        ' to contain ' +
+        queryCountData.percentage
+    );
+    assert.equal(
+      detailsQueryCountData.val.indexOf(queryCountData.val) > -1,
+      true,
+      "Details Query Count Value Doesn't Match expected " +
+        detailsQueryCountData.val +
+        ' to contain ' +
+        queryCountData.val
+    );
+    assert.equal(
+      detailsQueryTimeData.percentage.indexOf(queryTimeData.percentage) > -1,
+      true,
+      "Details Query Time Percentage Doesn't Match expected " +
+        detailsQueryTimeData.percentage +
+        ' to contain ' +
+        queryTimeData.percentage
+    );
+    assert.equal(
+      detailsQueryTimeData.val.indexOf(queryTimeData.val) > -1,
+      true,
+      "Details Query Time value Doesn't Match expected " +
+        detailsQueryTimeData.val +
+        ' to contain ' +
+        queryTimeData.val
+    );
   },
 
-  async clearFilters(){
+  async clearFilters() {
     const numOfElementsFilters = await I.grabNumberOfVisibleElements(this.fields.filterSelection);
     for (let i = 1; i <= numOfElementsFilters; i++) {
-      I.click(this.fields.filterSelection + "[" + i + "]");
+      I.click(this.fields.filterSelection + '[' + i + ']');
       I.waitForInvisible(this.fields.detailsTable, 30);
     }
   },

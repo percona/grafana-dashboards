@@ -48,7 +48,7 @@ Scenario(
     I.amOnPage(dashboardPage.prometheusExporterOverviewDashboard.url);
     dashboardPage.waitForDashboardOpened();
     dashboardPage.verifyMetricsExistence(dashboardPage.prometheusExporterOverviewDashboard.metrics);
-    await dashboardPage.verifyThereAreNoGraphsWithNA(3);
+    await dashboardPage.verifyThereAreNoGraphsWithNA(6);
     await dashboardPage.verifyThereAreNoGraphsWithoutData();
   }
 );
