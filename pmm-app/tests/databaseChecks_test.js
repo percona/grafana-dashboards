@@ -35,7 +35,7 @@ Before( async (I, pmmSettingsPage) => {
 });
 
 Scenario(
-    'PMM-T233 PMM-T233 Verify user is able to access PMM Database Checks through UI and with URL @not-pr-pipeline',
+    'PMM-T233 PMM-T234 Verify user is able to access PMM Database Checks through UI and with URL @not-pr-pipeline',
     async (I, adminPage, databaseChecksPage) => {
         adminPage.selectItemFromPMMDropdown('PMM Database Checks');
         I.waitForVisible(databaseChecksPage.fields.dbCheckPanelSelector, 30);

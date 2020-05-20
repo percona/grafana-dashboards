@@ -74,6 +74,7 @@ Scenario(
     async (I, pmmSettingsPage) => {
       await pmmSettingsPage.enableSTT();
       I.refreshPage();
+      pmmSettingsPage.waitForPmmSettingsPageLoaded();
       pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelector, 'on');
       I.click(pmmSettingsPage.fields.sttSwitchSelector);
       pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelector, 'off');
