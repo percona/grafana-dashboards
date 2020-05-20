@@ -54,13 +54,14 @@ module.exports = {
   async waitForCheckResultsToAppearInPanel() {
     let results;
     for (let i = 0; i < 30; i++) {
+      I.waitForVisible(this.fields.checksPanelSelector, 30);
+      I.wait(1);
       results = await I.grabNumberOfVisibleElements(this.fields.sttFailedChecksPanelSelector);
       if (results > 0) {
+        I.waitForVisible(this.fields.sttFailedChecksPanelSelector, 30);
         break
       }
       I.refreshPage();
-      I.waitForVisible(this.fields.checksPanelSelector, 30);
-      I.wait(1);
     }
     assert.equal(true, results > 0, 'Checks have not appeared at Home Page');
   },
