@@ -1,4 +1,4 @@
-const { I } = inject();
+const { I, pmmSettingsPage } = inject();
 const assert = require('assert');
 
 module.exports = {
@@ -53,10 +53,18 @@ module.exports = {
   // Refreshing page until results appear
   async waitForCheckResultsToAppearInPanel() {
     let results;
+    let disabledSTT;
     for (let i = 0; i < 30; i++) {
       I.waitForVisible(this.fields.checksPanelSelector, 30);
       I.wait(1);
       results = await I.grabNumberOfVisibleElements(this.fields.sttFailedChecksPanelSelector);
+      disabledSTT = await I.grabNumberOfVisibleElements(this.fields.sttDisabledFailedChecksPanelSelector);
+      if (disabledSTT) {
+        I.amOnPage(pmmSettingsPage.url);
+        await pmmSettingsPage.enableSTT();
+        I.amOnPage(this.url);
+        continue
+      }
       if (results > 0) {
         I.waitForVisible(this.fields.sttFailedChecksPanelSelector, 30);
         break

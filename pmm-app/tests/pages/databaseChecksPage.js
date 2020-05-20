@@ -1,4 +1,4 @@
-const { I, pmmInventoryPage } = inject();
+const { I, pmmInventoryPage, pmmSettingsPage } = inject();
 const assert = require('assert');
 module.exports = {
   // insert your locators and methods here
@@ -57,10 +57,18 @@ module.exports = {
 
   async waitForChecksToLoad() {
     let results;
+    let disabledSTT;
     for (let i = 0; i < 30; i++) {
       I.waitForVisible(this.fields.dbCheckPanelSelector, 30);
       I.wait(1);
       results = await I.grabNumberOfVisibleElements(this.fields.serviceNameSelector);
+      disabledSTT = await I.grabNumberOfVisibleElements(this.fields.disabledSTTMessageSelector);
+      if (disabledSTT) {
+        I.amOnPage(pmmSettingsPage.url);
+        await pmmSettingsPage.enableSTT();
+        I.amOnPage(this.url);
+        continue
+      }
       if (results > 0) {
         I.waitForVisible(this.fields.serviceNameSelector, 30);
         return
