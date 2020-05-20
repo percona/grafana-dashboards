@@ -33,10 +33,8 @@ Scenario(
         await pmmSettingsPage.enableSTT();
         adminPage.selectItemFromPMMDropdown('PMM Database Checks');
         I.waitForVisible(databaseChecksPage.fields.dbCheckPanelSelector, 30);
-        await databaseChecksPage.verifyDatabaseChecksPageOpened();
         I.amOnPage(databaseChecksPage.url);
         I.waitForVisible(databaseChecksPage.fields.dbCheckPanelSelector, 30);
-        await databaseChecksPage.verifyDatabaseChecksPageOpened();
     }
 );
 
