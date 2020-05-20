@@ -1,11 +1,12 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
+import { shallow } from 'enzyme';
 import AlertManager from './AlertManager';
 
-jest.mock('../../../react-plugins-deps/components/helpers/notification-manager', () => () => ({}));
+jest.mock('../../../react-plugins-deps/components/helpers/notification-manager');
+
 describe('Settings Part test', () => {
   it('Alert Manager renders correct without props', () => {
-    const component = renderer.create(
+    const root = shallow(
       <AlertManager
         settings={{
           alert_manager_url: 'http://localhost',
@@ -13,7 +14,8 @@ describe('Settings Part test', () => {
         }}
       />
     );
-    const tree = component.toJSON();
-    expect(tree).toMatchSnapshot();
+
+    expect(root).toMatchSnapshot();
+    root.unmount();
   });
 });

@@ -30,7 +30,6 @@ export const SelectField = ({
       <Select {...input} defaultValue={defaultValue} style={{ width: '100%', height: '40px' }}>
         {options &&
           options.map(option => {
-            // @ts-ignore
             return (
               <Option value={option.value} key={option.label}>
                 <div className="select-item">{option.label}</div>

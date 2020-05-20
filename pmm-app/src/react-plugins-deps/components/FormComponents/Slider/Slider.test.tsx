@@ -1,10 +1,11 @@
 import React from 'react';
+import { Slider } from 'antd';
 import { Form } from 'react-final-form';
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import { SliderField } from './Slider';
 
 describe('Slider', () => {
-  it('Slider renders correct without props', () => {
+  it('Slider renders without props', () => {
     const marks = {
       0: 'Low',
       1: 'Medium',
@@ -12,13 +13,20 @@ describe('Slider', () => {
     };
 
     const onSubmit = jest.fn();
-    const component = shallow(
+    const root = mount(
       <Form
         onSubmit={onSubmit}
-        render={() => <SliderField marks={marks} name="metrics_resolutions_slider" />}
+        initialValues={{ metrics_resolutions_slider: 0 }}
+        render={() => (
+          <SliderField marks={marks} name="metrics_resolutions_slider" tipFormatter={jest.fn()} />
+        )}
       />
     );
 
-    expect(component).toMatchSnapshot();
+    expect(root.find(Slider).prop('name')).toEqual('metrics_resolutions_slider');
+    expect(root.find(Slider).prop('marks')).toEqual(marks);
+    expect(root).toMatchSnapshot();
+
+    root.unmount();
   });
 });

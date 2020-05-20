@@ -57,7 +57,6 @@ const AlertManager = props => {
         useEffect(() => {
           form.initialize(props.settings);
         }, [props.settings]);
-        // @ts-ignore
         return (
           <form onSubmit={handleSubmit}>
             <>

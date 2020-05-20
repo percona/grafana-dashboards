@@ -1,6 +1,6 @@
 import { PluginTooltip } from '../../../react-plugins-deps/components/helpers/Helpers';
 import { TextAreaField } from '../../../react-plugins-deps/components/FormComponents/TextArea/TextArea';
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import ButtonElement from '../../../react-plugins-deps/components/FormComponents/Button/Button';
 import { Form as FormFinal } from 'react-final-form';
 import { SettingsService } from '../../Settings.service';
@@ -12,16 +12,12 @@ interface UploadSSHInterface {
   ssh_key: string;
 }
 
-const UploadSSH = props => {
+const UploadSSH = ({ settings }) => {
   const [loading, setLoading] = useState(false);
-  // @ts-ignore
   const onSubmit = async (values: UploadSSHInterface) => {
-    const settings = {
-      ssh_key: values.ssh_key,
-    };
     setLoading(true);
     try {
-      await SettingsService.setSettings(settings);
+      await SettingsService.setSettings({ ssh_key: values.ssh_key });
       setLoading(false);
       showSuccessNotification({ message: 'SSH key updated' });
     } catch (e) {
@@ -31,10 +27,10 @@ const UploadSSH = props => {
   return (
     <FormFinal
       onSubmit={onSubmit}
-      render={({ form, handleSubmit }): ReactElement => {
+      render={({ form, handleSubmit }): ReactNode => {
         useEffect(() => {
-          form.initialize(props.settings);
-        }, [props.settings]);
+          form.initialize(settings);
+        }, [settings]);
         return (
           <form onSubmit={handleSubmit}>
             <>
