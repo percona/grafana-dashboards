@@ -225,7 +225,7 @@ const SettingsPart = props => {
                             text: 'Read more',
                           },
                         ]}
-                        text="Option to send usage data back to Percona to let us make our  "
+                        text="Option to send usage data back to Percona to let us make our product better"
                       />
                     }
                     element={
