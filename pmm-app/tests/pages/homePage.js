@@ -35,6 +35,7 @@ module.exports = {
 
   async upgradePMM() {
     I.waitForElement(this.fields.triggerUpdate, 180);
+    I.seeElement(this.fields.triggerUpdate);
     const available_version = await I.grabTextFrom(this.fields.availableVersion);
     I.click(this.fields.triggerUpdate);
     I.waitForElement(this.fields.updateProgressModal, 30);
@@ -86,5 +87,13 @@ module.exports = {
     I.seeElement(this.fields.currentVersion);
     I.seeElement(this.fields.checkUpdateButton);
     I.see('Last check:' , `${this.fields.checkUpdateButton}/../preceding-sibling::p`);
+  },
+
+  async verifyVisibleService(serviceName) {
+    I.scrollPageToBottom();
+    const serviceExists =
+      "//div[@class='react-grid-item']/descendant::p[contains(text(),'" + serviceName + "')]";
+    I.waitForElement(serviceExists, 30);
+    I.seeElement(serviceExists);
   },
 };
