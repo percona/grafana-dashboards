@@ -1,5 +1,8 @@
 const { I } = inject();
 const assert = require('assert');
+
+const locateLabel = dataQA => locate(`[data-qa="${dataQA}"]`).find('span');
+
 module.exports = {
   // insert your locators and methods here
   // setting locators
@@ -57,12 +60,12 @@ module.exports = {
     'Diagnostics',
   ],
 
-  tooltips : {
+  tooltips: {
     stt: {
-      text: "Enable Security Threat Tool and get updated checks from Percona",
-      link: "https://www.percona.com/doc/percona-monitoring-and-management/2.x/manage/server-admin-gui.html#security-threat-tool"
+      text: 'Enable Security Threat Tool and get updated checks from Percona',
+      link:
+        'https://www.percona.com/doc/percona-monitoring-and-management/2.x/manage/server-admin-gui.html#security-threat-tool',
     },
-
   },
 
   sectionButtonText: {
@@ -72,29 +75,35 @@ module.exports = {
     downloadLogs: 'Download PMM Server Logs',
   },
   fields: {
-    iframe: "//div[@class='panel-content']//iframe",
-    sectionHeader: "//div[@class='ant-collapse-header']",
-    sectionRow: '//strong',
-    diagnosticsSectionRow: "//div[@class='ant-row']",
-    dataRetentionCount: "//input[@name='data_retention_count']",
-    callHomeSwitch: "//button[@class='toggle-field ant-switch ant-switch-checked']",
-    subSectionHeader: "/following-sibling::div//div[@class='ant-collapse-header']",
-    applyButton: "//button[@type='submit']",
-    addSSHKeyButton: "//span[text()='Apply SSH key']/parent::button",
-    sshKeyInput: "//textarea[@name='ssh_key' and @placeholder='Enter ssh key']",
-    alertURLInput: "//input[@name='alert_manager_url' and @placeholder='Enter URL']",
-    alertRulesInput: "//textarea[@name='alert_manager_rules' and @placeholder='Alerting rules']",
     addAlertRuleButton: "//span[text()='Apply Alertmanager settings']/parent::button",
+    addSSHKeyButton: "//span[text()='Apply SSH key']/parent::button",
+    alertRulesInput: "//textarea[@name='alert_manager_rules' and @placeholder='Alerting rules']",
+    alertURLInput: "//input[@name='alert_manager_url' and @placeholder='Enter URL']",
+    alertingRules: locateLabel('form-field-alerting-rules'),
+    amUrlLabel: locateLabel('form-field-am-url'),
+    applyButton: "//button[@type='submit']",
+    callHomeSwitch: "//button[@class='toggle-field ant-switch ant-switch-checked']",
+    checkForUpdatesLabel: locateLabel('form-field-check-for-updates'),
+    dataRetentionCount: "//input[@name='data_retention_count']",
+    dataRetentionLabel: locateLabel('form-field-data-retention'),
+    diagnosticsSectionRow: "//div[@class='ant-row']",
     downloadLogsButton: "//a[@class='ant-btn' and @href='/logs.zip']",
+    iframe: "//div[@class='panel-content']//iframe",
     metricsResolution: "//div[@class='ant-slider-mark']/span[text()='",
+    metricsResolutionLabel: locateLabel('form-field-metrics'),
     metricsResolutionSlider: "//div[@class='ant-slider-rail']",
     popUpTitle: "//div[@class='alert-title']",
-    validationMessage: "//span[@class='error-message']",
+    sectionHeader: "//div[@class='ant-collapse-header']",
     selectedResolution: "//span[@class='ant-slider-mark-text ant-slider-mark-text-active']",
-    sttSwitchSelector: "//strong[text()='Security Threat Tool']/parent::div/following-sibling::div/button",
-    telemetrySwitchSelector: "//strong[text()='Telemetry']/parent::div/following-sibling::div/button",
-    sttLabelTooltipSelector: "//strong[text()='Security Threat Tool']/following-sibling::span/i",
-    tooltipSelector: ".ant-tooltip-inner"
+    sshKeyInput: "//textarea[@name='ssh_key' and @placeholder='Enter ssh key']",
+    sshKeyLabel: locateLabel('form-field-ssh-key'),
+    sttLabelTooltipSelector: "//[text()='Security Threat Tool']/following-sibling::span/i",
+    sttSwitchSelector: "//[text()='Security Threat Tool']/parent::div/following-sibling::div/button",
+    subSectionHeader: "//following-sibling::div//div[@class='ant-collapse-header']",
+    telemetrySwitchSelector: "//[text()='Telemetry']/parent::div/following-sibling::div/button",
+    telemetryLabel: locateLabel('form-field-telemetry'),
+    tooltipSelector: '.ant-tooltip-inner',
+    validationMessage: 'span.error-message',
   },
 
   waitForPmmSettingsPageLoaded() {
@@ -104,24 +113,24 @@ module.exports = {
   },
 
   verifySettingsSectionElements() {
-    I.see('Metrics resolution', this.fields.sectionRow);
+    I.see('Metrics resolution', this.fields.metricsResolutionLabel);
     I.seeElement(this.fields.metricsResolutionSlider);
-    I.see('Data retention', this.fields.sectionRow);
+    I.see('Data retention', this.fields.dataRetentionLabel);
     I.seeElement(this.fields.dataRetentionCount);
-    I.see('Telemetry', this.fields.sectionRow);
+    I.see('Telemetry', this.fields.telemetryLabel);
     I.seeElement(this.fields.callHomeSwitch);
-    I.see('Check for updates', this.fields.sectionRow);
+    I.see('Check for updates', this.fields.checkForUpdatesLabel);
     I.seeElement(this.fields.sttSwitchSelector);
   },
 
   verifySSHKeyDetailsSectionElements() {
-    I.see('SSH key', this.fields.sectionRow);
+    I.see('SSH key', this.fields.sshKeyLabel);
     I.seeElement(this.fields.sshKeyInput);
   },
 
   verifyAlertmanagerSectionElements() {
-    I.see('Alertmanager URL', this.fields.sectionRow);
-    I.see('Prometheus Alerting rules', this.fields.sectionRow);
+    I.see('Alertmanager URL', this.fields.amUrlLabel);
+    I.see('Prometheus Alerting rules', this.fields.alertingRules);
     I.seeElement(this.fields.alertURLInput);
     I.seeElement(this.fields.alertRulesInput);
   },
@@ -140,7 +149,8 @@ module.exports = {
       );
     }
   },
-  async waitForButton(contentLocator, contentLocatorText) {
+
+  async waitForButton(contentLocator) {
     I.waitForVisible(contentLocator, 30);
     I.waitForEnabled(contentLocator, 30);
   },
@@ -186,7 +196,7 @@ module.exports = {
       alertText.toString().split(',')[0],
       validationMessage,
       `Unexpected popup message! 
-                        Expected to see ${validationMessage} instead of ${alertText}`
+        Expected to see ${validationMessage} instead of ${alertText}`
     );
   },
 
@@ -196,7 +206,7 @@ module.exports = {
       validationText.toString().split(',')[0],
       validationMessage,
       `Unexpected popup message! 
-                        Expected to see ${validationMessage} instead of ${validationText}`
+        Expected to see ${validationMessage} instead of ${validationText}`
     );
   },
 
@@ -229,7 +239,7 @@ module.exports = {
       selectedResolutionText,
       resolution,
       `Resolution ${resolution} was not saved,
-                        actual resolution is ${selectedResolutionText}`
+        actual resolution is ${selectedResolutionText}`
     );
   },
 
@@ -265,7 +275,7 @@ module.exports = {
       selectedTimeValue,
       seconds,
       `Data Retention value ${seconds} was not saved, 
-                        actual value is ${selectedTimeValue}`
+        actual value is ${selectedTimeValue}`
     );
   },
 
@@ -300,28 +310,27 @@ module.exports = {
 
   async verifyTooltip(tooltipObj) {
     I.see(tooltipObj.text, this.fields.tooltipSelector);
-    I.seeAttributesOnElements(`${this.fields.tooltipSelector} > div > a`, {href: tooltipObj.link});
+    I.seeAttributesOnElements(`${this.fields.tooltipSelector} > div > a`, { href: tooltipObj.link });
   },
 
-  verifySwitch(switchSelector, expectedSwitchState= 'on') {
+  verifySwitch(switchSelector, expectedSwitchState = 'on') {
     let expectedSwitch;
-    switch (expectedSwitchState){
+    switch (expectedSwitchState) {
       case 'on':
-        expectedSwitch = {'aria-checked':'true'};
+        expectedSwitch = { 'aria-checked': 'true' };
         break;
       case 'off':
-        expectedSwitch = {'aria-checked':'false'};
+        expectedSwitch = { 'aria-checked': 'false' };
         break;
     }
   },
 
   verifySwitchStateIs(switchSelector, enabled = true) {
-    switchSelector = switchSelector+'[@disabled]';
+    switchSelector = switchSelector + '[@disabled]';
     if (!enabled) {
       I.seeElement(switchSelector);
     } else {
-      I.dontSeeElement(switchSelector)
+      I.dontSeeElement(switchSelector);
     }
   },
-
 };

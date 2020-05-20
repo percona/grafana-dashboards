@@ -35,6 +35,7 @@ const UploadSSH = ({ settings }) => {
           <form onSubmit={handleSubmit}>
             <>
               <FormElement
+                data-qa="form-field-ssh-key"
                 label="SSH key"
                 tooltip={
                   <PluginTooltip

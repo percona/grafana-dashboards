@@ -61,6 +61,7 @@ const AlertManager = props => {
           <form onSubmit={handleSubmit}>
             <>
               <FormElement
+                data-qa="form-field-am-url"
                 label="Alertmanager URL"
                 tooltip={
                   <PluginTooltip
@@ -82,6 +83,7 @@ const AlertManager = props => {
                 }
               />
               <FormElement
+                data-qa="form-field-alerting-rules"
                 label="Prometheus Alerting rules"
                 tooltip={
                   <PluginTooltip

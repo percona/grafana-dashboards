@@ -72,7 +72,7 @@ const VerticalFieldLayout = ({ label, tooltip, alignLabel, element }) => {
 
 export const FormElement = props => {
   return (
-    <div className={style.formElementWrapper}>
+    <div className={style.formElementWrapper} data-qa={props['data-qa']}>
       {props.type === 'horizontal' ? (
         <HorizontalFieldLayout {...props} />
       ) : (

@@ -134,13 +134,11 @@ const SettingsPart = props => {
   return (
     <FormFinal
       onSubmit={onSubmit}
+      // This is the slider's default, since in controlled components defaultValue can't be used
+      initialValues={{ metrics_resolutions_slider: 2 } as any}
       render={({ form, handleSubmit }): ReactElement => {
         useEffect(() => {
           if (!settings.data_retention && !settings.metrics_resolutions) {
-            form.initialize({
-              // This is the slider's default, since in controlled components defaultValue can't be used
-              metrics_resolutions_slider: 2,
-            });
             return;
           }
           const [count, units] = [settings.data_retention.slice(0, -1), settings.data_retention.slice(-1)];
@@ -155,11 +153,12 @@ const SettingsPart = props => {
             },
           });
         }, [settings]);
-        // @ts-ignore
+
         return (
           <form onSubmit={handleSubmit}>
             <>
               <FormElement
+                data-qa="form-field-metrics"
                 label="Metrics resolution"
                 tooltip={
                   <PluginTooltip
@@ -191,6 +190,7 @@ const SettingsPart = props => {
               >
                 <Panel header="Advanced settings " key="1" className={style.panel}>
                   <FormElement
+                    data-qa="form-field-data-retention"
                     label="Data retention (days)"
                     tooltip={
                       <PluginTooltip
@@ -214,6 +214,7 @@ const SettingsPart = props => {
                     }
                   />
                   <FormElement
+                    data-qa="form-field-telemetry"
                     label="Telemetry"
                     type="horizontal"
                     tooltip={
@@ -224,7 +225,7 @@ const SettingsPart = props => {
                             text: 'Read more',
                           },
                         ]}
-                        text="Option to send usage data back to Percona to let us make product better"
+                        text="Option to send usage data back to Percona to let us make our  "
                       />
                     }
                     element={
@@ -232,6 +233,7 @@ const SettingsPart = props => {
                     }
                   />
                   <FormElement
+                    data-qa="form-field-check-for-updates"
                     label="Check for updates"
                     type="horizontal"
                     tooltip={
