@@ -47,7 +47,7 @@ module.exports = {
     invalidAlertmanagerMissingSchemeMessage:
       'Invalid alert_manager_url: invalid_url - missing protocol scheme.',
     invalidAlertmanagerMissingHostMessage: 'Invalid alert_manager_url: http:// - missing host.',
-    invalidAlertmanagerRulesMessage: 'Invalid Alert Manager rules.',
+    invalidAlertmanagerRulesMessage: 'Invalid alerting rules.',
   },
   sectionHeaderList: [
     'Settings',
