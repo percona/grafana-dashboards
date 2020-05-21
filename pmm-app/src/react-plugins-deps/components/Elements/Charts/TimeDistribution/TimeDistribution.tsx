@@ -2,7 +2,6 @@ import React from 'react';
 import HSBar from 'react-horizontal-stacked-bar-chart';
 import { Humanize } from '../../../helpers/Humanization';
 // eslint-disable-next-line max-len
-import { DATABASE } from '../../../../../pmm-qan-app-panel/components/DataOutput/components/Details/Details.constants';
 import { METRICS_COLORS, PERCENT_COUNT, TIME_METRICS } from './TimeDistribution.constants';
 
 export const getMetricDistribution = data => {
@@ -49,14 +48,10 @@ export const getMetricDistribution = data => {
   return normalizedTimeMetrics;
 };
 
-export const TimeDistribution = ({ data, databaseType }) => {
-  if (databaseType !== DATABASE.mysql) {
-    return null;
-  }
+export const TimeDistribution = ({ data }) => {
   const normalizedTimeMetrics = getMetricDistribution(data);
   return (
     <>
-      <h4>Query time distribution</h4>
       <HSBar height={30} showTextIn id="query-time-chart" fontColor="white" data={normalizedTimeMetrics} />
     </>
   );
