@@ -31,6 +31,10 @@ export const Styling = {
   metricData: css`
     white-space: pre;
   `,
+  sparkline: css`
+    margin-left: 5px;
+    margin-right: 5px;
+  `,
   perQueryStats: css`
     margin-right: 10px;
   `,
