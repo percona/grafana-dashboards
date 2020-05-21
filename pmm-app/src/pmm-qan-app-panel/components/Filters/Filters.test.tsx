@@ -11,6 +11,11 @@ jest.mock('antd/es/input/Search', () => () => {
 jest.mock('react-scrollbar', () => () => {
   return <div></div>;
 });
+jest.mock('../../../react-plugins-deps/components/Elements/Icons', () => () => {
+  return {
+    FilterIcon: <div></div>,
+  };
+});
 
 jest.mock('../../../react-plugins-deps/components/helpers/notification-manager', () => () => ({}));
 
