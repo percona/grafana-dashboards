@@ -7,9 +7,12 @@ exports.config = {
       browser: 'chromium',
       windowSize: "2560x1600",
       waitForNavigation: 'networkidle0',
+      waitForTimeout: 30000,
+      getPageTimeout: 30000,
+      waitForAction: 500,
       chromium: {
         ignoreHTTPSErrors: true,
-        args: ['--no-sandbox', '--window-size=2560,1600', '--disable-gpu'],
+        args: ['--no-sandbox', '--window-size=2560,1600', '--disable-gpu', '--disable-dev-shm-usage', '--disable-setuid-sandbox'],
       },
     },
     Grafana: {
@@ -28,6 +31,7 @@ exports.config = {
     pmmSettingsPage: './tests/pages/pmmSettingsPage.js',
     mysqlTableDetailsPage: './tests/pages/mysqlTableDetailsPage.js',
     dashboardPage: './tests/pages/dashboardPage.js',
+    databaseChecksPage: './tests/pages/databaseChecksPage.js',
   },
   multiple: {
     parallel: {
