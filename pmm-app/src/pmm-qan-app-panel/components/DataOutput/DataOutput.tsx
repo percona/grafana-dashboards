@@ -54,10 +54,10 @@ const DataOutput = () => {
           className={Styling.splitterWrapper}
           resizerStyle={{ display: querySelected ? '' : 'none' }}
           pane1Style={{
-            minHeight: querySelected ? '40%' : '100%',
+            minHeight: querySelected ? '30%' : '100%',
             maxHeight: querySelected ? '60%' : '100%',
           }}
-          pane2Style={{ minHeight: '20%', overflowY: 'scroll' }}
+          pane2Style={{ minHeight: '20%', overflowY: 'scroll', zIndex: 999 }}
         >
           <div className="table-wrapper" style={{ width: '100%' }}>
             <OverviewTable setTotal={setTotal} reload={reload} />

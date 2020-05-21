@@ -28,6 +28,9 @@ export const Styling = {
     min-width: 90px;
     display: inline-block;
   `,
+  metricData: css`
+    white-space: pre;
+  `,
   perQueryStats: css`
     margin-right: 10px;
   `,

@@ -7,7 +7,7 @@ import { Table } from './Table';
 import { TableHeader } from './TableHeader';
 import { TableBody } from './TableBody';
 
-describe('Table::', () => {
+xdescribe('Table::', () => {
   it('should render the caption passed as a parameter', () => {
     const root = shallow(<Table caption="Simple Table" columns={COLUMNS} isSttEnabled data={[]} />);
 

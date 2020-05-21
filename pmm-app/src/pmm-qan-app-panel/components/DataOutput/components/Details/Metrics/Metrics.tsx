@@ -30,7 +30,7 @@ const rateColumn = (text, item) => {
   };
   return (
     <div className={Styling.metricColumn}>
-      <span>
+      <span className={Styling.metricData}>
         {(item.isRate ? Humanize.transform(item.metric.rate, item.pipeTypes['ratePipe']) : '0') +
           ` ${item.units}`}
       </span>
