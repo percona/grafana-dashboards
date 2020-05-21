@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useActionResult } from '../../../Details.hooks';
 import { databaseFactory } from '../../../database-models';
 import { Spin } from 'antd';
+import Highlight from 'react-highlight.js';
 
 // TODO: refactor example parameters passing
 
@@ -19,8 +20,10 @@ const TableCreate = props => {
       <div>
         {showCreateTable.loading ? (
           <pre>{showCreateTable.loading}</pre>
+        ) : showCreateTable.error ? (
+          <pre>{showCreateTable.error}</pre>
         ) : (
-          <pre>{showCreateTable.error || showCreateTable.value}</pre>
+          <Highlight language="sql">{showCreateTable.value}</Highlight>
         )}
       </div>
     </Spin>

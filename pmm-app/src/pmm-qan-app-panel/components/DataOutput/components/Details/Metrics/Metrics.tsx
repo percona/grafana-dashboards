@@ -34,7 +34,7 @@ const rateColumn = (text, item) => {
         {(item.isRate ? Humanize.transform(item.metric.rate, item.pipeTypes['ratePipe']) : '0') +
           ` ${item.units}`}
       </span>
-      {item.sparkline && <Sparkline {...polygonChartProps} />}
+      <span className={Styling.sparkline}>{item.sparkline && <Sparkline {...polygonChartProps} />}</span>
     </div>
   );
 };

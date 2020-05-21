@@ -42,7 +42,6 @@ const DataOutput = () => {
   return (
     <div className={Styling.getContainerWrapper(size)}>
       <div className={Styling.overviewHeader}>
-        <h5 className={Styling.overviewTitle}>Overview</h5>
         <div className={Styling.manageColumnsWrapper}>
           <ManageColumns onlyAdd />
         </div>
