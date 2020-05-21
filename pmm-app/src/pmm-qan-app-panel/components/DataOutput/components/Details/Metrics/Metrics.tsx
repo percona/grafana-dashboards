@@ -1,6 +1,5 @@
-import { Table } from 'antd';
+import { Collapse, Icon, Table, Tooltip } from 'antd';
 import React from 'react';
-import { Icon, Tooltip } from 'antd';
 import {
   Latency,
   Sparkline,
@@ -9,6 +8,9 @@ import {
 import { Humanize } from '../../../../../../react-plugins-deps/components/helpers/Humanization';
 import { Styling } from './Metrics.styles';
 import { useMetricsDetails } from './Metrics.hooks';
+import { DATABASE } from '../Details.constants';
+
+const { Panel } = Collapse;
 
 const mainColumn = (text, item) => {
   return (
@@ -105,16 +107,23 @@ const Metrics = ({ databaseType }) => {
 
   return (
     <div className="metrics-wrapper">
-      <TimeDistribution data={metrics} databaseType={databaseType} />
-      <h4 style={{ marginTop: '10px' }}>Metrics</h4>
-      <Table
-        dataSource={metrics}
-        columns={columns}
-        pagination={false}
-        size="small"
-        bordered
-        loading={loading}
-      />
+      <Collapse bordered={false} defaultActiveKey={['1', '2']} className={Styling.collapse}>
+        {databaseType === DATABASE.mysql ? (
+          <Panel header="Query time distribution" key="1" className={Styling.panel}>
+            <TimeDistribution data={metrics} />
+          </Panel>
+        ) : null}
+        <Panel header="Metrics" key="2" className={Styling.panel}>
+          <Table
+            dataSource={metrics}
+            columns={columns}
+            pagination={false}
+            size="small"
+            bordered
+            loading={loading}
+          />
+        </Panel>
+      </Collapse>
     </div>
   );
 };
