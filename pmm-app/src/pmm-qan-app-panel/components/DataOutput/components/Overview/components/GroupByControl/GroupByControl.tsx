@@ -18,7 +18,7 @@ export const GroupByControl = () => {
       <Select
         optionLabelProp="label"
         defaultValue={groupBy}
-        style={{ width: '120px' }}
+        style={{ width: '150px', fontSize: '16px', color: 'rgba(255,255,255,0.8)' }}
         onChange={contextActions.changeGroupBy}
         className="group-by-selector"
         data-qa="group-by"

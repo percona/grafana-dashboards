@@ -3,8 +3,7 @@ import React from 'react';
 import { QueryTooltip } from '../../../../../../react-plugins-deps/components/Elements/QueryTooltip/QueryTooltip';
 import { GROUP_BY_OPTIONS } from './Fingerprint.constants';
 import { Styling } from './Fingerprint.styles';
-import { CloseOutlined } from '@ant-design/icons';
-import { Icon } from 'antd';
+import { CloseIcon, InfoIcon } from '../../../../../../react-plugins-deps/components/Elements/Icons';
 
 const Fingerprint = props => {
   const currentGroupBy = GROUP_BY_OPTIONS.filter(option => option.value === props.groupBy)[0];
@@ -22,11 +21,11 @@ const Fingerprint = props => {
         ) : null}
         {props.groupBy === 'queryid' && !props.totals ? (
           <QueryTooltip query={props.query}>
-            <Icon type="question-circle" className={Styling.tooltipIcon} />
+            <InfoIcon className={Styling.tooltipIcon} />
           </QueryTooltip>
         ) : null}
       </div>
-      <CloseOutlined className={Styling.closeButton} onClick={props.closeDetails} />
+      <CloseIcon className={Styling.closeButton} onClick={props.closeDetails} />
     </div>
   );
 };

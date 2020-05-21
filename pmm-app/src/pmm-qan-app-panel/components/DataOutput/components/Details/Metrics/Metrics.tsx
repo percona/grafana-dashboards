@@ -1,4 +1,4 @@
-import { Collapse, Icon, Table, Tooltip } from 'antd';
+import { Collapse, Table, Tooltip } from 'antd';
 import React from 'react';
 import {
   Latency,
@@ -9,6 +9,7 @@ import { Humanize } from '../../../../../../react-plugins-deps/components/helper
 import { Styling } from './Metrics.styles';
 import { useMetricsDetails } from './Metrics.hooks';
 import { DATABASE } from '../Details.constants';
+import { InfoIcon } from '../../../../../../react-plugins-deps/components/Elements/Icons';
 
 const { Panel } = Collapse;
 
@@ -17,7 +18,7 @@ const mainColumn = (text, item) => {
     <span className={Styling.metricColumn}>
       <span>{item.name}</span>
       <Tooltip title={item.tooltip} placement="leftTop">
-        <Icon type="question-circle" className={Styling.metricTooltipIcon} />
+        <InfoIcon className={Styling.metricTooltipIcon} />
       </Tooltip>
     </span>
   );

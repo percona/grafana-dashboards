@@ -9,7 +9,7 @@ export const TIME_METRICS = [
 ];
 
 export const METRICS_COLORS = {
-  lock_time: '#be1818',
+  lock_time: '#BD4848',
   blk_read_time: '#4e378c',
   blk_write_time: '#fcc200',
   innodb_io_r_wait: '#3c3c3c',

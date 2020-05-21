@@ -6,11 +6,11 @@ import {
   MAIN_METRIC_MIN_WIDTH,
   ROW_NUMBER_COLUMN_WIDTH,
 } from '../../OverviewTable.constants';
-import { Icon } from 'antd';
 import { mainColumn, mainMetric, metricWrapper, rowNumber, tooltipIcon } from './DefaultColumns.styles';
 import { GroupByControl } from '../GroupByControl/GroupByControl';
 // eslint-disable-next-line max-len
 import { QueryTooltip } from '../../../../../../../react-plugins-deps/components/Elements/QueryTooltip/QueryTooltip';
+import { InfoIcon } from '../../../../../../../react-plugins-deps/components/Elements/Icons';
 
 const getMainColumnWidth = columns => {
   /* TODO(lunaticusgreen): add something more elegant */
@@ -52,7 +52,7 @@ export const getDefaultColumns = (groupBy, pageNumber, pageSize, columns, onCell
             </div>
             {index !== 0 && record.fingerprint ? (
               <QueryTooltip query={record.fingerprint}>
-                <Icon type="question-circle" className={tooltipIcon} />
+                <InfoIcon className={tooltipIcon} />
               </QueryTooltip>
             ) : null}
           </div>

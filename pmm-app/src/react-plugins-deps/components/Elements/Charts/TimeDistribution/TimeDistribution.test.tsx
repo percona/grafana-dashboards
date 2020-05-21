@@ -4432,13 +4432,9 @@ describe('TimeDistributionChart chart test', () => {
   xit('getMetricDistribution metrics summ equal 100%', () => {
     const TimeDistributionChartProps = {
       data: MOCK_METRICS,
-      databaseType: 'mysql',
     };
 
-    const dataDistribution = getMetricDistribution(
-      TimeDistributionChartProps.data,
-      TimeDistributionChartProps.databaseType
-    );
+    const dataDistribution = getMetricDistribution(TimeDistributionChartProps.data);
 
     const sum = dataDistribution.reduce((acc, metric) => {
       acc += metric.value;
@@ -4448,36 +4444,13 @@ describe('TimeDistributionChart chart test', () => {
     expect(sum).toEqual(100);
   });
 
-  it('Renders correct for mysql', () => {
+  it('Renders correct', () => {
     const TimeDistributionChartProps = {
       data: MOCK_METRICS,
-      databaseType: 'mysql',
     };
 
     const component = renderer.create(<TimeDistribution {...TimeDistributionChartProps} />);
     const tree = component.toJSON();
     expect(tree).toMatchSnapshot();
-  });
-
-  it('Renders correct for postgresql', () => {
-    const TimeDistributionChartProps = {
-      data: MOCK_METRICS,
-      databaseType: 'postgresql',
-    };
-
-    const component = renderer.create(<TimeDistribution {...TimeDistributionChartProps} />);
-    const tree = component.toJSON();
-    expect(tree).toEqual(null);
-  });
-
-  it('Renders correct for mongodb', () => {
-    const TimeDistributionChartProps = {
-      data: MOCK_METRICS,
-      databaseType: 'mongodb',
-    };
-
-    const component = renderer.create(<TimeDistribution {...TimeDistributionChartProps} />);
-    const tree = component.toJSON();
-    expect(tree).toEqual(null);
   });
 });

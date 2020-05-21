@@ -28,7 +28,7 @@ export const Styling = {
   filterHeader: css`
     margin-right: auto;
     font-weight: 700;
-    font-size: 14px;
+    font-size: 16px;
     color: rgba(255, 255, 255, 0.8);
   `,
   divider: css`

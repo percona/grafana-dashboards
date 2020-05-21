@@ -4,6 +4,7 @@ import { PanelProvider } from '../../../../panel/panel.provider';
 import './ManageColumns.scss';
 import { METRIC_CATALOGUE } from '../../../../panel/panel.constants';
 import Tooltip from 'antd/es/tooltip';
+import { Styling } from './ManageColumns.styles';
 
 const { Option } = Select;
 
@@ -44,12 +45,12 @@ const ManageColumns = props => {
         title={props.placeholder && METRIC_CATALOGUE[props.placeholder].humanizeName}
         placement="topLeft"
       >
-        <span style={{ color: '#03DAC5' }}>
+        <span className={Styling.placeholder}>
           {props.placeholder && METRIC_CATALOGUE[props.placeholder].humanizeName}
         </span>
       </Tooltip>
     ) : (
-      <div style={{ fontSize: '16px', color: '#32B3E3' }}>
+      <div className={Styling.placeholder}>
         <i className="fa fa-plus-circle" style={{ marginRight: '5px' }}></i> <span> Add column</span>
       </div>
     );
