@@ -14,7 +14,7 @@ import {
 } from './Filters.constants';
 import { Styling } from './Filters.styles';
 import { useFilters, useInitialFilterValues } from './Filters.hooks';
-import { FilterIcon } from '../../../react-plugins-deps/components/Elements/Icons';
+import { Filter } from '../../../react-plugins-deps/components/Elements/Icons/Filter';
 
 export const Filters = ({ contextActions, form, labels, filters }) => {
   // @ts-ignore
@@ -71,7 +71,7 @@ export const Filters = ({ contextActions, form, labels, filters }) => {
       <FiltersControlPanel />
       <ScrollArea className={Styling.getFiltersWrapper(filtersBodyHeight)}>
         <Input
-          suffix={<FilterIcon />}
+          suffix={<Filter />}
           placeholder="Filter by..."
           onChange={e => {
             setFilter(e.target.value);

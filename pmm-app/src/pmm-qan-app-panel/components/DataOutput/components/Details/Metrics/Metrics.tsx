@@ -9,7 +9,7 @@ import { Humanize } from '../../../../../../react-plugins-deps/components/helper
 import { Styling } from './Metrics.styles';
 import { useMetricsDetails } from './Metrics.hooks';
 import { DATABASE } from '../Details.constants';
-import { InfoIcon } from '../../../../../../react-plugins-deps/components/Elements/Icons';
+import { Info } from '../../../../../../react-plugins-deps/components/Elements/Icons/Info';
 
 const { Panel } = Collapse;
 
@@ -18,7 +18,7 @@ const mainColumn = (text, item) => {
     <span className={Styling.metricColumn}>
       <span>{item.name}</span>
       <Tooltip title={item.tooltip} placement="leftTop">
-        <InfoIcon className={Styling.metricTooltipIcon} />
+        <Info className={Styling.metricTooltipIcon} />
       </Tooltip>
     </span>
   );
