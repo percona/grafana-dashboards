@@ -14,11 +14,10 @@ export const Styling = {
     color: rgba(255, 255, 255, 0.8);
   `,
   splitterWrapper: css`
-    height: 800px;
+    height: 1000px;
   `,
   paginationWrapper: css`
     display: flex;
-    // margin-left: auto;
     align-items: center;
   `,
   showTotal: css`

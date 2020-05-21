@@ -19,24 +19,32 @@ const Explain = ({ classicExplain, jsonExplain }) => {
       <Collapse bordered={false} defaultActiveKey={['1', '2']} className={Styling.collapse}>
         <Panel header="Classic" key="1" className={Styling.panel}>
           <Spin spinning={classicExplain.loading}>
-            {classicExplain.error ? (
-              <pre>{classicExplain.error}</pre>
-            ) : data.rows.length ? (
-              <Table dataSource={data.rows} columns={data.columns} pagination={false} size="small" bordered />
-            ) : (
-              <pre>No classic explains found</pre>
-            )}
+            {classicExplain.error ? <pre>{classicExplain.error}</pre> : null}
+            {!classicExplain.error && !classicExplain.loading ? (
+              data.rows.length ? (
+                <Table
+                  dataSource={data.rows}
+                  columns={data.columns}
+                  pagination={false}
+                  size="small"
+                  bordered
+                />
+              ) : (
+                <pre>No classic explains found</pre>
+              )
+            ) : null}
           </Spin>
         </Panel>
         <Panel header="JSON" key="2" className={Styling.panel}>
           <Spin spinning={jsonExplain.loading}>
-            {jsonExplain.error ? (
-              <pre>{jsonExplain.error}</pre>
-            ) : jsonExplain.value ? (
-              <ReactJSON json={JSON.parse(jsonExplain.value)} />
-            ) : (
-              <pre>No JSON explains found</pre>
-            )}
+            {jsonExplain.error ? <pre>{jsonExplain.error}</pre> : null}
+            {!jsonExplain.error && !jsonExplain.loading ? (
+              jsonExplain.value ? (
+                <ReactJSON json={JSON.parse(jsonExplain.value)} />
+              ) : (
+                <pre>No JSON explains found</pre>
+              )
+            ) : null}
           </Spin>
         </Panel>
       </Collapse>
