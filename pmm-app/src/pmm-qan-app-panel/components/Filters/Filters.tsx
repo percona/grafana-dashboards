@@ -2,7 +2,7 @@ import React, { ReactElement, useContext, useEffect, useState } from 'react';
 import { Button, Spin } from 'antd';
 import { PanelProvider } from '../../panel/panel.provider';
 import { Form as FormFinal } from 'react-final-form';
-import Search from 'antd/lib/input/Search';
+import Input from 'antd/lib/input/Input';
 import { CheckboxGroup } from './components/CheckboxGroup/CheckboxGroup';
 import useWindowSize from 'react-plugins-deps/components/helpers/WindowSize.hooks';
 import ScrollArea from 'react-scrollbar';
@@ -14,6 +14,7 @@ import {
 } from './Filters.constants';
 import { Styling } from './Filters.styles';
 import { useFilters, useInitialFilterValues } from './Filters.hooks';
+import { FilterIcon } from '../../../react-plugins-deps/components/Elements/Icons';
 
 export const Filters = ({ contextActions, form, labels, filters }) => {
   // @ts-ignore
@@ -69,8 +70,9 @@ export const Filters = ({ contextActions, form, labels, filters }) => {
     <div>
       <FiltersControlPanel />
       <ScrollArea className={Styling.getFiltersWrapper(filtersBodyHeight)}>
-        <Search
-          placeholder="Search..."
+        <Input
+          suffix={<FilterIcon />}
+          placeholder="Filter by..."
           onChange={e => {
             setFilter(e.target.value);
             e.stopPropagation();
