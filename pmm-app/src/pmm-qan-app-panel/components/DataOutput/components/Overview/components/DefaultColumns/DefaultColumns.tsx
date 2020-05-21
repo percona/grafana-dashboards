@@ -13,7 +13,7 @@ import { GroupByControl } from '../GroupByControl/GroupByControl';
 // eslint-disable-next-line max-len
 import { QueryTooltip } from '../../../../../../../react-plugins-deps/components/Elements/QueryTooltip/QueryTooltip';
 
-const MAGIC_WIDTH_FIX = 17;
+const MAGIC_WIDTH_FIX = 60;
 
 const getMainColumnWidth = columns => {
   return Math.max(

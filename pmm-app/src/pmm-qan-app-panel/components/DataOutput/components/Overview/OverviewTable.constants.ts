@@ -1,4 +1,4 @@
-export const MAIN_METRIC_MIN_WIDTH = 470;
+export const MAIN_METRIC_MIN_WIDTH = 500;
 export const TABLE_X_SCROLL = 1250;
 export const TABLE_Y_SCROLL = 300;
 export const COLUMN_WIDTH = 250;
