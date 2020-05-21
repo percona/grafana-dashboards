@@ -5,7 +5,6 @@ import {
   FIXED_COLUMN_WIDTH,
   MAIN_METRIC_MIN_WIDTH,
   ROW_NUMBER_COLUMN_WIDTH,
-  TABLE_X_SCROLL,
 } from '../../OverviewTable.constants';
 import { Icon } from 'antd';
 import { mainColumn, mainMetric, metricWrapper, rowNumber, tooltipIcon } from './DefaultColumns.styles';
@@ -13,15 +12,12 @@ import { GroupByControl } from '../GroupByControl/GroupByControl';
 // eslint-disable-next-line max-len
 import { QueryTooltip } from '../../../../../../../react-plugins-deps/components/Elements/QueryTooltip/QueryTooltip';
 
-const MAGIC_WIDTH_FIX = 50;
-
 const getMainColumnWidth = columns => {
+  /* TODO(lunaticusgreen): add something more elegant */
+  const container = document.querySelector('.table-wrapper');
+  const width = +((container && container.clientWidth) || 0);
   return Math.max(
-    TABLE_X_SCROLL -
-      (columns - 1) * FIXED_COLUMN_WIDTH -
-      COLUMN_WIDTH * 1.8 -
-      ROW_NUMBER_COLUMN_WIDTH +
-      MAGIC_WIDTH_FIX,
+    width - (columns - 1) * FIXED_COLUMN_WIDTH - COLUMN_WIDTH * 1.8 - ROW_NUMBER_COLUMN_WIDTH - 2,
     MAIN_METRIC_MIN_WIDTH
   );
 };
