@@ -10,7 +10,7 @@ import { mainColumn, mainMetric, metricWrapper, rowNumber, tooltipIcon } from '.
 import { GroupByControl } from '../GroupByControl/GroupByControl';
 // eslint-disable-next-line max-len
 import { QueryTooltip } from '../../../../../../../react-plugins-deps/components/Elements/QueryTooltip/QueryTooltip';
-import { InfoIcon } from '../../../../../../../react-plugins-deps/components/Elements/Icons';
+import { Info } from '../../../../../../../react-plugins-deps/components/Elements/Icons/Info';
 
 const getMainColumnWidth = columns => {
   /* TODO(lunaticusgreen): add something more elegant */
@@ -52,7 +52,7 @@ export const getDefaultColumns = (groupBy, pageNumber, pageSize, columns, onCell
             </div>
             {index !== 0 && record.fingerprint ? (
               <QueryTooltip query={record.fingerprint}>
-                <InfoIcon className={tooltipIcon} />
+                <Info className={tooltipIcon} />
               </QueryTooltip>
             ) : null}
           </div>
