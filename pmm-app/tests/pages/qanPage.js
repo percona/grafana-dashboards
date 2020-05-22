@@ -52,6 +52,7 @@ module.exports = {
     tablesTabContents: "//div[@class='card-body']//pre",
     copyQueryButton: "//button[@id='copyQueryExample']",
     spinnerLocator: "//i[@class='fa fa-spinner fa-spin spinner']",
+    newQANPanelContent: '.panel-content',
   },
 
   filterGroupLocator(filterName) {
