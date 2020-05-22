@@ -43,6 +43,11 @@ exports.config = {
     autoDelay: {
       enabled: true,
     },
+    customLocator: {
+      enabled: true,
+      attribute: 'data-qa',
+      showActual: false
+    }
   },
   mocha: {
     reporterOptions: {

@@ -1,5 +1,6 @@
 const { I, pmmInventoryPage, pmmSettingsPage } = inject();
 const assert = require('assert');
+const locateChecksHeader = header => locate('th').withText(`${header}`);
 module.exports = {
   // insert your locators and methods here
   // setting locators
@@ -9,30 +10,34 @@ module.exports = {
     disabledSTTMessage: "Security Threat Tool is disabled. You can enable it in",
   },
   fields: {
-    dbCheckPanelSelector: "//div[@data-qa='db-check-panel']",
-    dbCheckPanelEmptySelector:"//div[@data-qa='db-check-panel-table-empty']",
-    sttEnabledDBCheckPanelSelector:"//div[@data-qa='db-check-panel-home']",
-    disabledSTTMessageSelector:"//div[@data-qa='db-check-panel-settings-link']",
-    serviceNameHeaderSelector:"//table[@data-qa='db-check-panel-table']//th[text()='Service name']",
-    detailsHeaderSelector:"//table[@data-qa='db-check-panel-table']//th[text()='Details']",
-    noOfFailedChecksHeaderSelector:"//table[@data-qa='db-check-panel-table']//th[text()='Failed Checks']",
-    serviceNameSelector:"//tbody/tr/td[1]",
-    failedChecksRowSelector:"//tbody/tr",
-    tooltipSelector: "//div[@class='ant-tooltip-inner']/div/div[1]",
-    totalFailedChecksTooltipSelector: "//div[@class='popper']//div[text()='Failed checks: ']",
-    failedChecksTooltipSelector: "//div[@class='popper']/div/div/div"
+    dbCheckPanelSelector: "$db-check-panel",
+    dbCheckPanelEmptySelector: "$db-check-panel-table-empty",
+    sttEnabledDBCheckPanelSelector: "$db-check-panel-home",
+    disabledSTTMessageSelector: "$db-check-panel-settings-link",
+    serviceNameSelector: "tbody > tr > td:first-child",
+    totalFailedChecksTooltipSelector: ".popper > div > div > div:first-of-type",
+    failedChecksTooltipSelector: ".popper > div > div > div",
+    serviceNameHeaderSelector: locateChecksHeader('Service name'),
+    detailsHeaderSelector: locateChecksHeader('Details'),
+    noOfFailedChecksHeaderSelector: locateChecksHeader('Failed Checks'),
+    disabledSTTMessageLinkSelector: locate('a').inside('$db-check-panel-settings-link'),
+    failedChecksRowSelector: locate('tbody').find('tr'),
+    tooltipSelector: locate('.ant-tooltip-inner').find('div').find('div').first()
   },
-
   // introducing methods
 
+  // Info icon locator in Failed Checks column for showing tooltip with additional information
   failedChecksInfoLocator(rowNumber = 1){
       return (`//tbody/tr[${rowNumber}]/td[1]/following-sibling::td/div/span[2]`);
   },
-
+  // Locator for checks results in Failed Checks column
   numberOfFailedChecksLocator(rowNumber = 1){
       return (`//tbody/tr[${rowNumber}]/td[1]/following-sibling::td/div/span[1]`);
   },
-
+  /*
+   Method for verifying elements on a page when STT is enabled and disabled
+   default state is enabled
+   */
   verifyDatabaseChecksPageElements(stt = 'enabled'){
     switch (stt) {
       case 'enabled':
@@ -54,7 +59,11 @@ module.exports = {
         break;
     }
   },
-
+  /*
+   Refreshing page (30 times refresh timeout) until checks appear
+   Alertmanager receives checks results every 30 seconds
+   So 30 tries should be enough to get results
+   */
   async waitForChecksToLoad() {
     let results;
     let disabledSTT;
@@ -77,6 +86,7 @@ module.exports = {
     }
   },
 
+  // Method used to verify elements on a page depending on STT state
   async verifyDatabaseChecksPageOpened(stt = 'enabled'){
     switch (stt) {
       case 'enabled':
@@ -90,6 +100,7 @@ module.exports = {
     }
   },
 
+  // Compares values in tooltip with values in table
   async compareTooltipValues(rowNumber = 1) {
     let tableNumbers = await I.grabTextFrom(this.numberOfFailedChecksLocator(rowNumber));
     let tooltipTotalNumber = await I.grabTextFrom(this.fields.totalFailedChecksTooltipSelector);
@@ -108,6 +119,10 @@ module.exports = {
     I.seeElement(this.fields.totalFailedChecksTooltipSelector);
   },
 
+  /*
+    Method takes service names listed in Database Failed checks
+     and compares names with existing Service Names in PMM Inventory
+   */
   async verifyServiceNamesExistence() {
     let serviceNames = await I.grabTextFrom(this.fields.serviceNameSelector);
     I.amOnPage(pmmInventoryPage.url);
