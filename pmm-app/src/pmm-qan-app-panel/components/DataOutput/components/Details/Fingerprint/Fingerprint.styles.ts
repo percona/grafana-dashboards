@@ -26,7 +26,7 @@ export const Styling = {
     cursor: pointer;
     position: absolute;
     right: 10px;
-    top: 10px;
+    top: 14px;
   `,
   tooltipIcon: css`
     margin-left: 5px;

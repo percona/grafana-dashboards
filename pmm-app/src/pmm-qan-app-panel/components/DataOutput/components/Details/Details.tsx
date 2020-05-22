@@ -41,7 +41,7 @@ const Details = () => {
         <Divider style={{ margin: 0 }} />
         <Tabs activeKey={activeTab} onChange={setActiveTab} tabPosition="top" destroyInactiveTabPane>
           <TabPane tab={<span>Details</span>} key={TabKeys.Details}>
-            <Metrics databaseType={databaseType} />
+            <Metrics databaseType={databaseType} totals={totals} />
           </TabPane>
           {groupBy === 'queryid' && !totals ? (
             <TabPane tab={<span>Examples</span>} key={TabKeys.Examples} disabled={queryId === 'TOTAL'}>
