@@ -328,4 +328,16 @@ module.exports = {
     I.waitInUrl('tz=browser&theme=dark', 30);
     I.seeInCurrentUrl(urlPart);
   },
+
+  waitForNewQANPageLoaded() {
+    I.waitForElement(this.fields.newQANPanelContent, 30);
+  },
+
+  applyFilterNewQAN(filterName) {
+    const filterToAplly = locate('input').before(
+      locate('.checkbox-container__label-text').withText('ps_5.7_0.0.0.0_1')
+    );
+    I.waitForVisible(filterToAplly, 20);
+    I.click(filterToAplly);
+  },
 };
