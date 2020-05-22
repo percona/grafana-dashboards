@@ -24,13 +24,15 @@ const mainColumn = (text, item) => {
   );
 };
 
-const rateColumn = (text, item) => {
+const rateColumn = totals => (text, item) => {
   // @ts-ignore
   const polygonChartProps = {
     data: item.sparkline,
     ykey: 'metric',
     metricName: item.metricName,
+    color: totals ? 'rgba(223, 159, 85, 0.8)' : undefined,
   };
+
   return (
     <div className={Styling.metricColumn}>
       <span className={Styling.metricData}>
@@ -80,31 +82,32 @@ const perQueryStatsColumn = (text, item) => {
     </div>
   );
 };
-const columns = [
-  {
-    title: 'Metric',
-    width: '20%',
-    render: mainColumn,
-  },
-  {
-    title: 'Rate/Second',
-    width: '35%',
-    render: rateColumn,
-  },
-  {
-    title: 'Sum',
-    width: '20%',
-    render: sumColumn,
-  },
-  {
-    title: 'Per Query Stats',
-    width: '25%',
-    render: perQueryStatsColumn,
-  },
-];
 
-const Metrics = ({ databaseType }) => {
+const Metrics = ({ databaseType, totals }) => {
   const [metrics, loading] = useMetricsDetails();
+
+  const columns = [
+    {
+      title: 'Metric',
+      width: '20%',
+      render: mainColumn,
+    },
+    {
+      title: 'Rate/Second',
+      width: '35%',
+      render: rateColumn(totals),
+    },
+    {
+      title: 'Sum',
+      width: '20%',
+      render: sumColumn,
+    },
+    {
+      title: 'Per Query Stats',
+      width: '25%',
+      render: perQueryStatsColumn,
+    },
+  ];
 
   return (
     <div className="metrics-wrapper">
