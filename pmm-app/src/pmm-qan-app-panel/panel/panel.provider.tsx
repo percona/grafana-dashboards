@@ -3,6 +3,7 @@ import { ParseQueryParamDate } from '../../react-plugins-deps/components/helpers
 import { getDataSourceSrv } from '@grafana/runtime';
 import { find, omit } from 'lodash';
 import { DEFAULT_COLUMNS, FILTERS_NAMES } from './panel.constants';
+import moment from 'moment';
 
 const initialState = {} as any;
 
@@ -234,6 +235,31 @@ export const UrlParametersProvider = ({ grafanaProps, children }) => {
 
   const [isFirstLoad, setFirstLoad] = useState(true);
   useEffect(() => {
+    if (isFirstLoad) {
+      return;
+    }
+    const newState = { ...panelState, from, to, rawTime };
+
+    if (panelState.rawTime.from !== rawTime.from || panelState.rawTime.to !== rawTime.to) {
+      newState.pageNumber = 1;
+      delete newState.queryId;
+      delete newState.querySelected;
+    }
+
+    setContext(newState);
+  }, [rawTime.from, rawTime.to]);
+
+  // Refresh
+  useEffect(() => {
+    const fromNew = moment(from);
+    const fromOld = moment(panelState.from);
+    const toNew = moment(to);
+    const toOld = moment(panelState.to);
+
+    if (fromNew.diff(fromOld, 'seconds') < 10 || toNew.diff(toOld, 'seconds') < 10) {
+      return;
+    }
+
     if (isFirstLoad) {
       return;
     }
