@@ -1,9 +1,9 @@
 import React from 'react';
 
-const getCustomLabels = customLabels =>
+export const getCustomLabels = customLabels =>
   customLabels.map(label => <span key={label.key}>{`${label.key}: ${label.value}`}</span>);
 
-const mainColumns = ['service_id', 'type', 'service_name', 'custom_labels', 'node_id', 'address', 'port'];
+export const mainColumns = ['service_id', 'type', 'service_name', 'custom_labels', 'node_id', 'address', 'port'];
 
 // TODO(lunaticusgreen): extract all `render`s to separate components
 export const servicesColumns = [
