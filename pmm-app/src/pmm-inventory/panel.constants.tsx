@@ -3,50 +3,50 @@ import React from 'react';
 export const getCustomLabels = customLabels =>
   customLabels.map(label => <span key={label.key}>{`${label.key}: ${label.value}`}</span>);
 
-export const mainColumns = ['service_id', 'type', 'service_name', 'custom_labels', 'node_id', 'address', 'port'];
+export const mainColumns = [
+  'service_id',
+  'type',
+  'service_name',
+  'custom_labels',
+  'node_id',
+  'address',
+  'port',
+];
 
 // TODO(lunaticusgreen): extract all `render`s to separate components
 export const servicesColumns = [
   {
-    title: 'ID',
-    dataIndex: 'service_id',
-    key: 'service_id',
+    Header: 'ID',
+    accessor: 'service_id',
   },
   {
-    title: 'Service Type',
-    dataIndex: 'type',
-    key: 'type',
+    Header: 'Service Type',
+    accessor: 'type',
   },
   {
-    title: 'Service name',
-    dataIndex: 'service_name',
-    key: 'service_name',
+    Header: 'Service name',
+    accessor: 'service_name',
   },
   {
-    title: 'Node ID',
-    dataIndex: 'node_id',
-    key: 'node_id',
+    Header: 'Node ID',
+    accessor: 'node_id',
   },
   {
-    title: 'Addresses',
-    dataIndex: 'address',
-    key: 'address',
+    Header: 'Addresses',
+    accessor: 'address',
   },
   {
-    title: 'Port',
-    dataIndex: 'port',
-    key: 'port',
+    Header: 'Port',
+    accessor: 'port',
   },
   {
-    title: 'Other Details',
-    dataIndex: 'age',
-    key: 'age',
-    render: (text, element) => {
+    Header: 'Other Details',
+    accessor: element => {
       const labels = Object.keys(element).filter(label => !mainColumns.includes(label));
       return (
         <div className="other-details-wrapper">
-          {labels.map((label, key) =>
-            element[label] ? <span key={key}>{`${label}: ${element[label]}`}</span> : null
+          {labels.map((label, accessor) =>
+            element[label] ? <span key={accessor}>{`${label}: ${element[label]}`}</span> : null
           )}
           {element.custom_labels && getCustomLabels(element.custom_labels)}
         </div>
@@ -57,20 +57,16 @@ export const servicesColumns = [
 
 export const agentsColumns = [
   {
-    title: 'ID',
-    dataIndex: 'agent_id',
-    key: 'agent_id',
+    Header: 'ID',
+    accessor: 'agent_id',
   },
   {
-    title: 'Agent Type',
-    dataIndex: 'type',
-    key: 'type',
+    Header: 'Agent Type',
+    accessor: 'type',
   },
   {
-    title: 'Other Details',
-    dataIndex: 'age',
-    key: 'age',
-    render: (text, element) => {
+    Header: 'Other Details',
+    accessor: element => {
       const mainColumns = ['agent_id', 'type', 'isDeleted', 'service_ids', 'custom_labels'];
       const labels = Object.keys(element).filter(label => !mainColumns.includes(label));
       return (
@@ -79,7 +75,6 @@ export const agentsColumns = [
             element[label] ? <span key={key}>{`${label}: ${element[label]}`}</span> : null
           )}
           {element.username ? <span>password: ******</span> : null}
-          {/* TODO: know more about isString*/}
           {element.service_ids && element.service_ids.length ? (
             /* TODO(lunaticusgreen): all map renders need a key! */
             <>
@@ -95,30 +90,24 @@ export const agentsColumns = [
 
 export const nodesColumns = [
   {
-    title: 'ID',
-    dataIndex: 'node_id',
-    key: 'node_id',
+    Header: 'ID',
+    accessor: 'node_id',
   },
   {
-    title: 'Node Type',
-    dataIndex: 'type',
-    key: 'type',
+    Header: 'Node Type',
+    accessor: 'type',
   },
   {
-    title: 'Node Name',
-    dataIndex: 'node_name',
-    key: 'node_name',
+    Header: 'Node Name',
+    accessor: 'node_name',
   },
   {
-    title: 'Addresses',
-    dataIndex: 'address',
-    key: 'address',
+    Header: 'Addresses',
+    accessor: 'address',
   },
   {
-    title: 'Other Details',
-    dataIndex: 'age',
-    key: 'age',
-    render: (text, element) => {
+    Header: 'Other Details',
+    accessor: element => {
       const mainColumns = ['node_id', 'node_name', 'address', 'custom_labels', 'type', 'isDeleted'];
       const labels = Object.keys(element).filter(label => !mainColumns.includes(label));
       return (

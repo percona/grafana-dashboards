@@ -1,74 +1,22 @@
 // @ts-nocheck
-import { ConfirmButton, Modal, Icon, Button, HorizontalGroup } from '@grafana/ui';
+import { Button, HorizontalGroup, Icon, Modal } from '@grafana/ui';
 
 import React, { ReactElement, useEffect, useState } from 'react';
-import { InventoryDataService } from '../DataService';
-import { InventoryService } from '../Inventory.service';
-import { getCustomLabels, mainColumns } from '../panel.constants';
-import TableBodyReact from '../../react-plugins-deps/components/Table/TableBodyReact';
-import '../../react-plugins-deps/components/FormComponents/Checkbox/Checkbox.scss';
-import { FormElement, InputField } from '../../react-plugins-deps/components/FormComponents';
-import { PluginTooltip } from '../../react-plugins-deps/components/helpers';
-import { GUI_DOC_URL } from '../../pmm-settings/panel.constants';
-import { CheckboxField } from '../../react-plugins-deps/components/FormComponents/Checkbox/Checkbox';
-import { TextAreaField } from '../../react-plugins-deps/components/FormComponents/TextArea/TextArea';
-import ButtonElement from '../../react-plugins-deps/components/FormComponents/Button/Button';
+import { InventoryDataService } from '../../DataService';
+import { InventoryService } from '../../Inventory.service';
+import { servicesColumns } from '../../panel.constants';
+import CustomTable from '../../../react-plugins-deps/components/Table/Table';
+import { FormElement } from '../../../react-plugins-deps/components/FormComponents';
+import { CheckboxField } from '../../../react-plugins-deps/components/FormComponents/Checkbox/Checkbox';
 import { Form as FormFinal } from 'react-final-form';
+import { showSuccessNotification } from '../../../react-plugins-deps/components/helpers';
+
 export const ServicesTab = () => {
   const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [data, setData] = useState([]);
   const [reload, setReload] = useState({});
-  const columns = React.useMemo(
-    () => [
-      {
-        Header: 'ID',
-        dataIndex: 'service_id',
-        accessor: 'service_id',
-      },
-      {
-        Header: 'Service Type',
-        dataIndex: 'type',
-        accessor: 'type',
-      },
-      {
-        Header: 'Service name',
-        dataIndex: 'service_name',
-        accessor: 'service_name',
-      },
-      {
-        Header: 'Node ID',
-        dataIndex: 'node_id',
-        accessor: 'node_id',
-      },
-      {
-        Header: 'Addresses',
-        dataIndex: 'address',
-        accessor: 'address',
-      },
-      {
-        Header: 'Port',
-        dataIndex: 'port',
-        accessor: 'port',
-      },
-      {
-        Header: 'Other Details',
-        dataIndex: 'age',
-        accessor: element => {
-          const labels = Object.keys(element).filter(label => !mainColumns.includes(label));
-          return (
-            <div className="other-details-wrapper">
-              {labels.map((label, accessor) =>
-                element[label] ? <span accessor={accessor}>{`${label}: ${element[label]}`}</span> : null
-              )}
-              {element.custom_labels && getCustomLabels(element.custom_labels)}
-            </div>
-          );
-        },
-      },
-    ],
-    []
-  );
+
   useEffect(() => {
     setLoading(true);
     (async () => {
@@ -85,10 +33,11 @@ export const ServicesTab = () => {
   const removeServices = async (services, forceMode) => {
     try {
       setLoading(true);
-      const requests = services.map(service =>
-        InventoryService.removeService({ service_id: service.service_id, force: forceMode })
-      );
-      const result = await Promise.all(requests);
+      const requests = services
+        .map(item => item.original)
+        .map(service => InventoryService.removeService({ service_id: service.service_id, force: forceMode }));
+      await Promise.all(requests);
+      showSuccessNotification({ message: 'Services successfully deleted' });
       setReload({});
     } catch (e) {}
   };
@@ -131,7 +80,8 @@ export const ServicesTab = () => {
                       element={
                         <CheckboxField
                           name="force"
-                          label="Force mode is going to delete all agents and nodes associated with the services"
+                          label="Force mode is going to delete all agents
+                           and nodes associated with the services"
                         />
                       }
                     />
@@ -143,9 +93,7 @@ export const ServicesTab = () => {
                         variant="primary"
                         size="md"
                         onClick={() => {
-                          console.log(form.getState().values.force);
-                          console.log(selected);
-                          removeServices(selected.map(item => item.original), form.getState().values.force);
+                          removeServices(selected, form.getState().values.force);
                           setModalVisible(false);
                         }}
                       >
@@ -164,7 +112,12 @@ export const ServicesTab = () => {
 
   return (
     <div style={{ padding: '10px' }}>
-      <TableBodyReact columns={columns} data={data} ActionPanel={ActionPanel} />
+      <CustomTable
+        columns={servicesColumns}
+        data={data}
+        ActionPanel={ActionPanel}
+        noData={<h1>No services Available</h1>}
+      />
     </div>
   );
 };

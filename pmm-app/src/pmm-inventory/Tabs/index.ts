@@ -1,3 +1,3 @@
-export { AgentsTab } from './AgentsTab';
-export { NodesTab } from './NodesTabs';
-export { ServicesTab } from './ServicesTab';
+export { AgentsTab } from './agents/AgentsTab';
+export { NodesTab } from './nodes/NodesTabs';
+export { ServicesTab } from './services/ServicesTab';
