@@ -38,7 +38,7 @@ function Table({ columns, data, ActionPanel, noData, loading, rowKey }: TableInt
             id: 'selection',
             Header: ({ getToggleAllRowsSelectedProps }) => (
               <div data-qa="select-all">
-                <label className="checkbox-container checkbox-container--main">
+                <label className="checkbox-container checkbox-container--main no-gap">
                   <input type="checkbox" {...getToggleAllRowsSelectedProps()} />
                   <span className="checkbox-container__checkmark"></span>
                 </label>
@@ -47,7 +47,7 @@ function Table({ columns, data, ActionPanel, noData, loading, rowKey }: TableInt
             Cell: propsData => {
               return (
                 <div data-qa="select-row">
-                  <label className="checkbox-container checkbox-container--main">
+                  <label className="checkbox-container checkbox-container--main no-gap">
                     <input type="checkbox" {...propsData.row.getToggleRowSelectedProps()} />
                     <span className="checkbox-container__checkmark"></span>
                   </label>
@@ -73,8 +73,12 @@ function Table({ columns, data, ActionPanel, noData, loading, rowKey }: TableInt
               {headerGroups.map(headerGroup => (
                 // eslint-disable-next-line react/jsx-key
                 <tr data-qa="table-header" {...headerGroup.getHeaderGroupProps()}>
-                  {headerGroup.headers.map(column => (
-                    <th {...column.getHeaderProps()} key={column.id}>
+                  {headerGroup.headers.map((column, index) => (
+                    <th
+                      {...column.getHeaderProps()}
+                      key={column.id}
+                      style={index === 0 && ActionPanel ? { width: '20px' } : {}}
+                    >
                       {column.render('Header')}
                     </th>
                   ))}
@@ -86,9 +90,13 @@ function Table({ columns, data, ActionPanel, noData, loading, rowKey }: TableInt
                 prepareRow(row);
                 return (
                   <tr data-qa="table-row" {...row.getRowProps()} key={rowKey ? rowKey(row) : i}>
-                    {row.cells.map(cell => {
+                    {row.cells.map((cell, index) => {
                       return (
-                        <td {...cell.getCellProps()} key={cell.id}>
+                        <td
+                          {...cell.getCellProps()}
+                          key={cell.id}
+                          style={index === 0 && ActionPanel ? { width: '20px' } : {}}
+                        >
                           {cell.render('Cell')}
                         </td>
                       );

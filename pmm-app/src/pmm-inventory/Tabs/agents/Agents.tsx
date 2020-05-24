@@ -1,7 +1,7 @@
 import React, { FC, ReactElement, useEffect, useState } from 'react';
 import { InventoryDataService } from '../../DataService';
 import { InventoryService } from '../../Inventory.service';
-import { nodesColumns } from '../../panel.constants';
+import { agentsColumns } from '../../panel.constants';
 import CustomTable from '../../../react-plugins-deps/components/Table/Table';
 import { showSuccessNotification } from '../../../react-plugins-deps/components/helpers';
 import Styling from '../services/Services.styles';
@@ -10,17 +10,17 @@ import { Form as FormFinal } from 'react-final-form';
 import { FormElement } from '../../../react-plugins-deps/components/FormComponents';
 import { CheckboxField } from '../../../react-plugins-deps/components/FormComponents/Checkbox/Checkbox';
 
-export const NodesTab = () => {
+export const Agents = () => {
   const [loading, setLoading] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
   const [data, setData] = useState([]);
   const [reload, setReload] = useState({});
-  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     setLoading(true);
     (async () => {
       try {
-        const result = await InventoryService.getNodes({});
+        const result = await InventoryService.getAgents({});
         setData(InventoryDataService.generateStructure(result));
       } catch (e) {
       } finally {
@@ -29,14 +29,14 @@ export const NodesTab = () => {
     })();
   }, [reload]);
 
-  const removeNodes = async (nodes, forceMode) => {
+  const removeAgents = async (nodes, forceMode) => {
     try {
       setLoading(true);
       const requests = nodes
         .map(item => item.original)
-        .map(service => InventoryService.removeNode({ service_id: service.service_id, force: forceMode }));
+        .map(service => InventoryService.removeAgent({ service_id: service.service_id, force: forceMode }));
       await Promise.all(requests);
-      showSuccessNotification({ message: 'Nodes successfully deleted' });
+      showSuccessNotification({ message: 'Agents successfully deleted' });
     } catch (e) {
       console.error(e);
     } finally {
@@ -55,7 +55,7 @@ export const NodesTab = () => {
               setModalVisible(!modalVisible);
             }}
             icon="trash-alt"
-            variant="destructive"
+            variant="primary"
           >
             Delete
           </Button>
@@ -63,11 +63,7 @@ export const NodesTab = () => {
         <Modal
           title={
             <div className="modal-header-title">
-              <Icon name="exclamation-triangle" size="lg" />
-              <span className="p-l-1">
-                Are you sure that you want to permanently delete {selected.length}{' '}
-                {selected.length === 1 ? 'node' : 'nodes'}?
-              </span>
+              <span className="p-l-1">Confirm action</span>
             </div>
           }
           isOpen={modalVisible}
@@ -79,13 +75,17 @@ export const NodesTab = () => {
               return (
                 <form onSubmit={handleSubmit}>
                   <>
+                    <h4>
+                      Are you sure that you want to permanently delete {selected.length}{' '}
+                      {selected.length === 1 ? 'agent' : 'agents'}?
+                    </h4>
                     <FormElement
                       data-qa="form-field-force"
                       label="Force mode"
                       element={
                         <CheckboxField
                           name="force"
-                          label="Force mode is going to delete all Agents associated with the nodes"
+                          label="Force mode is going to delete all Agents associated with the services"
                         />
                       }
                     />
@@ -97,7 +97,7 @@ export const NodesTab = () => {
                         variant="primary"
                         size="md"
                         onClick={() => {
-                          removeNodes(selected, form.getState().values.force);
+                          removeAgents(selected, form.getState().values.force);
                           setModalVisible(false);
                         }}
                       >
@@ -117,7 +117,7 @@ export const NodesTab = () => {
   return (
     <div style={{ padding: '10px' }}>
       <CustomTable
-        columns={nodesColumns}
+        columns={agentsColumns}
         data={data}
         ActionPanel={ActionPanel}
         noData={<h1>No Nodes Available</h1>}
@@ -125,4 +125,5 @@ export const NodesTab = () => {
       />
     </div>
   );
+  // return <Table dataSource={data} columns={agentsColumns} pagination={false} bordered loading={loading} />;
 };

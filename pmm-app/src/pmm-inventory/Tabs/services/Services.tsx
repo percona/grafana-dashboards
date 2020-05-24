@@ -53,7 +53,7 @@ export const Services = () => {
               setModalVisible(!modalVisible);
             }}
             icon="trash-alt"
-            variant="destructive"
+            variant="primary"
           >
             Delete
           </Button>
@@ -61,11 +61,7 @@ export const Services = () => {
         <Modal
           title={
             <div className="modal-header-title">
-              <Icon name="exclamation-triangle" size="lg" />
-              <span className="p-l-1">
-                Are you sure that you want to permanently delete {selected.length}{' '}
-                {selected.length === 1 ? 'service' : 'services'}?
-              </span>
+              <span className="p-l-1">Confirm action</span>
             </div>
           }
           isOpen={modalVisible}
@@ -77,6 +73,10 @@ export const Services = () => {
               return (
                 <form onSubmit={handleSubmit}>
                   <>
+                    <h4>
+                      Are you sure that you want to permanently delete {selected.length}{' '}
+                      {selected.length === 1 ? 'service' : 'services'}?
+                    </h4>
                     <FormElement
                       data-qa="form-field-force"
                       label="Force mode"
