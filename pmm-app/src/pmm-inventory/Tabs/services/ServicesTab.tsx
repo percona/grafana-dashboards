@@ -1,7 +1,6 @@
-// @ts-nocheck
 import { Button, HorizontalGroup, Icon, Modal } from '@grafana/ui';
 
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { FC, ReactElement, useEffect, useState } from 'react';
 import { InventoryDataService } from '../../DataService';
 import { InventoryService } from '../../Inventory.service';
 import { servicesColumns } from '../../panel.constants';
@@ -42,7 +41,7 @@ export const ServicesTab = () => {
     } catch (e) {}
   };
 
-  const ActionPanel = ({ selected }) => {
+  const ActionPanel: FC<{ selected: any[] }> = ({ selected }): ReactElement => {
     return (
       <>
         <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '5px' }}>

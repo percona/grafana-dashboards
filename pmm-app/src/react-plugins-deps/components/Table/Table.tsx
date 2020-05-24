@@ -1,6 +1,6 @@
 // @ts-nocheck
 
-import React, { ReactElement } from 'react';
+import React, { FC, ReactElement } from 'react';
 import { useRowSelect, useTable } from 'react-table';
 import { Spinner, useTheme } from '@grafana/ui';
 import { getStyles } from './Table.styles';
@@ -9,7 +9,7 @@ interface TableInterface {
   columns: object[];
   data: object[];
   noData?: ReactElement;
-  ActionPanel?: ReactElement;
+  ActionPanel?: FC<{ selected: any[] }>;
   loading?: boolean;
   rowKey?: Function;
 }

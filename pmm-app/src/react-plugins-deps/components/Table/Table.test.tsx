@@ -40,7 +40,7 @@ describe('Table', () => {
   });
 
   xit('Render action panel and checkboxes section if ActionPanel passed', () => {
-    const ActionPanel = <div data-qa="action-panel"></div>;
+    const ActionPanel = ({ selected }) => <div data-qa="action-panel"></div>;
     const root = mount(<Table columns={columns} data={rows} ActionPanel={ActionPanel} />);
     expect(root.find('[data-qa="select-all"]').length).toEqual(1);
     expect(root.find('[data-qa="select-row"]').length).toEqual(rows.length);
