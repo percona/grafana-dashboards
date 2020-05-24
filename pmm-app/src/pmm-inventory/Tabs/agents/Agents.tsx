@@ -5,7 +5,7 @@ import { agentsColumns } from '../../panel.constants';
 import CustomTable from '../../../react-plugins-deps/components/Table/Table';
 import { showSuccessNotification } from '../../../react-plugins-deps/components/helpers';
 import Styling from '../services/Services.styles';
-import { Button, HorizontalGroup, Icon, Modal } from '@grafana/ui';
+import { Button, HorizontalGroup, Modal } from '@grafana/ui';
 import { Form as FormFinal } from 'react-final-form';
 import { FormElement } from '../../../react-plugins-deps/components/FormComponents';
 import { CheckboxField } from '../../../react-plugins-deps/components/FormComponents/Checkbox/Checkbox';

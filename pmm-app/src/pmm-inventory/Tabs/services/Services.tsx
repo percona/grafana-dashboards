@@ -1,4 +1,4 @@
-import { Button, HorizontalGroup, Icon, Modal } from '@grafana/ui';
+import { Button, HorizontalGroup, Modal } from '@grafana/ui';
 
 import React, { FC, ReactElement, useEffect, useState } from 'react';
 import { InventoryDataService } from '../../DataService';
