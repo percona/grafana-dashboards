@@ -34,7 +34,7 @@ export const NodesTab = () => {
       setLoading(true);
       const requests = nodes
         .map(item => item.original)
-        .map(service => InventoryService.removeNode({ service_id: service.service_id, force: forceMode }));
+        .map(node => InventoryService.removeNode({ node_id: node.node_id, force: forceMode }));
       await Promise.all(requests);
       showSuccessNotification({ message: 'Nodes successfully deleted' });
     } catch (e) {

@@ -29,12 +29,12 @@ export const Agents = () => {
     })();
   }, [reload]);
 
-  const removeAgents = async (nodes, forceMode) => {
+  const removeAgents = async (agents, forceMode) => {
     try {
       setLoading(true);
-      const requests = nodes
+      const requests = agents
         .map(item => item.original)
-        .map(service => InventoryService.removeAgent({ service_id: service.service_id, force: forceMode }));
+        .map(agent => InventoryService.removeAgent({ agent_id: agent.agent_id, force: forceMode }));
       await Promise.all(requests);
       showSuccessNotification({ message: 'Agents successfully deleted' });
     } catch (e) {
