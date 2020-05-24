@@ -9,8 +9,9 @@ import { FormElement } from '../../../react-plugins-deps/components/FormComponen
 import { CheckboxField } from '../../../react-plugins-deps/components/FormComponents/Checkbox/Checkbox';
 import { Form as FormFinal } from 'react-final-form';
 import { showSuccessNotification } from '../../../react-plugins-deps/components/helpers';
+import Styling from './Services.styles';
 
-export const ServicesTab = () => {
+export const Services = () => {
   const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [data, setData] = useState([]);
@@ -44,7 +45,7 @@ export const ServicesTab = () => {
   const ActionPanel: FC<{ selected: any[] }> = ({ selected }): ReactElement => {
     return (
       <>
-        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '5px' }}>
+        <div className={Styling.actionPanel}>
           <Button
             size="md"
             disabled={selected.length === 0}
@@ -61,7 +62,10 @@ export const ServicesTab = () => {
           title={
             <div className="modal-header-title">
               <Icon name="exclamation-triangle" size="lg" />
-              <span className="p-l-1">Are you sure that you want to permanently delete 2 services?</span>
+              <span className="p-l-1">
+                Are you sure that you want to permanently delete {selected.length}{' '}
+                {selected.length === 1 ? 'service' : 'services'}?
+              </span>
             </div>
           }
           isOpen={modalVisible}
@@ -71,10 +75,10 @@ export const ServicesTab = () => {
             onSubmit={() => {}}
             render={({ form, handleSubmit }): ReactElement => {
               return (
-                <form onSubmit={handleSubmit} id="antd">
+                <form onSubmit={handleSubmit}>
                   <>
                     <FormElement
-                      data-qa="form-field-"
+                      data-qa="form-field-force"
                       label="Force mode"
                       element={
                         <CheckboxField
@@ -110,7 +114,7 @@ export const ServicesTab = () => {
   };
 
   return (
-    <div style={{ padding: '10px' }}>
+    <div className={Styling.tableWrapper}>
       <CustomTable
         columns={servicesColumns}
         data={data}

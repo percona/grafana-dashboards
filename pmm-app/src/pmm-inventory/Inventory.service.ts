@@ -9,6 +9,9 @@ export class InventoryService {
   static async getAgents(body) {
     return apiRequest.post<any, any>('/v1/inventory/Agents/List', body);
   }
+  static async removeAgent(body) {
+    return apiRequest.post<any, any>('/v1/inventory/Agents/Remove', body);
+  }
   static async getServices(body) {
     return apiRequest.post<any, any>('/v1/inventory/Services/List', body);
   }
@@ -17,5 +20,8 @@ export class InventoryService {
   }
   static async getNodes(body) {
     return apiRequest.post<any, any>('/v1/inventory/Nodes/List', body);
+  }
+  static async removeNode(body) {
+    return apiRequest.post<any, any>('/v1/inventory/Nodes/Remove', body);
   }
 }

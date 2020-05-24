@@ -1,6 +1,6 @@
 import React from 'react';
 import { Tabs } from 'antd';
-import { AgentsTab, NodesTab, ServicesTab } from './Tabs';
+import { AgentsTab, NodesTab, Services } from './Tabs';
 
 const { TabPane } = Tabs;
 
@@ -9,7 +9,7 @@ export const InventoryPanel = () => {
     <div id="antd" style={{ width: '100%' }}>
       <Tabs defaultActiveKey="1">
         <TabPane tab="Services" key="1">
-          <ServicesTab />
+          <Services />
         </TabPane>
         <TabPane tab="Agents" key="2">
           <AgentsTab />
