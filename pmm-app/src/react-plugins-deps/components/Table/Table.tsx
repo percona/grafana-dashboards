@@ -1,11 +1,22 @@
 // @ts-nocheck
 
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { useRowSelect, useTable } from 'react-table';
-import { classNameTable, empty } from './Table.styles';
+import { Spinner, useTheme } from '@grafana/ui';
+import { getStyles } from './Table.styles';
 
-function Table({ columns, data, ActionPanel, noData }) {
+interface TableInterface {
+  columns: object[];
+  data: object[];
+  noData?: ReactElement;
+  ActionPanel?: ReactElement;
+  loading?: boolean;
+  rowKey?: Function;
+}
+function Table({ columns, data, ActionPanel, noData, loading, rowKey }: TableInterface) {
   // Use the state and functions returned from useTable to build your UI
+  const theme = useTheme();
+  const Styling = getStyles(theme);
   const {
     getTableProps,
     getTableBodyProps,
@@ -52,7 +63,8 @@ function Table({ columns, data, ActionPanel, noData }) {
 
   // Render the UI for your table
   return (
-    <div className={classNameTable}>
+    <div className={Styling.table}>
+      {loading && <Spinner />}
       {ActionPanel && rows.length ? <ActionPanel selected={selectedFlatRows} /> : null}
       <div className="tableWrap">
         {rows.length ? (
@@ -73,8 +85,7 @@ function Table({ columns, data, ActionPanel, noData }) {
               {rows.map((row, i) => {
                 prepareRow(row);
                 return (
-                  // eslint-disable-next-line react/jsx-key
-                  <tr data-qa="table-row" {...row.getRowProps()}>
+                  <tr data-qa="table-row" {...row.getRowProps()} key={rowKey ? rowKey(row) : i}>
                     {row.cells.map(cell => {
                       return (
                         <td {...cell.getCellProps()} key={cell.id}>
@@ -89,7 +100,7 @@ function Table({ columns, data, ActionPanel, noData }) {
           </table>
         ) : null}
         {!rows.length ? (
-          <div data-qa="table-no-data" className={empty}>
+          <div data-qa="table-no-data" className={Styling.empty}>
             {noData ? noData : <h1>No data</h1>}
           </div>
         ) : null}

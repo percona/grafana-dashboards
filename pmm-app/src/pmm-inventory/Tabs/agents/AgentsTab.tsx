@@ -27,6 +27,7 @@ export const AgentsTab = () => {
         data={data}
         // ActionPanel={ActionPanel}
         noData={<h1>No Nodes Available</h1>}
+        loading={loading}
       />
     </div>
   );

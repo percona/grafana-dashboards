@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table } from 'antd';
+import CustomTable from '../react-plugins-deps/components/Table/Table';
 import { render, unmountComponentAtNode } from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import { InventoryDataService } from './DataService';
@@ -55,12 +55,10 @@ xdescribe('Inventory tables', () => {
 
     act(() => {
       render(
-        <Table
-          dataSource={InventoryDataService.generateStructure(response)}
+        <CustomTable
+          data={InventoryDataService.generateStructure(response)}
           rowKey={rec => rec.agent_id}
           columns={agentsColumns}
-          pagination={false}
-          bordered
           loading={false}
         />,
         container
@@ -84,12 +82,10 @@ xdescribe('Inventory tables', () => {
     };
     act(() => {
       render(
-        <Table
-          dataSource={InventoryDataService.generateStructure(response)}
+        <CustomTable
+          data={InventoryDataService.generateStructure(response)}
           rowKey={rec => rec.service_id}
           columns={servicesColumns}
-          pagination={false}
-          bordered
           loading={false}
         />,
         container
@@ -108,12 +104,10 @@ xdescribe('Inventory tables', () => {
     };
     act(() => {
       render(
-        <Table
-          dataSource={InventoryDataService.generateStructure(response)}
+        <CustomTable
+          data={InventoryDataService.generateStructure(response)}
           rowKey={rec => rec.node_id}
           columns={nodesColumns}
-          pagination={false}
-          bordered
           loading={false}
         />,
         container

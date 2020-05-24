@@ -117,6 +117,7 @@ export const ServicesTab = () => {
         data={data}
         ActionPanel={ActionPanel}
         noData={<h1>No services Available</h1>}
+        loading={loading}
       />
     </div>
   );

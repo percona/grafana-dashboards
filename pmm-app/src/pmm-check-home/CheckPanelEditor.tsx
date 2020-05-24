@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { FormField } from '@grafana/ui';
+import { LegacyForms } from '@grafana/ui';
 import { PanelEditorProps } from '@grafana/data';
 import { CheckPanelOptions } from 'pmm-check/types';
 
@@ -14,7 +14,7 @@ export class CheckPanelEditor extends PureComponent<PanelEditorProps<CheckPanelO
     return (
       <div className="section gf-form-group">
         <h5 className="section-heading">Panel Options</h5>
-        <FormField
+        <LegacyForms.FormField
           label="Title"
           labelWidth={5}
           inputWidth={20}

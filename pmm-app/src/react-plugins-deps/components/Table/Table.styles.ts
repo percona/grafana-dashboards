@@ -1,83 +1,84 @@
 import { css } from 'emotion';
+import { GrafanaTheme } from '@grafana/data';
+import { selectThemeVariant, stylesFactory } from '@grafana/ui';
 
-const theme = 'dark';
-const themeVariables = {
-  dark: {
-    background: '#161719',
-    border: '#292929',
-    textColor: 'rgba(255, 255, 255, 0.8)',
-    headerBg: '#3D3D3D',
-  },
-  light: {
-    background: 'white',
-    border: 'black',
-    textColor: 'deepskyblue',
-  },
-};
-const currentTheme = themeVariables[theme];
-export const classNameTable = css`
-  /* This is required to make the table full-width */
-  display: block;
-  max-width: 100%;
+export const getStyles = stylesFactory((theme: GrafanaTheme) => {
+  console.log(theme);
+  const backgroundColor = selectThemeVariant({ light: 'rgb(247, 247, 249)', dark: '#161719' }, theme.type);
+  // @ts-ignore
+  const borderColor = selectThemeVariant({ light: theme.colors.gray85, dark: '#292929' }, theme.type);
+  const headerBackground = selectThemeVariant({ light: 'rgb(247, 247, 249)', dark: '#3D3D3D' }, theme.type);
+  const textColor = selectThemeVariant(
+    // @ts-ignore
+    { light: theme.colors.gray85, dark: 'rgba(255, 255, 255, 0.8)' },
+    theme.type
+  );
 
-  /* This will make the table scrollable when it gets too small */
-  .tableWrap {
-    display: block;
-    max-width: 100%;
-    overflow-x: scroll;
-    overflow-y: hidden;
-    border: 1px solid ${currentTheme.border};
-  }
+  return {
+    table: css`
+      /* This is required to make the table full-width */
+      display: block;
+      max-width: 100%;
 
-  table {
-    /* Make sure the inner table is always as wide as needed */
-    width: 100%;
-    border-spacing: 0;
+      /* This will make the table scrollable when it gets too small */
+      .tableWrap {
+        display: block;
+        max-width: 100%;
+        overflow-x: scroll;
+        overflow-y: hidden;
+        border: 1px solid ${borderColor};
+      }
 
-    tr {
-      :last-child {
+      table {
+        /* Make sure the inner table is always as wide as needed */
+        width: 100%;
+        border-spacing: 0;
+
+        tr {
+          :last-child {
+            td {
+              border-bottom: 0;
+            }
+          }
+        }
+        th,
         td {
-          border-bottom: 0;
+          background-color: ${backgroundColor};
+          margin: 0;
+          padding: 0.5rem;
+          border-bottom: 1px solid ${borderColor};
+          border-right: 1px solid ${borderColor};
+          color: ${textColor};
+
+          /* The secret sauce */
+          /* Each cell should grow equally */
+          // width: 1%;
+          /* But "collapsed" cells should be as small as possible */
+          // &.collapse {
+          //   width: 0.0000000001%;
+          // }
+
+          :last-child {
+            border-right: 0;
+          }
+        }
+
+        th {
+          background-color: ${headerBackground};
         }
       }
-    }
-    th,
-    td {
-      background-color: ${currentTheme.background};
-      margin: 0;
-      padding: 0.5rem;
-      border-bottom: 1px solid ${currentTheme.border};
-      border-right: 1px solid ${currentTheme.border};
-      color: ${currentTheme.textColor};
 
-      /* The secret sauce */
-      /* Each cell should grow equally */
-      // width: 1%;
-      /* But "collapsed" cells should be as small as possible */
-      // &.collapse {
-      //   width: 0.0000000001%;
-      // }
-
-      :last-child {
-        border-right: 0;
+      .pagination {
+        padding: 0.5rem;
       }
-    }
-
-    th {
-      background-color: ${currentTheme.headerBg};
-    }
-  }
-
-  .pagination {
-    padding: 0.5rem;
-  }
-`;
-
-export const empty = css`
-  display: flex;
-  width: 100%;
-  height: 160px;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid ${currentTheme.border};
-`;
+    `,
+    empty: css`
+      display: flex;
+      width: 100%;
+      height: 160px;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid ${borderColor};
+    `,
+  };
+});
