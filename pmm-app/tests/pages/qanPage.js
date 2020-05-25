@@ -54,6 +54,8 @@ module.exports = {
     spinnerLocator: "//i[@class='fa fa-spinner fa-spin spinner']",
     newQANPanelContent: '.panel-content',
     countOfItems: '.css-ni562u',
+    resetAll: 'button#reset-all-filters',
+    newQANSpinnerLocator: "//i[@class='fa fa-spinner fa-spin spinner ant-spin-dot']",
   },
 
   filterGroupLocator(filterName) {
@@ -333,12 +335,14 @@ module.exports = {
 
   waitForNewQANPageLoaded() {
     I.waitForElement(this.fields.newQANPanelContent, 30);
+    I.waitForInvisible(this.fields.newQANSpinnerLocator, 30);
   },
 
   applyFilterNewQAN(filterName) {
-    const filterToAplly = locate('input').before(
-      locate('.checkbox-container__label-text').withText(filterName)
-    );
+    const filterToAplly =
+      "//span//span[contains(@class, 'checkbox-container__label-text') and contains(text(), '" +
+      filterName +
+      "')]";
     I.waitForVisible(filterToAplly, 20);
     I.click(filterToAplly);
   },
@@ -347,7 +351,12 @@ module.exports = {
     return await I.grabTextFrom(this.fields.countOfItems);
   },
 
-  verifyChangedCount(countBefore, countAfter) {
-    assert.notEqual(countAfter, countBefore, 'Data should change after applied filter');
+  verifyChangedCount(countBefore, countAfter, expectation) {
+    if (expectation === 'notEqual') {
+      assert.notEqual(countAfter, countBefore, 'Data should be changed');
+    }
+    if (expectation === 'equal') {
+      assert.equal(countAfter, countBefore, 'Count should be same');
+    }
   },
 };

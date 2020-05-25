@@ -131,10 +131,29 @@ xScenario(
     qanPage.applyFilterNewQAN(serviceName);
     I.seeInCurrentUrl('service_name=' + serviceName);
     let countAfter = await qanPage.getCountOfItems();
-    qanPage.verifyChangedCount(countBefore, countAfter);
+    qanPage.verifyChangedCount(countBefore, countAfter, 'notEqual');
     qanPage.applyFilterNewQAN(environmentName);
     I.seeInCurrentUrl('environment=' + environmentName);
+    qanPage.waitForNewQANPageLoaded();
     countAfter = await qanPage.getCountOfItems();
-    qanPage.verifyChangedCount(countBefore, countAfter);
+    qanPage.verifyChangedCount(countBefore, countAfter, 'notEqual');
   }
 );
+
+xScenario('PMM-T126 - Verify user is able to Reset All filters @not-pr-pipeline', async (I, qanPage) => {
+  const service_name = 'ps_5.7_0.0.0.0_1';
+  const environmentName = 'ps-dev';
+  qanPage.waitForNewQANPageLoaded();
+  let countBefore = await qanPage.getCountOfItems();
+  qanPage.applyFilterNewQAN(service_name);
+  qanPage.applyFilterNewQAN(environmentName);
+  let countAfter = await qanPage.getCountOfItems();
+  qanPage.verifyChangedCount(countBefore, countAfter, 'notEqual');
+  //currently blocked by PMM-6025
+  /*
+  I.waitForVisible(qanPage.fields.resetAll, 10);
+  I.click(qanPage.fields.resetAll);
+  countAfter = await qanPage.getCountOfItems();
+  qanPage.verifyChangedCount(countBefore, countAfter, 'equal');
+  */
+});
