@@ -3,7 +3,6 @@ import { GrafanaTheme } from '@grafana/data';
 import { selectThemeVariant, stylesFactory } from '@grafana/ui';
 
 export const getStyles = stylesFactory((theme: GrafanaTheme) => {
-  console.log(theme);
   const backgroundColor = selectThemeVariant({ light: 'rgb(247, 247, 249)', dark: '#161719' }, theme.type);
   // @ts-ignore
   const borderColor = selectThemeVariant({ light: theme.colors.gray85, dark: '#292929' }, theme.type);

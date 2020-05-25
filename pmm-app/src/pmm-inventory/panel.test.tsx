@@ -7,7 +7,7 @@ import { agentsColumns, nodesColumns, servicesColumns } from './panel.constants'
 
 jest.mock('../react-plugins-deps/components/helpers/notification-manager');
 
-xdescribe('Inventory tables', () => {
+describe('Inventory tables', () => {
   let container: Element;
   beforeEach(() => {
     // setup a DOM element as a render target

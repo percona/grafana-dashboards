@@ -86,14 +86,14 @@ export const NodesTab = () => {
                         <CheckboxField
                           name="force"
                           label={
-                            'Force mode is going to delete all' +
-                            'Agents and Services associated with the nodes'
+                            'Force mode is going to delete all ' +
+                            'agents and services associated with the nodes'
                           }
                         />
                       }
                     />
                     <HorizontalGroup justify="space-between" spacing="md">
-                      <Button variant="secondary" size="md">
+                      <Button variant="secondary" size="md" onClick={setModalVisible.bind(null, false)}>
                         Cancel
                       </Button>
                       <Button

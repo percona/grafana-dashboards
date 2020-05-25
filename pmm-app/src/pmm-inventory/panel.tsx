@@ -1,23 +1,39 @@
-import React from 'react';
-import { Tabs } from 'antd';
+import React, { useState } from 'react';
+// import { Tabs } from 'antd';
 import { Agents, NodesTab, Services } from './Tabs';
-
-const { TabPane } = Tabs;
+//
+// const { TabPane } = Tabs;
+import { TabsBar, TabContent, Tab } from '@grafana/ui';
 
 export const InventoryPanel = () => {
+  const [activeTab, setActiveTab] = useState('services');
+  const tabs = [
+    { label: 'Services', key: 'services', active: activeTab === 'services' },
+    { label: 'Agents', key: 'agents', active: activeTab === 'agents' },
+    { label: 'Nodes', key: 'nodes', active: activeTab === 'nodes' },
+  ];
+
   return (
     <div id="antd" style={{ width: '100%' }}>
-      <Tabs defaultActiveKey="1">
-        <TabPane tab="Services" key="1">
-          <Services />
-        </TabPane>
-        <TabPane tab="Agents" key="2">
-          <Agents />
-        </TabPane>
-        <TabPane tab="Nodes" key="3">
-          <NodesTab />
-        </TabPane>
-      </Tabs>
+      <TabsBar>
+        {tabs.map((tab, index) => {
+          return (
+            <Tab
+              key={index}
+              label={tab.label}
+              active={tab.active}
+              onChangeTab={() => {
+                setActiveTab(tab.key);
+              }}
+            />
+          );
+        })}
+      </TabsBar>
+      <TabContent>
+        {tabs[0].active && <Services />}
+        {tabs[1].active && <Agents />}
+        {tabs[2].active && <NodesTab />}
+      </TabContent>
     </div>
   );
 };

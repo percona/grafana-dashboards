@@ -90,7 +90,7 @@ export const Agents = () => {
                       }
                     />
                     <HorizontalGroup justify="space-between" spacing="md">
-                      <Button variant="secondary" size="md">
+                      <Button variant="secondary" size="md" onClick={setModalVisible.bind(null, false)}>
                         Cancel
                       </Button>
                       <Button
