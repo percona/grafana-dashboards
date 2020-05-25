@@ -85,7 +85,10 @@ export const NodesTab = () => {
                       element={
                         <CheckboxField
                           name="force"
-                          label="Force mode is going to delete all Agents associated with the nodes"
+                          label={
+                            'Force mode is going to delete all' +
+                            'Agents and Services associated with the nodes'
+                          }
                         />
                       }
                     />
