@@ -53,6 +53,7 @@ module.exports = {
     copyQueryButton: "//button[@id='copyQueryExample']",
     spinnerLocator: "//i[@class='fa fa-spinner fa-spin spinner']",
     newQANPanelContent: '.panel-content',
+    countOfItems: '.css-ni562u',
   },
 
   filterGroupLocator(filterName) {
@@ -336,9 +337,17 @@ module.exports = {
 
   applyFilterNewQAN(filterName) {
     const filterToAplly = locate('input').before(
-      locate('.checkbox-container__label-text').withText('ps_5.7_0.0.0.0_1')
+      locate('.checkbox-container__label-text').withText(filterName)
     );
     I.waitForVisible(filterToAplly, 20);
     I.click(filterToAplly);
+  },
+
+  async getCountOfItems() {
+    return await I.grabTextFrom(this.fields.countOfItems);
+  },
+
+  verifyChangedCount(countBefore, countAfter) {
+    assert.notEqual(countAfter, countBefore, 'Data should change after applied filter');
   },
 };

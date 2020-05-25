@@ -3,7 +3,7 @@ Feature('QAN Dashboard');
 Before(async (I, qanPage, adminPage) => {
   I.Authorize();
 
-  I.amOnPage(qanPage.url + '?from=now-5m&to=now');
+  I.amOnPage(`${qanPage.url}?from=now-5m&to=now`);
   await I.waitForElement(qanPage.fields.iframe, 60);
   await I.switchTo(qanPage.fields.iframe);
 });
@@ -122,11 +122,19 @@ Scenario('Verify Main Metric change reflects in URL @not-pr-pipeline', async (I,
 });
 
 xScenario(
-  'PMM-T175 - Verify user is able to apply filter that has dots in label @not-pr-pipeline',
+  'PMM-T175 - Verify user is able to apply filter that has dots in label, PMM-T172 - Verify that selecting a filter updates the table data and URL  @not-pr-pipeline',
   async (I, qanPage) => {
-    const filterName = 'ps_5.7_0.0.0.0_1';
+    const serviceName = 'ps_5.7_0.0.0.0_1';
+    const environmentName = 'ps-dev';
     qanPage.waitForNewQANPageLoaded();
-    qanPage.applyFilterNewQAN(filterName);
-    I.seeInCurrentUrl('service_name=' + filterName);
+    let countBefore = await qanPage.getCountOfItems();
+    qanPage.applyFilterNewQAN(serviceName);
+    I.seeInCurrentUrl('service_name=' + serviceName);
+    let countAfter = await qanPage.getCountOfItems();
+    qanPage.verifyChangedCount(countBefore, countAfter);
+    qanPage.applyFilterNewQAN(environmentName);
+    I.seeInCurrentUrl('environment=' + environmentName);
+    countAfter = await qanPage.getCountOfItems();
+    qanPage.verifyChangedCount(countBefore, countAfter);
   }
 );
