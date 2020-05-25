@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
-// import { Tabs } from 'antd';
 import { Agents, NodesTab, Services } from './Tabs';
-//
-// const { TabPane } = Tabs;
 import { TabsBar, TabContent, Tab } from '@grafana/ui';
 
 export const InventoryPanel = () => {
@@ -14,7 +11,7 @@ export const InventoryPanel = () => {
   ];
 
   return (
-    <div id="antd" style={{ width: '100%' }}>
+    <div id="inventory-wrapper">
       <TabsBar>
         {tabs.map((tab, index) => {
           return (

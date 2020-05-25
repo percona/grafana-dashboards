@@ -3,7 +3,7 @@ import CustomTable from '../react-plugins-deps/components/Table/Table';
 import { render, unmountComponentAtNode } from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import { InventoryDataService } from './DataService';
-import { agentsColumns, nodesColumns, servicesColumns } from './panel.constants';
+import { AGENTS_COLUMNS, NODES_COLUMNS, SERVICES_COLUMNS } from './panel.constants';
 
 jest.mock('../react-plugins-deps/components/helpers/notification-manager');
 
@@ -58,7 +58,7 @@ describe('Inventory tables', () => {
         <CustomTable
           data={InventoryDataService.generateStructure(response)}
           rowKey={rec => rec.agent_id}
-          columns={agentsColumns}
+          columns={AGENTS_COLUMNS}
           loading={false}
         />,
         container
@@ -85,7 +85,7 @@ describe('Inventory tables', () => {
         <CustomTable
           data={InventoryDataService.generateStructure(response)}
           rowKey={rec => rec.service_id}
-          columns={servicesColumns}
+          columns={SERVICES_COLUMNS}
           loading={false}
         />,
         container
@@ -107,7 +107,7 @@ describe('Inventory tables', () => {
         <CustomTable
           data={InventoryDataService.generateStructure(response)}
           rowKey={rec => rec.node_id}
-          columns={nodesColumns}
+          columns={NODES_COLUMNS}
           loading={false}
         />,
         container

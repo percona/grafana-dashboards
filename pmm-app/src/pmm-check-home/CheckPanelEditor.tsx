@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { LegacyForms } from '@grafana/ui';
 import { PanelEditorProps } from '@grafana/data';
 import { CheckPanelOptions } from 'pmm-check/types';
+const { FormField } = LegacyForms;
 
 export class CheckPanelEditor extends PureComponent<PanelEditorProps<CheckPanelOptions>> {
   onTitleChanged = ({ target }: any) => {
@@ -14,7 +15,7 @@ export class CheckPanelEditor extends PureComponent<PanelEditorProps<CheckPanelO
     return (
       <div className="section gf-form-group">
         <h5 className="section-heading">Panel Options</h5>
-        <LegacyForms.FormField
+        <FormField
           label="Title"
           labelWidth={5}
           inputWidth={20}

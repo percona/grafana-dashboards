@@ -3,7 +3,7 @@ import React from 'react';
 export const getCustomLabels = customLabels =>
   customLabels.map(label => <span key={label.key}>{`${label.key}: ${label.value}`}</span>);
 
-export const mainColumns = [
+export const MAIN_COLUMN = [
   'service_id',
   'type',
   'service_name',
@@ -13,8 +13,7 @@ export const mainColumns = [
   'port',
 ];
 
-// TODO(lunaticusgreen): extract all `render`s to separate components
-export const servicesColumns = [
+export const SERVICES_COLUMNS = [
   {
     Header: 'ID',
     accessor: 'service_id',
@@ -42,7 +41,7 @@ export const servicesColumns = [
   {
     Header: 'Other Details',
     accessor: element => {
-      const labels = Object.keys(element).filter(label => !mainColumns.includes(label));
+      const labels = Object.keys(element).filter(label => !MAIN_COLUMN.includes(label));
       return (
         <div className="other-details-wrapper">
           {labels.map((label, accessor) =>
@@ -55,7 +54,7 @@ export const servicesColumns = [
   },
 ];
 
-export const agentsColumns = [
+export const AGENTS_COLUMNS = [
   {
     Header: 'ID',
     accessor: 'agent_id',
@@ -88,7 +87,7 @@ export const agentsColumns = [
   },
 ];
 
-export const nodesColumns = [
+export const NODES_COLUMNS = [
   {
     Header: 'ID',
     accessor: 'node_id',

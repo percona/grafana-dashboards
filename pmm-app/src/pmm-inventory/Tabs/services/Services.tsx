@@ -1,15 +1,14 @@
-import { Button, HorizontalGroup, Modal } from '@grafana/ui';
-
 import React, { FC, ReactElement, useEffect, useState } from 'react';
-import { InventoryDataService } from '../../DataService';
-import { InventoryService } from '../../Inventory.service';
-import { servicesColumns } from '../../panel.constants';
+import { Button, HorizontalGroup, Modal } from '@grafana/ui';
+import { Form } from 'react-final-form';
 import CustomTable from '../../../react-plugins-deps/components/Table/Table';
+import { showSuccessNotification } from '../../../react-plugins-deps/components/helpers';
 import { FormElement } from '../../../react-plugins-deps/components/FormComponents';
 import { CheckboxField } from '../../../react-plugins-deps/components/FormComponents/Checkbox/Checkbox';
-import { Form as FormFinal } from 'react-final-form';
-import { showSuccessNotification } from '../../../react-plugins-deps/components/helpers';
-import Styling from './Services.styles';
+import { InventoryDataService } from '../../DataService';
+import { InventoryService } from '../../Inventory.service';
+import { SERVICES_COLUMNS } from '../../panel.constants';
+import styles from '../Tabs.styles';
 
 export const Services = () => {
   const [loading, setLoading] = useState(false);
@@ -45,7 +44,7 @@ export const Services = () => {
   const ActionPanel: FC<{ selected: any[] }> = ({ selected }): ReactElement => {
     return (
       <>
-        <div className={Styling.actionPanel}>
+        <div className={styles.actionPanel}>
           <Button
             size="md"
             disabled={selected.length === 0}
@@ -65,9 +64,9 @@ export const Services = () => {
             </div>
           }
           isOpen={modalVisible}
-          onDismiss={setModalVisible.bind(null, false)}
+          onDismiss={() => setModalVisible(false)}
         >
-          <FormFinal
+          <Form
             onSubmit={() => {}}
             render={({ form, handleSubmit }): ReactElement => {
               return (
@@ -89,7 +88,7 @@ export const Services = () => {
                       }
                     />
                     <HorizontalGroup justify="space-between" spacing="md">
-                      <Button variant="secondary" size="md" onClick={setModalVisible.bind(null, false)}>
+                      <Button variant="secondary" size="md" onClick={() => setModalVisible(false)}>
                         Cancel
                       </Button>
                       <Button
@@ -114,11 +113,11 @@ export const Services = () => {
   };
 
   return (
-    <div className={Styling.tableWrapper}>
+    <div className={styles.tableWrapper}>
       <CustomTable
-        columns={servicesColumns}
+        columns={SERVICES_COLUMNS}
         data={data}
-        ActionPanel={ActionPanel}
+        actionPanel={selected => <ActionPanel selected={selected} />}
         noData={<h1>No services Available</h1>}
         loading={loading}
       />

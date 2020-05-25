@@ -1,6 +1,6 @@
 import { css } from 'emotion';
 
-const Styling = {
+const styles = {
   actionPanel: css`
     display: flex;
     justify-content: flex-end;
@@ -10,5 +10,4 @@ const Styling = {
     padding: 10px;
   `,
 };
-
-export default Styling;
+export default styles;

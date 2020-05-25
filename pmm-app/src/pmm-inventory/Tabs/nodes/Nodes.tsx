@@ -1,14 +1,14 @@
 import React, { FC, ReactElement, useEffect, useState } from 'react';
-import { InventoryDataService } from '../../DataService';
-import { InventoryService } from '../../Inventory.service';
-import { nodesColumns } from '../../panel.constants';
+import { Button, HorizontalGroup, Modal } from '@grafana/ui';
+import { Form } from 'react-final-form';
 import CustomTable from '../../../react-plugins-deps/components/Table/Table';
 import { showSuccessNotification } from '../../../react-plugins-deps/components/helpers';
-import Styling from '../services/Services.styles';
-import { Button, HorizontalGroup, Modal } from '@grafana/ui';
-import { Form as FormFinal } from 'react-final-form';
 import { FormElement } from '../../../react-plugins-deps/components/FormComponents';
 import { CheckboxField } from '../../../react-plugins-deps/components/FormComponents/Checkbox/Checkbox';
+import { InventoryDataService } from '../../DataService';
+import { InventoryService } from '../../Inventory.service';
+import { NODES_COLUMNS } from '../../panel.constants';
+import styles from '../Tabs.styles';
 
 export const NodesTab = () => {
   const [loading, setLoading] = useState(false);
@@ -47,7 +47,7 @@ export const NodesTab = () => {
   const ActionPanel: FC<{ selected: any[] }> = ({ selected }): ReactElement => {
     return (
       <>
-        <div className={Styling.actionPanel}>
+        <div className={styles.actionPanel}>
           <Button
             size="md"
             disabled={selected.length === 0}
@@ -67,9 +67,9 @@ export const NodesTab = () => {
             </div>
           }
           isOpen={modalVisible}
-          onDismiss={setModalVisible.bind(null, false)}
+          onDismiss={() => setModalVisible(false)}
         >
-          <FormFinal
+          <Form
             onSubmit={() => {}}
             render={({ form, handleSubmit }): ReactElement => {
               return (
@@ -93,7 +93,7 @@ export const NodesTab = () => {
                       }
                     />
                     <HorizontalGroup justify="space-between" spacing="md">
-                      <Button variant="secondary" size="md" onClick={setModalVisible.bind(null, false)}>
+                      <Button variant="secondary" size="md" onClick={() => setModalVisible(false)}>
                         Cancel
                       </Button>
                       <Button
@@ -118,11 +118,11 @@ export const NodesTab = () => {
   };
 
   return (
-    <div style={{ padding: '10px' }}>
+    <div className={styles.tableWrapper}>
       <CustomTable
-        columns={nodesColumns}
+        columns={NODES_COLUMNS}
         data={data}
-        ActionPanel={ActionPanel}
+        actionPanel={selected => <ActionPanel selected={selected} />}
         noData={<h1>No Nodes Available</h1>}
         loading={loading}
       />
