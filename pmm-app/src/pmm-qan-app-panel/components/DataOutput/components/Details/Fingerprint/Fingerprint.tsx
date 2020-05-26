@@ -21,7 +21,7 @@ const Fingerprint = props => {
           </div>
         ) : null}
         {props.groupBy === 'queryid' && !props.totals ? (
-          <QueryTooltip query={props.query}>
+          <QueryTooltip query={props.query} queryId={props.queryId}>
             <Info className={Styling.tooltipIcon} />
           </QueryTooltip>
         ) : null}
