@@ -24,7 +24,7 @@ export const Styling = {
     display: inline-block;
   `,
   complexMetric: css`
-    color: #268b40;
+    color: rgba(223, 159, 85, 0.8);
     min-width: 90px;
     display: inline-block;
   `,

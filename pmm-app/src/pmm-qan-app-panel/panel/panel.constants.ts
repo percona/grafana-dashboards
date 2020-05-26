@@ -360,7 +360,7 @@ export const METRIC_CATALOGUE = {
         return '';
       }
 
-      return `${Humanize.transform(mainMetric / divider)} per query`;
+      return `${Humanize.transform(mainMetric / divider, 'number')} per query`;
     },
     units: Units.PER_SEC,
     pipeTypes: {
@@ -383,7 +383,7 @@ export const METRIC_CATALOGUE = {
         return '';
       }
 
-      return `${Humanize.transform(mainMetric / divider)} per query`;
+      return `${Humanize.transform(mainMetric / divider, 'number')} per query`;
     },
     units: Units.NONE,
     pipeTypes: {
@@ -406,7 +406,7 @@ export const METRIC_CATALOGUE = {
         return '';
       }
 
-      return `${Humanize.transform(mainMetric / divider)} per Read Ops`;
+      return `${Humanize.transform(mainMetric / divider, 'size')} per Read Ops`;
     },
     units: Units.PER_SEC,
     pipeTypes: {
