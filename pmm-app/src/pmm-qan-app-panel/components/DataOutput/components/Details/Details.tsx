@@ -34,6 +34,7 @@ const Details = () => {
         totals={totals}
         query={fingerprint}
         controlSum={controlSum}
+        queryId={queryId}
         groupBy={groupBy}
         closeDetails={closeDetails}
       />

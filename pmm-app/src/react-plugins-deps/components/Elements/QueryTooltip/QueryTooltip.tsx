@@ -3,7 +3,13 @@ import Highlight from 'react-highlight.js';
 import React from 'react';
 import './QueryTooltip.scss';
 
-export const QueryTooltip = ({ query, children, show = true }) => {
+interface QueryTooltipProps {
+  query: string;
+  queryId?: string;
+  show?: boolean;
+  children: any;
+}
+export const QueryTooltip = ({ query, queryId, children, show = true }: QueryTooltipProps) => {
   const TooltipContent = () => {
     return <Highlight language="sql">{query}</Highlight>;
   };
@@ -12,7 +18,12 @@ export const QueryTooltip = ({ query, children, show = true }) => {
       placement="left"
       mouseEnterDelay={0}
       overlayClassName="query-tooltip"
-      title={() => <TooltipContent />}
+      title={() => (
+        <>
+          {queryId ? <h5 style={{ margin: '10px' }}>{queryId}</h5> : null}
+          <TooltipContent />
+        </>
+      )}
     >
       {children}
     </Tooltip>
