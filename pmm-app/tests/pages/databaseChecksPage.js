@@ -1,6 +1,7 @@
 const { I, pmmInventoryPage, pmmSettingsPage } = inject();
 const assert = require('assert');
-const locateChecksHeader = header => locate('th').withText(`${header}`);
+// xpath used here because locate('th').withText('') method does not work correctly
+const locateChecksHeader = header => `//th[text()='${header}']`;
 module.exports = {
   // insert your locators and methods here
   // setting locators
@@ -21,8 +22,8 @@ module.exports = {
     detailsHeaderSelector: locateChecksHeader('Details'),
     noOfFailedChecksHeaderSelector: locateChecksHeader('Failed Checks'),
     disabledSTTMessageLinkSelector: locate('a').inside('$db-check-panel-settings-link'),
-    failedChecksRowSelector: locate('tbody').find('tr'),
-    tooltipSelector: locate('.ant-tooltip-inner').find('div').find('div').first()
+    failedChecksRowSelector: "tbody > tr",
+    tooltipSelector: locate('.ant-tooltip-inner > div > div').first()
   },
   // introducing methods
 
@@ -43,7 +44,7 @@ module.exports = {
       case 'enabled':
         I.seeElement(this.fields.dbCheckPanelSelector);
         I.dontSeeElement(this.fields.disabledSTTMessageSelector);
-        I.dontSeeElement(`${this.fields.disabledSTTMessageSelector}/a`);
+        I.dontSeeElement(this.fields.disabledSTTMessageLinkSelector);
         I.seeElement(this.fields.serviceNameHeaderSelector);
         I.seeElement(this.fields.noOfFailedChecksHeaderSelector);
         I.seeElement(this.fields.detailsHeaderSelector);
@@ -52,7 +53,7 @@ module.exports = {
         I.waitForVisible(this.fields.disabledSTTMessageSelector, 30);
         I.seeElement(this.fields.dbCheckPanelSelector);
         I.see(this.messages.disabledSTTMessage ,this.fields.disabledSTTMessageSelector);
-        I.seeElement(`${this.fields.disabledSTTMessageSelector}/a`);
+        I.seeElement(this.fields.disabledSTTMessageLinkSelector);
         I.dontSeeElement(this.fields.serviceNameHeaderSelector);
         I.dontSeeElement(this.fields.noOfFailedChecksHeaderSelector);
         I.dontSeeElement(this.fields.detailsHeaderSelector);
