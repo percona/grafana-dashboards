@@ -4,7 +4,11 @@ import ManageColumns from '../../../ManageColumns/ManageColumns';
 import { Humanize } from '../../../../../../../react-plugins-deps/components/helpers/Humanization';
 import { Styling } from './MetricColumn.styles';
 import { Divider } from 'antd';
-import { Latency, Sparkline } from '../../../../../../../react-plugins-deps/components/Elements/Charts';
+import {
+  Latency,
+  Sparkline,
+  TotalPercentage,
+} from '../../../../../../../react-plugins-deps/components/Elements/Charts';
 import Tooltip from 'antd/es/tooltip';
 import React from 'react';
 import './MetricColumns.scss';
@@ -150,6 +154,11 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
           >
             {isTimeMetric ? <TimeMetric value={stats.avg} /> : null}
             {!isTimeMetric ? <NonTimeMetric value={statPerSec} units={metric.units} /> : null}
+            <TotalPercentage
+              width={((stats.sum_per_sec / totalValues.metrics[metricName].stats.sum_per_sec) * 100).toFixed(
+                2
+              )}
+            />
           </Tooltip>
         </div>
       );
