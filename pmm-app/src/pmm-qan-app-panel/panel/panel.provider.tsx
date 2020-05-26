@@ -16,10 +16,6 @@ const setFilters = query =>
       return result;
     }
 
-    if (filters[0] === 'All') {
-      return result;
-    }
-
     result[filterName] = filters;
     return result;
   }, {});

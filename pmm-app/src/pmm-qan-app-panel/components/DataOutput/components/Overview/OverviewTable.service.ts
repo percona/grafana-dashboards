@@ -5,12 +5,14 @@ class OverviewTableService {
   static async getReport(body: OverviewServiceInterface) {
     const columns = body.columns;
     const labels =
-      Object.keys(body.labels).map(key => {
-        return {
-          key: key,
-          value: body.labels[key],
-        };
-      }) || [];
+      Object.keys(body.labels)
+        .map(key => {
+          return {
+            key: key,
+            value: body.labels[key],
+          };
+        })
+        .filter(item => item.value.filter(element => element !== 'All').length) || [];
     const request = {
       columns: columns,
       group_by: body.groupBy,
