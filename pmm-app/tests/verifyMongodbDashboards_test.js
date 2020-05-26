@@ -27,6 +27,6 @@ Scenario(
     await dashboardPage.expandEachDashboardRow();
     dashboardPage.verifyMetricsExistence(dashboardPage.mongoDbClusterSummaryDashboard.metrics);
     await dashboardPage.verifyThereAreNoGraphsWithNA();
-    await dashboardPage.verifyThereAreNoGraphsWithoutData(10);
+    await dashboardPage.verifyThereAreNoGraphsWithoutData(12);
   }
 );
