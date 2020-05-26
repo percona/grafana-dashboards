@@ -54,7 +54,6 @@ export const Filters = ({ contextActions, form, labels, filters }) => {
           className={Styling.resetButton}
           id="reset-all-filters"
           onClick={() => {
-            console.log('reset value');
             setFilter('');
             showSetAll(true);
             contextActions.resetLabels();
