@@ -157,3 +157,14 @@ xScenario('PMM-T126 - Verify user is able to Reset All filters @not-pr-pipeline'
   qanPage.verifyChangedCount(countBefore, countAfter, 'equal');
   */
 });
+
+xScenario('PMM-T124 - Verify User is able to show all and show top 5 values for filter section @not-pr-pipeline', async (I, qanPage) => {
+  const filterSection = "Database";
+  qanPage.waitForNewQANPageLoaded();
+  await qanPage.verifyFiltersSection(filterSection, 5);
+  let countToShow = await qanPage.getCountOfFilters(filterSection);
+  qanPage.applyShowAllLink(filterSection);
+  await qanPage.verifyFiltersSection(filterSection, countToShow);
+  await qanPage.applyShowTop5Link(filterSection);
+  await qanPage.verifyFiltersSection(filterSection, 5);
+});

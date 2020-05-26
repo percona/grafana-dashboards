@@ -359,4 +359,47 @@ module.exports = {
       assert.equal(countAfter, countBefore, 'Count should be same');
     }
   },
+
+  async verifyFiltersSection(filterSection, expectedCount) {
+    const selectedPart =
+      "//span[contains(@class, 'css-lljzu5') and contains(text(), '" + filterSection + "')]";
+    let countOfFiltersInSection = await I.grabNumberOfVisibleElements(
+      selectedPart + "/parent::p/following-sibling::div[contains(@class, 'css-180k0fv')]"
+    );
+    assert.equal(
+      countOfFiltersInSection,
+      expectedCount,
+      'There should be ' + expectedCount + ' visible links'
+    );
+  },
+
+  async getCountOfFilters(filterSection) {
+    const showAllLink =
+      "//span[contains(@class, 'css-lljzu5') and contains(text(), '" +
+      filterSection +
+      "')]/following-sibling::span[@class='css-9r0iio']";
+    let showAllCount = await I.grabTextFrom(showAllLink);
+    let count = showAllCount.slice(10, 12);
+    return count;
+  },
+
+  applyShowAllLink(filterSection) {
+    const showAllLink =
+      "//span[contains(@class, 'css-lljzu5') and contains(text(), '" +
+      filterSection +
+      "')]/following-sibling::span[@class='css-9r0iio']";
+    I.waitForVisible(showAllLink, 30);
+    I.click(showAllLink);
+  },
+
+  async applyShowTop5Link(filterSection) {
+    const showTop5Link =
+      "//span[contains(@class, 'css-lljzu5') and contains(text(), '" +
+      filterSection +
+      "')]/following-sibling::span[contains(@class,'css-9r0iio') and contains(text(), 'Show top 5')]";
+    I.waitForVisible(showTop5Link, 30);
+    let top5Link = await I.grabTextFrom(showTop5Link);
+    assert.equal(top5Link, 'Show top 5', 'Link is not correct');
+    I.click(showTop5Link);
+  },
 };
