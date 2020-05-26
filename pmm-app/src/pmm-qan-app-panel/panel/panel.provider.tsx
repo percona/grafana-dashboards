@@ -255,7 +255,7 @@ export const UrlParametersProvider = ({ grafanaProps, children }) => {
   useEffect(() => {
     const fromNew = moment(from);
     const toNew = moment(to);
-    if (fromNew.diff(oldFrom, 'seconds') < 3 || toNew.diff(oldTo, 'seconds') < 3) {
+    if (fromNew.diff(oldFrom, 'seconds') < 5 || toNew.diff(oldTo, 'seconds') < 5) {
       return;
     }
 
