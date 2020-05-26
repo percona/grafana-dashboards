@@ -37,8 +37,8 @@ export const Filters = ({ contextActions, form, labels, filters }) => {
     setFiltersBodyHeight(Math.max(filtersHeight, FILTERS_BODY_HEIGHT));
   }, [height]);
 
-  const FiltersControlPanel = () => {
-    return (
+  return (
+    <div>
       <div className={Styling.filtersHeader}>
         <h5 className={Styling.title}>Filters</h5>
         <Button
@@ -54,6 +54,7 @@ export const Filters = ({ contextActions, form, labels, filters }) => {
           className={Styling.resetButton}
           id="reset-all-filters"
           onClick={() => {
+            console.log('reset value');
             setFilter('');
             showSetAll(true);
             contextActions.resetLabels();
@@ -64,11 +65,6 @@ export const Filters = ({ contextActions, form, labels, filters }) => {
           Reset All
         </Button>
       </div>
-    );
-  };
-  return (
-    <div>
-      <FiltersControlPanel />
       <ScrollArea className={Styling.getFiltersWrapper(filtersBodyHeight)}>
         <Input
           suffix={<Filter />}
