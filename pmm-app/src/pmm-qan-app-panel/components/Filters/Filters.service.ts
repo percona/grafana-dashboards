@@ -2,12 +2,14 @@ import { apiRequestQAN } from '../../../react-plugins-deps/components/helpers/ap
 
 class FiltersService {
   static async getQueryOverviewFiltersList(paramLabels, from, to, mainMetric) {
-    const requestLabels = Object.keys(paramLabels).map(key => {
-      return {
-        key: key,
-        value: paramLabels[key],
-      };
-    });
+    const requestLabels = Object.keys(paramLabels)
+      .map(key => {
+        return {
+          key: key,
+          value: paramLabels[key],
+        };
+      })
+      .filter(item => item.value.filter(element => element !== 'All').length);
 
     const { labels } = await apiRequestQAN.post<any, any>('/Filters/Get', {
       labels: requestLabels,
