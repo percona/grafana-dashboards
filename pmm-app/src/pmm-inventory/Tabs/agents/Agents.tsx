@@ -120,7 +120,7 @@ export const Agents = () => {
         columns={AGENTS_COLUMNS}
         data={data}
         actionPanel={selected => <ActionPanel selected={selected} />}
-        noData={<h1>No Nodes Available</h1>}
+        noData={<h1>No agents Available</h1>}
         loading={loading}
       />
     </div>
