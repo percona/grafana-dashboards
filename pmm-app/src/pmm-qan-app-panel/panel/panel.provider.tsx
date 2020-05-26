@@ -249,20 +249,22 @@ export const UrlParametersProvider = ({ grafanaProps, children }) => {
     setContext(newState);
   }, [rawTime.from, rawTime.to]);
 
+  const [oldTo, setOldTo] = useState(moment(panelState.to));
+  const [oldFrom, setOldFrom] = useState(moment(panelState.from));
   // Refresh
   useEffect(() => {
     const fromNew = moment(from);
-    const fromOld = moment(panelState.from);
     const toNew = moment(to);
-    const toOld = moment(panelState.to);
-
-    if (fromNew.diff(fromOld, 'seconds') < 10 || toNew.diff(toOld, 'seconds') < 10) {
+    if (fromNew.diff(oldFrom, 'seconds') < 3 || toNew.diff(oldTo, 'seconds') < 3) {
       return;
     }
 
     if (isFirstLoad) {
       return;
     }
+
+    setOldTo(toNew);
+    setOldFrom(fromNew);
     const newState = { ...panelState, from, to, rawTime };
 
     if (panelState.rawTime.from !== rawTime.from || panelState.rawTime.to !== rawTime.to) {
