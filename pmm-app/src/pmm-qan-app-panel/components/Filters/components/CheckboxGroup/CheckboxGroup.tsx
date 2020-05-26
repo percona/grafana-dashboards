@@ -23,7 +23,10 @@ export const CheckboxGroup = ({ name, items, group, showAll, filter: searchFilte
     })
     .filter(item => {
       if (!item.value) {
-        return 'n/a'.includes(searchFilterBy.toLowerCase());
+        return (
+          'n/a'.includes(searchFilterBy.toLowerCase()) ||
+          name.toLowerCase().includes(searchFilterBy.toLowerCase())
+        );
       }
       return (
         item.value.toLowerCase().includes(searchFilterBy.toLowerCase()) ||
@@ -37,10 +40,8 @@ export const CheckboxGroup = ({ name, items, group, showAll, filter: searchFilte
           <span className={Styling.filterName}>
             <CheckboxField
               // TODO: using '--' because final form think that it is a nested fields
-              //  need to replace it with something better
               name={`${group}:${item.value ? item.value.replace(/\./gi, '--') : 'na'}`}
               label={item.value || 'n/a'}
-              // checked={item.checked}
               disabled={!valueExists}
             />
           </span>
