@@ -12,7 +12,7 @@ interface CheckboxFieldInterface {
 }
 
 export const CheckboxField = ({ name, label, required, disabled }: CheckboxFieldInterface) => {
-  const field = useField(name);
+  const field = useField(name, { type: 'checkbox' });
 
   return (
     <label className="checkbox-container checkbox-container--main">

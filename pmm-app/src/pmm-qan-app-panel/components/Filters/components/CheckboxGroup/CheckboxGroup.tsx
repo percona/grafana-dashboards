@@ -14,6 +14,20 @@ export const CheckboxGroup = ({ name, items, group, showAll, filter: searchFilte
     }
     return true;
   });
+
+  const searchFilter = item => {
+    if (!item.value) {
+      return (
+        'n/a'.includes(searchFilterBy.toLowerCase()) ||
+        name.toLowerCase().includes(searchFilterBy.toLowerCase())
+      );
+    }
+    return (
+      item.value.toLowerCase().includes(searchFilterBy.toLowerCase()) ||
+      name.toLowerCase().includes(searchFilterBy.toLowerCase())
+    );
+  };
+
   const itemsList = (showTop ? filteredData.slice(0, TOP_LIMIT) : filteredData)
     .filter((item, index, list) => {
       if (showAll && !item.value && list.length === 1) {
@@ -21,18 +35,7 @@ export const CheckboxGroup = ({ name, items, group, showAll, filter: searchFilte
       }
       return true;
     })
-    .filter(item => {
-      if (!item.value) {
-        return (
-          'n/a'.includes(searchFilterBy.toLowerCase()) ||
-          name.toLowerCase().includes(searchFilterBy.toLowerCase())
-        );
-      }
-      return (
-        item.value.toLowerCase().includes(searchFilterBy.toLowerCase()) ||
-        name.toLowerCase().includes(searchFilterBy.toLowerCase())
-      );
-    })
+    .filter(searchFilter)
     .map(item => {
       const valueExists = item.hasOwnProperty('main_metric_percent');
       return (
@@ -55,9 +58,9 @@ export const CheckboxGroup = ({ name, items, group, showAll, filter: searchFilte
     <div>
       <p className={Styling.filterHeaderWrapper}>
         <span className={Styling.filterHeader}>{name}</span>
-        {filteredData.length > TOP_LIMIT ? (
+        {filteredData.filter(searchFilter).length > TOP_LIMIT ? (
           <span onClick={() => setShowTop(!showTop)} className={Styling.showModeSwitcher}>
-            {showTop ? `Show all (${filteredData.length})` : `Show top ${TOP_LIMIT}`}
+            {showTop ? `Show all (${filteredData.filter(searchFilter).length})` : `Show top ${TOP_LIMIT}`}
           </span>
         ) : (
           <span></span>
