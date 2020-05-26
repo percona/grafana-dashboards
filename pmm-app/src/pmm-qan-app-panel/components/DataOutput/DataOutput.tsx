@@ -53,7 +53,7 @@ const DataOutput = () => {
           className={Styling.splitterWrapper}
           resizerStyle={{ display: querySelected ? '' : 'none' }}
           pane1Style={{
-            minHeight: querySelected ? '30%' : '100%',
+            minHeight: querySelected ? '20%' : '100%',
             maxHeight: querySelected ? '60%' : '100%',
           }}
           pane2Style={{ minHeight: '20%', overflowY: 'scroll', zIndex: 999 }}
