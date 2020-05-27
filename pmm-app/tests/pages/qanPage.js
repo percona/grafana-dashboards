@@ -352,12 +352,7 @@ module.exports = {
   },
 
   verifyChangedCount(countBefore, countAfter, expectation) {
-    if (expectation === 'notEqual') {
-      assert.notEqual(countAfter, countBefore, 'Data should be changed');
-    }
-    if (expectation === 'equal') {
-      assert.equal(countAfter, countBefore, 'Count should be same');
-    }
+    assert.notEqual(countAfter, countBefore, 'Data should be changed');
   },
 
   async verifyFiltersSection(filterSection, expectedCount) {

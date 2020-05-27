@@ -148,23 +148,22 @@ xScenario('PMM-T126 - Verify user is able to Reset All filters @not-pr-pipeline'
   qanPage.applyFilterNewQAN(service_name);
   qanPage.applyFilterNewQAN(environmentName);
   let countAfter = await qanPage.getCountOfItems();
-  qanPage.verifyChangedCount(countBefore, countAfter, 'notEqual');
-  //currently blocked by PMM-6025
-  /*
-  I.waitForVisible(qanPage.fields.resetAll, 10);
+  await qanPage.verifyChangedCount(countBefore, countAfter);
   I.click(qanPage.fields.resetAll);
-  countAfter = await qanPage.getCountOfItems();
-  qanPage.verifyChangedCount(countBefore, countAfter, 'equal');
-  */
+  I.waitForVisible(qanPage.fields.resetAll + ':disabled', 20);
 });
 
-xScenario('PMM-T124 - Verify User is able to show all and show top 5 values for filter section @not-pr-pipeline', async (I, qanPage) => {
-  const filterSection = "Database";
-  qanPage.waitForNewQANPageLoaded();
-  await qanPage.verifyFiltersSection(filterSection, 5);
-  let countToShow = await qanPage.getCountOfFilters(filterSection);
-  qanPage.applyShowAllLink(filterSection);
-  await qanPage.verifyFiltersSection(filterSection, countToShow);
-  await qanPage.applyShowTop5Link(filterSection);
-  await qanPage.verifyFiltersSection(filterSection, 5);
-});
+xScenario(
+  'PMM-T124 - Verify User is able to show all and show top 5 values for filter section @not-pr-pipeline',
+  async (I, qanPage) => {
+    const filterSection = 'Database';
+    qanPage.waitForNewQANPageLoaded();
+    await qanPage.verifyFiltersSection(filterSection, 5);
+    let countToShow = await qanPage.getCountOfFilters(filterSection);
+    qanPage.applyShowAllLink(filterSection);
+    await qanPage.verifyFiltersSection(filterSection, countToShow);
+    await qanPage.applyShowTop5Link(filterSection);
+    await qanPage.verifyFiltersSection(filterSection, 5);
+  }
+);
+
