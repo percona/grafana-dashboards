@@ -14,11 +14,7 @@ module.exports = {
     metricTitle: "//div[@class='panel-title']",
     reportTitleWithNA:
       "//span[contains(text(), 'N/A')]//ancestor::div[contains(@class,'panel-container')]//span[contains(@class,'panel-title-text')]",
-    pmmDropdownMenuSelector: locate('a')
-        .withAttr({'data-toggle' : 'dropdown'})
-        .find('span')
-        .withText('PMM')
-
+    pmmDropdownMenuSelector: locate('a[data-toggle="dropdown"] > span').withText('PMM')
   },
 
   // introducing methods

@@ -2,9 +2,8 @@ exports.config = {
   output: 'tests/output',
   helpers: {
     Playwright: {
-      url: 'http://18.221.19.47/',
+      url: 'http://localhost/',
       restart: true,
-      show: true,
       browser: 'chromium',
       windowSize: "2560x1600",
       waitForNavigation: 'networkidle0',
@@ -13,7 +12,7 @@ exports.config = {
       waitForAction: 500,
       chromium: {
         ignoreHTTPSErrors: true,
-        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        args: ['--no-sandbox', '--window-size=2560,1600', '--disable-gpu', '--disable-dev-shm-usage', '--disable-setuid-sandbox'],
       },
     },
     Grafana: {

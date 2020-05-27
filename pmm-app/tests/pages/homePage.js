@@ -13,7 +13,7 @@ module.exports = {
       "//span[@class='panel-title-text' and contains(text(), 'Monitored DB Instances')]//../../../..//span[@class='singlestat-panel-value']",
     dashboardHeaderText: 'Percona Monitoring and Management',
     dashboardHeaderLocator: "//div[contains(@class, 'dashboard-header')]",
-    checkUpdateButton: "//*[@id='refresh']",
+    checkUpdateButton: "#refresh",
     lastCheckSelector: ".last-check-wrapper > p",
     triggerUpdate: "button[ng-click='update()']",
     updateProgressModal: ".modal-content",
