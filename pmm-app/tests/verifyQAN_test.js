@@ -4,6 +4,7 @@ Before(async (I, qanPage, adminPage) => {
   I.Authorize();
 
   I.amOnPage(`${qanPage.url}?from=now-5m&to=now`);
+  //this two elements should be changed after new QAN
   await I.waitForElement(qanPage.fields.iframe, 60);
   await I.switchTo(qanPage.fields.iframe);
 });
@@ -168,3 +169,18 @@ xScenario(
   }
 );
 
+xScenario(
+  'PMM-T125 - Verify user is able to Show only selected filter values and Show All filter values',
+  async (I, qanPage) => {
+    const service_name = 'ps_5.7_0.0.0.0_1';
+    const environmentName = 'ps-dev';
+    qanPage.waitForNewQANPageLoaded();
+    qanPage.applyFilterNewQAN(service_name);
+    qanPage.applyFilterNewQAN(environmentName);
+    I.waitForVisible(qanPage.fields.showSelected, 20);
+    I.click(qanPage.fields.showSelected);
+    await qanPage.verifyCountOfFilterLinks(2, false);
+    I.click(qanPage.fields.showSelected);
+    await qanPage.verifyCountOfFilterLinks(2, true);
+  }
+);

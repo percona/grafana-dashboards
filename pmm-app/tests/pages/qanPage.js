@@ -56,6 +56,7 @@ module.exports = {
     countOfItems: '.css-ni562u',
     resetAll: 'button#reset-all-filters',
     newQANSpinnerLocator: "//i[@class='fa fa-spinner fa-spin spinner ant-spin-dot']",
+    showSelected: "//button[contains(@class, 'ant-btn css-x930nf ant-btn-link')]",
   },
 
   filterGroupLocator(filterName) {
@@ -396,5 +397,16 @@ module.exports = {
     let top5Link = await I.grabTextFrom(showTop5Link);
     assert.equal(top5Link, 'Show top 5', 'Link is not correct');
     I.click(showTop5Link);
+  },
+
+  async verifyCountOfFilterLinks(expectedCount, before) {
+    const links = "//div[contains(@class, 'css-180k0fv')]";
+    let count = await I.grabNumberOfVisibleElements(links);
+    if (before === false) {
+      assert.equal(count, expectedCount);
+    }
+    if (before === true) {
+      assert.notEqual(count, expectedCount);
+    }
   },
 };
