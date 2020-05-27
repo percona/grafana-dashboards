@@ -12,34 +12,46 @@ import {
 import Tooltip from 'antd/es/tooltip';
 import React from 'react';
 import './MetricColumns.scss';
+import { css } from 'emotion';
 
-const TimeMetric = ({ value }) => (
-  <span
-    className="summarize"
-    style={{
-      marginLeft: 'auto',
-      cursor: value && value !== 'NaN' ? 'help' : '',
-      color: 'rgba(255,255,255,0.8)',
-    }}
-  >
-    {value === undefined ? `${Humanize.transform(0, 'time')}` : null}
-    {value === null || value === 'NaN' ? 'N/A' : null}
-    {value && value !== 'NaN' ? `${Humanize.transform(value, 'time')}` : null}
-  </span>
+const metricStyle = css`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+`;
+const TimeMetric = ({ value, percentage }) => (
+  <div className={metricStyle}>
+    <span
+      className="summarize"
+      style={{
+        marginLeft: 'auto',
+        cursor: value && value !== 'NaN' ? 'help' : '',
+        color: 'rgba(255,255,255,0.8)',
+      }}
+    >
+      {value === undefined ? `${Humanize.transform(0, 'time')}` : null}
+      {value === null || value === 'NaN' ? 'N/A' : null}
+      {value && value !== 'NaN' ? `${Humanize.transform(value, 'time')}` : null}
+    </span>
+    {value === undefined || value === null || value === 'NaN' ? null : <TotalPercentage width={percentage} />}
+  </div>
 );
-const NonTimeMetric = ({ value, units }) => (
-  <span
-    className="summarize"
-    style={{
-      marginLeft: 'auto',
-      cursor: value && value !== 'NaN' ? 'help' : '',
-      color: 'rgba(255,255,255,0.8)',
-    }}
-  >
-    {value === undefined ? `0 ${units}` : null}
-    {value === null || value === 'NaN' ? 'N/A' : null}
-    {value && value !== 'NaN' ? `${Humanize.transform(value, 'number')} ${units}` : null}
-  </span>
+const NonTimeMetric = ({ value, units, percentage }) => (
+  <div className={metricStyle}>
+    <span
+      className="summarize"
+      style={{
+        marginLeft: 'auto',
+        cursor: value && value !== 'NaN' ? 'help' : '',
+        color: 'rgba(255,255,255,0.8)',
+      }}
+    >
+      {value === undefined ? `0 ${units}` : null}
+      {value === null || value === 'NaN' ? 'N/A' : null}
+      {value && value !== 'NaN' ? `${Humanize.transform(value, 'number')} ${units}` : null}
+    </span>
+    {value === undefined || value === null || value === 'NaN' ? null : <TotalPercentage width={percentage} />}
+  </div>
 );
 
 const getSorting = (orderBy, metricName) => {
@@ -66,6 +78,10 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
     render: (text, item, index) => {
       const stats = item.metrics[metricName].stats;
       const statPerSec = stats.qps || stats.sum_per_sec;
+      const percentFromTotal = (
+        (stats.sum_per_sec / totalValues.metrics[metricName].stats.sum_per_sec) *
+        100
+      ).toFixed(2);
       // @ts-ignore
       const tooltipData = [
         {
@@ -82,8 +98,7 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
         },
         {
           header: 'From total',
-          value:
-            ((stats.sum_per_sec / totalValues.metrics[metricName].stats.sum_per_sec) * 100).toFixed(2) + ' %',
+          value: percentFromTotal + ' %',
           key: 'from-total',
         },
       ].filter(tooltip => tooltip.value);
@@ -152,13 +167,10 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
               ) : null
             }
           >
-            {isTimeMetric ? <TimeMetric value={stats.avg} /> : null}
-            {!isTimeMetric ? <NonTimeMetric value={statPerSec} units={metric.units} /> : null}
-            <TotalPercentage
-              width={((stats.sum_per_sec / totalValues.metrics[metricName].stats.sum_per_sec) * 100).toFixed(
-                2
-              )}
-            />
+            {isTimeMetric ? <TimeMetric value={stats.avg} percentage={percentFromTotal} /> : null}
+            {!isTimeMetric ? (
+              <NonTimeMetric value={statPerSec} units={metric.units} percentage={percentFromTotal} />
+            ) : null}
           </Tooltip>
         </div>
       );
