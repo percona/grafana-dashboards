@@ -245,32 +245,25 @@ export const UrlParametersProvider = ({ grafanaProps, children }) => {
     setContext(newState);
   }, [rawTime.from, rawTime.to]);
 
-  const [oldTo, setOldTo] = useState(moment(panelState.to));
-  const [oldFrom, setOldFrom] = useState(moment(panelState.from));
-  // Refresh
+  // refresh
   useEffect(() => {
-    const fromNew = moment(from);
-    const toNew = moment(to);
-    if (fromNew.diff(oldFrom, 'seconds') < 5 || toNew.diff(oldTo, 'seconds') < 5) {
-      return;
-    }
+    const refreshButton = document.querySelector('.refresh-picker-buttons button');
+    const refreshHandle = () => {
+      const newState = { ...panelState, from, to, rawTime };
+      if (panelState.rawTime.from !== rawTime.from || panelState.rawTime.to !== rawTime.to) {
+        newState.pageNumber = 1;
+        delete newState.queryId;
+        delete newState.querySelected;
+      }
 
-    if (isFirstLoad) {
-      return;
-    }
+      setContext(newState);
+    };
+    refreshButton && refreshButton.addEventListener('click', refreshHandle);
 
-    setOldTo(toNew);
-    setOldFrom(fromNew);
-    const newState = { ...panelState, from, to, rawTime };
-
-    if (panelState.rawTime.from !== rawTime.from || panelState.rawTime.to !== rawTime.to) {
-      newState.pageNumber = 1;
-      delete newState.queryId;
-      delete newState.querySelected;
-    }
-
-    setContext(newState);
-  }, [from, to]);
+    return () => {
+      refreshButton && refreshButton.removeEventListener('click', refreshHandle);
+    };
+  }, []);
 
   useEffect(() => {
     setFirstLoad(false);
