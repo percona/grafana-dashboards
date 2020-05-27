@@ -111,7 +111,7 @@ const Metrics = ({ databaseType, totals }) => {
 
   return (
     <div className="metrics-wrapper">
-      <Collapse bordered={false} defaultActiveKey={['1', '2']} className={Styling.collapse}>
+      <Collapse bordered={false} defaultActiveKey={['1']} className={Styling.collapse}>
         {databaseType === DATABASE.mysql ? (
           <Panel header="Query time distribution" key="1" className={Styling.panel}>
             <TimeDistribution data={metrics} />
