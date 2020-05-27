@@ -16,6 +16,8 @@ export const FILTERS_NAMES = [
   'node_type',
   'city',
   'az',
+  // we need to have interval to not lose it during pages transitions
+  'interval',
 ];
 
 const Units = {

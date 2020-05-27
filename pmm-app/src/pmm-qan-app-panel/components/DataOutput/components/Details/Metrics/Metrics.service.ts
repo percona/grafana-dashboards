@@ -1,19 +1,12 @@
 import { apiRequestQAN } from '../../../../../../react-plugins-deps/components/helpers/api';
+import { getLabelQueryParams } from '../../../../../panel/panel.tools';
 
 class MetricsService {
   static getMetrics({ filterBy, groupBy, labels = [], from, to, tables = [], totals }) {
     const body = {
       filter_by: filterBy || '',
       group_by: groupBy,
-      labels:
-        Object.keys(labels)
-          .map(key => {
-            return {
-              key: key,
-              value: labels[key],
-            };
-          })
-          .filter(item => item.value.filter(element => element !== 'All').length) || [],
+      labels: getLabelQueryParams(labels),
       period_start_from: from,
       period_start_to: to,
       tables: tables,

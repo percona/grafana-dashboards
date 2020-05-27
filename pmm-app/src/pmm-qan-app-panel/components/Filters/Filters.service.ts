@@ -1,18 +1,10 @@
 import { apiRequestQAN } from '../../../react-plugins-deps/components/helpers/api';
+import { getLabelQueryParams } from '../../panel/panel.tools';
 
 class FiltersService {
   static async getQueryOverviewFiltersList(paramLabels, from, to, mainMetric) {
-    const requestLabels = Object.keys(paramLabels)
-      .map(key => {
-        return {
-          key: key,
-          value: paramLabels[key],
-        };
-      })
-      .filter(item => item.value.filter(element => element !== 'All').length);
-
     const { labels } = await apiRequestQAN.post<any, any>('/Filters/Get', {
-      labels: requestLabels,
+      labels: getLabelQueryParams(paramLabels),
       main_metric_name: mainMetric,
       period_start_from: from,
       period_start_to: to,
