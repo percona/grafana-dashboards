@@ -3,7 +3,6 @@ import { ParseQueryParamDate } from '../../react-plugins-deps/components/helpers
 import { getDataSourceSrv } from '@grafana/runtime';
 import { find, omit } from 'lodash';
 import { DEFAULT_COLUMNS, FILTERS_NAMES } from './panel.constants';
-import moment from 'moment';
 
 const initialState = {} as any;
 
