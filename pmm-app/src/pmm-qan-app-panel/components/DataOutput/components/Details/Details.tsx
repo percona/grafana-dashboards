@@ -51,7 +51,11 @@ const Details = () => {
           ) : null}
           {groupBy === 'queryid' && showExplainTab && !totals ? (
             <TabPane tab={<span>Explain</span>} key={TabKeys.Explain} disabled={queryId === 'TOTAL'}>
-              <Explain classicExplain={classicExplain} jsonExplain={jsonExplain} />
+              <Explain
+                classicExplain={classicExplain}
+                jsonExplain={jsonExplain}
+                databaseType={databaseType}
+              />
             </TabPane>
           ) : null}
           {groupBy === 'queryid' && showTablesTab && !totals ? (
