@@ -23,7 +23,7 @@ module.exports = {
 
   // introducing methods
   dropdownMenuItemLocator(title) {
-    return locate('ul > li > a').withText(`${title}`);
+    return locate('ul > li > a').withText(title);
   },
 
   selectItemFromPMMDropdown(title){
