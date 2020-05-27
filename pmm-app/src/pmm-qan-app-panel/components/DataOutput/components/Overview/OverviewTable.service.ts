@@ -1,24 +1,16 @@
 import { apiRequestQAN } from '../../../../../react-plugins-deps/components/helpers/api';
 import { OverviewServiceInterface } from './OverviewTable.types';
+import { getLabelQueryParams } from '../../../../panel/panel.tools';
 
 class OverviewTableService {
   static async getReport(body: OverviewServiceInterface) {
     const columns = body.columns;
-    const labels =
-      Object.keys(body.labels)
-        .map(key => {
-          return {
-            key: key,
-            value: body.labels[key],
-          };
-        })
-        .filter(item => item.value.filter(element => element !== 'All').length) || [];
     const request = {
       columns: columns,
       group_by: body.groupBy,
       include_only_fields: [],
       keyword: '',
-      labels: labels,
+      labels: getLabelQueryParams(body.labels),
       limit: body.pageSize,
       offset: (body.pageNumber - 1) * body.pageSize,
       order_by: body.orderBy,
