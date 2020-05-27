@@ -124,21 +124,28 @@ Scenario('Verify Main Metric change reflects in URL @not-pr-pipeline', async (I,
 });
 
 xScenario(
-  'PMM-T175 - Verify user is able to apply filter that has dots in label, PMM-T172 - Verify that selecting a filter updates the table data and URL  @not-pr-pipeline',
+  'PMM-T175 - Verify user is able to apply filter that has dots in label @not-pr-pipeline',
   async (I, qanPage) => {
     const serviceName = 'ps_5.7_0.0.0.0_1';
-    const environmentName = 'ps-dev';
     qanPage.waitForNewQANPageLoaded();
     let countBefore = await qanPage.getCountOfItems();
     qanPage.applyFilterNewQAN(serviceName);
     I.seeInCurrentUrl('service_name=' + serviceName);
     let countAfter = await qanPage.getCountOfItems();
-    qanPage.verifyChangedCount(countBefore, countAfter, 'notEqual');
+    qanPage.verifyChangedCount(countBefore, countAfter);
+  }
+);
+
+xScenario(
+  'PMM-T172 - Verify that selecting a filter updates the table data and URL  @not-pr-pipeline',
+  async (I, qanPage) => {
+    const environmentName = 'ps-dev';
+    qanPage.waitForNewQANPageLoaded();
+    let countBefore = await qanPage.getCountOfItems();
     qanPage.applyFilterNewQAN(environmentName);
     I.seeInCurrentUrl('environment=' + environmentName);
-    qanPage.waitForNewQANPageLoaded();
     countAfter = await qanPage.getCountOfItems();
-    qanPage.verifyChangedCount(countBefore, countAfter, 'notEqual');
+    qanPage.verifyChangedCount(countBefore, countAfter);
   }
 );
 
@@ -184,3 +191,28 @@ xScenario(
     await qanPage.verifyCountOfFilterLinks(2, true);
   }
 );
+
+xScenario('PMM-T123 - Verify User is able to search for filter value', async (I, qanPage) => {
+  let filters = [
+    'ps-prod',
+    'ps-dev-cluster',
+    'pgsql-repl1',
+    'local',
+    'ip-10-178-2-34',
+    'postgresql',
+    'generic',
+  ];
+  qanPage.waitForNewQANPageLoaded();
+  I.waitForElement(qanPage.fields.filterBy, 30);
+  let countBefore = await qanPage.getCountOfItems();
+  for (i = 0; i < filters.length; i++) {
+    await I.fillField(qanPage.fields.filterBy, filters[i]);
+    qanPage.applyFilterNewQAN(filters[i]);
+    I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);
+    let countAfter = await qanPage.getCountOfItems();
+    await qanPage.verifyChangedCount(countBefore, countAfter);
+    qanPage.applyFilterNewQAN(filters[i]);
+    I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);
+    await I.clearField(qanPage.fields.filterBy);
+  }
+});

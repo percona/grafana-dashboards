@@ -57,6 +57,8 @@ module.exports = {
     resetAll: 'button#reset-all-filters',
     newQANSpinnerLocator: "//i[@class='fa fa-spinner fa-spin spinner ant-spin-dot']",
     showSelected: "//button[contains(@class, 'ant-btn css-x930nf ant-btn-link')]",
+    filterBy: "//span[contains(@class, 'css-1xgzgf8 ant-input-affix-wrapper')]//input",
+    showTop5OrAllLink: "//span[contains(@class, 'css-lljzu5') and contains(text(), '",
   },
 
   filterGroupLocator(filterName) {
@@ -352,13 +354,12 @@ module.exports = {
     return await I.grabTextFrom(this.fields.countOfItems);
   },
 
-  verifyChangedCount(countBefore, countAfter, expectation) {
+  verifyChangedCount(countBefore, countAfter) {
     assert.notEqual(countAfter, countBefore, 'Data should be changed');
   },
 
   async verifyFiltersSection(filterSection, expectedCount) {
-    const selectedPart =
-      "//span[contains(@class, 'css-lljzu5') and contains(text(), '" + filterSection + "')]";
+    const selectedPart = this.fields.showTop5OrAllLink + filterSection + "')]";
     let countOfFiltersInSection = await I.grabNumberOfVisibleElements(
       selectedPart + "/parent::p/following-sibling::div[contains(@class, 'css-180k0fv')]"
     );
@@ -371,9 +372,7 @@ module.exports = {
 
   async getCountOfFilters(filterSection) {
     const showAllLink =
-      "//span[contains(@class, 'css-lljzu5') and contains(text(), '" +
-      filterSection +
-      "')]/following-sibling::span[@class='css-9r0iio']";
+      this.fields.showTop5OrAllLink + filterSection + "')]/following-sibling::span[@class='css-9r0iio']";
     let showAllCount = await I.grabTextFrom(showAllLink);
     let count = showAllCount.slice(10, 12);
     return count;
@@ -381,16 +380,14 @@ module.exports = {
 
   applyShowAllLink(filterSection) {
     const showAllLink =
-      "//span[contains(@class, 'css-lljzu5') and contains(text(), '" +
-      filterSection +
-      "')]/following-sibling::span[@class='css-9r0iio']";
+      this.fields.showTop5OrAllLink + filterSection + "')]/following-sibling::span[@class='css-9r0iio']";
     I.waitForVisible(showAllLink, 30);
     I.click(showAllLink);
   },
 
   async applyShowTop5Link(filterSection) {
     const showTop5Link =
-      "//span[contains(@class, 'css-lljzu5') and contains(text(), '" +
+      this.fields.showTop5OrAllLink +
       filterSection +
       "')]/following-sibling::span[contains(@class,'css-9r0iio') and contains(text(), 'Show top 5')]";
     I.waitForVisible(showTop5Link, 30);
