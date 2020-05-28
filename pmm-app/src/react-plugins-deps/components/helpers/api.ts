@@ -5,11 +5,6 @@ import { showErrorNotification } from './notification-manager';
 class ApiRequest {
   axiosInstance: axios.AxiosInstance;
 
-  // readonly get;
-  // readonly post;
-  // readonly patch;
-  // readonly delete;
-
   constructor(params) {
     this.axiosInstance = axios.create({
       ...params,
