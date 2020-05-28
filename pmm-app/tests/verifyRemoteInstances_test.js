@@ -56,7 +56,7 @@ Scenario(
   }
 );
 
-Scenario(
+xScenario(
   'Verify Remote ProxySQL Instance Addition',
   async (I, adminPage, remoteInstancesPage, pmmInventoryPage) => {
     const proxysql_service_name = 'proxysql_remote_new';
