@@ -18,8 +18,6 @@ interface SelectFieldInterface {
 }
 export const SelectField = ({
   name,
-  placeholder,
-  required,
   options,
   style,
   defaultValue,

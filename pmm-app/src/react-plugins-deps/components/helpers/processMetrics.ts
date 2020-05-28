@@ -44,9 +44,7 @@ export const processMetrics = (metricsCatalogue, metrics) => {
   const data = metrics.metrics ? metrics.metrics : metrics.totals;
   return Object.entries(data)
     .filter(
-      (metricData) =>
-        // @ts-ignore
-        Object.keys(metricData[1]).length,
+      (metricData) => Object.keys(metricData[1]).length
     )
     .filter(
       (metricData) =>

@@ -15,14 +15,14 @@ interface ActionResult {
 }
 export const useActionResult = (): [ActionResult, Dispatch<string>] => {
   const [result, setResult] = useState<any>();
-  const [action_id, setActionId] = useState<any>();
+  const [actionId, setActionId] = useState<any>();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   let intervalId;
   // 9 seconds, long enough
   let counter = 30;
   useEffect(() => {
-    if (!action_id) {
+    if (!actionId) {
       return;
     }
     const getData = async () => {
@@ -34,14 +34,14 @@ export const useActionResult = (): [ActionResult, Dispatch<string>] => {
       counter--;
 
       try {
-        const result = await DetailsService.getActionResult({
-          action_id,
+        const requestResult = await DetailsService.getActionResult({
+          action_id: actionId,
         });
-        if (result.done) {
+        if (requestResult.done) {
           setLoading(false);
           clearInterval(intervalId);
 
-          if (result.error) {
+          if (requestResult.error) {
             setError(result.error);
           } else {
             setError('');
@@ -54,7 +54,7 @@ export const useActionResult = (): [ActionResult, Dispatch<string>] => {
       }
     };
     intervalId = setInterval(getData, 300);
-  }, [action_id]);
+  }, [actionId]);
 
   return [{ value: result, loading, error }, setActionId];
 };

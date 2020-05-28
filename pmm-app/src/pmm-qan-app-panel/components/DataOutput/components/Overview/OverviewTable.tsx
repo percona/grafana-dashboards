@@ -8,7 +8,8 @@ import '../../../../../react-plugins-deps/components/Elements/Spinner/Spinner';
 import { useOverviewTable } from './OverviewTable.hooks';
 
 const OverviewTable = (props) => {
-  const [data, loading] = useOverviewTable(props.setTotal);
+  const { setTotal, reload } = props;
+  const [data, loading] = useOverviewTable(setTotal);
   const [height, setHeight] = useState(400);
   const {
     contextActions,
@@ -19,7 +20,7 @@ const OverviewTable = (props) => {
     // @ts-ignore
     const container = document.querySelector('.table-wrapper');
     setHeight(+((container && container.clientHeight) || 0));
-  }, [props.reload]);
+  }, [reload]);
 
   const onTableChange = useCallback((pagination, filters, sorter) => {
     contextActions.changeSort(sorter.columnKey);

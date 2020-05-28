@@ -9,12 +9,7 @@ export default class MysqlDatabaseService {
     return apiRequestManagement.post<any, any>('/Actions/StartMySQLShowTableStatus', body);
   }
 
-  static getMysqlIndex({ database, service_id, table_name }) {
-    const body = {
-      database,
-      service_id,
-      table_name,
-    };
+  static getMysqlIndex(body) {
     return apiRequestManagement.post<any, any>('/Actions/StartMySQLShowIndex', body);
   }
 
