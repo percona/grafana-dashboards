@@ -5,21 +5,21 @@ export default class PostgreSQL {
     if (!tableName) {
       return;
     }
-    const { action_id } = await PostgresqlDatabaseService.getShowCreateTablePostgreSQL({
+    const result = await PostgresqlDatabaseService.getShowCreateTablePostgreSQL({
       table_name: tableName,
       service_id: example.service_id,
     });
-    setActionId(action_id as string);
+    setActionId(result.action_id);
   }
 
   static async getIndexes({ example, tableName, setActionId }) {
     if (!tableName) {
       return;
     }
-    const { action_id } = await PostgresqlDatabaseService.getPostgreSQLIndex({
+    const result = await PostgresqlDatabaseService.getPostgreSQLIndex({
       table_name: tableName,
       service_id: example.service_id,
     });
-    setActionId(action_id as string);
+    setActionId(result.action_id);
   }
 }

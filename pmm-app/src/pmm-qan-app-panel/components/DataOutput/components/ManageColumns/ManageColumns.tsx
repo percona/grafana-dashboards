@@ -12,6 +12,10 @@ const { Option } = Select;
 
 const ManageColumns = (props) => {
   const {
+    onlyAdd,
+    currentMetric, placeholder, width,
+  } = props;
+  const {
     contextActions,
     panelState: { columns },
   } = useContext(PanelProvider);
@@ -25,29 +29,29 @@ const ManageColumns = (props) => {
 
   const changeColumn = useCallback(
     (column) => {
-      if (props.onlyAdd) {
+      if (onlyAdd) {
         contextActions.addColumn(column);
       } else {
         contextActions.changeColumn({
           column,
-          oldColumn: props.currentMetric,
+          oldColumn: currentMetric,
         });
       }
     },
-    [props.currentMetric, props.onlyAdd],
+    [currentMetric, onlyAdd],
   );
 
-  const removeColumn = useCallback(() => contextActions.removeColumn(props.currentMetric), [
-    props.currentMetric,
+  const removeColumn = useCallback(() => contextActions.removeColumn(currentMetric), [
+    currentMetric,
   ]);
 
-  const Placeholder = () => (!props.onlyAdd ? (
+  const Placeholder = () => (!onlyAdd ? (
     <Tooltip
-      title={props.placeholder && METRIC_CATALOGUE[props.placeholder].humanizeName}
+      title={placeholder && METRIC_CATALOGUE[placeholder].humanizeName}
       placement="topLeft"
     >
       <span className={Styling.placeholder}>
-        {props.placeholder && METRIC_CATALOGUE[props.placeholder].humanizeName}
+        {placeholder && METRIC_CATALOGUE[placeholder].humanizeName}
       </span>
     </Tooltip>
   ) : (
@@ -61,7 +65,7 @@ const ManageColumns = (props) => {
     <div className="add-column-wrapper">
       {menu}
       <Divider style={{ margin: '4px 0' }} />
-      {!props.onlyAdd && columns.length > 1 && (
+      {!onlyAdd && columns.length > 1 && (
         <div
           style={{ padding: '4px 8px', cursor: 'pointer' }}
           onMouseDown={(e) => e.preventDefault()}
@@ -75,11 +79,11 @@ const ManageColumns = (props) => {
   );
   // @ts-ignore
   return (
-    <div className={!props.onlyAdd ? 'manage-columns' : 'add-columns'} onClick={(e) => e.stopPropagation()}>
+    <div className={!onlyAdd ? 'manage-columns' : 'add-columns'} onClick={(e) => e.stopPropagation()}>
       <Select
         optionLabelProp="label"
         showSearch
-        style={{ width: props.width || '160px' }}
+        style={{ width: width || '160px' }}
         placeholder={<Placeholder />}
         filterOption={(value, option) => String(option.props.label)
           .toLowerCase()
@@ -88,8 +92,8 @@ const ManageColumns = (props) => {
         dropdownMatchSelectWidth={false}
         value={undefined}
         showArrow={false}
-        className={`${props.onlyAdd ? 'add' : 'manage'}-columns-selector`}
-        dropdownClassName={`${props.onlyAdd ? 'add' : 'manage'}-columns-selector-dropdown`}
+        className={`${onlyAdd ? 'add' : 'manage'}-columns-selector`}
+        dropdownClassName={`${onlyAdd ? 'add' : 'manage'}-columns-selector-dropdown`}
         dropdownRender={dropdownRender}
       >
         {availableColumns.map((item) => (
