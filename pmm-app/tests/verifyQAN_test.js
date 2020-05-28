@@ -102,11 +102,12 @@ xScenario('Verify adding new Column reflects in URL @not-pr-pipeline', async (I,
   qanPage.verifyURLContains(qanPage.urlParts.queryCountWithoutErrors);
 });
 
-Scenario(
+xScenario(
   'Verify adding new Database Filter reflects in URL @not-pr-pipeline',
   async (I, adminPage, qanPage) => {
     const filterToApply = 'local';
     qanPage.waitForQANPageLoaded();
+    await qanPage.expandAllFilter();
     I.wait(2);
     qanPage.applyFilter(filterToApply);
     qanPage.verifyURLContains(qanPage.urlParts.pmmManaged);
