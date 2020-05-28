@@ -128,10 +128,11 @@ xScenario(
   async (I, qanPage) => {
     const serviceName = 'ps_5.7_0.0.0.0_1';
     qanPage.waitForNewQANPageLoaded();
-    let countBefore = await qanPage.getCountOfItems();
+    const countBefore = await qanPage.getCountOfItems();
     qanPage.applyFilterNewQAN(serviceName);
     I.seeInCurrentUrl('service_name=' + serviceName);
-    let countAfter = await qanPage.getCountOfItems();
+    I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);
+    const countAfter = await qanPage.getCountOfItems();
     qanPage.verifyChangedCount(countBefore, countAfter);
   }
 );
@@ -141,10 +142,11 @@ xScenario(
   async (I, qanPage) => {
     const environmentName = 'ps-dev';
     qanPage.waitForNewQANPageLoaded();
-    let countBefore = await qanPage.getCountOfItems();
+    const countBefore = await qanPage.getCountOfItems();
     qanPage.applyFilterNewQAN(environmentName);
     I.seeInCurrentUrl('environment=' + environmentName);
-    countAfter = await qanPage.getCountOfItems();
+    I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);
+    const countAfter = await qanPage.getCountOfItems();
     qanPage.verifyChangedCount(countBefore, countAfter);
   }
 );
@@ -153,10 +155,10 @@ xScenario('PMM-T126 - Verify user is able to Reset All filters @not-pr-pipeline'
   const service_name = 'ps_5.7_0.0.0.0_1';
   const environmentName = 'ps-dev';
   qanPage.waitForNewQANPageLoaded();
-  let countBefore = await qanPage.getCountOfItems();
+  const countBefore = await qanPage.getCountOfItems();
   qanPage.applyFilterNewQAN(service_name);
   qanPage.applyFilterNewQAN(environmentName);
-  let countAfter = await qanPage.getCountOfItems();
+  const countAfter = await qanPage.getCountOfItems();
   await qanPage.verifyChangedCount(countBefore, countAfter);
   I.click(qanPage.fields.resetAll);
   I.waitForVisible(qanPage.fields.resetAll + ':disabled', 20);
@@ -193,23 +195,23 @@ xScenario(
 );
 
 xScenario('PMM-T123 - Verify User is able to search for filter value', async (I, qanPage) => {
-  let filters = [
+  const filters = [
     'ps-prod',
     'ps-dev-cluster',
     'pgsql-repl1',
     'local',
-    'ip-10-178-2-34',
+    'pmm-server',
     'postgresql',
     'generic',
   ];
   qanPage.waitForNewQANPageLoaded();
   I.waitForElement(qanPage.fields.filterBy, 30);
-  let countBefore = await qanPage.getCountOfItems();
+  const countBefore = await qanPage.getCountOfItems();
   for (i = 0; i < filters.length; i++) {
     await I.fillField(qanPage.fields.filterBy, filters[i]);
     qanPage.applyFilterNewQAN(filters[i]);
     I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);
-    let countAfter = await qanPage.getCountOfItems();
+    const countAfter = await qanPage.getCountOfItems();
     await qanPage.verifyChangedCount(countBefore, countAfter);
     qanPage.applyFilterNewQAN(filters[i]);
     I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);
