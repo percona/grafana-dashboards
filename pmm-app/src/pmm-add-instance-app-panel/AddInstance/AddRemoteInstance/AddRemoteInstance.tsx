@@ -48,6 +48,8 @@ export const getInstanceData = (instanceType, credentials) => {
       instance.instanceType = 'ProxySQL';
       instance.remoteInstanceCredentials.port = instance.remoteInstanceCredentials.port || 6032;
       break;
+    default:
+      console.error('Not implemented');
   }
 
   return instance;
@@ -100,17 +102,20 @@ const validateInstanceForm = (values) => {
 
   errors.port = values.port ? Validators.validatePort(values.port) : '';
   errors.custom_labels = values.custom_labels ? Validators.validateKeyValue(values.custom_labels) : '';
-  for (const propName in errors) {
-    if (!errors[propName]) {
-      delete errors[propName];
+  Object.keys(errors).forEach((errorKey) => {
+    if (!errors[errorKey]) {
+      delete errors[errorKey];
     }
-  }
+  });
   return errors;
 };
 const AddRemoteInstance = (props) => {
+  const {
+    instance: { type, credentials },
+  } = props;
   const { instanceType, remoteInstanceCredentials, discoverName } = getInstanceData(
-    props.instance.type,
-    props.instance.credentials,
+    type,
+    credentials
   );
   const [loading, setLoading] = useState<boolean>(false);
   const initialValues = { ...remoteInstanceCredentials };

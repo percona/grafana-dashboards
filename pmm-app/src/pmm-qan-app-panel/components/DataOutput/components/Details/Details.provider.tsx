@@ -52,6 +52,7 @@ export const DetailsContentProvider = ({ children }) => {
       value={{
         detailsState,
         contextActions: Object.keys(actions).reduce((actions, key) => {
+          // eslint-disable-next-line no-param-reassign
           actions[key] = wrapAction(key);
           return actions;
         }, {}),

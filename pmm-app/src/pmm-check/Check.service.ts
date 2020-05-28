@@ -53,13 +53,13 @@ export const processData = (data: Alert[]): ActiveCheck[] => {
     const failed = value.reduce(
       (acc, val) => {
         if (val.severity === 'error') {
-          acc[0]++;
+          acc[0] += 1;
         }
         if (val.severity === 'warning') {
-          acc[1]++;
+          acc[1] += 1;
         }
         if (val.severity === 'notice') {
-          acc[2]++;
+          acc[2] += 1;
         }
         return acc;
       },

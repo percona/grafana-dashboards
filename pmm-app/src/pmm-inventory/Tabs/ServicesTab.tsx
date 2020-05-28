@@ -14,7 +14,7 @@ export const ServicesTab = () => {
         const result = await InventoryService.getServices({});
         setData(InventoryDataService.generateStructure(result));
       } catch (e) {
-        console.error(e)
+        console.error(e);
       } finally {
         setLoading(false);
       }

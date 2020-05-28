@@ -33,6 +33,7 @@ const InstancesTable = (props) => {
       title: 'Engine',
       dataIndex: 'type',
       className: 'discovery-column',
+      // eslint-disable-next-line max-len
       render: (element, instance) => (instance.engine ? `${getEngineType(instance.engine)}  ${instance.engine_version}` : 'nothing'),
     },
     {

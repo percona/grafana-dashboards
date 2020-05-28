@@ -1,3 +1,5 @@
+/* eslint-disable */
+// Will be refactored in PMM-544
 import React from 'react';
 
 const getCustomLabels = (customLabels) => customLabels.map((label) => <span key={label.key}>{`${label.key}: ${label.value}`}</span>);

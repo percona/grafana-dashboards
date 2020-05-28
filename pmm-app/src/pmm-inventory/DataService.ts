@@ -1,4 +1,5 @@
-/* tslint:disable */
+/* eslint-disable */
+// Will be refactored in PMM-544
 export class CustomLabelsModel {
   key: string;
 

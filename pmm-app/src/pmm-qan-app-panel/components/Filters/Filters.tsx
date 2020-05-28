@@ -1,5 +1,5 @@
 import React, {
-  ReactElement, useContext, useEffect, useState,
+  ReactElement, useContext, useEffect, useState
 } from 'react';
 import { Button, Spin } from 'antd';
 import { Form as FormFinal } from 'react-final-form';
@@ -19,10 +19,10 @@ import { useFilters, useInitialFilterValues } from './Filters.hooks';
 import { Filter } from '../../../react-plugins-deps/components/Elements/Icons/Filter';
 
 export const Filters = ({
-  contextActions, form, labels, filters,
+  contextActions, form, labels, filters
 }) => {
   // @ts-ignore
-  const [width, height] = useWindowSize();
+  const windowSize = useWindowSize();
   const [filtersBodyHeight, setFiltersBodyHeight] = useState(FILTERS_BODY_HEIGHT);
   const [filter, setFilter] = useState('');
   const [showAll, showSetAll] = useState(true);
@@ -36,10 +36,13 @@ export const Filters = ({
   useEffect(() => {
     const filtersWrapperElement = document.querySelector('#query-analytics-filters');
     const filtersHeight = filtersWrapperElement
-      ? height - filtersWrapperElement.getBoundingClientRect().y - FILTERS_HEADER_SIZE - FILTERS_MARGIN_BOTTOM
+      ? windowSize[1]
+        - filtersWrapperElement.getBoundingClientRect().y
+        - FILTERS_HEADER_SIZE
+        - FILTERS_MARGIN_BOTTOM
       : FILTERS_BODY_HEIGHT;
     setFiltersBodyHeight(Math.max(filtersHeight, FILTERS_BODY_HEIGHT));
-  }, [height]);
+  }, [windowSize[1]]);
 
   return (
     <div>
@@ -48,7 +51,7 @@ export const Filters = ({
         <Button
           type="link"
           className={Styling.showAllButton}
-          onClick={showSetAll.bind(null, !showAll)}
+          onClick={() => showSetAll(!showAll)}
           disabled={!checkboxesSelected}
         >
           {showAll ? 'Show Selected' : 'Show All'}
