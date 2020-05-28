@@ -18,13 +18,11 @@ const TableCreate = (props) => {
   return (
     <Spin spinning={showCreateTable.loading}>
       <div>
-        {showCreateTable.loading ? (
-          <pre>{showCreateTable.loading}</pre>
-        ) : showCreateTable.error ? (
-          <pre>{showCreateTable.error}</pre>
-        ) : (
+        {showCreateTable.loading ? <pre>{showCreateTable.loading}</pre> : null}
+        {!showCreateTable.loading && showCreateTable.error ? <pre>{showCreateTable.error}</pre> : null}
+        {!showCreateTable.loading && !showCreateTable.error ? (
           <Highlight language="sql">{showCreateTable.value}</Highlight>
-        )}
+        ) : null}
       </div>
     </Spin>
   );

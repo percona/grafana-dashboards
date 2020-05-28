@@ -13,8 +13,8 @@ const TableCreateContainer = ({ databaseType, examples, tables }) => (
   <Spin spinning={false}>
     {tables && tables.length ? (
       <Tabs defaultActiveKey="0" onChange={() => {}} tabPosition="top">
-        {tables.map((table, index) => (
-          <TabPane tab={<span>{table}</span>} key={index}>
+        {tables.map((table) => (
+          <TabPane tab={<span>{table}</span>} key={table}>
             <Collapse bordered={false} defaultActiveKey={['1']} className={Styling.collapse}>
               <Panel header="Table" key="1" className={Styling.panel}>
                 <TableCreate

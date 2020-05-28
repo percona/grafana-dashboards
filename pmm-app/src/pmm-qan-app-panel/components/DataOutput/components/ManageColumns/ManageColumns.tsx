@@ -1,7 +1,9 @@
 import React, {
   useCallback, useContext, useEffect, useState,
 } from 'react';
-import { Divider, Icon, Select, Tooltip } from 'antd';
+import {
+  Divider, Icon, Select, Tooltip
+} from 'antd';
 import { PanelProvider } from '../../../../panel/panel.provider';
 import { METRIC_CATALOGUE } from '../../../../panel/panel.constants';
 import { Styling } from './ManageColumns.styles';

@@ -9,7 +9,7 @@ interface DiscoverySearchPanelInterface {
   onSelectInstance: (instanceData: any) => void;
 }
 
-const DiscoveryPanel = (props: DiscoverySearchPanelInterface) => {
+const DiscoveryPanel = ({ onSelectInstance }: DiscoverySearchPanelInterface) => {
   const [instances, setInstances] = useState([] as any);
   const [credentials, setCredentials] = useState({ aws_secret_key: '', aws_access_key: '' });
   const [loading, startLoading] = useState(false);
@@ -28,7 +28,7 @@ const DiscoveryPanel = (props: DiscoverySearchPanelInterface) => {
     };
     if (credentials.aws_secret_key && credentials.aws_access_key) {
       startLoading(true);
-      updateInstances().then((r) => {});
+      updateInstances()
     }
   }, [credentials]);
 
@@ -42,7 +42,7 @@ const DiscoveryPanel = (props: DiscoverySearchPanelInterface) => {
         {!loading && (
           <InstancesTable
             instances={instances}
-            onSelectInstance={props.onSelectInstance}
+            onSelectInstance={onSelectInstance}
             credentials={credentials}
           />
         )}

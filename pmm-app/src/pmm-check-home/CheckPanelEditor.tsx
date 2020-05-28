@@ -4,7 +4,8 @@ import { PanelEditorProps } from '@grafana/data';
 import { CheckPanelOptions } from 'pmm-check/types';
 export class CheckPanelEditor extends PureComponent<PanelEditorProps<CheckPanelOptions>> {
   onTitleChanged = ({ target }: any) => {
-    this.props.onOptionsChange({ ...this.props.options, title: target.value });
+    const { onOptionsChange, options } = this.props;
+    onOptionsChange({ ...options, title: target.value });
   };
 
   render() {

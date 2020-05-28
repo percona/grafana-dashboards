@@ -8,7 +8,7 @@ export const useFilters = () => {
   const [loading, setLoading] = useState(false);
   const {
     panelState: {
-      labels = {}, from, to, columns,
+      labels = {}, from, to, columns
     },
   } = useContext(PanelProvider);
 
@@ -40,10 +40,11 @@ export const useInitialFilterValues = () => {
     (async () => {
       const initialFiltersValues = Object.entries(labels).reduce((acc, data) => {
         const [key, values] = data;
-        Array.isArray(values)
-          && values.forEach((value) => {
+        if (Array.isArray(values)) {
+          values.forEach((value) => {
             acc[`${key}:${value.replace(/\./gi, '--') || 'na'}`] = true;
           });
+        }
         return acc;
       }, {});
       setInitialValues(initialFiltersValues);

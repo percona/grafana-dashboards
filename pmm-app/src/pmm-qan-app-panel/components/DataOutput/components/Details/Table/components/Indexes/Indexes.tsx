@@ -21,9 +21,8 @@ export const Indexes = (props) => {
   return (
     <div>
       <Spin spinning={indexes.loading}>
-        {indexes.error ? (
-          <pre>{indexes.error}</pre>
-        ) : data.rows.length ? (
+        {indexes.error ? <pre>{indexes.error}</pre> : null}
+        {!indexes.error && data.rows.length ? (
           <Table
             dataSource={data.rows}
             columns={data.columns}
@@ -32,9 +31,8 @@ export const Indexes = (props) => {
             size="small"
             bordered
           />
-        ) : (
-          <pre> No data found</pre>
-        )}
+        ) : null}
+        {!indexes.error && !data.rows.length ? <pre> No data found</pre> : null}
       </Spin>
     </div>
   );
