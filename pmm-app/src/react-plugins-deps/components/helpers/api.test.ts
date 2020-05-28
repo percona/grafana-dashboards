@@ -1,7 +1,8 @@
 import { apiRequest } from './api';
 import axios from 'axios';
+
 jest.mock('axios');
-jest.mock('../../../react-plugins-deps/components/helpers/notification-manager', () => () => ({}));
+jest.mock('../../../react-plugins-deps/components/helpers/notification-manager');
 
 describe('GET tests', () => {
   it('should return data', async () => {

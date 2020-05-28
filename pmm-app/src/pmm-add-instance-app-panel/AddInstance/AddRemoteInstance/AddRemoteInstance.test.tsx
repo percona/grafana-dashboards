@@ -1,8 +1,6 @@
 import { getInstanceData } from './AddRemoteInstance';
 
-jest.mock('../../../react-plugins-deps/components/helpers/notification-manager', () => () => ({
-  showErrorNotification: () => {},
-}));
+jest.mock('../../../react-plugins-deps/components/helpers/notification-manager');
 
 describe('Add remote instance', () => {
   it('get instance data should return correct one when isRDS is false', () => {
