@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import * as moment from 'moment';
 
 type TimeEdge = 'from' | 'to';
