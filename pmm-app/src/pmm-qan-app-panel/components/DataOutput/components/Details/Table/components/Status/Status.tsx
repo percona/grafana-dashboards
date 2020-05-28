@@ -21,9 +21,8 @@ export const Status = (props) => {
   return (
     <div>
       <Spin spinning={status.loading}>
-        {status.error ? (
-          <pre>{status.error}</pre>
-        ) : data.rows.length ? (
+        {status.error ? <pre>{status.error}</pre> : null}
+        {!status.error && data.rows.length ? (
           <Table
             dataSource={data.rows}
             columns={data.columns}
@@ -32,9 +31,8 @@ export const Status = (props) => {
             size="small"
             bordered
           />
-        ) : (
-          <pre> No data found</pre>
-        )}
+        ) : null}
+        {!status.error && !data.rows.length ? <pre> No data found</pre> : null}
       </Spin>
     </div>
   );

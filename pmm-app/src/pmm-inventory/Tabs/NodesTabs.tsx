@@ -14,6 +14,8 @@ export const NodesTab = () => {
         const result = await InventoryService.getNodes({});
         setData(InventoryDataService.generateStructure(result));
       } catch (e) {
+        console.error(e)
+
       } finally {
         setLoading(false);
       }

@@ -1,5 +1,5 @@
 import {
-  Dispatch, useContext, useEffect, useState,
+  Dispatch, useContext, useEffect, useState
 } from 'react';
 import { get } from 'lodash';
 import { PanelProvider } from '../../../../panel/panel.provider';
@@ -31,7 +31,7 @@ export const useActionResult = (): [ActionResult, Dispatch<string>] => {
         setLoading(false);
         return;
       }
-      counter--;
+      counter -= 1;
 
       try {
         const requestResult = await DetailsService.getActionResult({
@@ -40,12 +40,11 @@ export const useActionResult = (): [ActionResult, Dispatch<string>] => {
         if (requestResult.done) {
           setLoading(false);
           clearInterval(intervalId);
-
           if (requestResult.error) {
-            setError(result.error);
+            setError(requestResult.error);
           } else {
             setError('');
-            setResult(result.output);
+            setResult(requestResult.output);
           }
         }
       } catch (e) {
@@ -91,7 +90,7 @@ export const useExplain = (): [any, any, string] => {
 export const useDetailsState = () => {
   const {
     panelState: {
-      queryId, groupBy, from, to, labels,
+      queryId, groupBy, from, to, labels
     },
   } = useContext(PanelProvider);
   const {
@@ -125,7 +124,7 @@ export const useDetailsState = () => {
         [
           get(parsedJSON, 'query_block.table.table_name')
             || get(parsedJSON, 'query_block.ordering_operation.grouping_operation.table.table_name'),
-        ].filter(Boolean),
+        ].filter(Boolean)
       );
     }
 

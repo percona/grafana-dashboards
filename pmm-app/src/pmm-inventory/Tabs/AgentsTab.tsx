@@ -14,6 +14,7 @@ export const AgentsTab = () => {
         const result = await InventoryService.getAgents({});
         setData(InventoryDataService.generateStructure(result));
       } catch (e) {
+        console.error(e);
       } finally {
         setLoading(false);
       }

@@ -3,8 +3,8 @@ import React, { ReactElement } from 'react';
 import { InputField } from '../../react-plugins-deps/components/Form/Input/Input';
 import { PasswordField } from '../../react-plugins-deps/components/Form/Password/Password';
 
-const SECURITY_CREDENTIALS_DOC_LINK = 'https://www.percona.com/doc/percona-monitoring-and-management/';
-'2.x/install/aws.html#pmm-server-aws-running-instance';
+const SECURITY_CREDENTIALS_DOC_LINK = 'https://www.percona.com/doc/percona-monitoring-and-management/'
++ '2.x/install/aws.html#pmm-server-aws-running-instance';
 const CredentialsForm = (props) => {
   const onSubmit = (values) => {
     props.onSetCredentials({ ...values });
@@ -28,7 +28,7 @@ const CredentialsForm = (props) => {
               placeholder="AMAZON_RDS_SECRET_ACCESS_KEY"
               required
             />
-            <button className="button button--dark" id="addInstance">
+            <button type={"button"} className="button button--dark" id="addInstance">
               Discover
             </button>
           </div>
