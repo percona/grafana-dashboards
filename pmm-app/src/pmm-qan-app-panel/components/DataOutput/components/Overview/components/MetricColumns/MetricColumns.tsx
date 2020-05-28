@@ -121,11 +121,11 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
       };
       const MetricsList = ({ data }) => (
         <div className={Styling.metricsWrapper} data-qa="metrics-list">
-          {data.map((item, index, list) => (
+          {data.map((metricItem, metricIndex, list) => (
             // eslint-disable-next-line react/jsx-key
-            <div className={Styling.singleMetricWrapper} data-qa={item.key || ''}>
-              <span className={Styling.metricName}>{`${item.header} : ${item.value}`}</span>
-              {list.length === index + 1 ? null : <Divider className={Styling.metricsListDivider} />}
+            <div className={Styling.singleMetricWrapper} data-qa={metricItem.key || ''}>
+              <span className={Styling.metricName}>{`${metricItem.header} : ${metricItem.value}`}</span>
+              {list.length === metricIndex + 1 ? null : <Divider className={Styling.metricsListDivider} />}
             </div>
           ))}
         </div>

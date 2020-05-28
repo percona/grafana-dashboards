@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { MetricsPanelCtrl } from 'grafana/app/plugins/sdk';
 import config from 'grafana/app/core/config';
 import AppEvents from 'grafana/app/core/app_events';

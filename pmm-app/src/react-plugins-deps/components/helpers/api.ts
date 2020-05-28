@@ -42,7 +42,7 @@ class ApiRequest {
     return this.axiosInstance
       .delete<T>(path)
       .then((response): T => response.data)
-      .catch((e): void => {
+      .catch((): void => {
         // Notify.error(e.message);
       });
   }
@@ -51,7 +51,7 @@ class ApiRequest {
     return this.axiosInstance
       .patch<T>(path, body)
       .then((response): T => response.data)
-      .catch((e): void => {
+      .catch((): void => {
         // Notify.error(e.message);
       });
   }

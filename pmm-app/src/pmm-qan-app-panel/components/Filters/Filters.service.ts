@@ -14,14 +14,14 @@ class FiltersService {
 }
 
 const markCheckedLabels = (labels, paramLabels) => {
-  Object.keys(labels).forEach(label => {
-    labels[label].name.forEach(metric => {
+  Object.keys(labels).forEach((label) => {
+    labels[label].name.forEach((metric) => {
       const passedVariables = paramLabels[label];
       metric.checked = passedVariables;
       if (!passedVariables) {
         return;
       }
-      passedVariables.some(variable => {
+      passedVariables.some((variable) => {
         if (!metric.value) {
           metric.value = '';
         }
