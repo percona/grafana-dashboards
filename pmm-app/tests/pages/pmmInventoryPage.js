@@ -49,6 +49,7 @@ module.exports = {
       service_name === 'postgresql_remote_new' ||
       service_name === 'mysql_remote_new'
     ) {
+      I.waitForVisible(numberOfServices, 30);
       assert.equal(
         numberOfServices,
         2,
