@@ -1,5 +1,5 @@
 import React, {
- useCallback, useContext, useEffect, useState
+  useCallback, useContext, useEffect, useState,
 } from 'react';
 import { Divider, Icon, Select } from 'antd';
 import { PanelProvider } from '../../../../panel/panel.provider';
@@ -42,21 +42,20 @@ const ManageColumns = (props) => {
   ]);
 
   const Placeholder = () => (!props.onlyAdd ? (
-      <Tooltip
-        title={props.placeholder && METRIC_CATALOGUE[props.placeholder].humanizeName}
-        placement="topLeft"
-      >
-        <span className={Styling.placeholder}>
-          {props.placeholder && METRIC_CATALOGUE[props.placeholder].humanizeName}
-        </span>
-      </Tooltip>
-    ) : (
-      <div className={Styling.placeholder}>
-        <i className="fa fa-plus-circle" style={{ marginRight: '5px' }} />
-{' '}
-<span> Add column</span>
-      </div>
-    );
+    <Tooltip
+      title={props.placeholder && METRIC_CATALOGUE[props.placeholder].humanizeName}
+      placement="topLeft"
+    >
+      <span className={Styling.placeholder}>
+        {props.placeholder && METRIC_CATALOGUE[props.placeholder].humanizeName}
+      </span>
+    </Tooltip>
+  ) : (
+    <div className={Styling.placeholder}>
+      <i className="fa fa-plus-circle" style={{ marginRight: '5px' }} />
+      <span> Add column</span>
+    </div>
+  ));
 
   const dropdownRender = (menu) => (
     <div className="add-column-wrapper">
@@ -82,7 +81,9 @@ const ManageColumns = (props) => {
         showSearch
         style={{ width: props.width || '160px' }}
         placeholder={<Placeholder />}
-        filterOption={(value, option) => String(option.props.label).toLowerCase().includes(value.toLowerCase())}
+        filterOption={(value, option) => String(option.props.label)
+          .toLowerCase()
+          .includes(value.toLowerCase())}
         onChange={changeColumn}
         dropdownMatchSelectWidth={false}
         value={undefined}

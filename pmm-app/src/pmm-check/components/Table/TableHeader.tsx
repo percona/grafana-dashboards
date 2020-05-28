@@ -12,12 +12,9 @@ export const TableHeader: FC<TableHeaderProps> = ({ columns }) => {
   return (
     <>
       <colgroup>
-        {widths.map((width, key) => (width ? (
-            <col key={key} style={{ width: `${width}px`, minWidth: `${width}px` }} />
-          ) : (
-            <col key={key} />
-          )
-        )}
+        {widths.map((width, key) => (
+          <col key={key} style={width ? { width: `${width}px`, minWidth: `${width}px` } : {}} />
+        ))}
       </colgroup>
       <thead>
         <tr>
