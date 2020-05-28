@@ -85,15 +85,22 @@ module.exports = {
   fillRemoteFields(serviceName) {
     switch (serviceName) {
       case 'mysql_remote_new':
+        I.waitForVisible(this.fields.hostName, 30);
         I.fillField(this.fields.hostName, process.env.REMOTE_MYSQL_HOST);
+        I.waitForVisible(this.fields.userName, 30);
         I.fillField(this.fields.userName, process.env.REMOTE_MYSQL_USER);
+        I.waitForVisible(this.fields.password, 30);
         I.fillField(this.fields.password, process.env.REMOTE_MYSQL_PASSWORD);
+        I.waitForVisible(this.fields.portNumber, 30);
         I.appendField(this.fields.portNumber, '');
         I.pressKey(['Shift', 'Home']);
         I.pressKey('Backspace');
         I.fillField(this.fields.portNumber, '3307');
+        I.waitForVisible(this.fields.serviceName, 30);
         I.fillField(this.fields.serviceName, serviceName);
+        I.waitForVisible(this.fields.environment, 30);
         I.fillField(this.fields.environment, 'remote-mysql');
+        I.waitForVisible(this.fields.cluster, 30);
         I.fillField(this.fields.cluster, 'remote-mysql-cluster');
         break;
       case 'mongodb_remote_new':
