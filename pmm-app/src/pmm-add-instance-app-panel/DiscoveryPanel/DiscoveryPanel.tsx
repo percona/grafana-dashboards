@@ -28,7 +28,7 @@ const DiscoveryPanel = ({ onSelectInstance }: DiscoverySearchPanelInterface) => 
     };
     if (credentials.aws_secret_key && credentials.aws_access_key) {
       startLoading(true);
-      updateInstances()
+      updateInstances();
     }
   }, [credentials]);
 

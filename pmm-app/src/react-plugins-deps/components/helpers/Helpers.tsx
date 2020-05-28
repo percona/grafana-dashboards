@@ -19,8 +19,8 @@ export const PluginTooltip = ({ text, links }: PluginTooltipInterface) => (
         {text}
         {' '}
         <br />
-        {links.map((link, key) => (
-          <div key={key}>
+        {links.map((link) => (
+          <div key={link.url}>
             <a
               style={{ color: 'white', textDecoration: 'underline' }}
               href={link.url || ''}
