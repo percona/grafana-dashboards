@@ -3,7 +3,7 @@ import Validators from './validators';
 describe('validatePort test', () => {
   it('return error string when value is 0', () => {
     expect(Validators.validatePort(0)).toEqual(
-      'Port should be a number and between the range of 0 and 65535'
+      'Port should be a number and between the range of 0 and 65535',
     );
   });
 

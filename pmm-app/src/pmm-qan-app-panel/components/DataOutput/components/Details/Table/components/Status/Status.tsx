@@ -4,7 +4,7 @@ import { useActionResult } from '../../../Details.hooks';
 import { databaseFactory } from '../../../database-models';
 import { processTableData } from '../../TableContainer.tools';
 
-export const Status = props => {
+export const Status = (props) => {
   const { tableName, databaseType, example } = props;
   const [data, setData] = useState<{ columns: any[]; rows: any[] }>({ columns: [], rows: [] });
   const [status, setActionId] = useActionResult();

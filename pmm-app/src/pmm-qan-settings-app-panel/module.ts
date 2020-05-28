@@ -7,11 +7,13 @@ export class PanelCtrl extends MetricsPanelCtrl {
 		<iframe ng-src="{{ trustSrc(url) }}"
 			style="width: 100%; height: 400px; border: 0;" scrolling="no" />
 	`;
+
   baseUrl = '/qan/settings?var-host=';
+
   /** @ngInject */
   constructor($scope, $injector, templateSrv, $sce, $http) {
     super($scope, $injector);
-    $scope.trustSrc = src => $sce.trustAsResourceUrl(src);
+    $scope.trustSrc = (src) => $sce.trustAsResourceUrl(src);
     $scope.qanParams = {
       theme: config.bootData.user.lightTheme ? 'light' : 'dark',
     };
@@ -19,7 +21,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
     const setUrl = () => {
       // translates Grafana's variables into iframe's URL;
       $scope.url = this.baseUrl + templateSrv.variables[0].current.value;
-      $scope.url += '&theme=' + $scope.qanParams.theme;
+      $scope.url += `&theme=${$scope.qanParams.theme}`;
     };
     $scope.$root.onAppEvent('template-variable-value-updated', setUrl);
     setUrl();
@@ -36,7 +38,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
       () => {
         AppEvents.emit('alert-success', ['Settings has been applied']);
       },
-      false
+      false,
     );
     panel.css({
       'background-color': 'transparent',
@@ -47,11 +49,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
     this.fixMenuVisibility(elem);
 
     $scope.ctrl.calculatePanelHeight = () => {
-      const h =
-        frame
-          .contents()
-          .find('body')
-          .height() || 400;
+      const h = frame.contents().find('body').height() || 400;
       const documentH = elem && elem[0] ? elem[0].ownerDocument.height : h;
 
       $scope.ctrl.containerHeight = documentH;
@@ -87,12 +85,8 @@ export class PanelCtrl extends MetricsPanelCtrl {
     const perfectScrollContainers = elem[0].ownerDocument.getElementsByClassName('ps') as any;
     const rightScrollbarContainers = elem[0].ownerDocument.getElementsByClassName('ps__thumb-y') as any;
 
-    [].forEach.call(perfectScrollContainers, (container: HTMLElement) =>
-      container.setAttribute('style', 'overflow: auto !important')
-    );
-    [].forEach.call(rightScrollbarContainers, (container: HTMLElement) =>
-      container.setAttribute('style', 'display: none !important')
-    );
+    [].forEach.call(perfectScrollContainers, (container: HTMLElement) => container.setAttribute('style', 'overflow: auto !important'));
+    [].forEach.call(rightScrollbarContainers, (container: HTMLElement) => container.setAttribute('style', 'display: none !important'));
   }
 
   private fixMenuVisibility(elem): void | boolean {

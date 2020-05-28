@@ -7,7 +7,9 @@ import { METRIC_CATALOGUE } from '../../../../../panel/panel.constants';
 export const useMetricsDetails = (): [any[], boolean] => {
   const {
     contextActions,
-    panelState: { queryId, groupBy, from, to, labels, totals },
+    panelState: {
+      queryId, groupBy, from, to, labels, totals,
+    },
   } = useContext(PanelProvider);
   const [metrics, setMetrics] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -28,7 +30,7 @@ export const useMetricsDetails = (): [any[], boolean] => {
         setLoading(false);
       } catch (e) {
         setLoading(false);
-        //TODO: add error handling
+        // TODO: add error handling
       }
     };
     getMetrics();

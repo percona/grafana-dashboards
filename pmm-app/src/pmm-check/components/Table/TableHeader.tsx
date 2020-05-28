@@ -6,19 +6,18 @@ interface TableHeaderProps {
 }
 
 export const TableHeader: FC<TableHeaderProps> = ({ columns }) => {
-  const widths = columns.map(col => col.width);
-  const titles = columns.map(col => col.title);
+  const widths = columns.map((col) => col.width);
+  const titles = columns.map((col) => col.title);
 
   return (
     <>
       <colgroup>
-        {widths.map((width, key) => {
-          return width ? (
+        {widths.map((width, key) => (width ? (
             <col key={key} style={{ width: `${width}px`, minWidth: `${width}px` }} />
           ) : (
             <col key={key} />
-          );
-        })}
+          )
+        )}
       </colgroup>
       <thead>
         <tr>

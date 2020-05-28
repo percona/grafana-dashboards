@@ -7,7 +7,9 @@ export const useFilters = () => {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const {
-    panelState: { labels = {}, from, to, columns },
+    panelState: {
+      labels = {}, from, to, columns,
+    },
   } = useContext(PanelProvider);
 
   useEffect(() => {
@@ -20,7 +22,7 @@ export const useFilters = () => {
       } catch (e) {
         setLoading(false);
         setError(true);
-        //TODO: add error handling
+        // TODO: add error handling
       }
     })();
   }, [labels, from, to, columns]);
@@ -38,8 +40,8 @@ export const useInitialFilterValues = () => {
     (async () => {
       const initialFiltersValues = Object.entries(labels).reduce((acc, data) => {
         const [key, values] = data;
-        Array.isArray(values) &&
-          values.forEach(value => {
+        Array.isArray(values)
+          && values.forEach((value) => {
             acc[`${key}:${value.replace(/\./gi, '--') || 'na'}`] = true;
           });
         return acc;

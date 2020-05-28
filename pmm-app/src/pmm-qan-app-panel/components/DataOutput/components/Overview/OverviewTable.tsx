@@ -1,11 +1,13 @@
 import { Table } from 'antd';
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, {
+  useCallback, useContext, useEffect, useState,
+} from 'react';
 import './OverviewTable.scss';
 import { PanelProvider } from '../../../../panel/panel.provider';
 import '../../../../../react-plugins-deps/components/Elements/Spinner/Spinner';
 import { useOverviewTable } from './OverviewTable.hooks';
 
-const OverviewTable = props => {
+const OverviewTable = (props) => {
   const [data, loading] = useOverviewTable(props.setTotal);
   const [height, setHeight] = useState(400);
   const {
@@ -28,24 +30,23 @@ const OverviewTable = props => {
       if (querySelected) {
         if (index === 0) {
           return totals ? 'selected-overview-row' : '';
-        } else {
-          if (totals) {
-            return '';
-          }
+        }
+        if (totals) {
+          return '';
+        }
 
-          if (!record.dimension && !queryId) {
-            return 'selected-overview-row';
-          }
+        if (!record.dimension && !queryId) {
+          return 'selected-overview-row';
+        }
 
-          if (record.dimension === queryId) {
-            return 'selected-overview-row';
-          }
+        if (record.dimension === queryId) {
+          return 'selected-overview-row';
         }
       }
 
       return '';
     },
-    [querySelected, totals, queryId]
+    [querySelected, totals, queryId],
   );
 
   return (

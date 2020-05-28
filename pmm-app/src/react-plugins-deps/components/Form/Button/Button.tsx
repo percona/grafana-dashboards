@@ -9,19 +9,17 @@ const ButtonElement = ({
   onClick,
   text,
   htmlType = 'submit',
-}: ButtonElementInterface) => {
-  return (
-    <Button
-      onClick={onClick || (() => {})}
-      type="primary"
-      htmlType={htmlType}
-      loading={loading}
-      disabled={disabled}
-      className={Styling.button}
-    >
-      {text}
-    </Button>
-  );
-};
+}: ButtonElementInterface) => (
+  <Button
+    onClick={onClick || (() => {})}
+    type="primary"
+    htmlType={htmlType}
+    loading={loading}
+    disabled={disabled}
+    className={Styling.button}
+  >
+    {text}
+  </Button>
+);
 
 export default ButtonElement;

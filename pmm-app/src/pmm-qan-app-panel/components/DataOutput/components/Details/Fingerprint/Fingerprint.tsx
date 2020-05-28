@@ -6,27 +6,28 @@ import { Styling } from './Fingerprint.styles';
 import { Close } from '../../../../../../react-plugins-deps/components/Elements/Icons/Close';
 import { Info } from '../../../../../../react-plugins-deps/components/Elements/Icons/Info';
 
-const Fingerprint = props => {
-  const currentGroupBy = GROUP_BY_OPTIONS.filter(option => option.value === props.groupBy)[0];
+const Fingerprint = (props) => {
+  const currentGroupBy = GROUP_BY_OPTIONS.filter((option) => option.value === groupBy)[0];
+  const [totals, query, queryId, groupBy, closeDetails] = props;
   return (
     <div className={Styling.fingerprintWrapper} id="query-id">
       <div className={Styling.fingerprintView}>
-        <h4>{!props.totals ? `${currentGroupBy.data.label} : ` : 'TOTAL'}</h4>
+        <h4>{!totals ? `${currentGroupBy.data.label} : ` : 'TOTAL'}</h4>
         &nbsp;
-        {!props.totals ? (
+        {!totals ? (
           <div>
             <div className={Styling.fingerprint} style={{ color: 'rgba(32, 215, 255, 0.8)' }}>
-              {props.query || 'N/A'}
+              {query || 'N/A'}
             </div>
           </div>
         ) : null}
-        {props.groupBy === 'queryid' && !props.totals ? (
-          <QueryTooltip query={props.query} queryId={props.queryId}>
+        {groupBy === 'queryid' && !totals ? (
+          <QueryTooltip query={query} queryId={queryId}>
             <Info className={Styling.tooltipIcon} />
           </QueryTooltip>
         ) : null}
       </div>
-      <Close className={Styling.closeButton} onClick={props.closeDetails} />
+      <Close className={Styling.closeButton} onClick={closeDetails} />
     </div>
   );
 };

@@ -29,7 +29,7 @@ export const Styling = {
   tableWrapper: css`
     min-height: 1000px;
   `,
-  getContainerWrapper: size => css`
+  getContainerWrapper: (size) => css`
     width: ${(size || 1500) - 260}px;
     height: 100%;
     overflow-y: scroll;

@@ -10,7 +10,7 @@ export class Humanize {
         dur = '0';
         break;
       case durSec.as('s') > 1 && durSec.as('s') < 60:
-        dur = durSec.as('s').toFixed(2) + ' sec';
+        dur = `${durSec.as('s').toFixed(2)} sec`;
         break;
       case durSec.as('s') >= 60:
         let secs = durSec.as('s');
@@ -18,15 +18,15 @@ export class Humanize {
         if (secs >= secondsInDay) {
           const days = Math.floor(secs / secondsInDay);
           dur = `${days} days, `;
-          secs = secs % secondsInDay;
+          secs %= secondsInDay;
         }
         dur += numeral(secs).format('00:00:00');
         break;
       case durSec.as('ms') < 1:
-        dur = (durSec.as('ms') * 1000).toFixed(2) + ' µs';
+        dur = `${(durSec.as('ms') * 1000).toFixed(2)} µs`;
         break;
       default:
-        dur = durSec.as('ms').toFixed(2) + ' ms';
+        dur = `${durSec.as('ms').toFixed(2)} ms`;
         break;
     }
     return dur;

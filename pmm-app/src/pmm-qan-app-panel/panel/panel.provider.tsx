@@ -1,29 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { ParseQueryParamDate } from '../../react-plugins-deps/components/helpers/time-parameters-parser';
 import { getDataSourceSrv } from '@grafana/runtime';
 import { find, omit } from 'lodash';
+import { ParseQueryParamDate } from '../../react-plugins-deps/components/helpers/time-parameters-parser';
 import { DEFAULT_COLUMNS, FILTERS_NAMES } from './panel.constants';
 
 const initialState = {} as any;
 
 export const PanelProvider = React.createContext(initialState);
 
-const setFilters = query =>
-  FILTERS_NAMES.reduce((result, filterName) => {
-    const filters = query.getAll(`var-${filterName}`);
-    if (!filters.length) {
-      return result;
-    }
-
-    result[filterName] = filters;
+const setFilters = (query) => FILTERS_NAMES.reduce((result, filterName) => {
+  const filters = query.getAll(`var-${filterName}`);
+  if (!filters.length) {
     return result;
-  }, {});
+  }
 
-const refreshGrafanaVariables = state => {
+  result[filterName] = filters;
+  return result;
+}, {});
+
+const refreshGrafanaVariables = (state) => {
   const dataSource = getDataSourceSrv();
   // @ts-ignore
   const templateVariables = dataSource.templateSrv.variables;
-  FILTERS_NAMES.forEach(filter => {
+  FILTERS_NAMES.forEach((filter) => {
     const variables = find(templateVariables, { name: filter.replace('var-', '') });
     if (!variables) {
       return;
@@ -36,20 +35,21 @@ const refreshGrafanaVariables = state => {
   templateVariables[0].variableSrv.variableUpdated(templateVariables[0]);
 };
 
-const generateURL = state => {
+const generateURL = (state) => {
   // read parameters and create new url
-  const { labels, columns, groupBy, queryId, orderBy } = state;
+  const {
+    labels, columns, groupBy, queryId, orderBy,
+  } = state;
   // @ts-ignore
-  const urlLabels =
-    labels &&
-    Object.keys(labels)
-      .map(key => {
-        // @ts-ignore
-        const variables = labels[key];
-        return variables.map(variable => `var-${key}=${variable === 'na' ? '' : variable}`).join('&');
-      })
-      .filter(Boolean)
-      .join('&');
+  const urlLabels = labels;
+  Object.keys(labels)
+    .map((key) => {
+      // @ts-ignore
+      const variables = labels[key];
+      return variables.map((variable) => `var-${key}=${variable === 'na' ? '' : variable}`).join('&');
+    })
+    .filter(Boolean)
+    .join('&');
   const urlColumnsQuery = columns ? `columns=${JSON.stringify(columns)}` : '';
   const urlGroupBy = groupBy ? `group_by=${groupBy}` : '';
   const urlFilterByQuery = queryId ? `filter_by=${queryId}` : '';
@@ -74,7 +74,7 @@ const generateURL = state => {
     .join('&')}`;
 };
 
-const parseURL = query => ({
+const parseURL = (query) => ({
   from: ParseQueryParamDate.transform(query.get('from') || 'now-12h', 'from'),
   to: ParseQueryParamDate.transform(query.get('to') || 'now', 'to')
     .utc()
@@ -90,32 +90,30 @@ const parseURL = query => ({
   groupBy: query.get('group_by') || 'queryid',
 });
 
-const setLabels = filters =>
-  Object.keys(filters)
-    .filter(filter => filters[filter])
-    .reduce((labels, filter) => {
-      const [group, value] = filter.split(':');
-      // TODO: using '--' because final form think that it is a nested fields
-      //  need to replace it with something better
-      if (labels[group]) {
-        labels[group].push(value.replace(/\-\-/gi, '.').replace(/^na$/, ''));
-      } else {
-        labels[group] = [value.replace(/\-\-/gi, '.').replace(/^na$/, '')];
-      }
-      return labels;
-    }, {});
+const setLabels = (filters) => Object.keys(filters)
+  .filter((filter) => filters[filter])
+  .reduce((labels, filter) => {
+    const [group, value] = filter.split(':');
+    // TODO: using '--' because final form think that it is a nested fields
+    //  need to replace it with something better
+    if (labels[group]) {
+      labels[group].push(value.replace(/\-\-/gi, '.').replace(/^na$/, ''));
+    } else {
+      labels[group] = [value.replace(/\-\-/gi, '.').replace(/^na$/, '')];
+    }
+    return labels;
+  }, {});
 
 const actions = {
-  setLabels: value => state => {
-    return omit({ ...state, labels: setLabels(value), pageNumber: 1 }, ['queryId', 'querySelected']);
-  },
-  resetLabels: value => state => {
-    return omit({ ...state, labels: {}, pageNumber: 1 }, ['queryId', 'querySelected']);
-  },
-  selectQuery: (value, totals) => state => {
-    return { ...state, queryId: value, querySelected: true, totals: totals };
-  },
-  addColumn: value => state => {
+  setLabels: (value) => (state) => omit({ ...state, labels: setLabels(value), pageNumber: 1 }, ['queryId', 'querySelected']),
+  resetLabels: (value) => (state) => omit({ ...state, labels: {}, pageNumber: 1 }, ['queryId', 'querySelected']),
+  selectQuery: (value, totals) => (state) => ({
+    ...state,
+    queryId: value,
+    querySelected: true,
+    totals,
+  }),
+  addColumn: (value) => (state) => {
     const columns = [...state.columns];
     columns.push(value);
     return {
@@ -123,7 +121,7 @@ const actions = {
       columns,
     };
   },
-  changeColumn: value => state => {
+  changeColumn: (value) => (state) => {
     const columns = [...state.columns];
     columns[columns.indexOf(value.oldColumn.simpleName)] = value.column;
     return {
@@ -133,7 +131,7 @@ const actions = {
         value.oldColumn.simpleName === state.orderBy.replace('-', '') ? `-${columns[0]}` : state.orderBy,
     };
   },
-  removeColumn: value => state => {
+  removeColumn: (value) => (state) => {
     const columns = [...state.columns];
     columns.splice(columns.indexOf(value.simpleName), 1);
     return {
@@ -142,26 +140,22 @@ const actions = {
       orderBy: value.simpleName === state.orderBy.replace('-', '') ? `-${columns[0]}` : state.orderBy,
     };
   },
-  changePage: value => state => {
-    return omit(
-      {
-        ...state,
-        pageNumber: value,
-      },
-      ['queryId', 'querySelected']
-    );
-  },
-  changePageSize: value => state => {
-    return omit(
-      {
-        ...state,
-        pageSize: value,
-        pageNumber: 1,
-      },
-      ['queryId', 'querySelected']
-    );
-  },
-  changeSort: value => state => {
+  changePage: (value) => (state) => omit(
+    {
+      ...state,
+      pageNumber: value,
+    },
+    ['queryId', 'querySelected'],
+  ),
+  changePageSize: (value) => (state) => omit(
+    {
+      ...state,
+      pageSize: value,
+      pageNumber: 1,
+    },
+    ['queryId', 'querySelected'],
+  ),
+  changeSort: (value) => (state) => {
     let newOrderBy = '';
 
     if (value === state.orderBy) {
@@ -178,34 +172,28 @@ const actions = {
         orderBy: newOrderBy,
         pageNumber: 1,
       },
-      ['queryId', 'querySelected']
+      ['queryId', 'querySelected'],
     );
   },
-  changeGroupBy: value => state => {
-    return omit(
-      {
-        ...state,
-        groupBy: value,
-        querySelected: false,
-        pageNumber: 1,
-      },
-      ['queryId', 'querySelected']
-    );
-  },
-  closeDetails: value => state => {
-    return omit(
-      {
-        ...state,
-      },
-      ['queryId', 'querySelected']
-    );
-  },
-  setFingerprint: value => state => {
-    return {
+  changeGroupBy: (value) => (state) => omit(
+    {
       ...state,
-      fingerprint: value,
-    };
-  },
+      groupBy: value,
+      querySelected: false,
+      pageNumber: 1,
+    },
+    ['queryId', 'querySelected'],
+  ),
+  closeDetails: (value) => (state) => omit(
+    {
+      ...state,
+    },
+    ['queryId', 'querySelected'],
+  ),
+  setFingerprint: (value) => (state) => ({
+    ...state,
+    fingerprint: value,
+  }),
 };
 
 export const UrlParametersProvider = ({ grafanaProps, children }) => {
@@ -224,16 +212,19 @@ export const UrlParametersProvider = ({ grafanaProps, children }) => {
     history.pushState({}, 'test', newUrl);
   }, [panelState]);
 
-  const wrapAction = key => (...value) => {
-    return setContext(actions[key](...value));
-  };
+  const wrapAction = (key) => (...value) => setContext(actions[key](...value));
 
   const [isFirstLoad, setFirstLoad] = useState(true);
   useEffect(() => {
     if (isFirstLoad) {
       return;
     }
-    const newState = { ...panelState, from, to, rawTime };
+    const newState = {
+      ...panelState,
+      from,
+      to,
+      rawTime,
+    };
 
     if (panelState.rawTime.from !== rawTime.from || panelState.rawTime.to !== rawTime.to) {
       newState.pageNumber = 1;
@@ -248,7 +239,12 @@ export const UrlParametersProvider = ({ grafanaProps, children }) => {
   useEffect(() => {
     const refreshButton = document.querySelector('.refresh-picker-buttons button');
     const refreshHandle = () => {
-      const newState = { ...panelState, from, to, rawTime };
+      const newState = {
+        ...panelState,
+        from,
+        to,
+        rawTime,
+      };
       if (panelState.rawTime.from !== rawTime.from || panelState.rawTime.to !== rawTime.to) {
         newState.pageNumber = 1;
         delete newState.queryId;
@@ -271,7 +267,7 @@ export const UrlParametersProvider = ({ grafanaProps, children }) => {
   return (
     <PanelProvider.Provider
       value={{
-        panelState: panelState,
+        panelState,
         contextActions: Object.keys(actions).reduce((actions, key) => {
           actions[key] = wrapAction(key);
           return actions;

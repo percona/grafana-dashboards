@@ -1,6 +1,6 @@
 import renderer from 'react-test-renderer';
-import { TimeDistribution, getMetricDistribution } from './TimeDistribution';
 import React from 'react';
+import { TimeDistribution, getMetricDistribution } from './TimeDistribution';
 
 const MOCK_METRICS = [
   {

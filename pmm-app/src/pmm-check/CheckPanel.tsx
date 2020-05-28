@@ -96,7 +96,7 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
   }
 }
 
-export const CheckPanelRouter: FC<CheckPanelProps> = props => (
+export const CheckPanelRouter: FC<CheckPanelProps> = (props) => (
   <Router history={history}>
     <Route>
       <CheckPanel {...props} />

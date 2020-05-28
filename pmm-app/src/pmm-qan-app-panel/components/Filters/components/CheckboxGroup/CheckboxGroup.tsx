@@ -1,30 +1,32 @@
 import React, { useState } from 'react';
+import { Divider } from 'antd';
 import { CheckboxField } from '../../../../../react-plugins-deps/components/Form/Checkbox/Checkbox';
 import { Humanize } from '../../../../../react-plugins-deps/components/helpers/Humanization';
-import { Divider } from 'antd';
 import { Styling } from './CheckboxGroup.styles';
 
 const TOP_LIMIT = 5;
 
-export const CheckboxGroup = ({ name, items, group, showAll, filter: searchFilterBy }) => {
+export const CheckboxGroup = ({
+  name, items, group, showAll, filter: searchFilterBy,
+}) => {
   const [showTop, setShowTop] = useState(true);
-  const filteredData = items.filter(item => {
+  const filteredData = items.filter((item) => {
     if (!showAll) {
       return item.checked;
     }
     return true;
   });
 
-  const searchFilter = item => {
+  const searchFilter = (item) => {
     if (!item.value) {
       return (
-        'n/a'.includes(searchFilterBy.toLowerCase()) ||
-        name.toLowerCase().includes(searchFilterBy.toLowerCase())
+        'n/a'.includes(searchFilterBy.toLowerCase())
+        || name.toLowerCase().includes(searchFilterBy.toLowerCase())
       );
     }
     return (
-      item.value.toLowerCase().includes(searchFilterBy.toLowerCase()) ||
-      name.toLowerCase().includes(searchFilterBy.toLowerCase())
+      item.value.toLowerCase().includes(searchFilterBy.toLowerCase())
+      || name.toLowerCase().includes(searchFilterBy.toLowerCase())
     );
   };
 
@@ -36,7 +38,7 @@ export const CheckboxGroup = ({ name, items, group, showAll, filter: searchFilte
       return true;
     })
     .filter(searchFilter)
-    .map(item => {
+    .map((item) => {
       const valueExists = item.hasOwnProperty('main_metric_percent');
       return (
         <div className={Styling.label} key={`${group}:${item.value || ''}`}>
@@ -63,10 +65,10 @@ export const CheckboxGroup = ({ name, items, group, showAll, filter: searchFilte
             {showTop ? `Show all (${filteredData.filter(searchFilter).length})` : `Show top ${TOP_LIMIT}`}
           </span>
         ) : (
-          <span></span>
+          <span />
         )}
       </p>
-      <Divider className={Styling.divider}></Divider>
+      <Divider className={Styling.divider} />
       {itemsList}
     </div>
   ) : null;

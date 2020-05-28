@@ -2,13 +2,9 @@
 // import { Filters } from './Filters';
 import React from 'react';
 
-jest.mock('antd/es/input/Search', () => () => {
-  return <></>;
-});
+jest.mock('antd/es/input/Search', () => () => <></>);
 
-jest.mock('react-scrollbar', () => () => {
-  return <div></div>;
-});
+jest.mock('react-scrollbar', () => () => <div />);
 
 jest.mock('../../../react-plugins-deps/components/helpers/notification-manager', () => () => ({}));
 

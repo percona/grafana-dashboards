@@ -6,6 +6,7 @@ type TimeEdge = 'from' | 'to';
 
 export class MomentFormatPipe {
   timezone = 'browser';
+
   constructor() {
     this.timezone = this.getCookie('timezone') || 'browser';
   }
@@ -23,12 +24,9 @@ export class MomentFormatPipe {
     }
 
     if (this.timezone === 'browser') {
-      return moment(value)
-        .local()
-        .format(format);
-    } else {
-      return moment(value).format(format);
+      return moment(value).local().format(format);
     }
+    return moment(value).format(format);
   }
 }
 
@@ -59,9 +57,8 @@ export class ParseQueryParamDate {
         const isnum = /^\d+$/.test(date);
         if (isnum) {
           return nowFunc(parseInt(date, 10));
-        } else {
-          return nowFunc(date);
         }
+        return nowFunc(date);
       }
 
       if (parts[1] === 'now') {
@@ -73,25 +70,22 @@ export class ParseQueryParamDate {
       if (parts[2] === '/') {
         if (edge === 'from') {
           return parsedDate.startOf(parts[4]);
-        } else {
-          return parsedDate.endOf(parts[4]);
         }
+        return parsedDate.endOf(parts[4]);
       }
       if (parts.length > 4 && parts[5] === '/') {
         if (edge === 'from') {
           return parsedDate.startOf(parts[6]);
-        } else {
-          return parsedDate.endOf(parts[6]);
         }
+        return parsedDate.endOf(parts[6]);
       }
     } else {
       // expect unix timestamp in milliseconds
       const isnum = /^\d+$/.test(date);
       if (isnum) {
         return nowFunc(parseInt(date, 10));
-      } else {
-        return nowFunc(date);
       }
+      return nowFunc(date);
     }
     return parsedDate;
   }

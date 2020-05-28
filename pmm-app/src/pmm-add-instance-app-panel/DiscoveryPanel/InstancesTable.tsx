@@ -1,7 +1,7 @@
 import { Table } from 'antd';
 import React from 'react';
 
-const getEngineType = type => {
+const getEngineType = (type) => {
   switch (type) {
     case 'DISCOVER_RDS_MYSQL':
       return 'MySQL';
@@ -14,7 +14,7 @@ const getEngineType = type => {
   }
 };
 
-const InstancesTable = props => {
+const InstancesTable = (props) => {
   const { instances, onSelectInstance, credentials } = props;
   const columns = [
     {
@@ -33,9 +33,7 @@ const InstancesTable = props => {
       title: 'Engine',
       dataIndex: 'type',
       className: 'discovery-column',
-      render: (element, instance) => {
-        return instance.engine ? `${getEngineType(instance.engine)}  ${instance.engine_version}` : 'nothing';
-      },
+      render: (element, instance) => (instance.engine ? `${getEngineType(instance.engine)}  ${instance.engine_version}` : 'nothing'),
     },
     {
       title: 'Instance ID',
@@ -48,12 +46,12 @@ const InstancesTable = props => {
       dataIndex: 'address',
       key: 'address',
       className: 'discovery-column',
-      render: element => element.split(':')[0],
+      render: (element) => element.split(':')[0],
     },
     {
       title: 'Action',
       className: 'discovery-column',
-      render: element => {
+      render: (element) => {
         let type = '';
         switch (element.engine) {
           case 'DISCOVER_RDS_MYSQL':
@@ -65,9 +63,7 @@ const InstancesTable = props => {
         }
         return (
           <a
-            onClick={() =>
-              onSelectInstance({ type, credentials: { ...{ ...element, ...credentials }, isRDS: true } })
-            }
+            onClick={() => onSelectInstance({ type, credentials: { ...{ ...element, ...credentials }, isRDS: true } })}
           >
             Start monitoring
           </a>

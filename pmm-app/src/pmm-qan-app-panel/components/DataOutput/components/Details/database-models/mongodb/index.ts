@@ -18,11 +18,13 @@ export class Mongodb extends GenericDatabase {
       // setLoading(false);
     } catch (e) {
       // setLoading(false);
-      //TODO: add error handling
+      // TODO: add error handling
     }
   }
 
-  getExplains({ example, setActionIdTraditional, setActionIdJSON, setErrorText }) {
+  getExplains({
+    example, setActionIdTraditional, setActionIdJSON, setErrorText,
+  }) {
     if (!('example' in example) || example.example === '') {
       setErrorText('Cannot display query explain without query example at this time.');
       return;

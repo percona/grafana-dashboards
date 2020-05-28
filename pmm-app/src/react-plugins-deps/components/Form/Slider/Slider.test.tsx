@@ -20,7 +20,7 @@ describe('Slider', () => {
         render={() => (
           <SliderField marks={marks} name="metrics_resolutions_slider" tipFormatter={jest.fn()} />
         )}
-      />
+      />,
     );
 
     expect(root.find(Slider).prop('name')).toEqual('metrics_resolutions_slider');

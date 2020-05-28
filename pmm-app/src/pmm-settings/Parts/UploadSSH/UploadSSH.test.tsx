@@ -11,7 +11,7 @@ describe('UploadSSH', () => {
         settings={{
           ssh_key: 'test_ssh_key',
         }}
-      />
+      />,
     );
 
     expect(root).toMatchSnapshot();

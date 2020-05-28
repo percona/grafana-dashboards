@@ -12,7 +12,7 @@ describe('Settings Part test', () => {
           alert_manager_url: 'http://localhost',
           alert_manager_rules: 'test rules',
         }}
-      />
+      />,
     );
 
     expect(root).toMatchSnapshot();

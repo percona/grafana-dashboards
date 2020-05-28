@@ -1,6 +1,6 @@
 import React from 'react';
-import SettingsPanel from './panel';
 import { shallow } from 'enzyme';
+import SettingsPanel from './panel';
 
 jest.mock('../react-plugins-deps/components/helpers/notification-manager');
 

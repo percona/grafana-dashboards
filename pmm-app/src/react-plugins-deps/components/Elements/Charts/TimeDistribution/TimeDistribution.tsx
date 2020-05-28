@@ -4,9 +4,9 @@ import { Humanize } from '../../../helpers/Humanization';
 // eslint-disable-next-line max-len
 import { METRICS_COLORS, PERCENT_COUNT, TIME_METRICS } from './TimeDistribution.constants';
 
-export const getMetricDistribution = data => {
+export const getMetricDistribution = (data) => {
   let totalValue = 0;
-  const timeMetrics = data.filter(metric => {
+  const timeMetrics = data.filter((metric) => {
     if (metric.metricName === 'query_time') {
       totalValue = metric.metric.sum;
       return false;
@@ -17,7 +17,7 @@ export const getMetricDistribution = data => {
   let currentPercent = PERCENT_COUNT;
 
   const normalizedTimeMetrics = timeMetrics
-    .map(metric => {
+    .map((metric) => {
       const {
         name,
         metricName,
@@ -28,8 +28,8 @@ export const getMetricDistribution = data => {
       const value = Math.max(percentage, 1);
       currentPercent -= percentage;
       return {
-        name: name,
-        value: value,
+        name,
+        value,
         description: Humanize.transform(percentage / PERCENT_COUNT, 'percent'),
         color: METRICS_COLORS[metricName],
       };

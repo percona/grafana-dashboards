@@ -5,8 +5,8 @@ import { PanelProps } from '@grafana/data';
 import { Spinner } from '@grafana/ui';
 import { CheckPanelOptions, Settings, FailedChecks } from 'pmm-check/types';
 import { CheckService } from 'pmm-check/Check.service';
-import * as styles from './CheckPanel.styles';
 import { Failed } from 'pmm-check-home/components';
+import * as styles from './CheckPanel.styles';
 
 export interface CheckPanelProps extends PanelProps<CheckPanelOptions> {}
 
@@ -79,7 +79,7 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
   }
 }
 
-export const CheckPanelRouter: FC<CheckPanelProps> = props => (
+export const CheckPanelRouter: FC<CheckPanelProps> = (props) => (
   <Router history={history}>
     <Route>
       <CheckPanel {...props} />

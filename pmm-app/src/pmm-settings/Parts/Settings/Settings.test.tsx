@@ -17,7 +17,7 @@ describe('Settings Part test', () => {
             lr: '300s',
           },
         }}
-      />
+      />,
     );
 
     expect(root).toMatchSnapshot();

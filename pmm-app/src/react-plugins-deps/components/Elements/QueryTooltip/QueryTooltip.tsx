@@ -9,10 +9,10 @@ interface QueryTooltipProps {
   show?: boolean;
   children: any;
 }
-export const QueryTooltip = ({ query, queryId, children, show = true }: QueryTooltipProps) => {
-  const TooltipContent = () => {
-    return <Highlight language="sql">{query}</Highlight>;
-  };
+export const QueryTooltip = ({
+  query, queryId, children, show = true,
+}: QueryTooltipProps) => {
+  const TooltipContent = () => <Highlight language="sql">{query}</Highlight>;
   return show ? (
     <Tooltip
       placement="left"
