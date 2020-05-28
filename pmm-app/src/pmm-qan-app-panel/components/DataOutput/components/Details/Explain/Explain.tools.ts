@@ -14,8 +14,8 @@ export const processClassicExplain = (classic) => {
     .split('|')
     .map((e) => (String(e) ? e.trim() : ''))
     .filter(Boolean)
-    .reduce((acc, item, index) => {
-      acc[headerList[index].title] = item;
+    .reduce((acc, row, index) => {
+      acc[headerList[index].title] = row;
       return acc;
     }, {}));
 

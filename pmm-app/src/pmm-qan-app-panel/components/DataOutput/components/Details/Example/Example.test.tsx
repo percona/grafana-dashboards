@@ -71,7 +71,9 @@ describe('Example tab page render test', () => {
       ],
       fingerprint: 'test fingerprint',
     };
-    const component = renderer.create(<Example {...props} />);
+    const component = renderer.create(
+      <Example databaseType={props.databaseType} examples={props.examples} fingerprint={props.fingerprint} />
+    );
     const componentInstance = component.root;
     expect(componentInstance.findByProps({ className: 'sql' }).children[0]).toEqual(
       props.examples[0].example,

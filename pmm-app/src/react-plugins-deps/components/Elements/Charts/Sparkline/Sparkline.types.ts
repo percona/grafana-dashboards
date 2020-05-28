@@ -4,4 +4,5 @@ export interface PolygonChartInterface {
   width?: any;
   height?: any;
   metricName?: any;
+  color?: any;
 }

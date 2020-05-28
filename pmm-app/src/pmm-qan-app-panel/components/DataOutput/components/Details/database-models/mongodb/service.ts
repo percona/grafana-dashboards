@@ -1,12 +1,7 @@
 import { apiRequestManagement } from '../../../../../../../react-plugins-deps/components/helpers/api';
 
-export class MongoDBService {
-  static getTraditionalExplainJSONMongo({ pmm_agent_id, service_id, query }) {
-    const body = {
-      pmm_agent_id,
-      service_id,
-      query,
-    };
+export default class MongoDBService {
+  static getTraditionalExplainJSONMongo(body) {
     return apiRequestManagement.post<any, any>('/Actions/StartMongoDBExplain', body);
   }
 }

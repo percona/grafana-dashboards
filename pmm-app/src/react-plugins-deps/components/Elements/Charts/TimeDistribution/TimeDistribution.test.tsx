@@ -4437,6 +4437,7 @@ describe('TimeDistributionChart chart test', () => {
     const dataDistribution = getMetricDistribution(TimeDistributionChartProps.data);
 
     const sum = dataDistribution.reduce((acc, metric) => {
+      // eslint-disable-next-line no-param-reassign
       acc += metric.value;
       return acc;
     }, 0);

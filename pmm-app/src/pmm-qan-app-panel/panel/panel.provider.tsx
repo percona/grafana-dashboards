@@ -14,6 +14,7 @@ const setFilters = (query) => FILTERS_NAMES.reduce((result, filterName) => {
     return result;
   }
 
+  // eslint-disable-next-line no-param-reassign
   result[filterName] = filters;
   return result;
 }, {});
@@ -38,7 +39,7 @@ const refreshGrafanaVariables = (state) => {
 const generateURL = (state) => {
   // read parameters and create new url
   const {
-    labels, columns, groupBy, queryId, orderBy,
+    labels, columns, groupBy, queryId, orderBy
   } = state;
   // @ts-ignore
   const urlLabels = Object.keys(labels)
@@ -96,16 +97,17 @@ const setLabels = (filters) => Object.keys(filters)
     // TODO: using '--' because final form think that it is a nested fields
     //  need to replace it with something better
     if (labels[group]) {
-      labels[group].push(value.replace(/\-\-/gi, '.').replace(/^na$/, ''));
+      labels[group].push(value.replace(/--/gi, '.').replace(/^na$/, ''));
     } else {
-      labels[group] = [value.replace(/\-\-/gi, '.').replace(/^na$/, '')];
+      // eslint-disable-next-line no-param-reassign
+      labels[group] = [value.replace(/--/gi, '.').replace(/^na$/, '')];
     }
     return labels;
   }, {});
 
 const actions = {
   setLabels: (value) => (state) => omit({ ...state, labels: setLabels(value), pageNumber: 1 }, ['queryId', 'querySelected']),
-  resetLabels: (value) => (state) => omit({ ...state, labels: {}, pageNumber: 1 }, ['queryId', 'querySelected']),
+  resetLabels: () => (state) => omit({ ...state, labels: {}, pageNumber: 1 }, ['queryId', 'querySelected']),
   selectQuery: (value, totals) => (state) => ({
     ...state,
     queryId: value,
@@ -144,7 +146,7 @@ const actions = {
       ...state,
       pageNumber: value,
     },
-    ['queryId', 'querySelected'],
+    ['queryId', 'querySelected']
   ),
   changePageSize: (value) => (state) => omit(
     {
@@ -152,7 +154,7 @@ const actions = {
       pageSize: value,
       pageNumber: 1,
     },
-    ['queryId', 'querySelected'],
+    ['queryId', 'querySelected']
   ),
   changeSort: (value) => (state) => {
     let newOrderBy = '';
@@ -171,7 +173,7 @@ const actions = {
         orderBy: newOrderBy,
         pageNumber: 1,
       },
-      ['queryId', 'querySelected'],
+      ['queryId', 'querySelected']
     );
   },
   changeGroupBy: (value) => (state) => omit(
@@ -181,13 +183,13 @@ const actions = {
       querySelected: false,
       pageNumber: 1,
     },
-    ['queryId', 'querySelected'],
+    ['queryId', 'querySelected']
   ),
-  closeDetails: (value) => (state) => omit(
+  closeDetails: () => (state) => omit(
     {
       ...state,
     },
-    ['queryId', 'querySelected'],
+    ['queryId', 'querySelected']
   ),
   setFingerprint: (value) => (state) => ({
     ...state,
@@ -252,10 +254,14 @@ export const UrlParametersProvider = ({ grafanaProps, children }) => {
 
       setContext(newState);
     };
-    refreshButton && refreshButton.addEventListener('click', refreshHandle);
+    if (refreshButton) {
+      refreshButton.addEventListener('click', refreshHandle);
+    }
 
     return () => {
-      refreshButton && refreshButton.removeEventListener('click', refreshHandle);
+      if (refreshButton) {
+        refreshButton.removeEventListener('click', refreshHandle);
+      }
     };
   }, []);
 
@@ -267,9 +273,10 @@ export const UrlParametersProvider = ({ grafanaProps, children }) => {
     <PanelProvider.Provider
       value={{
         panelState,
-        contextActions: Object.keys(actions).reduce((actions, key) => {
-          actions[key] = wrapAction(key);
-          return actions;
+        contextActions: Object.keys(actions).reduce((actionsList, key) => {
+          // eslint-disable-next-line no-param-reassign
+          actionsList[key] = wrapAction(key);
+          return actionsList;
         }, {}),
       }}
     >

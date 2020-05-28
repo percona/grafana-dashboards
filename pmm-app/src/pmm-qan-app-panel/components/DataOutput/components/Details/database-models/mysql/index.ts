@@ -67,7 +67,9 @@ export default class Mysql {
     }
   }
 
-  static getExplains({ example, setActionIdTraditional, setActionIdJSON, setErrorText }) {
+  static getExplains({
+    example, setActionIdTraditional, setActionIdJSON, setErrorText
+  }) {
     if (!('example' in example) || example.example === '') {
       setErrorText('Cannot display query explain without query example at this time.');
       return;

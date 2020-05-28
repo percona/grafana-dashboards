@@ -18,16 +18,16 @@ const DataOutput = () => {
   } = useContext(PanelProvider);
   const [total, setTotal] = useState(30);
   const [showTotal, setShowTotal] = useState('');
-  const changePageNumber = useCallback((pageNumber) => {
-    contextActions.changePage(pageNumber);
+  const changePageNumber = useCallback((page) => {
+    contextActions.changePage(page);
   }, []);
 
-  const changePageSize = useCallback((current, pageSize) => {
-    contextActions.changePageSize(pageSize);
+  const changePageSize = useCallback((current, size) => {
+    contextActions.changePageSize(size);
   }, []);
 
-  const renderShowTotal = useCallback((total, range) => {
-    setShowTotal(`${range[0]}-${range[1]} of ${total} items`);
+  const renderShowTotal = useCallback((totalAmount, range) => {
+    setShowTotal(`${range[0]}-${range[1]} of ${totalAmount} items`);
     return null;
   }, []);
 
