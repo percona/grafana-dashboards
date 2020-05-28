@@ -57,13 +57,13 @@ describe('Inventory tables', () => {
       render(
         <Table
           dataSource={InventoryDataService.generateStructure(response)}
-          rowKey={rec => rec.agent_id}
+          rowKey={(rec) => rec.agent_id}
           columns={agentsColumns}
           pagination={false}
           bordered
           loading={false}
         />,
-        container
+        container,
       );
     });
     // length is 5 because header is also tr
@@ -86,13 +86,13 @@ describe('Inventory tables', () => {
       render(
         <Table
           dataSource={InventoryDataService.generateStructure(response)}
-          rowKey={rec => rec.service_id}
+          rowKey={(rec) => rec.service_id}
           columns={servicesColumns}
           pagination={false}
           bordered
           loading={false}
         />,
-        container
+        container,
       );
     });
     // length is 2 because header is also tr
@@ -110,13 +110,13 @@ describe('Inventory tables', () => {
       render(
         <Table
           dataSource={InventoryDataService.generateStructure(response)}
-          rowKey={rec => rec.node_id}
+          rowKey={(rec) => rec.node_id}
           columns={nodesColumns}
           pagination={false}
           bordered
           loading={false}
         />,
-        container
+        container,
       );
     });
     // length is 3 because header is also tr

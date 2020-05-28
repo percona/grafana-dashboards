@@ -11,15 +11,13 @@ jest.mock('../react-plugins-deps/components/helpers/notification-manager');
 
 jest.mock('./Check.service');
 
-const CheckPanelRouter: FC<CheckPanelProps> = props => {
-  return (
-    <MemoryRouter>
-      <Route>
-        <CheckPanel {...props} />
-      </Route>
-    </MemoryRouter>
-  );
-};
+const CheckPanelRouter: FC<CheckPanelProps> = (props) => (
+  <MemoryRouter>
+    <Route>
+      <CheckPanel {...props} />
+    </Route>
+  </MemoryRouter>
+);
 
 xdescribe('CheckPanel::', () => {
   CheckPanel.prototype.componentDidMount = jest.fn();

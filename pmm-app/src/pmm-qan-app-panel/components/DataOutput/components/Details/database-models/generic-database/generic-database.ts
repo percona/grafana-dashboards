@@ -23,7 +23,9 @@ export class GenericDatabase {
     console.error('Not implemented');
   }
 
-  getExplains({ example, setActionIdTraditional, setActionIdJSON, setErrorText }) {
+  getExplains({
+    example, setActionIdTraditional, setActionIdJSON, setErrorText,
+  }) {
     console.error('Not implemented');
   }
 }

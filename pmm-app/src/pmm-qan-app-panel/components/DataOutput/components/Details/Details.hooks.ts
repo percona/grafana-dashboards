@@ -1,8 +1,10 @@
-import { Dispatch, useContext, useEffect, useState } from 'react';
+import {
+  Dispatch, useContext, useEffect, useState,
+} from 'react';
+import { get } from 'lodash';
 import { PanelProvider } from '../../../../panel/panel.provider';
 import { DetailsProvider } from './Details.provider';
 import { DATABASE } from './Details.constants';
-import { get } from 'lodash';
 import DetailsService from './Details.service';
 import { databaseFactory } from './database-models';
 
@@ -33,7 +35,7 @@ export const useActionResult = (): [ActionResult, Dispatch<string>] => {
 
       try {
         const result = await DetailsService.getActionResult({
-          action_id: action_id,
+          action_id,
         });
         if (result.done) {
           setLoading(false);
@@ -54,7 +56,7 @@ export const useActionResult = (): [ActionResult, Dispatch<string>] => {
     intervalId = setInterval(getData, 300);
   }, [action_id]);
 
-  return [{ value: result, loading: loading, error: error }, setActionId];
+  return [{ value: result, loading, error }, setActionId];
 };
 
 export const useExplain = (): [any, any, string] => {
@@ -70,7 +72,7 @@ export const useExplain = (): [any, any, string] => {
       return;
     }
 
-    const notEmptyExample = examples.filter(example => example.example);
+    const notEmptyExample = examples.filter((example) => example.example);
     if (!notEmptyExample.length || !databaseType) {
       return;
     }
@@ -88,7 +90,9 @@ export const useExplain = (): [any, any, string] => {
 
 export const useDetailsState = () => {
   const {
-    panelState: { queryId, groupBy, from, to, labels },
+    panelState: {
+      queryId, groupBy, from, to, labels,
+    },
   } = useContext(PanelProvider);
   const {
     detailsState: { databaseType, examples },
@@ -103,13 +107,13 @@ export const useDetailsState = () => {
           groupBy,
           from,
           to,
-          labels: labels,
+          labels,
           tables: [],
         });
-        contextActions.setExamples(result['query_examples']);
-        contextActions.setDatabaseType(result['query_examples'][0].service_type);
+        contextActions.setExamples(result.query_examples);
+        contextActions.setDatabaseType(result.query_examples[0].service_type);
       } catch (e) {
-        //TODO: add error handling
+        // TODO: add error handling
       }
     })();
   }, [queryId]);
@@ -119,9 +123,9 @@ export const useDetailsState = () => {
       const parsedJSON = JSON.parse(jsonExplain.value);
       contextActions.setTables(
         [
-          get(parsedJSON, 'query_block.table.table_name') ||
-            get(parsedJSON, 'query_block.ordering_operation.grouping_operation.table.table_name'),
-        ].filter(Boolean)
+          get(parsedJSON, 'query_block.table.table_name')
+            || get(parsedJSON, 'query_block.ordering_operation.grouping_operation.table.table_name'),
+        ].filter(Boolean),
       );
     }
 

@@ -1,6 +1,6 @@
-import { PanelProvider } from '../../../../../../panel/panel.provider';
 import React, { useContext } from 'react';
 import { Select } from 'antd';
+import { PanelProvider } from '../../../../../../panel/panel.provider';
 import { Styling } from './GroupByControl.styles';
 import { GROUP_BY_OPTIONS } from './GroupByControl.types';
 import './GroupByControl.scss';
@@ -24,7 +24,7 @@ export const GroupByControl = () => {
         data-qa="group-by"
         dropdownClassName="group-by-selector-dropdown"
       >
-        {GROUP_BY_OPTIONS.map(option => (
+        {GROUP_BY_OPTIONS.map((option) => (
           <Option value={option.value} label={option.label} key={option.value}>
             {option.label}
           </Option>

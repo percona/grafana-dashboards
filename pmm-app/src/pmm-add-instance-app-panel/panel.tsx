@@ -10,7 +10,7 @@ import '../react-plugins-deps/style.less';
 import '../react-plugins-deps/styles.scss';
 
 const history = createBrowserHistory();
-const AddInstancePanel = props => {
+const AddInstancePanel = (props) => {
   const urlParams = new URLSearchParams(window.location.search);
   const instanceType = urlParams.get('instance_type') || '';
   const availableInstanceTypes = ['rds', 'postgresql', 'mysql', 'proxysql', 'mongodb', 'proxysql'];
@@ -18,7 +18,7 @@ const AddInstancePanel = props => {
     type: availableInstanceTypes.includes(instanceType) ? instanceType : '',
   });
 
-  const setSelectedInstance = instance => {
+  const setSelectedInstance = (instance) => {
     const url = new URL((window.location as unknown) as string);
     url.searchParams.set('instance_type', instance.type);
     selectInstance(instance);
@@ -44,12 +44,10 @@ const AddInstancePanel = props => {
   );
 };
 
-const AddPanel = () => {
-  return (
-    <Router history={history}>
-      <Route path="*" component={AddInstancePanel} />
-    </Router>
-  );
-};
+const AddPanel = () => (
+  <Router history={history}>
+    <Route path="*" component={AddInstancePanel} />
+  </Router>
+);
 
 export default AddPanel;

@@ -16,7 +16,7 @@ class Validators {
   }
 
   static range(from, to) {
-    return value => {
+    return (value) => {
       if (!value) {
         return undefined;
       }
@@ -27,11 +27,11 @@ class Validators {
 
   static validateKeyValue(value) {
     if (
-      value &&
-      !value
+      value
+      && !value
         .split(/[\n\s]/)
         .filter(Boolean)
-        .every(element => /^[a-z0-9]+:[a-z0-9]+$/.test(element))
+        .every((element) => /^[a-z0-9]+:[a-z0-9]+$/.test(element))
     ) {
       return 'Values have to be in key:value format, and separated with new line or space';
     }
@@ -39,11 +39,11 @@ class Validators {
   }
 
   static required(value) {
-    return Boolean(value) ? undefined : 'Required field';
+    return value ? undefined : 'Required field';
   }
 
   static compose(...validators) {
-    return value => validators.reduce((error, validator) => error || validator(value), undefined);
+    return (value) => validators.reduce((error, validator) => error || validator(value), undefined);
   }
 }
 

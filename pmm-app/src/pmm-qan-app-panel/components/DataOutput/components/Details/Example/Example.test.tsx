@@ -1,17 +1,13 @@
 // Just a stub test
-import Example from './Example';
 import React from 'react';
 import renderer from 'react-test-renderer';
+import Example from './Example';
 import { DatabasesType } from '../Details.types';
 
-jest.mock('react-highlight.js', () => {
-  return ({ children }) => {
-    return <div className="sql">{children}</div>;
-  };
-});
-jest.mock('react-json-view', () => {
-  return ({ src = {} }) => <div className="json" srcAttribute={JSON.stringify(src)}></div>;
-});
+jest.mock('react-highlight.js', () => ({ children }) => <div className="sql">{children}</div>);
+jest.mock('react-json-view', () => ({ src = {} }) => (
+  <div className="json" srcAttribute={JSON.stringify(src)} />
+));
 
 describe('Example tab page render test', () => {
   it('Component shows error text when there is no examples', () => {
@@ -56,7 +52,7 @@ describe('Example tab page render test', () => {
     const component = renderer.create(<Example {...props} />);
     const componentInstance = component.root;
     expect(componentInstance.findByProps({ className: 'json' }).props.srcAttribute).toBe(
-      props.examples[0].example
+      props.examples[0].example,
     );
   });
 
@@ -78,7 +74,7 @@ describe('Example tab page render test', () => {
     const component = renderer.create(<Example {...props} />);
     const componentInstance = component.root;
     expect(componentInstance.findByProps({ className: 'sql' }).children[0]).toEqual(
-      props.examples[0].example
+      props.examples[0].example,
     );
   });
 });

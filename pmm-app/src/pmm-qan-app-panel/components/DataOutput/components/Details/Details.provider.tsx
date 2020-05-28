@@ -6,35 +6,35 @@ const initialState = { detailsState: { tables: [] } } as Details;
 export const DetailsProvider = React.createContext(initialState);
 
 const actions = {
-  setExamples: value => state => {
+  setExamples: (value) => (state) => {
     const newState = {
       ...state,
       examples: value,
     };
     return newState;
   },
-  setDatabaseType: value => state => {
+  setDatabaseType: (value) => (state) => {
     const newState = {
       ...state,
       databaseType: value,
     };
     return newState;
   },
-  setTables: value => state => {
+  setTables: (value) => (state) => {
     const newState = {
       ...state,
       tables: value,
     };
     return newState;
   },
-  setExplainJSON: value => state => {
+  setExplainJSON: (value) => (state) => {
     const newState = {
       ...state,
       jsonExplain: value,
     };
     return newState;
   },
-  setExplainClassic: value => state => {
+  setExplainClassic: (value) => (state) => {
     const newState = {
       ...state,
       classicExplain: value,
@@ -45,14 +45,12 @@ const actions = {
 
 export const DetailsContentProvider = ({ children }) => {
   const [detailsState, setContext] = useState({ tables: [] });
-  const wrapAction = key => value => {
-    return setContext(actions[key](value));
-  };
+  const wrapAction = (key) => (value) => setContext(actions[key](value));
 
   return (
     <DetailsProvider.Provider
       value={{
-        detailsState: detailsState,
+        detailsState,
         contextActions: Object.keys(actions).reduce((actions, key) => {
           actions[key] = wrapAction(key);
           return actions;

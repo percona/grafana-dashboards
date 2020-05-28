@@ -1,7 +1,7 @@
 // Just a stub test
-import { Latency } from './Latency';
 import React from 'react';
 import renderer from 'react-test-renderer';
+import { Latency } from './Latency';
 
 describe('Latency chart test', () => {
   it('Renders correct with empty props', () => {

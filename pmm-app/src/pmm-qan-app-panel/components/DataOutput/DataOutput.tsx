@@ -1,12 +1,14 @@
+import React, {
+  useCallback, useContext, useEffect, useState,
+} from 'react';
+import { Pagination } from 'antd';
+import SplitPane from 'react-split-pane';
 import OverviewTable from './components/Overview/OverviewTable';
 import Details from './components/Details/Details';
-import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { PanelProvider } from '../../panel/panel.provider';
-import { Pagination } from 'antd';
 import ManageColumns from './components/ManageColumns/ManageColumns';
 import { Styling } from './DataOutput.styles';
 import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE, PAGE_SIZE_OPTIONS } from './DataOutput.constants';
-import SplitPane from 'react-split-pane';
 import './DataOutput.scss';
 
 const DataOutput = () => {
@@ -16,7 +18,7 @@ const DataOutput = () => {
   } = useContext(PanelProvider);
   const [total, setTotal] = useState(30);
   const [showTotal, setShowTotal] = useState('');
-  const changePageNumber = useCallback(pageNumber => {
+  const changePageNumber = useCallback((pageNumber) => {
     contextActions.changePage(pageNumber);
   }, []);
 

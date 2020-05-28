@@ -36,6 +36,7 @@ export default class MysqlDatabaseService {
     };
     return apiRequestManagement.post<any, any>('/Actions/StartMySQLExplainJSON', body);
   }
+
   static getTraditionalExplainMysql({ database, service_id, query }) {
     const body = {
       database,

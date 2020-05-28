@@ -8,7 +8,7 @@ import FiltersContainer from '../components/Filters/Filters';
 import DataOutput from '../components/DataOutput/DataOutput';
 import Styling from '../../react-plugins-deps/components/helpers/styling';
 
-const QueryAnalyticsPanel = props => {
+const QueryAnalyticsPanel = (props) => {
   useEffect(() => Styling.addPluginPanelClass(), []);
   return (
     <UrlParametersProvider grafanaProps={props}>

@@ -4,9 +4,9 @@ import { getLabelQueryParams } from '../../../../panel/panel.tools';
 
 class OverviewTableService {
   static async getReport(body: OverviewServiceInterface) {
-    const columns = body.columns;
+    const { columns } = body;
     const request = {
-      columns: columns,
+      columns,
       group_by: body.groupBy,
       include_only_fields: [],
       keyword: '',

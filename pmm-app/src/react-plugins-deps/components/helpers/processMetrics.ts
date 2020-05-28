@@ -3,17 +3,15 @@ const getPercentOfTotal = (current, total) => {
   return +((+current[key] / +total[key]) * 100).toFixed(2);
 };
 
-const getSparkline = (sparklines, metricName) => {
-  return sparklines.map(sparkline => {
-    const key = Object.keys(sparkline).find(sparklineKey => sparklineKey.includes(metricName)) as string;
-    return {
-      point: sparkline.point,
-      time_frame: sparkline.time_frame,
-      timestamp: sparkline.timestamp,
-      [key]: sparkline[key],
-    };
-  });
-};
+const getSparkline = (sparklines, metricName) => sparklines.map((sparkline) => {
+  const key = Object.keys(sparkline).find((sparklineKey) => sparklineKey.includes(metricName)) as string;
+  return {
+    point: sparkline.point,
+    time_frame: sparkline.time_frame,
+    timestamp: sparkline.timestamp,
+    [key]: sparkline[key],
+  };
+});
 
 const sortDetails = (a, b) => {
   const order = [
@@ -45,16 +43,18 @@ export const processMetrics = (metricsCatalogue, metrics) => {
   // @ts-ignore
   const data = metrics.metrics ? metrics.metrics : metrics.totals;
   return Object.entries(data)
-    .filter(metricData => {
-      // @ts-ignore
-      return Object.keys(metricData[1]).length;
-    })
-    .filter(metricData => {
-      // @ts-ignore
-      return !(metricData[1]['cnt'] !== 0 && metricData[1]['sum'] === undefined);
-    })
+    .filter(
+      (metricData) =>
+        // @ts-ignore
+        Object.keys(metricData[1]).length,
+    )
+    .filter(
+      (metricData) =>
+        // @ts-ignore
+        !(metricData[1].cnt !== 0 && metricData[1].sum === undefined),
+    )
     .sort(sortDetails)
-    .map(metricData => {
+    .map((metricData) => {
       const [metricName] = metricData;
       const metric = data[metricName];
       const sparkline = getSparkline(metrics.sparkline, metricName);
@@ -65,16 +65,16 @@ export const processMetrics = (metricsCatalogue, metrics) => {
         pipeTypes: metricsCatalogue[metricName].pipeTypes,
         units: metricsCatalogue[metricName].units,
         complexMetric: metricsCatalogue[metricName].metricRelation(data),
-        sparkline: sparkline,
-        metric: metric,
-        total: total,
-        queryCount: data['num_queries'].sum,
+        sparkline,
+        metric,
+        total,
+        queryCount: data.num_queries.sum,
         percentOfTotal: getPercentOfTotal(metric, total),
         isRate: metric.rate >= 0,
         isSum: metric.sum >= 0,
         isStats: metric.avg >= 0,
         isLatencyChart: metric.min && metric.max,
-        metricName: metricName,
+        metricName,
       };
     });
 };

@@ -11,7 +11,9 @@ interface CheckboxFieldInterface {
   disabled?: boolean;
 }
 
-export const CheckboxField = ({ name, label, required, disabled }: CheckboxFieldInterface) => {
+export const CheckboxField = ({
+  name, label, required, disabled,
+}: CheckboxFieldInterface) => {
   const field = useField(name);
 
   return (
@@ -23,7 +25,7 @@ export const CheckboxField = ({ name, label, required, disabled }: CheckboxField
         required={required}
         disabled={disabled}
       />
-      <span className="checkbox-container__checkmark"></span>
+      <span className="checkbox-container__checkmark" />
       <span className="checkbox-container__label-text">{label}</span>
     </label>
   );

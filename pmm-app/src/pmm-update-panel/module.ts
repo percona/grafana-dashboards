@@ -2,6 +2,7 @@ import { MetricsPanelCtrl } from 'grafana/app/plugins/sdk';
 import AppEvents from 'grafana/app/core/app_events';
 import moment from 'moment';
 import $ from 'jquery';
+
 export class PanelCtrl extends MetricsPanelCtrl {
   /**
    * Urls to define panels templates
@@ -30,6 +31,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
     DONE: 'succeeded',
     ERROR: 'error',
   };
+
   /**
    * Possible errors during update process
    */
@@ -43,6 +45,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
    * Grafana param, define url of template that will be used for panel
    */
   static templateUrl: string = PanelCtrl.TEMPLATES.MAIN;
+
   /** @ngInject */
   constructor(public $scope, public $injector, public $http) {
     super($scope, $injector);
@@ -82,13 +85,13 @@ export class PanelCtrl extends MetricsPanelCtrl {
     const body = document.querySelector('body') as HTMLElement;
     const escKeyCode = 'Escape';
 
-    body.addEventListener('click', event => {
+    body.addEventListener('click', (event) => {
       if ($(event.target).hasClass('modal-backdrop') && $scope.canBeReloaded) {
         location.reload(true);
       }
     });
 
-    body.addEventListener('keydown', event => {
+    body.addEventListener('keydown', (event) => {
       $scope.keydownCode = event.code;
       event.key === escKeyCode && $scope.canBeReloaded ? location.reload(true) : event.stopPropagation();
     });
@@ -100,7 +103,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
   private update($scope, $http): void {
     const modalScope = $scope.$new(true);
     modalScope.isOutputShown = true;
-    $scope.$watch(newState => {
+    $scope.$watch((newState) => {
       modalScope.output = newState.output;
       modalScope.isChecked = newState.isChecked;
       modalScope.isUpdated = newState.isUpdated;
@@ -136,8 +139,8 @@ export class PanelCtrl extends MetricsPanelCtrl {
       method: 'POST',
       url: PanelCtrl.API.UPDATE_START,
     })
-      .then(response => {
-        const data = response.data;
+      .then((response) => {
+        const { data } = response;
         $scope.updateAuthToken = data.auth_token;
         $scope.updateLogOffset = 'log_offset' in data ? data.log_offset : 0;
         $scope.getLog($scope, $http);
@@ -168,28 +171,20 @@ export class PanelCtrl extends MetricsPanelCtrl {
       url: PanelCtrl.API.GET_CURRENT_VERSION,
       data: { force: false },
     })
-      .then(res => {
-        const data = res.data;
+      .then((res) => {
+        const { data } = res;
         $scope.nextVersion = data.latest.version || '';
         $scope.nextFullVersion = data.latest.full_version || '';
         $scope.lastCheckDate = data.last_check
-          ? moment(data.last_check)
-              .locale('en')
-              .format('MMMM DD, H:mm')
+          ? moment(data.last_check).locale('en').format('MMMM DD, H:mm')
           : '';
         $scope.version = data.installed.version || '';
         $scope.fullVersion = data.installed.full_version || '';
         $scope.currentReleaseDate = data.installed.timestamp
-          ? moment
-              .utc(data.installed.timestamp)
-              .locale('en')
-              .format('MMMM DD')
+          ? moment.utc(data.installed.timestamp).locale('en').format('MMMM DD')
           : '';
         $scope.newReleaseDate = data.latest.timestamp
-          ? moment
-              .utc(data.latest.timestamp)
-              .locale('en')
-              .format('MMMM DD')
+          ? moment.utc(data.latest.timestamp).locale('en').format('MMMM DD')
           : '';
         $scope.newsLink = data.latest_news_url || '';
         $scope.isUpdateAvailable = data.update_available || false;
@@ -218,20 +213,15 @@ export class PanelCtrl extends MetricsPanelCtrl {
       url: PanelCtrl.API.CHECK_FOR_UPDATE,
       data: { force: true },
     })
-      .then(res => {
-        const data = res.data;
+      .then((res) => {
+        const { data } = res;
         $scope.nextVersion = data.latest.version || '';
         $scope.nextFullVersion = data.latest.full_version || '';
         $scope.lastCheckDate = data.last_check
-          ? moment(data.last_check)
-              .locale('en')
-              .format('MMMM DD, H:mm')
+          ? moment(data.last_check).locale('en').format('MMMM DD, H:mm')
           : '';
         $scope.newReleaseDate = data.latest.timestamp
-          ? moment
-              .utc(data.latest.timestamp)
-              .locale('en')
-              .format('MMMM DD')
+          ? moment.utc(data.latest.timestamp).locale('en').format('MMMM DD')
           : '';
         $scope.newsLink = data.latest_news_url || '';
         $scope.isUpdateAvailable = data.update_available || false;
@@ -261,15 +251,15 @@ export class PanelCtrl extends MetricsPanelCtrl {
       url: PanelCtrl.API.UPDATE_STATUS,
       data: { auth_token: $scope.updateAuthToken, log_offset: $scope.updateLogOffset },
     })
-      .then(response => {
-        const data = response.data;
+      .then((response) => {
+        const { data } = response;
         $scope.isUpdated = 'done' in data ? data.done : false;
         $scope.updateLogOffset = 'log_offset' in data ? data.log_offset : 0;
-        $scope.output += data.log_lines.join('\n') + '\n';
+        $scope.output += `${data.log_lines.join('\n')}\n`;
         $scope.updateCntErrors = 0;
         window.setTimeout(this.getLog.bind(this, $scope, $http), 500);
       })
-      .catch(err => {
+      .catch((err) => {
         $scope.updateCntErrors++;
         $scope.errorMessage = err.message;
         window.setTimeout(this.getLog.bind(this, $scope, $http), 500);

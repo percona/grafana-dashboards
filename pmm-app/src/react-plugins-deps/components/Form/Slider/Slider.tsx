@@ -10,7 +10,9 @@ interface SliderFieldInterface {
   marks?: SliderMarks;
   tipFormatter?: (value: number) => string;
 }
-export const SliderField = ({ name, marks, style, tipFormatter }: SliderFieldInterface) => {
+export const SliderField = ({
+  name, marks, style, tipFormatter,
+}: SliderFieldInterface) => {
   const { input } = useField(name);
   return (
     <span className="fields__Slider-field" style={style || {}}>

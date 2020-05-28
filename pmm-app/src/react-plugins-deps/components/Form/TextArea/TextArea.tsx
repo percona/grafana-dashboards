@@ -2,6 +2,7 @@ import React from 'react';
 import { useField } from 'react-final-form';
 import { cx } from 'emotion';
 import './TextArea.scss';
+
 interface TextAreaFieldInterface {
   required?: boolean;
   name: string;
@@ -12,7 +13,9 @@ interface TextAreaFieldInterface {
   style?: any;
   className?: any;
 }
-export const TextAreaField = ({ name, placeholder, style, className }: TextAreaFieldInterface) => {
+export const TextAreaField = ({
+  name, placeholder, style, className,
+}: TextAreaFieldInterface) => {
   const { input, meta } = useField(name);
   return (
     <div className="text-area-field-wrapper">

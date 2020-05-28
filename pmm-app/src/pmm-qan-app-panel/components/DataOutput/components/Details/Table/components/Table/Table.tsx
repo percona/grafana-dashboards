@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
-import { useActionResult } from '../../../Details.hooks';
-import { databaseFactory } from '../../../database-models';
 import { Spin } from 'antd';
 import Highlight from 'react-highlight.js';
+import { useActionResult } from '../../../Details.hooks';
+import { databaseFactory } from '../../../database-models';
 
 // TODO: refactor example parameters passing
 
-const TableCreate = props => {
+const TableCreate = (props) => {
   const { tableName, databaseType, example } = props;
   const [showCreateTable, setActionId] = useActionResult();
 

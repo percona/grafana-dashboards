@@ -16,10 +16,14 @@ const { TabPane } = Tabs;
 const Details = () => {
   const {
     contextActions: { closeDetails },
-    panelState: { queryId, groupBy, fingerprint, controlSum, totals },
+    panelState: {
+      queryId, groupBy, fingerprint, controlSum, totals,
+    },
   } = useContext(PanelProvider);
   const {
-    detailsState: { databaseType, classicExplain, jsonExplain, examples, tables },
+    detailsState: {
+      databaseType, classicExplain, jsonExplain, examples, tables,
+    },
   } = useContext(DetailsProvider);
 
   useDetailsState();
@@ -69,10 +73,8 @@ const Details = () => {
   );
 };
 
-export default () => {
-  return (
-    <DetailsContentProvider>
-      <Details />
-    </DetailsContentProvider>
-  );
-};
+export default () => (
+  <DetailsContentProvider>
+    <Details />
+  </DetailsContentProvider>
+);

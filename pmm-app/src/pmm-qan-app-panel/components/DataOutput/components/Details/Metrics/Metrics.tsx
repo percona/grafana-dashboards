@@ -13,18 +13,16 @@ import { Info } from '../../../../../../react-plugins-deps/components/Elements/I
 
 const { Panel } = Collapse;
 
-const mainColumn = (text, item) => {
-  return (
-    <span className={Styling.metricColumn}>
-      <span>{item.name}</span>
-      <Tooltip title={item.tooltip} placement="leftTop">
-        <Info className={Styling.metricTooltipIcon} />
-      </Tooltip>
-    </span>
-  );
-};
+const mainColumn = (text, item) => (
+  <span className={Styling.metricColumn}>
+    <span>{item.name}</span>
+    <Tooltip title={item.tooltip} placement="leftTop">
+      <Info className={Styling.metricTooltipIcon} />
+    </Tooltip>
+  </span>
+);
 
-const rateColumn = totals => (text, item) => {
+const rateColumn = (totals) => (text, item) => {
   // @ts-ignore
   const polygonChartProps = {
     data: item.sparkline,
@@ -36,35 +34,32 @@ const rateColumn = totals => (text, item) => {
   return (
     <div className={Styling.metricColumn}>
       <span className={Styling.metricData}>
-        {(item.isRate ? Humanize.transform(item.metric.rate, item.pipeTypes['ratePipe']) : '0') +
-          ` ${item.units}`}
+        {`${item.isRate ? Humanize.transform(item.metric.rate, item.pipeTypes.ratePipe) : '0'} ${item.units}`}
       </span>
       <span className={Styling.sparkline}>{item.sparkline && <Sparkline {...polygonChartProps} />}</span>
     </div>
   );
 };
 
-const sumColumn = (text, item) => {
-  return (
-    <>
-      <div>
-        {item.isSum && (
-          <span className={Styling.sum}>
-            {Humanize.transform(item.metric.sum, item.pipeTypes['sumPipe']) || 0}
-          </span>
-        )}
-        {item.percentOfTotal ? (
-          <span className={Styling.percentOfTotal}>{`${item.percentOfTotal}% of total`}</span>
-        ) : null}
-      </div>
-      {item.complexMetric ? (
-        <div>
-          <span className={Styling.complexMetric}>{item.complexMetric}</span>
-        </div>
+const sumColumn = (text, item) => (
+  <>
+    <div>
+      {item.isSum && (
+        <span className={Styling.sum}>
+          {Humanize.transform(item.metric.sum, item.pipeTypes.sumPipe) || 0}
+        </span>
+      )}
+      {item.percentOfTotal ? (
+        <span className={Styling.percentOfTotal}>{`${item.percentOfTotal}% of total`}</span>
       ) : null}
-    </>
-  );
-};
+    </div>
+    {item.complexMetric ? (
+      <div>
+        <span className={Styling.complexMetric}>{item.complexMetric}</span>
+      </div>
+    ) : null}
+  </>
+);
 
 const perQueryStatsColumn = (text, item) => {
   const latencyChartProps = {
@@ -75,7 +70,7 @@ const perQueryStatsColumn = (text, item) => {
     <div className={Styling.metricColumn}>
       <span className={Styling.perQueryStats}>
         {item.metric.avg
-          ? Humanize.transform(item.metric.avg, item.pipeTypes['perQueryStatsPipe'])
+          ? Humanize.transform(item.metric.avg, item.pipeTypes.perQueryStatsPipe)
           : (+item.metric.sum / +item.queryCount).toFixed(2) || '0'}
       </span>
       {item.isLatencyChart && <Latency {...latencyChartProps} />}

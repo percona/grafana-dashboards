@@ -28,14 +28,12 @@ export const SelectField = ({
   return (
     <span className="fields__select-field" style={style || {}}>
       <Select {...input} defaultValue={defaultValue} style={{ width: '100%', height: '40px' }}>
-        {options &&
-          options.map(option => {
-            return (
-              <Option value={option.value} key={option.label}>
-                <div className="select-item">{option.label}</div>
-              </Option>
-            );
-          })}
+        {options
+          && options.map((option) => (
+            <Option value={option.value} key={option.label}>
+              <div className="select-item">{option.label}</div>
+            </Option>
+          ))}
       </Select>
     </span>
   );

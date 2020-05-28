@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import './DiscoveryPanel.scss';
+import { Spin } from 'antd';
 import DiscoveryService from './Discovery.service';
 import CredentialsForm from './CredentialsForm';
 import InstancesTable from './InstancesTable';
-import { Spin } from 'antd';
 
 interface DiscoverySearchPanelInterface {
   onSelectInstance: (instanceData: any) => void;
@@ -28,7 +28,7 @@ const DiscoveryPanel = (props: DiscoverySearchPanelInterface) => {
     };
     if (credentials.aws_secret_key && credentials.aws_access_key) {
       startLoading(true);
-      updateInstances().then(r => {});
+      updateInstances().then((r) => {});
     }
   }, [credentials]);
 

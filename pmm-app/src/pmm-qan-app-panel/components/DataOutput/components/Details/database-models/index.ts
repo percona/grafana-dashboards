@@ -3,7 +3,7 @@ import { Mysql } from './mysql';
 import { PostgreSQL } from './postgresql';
 import { Mongodb } from './mongodb';
 
-export const databaseFactory = databaseType => {
+export const databaseFactory = (databaseType) => {
   switch (databaseType) {
     case DATABASE.mysql:
       return new Mysql();

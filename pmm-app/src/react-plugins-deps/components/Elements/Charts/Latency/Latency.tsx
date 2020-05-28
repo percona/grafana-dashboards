@@ -10,9 +10,13 @@ interface LatencyChartState {
 
 export class Latency extends Component<any, LatencyChartState> {
   private width: number;
+
   private data: any[] | any;
+
   private measurement: string | undefined;
+
   private dataTooltip: string | undefined;
+
   constructor(props: any) {
     super(props as any);
     this.width = 200;
@@ -26,15 +30,13 @@ export class Latency extends Component<any, LatencyChartState> {
     this.drawChart(this.data);
     this.setState({ tooltip: this.dataTooltip });
   }
+
   drawChart(data) {
     // eslint-disable-next-line react/no-string-refs
     const chart = d3.select(this.refs.graphContainer);
     chart.selectAll('*').remove();
 
-    const svg = chart
-      .append('svg')
-      .attr('height', '20')
-      .attr('width', this.width);
+    const svg = chart.append('svg').attr('height', '20').attr('width', this.width);
 
     const x = scaleLog()
       .domain([0.00001, 10000])
@@ -42,7 +44,9 @@ export class Latency extends Component<any, LatencyChartState> {
       .clamp(true)
       .nice();
 
-    const { min = 0, max = 0, avg = 0, p99 = 0 } = data;
+    const {
+      min = 0, max = 0, avg = 0, p99 = 0,
+    } = data;
     const minStr = `⌜ Min: ${Humanize.transform(min, this.measurement)}`;
     const maxStr = `⌟ Max: ${Humanize.transform(max, this.measurement)}`;
     const avgStr = `◦ Avg: ${Humanize.transform(avg, this.measurement)}`;
@@ -64,32 +68,32 @@ export class Latency extends Component<any, LatencyChartState> {
     // hrLine
     g.append('line')
       .attr('class', 'latency-chart-line')
-      .attr('x1', x(min) + '')
+      .attr('x1', `${x(min)}`)
       .attr('y1', '13px')
-      .attr('x2', x(max) + '')
+      .attr('x2', `${x(max)}`)
       .attr('y2', '13px');
 
     // minMark
     g.append('line')
       .attr('class', 'latency-chart-min')
-      .attr('x1', x(min) + '')
+      .attr('x1', `${x(min)}`)
       .attr('y1', '13px')
-      .attr('x2', x(min) + '')
+      .attr('x2', `${x(min)}`)
       .attr('y2', '19px');
 
     // maxMark
     g.append('line')
       .attr('class', 'latency-chart-max')
-      .attr('x1', x(max) + '')
+      .attr('x1', `${x(max)}`)
       .attr('y1', '8px')
-      .attr('x2', x(max) + '')
+      .attr('x2', `${x(max)}`)
       .attr('y2', '13px');
 
     // avgMark
     g.append('circle')
       .attr('class', 'latency-chart-avg')
       .attr('r', 3)
-      .attr('cx', x(avg) + '')
+      .attr('cx', `${x(avg)}`)
       .attr('cy', '13px');
 
     // p99Mark
@@ -97,10 +101,11 @@ export class Latency extends Component<any, LatencyChartState> {
       g.append('circle')
         .attr('class', 'latency-chart-p95')
         .attr('r', 2)
-        .attr('cx', x(p99) + '')
+        .attr('cx', `${x(p99)}`)
         .attr('cy', '13px');
     }
   }
+
   render() {
     /* eslint-disable react/no-string-refs */
     return (
