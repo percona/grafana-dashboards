@@ -1,19 +1,11 @@
 import { apiRequestManagement } from '../../../../../../../react-plugins-deps/components/helpers/api';
 
 export default class PostgresqlDatabaseService {
-  static getPostgreSQLIndex({ service_id, table_name }) {
-    const body = {
-      service_id,
-      table_name,
-    };
+  static getPostgreSQLIndex(body) {
     return apiRequestManagement.post<any, any>('/Actions/StartPostgreSQLShowIndex', body);
   }
 
-  static getShowCreateTablePostgreSQL({ service_id, table_name }) {
-    const body = {
-      service_id,
-      table_name,
-    };
+  static getShowCreateTablePostgreSQL(body) {
     return apiRequestManagement.post<any, any>('/Actions/StartPostgreSQLShowCreateTable', body);
   }
 }
