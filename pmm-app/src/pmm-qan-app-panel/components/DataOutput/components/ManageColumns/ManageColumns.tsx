@@ -1,12 +1,11 @@
 import React, {
   useCallback, useContext, useEffect, useState,
 } from 'react';
-import { Divider, Icon, Select } from 'antd';
+import { Divider, Icon, Select, Tooltip } from 'antd';
 import { PanelProvider } from '../../../../panel/panel.provider';
-import './ManageColumns.scss';
 import { METRIC_CATALOGUE } from '../../../../panel/panel.constants';
-import Tooltip from 'antd/es/tooltip';
 import { Styling } from './ManageColumns.styles';
+import './ManageColumns.scss';
 
 const { Option } = Select;
 

@@ -18,7 +18,7 @@ export default class Mongodb {
   }
 
   static getExplains({
-    example, setActionIdTraditional, setActionIdJSON, setErrorText
+    example, setActionIdJSON, setErrorText
   }) {
     if (!('example' in example) || example.example === '') {
       setErrorText('Cannot display query explain without query example at this time.');

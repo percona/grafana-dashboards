@@ -20,10 +20,7 @@ class DetailsService {
     return apiRequestQAN.post<any, any>('/ObjectDetails/GetQueryExample', data);
   }
 
-  static getActionResult({ action_id }) {
-    const body = {
-      action_id,
-    };
+  static getActionResult(body) {
     return apiRequestManagement.post<any, any>('/Actions/Get', body);
   }
 }
