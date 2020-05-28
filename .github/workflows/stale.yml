@@ -1,0 +1,39 @@
+name: "Close stale issues"
+
+# Controls when the action will run. Scheduled to run at 00:00 UTC every day.
+on:
+  schedule:
+    - cron: "0 0 * * *"
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Close Stale Issues
+        uses: actions/stale@v3.0.0
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          # The message to post on the issue when tagging it. If none provided, will not mark issues stale.
+          stale-issue-message: >
+            This issue is stale because it has been open 60 days with no activity.
+            Remove `stale` label or assign `approved` label or comment, otherwise this will be closed in 5 days.
+          # The message to post on the pr when tagging it. If none provided, will not mark pull requests stale.
+          stale-pr-message: >
+            This pull request has been automatically marked as stale because it has not had
+            recent activity. It will be closed if no further activity occurs. Thank you
+            for your contributions.
+          # The number of days old an issue can be before marking it stale
+          days-before-stale: 60
+          # The number of days to wait to close an issue or pull request after it being marked stale. Set to -1 to never close stale issues
+          days-before-close: 5
+          # The label to apply when an issue is stale
+          stale-issue-label: stale
+          # The labels to apply when an issue is exempt from being marked stale. Separate multiple labels with commas (eg. "label1,label2")
+          exempt-issue-labels: approved
+          # The label to apply when a pull request is stale.
+          stale-pr-label: stale
+          # Remove stale labels from issues when they are updated or commented on.
+          remove-stale-when-updated: true
+          # Run the processor in debug mode without actually performing any operations on live issues.
+          debug-only: true

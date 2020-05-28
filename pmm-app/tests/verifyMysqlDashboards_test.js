@@ -47,7 +47,7 @@ Scenario(
   }
 ).retry(2);
 
-Scenario(
+xScenario(
   // eslint-disable-next-line max-len
   'Open the MySQL Table Details Dashboard and verify Disable Tablestats Report shows no Data @not-pr-pipeline',
   async (I, adminPage, mysqlTableDetailsPage) => {
