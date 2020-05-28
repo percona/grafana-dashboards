@@ -1,12 +1,7 @@
-import { GenericDatabase } from '../generic-database/generic-database';
 import PostgresqlDatabaseService from './service';
 
-export class PostgreSQL extends GenericDatabase {
-  constructor() {
-    super();
-  }
-
-  async getShowCreateTables({ example, tableName, setActionId }) {
+export default class PostgreSQL {
+  static async getShowCreateTables({ example, tableName, setActionId }) {
     if (!tableName) {
       return;
     }
@@ -17,7 +12,7 @@ export class PostgreSQL extends GenericDatabase {
     setActionId(action_id as string);
   }
 
-  async getIndexes({ example, tableName, setActionId }) {
+  static async getIndexes({ example, tableName, setActionId }) {
     if (!tableName) {
       return;
     }
@@ -27,6 +22,4 @@ export class PostgreSQL extends GenericDatabase {
     });
     setActionId(action_id as string);
   }
-
-  getStatuses() {}
 }

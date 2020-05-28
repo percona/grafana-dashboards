@@ -9,17 +9,19 @@ class FiltersService {
       period_start_from: from,
       period_start_to: to,
     });
-
     return markCheckedLabels(labels, paramLabels);
   }
 }
 
 const markCheckedLabels = (labels, paramLabels) => {
-  Object.keys(labels).forEach((label) => {
-    labels[label].name.forEach((metric) => {
+  Object.keys(labels).forEach(label => {
+    labels[label].name.forEach(metric => {
       const passedVariables = paramLabels[label];
       metric.checked = passedVariables;
-      passedVariables.some((variable) => {
+      if (!passedVariables) {
+        return;
+      }
+      passedVariables.some(variable => {
         if (!metric.value) {
           metric.value = '';
         }

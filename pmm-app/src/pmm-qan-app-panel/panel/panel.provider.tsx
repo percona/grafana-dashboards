@@ -41,8 +41,7 @@ const generateURL = (state) => {
     labels, columns, groupBy, queryId, orderBy,
   } = state;
   // @ts-ignore
-  const urlLabels = labels;
-  Object.keys(labels)
+  const urlLabels = Object.keys(labels)
     .map((key) => {
       // @ts-ignore
       const variables = labels[key];

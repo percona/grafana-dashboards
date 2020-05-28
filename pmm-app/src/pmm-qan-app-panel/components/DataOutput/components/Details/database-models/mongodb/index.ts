@@ -1,12 +1,7 @@
-import { GenericDatabase } from '../generic-database/generic-database';
 import { MongoDBService } from './service';
 
-export class Mongodb extends GenericDatabase {
-  constructor() {
-    super();
-  }
-
-  async getExplainJSON({ example, setActionId }) {
+export default class Mongodb {
+  static async getExplainJSON({ example, setActionId }) {
     try {
       // setLoading(true);
       const { action_id } = await MongoDBService.getTraditionalExplainJSONMongo({
@@ -22,7 +17,7 @@ export class Mongodb extends GenericDatabase {
     }
   }
 
-  getExplains({
+  static getExplains({
     example, setActionIdTraditional, setActionIdJSON, setErrorText,
   }) {
     if (!('example' in example) || example.example === '') {

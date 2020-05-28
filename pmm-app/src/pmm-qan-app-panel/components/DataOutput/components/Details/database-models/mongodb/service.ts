@@ -1,7 +1,6 @@
 import { apiRequestManagement } from '../../../../../../../react-plugins-deps/components/helpers/api';
-import { GenericDatabase } from '../generic-database/generic-database';
 
-export class MongoDBService extends GenericDatabase {
+export class MongoDBService {
   static getTraditionalExplainJSONMongo({ pmm_agent_id, service_id, query }) {
     const body = {
       pmm_agent_id,

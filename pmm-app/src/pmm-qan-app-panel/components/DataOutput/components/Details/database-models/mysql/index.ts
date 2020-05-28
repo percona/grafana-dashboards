@@ -1,12 +1,7 @@
-import { GenericDatabase } from '../generic-database/generic-database';
 import MysqlDatabaseService from './service';
 
-export class Mysql extends GenericDatabase {
-  constructor() {
-    super();
-  }
-
-  async getShowCreateTables({ example, tableName, setActionId }) {
+export default class Mysql {
+  static async getShowCreateTables({ example, tableName, setActionId }) {
     if (!tableName) {
       return;
     }
@@ -18,7 +13,7 @@ export class Mysql extends GenericDatabase {
     setActionId(action_id as string);
   }
 
-  async getIndexes({ example, tableName, setActionId }) {
+  static async getIndexes({ example, tableName, setActionId }) {
     if (!tableName) {
       return;
     }
@@ -30,7 +25,7 @@ export class Mysql extends GenericDatabase {
     setActionId(action_id as string);
   }
 
-  async getStatuses({ example, tableName, setActionId }) {
+  static async getStatuses({ example, tableName, setActionId }) {
     if (!tableName) {
       return;
     }
@@ -42,7 +37,7 @@ export class Mysql extends GenericDatabase {
     setActionId(action_id as string);
   }
 
-  async getExplainJSON({ example, setActionId }) {
+  static async getExplainJSON({ example, setActionId }) {
     try {
       const { action_id } = await MysqlDatabaseService.getTraditionalExplainJSONMysql({
         database: example.schema,
@@ -57,7 +52,7 @@ export class Mysql extends GenericDatabase {
     }
   }
 
-  async getExplainTraditional({ example, setActionId }) {
+  static async getExplainTraditional({ example, setActionId }) {
     try {
       const { action_id } = await MysqlDatabaseService.getTraditionalExplainMysql({
         database: example.schema,
@@ -72,7 +67,7 @@ export class Mysql extends GenericDatabase {
     }
   }
 
-  getExplains({
+  static getExplains({
     example, setActionIdTraditional, setActionIdJSON, setErrorText,
   }) {
     if (!('example' in example) || example.example === '') {
