@@ -14,16 +14,12 @@ module.exports = {
     metricTitle: "//div[@class='panel-title']",
     reportTitleWithNA:
       "//span[contains(text(), 'N/A')]//ancestor::div[contains(@class,'panel-container')]//span[contains(@class,'panel-title-text')]",
-    sttDisabledFailedChecksPanelSelector: "//div[@data-qa='db-check-panel-settings-link']",
-    sttFailedChecksPanelSelector:"//div[@data-qa='db-check-panel-has-checks']",
-    checksPanelSelector:"//div[@data-qa='db-check-panel-home']",
-    pmmDropdownMenuSelector: "//a[@data-toggle='dropdown']/span[text()='PMM']",
-
+    pmmDropdownMenuSelector: locate('a[data-toggle="dropdown"] > span').withText('PMM')
   },
 
   // introducing methods
   dropdownMenuItemLocator(title) {
-    return (`//ul/li/a[text()='${title}']`)
+    return locate('ul > li > a').withText(title);
   },
 
   selectItemFromPMMDropdown(title){
