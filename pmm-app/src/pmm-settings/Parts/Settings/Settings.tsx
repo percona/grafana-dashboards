@@ -3,6 +3,7 @@ import { Collapse } from 'antd';
 import { Form as FormFinal } from 'react-final-form';
 import { css } from 'emotion';
 import { showSuccessNotification, PluginTooltip } from 'react-plugins-deps/components/helpers';
+import Validators from 'react-plugins-deps/components/validators/validators';
 import {
   Button,
   FormElement,
@@ -10,7 +11,6 @@ import {
   SliderField,
   ToggleField,
 } from 'react-plugins-deps/components/FormComponents';
-import Validators from '../../../react-plugins-deps/components/validators/validators';
 import { SettingsService } from '../../Settings.service';
 import { GUI_DOC_URL } from '../../panel.constants';
 import './Settings.scss';
@@ -154,11 +154,13 @@ const SettingsPart = props => {
           });
         }, [settings]);
 
+        const { values } = form.getState();
+
         return (
           <form onSubmit={handleSubmit}>
             <>
               <FormElement
-                data-qa="form-field-metrics"
+                dataQa="form-field-metrics"
                 label="Metrics resolution"
                 tooltip={
                   <PluginTooltip
@@ -190,7 +192,7 @@ const SettingsPart = props => {
               >
                 <Panel header="Advanced settings " key="1" className={style.panel}>
                   <FormElement
-                    data-qa="form-field-data-retention"
+                    dataQa="form-field-data-retention"
                     label="Data retention (days)"
                     tooltip={
                       <PluginTooltip
@@ -214,7 +216,7 @@ const SettingsPart = props => {
                     }
                   />
                   <FormElement
-                    data-qa="form-field-telemetry"
+                    dataQa="form-field-telemetry"
                     label="Telemetry"
                     type="horizontal"
                     tooltip={
@@ -228,12 +230,10 @@ const SettingsPart = props => {
                         text="Option to send usage data back to Percona to let us make our product better"
                       />
                     }
-                    element={
-                      <ToggleField name="telemetry_enabled" disabled={form.getState().values.stt_enabled} />
-                    }
+                    element={<ToggleField name="telemetry_enabled" disabled={values.stt_enabled} />}
                   />
                   <FormElement
-                    data-qa="form-field-check-for-updates"
+                    dataQa="form-field-check-for-updates"
                     label="Check for updates"
                     type="horizontal"
                     tooltip={
@@ -263,9 +263,7 @@ const SettingsPart = props => {
                         text="Enable Security Threat Tool and get updated checks from Percona"
                       />
                     }
-                    element={
-                      <ToggleField name="stt_enabled" disabled={!form.getState().values.telemetry_enabled} />
-                    }
+                    element={<ToggleField name="stt_enabled" disabled={!values.telemetry_enabled} />}
                   />
                 </Panel>
               </Collapse>
