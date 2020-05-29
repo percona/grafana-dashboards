@@ -31,9 +31,7 @@ describe('Failed::', () => {
   it('should render a message when the user only has reader access', () => {
     const root = shallow(<Failed failed={[1, 0, 1]} isSttEnabled hasNoAccess />);
 
-    expect(root.find('[data-qa="db-check-panel-no-access"]').text()).toEqual(
-      'Insufficient access rights.Please contact the administrator.'
-    );
+    expect(root.find('[data-qa="db-check-panel-no-access"]').text()).toEqual('Insufficient access rights.');
     root.unmount();
   });
 });
