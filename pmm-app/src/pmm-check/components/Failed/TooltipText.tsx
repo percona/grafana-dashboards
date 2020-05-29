@@ -17,19 +17,23 @@ export const TooltipText: FC<TooltipTextProps> = ({ sum, data }) => {
     <div className={styles.TooltipWrapper}>
       <div className={styles.TooltipHeader}>
         Failed checks:
+        {' '}
         {sum}
       </div>
       <div className={styles.TooltipBody}>
         <div>
           Critical &ndash;
+          {' '}
           {critical}
         </div>
         <div>
           Major &ndash;
+          {' '}
           {major}
         </div>
         <div>
           Trivial &ndash;
+          {' '}
           {trivial}
         </div>
       </div>

@@ -211,6 +211,7 @@ export const UrlParametersProvider = ({ grafanaProps, children }) => {
   useEffect(() => {
     refreshGrafanaVariables(panelState);
     const newUrl = generateURL(panelState);
+    // eslint-disable-next-line no-restricted-globals
     history.pushState({}, 'test', newUrl);
   }, [panelState]);
 

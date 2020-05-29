@@ -13,12 +13,14 @@ export const TableHeader: FC<TableHeaderProps> = ({ columns }) => {
     <>
       <colgroup>
         {widths.map((width, key) => (
+          // eslint-disable-next-line react/no-array-index-key
           <col key={key} style={width ? { width: `${width}px`, minWidth: `${width}px` } : {}} />
         ))}
       </colgroup>
       <thead>
         <tr>
           {titles.map((title, key) => (
+            // eslint-disable-next-line react/no-array-index-key
             <th key={key}>{title}</th>
           ))}
         </tr>
