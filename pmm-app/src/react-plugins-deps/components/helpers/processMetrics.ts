@@ -47,9 +47,14 @@ export const processMetrics = (metricsCatalogue, metrics) => {
       (metricData) => Object.keys(metricData[1]).length
     )
     .filter(
-      (metricData) =>
+      (metricData) => {
         // @ts-ignore
-        !(metricData[1].cnt !== 0 && metricData[1].sum === undefined),
+        const notZeroCount = metricData[1].cnt !== 0;
+        // @ts-ignore
+        const notSum = metricData[1].sum === undefined;
+        return !(notZeroCount && notSum);
+      }
+
     )
     .sort(sortDetails)
     .map((metricData) => {

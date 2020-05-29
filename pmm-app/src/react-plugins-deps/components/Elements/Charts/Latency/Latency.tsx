@@ -36,7 +36,10 @@ export class Latency extends Component<any, LatencyChartState> {
     const chart = d3.select(this.refs.graphContainer);
     chart.selectAll('*').remove();
 
-    const svg = chart.append('svg').attr('height', '20').attr('width', this.width);
+    const svg = chart
+      .append('svg')
+      .attr('height', '20')
+      .attr('width', this.width);
 
     const x = scaleLog()
       .domain([0.00001, 10000])
@@ -45,7 +48,7 @@ export class Latency extends Component<any, LatencyChartState> {
       .nice();
 
     const {
-      min = 0, max = 0, avg = 0, p99 = 0,
+      min = 0, max = 0, avg = 0, p99 = 0
     } = data;
     const minStr = `⌜ Min: ${Humanize.transform(min, this.measurement)}`;
     const maxStr = `⌟ Max: ${Humanize.transform(max, this.measurement)}`;
@@ -108,11 +111,13 @@ export class Latency extends Component<any, LatencyChartState> {
 
   render() {
     /* eslint-disable react/no-string-refs */
+    const { className } = this.props;
+    const { tooltip } = this.state;
     return (
       <div
-        className={`${this.props.className || ''} d3-bar-chart-container app-tooltip`}
+        className={`${className || ''} d3-bar-chart-container app-tooltip`}
         ref="graphContainer"
-        data-tooltip={this.state.tooltip}
+        data-tooltip={tooltip}
       />
     );
   }

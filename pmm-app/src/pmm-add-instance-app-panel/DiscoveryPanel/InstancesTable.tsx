@@ -64,7 +64,9 @@ const InstancesTable = (props) => {
         }
         return (
           <a
-            onClick={() => onSelectInstance({ type, credentials: { ...{ ...element, ...credentials }, isRDS: true } })}
+            onClick={() => {
+              onSelectInstance({ type, credentials: { ...{ ...element, ...credentials }, isRDS: true } });
+            }}
           >
             Start monitoring
           </a>

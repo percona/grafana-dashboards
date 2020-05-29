@@ -10,7 +10,7 @@ import '../react-plugins-deps/style.less';
 import '../react-plugins-deps/styles.scss';
 
 const history = createBrowserHistory();
-const AddInstancePanel = (props) => {
+const AddInstancePanel = () => {
   const urlParams = new URLSearchParams(window.location.search);
   const instanceType = urlParams.get('instance_type') || '';
   const availableInstanceTypes = ['rds', 'postgresql', 'mysql', 'proxysql', 'mongodb', 'proxysql'];
@@ -30,7 +30,7 @@ const AddInstancePanel = (props) => {
       {!selectedInstance.type ? <AddInstance onSelectInstanceType={setSelectedInstance} /> : null}
       {selectedInstance.type && (
         <>
-          <Button type="link" onClick={setSelectedInstance.bind(null, { type: '' })}>
+          <Button type="link" onClick={() => setSelectedInstance({ type: '' })}>
             Return to instance select menu
           </Button>
           {selectedInstance.type === 'rds' ? (
