@@ -4,7 +4,7 @@ Before(async (I, qanPage, adminPage) => {
   I.Authorize();
 
   I.amOnPage(`${qanPage.url}?from=now-5m&to=now`);
-  //this two elements should be changed after new QAN
+  // TODO: these two elements should be changed once new QAN is merged
   await I.waitForElement(qanPage.fields.iframe, 60);
   await I.switchTo(qanPage.fields.iframe);
 });
