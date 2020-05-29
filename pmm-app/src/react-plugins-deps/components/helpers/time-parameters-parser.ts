@@ -8,10 +8,10 @@ export class MomentFormatPipe {
   timezone = 'browser';
 
   constructor() {
-    this.timezone = this.getCookie('timezone') || 'browser';
+    this.timezone = MomentFormatPipe.getCookie('timezone') || 'browser';
   }
 
-  getCookie(name) {
+  static getCookie(name) {
     return document.cookie.split('; ').reduce((r, v) => {
       const parts = v.split('=');
       return parts[0] === name ? decodeURIComponent(parts[1]) : r;

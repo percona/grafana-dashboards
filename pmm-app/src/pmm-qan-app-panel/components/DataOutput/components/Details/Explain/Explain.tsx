@@ -22,19 +22,17 @@ const Explain = ({ classicExplain, jsonExplain, databaseType }) => {
           <Panel header="Classic" key="1" className={Styling.panel}>
             <Spin spinning={classicExplain.loading}>
               {classicExplain.error ? <pre>{classicExplain.error}</pre> : null}
-              {!classicExplain.error && !classicExplain.loading ? (
-                data.rows.length ? (
-                  <Table
-                    dataSource={data.rows}
-                    columns={data.columns}
-                    pagination={false}
-                    size="small"
-                    bordered
-                  />
-                ) : (
-                  <pre>No classic explains found</pre>
-                )
+              {!classicExplain.error && !classicExplain.loading && data.rows.length ? (
+                <Table
+                  dataSource={data.rows}
+                  columns={data.columns}
+                  pagination={false}
+                  size="small"
+                  bordered
+                />
               ) : null}
+              {/* eslint-disable-next-line max-len */}
+              {!classicExplain.error && !classicExplain.loading && !data.rows.length ? <pre>No classic explains found</pre> : null}
             </Spin>
           </Panel>
         ) : null}

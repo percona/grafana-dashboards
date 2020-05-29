@@ -106,6 +106,7 @@ const setLabels = (filters) => Object.keys(filters)
   }, {});
 
 const actions = {
+  // eslint-disable-next-line max-len
   setLabels: (value) => (state) => omit({ ...state, labels: setLabels(value), pageNumber: 1 }, ['queryId', 'querySelected']),
   resetLabels: () => (state) => omit({ ...state, labels: {}, pageNumber: 1 }, ['queryId', 'querySelected']),
   selectQuery: (value, totals) => (state) => ({

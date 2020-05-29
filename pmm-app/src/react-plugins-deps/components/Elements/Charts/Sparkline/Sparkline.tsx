@@ -6,10 +6,10 @@ import {
   area, axisBottom, curveStepAfter, scaleLinear,
 } from 'd3';
 import * as moment from 'moment';
+import ReactTooltip from 'react-tooltip';
 import { Humanize } from '../../../helpers/Humanization';
 import './Sparkline.scss';
 import { PolygonChartInterface } from './Sparkline.types';
-import ReactTooltip from 'react-tooltip';
 
 const getMetricSparklineKey = (metricName) => {
   switch (metricName) {
@@ -28,18 +28,16 @@ const getMetricSparklineKey = (metricName) => {
 
 export const Sparkline = ({
   appLoadPolygonChart,
-  margin,
+  margin = 0,
   height,
-  width,
+  width = 300,
+  height = 30,
   metricName,
   data,
   color = 'rgba(255, 239, 168, 0.8)',
 }: PolygonChartInterface) => {
   const xkey = 'timestamp';
   const ykey = getMetricSparklineKey(metricName);
-  margin = 0;
-  width = width || 300;
-  height = height || 30;
   appLoadPolygonChart = [...data] || [];
 
   const getAdditionalPoint = (last, previous) => new Date(
@@ -121,7 +119,7 @@ export const Sparkline = ({
 
     const bisectDate = d3.bisector((d, x) => +moment.utc(d[xkey]).isBefore(x)).right;
 
-    svg.on('mousemove', (d, i) => {
+    svg.on('mousemove', () => {
       const coords = d3.mouse(d3.event.currentTarget);
       const mouseDate = moment.utc(scaleX.invert(coords[0]));
 
@@ -133,16 +131,17 @@ export const Sparkline = ({
       const endPoint = appLoadPolygonChart[indexOfStartPoint - 1];
       const focusPointsRange = [hoveredPoint, endPoint];
       const activeArea: any = focusPointsRange.map(
-        (item) => new Object({
+        (item) => ({
           x: scaleX(moment.utc(item[xkey])) || 0,
           y:
-              scaleY(isMetricExists(endPoint[ykey]) ? 0 : Math.max(maxY / 15, endPoint[ykey]) || 0)
-                + margin || 0,
+            scaleY(isMetricExists(endPoint[ykey]) ? 0 : Math.max(maxY / 15, endPoint[ykey]) || 0)
+            + margin || 0,
         }),
       );
       const value = isMetricExists(endPoint[ykey]) ? 0 : endPoint[ykey];
       const dateToShow = moment(endPoint[xkey]).format('YYYY-MM-DD HH:mm:ss');
 
+      // eslint-disable-next-line max-len
       const isTimeBased = metricName.endsWith('_time') || metricName.endsWith('_wait') || metricName === 'load';
       const load = Humanize.transform(value, 'number');
 

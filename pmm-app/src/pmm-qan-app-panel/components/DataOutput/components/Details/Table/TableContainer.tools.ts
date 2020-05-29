@@ -11,8 +11,8 @@ export const processTableData = (input): { columns: any[]; rows: any[] } => {
   const rowsList = data.map((item) => item
     .map((e) => (String(e) ? String(e).trim() : 'NULL'))
     .filter(Boolean)
-    .reduce((acc, item, index) => {
-      acc[headerList[index].title] = item;
+    .reduce((acc, row, index) => {
+      acc[headerList[index].title] = row;
       return acc;
     }, {}));
   return { columns: headerList, rows: rowsList };
