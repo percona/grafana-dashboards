@@ -123,6 +123,7 @@ Scenario('Verify Main Metric change reflects in URL @not-pr-pipeline', async (I,
   qanPage.verifyURLContains(qanPage.urlParts.lockTime);
 });
 
+// TODO: Uncomment after new QAN will be merged
 xScenario(
   'PMM-T175 - Verify user is able to apply filter that has dots in label @not-pr-pipeline',
   async (I, qanPage) => {
@@ -137,6 +138,7 @@ xScenario(
   }
 );
 
+// TODO: Uncomment after new QAN will be merged
 xScenario(
   'PMM-T172 - Verify that selecting a filter updates the table data and URL  @not-pr-pipeline',
   async (I, qanPage) => {
@@ -151,6 +153,7 @@ xScenario(
   }
 );
 
+// TODO: Uncomment after new QAN will be merged
 xScenario('PMM-T126 - Verify user is able to Reset All filters @not-pr-pipeline', async (I, qanPage) => {
   const service_name = 'ps_5.7_0.0.0.0_1';
   const environmentName = 'ps-dev';
@@ -164,6 +167,7 @@ xScenario('PMM-T126 - Verify user is able to Reset All filters @not-pr-pipeline'
   I.waitForVisible(qanPage.fields.resetAll + ':disabled', 20);
 });
 
+// TODO: Uncomment after new QAN will be merged
 xScenario(
   'PMM-T124 - Verify User is able to show all and show top 5 values for filter section @not-pr-pipeline',
   async (I, qanPage) => {
@@ -178,6 +182,7 @@ xScenario(
   }
 );
 
+// TODO: Uncomment after new QAN will be merged
 xScenario(
   'PMM-T125 - Verify user is able to Show only selected filter values and Show All filter values',
   async (I, qanPage) => {
@@ -194,6 +199,7 @@ xScenario(
   }
 );
 
+// TODO: Uncomment after new QAN will be merged
 xScenario('PMM-T123 - Verify User is able to search for filter value', async (I, qanPage) => {
   const filters = [
     'ps-prod',
