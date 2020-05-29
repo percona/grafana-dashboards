@@ -359,11 +359,7 @@ module.exports = {
     const countOfFiltersInSection = await I.grabNumberOfVisibleElements(
       `//span[contains(text(), '${filterSection}')]/parent::p/following-sibling::div/span/label[contains(@class, 'checkbox-container checkbox-container--main')]`
     );
-    assert.equal(
-      countOfFiltersInSection,
-      expectedCount,
-      `There should be '${expectedCount}' visible links`
-    );
+    assert.equal(countOfFiltersInSection, expectedCount, `There should be '${expectedCount}' visible links`);
   },
 
   async getCountOfFilters(filterSection) {
