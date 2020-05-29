@@ -58,7 +58,7 @@ module.exports = {
     newQANSpinnerLocator: "//i[@class='fa fa-spinner fa-spin spinner ant-spin-dot']",
     showSelected: "//*[@id='query-analytics-filters']/div/div/form/div/div[1]/button[1]",
     filterBy: "//input[@class='ant-input']",
-    showTop5OrAllLink: "//span[contains(@class, 'css-lljzu5') and contains(text(), '",
+    filterCheckboxes: '.checkbox-container__checkmark',
   },
 
   filterGroupLocator(filterName) {
@@ -359,9 +359,10 @@ module.exports = {
   },
 
   async verifyFiltersSection(filterSection, expectedCount) {
-    const selectedPart = this.fields.showTop5OrAllLink + filterSection + "')]";
+    const selectedPart = "//span[contains(text(), '" + filterSection + "')]";
     let countOfFiltersInSection = await I.grabNumberOfVisibleElements(
-      selectedPart + "/parent::p/following-sibling::div[contains(@class, 'css-180k0fv')]"
+      selectedPart +
+        "/parent::p/following-sibling::div/span/label[contains(@class, 'checkbox-container checkbox-container--main')]"
     );
     assert.equal(
       countOfFiltersInSection,
@@ -372,7 +373,9 @@ module.exports = {
 
   async getCountOfFilters(filterSection) {
     const showAllLink =
-      this.fields.showTop5OrAllLink + filterSection + "')]/following-sibling::span[@class='css-9r0iio']";
+      "//span[contains(text(), '" +
+      filterSection +
+      "')]/following-sibling::span[contains(text(), 'Show all')]";
     let showAllCount = await I.grabTextFrom(showAllLink);
     let count = showAllCount.slice(10, 12);
     return count;
@@ -380,16 +383,18 @@ module.exports = {
 
   applyShowAllLink(filterSection) {
     const showAllLink =
-      this.fields.showTop5OrAllLink + filterSection + "')]/following-sibling::span[@class='css-9r0iio']";
+      "//span[contains(text(), '" +
+      filterSection +
+      "')]/following-sibling::span[contains(text(), 'Show all')]";
     I.waitForVisible(showAllLink, 30);
     I.click(showAllLink);
   },
 
   async applyShowTop5Link(filterSection) {
     const showTop5Link =
-      this.fields.showTop5OrAllLink +
+      "//span[contains(text(), '" +
       filterSection +
-      "')]/following-sibling::span[contains(@class,'css-9r0iio') and contains(text(), 'Show top 5')]";
+      "')]/following-sibling::span[contains(text(), 'Show top 5')]";
     I.waitForVisible(showTop5Link, 30);
     let top5Link = await I.grabTextFrom(showTop5Link);
     assert.equal(top5Link, 'Show top 5', 'Link is not correct');
@@ -397,8 +402,7 @@ module.exports = {
   },
 
   async verifyCountOfFilterLinks(expectedCount, before) {
-    const links = "//div[contains(@class, 'css-180k0fv')]";
-    let count = await I.grabNumberOfVisibleElements(links);
+    let count = await I.grabNumberOfVisibleElements(this.fields.filterCheckboxes);
     if (before === false) {
       assert.equal(count, expectedCount);
     }
