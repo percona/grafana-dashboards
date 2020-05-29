@@ -14,17 +14,17 @@ module.exports = {
     dashboardHeaderText: 'Percona Monitoring and Management',
     dashboardHeaderLocator: "//div[contains(@class, 'dashboard-header')]",
     checkUpdateButton: "#refresh",
-    triggerUpdate: "//button[@ng-click='update()']",
-    updateProgressModal: "//div[@class='modal-content']",
-    reloadButtonAfterUpgrade: "//button[@ng-click='reloadAfterUpdate()']",
-    pmmUpdateWidget: "//div[@id='pmm-update-widget']",
-    upToDateLocator: "//section[@class='state']/p[text() = 'You are up to date']",
-    availableVersion: "//div[@id='available_version']/div/p",
-    currentVersion: "//p[@id='current_version']/span",
-    lastCheckSelector: "//div[@class='last-check-wrapper']",
-    sttDisabledFailedChecksPanelSelector: "//div[@data-qa='db-check-panel-settings-link']",
-    sttFailedChecksPanelSelector:"//div[@data-qa='db-check-panel-has-checks']",
-    checksPanelSelector:"//div[@data-qa='db-check-panel-home']",
+    lastCheckSelector: ".last-check-wrapper > p",
+    triggerUpdate: "button[ng-click='update()']",
+    updateProgressModal: ".modal-content",
+    reloadButtonAfterUpgrade: "button[ng-click='reloadAfterUpdate()'",
+    pmmUpdateWidget: "#pmm-update-widget",
+    upToDateLocator: locate('p').withText('You are up to date').inside('.state'),
+    availableVersion: "#available_version > div > p",
+    currentVersion: "#current_version > span",
+    sttDisabledFailedChecksPanelSelector: "$db-check-panel-settings-link",
+    sttFailedChecksPanelSelector: "$db-check-panel-has-checks",
+    checksPanelSelector: "$db-check-panel-home",
 
   },
 
@@ -50,7 +50,11 @@ module.exports = {
     );
   },
 
-  // Refreshing page until results appear
+  /*
+   Refreshing page (30 times refresh timeout) until checks appear
+   Alertmanager receives checks results every 30 seconds
+   So 30 tries should be enough to get results
+   */
   async waitForCheckResultsToAppearInPanel() {
     let results;
     let disabledSTT;
@@ -83,19 +87,20 @@ module.exports = {
     I.dontSeeElement(this.fields.upToDateLocator);
     I.seeElement(this.fields.currentVersion);
     I.seeElement(this.fields.checkUpdateButton);
-    I.see('Last check:',`${this.fields.checkUpdateButton}/../preceding-sibling::p`);
+    I.see('Last check:',this.fields.checkUpdateButton);
     assert.notEqual(await I.grabTextFrom(this.fields.availableVersion),
         await I.grabTextFrom(this.fields.currentVersion), 'Available and Current versions match');
   },
 
   verifyPostUpdateWidgetIsPresent() {
     I.waitForVisible(this.fields.pmmUpdateWidget, 30);
+    I.waitForVisible(this.fields.upToDateLocator, 30);
     I.dontSeeElement(this.fields.availableVersion);
     I.dontSeeElement(this.fields.triggerUpdate);
     I.seeElement(this.fields.upToDateLocator);
     I.seeElement(this.fields.currentVersion);
     I.seeElement(this.fields.checkUpdateButton);
-    I.see('Last check:' , `${this.fields.checkUpdateButton}/../preceding-sibling::p`);
+    I.see('Last check:' , this.fields.lastCheckSelector);
   },
 
   async verifyVisibleService(serviceName) {

@@ -1,4 +1,5 @@
 Feature('Database Failed Checks');
+const config = require('../pr.codecept.js').config.helpers.Playwright;
 
 Before( async (I, pmmSettingsPage) => {
     I.Authorize();
@@ -23,7 +24,9 @@ Scenario(
         I.waitForVisible(databaseChecksPage.fields.dbCheckPanelSelector, 30);
         I.waitForVisible(databaseChecksPage.fields.disabledSTTMessageSelector, 30);
         I.see(databaseChecksPage.messages.disabledSTTMessage, databaseChecksPage.fields.disabledSTTMessageSelector);
-        I.seeElement(`${databaseChecksPage.fields.disabledSTTMessageSelector}/a`)
+        I.seeElement(databaseChecksPage.fields.disabledSTTMessageLinkSelector);
+        I.seeAttributesOnElements(databaseChecksPage.fields.disabledSTTMessageLinkSelector,
+        { href: `${config.url}${pmmSettingsPage.url}` });
     }
 );
 
