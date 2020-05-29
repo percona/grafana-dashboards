@@ -359,7 +359,7 @@ module.exports = {
   },
 
   async verifyFiltersSection(filterSection, expectedCount) {
-    const selectedPart = "//span[contains(text(), '" + filterSection + "')]";
+    const selectedPart = `//span[contains(text(), '${filterSection}')]`;
     const countOfFiltersInSection = await I.grabNumberOfVisibleElements(
       selectedPart +
         "/parent::p/following-sibling::div/span/label[contains(@class, 'checkbox-container checkbox-container--main')]"
@@ -403,10 +403,10 @@ module.exports = {
 
   async verifyCountOfFilterLinks(expectedCount, before) {
     const count = await I.grabNumberOfVisibleElements(this.fields.filterCheckboxes);
-    if (before === false) {
+    if (!before) {
       assert.equal(count, expectedCount);
     }
-    if (before === true) {
+    if (before) {
       assert.notEqual(count, expectedCount);
     }
   },
