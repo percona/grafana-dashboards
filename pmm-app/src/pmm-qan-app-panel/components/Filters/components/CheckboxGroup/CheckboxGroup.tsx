@@ -39,7 +39,7 @@ export const CheckboxGroup = ({
     })
     .filter(searchFilter)
     .map((item) => {
-      const valueExists = item.hasOwnProperty('main_metric_percent');
+      const valueExists = item.main_metric_percent !== undefined;
       return (
         <div className={Styling.label} key={`${group}:${item.value || ''}`}>
           <span className={Styling.filterName}>

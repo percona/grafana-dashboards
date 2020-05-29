@@ -45,6 +45,7 @@ export const useOverviewTable = (setTotal): [DataInterface, boolean] => {
         setTotal(result.total_rows);
         const defaultColumns = getDefaultColumns(groupBy, pageNumber, pageSize, columns.length, onCell);
 
+        // eslint-disable-next-line max-len
         const metricsColumns = columns.map((key, index) => getOverviewColumn(key, index, result.rows[0], orderBy));
 
         // @ts-ignore

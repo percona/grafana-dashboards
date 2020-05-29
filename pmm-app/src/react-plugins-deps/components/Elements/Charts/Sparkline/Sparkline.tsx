@@ -27,9 +27,7 @@ const getMetricSparklineKey = (metricName) => {
 };
 
 export const Sparkline = ({
-  appLoadPolygonChart,
   margin = 0,
-  height,
   width = 300,
   height = 30,
   metricName,
@@ -38,7 +36,7 @@ export const Sparkline = ({
 }: PolygonChartInterface) => {
   const xkey = 'timestamp';
   const ykey = getMetricSparklineKey(metricName);
-  appLoadPolygonChart = [...data] || [];
+  const appLoadPolygonChart = [...data] || [];
 
   const getAdditionalPoint = (last, previous) => new Date(
     (+moment.utc(last) || 0) - ((+moment.utc(previous) || 0) - (+moment.utc(last) || 0)),
@@ -57,13 +55,13 @@ export const Sparkline = ({
   const [tooltip, setTooltip] = useState('');
   const isMetricExists = (metric) => metric === 'NaN' || metric === undefined || metric === '';
 
-  const findYRange = function (array) {
-    const values = array.map((data) => +data[ykey] || 0);
+  const findYRange = (array) => {
+    const values = array.map((arrayItem) => +arrayItem[ykey] || 0);
     return [Math.max(...values) || 1, Math.min(...values) || 0];
   };
 
-  const findXRange = function (array) {
-    const values = array.map((data) => +moment.utc(data[xkey]) || 0);
+  const findXRange = (array) => {
+    const values = array.map((arrayItem) => +moment.utc(arrayItem[xkey]) || 0);
 
     return [Math.max(...values), Math.min(...values)];
   };
@@ -92,8 +90,8 @@ export const Sparkline = ({
     const [maxY, minY] = findYRange(appLoadPolygonChart);
     const scaleY = scaleLinear().domain([maxY, minY]).range([0, yAxisLength]);
 
-    data = appLoadPolygonChart.map(
-      (item) => new Object({
+    const drawData = appLoadPolygonChart.map(
+      (item) => ({
         x: scaleX(moment.utc(item.timestamp)),
         y: scaleY(isMetricExists(item[ykey]) ? 0 : Math.max(maxY / 15, item[ykey])) + margin || 0,
       }),
@@ -109,10 +107,9 @@ export const Sparkline = ({
     const focusG = svg.append('g');
     // .style('display', 'none');
 
-    g.append('path').attr('d', areaBar(data)).style('fill', color);
+    g.append('path').attr('d', areaBar(drawData)).style('fill', color);
 
     const focusBar = focusG.append('path').attr('class', 'active-rect').style('fill', 'white');
-    // .on('mouseout', () => focusG.style('display', 'none'));
 
     focusBar.append('text').attr('id', 'focusText').attr('font-size', '10').attr('x', 1)
       .attr('y', 8);

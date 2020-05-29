@@ -23,16 +23,14 @@ interface ExampleInterface {
 }
 const Example = ({ fingerprint, databaseType, examples }: ExampleInterface) => (
   <div>
-    {databaseType === DATABASE.postgresql ? (
-      getExample(databaseType)(fingerprint)
-    ) : examples && examples.filter((example) => example.example).length ? (
-      examples
-        .filter((example) => example.example)
-        .map((example) => example.example)
-        .map(getExample(databaseType))
-    ) : (
-      <pre>Sorry, no examples found for this query</pre>
-    )}
+    {databaseType === DATABASE.postgresql ? getExample(databaseType)(fingerprint) : null}
+    {/* eslint-disable-next-line max-len */}
+    {databaseType !== DATABASE.postgresql && examples && examples.filter((example) => example.example).length ? examples
+      .filter((example) => example.example)
+      .map((example) => example.example)
+      .map(getExample(databaseType)) : null}
+    {/* eslint-disable-next-line max-len */}
+    {databaseType !== DATABASE.postgresql && !(examples && examples.filter((example) => example.example).length) ? <pre>Sorry, no examples found for this query</pre> : null}
   </div>
 );
 
