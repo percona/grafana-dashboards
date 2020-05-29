@@ -20,12 +20,13 @@ export class CommonModel {
 
   constructor(params, type) {
     const { custom_labels, ...rest } = params;
-    this.custom_labels = custom_labels && Object.keys(custom_labels).length
-      ? Object.entries(custom_labels).map((item) => new CustomLabelsModel(item))
-      : [];
+    this.custom_labels =
+      custom_labels && Object.keys(custom_labels).length
+        ? Object.entries(custom_labels).map(item => new CustomLabelsModel(item))
+        : [];
     this.type = type;
     this.isDeleted = false;
-    Object.keys(rest).forEach((param) => {
+    Object.keys(rest).forEach(param => {
       this[param] = rest[param];
     });
   }
@@ -54,15 +55,23 @@ const inventoryTypes = {
   postgresql: 'PostgreSQL',
   proxysql: 'ProxySQL',
 };
+
+interface TypedElement {
+  type: string;
+  params: any;
+}
+
 export class InventoryDataService {
   constructor() {}
 
   static generateStructure(item) {
-    const addType = Object.keys(item).map((type) => new Object({ type, params: item[type] }));
-    const createParams = addType.map((agent) => agent.params.map((arrItem) => {
-      const type = inventoryTypes[agent.type] || '';
-      return new CommonModel(arrItem, type);
-    }));
+    const addType = Object.keys(item).map((type ): TypedElement => ({ type, params: item[type] }));
+    const createParams = addType.map((agent) =>
+      agent.params.map((arrItem) => {
+        const type = inventoryTypes[agent.type] || '';
+        return new CommonModel(arrItem, type);
+      })
+    );
     return [].concat(...createParams);
   }
 }

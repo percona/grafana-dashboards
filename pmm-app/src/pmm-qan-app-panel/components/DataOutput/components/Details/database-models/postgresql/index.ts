@@ -22,4 +22,12 @@ export default class PostgreSQL {
     });
     setActionId(result.action_id);
   }
+
+  static getExplains() {
+    console.error('Does not exist for PostgreSQL');
+  }
+
+  static async getStatuses() {
+    console.error('Does not exist for PostgreSQL');
+  }
 }

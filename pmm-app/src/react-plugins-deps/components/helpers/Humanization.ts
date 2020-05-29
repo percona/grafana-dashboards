@@ -27,7 +27,7 @@ export class Humanize {
     return dur;
   }
 
-  static transform(input: number, name?: string): string {
+  static transform(input: number | null, name?: string): string {
     if (input === null) {
       return '0';
     }
