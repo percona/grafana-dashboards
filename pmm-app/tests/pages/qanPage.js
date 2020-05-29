@@ -342,10 +342,7 @@ module.exports = {
   },
 
   applyFilterNewQAN(filterName) {
-    const filterToAplly =
-      "//span//span[contains(@class, 'checkbox-container__label-text') and contains(text(), '" +
-      filterName +
-      "')]";
+    const filterToAplly = `//span//span[contains(@class, 'checkbox-container__label-text') and contains(text(), '${filterName}')]`;
     I.waitForVisible(filterToAplly, 20);
     I.click(filterToAplly);
   },
@@ -359,42 +356,31 @@ module.exports = {
   },
 
   async verifyFiltersSection(filterSection, expectedCount) {
-    const selectedPart = `//span[contains(text(), '${filterSection}')]`;
     const countOfFiltersInSection = await I.grabNumberOfVisibleElements(
-      selectedPart +
-        "/parent::p/following-sibling::div/span/label[contains(@class, 'checkbox-container checkbox-container--main')]"
+      `//span[contains(text(), '${filterSection}')]/parent::p/following-sibling::div/span/label[contains(@class, 'checkbox-container checkbox-container--main')]`
     );
     assert.equal(
       countOfFiltersInSection,
       expectedCount,
-      'There should be ' + expectedCount + ' visible links'
+      `There should be '${expectedCount}' visible links`
     );
   },
 
   async getCountOfFilters(filterSection) {
-    const showAllLink =
-      "//span[contains(text(), '" +
-      filterSection +
-      "')]/following-sibling::span[contains(text(), 'Show all')]";
+    const showAllLink = `//span[contains(text(), '${filterSection}')]/following-sibling::span[contains(text(), 'Show all')]`;
     const showAllCount = await I.grabTextFrom(showAllLink);
     const count = showAllCount.slice(10, 12);
     return count;
   },
 
   applyShowAllLink(filterSection) {
-    const showAllLink =
-      "//span[contains(text(), '" +
-      filterSection +
-      "')]/following-sibling::span[contains(text(), 'Show all')]";
+    const showAllLink = `//span[contains(text(), '${filterSection}')]/following-sibling::span[contains(text(), 'Show all')]`;
     I.waitForVisible(showAllLink, 30);
     I.click(showAllLink);
   },
 
   async applyShowTop5Link(filterSection) {
-    const showTop5Link =
-      "//span[contains(text(), '" +
-      filterSection +
-      "')]/following-sibling::span[contains(text(), 'Show top 5')]";
+    const showTop5Link = `//span[contains(text(), '${filterSection}')]/following-sibling::span[contains(text(), 'Show top 5')]`;
     I.waitForVisible(showTop5Link, 30);
     const top5Link = await I.grabTextFrom(showTop5Link);
     assert.equal(top5Link, 'Show top 5', 'Link is not correct');
