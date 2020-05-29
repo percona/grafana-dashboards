@@ -360,7 +360,7 @@ module.exports = {
 
   async verifyFiltersSection(filterSection, expectedCount) {
     const selectedPart = "//span[contains(text(), '" + filterSection + "')]";
-    let countOfFiltersInSection = await I.grabNumberOfVisibleElements(
+    const countOfFiltersInSection = await I.grabNumberOfVisibleElements(
       selectedPart +
         "/parent::p/following-sibling::div/span/label[contains(@class, 'checkbox-container checkbox-container--main')]"
     );
@@ -376,8 +376,8 @@ module.exports = {
       "//span[contains(text(), '" +
       filterSection +
       "')]/following-sibling::span[contains(text(), 'Show all')]";
-    let showAllCount = await I.grabTextFrom(showAllLink);
-    let count = showAllCount.slice(10, 12);
+    const showAllCount = await I.grabTextFrom(showAllLink);
+    const count = showAllCount.slice(10, 12);
     return count;
   },
 
@@ -396,13 +396,13 @@ module.exports = {
       filterSection +
       "')]/following-sibling::span[contains(text(), 'Show top 5')]";
     I.waitForVisible(showTop5Link, 30);
-    let top5Link = await I.grabTextFrom(showTop5Link);
+    const top5Link = await I.grabTextFrom(showTop5Link);
     assert.equal(top5Link, 'Show top 5', 'Link is not correct');
     I.click(showTop5Link);
   },
 
   async verifyCountOfFilterLinks(expectedCount, before) {
-    let count = await I.grabNumberOfVisibleElements(this.fields.filterCheckboxes);
+    const count = await I.grabNumberOfVisibleElements(this.fields.filterCheckboxes);
     if (before === false) {
       assert.equal(count, expectedCount);
     }

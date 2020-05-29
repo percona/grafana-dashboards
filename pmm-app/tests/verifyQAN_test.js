@@ -170,7 +170,7 @@ xScenario(
     const filterSection = 'Database';
     qanPage.waitForNewQANPageLoaded();
     await qanPage.verifyFiltersSection(filterSection, 5);
-    let countToShow = await qanPage.getCountOfFilters(filterSection);
+    const countToShow = await qanPage.getCountOfFilters(filterSection);
     qanPage.applyShowAllLink(filterSection);
     await qanPage.verifyFiltersSection(filterSection, countToShow);
     await qanPage.applyShowTop5Link(filterSection);
