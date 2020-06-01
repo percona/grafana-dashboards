@@ -21,12 +21,13 @@ exports.config = {
       password: process.env.GRAFANA_PASSWORD,
     },
     InfluxDBHelper: {
-      require: './tests/helper/codeceptjs-influxdbhelper.js',
+      require: 'codeceptjs-influxdbhelper',
       username: 'admin',
       password: process.env.REMOTE_MYSQL_PASSWORD,
       host: process.env.QA_GRAFANA_HOST,
       port: '8086',
       dbname: 'selenium',
+      measurement: 'testmethod',
     },
   },
   include: {
