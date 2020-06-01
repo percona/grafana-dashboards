@@ -1,4 +1,4 @@
-const { I, pmmSettingsPage } = inject();
+const { I, settingsAPI } = inject();
 const assert = require('assert');
 
 module.exports = {
@@ -64,8 +64,7 @@ module.exports = {
       results = await I.grabNumberOfVisibleElements(this.fields.sttFailedChecksPanelSelector);
       disabledSTT = await I.grabNumberOfVisibleElements(this.fields.sttDisabledFailedChecksPanelSelector);
       if (disabledSTT) {
-        I.amOnPage(pmmSettingsPage.url);
-        await pmmSettingsPage.enableSTT();
+        await settingsAPI.apiEnableSTT();
         I.amOnPage(this.url);
         continue
       }
