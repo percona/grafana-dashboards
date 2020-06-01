@@ -33,7 +33,6 @@ function Table({ columns, data, actionPanel, noData, loading, rowKey }: TablePro
     useRowSelect,
     hooks => {
       if (actionPanel) {
-        // @ts-ignore
         hooks.visibleColumns.push(columns => [
           {
             id: 'selection',
@@ -45,7 +44,6 @@ function Table({ columns, data, actionPanel, noData, loading, rowKey }: TablePro
               </div>
             ),
             Cell: ({ row }) => {
-              // @ts-ignore
               return (
                 <div data-qa="select-row">
                   {/*
@@ -86,8 +84,9 @@ function Table({ columns, data, actionPanel, noData, loading, rowKey }: TablePro
                     // eslint-disable-next-line react/jsx-key
                     <th
                       {...column.getHeaderProps()}
-                      style={index === 0 && actionPanel ? { width: '20px' } : {}}
+                      className={index === 0 && actionPanel ? styles.checkboxColumn : ''}
                     >
+                      {console.log(column)}
                       {column.render('Header')}
                     </th>
                   ))}
@@ -104,7 +103,7 @@ function Table({ columns, data, actionPanel, noData, loading, rowKey }: TablePro
                         // eslint-disable-next-line react/jsx-key
                         <td
                           {...cell.getCellProps()}
-                          style={index === 0 && actionPanel ? { width: '20px' } : {}}
+                          className={index === 0 && actionPanel ? styles.checkboxColumn : ''}
                         >
                           {cell.render('Cell')}
                         </td>

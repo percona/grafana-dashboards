@@ -79,5 +79,8 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       align-items: center;
       border: 1px solid ${borderColor};
     `,
+    checkboxColumn: css`
+      width: 20px;
+    `,
   };
 });
