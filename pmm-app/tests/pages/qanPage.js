@@ -53,10 +53,10 @@ module.exports = {
     copyQueryButton: "//button[@id='copyQueryExample']",
     spinnerLocator: "//i[@class='fa fa-spinner fa-spin spinner']",
     newQANPanelContent: '.panel-content',
-    countOfItems: "//*[@id='query-analytics-data']/div/div[2]/div/div[1]/div/div[2]/div/span",
+    countOfItems: "//div[@id='query-analytics-data']/div/div[2]/div/div[1]/div/div[2]/div/span",
     resetAll: 'button#reset-all-filters',
     newQANSpinnerLocator: "//i[@class='fa fa-spinner fa-spin spinner ant-spin-dot']",
-    showSelected: "//*[@id='query-analytics-filters']/div/div/form/div/div[1]/button[1]",
+    showSelected: "//div[@id='query-analytics-filters']/div/div/form/div/div[1]/button[1]",
     filterBy: "//input[@class='ant-input']",
     filterCheckboxes: '.checkbox-container__checkmark',
   },
@@ -342,7 +342,7 @@ module.exports = {
   },
 
   applyFilterNewQAN(filterName) {
-    const filterToAplly = `//span//span[contains(@class, 'checkbox-container__label-text') and contains(text(), '${filterName}')]`;
+    const filterToAplly = `//span[contains(@class, 'checkbox-container__label-text') and contains(text(), '${filterName}')]`;
     I.waitForVisible(filterToAplly, 20);
     I.click(filterToAplly);
   },

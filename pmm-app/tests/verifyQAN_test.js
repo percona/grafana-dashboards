@@ -142,7 +142,7 @@ xScenario(
 xScenario(
   'PMM-T172 - Verify that selecting a filter updates the table data and URL  @not-pr-pipeline',
   async (I, qanPage) => {
-    const environmentName = 'ps-dev';
+    const environmentName = 'ps-prod';
     qanPage.waitForNewQANPageLoaded();
     const countBefore = await qanPage.getCountOfItems();
     qanPage.applyFilterNewQAN(environmentName);
@@ -155,12 +155,13 @@ xScenario(
 
 // TODO: Uncomment after new QAN will be merged
 xScenario('PMM-T126 - Verify user is able to Reset All filters @not-pr-pipeline', async (I, qanPage) => {
-  const service_name = 'ps_5.7_0.0.0.0_1';
-  const environmentName = 'ps-dev';
+  const environmentName1 = 'ps-dev';
+  const environmentName2 = 'ps-prod';
   qanPage.waitForNewQANPageLoaded();
   const countBefore = await qanPage.getCountOfItems();
-  qanPage.applyFilterNewQAN(service_name);
-  qanPage.applyFilterNewQAN(environmentName);
+  qanPage.applyFilterNewQAN(environmentName1);
+  I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);
+  qanPage.applyFilterNewQAN(environmentName2);
   const countAfter = await qanPage.getCountOfItems();
   await qanPage.verifyChangedCount(countBefore, countAfter);
   I.click(qanPage.fields.resetAll);
@@ -186,12 +187,13 @@ xScenario(
 xScenario(
   'PMM-T125 - Verify user is able to Show only selected filter values and Show All filter values',
   async (I, qanPage) => {
-    const service_name = 'ps_5.7_0.0.0.0_1';
-    const environmentName = 'ps-dev';
+    const environmentName1 = 'ps-dev';
+    const environmentName2 = 'ps-prod';
     qanPage.waitForNewQANPageLoaded();
-    qanPage.applyFilterNewQAN(service_name);
-    qanPage.applyFilterNewQAN(environmentName);
-    I.waitForVisible(qanPage.fields.showSelected, 20);
+    qanPage.applyFilterNewQAN(environmentName1);
+    I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);
+    qanPage.applyFilterNewQAN(environmentName2);
+    I.waitForVisible(qanPage.fields.showSelected, 30);
     I.click(qanPage.fields.showSelected);
     await qanPage.verifyCountOfFilterLinks(2, false);
     I.click(qanPage.fields.showSelected);
