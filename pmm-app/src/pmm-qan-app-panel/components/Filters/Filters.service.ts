@@ -1,23 +1,23 @@
 import { apiRequestQAN } from '../../../react-plugins-deps/components/helpers/api';
 import { getLabelQueryParams } from '../../panel/panel.tools';
 
-
 const markCheckedLabels = (labels, paramLabels) => {
   Object.keys(labels).forEach((label) => {
     labels[label].name.forEach((metric) => {
       const passedVariables = paramLabels[label];
-      // eslint-disable-next-line no-param-reassign
-      metric.checked = passedVariables;
       if (!passedVariables) {
         return;
       }
-      passedVariables.some((variable) => {
+
+      const isChecked = passedVariables.some((variable) => {
         if (!metric.value) {
           // eslint-disable-next-line no-param-reassign
           metric.value = '';
         }
         return variable === metric.value;
       });
+      // eslint-disable-next-line no-param-reassign
+      metric.checked = isChecked;
     });
   });
 
