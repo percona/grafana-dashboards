@@ -1,6 +1,6 @@
 import { Table } from 'antd';
 import React, {
-  useCallback, useContext, useEffect, useState,
+  useCallback, useContext, useEffect, useState
 } from 'react';
 import './OverviewTable.scss';
 import { PanelProvider } from '../../../../panel/panel.provider';
@@ -17,9 +17,11 @@ const OverviewTable = (props) => {
   } = useContext(PanelProvider);
 
   useEffect(() => {
-    // @ts-ignore
     const container = document.querySelector('.table-wrapper');
-    setHeight(+((container && container.clientHeight) || 0));
+    if (!container) {
+      return;
+    }
+    setHeight(+(container.clientHeight || 0));
   }, [reload]);
 
   const onTableChange = useCallback((pagination, filters, sorter) => {
@@ -47,7 +49,7 @@ const OverviewTable = (props) => {
 
       return '';
     },
-    [querySelected, totals, queryId],
+    [querySelected, totals, queryId]
   );
 
   return (
