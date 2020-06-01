@@ -1,5 +1,5 @@
-export const showSuccessNotification = () => {};
+export const showSuccessNotification = jest.fn();
 
-export const showWarningNotification = () => {};
+export const showWarningNotification = jest.fn();
 
-export const showErrorNotification = () => {};
+export const showErrorNotification = jest.fn();

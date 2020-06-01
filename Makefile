@@ -22,7 +22,7 @@ codecov:
 release:
 	cd pmm-app \
 	&& npm version \
-	&& npm i \
+	&& npm ci \
 	&& npm run build
 
 generate_coverage: coverage codecov

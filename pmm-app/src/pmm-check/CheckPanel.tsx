@@ -13,6 +13,7 @@ export interface CheckPanelProps extends PanelProps<CheckPanelOptions> {}
 
 export interface CheckPanelState {
   dataSource?: ActiveCheck[];
+  hasNoAccess: boolean;
   isLoading: boolean;
   isSttEnabled: boolean;
 }
@@ -22,6 +23,7 @@ const history = createBrowserHistory();
 export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> {
   state = {
     dataSource: undefined,
+    hasNoAccess: false,
     isLoading: true,
     isSttEnabled: false,
   };
@@ -51,14 +53,19 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
     try {
       const resp = (await CheckService.getSettings()) as Settings;
       this.setState({ isSttEnabled: !!resp.settings?.stt_enabled });
+      this.setState({ hasNoAccess: false });
+
       if (resp.settings?.stt_enabled) {
         this.fetchAlerts();
       } else {
         this.setState({ isLoading: false });
       }
     } catch (err) {
-      console.error(err);
       this.setState({ isLoading: false });
+      if (err.response?.status === 401) {
+        this.setState({ hasNoAccess: true });
+      }
+      console.error(err);
     }
   }
 
@@ -66,7 +73,7 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
     const {
       options: { title },
     } = this.props;
-    const { dataSource, isSttEnabled, isLoading } = this.state;
+    const { dataSource, isSttEnabled, isLoading, hasNoAccess } = this.state;
 
     return (
       <div className={styles.panel} data-qa="db-check-panel">
@@ -76,7 +83,13 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
           </div>
         )}
         {!isLoading && (
-          <Table caption={title} data={dataSource} columns={COLUMNS} isSttEnabled={isSttEnabled} />
+          <Table
+            caption={title}
+            data={dataSource}
+            columns={COLUMNS}
+            isSttEnabled={isSttEnabled}
+            hasNoAccess={hasNoAccess}
+          />
         )}
       </div>
     );
