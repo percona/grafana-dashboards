@@ -1,11 +1,9 @@
-import { PluginTooltip } from '../../../react-plugins-deps/components/helpers/Helpers';
-import { TextAreaField } from '../../../react-plugins-deps/components/FormComponents/TextArea/TextArea';
 import React, { ReactNode, useEffect, useState } from 'react';
-import ButtonElement from '../../../react-plugins-deps/components/FormComponents/Button/Button';
 import { Form as FormFinal } from 'react-final-form';
+import { PluginTooltip } from 'react-plugins-deps/components/helpers/Helpers';
+import { Button, FormElement, TextAreaField } from 'react-plugins-deps/components/FormComponents';
+import { showSuccessNotification } from 'react-plugins-deps/components/helpers/notification-manager';
 import { SettingsService } from '../../Settings.service';
-import { showSuccessNotification } from '../../../react-plugins-deps/components/helpers/notification-manager';
-import { FormElement } from '../../../react-plugins-deps/components/FormComponents/FormElement/FormElement';
 import { GUI_DOC_URL } from '../../panel.constants';
 
 interface UploadSSHInterface {
@@ -35,7 +33,7 @@ const UploadSSH = ({ settings }) => {
           <form onSubmit={handleSubmit}>
             <>
               <FormElement
-                data-qa="form-field-ssh-key"
+                dataQa="form-field-ssh-key"
                 label="SSH key"
                 tooltip={
                   <PluginTooltip
@@ -53,7 +51,7 @@ const UploadSSH = ({ settings }) => {
                 }
                 alignLabel="top"
               />
-              <ButtonElement loading={loading} text="Apply SSH key" />
+              <Button loading={loading} text="Apply SSH key" />
             </>
           </form>
         );

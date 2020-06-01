@@ -1,11 +1,12 @@
-import Diagnostics from './Diagnostics';
 import React from 'react';
-import renderer from 'react-test-renderer';
+import { shallow } from 'enzyme';
+import Diagnostics from './Diagnostics';
 
-describe('Diagnostics part test', () => {
-  it('Renders correct', () => {
-    const component = renderer.create(<Diagnostics />);
-    const tree = component.toJSON();
-    expect(tree).toMatchSnapshot();
+describe('Diagnostics part', () => {
+  it('Renders diagnostics', () => {
+    const root = shallow(<Diagnostics />);
+
+    expect(root).toMatchSnapshot();
+    root.unmount();
   });
 });

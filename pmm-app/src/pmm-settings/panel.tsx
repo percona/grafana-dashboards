@@ -38,7 +38,7 @@ const SettingsPanel = () => {
   }, []);
   return (
     <div id="antd">
-      <div className="app-theme-dark pmm-settings-panel" style={{ width: '100%' }}>
+      <div className="app-theme-dark pmm-settings-panel">
         <Form
           onSubmit={() => {}}
           render={(): ReactElement => {

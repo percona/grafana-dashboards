@@ -1,18 +1,20 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
+import { mount } from 'enzyme';
 import UploadSSH from './UploadSSH';
 
-jest.mock('../../../react-plugins-deps/components/helpers/notification-manager', () => () => ({}));
-describe('Settings Part test', () => {
-  it('Upload SSH key renders correct without props', () => {
-    const component = renderer.create(
+jest.mock('../../../react-plugins-deps/components/helpers/notification-manager');
+
+describe('UploadSSH', () => {
+  it('Upload SSH key renders without props', () => {
+    const root = mount(
       <UploadSSH
         settings={{
           ssh_key: 'test_ssh_key',
         }}
       />
     );
-    const tree = component.toJSON();
-    expect(tree).toMatchSnapshot();
+
+    expect(root).toMatchSnapshot();
+    root.unmount();
   });
 });

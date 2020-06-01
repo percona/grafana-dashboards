@@ -1,13 +1,10 @@
-import { InputField } from '../../../react-plugins-deps/components/FormComponents/Input/Input';
-import { TextAreaField } from '../../../react-plugins-deps/components/FormComponents/TextArea/TextArea';
 import React, { ReactElement, useEffect, useState } from 'react';
-import ButtonElement from '../../../react-plugins-deps/components/FormComponents/Button/Button';
 import { Form as FormFinal } from 'react-final-form';
-import { SettingsService } from '../../Settings.service';
-import { showSuccessNotification } from '../../../react-plugins-deps/components/helpers/notification-manager';
-import { FormElement } from '../../../react-plugins-deps/components/FormComponents/FormElement/FormElement';
-import { PluginTooltip } from '../../../react-plugins-deps/components/helpers/Helpers';
 import { css } from 'emotion';
+import { Button, FormElement, InputField, TextAreaField } from 'react-plugins-deps/components/FormComponents';
+import { showSuccessNotification } from 'react-plugins-deps/components/helpers/notification-manager';
+import { PluginTooltip } from 'react-plugins-deps/components/helpers/Helpers';
+import { SettingsService } from '../../Settings.service';
 import { GUI_DOC_URL } from '../../panel.constants';
 
 interface AlertManagerSettingsInterface {
@@ -61,7 +58,7 @@ const AlertManager = props => {
           <form onSubmit={handleSubmit}>
             <>
               <FormElement
-                data-qa="form-field-am-url"
+                dataQa="form-field-am-url"
                 label="Alertmanager URL"
                 tooltip={
                   <PluginTooltip
@@ -83,7 +80,7 @@ const AlertManager = props => {
                 }
               />
               <FormElement
-                data-qa="form-field-alerting-rules"
+                dataQa="form-field-alerting-rules"
                 label="Prometheus Alerting rules"
                 tooltip={
                   <PluginTooltip
@@ -105,7 +102,7 @@ const AlertManager = props => {
                 }
                 alignLabel="top"
               />
-              <ButtonElement loading={loading} text="Apply Alertmanager settings" />
+              <Button loading={loading} text="Apply Alertmanager settings" />
             </>
           </form>
         );
