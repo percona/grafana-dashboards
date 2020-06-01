@@ -3,7 +3,8 @@ Feature('QAN Dashboard');
 Before(async (I, qanPage, adminPage) => {
   I.Authorize();
 
-  I.amOnPage(qanPage.url + "?from=now-5m&to=now");
+  I.amOnPage(`${qanPage.url}?from=now-5m&to=now`);
+  // TODO: these two elements should be changed once new QAN is merged
   await I.waitForElement(qanPage.fields.iframe, 60);
   await I.switchTo(qanPage.fields.iframe);
 });
@@ -120,4 +121,108 @@ Scenario('Verify Main Metric change reflects in URL @not-pr-pipeline', async (I,
   qanPage.waitForQANPageLoaded();
   qanPage.changeMetricTo(metricToReplace, newMetricName);
   qanPage.verifyURLContains(qanPage.urlParts.lockTime);
+});
+
+// TODO: Uncomment after new QAN will be merged
+xScenario(
+  'PMM-T175 - Verify user is able to apply filter that has dots in label @not-pr-pipeline',
+  async (I, qanPage) => {
+    const serviceName = 'ps_5.7_0.0.0.0_1';
+    qanPage.waitForNewQANPageLoaded();
+    const countBefore = await qanPage.getCountOfItems();
+    qanPage.applyFilterNewQAN(serviceName);
+    I.seeInCurrentUrl('service_name=' + serviceName);
+    I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);
+    const countAfter = await qanPage.getCountOfItems();
+    qanPage.verifyChangedCount(countBefore, countAfter);
+  }
+);
+
+// TODO: Uncomment after new QAN will be merged
+xScenario(
+  'PMM-T172 - Verify that selecting a filter updates the table data and URL  @not-pr-pipeline',
+  async (I, qanPage) => {
+    const environmentName = 'ps-prod';
+    qanPage.waitForNewQANPageLoaded();
+    const countBefore = await qanPage.getCountOfItems();
+    qanPage.applyFilterNewQAN(environmentName);
+    I.seeInCurrentUrl('environment=' + environmentName);
+    I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);
+    const countAfter = await qanPage.getCountOfItems();
+    qanPage.verifyChangedCount(countBefore, countAfter);
+  }
+);
+
+// TODO: Uncomment after new QAN will be merged
+xScenario('PMM-T126 - Verify user is able to Reset All filters @not-pr-pipeline', async (I, qanPage) => {
+  const environmentName1 = 'ps-dev';
+  const environmentName2 = 'ps-prod';
+  qanPage.waitForNewQANPageLoaded();
+  const countBefore = await qanPage.getCountOfItems();
+  qanPage.applyFilterNewQAN(environmentName1);
+  I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);
+  qanPage.applyFilterNewQAN(environmentName2);
+  const countAfter = await qanPage.getCountOfItems();
+  await qanPage.verifyChangedCount(countBefore, countAfter);
+  I.click(qanPage.fields.resetAll);
+  I.waitForVisible(qanPage.fields.resetAll + ':disabled', 20);
+});
+
+// TODO: Uncomment after new QAN will be merged
+xScenario(
+  'PMM-T124 - Verify User is able to show all and show top 5 values for filter section @not-pr-pipeline',
+  async (I, qanPage) => {
+    const filterSection = 'Database';
+    qanPage.waitForNewQANPageLoaded();
+    await qanPage.verifyFiltersSection(filterSection, 5);
+    const countToShow = await qanPage.getCountOfFilters(filterSection);
+    qanPage.applyShowAllLink(filterSection);
+    await qanPage.verifyFiltersSection(filterSection, countToShow);
+    await qanPage.applyShowTop5Link(filterSection);
+    await qanPage.verifyFiltersSection(filterSection, 5);
+  }
+);
+
+// TODO: Uncomment after new QAN will be merged
+xScenario(
+  'PMM-T125 - Verify user is able to Show only selected filter values and Show All filter values',
+  async (I, qanPage) => {
+    const environmentName1 = 'ps-dev';
+    const environmentName2 = 'ps-prod';
+    qanPage.waitForNewQANPageLoaded();
+    qanPage.applyFilterNewQAN(environmentName1);
+    I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);
+    qanPage.applyFilterNewQAN(environmentName2);
+    I.waitForVisible(qanPage.fields.showSelected, 30);
+    I.click(qanPage.fields.showSelected);
+    await qanPage.verifyCountOfFilterLinks(2, false);
+    I.click(qanPage.fields.showSelected);
+    await qanPage.verifyCountOfFilterLinks(2, true);
+  }
+);
+
+// TODO: Uncomment after new QAN will be merged
+xScenario('PMM-T123 - Verify User is able to search for filter value', async (I, qanPage) => {
+  const filters = [
+    'ps-prod',
+    'ps-dev-cluster',
+    'pgsql-repl1',
+    'local',
+    'pmm-server',
+    'postgresql',
+    'generic',
+  ];
+  qanPage.waitForNewQANPageLoaded();
+  I.waitForElement(qanPage.fields.filterBy, 30);
+  const countBefore = await qanPage.getCountOfItems();
+  for (i = 0; i < filters.length; i++) {
+    await I.fillField(qanPage.fields.filterBy, filters[i]);
+    qanPage.applyFilterNewQAN(filters[i]);
+    I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);
+    const countAfter = await qanPage.getCountOfItems();
+    await qanPage.verifyChangedCount(countBefore, countAfter);
+    qanPage.applyFilterNewQAN(filters[i]);
+    I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);
+    await I.clearField(qanPage.fields.filterBy);
+  }
 });
