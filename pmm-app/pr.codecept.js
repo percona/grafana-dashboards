@@ -51,6 +51,12 @@ exports.config = {
     autoDelay: {
       enabled: true,
     },
+    customLocator: {
+      enabled: true,
+      strategy: 'css',
+      attribute: 'data-qa',
+      showActual: false
+    }
   },
   mocha: {
     reporterOptions: {
