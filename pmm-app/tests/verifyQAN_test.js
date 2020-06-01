@@ -226,3 +226,64 @@ xScenario('PMM-T123 - Verify User is able to search for filter value', async (I,
     await I.clearField(qanPage.fields.filterBy);
   }
 });
+
+// TODO: Uncomment after new QAN will be merged
+xScenario('PMM-T100 Check Changing Main Metric', async (I, qanPage, dashboardPage) => {
+    const metricName = 'Query Count with errors';
+    const urlString = 'num_queries_with_errors';
+    I.waitForElement(qanPage.fields.newQANAddColumn, 30);
+    I.waitForElement(qanPage.tableHeaderColumnLocator("Load"), 30);
+    I.click(qanPage.tableHeaderColumnLocator("Load"));
+    I.waitForElement(qanPage.fields.newQANMetricDropDown, 30);
+    I.fillField(qanPage.fields.newQANColumnSearchField, metricName);
+    I.click(dashboardPage.fields.metricTitle);
+    I.waitForElement(qanPage.tableHeaderColumnLocator(metricName), 30);
+    I.seeElement(qanPage.tableHeaderColumnLocator(metricName));
+    I.dontSeeElement(qanPage.tableHeaderColumnLocator('Load'));
+    I.seeInCurrentUrl(urlString);
+    const url = await I.grabCurrentUrl();
+    I.amOnPage(url);
+    I.waitForElement(qanPage.fields.newQANAddColumn, 30);
+    I.waitForElement(qanPage.tableHeaderColumnLocator(metricName), 30);
+    I.dontSeeElement(qanPage.tableHeaderColumnLocator("Load"));
+});
+
+// TODO: Uncomment after new QAN will be merged
+xScenario('PMM-T99 Verify User is able to add new metric', async (I, qanPage, dashboardPage) => {
+    const metricName = 'Query Count with errors';
+    const urlString = 'num_queries_with_errors';
+    I.waitForElement(qanPage.fields.newQANAddColumn, 30);
+    I.waitForElement(qanPage.tableHeaderColumnLocator("Load"), 30);
+    I.click(qanPage.fields.newQANAddColumn);
+    I.waitForElement(qanPage.fields.newQANMetricDropDown, 30);
+    I.fillField(qanPage.fields.newQANColumnSearchField, metricName);
+    I.click(dashboardPage.fields.metricTitle);
+    I.waitForElement(qanPage.tableHeaderColumnLocator(metricName), 30);
+    I.seeElement(qanPage.tableHeaderColumnLocator(metricName));
+    I.seeElement(qanPage.tableHeaderColumnLocator('Load'));
+    I.seeInCurrentUrl(urlString);
+    const url = await I.grabCurrentUrl();
+    I.amOnPage(url);
+    I.waitForElement(qanPage.fields.newQANAddColumn, 30);
+    I.waitForElement(qanPage.tableHeaderColumnLocator(metricName), 30);
+    I.seeElement(qanPage.tableHeaderColumnLocator("Load"));
+    I.seeElement(qanPage.tableHeaderColumnLocator(metricName));
+});
+
+// TODO: Uncomment after new QAN will be merged
+xScenario('PMM-T13 - Verify QAN has MongoDB, MySQL, PostgreSQl all three Service Types', async (I, qanPage) => {
+    const filters = ['mongodb', 'mysql', 'postgres'];
+    qanPage.waitForNewQANPageLoaded();
+    I.waitForElement(qanPage.fields.filterBy, 30);
+    const countBefore = await qanPage.getCountOfItems();
+    for (i = 0; i < filters.length; i++) {
+        await I.fillField(qanPage.fields.filterBy, filters[i]);
+        qanPage.applyFilterNewQAN(filters[i]);
+        I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);
+        const countAfter = await qanPage.getCountOfItems();
+        await qanPage.verifyChangedCount(countBefore, countAfter);
+        qanPage.applyFilterNewQAN(filters[i]);
+        I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);
+        await I.clearField(qanPage.fields.filterBy);
+    }
+});
