@@ -28,7 +28,7 @@ class ApiRequest {
       .then((response): T => response.data)
       .catch((e): void => {
         if (!disableNotifications) {
-          showErrorNotification({ message: e.response.data.message });
+          showErrorNotification({ message: e.response.data?.message ?? 'Unknown error' });
         }
         throw e;
       });

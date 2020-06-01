@@ -9,11 +9,20 @@ import * as styles from './Failed.styles';
 
 interface FailedProps {
   failed?: FailedChecks;
+  hasNoAccess: boolean;
   isSttEnabled: boolean;
 }
 
-export const Failed: FC<FailedProps> = ({ failed = [0, 0, 0], isSttEnabled }) => {
+export const Failed: FC<FailedProps> = ({ failed = [0, 0, 0], isSttEnabled, hasNoAccess }) => {
   const sum = useMemo(() => failed.reduce((acc, val) => acc + val, 0), [failed]);
+
+  if (hasNoAccess) {
+    return (
+      <div className={styles.Empty} data-qa="db-check-panel-no-access">
+        Insufficient access rights.
+      </div>
+    );
+  }
 
   if (!isSttEnabled) {
     return (

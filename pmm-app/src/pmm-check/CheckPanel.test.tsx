@@ -43,7 +43,7 @@ describe('CheckPanel::', () => {
     await root.instance().fetchAlerts();
     wrapper.update();
 
-    expect(root.state('dataSource')).toEqual(activeCheckStub);
+    expect(root.state().dataSource).toEqual(activeCheckStub);
     expect(root.state().isLoading).toEqual(false);
     expect(root.state().isSttEnabled).toEqual(false);
 
@@ -64,7 +64,8 @@ describe('CheckPanel::', () => {
     root.setState({ isLoading: false });
     wrapper.update();
 
-    expect(root.state('isLoading')).toEqual(false);
+    expect(root.state().isLoading).toEqual(false);
+    expect(root.state().hasNoAccess).toEqual(false);
 
     const table = wrapper.find('[data-qa="db-check-panel"]').find(Table);
     // Check if the table is rendered, the rest is tested by the Table itself

@@ -12,6 +12,7 @@ export interface CheckPanelProps extends PanelProps<CheckPanelOptions> {}
 
 export interface CheckPanelState {
   failedChecks?: FailedChecks;
+  hasNoAccess: boolean;
   isSttEnabled: boolean;
   isLoading: boolean;
 }
@@ -21,6 +22,7 @@ const history = createBrowserHistory();
 export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> {
   state: CheckPanelState = {
     failedChecks: undefined,
+    hasNoAccess: false,
     isSttEnabled: false,
     isLoading: true,
   };
@@ -50,6 +52,7 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
     try {
       const resp = (await CheckService.getSettings()) as Settings;
       this.setState({ isSttEnabled: !!resp.settings?.stt_enabled });
+      this.setState({ hasNoAccess: false });
       if (resp.settings?.stt_enabled) {
         this.fetchAlerts();
       } else {
@@ -57,17 +60,20 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
       }
     } catch (err) {
       this.setState({ isLoading: false });
+      if (err.response?.status === 401) {
+        this.setState({ hasNoAccess: true });
+      }
       console.error(err);
     }
   }
 
   render() {
-    const { isSttEnabled, failedChecks, isLoading } = this.state;
+    const { isSttEnabled, failedChecks, isLoading, hasNoAccess } = this.state;
 
     return (
       <div className={styles.panel} data-qa="db-check-panel-home">
         {isLoading && <Spinner />}
-        {!isLoading && <Failed failed={failedChecks} isSttEnabled={isSttEnabled} />}
+        {!isLoading && <Failed failed={failedChecks} isSttEnabled={isSttEnabled} hasNoAccess={hasNoAccess} />}
       </div>
     );
   }
