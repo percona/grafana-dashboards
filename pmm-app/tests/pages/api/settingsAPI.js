@@ -6,7 +6,7 @@ module.exports = {
             enable_stt: true,
             enable_telemetry: true
         };
-        const headers = { Authorization: `Basic ${await I.generateAuth()}` };
+        const headers = { Authorization: `Basic ${await I.getAuth()}` };
         await I.sendPostRequest("v1/Settings/Change", body, headers);
     },
 
@@ -15,7 +15,7 @@ module.exports = {
             disable_stt: true,
             enable_telemetry: true
         };
-        const headers = { Authorization: `Basic ${await I.generateAuth()}` };
+        const headers = { Authorization: `Basic ${await I.getAuth()}` };
         await I.sendPostRequest("v1/Settings/Change", body, headers);
     },
 };

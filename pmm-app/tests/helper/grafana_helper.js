@@ -11,11 +11,11 @@ class Grafana extends Helper {
 
   async Authorize() {
     const { browserContext } = this.helpers.Playwright;
-    const basicAuthEncoded = await this.generateAuth();
+    const basicAuthEncoded = await this.getAuth();
     await browserContext.setExtraHTTPHeaders({ Authorization: `Basic ${basicAuthEncoded}` });
   }
 
-  async generateAuth(username = 'admin', password = 'admin') {
+  async getAuth(username = 'admin', password = 'admin') {
     return Buffer.from(
         `${this.config.username || username}:${this.config.password || password}`
     ).toString('base64');
