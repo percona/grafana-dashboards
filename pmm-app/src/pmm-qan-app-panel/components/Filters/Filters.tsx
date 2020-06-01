@@ -81,6 +81,7 @@ export const Filters = ({
           }}
           value={filter}
           className={Styling.filtersField}
+          data-qa="filters-search-field"
         />
         {FILTERS_GROUPS.filter((group) => filters[group.dataKey]).map((group) => {
           const { name, dataKey } = group;
