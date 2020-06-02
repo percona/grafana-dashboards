@@ -2,7 +2,7 @@ exports.config = {
   output: 'tests/output',
   helpers: {
     Playwright: {
-      url: 'http://localhost/',
+      url: process.env.PMM_UI_URL || 'http://localhost/',
       restart: true,
       browser: 'chromium',
       windowSize: "2560x1600",
@@ -20,6 +20,9 @@ exports.config = {
       username: process.env.GRAFANA_USERNAME,
       password: process.env.GRAFANA_PASSWORD,
     },
+    REST: {
+      endpoint: process.env.PMM_UI_URL || 'http://localhost/'
+    }
   },
   include: {
     homePage: './tests/pages/homePage.js',
@@ -32,6 +35,7 @@ exports.config = {
     mysqlTableDetailsPage: './tests/pages/mysqlTableDetailsPage.js',
     dashboardPage: './tests/pages/dashboardPage.js',
     databaseChecksPage: './tests/pages/databaseChecksPage.js',
+    settingsAPI: './tests/pages/api/settingsAPI.js'
   },
   multiple: {
     parallel: {
