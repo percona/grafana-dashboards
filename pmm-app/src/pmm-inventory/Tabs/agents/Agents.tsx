@@ -3,7 +3,7 @@ import { Button, HorizontalGroup, Modal } from '@grafana/ui';
 import { Form } from 'react-final-form';
 import { Table } from 'react-plugins-deps/components/Table/Table';
 import { showSuccessNotification } from 'react-plugins-deps/components/helpers';
-import { processPromiseResults } from 'pmm-inventory/Inventory.tools';
+import { processPromiseResults, filterFulfilled } from 'pmm-inventory/Inventory.tools';
 import { CheckboxField, FormElement } from 'react-plugins-deps/components/FormComponents';
 import { InventoryDataService } from '../../DataService';
 import { InventoryService } from '../../Inventory.service';
@@ -14,20 +14,21 @@ export const Agents = () => {
   const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [data, setData] = useState([]);
-  const [reload, setReload] = useState({});
+
+  const loadData = async () => {
+    setLoading(true);
+    try {
+      const result = await InventoryService.getAgents({});
+      setData(InventoryDataService.generateStructure(result));
+    } catch (e) {
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    setLoading(true);
-    (async () => {
-      try {
-        const result = await InventoryService.getAgents({});
-        setData(InventoryDataService.generateStructure(result));
-      } catch (e) {
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, [reload]);
+    loadData();
+  }, []);
 
   const removeAgents = async (agents, forceMode) => {
     try {
@@ -37,14 +38,14 @@ export const Agents = () => {
         .map(agent => InventoryService.removeAgent({ agent_id: agent.agent_id, force: forceMode }));
       const results = await processPromiseResults(requests);
 
-      const successfullyDeleted = results.filter(({ status }) => status === 'fulfilled').length;
+      const successfullyDeleted = results.filter(filterFulfilled).length;
       showSuccessNotification({
         message: `${successfullyDeleted} of ${agents.length} agents successfully deleted`,
       });
     } catch (e) {
       console.error(e);
     } finally {
-      setReload({});
+      loadData();
     }
   };
 

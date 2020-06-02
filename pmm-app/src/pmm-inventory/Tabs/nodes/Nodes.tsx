@@ -4,6 +4,7 @@ import { Form } from 'react-final-form';
 import { Table } from 'react-plugins-deps/components/Table/Table';
 import { showSuccessNotification } from 'react-plugins-deps/components/helpers';
 import { CheckboxField, FormElement } from 'react-plugins-deps/components/FormComponents';
+import { filterFulfilled, processPromiseResults } from 'pmm-inventory/Inventory.tools';
 import { InventoryDataService } from '../../DataService';
 import { InventoryService } from '../../Inventory.service';
 import { NODES_COLUMNS } from '../../panel.constants';
@@ -34,20 +35,9 @@ export const NodesTab = () => {
       const requests = nodes
         .map(item => item.original)
         .map(node => InventoryService.removeNode({ node_id: node.node_id, force: forceMode }));
-      const results: Array<{ status: string; value: string }> = await Promise.all(
-        requests.map((promise, i) =>
-          promise
-            .then(value => ({
-              status: 'fulfilled',
-              value,
-            }))
-            .catch(reason => ({
-              status: 'rejected',
-              reason,
-            }))
-        )
-      );
-      const successfullyDeleted = results.filter(({ status }) => status === 'fulfilled').length;
+
+      const results = await processPromiseResults(requests);
+      const successfullyDeleted = results.filter(filterFulfilled).length;
       showSuccessNotification({
         message: `${successfullyDeleted} of ${nodes.length} nodes successfully deleted`,
       });
