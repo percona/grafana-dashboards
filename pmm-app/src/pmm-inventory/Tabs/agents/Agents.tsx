@@ -35,9 +35,20 @@ export const Agents = () => {
       const requests = agents
         .map(item => item.original)
         .map(agent => InventoryService.removeAgent({ agent_id: agent.agent_id, force: forceMode }));
-      // TODO: add es2020 declarations
-      // @ts-ignore
-      const results = await Promise.allSettled(requests);
+      const results = await Promise.all(
+        requests.map((promise, i) =>
+          promise
+            .then(value => ({
+              status: 'fulfilled',
+              value,
+            }))
+            .catch(reason => ({
+              status: 'rejected',
+              reason,
+            }))
+        )
+      );
+      console.log(results);
       const successfullyDeleted = results.filter(promise => promise.status === 'fulfilled').length;
       showSuccessNotification({
         message: `${successfullyDeleted} of ${agents.length} agents successfully deleted`,

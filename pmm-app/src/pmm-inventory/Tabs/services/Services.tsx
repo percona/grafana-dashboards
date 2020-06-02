@@ -35,9 +35,19 @@ export const Services = () => {
       const requests = services
         .map(item => item.original)
         .map(service => InventoryService.removeService({ service_id: service.service_id, force: forceMode }));
-      // TODO: add es2020 declarations
-      // @ts-ignore
-      const results = await Promise.allSettled(requests);
+      const results = Promise.all(
+        requests.map((promise, i) =>
+          promise
+            .then(value => ({
+              status: 'fulfilled',
+              value,
+            }))
+            .catch(reason => ({
+              status: 'rejected',
+              reason,
+            }))
+        )
+      );
       const successfullyDeleted = results.filter(promise => promise.status === 'fulfilled').length;
       showSuccessNotification({
         message: `${successfullyDeleted} of ${services.length} services successfully deleted`,

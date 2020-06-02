@@ -86,7 +86,6 @@ function Table({ columns, data, actionPanel, noData, loading, rowKey }: TablePro
                       {...column.getHeaderProps()}
                       className={index === 0 && actionPanel ? styles.checkboxColumn : ''}
                     >
-                      {console.log(column)}
                       {column.render('Header')}
                     </th>
                   ))}
