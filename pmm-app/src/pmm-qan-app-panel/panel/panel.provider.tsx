@@ -133,6 +133,17 @@ const actions = {
         value.oldColumn.simpleName === state.orderBy.replace('-', '') ? `-${columns[0]}` : state.orderBy,
     };
   },
+  swapMainColumn: (value) => (state) => {
+    const columns = [...state.columns];
+    const columnIndex = columns.indexOf(value.simpleName);
+    const b = columns[columnIndex];
+    columns[columnIndex] = columns[0];
+    columns[0] = b;
+    return {
+      ...state,
+      columns,
+    };
+  },
   removeColumn: (value) => (state) => {
     const columns = [...state.columns];
     columns.splice(columns.indexOf(value.simpleName), 1);
