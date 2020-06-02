@@ -59,6 +59,9 @@ module.exports = {
     showSelected: "//div[@id='query-analytics-filters']/div/div/form/div/div[1]/button[1]",
     filterBy: "//input[@class='ant-input']",
     filterCheckboxes: '.checkbox-container__checkmark',
+    newQANAddColumn: "//span[contains(text(), 'Add column')]",
+    newQANMetricDropDown: '.ant-select-dropdown-menu-item',
+    newQANColumnSearchField: "div[style*='display: block;'] input"
   },
 
   filterGroupLocator(filterName) {
@@ -69,6 +72,10 @@ module.exports = {
     return (
       "//ng-select//span[contains(@class, 'ng-value-label') and contains(text(), '" + tableHeader + "')]"
     );
+  },
+
+  tableHeaderColumnLocator(columnHeader) {
+    return `(//span[@class='ant-table-header-column'])//span[contains(text(), '${columnHeader}')]`;
   },
 
   filterGroupCountSelector(groupName) {
