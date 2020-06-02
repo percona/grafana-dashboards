@@ -4,9 +4,11 @@ import { selectThemeVariant, stylesFactory } from '@grafana/ui';
 
 export const getStyles = stylesFactory((theme: GrafanaTheme) => {
   const backgroundColor = selectThemeVariant({ light: 'rgb(247, 247, 249)', dark: '#161719' }, theme.type);
+  // @ts-ignore
   const borderColor = selectThemeVariant({ light: theme.colors.gray85, dark: '#292929' }, theme.type);
   const headerBackground = selectThemeVariant({ light: 'rgb(247, 247, 249)', dark: '#3D3D3D' }, theme.type);
   const textColor = selectThemeVariant(
+    // @ts-ignore
     { light: theme.colors.gray85, dark: 'rgba(255, 255, 255, 0.8)' },
     theme.type
   );
