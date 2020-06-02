@@ -19,7 +19,7 @@ const metricStyle = css`
   flex-direction: column;
   align-items: flex-end;
 `;
-const TimeMetric = ({ value, percentage }) => (
+const TimeMetric = ({ value, percentage, cnt }) => (
   <div className={metricStyle}>
     <span
       className="summarize"
@@ -29,14 +29,16 @@ const TimeMetric = ({ value, percentage }) => (
         color: 'rgba(255,255,255,0.8)',
       }}
     >
-      {value === undefined ? `${Humanize.transform(0, 'time')}` : null}
-      {value === null || value === 'NaN' ? 'N/A' : null}
+      {value === undefined && cnt > 0 ? `${Humanize.transform(0, 'time')}` : null}
+      {(value === undefined && cnt === undefined) || value === null || value === 'NaN' ? 'N/A' : null}
       {value && value !== 'NaN' ? `${Humanize.transform(value, 'time')}` : null}
     </span>
     {value === undefined || value === null || value === 'NaN' ? null : <TotalPercentage width={percentage} />}
   </div>
 );
-const NonTimeMetric = ({ value, units, percentage }) => (
+const NonTimeMetric = ({
+  value, units, percentage, cnt
+}) => (
   <div className={metricStyle}>
     <span
       className="summarize"
@@ -46,8 +48,8 @@ const NonTimeMetric = ({ value, units, percentage }) => (
         color: 'rgba(255,255,255,0.8)',
       }}
     >
-      {value === undefined ? `0 ${units}` : null}
-      {value === null || value === 'NaN' ? 'N/A' : null}
+      {value === undefined && cnt > 0 ? `0 ${units}` : null}
+      {(value === undefined && cnt === undefined) || value === null || value === 'NaN' ? 'N/A' : null}
       {value && value !== 'NaN' ? `${Humanize.transform(value, 'number')} ${units}` : null}
     </span>
     {value === undefined || value === null || value === 'NaN' ? null : <TotalPercentage width={percentage} />}
@@ -162,9 +164,16 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
               ) : null
             }
           >
-            {isTimeMetric ? <TimeMetric value={stats.avg} percentage={percentFromTotal} /> : null}
+            {isTimeMetric ? (
+              <TimeMetric value={stats.avg} cnt={stats.cnt} percentage={percentFromTotal} />
+            ) : null}
             {!isTimeMetric ? (
-              <NonTimeMetric value={statPerSec} units={metric.units} percentage={percentFromTotal} />
+              <NonTimeMetric
+                value={statPerSec}
+                cnt={stats.cnt}
+                units={metric.units}
+                percentage={percentFromTotal}
+              />
             ) : null}
           </Tooltip>
         </div>
