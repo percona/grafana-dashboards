@@ -11,8 +11,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
     theme.type
   );
   const borderColor = selectThemeVariant(
-    // @ts-ignore
-    { light: theme.colors.gray85, dark: theme.colors.dark7 },
+    { light: theme.palette.gray85, dark: theme.palette.dark7 },
     theme.type
   );
   const cellPadding = '12px 8px';

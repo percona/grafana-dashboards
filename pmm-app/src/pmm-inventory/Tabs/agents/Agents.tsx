@@ -1,14 +1,14 @@
 import React, { FC, ReactElement, useEffect, useState } from 'react';
 import { Button, HorizontalGroup, Modal } from '@grafana/ui';
 import { Form } from 'react-final-form';
-import CustomTable from '../../../react-plugins-deps/components/Table/Table';
-import { showSuccessNotification } from '../../../react-plugins-deps/components/helpers';
-import { FormElement } from '../../../react-plugins-deps/components/FormComponents';
-import { CheckboxField } from '../../../react-plugins-deps/components/FormComponents/Checkbox/Checkbox';
+import { Table } from 'react-plugins-deps/components/Table/Table';
+import { showSuccessNotification } from 'react-plugins-deps/components/helpers';
+import { processPromiseResults } from 'pmm-inventory/Inventory.tools';
+import { CheckboxField, FormElement } from 'react-plugins-deps/components/FormComponents';
 import { InventoryDataService } from '../../DataService';
 import { InventoryService } from '../../Inventory.service';
 import { AGENTS_COLUMNS } from '../../panel.constants';
-import styles from '../Tabs.styles';
+import { styles } from '../Tabs.styles';
 
 export const Agents = () => {
   const [loading, setLoading] = useState(false);
@@ -35,21 +35,8 @@ export const Agents = () => {
       const requests = agents
         .map(item => item.original)
         .map(agent => InventoryService.removeAgent({ agent_id: agent.agent_id, force: forceMode }));
-      const results = await Promise.all(
-        requests.map((promise, i) =>
-          promise
-            .then(value => ({
-              status: 'fulfilled',
-              value,
-            }))
-            .catch(reason => ({
-              status: 'rejected',
-              reason,
-            }))
-        )
-      );
+      const results = await processPromiseResults(requests);
 
-      // @ts-ignore
       const successfullyDeleted = results.filter(({ status }) => status === 'fulfilled').length;
       showSuccessNotification({
         message: `${successfullyDeleted} of ${agents.length} agents successfully deleted`,
@@ -88,7 +75,7 @@ export const Agents = () => {
         >
           <Form
             onSubmit={() => {}}
-            render={({ form, handleSubmit }): ReactElement => {
+            render={({ form, handleSubmit }) => {
               return (
                 <form onSubmit={handleSubmit}>
                   <>
@@ -97,7 +84,7 @@ export const Agents = () => {
                       {selected.length === 1 ? 'agent' : 'agents'}?
                     </h4>
                     <FormElement
-                      data-qa="form-field-force"
+                      dataQa="form-field-force"
                       label="Force mode"
                       element={
                         <CheckboxField
@@ -133,7 +120,7 @@ export const Agents = () => {
 
   return (
     <div className={styles.tableWrapper}>
-      <CustomTable
+      <Table
         columns={AGENTS_COLUMNS}
         data={data}
         actionPanel={selected => <ActionPanel selected={selected} />}

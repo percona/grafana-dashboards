@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
-import Table from './Table';
+import { Table } from './Table';
 
 const columns = [
   {
@@ -53,10 +53,12 @@ describe('Table', () => {
     expect(root.find('[data-qa="table-no-data"]').length).toEqual(1);
     expect(root.find('[data-qa="custom-no-data"]').length).toEqual(1);
   });
+
   it('Render default no data section if no noData passed', () => {
     const root = shallow(<Table columns={columns} data={[]} />);
     expect(root.find('[data-qa="table-no-data"]').length).toEqual(1);
   });
+
   it('Render spinner if table is loading', () => {
     const noData = <div data-qa="custom-no-data">123</div>;
     const root = shallow(<Table columns={columns} data={[]} noData={noData} loading />);

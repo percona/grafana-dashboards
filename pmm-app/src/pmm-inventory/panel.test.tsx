@@ -1,5 +1,5 @@
 import React from 'react';
-import CustomTable from '../react-plugins-deps/components/Table/Table';
+import { Table } from '../react-plugins-deps/components/Table/Table';
 import { render, unmountComponentAtNode } from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import { InventoryDataService } from './DataService';
@@ -55,7 +55,7 @@ describe('Inventory tables', () => {
 
     act(() => {
       render(
-        <CustomTable
+        <Table
           data={InventoryDataService.generateStructure(response)}
           rowKey={rec => rec.agent_id}
           columns={AGENTS_COLUMNS}
@@ -82,7 +82,7 @@ describe('Inventory tables', () => {
     };
     act(() => {
       render(
-        <CustomTable
+        <Table
           data={InventoryDataService.generateStructure(response)}
           rowKey={rec => rec.service_id}
           columns={SERVICES_COLUMNS}
@@ -104,7 +104,7 @@ describe('Inventory tables', () => {
     };
     act(() => {
       render(
-        <CustomTable
+        <Table
           data={InventoryDataService.generateStructure(response)}
           rowKey={rec => rec.node_id}
           columns={NODES_COLUMNS}

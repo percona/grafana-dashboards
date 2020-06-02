@@ -1,14 +1,13 @@
-import React, { FC, ReactElement, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Button, HorizontalGroup, Modal } from '@grafana/ui';
 import { Form } from 'react-final-form';
-import CustomTable from '../../../react-plugins-deps/components/Table/Table';
-import { showSuccessNotification } from '../../../react-plugins-deps/components/helpers';
-import { FormElement } from '../../../react-plugins-deps/components/FormComponents';
-import { CheckboxField } from '../../../react-plugins-deps/components/FormComponents/Checkbox/Checkbox';
+import { Table } from 'react-plugins-deps/components/Table/Table';
+import { showSuccessNotification } from 'react-plugins-deps/components/helpers';
+import { CheckboxField, FormElement } from 'react-plugins-deps/components/FormComponents';
 import { InventoryDataService } from '../../DataService';
 import { InventoryService } from '../../Inventory.service';
 import { NODES_COLUMNS } from '../../panel.constants';
-import styles from '../Tabs.styles';
+import { styles } from '../Tabs.styles';
 
 export const NodesTab = () => {
   const [loading, setLoading] = useState(false);
@@ -35,7 +34,7 @@ export const NodesTab = () => {
       const requests = nodes
         .map(item => item.original)
         .map(node => InventoryService.removeNode({ node_id: node.node_id, force: forceMode }));
-      const results = await Promise.all(
+      const results: Array<{ status: string; value: string }> = await Promise.all(
         requests.map((promise, i) =>
           promise
             .then(value => ({
@@ -48,7 +47,6 @@ export const NodesTab = () => {
             }))
         )
       );
-      // @ts-ignore
       const successfullyDeleted = results.filter(({ status }) => status === 'fulfilled').length;
       showSuccessNotification({
         message: `${successfullyDeleted} of ${nodes.length} nodes successfully deleted`,
@@ -60,7 +58,7 @@ export const NodesTab = () => {
     }
   };
 
-  const ActionPanel: FC<{ selected: any[] }> = ({ selected }): ReactElement => {
+  const ActionPanel: FC<{ selected: any[] }> = ({ selected }) => {
     return (
       <>
         <div className={styles.actionPanel}>
@@ -87,7 +85,7 @@ export const NodesTab = () => {
         >
           <Form
             onSubmit={() => {}}
-            render={({ form, handleSubmit }): ReactElement => {
+            render={({ form, handleSubmit }) => {
               return (
                 <form onSubmit={handleSubmit}>
                   <>
@@ -96,7 +94,7 @@ export const NodesTab = () => {
                       {selected.length === 1 ? 'node' : 'nodes'}?
                     </h4>
                     <FormElement
-                      data-qa="form-field-force"
+                      dataQa="form-field-force"
                       label="Force mode"
                       element={
                         <CheckboxField
@@ -135,7 +133,7 @@ export const NodesTab = () => {
 
   return (
     <div className={styles.tableWrapper}>
-      <CustomTable
+      <Table
         columns={NODES_COLUMNS}
         data={data}
         actionPanel={selected => <ActionPanel selected={selected} />}

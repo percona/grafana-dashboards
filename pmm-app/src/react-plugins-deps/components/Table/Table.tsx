@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactNode, FC } from 'react';
 import { useRowSelect, useTable } from 'react-table';
 import { Spinner, useTheme } from '@grafana/ui';
 import { getStyles } from './Table.styles';
@@ -6,8 +6,8 @@ import { getStyles } from './Table.styles';
 interface TableProps {
   columns: object[];
   data: object[];
-  noData?: ReactElement;
-  actionPanel?: (selected: any[]) => ReactElement;
+  noData?: ReactNode;
+  actionPanel?: (selected: any[]) => ReactNode;
   loading?: boolean;
   rowKey?: (rec: any) => any;
 }
@@ -21,7 +21,7 @@ const TableCheckbox = props => {
   );
 };
 
-function Table({ columns, data, actionPanel, noData, loading, rowKey }: TableProps) {
+export const Table: FC<TableProps> = ({ columns, data, actionPanel, noData, loading, rowKey }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
   // @ts-ignore
@@ -63,7 +63,7 @@ function Table({ columns, data, actionPanel, noData, loading, rowKey }: TablePro
   return (
     <div className={styles.table}>
       {actionPanel && rows.length ? actionPanel(selectedFlatRows) : null}
-      <div className="tableWrap">
+      <div className={styles.tableWrap}>
         {loading ? (
           <div data-qa="table-loading" className={styles.empty}>
             <Spinner />
@@ -117,6 +117,4 @@ function Table({ columns, data, actionPanel, noData, loading, rowKey }: TablePro
       </div>
     </div>
   );
-}
-
-export default Table;
+};

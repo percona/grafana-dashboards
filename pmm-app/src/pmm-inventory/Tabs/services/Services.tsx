@@ -1,13 +1,14 @@
 import React, { FC, ReactElement, useEffect, useState } from 'react';
 import { Button, HorizontalGroup, Modal } from '@grafana/ui';
 import { Form } from 'react-final-form';
-import CustomTable from 'react-plugins-deps/components/Table/Table';
+import { Table } from 'react-plugins-deps/components/Table/Table';
 import { showSuccessNotification } from 'react-plugins-deps/components/helpers';
 import { CheckboxField, FormElement } from 'react-plugins-deps/components/FormComponents';
+import { processPromiseResults, filterFulfilled } from 'pmm-inventory/Inventory.tools';
 import { InventoryDataService } from '../../DataService';
 import { InventoryService } from '../../Inventory.service';
 import { SERVICES_COLUMNS } from '../../panel.constants';
-import styles from '../Tabs.styles';
+import { styles } from '../Tabs.styles';
 
 export const Services = () => {
   const [loading, setLoading] = useState(false);
@@ -34,21 +35,8 @@ export const Services = () => {
       const requests = services
         .map(item => item.original)
         .map(service => InventoryService.removeService({ service_id: service.service_id, force: forceMode }));
-      const results = await Promise.all(
-        requests.map((promise, i) =>
-          promise
-            .then(value => ({
-              status: 'fulfilled',
-              value,
-            }))
-            .catch(reason => ({
-              status: 'rejected',
-              reason,
-            }))
-        )
-      );
-      // @ts-ignore
-      const successfullyDeleted = results.filter(({ status }) => status === 'fulfilled').length;
+      const results = await processPromiseResults(requests);
+      const successfullyDeleted = results.filter(filterFulfilled).length;
       showSuccessNotification({
         message: `${successfullyDeleted} of ${services.length} services successfully deleted`,
       });
@@ -83,7 +71,7 @@ export const Services = () => {
         >
           <Form
             onSubmit={() => {}}
-            render={({ form, handleSubmit }): ReactElement => {
+            render={({ form, handleSubmit }) => {
               return (
                 <form onSubmit={handleSubmit}>
                   <>
@@ -92,7 +80,7 @@ export const Services = () => {
                       {selected.length === 1 ? 'service' : 'services'}?
                     </h4>
                     <FormElement
-                      data-qa="form-field-force"
+                      dataQa="form-field-force"
                       label="Force mode"
                       element={
                         <CheckboxField
@@ -129,7 +117,7 @@ export const Services = () => {
 
   return (
     <div className={styles.tableWrapper}>
-      <CustomTable
+      <Table
         columns={SERVICES_COLUMNS}
         data={data}
         actionPanel={selected => <ActionPanel selected={selected} />}
