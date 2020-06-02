@@ -7,8 +7,23 @@ import { CheckboxField, FormElement } from 'react-plugins-deps/components/FormCo
 import { processPromiseResults, filterFulfilled } from 'pmm-inventory/Inventory.tools';
 import { InventoryDataService } from '../../DataService';
 import { InventoryService } from '../../Inventory.service';
+import { InventoryType } from '../../Inventory.types';
 import { SERVICES_COLUMNS } from '../../panel.constants';
 import { styles } from '../Tabs.styles';
+import { SelectedTableRows } from '../../../react-plugins-deps/components/Table/Table.types';
+
+interface Service {
+  service_id: string;
+  service_name: string;
+  node_id: string;
+  address: string;
+  port: string;
+  [key: string]: string;
+}
+
+interface ServicesList {
+  [key: InventoryType]: Node[];
+}
 
 export const Services = () => {
   const [loading, setLoading] = useState(false);
@@ -18,7 +33,7 @@ export const Services = () => {
   const loadData = async () => {
     setLoading(true);
     try {
-      const result = await InventoryService.getServices({});
+      const result: ServicesList = await InventoryService.getServices({});
       setData(InventoryDataService.generateStructure(result));
     } catch (e) {
     } finally {
@@ -30,7 +45,7 @@ export const Services = () => {
     loadData();
   }, []);
 
-  const removeServices = async (services, forceMode) => {
+  const removeServices = async (services: Array<SelectedTableRows<Service>>, forceMode) => {
     try {
       setLoading(true);
       const requests = services

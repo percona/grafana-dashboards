@@ -7,8 +7,21 @@ import { CheckboxField, FormElement } from 'react-plugins-deps/components/FormCo
 import { filterFulfilled, processPromiseResults } from 'pmm-inventory/Inventory.tools';
 import { InventoryDataService } from '../../DataService';
 import { InventoryService } from '../../Inventory.service';
+import { InventoryType } from '../../Inventory.types';
 import { NODES_COLUMNS } from '../../panel.constants';
 import { styles } from '../Tabs.styles';
+import { SelectedTableRows } from 'react-plugins-deps/components/Table/Table.types';
+
+interface Node {
+  node_id: string;
+  node_name: string;
+  address: string;
+  [key: string]: string;
+}
+
+interface NodesList {
+  [key: InventoryType]: Node[];
+}
 
 export const NodesTab = () => {
   const [loading, setLoading] = useState(false);
@@ -18,7 +31,7 @@ export const NodesTab = () => {
   const loadData = async () => {
     setLoading(true);
     try {
-      const result = await InventoryService.getNodes({});
+      const result: NodesList = await InventoryService.getNodes({});
       setData(InventoryDataService.generateStructure(result));
     } catch (e) {
     } finally {
@@ -30,7 +43,7 @@ export const NodesTab = () => {
     loadData();
   }, []);
 
-  const removeNodes = async (nodes, forceMode) => {
+  const removeNodes = async (nodes: Array<SelectedTableRows<Node>>, forceMode) => {
     try {
       setLoading(true);
       const requests = nodes

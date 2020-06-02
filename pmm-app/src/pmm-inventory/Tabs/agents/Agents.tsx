@@ -7,8 +7,19 @@ import { processPromiseResults, filterFulfilled } from 'pmm-inventory/Inventory.
 import { CheckboxField, FormElement } from 'react-plugins-deps/components/FormComponents';
 import { InventoryDataService } from '../../DataService';
 import { InventoryService } from '../../Inventory.service';
+import { InventoryType } from '../../Inventory.types';
 import { AGENTS_COLUMNS } from '../../panel.constants';
 import { styles } from '../Tabs.styles';
+import { SelectedTableRows } from '../../../react-plugins-deps/components/Table/Table.types';
+
+interface Agent {
+  agent_id: string;
+  [key: string]: string;
+}
+
+interface AgentsList {
+  [key: InventoryType]: Node[];
+}
 
 export const Agents = () => {
   const [loading, setLoading] = useState(false);
@@ -18,7 +29,7 @@ export const Agents = () => {
   const loadData = async () => {
     setLoading(true);
     try {
-      const result = await InventoryService.getAgents({});
+      const result: AgentsList = await InventoryService.getAgents({});
       setData(InventoryDataService.generateStructure(result));
     } catch (e) {
     } finally {
@@ -30,7 +41,7 @@ export const Agents = () => {
     loadData();
   }, []);
 
-  const removeAgents = async (agents, forceMode) => {
+  const removeAgents = async (agents: Array<SelectedTableRows<Agent>>, forceMode) => {
     try {
       setLoading(true);
       const requests = agents
