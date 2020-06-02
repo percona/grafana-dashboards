@@ -42,7 +42,7 @@ const ManageColumns = (props) => {
   );
 
   const removeColumn = useCallback(() => contextActions.removeColumn(currentMetric), [currentMetric]);
-  const swapWithMain = useCallback(() => console.log(currentMetric, 'swap'), [currentMetric]);
+  const swapWithMain = useCallback(() => contextActions.swapMainColumn(currentMetric), [currentMetric]);
 
   const Placeholder = () => (!onlyAdd ? (
     <Tooltip title={placeholder && METRIC_CATALOGUE[placeholder].humanizeName} placement="topLeft">
@@ -71,14 +71,13 @@ const ManageColumns = (props) => {
           Remove column
         </div>
       )}
-      {console.log(currentMetric, mainMetric)}
-      {!onlyAdd && mainMetric === currentMetric && (
+      {!onlyAdd && mainMetric !== currentMetric.simpleName && (
         <div
           style={{ padding: '4px 8px', cursor: 'pointer' }}
           onMouseDown={(e) => e.preventDefault()}
           onClick={swapWithMain}
         >
-          <Icon type="minus" style={{ marginRight: '4px' }} />
+          <Icon type="swap" style={{ marginRight: '4px' }} />
           Swap with main metric
         </div>
       )}
