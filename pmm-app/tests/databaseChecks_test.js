@@ -56,20 +56,6 @@ Scenario(
 );
 
 Scenario(
-    'PMM-T338 Verify user can see correct colors in Failed Checks Panel at Home page @not-pr-pipeline',
-    async (I, homePage, databaseChecksPage, settingsAPI) => {
-            await settingsAPI.apiEnableSTT();
-            I.amOnPage(homePage.url);
-            I.waitForVisible(homePage.fields.checksPanelSelector, 30);
-            await homePage.waitForCheckResultsToAppearInPanel();
-            const colors = await I.grabCssPropertyFrom(locate(homePage.fields.sttFailedChecksPanelSelector)
-                .find('a > span[class]'), `color`);
-            assert.equal(colors.toString(), databaseChecksPage.failedChecksColors.toString(),
-                `Number colors at Failed Checks panel do not match`);
-    }
-);
-
-Scenario(
     'PMM-T236 Verify user is able to hover Failed Checks values and see tooltip @not-pr-pipeline',
     async (I, databaseChecksPage, settingsAPI) => {
         const row = 1;
