@@ -28,7 +28,7 @@ Scenario(
   }
 );
 
-xScenario(
+Scenario(
   'Verify Remote MongoDB Instance Addition',
   async (I, adminPage, remoteInstancesPage, pmmInventoryPage) => {
     const mongodb_service_name = 'mongodb_remote_new';
@@ -42,7 +42,7 @@ xScenario(
   }
 );
 
-xScenario(
+Scenario(
   'Verify Remote PostgreSQL Instance Addition',
   async (I, adminPage, remoteInstancesPage, pmmInventoryPage) => {
     const postgresql_service_name = 'postgresql_remote_new';
@@ -56,7 +56,7 @@ xScenario(
   }
 );
 
-xScenario(
+Scenario(
   'Verify Remote ProxySQL Instance Addition',
   async (I, adminPage, remoteInstancesPage, pmmInventoryPage) => {
     const proxysql_service_name = 'proxysql_remote_new';
