@@ -52,6 +52,13 @@ module.exports = {
     tablesTabContents: "//div[@class='card-body']//pre",
     copyQueryButton: "//button[@id='copyQueryExample']",
     spinnerLocator: "//i[@class='fa fa-spinner fa-spin spinner']",
+    newQANPanelContent: '.panel-content',
+    countOfItems: "//div[@id='query-analytics-data']/div/div[2]/div/div[1]/div/div[2]/div/span",
+    resetAll: 'button#reset-all-filters',
+    newQANSpinnerLocator: "//i[@class='fa fa-spinner fa-spin spinner ant-spin-dot']",
+    showSelected: "//div[@id='query-analytics-filters']/div/div/form/div/div[1]/button[1]",
+    filterBy: "//input[@class='ant-input']",
+    filterCheckboxes: '.checkbox-container__checkmark',
   },
 
   filterGroupLocator(filterName) {
@@ -327,5 +334,62 @@ module.exports = {
   verifyURLContains(urlPart) {
     I.waitInUrl('tz=browser&theme=dark', 30);
     I.seeInCurrentUrl(urlPart);
+  },
+
+  waitForNewQANPageLoaded() {
+    I.waitForElement(this.fields.newQANPanelContent, 30);
+    I.waitForInvisible(this.fields.newQANSpinnerLocator, 30);
+  },
+
+  applyFilterNewQAN(filterName) {
+    const filterToAplly = `//span[contains(@class, 'checkbox-container__label-text') and contains(text(), '${filterName}')]`;
+    I.waitForVisible(filterToAplly, 20);
+    I.click(filterToAplly);
+  },
+
+  async getCountOfItems() {
+    return await I.grabTextFrom(this.fields.countOfItems);
+  },
+
+  verifyChangedCount(countBefore, countAfter) {
+    assert.notEqual(countAfter, countBefore, 'Data should be changed');
+  },
+
+  async verifyFiltersSection(filterSection, expectedCount) {
+    const countOfFiltersInSection = await I.grabNumberOfVisibleElements(
+      `//span[contains(text(), '${filterSection}')]/parent::p/following-sibling::div/span/label[contains(@class, 'checkbox-container checkbox-container--main')]`
+    );
+    assert.equal(countOfFiltersInSection, expectedCount, `There should be '${expectedCount}' visible links`);
+  },
+
+  async getCountOfFilters(filterSection) {
+    const showAllLink = `//span[contains(text(), '${filterSection}')]/following-sibling::span[contains(text(), 'Show all')]`;
+    const showAllCount = await I.grabTextFrom(showAllLink);
+    const count = showAllCount.slice(10, 12);
+    return count;
+  },
+
+  applyShowAllLink(filterSection) {
+    const showAllLink = `//span[contains(text(), '${filterSection}')]/following-sibling::span[contains(text(), 'Show all')]`;
+    I.waitForVisible(showAllLink, 30);
+    I.click(showAllLink);
+  },
+
+  async applyShowTop5Link(filterSection) {
+    const showTop5Link = `//span[contains(text(), '${filterSection}')]/following-sibling::span[contains(text(), 'Show top 5')]`;
+    I.waitForVisible(showTop5Link, 30);
+    const top5Link = await I.grabTextFrom(showTop5Link);
+    assert.equal(top5Link, 'Show top 5', 'Link is not correct');
+    I.click(showTop5Link);
+  },
+
+  async verifyCountOfFilterLinks(expectedCount, before) {
+    const count = await I.grabNumberOfVisibleElements(this.fields.filterCheckboxes);
+    if (!before) {
+      assert.equal(count, expectedCount);
+    }
+    if (before) {
+      assert.notEqual(count, expectedCount);
+    }
   },
 };
