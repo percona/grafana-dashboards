@@ -67,7 +67,7 @@ const getSorting = (orderBy, metricName) => {
   return false;
 };
 
-export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy) => {
+export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy, mainMetric) => {
   const metric = METRIC_CATALOGUE[metricName];
   const isTimeMetric = metricName.endsWith('_time');
 
@@ -77,7 +77,7 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy)
     sortOrder: getSorting(orderBy, metricName),
     sortDirections: ['descend', 'ascend'],
     width: columnIndex === 0 ? COLUMN_WIDTH * 1.8 : FIXED_COLUMN_WIDTH,
-    title: () => <ManageColumns placeholder={metricName} currentMetric={metric} width="100%" />,
+    title: () => <ManageColumns placeholder={metricName} currentMetric={metric} mainMetric={mainMetric} width="100%" />,
     render: (text, item, index) => {
       const { stats } = item.metrics[metricName];
       const statPerSec = stats.qps || stats.sum_per_sec;

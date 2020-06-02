@@ -1,5 +1,5 @@
 import {
-  useCallback, useContext, useEffect, useState,
+  useCallback, useContext, useEffect, useState
 } from 'react';
 import OverviewTableService from './OverviewTable.service';
 import { PanelProvider } from '../../../../panel/panel.provider';
@@ -11,7 +11,7 @@ export const useOverviewTable = (setTotal): [DataInterface, boolean] => {
   const {
     contextActions,
     panelState: {
-      labels, columns, pageNumber, pageSize, orderBy, from, to, groupBy, rawTime,
+      labels, columns, pageNumber, pageSize, orderBy, from, to, groupBy, rawTime
     },
   } = useContext(PanelProvider);
   const [data, setData] = useState<DataInterface>({ rows: [], columns: [] });
@@ -23,7 +23,7 @@ export const useOverviewTable = (setTotal): [DataInterface, boolean] => {
         contextActions.selectQuery(record.dimension, rowIndex === 0);
       },
     }),
-    [data.rows],
+    [data.rows]
   );
 
   useEffect(() => {
@@ -45,8 +45,9 @@ export const useOverviewTable = (setTotal): [DataInterface, boolean] => {
         setTotal(result.total_rows);
         const defaultColumns = getDefaultColumns(groupBy, pageNumber, pageSize, columns.length, onCell);
 
+        const mainMetric = columns[0];
         // eslint-disable-next-line max-len
-        const metricsColumns = columns.map((key, index) => getOverviewColumn(key, index, result.rows[0], orderBy));
+        const metricsColumns = columns.map((key, index) => getOverviewColumn(key, index, result.rows[0], orderBy, mainMetric));
 
         setData({ rows: result.rows, columns: [...defaultColumns, ...metricsColumns] });
         setLoading(false);

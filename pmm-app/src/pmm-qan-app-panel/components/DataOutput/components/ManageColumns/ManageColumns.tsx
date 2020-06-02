@@ -1,5 +1,5 @@
 import React, {
-  useCallback, useContext, useEffect, useState,
+  useCallback, useContext, useEffect, useState
 } from 'react';
 import {
   Divider, Icon, Select, Tooltip
@@ -13,8 +13,7 @@ const { Option } = Select;
 
 const ManageColumns = (props) => {
   const {
-    onlyAdd,
-    currentMetric, placeholder, width,
+    onlyAdd, currentMetric, placeholder, width, mainMetric
   } = props;
   const {
     contextActions,
@@ -24,7 +23,7 @@ const ManageColumns = (props) => {
 
   useEffect(() => {
     setAvailableColumns(
-      Object.values(METRIC_CATALOGUE).filter((metric) => !columns.find((item) => item === metric.simpleName)),
+      Object.values(METRIC_CATALOGUE).filter((metric) => !columns.find((item) => item === metric.simpleName))
     );
   }, [columns]);
 
@@ -39,18 +38,14 @@ const ManageColumns = (props) => {
         });
       }
     },
-    [currentMetric, onlyAdd],
+    [currentMetric, onlyAdd]
   );
 
-  const removeColumn = useCallback(() => contextActions.removeColumn(currentMetric), [
-    currentMetric,
-  ]);
+  const removeColumn = useCallback(() => contextActions.removeColumn(currentMetric), [currentMetric]);
+  const swapWithMain = useCallback(() => console.log(currentMetric, 'swap'), [currentMetric]);
 
   const Placeholder = () => (!onlyAdd ? (
-    <Tooltip
-      title={placeholder && METRIC_CATALOGUE[placeholder].humanizeName}
-      placement="topLeft"
-    >
+    <Tooltip title={placeholder && METRIC_CATALOGUE[placeholder].humanizeName} placement="topLeft">
       <span className={Styling.placeholder}>
         {placeholder && METRIC_CATALOGUE[placeholder].humanizeName}
       </span>
@@ -74,6 +69,17 @@ const ManageColumns = (props) => {
         >
           <Icon type="minus" style={{ marginRight: '4px' }} />
           Remove column
+        </div>
+      )}
+      {console.log(currentMetric, mainMetric)}
+      {!onlyAdd && mainMetric === currentMetric && (
+        <div
+          style={{ padding: '4px 8px', cursor: 'pointer' }}
+          onMouseDown={(e) => e.preventDefault()}
+          onClick={swapWithMain}
+        >
+          <Icon type="minus" style={{ marginRight: '4px' }} />
+          Swap with main metric
         </div>
       )}
     </div>
