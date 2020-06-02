@@ -49,6 +49,9 @@ module.exports = {
       service_name === 'postgresql_remote_new' ||
       service_name === 'mysql_remote_new'
     ) {
+      I.waitForVisible("//span[contains(text(), '" +
+          serviceId +
+          "')]/following-sibling::span[contains(text(),'status: RUNNING')]", 30);
       assert.equal(
         numberOfServices,
         2,
