@@ -1,10 +1,9 @@
 import React, { FC, ReactElement, useEffect, useState } from 'react';
 import { Button, HorizontalGroup, Modal } from '@grafana/ui';
 import { Form } from 'react-final-form';
-import CustomTable from '../../../react-plugins-deps/components/Table/Table';
-import { showSuccessNotification } from '../../../react-plugins-deps/components/helpers';
-import { FormElement } from '../../../react-plugins-deps/components/FormComponents';
-import { CheckboxField } from '../../../react-plugins-deps/components/FormComponents/Checkbox/Checkbox';
+import CustomTable from 'react-plugins-deps/components/Table/Table';
+import { showSuccessNotification } from 'react-plugins-deps/components/helpers';
+import { CheckboxField, FormElement } from 'react-plugins-deps/components/FormComponents';
 import { InventoryDataService } from '../../DataService';
 import { InventoryService } from '../../Inventory.service';
 import { SERVICES_COLUMNS } from '../../panel.constants';
