@@ -35,7 +35,7 @@ export const Services = () => {
       const requests = services
         .map(item => item.original)
         .map(service => InventoryService.removeService({ service_id: service.service_id, force: forceMode }));
-      const results = Promise.all(
+      const results = await Promise.all(
         requests.map((promise, i) =>
           promise
             .then(value => ({
@@ -48,7 +48,8 @@ export const Services = () => {
             }))
         )
       );
-      const successfullyDeleted = results.filter(promise => promise.status === 'fulfilled').length;
+      // @ts-ignore
+      const successfullyDeleted = results.filter(({ status }) => status === 'fulfilled').length;
       showSuccessNotification({
         message: `${successfullyDeleted} of ${services.length} services successfully deleted`,
       });

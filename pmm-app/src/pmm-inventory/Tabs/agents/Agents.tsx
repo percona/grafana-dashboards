@@ -48,8 +48,9 @@ export const Agents = () => {
             }))
         )
       );
-      console.log(results);
-      const successfullyDeleted = results.filter(promise => promise.status === 'fulfilled').length;
+
+      // @ts-ignore
+      const successfullyDeleted = results.filter(({ status }) => status === 'fulfilled').length;
       showSuccessNotification({
         message: `${successfullyDeleted} of ${agents.length} agents successfully deleted`,
       });

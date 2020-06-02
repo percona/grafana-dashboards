@@ -35,9 +35,7 @@ export const NodesTab = () => {
       const requests = nodes
         .map(item => item.original)
         .map(node => InventoryService.removeNode({ node_id: node.node_id, force: forceMode }));
-      // TODO: add es2020 declarations
-      // @ts-ignore
-      const results = Promise.all(
+      const results = await Promise.all(
         requests.map((promise, i) =>
           promise
             .then(value => ({
@@ -50,7 +48,8 @@ export const NodesTab = () => {
             }))
         )
       );
-      const successfullyDeleted = results.filter(promise => promise.status === 'fulfilled').length;
+      // @ts-ignore
+      const successfullyDeleted = results.filter(({ status }) => status === 'fulfilled').length;
       showSuccessNotification({
         message: `${successfullyDeleted} of ${nodes.length} nodes successfully deleted`,
       });
