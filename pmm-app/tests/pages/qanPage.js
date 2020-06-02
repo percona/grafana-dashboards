@@ -43,7 +43,7 @@ module.exports = {
     columns: '//tbody//app-qan-table-header-cell',
     fifty: "//div[@id='ad0800a556c8']/span",
     hundred: "//div[@id='a305c6a9fc9e']",
-    iframe: "//div[@class='panel-content']//iframe",
+    iframe: "//div[@class='panel-content']",
     filterSelection: "(//div[@class='chips']//button)",
     resultsPerPageDropDown: "//div[@class='results-per-page']/ng-select",
     tablesTabInDetails: "//a[@id='tables']",
@@ -59,6 +59,8 @@ module.exports = {
     showSelected: "//div[@id='query-analytics-filters']/div/div/form/div/div[1]/button[1]",
     filterBy: "//input[@class='ant-input']",
     filterCheckboxes: '.checkbox-container__checkmark',
+    resultsPerPage: '.ant-select-selection-selected-value',
+    nextPage: '.ant-pagination-next',
   },
 
   filterGroupLocator(filterName) {
@@ -391,5 +393,11 @@ module.exports = {
     if (before) {
       assert.notEqual(count, expectedCount);
     }
+  },
+
+  verifySelectedCountPerPage(expectedResults) {
+    I.waitForElement(this.fields.resultsPerPage, 30);
+    const selectedResults = `//div[contains(@class, 'ant-select-selection-selected-value') and contains(text(), '${expectedResults}' )]`;
+    I.seeElement(selectedResults);
   },
 };

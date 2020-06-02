@@ -8,7 +8,7 @@ Before(async (I, qanPage, adminPage) => {
   await I.waitForElement(qanPage.fields.iframe, 60);
   await I.switchTo(qanPage.fields.iframe);
 });
-
+/*
 Scenario('Verify QAN Filter groups exist  @not-pr-pipeline', async (I, adminPage, qanPage) => {
   qanPage.waitForQANPageLoaded();
   await qanPage.changeResultsPerPage(50);
@@ -225,4 +225,11 @@ xScenario('PMM-T123 - Verify User is able to search for filter value', async (I,
     I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);
     await I.clearField(qanPage.fields.filterBy);
   }
+});
+*/
+
+Scenario('PMM-T128 - Verify pagination works correctly', async (I, qanPage) => {
+  qanPage.waitForNewQANPageLoaded();
+  qanPage.verifySelectedCountPerPage('10 / page');
+  I.click(qanPage.fields.nextPage);
 });
