@@ -10,6 +10,7 @@ module.exports = {
     homePagePanelMessage:"Security Threat Tool is disabled.\nCheck PMM Settings.",
     disabledSTTMessage: "Security Threat Tool is disabled. You can enable it in",
   },
+  failedChecksColors: ['rgb(224, 47, 68)', 'rgb(227, 101, 38)', 'rgb(87, 148, 242)'],
   fields: {
     dbCheckPanelSelector: "$db-check-panel",
     dbCheckPanelEmptySelector: "$db-check-panel-table-empty",
