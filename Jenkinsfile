@@ -90,10 +90,10 @@ pipeline {
                     }
                     steps {
                         sh """
+                            eval echo $(cat pmm-app/env.list) > pmm-app/env.list
                             sg docker -c "
                                 export CHROME_VERSION=${params.CHROME_VERSION}
                                 source \"/usr/local/nvm/nvm.sh\"
-                                eval echo $(cat pmm-app/env.list) > pmm-app/env.list
                                 make e2e
                             "
                         """
