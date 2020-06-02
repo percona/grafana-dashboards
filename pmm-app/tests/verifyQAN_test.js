@@ -228,7 +228,7 @@ xScenario('PMM-T123 - Verify User is able to search for filter value', async (I,
 });
 
 // TODO: Uncomment after new QAN will be merged
-xScenario('PMM-T100 Check Changing Main Metric', async (I, qanPage, dashboardPage) => {
+xScenario('PMM-T100 Check Changing Main Metric, PMM-T203 Verify user is able to search for columns by typing, PMM-T133, PMM-T132', async (I, qanPage, dashboardPage) => {
     const metricName = 'Query Count with errors';
     const urlString = 'num_queries_with_errors';
     I.waitForElement(qanPage.fields.newQANAddColumn, 30);
@@ -249,7 +249,7 @@ xScenario('PMM-T100 Check Changing Main Metric', async (I, qanPage, dashboardPag
 });
 
 // TODO: Uncomment after new QAN will be merged
-xScenario('PMM-T99 Verify User is able to add new metric', async (I, qanPage, dashboardPage) => {
+xScenario('PMM-T99 Verify User is able to add new metric, PMM-T222 Verify `Add column` dropdown works', async (I, qanPage, dashboardPage) => {
     const metricName = 'Query Count with errors';
     const urlString = 'num_queries_with_errors';
     I.waitForElement(qanPage.fields.newQANAddColumn, 30);
