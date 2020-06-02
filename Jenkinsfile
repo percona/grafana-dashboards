@@ -90,6 +90,7 @@ pipeline {
                     }
                     steps {
                         sh """
+                            sudo yum install -y gettext
                             envsubst < pmm-app/env.list > pmm-app/env.generated.list
                             sg docker -c "
                                 export CHROME_VERSION=${params.CHROME_VERSION}
