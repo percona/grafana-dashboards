@@ -13,7 +13,7 @@ e2e:
 	cd pmm-app \
 	&& mkdir -pv logs video || true \
 	&& docker-compose up -d \
-	&& eval "echo \"$(cat env.list)\"" > env.list \
+	&& eval echo $(cat env.list) > env.list \
 	&& npm run e2e
 
 codecov:
