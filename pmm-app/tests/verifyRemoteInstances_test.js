@@ -28,7 +28,7 @@ Scenario(
   }
 );
 
-Scenario(
+xScenario(
   'Verify Remote MongoDB Instance Addition',
   async (I, adminPage, remoteInstancesPage, pmmInventoryPage) => {
     const mongodb_service_name = 'mongodb_remote_new';
