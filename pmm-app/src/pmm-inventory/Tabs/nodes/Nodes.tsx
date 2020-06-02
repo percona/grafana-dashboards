@@ -13,21 +13,22 @@ import { styles } from '../Tabs.styles';
 export const NodesTab = () => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
-  const [reload, setReload] = useState({});
   const [modalVisible, setModalVisible] = useState(false);
 
-  useEffect(() => {
+  const loadData = async () => {
     setLoading(true);
-    (async () => {
-      try {
-        const result = await InventoryService.getNodes({});
-        setData(InventoryDataService.generateStructure(result));
-      } catch (e) {
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, [reload]);
+    try {
+      const result = await InventoryService.getNodes({});
+      setData(InventoryDataService.generateStructure(result));
+    } catch (e) {
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadData();
+  }, []);
 
   const removeNodes = async (nodes, forceMode) => {
     try {
@@ -44,7 +45,7 @@ export const NodesTab = () => {
     } catch (e) {
       console.error(e);
     } finally {
-      setReload({});
+      loadData();
     }
   };
 

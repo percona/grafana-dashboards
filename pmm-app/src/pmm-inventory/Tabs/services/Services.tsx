@@ -14,20 +14,21 @@ export const Services = () => {
   const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [data, setData] = useState([]);
-  const [reload, setReload] = useState({});
+
+  const loadData = async () => {
+    setLoading(true);
+    try {
+      const result = await InventoryService.getServices({});
+      setData(InventoryDataService.generateStructure(result));
+    } catch (e) {
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    setLoading(true);
-    (async () => {
-      try {
-        const result = await InventoryService.getServices({});
-        setData(InventoryDataService.generateStructure(result));
-      } catch (e) {
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, [reload]);
+    loadData();
+  }, []);
 
   const removeServices = async (services, forceMode) => {
     try {
@@ -40,8 +41,10 @@ export const Services = () => {
       showSuccessNotification({
         message: `${successfullyDeleted} of ${services.length} services successfully deleted`,
       });
-      setReload({});
-    } catch (e) {}
+    } catch (e) {
+    } finally {
+      loadData();
+    }
   };
 
   const ActionPanel: FC<{ selected: any[] }> = ({ selected }): ReactElement => {
