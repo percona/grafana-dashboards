@@ -7,7 +7,7 @@ const { Option } = Select;
 interface SelectFieldInterface {
   required?: boolean;
   name: string;
-  dataQa: string;
+  dataQa?: string;
   label?: string;
   prefix?: string;
   placeholder?: string;

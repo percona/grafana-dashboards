@@ -1,7 +1,9 @@
 import React from 'react';
 import { useField } from 'react-final-form';
 
-export const PasswordField = ({ name, placeholder = '', required = false }) => {
+export const PasswordField = ({
+  name, placeholder = '', required = false, dataQa = ''
+}) => {
   const { input } = useField(name);
 
   return (
@@ -11,6 +13,7 @@ export const PasswordField = ({ name, placeholder = '', required = false }) => {
       required={required}
       placeholder={`${required ? '*' : ''}${placeholder}`}
       className="input-field input-field--dark"
+      data-qa={dataQa}
     />
   );
 };
