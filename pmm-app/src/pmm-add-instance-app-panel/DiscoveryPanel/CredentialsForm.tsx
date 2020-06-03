@@ -16,7 +16,7 @@ const CredentialsForm = props => {
       validate={() => {
         return undefined;
       }}
-      render={({ form, handleSubmit }): ReactElement => {
+      render={({ form, handleSubmit }) => {
         return (
           <form onSubmit={handleSubmit} className="discovery-instance-form app-theme-dark">
             <div className="discovery-search-panel">

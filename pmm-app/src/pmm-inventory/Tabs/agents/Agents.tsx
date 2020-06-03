@@ -1,4 +1,4 @@
-import React, { FC, ReactElement, useEffect, useState } from 'react';
+import React, { FC, ReactElement, useCallback, useEffect, useState } from 'react';
 import { Button, HorizontalGroup, Modal } from '@grafana/ui';
 import { Form } from 'react-final-form';
 import { Table } from 'react-plugins-deps/components/Table/Table';
@@ -26,7 +26,7 @@ export const Agents = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [data, setData] = useState([]);
 
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     setLoading(true);
     try {
       const result: AgentsList = await InventoryService.getAgents({});
@@ -35,13 +35,13 @@ export const Agents = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     loadData();
   }, []);
 
-  const removeAgents = async (agents: Array<SelectedTableRows<Agent>>, forceMode) => {
+  const removeAgents = useCallback(async (agents: Array<SelectedTableRows<Agent>>, forceMode) => {
     try {
       setLoading(true);
       const requests = agents
@@ -58,9 +58,9 @@ export const Agents = () => {
     } finally {
       loadData();
     }
-  };
+  }, []);
 
-  const ActionPanel: FC<{ selected: any[] }> = ({ selected }): ReactElement => {
+  const ActionPanel: FC<{ selected: any[] }> = ({ selected }) => {
     return (
       <>
         <div className={styles.actionPanel}>

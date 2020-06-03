@@ -136,7 +136,7 @@ const SettingsPart = props => {
       onSubmit={onSubmit}
       // This is the slider's default, since in controlled components defaultValue can't be used
       initialValues={{ metrics_resolutions_slider: 2 } as any}
-      render={({ form, handleSubmit }): ReactElement => {
+      render={({ form, handleSubmit }) => {
         useEffect(() => {
           if (!settings.data_retention && !settings.metrics_resolutions) {
             return;
