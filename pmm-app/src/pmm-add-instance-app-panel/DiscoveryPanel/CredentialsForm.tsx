@@ -24,7 +24,7 @@ const CredentialsForm = (props) => {
             />
             <PasswordField
               name="aws_secret_key"
-              data-cy="add-account-username"
+              dataQa="add-account-username"
               placeholder="AMAZON_RDS_SECRET_ACCESS_KEY"
               required
             />

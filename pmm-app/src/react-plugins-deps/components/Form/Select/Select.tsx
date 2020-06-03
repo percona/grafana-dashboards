@@ -7,7 +7,7 @@ const { Option } = Select;
 interface SelectFieldInterface {
   required?: boolean;
   name: string;
-  'data-cy'?: string;
+  dataQa: string;
   label?: string;
   prefix?: string;
   placeholder?: string;
@@ -21,11 +21,12 @@ export const SelectField = ({
   options,
   style,
   defaultValue,
+  dataQa
 }: SelectFieldInterface) => {
   const { input } = useField(name);
   return (
     <span className="fields__select-field" style={style || {}}>
-      <Select {...input} defaultValue={defaultValue} style={{ width: '100%', height: '40px' }}>
+      <Select {...input} defaultValue={defaultValue} style={{ width: '100%', height: '40px' }} data-qa={dataQa}>
         {options
           && options.map((option) => (
             <Option value={option.value} key={option.label}>
