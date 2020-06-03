@@ -26,6 +26,7 @@ export const SelectField = ({
   const { input } = useField(name);
   return (
     <span className="fields__select-field" style={style || {}}>
+      {/* eslint-disable-next-line max-len */}
       <Select {...input} defaultValue={defaultValue} style={{ width: '100%', height: '40px' }} data-qa={dataQa}>
         {options
           && options.map((option) => (
