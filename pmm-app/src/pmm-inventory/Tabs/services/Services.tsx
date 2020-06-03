@@ -29,6 +29,7 @@ export const Services = () => {
   const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [data, setData] = useState([]);
+  const [selected, setSelectedRows] = useState<ServicesList>([]);
 
   const loadData = useCallback(async () => {
     setLoading(true);
@@ -62,83 +63,78 @@ export const Services = () => {
     }
   }, []);
 
-  const ActionPanel: FC<{ selected: any[] }> = ({ selected }) => {
-    return (
-      <>
-        <div className={styles.actionPanel}>
-          <Button
-            size="md"
-            disabled={selected.length === 0}
-            onClick={() => {
-              setModalVisible(!modalVisible);
-            }}
-            icon="trash-alt"
-            variant="primary"
-          >
-            Delete
-          </Button>
-        </div>
-        <Modal
-          title={
-            <div className="modal-header-title">
-              <span className="p-l-1">Confirm action</span>
-            </div>
-          }
-          isOpen={modalVisible}
-          onDismiss={() => setModalVisible(false)}
-        >
-          <Form
-            onSubmit={() => {}}
-            render={({ form, handleSubmit }) => {
-              return (
-                <form onSubmit={handleSubmit}>
-                  <>
-                    <h4>
-                      Are you sure that you want to permanently delete {selected.length}{' '}
-                      {selected.length === 1 ? 'service' : 'services'}?
-                    </h4>
-                    <FormElement
-                      dataQa="form-field-force"
-                      label="Force mode"
-                      element={
-                        <CheckboxField
-                          name="force"
-                          label="Force mode is going to delete all agents
-                           and nodes associated with the services"
-                        />
-                      }
-                    />
-                    <HorizontalGroup justify="space-between" spacing="md">
-                      <Button variant="secondary" size="md" onClick={() => setModalVisible(false)}>
-                        Cancel
-                      </Button>
-                      <Button
-                        variant="primary"
-                        size="md"
-                        onClick={() => {
-                          removeServices(selected, form.getState().values.force);
-                          setModalVisible(false);
-                        }}
-                      >
-                        Proceed
-                      </Button>
-                    </HorizontalGroup>
-                  </>
-                </form>
-              );
-            }}
-          />
-        </Modal>
-      </>
-    );
-  };
-
   return (
     <div className={styles.tableWrapper}>
+      <div className={styles.actionPanel}>
+        <Button
+          size="md"
+          disabled={selected.length === 0}
+          onClick={() => {
+            setModalVisible(!modalVisible);
+          }}
+          icon="trash-alt"
+          variant="primary"
+        >
+          Delete
+        </Button>
+      </div>
+      <Modal
+        title={
+          <div className="modal-header-title">
+            <span className="p-l-1">Confirm action</span>
+          </div>
+        }
+        isOpen={modalVisible}
+        onDismiss={() => setModalVisible(false)}
+      >
+        <Form
+          onSubmit={() => {}}
+          render={({ form, handleSubmit }) => {
+            return (
+              <form onSubmit={handleSubmit}>
+                <>
+                  <h4>
+                    Are you sure that you want to permanently delete {selected.length}{' '}
+                    {selected.length === 1 ? 'service' : 'services'}?
+                  </h4>
+                  <FormElement
+                    dataQa="form-field-force"
+                    label="Force mode"
+                    element={
+                      <CheckboxField
+                        name="force"
+                        label="Force mode is going to delete all agents
+                           and nodes associated with the services"
+                      />
+                    }
+                  />
+                  <HorizontalGroup justify="space-between" spacing="md">
+                    <Button variant="secondary" size="md" onClick={() => setModalVisible(false)}>
+                      Cancel
+                    </Button>
+                    <Button
+                      variant="primary"
+                      size="md"
+                      onClick={() => {
+                        removeServices(selected, form.getState().values.force);
+                        setModalVisible(false);
+                      }}
+                    >
+                      Proceed
+                    </Button>
+                  </HorizontalGroup>
+                </>
+              </form>
+            );
+          }}
+        />
+      </Modal>
       <Table
         columns={SERVICES_COLUMNS}
         data={data}
-        actionPanel={selected => <ActionPanel selected={selected} />}
+        rowSelection={{
+          onChange: setSelectedRows,
+        }}
         noData={<h1>No services Available</h1>}
         loading={loading}
       />

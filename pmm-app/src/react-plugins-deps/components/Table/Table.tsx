@@ -1,9 +1,13 @@
-import React, { ReactNode, FC } from 'react';
+import React, { ReactNode, FC, useEffect } from 'react';
 import { useRowSelect, useTable } from 'react-table';
 import { Spinner, useTheme } from '@grafana/ui';
 import { getStyles } from './Table.styles';
 
+interface RowSelection {
+  onChange: (rowsSelected: any) => undefined;
+}
 interface TableProps {
+  rowSelection?: RowSelection;
   columns: object[];
   data: object[];
   noData?: ReactNode;
@@ -21,7 +25,7 @@ const TableCheckbox = props => {
   );
 };
 
-export const Table: FC<TableProps> = ({ columns, data, actionPanel, noData, loading, rowKey }) => {
+export const Table: FC<TableProps> = ({ columns, rowSelection = {}, data, noData, loading, rowKey }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
   // @ts-ignore
@@ -32,7 +36,7 @@ export const Table: FC<TableProps> = ({ columns, data, actionPanel, noData, load
     },
     useRowSelect,
     hooks => {
-      if (actionPanel) {
+      if (rowSelection.onChange) {
         hooks.visibleColumns.push(columns => [
           {
             id: 'selection',
@@ -59,10 +63,14 @@ export const Table: FC<TableProps> = ({ columns, data, actionPanel, noData, load
     }
   );
 
+  useEffect(() => {
+    if (rowSelection.onChange) {
+      rowSelection.onChange(selectedFlatRows);
+    }
+  }, [selectedFlatRows]);
   // Render the UI for your table
   return (
     <div className={styles.table}>
-      {actionPanel && rows.length ? actionPanel(selectedFlatRows) : null}
       <div className={styles.tableWrap}>
         {loading ? (
           <div data-qa="table-loading" className={styles.empty}>
@@ -84,7 +92,7 @@ export const Table: FC<TableProps> = ({ columns, data, actionPanel, noData, load
                     // eslint-disable-next-line react/jsx-key
                     <th
                       {...column.getHeaderProps()}
-                      className={index === 0 && actionPanel ? styles.checkboxColumn : ''}
+                      className={index === 0 && rowSelection.onChange ? styles.checkboxColumn : ''}
                     >
                       {column.render('Header')}
                     </th>
@@ -102,7 +110,7 @@ export const Table: FC<TableProps> = ({ columns, data, actionPanel, noData, load
                         // eslint-disable-next-line react/jsx-key
                         <td
                           {...cell.getCellProps()}
-                          className={index === 0 && actionPanel ? styles.checkboxColumn : ''}
+                          className={index === 0 && rowSelection.onChange ? styles.checkboxColumn : ''}
                         >
                           {cell.render('Cell')}
                         </td>
