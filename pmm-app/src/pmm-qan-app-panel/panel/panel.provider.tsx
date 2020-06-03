@@ -136,9 +136,10 @@ const actions = {
   swapMainColumn: (value) => (state) => {
     const columns = [...state.columns];
     const columnIndex = columns.indexOf(value.simpleName);
-    const b = columns[columnIndex];
+    const currentColumn = columns[columnIndex];
+    // eslint-disable-next-line prefer-destructuring
     columns[columnIndex] = columns[0];
-    columns[0] = b;
+    columns[0] = currentColumn;
     return {
       ...state,
       columns,

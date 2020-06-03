@@ -21,32 +21,20 @@ export interface CheckPanelState {
 const history = createBrowserHistory();
 
 export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> {
-  state = {
-    dataSource: undefined,
-    hasNoAccess: false,
-    isLoading: true,
-    isSttEnabled: false,
-  };
-
   constructor(props: CheckPanelProps) {
     super(props);
     this.fetchAlerts = this.fetchAlerts.bind(this);
     this.getSettings = this.getSettings.bind(this);
+    this.state = {
+      dataSource: undefined,
+      hasNoAccess: false,
+      isLoading: true,
+      isSttEnabled: false,
+    };
   }
 
   componentDidMount() {
     this.getSettings();
-  }
-
-  async fetchAlerts() {
-    try {
-      const dataSource = await CheckService.getActiveAlerts();
-      this.setState({ dataSource });
-    } catch (err) {
-      console.error(err);
-    } finally {
-      this.setState({ isLoading: false });
-    }
   }
 
   async getSettings() {
@@ -69,11 +57,24 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
     }
   }
 
+  async fetchAlerts() {
+    try {
+      const dataSource = await CheckService.getActiveAlerts();
+      this.setState({ dataSource });
+    } catch (err) {
+      console.error(err);
+    } finally {
+      this.setState({ isLoading: false });
+    }
+  }
+
   render() {
     const {
       options: { title },
     } = this.props;
-    const { dataSource, isSttEnabled, isLoading, hasNoAccess } = this.state;
+    const {
+      dataSource, isSttEnabled, isLoading, hasNoAccess
+    } = this.state;
 
     return (
       <div className={styles.panel} data-qa="db-check-panel">

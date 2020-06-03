@@ -17,7 +17,7 @@ const style = {
   `,
 };
 
-const getErrorsWrapperStyle = align => {
+const getErrorsWrapperStyle = (align) => {
   let alignLabel: string;
   switch (align) {
     case 'top':
@@ -40,46 +40,47 @@ const getErrorsWrapperStyle = align => {
   `;
 };
 
-const HorizontalFieldLayout = ({ label, tooltip, element }) => {
-  return (
-    <>
-      <Row align="middle">
-        <Col span={8} className={style.fieldLabelColumn}>
-          <span>{label}</span>
-          <span>{tooltip || ''}</span>
-        </Col>
-        <Col span={16}>{element}</Col>
-      </Row>
-    </>
-  );
-};
+const HorizontalFieldLayout = ({ label, tooltip, element }) => (
+  <>
+    <Row align="middle">
+      <Col span={8} className={style.fieldLabelColumn}>
+        <span>{label}</span>
+        <span>{tooltip || ''}</span>
+      </Col>
+      <Col span={16}>{element}</Col>
+    </Row>
+  </>
+);
 
-const VerticalFieldLayout = ({ label, tooltip, alignLabel, element }) => {
-  return (
-    <>
-      <Row align="middle" className={style.verticalFieldLabelRow}>
-        <Col span={24} className={style.fieldLabelColumn}>
-          <span>{label}</span>
-          <span>{tooltip || ''}</span>
-        </Col>
-      </Row>
-      <Row className={getErrorsWrapperStyle(alignLabel)} align="middle">
-        <Col span={24}>{element}</Col>
-      </Row>
-    </>
-  );
-};
+const VerticalFieldLayout = ({
+  label, tooltip, alignLabel, element
+}) => (
+  <>
+    <Row align="middle" className={style.verticalFieldLabelRow}>
+      <Col span={24} className={style.fieldLabelColumn}>
+        <span>{label}</span>
+        <span>{tooltip || ''}</span>
+      </Col>
+    </Row>
+    <Row className={getErrorsWrapperStyle(alignLabel)} align="middle">
+      <Col span={24}>{element}</Col>
+    </Row>
+  </>
+);
 
-export const FormElement = props => {
+export const FormElement = (props) => {
+  const {
+    dataQa, type, errors, alignLabel
+  } = props;
   return (
-    <div className={style.formElementWrapper} data-qa={props.dataQa}>
-      {props.type === 'horizontal' ? (
+    <div className={style.formElementWrapper} data-qa={dataQa}>
+      {type === 'horizontal' ? (
         <HorizontalFieldLayout {...props} />
       ) : (
         <VerticalFieldLayout {...props} />
       )}
-      <Row className={getErrorsWrapperStyle(props.alignLabel)} align="middle">
-        <Col span={24}>{props.errors}</Col>
+      <Row className={getErrorsWrapperStyle(alignLabel)} align="middle">
+        <Col span={24}>{errors}</Col>
       </Row>
     </div>
   );
