@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import React, { useState } from 'react';
 import './AddRemoteInstance.scss';
 import { InputField } from '../../../react-plugins-deps/components/FormComponents/Input/Input';
 import { TextAreaField } from '../../../react-plugins-deps/components/FormComponents/TextArea/TextArea';

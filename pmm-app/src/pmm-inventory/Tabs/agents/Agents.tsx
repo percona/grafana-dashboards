@@ -1,9 +1,9 @@
-import React, { FC, ReactElement, useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Button, HorizontalGroup, Modal } from '@grafana/ui';
 import { Form } from 'react-final-form';
 import { Table } from 'react-plugins-deps/components/Table/Table';
 import { showSuccessNotification } from 'react-plugins-deps/components/helpers';
-import { processPromiseResults, filterFulfilled } from 'pmm-inventory/Inventory.tools';
+import { filterFulfilled, processPromiseResults } from 'pmm-inventory/Inventory.tools';
 import { CheckboxField, FormElement } from 'react-plugins-deps/components/FormComponents';
 import { InventoryDataService } from '../../DataService';
 import { InventoryService } from '../../Inventory.service';
@@ -25,7 +25,7 @@ export const Agents = () => {
   const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [data, setData] = useState([]);
-  const [selected, setSelectedRows] = useState<AgentsList>([]);
+  const [selected, setSelectedRows] = useState([]);
 
   const loadData = useCallback(async () => {
     setLoading(true);
@@ -127,7 +127,9 @@ export const Agents = () => {
         columns={AGENTS_COLUMNS}
         data={data}
         rowSelection={{
-          onChange: setSelectedRows,
+          onChange: selected => {
+            setSelectedRows(selected);
+          },
         }}
         noData={<h1>No agents Available</h1>}
         loading={loading}

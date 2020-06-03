@@ -1,5 +1,5 @@
 import { Form as FormFinal } from 'react-final-form';
-import React, { ReactElement } from 'react';
+import React from 'react';
 import { InputField } from '../../react-plugins-deps/components/FormComponents/Input/Input';
 import { PasswordField } from '../../react-plugins-deps/components/FormComponents/Password/Password';
 

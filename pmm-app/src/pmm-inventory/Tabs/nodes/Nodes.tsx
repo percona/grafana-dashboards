@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Button, HorizontalGroup, Modal } from '@grafana/ui';
 import { Form } from 'react-final-form';
 import { Table } from 'react-plugins-deps/components/Table/Table';
@@ -27,7 +27,7 @@ export const NodesTab = () => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
-  const [selected, setSelectedRows] = useState<NodesList>([]);
+  const [selected, setSelectedRows] = useState([]);
 
   const loadData = useCallback(async () => {
     setLoading(true);
@@ -135,7 +135,9 @@ export const NodesTab = () => {
         columns={NODES_COLUMNS}
         data={data}
         rowSelection={{
-          onChange: setSelectedRows,
+          onChange: selected => {
+            setSelectedRows(selected);
+          },
         }}
         noData={<h1>No nodes Available</h1>}
         loading={loading}

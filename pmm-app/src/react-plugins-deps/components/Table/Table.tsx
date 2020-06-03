@@ -4,7 +4,7 @@ import { Spinner, useTheme } from '@grafana/ui';
 import { getStyles } from './Table.styles';
 
 interface RowSelection {
-  onChange: (rowsSelected: any) => undefined;
+  onChange?: (selected: any) => void;
 }
 interface TableProps {
   rowSelection?: RowSelection;

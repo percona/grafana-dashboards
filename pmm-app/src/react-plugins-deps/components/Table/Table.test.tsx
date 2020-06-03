@@ -38,10 +38,15 @@ describe('Table', () => {
     expect(root.find('[data-qa="table-no-data"]').length).toEqual(1);
   });
 
-  it('Render action panel and checkboxes section if ActionPanel passed', () => {
-    const ActionPanel = ({ selected }) => <div data-qa="action-panel"></div>;
+  it('Render checkboxes if rowSelection.onChange is passed', () => {
     const root = mount(
-      <Table columns={columns} data={rows} actionPanel={selected => <ActionPanel selected={selected} />} />
+      <Table
+        columns={columns}
+        data={rows}
+        rowSelection={{
+          onChange: selected => {},
+        }}
+      />
     );
     expect(root.find('[data-qa="select-all"]').length).toEqual(1);
     expect(root.find('[data-qa="select-row"]').length).toEqual(rows.length);
