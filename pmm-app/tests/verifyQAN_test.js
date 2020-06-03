@@ -232,4 +232,12 @@ Scenario('PMM-T128 - Verify pagination works correctly', async (I, qanPage) => {
   qanPage.waitForNewQANPageLoaded();
   qanPage.verifySelectedCountPerPage('10 / page');
   I.click(qanPage.fields.nextPage);
+  qanPage.verifyActiveItem(2);
+  I.click(qanPage.fields.previousPage);
+  qanPage.verifyActiveItem(1);
+  I.click(qanPage.fields.ellipsisButton);
+  qanPage.verifyActiveItem(6);
+  I.click(qanPage.fields.ellipsisButton);
+  qanPage.verifyActiveItem(1);
+
 });

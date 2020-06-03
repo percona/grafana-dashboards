@@ -61,6 +61,8 @@ module.exports = {
     filterCheckboxes: '.checkbox-container__checkmark',
     resultsPerPage: '.ant-select-selection-selected-value',
     nextPage: '.ant-pagination-next',
+    previousPage: '.ant-pagination-prev',
+    ellipsisButton: '.ant-pagination-item-ellipsis',
   },
 
   filterGroupLocator(filterName) {
@@ -400,4 +402,9 @@ module.exports = {
     const selectedResults = `//div[contains(@class, 'ant-select-selection-selected-value') and contains(text(), '${expectedResults}' )]`;
     I.seeElement(selectedResults);
   },
+
+  verifyActiveItem(page){
+    const item = `//li[@class='ant-pagination-item ant-pagination-item-${page} ant-pagination-item-active']`;
+    I.waitForElement(item, 30);
+  }
 };
