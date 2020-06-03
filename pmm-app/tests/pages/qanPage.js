@@ -61,11 +61,12 @@ module.exports = {
     filterCheckboxes: '.checkbox-container__checkmark',
     newQANAddColumn: "//span[contains(text(), 'Add column')]",
     newQANMetricDropDown: '.ant-select-dropdown-menu-item',
-    newQANColumnSearchField: "div[style*='display: block;'] input"
-    resultsPerPage: '.ant-select-selection-selected-value',
+    newQANColumnSearchField: "div[style*='display: block;'] input",
+    resultsPerPageValue: '.ant-select-selection-selected-value',
     nextPage: '.ant-pagination-next',
     previousPage: '.ant-pagination-prev',
     ellipsisButton: '.ant-pagination-item-ellipsis',
+    tableRow: '.ant-table-row ant-table-row-level-0',
   },
 
   filterGroupLocator(filterName) {
@@ -405,13 +406,34 @@ module.exports = {
   },
 
   verifySelectedCountPerPage(expectedResults) {
-    I.waitForElement(this.fields.resultsPerPage, 30);
+    I.waitForElement(this.fields.resultsPerPageValue, 30);
     const selectedResults = `//div[contains(@class, 'ant-select-selection-selected-value') and contains(text(), '${expectedResults}' )]`;
     I.seeElement(selectedResults);
   },
 
-  verifyActiveItem(page){
+  verifyActiveItem(page) {
     const item = `//li[@class='ant-pagination-item ant-pagination-item-${page} ant-pagination-item-active']`;
     I.waitForElement(item, 30);
-  }
+  },
+
+  async verifyCount(expectedCount) {
+    const count = await I.grabTextFrom(this.fields.countOfItems);
+    assert.equal(count.includes(expectedCount), true, 'The count is not correct!');
+  },
+
+  selectPage(page) {
+    const item = `//li[@class='ant-pagination-item ant-pagination-item-${page}']`;
+    I.click(item);
+  },
+
+  selectPagination(option) {
+    const optionToSelect = `//li[contains(@class, 'ant-select-dropdown-menu-item') and contains(text(), '${option}' )]`;
+    I.click(optionToSelect);
+  },
+
+  async verifyRowCount(rowCount) {
+    const count = await I.grabNumberOfVisibleElements(this.fields.tableRow);
+    console.log('Count: ' + count);
+    assert.equal(count, rowCount, 'Row count is incorrect!');
+  },
 };

@@ -293,11 +293,20 @@ Scenario('PMM-T128 - Verify pagination works correctly', async (I, qanPage) => {
   qanPage.verifySelectedCountPerPage('10 / page');
   I.click(qanPage.fields.nextPage);
   qanPage.verifyActiveItem(2);
+  await qanPage.verifyCount('11-20');
   I.click(qanPage.fields.previousPage);
   qanPage.verifyActiveItem(1);
+  await qanPage.verifyCount('1-10');
   I.click(qanPage.fields.ellipsisButton);
   qanPage.verifyActiveItem(6);
+  await qanPage.verifyCount('51-60');
   I.click(qanPage.fields.ellipsisButton);
   qanPage.verifyActiveItem(1);
-
+  await qanPage.verifyCount('1-10');
+  qanPage.selectPage(3);
+  qanPage.verifyActiveItem(3);
+  await qanPage.verifyCount('21-30');
+  I.click(qanPage.fields.resultsPerPage);
+  qanPage.selectPagination('50 / page');
+  await qanPage.verifyRowCount(51);
 });
