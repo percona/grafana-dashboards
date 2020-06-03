@@ -288,7 +288,8 @@ xScenario('PMM-T13 - Verify QAN has MongoDB, MySQL, PostgreSQl all three Service
     }
 */
 
-Scenario('PMM-T128 - Verify pagination works correctly', async (I, qanPage) => {
+// TODO: Uncomment after new QAN will be merged
+xScenario('PMM-T128 - Verify pagination works correctly', async (I, qanPage) => {
   qanPage.waitForNewQANPageLoaded();
   qanPage.verifySelectedCountPerPage('10 / page');
   I.seeAttributesOnElements(qanPage.fields.previousPage, { 'aria-disabled': 'true' });
