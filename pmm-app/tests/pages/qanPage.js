@@ -66,7 +66,8 @@ module.exports = {
     nextPage: '.ant-pagination-next',
     previousPage: '.ant-pagination-prev',
     ellipsisButton: '.ant-pagination-item-ellipsis',
-    tableRow: '.ant-table-row ant-table-row-level-0',
+    tableRow: "//td[@class='ant-table-row-cell-break-word']",
+    resultPerPageCombobox: '.ant-pagination-options',
   },
 
   filterGroupLocator(filterName) {
@@ -427,13 +428,14 @@ module.exports = {
   },
 
   selectPagination(option) {
+    I.waitForInvisible(this.fields.newQANSpinnerLocator, 30);
+    I.click(this.fields.resultPerPageCombobox);
     const optionToSelect = `//li[contains(@class, 'ant-select-dropdown-menu-item') and contains(text(), '${option}' )]`;
     I.click(optionToSelect);
   },
 
   async verifyRowCount(rowCount) {
     const count = await I.grabNumberOfVisibleElements(this.fields.tableRow);
-    console.log('Count: ' + count);
     assert.equal(count, rowCount, 'Row count is incorrect!');
   },
 };

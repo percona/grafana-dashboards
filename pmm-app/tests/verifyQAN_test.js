@@ -291,12 +291,14 @@ xScenario('PMM-T13 - Verify QAN has MongoDB, MySQL, PostgreSQl all three Service
 Scenario('PMM-T128 - Verify pagination works correctly', async (I, qanPage) => {
   qanPage.waitForNewQANPageLoaded();
   qanPage.verifySelectedCountPerPage('10 / page');
+  I.seeAttributesOnElements(qanPage.fields.previousPage, { 'aria-disabled': 'true' });
   I.click(qanPage.fields.nextPage);
   qanPage.verifyActiveItem(2);
   await qanPage.verifyCount('11-20');
   I.click(qanPage.fields.previousPage);
   qanPage.verifyActiveItem(1);
   await qanPage.verifyCount('1-10');
+  I.seeAttributesOnElements(qanPage.fields.previousPage, { 'aria-disabled': 'true' });
   I.click(qanPage.fields.ellipsisButton);
   qanPage.verifyActiveItem(6);
   await qanPage.verifyCount('51-60');
@@ -306,7 +308,10 @@ Scenario('PMM-T128 - Verify pagination works correctly', async (I, qanPage) => {
   qanPage.selectPage(3);
   qanPage.verifyActiveItem(3);
   await qanPage.verifyCount('21-30');
-  I.click(qanPage.fields.resultsPerPage);
   qanPage.selectPagination('50 / page');
+  I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);
   await qanPage.verifyRowCount(51);
+  qanPage.selectPagination('100 / page');
+  I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);
+  await qanPage.verifyRowCount(101);
 });
