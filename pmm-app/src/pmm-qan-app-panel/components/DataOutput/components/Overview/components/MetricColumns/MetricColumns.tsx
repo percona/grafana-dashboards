@@ -77,6 +77,7 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy,
     sortOrder: getSorting(orderBy, metricName),
     sortDirections: ['descend', 'ascend'],
     width: columnIndex === 0 ? COLUMN_WIDTH * 1.8 : FIXED_COLUMN_WIDTH,
+    // eslint-disable-next-line max-len
     title: () => <ManageColumns placeholder={metricName} currentMetric={metric} mainMetric={mainMetric} width="100%" />,
     render: (text, item, index) => {
       const { stats } = item.metrics[metricName];

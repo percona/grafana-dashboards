@@ -1,7 +1,7 @@
 import React, { ReactNode, useEffect, useState } from 'react';
 import { Form as FormFinal } from 'react-final-form';
 import { PluginTooltip } from 'react-plugins-deps/components/helpers/Helpers';
-import { Button, FormElement, TextAreaField } from 'react-plugins-deps/components/FormComponents';
+import { Button, FormElement, TextAreaField } from 'react-plugins-deps/components/Form';
 import { showSuccessNotification } from 'react-plugins-deps/components/helpers/notification-manager';
 import { SettingsService } from '../../Settings.service';
 import { GUI_DOC_URL } from '../../panel.constants';
@@ -35,7 +35,7 @@ const UploadSSH = ({ settings }) => {
               <FormElement
                 dataQa="form-field-ssh-key"
                 label="SSH key"
-                tooltip={
+                tooltip={(
                   <PluginTooltip
                     links={[
                       {
@@ -45,7 +45,7 @@ const UploadSSH = ({ settings }) => {
                     ]}
                     text="Public SSH key to let you login into the server using SSH."
                   />
-                }
+                )}
                 element={
                   <TextAreaField name="ssh_key" placeholder="Enter ssh key" style={{ width: '100%' }} />
                 }
