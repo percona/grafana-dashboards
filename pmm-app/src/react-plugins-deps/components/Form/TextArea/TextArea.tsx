@@ -6,7 +6,7 @@ import './TextArea.scss';
 interface TextAreaFieldInterface {
   required?: boolean;
   name: string;
-  'data-cy'?: string;
+  dataQa?: string;
   label?: string;
   prefix?: string;
   placeholder?: string;
@@ -14,7 +14,7 @@ interface TextAreaFieldInterface {
   className?: any;
 }
 export const TextAreaField = ({
-  name, placeholder, style, className,
+  name, placeholder, style, className, dataQa
 }: TextAreaFieldInterface) => {
   const { input, meta } = useField(name);
   return (
@@ -25,6 +25,7 @@ export const TextAreaField = ({
         className={cx('input-field input-field--textarea input-field--dark', className)}
         style={style}
         placeholder={placeholder}
+        data-qa={dataQa}
       />
       {meta.error && meta.touched && <span className="error-message">{meta.error}</span>}
     </div>

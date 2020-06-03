@@ -249,7 +249,7 @@ key2:value2"
             <CheckboxField
               label="Skip TLS certificate and hostname validation"
               name="tls_skip_verify"
-              data-cy="add-account-username"
+              dataQa="add-account-username"
             />
             <span className="description" />
             {getAdditionalOptions(instanceType, remoteInstanceCredentials)}

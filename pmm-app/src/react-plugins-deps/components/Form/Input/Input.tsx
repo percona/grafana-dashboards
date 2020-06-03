@@ -6,7 +6,7 @@ import './Input.scss';
 interface InputFieldInterface {
   required?: boolean;
   name: string;
-  'data-cy'?: string;
+  dataQa?: string;
   label?: string;
   prefix?: string;
   placeholder?: string;
@@ -29,6 +29,7 @@ export const InputField = ({
   readonly,
   validate,
   className,
+  dataQa
 }: InputFieldInterface) => {
   const { input, meta } = useField(name, { validate });
   return (
@@ -39,6 +40,7 @@ export const InputField = ({
         required={required}
         placeholder={`${required ? '*' : ''}${placeholder}`}
         style={style || {}}
+        data-qa={dataQa}
         readOnly={readonly}
         className={cx('input-field input-field--dark', className)}
       />
