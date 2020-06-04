@@ -19,7 +19,7 @@ interface TableProps {
 const TableCheckbox = props => {
   return (
     <label className="checkbox-container checkbox-container--main no-gap">
-      <input type="checkbox" {...props} />
+      <input type="checkbox" {...props} indeterminate="false" />
       <span className="checkbox-container__checkmark"></span>
     </label>
   );
@@ -111,6 +111,7 @@ export const Table: FC<TableProps> = ({ columns, rowSelection = {}, data, noData
                         <td
                           {...cell.getCellProps()}
                           className={index === 0 && rowSelection.onChange ? styles.checkboxColumn : ''}
+                          key={index}
                         >
                           {cell.render('Cell')}
                         </td>
