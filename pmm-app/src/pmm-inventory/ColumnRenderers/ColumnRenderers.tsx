@@ -9,7 +9,7 @@ export const servicesDetailsRender = element => {
       {labels.map((label, accessor) =>
         element[label] ? <span key={accessor}>{`${label}: ${element[label]}`}</span> : null
       )}
-      {element.custom_labels && getCustomLabels(element.custom_labels)}
+      {getCustomLabels(element.custom_labels)}
     </div>
   );
 };
@@ -29,7 +29,7 @@ export const agentsDetailsRender = element => {
           service_ids: <span>{element.service_ids.map(serviceId => serviceId)}</span>
         </>
       ) : null}
-      {element.custom_labels && getCustomLabels(element.custom_labels)}
+      {getCustomLabels(element.custom_labels)}
     </div>
   );
 };
@@ -42,7 +42,7 @@ export const nodesDetailsRender = element => {
       {labels.map((label, key) =>
         element[label] ? <span key={key}>{`${label}: ${element[label]}`}</span> : null
       )}
-      {element.custom_labels && getCustomLabels(element.custom_labels)}
+      {getCustomLabels(element.custom_labels)}
     </div>
   );
 };
