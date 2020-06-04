@@ -39,7 +39,7 @@ module.exports = {
     I.waitForElement(this.fields.pmmAgentLocator, 60);
     I.waitForElement(this.fields.inventoryTable, 60);
     const numberOfServices = await I.grabNumberOfVisibleElements(
-      `//span[contains(text(), "${serviceId}")]/following-sibling::span[contains(text(),"status: RUNNING")]`
+      `//tr[td[contains(text(), "${serviceId}")]]//span[contains(text(),"status: RUNNING")]`
     );
     if (
       service_name === 'rds-mysql56' ||
@@ -48,9 +48,7 @@ module.exports = {
       service_name === 'mysql_remote_new'
     ) {
       I.waitForVisible(
-        '//span[contains(text(), "' +
-          serviceId +
-          '")]/following-sibling::span[contains(text(),"status: RUNNING")]',
+        `//tr[td[contains(text(), "${serviceId}")]]//span[contains(text(),"status: RUNNING")]`,
         30
       );
       assert.equal(
@@ -71,10 +69,10 @@ module.exports = {
     const nodeId = await this.getNodeId(serviceName);
     I.click(agentLinkLocator);
     // eslint-disable-next-line max-len
-    let flagExists = `//span[contains(text(), "${nodeId}")]/following-sibling::span[contains(text(),"enhanced_metrics_disabled: true")]`;
+    let flagExists = `//tr[td[contains(text(), "${nodeId}")]]//span[contains(text(),"enhanced_metrics_disabled: true")]`;
     I.seeElement(flagExists);
     // eslint-disable-next-line max-len
-    flagExists = `//span[contains(text(), "${nodeId}")]/following-sibling::span[contains(text(),"basic_metrics_disabled: true")]`;
+    flagExists = `//tr[td[contains(text(), "${nodeId}")]]//span[contains(text(),"basic_metrics_disabled: true")]`;
     I.seeElement(flagExists);
   },
 
