@@ -8,7 +8,7 @@ import { filterFulfilled, processPromiseResults } from 'pmm-inventory/Inventory.
 import { InventoryDataService } from '../DataService';
 import { InventoryService } from '../Inventory.service';
 import { ServicesList } from '../Inventory.types';
-import { SERVICES_COLUMNS } from '../panel.constants';
+import { SERVICES_COLUMNS } from '../Inventory.constants';
 import { styles } from './Tabs.styles';
 import { SelectedTableRows } from '../../react-plugins-deps/components/Table/Table.types';
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { MAIN_COLUMN } from 'pmm-inventory/panel.constants';
+import { MAIN_COLUMN } from 'pmm-inventory/Inventory.constants';
 import { CustomLabel } from 'pmm-inventory/Inventory.types';
 
 export const servicesDetailsRender = element => {

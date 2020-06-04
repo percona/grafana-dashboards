@@ -8,7 +8,7 @@ import { filterFulfilled, processPromiseResults } from 'pmm-inventory/Inventory.
 import { InventoryDataService } from '../DataService';
 import { InventoryService } from '../Inventory.service';
 import { NodesList } from '../Inventory.types';
-import { NODES_COLUMNS } from '../panel.constants';
+import { NODES_COLUMNS } from '../Inventory.constants';
 import { styles } from './Tabs.styles';
 
 interface Node {

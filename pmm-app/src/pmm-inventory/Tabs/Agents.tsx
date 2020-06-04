@@ -7,7 +7,7 @@ import { filterFulfilled, processPromiseResults } from 'pmm-inventory/Inventory.
 import { CheckboxField, FormElement } from 'react-plugins-deps/components/FormComponents';
 import { InventoryDataService } from '../DataService';
 import { InventoryService } from '../Inventory.service';
-import { AGENTS_COLUMNS } from '../panel.constants';
+import { AGENTS_COLUMNS } from '../Inventory.constants';
 import { styles } from './Tabs.styles';
 import { AgentsList } from 'pmm-inventory/Inventory.types';
 
