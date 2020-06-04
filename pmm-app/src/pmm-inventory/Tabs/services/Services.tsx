@@ -103,8 +103,7 @@ export const Services = () => {
                     element={
                       <CheckboxField
                         name="force"
-                        label="Force mode is going to delete all agents
-                           and nodes associated with the services"
+                        label="Force mode is going to delete all associated agents"
                       />
                     }
                   />

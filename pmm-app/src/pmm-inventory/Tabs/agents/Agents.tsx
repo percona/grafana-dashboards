@@ -99,7 +99,10 @@ export const Agents = () => {
                     dataQa="form-field-force"
                     label="Force mode"
                     element={
-                      <CheckboxField name="force" label="Force mode is going to delete all managed agents" />
+                      <CheckboxField
+                        name="force"
+                        label="Force mode is going to delete all associated agents and services"
+                      />
                     }
                   />
                   <HorizontalGroup justify="space-between" spacing="md">
