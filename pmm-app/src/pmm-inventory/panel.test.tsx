@@ -7,6 +7,7 @@ import { AGENTS_COLUMNS, NODES_COLUMNS, SERVICES_COLUMNS } from './panel.constan
 
 jest.mock('../react-plugins-deps/components/helpers/notification-manager');
 
+// FIXME: types
 describe('Inventory tables', () => {
   let container: Element;
   beforeEach(() => {
@@ -56,7 +57,7 @@ describe('Inventory tables', () => {
     act(() => {
       render(
         <Table
-          data={InventoryDataService.generateStructure(response)}
+          data={InventoryDataService.generateStructure(response as any)}
           rowKey={rec => rec.agent_id}
           columns={AGENTS_COLUMNS}
           loading={false}
@@ -83,7 +84,7 @@ describe('Inventory tables', () => {
     act(() => {
       render(
         <Table
-          data={InventoryDataService.generateStructure(response)}
+          data={InventoryDataService.generateStructure(response as any)}
           rowKey={rec => rec.service_id}
           columns={SERVICES_COLUMNS}
           loading={false}
@@ -105,7 +106,7 @@ describe('Inventory tables', () => {
     act(() => {
       render(
         <Table
-          data={InventoryDataService.generateStructure(response)}
+          data={InventoryDataService.generateStructure(response as any)}
           rowKey={rec => rec.node_id}
           columns={NODES_COLUMNS}
           loading={false}

@@ -1,16 +1,7 @@
-/* tslint:disable */
-export class CustomLabelsModel {
-  key: string;
-  value: string;
-
-  constructor(customLabel) {
-    this.key = customLabel[0];
-    this.value = customLabel[1];
-  }
-}
+import { ServicesList, CustomLabel } from './Inventory.types';
 
 export class CommonModel {
-  custom_labels: CustomLabelsModel[];
+  custom_labels: CustomLabel[];
   type: string;
   isDeleted: boolean;
 
@@ -18,7 +9,7 @@ export class CommonModel {
     const { custom_labels, ...rest } = params;
     this.custom_labels =
       custom_labels && Object.keys(custom_labels).length
-        ? Object.entries(custom_labels).map(item => new CustomLabelsModel(item))
+        ? Object.entries<string>(custom_labels).map<CustomLabel>(([key, value]) => ({ key, value }))
         : [];
     this.type = type;
     this.isDeleted = false;
@@ -29,39 +20,39 @@ export class CommonModel {
 }
 
 const inventoryTypes = {
+  amazon_rds_mysql: 'Amazon RDS MySQL',
+  container: 'Container',
   external_exporter: 'External exporter',
+  generic: 'Generic',
   mongodb_exporter: 'MongoDB exporter',
+  mongodb: 'MongoDB',
+  mysql: 'MySQL',
   mysqld_exporter: 'MySQL exporter',
-  postgres_exporter: 'Postgres exporter',
-  proxysql_exporter: 'ProxySQL exporter',
   node_exporter: 'Node exporter',
   pmm_agent: 'PMM Agent',
+  postgres_exporter: 'Postgres exporter',
+  postgresql: 'PostgreSQL',
+  proxysql_exporter: 'ProxySQL exporter',
+  proxysql: 'ProxySQL',
   qan_mongodb_profiler_agent: 'Qan MongoDB Profiler Agent',
   qan_mysql_perfschema_agent: 'Qan MySQL Perfschema Agent',
   qan_mysql_slowlog_agent: 'Qan MySQL Slowlog Agent',
   qan_postgresql_pgstatements_agent: 'QAN PostgreSQL PgStatements Agent',
   rds_exporter: 'RDS exporter',
-  container: 'Container',
-  generic: 'Generic',
-  remote: 'Remote',
   remote_rds: 'Remote Amazon RDS',
-  amazon_rds_mysql: 'Amazon RDS MySQL',
-  mongodb: 'MongoDB',
-  mysql: 'MySQL',
-  postgresql: 'PostgreSQL',
-  proxysql: 'ProxySQL',
+  remote: 'Remote',
 };
-export class InventoryDataService {
-  constructor() {}
 
-  static generateStructure(item) {
-    const addType = Object.keys(item).map(type => new Object({ type, params: item[type] }));
-    const createParams = addType.map(agent =>
-      agent['params'].map(arrItem => {
-        const type = inventoryTypes[agent['type']] || '';
-        return new CommonModel(arrItem, type);
-      })
-    );
+export const InventoryDataService = {
+  generateStructure(item: ServicesList) {
+    const createParams = Object.keys(item)
+      .map(type => ({ type, params: item[type] }))
+      .map(agent =>
+        agent['params'].map(arrItem => {
+          const type = inventoryTypes[agent['type']] || '';
+          return new CommonModel(arrItem, type);
+        })
+      );
     return [].concat(...createParams);
-  }
-}
+  },
+};

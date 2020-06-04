@@ -14,19 +14,19 @@ interface RemoveNodeBody {
 }
 
 export const InventoryService = {
-  async getAgents(body) {
+  async getAgents(body = {}) {
     return apiRequest.post<any, any>('/v1/inventory/Agents/List', body);
   },
   async removeAgent(body: RemoveAgentBody) {
     return apiRequest.post<any, any>('/v1/inventory/Agents/Remove', body);
   },
-  async getServices(body) {
+  async getServices(body = {}) {
     return apiRequest.post<any, any>('/v1/inventory/Services/List', body);
   },
   async removeService(body: RemoveServiceBody) {
     return apiRequest.post<any, any>('/v1/inventory/Services/Remove', body);
   },
-  async getNodes(body) {
+  async getNodes(body = {}) {
     return apiRequest.post<any, any>('/v1/inventory/Nodes/List', body);
   },
   async removeNode(body: RemoveNodeBody) {

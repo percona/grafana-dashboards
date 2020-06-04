@@ -1,40 +1,31 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Button, HorizontalGroup, Modal } from '@grafana/ui';
 import { Form } from 'react-final-form';
-import { Table } from 'react-plugins-deps/components/Table/Table';
+import { Table, SelectedTableRows } from 'react-plugins-deps/components/Table';
 import { showSuccessNotification } from 'react-plugins-deps/components/helpers';
-import { CheckboxField, FormElement } from 'react-plugins-deps/components/FormComponents';
 import { filterFulfilled, processPromiseResults } from 'pmm-inventory/Inventory.tools';
-import { InventoryDataService } from '../../DataService';
-import { InventoryService } from '../../Inventory.service';
-import { InventoryType } from '../../Inventory.types';
-import { SERVICES_COLUMNS } from '../../panel.constants';
-import { styles } from '../Tabs.styles';
-import { SelectedTableRows } from '../../../react-plugins-deps/components/Table/Table.types';
+import { CheckboxField, FormElement } from 'react-plugins-deps/components/FormComponents';
+import { InventoryDataService } from '../DataService';
+import { InventoryService } from '../Inventory.service';
+import { AGENTS_COLUMNS } from '../panel.constants';
+import { styles } from './Tabs.styles';
+import { AgentsList } from 'pmm-inventory/Inventory.types';
 
-interface Service {
-  service_id: string;
-  service_name: string;
-  node_id: string;
-  address: string;
-  port: string;
+interface Agent {
+  agent_id: string;
   [key: string]: string;
 }
 
-interface ServicesList {
-  [key: InventoryType]: Node[];
-}
-
-export const Services = () => {
+export const Agents = () => {
   const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<any[]>([]);
   const [selected, setSelectedRows] = useState([]);
 
   const loadData = useCallback(async () => {
     setLoading(true);
     try {
-      const result: ServicesList = await InventoryService.getServices({});
+      const result: AgentsList = await InventoryService.getAgents();
       setData(InventoryDataService.generateStructure(result));
     } catch (e) {
     } finally {
@@ -46,18 +37,20 @@ export const Services = () => {
     loadData();
   }, []);
 
-  const removeServices = useCallback(async (services: Array<SelectedTableRows<Service>>, forceMode) => {
+  const removeAgents = useCallback(async (agents: Array<SelectedTableRows<Agent>>, forceMode) => {
     try {
       setLoading(true);
-      const requests = services
+      const requests = agents
         .map(item => item.original)
-        .map(service => InventoryService.removeService({ service_id: service.service_id, force: forceMode }));
+        .map(agent => InventoryService.removeAgent({ agent_id: agent.agent_id, force: forceMode }));
       const results = await processPromiseResults(requests);
+
       const successfullyDeleted = results.filter(filterFulfilled).length;
       showSuccessNotification({
-        message: `${successfullyDeleted} of ${services.length} services successfully deleted`,
+        message: `${successfullyDeleted} of ${agents.length} agents successfully deleted`,
       });
     } catch (e) {
+      console.error(e);
     } finally {
       loadData();
     }
@@ -95,7 +88,7 @@ export const Services = () => {
                 <>
                   <h4>
                     Are you sure that you want to permanently delete {selected.length}{' '}
-                    {selected.length === 1 ? 'service' : 'services'}?
+                    {selected.length === 1 ? 'agent' : 'agents'}?
                   </h4>
                   <FormElement
                     dataQa="form-field-force"
@@ -103,7 +96,7 @@ export const Services = () => {
                     element={
                       <CheckboxField
                         name="force"
-                        label="Force mode is going to delete all associated agents"
+                        label="Force mode is going to delete all associated agents and services"
                       />
                     }
                   />
@@ -115,7 +108,7 @@ export const Services = () => {
                       variant="primary"
                       size="md"
                       onClick={() => {
-                        removeServices(selected, form.getState().values.force);
+                        removeAgents(selected, form.getState().values.force);
                         setModalVisible(false);
                       }}
                     >
@@ -129,14 +122,14 @@ export const Services = () => {
         />
       </Modal>
       <Table
-        columns={SERVICES_COLUMNS}
+        columns={AGENTS_COLUMNS}
         data={data}
         rowSelection={{
           onChange: selected => {
             setSelectedRows(selected);
           },
         }}
-        noData={<h1>No services Available</h1>}
+        noData={<h1>No agents Available</h1>}
         loading={loading}
       />
     </div>

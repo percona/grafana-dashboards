@@ -1,16 +1,15 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Button, HorizontalGroup, Modal } from '@grafana/ui';
 import { Form } from 'react-final-form';
-import { Table } from 'react-plugins-deps/components/Table/Table';
+import { Table, SelectedTableRows } from 'react-plugins-deps/components/Table';
 import { showSuccessNotification } from 'react-plugins-deps/components/helpers';
 import { CheckboxField, FormElement } from 'react-plugins-deps/components/FormComponents';
 import { filterFulfilled, processPromiseResults } from 'pmm-inventory/Inventory.tools';
-import { InventoryDataService } from '../../DataService';
-import { InventoryService } from '../../Inventory.service';
-import { InventoryType } from '../../Inventory.types';
-import { NODES_COLUMNS } from '../../panel.constants';
-import { styles } from '../Tabs.styles';
-import { SelectedTableRows } from 'react-plugins-deps/components/Table/Table.types';
+import { InventoryDataService } from '../DataService';
+import { InventoryService } from '../Inventory.service';
+import { NodesList } from '../Inventory.types';
+import { NODES_COLUMNS } from '../panel.constants';
+import { styles } from './Tabs.styles';
 
 interface Node {
   node_id: string;
@@ -19,20 +18,16 @@ interface Node {
   [key: string]: string;
 }
 
-interface NodesList {
-  [key: InventoryType]: Node[];
-}
-
 export const NodesTab = () => {
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<any[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [selected, setSelectedRows] = useState([]);
 
   const loadData = useCallback(async () => {
     setLoading(true);
     try {
-      const result: NodesList = await InventoryService.getNodes({});
+      const result: NodesList = await InventoryService.getNodes();
       setData(InventoryDataService.generateStructure(result));
     } catch (e) {
     } finally {
