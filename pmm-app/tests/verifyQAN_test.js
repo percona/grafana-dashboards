@@ -309,10 +309,25 @@ xScenario('PMM-T128 - Verify pagination works correctly', async (I, qanPage) => 
   qanPage.selectPage(3);
   qanPage.verifyActiveItem(3);
   await qanPage.verifyCount('21-30');
-  qanPage.selectPagination('50 / page');
-  I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);
-  await qanPage.verifyRowCount(51);
-  qanPage.selectPagination('100 / page');
-  I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);
-  await qanPage.verifyRowCount(101);
 });
+
+// TODO: Uncomment after new QAN will be merged
+xScenario(
+  'PMM-T193 - Verify user is able to change per page elements display and pagination is updated according to this value',
+  async (I, qanPage) => {
+    qanPage.waitForNewQANPageLoaded();
+    await qanPage.verifyRowCount(11);
+    await qanPage.verifyCount('1-10');
+    await qanPage.verifyPagesAndCount(10);
+    qanPage.selectPagination('50 / page');
+    I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);
+    await qanPage.verifyRowCount(51);
+    await qanPage.verifyPagesAndCount(50);
+    await qanPage.verifyCount('1-50');
+    qanPage.selectPagination('100 / page');
+    I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);
+    await qanPage.verifyRowCount(101);
+    await qanPage.verifyPagesAndCount(100);
+    await qanPage.verifyCount('1-100');
+  }
+);

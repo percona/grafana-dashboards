@@ -438,4 +438,23 @@ module.exports = {
     const count = await I.grabNumberOfVisibleElements(this.fields.tableRow);
     assert.equal(count, rowCount, 'Row count is incorrect!');
   },
+
+  async verifyPagesAndCount(itemsPerPage) {
+    const count = await this.getCountOfItems();
+    let items = '';
+    if (itemsPerPage < 100) {
+      items = count.slice(8, count.length - 6);
+    } else {
+      items = count.slice(9, count.length - 6);
+    }
+    const lastpage = await this.getPagesCount();
+    const result = parseInt(items) / parseInt(lastpage);
+    assert.equal(Math.ceil(result / 10) * 10, itemsPerPage, 'Error');
+  },
+
+  async getPagesCount() {
+    const pagesCount = locate('li').before(this.fields.nextPage);
+    const pages = await I.grabTextFrom(pagesCount);
+    return pages[pages.length - 1];
+  },
 };
