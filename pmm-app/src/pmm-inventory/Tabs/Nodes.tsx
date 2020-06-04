@@ -68,7 +68,7 @@ export const NodesTab = () => {
             setModalVisible(!modalVisible);
           }}
           icon="trash-alt"
-          variant="destructive"
+          variant="primary"
         >
           Delete
         </Button>
@@ -110,7 +110,7 @@ export const NodesTab = () => {
                       Cancel
                     </Button>
                     <Button
-                      variant="primary"
+                      variant="destructive"
                       size="md"
                       onClick={() => {
                         removeNodes(selected, form.getState().values.force);

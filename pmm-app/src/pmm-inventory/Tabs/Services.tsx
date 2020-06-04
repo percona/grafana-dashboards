@@ -69,7 +69,7 @@ export const Services = () => {
             setModalVisible(!modalVisible);
           }}
           icon="trash-alt"
-          variant="destructive"
+          variant="primary"
         >
           Delete
         </Button>
@@ -108,7 +108,7 @@ export const Services = () => {
                       Cancel
                     </Button>
                     <Button
-                      variant="primary"
+                      variant="destructive"
                       size="md"
                       onClick={() => {
                         removeServices(selected, form.getState().values.force);

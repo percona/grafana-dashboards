@@ -48,8 +48,8 @@ export const InventoryDataService = {
     const createParams = Object.keys(item)
       .map(type => ({ type, params: item[type] }))
       .map(agent =>
-        agent['params'].map(arrItem => {
-          const type = inventoryTypes[agent['type']] || '';
+        agent.params.map(arrItem => {
+          const type = inventoryTypes[agent.type] || '';
           return new CommonModel(arrItem, type);
         })
       );

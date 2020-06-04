@@ -66,7 +66,7 @@ export const Agents = () => {
             setModalVisible(!modalVisible);
           }}
           icon="trash-alt"
-          variant="destructive"
+          variant="primary"
         >
           Delete
         </Button>
@@ -105,7 +105,7 @@ export const Agents = () => {
                       Cancel
                     </Button>
                     <Button
-                      variant="primary"
+                      variant="destructive"
                       size="md"
                       onClick={() => {
                         removeAgents(selected, form.getState().values.force);
