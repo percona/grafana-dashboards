@@ -69,7 +69,7 @@ export const Services = () => {
             setModalVisible(!modalVisible);
           }}
           icon="trash-alt"
-          variant="primary"
+          variant="destructive"
         >
           Delete
         </Button>
@@ -127,11 +127,8 @@ export const Services = () => {
       <Table
         columns={SERVICES_COLUMNS}
         data={data}
-        rowSelection={{
-          onChange: selected => {
-            setSelectedRows(selected);
-          },
-        }}
+        rowSelection
+        onRowSelection={selected => setSelectedRows(selected)}
         noData={<h1>No services Available</h1>}
         loading={loading}
       />

@@ -66,7 +66,7 @@ export const Agents = () => {
             setModalVisible(!modalVisible);
           }}
           icon="trash-alt"
-          variant="primary"
+          variant="destructive"
         >
           Delete
         </Button>
@@ -124,11 +124,8 @@ export const Agents = () => {
       <Table
         columns={AGENTS_COLUMNS}
         data={data}
-        rowSelection={{
-          onChange: selected => {
-            setSelectedRows(selected);
-          },
-        }}
+        rowSelection
+        onRowSelection={selected => setSelectedRows(selected)}
         noData={<h1>No agents Available</h1>}
         loading={loading}
       />

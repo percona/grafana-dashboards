@@ -68,7 +68,7 @@ export const NodesTab = () => {
             setModalVisible(!modalVisible);
           }}
           icon="trash-alt"
-          variant="primary"
+          variant="destructive"
         >
           Delete
         </Button>
@@ -129,11 +129,8 @@ export const NodesTab = () => {
       <Table
         columns={NODES_COLUMNS}
         data={data}
-        rowSelection={{
-          onChange: selected => {
-            setSelectedRows(selected);
-          },
-        }}
+        rowSelection
+        onRowSelection={selected => setSelectedRows(selected)}
         noData={<h1>No nodes Available</h1>}
         loading={loading}
       />

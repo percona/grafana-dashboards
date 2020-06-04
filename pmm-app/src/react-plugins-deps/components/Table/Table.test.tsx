@@ -32,22 +32,14 @@ describe('Table', () => {
     expect(root.find('[data-qa="table-header"]').length).toEqual(1);
   });
 
-  it('Render no data section of empty rows passed', () => {
+  it('Render no data section if empty rows passed', () => {
     const root = shallow(<Table columns={columns} data={[]} />);
     expect(root.find('[data-qa="table-row"]').length).toEqual(0);
     expect(root.find('[data-qa="table-no-data"]').length).toEqual(1);
   });
 
-  it('Render checkboxes if rowSelection.onChange is passed', () => {
-    const root = mount(
-      <Table
-        columns={columns}
-        data={rows}
-        rowSelection={{
-          onChange: selected => {},
-        }}
-      />
-    );
+  it('Render checkboxes if rowSelection is passed', () => {
+    const root = mount(<Table columns={columns} data={rows} rowSelection />);
     expect(root.find('[data-qa="select-all"]').length).toEqual(1);
     expect(root.find('[data-qa="select-row"]').length).toEqual(rows.length);
   });

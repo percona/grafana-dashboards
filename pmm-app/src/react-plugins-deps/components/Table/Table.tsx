@@ -1,17 +1,14 @@
 import React, { ReactNode, FC, useEffect } from 'react';
-import { useRowSelect, useTable } from 'react-table';
+import { useRowSelect, useTable, Column } from 'react-table';
 import { Spinner, useTheme } from '@grafana/ui';
 import { getStyles } from './Table.styles';
 
-interface RowSelection {
-  onChange?: (selected: any) => void;
-}
 interface TableProps {
-  rowSelection?: RowSelection;
-  columns: object[];
+  rowSelection?: boolean;
+  onRowSelection?: (selected: any) => void;
+  columns: Column[];
   data: object[];
   noData?: ReactNode;
-  actionPanel?: (selected: any[]) => ReactNode;
   loading?: boolean;
   rowKey?: (rec: any) => any;
 }
@@ -25,7 +22,15 @@ const TableCheckbox = props => {
   );
 };
 
-export const Table: FC<TableProps> = ({ columns, rowSelection = {}, data, noData, loading, rowKey }) => {
+export const Table: FC<TableProps> = ({
+  columns,
+  rowSelection = false,
+  onRowSelection,
+  data,
+  noData,
+  loading,
+  rowKey,
+}) => {
   const theme = useTheme();
   const styles = getStyles(theme);
   // @ts-ignore
@@ -36,22 +41,18 @@ export const Table: FC<TableProps> = ({ columns, rowSelection = {}, data, noData
     },
     useRowSelect,
     hooks => {
-      if (rowSelection.onChange) {
+      if (rowSelection) {
         hooks.visibleColumns.push(columns => [
           {
             id: 'selection',
-            Header: props => (
+            Header: ({ getToggleAllRowsSelectedProps }: any) => (
               <div data-qa="select-all">
-                {/*
-                  // @ts-ignore */}
-                <TableCheckbox {...props.getToggleAllRowsSelectedProps()} />
+                <TableCheckbox {...getToggleAllRowsSelectedProps()} />
               </div>
             ),
-            Cell: ({ row }) => {
+            Cell: ({ row }: { row: any }) => {
               return (
                 <div data-qa="select-row">
-                  {/*
-                  // @ts-ignore */}
                   <TableCheckbox {...row.getToggleRowSelectedProps()} />
                 </div>
               );
@@ -64,11 +65,11 @@ export const Table: FC<TableProps> = ({ columns, rowSelection = {}, data, noData
   );
 
   useEffect(() => {
-    if (rowSelection.onChange) {
-      rowSelection.onChange(selectedFlatRows);
+    if (onRowSelection) {
+      onRowSelection(selectedFlatRows);
     }
   }, [selectedFlatRows]);
-  // Render the UI for your table
+
   return (
     <div className={styles.table}>
       <div className={styles.tableWrap}>
@@ -92,7 +93,7 @@ export const Table: FC<TableProps> = ({ columns, rowSelection = {}, data, noData
                     // eslint-disable-next-line react/jsx-key
                     <th
                       {...column.getHeaderProps()}
-                      className={index === 0 && rowSelection.onChange ? styles.checkboxColumn : ''}
+                      className={index === 0 && rowSelection ? styles.checkboxColumn : ''}
                     >
                       {column.render('Header')}
                     </th>
@@ -110,7 +111,7 @@ export const Table: FC<TableProps> = ({ columns, rowSelection = {}, data, noData
                         // eslint-disable-next-line react/jsx-key
                         <td
                           {...cell.getCellProps()}
-                          className={index === 0 && rowSelection.onChange ? styles.checkboxColumn : ''}
+                          className={index === 0 && rowSelection ? styles.checkboxColumn : ''}
                           key={index}
                         >
                           {cell.render('Cell')}
