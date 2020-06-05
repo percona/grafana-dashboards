@@ -66,7 +66,8 @@ export const Agents = () => {
             setModalVisible(!modalVisible);
           }}
           icon="trash-alt"
-          variant="primary"
+          variant="destructive"
+          className={styles.destructiveButton}
         >
           Delete
         </Button>
@@ -86,7 +87,7 @@ export const Agents = () => {
             return (
               <form onSubmit={handleSubmit}>
                 <>
-                  <h4>
+                  <h4 className={styles.confirmationText}>
                     Are you sure that you want to permanently delete {selected.length}{' '}
                     {selected.length === 1 ? 'agent' : 'agents'}?
                   </h4>
@@ -105,12 +106,13 @@ export const Agents = () => {
                       Cancel
                     </Button>
                     <Button
-                      variant="destructive"
                       size="md"
                       onClick={() => {
                         removeAgents(selected, form.getState().values.force);
                         setModalVisible(false);
                       }}
+                      variant="destructive"
+                      className={styles.destructiveButton}
                     >
                       Proceed
                     </Button>

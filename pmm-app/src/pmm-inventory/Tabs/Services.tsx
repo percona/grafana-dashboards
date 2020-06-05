@@ -69,7 +69,8 @@ export const Services = () => {
             setModalVisible(!modalVisible);
           }}
           icon="trash-alt"
-          variant="primary"
+          variant="destructive"
+          className={styles.destructiveButton}
         >
           Delete
         </Button>
@@ -89,7 +90,7 @@ export const Services = () => {
             return (
               <form onSubmit={handleSubmit}>
                 <>
-                  <h4>
+                  <h4 className={styles.confirmationText}>
                     Are you sure that you want to permanently delete {selected.length}{' '}
                     {selected.length === 1 ? 'service' : 'services'}?
                   </h4>
@@ -114,6 +115,7 @@ export const Services = () => {
                         removeServices(selected, form.getState().values.force);
                         setModalVisible(false);
                       }}
+                      className={styles.destructiveButton}
                     >
                       Proceed
                     </Button>
