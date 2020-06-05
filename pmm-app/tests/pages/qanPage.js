@@ -66,7 +66,7 @@ module.exports = {
     nextPage: '.ant-pagination-next',
     previousPage: '.ant-pagination-prev',
     ellipsisButton: '.ant-pagination-item-ellipsis',
-    tableRow: "//td[@class='ant-table-row-cell-break-word']",
+    tableRow: 'td.ant-table-row-cell-break-word',
     resultPerPageCombobox: '.ant-pagination-options',
   },
 
