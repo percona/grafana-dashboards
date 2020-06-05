@@ -419,7 +419,7 @@ module.exports = {
 
   async verifyCount(expectedCount) {
     const count = await I.grabTextFrom(this.fields.countOfItems);
-    assert.equal(count.includes(expectedCount), true, 'The count is not correct!');
+    assert.equal(count.includes(expectedCount), true, 'The count is incorrect!');
   },
 
   selectPage(page) {
@@ -449,7 +449,7 @@ module.exports = {
     }
     const lastpage = await this.getPagesCount();
     const result = parseInt(items) / parseInt(lastpage);
-    assert.equal(Math.ceil(result / 10) * 10, itemsPerPage, 'Error');
+    assert.equal(Math.ceil(result / 10) * 10, itemsPerPage, 'Pages do not match with total count');
   },
 
   async getPagesCount() {
