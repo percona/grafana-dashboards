@@ -8,7 +8,7 @@ Before(async (I, qanPage, adminPage) => {
   await I.waitForElement(qanPage.fields.iframe, 60);
   await I.switchTo(qanPage.fields.iframe);
 });
-/*
+
 Scenario('Verify QAN Filter groups exist  @not-pr-pipeline', async (I, adminPage, qanPage) => {
   qanPage.waitForQANPageLoaded();
   await qanPage.changeResultsPerPage(50);
@@ -286,7 +286,7 @@ xScenario('PMM-T13 - Verify QAN has MongoDB, MySQL, PostgreSQl all three Service
         I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);
         await I.clearField(qanPage.fields.filterBy);
     }
-*/
+
 
 // TODO: Uncomment after new QAN will be merged
 xScenario('PMM-T128 - Verify pagination works correctly', async (I, qanPage) => {
@@ -313,7 +313,7 @@ xScenario('PMM-T128 - Verify pagination works correctly', async (I, qanPage) => 
 
 // TODO: Uncomment after new QAN will be merged
 xScenario(
-  'PMM-T193 - Verify user is able to change per page elements display and pagination is updated according to this value',
+  'PMM-T193 - Verify user is able to change per page elements display and pagination is updated according to this value, PMM-T256 - Verify that switching view from 10 to 50/100 pages works correctly',
   async (I, qanPage) => {
     qanPage.waitForNewQANPageLoaded();
     await qanPage.verifyRowCount(11);
@@ -329,5 +329,9 @@ xScenario(
     await qanPage.verifyRowCount(101);
     await qanPage.verifyPagesAndCount(100);
     await qanPage.verifyCount('1-100');
+    qanPage.selectPagination('10 / page');
+    await qanPage.verifyRowCount(11);
+    await qanPage.verifyCount('1-10');
+    await qanPage.verifyPagesAndCount(10);
   }
 );
