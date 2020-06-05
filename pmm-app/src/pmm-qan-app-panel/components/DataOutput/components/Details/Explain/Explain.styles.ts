@@ -1,6 +1,6 @@
 import { css } from 'emotion';
 
-export const Styling = {
+export const styles = {
   collapse: css`
     background: #1f1d1d !important;
     margin-bottom: 10 !important;

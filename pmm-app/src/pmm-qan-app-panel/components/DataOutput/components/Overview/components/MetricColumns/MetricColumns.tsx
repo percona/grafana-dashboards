@@ -1,34 +1,19 @@
 import { Divider } from 'antd';
 import Tooltip from 'antd/es/tooltip';
 import React from 'react';
-import { css } from 'emotion';
+import { cx } from 'emotion';
 import { METRIC_CATALOGUE } from '../../../../../../panel/panel.constants';
 import { COLUMN_WIDTH, FIXED_COLUMN_WIDTH } from '../../OverviewTable.constants';
 import ManageColumns from '../../../ManageColumns/ManageColumns';
 import { Humanize } from '../../../../../../../react-plugins-deps/components/helpers/Humanization';
-import { Styling } from './MetricColumn.styles';
-import {
-  Latency,
-  Sparkline,
-  TotalPercentage,
-} from '../../../../../../../react-plugins-deps/components/Elements/Charts';
+import { styles } from './MetricColumn.styles';
+// eslint-disable-next-line max-len
+import { Latency, Sparkline, TotalPercentage } from '../../../../../../../react-plugins-deps/components/Elements/Charts';
 import './MetricColumns.scss';
 
-const metricStyle = css`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-`;
 const TimeMetric = ({ value, percentage, cnt }) => (
-  <div className={metricStyle}>
-    <span
-      className="summarize"
-      style={{
-        marginLeft: 'auto',
-        cursor: value && value !== 'NaN' ? 'help' : '',
-        color: 'rgba(255,255,255,0.8)',
-      }}
-    >
+  <div className={styles.metricStyle}>
+    <span className={cx('summarize', styles.summarize(value))}>
       {value === undefined && cnt > 0 ? `${Humanize.transform(0, 'time')}` : null}
       {(value === undefined && cnt === undefined) || value === null || value === 'NaN' ? 'N/A' : null}
       {value && value !== 'NaN' ? `${Humanize.transform(value, 'time')}` : null}
@@ -39,15 +24,8 @@ const TimeMetric = ({ value, percentage, cnt }) => (
 const NonTimeMetric = ({
   value, units, percentage, cnt
 }) => (
-  <div className={metricStyle}>
-    <span
-      className="summarize"
-      style={{
-        marginLeft: 'auto',
-        cursor: value && value !== 'NaN' ? 'help' : '',
-        color: 'rgba(255,255,255,0.8)',
-      }}
-    >
+  <div className={styles.metricStyle}>
+    <span className={cx('summarize', styles.summarize(value))}>
       {value === undefined && cnt > 0 ? `0 ${units}` : null}
       {(value === undefined && cnt === undefined) || value === null || value === 'NaN' ? 'N/A' : null}
       {value && value !== 'NaN' ? `${Humanize.transform(value, 'number')} ${units}` : null}
@@ -78,7 +56,9 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy,
     sortDirections: ['descend', 'ascend'],
     width: columnIndex === 0 ? COLUMN_WIDTH * 1.8 : FIXED_COLUMN_WIDTH,
     // eslint-disable-next-line max-len
-    title: () => <ManageColumns placeholder={metricName} currentMetric={metric} mainMetric={mainMetric} width="100%" />,
+    title: () => (
+      <ManageColumns placeholder={metricName} currentMetric={metric} mainMetric={mainMetric} width="100%" />
+    ),
     render: (text, item, index) => {
       const { stats } = item.metrics[metricName];
       const statPerSec = stats.qps || stats.sum_per_sec;
@@ -86,7 +66,6 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy,
         (stats.sum_per_sec / totalValues.metrics[metricName].stats.sum_per_sec)
         * 100
       ).toFixed(2);
-      // @ts-ignore
       const tooltipData = [
         {
           header: isTimeMetric ? 'Per query' : 'Per sec',
@@ -116,19 +95,18 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy,
         .filter((element) => element.value)
         .map(({ header, value }) => ({ header, value: Humanize.transform(value) }));
 
-      // @ts-ignore
       const polygonChartProps = {
         data: item.sparkline,
         metricName,
         color: index === 0 ? 'rgba(223, 159, 85, 0.8)' : undefined,
       };
       const MetricsList = ({ data }) => (
-        <div className={Styling.metricsWrapper} data-qa="metrics-list">
+        <div className={styles.metricsWrapper} data-qa="metrics-list">
           {data.map((metricItem, metricIndex, list) => (
             // eslint-disable-next-line react/jsx-key
-            <div className={Styling.singleMetricWrapper} data-qa={metricItem.key || ''}>
-              <span className={Styling.metricName}>{`${metricItem.header} : ${metricItem.value}`}</span>
-              {list.length === metricIndex + 1 ? null : <Divider className={Styling.metricsListDivider} />}
+            <div className={styles.singleMetricWrapper} data-qa={metricItem.key || ''}>
+              <span className={styles.metricName}>{`${metricItem.header} : ${metricItem.value}`}</span>
+              {list.length === metricIndex + 1 ? null : <Divider className={styles.metricsListDivider} />}
             </div>
           ))}
         </div>
@@ -136,12 +114,12 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy,
 
       const MetricTooltip = () => (
         <div>
-          <div className={Styling.tooltipHeader}>{metric.humanizeName}</div>
-          <Divider style={{ background: '#363434', margin: '0' }} />
+          <div className={styles.tooltipHeader}>{metric.humanizeName}</div>
+          <Divider className={styles.tooltipDivider} />
           <MetricsList data={tooltipData} />
           {latencyTooltipData.length ? (
             <>
-              <Divider style={{ background: '#666666', margin: '0' }} />
+              <Divider className={styles.tooltipLatencyDivider} />
               {metricName === 'query_time' && (
                 <Latency {...{ data: stats }} className="latency-chart-container" />
               )}
@@ -152,7 +130,7 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy,
       );
       return (
         <div className="overview-content-column">
-          <div style={{ marginRight: 'auto' }}>
+          <div className="overview-column-sparkline">
             {columnIndex === 0 && <Sparkline {...polygonChartProps} />}
           </div>
           <Tooltip

@@ -1,6 +1,6 @@
 import { css } from 'emotion';
 
-export const Styling = {
+export const styles = {
   getFiltersWrapper: (height) => css`
     border: 1px solid rgb(40, 40, 40);
     padding: 5px 16px !important;

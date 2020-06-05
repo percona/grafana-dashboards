@@ -4,9 +4,10 @@ import React, {
 import {
   Divider, Icon, Select, Tooltip
 } from 'antd';
+import { cx } from 'emotion';
 import { PanelProvider } from '../../../../panel/panel.provider';
 import { METRIC_CATALOGUE } from '../../../../panel/panel.constants';
-import { Styling } from './ManageColumns.styles';
+import { styles } from './ManageColumns.styles';
 import './ManageColumns.scss';
 
 const { Option } = Select;
@@ -46,13 +47,13 @@ const ManageColumns = (props) => {
 
   const Placeholder = () => (!onlyAdd ? (
     <Tooltip title={placeholder && METRIC_CATALOGUE[placeholder].humanizeName} placement="topLeft">
-      <span className={Styling.placeholder}>
+      <span className={styles.placeholder}>
         {placeholder && METRIC_CATALOGUE[placeholder].humanizeName}
       </span>
     </Tooltip>
   ) : (
-    <div className={Styling.placeholder}>
-      <i className="fa fa-plus-circle" style={{ marginRight: '5px' }} />
+    <div className={styles.placeholder}>
+      <i className={cx('fa fa-plus-circle', styles.iconMargin)} />
       <span> Add column</span>
     </div>
   ));
@@ -60,30 +61,29 @@ const ManageColumns = (props) => {
   const dropdownRender = (menu) => (
     <div className="add-column-wrapper">
       {menu}
-      <Divider style={{ margin: '4px 0' }} />
+      <Divider className={styles.iconMargin} />
       {!onlyAdd && columns.length > 1 && (
         <div
-          style={{ padding: '4px 8px', cursor: 'pointer' }}
+          style={}
           onMouseDown={(e) => e.preventDefault()}
           onClick={removeColumn}
         >
-          <Icon type="minus" style={{ marginRight: '4px' }} />
+          <Icon type="minus" className={styles.iconMargin} />
           Remove column
         </div>
       )}
       {!onlyAdd && mainMetric !== currentMetric.simpleName && (
         <div
-          style={{ padding: '4px 8px', cursor: 'pointer' }}
+          className={styles.actionElement}
           onMouseDown={(e) => e.preventDefault()}
           onClick={swapWithMain}
         >
-          <Icon type="swap" style={{ marginRight: '4px' }} />
+          <Icon type="swap" className={styles.iconMargin} />
           Swap with main metric
         </div>
       )}
     </div>
   );
-  // @ts-ignore
   return (
     <div className={!onlyAdd ? 'manage-columns' : 'add-columns'} onClick={(e) => e.stopPropagation()}>
       <Select

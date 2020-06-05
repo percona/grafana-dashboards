@@ -30,7 +30,6 @@ export const useOverviewTable = (setTotal): [DataInterface, boolean] => {
     const updateInstances = async () => {
       try {
         setLoading(true);
-        // @ts-ignore
         const result = await OverviewTableService.getReport({
           labels,
           columns,

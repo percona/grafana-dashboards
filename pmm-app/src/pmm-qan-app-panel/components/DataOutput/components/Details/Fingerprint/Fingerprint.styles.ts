@@ -1,6 +1,6 @@
 import { css } from 'emotion';
 
-export const Styling = {
+export const styles = {
   fingerprintWrapper: css`
     display: flex;
     justify-content: center;
@@ -21,6 +21,7 @@ export const Styling = {
     min-width: 300px;
     max-width: 600px;
     overflow: hidden;
+    color: rgba(32, 215, 255, 0.8);
   `,
   closeButton: css`
     cursor: pointer;

@@ -179,7 +179,7 @@ const AddRemoteInstance = (props) => {
       onSubmit={onSubmit}
       initialValues={initialValues}
       validate={validateInstanceForm}
-      render={({ form, handleSubmit }): ReactElement => (
+      render={({ form, handleSubmit }) => (
         <form onSubmit={handleSubmit} className="add-instance-form app-theme-dark">
           <h5>{`Add remote ${instanceType} Instance`}</h5>
           <div className="add-instance-panel">

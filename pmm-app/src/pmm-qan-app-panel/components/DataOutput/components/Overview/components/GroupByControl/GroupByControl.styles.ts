@@ -1,6 +1,6 @@
 import { css } from 'emotion';
 
-export const Styling = {
+export const styles = {
   groupByWrapper: css`
     display: flex;
     align-items: center;

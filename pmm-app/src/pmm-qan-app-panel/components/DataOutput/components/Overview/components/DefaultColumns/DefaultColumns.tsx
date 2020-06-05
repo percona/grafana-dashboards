@@ -26,7 +26,6 @@ const getMainColumnWidth = (columns) => {
 
 export const getDefaultColumns = (groupBy, pageNumber, pageSize, columns, onCell) => {
   const mainMetricColumnWidth = getMainColumnWidth(columns);
-  // @ts-ignore
   return [
     {
       title: '#',

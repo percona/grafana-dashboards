@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Divider } from 'antd';
 import { CheckboxField } from '../../../../../react-plugins-deps/components/Form/Checkbox/Checkbox';
 import { Humanize } from '../../../../../react-plugins-deps/components/helpers/Humanization';
-import { Styling } from './CheckboxGroup.styles';
+import { styles } from './CheckboxGroup.styles';
 
 const TOP_LIMIT = 5;
 
@@ -41,8 +41,8 @@ export const CheckboxGroup = ({
     .map((item) => {
       const valueExists = item.main_metric_percent !== undefined;
       return (
-        <div className={Styling.label} key={`${group}:${item.value || ''}`}>
-          <span className={Styling.filterName}>
+        <div className={styles.label} key={`${group}:${item.value || ''}`}>
+          <span className={styles.filterName}>
             <CheckboxField
               // TODO: using '--' because final form think that it is a nested fields
               name={`${group}:${item.value ? item.value.replace(/\./gi, '--') : 'na'}`}
@@ -50,7 +50,7 @@ export const CheckboxGroup = ({
               disabled={!valueExists}
             />
           </span>
-          <span className={Styling.percentage}>
+          <span className={styles.percentage}>
             <span>{valueExists ? Humanize.transform(item.main_metric_percent, 'percent') : null}</span>
           </span>
         </div>
@@ -58,17 +58,17 @@ export const CheckboxGroup = ({
     });
   return itemsList.length ? (
     <div>
-      <p className={Styling.filterHeaderWrapper}>
-        <span className={Styling.filterHeader}>{name}</span>
+      <p className={styles.filterHeaderWrapper}>
+        <span className={styles.filterHeader}>{name}</span>
         {filteredData.filter(searchFilter).length > TOP_LIMIT ? (
-          <span onClick={() => setShowTop(!showTop)} className={Styling.showModeSwitcher}>
+          <span onClick={() => setShowTop(!showTop)} className={styles.showModeSwitcher}>
             {showTop ? `Show all (${filteredData.filter(searchFilter).length})` : `Show top ${TOP_LIMIT}`}
           </span>
         ) : (
           <span />
         )}
       </p>
-      <Divider className={Styling.divider} />
+      <Divider className={styles.divider} />
       {itemsList}
     </div>
   ) : null;

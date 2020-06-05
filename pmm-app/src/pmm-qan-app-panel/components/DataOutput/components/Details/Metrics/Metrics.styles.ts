@@ -1,6 +1,6 @@
 import { css } from 'emotion';
 
-export const Styling = {
+export const styles = {
   metricColumn: css`
     display: flex;
     justify-content: space-between;
