@@ -2,7 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { Table } from '../react-plugins-deps/components/Table/Table';
 import { AGENTS_COLUMNS, NODES_COLUMNS, SERVICES_COLUMNS } from './Inventory.constants';
-import { InventoryDataService } from './DataService';
+import { InventoryDataService } from './Inventory.tools';
 
 jest.mock('../react-plugins-deps/components/helpers/notification-manager');
 

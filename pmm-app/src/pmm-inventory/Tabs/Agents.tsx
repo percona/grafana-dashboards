@@ -3,9 +3,8 @@ import { Button, HorizontalGroup, Modal } from '@grafana/ui';
 import { Form } from 'react-final-form';
 import { Table, SelectedTableRows } from 'react-plugins-deps/components/Table';
 import { showSuccessNotification } from 'react-plugins-deps/components/helpers';
-import { filterFulfilled, processPromiseResults } from 'pmm-inventory/Inventory.tools';
+import { filterFulfilled, InventoryDataService, processPromiseResults } from 'pmm-inventory/Inventory.tools';
 import { CheckboxField, FormElement } from 'react-plugins-deps/components/FormComponents';
-import { InventoryDataService } from '../DataService';
 import { InventoryService } from '../Inventory.service';
 import { AGENTS_COLUMNS } from '../Inventory.constants';
 import { styles } from './Tabs.styles';
@@ -52,6 +51,7 @@ export const Agents = () => {
     } catch (e) {
       console.error(e);
     } finally {
+      setSelectedRows([]);
       loadData();
     }
   }, []);

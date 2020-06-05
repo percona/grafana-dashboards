@@ -4,8 +4,7 @@ import { Form } from 'react-final-form';
 import { Table } from 'react-plugins-deps/components/Table/Table';
 import { showSuccessNotification } from 'react-plugins-deps/components/helpers';
 import { CheckboxField, FormElement } from 'react-plugins-deps/components/FormComponents';
-import { filterFulfilled, processPromiseResults } from 'pmm-inventory/Inventory.tools';
-import { InventoryDataService } from '../DataService';
+import { filterFulfilled, InventoryDataService, processPromiseResults } from 'pmm-inventory/Inventory.tools';
 import { InventoryService } from '../Inventory.service';
 import { ServicesList } from '../Inventory.types';
 import { SERVICES_COLUMNS } from '../Inventory.constants';
@@ -55,6 +54,7 @@ export const Services = () => {
       });
     } catch (e) {
     } finally {
+      setSelectedRows([]);
       loadData();
     }
   }, []);

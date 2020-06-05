@@ -4,8 +4,7 @@ import { Form } from 'react-final-form';
 import { Table, SelectedTableRows } from 'react-plugins-deps/components/Table';
 import { showSuccessNotification } from 'react-plugins-deps/components/helpers';
 import { CheckboxField, FormElement } from 'react-plugins-deps/components/FormComponents';
-import { filterFulfilled, processPromiseResults } from 'pmm-inventory/Inventory.tools';
-import { InventoryDataService } from '../DataService';
+import { filterFulfilled, InventoryDataService, processPromiseResults } from 'pmm-inventory/Inventory.tools';
 import { InventoryService } from '../Inventory.service';
 import { NodesList } from '../Inventory.types';
 import { NODES_COLUMNS } from '../Inventory.constants';
@@ -54,6 +53,7 @@ export const NodesTab = () => {
     } catch (e) {
       console.error(e);
     } finally {
+      setSelectedRows([]);
       loadData();
     }
   }, []);

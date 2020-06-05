@@ -1,4 +1,4 @@
-import { InventoryDataService } from './DataService';
+import { InventoryDataService } from './Inventory.tools';
 
 describe('Inventory data service', () => {
   it('Transforms response correct', () => {
