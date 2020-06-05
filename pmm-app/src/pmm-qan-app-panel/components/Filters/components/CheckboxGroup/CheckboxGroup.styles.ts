@@ -1,6 +1,6 @@
 import { css } from 'emotion';
 
-export const Styling = {
+export const styles = {
   label: css`
     display: grid;
     grid-template-areas: 'filtername percentagearea';

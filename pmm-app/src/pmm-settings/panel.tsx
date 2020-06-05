@@ -41,7 +41,7 @@ const SettingsPanel = () => {
       <div className="app-theme-dark pmm-settings-panel">
         <Form
           onSubmit={() => {}}
-          render={(): ReactElement => (
+          render={() => (
             <Collapse
               bordered={false}
               defaultActiveKey={['1']}

@@ -10,6 +10,7 @@ import TableCreateContainer from './Table/TableContainer';
 import { useDetailsState } from './Details.hooks';
 import { DATABASE, TabKeys } from './Details.constants';
 import { DetailsContentProvider, DetailsProvider } from './Details.provider';
+import { styles } from './Details.styles';
 
 const { TabPane } = Tabs;
 
@@ -43,7 +44,7 @@ const Details = () => {
         closeDetails={closeDetails}
       />
       <div className="details-tabs">
-        <Divider style={{ margin: 0 }} />
+        <Divider className={styles.zeroMargin} />
         <Tabs activeKey={activeTab} onChange={setActiveTab} tabPosition="top" destroyInactiveTabPane>
           <TabPane tab={<span>Details</span>} key={TabKeys.Details}>
             <Metrics databaseType={databaseType} totals={totals} />

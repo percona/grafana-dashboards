@@ -6,7 +6,7 @@ import {
   TimeDistribution,
 } from '../../../../../../react-plugins-deps/components/Elements/Charts';
 import { Humanize } from '../../../../../../react-plugins-deps/components/helpers/Humanization';
-import { Styling } from './Metrics.styles';
+import { styles } from './Metrics.styles';
 import { useMetricsDetails } from './Metrics.hooks';
 import { DATABASE } from '../Details.constants';
 import { Info } from '../../../../../../react-plugins-deps/components/Elements/Icons/Info';
@@ -14,10 +14,10 @@ import { Info } from '../../../../../../react-plugins-deps/components/Elements/I
 const { Panel } = Collapse;
 
 const mainColumn = (text, item) => (
-  <span className={Styling.metricColumn}>
+  <span className={styles.metricColumn}>
     <span>{item.name}</span>
     <Tooltip title={item.tooltip} placement="leftTop">
-      <Info className={Styling.metricTooltipIcon} />
+      <Info className={styles.metricTooltipIcon} />
     </Tooltip>
   </span>
 );
@@ -32,11 +32,11 @@ const rateColumn = (totals) => (text, item) => {
   };
 
   return (
-    <div className={Styling.metricColumn}>
-      <span className={Styling.metricData}>
+    <div className={styles.metricColumn}>
+      <span className={styles.metricData}>
         {`${item.isRate ? Humanize.transform(item.metric.rate, item.pipeTypes.ratePipe) : '0'} ${item.units}`}
       </span>
-      <span className={Styling.sparkline}>{item.sparkline && <Sparkline {...polygonChartProps} />}</span>
+      <span className={styles.sparkline}>{item.sparkline && <Sparkline {...polygonChartProps} />}</span>
     </div>
   );
 };
@@ -45,17 +45,17 @@ const sumColumn = (text, item) => (
   <>
     <div>
       {item.isSum && (
-        <span className={Styling.sum}>
+        <span className={styles.sum}>
           {Humanize.transform(item.metric.sum, item.pipeTypes.sumPipe) || 0}
         </span>
       )}
       {item.percentOfTotal ? (
-        <span className={Styling.percentOfTotal}>{`${item.percentOfTotal}% of total`}</span>
+        <span className={styles.percentOfTotal}>{`${item.percentOfTotal}% of total`}</span>
       ) : null}
     </div>
     {item.complexMetric ? (
       <div>
-        <span className={Styling.complexMetric}>{item.complexMetric}</span>
+        <span className={styles.complexMetric}>{item.complexMetric}</span>
       </div>
     ) : null}
   </>
@@ -67,8 +67,8 @@ const perQueryStatsColumn = (text, item) => {
   };
 
   return (
-    <div className={Styling.metricColumn}>
-      <span className={Styling.perQueryStats}>
+    <div className={styles.metricColumn}>
+      <span className={styles.perQueryStats}>
         {item.metric.avg
           ? Humanize.transform(item.metric.avg, item.pipeTypes.perQueryStatsPipe)
           : (+item.metric.sum / +item.queryCount).toFixed(2) || '0'}
@@ -106,13 +106,13 @@ const Metrics = ({ databaseType, totals }) => {
 
   return (
     <div className="metrics-wrapper">
-      <Collapse bordered={false} defaultActiveKey={['1', '2']} className={Styling.collapse}>
+      <Collapse bordered={false} defaultActiveKey={['1', '2']} className={styles.collapse}>
         {databaseType === DATABASE.mysql ? (
-          <Panel header="Query time distribution" key="1" className={Styling.panel}>
+          <Panel header="Query time distribution" key="1" className={styles.panel}>
             <TimeDistribution data={metrics} />
           </Panel>
         ) : null}
-        <Panel header="Metrics" key="2" className={Styling.panel}>
+        <Panel header="Metrics" key="2" className={styles.panel}>
           <Table
             dataSource={metrics}
             columns={columns}

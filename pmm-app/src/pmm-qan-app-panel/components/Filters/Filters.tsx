@@ -14,7 +14,7 @@ import {
   FILTERS_HEADER_SIZE,
   FILTERS_MARGIN_BOTTOM,
 } from './Filters.constants';
-import { Styling } from './Filters.styles';
+import { styles } from './Filters.styles';
 import { useFilters, useInitialFilterValues } from './Filters.hooks';
 import { Filter } from '../../../react-plugins-deps/components/Elements/Icons/Filter';
 
@@ -46,11 +46,11 @@ export const Filters = ({
 
   return (
     <div>
-      <div className={Styling.filtersHeader}>
-        <h5 className={Styling.title}>Filters</h5>
+      <div className={styles.filtersHeader}>
+        <h5 className={styles.title}>Filters</h5>
         <Button
           type="link"
-          className={Styling.showAllButton}
+          className={styles.showAllButton}
           onClick={() => showSetAll(!showAll)}
           disabled={!checkboxesSelected}
         >
@@ -58,7 +58,7 @@ export const Filters = ({
         </Button>
         <Button
           type="link"
-          className={Styling.resetButton}
+          className={styles.resetButton}
           id="reset-all-filters"
           onClick={() => {
             setFilter('');
@@ -71,7 +71,7 @@ export const Filters = ({
           Reset All
         </Button>
       </div>
-      <ScrollArea className={Styling.getFiltersWrapper(filtersBodyHeight)}>
+      <ScrollArea className={styles.getFiltersWrapper(filtersBodyHeight)}>
         <Input
           suffix={<Filter />}
           placeholder="Filter by..."
@@ -80,7 +80,7 @@ export const Filters = ({
             e.stopPropagation();
           }}
           value={filter}
-          className={Styling.filtersField}
+          className={styles.filtersField}
           data-qa="filters-search-field"
         />
         {FILTERS_GROUPS.filter((group) => filters[group.dataKey]).map((group) => {
@@ -116,7 +116,7 @@ const FiltersContainer = () => {
     <FormFinal
       onSubmit={() => {}}
       initialValues={initialValues}
-      render={({ form, handleSubmit }): ReactElement => (
+      render={({ form, handleSubmit }) => (
         // @ts-ignore
         <Spin spinning={loading}>
           <form onSubmit={handleSubmit} onChange={() => contextActions.setLabels(form.getState().values)}>

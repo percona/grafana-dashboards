@@ -13,7 +13,7 @@ const CredentialsForm = (props) => {
     <FormFinal
       onSubmit={onSubmit}
       validate={() => undefined}
-      render={({ form, handleSubmit }): ReactElement => (
+      render={({ form, handleSubmit }) => (
         <form onSubmit={handleSubmit} className="discovery-instance-form app-theme-dark">
           <div className="discovery-search-panel">
             <InputField

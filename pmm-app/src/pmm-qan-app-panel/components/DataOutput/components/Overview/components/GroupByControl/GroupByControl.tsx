@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Select } from 'antd';
 import { PanelProvider } from '../../../../../../panel/panel.provider';
-import { Styling } from './GroupByControl.styles';
+import { styles } from './GroupByControl.styles';
 import { GROUP_BY_OPTIONS } from './GroupByControl.types';
 import './GroupByControl.scss';
 
@@ -14,11 +14,10 @@ export const GroupByControl = () => {
   } = useContext(PanelProvider);
 
   return (
-    <div className={Styling.groupByWrapper}>
+    <div className={styles.groupByWrapper}>
       <Select
         optionLabelProp="label"
         defaultValue={groupBy}
-        style={{ width: '150px', fontSize: '16px', color: 'rgba(255,255,255,0.8)' }}
         onChange={contextActions.changeGroupBy}
         className="group-by-selector"
         data-qa="group-by"

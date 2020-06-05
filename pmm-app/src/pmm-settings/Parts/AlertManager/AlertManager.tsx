@@ -52,7 +52,7 @@ const AlertManager = (props) => {
   return (
     <FormFinal
       onSubmit={onSubmit}
-      render={({ form, handleSubmit }): ReactElement => {
+      render={({ form, handleSubmit }) => {
         useEffect(() => {
           form.initialize(props.settings);
         }, [props.settings]);

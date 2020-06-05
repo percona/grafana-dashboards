@@ -7,7 +7,7 @@ import OverviewTable from './components/Overview/OverviewTable';
 import Details from './components/Details/Details';
 import { PanelProvider } from '../../panel/panel.provider';
 import ManageColumns from './components/ManageColumns/ManageColumns';
-import { Styling } from './DataOutput.styles';
+import { styles } from './DataOutput.styles';
 import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE, PAGE_SIZE_OPTIONS } from './DataOutput.constants';
 import './DataOutput.scss';
 
@@ -42,17 +42,17 @@ const DataOutput = () => {
   }, [querySelected]);
 
   return (
-    <div className={Styling.getContainerWrapper(size)}>
-      <div className={Styling.overviewHeader}>
-        <div className={Styling.manageColumnsWrapper}>
+    <div className={styles.getContainerWrapper(size)}>
+      <div className={styles.overviewHeader}>
+        <div className={styles.manageColumnsWrapper}>
           <ManageColumns onlyAdd />
         </div>
       </div>
-      <div style={{ position: 'relative' }} className={Styling.splitterWrapper}>
+      <div style={{ position: 'relative' }} className={styles.splitterWrapper}>
         <SplitPane
           split="horizontal"
           onDragFinished={() => setReload({})}
-          className={Styling.splitterWrapper}
+          className={styles.splitterWrapper}
           resizerStyle={{ display: querySelected ? '' : 'none' }}
           pane1Style={{
             minHeight: querySelected ? '20%' : '100%',
@@ -62,8 +62,8 @@ const DataOutput = () => {
         >
           <div className="table-wrapper" style={{ width: '100%' }}>
             <OverviewTable setTotal={setTotal} reload={reload} />
-            <div className={Styling.overviewHeader}>
-              <div className={Styling.paginationWrapper}>
+            <div className={styles.overviewHeader}>
+              <div className={styles.paginationWrapper}>
                 <Pagination
                   showSizeChanger
                   pageSizeOptions={PAGE_SIZE_OPTIONS}
@@ -76,7 +76,7 @@ const DataOutput = () => {
                   onShowSizeChange={changePageSize}
                   onChange={changePageNumber}
                 />
-                <span className={Styling.showTotal}>{showTotal}</span>
+                <span className={styles.showTotal}>{showTotal}</span>
               </div>
             </div>
           </div>
