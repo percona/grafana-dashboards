@@ -23,18 +23,20 @@ interface Model {
   isDeleted: boolean;
 }
 
-const CommonModel = function(this: Model, params, type) {
+const getModel = (params, type): Model => {
   const { custom_labels, ...rest } = params;
-  this.custom_labels =
+  const labels =
     custom_labels && Object.keys(custom_labels).length
       ? Object.entries<string>(custom_labels).map<CustomLabel>(([key, value]) => ({ key, value }))
       : [];
-  this.type = type;
-  this.isDeleted = false;
-  Object.keys(rest).forEach(param => {
-    this[param] = rest[param];
-  });
+  return {
+    custom_labels: labels,
+    type,
+    isDeleted: false,
+    ...rest,
+  };
 };
+
 const inventoryTypes = {
   amazon_rds_mysql: 'Amazon RDS MySQL',
   container: 'Container',
@@ -58,6 +60,7 @@ const inventoryTypes = {
   remote_rds: 'Remote Amazon RDS',
   remote: 'Remote',
 };
+
 export const InventoryDataService = {
   generateStructure(item: ServicesList) {
     const createParams = Object.keys(item)
@@ -65,7 +68,7 @@ export const InventoryDataService = {
       .map(agent =>
         agent.params.map(arrItem => {
           const type = inventoryTypes[agent.type] || '';
-          return new CommonModel(arrItem, type);
+          return getModel(arrItem, type);
         })
       );
     return [].concat(...createParams);
