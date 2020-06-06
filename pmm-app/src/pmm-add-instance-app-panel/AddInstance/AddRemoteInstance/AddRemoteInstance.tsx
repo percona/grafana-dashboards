@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import React, { useState } from 'react';
 import './AddRemoteInstance.scss';
 import { Form as FormFinal } from 'react-final-form';
 import { InputField } from '../../../react-plugins-deps/components/Form/Input/Input';

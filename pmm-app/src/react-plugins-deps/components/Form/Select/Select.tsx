@@ -2,6 +2,7 @@ import React from 'react';
 import { useField } from 'react-final-form';
 import { Select } from 'antd';
 import './Select.scss';
+import { styles } from './Select.styles';
 
 const { Option } = Select;
 interface SelectFieldInterface {
@@ -17,17 +18,13 @@ interface SelectFieldInterface {
   defaultValue?: any;
 }
 export const SelectField = ({
-  name,
-  options,
-  style,
-  defaultValue,
-  dataQa
+  name, options, style, defaultValue, dataQa
 }: SelectFieldInterface) => {
   const { input } = useField(name);
   return (
     <span className="fields__select-field" style={style || {}}>
       {/* eslint-disable-next-line max-len */}
-      <Select {...input} defaultValue={defaultValue} style={{ width: '100%', height: '40px' }} data-qa={dataQa}>
+      <Select {...input} defaultValue={defaultValue} className={styles.select} data-qa={dataQa}>
         {options
           && options.map((option) => (
             <Option value={option.value} key={option.label}>
