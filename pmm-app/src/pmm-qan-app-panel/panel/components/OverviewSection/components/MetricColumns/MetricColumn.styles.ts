@@ -7,12 +7,12 @@ export const styles = {
     font-size: 14px;
   `,
   tooltipDivider: css`
-    background: #363434;
-    margin: 0;
+    background: #363434 !important;
+    margin: 0 !important;
   `,
   tooltipLatencyDivider: css`
-    background: #666666;
-    margin: 0;
+    background: #666666 !important;
+    margin: 0 !important;
   `,
   metricsWrapper: css`
     padding-left: 20px !important;
@@ -30,7 +30,7 @@ export const styles = {
     background: #a9a9a9 !important;
     margin: 0 !important;
   `,
-  summarize: (value) => css`
+  summarize: value => css`
     margin-left: 'auto';
     cursor: ${value && value !== 'NaN' ? 'help' : ''};
     color: 'rgba(255,255,255,0.8)';

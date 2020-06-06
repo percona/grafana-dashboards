@@ -114,11 +114,11 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy,
       const MetricTooltip = () => (
         <div>
           <div className={styles.tooltipHeader}>{metric.humanizeName}</div>
-          <Divider className={styles.tooltipDivider} />
+          <Divider className={styles.tooltipDivider}/>
           <MetricsList data={tooltipData} />
           {latencyTooltipData.length ? (
             <>
-              <Divider className={styles.tooltipLatencyDivider} />
+              <Divider className={styles.tooltipLatencyDivider}/>
               {metricName === 'query_time' && (
                 <Latency {...{ data: stats }} className="latency-chart-container" />
               )}
