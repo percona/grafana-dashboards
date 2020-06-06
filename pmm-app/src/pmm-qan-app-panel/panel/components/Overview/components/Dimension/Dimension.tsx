@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Select } from 'antd';
 import { PanelProvider } from 'pmm-qan-app-panel/panel/panel.provider';
 import { styles } from './Dimension.styles';
-import { GROUP_BY_OPTIONS } from './Dimension.constants';
+import { DIMENSIONS_OPTIONS } from './Dimension.constants';
 import './Dimension.scss';
 
 const { Option } = Select;
@@ -23,7 +23,7 @@ export const Dimension = () => {
         data-qa="group-by"
         dropdownClassName="group-by-selector-dropdown"
       >
-        {GROUP_BY_OPTIONS.map((option) => (
+        {DIMENSIONS_OPTIONS.map((option) => (
           <Option value={option.value} label={option.label} key={option.value}>
             {option.label}
           </Option>
