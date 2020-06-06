@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getDataSourceSrv } from '@grafana/runtime';
 import { find, omit } from 'lodash';
-import { ParseQueryParamDate } from '../../react-plugins-deps/components/helpers/time-parameters-parser';
+import { ParseQueryParamDate } from 'react-plugins-deps/components/helpers/time-parameters-parser';
 import { DEFAULT_COLUMNS, FILTERS_NAMES } from './panel.constants';
 
 const initialState = {} as any;
