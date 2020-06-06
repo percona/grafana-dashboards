@@ -4,7 +4,6 @@ import React from 'react';
 import { cx } from 'emotion';
 import { METRIC_CATALOGUE } from 'pmm-qan-app-panel/panel/panel.constants';
 import { Humanize } from 'react-plugins-deps/components/helpers/Humanization';
-// eslint-disable-next-line max-len
 import { Latency, Sparkline, TotalPercentage } from 'react-plugins-deps/components/Elements/Charts';
 import { COLUMN_WIDTH, FIXED_COLUMN_WIDTH } from '../../Overview.constants';
 import ManageColumns from '../ManageColumns/ManageColumns';

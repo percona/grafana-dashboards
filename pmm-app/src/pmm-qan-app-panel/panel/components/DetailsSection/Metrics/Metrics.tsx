@@ -1,15 +1,12 @@
 import { Collapse, Table, Tooltip } from 'antd';
 import React from 'react';
-import {
-  Latency,
-  Sparkline,
-  TimeDistribution,
-} from 'react-plugins-deps/components/Elements/Charts';
+import { Latency, Sparkline, TimeDistribution } from 'react-plugins-deps/components/Elements/Charts';
 import { Humanize } from 'react-plugins-deps/components/helpers/Humanization';
 import { Info } from 'react-plugins-deps/components/Elements/Icons/Info';
 import { styles } from './Metrics.styles';
 import { useMetricsDetails } from './Metrics.hooks';
 import { DATABASE } from '../Details.constants';
+import { MetricsTabs } from './Metrics.constants';
 
 const { Panel } = Collapse;
 
@@ -45,9 +42,7 @@ const sumColumn = (text, item) => (
   <>
     <div>
       {item.isSum && (
-        <span className={styles.sum}>
-          {Humanize.transform(item.metric.sum, item.pipeTypes.sumPipe) || 0}
-        </span>
+        <span className={styles.sum}>{Humanize.transform(item.metric.sum, item.pipeTypes.sumPipe) || 0}</span>
       )}
       {item.percentOfTotal ? (
         <span className={styles.percentOfTotal}>{`${item.percentOfTotal}% of total`}</span>
@@ -106,13 +101,17 @@ const Metrics = ({ databaseType, totals }) => {
 
   return (
     <div className="metrics-wrapper">
-      <Collapse bordered={false} defaultActiveKey={['1', '2']} className={styles.collapse}>
+      <Collapse
+        bordered={false}
+        defaultActiveKey={[MetricsTabs.distribution, MetricsTabs.metrics]}
+        className={styles.collapse}
+      >
         {databaseType === DATABASE.mysql ? (
-          <Panel header="Query time distribution" key="1" className={styles.panel}>
+          <Panel header={MetricsTabs.distribution} key={MetricsTabs.distribution} className={styles.panel}>
             <TimeDistribution data={metrics} />
           </Panel>
         ) : null}
-        <Panel header="Metrics" key="2" className={styles.panel}>
+        <Panel header={MetricsTabs.metrics} key={MetricsTabs.metrics} className={styles.panel}>
           <Table
             dataSource={metrics}
             columns={columns}

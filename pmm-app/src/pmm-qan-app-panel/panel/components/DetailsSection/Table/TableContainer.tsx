@@ -5,6 +5,7 @@ import { styles } from '../Explain/Explain.styles';
 import { Indexes } from './components/Indexes/Indexes';
 import { Status } from './components/Status/Status';
 import { DATABASE } from '../Details.constants';
+import { TableTabs } from './TableContainer.constants';
 
 const { TabPane } = Tabs;
 const { Panel } = Collapse;
@@ -15,8 +16,8 @@ const TableCreateContainer = ({ databaseType, examples, tables }) => (
       <Tabs defaultActiveKey="0" onChange={() => {}} tabPosition="top">
         {tables.map((table) => (
           <TabPane tab={<span>{table}</span>} key={table}>
-            <Collapse bordered={false} defaultActiveKey={['1']} className={styles.collapse}>
-              <Panel header="Table" key="1" className={styles.panel}>
+            <Collapse bordered={false} defaultActiveKey={[TableTabs.table]} className={styles.collapse}>
+              <Panel header={TableTabs.table} key={TableTabs.table} className={styles.panel}>
                 <TableCreate
                   tableName={table}
                   example={examples[0]}
@@ -25,7 +26,7 @@ const TableCreateContainer = ({ databaseType, examples, tables }) => (
                 />
               </Panel>
               {databaseType === DATABASE.mysql ? (
-                <Panel header="Status" key="2" className={styles.panel}>
+                <Panel header={TableTabs.status} key={TableTabs.status} className={styles.panel}>
                   <Status
                     tableName={table}
                     example={examples[0]}
@@ -34,7 +35,7 @@ const TableCreateContainer = ({ databaseType, examples, tables }) => (
                   />
                 </Panel>
               ) : null}
-              <Panel header="Indexes" key="3" className={styles.panel}>
+              <Panel header={TableTabs.indexes} key={TableTabs.indexes} className={styles.panel}>
                 <Indexes
                   tableName={table}
                   example={examples[0]}

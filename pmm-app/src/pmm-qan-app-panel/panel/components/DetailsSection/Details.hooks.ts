@@ -19,8 +19,8 @@ export const useActionResult = (): [ActionResult, Dispatch<string>] => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   let intervalId;
-  // 9 seconds, long enough
-  let counter = 30;
+  // 5 seconds
+  let counter = 10;
   useEffect(() => {
     if (!actionId) {
       return;
@@ -52,7 +52,7 @@ export const useActionResult = (): [ActionResult, Dispatch<string>] => {
         setLoading(false);
       }
     };
-    intervalId = setInterval(getData, 300);
+    intervalId = setInterval(getData, 500);
   }, [actionId]);
 
   return [{ value: result, loading, error }, setActionId];
