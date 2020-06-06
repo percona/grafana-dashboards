@@ -1,48 +1,23 @@
-import React, {
-  useContext, useEffect, useState
-} from 'react';
+import React, { useContext, useState } from 'react';
 import { Button, Spin } from 'antd';
 import { Form as FormFinal } from 'react-final-form';
 import Input from 'antd/lib/input/Input';
-import useWindowSize from 'core-dependencies/components/helpers/WindowSize.hooks';
 import ScrollArea from 'react-scrollbar';
 import { QueryAnalyticsProvider } from 'pmm-qan-app-panel/panel/panel.provider';
 import { Filter } from 'core-dependencies/components/Elements/Icons/Filter';
 import { CheckboxGroup } from './components/CheckboxGroup/CheckboxGroup';
-import {
-  FILTERS_BODY_HEIGHT,
-  FILTERS_GROUPS,
-  FILTERS_HEADER_SIZE,
-  FILTERS_MARGIN_BOTTOM,
-} from './Filters.constants';
+import { FILTERS_BODY_HEIGHT, FILTERS_GROUPS } from './Filters.constants';
 import { styles } from './Filters.styles';
-import { useFilters, useInitialFilterValues } from './Filters.hooks';
+import { useFilters, useFiltersContainerHeight, useInitialFilterValues } from './Filters.hooks';
+import { getSelectedCheckboxes } from './Filters.tools';
 
 export const FiltersContainer = ({
   contextActions, form, labels, filters
 }) => {
-  // @ts-ignore
-  const windowSize = useWindowSize();
-  const [filtersBodyHeight, setFiltersBodyHeight] = useState(FILTERS_BODY_HEIGHT);
+  const height = useFiltersContainerHeight(FILTERS_BODY_HEIGHT);
   const [filter, setFilter] = useState('');
   const [showAll, showSetAll] = useState(true);
-  const checkboxesSelected = FILTERS_GROUPS.map((group) => filters[group.dataKey])
-    .filter(Boolean)
-    .map((item) => item.name)
-    .flat()
-    .some((item) => item.checked);
-
-  // TODO: replace with something more elegant & fast
-  useEffect(() => {
-    const filtersWrapperElement = document.querySelector('#query-analytics-filters');
-    const filtersHeight = filtersWrapperElement
-      ? windowSize[1]
-        - filtersWrapperElement.getBoundingClientRect().y
-        - FILTERS_HEADER_SIZE
-        - FILTERS_MARGIN_BOTTOM
-      : FILTERS_BODY_HEIGHT;
-    setFiltersBodyHeight(Math.max(filtersHeight, FILTERS_BODY_HEIGHT));
-  }, [windowSize[1]]);
+  const selectedCheckboxes = getSelectedCheckboxes(filters)
 
   return (
     <div>
@@ -52,7 +27,7 @@ export const FiltersContainer = ({
           type="link"
           className={styles.showAllButton}
           onClick={() => showSetAll(!showAll)}
-          disabled={!checkboxesSelected}
+          disabled={!selectedCheckboxes}
         >
           {showAll ? 'Show Selected' : 'Show All'}
         </Button>
@@ -66,12 +41,12 @@ export const FiltersContainer = ({
             contextActions.resetLabels();
             form.reset();
           }}
-          disabled={!checkboxesSelected}
+          disabled={!selectedCheckboxes}
         >
           Reset All
         </Button>
       </div>
-      <ScrollArea className={styles.getFiltersWrapper(filtersBodyHeight)}>
+      <ScrollArea className={styles.getFiltersWrapper(height)}>
         <Input
           suffix={<Filter />}
           placeholder="Filter by..."
