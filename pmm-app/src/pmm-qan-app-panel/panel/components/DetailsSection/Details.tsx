@@ -29,7 +29,7 @@ const Details = () => {
 
   useDetailsState();
   const [activeTab, setActiveTab] = useState(TabKeys.Details);
-  const showTablesTab = databaseType !== DATABASE.mongodb && groupBy === 'queryid' && !totals
+  const showTablesTab = databaseType !== DATABASE.mongodb && groupBy === 'queryid' && !totals;
   const showExplainTab = databaseType !== DATABASE.postgresql && groupBy === 'queryid' && !totals;
   const showExamplesTab = groupBy === 'queryid' && !totals;
   useEffect(() => setActiveTab(TabKeys.Details), [queryId]);

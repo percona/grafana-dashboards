@@ -1,7 +1,10 @@
 class Validators {
   static validatePort(value) {
     const portNumber = Number.parseInt(value, 10);
-    if (portNumber > 0 && portNumber < 65535) {
+    const MIN_PORT_NUMBER = 0;
+    const MAX_PORT_NUMBER = 65535;
+
+    if (portNumber > MIN_PORT_NUMBER && portNumber < MAX_PORT_NUMBER) {
       return undefined;
     }
     return 'Port should be a number and between the range of 0 and 65535';

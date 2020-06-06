@@ -18,6 +18,7 @@ const Explain = ({ classicExplain, jsonExplain, databaseType }) => {
 
   return (
     <div>
+      {/* eslint-disable-next-line max-len */}
       <Collapse bordered={false} defaultActiveKey={[ExplainTabs.classic, ExplainTabs.json]} className={styles.collapse}>
         {databaseType !== DATABASE.mongodb ? (
           <Panel header={ExplainTabs.classic} key={ExplainTabs.classic} className={styles.panel}>

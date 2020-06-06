@@ -1,4 +1,4 @@
 export const ExplainTabs = {
   json: 'JSON',
-  classic: 'Classic'
-}
+  classic: 'Classic',
+};
