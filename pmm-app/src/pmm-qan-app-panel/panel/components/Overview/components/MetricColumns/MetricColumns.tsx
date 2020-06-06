@@ -4,7 +4,7 @@ import React from 'react';
 import { cx } from 'emotion';
 import { METRIC_CATALOGUE } from 'pmm-qan-app-panel/panel/panel.constants';
 import { COLUMN_WIDTH, FIXED_COLUMN_WIDTH } from '../../OverviewTable.constants';
-import ManageColumns from '../../../ManageColumns/ManageColumns';
+import ManageColumns from '../ManageColumns/ManageColumns';
 import { Humanize } from 'react-plugins-deps/components/helpers/Humanization';
 import { styles } from './MetricColumn.styles';
 // eslint-disable-next-line max-len
