@@ -3,15 +3,15 @@ import React, {
 } from 'react';
 import { Pagination } from 'antd';
 import SplitPane from 'react-split-pane';
-import OverviewTable from './components/Overview/OverviewTable';
-import Details from './components/Details/Details';
+import OverviewTable from '../Overview/OverviewTable';
+import Details from '../Details/Details';
 import { PanelProvider } from 'pmm-qan-app-panel/panel/panel.provider';
-import ManageColumns from './components/ManageColumns/ManageColumns';
-import { styles } from './DataOutput.styles';
-import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE, PAGE_SIZE_OPTIONS } from './DataOutput.constants';
-import './DataOutput.scss';
+import ManageColumns from '../Overview/components/ManageColumns/ManageColumns';
+import { styles } from './Layout.styles';
+import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE, PAGE_SIZE_OPTIONS } from './Layout.constants';
+import './Layout.scss';
 
-const DataOutput = () => {
+const Layout = () => {
   const {
     contextActions,
     panelState: { pageNumber, pageSize, querySelected },
@@ -87,4 +87,4 @@ const DataOutput = () => {
   );
 };
 
-export default DataOutput;
+export default Layout;
