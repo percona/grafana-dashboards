@@ -5,6 +5,7 @@ import { ReactJSON } from 'react-plugins-deps/components/Elements/ReactJSON/Reac
 import { processClassicExplain } from './Explain.tools';
 import { styles } from './Explain.styles';
 import { DATABASE } from '../Details.constants';
+import { ExplainTabs } from './Explain.constants';
 
 const { Panel } = Collapse;
 
@@ -17,9 +18,9 @@ const Explain = ({ classicExplain, jsonExplain, databaseType }) => {
 
   return (
     <div>
-      <Collapse bordered={false} defaultActiveKey={['1', '2']} className={styles.collapse}>
+      <Collapse bordered={false} defaultActiveKey={[ExplainTabs.classic, ExplainTabs.json]} className={styles.collapse}>
         {databaseType !== DATABASE.mongodb ? (
-          <Panel header="Classic" key="1" className={styles.panel}>
+          <Panel header={ExplainTabs.classic} key={ExplainTabs.classic} className={styles.panel}>
             <Spin spinning={classicExplain.loading}>
               {classicExplain.error ? <pre>{classicExplain.error}</pre> : null}
               {!classicExplain.error && !classicExplain.loading && data.rows.length ? (
@@ -36,9 +37,9 @@ const Explain = ({ classicExplain, jsonExplain, databaseType }) => {
             </Spin>
           </Panel>
         ) : null}
-        <Panel header="JSON" key="2" className={styles.panel}>
+        <Panel header={ExplainTabs.json} key={ExplainTabs.json} className={styles.panel}>
           <Spin spinning={jsonExplain.loading}>
-            {jsonExplain.error ? <pre>{jsonExplain.error}</pre> : null}
+            {!jsonExplain.loading && jsonExplain.error ? <pre>{jsonExplain.error}</pre> : null}
             {!jsonExplain.error && !jsonExplain.loading && jsonExplain.value ? (
               <ReactJSON json={JSON.parse(jsonExplain.value)} />
             ) : null}

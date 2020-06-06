@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
 import SplitPane from 'react-split-pane';
 import { PanelProvider } from 'pmm-qan-app-panel/panel/panel.provider';
-import { Overview } from '../Overview';
-import Details from '../Details/Details';
-import ManageColumns from '../Overview/components/ManageColumns/ManageColumns';
+import { Overview } from '../OverviewSection';
+import Details from '../DetailsSection/Details';
+import ManageColumns from '../OverviewSection/components/ManageColumns/ManageColumns';
 import { styles } from './Layout.styles';
 import './Layout.scss';
-import FiltersContainer from '../Filters/Filters';
+import FiltersContainer from '../FiltersSection/Filters';
 
 const Layout = () => {
   const {
