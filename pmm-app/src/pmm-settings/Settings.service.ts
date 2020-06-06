@@ -1,4 +1,4 @@
-import { apiRequest } from '../react-plugins-deps/components/helpers/api';
+import { apiRequest } from '../core-dependencies/components/helpers/api';
 
 export const SettingsService = {
   getSettings() {

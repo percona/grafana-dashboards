@@ -1,6 +1,6 @@
 import { PanelPlugin } from '@grafana/data';
-import '../react-plugins-deps/styles.scss';
-import '../react-plugins-deps/style.less';
+import '../core-dependencies/styles.scss';
+import '../core-dependencies/style.less';
 import './panel.scss';
 import SettingsPanel from './panel';
 

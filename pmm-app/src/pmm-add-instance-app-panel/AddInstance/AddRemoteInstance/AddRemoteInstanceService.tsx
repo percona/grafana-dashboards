@@ -1,4 +1,4 @@
-import { apiRequestManagement } from '../../../react-plugins-deps/components/helpers/api';
+import { apiRequestManagement } from '../../../core-dependencies/components/helpers/api';
 
 class AddRemoteInstanceService {
   static async addMysql(body) {

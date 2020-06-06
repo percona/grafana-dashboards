@@ -6,8 +6,8 @@ import AddRemoteInstance from './AddInstance/AddRemoteInstance/AddRemoteInstance
 import DiscoveryPanel from './DiscoveryPanel/DiscoveryPanel';
 import AddInstance from './AddInstance/AddInstance';
 import './panel.scss';
-import '../react-plugins-deps/style.less';
-import '../react-plugins-deps/styles.scss';
+import '../core-dependencies/style.less';
+import '../core-dependencies/styles.scss';
 
 const history = createBrowserHistory();
 const AddInstancePanel = () => {

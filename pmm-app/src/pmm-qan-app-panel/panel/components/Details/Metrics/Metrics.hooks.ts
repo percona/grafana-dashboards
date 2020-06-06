@@ -1,0 +1,40 @@
+import { useContext, useEffect, useState } from 'react';
+import { QueryAnalyticsProvider } from 'pmm-qan-app-panel/panel//panel.provider';
+import { processMetrics } from 'core-dependencies/components/helpers/processMetrics';
+import { METRIC_CATALOGUE } from 'pmm-qan-app-panel/panel/panel.constants';
+import MetricsService from './Metrics.service';
+
+export const useMetricsDetails = (): [any[], boolean] => {
+  const {
+    contextActions,
+    panelState: {
+      queryId, groupBy, from, to, labels, totals,
+    },
+  } = useContext(QueryAnalyticsProvider);
+  const [metrics, setMetrics] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  useEffect(() => {
+    const getMetrics = async () => {
+      try {
+        setLoading(true);
+        const result = await MetricsService.getMetrics({
+          filterBy: queryId,
+          groupBy,
+          from,
+          to,
+          labels,
+          totals,
+        });
+        setMetrics(processMetrics(METRIC_CATALOGUE, result));
+        contextActions.setFingerprint(groupBy === 'queryid' ? result.fingerprint : queryId);
+        setLoading(false);
+      } catch (e) {
+        setLoading(false);
+        // TODO: add error handling
+      }
+    };
+    getMetrics();
+  }, [queryId, totals]);
+
+  return [metrics, loading];
+};

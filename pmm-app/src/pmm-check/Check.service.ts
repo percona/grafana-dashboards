@@ -1,5 +1,5 @@
-import { apiRequest } from '../react-plugins-deps/components/helpers/api';
-import { API } from '../react-plugins-deps/core';
+import { apiRequest } from '../core-dependencies/components/helpers/api';
+import { API } from '../core-dependencies/core';
 import {
   ActiveCheck, Alert, AlertRequestParams, FailedChecks, Settings,
 } from './types';

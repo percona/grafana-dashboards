@@ -1,7 +1,7 @@
 import { Form as FormFinal } from 'react-final-form';
 import React from 'react';
-import { InputField } from '../../react-plugins-deps/components/Form/Input/Input';
-import { PasswordField } from '../../react-plugins-deps/components/Form/Password/Password';
+import { InputField } from '../../core-dependencies/components/Form/Input/Input';
+import { PasswordField } from '../../core-dependencies/components/Form/Password/Password';
 
 const SECURITY_CREDENTIALS_DOC_LINK =
   'https://www.percona.com/doc/percona-monitoring-and-management/' +
