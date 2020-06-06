@@ -5,7 +5,7 @@ import {
   FIXED_COLUMN_WIDTH,
   MAIN_METRIC_MIN_WIDTH,
   ROW_NUMBER_COLUMN_WIDTH,
-} from '../../OverviewTable.constants';
+} from '../../Overview.constants';
 import {
   mainColumn, mainMetric, metricWrapper, rowNumber, tooltipIcon,
 } from './DefaultColumns.styles';

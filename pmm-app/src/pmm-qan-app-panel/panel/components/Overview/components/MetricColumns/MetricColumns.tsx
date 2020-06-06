@@ -3,12 +3,12 @@ import Tooltip from 'antd/es/tooltip';
 import React from 'react';
 import { cx } from 'emotion';
 import { METRIC_CATALOGUE } from 'pmm-qan-app-panel/panel/panel.constants';
-import { COLUMN_WIDTH, FIXED_COLUMN_WIDTH } from '../../OverviewTable.constants';
-import ManageColumns from '../ManageColumns/ManageColumns';
 import { Humanize } from 'react-plugins-deps/components/helpers/Humanization';
-import { styles } from './MetricColumn.styles';
 // eslint-disable-next-line max-len
 import { Latency, Sparkline, TotalPercentage } from 'react-plugins-deps/components/Elements/Charts';
+import { COLUMN_WIDTH, FIXED_COLUMN_WIDTH } from '../../Overview.constants';
+import ManageColumns from '../ManageColumns/ManageColumns';
+import { styles } from './MetricColumn.styles';
 import './MetricColumns.scss';
 
 const TimeMetric = ({ value, percentage, cnt }) => (
