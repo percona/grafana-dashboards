@@ -1,5 +1,7 @@
 // TODO: calculate table width right and remove it
 import React from 'react';
+import { QueryTooltip } from 'react-plugins-deps/components/Elements/QueryTooltip/QueryTooltip';
+import { Info } from 'react-plugins-deps/components/Elements/Icons/Info';
 import {
   COLUMN_WIDTH,
   FIXED_COLUMN_WIDTH,
@@ -9,10 +11,8 @@ import {
 import {
   mainColumn, mainMetric, metricWrapper, rowNumber, tooltipIcon,
 } from './DefaultColumns.styles';
-import { GroupByControl } from '../GroupByControl/GroupByControl';
+import { Dimension } from '../Dimension/Dimension';
 // eslint-disable-next-line max-len
-import { QueryTooltip } from 'react-plugins-deps/components/Elements/QueryTooltip/QueryTooltip';
-import { Info } from 'react-plugins-deps/components/Elements/Icons/Info';
 
 const getMainColumnWidth = (columns) => {
   /* TODO(lunaticusgreen): add something more elegant */
@@ -41,7 +41,7 @@ export const getDefaultColumns = (groupBy, pageNumber, pageSize, columns, onCell
       dataIndex: 'mainMetric',
       fixed: 'left',
       width: mainMetricColumnWidth,
-      title: () => <GroupByControl />,
+      title: () => <Dimension />,
       ellipsis: true,
       className: mainColumn,
       onCell,

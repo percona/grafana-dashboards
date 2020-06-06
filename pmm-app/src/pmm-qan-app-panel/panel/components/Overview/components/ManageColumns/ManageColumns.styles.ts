@@ -9,6 +9,7 @@ export const styles = {
     margin-right: 4px;
   `,
   dividerMargin: css`
+    margin: 0;
     margin-right: 4px;
   `,
   actionElement: css`

@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Divider, Tabs } from 'antd';
 import './Details.scss';
+import { PanelProvider } from 'pmm-qan-app-panel/panel/panel.provider';
 import Fingerprint from './Fingerprint/Fingerprint';
 import Explain from './Explain/Explain';
 import Example from './Example/Example';
 import Metrics from './Metrics/Metrics';
-import { PanelProvider } from 'pmm-qan-app-panel/panel/panel.provider';
 import TableCreateContainer from './Table/TableContainer';
 import { useDetailsState } from './Details.hooks';
 import { DATABASE, TabKeys } from './Details.constants';

@@ -1,13 +1,13 @@
 import React, { useContext } from 'react';
 import { Select } from 'antd';
 import { PanelProvider } from 'pmm-qan-app-panel/panel/panel.provider';
-import { styles } from './GroupByControl.styles';
-import { GROUP_BY_OPTIONS } from './GroupByControl.types';
-import './GroupByControl.scss';
+import { styles } from './Dimension.styles';
+import { GROUP_BY_OPTIONS } from './Dimension.constants';
+import './Dimension.scss';
 
 const { Option } = Select;
 
-export const GroupByControl = () => {
+export const Dimension = () => {
   const {
     contextActions,
     panelState: { groupBy },
