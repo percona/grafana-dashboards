@@ -2,15 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { Collapse } from 'antd';
 import { Form as FormFinal } from 'react-final-form';
 import { css } from 'emotion';
-import { showSuccessNotification, PluginTooltip } from 'react-plugins-deps/components/helpers';
-import Validators from 'react-plugins-deps/components/helpers/validators';
+import { showSuccessNotification, PluginTooltip } from 'core-dependencies/components/helpers';
+import Validators from 'core-dependencies/components/helpers/validators';
 import {
   Button,
   FormElement,
   InputField,
   SliderField,
   ToggleField,
-} from 'react-plugins-deps/components/Form';
+} from 'core-dependencies/components/Form';
 import { SettingsService } from '../../Settings.service';
 import { GUI_DOC_URL } from '../../panel.constants';
 import './Settings.scss';

@@ -1,6 +1,13 @@
 import _ from 'lodash';
-import { Humanize } from 'react-plugins-deps/components/helpers/Humanization';
+import { Humanize } from 'core-dependencies/components/helpers/Humanization';
 
+export const PAGE_SIZE_OPTIONS = ['10', '50', '100'];
+export const DEFAULT_PAGE_NUMBER = 1;
+export const DEFAULT_PAGE_SIZE = 10;
+export const MIN_SPLIT_SIZE = 300;
+// percent
+export const SPACE_DISTRIBUTION_OVERVIEW = 40;
+export const SPACE_DISTRIBUTION_DETAILS = 60;
 export const DEFAULT_COLUMNS = ['load', 'num_queries', 'query_time'];
 export const FILTERS_NAMES = [
   'environment',

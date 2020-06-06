@@ -1,6 +1,6 @@
 import { processData, sumFailedChecks, makeApiUrl } from './Check.service';
 import { Alert } from './types';
-import { API } from '../react-plugins-deps/core';
+import { API } from '../core-dependencies/core';
 import { activeCheckStub, alertsStub } from './__mocks__/stubs';
 
 jest.mock('axios');

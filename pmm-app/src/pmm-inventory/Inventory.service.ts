@@ -1,4 +1,4 @@
-import { apiRequestInventory } from '../react-plugins-deps/components/helpers/api';
+import { apiRequestInventory } from '../core-dependencies/components/helpers/api';
 
 export class InventoryService {
   static async getAgents(body) {

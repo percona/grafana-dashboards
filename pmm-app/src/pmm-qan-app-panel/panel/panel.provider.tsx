@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { getDataSourceSrv } from '@grafana/runtime';
 import { find, omit } from 'lodash';
-import { ParseQueryParamDate } from 'react-plugins-deps/components/helpers/time-parameters-parser';
+import { ParseQueryParamDate } from 'core-dependencies/components/helpers/time-parameters-parser';
 import { DEFAULT_COLUMNS, FILTERS_NAMES } from './panel.constants';
 
 const initialState = {} as any;
 
-export const PanelProvider = React.createContext(initialState);
+export const QueryAnalyticsProvider = React.createContext(initialState);
 
 const setFilters = (query) => FILTERS_NAMES.reduce((result, filterName) => {
   const filters = query.getAll(`var-${filterName}`);
   if (!filters.length) {
     return result;
   }
-
   // eslint-disable-next-line no-param-reassign
   result[filterName] = filters;
   return result;
@@ -284,7 +283,7 @@ export const UrlParametersProvider = ({ grafanaProps, children }) => {
   }, []);
 
   return (
-    <PanelProvider.Provider
+    <QueryAnalyticsProvider.Provider
       value={{
         panelState,
         contextActions: Object.keys(actions).reduce((actionsList, key) => {
@@ -295,6 +294,6 @@ export const UrlParametersProvider = ({ grafanaProps, children }) => {
       }}
     >
       {children}
-    </PanelProvider.Provider>
+    </QueryAnalyticsProvider.Provider>
   );
 };
