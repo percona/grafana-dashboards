@@ -64,7 +64,7 @@ const ManageColumns = (props) => {
       <Divider className={styles.iconMargin} />
       {!onlyAdd && columns.length > 1 && (
         <div
-          style={}
+          className={styles.actionElement}
           onMouseDown={(e) => e.preventDefault()}
           onClick={removeColumn}
         >
