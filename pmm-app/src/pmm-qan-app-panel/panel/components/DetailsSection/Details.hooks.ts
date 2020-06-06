@@ -26,7 +26,7 @@ export const useActionResult = (): [ActionResult, Dispatch<string>] => {
       return;
     }
     const getData = async () => {
-      if (counter === 0) {
+      if (!counter) {
         clearInterval(intervalId);
         setLoading(false);
         return;
