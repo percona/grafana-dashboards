@@ -45,10 +45,8 @@ export default class Mysql {
         service_id: example.service_id,
       });
       setActionId(result.action_id);
-      // setLoading(false);
     } catch (e) {
-      // setLoading(false);
-      // TODO: add error handling
+      console.error(e);
     }
   }
 
@@ -60,10 +58,8 @@ export default class Mysql {
         service_id: example.service_id,
       });
       setActionId(result.action_id);
-      // setLoading(false);
     } catch (e) {
-      // setLoading(false);
-      // TODO: add error handling
+      console.error(e);
     }
   }
 

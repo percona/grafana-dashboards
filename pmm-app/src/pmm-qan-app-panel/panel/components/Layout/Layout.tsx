@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import SplitPane from 'react-split-pane';
+import { PanelProvider } from 'pmm-qan-app-panel/panel/panel.provider';
 import { Overview } from '../Overview';
 import Details from '../Details/Details';
-import { PanelProvider } from 'pmm-qan-app-panel/panel/panel.provider';
 import ManageColumns from '../Overview/components/ManageColumns/ManageColumns';
 import { styles } from './Layout.styles';
 import './Layout.scss';

@@ -1,10 +1,10 @@
 import React from 'react';
 // eslint-disable-next-line max-len
 import { QueryTooltip } from 'react-plugins-deps/components/Elements/QueryTooltip/QueryTooltip';
-import { GROUP_BY_OPTIONS } from './Fingerprint.constants';
-import { styles } from './Fingerprint.styles';
 import { Close } from 'react-plugins-deps/components/Elements/Icons/Close';
 import { Info } from 'react-plugins-deps/components/Elements/Icons/Info';
+import { GROUP_BY_OPTIONS } from './Fingerprint.constants';
+import { styles } from './Fingerprint.styles';
 
 const Fingerprint = (props) => {
   const {

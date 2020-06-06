@@ -6,10 +6,10 @@ import {
   TimeDistribution,
 } from 'react-plugins-deps/components/Elements/Charts';
 import { Humanize } from 'react-plugins-deps/components/helpers/Humanization';
+import { Info } from 'react-plugins-deps/components/Elements/Icons/Info';
 import { styles } from './Metrics.styles';
 import { useMetricsDetails } from './Metrics.hooks';
 import { DATABASE } from '../Details.constants';
-import { Info } from 'react-plugins-deps/components/Elements/Icons/Info';
 
 const { Panel } = Collapse;
 

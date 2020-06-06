@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { Collapse, Spin, Table } from 'antd';
+import { ReactJSON } from 'react-plugins-deps/components/Elements/ReactJSON/ReactJSON';
 import { processClassicExplain } from './Explain.tools';
 import { styles } from './Explain.styles';
-import { ReactJSON } from 'react-plugins-deps/components/Elements/ReactJSON/ReactJSON';
 import { DATABASE } from '../Details.constants';
 
 const { Panel } = Collapse;
