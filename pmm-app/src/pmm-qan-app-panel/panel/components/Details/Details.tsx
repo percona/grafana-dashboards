@@ -18,19 +18,20 @@ const Details = () => {
   const {
     contextActions: { closeDetails },
     panelState: {
-      queryId, groupBy, fingerprint, controlSum, totals,
+      queryId, groupBy, fingerprint, controlSum, totals
     },
   } = useContext(PanelProvider);
   const {
     detailsState: {
-      databaseType, classicExplain, jsonExplain, examples, tables,
+      databaseType, classicExplain, jsonExplain, examples, tables
     },
   } = useContext(DetailsProvider);
 
   useDetailsState();
   const [activeTab, setActiveTab] = useState(TabKeys.Details);
-  const showTablesTab = databaseType !== DATABASE.mongodb;
-  const showExplainTab = databaseType !== DATABASE.postgresql;
+  const showTablesTab = databaseType !== DATABASE.mongodb && groupBy === 'queryid' && !totals
+  const showExplainTab = databaseType !== DATABASE.postgresql && groupBy === 'queryid' && !totals;
+  const showExamplesTab = groupBy === 'queryid' && !totals;
   useEffect(() => setActiveTab(TabKeys.Details), [queryId]);
 
   return (
@@ -49,13 +50,13 @@ const Details = () => {
           <TabPane tab={<span>Details</span>} key={TabKeys.Details}>
             <Metrics databaseType={databaseType} totals={totals} />
           </TabPane>
-          {groupBy === 'queryid' && !totals ? (
-            <TabPane tab={<span>Examples</span>} key={TabKeys.Examples} disabled={queryId === 'TOTAL'}>
+          {showExamplesTab ? (
+            <TabPane tab={<span>Examples</span>} key={TabKeys.Examples}>
               <Example fingerprint={fingerprint} databaseType={databaseType} examples={examples} />
             </TabPane>
           ) : null}
-          {groupBy === 'queryid' && showExplainTab && !totals ? (
-            <TabPane tab={<span>Explain</span>} key={TabKeys.Explain} disabled={queryId === 'TOTAL'}>
+          {showExplainTab ? (
+            <TabPane tab={<span>Explain</span>} key={TabKeys.Explain} disabled={totals}>
               <Explain
                 classicExplain={classicExplain}
                 jsonExplain={jsonExplain}
@@ -63,8 +64,8 @@ const Details = () => {
               />
             </TabPane>
           ) : null}
-          {groupBy === 'queryid' && showTablesTab && !totals ? (
-            <TabPane tab={<span>Tables</span>} key={TabKeys.Tables} disabled={queryId === 'TOTAL'}>
+          {showTablesTab ? (
+            <TabPane tab={<span>Tables</span>} key={TabKeys.Tables} disabled={totals}>
               <TableCreateContainer databaseType={databaseType} examples={examples} tables={tables} />
             </TabPane>
           ) : null}

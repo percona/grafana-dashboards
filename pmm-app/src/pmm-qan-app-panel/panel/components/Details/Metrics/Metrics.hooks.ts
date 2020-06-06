@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from 'react';
 import { PanelProvider } from 'pmm-qan-app-panel/panel//panel.provider';
-import MetricsService from './Metrics.service';
 import { processMetrics } from 'react-plugins-deps/components/helpers/processMetrics';
 import { METRIC_CATALOGUE } from 'pmm-qan-app-panel/panel/panel.constants';
+import MetricsService from './Metrics.service';
 
 export const useMetricsDetails = (): [any[], boolean] => {
   const {

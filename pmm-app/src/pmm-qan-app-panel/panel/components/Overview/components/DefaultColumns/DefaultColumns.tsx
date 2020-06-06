@@ -12,7 +12,6 @@ import {
   mainColumn, mainMetric, metricWrapper, rowNumber, tooltipIcon,
 } from './DefaultColumns.styles';
 import { Dimension } from '../Dimension/Dimension';
-// eslint-disable-next-line max-len
 
 const getMainColumnWidth = (columns) => {
   /* TODO(lunaticusgreen): add something more elegant */
