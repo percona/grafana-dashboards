@@ -1,6 +1,8 @@
 import { useContext, useEffect, useState } from 'react';
 import { QueryAnalyticsProvider } from 'pmm-qan-app-panel/panel/panel.provider';
+import useWindowSize from 'core-dependencies/components/helpers/WindowSize.hooks';
 import FiltersService from './Filters.service';
+import { FILTERS_BODY_HEIGHT, FILTERS_HEADER_SIZE, FILTERS_MARGIN_BOTTOM } from './Filters.constants';
 
 export const useFilters = () => {
   const [filters, setFilters] = useState({});
@@ -52,4 +54,22 @@ export const useInitialFilterValues = () => {
   }, [labels]);
 
   return initialValues;
+};
+
+export const useFiltersContainerHeight = (initialValue) => {
+  const windowSize = useWindowSize();
+  const [height, setHeight] = useState(initialValue);
+
+  useEffect(() => {
+    const filtersWrapperElement = document.querySelector('#query-analytics-filters');
+    const filtersHeight = filtersWrapperElement
+      ? windowSize[1]
+        - filtersWrapperElement.getBoundingClientRect().y
+        - FILTERS_HEADER_SIZE
+        - FILTERS_MARGIN_BOTTOM
+      : FILTERS_BODY_HEIGHT;
+    setHeight(Math.max(filtersHeight, FILTERS_BODY_HEIGHT));
+  }, [windowSize[1]]);
+
+  return height;
 };
