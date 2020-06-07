@@ -1,7 +1,6 @@
 import React, { useContext, useState } from 'react';
-import { Button, Spin } from 'antd';
-import { Form as FormFinal } from 'react-final-form';
-import Input from 'antd/lib/input/Input';
+import { Button, Spin, Input} from 'antd';
+import { Form } from 'react-final-form';
 import ScrollArea from 'react-scrollbar';
 import { QueryAnalyticsProvider } from 'pmm-qan-app-panel/panel/panel.provider';
 import { Filter } from 'core-dependencies/components/Elements/Icons/Filter';
@@ -88,7 +87,7 @@ export const Filters = () => {
   const initialValues = useInitialFilterValues();
 
   return (
-    <FormFinal
+    <Form
       onSubmit={() => {}}
       initialValues={initialValues}
       render={({ form, handleSubmit }) => (
