@@ -15,7 +15,7 @@ module.exports = {
     agentsLinkOld: '//a[contains(text(), "Agents")]',
     nodesLinkOld: '//a[contains(text(), "Nodes")]',
     pmmAgentLocator: '//table//td[contains(text(), "PMM Agent")]',
-    serviceIdLocatorPrefix: '//table//tr/td[3][contains(text(),"',
+    serviceIdLocatorPrefix: '//table//tr/td[4][contains(text(),"',
   },
 
   verifyOldMySQLRemoteServiceIsDisplayed(serviceName) {
@@ -77,7 +77,7 @@ module.exports = {
   },
 
   async getNodeId(serviceName) {
-    const nodeIdLocator = this.fields.serviceIdLocatorPrefix + serviceName + '")]/following-sibling::td[1]';
+    const nodeIdLocator = this.fields.serviceIdLocatorPrefix + serviceName + '")]/following-sibling::td[5]';
     return await I.grabTextFrom(nodeIdLocator);
   },
 
