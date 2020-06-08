@@ -43,7 +43,7 @@ module.exports = {
     columns: '//tbody//app-qan-table-header-cell',
     fifty: "//div[@id='ad0800a556c8']/span",
     hundred: "//div[@id='a305c6a9fc9e']",
-    iframe: "//div[@class='panel-content']//iframe",
+    iframe: "//div[@class='panel-content']",
     filterSelection: "(//div[@class='chips']//button)",
     resultsPerPageDropDown: "//div[@class='results-per-page']/ng-select",
     tablesTabInDetails: "//a[@id='tables']",
@@ -68,6 +68,7 @@ module.exports = {
     ellipsisButton: '.ant-pagination-item-ellipsis',
     tableRow: 'td.ant-table-row-cell-break-word',
     resultPerPageCombobox: '.ant-pagination-options',
+    addColumnNewQAN: '.add-columns',
   },
 
   filterGroupLocator(filterName) {
@@ -456,5 +457,17 @@ module.exports = {
     const pagesCount = locate('li').before(this.fields.nextPage);
     const pages = await I.grabTextFrom(pagesCount);
     return pages[pages.length - 1];
+  },
+
+  addSpecificColumn(columnName) {
+    const column = `//li[contains(text(), '${columnName}')]`;
+    I.waitForVisible(column, 30);
+    I.click(column);
+  },
+
+  verifyAddedColumn(columnName) {
+    const columnHeader = `//span[contains(text(), '${columnName}')]`;
+    I.waitForVisible(columnHeader, 30);
+    I.seeElement(columnHeader);
   },
 };

@@ -8,7 +8,7 @@ Before(async (I, qanPage, adminPage) => {
   await I.waitForElement(qanPage.fields.iframe, 60);
   await I.switchTo(qanPage.fields.iframe);
 });
-
+/*
 Scenario('Verify QAN Filter groups exist  @not-pr-pipeline', async (I, adminPage, qanPage) => {
   qanPage.waitForQANPageLoaded();
   await qanPage.changeResultsPerPage(50);
@@ -344,3 +344,16 @@ xScenario(
     await qanPage.verifyPagesAndCount(10);
   }
 );
+*/
+// TODO: Uncomment after new QAN will be merged
+xScenario('PMM-T133 - Verify user is able to add metric to the overview table', async (I, qanPage) => {
+  const testColumn = 'Bytes Sent';
+  const otherColumns = ['Query Count', 'Query Time', 'Load'];
+  qanPage.waitForNewQANPageLoaded();
+  I.click(qanPage.fields.addColumnNewQAN);
+  qanPage.addSpecificColumn(testColumn);
+  qanPage.verifyAddedColumn(testColumn);
+  for (i = 0; i < otherColumns.length; i++) {
+    qanPage.verifyAddedColumn(otherColumns[i]);
+  }
+});
