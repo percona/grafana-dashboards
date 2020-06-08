@@ -3,9 +3,9 @@ import { Form as FormFinal } from 'react-final-form';
 import { css } from 'emotion';
 import {
   Button, FormElement, InputField, TextAreaField
-} from 'core-dependencies/components/Form';
-import { showSuccessNotification } from 'core-dependencies/components/helpers/notification-manager';
-import { PluginTooltip } from 'core-dependencies/components/helpers/Helpers';
+} from 'shared/components/Form';
+import { showSuccessNotification } from 'shared/components/helpers/notification-manager';
+import { PluginTooltip } from 'shared/components/helpers/Helpers';
 import { SettingsService } from '../../Settings.service';
 import { GUI_DOC_URL } from '../../panel.constants';
 

@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { QueryAnalyticsProvider } from 'pmm-qan-app-panel/panel//panel.provider';
-import { processMetrics } from 'core-dependencies/components/helpers/processMetrics';
+import { processMetrics } from 'shared/components/helpers/processMetrics';
 import { METRIC_CATALOGUE } from 'pmm-qan-app-panel/panel/panel.constants';
 import MetricsService from './Metrics.service';
 

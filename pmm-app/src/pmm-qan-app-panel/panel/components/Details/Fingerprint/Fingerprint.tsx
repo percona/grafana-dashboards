@@ -1,8 +1,8 @@
 import React from 'react';
 // eslint-disable-next-line max-len
-import { QueryTooltip } from 'core-dependencies/components/Elements/QueryTooltip/QueryTooltip';
-import { Close } from 'core-dependencies/components/Elements/Icons/Close';
-import { Info } from 'core-dependencies/components/Elements/Icons/Info';
+import { QueryTooltip } from 'shared/components/Elements/QueryTooltip/QueryTooltip';
+import { Close } from 'shared/components/Elements/Icons/Close';
+import { Info } from 'shared/components/Elements/Icons/Info';
 import { GROUP_BY_OPTIONS } from './Fingerprint.constants';
 import { styles } from './Fingerprint.styles';
 

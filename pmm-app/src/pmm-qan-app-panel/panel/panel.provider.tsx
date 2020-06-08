@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getDataSourceSrv } from '@grafana/runtime';
 import { find, omit } from 'lodash';
-import { ParseQueryParamDate } from 'core-dependencies/components/helpers/time-parameters-parser';
+import { ParseQueryParamDate } from 'shared/components/helpers/time-parameters-parser';
 import { DEFAULT_COLUMNS, FILTERS_NAMES } from './panel.constants';
 
 const initialState = {} as any;
@@ -251,6 +251,7 @@ export const UrlParametersProvider = ({ grafanaProps, children }) => {
 
   // refresh
   useEffect(() => {
+    // TODO: comment hack
     const refreshButton = document.querySelector('.refresh-picker-buttons button');
     const refreshHandle = () => {
       const newState = {

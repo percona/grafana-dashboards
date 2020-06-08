@@ -1,4 +1,4 @@
-import { apiRequestQAN } from 'core-dependencies/components/helpers/api';
+import { apiRequestQAN } from 'shared/components/helpers/api';
 import { getLabelQueryParams } from 'pmm-qan-app-panel/panel/panel.tools';
 
 const markCheckedLabels = (labels, paramLabels) => {

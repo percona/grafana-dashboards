@@ -1,4 +1,4 @@
-import { apiRequest } from '../core-dependencies/components/helpers/api';
+import { apiRequest } from '../shared/components/helpers/api';
 
 export const SettingsService = {
   getSettings() {

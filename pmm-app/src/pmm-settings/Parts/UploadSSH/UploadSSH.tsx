@@ -1,8 +1,8 @@
 import React, { ReactNode, useEffect, useState } from 'react';
 import { Form as FormFinal } from 'react-final-form';
-import { PluginTooltip } from 'core-dependencies/components/helpers/Helpers';
-import { Button, FormElement, TextAreaField } from 'core-dependencies/components/Form';
-import { showSuccessNotification } from 'core-dependencies/components/helpers/notification-manager';
+import { PluginTooltip } from 'shared/components/helpers/Helpers';
+import { Button, FormElement, TextAreaField } from 'shared/components/Form';
+import { showSuccessNotification } from 'shared/components/helpers/notification-manager';
 import { SettingsService } from '../../Settings.service';
 import { GUI_DOC_URL } from '../../panel.constants';
 

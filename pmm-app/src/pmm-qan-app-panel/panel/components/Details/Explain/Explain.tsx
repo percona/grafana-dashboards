@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { Collapse, Spin, Table } from 'antd';
-import { ReactJSON } from 'core-dependencies/components/Elements/ReactJSON/ReactJSON';
+import { ReactJSON } from 'shared/components/Elements/ReactJSON/ReactJSON';
 import { processClassicExplain } from './Explain.tools';
 import { styles } from './Explain.styles';
 import { DATABASE } from '../Details.constants';

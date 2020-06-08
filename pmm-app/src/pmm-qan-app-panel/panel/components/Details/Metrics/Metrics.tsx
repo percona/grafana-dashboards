@@ -1,8 +1,8 @@
 import { Collapse, Table, Tooltip } from 'antd';
 import React from 'react';
-import { Latency, Sparkline, TimeDistribution } from 'core-dependencies/components/Elements/Charts';
-import { Humanize } from 'core-dependencies/components/helpers/Humanization';
-import { Info } from 'core-dependencies/components/Elements/Icons/Info';
+import { Latency, Sparkline, TimeDistribution } from 'shared/components/Elements/Charts';
+import { Humanize } from 'shared/components/helpers/Humanization';
+import { Info } from 'shared/components/Elements/Icons/Info';
 import { styles } from './Metrics.styles';
 import { useMetricsDetails } from './Metrics.hooks';
 import { DATABASE } from '../Details.constants';

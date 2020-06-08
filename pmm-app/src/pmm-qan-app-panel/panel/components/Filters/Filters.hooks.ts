@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { QueryAnalyticsProvider } from 'pmm-qan-app-panel/panel/panel.provider';
-import useWindowSize from 'core-dependencies/components/helpers/WindowSize.hooks';
+import useWindowSize from 'shared/components/helpers/WindowSize.hooks';
 import FiltersService from './Filters.service';
 import { FILTERS_BODY_HEIGHT, FILTERS_HEADER_SIZE, FILTERS_MARGIN_BOTTOM } from './Filters.constants';
 

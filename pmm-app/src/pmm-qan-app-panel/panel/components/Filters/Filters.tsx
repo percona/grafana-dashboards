@@ -3,7 +3,7 @@ import { Button, Spin, Input} from 'antd';
 import { Form } from 'react-final-form';
 import ScrollArea from 'react-scrollbar';
 import { QueryAnalyticsProvider } from 'pmm-qan-app-panel/panel/panel.provider';
-import { Filter } from 'core-dependencies/components/Elements/Icons/Filter';
+import { Filter } from 'shared/components/Elements/Icons/Filter';
 import { CheckboxGroup } from './components/CheckboxGroup/CheckboxGroup';
 import { FILTERS_BODY_HEIGHT, FILTERS_GROUPS } from './Filters.constants';
 import { styles } from './Filters.styles';
