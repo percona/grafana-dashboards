@@ -286,4 +286,52 @@ xScenario('PMM-T13 - Verify QAN has MongoDB, MySQL, PostgreSQl all three Service
         I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);
         await I.clearField(qanPage.fields.filterBy);
     }
+
+
+// TODO: Uncomment after new QAN will be merged
+xScenario('PMM-T128 - Verify pagination works correctly', async (I, qanPage) => {
+  qanPage.waitForNewQANPageLoaded();
+  qanPage.verifySelectedCountPerPage('10 / page');
+  I.seeAttributesOnElements(qanPage.fields.previousPage, { 'aria-disabled': 'true' });
+  I.click(qanPage.fields.nextPage);
+  qanPage.verifyActiveItem(2);
+  await qanPage.verifyCount('11-20');
+  I.click(qanPage.fields.previousPage);
+  qanPage.verifyActiveItem(1);
+  await qanPage.verifyCount('1-10');
+  I.seeAttributesOnElements(qanPage.fields.previousPage, { 'aria-disabled': 'true' });
+  I.click(qanPage.fields.ellipsisButton);
+  qanPage.verifyActiveItem(6);
+  await qanPage.verifyCount('51-60');
+  I.click(qanPage.fields.ellipsisButton);
+  qanPage.verifyActiveItem(1);
+  await qanPage.verifyCount('1-10');
+  qanPage.selectPage(3);
+  qanPage.verifyActiveItem(3);
+  await qanPage.verifyCount('21-30');
 });
+
+// TODO: Uncomment after new QAN will be merged
+xScenario(
+  'PMM-T193 - Verify user is able to change per page elements display and pagination is updated according to this value, PMM-T256 - Verify that switching view from 10 to 50/100 pages works correctly',
+  async (I, qanPage) => {
+    qanPage.waitForNewQANPageLoaded();
+    await qanPage.verifyRowCount(11);
+    await qanPage.verifyCount('1-10');
+    await qanPage.verifyPagesAndCount(10);
+    qanPage.selectPagination('50 / page');
+    I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);
+    await qanPage.verifyRowCount(51);
+    await qanPage.verifyPagesAndCount(50);
+    await qanPage.verifyCount('1-50');
+    qanPage.selectPagination('100 / page');
+    I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);
+    await qanPage.verifyRowCount(101);
+    await qanPage.verifyPagesAndCount(100);
+    await qanPage.verifyCount('1-100');
+    qanPage.selectPagination('10 / page');
+    await qanPage.verifyRowCount(11);
+    await qanPage.verifyCount('1-10');
+    await qanPage.verifyPagesAndCount(10);
+  }
+);
