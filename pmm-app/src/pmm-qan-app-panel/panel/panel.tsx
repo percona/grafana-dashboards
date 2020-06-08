@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import './panel.scss';
-import 'core-dependencies/styles.scss';
-import 'core-dependencies/style.less';
-import containerStyling from 'core-dependencies/components/helpers/styling';
+import 'shared/styles.scss';
+import 'shared/style.less';
+import containerStyling from 'shared/components/helpers/styling';
 import SplitPane from 'react-split-pane';
 import { QueryAnalyticsProvider, UrlParametersProvider } from './panel.provider';
 import {

@@ -2,32 +2,32 @@ import { Humanize } from './Humanization';
 
 describe('Humanize', () => {
   it('should return 0 if input is zero', () => {
-    const result = Humanize.parceTime(0);
+    const result = Humanize.parseTime(0);
     expect(result).toBe('0');
   });
 
   it('should return 20.00 sec if input is more than 1 and less than 60', () => {
-    const result = Humanize.parceTime(20);
+    const result = Humanize.parseTime(20);
     expect(result).toBe('20.00 sec');
   });
 
   it('should return 0:01:00 if input is more or equal 60', () => {
-    const result = Humanize.parceTime(60);
+    const result = Humanize.parseTime(60);
     expect(result).toBe('0:01:00');
   });
 
   it('should return 1 days, 0:01:40 if input is more than 86400', () => {
-    const result = Humanize.parceTime(86500);
+    const result = Humanize.parseTime(86500);
     expect(result).toBe('1 days, 0:01:40');
   });
 
   it('should return 20.00 ms if input is less than 1', () => {
-    const result = Humanize.parceTime(0.02);
+    const result = Humanize.parseTime(0.02);
     expect(result).toBe('20.00 ms');
   });
 
   it('should return -1000000.00 µs if input is negative value', () => {
-    const result = Humanize.parceTime(-1);
+    const result = Humanize.parseTime(-1);
     expect(result).toBe('-1000000.00 µs');
   });
 

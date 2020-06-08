@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Divider } from 'antd';
-import { CheckboxField } from 'core-dependencies/components/Form/Checkbox/Checkbox';
-import { Humanize } from 'core-dependencies/components/helpers/Humanization';
+import { CheckboxField } from 'shared/components/Form/Checkbox/Checkbox';
+import { Humanize } from 'shared/components/helpers/Humanization';
 import { styles } from './CheckboxGroup.styles';
 
 const TOP_LIMIT = 5;

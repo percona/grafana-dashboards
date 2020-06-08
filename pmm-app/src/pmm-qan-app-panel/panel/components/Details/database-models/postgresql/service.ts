@@ -1,4 +1,4 @@
-import { apiRequestManagement } from 'core-dependencies/components/helpers/api';
+import { apiRequestManagement } from 'shared/components/helpers/api';
 
 export default class PostgresqlDatabaseService {
   static getPostgreSQLIndex(body) {

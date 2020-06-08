@@ -1,7 +1,7 @@
 import {
   apiRequestManagement,
   apiRequestQAN,
-} from 'core-dependencies/components/helpers/api';
+} from 'shared/components/helpers/api';
 import { getLabelQueryParams } from 'pmm-qan-app-panel/panel/panel.tools';
 
 class DetailsService {

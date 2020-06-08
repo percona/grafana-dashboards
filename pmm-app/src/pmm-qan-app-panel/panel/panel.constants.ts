@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { Humanize } from 'core-dependencies/components/helpers/Humanization';
+import { Humanize } from 'shared/components/helpers/Humanization';
 
 export const PAGE_SIZE_OPTIONS = ['10', '50', '100'];
 export const DEFAULT_PAGE_NUMBER = 1;

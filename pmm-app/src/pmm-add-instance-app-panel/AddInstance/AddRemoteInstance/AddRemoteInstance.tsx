@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import './AddRemoteInstance.scss';
 import { Form as FormFinal } from 'react-final-form';
-import { InputField } from '../../../core-dependencies/components/Form/Input/Input';
-import { TextAreaField } from '../../../core-dependencies/components/Form/TextArea/TextArea';
-import { CheckboxField } from '../../../core-dependencies/components/Form/Checkbox/Checkbox';
+import { InputField } from '../../../shared/components/Form/Input/Input';
+import { TextAreaField } from '../../../shared/components/Form/TextArea/TextArea';
+import { CheckboxField } from '../../../shared/components/Form/Checkbox/Checkbox';
 
-import { PasswordField } from '../../../core-dependencies/components/Form/Password/Password';
+import { PasswordField } from '../../../shared/components/Form/Password/Password';
 import AddRemoteInstanceService from './AddRemoteInstanceService';
-import Validators from '../../../core-dependencies/components/helpers/validators';
+import Validators from '../../../shared/components/helpers/validators';
 
 interface InstanceData {
   instanceType?: string;

@@ -1,5 +1,5 @@
-import { apiRequest } from '../core-dependencies/components/helpers/api';
-import { API } from '../core-dependencies/core';
+import { apiRequest } from '../shared/components/helpers/api';
+import { API } from '../shared/core';
 import {
   ActiveCheck, Alert, AlertRequestParams, FailedChecks, Settings,
 } from './types';

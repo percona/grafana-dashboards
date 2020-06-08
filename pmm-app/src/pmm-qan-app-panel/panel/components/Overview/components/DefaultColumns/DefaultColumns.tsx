@@ -1,7 +1,7 @@
 // TODO: calculate table width right and remove it
 import React from 'react';
-import { QueryTooltip } from 'core-dependencies/components/Elements/QueryTooltip/QueryTooltip';
-import { Info } from 'core-dependencies/components/Elements/Icons/Info';
+import { QueryTooltip } from 'shared/components/Elements/QueryTooltip/QueryTooltip';
+import { Info } from 'shared/components/Elements/Icons/Info';
 import {
   COLUMN_WIDTH,
   FIXED_COLUMN_WIDTH,

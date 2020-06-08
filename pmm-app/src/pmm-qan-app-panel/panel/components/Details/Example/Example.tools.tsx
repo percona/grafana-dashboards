@@ -1,7 +1,7 @@
 import Highlight from 'react-highlight.js';
 import React from 'react';
 import { DATABASE } from '../Details.constants';
-import { ReactJSON } from '../../../../../core-dependencies/components/Elements/ReactJSON/ReactJSON';
+import { ReactJSON } from '../../../../../shared/components/Elements/ReactJSON/ReactJSON';
 
 export const getExample = (databaseType) => (example: any): any => {
   if (databaseType === DATABASE.mongodb) {

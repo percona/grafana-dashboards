@@ -1,4 +1,4 @@
-import { apiRequestManagement } from '../../core-dependencies/components/helpers/api';
+import { apiRequestManagement } from '../../shared/components/helpers/api';
 
 class DiscoveryService {
   static async discoveryRDS(body) {
