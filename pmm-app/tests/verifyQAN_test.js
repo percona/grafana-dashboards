@@ -357,3 +357,14 @@ xScenario('PMM-T133 - Verify user is able to add metric to the overview table', 
     qanPage.verifyAddedColumn(otherColumns[i]);
   }
 });
+
+// TODO: Uncomment after new QAN will be merged
+xScenario('PMM-T132 - Verify user is able to change metric in the overview table', async (I, qanPage) => {
+  const testColumn = 'Query Time';
+  const changeColumn = 'Bytes Sent';
+  qanPage.waitForNewQANPageLoaded();
+  qanPage.changeMetricInTable(testColumn);
+  qanPage.addSpecificColumn(changeColumn);
+  qanPage.verifyAddedColumn(changeColumn);
+  qanPage.verifyChangedColumn(testColumn);
+});

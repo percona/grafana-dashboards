@@ -470,4 +470,15 @@ module.exports = {
     I.waitForVisible(columnHeader, 30);
     I.seeElement(columnHeader);
   },
+
+  changeMetricInTable(columnName) {
+    const columnHeader = `//span[contains(text(), '${columnName}')]`;
+    I.waitForVisible(columnHeader, 30);
+    I.click(columnHeader);
+  },
+
+  verifyChangedColumn(columnName) {
+    const columnHeader = `//span[contains(text(), '${columnName}')]`;
+    I.waitForInvisible(columnHeader, 30);
+  },
 };
