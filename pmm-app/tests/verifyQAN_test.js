@@ -368,3 +368,16 @@ xScenario('PMM-T132 - Verify user is able to change metric in the overview table
   qanPage.verifyAddedColumn(changeColumn);
   qanPage.verifyChangedColumn(testColumn);
 });
+
+// TODO: Uncomment after new QAN will be merged
+xScenario(
+  'PMM-T135 - Verify user is not able to add duplicate metric to the overview column',
+  async (I, qanPage) => {
+    const column = 'Load';
+    qanPage.waitForNewQANPageLoaded();
+    qanPage.verifyAddedColumn(column);
+    I.click(qanPage.fields.addColumnNewQAN);
+    I.fillField(qanPage.fields.addColumnNewQAN, column);
+    I.waitForVisible(qanPage.fields.noDataIcon, 30);
+  }
+);

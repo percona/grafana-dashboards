@@ -69,6 +69,7 @@ module.exports = {
     tableRow: 'td.ant-table-row-cell-break-word',
     resultPerPageCombobox: '.ant-pagination-options',
     addColumnNewQAN: '.add-columns',
+    noDataIcon: "//div[@class='ant-empty-image']",
   },
 
   filterGroupLocator(filterName) {
