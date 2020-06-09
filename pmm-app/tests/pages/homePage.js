@@ -14,25 +14,23 @@ module.exports = {
     dashboardHeaderText: 'Percona Monitoring and Management',
     dashboardHeaderLocator: "//div[contains(@class, 'dashboard-header')]",
     checkUpdateButton: "#refresh",
+    oldLastCheckSelector: "#pmm-update-widget > .last-check-wrapper p",
     lastCheckSelector: ".last-check-wrapper > p",
     triggerUpdate: "button[ng-click='update()']",
     updateProgressModal: ".modal-content",
     reloadButtonAfterUpgrade: "button[ng-click='reloadAfterUpdate()'",
     pmmUpdateWidget: "#pmm-update-widget",
-    upToDateLocator: locate('p').withText('You are up to date').inside('.state'),
+    upToDateLocator: "//section[@class='state']/p[text()='You are up to date']",
     availableVersion: "#available_version > div > p",
     currentVersion: "#current_version > span",
     sttDisabledFailedChecksPanelSelector: "$db-check-panel-settings-link",
     sttFailedChecksPanelSelector: "$db-check-panel-has-checks",
     checksPanelSelector: "$db-check-panel-home",
-
+    newsPanelTitleSelector: "//span[@class='panel-title-text' and text() = 'Percona News']",
+    newsPanelContentSelector: "//span[contains(text(), 'Percona News')]/ancestor::div[contains(@class, 'panel-container')]//div[contains(@class, 'view')]"
   },
 
   // introducing methods
-  getCount(field) {
-    return I.grabTextFrom(field);
-  },
-
   async upgradePMM() {
     I.waitForElement(this.fields.triggerUpdate, 180);
     I.seeElement(this.fields.triggerUpdate);
@@ -86,7 +84,7 @@ module.exports = {
     I.dontSeeElement(this.fields.upToDateLocator);
     I.seeElement(this.fields.currentVersion);
     I.seeElement(this.fields.checkUpdateButton);
-    I.see('Last check:',this.fields.checkUpdateButton);
+    I.see('Last check:', this.fields.oldLastCheckSelector);
     assert.notEqual(await I.grabTextFrom(this.fields.availableVersion),
         await I.grabTextFrom(this.fields.currentVersion), 'Available and Current versions match');
   },

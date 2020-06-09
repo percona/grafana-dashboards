@@ -38,16 +38,16 @@ module.exports = {
     I.click(agentLinkLocator);
     I.waitForElement(this.fields.pmmAgentLocator, 60);
     I.waitForElement(this.fields.inventoryTable, 60);
+    I.scrollPageToBottom();
     const numberOfServices = await I.grabNumberOfVisibleElements(
       "//span[contains(text(), '" +
         serviceId +
         "')]/following-sibling::span[contains(text(),'status: RUNNING')]"
     );
     if (
-      service_name === 'rds-mysql56' ||
-      service_name === 'mongodb_remote_new' ||
-      service_name === 'postgresql_remote_new' ||
-      service_name === 'mysql_remote_new'
+      service_name.toLowerCase().includes('mysql') ||
+      service_name.toLowerCase().includes('mongo') ||
+      service_name.toLowerCase().includes('postgres')
     ) {
       I.waitForVisible("//span[contains(text(), '" +
           serviceId +
@@ -88,7 +88,8 @@ module.exports = {
 
   async getServiceId(serviceName) {
     const serviceIdLocator =
-      this.fields.serviceIdLocatorPrefix + serviceName + "')]/preceding-sibling::td[2]";
+      `${this.fields.serviceIdLocatorPrefix}${serviceName}')]/preceding-sibling::td[2]`;
+    I.waitForVisible(serviceIdLocator, 30);
     const matchedServices = await I.grabNumberOfVisibleElements(serviceIdLocator);
     await assert.equal(
       matchedServices,
