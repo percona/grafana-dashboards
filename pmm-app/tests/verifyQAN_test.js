@@ -384,7 +384,7 @@ xScenario(
 
 // TODO: Uncomment after new QAN will be merged
 xScenario(
-  'PMM-T135 - Verify user is not able to add duplicate metric to the overview column',
+  'PMM-T156 - Verify queries are sorted by Load by default sorting from max to min',
   async (I, qanPage) => {
     qanPage.waitForNewQANPageLoaded();
     qanPage.verifyAppliedSortingForColumn('Load');
