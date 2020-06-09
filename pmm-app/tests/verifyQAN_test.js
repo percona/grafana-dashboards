@@ -381,3 +381,12 @@ xScenario(
     I.waitForVisible(qanPage.fields.noDataIcon, 30);
   }
 );
+
+// TODO: Uncomment after new QAN will be merged
+xScenario(
+  'PMM-T135 - Verify user is not able to add duplicate metric to the overview column',
+  async (I, qanPage) => {
+    qanPage.waitForNewQANPageLoaded();
+    qanPage.verifyAppliedSortingForColumn('Load');
+  }
+);
