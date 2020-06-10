@@ -45,9 +45,10 @@ module.exports = {
         "')]/following-sibling::span[contains(text(),'status: RUNNING')]"
     );
     if (
-      service_name.toLowerCase().includes('mysql') ||
-      service_name.toLowerCase().includes('mongo') ||
-      service_name.toLowerCase().includes('postgres')
+        service_name.toLowerCase().includes('mysql') ||
+        service_name.toLowerCase().includes('mongo') ||
+        service_name.toLowerCase().includes('postgres') ||
+        service_name.toLowerCase().includes('rds')
     ) {
       I.waitForVisible("//span[contains(text(), '" +
           serviceId +

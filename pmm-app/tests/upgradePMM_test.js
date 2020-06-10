@@ -12,11 +12,10 @@ Feature('PMM server Upgrade');
 Before( async (I) => {
     I.Authorize();
     I.setRequestTimeout(30000);
-
 });
 
 Scenario(
-    'Verify user can create Remote Instances before upgrade and they are in RUNNNING status @not-pr-pipeline',
+    'Verify user can create Remote Instances before upgrade and they are in RUNNNING status @pmm-upgrade',
     async (I,homePage, inventoryAPI, addInstanceAPI) => {
         // Adding instances for monitoring
         for (const type of Object.values(addInstanceAPI.instanceTypes)) {
@@ -31,7 +30,7 @@ Scenario(
 );
 
 Scenario(
-    'Verify user is able to Upgrade PMM version @not-pr-pipeline',
+    'Verify user is able to Upgrade PMM version @pmm-upgrade',
     async (I, inventoryAPI, homePage) => {
         I.amOnPage(homePage.url);
         await homePage.upgradePMM();
@@ -39,7 +38,7 @@ Scenario(
 );
 
 Scenario(
-    'Verify Agents are RUNNING after Upgrade (API) @not-pr-pipeline',
+    'Verify Agents are RUNNING after Upgrade (API) @pmm-upgrade',
     async (I, inventoryAPI) => {
         for (const service of Object.values(inventoryAPI.services)) {
             await inventoryAPI.verifyServiceExistsAndHasRunningStatus(service,
@@ -49,7 +48,7 @@ Scenario(
 );
 
 Scenario(
-    'Verify user can see Update widget @not-pr-pipeline',
+    'Verify user can see Update widget @pmm-upgrade',
     async (I, adminPage, homePage) => {
         I.amOnPage(homePage.url);
         homePage.verifyPostUpdateWidgetIsPresent();
@@ -57,7 +56,7 @@ Scenario(
 );
 
 Scenario(
-    'Verify user can see News Panel @not-pr-pipeline',
+    'Verify user can see News Panel @pmm-upgrade',
     async (I, adminPage, homePage) => {
         I.amOnPage(homePage.url);
         I.waitForVisible(homePage.fields.newsPanelTitleSelector, 30);
@@ -68,7 +67,7 @@ Scenario(
 );
 
 Scenario(
-    'Verify Agents are RUNNING after Upgrade (UI) @not-pr-pipeline',
+    'Verify Agents are RUNNING after Upgrade (UI) @pmm-upgrade',
     async (I, adminPage, pmmInventoryPage) => {
         I.amOnPage(pmmInventoryPage.url);
         for (const service of Object.values(serviceNames)) {
@@ -78,7 +77,7 @@ Scenario(
 );
 
 Scenario(
-    'Verify QAN has specific filters for Remote Instances after Upgrade (UI) @not-pr-pipeline',
+    'Verify QAN has specific filters for Remote Instances after Upgrade (UI) @pmm-upgrade',
     async (I, qanPage, addInstanceAPI) => {
         I.amOnPage(qanPage.url);
         I.waitForVisible(qanPage.fields.iframe, 30);

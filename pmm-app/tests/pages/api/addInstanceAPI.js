@@ -96,7 +96,8 @@ module.exports = {
             tls_skip_verify: true,
         };
         const headers = { Authorization: `Basic ${await I.getAuth()}` };
-        await I.sendPostRequest("v1/management/ProxySQL/Add", body, headers);
+        const resp = await I.sendPostRequest("v1/management/ProxySQL/Add", body, headers);
+        assert.equal(resp.status, 200, `Instance ${serviceName} was not added for monitoring`);
     },
 
     async addMongodb(serviceName) {
@@ -117,7 +118,8 @@ module.exports = {
             tls_skip_verify: true
         };
         const headers = { Authorization: `Basic ${await I.getAuth()}` };
-        await I.sendPostRequest("v1/management/MongoDB/Add", body, headers);
+        const resp = await I.sendPostRequest("v1/management/MongoDB/Add", body, headers);
+        assert.equal(resp.status, 200, `Instance ${serviceName} was not added for monitoring`);
     },
 
     async addRDS(serviceName) {
@@ -148,6 +150,7 @@ module.exports = {
             disable_enhanced_metrics: true
         };
         const headers = { Authorization: `Basic ${await I.getAuth()}` };
-        await I.sendPostRequest("v1/management/RDS/Add", body, headers);
+        const resp = await I.sendPostRequest("v1/management/RDS/Add", body, headers);
+        assert.equal(resp.status, 200, `Instance ${serviceName} was not added for monitoring`);
     },
 };
