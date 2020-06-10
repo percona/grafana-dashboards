@@ -1,6 +1,6 @@
 import PostgresqlDatabaseService from './service';
 
-export default {
+export const postgresqlMethods = {
   getShowCreateTables: async ({ example, tableName }) => {
     if (!tableName) {
       return null;

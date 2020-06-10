@@ -66,7 +66,7 @@ export const Sparkline = ({
     return [Math.max(...values), Math.min(...values)];
   };
   // eslint-disable-next-line react/no-string-refs
-  const ref = useRef();
+  const ref = useRef<HTMLDivElement>();
 
   useEffect(() => {
     drawGraph(ref);

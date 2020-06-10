@@ -7,10 +7,10 @@ import DetailsService from './Details.service';
 import Mysql from './database-models/mysql';
 import Mongodb from './database-models/mongodb';
 
-interface ActionResult {
-  value: any;
-  loading: boolean;
-  error: string;
+export interface ActionResult {
+  value?: any;
+  loading?: boolean;
+  error?: string;
 }
 export const useActionResult = async (actionId): Promise<ActionResult> => {
   let intervalId;
@@ -53,13 +53,10 @@ export const useActionResult = async (actionId): Promise<ActionResult> => {
               value: requestResult.output,
               error: '',
             });
-            // setError('');
-            // setResult(requestResult.output);
           }
         }
       } catch (e) {
         clearInterval(intervalId);
-        // setLoading(false);
         resolve({
           loading: false,
           value: null,

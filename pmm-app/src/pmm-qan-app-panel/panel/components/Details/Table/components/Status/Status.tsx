@@ -1,27 +1,29 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Spin, Table } from 'antd';
-import { useActionResult } from '../../../Details.hooks';
-import { databaseFactory } from '../../../database-models';
+import { ActionResult, useActionResult } from '../../../Details.hooks';
+import { mysqlMethods } from '../../../database-models';
 import { processTableData } from '../../TableContainer.tools';
+import { DATABASE } from '../../../Details.constants';
 
 export const Status = (props) => {
   const { tableName, databaseType, example } = props;
   const [data, setData] = useState<{ columns: any[]; rows: any[] }>({ columns: [], rows: [] });
-  const [status, setStatus] = useState({});
+  const [status, setStatus] = useState<ActionResult>({});
 
-  useEffect(() => {
-    const getData = async () => {
-      const database = databaseFactory(databaseType);
-      const id = await database.getStatuses({ example, tableName });
-      const result = await useActionResult(id);
-      setStatus(result);
-    };
-    getData();
+  const getStatuses = useCallback(async () => {
+    let id;
+    if (databaseType === DATABASE.postgresql) {
+      id = await mysqlMethods.getStatuses(({ example, tableName }));
+    }
+
+    const result = await useActionResult(id);
+    setStatus(result);
+    setData(processTableData(result.value));
   }, [databaseType]);
 
   useEffect(() => {
-    setData(processTableData(status.value));
-  }, [status.value]);
+    getStatuses();
+  }, [databaseType]);
 
   return (
     <div>

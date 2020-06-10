@@ -1,6 +1,6 @@
 import MysqlDatabaseService from './service';
 
-export default {
+export const mysqlMethods = {
   getShowCreateTables: async ({ example, tableName }) => {
     if (!tableName) {
       return null;

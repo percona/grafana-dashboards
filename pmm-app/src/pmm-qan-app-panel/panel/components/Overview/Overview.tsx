@@ -22,7 +22,7 @@ export const Overview = () => {
       queryId, querySelected, totals, pageNumber, pageSize
     },
   } = useContext(QueryAnalyticsProvider);
-  const tableWrapperRef = useRef(null);
+  const tableWrapperRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     setHeight((tableWrapperRef.current && tableWrapperRef.current.clientHeight) || 0);
   }, [tableWrapperRef.current && tableWrapperRef.current.clientHeight]);
@@ -70,7 +70,7 @@ export const Overview = () => {
 
 
   return (
-    <div className="table-wrapper" ref={tableWrapperRef}>
+    <div className="table-wrapper" ref={tableWrapperRef} style={{ width: '100%' }}>
       <div>
         <Table
           dataSource={overviewMetricsList.rows}

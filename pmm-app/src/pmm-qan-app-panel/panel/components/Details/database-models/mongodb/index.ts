@@ -1,6 +1,6 @@
 import MongoDBService from './service';
 
-export default {
+export const mongodbMethods = {
   getExplainJSON: async ({ example }) => {
     try {
       const result = await MongoDBService.getTraditionalExplainJSONMongo({
