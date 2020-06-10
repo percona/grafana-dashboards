@@ -40,8 +40,8 @@ module.exports = {
   async waitForRunningState(serviceId) {
     // 30 sec ping for getting Running status for Agents
     for (let i = 0; i < 30; i++) {
-      let agents = await this.apiGetAgents(serviceId);
-      let areRunning = Object.values(agents.data)
+      const agents = await this.apiGetAgents(serviceId);
+      const areRunning = Object.values(agents.data)
         .flat(Infinity)
         .every(({ status }) => status === 'RUNNING');
       if (areRunning) {
