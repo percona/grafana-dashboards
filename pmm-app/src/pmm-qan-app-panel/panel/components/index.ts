@@ -1,4 +1,4 @@
 export { Overview } from './Overview';
 export { Filters } from './Filters';
 export { Details } from './Details';
-export { ManageColumns } from './Overview/components/ManageColumns/ManageColumns';
+export { ManageColumns } from './ManageColumns/ManageColumns';

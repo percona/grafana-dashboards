@@ -64,15 +64,4 @@ export default class Mysql {
       console.error(e);
     }
   }
-
-  // static getExplains({
-  //   example, setActionIdTraditional, setActionIdJSON, setErrorText
-  // }) {
-  //   if (!('example' in example) || example.example === '') {
-  //     setErrorText('Cannot display query explain without query example at this time.');
-  //     return;
-  //   }
-  //   Mysql.getExplainJSON({ example, setActionId: setActionIdJSON });
-  //   Mysql.getExplainTraditional({ example, setActionId: setActionIdTraditional });
-  // }
 }

@@ -6,7 +6,7 @@ import { METRIC_CATALOGUE } from 'pmm-qan-app-panel/panel/panel.constants';
 import { Humanize } from 'shared/components/helpers/Humanization';
 import { Latency, Sparkline, TotalPercentage } from 'shared/components/Elements/Charts';
 import { COLUMN_WIDTH, FIXED_COLUMN_WIDTH } from '../../Overview.constants';
-import { ManageColumns } from '../ManageColumns/ManageColumns';
+import { ManageColumns } from '../../../ManageColumns/ManageColumns';
 import { styles } from './MetricColumn.styles';
 import './MetricColumns.scss';
 

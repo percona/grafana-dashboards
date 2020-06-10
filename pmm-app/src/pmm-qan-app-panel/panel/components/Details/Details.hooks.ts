@@ -5,6 +5,7 @@ import { DetailsProvider } from './Details.provider';
 import { DATABASE } from './Details.constants';
 import DetailsService from './Details.service';
 import Mysql from './database-models/mysql';
+import Mongodb from "./database-models/mongodb";
 
 interface ActionResult {
   value: any;
@@ -107,6 +108,10 @@ export const useDetailsState = () => {
 
           jsonExplain = await useActionResult(jsonExplainActionId);
           traditionalExplain = await useActionResult(traditionalExplainActionId);
+        } else if (databaseType === DATABASE.mongodb) {
+          const jsonExplainActionId = await Mongodb.getExplainJSON({ example: notEmptyExample[0] });
+
+          jsonExplain = await useActionResult(jsonExplainActionId);
         }
 
         // 3. Get tables
