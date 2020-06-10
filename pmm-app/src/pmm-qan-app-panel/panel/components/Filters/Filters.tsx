@@ -1,5 +1,5 @@
-import React, { useContext, useState } from 'react';
-import { Button, Spin, Input } from 'antd';
+import React, { useContext, useRef, useState } from 'react';
+import { Button, Input, Spin } from 'antd';
 import { Form } from 'react-final-form';
 import ScrollArea from 'react-scrollbar';
 import { QueryAnalyticsProvider } from 'pmm-qan-app-panel/panel/panel.provider';
@@ -13,13 +13,15 @@ import { getSelectedCheckboxes } from './Filters.tools';
 export const FiltersContainer = ({
   contextActions, form, labels, filters
 }) => {
-  const height = useFiltersContainerHeight(FILTERS_BODY_HEIGHT);
+  const filtersWrapperRef = useRef<HTMLDivElement>(null);
+
+  const height = useFiltersContainerHeight(FILTERS_BODY_HEIGHT, filtersWrapperRef);
   const [filter, setFilter] = useState('');
   const [showAll, showSetAll] = useState(true);
   const selectedCheckboxes = getSelectedCheckboxes(filters);
 
   return (
-    <div>
+    <div id="inner-filter-wrapper" ref={filtersWrapperRef}>
       <div className={styles.filtersHeader}>
         <h5 className={styles.title}>Filters</h5>
         <Button
