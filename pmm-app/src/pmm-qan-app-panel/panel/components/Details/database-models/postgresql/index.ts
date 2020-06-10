@@ -1,9 +1,9 @@
 import PostgresqlDatabaseService from './service';
 
-export default class PostgreSQL {
-  static async getShowCreateTables({ example, tableName }) {
+export default {
+  getShowCreateTables: async ({ example, tableName }) => {
     if (!tableName) {
-      return;
+      return null;
     }
     const result = await PostgresqlDatabaseService.getShowCreateTablePostgreSQL({
       table_name: tableName,
@@ -11,11 +11,10 @@ export default class PostgreSQL {
     });
 
     return result.action_id;
-  }
-
-  static async getIndexes({ example, tableName }) {
+  },
+  getIndexes: async ({ example, tableName }) => {
     if (!tableName) {
-      return;
+      return null;
     }
     const result = await PostgresqlDatabaseService.getPostgreSQLIndex({
       table_name: tableName,
@@ -23,13 +22,5 @@ export default class PostgreSQL {
     });
 
     return result.action_id;
-  }
-
-  static getExplains() {
-    console.error('Does not exist for PostgreSQL');
-  }
-
-  static async getStatuses() {
-    console.error('Does not exist for PostgreSQL');
-  }
-}
+  },
+};

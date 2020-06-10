@@ -1,9 +1,9 @@
 import MysqlDatabaseService from './service';
 
-export default class Mysql {
-  static async getShowCreateTables({ example, tableName }) {
+export default {
+  getShowCreateTables: async ({ example, tableName }) => {
     if (!tableName) {
-      return;
+      return null;
     }
     const result = await MysqlDatabaseService.getShowCreateTableMySQL({
       database: example.schema,
@@ -12,11 +12,11 @@ export default class Mysql {
     });
 
     return result.action_id;
-  }
+  },
 
-  static async getIndexes({ example, tableName, setActionId }) {
+  getIndexes: async ({ example, tableName }) => {
     if (!tableName) {
-      return;
+      return null;
     }
     const result = await MysqlDatabaseService.getMysqlIndex({
       database: example.schema,
@@ -24,11 +24,11 @@ export default class Mysql {
       service_id: example.service_id,
     });
     return result.action_id;
-  }
+  },
 
-  static async getStatuses({ example, tableName }) {
+  getStatuses: async ({ example, tableName }) => {
     if (!tableName) {
-      return;
+      return null;
     }
     const result = await MysqlDatabaseService.getMysqlTableStatus({
       database: example.schema,
@@ -36,9 +36,9 @@ export default class Mysql {
       service_id: example.service_id,
     });
     return result.action_id;
-  }
+  },
 
-  static async getExplainJSON({ example }) {
+  getExplainJSON: async ({ example }) => {
     try {
       const result = await MysqlDatabaseService.getTraditionalExplainJSONMysql({
         database: example.schema,
@@ -48,10 +48,11 @@ export default class Mysql {
       return result.action_id;
     } catch (e) {
       console.error(e);
+      return null;
     }
-  }
+  },
 
-  static async getExplainTraditional({ example }) {
+  getExplainTraditional: async ({ example }) => {
     try {
       const result = await MysqlDatabaseService.getTraditionalExplainMysql({
         database: example.schema,
@@ -62,6 +63,7 @@ export default class Mysql {
       return result.action_id;
     } catch (e) {
       console.error(e);
+      return null;
     }
-  }
-}
+  },
+};

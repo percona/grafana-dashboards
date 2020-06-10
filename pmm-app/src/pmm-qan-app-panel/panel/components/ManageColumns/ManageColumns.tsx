@@ -46,10 +46,24 @@ export const ManageColumns = (props) => {
   const swapWithMain = useCallback(() => contextActions.swapMainColumn(currentMetric), [currentMetric]);
 
   const Placeholder = () => (!onlyAdd ? (
-    <Tooltip title={placeholder && METRIC_CATALOGUE[placeholder].humanizeName} placement="topLeft">
-      <span className={styles.placeholder}>
-        {placeholder && METRIC_CATALOGUE[placeholder].humanizeName}
-      </span>
+    <Tooltip
+      title={() => (
+        <div className={styles.metricsTooltip}>
+          <b className={styles.placeholder}>
+            {placeholder && METRIC_CATALOGUE[placeholder].humanizeName}
+          </b>
+          <span className={styles.placeholder}>
+            {placeholder && METRIC_CATALOGUE[placeholder].tooltipText}
+          </span>
+        </div>
+      )}
+      placement="topLeft"
+    >
+      <div>
+        <span className={styles.placeholder}>
+          {placeholder && METRIC_CATALOGUE[placeholder].humanizeName}
+        </span>
+      </div>
     </Tooltip>
   ) : (
     <div className={styles.placeholder}>
@@ -63,21 +77,13 @@ export const ManageColumns = (props) => {
       {menu}
       <Divider className={styles.iconMargin} />
       {!onlyAdd && columns.length > 1 && (
-        <div
-          className={styles.actionElement}
-          onMouseDown={(e) => e.preventDefault()}
-          onClick={removeColumn}
-        >
+        <div className={styles.actionElement} onMouseDown={(e) => e.preventDefault()} onClick={removeColumn}>
           <Icon type="minus" className={styles.iconMargin} />
           Remove column
         </div>
       )}
       {!onlyAdd && mainMetric !== currentMetric.simpleName && (
-        <div
-          className={styles.actionElement}
-          onMouseDown={(e) => e.preventDefault()}
-          onClick={swapWithMain}
-        >
+        <div className={styles.actionElement} onMouseDown={(e) => e.preventDefault()} onClick={swapWithMain}>
           <Icon type="swap" className={styles.iconMargin} />
           Swap with main metric
         </div>

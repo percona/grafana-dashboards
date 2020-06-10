@@ -5,7 +5,7 @@ import { activeCheckStub } from 'pmm-check/__mocks__/stubs';
 import { CheckPanel, CheckPanelProps, CheckPanelState } from './CheckPanel';
 import { Failed } from './components';
 
-jest.mock('../react-plugins-deps/components/helpers/notification-manager');
+jest.mock('shared/components/helpers/notification-manager');
 
 jest.mock('../pmm-check/Check.service');
 

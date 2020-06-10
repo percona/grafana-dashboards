@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import AlertManager from './AlertManager';
 
-jest.mock('../../../react-plugins-deps/components/helpers/notification-manager');
+jest.mock('shared/components/helpers/notification-manager');
 
 describe('Settings Part test', () => {
   it('Alert Manager renders correct without props', () => {

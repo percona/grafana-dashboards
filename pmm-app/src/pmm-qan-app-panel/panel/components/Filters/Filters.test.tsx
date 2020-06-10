@@ -6,7 +6,7 @@ jest.mock('antd/es/input/Search', () => () => <></>);
 
 jest.mock('react-scrollbar', () => () => <div />);
 
-jest.mock('react-plugins-deps/components/helpers/notification-manager', () => () => ({}));
+jest.mock('shared/components/helpers/notification-manager', () => () => ({}));
 
 // const MOCK_FILTERS = {
 //   az: {
