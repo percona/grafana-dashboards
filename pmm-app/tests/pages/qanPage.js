@@ -61,7 +61,13 @@ module.exports = {
     filterCheckboxes: '.checkbox-container__checkmark',
     newQANAddColumn: "//span[contains(text(), 'Add column')]",
     newQANMetricDropDown: '.ant-select-dropdown-menu-item',
-    newQANColumnSearchField: "div[style*='display: block;'] input"
+    newQANColumnSearchField: "div[style*='display: block;'] input",
+    resultsPerPageValue: '.ant-select-selection-selected-value',
+    nextPage: '.ant-pagination-next',
+    previousPage: '.ant-pagination-prev',
+    ellipsisButton: '.ant-pagination-item-ellipsis',
+    tableRow: 'td.ant-table-row-cell-break-word',
+    resultPerPageCombobox: '.ant-pagination-options',
   },
 
   filterGroupLocator(filterName) {
@@ -398,5 +404,57 @@ module.exports = {
     if (before) {
       assert.notEqual(count, expectedCount);
     }
+  },
+
+  verifySelectedCountPerPage(expectedResults) {
+    I.waitForElement(this.fields.resultsPerPageValue, 30);
+    const selectedResults = `//div[contains(@class, 'ant-select-selection-selected-value') and contains(text(), '${expectedResults}' )]`;
+    I.seeElement(selectedResults);
+  },
+
+  verifyActiveItem(page) {
+    const item = `//li[@class='ant-pagination-item ant-pagination-item-${page} ant-pagination-item-active']`;
+    I.waitForElement(item, 30);
+  },
+
+  async verifyCount(expectedCount) {
+    const count = await I.grabTextFrom(this.fields.countOfItems);
+    assert.equal(count.includes(expectedCount), true, 'The count is incorrect!');
+  },
+
+  selectPage(page) {
+    const item = `//li[@class='ant-pagination-item ant-pagination-item-${page}']`;
+    I.click(item);
+  },
+
+  selectPagination(option) {
+    I.waitForInvisible(this.fields.newQANSpinnerLocator, 30);
+    I.click(this.fields.resultPerPageCombobox);
+    const optionToSelect = `//li[contains(@class, 'ant-select-dropdown-menu-item') and contains(text(), '${option}' )]`;
+    I.click(optionToSelect);
+  },
+
+  async verifyRowCount(rowCount) {
+    const count = await I.grabNumberOfVisibleElements(this.fields.tableRow);
+    assert.equal(count, rowCount, 'Row count is incorrect!');
+  },
+
+  async verifyPagesAndCount(itemsPerPage) {
+    const count = await this.getCountOfItems();
+    let items = '';
+    if (itemsPerPage < 100) {
+      items = count.slice(8, count.length - 6);
+    } else {
+      items = count.slice(9, count.length - 6);
+    }
+    const lastpage = await this.getPagesCount();
+    const result = parseInt(items) / parseInt(lastpage);
+    assert.equal(Math.ceil(result / 10) * 10, itemsPerPage, 'Pages do not match with total count');
+  },
+
+  async getPagesCount() {
+    const pagesCount = locate('li').before(this.fields.nextPage);
+    const pages = await I.grabTextFrom(pagesCount);
+    return pages[pages.length - 1];
   },
 };
