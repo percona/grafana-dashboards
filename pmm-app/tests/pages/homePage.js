@@ -1,4 +1,4 @@
-const { I, settingsAPI } = inject();
+const {I, settingsAPI} = inject();
 const assert = require('assert');
 
 module.exports = {
@@ -8,9 +8,9 @@ module.exports = {
   requestEnd: '/v1/Updates/Check',
   fields: {
     systemsUnderMonitoringCount:
-      "//span[@class='panel-title-text' and contains(text(), 'Systems under monitoring')]//../../../..//span[@class='singlestat-panel-value']",
+        "//span[@class='panel-title-text' and contains(text(), 'Systems under monitoring')]//../../../..//span[@class='singlestat-panel-value']",
     dbUnderMonitoringCount:
-      "//span[@class='panel-title-text' and contains(text(), 'Monitored DB Instances')]//../../../..//span[@class='singlestat-panel-value']",
+        "//span[@class='panel-title-text' and contains(text(), 'Monitored DB Instances')]//../../../..//span[@class='singlestat-panel-value']",
     dashboardHeaderText: 'Percona Monitoring and Management',
     dashboardHeaderLocator: "//div[contains(@class, 'dashboard-header')]",
     checkUpdateButton: "#refresh",
@@ -42,9 +42,9 @@ module.exports = {
     I.click(this.fields.reloadButtonAfterUpgrade);
     I.waitForVisible(this.fields.upToDateLocator, 30);
     assert.equal(
-      await I.grabTextFrom(this.fields.currentVersion),
-      available_version,
-      'Update operation failed'
+        await I.grabTextFrom(this.fields.currentVersion),
+        available_version,
+        'Update operation failed'
     );
   },
 
@@ -97,13 +97,13 @@ module.exports = {
     I.seeElement(this.fields.upToDateLocator);
     I.seeElement(this.fields.currentVersion);
     I.seeElement(this.fields.checkUpdateButton);
-    I.see('Last check:' , this.fields.lastCheckSelector);
+    I.see('Last check:', this.fields.lastCheckSelector);
   },
 
   async verifyVisibleService(serviceName) {
     I.scrollPageToBottom();
     const serviceExists =
-      "//div[@class='react-grid-item']/descendant::p[contains(text(),'" + serviceName + "')]";
+        "//div[@class='react-grid-item']/descendant::p[contains(text(),'" + serviceName + "')]";
     I.waitForElement(serviceExists, 30);
     I.seeElement(serviceExists);
   },
