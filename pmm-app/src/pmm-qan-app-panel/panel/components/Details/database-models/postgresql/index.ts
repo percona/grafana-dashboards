@@ -1,7 +1,7 @@
 import PostgresqlDatabaseService from './service';
 
 export default class PostgreSQL {
-  static async getShowCreateTables({ example, tableName, setActionId }) {
+  static async getShowCreateTables({ example, tableName }) {
     if (!tableName) {
       return;
     }
@@ -9,10 +9,11 @@ export default class PostgreSQL {
       table_name: tableName,
       service_id: example.service_id,
     });
-    setActionId(result.action_id);
+
+    return result.action_id;
   }
 
-  static async getIndexes({ example, tableName, setActionId }) {
+  static async getIndexes({ example, tableName }) {
     if (!tableName) {
       return;
     }
@@ -20,7 +21,8 @@ export default class PostgreSQL {
       table_name: tableName,
       service_id: example.service_id,
     });
-    setActionId(result.action_id);
+
+    return result.action_id;
   }
 
   static getExplains() {

@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Button, Spin, Input} from 'antd';
+import { Button, Spin, Input } from 'antd';
 import { Form } from 'react-final-form';
 import ScrollArea from 'react-scrollbar';
 import { QueryAnalyticsProvider } from 'pmm-qan-app-panel/panel/panel.provider';
@@ -16,7 +16,7 @@ export const FiltersContainer = ({
   const height = useFiltersContainerHeight(FILTERS_BODY_HEIGHT);
   const [filter, setFilter] = useState('');
   const [showAll, showSetAll] = useState(true);
-  const selectedCheckboxes = getSelectedCheckboxes(filters)
+  const selectedCheckboxes = getSelectedCheckboxes(filters);
 
   return (
     <div>

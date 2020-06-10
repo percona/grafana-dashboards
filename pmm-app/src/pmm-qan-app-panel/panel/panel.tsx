@@ -1,14 +1,16 @@
-import React, { useContext, useEffect, useState } from 'react';
-import './panel.scss';
-import 'shared/styles.scss';
-import 'shared/style.less';
+import React, {
+  useContext, useEffect, useRef, useState
+} from 'react';
 import containerStyling from 'shared/components/helpers/styling';
 import SplitPane from 'react-split-pane';
+import 'shared/styles.scss';
+import 'shared/style.less';
 import { QueryAnalyticsProvider, UrlParametersProvider } from './panel.provider';
 import {
   Overview, Filters, Details, ManageColumns
 } from './components';
 import { styles } from './panel.styles';
+import './panel.scss';
 
 const QueryAnalyticsPanel = () => {
   useEffect(() => containerStyling.addPluginPanelClass(), []);
@@ -16,8 +18,8 @@ const QueryAnalyticsPanel = () => {
     panelState: { querySelected },
   } = useContext(QueryAnalyticsProvider);
   // TODO: replace with something more elegant & fast
-  const container = document.querySelector('#antd');
-  const size = container && container.clientWidth;
+  const queryAnalyticsWrapper = useRef(null);
+  const size = queryAnalyticsWrapper.current && queryAnalyticsWrapper.current.clientWidth;
 
   const [reload, setReload] = useState<object>({});
 
@@ -26,18 +28,18 @@ const QueryAnalyticsPanel = () => {
   }, [querySelected]);
 
   return (
-    <div className="query-analytics-grid" id="antd">
-      <div className="overview-filters" id="query-analytics-filters">
+    <div className="query-analytics-grid" id="antd" ref={queryAnalyticsWrapper}>
+      <div className="overview-filters">
         <Filters />
       </div>
-      <div id="query-analytics-data">
+      <div className="query-analytics-data">
         <div className={styles.getContainerWrapper(size)}>
           <div className={styles.overviewHeader}>
             <div className={styles.manageColumnsWrapper}>
               <ManageColumns onlyAdd />
             </div>
           </div>
-          <div style={{ position: 'relative' }} className={styles.splitterWrapper}>
+          <div className={styles.splitterWrapper}>
             <SplitPane
               split="horizontal"
               onDragFinished={() => setReload({})}

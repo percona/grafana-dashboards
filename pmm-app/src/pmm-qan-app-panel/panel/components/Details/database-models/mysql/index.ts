@@ -1,7 +1,7 @@
 import MysqlDatabaseService from './service';
 
 export default class Mysql {
-  static async getShowCreateTables({ example, tableName, setActionId }) {
+  static async getShowCreateTables({ example, tableName }) {
     if (!tableName) {
       return;
     }
@@ -10,7 +10,8 @@ export default class Mysql {
       table_name: tableName,
       service_id: example.service_id,
     });
-    setActionId(result.action_id);
+
+    return result.action_id;
   }
 
   static async getIndexes({ example, tableName, setActionId }) {
@@ -22,10 +23,10 @@ export default class Mysql {
       table_name: tableName,
       service_id: example.service_id,
     });
-    setActionId(result.action_id);
+    return result.action_id;
   }
 
-  static async getStatuses({ example, tableName, setActionId }) {
+  static async getStatuses({ example, tableName }) {
     if (!tableName) {
       return;
     }
@@ -34,43 +35,44 @@ export default class Mysql {
       table_name: tableName,
       service_id: example.service_id,
     });
-    setActionId(result.action_id);
+    return result.action_id;
   }
 
-  static async getExplainJSON({ example, setActionId }) {
+  static async getExplainJSON({ example }) {
     try {
       const result = await MysqlDatabaseService.getTraditionalExplainJSONMysql({
         database: example.schema,
         query: example.example,
         service_id: example.service_id,
       });
-      setActionId(result.action_id);
+      return result.action_id;
     } catch (e) {
       console.error(e);
     }
   }
 
-  static async getExplainTraditional({ example, setActionId }) {
+  static async getExplainTraditional({ example }) {
     try {
       const result = await MysqlDatabaseService.getTraditionalExplainMysql({
         database: example.schema,
         query: example.example,
         service_id: example.service_id,
       });
-      setActionId(result.action_id);
+
+      return result.action_id;
     } catch (e) {
       console.error(e);
     }
   }
 
-  static getExplains({
-    example, setActionIdTraditional, setActionIdJSON, setErrorText
-  }) {
-    if (!('example' in example) || example.example === '') {
-      setErrorText('Cannot display query explain without query example at this time.');
-      return;
-    }
-    Mysql.getExplainJSON({ example, setActionId: setActionIdJSON });
-    Mysql.getExplainTraditional({ example, setActionId: setActionIdTraditional });
-  }
+  // static getExplains({
+  //   example, setActionIdTraditional, setActionIdJSON, setErrorText
+  // }) {
+  //   if (!('example' in example) || example.example === '') {
+  //     setErrorText('Cannot display query explain without query example at this time.');
+  //     return;
+  //   }
+  //   Mysql.getExplainJSON({ example, setActionId: setActionIdJSON });
+  //   Mysql.getExplainTraditional({ example, setActionId: setActionIdTraditional });
+  // }
 }

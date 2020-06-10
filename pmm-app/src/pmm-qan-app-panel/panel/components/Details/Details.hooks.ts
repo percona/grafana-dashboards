@@ -1,34 +1,33 @@
-import {
-  Dispatch, useContext, useEffect, useState
-} from 'react';
+import { useContext, useEffect } from 'react';
 import { get } from 'lodash';
 import { QueryAnalyticsProvider } from 'pmm-qan-app-panel/panel/panel.provider';
 import { DetailsProvider } from './Details.provider';
 import { DATABASE } from './Details.constants';
 import DetailsService from './Details.service';
-import { databaseFactory } from './database-models';
+import Mysql from './database-models/mysql';
 
 interface ActionResult {
   value: any;
   loading: boolean;
   error: string;
 }
-export const useActionResult = (): [ActionResult, Dispatch<string>] => {
-  const [result, setResult] = useState<any>();
-  const [actionId, setActionId] = useState<any>();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+export const useActionResult = async (actionId): Promise<ActionResult> => {
   let intervalId;
   // 5 seconds
   let counter = 10;
-  useEffect(() => {
+
+  return new Promise((resolve) => {
     if (!actionId) {
       return;
     }
     const getData = async () => {
       if (!counter) {
         clearInterval(intervalId);
-        setLoading(false);
+        resolve({
+          loading: false,
+          value: null,
+          error: '',
+        });
         return;
       }
       counter -= 1;
@@ -38,53 +37,37 @@ export const useActionResult = (): [ActionResult, Dispatch<string>] => {
           action_id: actionId,
         });
         if (requestResult.done) {
-          setLoading(false);
+          // setLoading(false);
           clearInterval(intervalId);
           if (requestResult.error) {
-            setError(requestResult.error);
+            // setError(requestResult.error);
+            resolve({
+              loading: false,
+              value: null,
+              error: requestResult.error,
+            });
           } else {
-            setError('');
-            setResult(requestResult.output);
+            resolve({
+              loading: false,
+              value: requestResult.output,
+              error: '',
+            });
+            // setError('');
+            // setResult(requestResult.output);
           }
         }
       } catch (e) {
         clearInterval(intervalId);
-        setLoading(false);
+        // setLoading(false);
+        resolve({
+          loading: false,
+          value: null,
+          error: '',
+        });
       }
     };
     intervalId = setInterval(getData, 500);
-  }, [actionId]);
-
-  return [{ value: result, loading, error }, setActionId];
-};
-
-export const useExplain = (): [any, any, string] => {
-  const [errorText, setErrorText] = useState('');
-  const {
-    detailsState: { databaseType, examples },
-  } = useContext(DetailsProvider);
-  const [traditionalExplain, setActionIdTraditional] = useActionResult();
-  const [jsonExplain, setActionIdJSON] = useActionResult();
-
-  useEffect(() => {
-    if (!examples) {
-      return;
-    }
-
-    const notEmptyExample = examples.filter((example) => example.example);
-    if (!notEmptyExample.length || !databaseType) {
-      return;
-    }
-    const database = databaseFactory(databaseType);
-    database.getExplains({
-      example: notEmptyExample[0],
-      setActionIdTraditional,
-      setActionIdJSON,
-      setErrorText,
-    });
-  }, [examples, databaseType]);
-
-  return [jsonExplain, traditionalExplain, errorText];
+  });
 };
 
 export const useDetailsState = () => {
@@ -94,13 +77,12 @@ export const useDetailsState = () => {
     },
   } = useContext(QueryAnalyticsProvider);
   const {
-    detailsState: { databaseType, examples },
     contextActions,
   } = useContext(DetailsProvider);
-  const [jsonExplain, traditionalExplain] = useExplain();
   useEffect(() => {
     (async () => {
       try {
+        // 1. Get examples, we need it to get all addditional data
         const result = await DetailsService.getExample({
           filterBy: queryId,
           groupBy,
@@ -109,35 +91,49 @@ export const useDetailsState = () => {
           labels,
           tables: [],
         });
-        contextActions.setExamples(result.query_examples);
-        contextActions.setDatabaseType(result.query_examples[0].service_type);
+        const examples = result.query_examples;
+        const databaseType = result.query_examples[0].service_type;
+
+        const notEmptyExample = examples.filter((example) => example.example);
+
+        let jsonExplain;
+        let traditionalExplain;
+        // 2. Get explains
+        if (databaseType === DATABASE.mysql) {
+          const traditionalExplainActionId = await Mysql.getExplainTraditional({
+            example: notEmptyExample[0],
+          });
+          const jsonExplainActionId = await Mysql.getExplainJSON({ example: notEmptyExample[0] });
+
+          jsonExplain = await useActionResult(jsonExplainActionId);
+          traditionalExplain = await useActionResult(traditionalExplainActionId);
+        }
+
+        // 3. Get tables
+        let tables;
+        if (databaseType === DATABASE.mysql && jsonExplain.value) {
+          const parsedJSON = JSON.parse(jsonExplain.value);
+          tables = [
+            get(parsedJSON, 'query_block.table.table_name')
+              || get(parsedJSON, 'query_block.ordering_operation.grouping_operation.table.table_name'),
+          ].filter(Boolean);
+        }
+
+        if (databaseType === DATABASE.postgresql && examples) {
+          tables = examples[0].tables || [];
+        }
+
+        // 4. Store data to context
+        contextActions.setFoundData({
+          examples,
+          databaseType,
+          jsonExplain,
+          traditionalExplain,
+          tables,
+        });
       } catch (e) {
         // TODO: add error handling
       }
     })();
   }, [queryId]);
-
-  useEffect(() => {
-    if (databaseType === DATABASE.mysql && jsonExplain.value) {
-      const parsedJSON = JSON.parse(jsonExplain.value);
-      contextActions.setTables(
-        [
-          get(parsedJSON, 'query_block.table.table_name')
-            || get(parsedJSON, 'query_block.ordering_operation.grouping_operation.table.table_name'),
-        ].filter(Boolean)
-      );
-    }
-
-    if (databaseType === DATABASE.postgresql && examples) {
-      contextActions.setTables(examples[0].tables || []);
-    }
-  }, [examples, jsonExplain.value, databaseType]);
-
-  useEffect(() => {
-    contextActions.setExplainJSON(jsonExplain);
-  }, [jsonExplain.value, jsonExplain.loading, jsonExplain.error]);
-
-  useEffect(() => {
-    contextActions.setExplainClassic(traditionalExplain);
-  }, [traditionalExplain.value, traditionalExplain.loading, traditionalExplain.error]);
 };

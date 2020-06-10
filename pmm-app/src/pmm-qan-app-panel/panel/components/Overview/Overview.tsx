@@ -1,6 +1,6 @@
 import { Pagination, Table } from 'antd';
 import React, {
-  useCallback, useContext, useEffect, useState
+  useCallback, useContext, useEffect, useState, useRef
 } from 'react';
 import './Overview.scss';
 import { QueryAnalyticsProvider } from 'pmm-qan-app-panel/panel/panel.provider';
@@ -22,14 +22,10 @@ export const Overview = (props) => {
       queryId, querySelected, totals, pageNumber, pageSize
     },
   } = useContext(QueryAnalyticsProvider);
-
+  const tableWrapperRef = useRef(null);
   useEffect(() => {
-    const container = document.querySelector('.table-wrapper');
-    if (!container) {
-      return;
-    }
-    setHeight(+(container.clientHeight || 0));
-  }, [reload]);
+    setHeight((tableWrapperRef.current && tableWrapperRef.current.clientHeight) || 0);
+  }, [tableWrapperRef.current && tableWrapperRef.current.clientHeight]);
 
   const changePageNumber = useCallback((page) => {
     contextActions.changePage(page);
@@ -74,7 +70,7 @@ export const Overview = (props) => {
 
 
   return (
-    <div className="table-wrapper" style={{ width: '100%' }}>
+    <div className="table-wrapper" ref={tableWrapperRef}>
       <div>
         <Table
           dataSource={overviewMetricsList.rows}

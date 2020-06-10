@@ -15,6 +15,7 @@ export const styles = {
   `,
   splitterWrapper: css`
     height: 1000px;
+    position: relative;
   `,
   paginationWrapper: css`
     display: flex;
