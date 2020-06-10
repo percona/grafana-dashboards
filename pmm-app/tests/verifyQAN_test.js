@@ -104,12 +104,14 @@ xScenario('PMM-T123 - Verify User is able to search for filter value', async (I,
 });
 
 // TODO: Uncomment after new QAN will be merged
-xScenario('PMM-T100 Check Changing Main Metric, PMM-T203 Verify user is able to search for columns by typing, PMM-T133, PMM-T132', async (I, qanPage, dashboardPage) => {
+xScenario(
+  'PMM-T100 Check Changing Main Metric, PMM-T203 Verify user is able to search for columns by typing, PMM-T133, PMM-T132',
+  async (I, qanPage, dashboardPage) => {
     const metricName = 'Query Count with errors';
     const urlString = 'num_queries_with_errors';
     I.waitForElement(qanPage.fields.newQANAddColumn, 30);
-    I.waitForElement(qanPage.tableHeaderColumnLocator("Load"), 30);
-    I.click(qanPage.tableHeaderColumnLocator("Load"));
+    I.waitForElement(qanPage.tableHeaderColumnLocator('Load'), 30);
+    I.click(qanPage.tableHeaderColumnLocator('Load'));
     I.waitForElement(qanPage.fields.newQANMetricDropDown, 30);
     I.fillField(qanPage.fields.newQANColumnSearchField, metricName);
     I.click(dashboardPage.fields.metricTitle);
@@ -121,15 +123,18 @@ xScenario('PMM-T100 Check Changing Main Metric, PMM-T203 Verify user is able to 
     I.amOnPage(url);
     I.waitForElement(qanPage.fields.newQANAddColumn, 30);
     I.waitForElement(qanPage.tableHeaderColumnLocator(metricName), 30);
-    I.dontSeeElement(qanPage.tableHeaderColumnLocator("Load"));
-});
+    I.dontSeeElement(qanPage.tableHeaderColumnLocator('Load'));
+  }
+);
 
 // TODO: Uncomment after new QAN will be merged
-xScenario('PMM-T99 Verify User is able to add new metric, PMM-T222 Verify `Add column` dropdown works', async (I, qanPage, dashboardPage) => {
+xScenario(
+  'PMM-T99 Verify User is able to add new metric, PMM-T222 Verify `Add column` dropdown works',
+  async (I, qanPage, dashboardPage) => {
     const metricName = 'Query Count with errors';
     const urlString = 'num_queries_with_errors';
     I.waitForElement(qanPage.fields.newQANAddColumn, 30);
-    I.waitForElement(qanPage.tableHeaderColumnLocator("Load"), 30);
+    I.waitForElement(qanPage.tableHeaderColumnLocator('Load'), 30);
     I.click(qanPage.fields.newQANAddColumn);
     I.waitForElement(qanPage.fields.newQANMetricDropDown, 30);
     I.fillField(qanPage.fields.newQANColumnSearchField, metricName);
@@ -142,24 +147,76 @@ xScenario('PMM-T99 Verify User is able to add new metric, PMM-T222 Verify `Add c
     I.amOnPage(url);
     I.waitForElement(qanPage.fields.newQANAddColumn, 30);
     I.waitForElement(qanPage.tableHeaderColumnLocator(metricName), 30);
-    I.seeElement(qanPage.tableHeaderColumnLocator("Load"));
+    I.seeElement(qanPage.tableHeaderColumnLocator('Load'));
     I.seeElement(qanPage.tableHeaderColumnLocator(metricName));
-});
+  }
+);
 
 // TODO: Uncomment after new QAN will be merged
-xScenario('PMM-T13 - Verify QAN has MongoDB, MySQL, PostgreSQl all three Service Types', async (I, qanPage) => {
+xScenario(
+  'PMM-T13 - Verify QAN has MongoDB, MySQL, PostgreSQl all three Service Types',
+  async (I, qanPage) => {
     const filters = ['mongodb', 'mysql', 'postgres'];
     qanPage.waitForNewQANPageLoaded();
     I.waitForElement(qanPage.fields.filterBy, 30);
     const countBefore = await qanPage.getCountOfItems();
     for (i = 0; i < filters.length; i++) {
-        await I.fillField(qanPage.fields.filterBy, filters[i]);
-        qanPage.applyFilterNewQAN(filters[i]);
-        I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);
-        const countAfter = await qanPage.getCountOfItems();
-        await qanPage.verifyChangedCount(countBefore, countAfter);
-        qanPage.applyFilterNewQAN(filters[i]);
-        I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);
-        await I.clearField(qanPage.fields.filterBy);
+      await I.fillField(qanPage.fields.filterBy, filters[i]);
+      qanPage.applyFilterNewQAN(filters[i]);
+      I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);
+      const countAfter = await qanPage.getCountOfItems();
+      await qanPage.verifyChangedCount(countBefore, countAfter);
+      qanPage.applyFilterNewQAN(filters[i]);
+      I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);
+      await I.clearField(qanPage.fields.filterBy);
     }
+  }
+);
+
+// TODO: Uncomment after new QAN will be merged
+xScenario('PMM-T128 - Verify pagination works correctly', async (I, qanPage) => {
+  qanPage.waitForNewQANPageLoaded();
+  qanPage.verifySelectedCountPerPage('10 / page');
+  I.seeAttributesOnElements(qanPage.fields.previousPage, { 'aria-disabled': 'true' });
+  I.click(qanPage.fields.nextPage);
+  qanPage.verifyActiveItem(2);
+  await qanPage.verifyCount('11-20');
+  I.click(qanPage.fields.previousPage);
+  qanPage.verifyActiveItem(1);
+  await qanPage.verifyCount('1-10');
+  I.seeAttributesOnElements(qanPage.fields.previousPage, { 'aria-disabled': 'true' });
+  I.click(qanPage.fields.ellipsisButton);
+  qanPage.verifyActiveItem(6);
+  await qanPage.verifyCount('51-60');
+  I.click(qanPage.fields.ellipsisButton);
+  qanPage.verifyActiveItem(1);
+  await qanPage.verifyCount('1-10');
+  qanPage.selectPage(3);
+  qanPage.verifyActiveItem(3);
+  await qanPage.verifyCount('21-30');
 });
+
+// TODO: Uncomment after new QAN will be merged
+xScenario(
+  'PMM-T193 - Verify user is able to change per page elements display and pagination is updated according to this value, PMM-T256 - Verify that switching view from 10 to 50/100 pages works correctly',
+  async (I, qanPage) => {
+    qanPage.waitForNewQANPageLoaded();
+    await qanPage.verifyRowCount(11);
+    await qanPage.verifyCount('1-10');
+    await qanPage.verifyPagesAndCount(10);
+    qanPage.selectPagination('50 / page');
+    I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);
+    await qanPage.verifyRowCount(51);
+    await qanPage.verifyPagesAndCount(50);
+    await qanPage.verifyCount('1-50');
+    qanPage.selectPagination('100 / page');
+    I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);
+    await qanPage.verifyRowCount(101);
+    await qanPage.verifyPagesAndCount(100);
+    await qanPage.verifyCount('1-100');
+    qanPage.selectPagination('10 / page');
+    await qanPage.verifyRowCount(11);
+    await qanPage.verifyCount('1-10');
+    await qanPage.verifyPagesAndCount(10);
+  }
+);
