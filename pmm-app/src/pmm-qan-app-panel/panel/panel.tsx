@@ -18,10 +18,10 @@ const QueryAnalyticsPanel = () => {
     panelState: { querySelected },
   } = useContext(QueryAnalyticsProvider);
   // TODO: replace with something more elegant & fast
-  const queryAnalyticsWrapper = useRef(null);
+  const queryAnalyticsWrapper = useRef<HTMLDivElement>(null);
   const size = queryAnalyticsWrapper.current && queryAnalyticsWrapper.current.clientWidth;
 
-  const [reload, setReload] = useState<object>({});
+  const [, setReload] = useState<object>({});
 
   useEffect(() => {
     setReload({});
@@ -51,7 +51,7 @@ const QueryAnalyticsPanel = () => {
               }}
               pane2Style={{ minHeight: '20%', overflowY: 'scroll', zIndex: 999 }}
             >
-              <Overview reload={reload} />
+              <Overview />
               <div>{querySelected ? <Details /> : null}</div>
             </SplitPane>
           </div>

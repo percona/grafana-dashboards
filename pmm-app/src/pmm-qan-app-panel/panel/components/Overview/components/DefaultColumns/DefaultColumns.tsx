@@ -14,7 +14,6 @@ import {
 import { Dimension } from '../Dimension/Dimension';
 
 const getMainColumnWidth = (columns) => {
-  /* TODO(lunaticusgreen): add something more elegant */
   const container = document.querySelector('.table-wrapper');
   const width = +((container && container.clientWidth) || 0);
   return Math.max(
@@ -22,6 +21,24 @@ const getMainColumnWidth = (columns) => {
     MAIN_METRIC_MIN_WIDTH,
   );
 };
+
+
+const rowNumberRender = (pageSize, pageNumber) => (text, record, index) => (
+  <div className={rowNumber}>{index === 0 ? '' : (pageNumber - 1) * pageSize + index}</div>
+);
+
+const dimensionColumnRender = (mainMetricColumnWidth) => (text, record, index) => (
+  <div className={metricWrapper}>
+    <div className={mainMetric(mainMetricColumnWidth, index === 0)}>
+      {index === 0 ? 'TOTAL' : record.fingerprint || record.dimension || 'N/A'}
+    </div>
+    {index !== 0 && record.fingerprint ? (
+      <QueryTooltip query={record.fingerprint}>
+        <Info className={tooltipIcon} />
+      </QueryTooltip>
+    ) : null}
+  </div>
+);
 
 export const getDefaultColumns = (groupBy, pageNumber, pageSize, columns, onCell) => {
   const mainMetricColumnWidth = getMainColumnWidth(columns);
@@ -32,9 +49,7 @@ export const getDefaultColumns = (groupBy, pageNumber, pageSize, columns, onCell
       key: 'rowNumber',
       fixed: 'left',
       width: ROW_NUMBER_COLUMN_WIDTH,
-      render: (text, record, index) => (
-        <div className={rowNumber}>{index === 0 ? '' : (pageNumber - 1) * pageSize + index}</div>
-      ),
+      render: rowNumberRender(pageSize, pageNumber),
     },
     {
       dataIndex: 'mainMetric',
@@ -44,18 +59,7 @@ export const getDefaultColumns = (groupBy, pageNumber, pageSize, columns, onCell
       ellipsis: true,
       className: mainColumn,
       onCell,
-      render: (text, record, index) => (
-        <div className={metricWrapper}>
-          <div className={mainMetric(mainMetricColumnWidth, index === 0)}>
-            {index === 0 ? 'TOTAL' : record.fingerprint || record.dimension || 'N/A'}
-          </div>
-          {index !== 0 && record.fingerprint ? (
-            <QueryTooltip query={record.fingerprint}>
-              <Info className={tooltipIcon} />
-            </QueryTooltip>
-          ) : null}
-        </div>
-      ),
+      render: dimensionColumnRender(mainMetricColumnWidth),
     },
   ];
 };

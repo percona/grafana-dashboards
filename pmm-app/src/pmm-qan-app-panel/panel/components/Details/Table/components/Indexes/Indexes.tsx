@@ -1,27 +1,32 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Spin, Table } from 'antd';
-import { useActionResult } from '../../../Details.hooks';
-import { databaseFactory } from '../../../database-models';
+import { ActionResult, useActionResult } from '../../../Details.hooks';
+import { mysqlMethods, postgresqlMethods } from '../../../database-models';
 import { processTableData } from '../../TableContainer.tools';
+import { DATABASE } from '../../../Details.constants';
 
 export const Indexes = (props) => {
   const { tableName, databaseType, example } = props;
   const [data, setData] = useState<{ columns: any[]; rows: any[] }>({ columns: [], rows: [] });
-  const [indexes, setIndexes] = useState({});
+  const [indexes, setIndexes] = useState<ActionResult>({});
 
-  useEffect(() => {
-    const getData = async () => {
-      const database = databaseFactory(databaseType);
-      const id = await database.getIndexes({ example, tableName });
-      const result = await useActionResult(id);
-      setIndexes(result);
-    };
-    getData();
+
+  const getIndexes = useCallback(async () => {
+    let id;
+    if (databaseType === DATABASE.postgresql) {
+      id = await mysqlMethods.getIndexes(({ example, tableName }));
+    } else if (databaseType === DATABASE.mysql) {
+      id = await postgresqlMethods.getIndexes(({ example, tableName }));
+    }
+
+    const result = await useActionResult(id);
+    setIndexes(result);
+    setData(processTableData(result.value));
   }, [databaseType]);
 
   useEffect(() => {
-    setData(processTableData(indexes.value));
-  }, [indexes.value]);
+    getIndexes();
+  }, [databaseType]);
 
   return (
     <div>
