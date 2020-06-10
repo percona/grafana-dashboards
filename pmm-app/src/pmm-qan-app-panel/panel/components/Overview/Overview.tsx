@@ -9,8 +9,8 @@ import { useOverviewTable } from './Overview.hooks';
 import { styles } from '../../panel.styles';
 import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE, PAGE_SIZE_OPTIONS } from '../../panel.constants';
 
-export const Overview = (props) => {
-  const { reload } = props;
+export const Overview = () => {
+  // const { reload } = props;
   const [total, setTotal] = useState(30);
   const [overviewMetricsList, loading] = useOverviewTable(setTotal);
   const [height, setHeight] = useState(400);

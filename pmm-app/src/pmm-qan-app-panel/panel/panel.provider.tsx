@@ -251,7 +251,7 @@ export const UrlParametersProvider = ({ grafanaProps, children }) => {
 
   // refresh
   useEffect(() => {
-    // TODO: comment hack
+    // TODO: can't remove it because now grafana updates time variables even when it wasn't changed
     const refreshButton = document.querySelector('.refresh-picker-buttons button');
     const refreshHandle = () => {
       const newState = {

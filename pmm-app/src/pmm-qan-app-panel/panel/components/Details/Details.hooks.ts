@@ -5,7 +5,7 @@ import { DetailsProvider } from './Details.provider';
 import { DATABASE } from './Details.constants';
 import DetailsService from './Details.service';
 import Mysql from './database-models/mysql';
-import Mongodb from "./database-models/mongodb";
+import Mongodb from './database-models/mongodb';
 
 interface ActionResult {
   value: any;

@@ -16,4 +16,8 @@ export const styles = {
     padding: 4px 8px;
     cursor: pointer;
   `,
+  metricsTooltip: css`
+    display: flex;
+    flex-direction: column;
+  `,
 };

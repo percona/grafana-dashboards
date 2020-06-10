@@ -3,7 +3,7 @@ import { apiRequest } from './api';
 import * as NotificationManager from './notification-manager';
 
 jest.mock('axios');
-jest.mock('../../../react-plugins-deps/components/helpers/notification-manager');
+jest.mock('shared/components/helpers/notification-manager');
 
 const axios = axiosInstance as jest.Mocked<typeof axiosInstance>;
 

@@ -4,7 +4,7 @@ import { Table } from '../react-plugins-deps/components/Table/Table';
 import { AGENTS_COLUMNS, NODES_COLUMNS, SERVICES_COLUMNS } from './Inventory.constants';
 import { InventoryDataService } from './Inventory.tools';
 
-jest.mock('../react-plugins-deps/components/helpers/notification-manager');
+jest.mock('shared/components/helpers/notification-manager');
 
 // FIXME: types
 describe('Inventory tables', () => {

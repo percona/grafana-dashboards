@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import SettingsPanel from './panel';
 
-jest.mock('../react-plugins-deps/components/helpers/notification-manager');
+jest.mock('shared/components/helpers/notification-manager');
 
 // TODO: add correct shallow renderer, we need to have something to render to 2nd level
 describe('Settings panel test', () => {
