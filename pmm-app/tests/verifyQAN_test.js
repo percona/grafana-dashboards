@@ -390,3 +390,26 @@ xScenario(
     qanPage.verifyAppliedSortingForColumn('Load');
   }
 );
+
+// TODO: Uncomment after new QAN will be merged
+xScenario(
+  'PMM-T219 - Verify that user is able to scroll up/down and resize the overview table',
+  async (I, qanPage) => {
+    const lastColumn = "//span[contains(text(), 'Local Blocks Written')]";
+    qanPage.waitForNewQANPageLoaded();
+    const columnsToAdd = [
+      'Bytes Sent',
+      'Reading Blocks Time',
+      'Local Blocks Read',
+      'Local Blocks Dirtied',
+      'Temp Blocks Read',
+      'Local Blocks Written',
+    ];
+    for (i = 0; i < columnsToAdd.length; i++) {
+      I.click(qanPage.fields.addColumnNewQAN);
+      qanPage.addSpecificColumn(columnsToAdd[i]);
+    }
+    I.waitForElement(lastColumn, 30);
+    I.scrollTo(lastColumn);
+  }
+);
