@@ -61,7 +61,7 @@ export const useFiltersContainerHeight = (initialValue) => {
   const [height, setHeight] = useState(initialValue);
 
   useEffect(() => {
-    const filtersWrapperElement = document.querySelector('#query-analytics-filters');
+    const filtersWrapperElement = document.querySelector('.overview-filters');
     const filtersHeight = filtersWrapperElement
       ? windowSize[1]
         - filtersWrapperElement.getBoundingClientRect().y

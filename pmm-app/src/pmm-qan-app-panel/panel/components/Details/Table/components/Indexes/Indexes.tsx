@@ -7,11 +7,16 @@ import { processTableData } from '../../TableContainer.tools';
 export const Indexes = (props) => {
   const { tableName, databaseType, example } = props;
   const [data, setData] = useState<{ columns: any[]; rows: any[] }>({ columns: [], rows: [] });
-  const [indexes, setActionId] = useActionResult();
+  const [indexes, setIndexes] = useState({});
 
   useEffect(() => {
-    const database = databaseFactory(databaseType);
-    database.getIndexes({ example, tableName, setActionId });
+    const getData = async () => {
+      const database = databaseFactory(databaseType);
+      const id = await database.getIndexes({ example, tableName });
+      const result = await useActionResult(id);
+      setIndexes(result);
+    };
+    getData();
   }, [databaseType]);
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Spin } from 'antd';
 import Highlight from 'react-highlight.js';
 import { useActionResult } from '../../../Details.hooks';
@@ -8,11 +8,16 @@ import { databaseFactory } from '../../../database-models';
 
 const TableCreate = (props) => {
   const { tableName, databaseType, example } = props;
-  const [showCreateTable, setActionId] = useActionResult();
+  const [showCreateTable, setShowCreateTable] = useState({});
 
   useEffect(() => {
-    const database = databaseFactory(databaseType);
-    database.getShowCreateTables({ example, tableName, setActionId });
+    const getData = async () => {
+      const database = databaseFactory(databaseType);
+      const id = await database.getShowCreateTables({ example, tableName });
+      const result = await useActionResult(id);
+      setShowCreateTable(result);
+    };
+    getData();
   }, [databaseType]);
 
   return (

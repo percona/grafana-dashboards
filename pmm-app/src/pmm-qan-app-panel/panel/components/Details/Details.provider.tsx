@@ -6,38 +6,10 @@ const initialState = { detailsState: { tables: [] } } as Details;
 export const DetailsProvider = React.createContext(initialState);
 
 const actions = {
-  setExamples: (value) => (state) => {
+  setFoundData: (value) => (state) => {
     const newState = {
       ...state,
-      examples: value,
-    };
-    return newState;
-  },
-  setDatabaseType: (value) => (state) => {
-    const newState = {
-      ...state,
-      databaseType: value,
-    };
-    return newState;
-  },
-  setTables: (value) => (state) => {
-    const newState = {
-      ...state,
-      tables: value,
-    };
-    return newState;
-  },
-  setExplainJSON: (value) => (state) => {
-    const newState = {
-      ...state,
-      jsonExplain: value,
-    };
-    return newState;
-  },
-  setExplainClassic: (value) => (state) => {
-    const newState = {
-      ...state,
-      classicExplain: value,
+      ...value
     };
     return newState;
   },

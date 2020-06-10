@@ -7,11 +7,16 @@ import { processTableData } from '../../TableContainer.tools';
 export const Status = (props) => {
   const { tableName, databaseType, example } = props;
   const [data, setData] = useState<{ columns: any[]; rows: any[] }>({ columns: [], rows: [] });
-  const [status, setActionId] = useActionResult();
+  const [status, setStatus] = useState({});
 
   useEffect(() => {
-    const database = databaseFactory(databaseType);
-    database.getStatuses({ example, tableName, setActionId });
+    const getData = async () => {
+      const database = databaseFactory(databaseType);
+      const id = await database.getStatuses({ example, tableName });
+      const result = await useActionResult(id);
+      setStatus(result);
+    };
+    getData();
   }, [databaseType]);
 
   useEffect(() => {
