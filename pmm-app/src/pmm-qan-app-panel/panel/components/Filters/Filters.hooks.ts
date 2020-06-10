@@ -56,15 +56,14 @@ export const useInitialFilterValues = () => {
   return initialValues;
 };
 
-export const useFiltersContainerHeight = (initialValue) => {
+export const useFiltersContainerHeight = (initialValue, ref) => {
   const windowSize = useWindowSize();
   const [height, setHeight] = useState(initialValue);
-
   useEffect(() => {
-    const filtersWrapperElement = document.querySelector('.overview-filters');
+    const filtersWrapperElement = ref.current && ref.current.getBoundingClientRect();
     const filtersHeight = filtersWrapperElement
       ? windowSize[1]
-        - filtersWrapperElement.getBoundingClientRect().y
+        - filtersWrapperElement.y
         - FILTERS_HEADER_SIZE
         - FILTERS_MARGIN_BOTTOM
       : FILTERS_BODY_HEIGHT;
