@@ -29,10 +29,10 @@ module.exports = {
       responseService = services.data[service.service].find(obj => {
         return obj.service_name === serviceName;
       });
-      if (responseService === undefined) break;
+      if (responseService !== undefined) break;
       await new Promise(r => setTimeout(r, 1000));
     }
-    assert.ok(responseService === undefined, `Service ${serviceName} was not found`);
+    assert.ok(responseService !== undefined, `Service ${serviceName} was not found`);
     const agents = await this.waitForRunningState(responseService.service_id);
     assert.ok(agents, `One or more agents are not running for ${service.service}`);
   },
