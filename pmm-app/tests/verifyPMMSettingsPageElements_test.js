@@ -205,7 +205,8 @@ Scenario(
   }
 );
 
-Scenario(
+//To be removed from Skip after https://jira.percona.com/browse/PMM-5791
+xScenario(
   'PMM-T227 Open PMM Settings page and verify DATA_RETENTION value is set to 2 days @not-pr-pipeline',
   async (I, pmmSettingsPage) => {
     const dataRetention = '2';
