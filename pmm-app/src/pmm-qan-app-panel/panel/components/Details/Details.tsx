@@ -21,24 +21,27 @@ const actionResult = {
 
 const Details = () => {
   const {
-    contextActions: { closeDetails },
+    contextActions: { closeDetails, setActiveTab },
     panelState: {
-      queryId, groupBy, fingerprint, controlSum, totals
+      queryId, groupBy, fingerprint, controlSum, totals, openDetailsTab
     },
   } = useContext(QueryAnalyticsProvider);
   const {
     detailsState: {
-      databaseType, classicExplain = actionResult, jsonExplain = actionResult, examples, tables
+      databaseType,
+      classicExplain = actionResult,
+      jsonExplain = actionResult,
+      examples,
+      tables,
     },
   } = useContext(DetailsProvider);
 
   useDetailsState();
-  const [activeTab, setActiveTab] = useState(TabKeys.Details);
+  const [activeTab, changeActiveTab] = useState(TabKeys[openDetailsTab]);
   const showTablesTab = databaseType !== DATABASE.mongodb && groupBy === 'queryid' && !totals;
-  // const showExplainTab = databaseType !== DATABASE.postgresql && groupBy === 'queryid' && !totals;
-  const showExplainTab = true;
+  const showExplainTab = databaseType !== DATABASE.postgresql && groupBy === 'queryid' && !totals;
   const showExamplesTab = groupBy === 'queryid' && !totals;
-  useEffect(() => setActiveTab(TabKeys.Details), [queryId]);
+  useEffect(() => changeActiveTab(TabKeys[openDetailsTab]), [queryId]);
 
   return (
     <div className="query-analytics-details-grid" id="query-analytics-details">
@@ -52,17 +55,25 @@ const Details = () => {
       />
       <div className="details-tabs">
         <Divider className={styles.zeroMargin} />
-        <Tabs activeKey={activeTab} onChange={setActiveTab} tabPosition="top" destroyInactiveTabPane>
-          <TabPane tab={<span>Details</span>} key={TabKeys.Details}>
+        <Tabs
+          activeKey={activeTab}
+          onChange={(newTab) => {
+            changeActiveTab(newTab);
+            setActiveTab(newTab);
+          }}
+          tabPosition="top"
+          destroyInactiveTabPane
+        >
+          <TabPane tab={<span>Details</span>} key={TabKeys.details}>
             <Metrics databaseType={databaseType} totals={totals} />
           </TabPane>
           {showExamplesTab ? (
-            <TabPane tab={<span>Examples</span>} key={TabKeys.Examples}>
+            <TabPane tab={<span>Examples</span>} key={TabKeys.examples}>
               <Example fingerprint={fingerprint} databaseType={databaseType} examples={examples} />
             </TabPane>
           ) : null}
           {showExplainTab ? (
-            <TabPane tab={<span>Explain</span>} key={TabKeys.Explain} disabled={totals}>
+            <TabPane tab={<span>Explain</span>} key={TabKeys.explain} disabled={totals}>
               <Explain
                 classicExplain={classicExplain}
                 jsonExplain={jsonExplain}
@@ -71,7 +82,7 @@ const Details = () => {
             </TabPane>
           ) : null}
           {showTablesTab ? (
-            <TabPane tab={<span>Tables</span>} key={TabKeys.Tables} disabled={totals}>
+            <TabPane tab={<span>Tables</span>} key={TabKeys.tables} disabled={totals}>
               <TableCreateContainer databaseType={databaseType} examples={examples} tables={tables} />
             </TabPane>
           ) : null}
