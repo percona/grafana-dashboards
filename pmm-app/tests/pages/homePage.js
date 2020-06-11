@@ -27,8 +27,7 @@ module.exports = {
     sttFailedChecksPanelSelector: "$db-check-panel-has-checks",
     checksPanelSelector: "$db-check-panel-home",
     newsPanelTitleSelector: "//span[@class='panel-title-text' and text() = 'Percona News']",
-    newsPanelContentSelector: "//span[contains(text(), 'Percona News')]/ancestor::div[contains(@class, 'panel-container')]//div[contains(@class, 'view')]",
-    noAccessRightsSelector: '$db-check-panel-no-access',
+    newsPanelContentSelector: "//span[contains(text(), 'Percona News')]/ancestor::div[contains(@class, 'panel-container')]//div[contains(@class, 'view')]"
   },
 
   // introducing methods
