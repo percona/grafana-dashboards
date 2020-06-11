@@ -4,9 +4,31 @@ import { find, omit } from 'lodash';
 import { ParseQueryParamDate } from 'shared/components/helpers/time-parameters-parser';
 import { DEFAULT_COLUMNS, FILTERS_NAMES } from './panel.constants';
 
-const initialState = {} as any;
+interface QueryAnalyticsPanelState {
+  to: string;
+  from: string;
+  columns: any[];
+  labels: any; // ???
+  pageNumber: number;
+  pageSize: number;
+  orderBy: string;
+  queryId?: string;
+  totals: boolean;
+  querySelected: boolean;
+  groupBy: string;
+  openDetailsTab: string;
+  fingerprint?: string;
+  controlSum?: string;
+}
 
-export const QueryAnalyticsProvider = React.createContext(initialState);
+interface QueryAnalyticsContext {
+  panelState?: QueryAnalyticsPanelState;
+  contextActions?: any;
+}
+
+const initialState = {} as QueryAnalyticsContext;
+
+export const QueryAnalyticsProvider = React.createContext<QueryAnalyticsContext>(initialState);
 
 const setFilters = (query) => FILTERS_NAMES.reduce((result, filterName) => {
   const filters = query.getAll(`var-${filterName}`);
@@ -59,20 +81,22 @@ const generateURL = (state) => {
   const querySelected = state.querySelected ? `query_selected=${state.querySelected}` : '';
   const openDetailsTab = state.openDetailsTab ? `details_tab=${state.openDetailsTab}` : '';
   // TODO: replace crutch with right redirect
-  return `${window.location.pathname}?${[
-    urlColumnsQuery,
-    urlFilterByQuery,
-    urlLabels,
-    urlOrderBy,
-    urlGroupBy,
-    urlFrom,
-    urlTo,
-    totals,
-    querySelected,
-    openDetailsTab
-  ]
-    .filter(Boolean)
-    .join('&')}`;
+  return encodeURI(
+    `${window.location.pathname}?${[
+      urlColumnsQuery,
+      urlFilterByQuery,
+      urlLabels,
+      urlOrderBy,
+      urlGroupBy,
+      urlFrom,
+      urlTo,
+      totals,
+      querySelected,
+      openDetailsTab,
+    ]
+      .filter(Boolean)
+      .join('&')}`
+  );
 };
 
 const parseURL = (query) => ({
