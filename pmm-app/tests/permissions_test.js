@@ -29,7 +29,7 @@ AfterSuite(async (I) => {
 });
 
 Scenario(
-    'PMM-T358 Verify Failed checks panel at Home page for the viewer role (STT is enabled)',
+    'PMM-T358 Verify Failed checks panel at Home page for the viewer role (STT is enabled) @not-pr-pipeline',
     async (I, homePage, settingsAPI) => {
       await settingsAPI.apiEnableSTT();
       await I.Authorize(users.viewer.username, users.viewer.password);
@@ -40,7 +40,7 @@ Scenario(
 );
 
 Scenario(
-    'PMM-T360 Verify Failed checks panel at Home page for the admin role (STT is enabled)',
+    'PMM-T360 Verify Failed checks panel at Home page for the admin role (STT is enabled) @not-pr-pipeline',
     async (I, homePage, settingsAPI) => {
       await settingsAPI.apiEnableSTT();
       await I.Authorize(users.admin.username, users.admin.password);
@@ -51,7 +51,7 @@ Scenario(
 );
 
 Scenario(
-    'PMM-T358 Verify Database Failed checks page for the viewer role (STT is enabled)',
+    'PMM-T358 Verify Database Failed checks page for the viewer role (STT is enabled) @not-pr-pipeline',
     async (I, databaseChecksPage, settingsAPI) => {
       await settingsAPI.apiEnableSTT();
       await I.Authorize(users.viewer.username, users.viewer.password);
@@ -62,7 +62,7 @@ Scenario(
 );
 
 Scenario(
-    'PMM-T360 Verify Database Failed checks page for the admin role (STT is enabled)',
+    'PMM-T360 Verify Database Failed checks page for the admin role (STT is enabled) @not-pr-pipeline',
     async (I, databaseChecksPage, settingsAPI) => {
       await settingsAPI.apiEnableSTT();
       await I.Authorize(users.admin.username, users.admin.password);
@@ -73,7 +73,7 @@ Scenario(
 );
 
 Scenario(
-    'PMM-T358 Verify Failed checks panel at Home page for the viewer role (STT is disabled)',
+    'PMM-T358 Verify Failed checks panel at Home page for the viewer role (STT is disabled) @not-pr-pipeline',
     async (I, homePage, settingsAPI) => {
       await settingsAPI.apiDisableSTT();
       await I.Authorize(users.viewer.username, users.viewer.password);
@@ -84,7 +84,7 @@ Scenario(
 );
 
 Scenario(
-    'PMM-T360 Verify Failed checks panel at Home page for the admin role (STT is disabled)',
+    'PMM-T360 Verify Failed checks panel at Home page for the admin role (STT is disabled) @not-pr-pipeline',
     async (I, homePage, settingsAPI) => {
       await settingsAPI.apiDisableSTT();
       await I.Authorize(users.admin.username, users.admin.password);
@@ -95,7 +95,7 @@ Scenario(
 );
 
 Scenario(
-    'PMM-T358 Verify Database Failed checks page for the viewer role (STT is disabled)',
+    'PMM-T358 Verify Database Failed checks page for the viewer role (STT is disabled) @not-pr-pipeline',
     async (I, databaseChecksPage, settingsAPI) => {
       await settingsAPI.apiDisableSTT();
       await I.Authorize(users.viewer.username, users.viewer.password);
@@ -106,7 +106,7 @@ Scenario(
 );
 
 Scenario(
-    'PMM-T360 Verify Database Failed checks page for the admin role (STT is disabled)',
+    'PMM-T360 Verify Database Failed checks page for the admin role (STT is disabled) @not-pr-pipeline',
     async (I, databaseChecksPage, settingsAPI) => {
       await settingsAPI.apiDisableSTT();
       await I.Authorize(users.admin.username, users.admin.password);
