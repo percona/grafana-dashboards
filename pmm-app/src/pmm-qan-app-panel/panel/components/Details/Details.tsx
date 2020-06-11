@@ -13,6 +13,11 @@ import { DetailsContentProvider, DetailsProvider } from './Details.provider';
 import { styles } from './Details.styles';
 
 const { TabPane } = Tabs;
+const actionResult = {
+  error: '',
+  loading: true,
+  value: null,
+};
 
 const Details = () => {
   const {
@@ -23,14 +28,15 @@ const Details = () => {
   } = useContext(QueryAnalyticsProvider);
   const {
     detailsState: {
-      databaseType, classicExplain, jsonExplain, examples, tables
+      databaseType, classicExplain = actionResult, jsonExplain = actionResult, examples, tables
     },
   } = useContext(DetailsProvider);
 
   useDetailsState();
   const [activeTab, setActiveTab] = useState(TabKeys.Details);
   const showTablesTab = databaseType !== DATABASE.mongodb && groupBy === 'queryid' && !totals;
-  const showExplainTab = databaseType !== DATABASE.postgresql && groupBy === 'queryid' && !totals;
+  // const showExplainTab = databaseType !== DATABASE.postgresql && groupBy === 'queryid' && !totals;
+  const showExplainTab = true;
   const showExamplesTab = groupBy === 'queryid' && !totals;
   useEffect(() => setActiveTab(TabKeys.Details), [queryId]);
 

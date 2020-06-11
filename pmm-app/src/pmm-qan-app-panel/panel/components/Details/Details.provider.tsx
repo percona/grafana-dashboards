@@ -1,7 +1,21 @@
 import React, { useState } from 'react';
 import { Details } from './Details.types';
 
-const initialState = { detailsState: { tables: [] } } as Details;
+const initialState = {
+  detailsState: {
+    tables: [],
+    classicExplain: {
+      error: '',
+      loading: true,
+      value: null,
+    },
+    jsonExplain: {
+      error: '',
+      loading: true,
+      value: null,
+    },
+  },
+} as Details;
 
 export const DetailsProvider = React.createContext(initialState);
 
@@ -9,7 +23,7 @@ const actions = {
   setFoundData: (value) => (state) => {
     const newState = {
       ...state,
-      ...value
+      ...value,
     };
     return newState;
   },

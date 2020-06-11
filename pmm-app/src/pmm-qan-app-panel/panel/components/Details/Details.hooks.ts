@@ -4,14 +4,9 @@ import { QueryAnalyticsProvider } from 'pmm-qan-app-panel/panel/panel.provider';
 import { DetailsProvider } from './Details.provider';
 import { DATABASE } from './Details.constants';
 import DetailsService from './Details.service';
-import Mysql from './database-models/mysql';
-import Mongodb from './database-models/mongodb';
+import { mysqlMethods, mongodbMethods } from './database-models';
+import { ActionResult } from './Details.types';
 
-export interface ActionResult {
-  value?: any;
-  loading?: boolean;
-  error?: string;
-}
 export const useActionResult = async (actionId): Promise<ActionResult> => {
   let intervalId;
   // 5 seconds
@@ -91,22 +86,26 @@ export const useDetailsState = () => {
         const databaseType = result.query_examples[0].service_type;
 
         const notEmptyExample = examples.filter((example) => example.example);
-
         let jsonExplain;
-        let traditionalExplain;
+        let classicExplain;
+        // debugger
         // 2. Get explains
-        if (databaseType === DATABASE.mysql) {
-          const traditionalExplainActionId = await Mysql.getExplainTraditional({
-            example: notEmptyExample[0],
-          });
-          const jsonExplainActionId = await Mysql.getExplainJSON({ example: notEmptyExample[0] });
+        try {
+          if (databaseType === DATABASE.mysql) {
+            const traditionalExplainActionId = await mysqlMethods.getExplainTraditional({
+              example: notEmptyExample[0],
+            });
+            const jsonExplainActionId = await mysqlMethods.getExplainJSON({ example: notEmptyExample[0] });
 
-          jsonExplain = await useActionResult(jsonExplainActionId);
-          traditionalExplain = await useActionResult(traditionalExplainActionId);
-        } else if (databaseType === DATABASE.mongodb) {
-          const jsonExplainActionId = await Mongodb.getExplainJSON({ example: notEmptyExample[0] });
+            jsonExplain = await useActionResult(jsonExplainActionId);
+            classicExplain = await useActionResult(traditionalExplainActionId);
+          } else if (databaseType === DATABASE.mongodb) {
+            const jsonExplainActionId = await mongodbMethods.getExplainJSON({ example: notEmptyExample[0] });
 
-          jsonExplain = await useActionResult(jsonExplainActionId);
+            jsonExplain = await useActionResult(jsonExplainActionId);
+          }
+        } catch (e) {
+          console.error(e);
         }
 
         // 3. Get tables
@@ -128,7 +127,7 @@ export const useDetailsState = () => {
           examples,
           databaseType,
           jsonExplain,
-          traditionalExplain,
+          classicExplain,
           tables,
         });
       } catch (e) {

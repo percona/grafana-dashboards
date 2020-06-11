@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Spin, Table } from 'antd';
-import { ActionResult, useActionResult } from '../../../Details.hooks';
+import { useActionResult } from '../../../Details.hooks';
+import { ActionResult } from '../../../Details.types';
 import { mysqlMethods, postgresqlMethods } from '../../../database-models';
 import { processTableData } from '../../TableContainer.tools';
 import { DATABASE } from '../../../Details.constants';
@@ -8,7 +9,11 @@ import { DATABASE } from '../../../Details.constants';
 export const Indexes = (props) => {
   const { tableName, databaseType, example } = props;
   const [data, setData] = useState<{ columns: any[]; rows: any[] }>({ columns: [], rows: [] });
-  const [indexes, setIndexes] = useState<ActionResult>({});
+  const [indexes, setIndexes] = useState<ActionResult>({
+    error: '',
+    loading: true,
+    value: null,
+  });
 
 
   const getIndexes = useCallback(async () => {

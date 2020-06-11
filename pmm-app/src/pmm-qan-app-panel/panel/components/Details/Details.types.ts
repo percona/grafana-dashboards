@@ -1,9 +1,15 @@
 export type DatabasesType = 'mysql' | 'postgresql' | 'mongodb' | undefined;
 
+export interface ActionResult {
+  error: string;
+  loading: boolean;
+  value: any;
+}
+
 export interface DetailsState {
   examples?: any;
-  jsonExplain?: any;
-  classicExplain?: any;
+  jsonExplain?: ActionResult;
+  classicExplain?: ActionResult;
   tables?: any;
   databaseType?: DatabasesType;
 }

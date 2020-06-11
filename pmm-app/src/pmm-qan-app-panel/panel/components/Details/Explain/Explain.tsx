@@ -6,12 +6,22 @@ import { processClassicExplain } from './Explain.tools';
 import { styles } from './Explain.styles';
 import { DATABASE } from '../Details.constants';
 import { ExplainTabs } from './Explain.constants';
+import { ActionResult, DatabasesType } from '../Details.types';
 
 const { Panel } = Collapse;
 
-const Explain = ({ classicExplain, jsonExplain, databaseType }) => {
-  const [data, setData] = useState({ columns: [], rows: [] });
 
+interface ExplainProps {
+  classicExplain: ActionResult;
+  jsonExplain: ActionResult;
+  databaseType: DatabasesType;
+}
+const Explain = ({
+  classicExplain,
+  jsonExplain,
+  databaseType,
+}: ExplainProps) => {
+  const [data, setData] = useState({ columns: [], rows: [] });
   useEffect(() => {
     setData(processClassicExplain(classicExplain.value));
   }, [classicExplain]);
@@ -19,7 +29,11 @@ const Explain = ({ classicExplain, jsonExplain, databaseType }) => {
   return (
     <div>
       {/* eslint-disable-next-line max-len */}
-      <Collapse bordered={false} defaultActiveKey={[ExplainTabs.classic, ExplainTabs.json]} className={styles.collapse}>
+      <Collapse
+        bordered={false}
+        defaultActiveKey={[ExplainTabs.classic, ExplainTabs.json]}
+        className={styles.collapse}
+      >
         {databaseType !== DATABASE.mongodb ? (
           <Panel header={ExplainTabs.classic} key={ExplainTabs.classic} className={styles.panel}>
             <Spin spinning={classicExplain.loading}>
@@ -34,7 +48,9 @@ const Explain = ({ classicExplain, jsonExplain, databaseType }) => {
                 />
               ) : null}
               {/* eslint-disable-next-line max-len */}
-              {!classicExplain.error && !classicExplain.loading && !data.rows.length ? <pre>No classic explains found</pre> : null}
+              {!classicExplain.error && !classicExplain.loading && !data.rows.length ? (
+                <pre>No classic explains found</pre>
+              ) : null}
             </Spin>
           </Panel>
         ) : null}
