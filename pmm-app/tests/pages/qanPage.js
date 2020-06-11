@@ -70,6 +70,8 @@ module.exports = {
     resultPerPageCombobox: '.ant-pagination-options',
     addColumnNewQAN: '.add-columns',
     noDataIcon: "//div[@class='ant-empty-image']",
+    aQuery: '//div[2]/div[2]/div/table/tbody/tr[4]/td[2]/div/div',
+    resizer: 'span.Resizer.horizontal',
   },
 
   filterGroupLocator(filterName) {
@@ -486,5 +488,13 @@ module.exports = {
   verifyAppliedSortingForColumn(column) {
     const loadColumn = `//span[contains(text(), '${column}')]/ancestor::*[@class='ant-table-column-sorters']/descendant::i[contains(@class, 'anticon anticon-caret-down ant-table-column-sorter-down on')]`;
     I.waitForVisible(loadColumn, 30);
+  },
+
+  getColumn(column) {
+    return `//span[contains(text(), '${column}')]`;
+  },
+
+  getRow(row) {
+    return `//td[@class='ant-table-row-cell-break-word']//div[contains(text(), '${row}')]`;
   },
 };

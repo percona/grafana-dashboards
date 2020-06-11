@@ -395,7 +395,6 @@ xScenario(
 xScenario(
   'PMM-T219 - Verify that user is able to scroll up/down and resize the overview table',
   async (I, qanPage) => {
-    const lastColumn = "//span[contains(text(), 'Local Blocks Written')]";
     qanPage.waitForNewQANPageLoaded();
     const columnsToAdd = [
       'Bytes Sent',
@@ -409,7 +408,13 @@ xScenario(
       I.click(qanPage.fields.addColumnNewQAN);
       qanPage.addSpecificColumn(columnsToAdd[i]);
     }
-    I.waitForElement(lastColumn, 30);
-    I.scrollTo(lastColumn);
+    I.waitForElement(qanPage.getColumn('Local Blocks Written'), 30);
+    I.scrollTo(qanPage.getColumn('Local Blocks Written'), 30);
+    I.moveCursorTo(qanPage.fields.aQuery);
+    I.click(qanPage.fields.aQuery);
+    I.scrollTo(qanPage.getRow('10'));
+    I.waitForVisible(qanPage.getColumn('Full Scan'), 30);
+    I.dragAndDrop(qanPage.fields.resizer, qanPage.getColumn('Full Scan'));
+    I.scrollTo(qanPage.getColumn('No index used'));
   }
 );
