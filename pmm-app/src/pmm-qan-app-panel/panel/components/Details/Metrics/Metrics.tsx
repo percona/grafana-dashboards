@@ -1,7 +1,7 @@
 import { Collapse, Table, Tooltip } from 'antd';
 import React from 'react';
 import { Latency, Sparkline, TimeDistribution } from 'shared/components/Elements/Charts';
-import { Humanize } from 'shared/components/helpers/Humanization';
+import { humanize } from 'shared/components/helpers/Humanization';
 import { Info } from 'shared/components/Elements/Icons/Info';
 import { styles } from './Metrics.styles';
 import { useMetricsDetails } from './Metrics.hooks';
@@ -31,7 +31,7 @@ const rateColumn = (totals) => (text, item) => {
   return (
     <div className={styles.metricColumn}>
       <span className={styles.metricData}>
-        {`${item.isRate ? Humanize.transform(item.metric.rate, item.pipeTypes.ratePipe) : '0'} ${item.units}`}
+        {`${item.isRate ? humanize.transform(item.metric.rate, item.pipeTypes.ratePipe) : '0'} ${item.units}`}
       </span>
       <span className={styles.sparkline}>{item.sparkline && <Sparkline {...polygonChartProps} />}</span>
     </div>
@@ -42,7 +42,7 @@ const sumColumn = (text, item) => (
   <>
     <div>
       {item.isSum && (
-        <span className={styles.sum}>{Humanize.transform(item.metric.sum, item.pipeTypes.sumPipe) || 0}</span>
+        <span className={styles.sum}>{humanize.transform(item.metric.sum, item.pipeTypes.sumPipe) || 0}</span>
       )}
       {item.percentOfTotal ? (
         <span className={styles.percentOfTotal}>{`${item.percentOfTotal}% of total`}</span>
@@ -65,7 +65,7 @@ const perQueryStatsColumn = (text, item) => {
     <div className={styles.metricColumn}>
       <span className={styles.perQueryStats}>
         {item.metric.avg
-          ? Humanize.transform(item.metric.avg, item.pipeTypes.perQueryStatsPipe)
+          ? humanize.transform(item.metric.avg, item.pipeTypes.perQueryStatsPipe)
           : (+item.metric.sum / +item.queryCount).toFixed(2) || '0'}
       </span>
       {item.isLatencyChart && <Latency {...latencyChartProps} />}
@@ -119,6 +119,7 @@ const Metrics = ({ databaseType, totals }) => {
             size="small"
             bordered
             loading={loading}
+            rowKey="metricName"
           />
         </Panel>
       </Collapse>

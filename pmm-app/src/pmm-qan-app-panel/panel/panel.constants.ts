@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { Humanize } from 'shared/components/helpers/Humanization';
+import { humanize } from 'shared/components/helpers/Humanization';
 
 export const PAGE_SIZE_OPTIONS = ['10', '50', '100'];
 export const DEFAULT_PAGE_NUMBER = 1;
@@ -50,7 +50,7 @@ export const METRIC_CATALOGUE = {
       if (!mainMetric || !divider) {
         return '';
       }
-      return `${Humanize.transform(mainMetric / divider, 'size')} per row sent`;
+      return `${humanize.transform(mainMetric / divider, 'size')} per row sent`;
     },
     units: Units.PER_SEC,
     pipeTypes: {
@@ -287,7 +287,7 @@ export const METRIC_CATALOGUE = {
         return '';
       }
 
-      return `${Humanize.transform(mainMetric / divider, 'number')} per row sent`;
+      return `${humanize.transform(mainMetric / divider, 'number')} per row sent`;
     },
     units: Units.PER_SEC,
     pipeTypes: {
@@ -323,7 +323,7 @@ export const METRIC_CATALOGUE = {
       if (!mainMetric || !divider) {
         return '';
       }
-      return `${Humanize.transform(mainMetric / divider)} per query`;
+      return `${humanize.transform(mainMetric / divider)} per query`;
     },
     units: Units.NONE,
     pipeTypes: {
@@ -346,7 +346,7 @@ export const METRIC_CATALOGUE = {
         return '';
       }
 
-      return `${Humanize.transform(mainMetric / divider)} per query`;
+      return `${humanize.transform(mainMetric / divider)} per query`;
     },
     units: Units.NONE,
     pipeTypes: {
@@ -369,7 +369,7 @@ export const METRIC_CATALOGUE = {
         return '';
       }
 
-      return `${Humanize.transform(mainMetric / divider, 'number')} per query`;
+      return `${humanize.transform(mainMetric / divider, 'number')} per query`;
     },
     units: Units.PER_SEC,
     pipeTypes: {
@@ -392,7 +392,7 @@ export const METRIC_CATALOGUE = {
         return '';
       }
 
-      return `${Humanize.transform(mainMetric / divider, 'number')} per query`;
+      return `${humanize.transform(mainMetric / divider, 'number')} per query`;
     },
     units: Units.NONE,
     pipeTypes: {
@@ -415,7 +415,7 @@ export const METRIC_CATALOGUE = {
         return '';
       }
 
-      return `${Humanize.transform(mainMetric / divider, 'size')} per Read Ops`;
+      return `${humanize.transform(mainMetric / divider, 'size')} per Read Ops`;
     },
     units: Units.PER_SEC,
     pipeTypes: {
@@ -452,7 +452,7 @@ export const METRIC_CATALOGUE = {
         return '';
       }
 
-      return `${Humanize.transform(mainMetric / divider, 'percent')} of query time`;
+      return `${humanize.transform(mainMetric / divider, 'percent')} of query time`;
     },
     units: Units.LOAD,
     pipeTypes: {
@@ -491,7 +491,7 @@ export const METRIC_CATALOGUE = {
         return '';
       }
 
-      return `${Humanize.transform(mainMetric / divider, 'percent')} of query time`;
+      return `${humanize.transform(mainMetric / divider, 'percent')} of query time`;
     },
     units: Units.NONE,
     pipeTypes: {
@@ -514,7 +514,7 @@ export const METRIC_CATALOGUE = {
         return '';
       }
 
-      return `${Humanize.transform(mainMetric / divider, 'percent')} of query time`;
+      return `${humanize.transform(mainMetric / divider, 'percent')} of query time`;
     },
     units: Units.AVG_LOAD,
     pipeTypes: {
@@ -550,7 +550,7 @@ export const METRIC_CATALOGUE = {
         return '';
       }
 
-      return `${Humanize.transform(mainMetric / divider, 'percent')} of query time`;
+      return `${humanize.transform(mainMetric / divider, 'percent')} of query time`;
     },
     units: Units.AVG_LOAD,
     pipeTypes: {
@@ -573,7 +573,7 @@ export const METRIC_CATALOGUE = {
         return '';
       }
 
-      return `${Humanize.transform(mainMetric / divider)} per external sort`;
+      return `${humanize.transform(mainMetric / divider)} per external sort`;
     },
     units: Units.NONE,
     pipeTypes: {
@@ -624,7 +624,7 @@ export const METRIC_CATALOGUE = {
         return '';
       }
 
-      return `${Humanize.transform(mainMetric / divider)} per query`;
+      return `${humanize.transform(mainMetric / divider)} per query`;
     },
     units: Units.PERCENT,
     pipeTypes: {
@@ -675,7 +675,7 @@ export const METRIC_CATALOGUE = {
         return '';
       }
 
-      return `${Humanize.transform(mainMetric / divider, 'size')} bytes/row`;
+      return `${humanize.transform(mainMetric / divider, 'size')} bytes/row`;
     },
     units: Units.BYTES_PER_SEC,
     pipeTypes: {
@@ -712,7 +712,7 @@ export const METRIC_CATALOGUE = {
         return '';
       }
 
-      return `${Humanize.transform(mainMetric / divider, 'number')} per row sent`;
+      return `${humanize.transform(mainMetric / divider, 'number')} per row sent`;
     },
     units: Units.PER_SEC,
     pipeTypes: {
@@ -847,7 +847,7 @@ export const METRIC_CATALOGUE = {
         return '';
       }
 
-      return `${Humanize.transform(mainMetric / divider)} per query`;
+      return `${humanize.transform(mainMetric / divider)} per query`;
     },
     units: Units.NONE,
     pipeTypes: {
@@ -870,7 +870,7 @@ export const METRIC_CATALOGUE = {
         return '';
       }
 
-      return `${Humanize.transform(mainMetric / divider)} per query`;
+      return `${humanize.transform(mainMetric / divider)} per query`;
     },
     units: Units.NONE,
     pipeTypes: {
@@ -893,7 +893,7 @@ export const METRIC_CATALOGUE = {
         return '';
       }
 
-      return `${Humanize.transform(mainMetric / divider)} per query`;
+      return `${humanize.transform(mainMetric / divider)} per query`;
     },
     units: Units.NONE,
     pipeTypes: {
@@ -916,7 +916,7 @@ export const METRIC_CATALOGUE = {
         return '';
       }
 
-      return `${Humanize.transform(mainMetric / divider)} per query`;
+      return `${humanize.transform(mainMetric / divider)} per query`;
     },
     units: Units.NONE,
     pipeTypes: {
@@ -939,7 +939,7 @@ export const METRIC_CATALOGUE = {
         return '';
       }
 
-      return `${Humanize.transform(mainMetric / divider)} per query`;
+      return `${humanize.transform(mainMetric / divider)} per query`;
     },
     units: Units.NONE,
     pipeTypes: {

@@ -1,5 +1,5 @@
-class Validators {
-  static validatePort(value) {
+const validators = {
+  validatePort: (value) => {
     const portNumber = Number.parseInt(value, 10);
     const MIN_PORT_NUMBER = 0;
     const MAX_PORT_NUMBER = 65535;
@@ -8,27 +8,25 @@ class Validators {
       return undefined;
     }
     return 'Port should be a number and between the range of 0 and 65535';
-  }
+  },
 
-  static validateRange(value, from, to) {
+  validateRange: (value, from, to) => {
     if (!value) {
       return '';
     }
 
     return value >= from && value <= to ? undefined : `Value should be in range from ${from} to ${to}`;
-  }
+  },
 
-  static range(from, to) {
-    return (value) => {
-      if (!value) {
-        return undefined;
-      }
+  range: (from, to) => (value) => {
+    if (!value) {
+      return undefined;
+    }
 
-      return value >= from && value <= to ? undefined : `Value should be in range from ${from} to ${to}`;
-    };
-  }
+    return value >= from && value <= to ? undefined : `Value should be in range from ${from} to ${to}`;
+  },
 
-  static validateKeyValue(value) {
+  validateKeyValue: (value) => {
     if (
       value
       && !value
@@ -39,15 +37,12 @@ class Validators {
       return 'Values have to be in key:value format, and separated with new line or space';
     }
     return undefined;
-  }
+  },
 
-  static required(value) {
-    return value ? undefined : 'Required field';
-  }
+  required: (value) => (value ? undefined : 'Required field'),
 
-  static compose(...validators) {
-    return (value) => validators.reduce((error, validator) => error || validator(value), undefined);
-  }
-}
+  // eslint-disable-next-line max-len
+  compose: (...validators) => (value) => validators.reduce((error, validator) => error || validator(value), undefined),
+};
 
-export default Validators;
+export default validators;

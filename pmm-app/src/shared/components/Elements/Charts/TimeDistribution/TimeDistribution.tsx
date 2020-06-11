@@ -1,6 +1,6 @@
 import React from 'react';
 import HSBar from 'react-horizontal-stacked-bar-chart';
-import { Humanize } from '../../../helpers/Humanization';
+import { humanize } from '../../../helpers/Humanization';
 // eslint-disable-next-line max-len
 import { METRICS_COLORS, PERCENT_COUNT, TIME_METRICS } from './TimeDistribution.constants';
 
@@ -30,7 +30,7 @@ export const getMetricDistribution = (data) => {
       return {
         name,
         value,
-        description: Humanize.transform(percentage / PERCENT_COUNT, 'percent'),
+        description: humanize.transform(percentage / PERCENT_COUNT, 'percent'),
         color: METRICS_COLORS[metricName],
       };
     })
@@ -40,7 +40,7 @@ export const getMetricDistribution = (data) => {
     normalizedTimeMetrics.push({
       name: 'Other',
       value: currentPercent,
-      description: Humanize.transform(currentPercent / PERCENT_COUNT, 'percent'),
+      description: humanize.transform(currentPercent / PERCENT_COUNT, 'percent'),
       color: 'gray',
     });
   }

@@ -3,7 +3,7 @@ import Tooltip from 'antd/es/tooltip';
 import React from 'react';
 import { cx } from 'emotion';
 import { METRIC_CATALOGUE } from 'pmm-qan-app-panel/panel/panel.constants';
-import { Humanize } from 'shared/components/helpers/Humanization';
+import { humanize } from 'shared/components/helpers/Humanization';
 import { Latency, Sparkline, TotalPercentage } from 'shared/components/Elements/Charts';
 import { COLUMN_WIDTH, FIXED_COLUMN_WIDTH } from '../../Overview.constants';
 import { ManageColumns } from '../../../ManageColumns/ManageColumns';
@@ -13,9 +13,9 @@ import './MetricColumns.scss';
 const TimeMetric = ({ value, percentage, cnt }) => (
   <div className={styles.metricStyle}>
     <span className={cx('summarize', styles.summarize(value))}>
-      {value === undefined && cnt > 0 ? `${Humanize.transform(0, 'time')}` : null}
+      {value === undefined && cnt > 0 ? `${humanize.transform(0, 'time')}` : null}
       {(value === undefined && cnt === undefined) || value === null || value === 'NaN' ? 'N/A' : null}
-      {value && value !== 'NaN' ? `${Humanize.transform(value, 'time')}` : null}
+      {value && value !== 'NaN' ? `${humanize.transform(value, 'time')}` : null}
     </span>
     {value === undefined || value === null || value === 'NaN' ? null : <TotalPercentage width={percentage} />}
   </div>
@@ -28,7 +28,7 @@ const NonTimeMetric = ({
     <span className={cx('summarize', styles.summarize(value))}>
       {value === undefined && cnt > 0 ? `0 ${units}` : null}
       {(value === undefined && cnt === undefined) || value === null || value === 'NaN' ? 'N/A' : null}
-      {value && value !== 'NaN' ? `${Humanize.transform(value, 'number')} ${units}` : null}
+      {value && value !== 'NaN' ? `${humanize.transform(value, 'number')} ${units}` : null}
     </span>
     {value === undefined || value === null || value === 'NaN' ? null : <TotalPercentage width={percentage} />}
   </div>
@@ -63,12 +63,12 @@ const metricColumnRender = ({
       {
         header: isTimeMetric ? 'Per query' : 'Per sec',
         // eslint-disable-next-line max-len
-        value: isTimeMetric ? Humanize.transform(stats.avg, 'time') : Humanize.transform(statPerSec, 'number'),
+        value: isTimeMetric ? humanize.transform(stats.avg, 'time') : humanize.transform(statPerSec, 'number'),
         key: 'qps',
       },
       {
         header: 'Sum',
-        value: stats.sum && Humanize.transform(stats.sum, metric.pipeTypes.sumPipe),
+        value: stats.sum && humanize.transform(stats.sum, metric.pipeTypes.sumPipe),
         key: 'sum',
       },
       {
@@ -85,7 +85,7 @@ const metricColumnRender = ({
       { header: '• 99%', value: stats.p99 },
     ]
       .filter((element) => element.value)
-      .map(({ header, value }) => ({ header, value: Humanize.transform(value) }));
+      .map(({ header, value }) => ({ header, value: humanize.transform(value) }));
 
     const MetricsList = ({ data }) => (
       <div className={styles.metricsWrapper} data-qa="metrics-list">
@@ -160,7 +160,6 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy,
     sortOrder: getSorting(orderBy, metricName),
     sortDirections: ['descend', 'ascend'],
     width: columnIndex === 0 ? COLUMN_WIDTH * 1.8 : FIXED_COLUMN_WIDTH,
-    // eslint-disable-next-line max-len
     title: () => (
       <ManageColumns placeholder={metricName} currentMetric={metric} mainMetric={mainMetric} width="100%" />
     ),

@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
 import { scaleLog } from 'd3';
-import { Humanize } from '../../../helpers/Humanization';
+import { humanize } from '../../../helpers/Humanization';
 
 interface LatencyChartState {
   tooltip: string | undefined;
@@ -50,10 +50,10 @@ export class Latency extends Component<any, LatencyChartState> {
     const {
       min = 0, max = 0, avg = 0, p99 = 0
     } = data;
-    const minStr = `⌜ Min: ${Humanize.transform(min, this.measurement)}`;
-    const maxStr = `⌟ Max: ${Humanize.transform(max, this.measurement)}`;
-    const avgStr = `◦ Avg: ${Humanize.transform(avg, this.measurement)}`;
-    const p99Str = `${p99 ? `• 99%: ${Humanize.transform(p99, this.measurement)}` : ''}`;
+    const minStr = `⌜ Min: ${humanize.transform(min, this.measurement)}`;
+    const maxStr = `⌟ Max: ${humanize.transform(max, this.measurement)}`;
+    const avgStr = `◦ Avg: ${humanize.transform(avg, this.measurement)}`;
+    const p99Str = `${p99 ? `• 99%: ${humanize.transform(p99, this.measurement)}` : ''}`;
 
     this.dataTooltip = `${minStr}\n${maxStr}\n${avgStr}\n${p99Str}`.trim();
 

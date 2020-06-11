@@ -23,6 +23,7 @@ export const Overview = () => {
     },
   } = useContext(QueryAnalyticsProvider);
   const tableWrapperRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     setHeight((tableWrapperRef.current && tableWrapperRef.current.clientHeight) || 0);
   }, [tableWrapperRef.current && tableWrapperRef.current.clientHeight]);
@@ -82,6 +83,7 @@ export const Overview = () => {
           scroll={{ y: height - 100, x: '100%' }}
           rowClassName={getRowClassName}
           loading={loading}
+          rowKey="fingerprint"
         />
       </div>
       <div className={styles.overviewHeader}>
