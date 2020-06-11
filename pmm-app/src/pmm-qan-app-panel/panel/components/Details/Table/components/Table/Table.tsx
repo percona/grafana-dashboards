@@ -11,13 +11,12 @@ const TableCreate = (props) => {
   const { tableName, databaseType, example } = props;
   const [showCreateTable, setShowCreateTable] = useState<ActionResult>({});
 
-
   const getDatabase = useCallback(async () => {
     let id;
     if (databaseType === DATABASE.postgresql) {
-      id = await mysqlMethods.getShowCreateTables(({ example, tableName }));
+      id = await mysqlMethods.getShowCreateTables({ example, tableName });
     } else if (databaseType === DATABASE.mysql) {
-      id = await postgresqlMethods.getShowCreateTables(({ example, tableName }));
+      id = await postgresqlMethods.getShowCreateTables({ example, tableName });
     }
 
     const result = await useActionResult(id);

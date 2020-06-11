@@ -1,5 +1,6 @@
 // Just a stub test
 import React from 'react';
+import sqlFormatter from 'sql-formatter';
 import renderer from 'react-test-renderer';
 import Example from './Example';
 import { DatabasesType } from '../Details.types';
@@ -76,7 +77,7 @@ describe('Example tab page render test', () => {
     );
     const componentInstance = component.root;
     expect(componentInstance.findByProps({ className: 'sql' }).children[0]).toEqual(
-      props.examples[0].example,
+      sqlFormatter.format(props.examples[0].example),
     );
   });
 });

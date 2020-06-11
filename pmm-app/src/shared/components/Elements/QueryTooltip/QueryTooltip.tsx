@@ -2,6 +2,7 @@ import { Tooltip } from 'antd';
 import Highlight from 'react-highlight.js';
 import React from 'react';
 import './QueryTooltip.scss';
+import sqlFormatter from 'sql-formatter';
 
 interface QueryTooltipProps {
   query: string;
@@ -10,9 +11,9 @@ interface QueryTooltipProps {
   children: any;
 }
 export const QueryTooltip = ({
-  query, queryId, children, show = true,
+  query, queryId, children, show = true
 }: QueryTooltipProps) => {
-  const TooltipContent = () => <Highlight language="sql">{query}</Highlight>;
+  const TooltipContent = () => <Highlight language="sql">{sqlFormatter.format(query)}</Highlight>;
   return show ? (
     <Tooltip
       placement="left"
