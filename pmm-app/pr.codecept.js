@@ -35,7 +35,9 @@ exports.config = {
     mysqlTableDetailsPage: './tests/pages/mysqlTableDetailsPage.js',
     dashboardPage: './tests/pages/dashboardPage.js',
     databaseChecksPage: './tests/pages/databaseChecksPage.js',
-    settingsAPI: './tests/pages/api/settingsAPI.js'
+    settingsAPI: './tests/pages/api/settingsAPI.js',
+    addInstanceAPI: './tests/pages/api/addInstanceAPI.js',
+    inventoryAPI: './tests/pages/api/inventoryAPI.js',
   },
   multiple: {
     parallel: {
