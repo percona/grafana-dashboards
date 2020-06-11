@@ -7,7 +7,7 @@ import {
 } from 'd3';
 import * as moment from 'moment';
 import ReactTooltip from 'react-tooltip';
-import { Humanize } from '../../../helpers/Humanization';
+import { humanize } from '../../../helpers/Humanization';
 import './Sparkline.scss';
 import { PolygonChartInterface } from './Sparkline.types';
 
@@ -140,7 +140,7 @@ export const Sparkline = ({
 
       // eslint-disable-next-line max-len
       const isTimeBased = metricName.endsWith('_time') || metricName.endsWith('_wait') || metricName === 'load';
-      const load = Humanize.transform(value, 'number');
+      const load = humanize.transform(value, 'number');
 
       focusBar.attr('d', areaBar(activeArea));
       const dataTooltip = !value

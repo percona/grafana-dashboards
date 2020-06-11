@@ -58,6 +58,7 @@ export const getDefaultColumns = (groupBy, pageNumber, pageSize, columns, onCell
       title: () => <Dimension />,
       ellipsis: true,
       className: mainColumn,
+      key: 'dimension',
       onCell,
       render: dimensionColumnRender(mainMetricColumnWidth),
     },

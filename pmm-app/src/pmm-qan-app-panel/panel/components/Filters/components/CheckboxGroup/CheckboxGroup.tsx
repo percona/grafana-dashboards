@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Divider } from 'antd';
 import { CheckboxField } from 'shared/components/Form/Checkbox/Checkbox';
-import { Humanize } from 'shared/components/helpers/Humanization';
+import { humanize } from 'shared/components/helpers/Humanization';
 import { styles } from './CheckboxGroup.styles';
 
 const TOP_LIMIT = 5;
@@ -51,7 +51,7 @@ export const CheckboxGroup = ({
             />
           </span>
           <span className={styles.percentage}>
-            <span>{valueExists ? Humanize.transform(item.main_metric_percent, 'percent') : null}</span>
+            <span>{valueExists ? humanize.transform(item.main_metric_percent, 'percent') : null}</span>
           </span>
         </div>
       );

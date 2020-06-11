@@ -2,17 +2,19 @@ import moment from 'moment';
 import numeral from 'numeral';
 
 // TODO: improve readability
-export class Humanize {
-  static parseTime(input: number) {
+export const humanize = {
+  parseTime: (input: number) => {
     let duration = '';
     const durationSec = moment.duration(input, 's');
+    const durationAsSec = durationSec.as('s');
+    const durationAsMs = durationSec.as('ms');
 
     if (input === 0) {
       duration = '0';
-    } else if (durationSec.as('s') > 1 && durationSec.as('s') < 60) {
-      duration = `${durationSec.as('s').toFixed(2)} sec`;
-    } else if (durationSec.as('s') >= 60) {
-      let secs = durationSec.as('s');
+    } else if (durationAsSec > 1 && durationAsSec < 60) {
+      duration = `${durationAsSec.toFixed(2)} sec`;
+    } else if (durationAsSec >= 60) {
+      let secs = durationAsSec;
       const secondsInDay = 24 * 60 * 60;
       if (secs >= secondsInDay) {
         const days = Math.floor(secs / secondsInDay);
@@ -20,15 +22,14 @@ export class Humanize {
         secs %= secondsInDay;
       }
       duration += numeral(secs).format('00:00:00');
-    } else if (durationSec.as('ms') < 1) {
-      duration = `${(durationSec.as('ms') * 1000).toFixed(2)} µs`;
+    } else if (durationAsMs < 1) {
+      duration = `${(durationAsMs * 1000).toFixed(2)} µs`;
     } else {
-      duration = `${durationSec.as('ms').toFixed(2)} ms`;
+      duration = `${durationAsMs.toFixed(2)} ms`;
     }
     return duration;
-  }
-
-  static transform(metricValue: number | null, name?: string): string {
+  },
+  transform: (metricValue: number | null, name?: string): string => {
     if (metricValue === null) {
       return '0';
     }
@@ -38,12 +39,12 @@ export class Humanize {
       // "top 10"/profile queries no name parameters
       case undefined:
         res = metricValue !== 0 && metricValue < 0.00001 ? '<' : '';
-        res += Humanize.parseTime(metricValue);
+        res += humanize.parseTime(metricValue);
         break;
       // time
       case 'time':
         res = metricValue !== 0 && metricValue < 0.00001 ? '<' : '';
-        res += Humanize.parseTime(metricValue);
+        res += humanize.parseTime(metricValue);
         break;
       // size
       case 'size':
@@ -88,5 +89,5 @@ export class Humanize {
         break;
     }
     return String(res).replace('<0.00', '<0.01');
-  }
-}
+  },
+};

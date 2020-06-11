@@ -10,9 +10,17 @@ import { styles } from './Filters.styles';
 import { useFilters, useFiltersContainerHeight, useInitialFilterValues } from './Filters.hooks';
 import { getSelectedCheckboxes } from './Filters.tools';
 
+
+interface FiltersContainerProps {
+  contextActions: any;
+  form: any;
+  labels: object;
+  filters: any;
+}
+
 export const FiltersContainer = ({
   contextActions, form, labels, filters
-}) => {
+}: FiltersContainerProps) => {
   const filtersWrapperRef = useRef<HTMLDivElement>(null);
 
   const height = useFiltersContainerHeight(FILTERS_BODY_HEIGHT, filtersWrapperRef);
@@ -87,7 +95,6 @@ export const Filters = () => {
   } = useContext(QueryAnalyticsProvider);
   const { filters, loading } = useFilters();
   const initialValues = useInitialFilterValues();
-
   return (
     <Form
       onSubmit={() => {}}
