@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Spin } from 'antd';
 import Highlight from 'react-highlight.js';
-import { ActionResult, useActionResult } from '../../../Details.hooks';
+import { useActionResult } from '../../../Details.hooks';
+import { ActionResult } from '../../../Details.types';
 import { mysqlMethods, postgresqlMethods } from '../../../database-models';
 import { DATABASE } from '../../../Details.constants';
 
@@ -9,7 +10,11 @@ import { DATABASE } from '../../../Details.constants';
 
 const TableCreate = (props) => {
   const { tableName, databaseType, example } = props;
-  const [showCreateTable, setShowCreateTable] = useState<ActionResult>({});
+  const [showCreateTable, setShowCreateTable] = useState<ActionResult>({
+    error: '',
+    loading: true,
+    value: null,
+  });
 
   const getDatabase = useCallback(async () => {
     let id;
