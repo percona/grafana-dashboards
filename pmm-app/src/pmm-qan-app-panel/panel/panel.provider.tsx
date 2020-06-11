@@ -57,6 +57,7 @@ const generateURL = (state) => {
   const urlTo = state.rawTime && state.rawTime.to ? `to=${state.rawTime.to}` : '';
   const totals = `totals=${state.totals}`;
   const querySelected = state.querySelected ? `query_selected=${state.querySelected}` : '';
+  const openDetailsTab = state.openDetailsTab ? `details_tab=${state.openDetailsTab}` : '';
   // TODO: replace crutch with right redirect
   return `${window.location.pathname}?${[
     urlColumnsQuery,
@@ -68,6 +69,7 @@ const generateURL = (state) => {
     urlTo,
     totals,
     querySelected,
+    openDetailsTab
   ]
     .filter(Boolean)
     .join('&')}`;
@@ -87,6 +89,7 @@ const parseURL = (query) => ({
   totals: query.get('totals') === 'true',
   querySelected: !!query.get('filter_by') || query.get('query_selected') === 'true',
   groupBy: query.get('group_by') || 'queryid',
+  openDetailsTab: query.get('details_tab') || 'details',
 });
 
 const setLabels = (filters) => Object.keys(filters)
@@ -108,6 +111,7 @@ const actions = {
   // eslint-disable-next-line max-len
   setLabels: (value) => (state) => omit({ ...state, labels: setLabels(value), pageNumber: 1 }, ['queryId', 'querySelected']),
   resetLabels: () => (state) => omit({ ...state, labels: {}, pageNumber: 1 }, ['queryId', 'querySelected']),
+  setActiveTab: (value) => (state) => ({ ...state, openDetailsTab: value }),
   selectQuery: (value, totals) => (state) => ({
     ...state,
     queryId: value,

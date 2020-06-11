@@ -1,8 +1,8 @@
 export const TabKeys = {
-  Details: 'Details',
-  Examples: 'Examples',
-  Explain: 'Explain',
-  Tables: 'Tables',
+  details: 'details',
+  examples: 'examples',
+  explain: 'explain',
+  tables: 'tables',
 };
 
 export const DATABASE = {
