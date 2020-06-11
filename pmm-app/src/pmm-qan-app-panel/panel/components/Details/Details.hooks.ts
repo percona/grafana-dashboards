@@ -38,10 +38,8 @@ export const useActionResult = async (actionId): Promise<ActionResult> => {
           action_id: actionId,
         });
         if (requestResult.done) {
-          // setLoading(false);
           clearInterval(intervalId);
           if (requestResult.error) {
-            // setError(requestResult.error);
             resolve({
               loading: false,
               value: null,
