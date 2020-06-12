@@ -35,6 +35,7 @@ Scenario(
       await I.Authorize(users.viewer.username, users.viewer.password);
       I.amOnPage(homePage.url);
       I.waitForVisible(homePage.fields.checksPanelSelector, 30);
+      I.waitForVisible(homePage.fields.noAccessRightsSelector, 30);
       I.see('Insufficient access rights.', homePage.fields.noAccessRightsSelector);
     }
 );
@@ -79,6 +80,7 @@ Scenario(
       await I.Authorize(users.viewer.username, users.viewer.password);
       I.amOnPage(homePage.url);
       I.waitForVisible(homePage.fields.checksPanelSelector, 30);
+      I.waitForVisible(homePage.fields.noAccessRightsSelector, 30);
       I.see('Insufficient access rights.', homePage.fields.noAccessRightsSelector);
     }
 );
