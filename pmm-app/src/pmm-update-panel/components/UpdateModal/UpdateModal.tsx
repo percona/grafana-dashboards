@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 
 import { Messages } from './UpdateModal.messages';
 import * as styles from './UpdateModal.styles';
