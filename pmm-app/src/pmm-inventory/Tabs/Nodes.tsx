@@ -42,8 +42,7 @@ export const NodesTab = () => {
     try {
       setLoading(true);
       const requests = nodes
-        .map(item => item.original)
-        .map(node => InventoryService.removeNode({ node_id: node.node_id, force: forceMode }));
+        .map(node => InventoryService.removeNode({ node_id: node.original.node_id, force: forceMode }));
 
       const results = await processPromiseResults(requests);
       const successfullyDeleted = results.filter(filterFulfilled).length;
