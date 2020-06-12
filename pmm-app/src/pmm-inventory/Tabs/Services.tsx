@@ -45,8 +45,7 @@ export const Services = () => {
     try {
       setLoading(true);
       const requests = services
-        .map(item => item.original)
-        .map(service => InventoryService.removeService({ service_id: service.service_id, force: forceMode }));
+        .map(service => InventoryService.removeService({ service_id: service.original.service_id, force: forceMode }));
       const results = await processPromiseResults(requests);
       const successfullyDeleted = results.filter(filterFulfilled).length;
       showSuccessNotification({
