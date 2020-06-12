@@ -4,6 +4,11 @@ import { find, omit } from 'lodash';
 import { ParseQueryParamDate } from 'shared/components/helpers/time-parameters-parser';
 import { DEFAULT_COLUMNS, FILTERS_NAMES } from './panel.constants';
 
+interface RawTime {
+  from: string;
+  to: string;
+}
+
 interface QueryAnalyticsPanelState {
   to: string;
   from: string;
@@ -19,10 +24,11 @@ interface QueryAnalyticsPanelState {
   openDetailsTab: string;
   fingerprint?: string;
   controlSum?: string;
+  rawTime: RawTime;
 }
 
 interface QueryAnalyticsContext {
-  panelState?: QueryAnalyticsPanelState;
+  panelState: QueryAnalyticsPanelState;
   contextActions?: any;
 }
 

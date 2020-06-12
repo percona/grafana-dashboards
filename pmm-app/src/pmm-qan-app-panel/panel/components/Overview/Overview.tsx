@@ -2,6 +2,7 @@ import { Pagination, Table } from 'antd';
 import React, {
   useCallback, useContext, useEffect, useState, useRef
 } from 'react';
+import scrollIntoView from 'scroll-into-view';
 import './Overview.scss';
 import { QueryAnalyticsProvider } from 'pmm-qan-app-panel/panel/panel.provider';
 import 'shared/components/Elements/Spinner/Spinner';
@@ -23,6 +24,15 @@ export const Overview = () => {
     },
   } = useContext(QueryAnalyticsProvider);
   const tableWrapperRef = useRef<HTMLDivElement>(null);
+
+
+  useEffect(() => {
+    scrollIntoView(document.querySelector('.selected-overview-row'), {
+      align: {
+        top: 0,
+      },
+    });
+  }, [queryId]);
 
   useEffect(() => {
     setHeight((tableWrapperRef.current && tableWrapperRef.current.clientHeight) || 0);

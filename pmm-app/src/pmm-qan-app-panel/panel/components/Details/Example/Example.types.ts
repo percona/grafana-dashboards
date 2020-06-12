@@ -1,7 +1,7 @@
 import { DatabasesType } from '../Details.types';
 
 export interface ExampleInterface {
-  fingerprint: string;
+  fingerprint?: string;
   databaseType: DatabasesType;
   // TODO: update examples interface
   examples: any[];
