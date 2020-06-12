@@ -89,47 +89,4 @@ export const panel = css`
       margin-bottom: 0.1rem;
     }
   }
-
-  #pmm-update-modal .pre-scrollable {
-    height: 200px;
-    overflow-y: scroll;
-  }
-
-  #pmm-update-modal .pre-scrollable pre {
-    border-radius: 0;
-    color: darkgrey;
-    background-color: #292929;
-    font-size: 0.6em;
-    border: none;
-  }
-
-  #pmm-update-modal .output-content {
-    background-color: #1f1d1d;
-    padding: 1em;
-  }
-
-  #pmm-update-modal .text-right {
-    float: right;
-  }
-
-  #pmm-update-modal .text-block {
-    padding: 80px;
-  }
-
-  #pmm-update-modal .text-primary {
-    color: #00729b;
-    cursor: pointer;
-  }
-
-  #pmm-update-modal .text-primary:hover {
-    color: #005f81;
-  }
-
-  #pmm-update-modal .btn-block {
-    width: 100%;
-  }
-
-  #pmm-update-modal .output-collapse {
-    cursor: pointer;
-  }
 `;

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { Messages } from './UpdateModal.messages';
+import * as styles from './UpdateModal.styles';
 
 export const UpdateModal: React.FC<{
   canBeReloaded: boolean;
@@ -45,14 +46,14 @@ export const UpdateModal: React.FC<{
 
   // TODO (nicolalamacchia): componentize this
   return (
-    <div className="modal-dialog" role="document" id="pmm-update-modal">
+    <div className={`modal-dialog ${styles.modal}`} role="document">
       {!isUpdated ? (
         <div className="modal-content">
           <div className="modal-body">
             {!errorMessage.length ? (
               <h4>
                 {Messages.updateInProgress}{' '}
-                {/* {isLoaderShown && <i className="fa fa-spinner fa-spin"></i>}*/}
+                {/* {isLoaderShown && <i className="fa fa-spinner fa-spin"></i>} */}
               </h4>
             ) : null}
             {updateFailed && (
@@ -74,6 +75,7 @@ export const UpdateModal: React.FC<{
               </div>
 
               {isOutputShown && (
+                // TODO (nicolalamacchia): remove IDs
                 <div id="scroll-container" className="pre-scrollable output-value">
                   <pre id="pre-scrollable">{output}</pre>
                 </div>
