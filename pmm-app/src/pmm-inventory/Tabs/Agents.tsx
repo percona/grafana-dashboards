@@ -39,9 +39,8 @@ export const Agents = () => {
   const removeAgents = useCallback(async (agents: Array<SelectedTableRows<Agent>>, forceMode) => {
     try {
       setLoading(true);
-      const requests = agents
-        .map(item => item.original)
-        .map(agent => InventoryService.removeAgent({ agent_id: agent.agent_id, force: forceMode }));
+      const requests = agents.map(agent =>
+        InventoryService.removeAgent({ agent_id: agent.original.agent_id, force: forceMode })
       const results = await processPromiseResults(requests);
 
       const successfullyDeleted = results.filter(filterFulfilled).length;
