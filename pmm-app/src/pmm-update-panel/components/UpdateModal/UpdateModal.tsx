@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { Messages } from './UpdateModal.messages';
 
-const UpdateModal: React.FC<{
+export const UpdateModal: React.FC<{
   canBeReloaded: boolean;
   errorMessage: string;
   isUpdated: boolean;
@@ -113,5 +113,3 @@ const UpdateModal: React.FC<{
     </div>
   );
 };
-
-export default UpdateModal;
