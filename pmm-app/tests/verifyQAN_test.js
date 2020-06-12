@@ -418,3 +418,15 @@ xScenario(
     I.scrollTo(qanPage.getColumn('No index used'));
   }
 );
+
+// TODO: Uncomment after new QAN will be merged
+xScenario(
+  'PMM-T223 - Verify time metrics are AVG per query (not per second)',
+  async (I, qanPage) => {
+    qanPage.waitForNewQANPageLoaded();
+    pause()
+    I.wait(300);
+
+  }
+);
+

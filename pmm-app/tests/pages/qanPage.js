@@ -497,4 +497,8 @@ module.exports = {
   getRow(row) {
     return `//td[@class='ant-table-row-cell-break-word']//div[contains(text(), '${row}')]`;
   },
+
+  getQueryCount(row){
+    const time = "//table/tbody/tr[2]/td[5]/div/span/div/span";
+  }
 };
