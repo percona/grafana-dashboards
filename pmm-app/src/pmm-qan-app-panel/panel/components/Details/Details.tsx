@@ -23,7 +23,7 @@ const Details = () => {
   const {
     contextActions: { closeDetails, setActiveTab },
     panelState: {
-      queryId, groupBy, fingerprint, controlSum, totals, openDetailsTab
+      queryId, groupBy, fingerprint, totals, openDetailsTab
     },
   } = useContext(QueryAnalyticsProvider);
   const {
@@ -48,7 +48,6 @@ const Details = () => {
       <Fingerprint
         totals={totals}
         query={fingerprint}
-        controlSum={controlSum}
         queryId={queryId}
         groupBy={groupBy}
         closeDetails={closeDetails}

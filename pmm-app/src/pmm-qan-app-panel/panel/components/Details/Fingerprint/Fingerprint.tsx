@@ -5,11 +5,11 @@ import { Close } from 'shared/components/Elements/Icons/Close';
 import { Info } from 'shared/components/Elements/Icons/Info';
 import { GROUP_BY_OPTIONS } from './Fingerprint.constants';
 import { styles } from './Fingerprint.styles';
+import { FingerprintProps } from './Fingerprint.types';
 
-const Fingerprint = (props) => {
-  const {
-    totals, query, queryId, groupBy, closeDetails
-  } = props;
+const Fingerprint = ({
+  totals, query, queryId, groupBy, closeDetails
+}: FingerprintProps) => {
   const currentGroupBy = GROUP_BY_OPTIONS.filter((option) => option.value === groupBy)[0];
   return (
     <div className={styles.fingerprintWrapper} id="query-id">

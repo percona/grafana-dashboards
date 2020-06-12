@@ -3,34 +3,7 @@ import { getDataSourceSrv } from '@grafana/runtime';
 import { find, omit } from 'lodash';
 import { ParseQueryParamDate } from 'shared/components/helpers/time-parameters-parser';
 import { DEFAULT_COLUMNS, FILTERS_NAMES } from './panel.constants';
-
-interface RawTime {
-  from: string;
-  to: string;
-}
-
-interface QueryAnalyticsPanelState {
-  to: string;
-  from: string;
-  columns: any[];
-  labels: any; // ???
-  pageNumber: number;
-  pageSize: number;
-  orderBy: string;
-  queryId?: string;
-  totals: boolean;
-  querySelected: boolean;
-  groupBy: string;
-  openDetailsTab: string;
-  fingerprint?: string;
-  controlSum?: string;
-  rawTime: RawTime;
-}
-
-interface QueryAnalyticsContext {
-  panelState: QueryAnalyticsPanelState;
-  contextActions?: any;
-}
+import { QueryAnalyticsContext } from './panel.types';
 
 const initialState = {} as QueryAnalyticsContext;
 
