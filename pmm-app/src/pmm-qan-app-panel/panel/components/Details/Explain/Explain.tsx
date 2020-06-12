@@ -6,16 +6,11 @@ import { processClassicExplain } from './Explain.tools';
 import { styles } from './Explain.styles';
 import { DATABASE } from '../Details.constants';
 import { ExplainTabs } from './Explain.constants';
-import { ActionResult, DatabasesType } from '../Details.types';
+import { ExplainProps } from './Explain.types';
 
 const { Panel } = Collapse;
 
 
-interface ExplainProps {
-  classicExplain: ActionResult;
-  jsonExplain: ActionResult;
-  databaseType: DatabasesType;
-}
 const Explain = ({
   classicExplain,
   jsonExplain,
