@@ -24,8 +24,8 @@ const markCheckedLabels = (labels, paramLabels) => {
   return labels;
 };
 
-class FiltersService {
-  static async getQueryOverviewFiltersList(paramLabels, from, to, mainMetric) {
+export default {
+  getQueryOverviewFiltersList: async (paramLabels, from, to, mainMetric) => {
     const { labels } = await apiRequestQAN.post<any, any>('/Filters/Get', {
       labels: getLabelQueryParams(paramLabels),
       main_metric_name: mainMetric,
@@ -34,6 +34,4 @@ class FiltersService {
     });
     return markCheckedLabels(labels, paramLabels);
   }
-}
-
-export default FiltersService;
+};

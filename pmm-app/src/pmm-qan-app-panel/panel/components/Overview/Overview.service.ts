@@ -2,8 +2,8 @@ import { apiRequestQAN } from 'shared/components/helpers/api';
 import { getLabelQueryParams } from 'pmm-qan-app-panel/panel/panel.tools';
 import { OverviewServiceInterface } from './Overview.types';
 
-class OverviewTableService {
-  static async getReport(body: OverviewServiceInterface) {
+export default {
+  getReport: async (body: OverviewServiceInterface) => {
     const { columns } = body;
     const request = {
       columns,
@@ -19,7 +19,5 @@ class OverviewTableService {
       period_start_to: body.to,
     };
     return apiRequestQAN.post<any, any>('/GetReport', request);
-  }
-}
-
-export default OverviewTableService;
+  },
+};
