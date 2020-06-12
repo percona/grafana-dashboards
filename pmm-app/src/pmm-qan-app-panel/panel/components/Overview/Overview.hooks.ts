@@ -1,7 +1,7 @@
 import {
   useCallback, useContext, useEffect, useState
 } from 'react';
-import { QueryAnalyticsProvider } from 'pmm-qan-app-panel/panel/panel.provider';
+import { QueryAnalyticsProvider } from 'pmm-qan-app-panel/panel/provider/provider';
 import OverviewService from './Overview.service';
 import { DataInterface } from './Overview.types';
 import { getOverviewColumn } from './components/MetricColumns/MetricColumns';
