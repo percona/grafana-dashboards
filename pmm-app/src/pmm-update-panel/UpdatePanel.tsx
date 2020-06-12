@@ -32,9 +32,6 @@ export const UpdatePanel = () => {
   const [updateLogOffset, setUpdateLogOffset] = useState(0);
   const [output, setOutput] = useState('');
 
-  // TODO (nicolalamacchia): consider removing this
-  const disableUpdate = false;
-
   // TODO (nicolalamacchia): make this work
   const displayError = useCallback(message => {
     setErrorMessage(message);
@@ -234,7 +231,7 @@ export const UpdatePanel = () => {
           </section>
         ) : null}
         {isUpdateAvailable || forceUpdate ? (
-          <UpdateButton disabled={disableUpdate} handleUpdate={update} nextVersion={nextVersion} />
+          <UpdateButton handleUpdate={update} nextVersion={nextVersion} />
         ) : null}
         <LastCheck
           handleCheckForUpdates={checkForUpdates}
