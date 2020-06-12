@@ -1,17 +1,33 @@
 import { CustomLabel, ServicesList } from './Inventory.types';
 
-export const processPromiseResults = (requests: Array<Promise<any>>) =>
+interface FulfilledPromiseResult {
+  status: 'fulfilled';
+  value: any;
+}
+
+interface RejectedPromiseResult {
+  status: 'rejected';
+  reason: any;
+}
+
+type PromiseResult = FulfilledPromiseResult | RejectedPromiseResult;
+
+export const processPromiseResults = (requests: Array<Promise<any>>): Promise<PromiseResult[]> =>
   Promise.all(
     requests.map(promise =>
       promise
-        .then(value => ({
-          status: 'fulfilled',
-          value,
-        }))
-        .catch(reason => ({
-          status: 'rejected',
-          reason,
-        }))
+        .then(
+          (value): FulfilledPromiseResult => ({
+            status: 'fulfilled',
+            value,
+          })
+        )
+        .catch(
+          (reason): RejectedPromiseResult => ({
+            status: 'rejected',
+            reason,
+          })
+        )
     )
   );
 
