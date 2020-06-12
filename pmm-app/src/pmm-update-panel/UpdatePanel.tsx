@@ -253,7 +253,7 @@ export const UpdatePanel = () => {
                   {newsLink && (
                     <a href={newsLink} className="pmm-link" rel="noreferrer" target="_blank">
                       {' '}
-                      {Messages.whatsNew}
+                      What&apos;s new
                     </a>
                   )}
                 </p>

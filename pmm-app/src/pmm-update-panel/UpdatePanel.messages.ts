@@ -5,7 +5,6 @@ export const Messages = {
   upToDate: 'You are up to date',
   updateTo: 'Update to',
   availableVersion: 'Available version',
-  whatsNew: "What's new",
   lastCheck: 'Last check',
   nothingToUpdate: 'Nothing to update',
 };
