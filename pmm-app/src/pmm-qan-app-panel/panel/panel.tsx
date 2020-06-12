@@ -5,7 +5,7 @@ import containerStyling from 'shared/components/helpers/styling';
 import SplitPane from 'react-split-pane';
 import 'shared/styles.scss';
 import 'shared/style.less';
-import { QueryAnalyticsProvider, UrlParametersProvider } from './panel.provider';
+import { QueryAnalyticsProvider, UrlParametersProvider } from './provider/provider';
 import {
   Overview, Filters, Details, ManageColumns
 } from './components';

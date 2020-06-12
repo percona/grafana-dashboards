@@ -2,7 +2,7 @@ import React, { useContext, useRef, useState } from 'react';
 import { Button, Input, Spin } from 'antd';
 import { Form } from 'react-final-form';
 import ScrollArea from 'react-scrollbar';
-import { QueryAnalyticsProvider } from 'pmm-qan-app-panel/panel/panel.provider';
+import { QueryAnalyticsProvider } from 'pmm-qan-app-panel/panel/provider/provider';
 import { Filter } from 'shared/components/Elements/Icons/Filter';
 import { CheckboxGroup } from './components/CheckboxGroup/CheckboxGroup';
 import { FILTERS_BODY_HEIGHT, FILTERS_GROUPS } from './Filters.constants';
