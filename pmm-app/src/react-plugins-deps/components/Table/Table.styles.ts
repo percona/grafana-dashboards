@@ -48,14 +48,6 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
           border-right: 1px solid ${borderColor};
           color: ${textColor};
 
-          /* The secret sauce */
-          /* Each cell should grow equally */
-          // width: 1%;
-          /* But "collapsed" cells should be as small as possible */
-          // &.collapse {
-          //   width: 0.0000000001%;
-          // }
-
           :last-child {
             border-right: 0;
           }

@@ -85,7 +85,7 @@ export const Services = () => {
       >
         <Form
           onSubmit={() => {}}
-          render={({ form, handleSubmit }) => {
+          render={({ handleSubmit }) => {
             return (
               <form onSubmit={handleSubmit}>
                 <>

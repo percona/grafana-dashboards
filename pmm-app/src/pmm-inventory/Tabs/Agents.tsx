@@ -82,7 +82,7 @@ export const Agents = () => {
       >
         <Form
           onSubmit={() => {}}
-          render={({ form, handleSubmit }) => {
+          render={({ handleSubmit }) => {
             return (
               <form onSubmit={handleSubmit}>
                 <>
