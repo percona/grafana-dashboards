@@ -31,7 +31,7 @@ export const processPromiseResults = (requests: Array<Promise<any>>): Promise<Pr
     )
   );
 
-export const filterFulfilled = ({ status }: { status: string }) => status === 'fulfilled';
+export const filterFulfilled = ({ status }: { status: PromiseResult['status'] }) => status === 'fulfilled';
 
 interface Model {
   custom_labels: CustomLabel[];
