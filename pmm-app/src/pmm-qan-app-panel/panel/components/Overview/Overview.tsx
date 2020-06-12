@@ -11,7 +11,6 @@ import { styles } from '../../panel.styles';
 import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE, PAGE_SIZE_OPTIONS } from '../../panel.constants';
 
 export const Overview = () => {
-  // const { reload } = props;
   const [total, setTotal] = useState(30);
   const [overviewMetricsList, loading] = useOverviewTable(setTotal);
   const [height, setHeight] = useState(400);
@@ -81,7 +80,7 @@ export const Overview = () => {
 
 
   return (
-    <div className="table-wrapper" ref={tableWrapperRef} style={{ width: '100%' }}>
+    <div className="table-wrapper" ref={tableWrapperRef}>
       <div>
         <Table
           dataSource={overviewMetricsList.rows}

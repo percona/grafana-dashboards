@@ -131,7 +131,7 @@ export const useDetailsState = () => {
           tables,
         });
       } catch (e) {
-        // TODO: add error handling
+        console.error(e);
       }
     })();
   }, [queryId]);
