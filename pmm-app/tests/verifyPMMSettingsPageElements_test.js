@@ -1,3 +1,5 @@
+const assert = require('assert');
+
 Feature('PMM Settings Page Elements and Validations');
 
 Before(async (I, pmmSettingsPage) => {
@@ -182,23 +184,38 @@ Scenario(
 );
 
 Scenario(
-    'PMM-T254 Verify validation for STT and Telemetry switches ',
-    async (I, pmmSettingsPage, settingsAPI) => {
-        await settingsAPI.apiDisableSTT();
-        I.amOnPage(pmmSettingsPage.url);
-        pmmSettingsPage.waitForPmmSettingsPageLoaded();
-        pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.telemetrySwitchSelector, 'on');
-        pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelector, 'off');
-        I.click(pmmSettingsPage.fields.telemetrySwitchSelector);
-        pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.telemetrySwitchSelector, 'off');
-        pmmSettingsPage.verifySwitchStateIs(pmmSettingsPage.fields.sttSwitchSelector, false);
-        I.click(pmmSettingsPage.fields.telemetrySwitchSelector);
-        pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.telemetrySwitchSelector, 'on');
-        pmmSettingsPage.verifySwitchStateIs(pmmSettingsPage.fields.sttSwitchSelector, true);
-        I.click(pmmSettingsPage.fields.sttSwitchSelector);
-        pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelector, 'on');
-        pmmSettingsPage.verifySwitchStateIs(pmmSettingsPage.fields.sttSwitchSelector, true);
-        pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.telemetrySwitchSelector, 'on');
-        pmmSettingsPage.verifySwitchStateIs(pmmSettingsPage.fields.telemetrySwitchSelector, false);
-    }
+  'PMM-T254 Verify validation for STT and Telemetry switches ',
+  async (I, pmmSettingsPage, settingsAPI) => {
+    await settingsAPI.apiDisableSTT();
+    I.amOnPage(pmmSettingsPage.url);
+    pmmSettingsPage.waitForPmmSettingsPageLoaded();
+    pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.telemetrySwitchSelector, 'on');
+    pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelector, 'off');
+    I.click(pmmSettingsPage.fields.telemetrySwitchSelector);
+    pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.telemetrySwitchSelector, 'off');
+    pmmSettingsPage.verifySwitchStateIs(pmmSettingsPage.fields.sttSwitchSelector, false);
+    I.click(pmmSettingsPage.fields.telemetrySwitchSelector);
+    pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.telemetrySwitchSelector, 'on');
+    pmmSettingsPage.verifySwitchStateIs(pmmSettingsPage.fields.sttSwitchSelector, true);
+    I.click(pmmSettingsPage.fields.sttSwitchSelector);
+    pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelector, 'on');
+    pmmSettingsPage.verifySwitchStateIs(pmmSettingsPage.fields.sttSwitchSelector, true);
+    pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.telemetrySwitchSelector, 'on');
+    pmmSettingsPage.verifySwitchStateIs(pmmSettingsPage.fields.telemetrySwitchSelector, false);
+  }
+);
+
+//To be removed from Skip after https://jira.percona.com/browse/PMM-5791
+xScenario(
+  'PMM-T227 Open PMM Settings page and verify DATA_RETENTION value is set to 2 days @not-pr-pipeline',
+  async (I, pmmSettingsPage) => {
+    const dataRetention = '2';
+    pmmSettingsPage.waitForPmmSettingsPageLoaded();
+    const dataRetentionActualValue = await I.grabValueFrom(pmmSettingsPage.fields.dataRetentionCount);
+    assert(
+      dataRetention,
+      dataRetentionActualValue,
+      'The Value for Data Retention is not the same as passed via Docker Environment Variable'
+    );
+  }
 );
