@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 
 import { Messages } from './UpdateModal.messages';
 import * as styles from './UpdateModal.styles';
@@ -11,17 +11,7 @@ export const UpdateModal: React.FC<{
   updateFailed: boolean;
   version: string;
 }> = ({ canBeReloaded, errorMessage, isUpdated, output, updateFailed, version }) => {
-  useEffect(() => {
-    // TODO (nicolalamacchia): change this (use a ref)
-    const element = document.getElementById('pre-scrollable');
-    // scroll update status to the end.
-    const interval = setInterval(() => element && element.scrollIntoView(false), 500);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
-
+  const scrollableRef = React.createRef<HTMLPreElement>();
   const [isOutputShown, setIsOutputShown] = useState(true);
 
   // TODO (nicolalamacchia): handle click outside the modal (use a ref) and the esc key
@@ -35,6 +25,15 @@ export const UpdateModal: React.FC<{
   //   $scope.keydownCode = event.code;
   //   event.key === escKeyCode && $scope.canBeReloaded ? location.reload(true) : event.stopPropagation();
   // });
+
+  useLayoutEffect(() => {
+    // scroll update status to the end.
+    const interval = setInterval(() => scrollableRef.current?.scrollIntoView(false), 500);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
 
   const handleToggleShowOutput = () => {
     setIsOutputShown(isOutputShown => !isOutputShown);
@@ -76,8 +75,8 @@ export const UpdateModal: React.FC<{
 
               {isOutputShown && (
                 // TODO (nicolalamacchia): remove IDs
-                <div id="scroll-container" className="pre-scrollable output-value">
-                  <pre id="pre-scrollable">{output}</pre>
+                <div className="pre-scrollable output-value">
+                  <pre ref={scrollableRef}>{output}</pre>
                 </div>
               )}
             </div>

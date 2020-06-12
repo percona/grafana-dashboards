@@ -16,7 +16,7 @@ const LastCheck: React.FC<{
   <div className="last-check-wrapper">
     <p>Last check: {lastCheckDate}</p>
     <button onClick={handleCheckForUpdates} className="check-update-button">
-      <i className={`fa ${isLoading ? 'fa-spin ' : ''}fa-refresh`} id="refresh"></i>
+      <i className={`fa ${isLoading ? 'fa-spin ' : ''}fa-refresh`}></i>
     </button>
   </div>
 );
@@ -225,7 +225,7 @@ export const UpdatePanel = () => {
       <div className={styles.panel}>
         <header>
           <h2 className="update-title">Updates</h2>
-          <p className="version" id="current_version" onClick={handleShowFullCurrentVersion}>
+          <p className="version" onClick={handleShowFullCurrentVersion}>
             Current version:{' '}
             <span>
               {version} <em>{currentReleaseDate}</em>
@@ -245,7 +245,7 @@ export const UpdatePanel = () => {
         ) : null}
         {isUpdateAvailable && !isDefaultView ? (
           <section className="available-version">
-            <div id="available_version" onClick={handleShowFullAvailableVersion}>
+            <div className="available_version" onClick={handleShowFullAvailableVersion}>
               <p>Available version:&nbsp;</p>
               <div className="version">
                 <p>

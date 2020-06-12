@@ -39,7 +39,7 @@ export const panel = css`
     background: transparent;
   }
 
-  #available_version {
+  .available_version {
     display: flex;
   }
 
