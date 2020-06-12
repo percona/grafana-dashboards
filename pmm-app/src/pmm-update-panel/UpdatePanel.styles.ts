@@ -14,31 +14,6 @@ export const panel = css`
     margin-bottom: 7px;
   }
 
-  .check-update-button {
-    position: relative;
-    display: flex;
-    align-items: center;
-    margin-left: auto;
-    font-size: 16px;
-    color: #27b4e7;
-    border-radius: 50%;
-    background-color: transparent;
-    border: none;
-  }
-
-  .update-button {
-    width: 100%;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    background: #292929 none;
-    box-sizing: border-box;
-  }
-
-  .update-button:disabled {
-    border: 2px solid #292929;
-    background: transparent;
-  }
-
   .available_version {
     display: flex;
   }
@@ -61,15 +36,6 @@ export const panel = css`
     align-items: flex-start;
   }
 
-  .last-check-wrapper {
-    position: absolute;
-    bottom: 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-  }
-
   .no-update-text {
     font-size: 12px;
   }
@@ -88,5 +54,39 @@ export const panel = css`
       font-size: 1.55rem;
       margin-bottom: 0.1rem;
     }
+  }
+`;
+
+export const lastCheck = css`
+  position: absolute;
+  bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+
+  button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    font-size: 16px;
+    color: #27b4e7;
+    border-radius: 50%;
+    background-color: transparent;
+    border: none;
+  }
+`;
+
+export const updateButton = css`
+  width: 100%;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  background: #292929 none;
+  box-sizing: border-box;
+
+  &:disabled {
+    border: 2px solid #292929;
+    background: transparent;
   }
 `;

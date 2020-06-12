@@ -1,39 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import moment from 'moment';
 
-import { UpdateModal } from 'pmm-update-panel/components';
+import { LastCheck, UpdateButton, UpdateModal } from 'pmm-update-panel/components';
 
 import { getCurrentVersion, getUpdates, startUpdate, getUpdateStatus } from './UpdatePanel.service';
 import { Messages } from './UpdatePanel.messages';
 import * as styles from './UpdatePanel.styles';
-
-// TODO (nicolalamacchia): move to separate component
-const LastCheck: React.FC<{
-  handleCheckForUpdates: () => void;
-  isLoading: boolean;
-  lastCheckDate: string;
-}> = ({ isLoading, lastCheckDate, handleCheckForUpdates }) => (
-  <div className="last-check-wrapper">
-    <p>Last check: {lastCheckDate}</p>
-    <button onClick={handleCheckForUpdates} className="check-update-button">
-      <i className={`fa ${isLoading ? 'fa-spin ' : ''}fa-refresh`}></i>
-    </button>
-  </div>
-);
-
-// TODO (nicolalamacchia): move to separate component
-const UpdateButton: React.FC<{
-  handleUpdate: () => void;
-  nextVersion: string;
-  disabled?: boolean;
-}> = ({ handleUpdate, nextVersion, disabled = false }) => (
-  <button className="btn btn-secondary btn-block update-button" disabled={disabled} onClick={handleUpdate}>
-    <span>
-      <i className="fa fa-download"></i>
-      Update to {nextVersion}
-    </span>
-  </button>
-);
 
 export const UpdatePanel = () => {
   const [version, setVersion] = useState('');

@@ -3,14 +3,23 @@ import React, { useLayoutEffect, useState } from 'react';
 import { Messages } from './UpdateModal.messages';
 import * as styles from './UpdateModal.styles';
 
-export const UpdateModal: React.FC<{
+interface UpdateModalProps {
   canBeReloaded: boolean;
   errorMessage: string;
   isUpdated: boolean;
   output: string;
   updateFailed: boolean;
   version: string;
-}> = ({ canBeReloaded, errorMessage, isUpdated, output, updateFailed, version }) => {
+}
+
+export const UpdateModal = ({
+  canBeReloaded,
+  errorMessage,
+  isUpdated,
+  output,
+  updateFailed,
+  version,
+}: UpdateModalProps) => {
   const scrollableRef = React.createRef<HTMLPreElement>();
   const [isOutputShown, setIsOutputShown] = useState(true);
 
