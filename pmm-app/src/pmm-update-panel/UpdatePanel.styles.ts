@@ -14,10 +14,6 @@ export const panel = css`
     margin-bottom: 7px;
   }
 
-  .available_version {
-    display: flex;
-  }
-
   section.state {
     height: 65px;
     margin: 10px 0;
@@ -34,19 +30,27 @@ export const panel = css`
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
+
+    > div {
+      display: flex;
+    }
+
+    a {
+      margin-left: 5px;
+    }
+
+    a,
+    a:hover {
+      color: #27b4e7;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
   }
 
   .no-update-text {
     font-size: 12px;
-  }
-
-  .pmm-link,
-  .pmm-link:hover {
-    color: #27b4e7;
-  }
-
-  .pmm-link:hover {
-    text-decoration: underline;
   }
 
   @media (max-width: 1281px) {

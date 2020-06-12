@@ -32,7 +32,6 @@ export const UpdatePanel = () => {
   const [updateLogOffset, setUpdateLogOffset] = useState(0);
   const [output, setOutput] = useState('');
 
-  // TODO (nicolalamacchia): make this work
   const displayError = useCallback(message => {
     setErrorMessage(message);
     setTimeout(() => {
@@ -193,7 +192,7 @@ export const UpdatePanel = () => {
     <>
       <div className={styles.panel}>
         <header>
-          <h2 className="update-title">Updates</h2>
+          <h2>Updates</h2>
           <p className="version" onClick={handleShowFullCurrentVersion}>
             Current version:{' '}
             <span>
@@ -214,15 +213,14 @@ export const UpdatePanel = () => {
         ) : null}
         {isUpdateAvailable && !isDefaultView ? (
           <section className="available-version">
-            <div className="available_version" onClick={handleShowFullAvailableVersion}>
+            <div onClick={handleShowFullAvailableVersion}>
               <p>Available version:&nbsp;</p>
               <div className="version">
                 <p>
                   {nextVersion} <em>{newReleaseDate}</em>
                   {newsLink && (
-                    <a href={newsLink} className="pmm-link" rel="noreferrer" target="_blank">
-                      {' '}
-                      What&apos;s new
+                    <a href={newsLink} rel="noreferrer" target="_blank">
+                      {Messages.whatsNew}
                     </a>
                   )}
                 </p>
