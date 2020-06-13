@@ -25,30 +25,6 @@ export const panel = css`
     border: 2px solid #292929;
   }
 
-  section.available-version {
-    margin-top: 5px;
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-
-    > div {
-      display: flex;
-    }
-
-    a {
-      margin-left: 5px;
-    }
-
-    a,
-    a:hover {
-      color: #27b4e7;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-  }
-
   .no-update-text {
     font-size: 12px;
   }
@@ -79,18 +55,5 @@ export const lastCheck = css`
     border-radius: 50%;
     background-color: transparent;
     border: none;
-  }
-`;
-
-export const updateButton = css`
-  width: 100%;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  background: #292929 none;
-  box-sizing: border-box;
-
-  &:disabled {
-    border: 2px solid #292929;
-    background: transparent;
   }
 `;

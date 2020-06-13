@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { MouseEvent, useCallback, useEffect, useState } from 'react';
 import moment from 'moment';
 
-import { LastCheck, UpdateButton, UpdateModal } from 'pmm-update-panel/components';
+import { AvailableUpdate, LastCheck, UpdateButton, UpdateModal } from 'pmm-update-panel/components';
 
 import { getCurrentVersion, getUpdates, startUpdate, getUpdateStatus } from './UpdatePanel.service';
 import { Messages } from './UpdatePanel.messages';
@@ -50,7 +50,7 @@ export const UpdatePanel = () => {
     }
   }, []);
 
-  const handleShowFullAvailableVersion = useCallback(e => {
+  const handleShowFullAvailableVersion = useCallback((e: MouseEvent) => {
     if (e.altKey) {
       if (nextVersion !== nextFullVersion) {
         setNextVersionCached(nextVersion);
@@ -92,7 +92,7 @@ export const UpdatePanel = () => {
     };
   };
 
-  const update = useCallback(async () => {
+  const handleUpdate = useCallback(async () => {
     setShowModal(true);
 
     try {
@@ -105,7 +105,7 @@ export const UpdatePanel = () => {
     }
   }, []);
 
-  const checkForUpdates = useCallback(async () => {
+  const handleCheckForUpdates = useCallback(async () => {
     setIsLoading(true);
 
     // TODO (nicolalamacchia): handle alt+click key
@@ -212,27 +212,18 @@ export const UpdatePanel = () => {
           </section>
         ) : null}
         {isUpdateAvailable && !isDefaultView ? (
-          <section className="available-version">
-            <div onClick={handleShowFullAvailableVersion}>
-              <p>Available version:&nbsp;</p>
-              <div className="version">
-                <p>
-                  {nextVersion} <em>{newReleaseDate}</em>
-                  {newsLink && (
-                    <a href={newsLink} rel="noreferrer" target="_blank">
-                      {Messages.whatsNew}
-                    </a>
-                  )}
-                </p>
-              </div>
-            </div>
-          </section>
+          <AvailableUpdate
+            onShowFullAvailableVersion={handleShowFullAvailableVersion}
+            newReleaseDate={newReleaseDate}
+            newsLink={newsLink}
+            nextVersion={nextVersion}
+          />
         ) : null}
         {isUpdateAvailable || forceUpdate ? (
-          <UpdateButton handleUpdate={update} nextVersion={nextVersion} />
+          <UpdateButton onClick={handleUpdate} nextVersion={nextVersion} />
         ) : null}
         <LastCheck
-          handleCheckForUpdates={checkForUpdates}
+          onCheckForUpdates={handleCheckForUpdates}
           lastCheckDate={lastCheckDate}
           isLoading={isLoading}
         />
