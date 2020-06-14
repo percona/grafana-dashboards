@@ -26,7 +26,7 @@ Scenario(
 );
 
 Scenario(
-  'PMM-T288 Verify user can see Update widget before upgrade @pmm-upgrade @visual-test @not-pr-pipeline',
+  'PMM-T288 Verify user can see Update widget before upgrade @visual-test @not-pr-pipeline',
   async (I, adminPage, homePage) => {
     I.amOnPage(homePage.url);
     await homePage.verifyPreUpdateWidgetIsPresent();
