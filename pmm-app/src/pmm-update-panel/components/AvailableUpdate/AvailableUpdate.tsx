@@ -20,16 +20,14 @@ export const AvailableUpdate = ({
     <section className={styles.availableUpdate}>
       <div onClick={onShowFullAvailableVersion}>
         <p>{Messages.availableVersion}:&nbsp;</p>
-        <div className="version">
-          <p>
-            {nextVersion} <em>{newReleaseDate}</em>
-            {newsLink && (
-              <a href={newsLink} rel="noreferrer" target="_blank">
-                {Messages.whatsNew}
-              </a>
-            )}
-          </p>
-        </div>
+        <p className={styles.availableUpdate_version}>
+          {nextVersion} <em>{newReleaseDate}</em>
+          {newsLink && (
+            <a href={newsLink} rel="noreferrer" target="_blank">
+              {Messages.whatsNew}
+            </a>
+          )}
+        </p>
       </div>
     </section>
   );

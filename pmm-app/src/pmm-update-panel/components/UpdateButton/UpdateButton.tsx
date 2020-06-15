@@ -9,11 +9,7 @@ interface UpdateButtonProps {
 }
 
 export const UpdateButton = ({ onClick, nextVersion, disabled = false }: UpdateButtonProps) => (
-  <button
-    className={`btn btn-secondary btn-block ${styles.updateButton}`}
-    disabled={disabled}
-    onClick={onClick}
-  >
+  <button className={styles.updateButton} disabled={disabled} onClick={onClick}>
     <span>
       <i className="fa fa-download"></i> Update to {nextVersion}
     </span>

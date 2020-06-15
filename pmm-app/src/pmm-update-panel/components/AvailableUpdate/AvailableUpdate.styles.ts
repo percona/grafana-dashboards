@@ -22,9 +22,9 @@ export const availableUpdate = css`
   a:hover {
     text-decoration: underline;
   }
+`;
 
-  .version {
-    font-size: 14px;
-    margin-bottom: 7px;
-  }
+export const availableUpdate_version = css`
+  font-size: 14px;
+  margin-bottom: 7px;
 `;

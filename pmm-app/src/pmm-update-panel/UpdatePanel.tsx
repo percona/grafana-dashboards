@@ -5,6 +5,7 @@ import {
   AvailableUpdate,
   LastCheck,
   UpdateButton,
+  UpdateHeader,
   UpdateInfoBox,
   UpdateModal,
 } from 'pmm-update-panel/components';
@@ -203,15 +204,11 @@ export const UpdatePanel = () => {
   return (
     <>
       <div className={styles.panel}>
-        <header>
-          <h2>Updates</h2>
-          <p className="version" onClick={handleShowFullCurrentVersion}>
-            Current version:{' '}
-            <span>
-              {version} <em>{currentReleaseDate}</em>
-            </span>
-          </p>
-        </header>
+        <UpdateHeader
+          currentReleaseDate={currentReleaseDate}
+          onExpandVersion={handleShowFullCurrentVersion}
+          version={version}
+        />
         {isDefaultView && <UpdateInfoBox />}
         {!isUpdateAvailable && !isDefaultView && !forceUpdate ? <UpdateInfoBox upToDate /> : null}
         {isUpdateAvailable && !isDefaultView ? (
