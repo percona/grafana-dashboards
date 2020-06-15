@@ -112,6 +112,7 @@ export const UpdatePanel = () => {
       const { auth_token, log_offset } = data;
       await updateLogs(auth_token, log_offset);
     } catch (e) {
+      setUpdateFailed(true);
       console.error(e);
     }
   }, [updateLogs, startUpdate]);
@@ -195,7 +196,7 @@ export const UpdatePanel = () => {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [getCurrentVersion]);
 
   useEffect(() => {
     getCurrentVersionDetails();
