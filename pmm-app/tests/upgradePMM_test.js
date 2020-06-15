@@ -7,7 +7,7 @@ const serviceNames = {
   rds: 'mysql_rds_uprgade_service',
 };
 
-Feature('PMM server Upgrade');
+Feature('PMM server Upgrade Tests and Executing test cases related to Upgrade Testing Cycle');
 
 Before(async I => {
   I.Authorize();
@@ -18,10 +18,11 @@ Scenario(
   'PMM-T289 Verify Whats New link is presented on Update Widget @pmm-upgrade @visual-test @not-pr-pipeline',
   async (I, homePage) => {
     I.amOnPage(homePage.url);
-    const res2 = process.env.DOCKER_VERSION.split('.');
-    const res = process.env.PMM_SERVER_LATEST.split('.');
-    const majorVersionDiff = res[1] - res2[1];
-    const patchVersionDiff = res[2] - res2[2];
+    //Whats New Link is added for the latest version hours before the release hence we need to skip checking on that, rest it should be available and checked.
+    const [, pmmMajor, pmmMinor] = process.env.PMM_SERVER_LATEST.split('.');
+    const [, dockerMajor, dockerMinor] = process.env.DOCKER_VERSION.split('.');
+    const majorVersionDiff = pmmMajor - dockerMajor;
+    const patchVersionDiff = pmmMinor - dockerMinor;
     if (majorVersionDiff >= 1 && patchVersionDiff >= 0) {
       I.waitForElement(homePage.fields.whatsNewLink, 30);
       I.seeElement(homePage.fields.whatsNewLink);
@@ -82,7 +83,6 @@ Scenario(
   'PMM-T262 Open PMM Settings page and verify DATA_RETENTION value is set to 2 days after upgrade @pmm-upgrade @visual-test @not-pr-pipeline',
   async (I, pmmSettingsPage) => {
     const dataRetention = '2';
-    I.amOnPage(pmmSettingsPage.url);
     pmmSettingsPage.waitForPmmSettingsPageLoaded();
     const dataRetentionActualValue = await I.grabValueFrom(pmmSettingsPage.fields.dataRetentionCount);
     assert(
