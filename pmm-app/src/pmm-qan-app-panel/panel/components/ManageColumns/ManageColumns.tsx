@@ -75,19 +75,19 @@ export const ManageColumns = (props) => {
   const dropdownRender = (menu) => (
     <div className="add-column-wrapper">
       {menu}
-      <Divider className={styles.iconMargin} />
-      {!onlyAdd && columns.length > 1 && (
+      {!onlyAdd ? <Divider className={styles.dividerMargin} /> : null}
+      {!onlyAdd && columns.length > 1 ? (
         <div className={styles.actionElement} onMouseDown={(e) => e.preventDefault()} onClick={removeColumn}>
           <Icon type="minus" className={styles.iconMargin} />
           Remove column
         </div>
-      )}
-      {!onlyAdd && mainMetric !== currentMetric.simpleName && (
+      ) : null}
+      {!onlyAdd && mainMetric !== currentMetric.simpleName ? (
         <div className={styles.actionElement} onMouseDown={(e) => e.preventDefault()} onClick={swapWithMain}>
           <Icon type="swap" className={styles.iconMargin} />
           Swap with main metric
         </div>
-      )}
+      ) : null}
     </div>
   );
   return (

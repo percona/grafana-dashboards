@@ -93,7 +93,7 @@ export const Overview = () => {
           scroll={{ y: height - 100, x: '100%' }}
           rowClassName={getRowClassName}
           loading={loading}
-          rowKey="fingerprint"
+          // rowKey="fingerprint"
         />
       </div>
       <div className={styles.overviewHeader}>
