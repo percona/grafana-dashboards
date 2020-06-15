@@ -9,8 +9,8 @@ export const styles = {
     margin-right: 4px;
   `,
   dividerMargin: css`
-    margin: 0;
-    margin-right: 4px;
+    margin: 0 !important;
+    margin-right: 4px !important;
   `,
   actionElement: css`
     padding: 4px 8px;
