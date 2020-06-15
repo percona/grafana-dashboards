@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button, Icon } from '@grafana/ui';
 
 import * as styles from './UpdateButton.styles';
 
@@ -9,9 +10,8 @@ interface UpdateButtonProps {
 }
 
 export const UpdateButton = ({ onClick, nextVersion, disabled = false }: UpdateButtonProps) => (
-  <button className={styles.updateButton} disabled={disabled} onClick={onClick}>
-    <span>
-      <i className="fa fa-download"></i> Update to {nextVersion}
-    </span>
-  </button>
+  // TODO (nicolalamacchia): replace the icon with the `icon` prop of `Button` (it currently doen not work)
+  <Button disabled={disabled} className={styles.updateButton} onClick={onClick}>
+    <Icon name="download" /> Update to {nextVersion}
+  </Button>
 );
