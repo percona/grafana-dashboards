@@ -20,6 +20,7 @@ const AddInstancePanel = () => {
 
   const setSelectedInstance = (instance) => {
     const url = new URL((window.location as unknown) as string);
+
     url.searchParams.set('instance_type', instance.type);
     selectInstance(instance);
     history.push(url.pathname + url.search);

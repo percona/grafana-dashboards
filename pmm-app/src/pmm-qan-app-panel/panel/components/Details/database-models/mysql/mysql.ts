@@ -5,6 +5,7 @@ export const mysqlMethods = {
     if (!tableName) {
       return null;
     }
+
     const result = await MysqlDatabaseService.getShowCreateTableMySQL({
       database: example.schema,
       table_name: tableName,
@@ -18,11 +19,13 @@ export const mysqlMethods = {
     if (!tableName) {
       return null;
     }
+
     const result = await MysqlDatabaseService.getMysqlIndex({
       database: example.schema,
       table_name: tableName,
       service_id: example.service_id,
     });
+
     return result.action_id;
   },
 
@@ -30,11 +33,13 @@ export const mysqlMethods = {
     if (!tableName) {
       return null;
     }
+
     const result = await MysqlDatabaseService.getMysqlTableStatus({
       database: example.schema,
       table_name: tableName,
       service_id: example.service_id,
     });
+
     return result.action_id;
   },
 
@@ -45,9 +50,11 @@ export const mysqlMethods = {
         query: example.example,
         service_id: example.service_id,
       });
+
       return result.action_id;
     } catch (e) {
       console.error(e);
+
       return null;
     }
   },
@@ -63,6 +70,7 @@ export const mysqlMethods = {
       return result.action_id;
     } catch (e) {
       console.error(e);
+
       return null;
     }
   },

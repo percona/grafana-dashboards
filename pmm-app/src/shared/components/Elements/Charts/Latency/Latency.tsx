@@ -34,6 +34,7 @@ export class Latency extends Component<any, LatencyChartState> {
   drawChart(data) {
     // eslint-disable-next-line react/no-string-refs
     const chart = d3.select(this.refs.graphContainer);
+
     chart.selectAll('*').remove();
 
     const svg = chart
@@ -113,6 +114,7 @@ export class Latency extends Component<any, LatencyChartState> {
     /* eslint-disable react/no-string-refs */
     const { className } = this.props;
     const { tooltip } = this.state;
+
     return (
       <div
         className={`${className || ''} d3-bar-chart-container app-tooltip`}

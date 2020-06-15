@@ -17,11 +17,13 @@ export const Status = (props) => {
 
   const getStatuses = useCallback(async () => {
     let id;
+
     if (databaseType === DATABASE.postgresql) {
       id = await mysqlMethods.getStatuses(({ example, tableName }));
     }
 
     const result = await useActionResult(id);
+
     setStatus(result);
     setData(processTableData(result.value));
   }, [databaseType]);

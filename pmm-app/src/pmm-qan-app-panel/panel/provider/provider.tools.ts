@@ -5,22 +5,29 @@ import { ParseQueryParamDate } from '../../../shared/components/helpers/time-par
 
 const setFilters = (query) => FILTERS_NAMES.reduce((result, filterName) => {
   const filters = query.getAll(`var-${filterName}`);
+
   if (!filters.length) {
     return result;
   }
+
   // eslint-disable-next-line no-param-reassign
   result[filterName] = filters;
+
   return result;
 }, {});
+
 export const refreshGrafanaVariables = (state) => {
   const dataSource = getDataSourceSrv();
   // @ts-ignore
   const templateVariables = dataSource.templateSrv.variables;
+
   FILTERS_NAMES.forEach((filter) => {
     const variables = find(templateVariables, { name: filter.replace('var-', '') });
+
     if (!variables) {
       return;
     }
+
     variables.current = {
       text: state.labels[filter] || ['All'],
       value: state.labels[filter] || ['All'],
@@ -38,6 +45,7 @@ export const generateURL = (state) => {
     .map((key) => {
       // @ts-ignore
       const variables = labels[key];
+
       return variables.map((variable) => `var-${key}=${variable === 'na' ? '' : variable}`).join('&');
     })
     .filter(Boolean)
@@ -51,6 +59,7 @@ export const generateURL = (state) => {
   const totals = `totals=${state.totals}`;
   const querySelected = state.querySelected ? `query_selected=${state.querySelected}` : '';
   const openDetailsTab = state.openDetailsTab ? `details_tab=${state.openDetailsTab}` : '';
+
   // TODO: replace crutch with right redirect
   return encodeURI(
     `${window.location.pathname}?${[
@@ -89,6 +98,7 @@ export const setLabels = (filters) => Object.keys(filters)
   .filter((filter) => filters[filter])
   .reduce((labels, filter) => {
     const [group, value] = filter.split(':');
+
     // TODO: using '--' because final form think that it is a nested fields
     //  need to replace it with something better
     if (labels[group]) {
@@ -97,5 +107,6 @@ export const setLabels = (filters) => Object.keys(filters)
       // eslint-disable-next-line no-param-reassign
       labels[group] = [value.replace(/--/gi, '.').replace(/^na$/, '')];
     }
+
     return labels;
   }, {});

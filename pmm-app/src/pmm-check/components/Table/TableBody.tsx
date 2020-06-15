@@ -13,6 +13,7 @@ export const TableBody: FC<TableBodyProps> = ({ data }) => (
       const {
         key, name, failed, details,
       } = row;
+
       return (
         <tr key={key}>
           <td>{name}</td>

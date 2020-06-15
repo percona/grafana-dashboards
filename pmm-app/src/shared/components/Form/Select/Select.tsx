@@ -5,6 +5,7 @@ import './Select.scss';
 import { styles } from './Select.styles';
 
 const { Option } = Select;
+
 interface SelectFieldInterface {
   required?: boolean;
   name: string;
@@ -21,6 +22,7 @@ export const SelectField = ({
   name, options, style, defaultValue, dataQa
 }: SelectFieldInterface) => {
   const { input } = useField(name);
+
   return (
     <span className="fields__select-field" style={style || {}}>
       {/* eslint-disable-next-line max-len */}

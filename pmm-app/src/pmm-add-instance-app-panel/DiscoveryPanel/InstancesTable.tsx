@@ -54,6 +54,7 @@ const InstancesTable = (props) => {
       className: 'discovery-column',
       render: (element) => {
         let type = '';
+
         switch (element.engine) {
           case 'DISCOVER_RDS_MYSQL':
             type = 'mysql';
@@ -62,6 +63,7 @@ const InstancesTable = (props) => {
             type = 'mysql';
             break;
         }
+
         return (
           <a
             onClick={() => {

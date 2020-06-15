@@ -13,6 +13,7 @@ export const useMetricsDetails = (): [any[], boolean] => {
   } = useContext(QueryAnalyticsProvider);
   const [metrics, setMetrics] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+
   useEffect(() => {
     const getMetrics = async () => {
       try {
@@ -25,6 +26,7 @@ export const useMetricsDetails = (): [any[], boolean] => {
           labels,
           totals,
         });
+
         setMetrics(processMetrics(METRIC_CATALOGUE, result));
         contextActions.setFingerprint(groupBy === 'queryid' ? result.fingerprint : queryId);
         setLoading(false);
@@ -33,6 +35,7 @@ export const useMetricsDetails = (): [any[], boolean] => {
         // TODO: add error handling
       }
     };
+
     getMetrics();
   }, [queryId, totals]);
 

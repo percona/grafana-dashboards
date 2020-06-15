@@ -18,6 +18,7 @@ const TableCreate = (props) => {
 
   const getDatabase = useCallback(async () => {
     let id;
+
     if (databaseType === DATABASE.postgresql) {
       id = await mysqlMethods.getShowCreateTables({ example, tableName });
     } else if (databaseType === DATABASE.mysql) {
@@ -25,6 +26,7 @@ const TableCreate = (props) => {
     }
 
     const result = await useActionResult(id);
+
     setShowCreateTable(result);
   }, [databaseType]);
 

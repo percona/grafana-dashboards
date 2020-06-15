@@ -737,6 +737,7 @@ describe('Polygon chart test', () => {
 
     const component = renderer.create(<Sparkline {...polygonChartProps} />);
     const tree = component.toJSON();
+
     expect(tree).toMatchSnapshot();
   });
 });

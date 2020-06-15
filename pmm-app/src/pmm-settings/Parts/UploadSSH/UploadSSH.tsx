@@ -22,6 +22,7 @@ const UploadSSH = ({ settings }) => {
       setLoading(false);
     }
   };
+
   return (
     <FormFinal
       onSubmit={onSubmit}
@@ -29,6 +30,7 @@ const UploadSSH = ({ settings }) => {
         useEffect(() => {
           form.initialize(settings);
         }, [settings]);
+
         return (
           <form onSubmit={handleSubmit}>
             <>
@@ -59,4 +61,5 @@ const UploadSSH = ({ settings }) => {
     />
   );
 };
+
 export default UploadSSH;

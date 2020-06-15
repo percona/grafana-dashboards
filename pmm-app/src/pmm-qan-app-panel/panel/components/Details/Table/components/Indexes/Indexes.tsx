@@ -18,6 +18,7 @@ export const Indexes = (props) => {
 
   const getIndexes = useCallback(async () => {
     let id;
+
     if (databaseType === DATABASE.postgresql) {
       id = await mysqlMethods.getIndexes(({ example, tableName }));
     } else if (databaseType === DATABASE.mysql) {
@@ -25,6 +26,7 @@ export const Indexes = (props) => {
     }
 
     const result = await useActionResult(id);
+
     setIndexes(result);
     setData(processTableData(result.value));
   }, [databaseType]);

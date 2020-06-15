@@ -29,6 +29,7 @@ export const extractCredentials = (credentials) => ({
 });
 export const getInstanceData = (instanceType, credentials) => {
   const instance: InstanceData = {};
+
   instance.remoteInstanceCredentials = credentials ? extractCredentials(credentials) : {};
   switch (instanceType) {
     case 'postgresql':
@@ -79,6 +80,7 @@ const getAdditionalOptions = (type, remoteInstanceCredentials) => {
           </>
         );
       }
+
       return (
         <>
           <CheckboxField label="Use performance schema" name="qan_mysql_perfschema" />
@@ -107,6 +109,7 @@ const validateInstanceForm = (values) => {
       delete errors[errorKey];
     }
   });
+
   return errors;
 };
 const AddRemoteInstance = (props) => {
@@ -119,6 +122,7 @@ const AddRemoteInstance = (props) => {
   );
   const [loading, setLoading] = useState<boolean>(false);
   const initialValues = { ...remoteInstanceCredentials };
+
   if (instanceType === 'MySQL') {
     initialValues.qan_mysql_perfschema = true;
   }
@@ -128,13 +132,16 @@ const AddRemoteInstance = (props) => {
     const newURL = `${currentUrl.split('/graph/d/').shift()}/graph/d/pmm-inventory/`;
 
     const data = { ...values };
+
     if (values.custom_labels) {
       data.custom_labels = data.custom_labels
         .split(/[\n\s]/)
         .filter(Boolean)
         .reduce((acc, val) => {
           const [key, value] = val.split(':');
+
           acc[key] = value;
+
           return acc;
         }, {});
     }
@@ -168,12 +175,14 @@ const AddRemoteInstance = (props) => {
         // remove rds fields from data
         await AddRemoteInstanceService.addRemote(instanceType, data);
       }
+
       setLoading(false);
       window.location.assign(newURL);
     } catch (e) {
       setLoading(false);
     }
   };
+
   return (
     <FormFinal
       onSubmit={onSubmit}

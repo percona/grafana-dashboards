@@ -10,6 +10,7 @@ const CredentialsForm = props => {
   const onSubmit = values => {
     props.onSetCredentials({ ...values });
   };
+
   return (
     <FormFinal
       onSubmit={onSubmit}

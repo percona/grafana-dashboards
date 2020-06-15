@@ -5,6 +5,7 @@ const AddInstance = (props) => {
   const selectInstanceType = (type) => () => {
     props.onSelectInstanceType({ type });
   };
+
   return (
     <section className="content-wrapper">
       <h3>How to Add an Instance</h3>

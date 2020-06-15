@@ -32,6 +32,7 @@ xdescribe('CheckPanel::', () => {
     const wrapper: ReactWrapper<CheckPanelProps, {}, any> = mount(<CheckPanelRouter {...props} />);
 
     const root = wrapper.find(CheckPanel) as ReactWrapper<CheckPanelProps, CheckPanelState, CheckPanel>;
+
     root.setState({ isSttEnabled: true });
     root.update();
 
@@ -47,6 +48,7 @@ xdescribe('CheckPanel::', () => {
     expect(root.state().isSttEnabled).toEqual(true);
 
     const failed = root.find('[data-qa="db-check-panel"]').find(Failed);
+
     // Check the table is rendered
     expect(failed.length).toEqual(1);
   });

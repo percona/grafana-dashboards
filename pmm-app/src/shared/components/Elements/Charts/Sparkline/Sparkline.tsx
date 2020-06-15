@@ -57,6 +57,7 @@ export const Sparkline = ({
 
   const findYRange = (array) => {
     const values = array.map((arrayItem) => +arrayItem[ykey] || 0);
+
     return [Math.max(...values) || 1, Math.min(...values) || 0];
   };
 
@@ -146,6 +147,7 @@ export const Sparkline = ({
       const dataTooltip = !value
         ? `NA at ${dateToShow}`
         : `${load} ${isTimeBased ? '' : '/ sec'} at ${dateToShow}`;
+
       setTooltip(dataTooltip);
     });
     svg.on('mouseover', () => focusG.style('display', null));

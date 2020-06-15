@@ -53,6 +53,7 @@ xdescribe('PATCH::', () => {
     axios.patch.mockResolvedValueOnce({ data: 'some data' });
 
     const result = await apiRequest.patch('/test/path', { key: 'value' });
+
     await expect(result).toEqual('some data');
   });
 });
@@ -62,6 +63,7 @@ xdescribe('DELETE::', () => {
     axios.delete.mockResolvedValueOnce({ data: 'some data' });
 
     const result = await apiRequest.delete('/test/path');
+
     await expect(result).toEqual('some data');
   });
 });

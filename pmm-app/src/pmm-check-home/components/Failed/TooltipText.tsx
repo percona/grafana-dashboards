@@ -13,6 +13,7 @@ export const TooltipText: FC<TooltipTextProps> = ({ sum, data }) => {
   }
 
   const [critical, major, trivial] = data;
+
   return (
     <div className={styles.TooltipWrapper}>
       <div className={styles.TooltipHeader}>

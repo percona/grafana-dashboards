@@ -17,6 +17,7 @@ const Explain = ({
   databaseType,
 }: ExplainProps) => {
   const [data, setData] = useState({ columns: [], rows: [] });
+
   useEffect(() => {
     setData(processClassicExplain(classicExplain.value));
   }, [classicExplain]);

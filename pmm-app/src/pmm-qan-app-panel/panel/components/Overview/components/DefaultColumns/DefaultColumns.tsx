@@ -16,6 +16,7 @@ import { Dimension } from '../Dimension/Dimension';
 const getMainColumnWidth = (columns) => {
   const container = document.querySelector('.table-wrapper');
   const width = +((container && container.clientWidth) || 0);
+
   return Math.max(
     width - (columns - 1) * FIXED_COLUMN_WIDTH - COLUMN_WIDTH * 1.8 - ROW_NUMBER_COLUMN_WIDTH - 2,
     MAIN_METRIC_MIN_WIDTH,
@@ -42,6 +43,7 @@ const dimensionColumnRender = (mainMetricColumnWidth) => (text, record, index) =
 
 export const getDefaultColumns = (groupBy, pageNumber, pageSize, columns, onCell) => {
   const mainMetricColumnWidth = getMainColumnWidth(columns);
+
   return [
     {
       title: '#',

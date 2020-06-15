@@ -66,6 +66,7 @@ xdescribe('CheckPanel::', () => {
     expect(root.state().hasNoAccess).toEqual(false);
 
     const table = wrapper.find('[data-qa="db-check-panel"]').find(Table);
+
     // Check if the table is rendered, the rest is tested by the Table itself
     expect(table.length).toEqual(1);
 

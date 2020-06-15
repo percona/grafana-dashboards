@@ -14,6 +14,7 @@ export const QueryTooltip = ({
   query, queryId, children, show = true
 }: QueryTooltipProps) => {
   const TooltipContent = () => <Highlight language="sql">{sqlFormatter.format(query)}</Highlight>;
+
   return show ? (
     <Tooltip
       placement="left"

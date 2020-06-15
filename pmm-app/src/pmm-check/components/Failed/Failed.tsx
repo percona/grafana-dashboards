@@ -10,6 +10,7 @@ interface FailedProps {
 
 export const Failed: FC<FailedProps> = ({ failed }) => {
   const sum = failed.reduce((acc, val) => acc + val, 0);
+
   return (
     <div>
       <span className={styles.FailedDiv}>

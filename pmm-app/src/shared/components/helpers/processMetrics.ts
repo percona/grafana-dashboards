@@ -1,10 +1,12 @@
 const getPercentOfTotal = (current, total) => {
   const key = current.sum ? 'sum' : 'sum_per_sec';
+
   return +((+current[key] / +total[key]) * 100).toFixed(2);
 };
 
 const getSparkline = (sparklines, metricName) => sparklines.map((sparkline) => {
   const key = Object.keys(sparkline).find((sparklineKey) => sparklineKey.includes(metricName)) as string;
+
   return {
     point: sparkline.point,
     time_frame: sparkline.time_frame,
@@ -42,6 +44,7 @@ const sortDetails = (a, b) => {
 export const processMetrics = (metricsCatalogue, metrics) => {
   // @ts-ignore
   const data = metrics.metrics ? metrics.metrics : metrics.totals;
+
   return Object.entries(data)
     .filter(
       // @ts-ignore
@@ -53,6 +56,7 @@ export const processMetrics = (metricsCatalogue, metrics) => {
         const notZeroCount = metricData[1].cnt !== 0;
         // @ts-ignore
         const notSum = metricData[1].sum === undefined;
+
         return !(notZeroCount && notSum);
       }
 
@@ -63,6 +67,7 @@ export const processMetrics = (metricsCatalogue, metrics) => {
       const metric = data[metricName];
       const sparkline = getSparkline(metrics.sparkline, metricName);
       const total = metrics.totals[metricName];
+
       return {
         name: metricsCatalogue[metricName].humanizeName,
         tooltip: metricsCatalogue[metricName].tooltipText,

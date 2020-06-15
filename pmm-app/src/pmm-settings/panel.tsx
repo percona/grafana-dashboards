@@ -33,9 +33,11 @@ const SettingsPanel = () => {
   useEffect(() => {
     (async () => {
       const response = await SettingsService.getSettings();
+
       updateSettings(response.settings);
     })();
   }, []);
+
   return (
     <div id="antd">
       <div className="app-theme-dark pmm-settings-panel">

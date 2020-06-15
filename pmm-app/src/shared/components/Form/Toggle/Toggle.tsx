@@ -10,6 +10,7 @@ interface ToggleInterface {
 
 export const ToggleField = ({ name, disabled }: ToggleInterface) => {
   const { input } = useField(name);
+
   return (
     <Switch
       onChange={input.onChange}

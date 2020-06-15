@@ -8,6 +8,7 @@ export const getExample = (databaseType) => (example: any): any => {
   if (databaseType === DATABASE.mongodb) {
     return <ReactJSON key={example} json={JSON.parse(example)} />;
   }
+
   return (
     <Highlight key={example} language="sql">
       {sqlFormatter.format(example)}
