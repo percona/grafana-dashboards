@@ -18,10 +18,16 @@ Scenario(
   'PMM-T289 Verify Whats New link is presented on Update Widget @pmm-upgrade @visual-test @not-pr-pipeline',
   async (I, homePage) => {
     I.amOnPage(homePage.url);
-    I.waitForElement(homePage.fields.whatsNewLink, 30);
-    I.seeElement(homePage.fields.whatsNewLink);
-    const link = await I.grabAttributeFrom(homePage.fields.whatsNewLink, 'href');
-    assert.equal(link.indexOf('https://per.co.na/pmm/') > -1, true, 'Whats New Link has an unexpected URL');
+    const res2 = env.process.DOCKER_VERSION.split('.');
+    const res = env.process.PMM_SERVER_LATEST.split('.');
+    const majorVersionDiff = res[1] - res2[1];
+    const patchVersionDiff = res[2] - res2[2];
+    if (majorVersionDiff >= 1 && patchVersionDiff >= 0) {
+      I.waitForElement(homePage.fields.whatsNewLink, 30);
+      I.seeElement(homePage.fields.whatsNewLink);
+      const link = await I.grabAttributeFrom(homePage.fields.whatsNewLink, 'href');
+      assert.equal(link.indexOf('https://per.co.na/pmm/') > -1, true, 'Whats New Link has an unexpected URL');
+    }
   }
 );
 
@@ -69,6 +75,20 @@ Scenario(
   async (I, adminPage, homePage) => {
     I.amOnPage(homePage.url);
     homePage.verifyPostUpdateWidgetIsPresent();
+  }
+);
+
+Scenario(
+  'PMM-T262 Open PMM Settings page and verify DATA_RETENTION value is set to 2 days after upgrade @pmm-upgrade @visual-test @not-pr-pipeline',
+  async (I, pmmSettingsPage) => {
+    const dataRetention = '2';
+    pmmSettingsPage.waitForPmmSettingsPageLoaded();
+    const dataRetentionActualValue = await I.grabValueFrom(pmmSettingsPage.fields.dataRetentionCount);
+    assert(
+      dataRetention,
+      dataRetentionActualValue,
+      'The Value for Data Retention is not the same as passed via Docker Environment Variable'
+    );
   }
 );
 
