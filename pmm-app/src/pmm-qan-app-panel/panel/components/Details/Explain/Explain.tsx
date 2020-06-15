@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Collapse, Spin, Table } from 'antd';
 import { ReactJSON } from 'shared/components/Elements/ReactJSON/ReactJSON';
 import { processClassicExplain } from './Explain.tools';
@@ -11,11 +11,11 @@ import { ExplainProps } from './Explain.types';
 const { Panel } = Collapse;
 
 
-const Explain = ({
+const Explain: FC<ExplainProps> = ({
   classicExplain,
   jsonExplain,
   databaseType,
-}: ExplainProps) => {
+}) => {
   const [data, setData] = useState({ columns: [], rows: [] });
 
   useEffect(() => {

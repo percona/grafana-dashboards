@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { FC, useContext } from 'react';
 import { Select } from 'antd';
 import { QueryAnalyticsProvider } from 'pmm-qan-app-panel/panel/provider/provider';
 import { styles } from './Dimension.styles';
@@ -7,7 +7,7 @@ import './Dimension.scss';
 
 const { Option } = Select;
 
-export const Dimension = () => {
+export const Dimension: FC = () => {
   const {
     contextActions,
     panelState: { groupBy },

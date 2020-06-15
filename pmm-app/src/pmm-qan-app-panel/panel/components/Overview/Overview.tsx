@@ -1,6 +1,6 @@
 import { Pagination, Table } from 'antd';
 import React, {
-  useCallback, useContext, useEffect, useState, useRef
+  useCallback, useContext, useEffect, useState, useRef, FC
 } from 'react';
 import scrollIntoView from 'scroll-into-view';
 import './Overview.scss';
@@ -10,7 +10,7 @@ import { useOverviewTable } from './Overview.hooks';
 import { styles } from '../../panel.styles';
 import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE, PAGE_SIZE_OPTIONS } from '../../panel.constants';
 
-export const Overview = () => {
+export const Overview: FC = () => {
   const [total, setTotal] = useState(30);
   const [overviewMetricsList, loading] = useOverviewTable(setTotal);
   const [height, setHeight] = useState(400);

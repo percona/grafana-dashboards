@@ -1,4 +1,6 @@
-import React, { useContext, useRef, useState } from 'react';
+import React, {
+  FC, useContext, useRef, useState
+} from 'react';
 import { Button, Input, Spin } from 'antd';
 import { Form } from 'react-final-form';
 import ScrollArea from 'react-scrollbar';
@@ -83,7 +85,7 @@ export const FiltersContainer = ({
   );
 };
 
-export const Filters = () => {
+export const Filters: FC = () => {
   const {
     contextActions,
     panelState: { labels = {} },

@@ -1,4 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, {
+  FC, useContext, useEffect, useState
+} from 'react';
 import { Divider, Tabs } from 'antd';
 import './Details.scss';
 import { QueryAnalyticsProvider } from 'pmm-qan-app-panel/panel/provider/provider';
@@ -19,7 +21,7 @@ const actionResult = {
   value: null,
 };
 
-const Details = () => {
+const Details: FC = () => {
   const {
     contextActions: { closeDetails, setActiveTab },
     panelState: {

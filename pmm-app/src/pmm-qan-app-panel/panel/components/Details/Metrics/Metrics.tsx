@@ -1,5 +1,5 @@
 import { Collapse, Table, Tooltip } from 'antd';
-import React from 'react';
+import React, { FC } from 'react';
 import { Latency, Sparkline, TimeDistribution } from 'shared/components/Elements/Charts';
 import { humanize } from 'shared/components/helpers/Humanization';
 import { Info } from 'shared/components/Elements/Icons/Info';
@@ -7,6 +7,7 @@ import { styles } from './Metrics.styles';
 import { useMetricsDetails } from './Metrics.hooks';
 import { DATABASE } from '../Details.constants';
 import { MetricsTabs } from './Metrics.constants';
+import { MetricsProps } from './Metrics.types';
 
 const { Panel } = Collapse;
 
@@ -72,7 +73,7 @@ const perQueryStatsColumn = (text, item) => {
   );
 };
 
-const Metrics = ({ databaseType, totals }) => {
+const Metrics: FC<MetricsProps> = ({ databaseType, totals }) => {
   const [metrics, loading] = useMetricsDetails();
 
   const columns = [

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Collapse, Spin, Tabs } from 'antd';
 import TableCreate from './components/Table/Table';
 import { styles } from '../Explain/Explain.styles';
@@ -6,11 +6,12 @@ import { Indexes } from './components/Indexes/Indexes';
 import { Status } from './components/Status/Status';
 import { DATABASE } from '../Details.constants';
 import { TableTabs } from './TableContainer.constants';
+import { TableContainerProps } from './TableContainer.types';
 
 const { TabPane } = Tabs;
 const { Panel } = Collapse;
 
-const TableCreateContainer = ({ databaseType, examples, tables }) => (
+const TableCreateContainer: FC<TableContainerProps> = ({ databaseType, examples, tables }) => (
   <Spin spinning={false}>
     {tables && tables.length ? (
       <Tabs defaultActiveKey="0" onChange={() => {}} tabPosition="top">
