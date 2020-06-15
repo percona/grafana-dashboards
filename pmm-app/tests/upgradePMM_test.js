@@ -19,10 +19,10 @@ Scenario(
   async (I, homePage) => {
     I.amOnPage(homePage.url);
     //Whats New Link is added for the latest version hours before the release hence we need to skip checking on that, rest it should be available and checked.
-    const [, pmmMajor, pmmMinor] = process.env.PMM_SERVER_LATEST.split('.');
-    const [, dockerMajor, dockerMinor] = process.env.DOCKER_VERSION.split('.');
-    const majorVersionDiff = pmmMajor - dockerMajor;
-    const patchVersionDiff = pmmMinor - dockerMinor;
+    const [, pmmMinor, pmmPatch] = process.env.PMM_SERVER_LATEST.split('.');
+    const [, dockerMinor, dockerPatch] = process.env.DOCKER_VERSION.split('.');
+    const majorVersionDiff = pmmMinor - dockerMinor;
+    const patchVersionDiff = pmmPatch - dockerPatch;
     if (majorVersionDiff >= 1 && patchVersionDiff >= 0) {
       I.waitForElement(homePage.fields.whatsNewLink, 30);
       I.seeElement(homePage.fields.whatsNewLink);
