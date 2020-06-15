@@ -1,7 +1,13 @@
 import React, { MouseEvent, useCallback, useEffect, useState } from 'react';
 import moment from 'moment';
 
-import { AvailableUpdate, LastCheck, UpdateButton, UpdateModal } from 'pmm-update-panel/components';
+import {
+  AvailableUpdate,
+  LastCheck,
+  UpdateButton,
+  UpdateInfoBox,
+  UpdateModal,
+} from 'pmm-update-panel/components';
 
 import { getCurrentVersion, getUpdates, startUpdate, getUpdateStatus } from './UpdatePanel.service';
 import { Messages } from './UpdatePanel.messages';
@@ -11,7 +17,7 @@ export const UpdatePanel = () => {
   const [version, setVersion] = useState('');
   const [isUpdateAvailable, setIsUpdateAvailable] = useState(false);
   const [isDefaultView, setIsDefaultView] = useState(false);
-  const forceUpdate = false;
+  const [forceUpdate, setForceUpdate] = useState(false);
   const [newsLink, setNewsLink] = useState('');
   const [nextVersion, setNextVersion] = useState('');
   const [nextFullVersion, setNextFullVersion] = useState('');
@@ -39,29 +45,35 @@ export const UpdatePanel = () => {
     }, 5000);
   }, []);
 
-  const handleShowFullCurrentVersion = useCallback(e => {
-    if (e.altKey) {
-      if (version !== fullVersion) {
-        setVersionCached(version);
-        setVersion(fullVersion);
-      } else {
-        setVersion(versionCached);
+  const handleShowFullCurrentVersion = useCallback(
+    e => {
+      if (e.altKey) {
+        if (version !== fullVersion) {
+          setVersionCached(version);
+          setVersion(fullVersion);
+        } else {
+          setVersion(versionCached);
+        }
       }
-    }
-  }, []);
+    },
+    [version, fullVersion, versionCached]
+  );
 
-  const handleShowFullAvailableVersion = useCallback((e: MouseEvent) => {
-    if (e.altKey) {
-      if (nextVersion !== nextFullVersion) {
-        setNextVersionCached(nextVersion);
-        setNextVersion(nextFullVersion);
-      } else {
-        setNextVersion(nextVersionCached);
+  const handleShowFullAvailableVersion = useCallback(
+    (e: MouseEvent) => {
+      if (e.altKey) {
+        if (nextVersion !== nextFullVersion) {
+          setNextVersionCached(nextVersion);
+          setNextVersion(nextFullVersion);
+        } else {
+          setNextVersion(nextVersionCached);
+        }
       }
-    }
-  }, []);
+    },
+    [nextVersion, nextFullVersion, nextVersionCached]
+  );
 
-  const getLog = async () => {
+  const getLog = useCallback(async () => {
     if (updateCntErrors > 600) {
       setUpdateFailed(true);
       return;
@@ -72,7 +84,7 @@ export const UpdatePanel = () => {
       return;
     }
 
-    let timeoutId;
+    let timeoutId: ReturnType<typeof setTimeout>;
 
     try {
       const data = await getUpdateStatus({ auth_token: updateAuthToken, log_offset: updateLogOffset });
@@ -90,7 +102,7 @@ export const UpdatePanel = () => {
     return () => {
       clearTimeout(timeoutId);
     };
-  };
+  }, []);
 
   const handleUpdate = useCallback(async () => {
     setShowModal(true);
@@ -105,13 +117,12 @@ export const UpdatePanel = () => {
     }
   }, []);
 
-  const handleCheckForUpdates = useCallback(async () => {
+  const handleCheckForUpdates = useCallback(async (e: MouseEvent) => {
     setIsLoading(true);
 
-    // TODO (nicolalamacchia): handle alt+click key
-    // if ($event.altKey) {
-    //   forceUpdate = true;
-    // }
+    if (e.altKey) {
+      setForceUpdate(true);
+    }
 
     try {
       const data = await getUpdates();
@@ -186,7 +197,7 @@ export const UpdatePanel = () => {
 
   useEffect(() => {
     getCurrentVersionDetails();
-  }, []);
+  }, [getCurrentVersionDetails]);
 
   return (
     <>
@@ -200,17 +211,8 @@ export const UpdatePanel = () => {
             </span>
           </p>
         </header>
-        {isDefaultView && (
-          <section className="state">
-            <p className="text-center">{Messages.noUpdates}</p>
-            <p className="text-center">{Messages.updatesNotice}</p>
-          </section>
-        )}
-        {!isUpdateAvailable && !isDefaultView && !forceUpdate ? (
-          <section className="state">
-            <p className="text-center">{Messages.upToDate}</p>
-          </section>
-        ) : null}
+        {isDefaultView && <UpdateInfoBox />}
+        {!isUpdateAvailable && !isDefaultView && !forceUpdate ? <UpdateInfoBox upToDate /> : null}
         {isUpdateAvailable && !isDefaultView ? (
           <AvailableUpdate
             onShowFullAvailableVersion={handleShowFullAvailableVersion}

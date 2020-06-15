@@ -1,7 +1,7 @@
 import React, { MouseEvent } from 'react';
 
 import { Messages } from './AvailableUpdate.messages';
-import * as styles from './AvailableUpdate.style';
+import * as styles from './AvailableUpdate.styles';
 
 interface AvailableUpdateProps {
   onShowFullAvailableVersion: (e: MouseEvent) => void;

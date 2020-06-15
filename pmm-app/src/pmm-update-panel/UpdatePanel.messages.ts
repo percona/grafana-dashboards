@@ -1,8 +1,5 @@
 export const Messages = {
   panelTitle: 'Updated',
-  noUpdates: 'No updates are available',
-  updatesNotice: 'PMM checks for updates once a day',
-  upToDate: 'You are up to date',
   updateTo: 'Update to',
   availableVersion: 'Available version',
   lastCheck: 'Last check',

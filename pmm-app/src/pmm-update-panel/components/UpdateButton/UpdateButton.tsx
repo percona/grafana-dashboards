@@ -15,8 +15,7 @@ export const UpdateButton = ({ onClick, nextVersion, disabled = false }: UpdateB
     onClick={onClick}
   >
     <span>
-      <i className="fa fa-download"></i>
-      Update to {nextVersion}
+      <i className="fa fa-download"></i> Update to {nextVersion}
     </span>
   </button>
 );

@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { MouseEvent } from 'react';
 
 import * as styles from './LastCheck.styles';
 
 interface LastCheckProps {
-  onCheckForUpdates: () => void;
+  onCheckForUpdates: (e: MouseEvent) => void;
   isLoading: boolean;
   lastCheckDate: string;
 }
