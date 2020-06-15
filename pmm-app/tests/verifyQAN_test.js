@@ -213,6 +213,8 @@ xScenario('PMM-T123 - Verify User is able to search for filter value', async (I,
     'generic',
   ];
   qanPage.waitForNewQANPageLoaded();
+  I.click(qanPage.fields.last5MinutesButton);
+  I.click(qanPage.fields.last12HoursButton);
   I.waitForElement(qanPage.fields.filterBy, 30);
   const countBefore = await qanPage.getCountOfItems();
   for (i = 0; i < filters.length; i++) {
@@ -420,13 +422,20 @@ xScenario(
 );
 
 // TODO: Uncomment after new QAN will be merged
-xScenario(
-  'PMM-T223 - Verify time metrics are AVG per query (not per second)',
-  async (I, qanPage) => {
-    qanPage.waitForNewQANPageLoaded();
-    pause()
-    I.wait(300);
-
-  }
-);
-
+Scenario('PMM-T223 - Verify time metrics are AVG per query (not per second)', async (I, qanPage) => {
+  const waitTime = 300;
+  qanPage.waitForNewQANPageLoaded();
+  I.click(qanPage.fields.last5MinutesButton);
+  I.click(qanPage.fields.last12HoursButton);
+  I.wait(waitTime);
+  qanPage.applyFilterNewQAN('mysql');
+  I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);
+  I.wait(10);
+  const queryTime = await I.grabTextFrom(qanPage.fields.queryTime);
+  I.moveCursorTo(qanPage.fields.aQuery);
+  I.wait(5);
+  I.click(qanPage.fields.aQuery);
+  I.waitForVisible(qanPage.getColumn('Lock Time'), 30);
+  await qanPage.verifyQueryTime(queryTime);
+  await qanPage.verifyAvqQueryTime(waitTime);
+});

@@ -72,6 +72,12 @@ module.exports = {
     noDataIcon: "//div[@class='ant-empty-image']",
     aQuery: '//div[2]/div[2]/div/table/tbody/tr[4]/td[2]/div/div',
     resizer: 'span.Resizer.horizontal',
+    queryTime: '//table/tbody/tr[4]/td[5]/div/span/div/span',
+    last5MinutesButton: "//span[contains(text(), 'Last 5 minutes')]",
+    last12HoursButton: "//span[contains(text(), 'Last 12 hours')]",
+    lockTimeDetail: '//div[2]/div/div/div/div/div/div/div/table/tbody/tr[3]/td[4]/div/span',
+    queryTimeDetail: '//div[2]/div/div/div/div/div/div/div/table/tbody/tr[2]/td[4]/div/span',
+    queryCountDetail: '//div[2]/div/div/div/div/div/div/div/table/tbody/tr[1]/td[3]/div/span[1]',
   },
 
   filterGroupLocator(filterName) {
@@ -498,7 +504,21 @@ module.exports = {
     return `//td[@class='ant-table-row-cell-break-word']//div[contains(text(), '${row}')]`;
   },
 
-  getQueryCount(row){
-    const time = "//table/tbody/tr[2]/td[5]/div/span/div/span";
-  }
+  getQueryCount(row) {
+    const time = '//table/tbody/tr[2]/td[5]/div/span/div/span';
+  },
+
+  async verifyQueryTime(queryTime) {
+    const queryTimeDetial = await I.grabTextFrom(this.fields.queryTimeDetail);
+    assert.equal(queryTimeDetial, queryTime, 'Query times are not same!');
+  },
+
+  async verifyAvqQueryTime(time) {
+    const queryTimeDetial = await I.grabTextFrom(this.fields.queryTimeDetail);
+    const queryCountDetail = await I.grabTextFrom(this.fields.queryCountDetail);
+    console.log('count ' + parseInt(queryTimeDetial));
+    const result = parseInt(queryCountDetail) / parseInt(time);
+    const roundedResult = Math.round(result * 10) / 10;
+    console.log('count ' + parseInt(roundedResult));
+  },
 };
