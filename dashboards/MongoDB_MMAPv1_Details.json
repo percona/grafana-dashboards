@@ -133,7 +133,6 @@
             "id": 999,
             "isRootDashboard": false,
             "links": [],
-            "options": {},
             "targets": [
                 {
                     "expr": "",
@@ -193,7 +192,6 @@
             "maxDataPoints": 100,
             "nullPointMode": "connected",
             "nullText": null,
-            "options": {},
             "postfix": "",
             "postfixFontSize": "50%",
             "prefix": "",
@@ -278,7 +276,6 @@
             "maxDataPoints": 100,
             "nullPointMode": "connected",
             "nullText": null,
-            "options": {},
             "postfix": "",
             "postfixFontSize": "50%",
             "prefix": "",
@@ -363,7 +360,6 @@
             "maxDataPoints": 100,
             "nullPointMode": "null",
             "nullText": null,
-            "options": {},
             "postfix": "",
             "postfixFontSize": "50%",
             "prefix": "",
@@ -447,7 +443,6 @@
             "maxDataPoints": 100,
             "nullPointMode": "connected",
             "nullText": null,
-            "options": {},
             "postfix": "",
             "postfixFontSize": "50%",
             "prefix": "",
@@ -772,6 +767,8 @@
                 "max": true,
                 "min": true,
                 "show": true,
+                "sort": "avg",
+                "sortDesc": true,
                 "total": false,
                 "values": true
             },
@@ -871,7 +868,9 @@
                 "current": false,
                 "max": true,
                 "min": true,
-                "show": false,
+                "show": true,
+                "sort": "avg",
+                "sortDesc": true,
                 "total": false,
                 "values": true
             },
@@ -892,7 +891,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "avg by (service_name) (rate(mongodb_mongod_extra_info_page_faults_total{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_mongod_extra_info_page_faults_total{service_name=~\"$service_name\"}[5m]))",
+                    "expr": "avg by (service_name) (rate(mongodb_extra_info_page_faults_total{service_name=~\"$service_name\"}[$interval]) or irate(mongodb_extra_info_page_faults_total{service_name=~\"$service_name\"}[5m]))",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -922,6 +921,7 @@
             },
             "yaxes": [
                 {
+                    "$$hashKey": "object:669",
                     "decimals": 2,
                     "format": "ops",
                     "label": "",
@@ -931,6 +931,7 @@
                     "show": true
                 },
                 {
+                    "$$hashKey": "object:670",
                     "format": "short",
                     "logBase": 1,
                     "max": null,
@@ -971,6 +972,8 @@
                 "max": true,
                 "min": true,
                 "show": true,
+                "sort": "avg",
+                "sortDesc": true,
                 "total": false,
                 "values": true
             },
@@ -1081,6 +1084,8 @@
                 "max": true,
                 "min": true,
                 "show": true,
+                "sort": "avg",
+                "sortDesc": true,
                 "total": false,
                 "values": true
             },
@@ -1181,6 +1186,8 @@
                 "max": true,
                 "min": true,
                 "show": true,
+                "sort": "avg",
+                "sortDesc": true,
                 "total": false,
                 "values": true
             },
@@ -1201,7 +1208,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "avg by (service_name) (rate(mongodb_mongod_durability_time_milliseconds_sum{service_name=~\"$service_name\",stage!=\"dt\"}[$interval]) or irate(mongodb_mongod_durability_time_milliseconds_sum{service_name=~\"$service_name\",stage!=\"dt\"}[5m]))",
+                    "expr": "avg by (service_name,stage) (rate(mongodb_mongod_durability_time_milliseconds_sum{service_name=~\"$service_name\",stage!=\"dt\"}[$interval]) or irate(mongodb_mongod_durability_time_milliseconds_sum{service_name=~\"$service_name\",stage!=\"dt\"}[5m]))",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1232,6 +1239,7 @@
             },
             "yaxes": [
                 {
+                    "$$hashKey": "object:908",
                     "decimals": 2,
                     "format": "ms",
                     "label": "",
@@ -1241,6 +1249,7 @@
                     "show": true
                 },
                 {
+                    "$$hashKey": "object:909",
                     "format": "short",
                     "logBase": 1,
                     "max": null,
@@ -1263,7 +1272,7 @@
             "description": "Times spent per second on different tasks of journaling.",
             "editable": true,
             "error": false,
-            "fill": 2,
+            "fill": 6,
             "fillGradient": 0,
             "grid": {},
             "gridPos": {
@@ -1281,6 +1290,8 @@
                 "max": true,
                 "min": true,
                 "show": true,
+                "sort": "avg",
+                "sortDesc": true,
                 "total": false,
                 "values": true
             },
@@ -1297,11 +1308,11 @@
             "renderer": "flot",
             "seriesOverrides": [],
             "spaceLength": 10,
-            "stack": false,
+            "stack": true,
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "avg by (service_name,stage) (mongodb_mongod_durability_time_milliseconds{service_name=~\"$service_name\",quantile=\"0.99\",stage!=\"dt\"})",
+                    "expr": "avg by (service_name,stage) (rate(mongodb_mongod_durability_time_milliseconds_count{service_name=~\"$service_name\",stage!=\"dt\"}[$interval]) or irate(mongodb_mongod_durability_time_milliseconds_count{service_name=~\"$service_name\",stage!=\"dt\"}[5m]))",
                     "hide": false,
                     "interval": "$interval",
                     "intervalFactor": 1,
@@ -1309,13 +1320,20 @@
                     "metric": "node_vmstat_nr_dirty",
                     "refId": "J",
                     "step": 300
+                },
+                {
+                    "expr": "avg by (service_name,stage) (mongodb_mongod_durability_time_milliseconds_count{service_name=~\"$service_name\",stage!=\"dt\"})",
+                    "hide": true,
+                    "interval": "",
+                    "legendFormat": "",
+                    "refId": "A"
                 }
             ],
             "thresholds": [],
             "timeFrom": null,
             "timeRegions": [],
             "timeShift": null,
-            "title": "MMAPv1 Journaling Time - 99th Percentile",
+            "title": "MMAPv1 Journaling Time per Stage",
             "tooltip": {
                 "msResolution": false,
                 "shared": true,
@@ -1332,6 +1350,7 @@
             },
             "yaxes": [
                 {
+                    "$$hashKey": "object:753",
                     "decimals": 2,
                     "format": "ms",
                     "label": "",
@@ -1341,6 +1360,7 @@
                     "show": true
                 },
                 {
+                    "$$hashKey": "object:754",
                     "format": "short",
                     "logBase": 1,
                     "max": null,
@@ -1607,7 +1627,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "avg by (service_name,type) (rate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", type!=\"command\"}[$interval]) or irate(mongodb_mongod_op_counters_total{service_name=~\"$service_name\", type!=\"command\"}[5m]))",
+                    "expr": "avg by (service_name,type) (rate(mongodb_op_counters_total{service_name=~\"$service_name\", type!=\"command\"}[$interval]) or irate(mongodb_op_counters_total{service_name=~\"$service_name\", type!=\"command\"}[5m]))",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "{{type}}",
@@ -1616,7 +1636,7 @@
                     "step": 300
                 },
                 {
-                    "expr": "avg by (service_name,type) (rate(mongodb_mongod_op_counters_repl_total{service_name=~\"$service_name\", type!~\"(command|query|getmore)\"}[$interval]) or irate(mongodb_mongod_op_counters_repl_total{service_name=~\"$service_name\", type!~\"(command|query|getmore)\"}[5m]))",
+                    "expr": "avg by (service_name,type) (rate(mongodb_op_counters_repl_total{service_name=~\"$service_name\", type!~\"(command|query|getmore)\"}[$interval]) or irate(mongodb_op_counters_repl_total{service_name=~\"$service_name\", type!~\"(command|query|getmore)\"}[5m]))",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "repl_{{type}}",
@@ -3780,7 +3800,7 @@
         }
     ],
     "refresh": "1m",
-    "schemaVersion": 21,
+    "schemaVersion": 22,
     "style": "dark",
     "tags": [
         "MongoDB",
@@ -3856,6 +3876,7 @@
                 "definition": "label_values(mongodb_up,cluster)",
                 "hide": 0,
                 "includeAll": true,
+                "index": -1,
                 "label": "Cluster",
                 "multi": false,
                 "multiFormat": "glob",
@@ -3880,6 +3901,7 @@
                 "definition": "",
                 "hide": 2,
                 "includeAll": true,
+                "index": -1,
                 "label": "Node Name",
                 "multi": false,
                 "multiFormat": "glob",
@@ -3904,6 +3926,7 @@
                 "definition": "",
                 "hide": 0,
                 "includeAll": false,
+                "index": -1,
                 "label": "Service Name",
                 "multi": false,
                 "multiFormat": "glob",
@@ -3927,6 +3950,7 @@
                 "definition": "label_values(mongodb_up{service_name=~\"$service_name\"}, service_name)",
                 "hide": 2,
                 "includeAll": false,
+                "index": -1,
                 "label": "Service Name",
                 "multi": false,
                 "name": "crop_service",
@@ -3950,6 +3974,7 @@
                 "definition": "label_values(mongodb_up{node_name=\"$node_name\"},node_name)",
                 "hide": 2,
                 "includeAll": false,
+                "index": -1,
                 "label": "Crop Node Name",
                 "multi": false,
                 "multiFormat": "regex values",
@@ -3974,6 +3999,7 @@
                 "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, environment)",
                 "hide": 2,
                 "includeAll": true,
+                "index": -1,
                 "label": "Environment",
                 "multi": true,
                 "name": "environment",
@@ -3996,6 +4022,7 @@
                 "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, replication_set)",
                 "hide": 2,
                 "includeAll": true,
+                "index": -1,
                 "label": "Replication Set",
                 "multi": true,
                 "name": "replication_set",
@@ -4018,6 +4045,7 @@
                 "definition": "label_values(pg_stat_database_tup_fetched{service_name=~\"$service_name\",datname!~\"template.*|postgres\"},datname)",
                 "hide": 2,
                 "includeAll": true,
+                "index": -1,
                 "label": "Database",
                 "multi": true,
                 "name": "database",
@@ -4040,6 +4068,7 @@
                 "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, node_type)",
                 "hide": 2,
                 "includeAll": true,
+                "index": -1,
                 "label": "Type",
                 "multi": true,
                 "name": "node_type",
@@ -4062,6 +4091,7 @@
                 "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, service_type)",
                 "hide": 2,
                 "includeAll": true,
+                "index": -1,
                 "label": "Type",
                 "multi": true,
                 "name": "service_type",
@@ -4084,6 +4114,7 @@
                 "definition": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, schema)",
                 "hide": 2,
                 "includeAll": true,
+                "index": -1,
                 "label": "Schema",
                 "multi": true,
                 "name": "schema",
