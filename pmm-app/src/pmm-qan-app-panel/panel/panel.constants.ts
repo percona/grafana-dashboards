@@ -480,7 +480,7 @@ export const METRIC_CATALOGUE = {
   innodb_queue_wait: {
     humanizeName: 'Innodb Queue Wait',
     tooltipText:
-      'Shows how long( in seconds) the query spent either waiting to'
+      'Shows how long ( in seconds) the query spent either waiting to'
       + ' enter the InnoDB queue or inside that queue waiting for + execution',
     simpleName: 'innodb_queue_wait',
     metricRelation: (data) => {
@@ -504,7 +504,7 @@ export const METRIC_CATALOGUE = {
   },
   innodb_rec_lock_wait: {
     humanizeName: 'Innodb Rec Lock Wait',
-    tooltipText: 'Shows how long( in seconds) the query waited for row locks',
+    tooltipText: 'Shows how long ( in seconds) the query waited for row locks',
     simpleName: 'innodb_rec_lock_wait',
     metricRelation: (data) => {
       const mainMetric = _.get(data, ['innodb_rec_lock_wait', 'avg']);
