@@ -153,7 +153,7 @@ export const UrlParametersProvider = ({ grafanaProps, children }) => {
     }
 
     setContext(newState);
-  }, [rawTime.from, rawTime.to, panelState]);
+  }, [rawTime.from, rawTime.to]);
 
   // refresh
   useEffect(() => {
