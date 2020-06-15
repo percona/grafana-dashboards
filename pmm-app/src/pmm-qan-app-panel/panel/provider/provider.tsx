@@ -139,21 +139,22 @@ export const UrlParametersProvider = ({ grafanaProps, children }) => {
     if (isFirstLoad) {
       return;
     }
-    const newState = {
-      ...panelState,
-      from,
-      to,
-      rawTime,
-    };
 
     if (panelState.rawTime.from !== rawTime.from || panelState.rawTime.to !== rawTime.to) {
+      const newState = {
+        ...panelState,
+        from,
+        to,
+        rawTime,
+      };
+
       newState.pageNumber = 1;
       delete newState.queryId;
       delete newState.querySelected;
-    }
 
-    setContext(newState);
-  }, [rawTime.from, rawTime.to]);
+      setContext(newState);
+    }
+  }, [rawTime.from, rawTime.to, panelState]);
 
   // refresh
   useEffect(() => {
