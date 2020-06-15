@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 // eslint-disable-next-line max-len
 import { QueryTooltip } from 'shared/components/Elements/QueryTooltip/QueryTooltip';
 import { Close } from 'shared/components/Elements/Icons/Close';
@@ -7,9 +7,9 @@ import { GROUP_BY_OPTIONS } from './Fingerprint.constants';
 import { styles } from './Fingerprint.styles';
 import { FingerprintProps } from './Fingerprint.types';
 
-const Fingerprint = ({
+const Fingerprint: FC<FingerprintProps> = ({
   totals, query, queryId, groupBy, closeDetails
-}: FingerprintProps) => {
+}) => {
   const currentGroupBy = GROUP_BY_OPTIONS.filter((option) => option.value === groupBy)[0];
 
   return (

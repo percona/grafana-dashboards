@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { DATABASE } from '../Details.constants';
 import { getExample } from './Example.tools';
 import { ExampleInterface } from './Example.types';
 
-const Example = ({ fingerprint, databaseType, examples }: ExampleInterface) => {
+const Example: FC<ExampleInterface> = ({ fingerprint, databaseType, examples }) => {
   const isExample = examples && examples.filter((example) => example.example).length;
   const isPostgresql = databaseType === DATABASE.postgresql;
 

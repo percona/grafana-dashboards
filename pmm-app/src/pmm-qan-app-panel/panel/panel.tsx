@@ -1,4 +1,5 @@
 import React, {
+  FC,
   useContext, useEffect, useRef, useState
 } from 'react';
 import containerStyling from 'shared/components/helpers/styling';
@@ -12,7 +13,7 @@ import {
 import { styles } from './panel.styles';
 import './panel.scss';
 
-const QueryAnalyticsPanel = () => {
+const QueryAnalyticsPanel: FC = () => {
   useEffect(() => containerStyling.addPluginPanelClass(), []);
   const {
     panelState: { querySelected },

@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import { Divider } from 'antd';
 import { CheckboxField } from 'shared/components/Form/Checkbox/Checkbox';
 import { humanize } from 'shared/components/helpers/Humanization';
 import { styles } from './CheckboxGroup.styles';
 import { TOP_LIMIT } from './CheckboxGroup.constants';
+import { CheckboxGroupProps } from './CheckboxGroup.types';
 
-export const CheckboxGroup = ({
+
+export const CheckboxGroup: FC<CheckboxGroupProps> = ({
   name, items, group, showAll, filter: searchFilterBy,
 }) => {
   const [showTop, setShowTop] = useState(true);

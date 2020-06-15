@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import { Details } from './Details.types';
 
 const initialState = {
@@ -30,7 +30,7 @@ const actions = {
   },
 };
 
-export const DetailsContentProvider = ({ children }) => {
+export const DetailsContentProvider: FC = ({ children }) => {
   const [detailsState, setContext] = useState({ tables: [] });
   const wrapAction = (key) => (value) => setContext(actions[key](value));
 
