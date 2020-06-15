@@ -153,7 +153,7 @@ export const UrlParametersProvider = ({ grafanaProps, children }) => {
     }
 
     setContext(newState);
-  }, [rawTime.from, rawTime.to]);
+  }, [rawTime.from, rawTime.to, panelState]);
 
   // refresh
   useEffect(() => {
@@ -183,7 +183,7 @@ export const UrlParametersProvider = ({ grafanaProps, children }) => {
         refreshButton.removeEventListener('click', refreshHandle);
       }
     };
-  }, []);
+  }, [panelState]);
 
   useEffect(() => {
     setFirstLoad(false);

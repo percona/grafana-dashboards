@@ -56,20 +56,21 @@ export const Overview = () => {
 
   const getRowClassName = useCallback(
     (record, index) => {
+      const SELECTED_ROW_CLASSNAME = 'selected-overview-row';
       if (querySelected) {
         if (index === 0) {
-          return totals ? 'selected-overview-row' : '';
+          return totals ? SELECTED_ROW_CLASSNAME : '';
         }
         if (totals) {
           return '';
         }
 
         if (!record.dimension && !queryId) {
-          return 'selected-overview-row';
+          return SELECTED_ROW_CLASSNAME;
         }
 
         if (record.dimension === queryId) {
-          return 'selected-overview-row';
+          return SELECTED_ROW_CLASSNAME;
         }
       }
 
