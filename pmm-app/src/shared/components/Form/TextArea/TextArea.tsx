@@ -17,6 +17,7 @@ export const TextAreaField = ({
   name, placeholder, style, className, dataQa
 }: TextAreaFieldInterface) => {
   const { input, meta } = useField(name);
+
   return (
     <div className="text-area-field-wrapper">
       <textarea

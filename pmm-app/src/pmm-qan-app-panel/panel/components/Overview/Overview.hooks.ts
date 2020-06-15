@@ -54,6 +54,7 @@ export const useOverviewTable = (setTotal): [DataInterface, boolean] => {
         setLoading(false);
       }
     };
+
     updateInstances().then(() => {});
   }, [columns, pageNumber, pageSize, groupBy, labels, orderBy, from, to, rawTime]);
 

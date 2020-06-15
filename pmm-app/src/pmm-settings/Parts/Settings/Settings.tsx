@@ -131,6 +131,7 @@ const SettingsPart = (props) => {
       setLoading(false);
     }
   };
+
   return (
     <FormFinal
       onSubmit={onSubmit}
@@ -141,6 +142,7 @@ const SettingsPart = (props) => {
           if (!settings.data_retention && !settings.metrics_resolutions) {
             return;
           }
+
           const [count, units] = [settings.data_retention.slice(0, -1), settings.data_retention.slice(-1)];
           const sliderValue = getMetricsResolutionValues(settings.metrics_resolutions);
 
@@ -179,6 +181,7 @@ const SettingsPart = (props) => {
                     name="metrics_resolutions_slider"
                     tipFormatter={(value) => {
                       const values = dataRetentionValues[value];
+
                       return `high: ${values.hr}, medium: ${values.mr}, low: ${values.lr}`;
                     }}
                   />

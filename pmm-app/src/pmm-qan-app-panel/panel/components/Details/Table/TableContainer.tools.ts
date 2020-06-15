@@ -13,7 +13,9 @@ export const processTableData = (input): { columns: any[]; rows: any[] } => {
     .filter(Boolean)
     .reduce((acc, row, index) => {
       acc[headerList[index].title] = row;
+
       return acc;
     }, {}));
+
   return { columns: headerList, rows: rowsList };
 };

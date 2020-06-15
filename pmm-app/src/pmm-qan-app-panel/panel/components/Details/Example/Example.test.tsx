@@ -19,6 +19,7 @@ describe('Example tab page render test', () => {
     };
     const component = renderer.create(<Example {...props} />);
     const componentInstance = component.root;
+
     expect(componentInstance.findByType('pre').children).toEqual(['Sorry, no examples found for this query']);
   });
 
@@ -30,6 +31,7 @@ describe('Example tab page render test', () => {
     };
     const component = renderer.create(<Example {...props} />);
     const componentInstance = component.root;
+
     expect(componentInstance.findByProps({ className: 'sql' }).children).toEqual(['test fingerprint']);
   });
 
@@ -52,6 +54,7 @@ describe('Example tab page render test', () => {
     };
     const component = renderer.create(<Example {...props} />);
     const componentInstance = component.root;
+
     expect(componentInstance.findByProps({ className: 'json' }).props['data-src']).toBe(
       props.examples[0].example,
     );
@@ -76,6 +79,7 @@ describe('Example tab page render test', () => {
       <Example databaseType={props.databaseType} examples={props.examples} fingerprint={props.fingerprint} />
     );
     const componentInstance = component.root;
+
     expect(componentInstance.findByProps({ className: 'sql' }).children[0]).toEqual(
       sqlFormatter.format(props.examples[0].example),
     );

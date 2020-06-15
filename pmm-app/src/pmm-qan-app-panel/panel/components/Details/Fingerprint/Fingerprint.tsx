@@ -11,6 +11,7 @@ const Fingerprint = ({
   totals, query, queryId, groupBy, closeDetails
 }: FingerprintProps) => {
   const currentGroupBy = GROUP_BY_OPTIONS.filter((option) => option.value === groupBy)[0];
+
   return (
     <div className={styles.fingerprintWrapper} id="query-id">
       <div className={styles.fingerprintView}>

@@ -39,6 +39,7 @@ const getSorting = (orderBy, metricName) => {
   if (orderBy === metricName) {
     return 'ascend';
   }
+
   if (orderBy === `-${metricName}`) {
     return 'descend';
   }
@@ -151,6 +152,7 @@ const metricColumnRender = ({
     </div>
   );
 };
+
 export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy, mainMetric) => {
   const metric = METRIC_CATALOGUE[metricName];
 

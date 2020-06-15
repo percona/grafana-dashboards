@@ -16,17 +16,21 @@ export const humanize = {
     } else if (durationAsSec >= 60) {
       let secs = durationAsSec;
       const secondsInDay = 24 * 60 * 60;
+
       if (secs >= secondsInDay) {
         const days = Math.floor(secs / secondsInDay);
+
         duration = `${days} days, `;
         secs %= secondsInDay;
       }
+
       duration += numeral(secs).format('00:00:00');
     } else if (durationAsMs < 1) {
       duration = `${(durationAsMs * 1000).toFixed(2)} µs`;
     } else {
       duration = `${durationAsMs.toFixed(2)} ms`;
     }
+
     return duration;
   },
   transform: (metricValue: number | null, name?: string): string => {
@@ -35,6 +39,7 @@ export const humanize = {
     }
 
     let res = '0';
+
     switch (name) {
       // "top 10"/profile queries no name parameters
       case undefined:
@@ -53,6 +58,7 @@ export const humanize = {
         } else {
           res = numeral(metricValue).format('0.00 b');
         }
+
         res = res.replace(/([\d]) B/, '$1 Bytes');
         break;
       // ops
@@ -62,6 +68,7 @@ export const humanize = {
         } else {
           res = numeral(metricValue).format('0.00a');
         }
+
         break;
       case 'percent':
         if (metricValue !== 0 && metricValue < 0.0001) {
@@ -71,6 +78,7 @@ export const humanize = {
         } else {
           res = numeral(metricValue).format('0.00%');
         }
+
         break;
       case 'percentRounded':
         if (metricValue !== 0 && metricValue < 0.0001) {
@@ -78,6 +86,7 @@ export const humanize = {
         } else {
           res = numeral(metricValue).format('0%');
         }
+
         break;
       // ops
       default:
@@ -86,8 +95,10 @@ export const humanize = {
         } else {
           res = numeral(metricValue).format('0.00 a');
         }
+
         break;
     }
+
     return String(res).replace('<0.00', '<0.01');
   },
 };

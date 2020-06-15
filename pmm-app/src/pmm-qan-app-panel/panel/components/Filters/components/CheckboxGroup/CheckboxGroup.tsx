@@ -13,6 +13,7 @@ export const CheckboxGroup = ({
     if (!showAll) {
       return item.checked;
     }
+
     return true;
   });
 
@@ -23,6 +24,7 @@ export const CheckboxGroup = ({
         || name.toLowerCase().includes(searchFilterBy.toLowerCase())
       );
     }
+
     return (
       item.value.toLowerCase().includes(searchFilterBy.toLowerCase())
       || name.toLowerCase().includes(searchFilterBy.toLowerCase())
@@ -34,11 +36,13 @@ export const CheckboxGroup = ({
       if (showAll && !item.value && list.length === 1) {
         return false;
       }
+
       return true;
     })
     .filter(searchFilter)
     .map((item) => {
       const valueExists = item.main_metric_percent !== undefined;
+
       return (
         <div className={styles.label} key={`${group}:${item.value || ''}`}>
           <span className={styles.filterName}>
@@ -55,6 +59,7 @@ export const CheckboxGroup = ({
         </div>
       );
     });
+
   return itemsList.length ? (
     <div>
       <p className={styles.filterHeaderWrapper}>

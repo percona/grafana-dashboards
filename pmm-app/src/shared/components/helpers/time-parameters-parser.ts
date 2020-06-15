@@ -13,6 +13,7 @@ export class MomentFormatPipe {
   static getCookie(name) {
     return document.cookie.split('; ').reduce((r, v) => {
       const parts = v.split('=');
+
       return parts[0] === name ? decodeURIComponent(parts[1]) : r;
     }, '');
   }
@@ -25,6 +26,7 @@ export class MomentFormatPipe {
     if (this.timezone === 'browser') {
       return moment(value).local().format(format);
     }
+
     return moment(value).format(format);
   }
 }
@@ -39,6 +41,7 @@ export class ParseQueryParamDate {
     if (date === undefined && edge === 'from') {
       return nowFunc().subtract(1, 'h');
     }
+
     if (date === undefined && edge === 'to') {
       return nowFunc();
     }
@@ -46,6 +49,7 @@ export class ParseQueryParamDate {
     if (date === 'now') {
       return nowFunc();
     }
+
     // from=now-5d&to=now-6M ... from=now/w&to=now/w
     if (date.length > 4 && date.startsWith('now')) {
       // let subtrahend = date.substr(4);
@@ -54,38 +58,48 @@ export class ParseQueryParamDate {
 
       if (!parts) {
         const isnum = /^\d+$/.test(date);
+
         if (isnum) {
           return nowFunc(parseInt(date, 10));
         }
+
         return nowFunc(date);
       }
 
       if (parts[1] === 'now') {
         parsedDate = nowFunc();
       }
+
       if (parts[2] === '-') {
         parsedDate.subtract(parts[3], parts[4]);
       }
+
       if (parts[2] === '/') {
         if (edge === 'from') {
           return parsedDate.startOf(parts[4]);
         }
+
         return parsedDate.endOf(parts[4]);
       }
+
       if (parts.length > 4 && parts[5] === '/') {
         if (edge === 'from') {
           return parsedDate.startOf(parts[6]);
         }
+
         return parsedDate.endOf(parts[6]);
       }
     } else {
       // expect unix timestamp in milliseconds
       const isnum = /^\d+$/.test(date);
+
       if (isnum) {
         return nowFunc(parseInt(date, 10));
       }
+
       return nowFunc(date);
     }
+
     return parsedDate;
   }
 }

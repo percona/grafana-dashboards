@@ -49,6 +49,7 @@ const AlertManager = (props) => {
       setLoading(false);
     }
   };
+
   return (
     <FormFinal
       onSubmit={onSubmit}
@@ -56,6 +57,7 @@ const AlertManager = (props) => {
         useEffect(() => {
           form.initialize(props.settings);
         }, [props.settings]);
+
         return (
           <form onSubmit={handleSubmit}>
             <>

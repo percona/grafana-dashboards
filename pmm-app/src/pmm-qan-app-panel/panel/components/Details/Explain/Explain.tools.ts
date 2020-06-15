@@ -16,6 +16,7 @@ export const processClassicExplain = (classic) => {
     .filter(Boolean)
     .reduce((acc, row, index) => {
       acc[headerList[index].title] = row;
+
       return acc;
     }, {}));
 

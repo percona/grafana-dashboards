@@ -5,6 +5,7 @@ const markCheckedLabels = (labels, paramLabels) => {
   Object.keys(labels).forEach((label) => {
     labels[label].name.forEach((metric) => {
       const passedVariables = paramLabels[label];
+
       if (!passedVariables) {
         return;
       }
@@ -14,8 +15,10 @@ const markCheckedLabels = (labels, paramLabels) => {
           // eslint-disable-next-line no-param-reassign
           metric.value = '';
         }
+
         return variable === metric.value;
       });
+
       // eslint-disable-next-line no-param-reassign
       metric.checked = isChecked;
     });
@@ -32,6 +35,7 @@ export default {
       period_start_from: from,
       period_start_to: to,
     });
+
     return markCheckedLabels(labels, paramLabels);
   }
 };

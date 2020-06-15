@@ -6,6 +6,7 @@ import { ExampleInterface } from './Example.types';
 const Example = ({ fingerprint, databaseType, examples }: ExampleInterface) => {
   const isExample = examples && examples.filter((example) => example.example).length;
   const isPostgresql = databaseType === DATABASE.postgresql;
+
   return (
     <div>
       {isPostgresql ? getExample(databaseType)(fingerprint) : null}

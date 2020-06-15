@@ -7,6 +7,7 @@ const validators = {
     if (portNumber > MIN_PORT_NUMBER && portNumber < MAX_PORT_NUMBER) {
       return undefined;
     }
+
     return 'Port should be a number and between the range of 0 and 65535';
   },
 
@@ -36,6 +37,7 @@ const validators = {
     ) {
       return 'Values have to be in key:value format, and separated with new line or space';
     }
+
     return undefined;
   },
 

@@ -34,6 +34,7 @@ class ApiRequest {
         if (!disableNotifications) {
           showErrorNotification({ message: e.response.data?.message ?? 'Unknown error' });
         }
+
         throw e;
       });
   }

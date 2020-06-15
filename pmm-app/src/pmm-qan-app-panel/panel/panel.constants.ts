@@ -50,6 +50,7 @@ export const METRIC_CATALOGUE = {
       if (!mainMetric || !divider) {
         return '';
       }
+
       return `${humanize.transform(mainMetric / divider, 'size')} per row sent`;
     },
     units: Units.PER_SEC,
@@ -323,6 +324,7 @@ export const METRIC_CATALOGUE = {
       if (!mainMetric || !divider) {
         return '';
       }
+
       return `${humanize.transform(mainMetric / divider)} per query`;
     },
     units: Units.NONE,
@@ -546,6 +548,7 @@ export const METRIC_CATALOGUE = {
     metricRelation: (data) => {
       const mainMetric = _.get(data, ['lock_time', 'avg']);
       const divider = _.get(data, ['query_time', 'avg']);
+
       if (!mainMetric || !divider) {
         return '';
       }

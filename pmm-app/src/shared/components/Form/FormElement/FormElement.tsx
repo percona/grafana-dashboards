@@ -19,6 +19,7 @@ const style = {
 
 const getErrorsWrapperStyle = (align) => {
   let alignLabel: string;
+
   switch (align) {
     case 'top':
       alignLabel = 'flex-start';
@@ -32,6 +33,7 @@ const getErrorsWrapperStyle = (align) => {
     default:
       alignLabel = 'center';
   }
+
   return css`
     color: white;
     margin-bottom: 10px;
@@ -72,6 +74,7 @@ export const FormElement = (props) => {
   const {
     dataQa, type, errors, alignLabel
   } = props;
+
   return (
     <div className={style.formElementWrapper} data-qa={dataQa}>
       {type === 'horizontal' ? (

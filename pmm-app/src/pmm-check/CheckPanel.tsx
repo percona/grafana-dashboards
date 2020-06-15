@@ -40,6 +40,7 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
   async getSettings() {
     try {
       const resp = (await CheckService.getSettings()) as Settings;
+
       this.setState({ isSttEnabled: !!resp.settings?.stt_enabled });
       this.setState({ hasNoAccess: false });
 
@@ -53,6 +54,7 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
       if (err.response?.status === 401) {
         this.setState({ hasNoAccess: true });
       }
+
       console.error(err);
     }
   }
@@ -60,6 +62,7 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
   async fetchAlerts() {
     try {
       const dataSource = await CheckService.getActiveAlerts();
+
       this.setState({ dataSource });
     } catch (err) {
       console.error(err);

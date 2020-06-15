@@ -16,6 +16,7 @@ export const useActionResult = async (actionId): Promise<ActionResult> => {
     if (!actionId) {
       return;
     }
+
     const getData = async () => {
       if (!counter) {
         clearInterval(intervalId);
@@ -24,14 +25,17 @@ export const useActionResult = async (actionId): Promise<ActionResult> => {
           value: null,
           error: '',
         });
+
         return;
       }
+
       counter -= 1;
 
       try {
         const requestResult = await DetailsService.getActionResult({
           action_id: actionId,
         });
+
         if (requestResult.done) {
           clearInterval(intervalId);
           if (requestResult.error) {
@@ -57,6 +61,7 @@ export const useActionResult = async (actionId): Promise<ActionResult> => {
         });
       }
     };
+
     intervalId = setInterval(getData, 500);
   });
 };
@@ -70,6 +75,7 @@ export const useDetailsState = () => {
   const {
     contextActions,
   } = useContext(DetailsProvider);
+
   useEffect(() => {
     (async () => {
       try {
@@ -88,6 +94,7 @@ export const useDetailsState = () => {
         const notEmptyExample = examples.filter((example) => example.example);
         let jsonExplain;
         let classicExplain;
+
         // debugger
         // 2. Get explains
         try {
@@ -110,8 +117,10 @@ export const useDetailsState = () => {
 
         // 3. Get tables
         let tables;
+
         if (databaseType === DATABASE.mysql && jsonExplain.value) {
           const parsedJSON = JSON.parse(jsonExplain.value);
+
           tables = [
             get(parsedJSON, 'query_block.table.table_name')
               || get(parsedJSON, 'query_block.ordering_operation.grouping_operation.table.table_name'),

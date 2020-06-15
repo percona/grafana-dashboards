@@ -8,9 +8,11 @@ export const mongodbMethods = {
         service_id: example.service_id,
         query: example.example,
       });
+
       return result.action_id;
     } catch (e) {
       console.error(e);
+
       return null;
     }
   }

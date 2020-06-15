@@ -47,6 +47,7 @@ export const Overview = () => {
 
   const renderShowTotal = useCallback((totalAmount, range) => {
     setShowTotal(`${range[0]}-${range[1]} of ${totalAmount} items`);
+
     return null;
   }, []);
 
@@ -57,10 +58,12 @@ export const Overview = () => {
   const getRowClassName = useCallback(
     (record, index) => {
       const SELECTED_ROW_CLASSNAME = 'selected-overview-row';
+
       if (querySelected) {
         if (index === 0) {
           return totals ? SELECTED_ROW_CLASSNAME : '';
         }
+
         if (totals) {
           return '';
         }

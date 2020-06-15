@@ -90,6 +90,7 @@ export const ManageColumns = (props) => {
       ) : null}
     </div>
   );
+
   return (
     <div className={!onlyAdd ? 'manage-columns' : 'add-columns'} onClick={(e) => e.stopPropagation()}>
       <Select

@@ -32,6 +32,7 @@ export const InputField = ({
   dataQa
 }: InputFieldInterface) => {
   const { input, meta } = useField(name, { validate });
+
   return (
     <div className="input-field-wrapper" style={wrapperStyle || {}}>
       <input

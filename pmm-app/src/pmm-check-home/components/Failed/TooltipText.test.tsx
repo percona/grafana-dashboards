@@ -25,6 +25,7 @@ describe('TooltipText::', () => {
   it('should render nothing when the sum is zero', () => {
     const outer = shallow(<TooltipText sum={0} data={[0, 0, 0]} />);
     const root = outer.find('div');
+
     expect(root.length).toEqual(0);
 
     root.unmount();

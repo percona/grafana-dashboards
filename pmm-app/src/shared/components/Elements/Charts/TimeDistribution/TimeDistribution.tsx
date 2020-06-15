@@ -9,6 +9,7 @@ export const getMetricDistribution = (data) => {
   const timeMetrics = data.filter((metric) => {
     if (metric.metricName === 'query_time') {
       totalValue = metric.metric.sum;
+
       return false;
     }
 
@@ -26,7 +27,9 @@ export const getMetricDistribution = (data) => {
 
       const percentage = sum / (totalValue / PERCENT_COUNT);
       const value = Math.max(percentage, 1);
+
       currentPercent -= percentage;
+
       return {
         name,
         value,
@@ -50,6 +53,7 @@ export const getMetricDistribution = (data) => {
 
 export const TimeDistribution = ({ data }) => {
   const normalizedTimeMetrics = getMetricDistribution(data);
+
   return (
     <>
       <HSBar height={30} showTextIn id="query-time-chart" fontColor="white" data={normalizedTimeMetrics} />

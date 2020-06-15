@@ -7,11 +7,13 @@ import { servicesColumns } from '../panel.constants';
 export const ServicesTab = () => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
+
   useEffect(() => {
     setLoading(true);
     (async () => {
       try {
         const result = await InventoryService.getServices({});
+
         setData(InventoryDataService.generateStructure(result));
       } catch (e) {
         console.error(e);

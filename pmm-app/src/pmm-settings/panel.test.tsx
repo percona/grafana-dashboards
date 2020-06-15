@@ -8,6 +8,7 @@ jest.mock('shared/components/helpers/notification-manager');
 describe('Settings panel test', () => {
   it('Settings panel renders correct without props', () => {
     const root = shallow(<SettingsPanel />);
+
     expect(root).toMatchSnapshot();
 
     root.unmount();

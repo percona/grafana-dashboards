@@ -6,6 +6,7 @@ import { CheckPanelOptions } from 'pmm-check/types';
 export class CheckPanelEditor extends PureComponent<PanelEditorProps<CheckPanelOptions>> {
   onTitleChanged = ({ target }: any) => {
     const { onOptionsChange, options } = this.props;
+
     onOptionsChange({ ...options, title: target.value });
   };
 

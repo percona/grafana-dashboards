@@ -9,6 +9,7 @@ jest.mock('shared/components/helpers/notification-manager');
 
 describe('Inventory tables', () => {
   let container: Element;
+
   beforeEach(() => {
     // setup a DOM element as a render target
     container = document.createElement('div');
@@ -82,6 +83,7 @@ describe('Inventory tables', () => {
         },
       ],
     };
+
     act(() => {
       render(
         <Table
@@ -106,6 +108,7 @@ describe('Inventory tables', () => {
         { node_id: 'pmm-server2', node_name: 'pmm-server2', address: '127.0.0.1' },
       ],
     };
+
     act(() => {
       render(
         <Table

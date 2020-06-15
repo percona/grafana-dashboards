@@ -63,6 +63,7 @@ export const FiltersContainer = ({
         />
         {FILTERS_GROUPS.filter((group) => filters[group.dataKey]).map((group) => {
           const { name, dataKey } = group;
+
           return (
             <CheckboxGroup
               key={name}
@@ -89,6 +90,7 @@ export const Filters = () => {
   } = useContext(QueryAnalyticsProvider);
   const { filters, loading } = useFilters();
   const initialValues = useInitialFilterValues();
+
   return (
     <Form
       onSubmit={() => {}}

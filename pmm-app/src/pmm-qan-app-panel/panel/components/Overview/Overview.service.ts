@@ -18,6 +18,7 @@ export default {
       period_start_from: body.from,
       period_start_to: body.to,
     };
+
     return apiRequestQAN.post<any, any>('/GetReport', request);
   },
 };

@@ -22,7 +22,9 @@ const actions = {
   }),
   addColumn: (value) => (state) => {
     const columns = [...state.columns];
+
     columns.push(value);
+
     return {
       ...state,
       columns,
@@ -30,7 +32,9 @@ const actions = {
   },
   changeColumn: (value) => (state) => {
     const columns = [...state.columns];
+
     columns[columns.indexOf(value.oldColumn.simpleName)] = value.column;
+
     return {
       ...state,
       columns,
@@ -42,9 +46,11 @@ const actions = {
     const columns = [...state.columns];
     const columnIndex = columns.indexOf(value.simpleName);
     const currentColumn = columns[columnIndex];
+
     // eslint-disable-next-line prefer-destructuring
     columns[columnIndex] = columns[0];
     columns[0] = currentColumn;
+
     return {
       ...state,
       columns,
@@ -52,7 +58,9 @@ const actions = {
   },
   removeColumn: (value) => (state) => {
     const columns = [...state.columns];
+
     columns.splice(columns.indexOf(value.simpleName), 1);
+
     return {
       ...state,
       columns,
@@ -128,6 +136,7 @@ export const UrlParametersProvider = ({ grafanaProps, children }) => {
   useEffect(() => {
     refreshGrafanaVariables(panelState);
     const newUrl = generateURL(panelState);
+
     // eslint-disable-next-line no-restricted-globals
     history.pushState({}, 'test', newUrl);
   }, [panelState]);
@@ -135,6 +144,7 @@ export const UrlParametersProvider = ({ grafanaProps, children }) => {
   const wrapAction = (key) => (...value) => setContext(actions[key](...value));
 
   const [isFirstLoad, setFirstLoad] = useState(true);
+
   useEffect(() => {
     if (isFirstLoad) {
       return;
@@ -167,6 +177,7 @@ export const UrlParametersProvider = ({ grafanaProps, children }) => {
         to,
         rawTime,
       };
+
       if (panelState.rawTime.from !== rawTime.from || panelState.rawTime.to !== rawTime.to) {
         newState.pageNumber = 1;
         delete newState.queryId;
@@ -175,6 +186,7 @@ export const UrlParametersProvider = ({ grafanaProps, children }) => {
 
       setContext(newState);
     };
+
     if (refreshButton) {
       refreshButton.addEventListener('click', refreshHandle);
     }
@@ -197,6 +209,7 @@ export const UrlParametersProvider = ({ grafanaProps, children }) => {
         contextActions: Object.keys(actions).reduce((actionsList, key) => {
           // eslint-disable-next-line no-param-reassign
           actionsList[key] = wrapAction(key);
+
           return actionsList;
         }, {}),
       }}

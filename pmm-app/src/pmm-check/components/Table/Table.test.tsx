@@ -25,6 +25,7 @@ xdescribe('Table::', () => {
 
     expect(root.find('[data-qa="db-check-panel-settings-link"]').length).toEqual(1);
     const text = 'Security Threat Tool is disabled. You can enable it in PMM Settings.';
+
     expect(root.find('[data-qa="db-check-panel-settings-link"]').text()).toEqual(text);
 
     // See if the link is rendered
@@ -35,6 +36,7 @@ xdescribe('Table::', () => {
     const root = shallow(<Table caption="" columns={COLUMNS} isSttEnabled data={[]} />);
 
     const emptyDiv = root.find('[data-qa="db-check-panel-table-empty"]');
+
     expect(emptyDiv.length).toEqual(1);
     expect(emptyDiv.text()).toEqual('No failed checks. Checks run every 24 hours.');
   });
@@ -43,6 +45,7 @@ xdescribe('Table::', () => {
     const root = shallow(<Table caption="" columns={COLUMNS} isSttEnabled data={activeCheckStub} />);
 
     const table = root.find('[data-qa="db-check-panel-table"]');
+
     expect(table.length).toEqual(1);
     expect(table.find(TableHeader).length).toEqual(1);
     expect(table.find(TableBody).length).toEqual(1);
@@ -52,6 +55,7 @@ xdescribe('Table::', () => {
     const root = shallow(<Table caption="" columns={COLUMNS} isSttEnabled hasNoAccess />);
 
     const empty = root.find('[data-qa="db-check-panel-no-access"]');
+
     expect(empty.text()).toEqual('Insufficient access rights.');
   });
 });
