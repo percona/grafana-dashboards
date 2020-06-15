@@ -5,3 +5,4 @@ export { UpdateButton } from './UpdateButton/UpdateButton';
 export { UpdateHeader } from './UpdateHeader/UpdateHeader';
 export { UpdateInfoBox } from './UpdateInfoBox/UpdateInfoBox';
 export { UpdateModal } from './UpdateModal/UpdateModal';
+export { UpdateModalHeader } from './UpdateModalHeader/UpdateModalHeader';

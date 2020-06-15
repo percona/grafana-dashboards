@@ -31,6 +31,8 @@ export const modal = css`
   .pre-scrollable {
     height: 200px;
     overflow-y: scroll;
+    width: 100%;
+    margin-right: 0;
   }
 
   .pre-scrollable pre {
@@ -69,5 +71,16 @@ export const modal = css`
 
   .output-collapse {
     cursor: pointer;
+    margin-right: 5px;
+  }
+  .btn-block {
+    width: 100%;
+  }
+
+  .modal-body {
+    position: relative;
+  }
+  .modal-content {
+    padding: 28px;
   }
 `;

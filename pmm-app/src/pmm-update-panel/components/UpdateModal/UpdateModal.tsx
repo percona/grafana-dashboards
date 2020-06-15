@@ -1,19 +1,30 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
+import { ClipboardButton, Icon } from '@grafana/ui';
+import { Modal } from '@grafana/ui';
 
 import { Messages } from './UpdateModal.messages';
 import * as styles from './UpdateModal.styles';
+import { CenteredButton, UpdateModalHeader } from 'pmm-update-panel/components';
 import { useClickOutside } from 'pmm-update-panel/hooks';
 
 interface UpdateModalProps {
   errorMessage: string;
+  isOpen: boolean;
   isUpdated: boolean;
   output: string;
   updateFailed: boolean;
   version: string;
 }
 
-export const UpdateModal = ({ errorMessage, isUpdated, output, updateFailed, version }: UpdateModalProps) => {
-  const scrollableRef = useRef<HTMLPreElement>(null);
+export const UpdateModal = ({
+  errorMessage,
+  isOpen,
+  isUpdated,
+  output,
+  updateFailed,
+  version,
+}: UpdateModalProps) => {
+  const outputRef = useRef<HTMLPreElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
   const [isOutputShown, setIsOutputShown] = useState(true);
 
@@ -25,7 +36,7 @@ export const UpdateModal = ({ errorMessage, isUpdated, output, updateFailed, ver
 
   useLayoutEffect(() => {
     // scroll update status to the end.
-    const interval = setInterval(() => scrollableRef.current?.scrollIntoView(false), 500);
+    const interval = setInterval(() => outputRef.current?.scrollIntoView(false), 500);
 
     return () => {
       clearInterval(interval);
@@ -40,76 +51,52 @@ export const UpdateModal = ({ errorMessage, isUpdated, output, updateFailed, ver
     location.reload(true);
   };
 
-  // TODO (nicolalamacchia): componentize this
+  const copyToClipboard = useCallback(() => outputRef.current?.textContent ?? '', [outputRef]);
+
+  const chevronIcon = isOutputShown ? 'chevron-down' : 'chevron-up';
+
+  // TODO (nicolalamacchia): componentize this further
   return (
-    <div className={styles.modal}>
+    <Modal title="" className={styles.modal} isOpen={isOpen}>
       <div ref={modalRef} className="modal-dialog" role="document">
-        {!isUpdated ? (
-          <div className="modal-content">
-            <div className="modal-body">
-              {!errorMessage.length ? (
-                <h4>
-                  {Messages.updateInProgress}{' '}
-                  {/* {isLoaderShown && <i className="fa fa-spinner fa-spin"></i>} */}
-                </h4>
-              ) : null}
-              {updateFailed && (
-                <>
-                  <h4>{Messages.updateFailed}</h4>
-                  <h4>{errorMessage}</h4>
-                </>
-              )}
+        <div className="modal-content">
+          <div className="modal-body">
+            <UpdateModalHeader
+              isUpdated={isUpdated}
+              updateFailed={updateFailed}
+              errorMessage={errorMessage}
+            />
+            {!isUpdated ? (
               <div className="output-content">
                 <div className="output-header">
-                  <i
-                    className={`fa output-collapse ${isOutputShown ? 'fa-chevron-down' : 'fa-chevron-up'}`}
-                    onClick={handleToggleShowOutput}
-                  ></i>
+                  <Icon className="output-collapse" name={chevronIcon} onClick={handleToggleShowOutput} />
                   <span>Log</span>
-                  <span className="text-secondary text-primary text-right" clipboard-button="output">
+                  <ClipboardButton getText={copyToClipboard} className="text-right" variant="link" size="sm">
                     {Messages.copyToClipboard}
-                  </span>
+                  </ClipboardButton>
                 </div>
-
                 {isOutputShown && (
                   <div className="pre-scrollable output-value">
-                    <pre ref={scrollableRef}>{output}</pre>
+                    <pre ref={outputRef}>{output}</pre>
                   </div>
                 )}
               </div>
-            </div>
-          </div>
-        ) : null}
-        {/*{isUpdated && !isLoaderShown ? (*/}
-        {isUpdated ? (
-          <div className="modal-content">
-            <div className="modal-body">
-              <h4>{Messages.updateSucceeded}</h4>
-              <div>
-                <div>
-                  <div className="text-center text-block">
-                    <h6>
-                      {Messages.updateSuccessNotice} {version}
-                    </h6>
-                  </div>
+            ) : (
+              <>
+                <div className="text-center text-block">
+                  <h6>
+                    {Messages.updateSuccessNotice} {version}
+                  </h6>
                 </div>
-                <div className="btn-holder">
-                  <div>
-                    <button
-                      className="btn btn-secondary btn-block"
-                      data-dismiss="modal"
-                      onClick={reloadAfterUpdate}
-                    >
-                      Close
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
+                <CenteredButton variant="primary" onClick={reloadAfterUpdate}>
+                  Close
+                </CenteredButton>
+              </>
+            )}
           </div>
-        ) : null}
+        </div>
       </div>
       <div className="backdrop"></div>
-    </div>
+    </Modal>
   );
 };

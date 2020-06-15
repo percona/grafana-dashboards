@@ -1,4 +1,5 @@
 import React, { MouseEvent, useCallback, useEffect, useState } from 'react';
+import { Modal } from '@grafana/ui';
 import moment from 'moment';
 
 import {
@@ -229,15 +230,14 @@ export const UpdatePanel = () => {
           isLoading={isLoading}
         />
       </div>
-      {showModal && (
-        <UpdateModal
-          errorMessage={errorMessage}
-          output={output}
-          updateFailed={updateFailed}
-          isUpdated={isUpdated}
-          version={version}
-        />
-      )}
+      <UpdateModal
+        errorMessage={errorMessage}
+        isOpen={showModal}
+        isUpdated={isUpdated}
+        output={output}
+        updateFailed={updateFailed}
+        version={version}
+      />
     </>
   );
 };
