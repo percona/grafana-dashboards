@@ -37,7 +37,7 @@ export const refreshGrafanaVariables = (state) => {
 export const generateURL = (state) => {
   // read parameters and create new url
   const {
-    labels, columns, groupBy, queryId, orderBy
+    labels, columns, groupBy, queryId, orderBy, rawTime
   } = state;
   const urlLabels = Object.keys(labels)
     .map((key) => {
@@ -51,28 +51,30 @@ export const generateURL = (state) => {
   const urlGroupBy = groupBy ? `group_by=${groupBy}` : '';
   const urlFilterByQuery = queryId ? `filter_by=${queryId}` : '';
   const urlOrderBy = orderBy ? `order_by=${orderBy}` : '';
-  const urlFrom = state.rawTime && state.rawTime.from ? `from=${state.rawTime.from}` : '';
-  const urlTo = state.rawTime && state.rawTime.to ? `to=${state.rawTime.to}` : '';
+  const urlFrom = rawTime && rawTime.from ? `from=${rawTime.from}` : '';
+  const urlTo = rawTime && rawTime.to ? `to=${rawTime.to}` : '';
   const totals = `totals=${state.totals}`;
   const querySelected = state.querySelected ? `query_selected=${state.querySelected}` : '';
   const openDetailsTab = state.openDetailsTab ? `details_tab=${state.openDetailsTab}` : '';
 
+  const uriQueryParams = [
+    urlColumnsQuery,
+    urlFilterByQuery,
+    urlLabels,
+    urlOrderBy,
+    urlGroupBy,
+    urlFrom,
+    urlTo,
+    totals,
+    querySelected,
+    openDetailsTab,
+  ]
+    .filter(Boolean)
+    .join('&');
+
   // TODO: replace crutch with right redirect
   return encodeURI(
-    `${window.location.pathname}?${[
-      urlColumnsQuery,
-      urlFilterByQuery,
-      urlLabels,
-      urlOrderBy,
-      urlGroupBy,
-      urlFrom,
-      urlTo,
-      totals,
-      querySelected,
-      openDetailsTab,
-    ]
-      .filter(Boolean)
-      .join('&')}`
+    `${window.location.pathname}?${uriQueryParams}`
   );
 };
 export const parseURL = (query) => ({
