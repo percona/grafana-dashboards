@@ -82,6 +82,7 @@ Scenario(
   'PMM-T262 Open PMM Settings page and verify DATA_RETENTION value is set to 2 days after upgrade @pmm-upgrade @visual-test @not-pr-pipeline',
   async (I, pmmSettingsPage) => {
     const dataRetention = '2';
+    I.amOnPage(pmmSettingsPage.url);
     pmmSettingsPage.waitForPmmSettingsPageLoaded();
     const dataRetentionActualValue = await I.grabValueFrom(pmmSettingsPage.fields.dataRetentionCount);
     assert(
