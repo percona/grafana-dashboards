@@ -18,8 +18,7 @@ const setFilters = (query) => FILTERS_NAMES.reduce((result, filterName) => {
 
 export const refreshGrafanaVariables = (state) => {
   const dataSource = getDataSourceSrv();
-  // @ts-ignore
-  const templateVariables = dataSource.templateSrv.variables;
+  const templateVariables = (dataSource as any).templateSrv.variables;
 
   FILTERS_NAMES.forEach((filter) => {
     const variables = find(templateVariables, { name: filter.replace('var-', '') });
@@ -40,10 +39,8 @@ export const generateURL = (state) => {
   const {
     labels, columns, groupBy, queryId, orderBy
   } = state;
-  // @ts-ignore
   const urlLabels = Object.keys(labels)
     .map((key) => {
-      // @ts-ignore
       const variables = labels[key];
 
       return variables.map((variable) => `var-${key}=${variable === 'na' ? '' : variable}`).join('&');

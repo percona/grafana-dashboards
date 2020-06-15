@@ -42,20 +42,17 @@ const sortDetails = (a, b) => {
 };
 
 export const processMetrics = (metricsCatalogue, metrics) => {
-  // @ts-ignore
   const data = metrics.metrics ? metrics.metrics : metrics.totals;
 
   return Object.entries(data)
     .filter(
-      // @ts-ignore
-      (metricData) => Object.keys(metricData[1]).length
+      (metricData) => Object.keys(metricData[1] as any[]).length
     )
     .filter(
       (metricData) => {
-        // @ts-ignore
-        const notZeroCount = metricData[1].cnt !== 0;
-        // @ts-ignore
-        const notSum = metricData[1].sum === undefined;
+        const metricStorage = metricData[1] as any;
+        const notZeroCount = metricStorage.cnt !== 0;
+        const notSum = metricStorage.sum === undefined;
 
         return !(notZeroCount && notSum);
       }

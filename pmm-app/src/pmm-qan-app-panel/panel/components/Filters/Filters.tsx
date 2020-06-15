@@ -96,7 +96,6 @@ export const Filters = () => {
       onSubmit={() => {}}
       initialValues={initialValues}
       render={({ form, handleSubmit }) => (
-        // @ts-ignore
         <Spin spinning={loading}>
           <form onSubmit={handleSubmit} onChange={() => contextActions.setLabels(form.getState().values)}>
             <FiltersContainer contextActions={contextActions} form={form} labels={labels} filters={filters} />

@@ -20,7 +20,6 @@ const mainColumn = (text, item) => (
 );
 
 const rateColumn = (totals) => (text, item) => {
-  // @ts-ignore
   const polygonChartProps = {
     data: item.sparkline,
     ykey: 'metric',
