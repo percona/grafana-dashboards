@@ -18,8 +18,8 @@ Scenario(
   'PMM-T289 Verify Whats New link is presented on Update Widget @pmm-upgrade @visual-test @not-pr-pipeline',
   async (I, homePage) => {
     I.amOnPage(homePage.url);
-    const res2 = env.process.DOCKER_VERSION.split('.');
-    const res = env.process.PMM_SERVER_LATEST.split('.');
+    const res2 = process.env.DOCKER_VERSION.split('.');
+    const res = process.env.PMM_SERVER_LATEST.split('.');
     const majorVersionDiff = res[1] - res2[1];
     const patchVersionDiff = res[2] - res2[2];
     if (majorVersionDiff >= 1 && patchVersionDiff >= 0) {
