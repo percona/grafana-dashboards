@@ -9,14 +9,8 @@ import { FILTERS_BODY_HEIGHT, FILTERS_GROUPS } from './Filters.constants';
 import { styles } from './Filters.styles';
 import { useFilters, useFiltersContainerHeight, useInitialFilterValues } from './Filters.hooks';
 import { getSelectedCheckboxes } from './Filters.tools';
+import { FiltersContainerProps } from './Filters.types';
 
-
-interface FiltersContainerProps {
-  contextActions: any;
-  form: any;
-  labels: object;
-  filters: any;
-}
 
 export const FiltersContainer = ({
   contextActions, form, labels, filters

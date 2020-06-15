@@ -3,8 +3,7 @@ import { Divider } from 'antd';
 import { CheckboxField } from 'shared/components/Form/Checkbox/Checkbox';
 import { humanize } from 'shared/components/helpers/Humanization';
 import { styles } from './CheckboxGroup.styles';
-
-const TOP_LIMIT = 5;
+import { TOP_LIMIT } from './CheckboxGroup.constants';
 
 export const CheckboxGroup = ({
   name, items, group, showAll, filter: searchFilterBy,
