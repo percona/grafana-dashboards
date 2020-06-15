@@ -1,6 +1,6 @@
 import React from 'react';
-import { Button, Icon } from '@grafana/ui';
 
+import { CenteredButton } from 'pmm-update-panel/components';
 import * as styles from './UpdateButton.styles';
 
 interface UpdateButtonProps {
@@ -10,8 +10,7 @@ interface UpdateButtonProps {
 }
 
 export const UpdateButton = ({ onClick, nextVersion, disabled = false }: UpdateButtonProps) => (
-  // TODO (nicolalamacchia): replace the icon with the `icon` prop of `Button` (it currently doen not work)
-  <Button disabled={disabled} className={styles.updateButton} onClick={onClick}>
-    <Icon name="download" /> Update to {nextVersion}
-  </Button>
+  <CenteredButton disabled={disabled} className={styles.updateButton} onClick={onClick} icon="fa fa-download">
+    Update to {nextVersion}
+  </CenteredButton>
 );
