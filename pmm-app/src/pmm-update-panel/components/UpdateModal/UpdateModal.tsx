@@ -5,7 +5,6 @@ import * as styles from './UpdateModal.styles';
 import { useClickOutside } from 'pmm-update-panel/hooks';
 
 interface UpdateModalProps {
-  canBeReloaded: boolean;
   errorMessage: string;
   isUpdated: boolean;
   output: string;
@@ -13,20 +12,13 @@ interface UpdateModalProps {
   version: string;
 }
 
-export const UpdateModal = ({
-  canBeReloaded,
-  errorMessage,
-  isUpdated,
-  output,
-  updateFailed,
-  version,
-}: UpdateModalProps) => {
+export const UpdateModal = ({ errorMessage, isUpdated, output, updateFailed, version }: UpdateModalProps) => {
   const scrollableRef = useRef<HTMLPreElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
   const [isOutputShown, setIsOutputShown] = useState(true);
 
   useClickOutside(modalRef, () => {
-    if (canBeReloaded) {
+    if (isUpdated) {
       location.reload(true);
     }
   });

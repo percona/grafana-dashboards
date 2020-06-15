@@ -29,13 +29,9 @@ export const UpdatePanel = () => {
   const [updateFailed, setUpdateFailed] = useState(false);
   const [versionCached, setVersionCached] = useState('');
   const [nextVersionCached, setNextVersionCached] = useState('');
-  const [canBeReloaded, setCanBeReloaded] = useState(false);
   const [isUpdated, setIsUpdated] = useState(false);
-  const [updateCntErrors, setUpdateCntErrors] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [updateAuthToken, setUpdateAuthToken] = useState('');
-  const [updateLogOffset, setUpdateLogOffset] = useState(0);
   const [output, setOutput] = useState('');
 
   const displayError = useCallback(message => {
@@ -73,30 +69,33 @@ export const UpdatePanel = () => {
     [nextVersion, nextFullVersion, nextVersionCached]
   );
 
-  const getLog = useCallback(async () => {
-    if (updateCntErrors > 600) {
+  const updateLogs = useCallback(async (authToken: string, logOffset: number, errorsCount = 0) => {
+    if (errorsCount > 600) {
       setUpdateFailed(true);
       return;
     }
 
-    if (isUpdated) {
-      setCanBeReloaded(true);
-      return;
-    }
-
-    let timeoutId: ReturnType<typeof setTimeout>;
+    let timeoutId: number | undefined;
+    let newErrorsCount = errorsCount;
+    let newLogOffset = logOffset;
 
     try {
-      const data = await getUpdateStatus({ auth_token: updateAuthToken, log_offset: updateLogOffset });
-      setIsUpdated('done' in data ? data.done : false);
-      setUpdateLogOffset('log_offset' in data ? data.log_offset : 0);
-      setOutput(output => `${output}${data.log_lines.join('\n')}\n`);
-      setUpdateCntErrors(0);
-      timeoutId = setTimeout(getLog, 500);
+      const data = await getUpdateStatus({ auth_token: authToken, log_offset: logOffset });
+      const { done, log_offset, log_lines } = data;
+      const updated = done ?? false;
+      if (updated) {
+        setIsUpdated(updated);
+        clearTimeout(timeoutId);
+        return;
+      }
+      newLogOffset = logOffset + log_offset ?? 0;
+      setOutput(output => `${output}${log_lines.join('\n')}\n`);
+      newErrorsCount = 0;
     } catch (e) {
-      setUpdateCntErrors(updateCntErrors => updateCntErrors + 1);
+      newErrorsCount += 1;
       setErrorMessage(e.message);
-      timeoutId = setTimeout(getLog, 500);
+    } finally {
+      timeoutId = setTimeout(updateLogs, 500, authToken, newLogOffset, newErrorsCount);
     }
 
     return () => {
@@ -109,50 +108,52 @@ export const UpdatePanel = () => {
 
     try {
       const data = await startUpdate();
-      setUpdateAuthToken(data.auth_token);
-      setUpdateLogOffset('log_offset' in data ? data.log_offset : 0);
-      getLog();
+      const { auth_token, log_offset } = data;
+      await updateLogs(auth_token, log_offset);
     } catch (e) {
       console.error(e);
     }
-  }, []);
+  }, [updateLogs, startUpdate]);
 
-  const handleCheckForUpdates = useCallback(async (e: MouseEvent) => {
-    setIsLoading(true);
+  const handleCheckForUpdates = useCallback(
+    async (e: MouseEvent) => {
+      setIsLoading(true);
 
-    if (e.altKey) {
-      setForceUpdate(true);
-    }
+      if (e.altKey) {
+        setForceUpdate(true);
+      }
 
-    try {
-      const data = await getUpdates();
+      try {
+        const data = await getUpdates();
 
-      setNextVersion(data.latest.version || '');
-      setNextFullVersion(data.latest.full_version || '');
-      setLastCheckDate(
-        data.last_check
-          ? moment(data.last_check)
-              .locale('en')
-              .format('MMMM DD, H:mm')
-          : ''
-      );
-      setNewReleaseDate(
-        data.latest.timestamp
-          ? moment
-              .utc(data.latest.timestamp)
-              .locale('en')
-              .format('MMMM DD')
-          : ''
-      );
-      setNewsLink(data.latest_news_url || '');
-      setIsUpdateAvailable(data.update_available || false);
-      setIsDefaultView(false);
-    } catch (e) {
-      displayError(Messages.nothingToUpdate);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+        setNextVersion(data.latest.version || '');
+        setNextFullVersion(data.latest.full_version || '');
+        setLastCheckDate(
+          data.last_check
+            ? moment(data.last_check)
+                .locale('en')
+                .format('MMMM DD, H:mm')
+            : ''
+        );
+        setNewReleaseDate(
+          data.latest.timestamp
+            ? moment
+                .utc(data.latest.timestamp)
+                .locale('en')
+                .format('MMMM DD')
+            : ''
+        );
+        setNewsLink(data.latest_news_url || '');
+        setIsUpdateAvailable(data.update_available || false);
+        setIsDefaultView(false);
+      } catch (e) {
+        displayError(Messages.nothingToUpdate);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [getUpdates]
+  );
 
   const getCurrentVersionDetails = useCallback(async () => {
     setIsLoading(true);
@@ -232,7 +233,6 @@ export const UpdatePanel = () => {
       </div>
       {showModal && (
         <UpdateModal
-          canBeReloaded={canBeReloaded}
           errorMessage={errorMessage}
           output={output}
           updateFailed={updateFailed}
