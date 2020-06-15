@@ -110,7 +110,7 @@ module.exports = {
   waitForPmmSettingsPageLoaded() {
     I.waitForVisible(this.fields.applyButton, 30);
     I.waitForVisible(this.fields.sectionHeader, 30);
-    I.waitForVisible(this.fields.callHomeSwitch, 30);
+    I.waitForVisible(this.fields.telemetrySwitchSelector, 30);
     I.waitForVisible(this.fields.sttSwitchSelector, 30);
   },
 
