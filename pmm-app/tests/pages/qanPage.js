@@ -43,7 +43,7 @@ module.exports = {
     columns: '//tbody//app-qan-table-header-cell',
     fifty: "//div[@id='ad0800a556c8']/span",
     hundred: "//div[@id='a305c6a9fc9e']",
-    iframe: "//div[@class='panel-content']",
+    iframe: "//div[@class='panel-content']//iframe",
     filterSelection: "(//div[@class='chips']//button)",
     resultsPerPageDropDown: "//div[@class='results-per-page']/ng-select",
     tablesTabInDetails: "//a[@id='tables']",
