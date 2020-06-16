@@ -8,7 +8,7 @@ Before(async (I, qanPage, adminPage) => {
   await I.waitForElement(qanPage.fields.iframe, 60);
   await I.switchTo(qanPage.fields.iframe);
 });
-/*
+
 Scenario('Verify QAN Filter groups exist  @not-pr-pipeline', async (I, adminPage, qanPage) => {
   qanPage.waitForQANPageLoaded();
   await qanPage.changeResultsPerPage(50);
@@ -346,7 +346,7 @@ xScenario(
     await qanPage.verifyPagesAndCount(10);
   }
 );
-*/
+
 // TODO: Uncomment after new QAN will be merged
 xScenario(
   'PMM-T135 - Verify user is not able to add duplicate metric to the overview column',
