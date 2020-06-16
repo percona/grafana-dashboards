@@ -41,8 +41,9 @@ export const NodesTab = () => {
   const removeNodes = useCallback(async (nodes: Array<SelectedTableRows<Node>>, forceMode) => {
     try {
       setLoading(true);
-      const requests = nodes
-        .map(node => InventoryService.removeNode({ node_id: node.original.node_id, force: forceMode }));
+      const requests = nodes.map(node =>
+        InventoryService.removeNode({ node_id: node.original.node_id, force: forceMode })
+      );
 
       const results = await processPromiseResults(requests);
       const successfullyDeleted = results.filter(filterFulfilled).length;
@@ -84,7 +85,7 @@ export const NodesTab = () => {
       >
         <Form
           onSubmit={() => {}}
-          render={({ handleSubmit }) => {
+          render={({ form, handleSubmit }) => {
             return (
               <form onSubmit={handleSubmit}>
                 <>

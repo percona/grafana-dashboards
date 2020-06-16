@@ -41,6 +41,7 @@ export const Agents = () => {
       setLoading(true);
       const requests = agents.map(agent =>
         InventoryService.removeAgent({ agent_id: agent.original.agent_id, force: forceMode })
+      );
       const results = await processPromiseResults(requests);
 
       const successfullyDeleted = results.filter(filterFulfilled).length;
@@ -82,7 +83,7 @@ export const Agents = () => {
       >
         <Form
           onSubmit={() => {}}
-          render={({ handleSubmit }) => {
+          render={({ form, handleSubmit }) => {
             return (
               <form onSubmit={handleSubmit}>
                 <>

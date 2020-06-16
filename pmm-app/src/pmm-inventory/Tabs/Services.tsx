@@ -44,8 +44,9 @@ export const Services = () => {
   const removeServices = useCallback(async (services: Array<SelectedTableRows<Service>>, forceMode) => {
     try {
       setLoading(true);
-      const requests = services
-        .map(service => InventoryService.removeService({ service_id: service.original.service_id, force: forceMode }));
+      const requests = services.map(service =>
+        InventoryService.removeService({ service_id: service.original.service_id, force: forceMode })
+      );
       const results = await processPromiseResults(requests);
       const successfullyDeleted = results.filter(filterFulfilled).length;
       showSuccessNotification({
@@ -85,7 +86,7 @@ export const Services = () => {
       >
         <Form
           onSubmit={() => {}}
-          render={({ handleSubmit }) => {
+          render={({ form, handleSubmit }) => {
             return (
               <form onSubmit={handleSubmit}>
                 <>
