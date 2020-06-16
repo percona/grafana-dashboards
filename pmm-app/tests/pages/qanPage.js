@@ -78,6 +78,9 @@ module.exports = {
     lockTimeDetail: '//div[2]/div/div/div/div/div/div/div/table/tbody/tr[3]/td[4]/div/span',
     queryTimeDetail: '//div[2]/div/div/div/div/div/div/div/table/tbody/tr[2]/td[4]/div/span',
     queryCountDetail: '//div[2]/div/div/div/div/div/div/div/table/tbody/tr[1]/td[3]/div/span[1]',
+    load: '//div[2]/div/div/div/div/div/div/div/table/tbody/tr[2]/td[2]/div/span[1]',
+    lockTimeDetail: '//div[2]/div/div/div/div/div/div/div/table/tbody/tr[3]/td[4]/div/span',
+    avgLoad: '//div[2]/div/div/div/div/div/div/div/table/tbody/tr[3]/td[2]/div/span[1]',
   },
 
   filterGroupLocator(filterName) {
@@ -513,12 +516,32 @@ module.exports = {
     assert.equal(queryTimeDetial, queryTime, 'Query times are not same!');
   },
 
-  async verifyAvqQueryTime(time) {
+  async verifyAvqQueryCount() {
     const queryTimeDetial = await I.grabTextFrom(this.fields.queryTimeDetail);
     const queryCountDetail = await I.grabTextFrom(this.fields.queryCountDetail);
-    console.log('count ' + parseInt(queryTimeDetial));
-    const result = parseInt(queryCountDetail) / parseInt(time);
-    const roundedResult = Math.round(result * 10) / 10;
+    console.log('count ' + parseFloat(queryTimeDetial));
+    const result = parseFloat(queryCountDetail) / 300;
+    const roundedResult = Math.round(parseFloat(result) * 10) / 10;
+    console.log('result: ' + result);
     console.log('count ' + parseInt(roundedResult));
+  },
+
+  async verifyAvgQueryTime() {
+    const queryTimeDetail = await I.grabTextFrom(this.fields.queryTimeDetail);
+    const queryCountDetail = await I.grabTextFrom(this.fields.queryCountDetail);
+    const load = await I.grabTextFrom(this.fields.load);
+    const result = (parseFloat(queryCountDetail) * (parseFloat(queryTimeDetail) / 1000)) / 300;
+    const roundedResult = Math.round(parseFloat(result) * 100) / 100;
+    assert.equal(roundedResult, parseFloat(load), 'Load should be same!');
+  },
+
+  async verifyAvgLockTime() {
+    const avgLoad = await I.grabTextFrom(this.fields.avgLoad);
+    const lockTimeDetail = await I.grabTextFrom(this.fields.lockTimeDetail);
+    const queryCountDetail = await I.grabTextFrom(this.fields.queryCountDetail);
+    const result = (parseFloat(queryCountDetail) * (parseFloat(lockTimeDetail) / 1000000)) / 300;
+    if (result > parseFloat(avgLoad.slice(2, avgLoad.length))) {
+      assert.fail(result + ' should be smaller than ' + parseFloat(avgLoad.slice(2, avgLoad.length)));
+    }
   },
 };

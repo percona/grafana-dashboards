@@ -422,7 +422,7 @@ xScenario(
 );
 
 // TODO: Uncomment after new QAN will be merged
-Scenario('PMM-T223 - Verify time metrics are AVG per query (not per second)', async (I, qanPage) => {
+xScenario('PMM-T223 - Verify time metrics are AVG per query (not per second)', async (I, qanPage) => {
   const waitTime = 300;
   qanPage.waitForNewQANPageLoaded();
   I.click(qanPage.fields.last5MinutesButton);
@@ -430,12 +430,16 @@ Scenario('PMM-T223 - Verify time metrics are AVG per query (not per second)', as
   I.wait(waitTime);
   qanPage.applyFilterNewQAN('mysql');
   I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);
+  I.click(qanPage.fields.last12HoursButton);
+  I.click(qanPage.fields.last5MinutesButton);
   I.wait(10);
   const queryTime = await I.grabTextFrom(qanPage.fields.queryTime);
   I.moveCursorTo(qanPage.fields.aQuery);
   I.wait(5);
   I.click(qanPage.fields.aQuery);
   I.waitForVisible(qanPage.getColumn('Lock Time'), 30);
-  await qanPage.verifyQueryTime(queryTime);
-  await qanPage.verifyAvqQueryTime(waitTime);
+  //await qanPage.verifyQueryTime(queryTime); //Blocked by bug: PMM-5382
+  await qanPage.verifyAvqQueryCount(waitTime);
+  await qanPage.verifyAvgQueryTime();
+  await qanPage.verifyAvgLockTime();
 });
