@@ -8,7 +8,7 @@ Before(async (I, qanPage, adminPage) => {
   await I.waitForElement(qanPage.fields.iframe, 60);
   await I.switchTo(qanPage.fields.iframe);
 });
-
+/*
 Scenario('Verify QAN Filter groups exist  @not-pr-pipeline', async (I, adminPage, qanPage) => {
   qanPage.waitForQANPageLoaded();
   await qanPage.changeResultsPerPage(50);
@@ -346,7 +346,7 @@ xScenario(
     await qanPage.verifyPagesAndCount(10);
   }
 );
-
+*/
 // TODO: Uncomment after new QAN will be merged
 xScenario(
   'PMM-T135 - Verify user is not able to add duplicate metric to the overview column',
@@ -399,11 +399,9 @@ xScenario(
 
 // TODO: Uncomment after new QAN will be merged
 xScenario('PMM-T223 - Verify time metrics are AVG per query (not per second)', async (I, qanPage) => {
-  const waitTime = 300;
   qanPage.waitForNewQANPageLoaded();
   I.click(qanPage.fields.last5MinutesButton);
   I.click(qanPage.fields.last12HoursButton);
-  I.wait(waitTime);
   qanPage.applyFilterNewQAN('mysql');
   I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);
   I.click(qanPage.fields.last12HoursButton);
@@ -415,7 +413,7 @@ xScenario('PMM-T223 - Verify time metrics are AVG per query (not per second)', a
   I.click(qanPage.fields.aQuery);
   I.waitForVisible(qanPage.getColumn('Lock Time'), 30);
   //await qanPage.verifyQueryTime(queryTime); //Blocked by bug: PMM-5382
-  await qanPage.verifyAvqQueryCount(waitTime);
+  await qanPage.verifyAvqQueryCount();
   await qanPage.verifyAvgQueryTime();
   await qanPage.verifyAvgLockTime();
 });

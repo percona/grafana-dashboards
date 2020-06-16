@@ -69,7 +69,7 @@ module.exports = {
     tableRow: 'td.ant-table-row-cell-break-word',
     resultPerPageCombobox: '.ant-pagination-options',
     addColumnNewQAN: '.add-columns',
-    noDataIcon: "//div[@class='ant-empty-image']",
+    noDataIcon: 'div.ant-empty-image',
     aQuery: '//div[2]/div[2]/div/table/tbody/tr[4]/td[2]/div/div',
     resizer: 'span.Resizer.horizontal',
     queryTime: '//table/tbody/tr[4]/td[5]/div/span/div/span',
@@ -478,24 +478,24 @@ module.exports = {
   },
 
   verifyAddedColumn(columnName) {
-    const columnHeader = `//span[contains(text(), '${columnName}')]`;
+    const columnHeader = this.getColumn(columnName);
     I.waitForVisible(columnHeader, 30);
     I.seeElement(columnHeader);
   },
 
   changeMetricInTable(columnName) {
-    const columnHeader = `//span[contains(text(), '${columnName}')]`;
+    const columnHeader = this.getColumn(columnName);
     I.waitForVisible(columnHeader, 30);
     I.click(columnHeader);
   },
 
   verifyChangedColumn(columnName) {
-    const columnHeader = `//span[contains(text(), '${columnName}')]`;
+    const columnHeader = this.getColumn(columnName);
     I.waitForInvisible(columnHeader, 30);
   },
 
   verifyAppliedSortingForColumn(column) {
-    const loadColumn = `//span[contains(text(), '${column}')]/ancestor::*[@class='ant-table-column-sorters']/descendant::i[contains(@class, 'anticon anticon-caret-down ant-table-column-sorter-down on')]`;
+    const loadColumn = `//span[contains(text(), '${column}')]/ancestor::div[@class='ant-table-column-sorters']/descendant::i[contains(@class, 'anticon anticon-caret-down ant-table-column-sorter-down on')]`;
     I.waitForVisible(loadColumn, 30);
   },
 
@@ -505,10 +505,6 @@ module.exports = {
 
   getRow(row) {
     return `//td[@class='ant-table-row-cell-break-word']//div[contains(text(), '${row}')]`;
-  },
-
-  getQueryCount(row) {
-    const time = '//table/tbody/tr[2]/td[5]/div/span/div/span';
   },
 
   async verifyQueryTime(queryTime) {
