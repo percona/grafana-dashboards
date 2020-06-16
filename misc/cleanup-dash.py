@@ -446,7 +446,7 @@ def add_copyrights_links(dashboard):
                     'h': 1,
                     'w': 24,
                     'x': 0,
-                    'y': 99
+                    'y': 200
                 },
                 'id': 9998,
                 'panels': [],
@@ -460,7 +460,7 @@ def add_copyrights_links(dashboard):
                   'h': 3,
                   'w': 24,
                   'x': 0,
-                  'y': 99
+                  'y': 201
                 },
                 'id': 9999,
                 'links': [],

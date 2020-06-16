@@ -58,6 +58,7 @@ Scenario(
       await I.Authorize(users.viewer.username, users.viewer.password);
       I.amOnPage(databaseChecksPage.url);
       I.waitForVisible(databaseChecksPage.fields.dbCheckPanelSelector, 30);
+      I.waitForVisible(databaseChecksPage.fields.noAccessRightsSelector, 30);
       I.see('Insufficient access rights.', databaseChecksPage.fields.noAccessRightsSelector);
     }
 );
@@ -103,6 +104,7 @@ Scenario(
       await I.Authorize(users.viewer.username, users.viewer.password);
       I.amOnPage(databaseChecksPage.url);
       I.waitForVisible(databaseChecksPage.fields.dbCheckPanelSelector, 30);
+      I.waitForVisible(databaseChecksPage.fields.noAccessRightsSelector, 30);
       I.see('Insufficient access rights.', databaseChecksPage.fields.noAccessRightsSelector);
     }
 );
