@@ -77,15 +77,15 @@ const inventoryTypes = {
   remote: 'Remote',
 };
 
-const generateStructure = (item: ServicesList) =>
-  Object.keys(item).map(type => {
-    const params = item[type];
-    return {
-      type,
-      params: params.map(param => {
-        return getModel(param, inventoryTypes[type] ?? '');
-      }),
-    };
-  });
+const generateStructure = (item: ServicesList) => {
+  const addType = Object.keys(item).map(type => new Object({ type, params: item[type] }));
+  const createParams = addType.map(agent =>
+    agent['params'].map(arrItem => {
+      const type = inventoryTypes[agent['type']] || '';
+      return getModel(arrItem, type);
+    })
+  );
+  return [].concat(...createParams);
+};
 
 export const InventoryDataService = { generateStructure };
