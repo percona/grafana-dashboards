@@ -511,8 +511,7 @@ module.exports = {
     console.log('count ' + parseFloat(queryTimeDetial));
     const result = parseFloat(queryCountDetail) / 300;
     const roundedResult = Math.round(parseFloat(result) * 10) / 10;
-    console.log('result: ' + result);
-    console.log('count ' + parseInt(roundedResult));
+    //TBD
   },
 
   //These calculations and verifications needs to be improved https://jira.percona.com/browse/PMM-6140
