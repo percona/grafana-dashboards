@@ -68,6 +68,16 @@ module.exports = {
     ellipsisButton: '.ant-pagination-item-ellipsis',
     tableRow: 'td.ant-table-row-cell-break-word',
     resultPerPageCombobox: '.ant-pagination-options',
+    addColumnNewQAN: '.add-columns',
+    noDataIcon: 'div.ant-empty-image',
+    querySelector: '//tr[@data-row-key][4]//td[2]//div',
+    resizer: 'span.Resizer.horizontal',
+    queryTime: '//tr[@data-row-key][4]//td[5]',
+    lockTimeDetail: "//tr[@data-row-key='lock_time']//td[4]",
+    queryTimeDetail: "//tr[@data-row-key='query_time']//td[4]",
+    queryCountDetail: "//tr[@data-row-key='num_queries']//td[4]",
+    load: "//tr[@data-row-key='query_time']//td[2]//div[1]//span[1]",
+    avgLoad: "//tr[@data-row-key='lock_time']//td[2]//div[1]//span[1]",
   },
 
   filterGroupLocator(filterName) {
@@ -316,14 +326,6 @@ module.exports = {
     );
   },
 
-  async clearFilters() {
-    const numOfElementsFilters = await I.grabNumberOfVisibleElements(this.fields.filterSelection);
-    for (let i = 1; i <= numOfElementsFilters; i++) {
-      I.click(this.fields.filterSelection + '[' + i + ']');
-      I.waitForInvisible(this.fields.detailsTable, 30);
-    }
-  },
-
   addColumnToQAN(columnName) {
     const columnNameLocator = this.fields.searchResult + columnName + "']";
     I.click(this.fields.addColumn);
@@ -344,6 +346,14 @@ module.exports = {
     this.waitForQANPageLoaded();
   },
 
+  async clearFilters() {
+    const numOfElementsFilters = await I.grabNumberOfVisibleElements(this.fields.filterSelection);
+    for (let i = 1; i <= numOfElementsFilters; i++) {
+      I.click(this.fields.filterSelection + '[' + i + ']');
+      I.waitForInvisible(this.fields.detailsTable, 30);
+    }
+  },
+
   verifyURLContains(urlPart) {
     I.waitInUrl('tz=browser&theme=dark', 30);
     I.seeInCurrentUrl(urlPart);
@@ -351,7 +361,7 @@ module.exports = {
 
   waitForNewQANPageLoaded() {
     I.waitForElement(this.fields.newQANPanelContent, 30);
-    I.waitForInvisible(this.fields.newQANSpinnerLocator, 30);
+    I.waitForElement(this.fields.querySelector, 30);
   },
 
   applyFilterNewQAN(filterName) {
@@ -456,5 +466,71 @@ module.exports = {
     const pagesCount = locate('li').before(this.fields.nextPage);
     const pages = await I.grabTextFrom(pagesCount);
     return pages[pages.length - 1];
+  },
+
+  addSpecificColumn(columnName) {
+    const column = `//li[contains(text(), '${columnName}')]`;
+    I.waitForVisible(column, 30);
+    I.click(column);
+  },
+
+  verifyAddedColumn(columnName) {
+    const columnHeader = this.getColumn(columnName);
+    I.waitForVisible(columnHeader, 30);
+    I.seeElement(columnHeader);
+  },
+
+  changeMetricInTable(columnName) {
+    const columnHeader = this.getColumn(columnName);
+    I.waitForVisible(columnHeader, 30);
+    I.click(columnHeader);
+  },
+
+  verifyChangedColumn(columnName) {
+    const columnHeader = this.getColumn(columnName);
+    I.waitForInvisible(columnHeader, 30);
+  },
+
+  getColumn(column) {
+    return `//span[contains(text(), '${column}')]`;
+  },
+
+  getRow(row) {
+    return `//td[@class='ant-table-row-cell-break-word']//div[contains(text(), '${row}')]`;
+  },
+
+  async verifyQueryTime(queryTime) {
+    const queryTimeDetial = await I.grabTextFrom(this.fields.queryTimeDetail);
+    assert.equal(queryTimeDetial, queryTime, 'Query times are not same!');
+  },
+
+  //These calculations and verifications needs to be improved https://jira.percona.com/browse/PMM-6140
+  async verifyAvqQueryCount() {
+    const queryTimeDetial = await I.grabTextFrom(this.fields.queryTimeDetail);
+    const queryCountDetail = await I.grabTextFrom(this.fields.queryCountDetail);
+    const result = parseFloat(queryCountDetail) / 300;
+    const roundedResult = Math.round(parseFloat(result) * 10) / 10;
+    //TBD
+  },
+
+  //These calculations and verifications needs to be improved https://jira.percona.com/browse/PMM-6140
+  async verifyAvgQueryTime() {
+    const queryTimeDetail = await I.grabTextFrom(this.fields.queryTimeDetail);
+    const queryCountDetail = await I.grabTextFrom(this.fields.queryCountDetail);
+    const load = await I.grabTextFrom(this.fields.load);
+    const result = (parseFloat(queryCountDetail) * (parseFloat(queryTimeDetail) / 1000)) / 300;
+    const roundedResult = Math.round(parseFloat(result) * 100) / 100;
+    assert.equal(roundedResult, parseFloat(load), 'Load should be same!');
+  },
+
+  //These calculations and verifications needs to be improved https://jira.percona.com/browse/PMM-6140
+  async verifyAvgLockTime() {
+    const avgLoad = await I.grabTextFrom(this.fields.avgLoad);
+    const lockTimeDetail = await I.grabTextFrom(this.fields.lockTimeDetail);
+    const queryCountDetail = await I.grabTextFrom(this.fields.queryCountDetail);
+    const result = (parseFloat(queryCountDetail) * (parseFloat(lockTimeDetail) / 1000000)) / 300;
+    if (result > parseFloat(avgLoad.slice(2, avgLoad.length))) {
+      assert.fail(result + ' should be smaller than ' + parseFloat(avgLoad.slice(2, avgLoad.length)));
+    }
   },
 };

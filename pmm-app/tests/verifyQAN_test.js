@@ -229,7 +229,7 @@ xScenario('PMM-T123 - Verify User is able to search for filter value', async (I,
 
 // TODO: Uncomment after new QAN will be merged
 xScenario(
-  'PMM-T100 Check Changing Main Metric, PMM-T203 Verify user is able to search for columns by typing, PMM-T133, PMM-T132',
+  'PMM-T133, PMM-T132, PMM-T100 Check Changing Main Metric, PMM-T203 Verify user is able to search for columns by typing',
   async (I, qanPage, dashboardPage) => {
     const metricName = 'Query Count with errors';
     const urlString = 'num_queries_with_errors';
@@ -344,3 +344,62 @@ xScenario(
     await qanPage.verifyPagesAndCount(10);
   }
 );
+
+// TODO: Uncomment after new QAN will be merged
+xScenario(
+  'PMM-T135 - Verify user is not able to add duplicate metric to the overview column',
+  async (I, qanPage) => {
+    const column = 'Load';
+    qanPage.waitForNewQANPageLoaded();
+    qanPage.verifyAddedColumn(column);
+    I.click(qanPage.fields.addColumnNewQAN);
+    I.fillField(qanPage.fields.addColumnNewQAN, column);
+    I.waitForVisible(qanPage.fields.noDataIcon, 30);
+    I.seeElement(qanPage.fields.noDataIcon);
+  }
+);
+
+// TODO: Uncomment after new QAN will be merged
+xScenario(
+  'PMM-T219 - Verify that user is able to scroll up/down and resize the overview table',
+  async (I, qanPage) => {
+    qanPage.waitForNewQANPageLoaded();
+    const columnsToAdd = [
+      'Bytes Sent',
+      'Reading Blocks Time',
+      'Local Blocks Read',
+      'Local Blocks Dirtied',
+      'Temp Blocks Read',
+      'Local Blocks Written',
+    ];
+    for (i = 0; i < columnsToAdd.length; i++) {
+      I.click(qanPage.fields.addColumnNewQAN);
+      qanPage.addSpecificColumn(columnsToAdd[i]);
+    }
+    I.waitForElement(qanPage.getColumn('Local Blocks Written'), 30);
+    I.scrollTo(qanPage.getColumn('Local Blocks Written'), 30);
+    I.moveCursorTo(qanPage.fields.querySelector);
+    I.waitForVisible(qanPage.fields.querySelector);
+    I.click(qanPage.fields.querySelector);
+    I.scrollTo(qanPage.getRow('10'));
+    I.waitForVisible(qanPage.getColumn('Full Scan'), 30);
+    I.dragAndDrop(qanPage.fields.resizer, qanPage.getColumn('Full Scan'));
+    I.scrollTo(qanPage.getColumn('No index used'));
+  }
+);
+
+// TODO: Uncomment after new QAN will be merged
+xScenario('PMM-T223 - Verify time metrics are AVG per query (not per second)', async (I, qanPage) => {
+  qanPage.waitForNewQANPageLoaded();
+  qanPage.applyFilterNewQAN('mysql');
+  I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);
+  I.waitForElement(qanPage.fields.querySelector, 30);
+  const queryTime = await I.grabTextFrom(qanPage.fields.queryTime);
+  I.moveCursorTo(qanPage.fields.querySelector);
+  I.click(qanPage.fields.querySelector);
+  I.waitForVisible(qanPage.getColumn('Lock Time'), 30);
+  //await qanPage.verifyQueryTime(queryTime); //Blocked by bug: PMM-5382
+  await qanPage.verifyAvqQueryCount();
+  await qanPage.verifyAvgQueryTime();
+  await qanPage.verifyAvgLockTime();
+});
