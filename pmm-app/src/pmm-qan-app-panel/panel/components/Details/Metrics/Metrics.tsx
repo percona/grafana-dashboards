@@ -4,7 +4,6 @@ import { Latency, Sparkline, TimeDistribution } from 'shared/components/Elements
 import { humanize } from 'shared/components/helpers/Humanization';
 import { Info } from 'shared/components/Elements/Icons/Info';
 import { styles } from './Metrics.styles';
-import { useMetricsDetails } from './Metrics.hooks';
 import { DATABASE } from '../Details.constants';
 import { MetricsTabs } from './Metrics.constants';
 import { MetricsProps } from './Metrics.types';
@@ -73,9 +72,9 @@ const perQueryStatsColumn = (text, item) => {
   );
 };
 
-const Metrics: FC<MetricsProps> = ({ databaseType, totals }) => {
-  const [metrics, loading] = useMetricsDetails();
-
+const Metrics: FC<MetricsProps> = ({
+  databaseType, totals, metrics, loading
+}) => {
   const columns = [
     {
       title: 'Metric',

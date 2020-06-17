@@ -34,7 +34,7 @@ const dimensionColumnRender = (mainMetricColumnWidth) => (text, record, index) =
       {index === 0 ? 'TOTAL' : record.fingerprint || record.dimension || 'N/A'}
     </div>
     {index !== 0 && record.fingerprint ? (
-      <QueryTooltip query={record.fingerprint}>
+      <QueryTooltip query={record.fingerprint} queryId={record.dimension}>
         <Info className={tooltipIcon} />
       </QueryTooltip>
     ) : null}

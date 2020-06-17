@@ -1,5 +1,5 @@
 import React, {
-  FC, useContext, useRef, useState
+  FC, useContext, useMemo, useRef, useState
 } from 'react';
 import { Button, Input, Spin } from 'antd';
 import { Form } from 'react-final-form';
@@ -12,7 +12,6 @@ import { styles } from './Filters.styles';
 import { useFilters, useFiltersContainerHeight, useInitialFilterValues } from './Filters.hooks';
 import { getSelectedCheckboxes } from './Filters.tools';
 import { FiltersContainerProps } from './Filters.types';
-
 
 export const FiltersContainer = ({
   contextActions, form, labels, filters
@@ -93,17 +92,22 @@ export const Filters: FC = () => {
   const { filters, loading } = useFilters();
   const initialValues = useInitialFilterValues();
 
-  return (
+  return useMemo(() => (
     <Form
       onSubmit={() => {}}
       initialValues={initialValues}
       render={({ form, handleSubmit }) => (
         <Spin spinning={loading}>
           <form onSubmit={handleSubmit} onChange={() => contextActions.setLabels(form.getState().values)}>
-            <FiltersContainer contextActions={contextActions} form={form} labels={labels} filters={filters} />
+            <FiltersContainer
+              contextActions={contextActions}
+              form={form}
+              labels={labels}
+              filters={filters}
+            />
           </form>
         </Spin>
       )}
     />
-  );
+  ), [contextActions, filters, loading, initialValues, labels]);
 };

@@ -13,6 +13,7 @@ import { useDetailsState } from './Details.hooks';
 import { DATABASE, TabKeys } from './Details.constants';
 import { DetailsContentProvider, DetailsProvider } from './Details.provider';
 import { styles } from './Details.styles';
+import { useMetricsDetails } from './Metrics/Metrics.hooks';
 
 const { TabPane } = Tabs;
 const actionResult = {
@@ -39,6 +40,8 @@ const Details: FC = () => {
   } = useContext(DetailsProvider);
 
   useDetailsState();
+  const [metrics, metricsLoading] = useMetricsDetails();
+
   const [activeTab, changeActiveTab] = useState(TabKeys[openDetailsTab]);
   const showTablesTab = databaseType !== DATABASE.mongodb && groupBy === 'queryid' && !totals;
   const showExplainTab = databaseType !== DATABASE.postgresql && groupBy === 'queryid' && !totals;
@@ -67,7 +70,7 @@ const Details: FC = () => {
           destroyInactiveTabPane
         >
           <TabPane tab={<span>Details</span>} key={TabKeys.details}>
-            <Metrics databaseType={databaseType} totals={totals} />
+            <Metrics databaseType={databaseType} totals={totals} metrics={metrics} loading={metricsLoading} />
           </TabPane>
           {showExamplesTab ? (
             <TabPane tab={<span>Examples</span>} key={TabKeys.examples}>

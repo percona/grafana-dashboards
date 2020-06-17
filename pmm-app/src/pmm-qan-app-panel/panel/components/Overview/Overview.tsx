@@ -1,6 +1,6 @@
 import { Pagination, Table } from 'antd';
 import React, {
-  useCallback, useContext, useEffect, useState, useRef, FC
+  useCallback, useContext, useEffect, useState, useRef, FC, useMemo
 } from 'react';
 import scrollIntoView from 'scroll-into-view';
 import './Overview.scss';
@@ -23,7 +23,6 @@ export const Overview: FC = () => {
     },
   } = useContext(QueryAnalyticsProvider);
   const tableWrapperRef = useRef<HTMLDivElement>(null);
-
 
   useEffect(() => {
     scrollIntoView(document.querySelector('.selected-overview-row'), {
@@ -82,23 +81,23 @@ export const Overview: FC = () => {
     [querySelected, totals, queryId]
   );
 
-
   return (
     <div className="table-wrapper" ref={tableWrapperRef}>
-      <div>
-        <Table
-          dataSource={overviewMetricsList.rows}
-          onChange={onTableChange}
-          columns={overviewMetricsList.columns}
-          size="small"
-          bordered
-          pagination={false}
-          scroll={{ y: height - 100, x: '100%' }}
-          rowClassName={getRowClassName}
-          loading={loading}
-          // rowKey="fingerprint"
-        />
-      </div>
+      {useMemo(() => (
+        <div>
+          <Table
+            dataSource={overviewMetricsList.rows}
+            onChange={onTableChange}
+            columns={overviewMetricsList.columns}
+            size="small"
+            bordered
+            pagination={false}
+            scroll={{ y: height - 100, x: '100%' }}
+            rowClassName={getRowClassName}
+            loading={loading}
+          />
+        </div>
+      ), [overviewMetricsList, loading, onTableChange, height, getRowClassName])}
       <div className={styles.overviewHeader}>
         <div className={styles.paginationWrapper}>
           <Pagination
@@ -117,7 +116,5 @@ export const Overview: FC = () => {
         </div>
       </div>
     </div>
-
-
   );
 };
