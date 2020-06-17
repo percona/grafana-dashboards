@@ -86,14 +86,13 @@ export const Table: FC<TableProps> = ({
         {rows.length && !loading ? (
           <table {...getTableProps()}>
             <thead>
-              {headerGroups.map(headerGroup => (
-                // eslint-disable-next-line react/jsx-key
-                <tr data-qa="table-header" {...headerGroup.getHeaderGroupProps()}>
+              {headerGroups.map((headerGroup, i) => (
+                <tr data-qa="table-header" {...headerGroup.getHeaderGroupProps()} key={i}>
                   {headerGroup.headers.map((column, index) => (
-                    // eslint-disable-next-line react/jsx-key
                     <th
                       {...column.getHeaderProps()}
                       className={index === 0 && rowSelection ? styles.checkboxColumn : ''}
+                      key={index}
                     >
                       {column.render('Header')}
                     </th>
