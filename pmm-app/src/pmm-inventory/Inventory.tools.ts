@@ -1,4 +1,5 @@
 import { CustomLabel, ServicesList } from './Inventory.types';
+import { inventoryTypes } from './Inventory.constants';
 
 interface FulfilledPromiseResult {
   status: 'fulfilled';
@@ -51,30 +52,6 @@ const getModel = (params, type): Model => {
     isDeleted: false,
     ...rest,
   };
-};
-
-const inventoryTypes = {
-  amazon_rds_mysql: 'Amazon RDS MySQL',
-  container: 'Container',
-  external_exporter: 'External exporter',
-  generic: 'Generic',
-  mongodb_exporter: 'MongoDB exporter',
-  mongodb: 'MongoDB',
-  mysql: 'MySQL',
-  mysqld_exporter: 'MySQL exporter',
-  node_exporter: 'Node exporter',
-  pmm_agent: 'PMM Agent',
-  postgres_exporter: 'Postgres exporter',
-  postgresql: 'PostgreSQL',
-  proxysql_exporter: 'ProxySQL exporter',
-  proxysql: 'ProxySQL',
-  qan_mongodb_profiler_agent: 'QAN MongoDB Profiler Agent',
-  qan_mysql_perfschema_agent: 'QAN MySQL Perfschema Agent',
-  qan_mysql_slowlog_agent: 'QAN MySQL Slowlog Agent',
-  qan_postgresql_pgstatements_agent: 'QAN PostgreSQL PgStatements Agent',
-  rds_exporter: 'RDS exporter',
-  remote_rds: 'Remote Amazon RDS',
-  remote: 'Remote',
 };
 
 const generateStructure = (item: ServicesList) => {
