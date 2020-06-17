@@ -491,11 +491,6 @@ module.exports = {
     I.waitForInvisible(columnHeader, 30);
   },
 
-  verifyAppliedSortingForColumn(column) {
-    const loadColumn = `//span[contains(text(), '${column}')]/ancestor::div[@class='ant-table-column-sorters']/descendant::i[contains(@class, 'anticon anticon-caret-down ant-table-column-sorter-down on')]`;
-    I.waitForVisible(loadColumn, 30);
-  },
-
   getColumn(column) {
     return `//span[contains(text(), '${column}')]`;
   },
