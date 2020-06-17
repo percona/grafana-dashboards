@@ -55,9 +55,11 @@ export const ManageColumns = (props) => {
           <span className={styles.placeholder}>
             {placeholder && METRIC_CATALOGUE[placeholder].tooltipText}
           </span>
-          { placeholder && METRIC_CATALOGUE[placeholder].units ? <span className={styles.placeholder}>
-            {placeholder && METRIC_CATALOGUE[placeholder].units}
-          </span>: null }
+          { placeholder && METRIC_CATALOGUE[placeholder].units ? (
+            <span className={styles.placeholder}>
+              {placeholder && METRIC_CATALOGUE[placeholder].units}
+            </span>
+          ) : null }
         </div>
       )}
       placement="topLeft"

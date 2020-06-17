@@ -3,17 +3,16 @@ import { find } from 'lodash';
 import { DEFAULT_COLUMNS, FILTERS_NAMES } from '../panel.constants';
 import { ParseQueryParamDate } from '../../../shared/components/helpers/time-parameters-parser';
 
-const setFilters = (query) => FILTERS_NAMES.reduce((result, filterName) => {
+const setFilters = (query) => FILTERS_NAMES.reduce((acc, filterName) => {
   const filters = query.getAll(`var-${filterName}`);
 
   if (!filters.length) {
-    return result;
+    return acc;
   }
 
-  // eslint-disable-next-line no-param-reassign
-  result[filterName] = filters;
+  acc[filterName] = filters;
 
-  return result;
+  return acc;
 }, {});
 
 export const refreshGrafanaVariables = (state) => {
@@ -73,9 +72,7 @@ export const generateURL = (state) => {
     .join('&');
 
   // TODO: replace crutch with right redirect
-  return encodeURI(
-    `${window.location.pathname}?${uriQueryParams}`
-  );
+  return encodeURI(`${window.location.pathname}?${uriQueryParams}`);
 };
 export const parseURL = (query) => ({
   from: ParseQueryParamDate.transform(query.get('from') || 'now-12h', 'from'),

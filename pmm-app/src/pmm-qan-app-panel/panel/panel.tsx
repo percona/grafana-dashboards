@@ -1,16 +1,15 @@
 import React, {
-  FC,
-  useContext, useEffect, useRef, useState
+  FC, useContext, useEffect, useRef, useState
 } from 'react';
 import containerStyling from 'shared/components/helpers/styling';
 import SplitPane from 'react-split-pane';
-import 'shared/styles.scss';
-import 'shared/style.less';
 import { QueryAnalyticsProvider, UrlParametersProvider } from './provider/provider';
 import {
   Overview, Filters, Details, ManageColumns
 } from './components';
 import { styles } from './panel.styles';
+import 'shared/styles.scss';
+import 'shared/style.less';
 import './panel.scss';
 
 const QueryAnalyticsPanel: FC = () => {
@@ -20,7 +19,7 @@ const QueryAnalyticsPanel: FC = () => {
   } = useContext(QueryAnalyticsProvider);
   // TODO: replace with something more elegant & fast
   const queryAnalyticsWrapper = useRef<HTMLDivElement>(null);
-  const size = queryAnalyticsWrapper.current && queryAnalyticsWrapper.current.clientWidth;
+  const size = queryAnalyticsWrapper.current?.clientWidth;
 
   const [, setReload] = useState<object>({});
 
