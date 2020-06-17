@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Collapse } from 'antd';
 import { Form } from 'react-final-form';
 import UploadSSH from './Parts/UploadSSH/UploadSSH';
@@ -41,7 +41,7 @@ const SettingsPanel = () => {
       <div className="app-theme-dark pmm-settings-panel">
         <Form
           onSubmit={() => {}}
-          render={(): ReactElement => {
+          render={() => {
             return (
               <Collapse
                 bordered={false}

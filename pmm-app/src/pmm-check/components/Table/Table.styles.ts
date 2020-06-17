@@ -11,6 +11,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
     theme.type
   );
   const borderColor = selectThemeVariant(
+    // @ts-ignore
     { light: theme.colors.gray85, dark: theme.colors.dark7 },
     theme.type
   );
@@ -64,7 +65,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
     link: css`
       color: ${theme.colors.linkExternal};
       &:hover {
-        color: ${theme.colors.blueLight};
+        color: ${theme.colors.textBlue};
       }
     `,
   };
