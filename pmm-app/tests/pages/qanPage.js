@@ -70,17 +70,14 @@ module.exports = {
     resultPerPageCombobox: '.ant-pagination-options',
     addColumnNewQAN: '.add-columns',
     noDataIcon: 'div.ant-empty-image',
-    aQuery: '//div[2]/div[2]/div/table/tbody/tr[4]/td[2]/div/div',
+    querySelector: '//tr[@data-row-key][4]//td[2]//div',
     resizer: 'span.Resizer.horizontal',
-    queryTime: '//table/tbody/tr[4]/td[5]/div/span/div/span',
-    last5MinutesButton: "//span[contains(text(), 'Last 5 minutes')]",
-    last12HoursButton: "//span[contains(text(), 'Last 12 hours')]",
-    lockTimeDetail: '//div[2]/div/div/div/div/div/div/div/table/tbody/tr[3]/td[4]/div/span',
-    queryTimeDetail: '//div[2]/div/div/div/div/div/div/div/table/tbody/tr[2]/td[4]/div/span',
-    queryCountDetail: '//div[2]/div/div/div/div/div/div/div/table/tbody/tr[1]/td[3]/div/span[1]',
-    load: '//div[2]/div/div/div/div/div/div/div/table/tbody/tr[2]/td[2]/div/span[1]',
-    lockTimeDetail: '//div[2]/div/div/div/div/div/div/div/table/tbody/tr[3]/td[4]/div/span',
-    avgLoad: '//div[2]/div/div/div/div/div/div/div/table/tbody/tr[3]/td[2]/div/span[1]',
+    queryTime: '//tr[@data-row-key][4]//td[5]',
+    lockTimeDetail: "//tr[@data-row-key='lock_time']//td[4]",
+    queryTimeDetail: "//tr[@data-row-key='query_time']//td[4]",
+    queryCountDetail: "//tr[@data-row-key='num_queries']//td[4]",
+    load: "//tr[@data-row-key='query_time']//td[2]//div[1]//span[1]",
+    avgLoad: "//tr[@data-row-key='lock_time']//td[2]//div[1]//span[1]",
   },
 
   filterGroupLocator(filterName) {
@@ -337,26 +334,6 @@ module.exports = {
     }
   },
 
-  addColumnToQAN(columnName) {
-    const columnNameLocator = this.fields.searchResult + columnName + "']";
-    I.click(this.fields.addColumn);
-    I.waitForVisible(this.fields.searchForColumn, 30);
-    I.fillField(this.fields.searchForColumn, columnName);
-    I.waitForVisible(columnNameLocator, 30);
-    I.click(columnNameLocator);
-    this.waitForQANPageLoaded();
-  },
-
-  changeMetricTo(metricToReplace, newMetric) {
-    const currentMetric = this.fields.qanMainMetric + metricToReplace + "']]";
-    const metricToSelect = this.fields.searchResult + newMetric + "']";
-    I.click(currentMetric);
-    I.waitForVisible(this.fields.searchForColumn, 30);
-    I.fillField(this.fields.searchForColumn, newMetric);
-    I.click(metricToSelect);
-    this.waitForQANPageLoaded();
-  },
-
   verifyURLContains(urlPart) {
     I.waitInUrl('tz=browser&theme=dark', 30);
     I.seeInCurrentUrl(urlPart);
@@ -364,7 +341,7 @@ module.exports = {
 
   waitForNewQANPageLoaded() {
     I.waitForElement(this.fields.newQANPanelContent, 30);
-    I.waitForInvisible(this.fields.newQANSpinnerLocator, 30);
+    I.waitForElement(this.fields.querySelector, 30);
   },
 
   applyFilterNewQAN(filterName) {
