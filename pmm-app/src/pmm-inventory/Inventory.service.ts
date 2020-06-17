@@ -1,13 +1,15 @@
-import { apiRequest } from '../react-plugins-deps/components/helpers/api';
+import { apiRequestInventory } from '../shared/components/helpers/api';
 
 export class InventoryService {
   static async getAgents(body) {
-    return apiRequest.post<any, any>('/v1/inventory/Agents/List', body);
+    return apiRequestInventory.post<any, any>('/Agents/List', body);
   }
+
   static async getServices(body) {
-    return apiRequest.post<any, any>('/v1/inventory/Services/List', body);
+    return apiRequestInventory.post<any, any>('/Services/List', body);
   }
+
   static async getNodes(body) {
-    return apiRequest.post<any, any>('/v1/inventory/Nodes/List', body);
+    return apiRequestInventory.post<any, any>('/Nodes/List', body);
   }
 }

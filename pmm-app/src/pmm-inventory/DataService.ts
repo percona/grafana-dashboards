@@ -1,6 +1,8 @@
-/* tslint:disable */
+/* eslint-disable */
+// Will be refactored in PMM-544
 export class CustomLabelsModel {
   key: string;
+
   value: string;
 
   constructor(customLabel) {
@@ -11,7 +13,9 @@ export class CustomLabelsModel {
 
 export class CommonModel {
   custom_labels: CustomLabelsModel[];
+
   type: string;
+
   isDeleted: boolean;
 
   constructor(params, type) {
@@ -51,14 +55,20 @@ const inventoryTypes = {
   postgresql: 'PostgreSQL',
   proxysql: 'ProxySQL',
 };
+
+interface TypedElement {
+  type: string;
+  params: any;
+}
+
 export class InventoryDataService {
   constructor() {}
 
   static generateStructure(item) {
-    const addType = Object.keys(item).map(type => new Object({ type, params: item[type] }));
-    const createParams = addType.map(agent =>
-      agent['params'].map(arrItem => {
-        const type = inventoryTypes[agent['type']] || '';
+    const addType = Object.keys(item).map((type ): TypedElement => ({ type, params: item[type] }));
+    const createParams = addType.map((agent) =>
+      agent.params.map((arrItem) => {
+        const type = inventoryTypes[agent.type] || '';
         return new CommonModel(arrItem, type);
       })
     );

@@ -6,12 +6,12 @@ module.exports = {
   url: 'graph/d/pmm-home/home-dashboard?orgId=1',
   fields: {
     navigation: "//i[contains(@class, 'navbar-page-btn__search')]",
-    timePickerMenu: "//button[contains(@aria-label,'TimePicker')]",
+    timePickerMenu: "//div[@class='time-picker-buttons']//div//span[@class='select-button-value']",
     fromTime: '(//input[@input-datetime])[1]',
     applyCustomTimer: '//button[@ng-click="ctrl.applyCustom();"]',
     backToDashboard: "//button[@ng-click='ctrl.close()']",
     discardChanges: "//button[@ng-click='ctrl.discard()']",
-    metricTitle: "//div[@class='panel-title']",
+    metricTitle: "//span[@class='panel-title']",
     reportTitleWithNA:
       "//span[contains(text(), 'N/A')]//ancestor::div[contains(@class,'panel-container')]//span[contains(@class,'panel-title-text')]",
     pmmDropdownMenuSelector: locate('a[data-toggle="dropdown"] > span').withText('PMM')
@@ -52,12 +52,12 @@ module.exports = {
     return "(//div[contains(text(), '" + dashboardName + "')])[1]";
   },
 
-  applyTimer(timeDiff = "Last 5 minutes") {
-    I.click(this.fields.timePickerMenu);
-    I.waitForVisible("//span[contains(text(), 'Last 5 minutes')]", 30);
-    I.click(`//span[contains(text(), '${timeDiff}')]`);
-    I.wait(5);
-    I.waitForVisible(`//span[contains(text(), '${timeDiff}')]`, 30);
+  applyTimeRange(timeRange = 'Last 5 minutes') {
+    const timeRangeSelector = `//div[contains(text(), '${timeRange}')]`;
+    I.waitForElement(this.fields.timePickerMenu, 30);
+    I.forceClick(this.fields.timePickerMenu);
+    I.waitForVisible(timeRangeSelector, 30);
+    I.click(timeRangeSelector);
   },
 
   viewMetric(metricName) {

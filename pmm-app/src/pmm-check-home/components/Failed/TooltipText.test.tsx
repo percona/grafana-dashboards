@@ -6,12 +6,7 @@ describe('TooltipText::', () => {
   it('should render a header with a sum of failed checks', () => {
     const root = shallow(<TooltipText sum={5} data={[1, 3, 1]} />);
 
-    expect(
-      root
-        .find('div > div')
-        .at(0)
-        .text()
-    ).toEqual('Failed checks: 5');
+    expect(root.find('div > div').at(0).text()).toEqual('Failed checks: 5');
 
     root.unmount();
   });
@@ -30,6 +25,7 @@ describe('TooltipText::', () => {
   it('should render nothing when the sum is zero', () => {
     const outer = shallow(<TooltipText sum={0} data={[0, 0, 0]} />);
     const root = outer.find('div');
+
     expect(root.length).toEqual(0);
 
     root.unmount();

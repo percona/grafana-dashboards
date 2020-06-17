@@ -5,10 +5,11 @@ import { act } from 'react-dom/test-utils';
 import { InventoryDataService } from './DataService';
 import { agentsColumns, nodesColumns, servicesColumns } from './panel.constants';
 
-jest.mock('../react-plugins-deps/components/helpers/notification-manager');
+jest.mock('shared/components/helpers/notification-manager');
 
 describe('Inventory tables', () => {
   let container: Element;
+
   beforeEach(() => {
     // setup a DOM element as a render target
     container = document.createElement('div');
@@ -57,13 +58,13 @@ describe('Inventory tables', () => {
       render(
         <Table
           dataSource={InventoryDataService.generateStructure(response)}
-          rowKey={rec => rec.agent_id}
+          rowKey={(rec) => rec.agent_id}
           columns={agentsColumns}
           pagination={false}
           bordered
           loading={false}
         />,
-        container
+        container,
       );
     });
     // length is 5 because header is also tr
@@ -82,17 +83,18 @@ describe('Inventory tables', () => {
         },
       ],
     };
+
     act(() => {
       render(
         <Table
           dataSource={InventoryDataService.generateStructure(response)}
-          rowKey={rec => rec.service_id}
+          rowKey={(rec) => rec.service_id}
           columns={servicesColumns}
           pagination={false}
           bordered
           loading={false}
         />,
-        container
+        container,
       );
     });
     // length is 2 because header is also tr
@@ -106,17 +108,18 @@ describe('Inventory tables', () => {
         { node_id: 'pmm-server2', node_name: 'pmm-server2', address: '127.0.0.1' },
       ],
     };
+
     act(() => {
       render(
         <Table
           dataSource={InventoryDataService.generateStructure(response)}
-          rowKey={rec => rec.node_id}
+          rowKey={(rec) => rec.node_id}
           columns={nodesColumns}
           pagination={false}
           bordered
           loading={false}
         />,
-        container
+        container,
       );
     });
     // length is 3 because header is also tr
