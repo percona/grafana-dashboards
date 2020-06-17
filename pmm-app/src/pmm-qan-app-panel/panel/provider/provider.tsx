@@ -18,6 +18,7 @@ const actions = {
     ...state,
     queryId: value,
     querySelected: true,
+    openDetailsTab: 'details',
     totals,
   }),
   addColumn: (value) => (state) => {
