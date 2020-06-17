@@ -24,7 +24,6 @@ const Explain: FC<ExplainProps> = ({
 
   return (
     <div>
-      {/* eslint-disable-next-line max-len */}
       <Collapse
         bordered={false}
         defaultActiveKey={[ExplainTabs.classic, ExplainTabs.json]}

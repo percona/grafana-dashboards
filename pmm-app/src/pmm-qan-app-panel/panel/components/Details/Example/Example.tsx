@@ -9,14 +9,15 @@ const Example: FC<ExampleInterface> = ({ fingerprint, databaseType, examples }) 
 
   return (
     <div>
-      {isPostgresql ? getExample(databaseType)(fingerprint) : null}
+      {isPostgresql && fingerprint ? getExample(databaseType)(fingerprint) : null}
       {!isPostgresql && isExample
         ? examples
           .filter((example) => example.example)
           .map((example) => example.example)
           .map(getExample(databaseType))
         : null}
-      {!isPostgresql && !isExample ? <pre>Sorry, no examples found for this query</pre> : null}
+      {/* eslint-disable-next-line max-len */}
+      {(!isPostgresql && !isExample) || (isPostgresql && !fingerprint) ? <pre>Sorry, no examples found for this query</pre> : null}
     </div>
   );
 };

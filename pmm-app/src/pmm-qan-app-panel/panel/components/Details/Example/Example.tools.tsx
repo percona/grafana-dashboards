@@ -11,7 +11,7 @@ export const getExample = (databaseType) => (example: any): any => {
 
   return (
     <Highlight key={example || ''} language="sql">
-      {sqlFormatter.format(example)}
+      {sqlFormatter.format(example || '')}
     </Highlight>
   );
 };
