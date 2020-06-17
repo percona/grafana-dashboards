@@ -508,7 +508,6 @@ module.exports = {
   async verifyAvqQueryCount() {
     const queryTimeDetial = await I.grabTextFrom(this.fields.queryTimeDetail);
     const queryCountDetail = await I.grabTextFrom(this.fields.queryCountDetail);
-    console.log('count ' + parseFloat(queryTimeDetial));
     const result = parseFloat(queryCountDetail) / 300;
     const roundedResult = Math.round(parseFloat(result) * 10) / 10;
     //TBD
