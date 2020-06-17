@@ -326,6 +326,26 @@ module.exports = {
     );
   },
 
+  addColumnToQAN(columnName) {
+    const columnNameLocator = this.fields.searchResult + columnName + "']";
+    I.click(this.fields.addColumn);
+    I.waitForVisible(this.fields.searchForColumn, 30);
+    I.fillField(this.fields.searchForColumn, columnName);
+    I.waitForVisible(columnNameLocator, 30);
+    I.click(columnNameLocator);
+    this.waitForQANPageLoaded();
+  },
+
+  changeMetricTo(metricToReplace, newMetric) {
+    const currentMetric = this.fields.qanMainMetric + metricToReplace + "']]";
+    const metricToSelect = this.fields.searchResult + newMetric + "']";
+    I.click(currentMetric);
+    I.waitForVisible(this.fields.searchForColumn, 30);
+    I.fillField(this.fields.searchForColumn, newMetric);
+    I.click(metricToSelect);
+    this.waitForQANPageLoaded();
+  },
+
   async clearFilters() {
     const numOfElementsFilters = await I.grabNumberOfVisibleElements(this.fields.filterSelection);
     for (let i = 1; i <= numOfElementsFilters; i++) {
@@ -489,6 +509,7 @@ module.exports = {
     assert.equal(queryTimeDetial, queryTime, 'Query times are not same!');
   },
 
+  //These calculations and verifications needs to be improved https://jira.percona.com/browse/PMM-6140
   async verifyAvqQueryCount() {
     const queryTimeDetial = await I.grabTextFrom(this.fields.queryTimeDetail);
     const queryCountDetail = await I.grabTextFrom(this.fields.queryCountDetail);
@@ -499,6 +520,7 @@ module.exports = {
     console.log('count ' + parseInt(roundedResult));
   },
 
+  //These calculations and verifications needs to be improved https://jira.percona.com/browse/PMM-6140
   async verifyAvgQueryTime() {
     const queryTimeDetail = await I.grabTextFrom(this.fields.queryTimeDetail);
     const queryCountDetail = await I.grabTextFrom(this.fields.queryCountDetail);
@@ -508,6 +530,7 @@ module.exports = {
     assert.equal(roundedResult, parseFloat(load), 'Load should be same!');
   },
 
+  //These calculations and verifications needs to be improved https://jira.percona.com/browse/PMM-6140
   async verifyAvgLockTime() {
     const avgLoad = await I.grabTextFrom(this.fields.avgLoad);
     const lockTimeDetail = await I.grabTextFrom(this.fields.lockTimeDetail);
