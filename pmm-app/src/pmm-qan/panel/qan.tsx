@@ -13,6 +13,8 @@ import 'shared/style.less';
 import './qan.scss';
 
 const QueryAnalyticsPanel: FC = () => {
+  //  TODO: this hack should be removed ASAP, but only after this branch will be merged
+  //  change is too significant to do it now
   useEffect(() => containerStyling.addPluginPanelClass(), []);
 
   const {
