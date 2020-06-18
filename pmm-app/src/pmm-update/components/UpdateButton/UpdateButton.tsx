@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { CenteredButton } from 'pmm-update-panel/components';
+import { CenteredButton } from 'pmm-update/components';
 import * as styles from './UpdateButton.styles';
 
 interface UpdateButtonProps {

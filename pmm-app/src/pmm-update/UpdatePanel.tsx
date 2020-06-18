@@ -1,5 +1,4 @@
 import React, { MouseEvent, useCallback, useEffect, useState } from 'react';
-import { Modal } from '@grafana/ui';
 import moment from 'moment';
 
 import {
@@ -9,7 +8,7 @@ import {
   UpdateHeader,
   UpdateInfoBox,
   UpdateModal,
-} from 'pmm-update-panel/components';
+} from 'pmm-update/components';
 
 import { getCurrentVersion, getUpdates, startUpdate, getUpdateStatus } from './UpdatePanel.service';
 import { Messages } from './UpdatePanel.messages';
@@ -116,47 +115,44 @@ export const UpdatePanel = () => {
       setUpdateFailed(true);
       console.error(e);
     }
-  }, [updateLogs, startUpdate]);
+  }, [updateLogs]);
 
-  const handleCheckForUpdates = useCallback(
-    async (e: MouseEvent) => {
-      setIsLoading(true);
+  const handleCheckForUpdates = useCallback(async (e: MouseEvent) => {
+    setIsLoading(true);
 
-      if (e.altKey) {
-        setForceUpdate(true);
-      }
+    if (e.altKey) {
+      setForceUpdate(true);
+    }
 
-      try {
-        const data = await getUpdates();
+    try {
+      const data = await getUpdates();
 
-        setNextVersion(data.latest.version || '');
-        setNextFullVersion(data.latest.full_version || '');
-        setLastCheckDate(
-          data.last_check
-            ? moment(data.last_check)
-                .locale('en')
-                .format('MMMM DD, H:mm')
-            : ''
-        );
-        setNewReleaseDate(
-          data.latest.timestamp
-            ? moment
-                .utc(data.latest.timestamp)
-                .locale('en')
-                .format('MMMM DD')
-            : ''
-        );
-        setNewsLink(data.latest_news_url || '');
-        setIsUpdateAvailable(data.update_available || false);
-        setIsDefaultView(false);
-      } catch (e) {
-        displayError(Messages.nothingToUpdate);
-      } finally {
-        setIsLoading(false);
-      }
-    },
-    [getUpdates]
-  );
+      setNextVersion(data.latest.version || '');
+      setNextFullVersion(data.latest.full_version || '');
+      setLastCheckDate(
+        data.last_check
+          ? moment(data.last_check)
+              .locale('en')
+              .format('MMMM DD, H:mm')
+          : ''
+      );
+      setNewReleaseDate(
+        data.latest.timestamp
+          ? moment
+              .utc(data.latest.timestamp)
+              .locale('en')
+              .format('MMMM DD')
+          : ''
+      );
+      setNewsLink(data.latest_news_url || '');
+      setIsUpdateAvailable(data.update_available || false);
+      setIsDefaultView(false);
+    } catch (e) {
+      displayError(Messages.nothingToUpdate);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
 
   const getCurrentVersionDetails = useCallback(async () => {
     setIsLoading(true);
@@ -197,7 +193,7 @@ export const UpdatePanel = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [getCurrentVersion]);
+  }, []);
 
   useEffect(() => {
     getCurrentVersionDetails();

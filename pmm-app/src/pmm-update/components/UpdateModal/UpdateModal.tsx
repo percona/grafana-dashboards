@@ -4,8 +4,8 @@ import { Modal } from '@grafana/ui';
 
 import { Messages } from './UpdateModal.messages';
 import * as styles from './UpdateModal.styles';
-import { CenteredButton, UpdateModalHeader } from 'pmm-update-panel/components';
-import { useClickOutside } from 'pmm-update-panel/hooks';
+import { CenteredButton, UpdateModalHeader } from 'pmm-update/components';
+import { useClickOutside } from 'pmm-update/hooks';
 
 interface UpdateModalProps {
   errorMessage: string;
