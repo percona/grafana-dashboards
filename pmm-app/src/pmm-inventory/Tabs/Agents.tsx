@@ -25,7 +25,7 @@ export const Agents = () => {
     setLoading(true);
     try {
       const result: AgentsList = await InventoryService.getAgents();
-      setData(InventoryDataService.generateStructure(result));
+      setData(InventoryDataService.generateAgentsStructure(result));
     } catch (e) {
     } finally {
       setLoading(false);
