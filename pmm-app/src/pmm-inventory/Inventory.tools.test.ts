@@ -141,7 +141,7 @@ describe('Inventory data service', () => {
       },
     ];
     // FIXME: types
-    expect(InventoryDataService.generateAgentsStructure(response as any)).toEqual(testTransformedData);
+    expect(InventoryDataService.getAgentModel(response as any)).toEqual(testTransformedData);
   });
 
   it('Transforms response for Services correct', () => {
@@ -188,7 +188,7 @@ describe('Inventory data service', () => {
       },
     ];
     // FIXME: types
-    expect(InventoryDataService.generateServicesStructure(response as any)).toEqual(testTransformedData);
+    expect(InventoryDataService.getServiceModel(response as any)).toEqual(testTransformedData);
   });
 
   it('Transforms response for Nodes correct', () => {
@@ -223,6 +223,6 @@ describe('Inventory data service', () => {
       },
     ];
     // FIXME: types
-    expect(InventoryDataService.generateNodesStructure(response as any)).toEqual(testTransformedData);
+    expect(InventoryDataService.getNodeModel(response as any)).toEqual(testTransformedData);
   });
 });

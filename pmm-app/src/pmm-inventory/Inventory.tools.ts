@@ -42,7 +42,7 @@ interface Model {
   [key: string]: any;
 }
 
-const getModel = (params, type): Model => {
+const getParams = (params, type): Model => {
   const { custom_labels, ...rest } = params;
   const labels =
     custom_labels && Object.keys(custom_labels).length
@@ -56,20 +56,20 @@ const getModel = (params, type): Model => {
   };
 };
 
-const generateStructure = (item: ServicesList) => {
+const getModel = (item: ServicesList) => {
   const addType = Object.keys(item).map(type => ({ type, params: item[type] }));
   return addType.map(agent =>
     agent['params'].map(
       (arrItem): Model => {
         const type = inventoryTypes[agent['type']] || '';
-        return getModel(arrItem, type);
+        return getParams(arrItem, type);
       }
     )
   );
 };
 
-const generateServicesStructure = (item: InventoryList) => {
-  const createParams = generateStructure(item);
+const getServiceModel = (item: InventoryList) => {
+  const createParams = getModel(item);
   return orderBy(
     [].concat(...createParams),
     [(service: Model) => (service.service_name || '').toLowerCase()],
@@ -77,8 +77,8 @@ const generateServicesStructure = (item: InventoryList) => {
   );
 };
 
-const generateNodesStructure = (item: InventoryList) => {
-  const createParams = generateStructure(item);
+const getNodeModel = (item: InventoryList) => {
+  const createParams = getModel(item);
   return orderBy(
     [].concat(...createParams),
     [(node: Model) => (node.node_name || '').toLowerCase()],
@@ -86,14 +86,13 @@ const generateNodesStructure = (item: InventoryList) => {
   );
 };
 
-const generateAgentsStructure = (item: InventoryList) => {
-  const createParams = generateStructure(item);
+const getAgentModel = (item: InventoryList) => {
+  const createParams = getModel(item);
   return orderBy([].concat(...createParams), [(agent: Model) => (agent.type || '').toLowerCase()], ['asc']);
 };
 
 export const InventoryDataService = {
-  generateStructure,
-  generateServicesStructure,
-  generateAgentsStructure,
-  generateNodesStructure,
+  getServiceModel,
+  getAgentModel,
+  getNodeModel,
 };
