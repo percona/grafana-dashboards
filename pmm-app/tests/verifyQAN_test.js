@@ -405,7 +405,7 @@ xScenario('PMM-T223 - Verify time metrics are AVG per query (not per second)', a
 });
 */
 // TODO: Uncomment after new QAN will be merged
-Scenario(
+xScenario(
   'PMM-T215 - Verify that buttons in QAN are disabled and visible on the screen',
   async (I, qanPage) => {
     qanPage.waitForNewQANPageLoaded();
@@ -413,6 +413,6 @@ Scenario(
     I.seeAttributesOnElements(qanPage.fields.nextPage, { 'aria-disabled': 'false' });
     I.seeElement(qanPage.fields.resetAll + ':disabled');
     I.seeElement(qanPage.fields.ellipsisButton);
-    
+
   }
 );
