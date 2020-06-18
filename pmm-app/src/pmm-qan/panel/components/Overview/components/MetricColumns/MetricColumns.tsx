@@ -2,7 +2,7 @@ import { Divider } from 'antd';
 import Tooltip from 'antd/es/tooltip';
 import React from 'react';
 import { cx } from 'emotion';
-import { METRIC_CATALOGUE } from 'pmm-qan-app-panel/panel/panel.constants';
+import { METRIC_CATALOGUE } from 'pmm-qan/panel/panel.constants';
 import { humanize } from 'shared/components/helpers/Humanization';
 import { Latency, Sparkline, TotalPercentage } from 'shared/components/Elements/Charts';
 import { COLUMN_WIDTH, FIXED_COLUMN_WIDTH } from '../../Overview.constants';

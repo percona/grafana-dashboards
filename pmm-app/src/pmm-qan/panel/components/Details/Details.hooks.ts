@@ -1,6 +1,6 @@
 import { useContext, useEffect } from 'react';
 import { get } from 'lodash';
-import { QueryAnalyticsProvider } from 'pmm-qan-app-panel/panel/provider/provider';
+import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
 import { DetailsProvider } from './Details.provider';
 import { DATABASE } from './Details.constants';
 import DetailsService from './Details.service';

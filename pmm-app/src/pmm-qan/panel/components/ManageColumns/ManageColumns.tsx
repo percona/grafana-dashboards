@@ -5,8 +5,8 @@ import {
   Divider, Icon, Select, Tooltip
 } from 'antd';
 import { cx } from 'emotion';
-import { QueryAnalyticsProvider } from 'pmm-qan-app-panel/panel/provider/provider';
-import { METRIC_CATALOGUE } from 'pmm-qan-app-panel/panel/panel.constants';
+import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
+import { METRIC_CATALOGUE } from 'pmm-qan/panel/panel.constants';
 import { styles } from './ManageColumns.styles';
 import './ManageColumns.scss';
 

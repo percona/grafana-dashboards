@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
-import { QueryAnalyticsProvider } from 'pmm-qan-app-panel/panel/provider/provider';
+import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
 import { processMetrics } from 'shared/components/helpers/processMetrics';
-import { METRIC_CATALOGUE } from 'pmm-qan-app-panel/panel/panel.constants';
+import { METRIC_CATALOGUE } from 'pmm-qan/panel/panel.constants';
 import MetricsService from './Metrics.service';
 
 export const useMetricsDetails = (): [any[], boolean] => {

@@ -4,7 +4,7 @@ import React, {
 } from 'react';
 import scrollIntoView from 'scroll-into-view';
 import './Overview.scss';
-import { QueryAnalyticsProvider } from 'pmm-qan-app-panel/panel/provider/provider';
+import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
 import 'shared/components/Elements/Spinner/Spinner';
 import { useOverviewTable } from './Overview.hooks';
 import { styles } from '../../panel.styles';

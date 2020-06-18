@@ -1,6 +1,6 @@
 import React, { FC, useContext } from 'react';
 import { Select } from 'antd';
-import { QueryAnalyticsProvider } from 'pmm-qan-app-panel/panel/provider/provider';
+import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
 import { styles } from './Dimension.styles';
 import { DIMENSIONS_OPTIONS } from './Dimension.constants';
 import './Dimension.scss';

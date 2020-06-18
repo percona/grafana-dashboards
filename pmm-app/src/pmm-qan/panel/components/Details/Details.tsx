@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import { Divider, Tabs } from 'antd';
 import './Details.scss';
-import { QueryAnalyticsProvider } from 'pmm-qan-app-panel/panel/provider/provider';
+import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
 import Fingerprint from './Fingerprint/Fingerprint';
 import Explain from './Explain/Explain';
 import Example from './Example/Example';
