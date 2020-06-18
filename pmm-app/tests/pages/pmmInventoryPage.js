@@ -76,7 +76,7 @@ module.exports = {
 
   async getServiceId(serviceName) {
     const serviceIdLocator =
-        `${this.fields.serviceIdLocatorPrefix}${serviceName}')]/preceding-sibling::td[2]`;
+        `${this.fields.serviceIdLocatorPrefix}${serviceName}")]/preceding-sibling::td[2]`;
     I.waitForVisible(serviceIdLocator, 30);
     const matchedServices = await I.grabNumberOfVisibleElements(serviceIdLocator);
     await assert.equal(
