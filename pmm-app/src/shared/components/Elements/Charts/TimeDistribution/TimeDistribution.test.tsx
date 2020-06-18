@@ -1,4 +1,4 @@
-import renderer from 'react-test-renderer';
+import { mount } from 'enzyme';
 import React from 'react';
 import { TimeDistribution, getMetricDistribution } from './TimeDistribution';
 
@@ -4450,10 +4450,8 @@ describe('TimeDistributionChart chart test', () => {
     const TimeDistributionChartProps = {
       data: MOCK_METRICS,
     };
+    const root = mount(<TimeDistribution {...TimeDistributionChartProps} />);
 
-    const component = renderer.create(<TimeDistribution {...TimeDistributionChartProps} />);
-    const tree = component.toJSON();
-
-    expect(tree).toMatchSnapshot();
+    expect(root.find('[data-qa="select-all"]').length).toEqual(1);
   });
 });

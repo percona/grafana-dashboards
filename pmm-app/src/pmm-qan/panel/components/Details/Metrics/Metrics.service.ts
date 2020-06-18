@@ -1,5 +1,5 @@
 import { apiRequestQAN } from 'shared/components/helpers/api';
-import { getLabelQueryParams } from 'pmm-qan/panel/panel.tools';
+import { getLabelQueryParams } from 'pmm-qan/panel/qan.tools';
 
 
 export const getMetrics = async ({

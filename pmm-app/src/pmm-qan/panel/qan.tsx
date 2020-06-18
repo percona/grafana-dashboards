@@ -2,16 +2,19 @@ import React, {
   FC, useContext, useEffect, useRef, useState
 } from 'react';
 import SplitPane from 'react-split-pane';
+import containerStyling from 'shared/components/helpers/styling';
 import { QueryAnalyticsProvider, UrlParametersProvider } from './provider/provider';
 import {
   Overview, Filters, Details, ManageColumns
 } from './components';
-import { styles } from './panel.styles';
+import { styles } from './qan.styles';
 import 'shared/styles.scss';
 import 'shared/style.less';
-import './panel.scss';
+import './qan.scss';
 
 const QueryAnalyticsPanel: FC = () => {
+  useEffect(() => containerStyling.addPluginPanelClass(), []);
+
   const {
     panelState: { querySelected },
   } = useContext(QueryAnalyticsProvider);
