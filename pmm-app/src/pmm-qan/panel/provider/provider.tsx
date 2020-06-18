@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { omit } from 'lodash';
-import { QueryAnalyticsContext } from '../panel.types';
 import {
   generateURL, parseURL, refreshGrafanaVariables, setLabels
 } from './provider.tools';
+import { QueryAnalyticsContext } from './provider.types';
 
 const initialState = {} as QueryAnalyticsContext;
 

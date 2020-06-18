@@ -1,4 +1,4 @@
-import { QueryDimension } from '../../../panel.types';
+import { QueryDimension } from '../../../provider/provider.types';
 
 export interface FingerprintProps {
   totals: boolean;
