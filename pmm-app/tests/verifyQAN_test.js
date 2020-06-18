@@ -8,7 +8,7 @@ Before(async (I, qanPage, adminPage) => {
   await I.waitForElement(qanPage.fields.iframe, 60);
   await I.switchTo(qanPage.fields.iframe);
 });
-
+/*
 Scenario('Verify QAN Filter groups exist  @not-pr-pipeline', async (I, adminPage, qanPage) => {
   qanPage.waitForQANPageLoaded();
   await qanPage.changeResultsPerPage(50);
@@ -403,3 +403,16 @@ xScenario('PMM-T223 - Verify time metrics are AVG per query (not per second)', a
   await qanPage.verifyAvgQueryTime();
   await qanPage.verifyAvgLockTime();
 });
+*/
+// TODO: Uncomment after new QAN will be merged
+Scenario(
+  'PMM-T215 - Verify that buttons in QAN are disabled and visible on the screen',
+  async (I, qanPage) => {
+    qanPage.waitForNewQANPageLoaded();
+    I.seeAttributesOnElements(qanPage.fields.previousPage, { 'aria-disabled': 'true' });
+    I.seeAttributesOnElements(qanPage.fields.nextPage, { 'aria-disabled': 'false' });
+    I.seeElement(qanPage.fields.resetAll + ':disabled');
+    I.seeElement(qanPage.fields.ellipsisButton);
+    
+  }
+);
