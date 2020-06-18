@@ -2,7 +2,7 @@ import { css } from 'emotion';
 
 export const panel = css`
   position: relative;
-  height: inherit;
+  height: 100%;
   padding-top: 5px;
 
   p {

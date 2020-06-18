@@ -10,7 +10,6 @@ interface LastCheckProps {
 
 export const UpdateHeader = ({ currentReleaseDate, onExpandVersion, version }: LastCheckProps) => (
   <header className={styles.updateHeader}>
-    <h2>Updates</h2>
     <p onClick={onExpandVersion}>
       Current version:{' '}
       <span>
