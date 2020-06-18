@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { LegacyForms } from '@grafana/ui';
 import { PanelEditorProps } from '@grafana/data';
 import { CheckPanelOptions } from 'pmm-check/types';
+
 export class CheckPanelEditor extends PureComponent<PanelEditorProps<CheckPanelOptions>> {
   onTitleChanged = ({ target }: any) => {
     const { onOptionsChange, options } = this.props;

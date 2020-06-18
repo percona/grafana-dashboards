@@ -13,14 +13,12 @@ interface TableProps {
   rowKey?: (rec: any) => any;
 }
 
-const TableCheckbox = props => {
-  return (
-    <label className="checkbox-container checkbox-container--main no-gap">
-      <input type="checkbox" {...props} indeterminate="false" />
-      <span className="checkbox-container__checkmark"></span>
-    </label>
-  );
-};
+const TableCheckbox = (props) => (
+  <label className="checkbox-container checkbox-container--main no-gap">
+    <input type="checkbox" {...props} indeterminate="false" />
+    <span className="checkbox-container__checkmark" />
+  </label>
+);
 
 export const Table: FC<TableProps> = ({
   columns,
@@ -33,16 +31,18 @@ export const Table: FC<TableProps> = ({
 }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
-  // @ts-ignore
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow, selectedFlatRows } = useTable(
+  const {
+    // @ts-ignore
+    getTableProps, getTableBodyProps, headerGroups, rows, prepareRow, selectedFlatRows
+  } = useTable(
     {
       columns,
       data,
     },
     useRowSelect,
-    hooks => {
+    (hooks) => {
       if (rowSelection) {
-        hooks.visibleColumns.push(columns => [
+        hooks.visibleColumns.push((columns) => [
           {
             id: 'selection',
             Header: ({ getToggleAllRowsSelectedProps }: any) => (
@@ -50,13 +50,11 @@ export const Table: FC<TableProps> = ({
                 <TableCheckbox {...getToggleAllRowsSelectedProps()} />
               </div>
             ),
-            Cell: ({ row }: { row: any }) => {
-              return (
-                <div data-qa="select-row">
-                  <TableCheckbox {...row.getToggleRowSelectedProps()} />
-                </div>
-              );
-            },
+            Cell: ({ row }: { row: any }) => (
+              <div data-qa="select-row">
+                <TableCheckbox {...row.getToggleRowSelectedProps()} />
+              </div>
+            ),
           },
           ...columns,
         ]);
@@ -80,7 +78,7 @@ export const Table: FC<TableProps> = ({
         ) : null}
         {!rows.length && !loading ? (
           <div data-qa="table-no-data" className={styles.empty}>
-            {noData ? noData : <h1>No data</h1>}
+            {noData || <h1>No data</h1>}
           </div>
         ) : null}
         {rows.length && !loading ? (
@@ -103,20 +101,19 @@ export const Table: FC<TableProps> = ({
             <tbody {...getTableBodyProps()}>
               {rows.map((row, i) => {
                 prepareRow(row);
+
                 return (
                   <tr data-qa="table-row" {...row.getRowProps()} key={rowKey ? rowKey(row) : i}>
-                    {row.cells.map((cell, index) => {
-                      return (
-                        // eslint-disable-next-line react/jsx-key
-                        <td
-                          {...cell.getCellProps()}
-                          className={index === 0 && rowSelection ? styles.checkboxColumn : ''}
-                          key={index}
-                        >
-                          {cell.render('Cell')}
-                        </td>
-                      );
-                    })}
+                    {row.cells.map((cell, index) => (
+                      // eslint-disable-next-line react/jsx-key
+                      <td
+                        {...cell.getCellProps()}
+                        className={index === 0 && rowSelection ? styles.checkboxColumn : ''}
+                        key={index}
+                      >
+                        {cell.render('Cell')}
+                      </td>
+                    ))}
                   </tr>
                 );
               })}
