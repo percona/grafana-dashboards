@@ -1,19 +1,13 @@
-import React, {
-  FC, useContext, useEffect, useRef, useState
-} from 'react';
-import containerStyling from 'shared/components/helpers/styling';
+import React, { FC, useContext, useEffect, useRef, useState } from 'react';
 import SplitPane from 'react-split-pane';
 import { QueryAnalyticsProvider, UrlParametersProvider } from './provider/provider';
-import {
-  Overview, Filters, Details, ManageColumns
-} from './components';
+import { Overview, Filters, Details, ManageColumns } from './components';
 import { styles } from './panel.styles';
 import 'shared/styles.scss';
 import 'shared/style.less';
 import './panel.scss';
 
 const QueryAnalyticsPanel: FC = () => {
-  useEffect(() => containerStyling.addPluginPanelClass(), []);
   const {
     panelState: { querySelected },
   } = useContext(QueryAnalyticsProvider);
@@ -61,8 +55,8 @@ const QueryAnalyticsPanel: FC = () => {
   );
 };
 
-export default (props) => (
-  <UrlParametersProvider grafanaProps={props}>
+export default props => (
+  <UrlParametersProvider {...props}>
     <QueryAnalyticsPanel />
   </UrlParametersProvider>
 );
