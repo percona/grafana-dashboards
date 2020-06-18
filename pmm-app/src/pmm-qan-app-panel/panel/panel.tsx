@@ -1,7 +1,11 @@
-import React, { FC, useContext, useEffect, useRef, useState } from 'react';
+import React, {
+  FC, useContext, useEffect, useRef, useState
+} from 'react';
 import SplitPane from 'react-split-pane';
 import { QueryAnalyticsProvider, UrlParametersProvider } from './provider/provider';
-import { Overview, Filters, Details, ManageColumns } from './components';
+import {
+  Overview, Filters, Details, ManageColumns
+} from './components';
 import { styles } from './panel.styles';
 import 'shared/styles.scss';
 import 'shared/style.less';
@@ -55,7 +59,7 @@ const QueryAnalyticsPanel: FC = () => {
   );
 };
 
-export default props => (
+export default (props) => (
   <UrlParametersProvider {...props}>
     <QueryAnalyticsPanel />
   </UrlParametersProvider>
