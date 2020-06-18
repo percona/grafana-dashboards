@@ -95,6 +95,7 @@ export const Overview: FC = () => {
             scroll={{ y: height - 100, x: '100%' }}
             rowClassName={getRowClassName}
             loading={loading}
+            rowKey={(record: any) => (record.fingerprint + record.dimension)}
           />
         </div>
       ), [overviewMetricsList, loading, onTableChange, height, getRowClassName])}
