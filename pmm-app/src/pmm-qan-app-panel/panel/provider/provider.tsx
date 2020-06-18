@@ -124,11 +124,11 @@ const actions = {
   }),
 };
 
-export const UrlParametersProvider = ({ grafanaProps, children }) => {
+export const UrlParametersProvider = ({ timeRange, children }) => {
   const query = new URLSearchParams(window.location.search);
-  const rawTime = { ...grafanaProps.timeRange.raw };
-  const from = grafanaProps.timeRange.from.utc().format('YYYY-MM-DDTHH:mm:ssZ');
-  const to = grafanaProps.timeRange.to.utc().format('YYYY-MM-DDTHH:mm:ssZ');
+  const rawTime = { ...timeRange.raw };
+  const from = timeRange.from.utc().format('YYYY-MM-DDTHH:mm:ssZ');
+  const to = timeRange.to.utc().format('YYYY-MM-DDTHH:mm:ssZ');
   const [panelState, setContext] = useState({
     ...parseURL(query),
     rawTime,
