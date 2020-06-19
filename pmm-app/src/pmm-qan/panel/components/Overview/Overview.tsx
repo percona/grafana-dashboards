@@ -96,6 +96,7 @@ export const Overview: FC = () => {
             rowClassName={getRowClassName}
             loading={loading}
             rowKey={(record: any) => (record.fingerprint + record.dimension)}
+            data-qa="qan-overview-table"
           />
         </div>
       ), [overviewMetricsList, loading, onTableChange, height, getRowClassName])}
@@ -112,8 +113,9 @@ export const Overview: FC = () => {
             total={total}
             onShowSizeChange={changePageSize}
             onChange={changePageNumber}
+            data-qa="qan-pagination"
           />
-          <span className={styles.showTotal}>{showTotal}</span>
+          <span className={styles.showTotal} data-qa="qan-total-items">{showTotal}</span>
         </div>
       </div>
     </div>

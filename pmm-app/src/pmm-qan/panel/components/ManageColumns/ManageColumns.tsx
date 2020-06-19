@@ -113,6 +113,7 @@ export const ManageColumns = (props) => {
         className={`${onlyAdd ? 'add' : 'manage'}-columns-selector`}
         dropdownClassName={`${onlyAdd ? 'add' : 'manage'}-columns-selector-dropdown`}
         dropdownRender={dropdownRender}
+        data-qa="manage-columns-selector"
       >
         {availableColumns.map((item) => (
           <Option key={item.simpleName} label={item.humanizeName}>

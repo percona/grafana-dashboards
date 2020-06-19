@@ -2,7 +2,6 @@ import React, {
   FC, useContext, useEffect, useRef, useState
 } from 'react';
 import SplitPane from 'react-split-pane';
-import containerStyling from 'shared/components/helpers/styling';
 import { QueryAnalyticsProvider, UrlParametersProvider } from './provider/provider';
 import {
   Overview, Filters, Details, ManageColumns
@@ -13,10 +12,6 @@ import 'shared/style.less';
 import './qan.scss';
 
 const QueryAnalyticsPanel: FC = () => {
-  //  TODO: this hack should be removed ASAP, but only after this branch will be merged
-  //  change is too significant to do it now
-  useEffect(() => containerStyling.addPluginPanelClass(), []);
-
   const {
     panelState: { querySelected },
   } = useContext(QueryAnalyticsProvider);

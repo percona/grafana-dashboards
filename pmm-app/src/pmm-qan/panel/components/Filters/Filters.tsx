@@ -24,7 +24,7 @@ export const FiltersContainer = ({
   const selectedCheckboxes = getSelectedCheckboxes(filters);
 
   return (
-    <div id="inner-filter-wrapper" ref={filtersWrapperRef}>
+    <div ref={filtersWrapperRef}>
       <div className={styles.filtersHeader}>
         <h5 className={styles.title}>Filters</h5>
         <Button
@@ -32,13 +32,14 @@ export const FiltersContainer = ({
           className={styles.showAllButton}
           onClick={() => showSetAll(!showAll)}
           disabled={!selectedCheckboxes}
+          data-qa="qan-filters-show-selected"
         >
           {showAll ? 'Show Selected' : 'Show All'}
         </Button>
         <Button
           type="link"
           className={styles.resetButton}
-          id="reset-all-filters"
+          data-qa="qan-filters-reset-all"
           onClick={() => {
             setFilter('');
             showSetAll(true);

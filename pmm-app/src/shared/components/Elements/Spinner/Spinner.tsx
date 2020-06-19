@@ -12,5 +12,5 @@ const spinnerStyle = css`
 `;
 
 Spin.setDefaultIndicator(
-  <i className={cx('fa fa-spinner fa-spin spinner', spinnerStyle)} />
+  <i className={cx('fa fa-spinner fa-spin spinner', spinnerStyle)} data-qa="loading-spinner" />
 );

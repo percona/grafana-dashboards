@@ -50,7 +50,7 @@ const Details: FC = () => {
   useEffect(() => changeActiveTab(TabKeys[openDetailsTab]), [queryId]);
 
   return (
-    <div className="query-analytics-details-grid" id="query-analytics-details">
+    <div className="query-analytics-details-grid query-analytics-details" data-qa="query-analytics-details">
       <Fingerprint
         totals={totals}
         query={fingerprint}

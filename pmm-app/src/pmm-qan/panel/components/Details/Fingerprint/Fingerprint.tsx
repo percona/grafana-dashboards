@@ -3,6 +3,7 @@ import React, { FC } from 'react';
 import { QueryTooltip } from 'shared/components/Elements/QueryTooltip/QueryTooltip';
 import { Close } from 'shared/components/Elements/Icons/Close';
 import { Info } from 'shared/components/Elements/Icons/Info';
+import { cx } from 'emotion';
 import { GROUP_BY_OPTIONS } from './Fingerprint.constants';
 import { styles } from './Fingerprint.styles';
 import { FingerprintProps } from './Fingerprint.types';
@@ -13,7 +14,7 @@ const Fingerprint: FC<FingerprintProps> = ({
   const currentGroupBy = GROUP_BY_OPTIONS.filter((option) => option.value === groupBy)[0];
 
   return (
-    <div className={styles.fingerprintWrapper} id="query-id">
+    <div className={cx('query-id', styles.fingerprintWrapper)} data-qa="query-id">
       <div className={styles.fingerprintView}>
         <h4>{!totals ? `${currentGroupBy.data.label} : ` : 'TOTAL'}</h4>
         &nbsp;
