@@ -1,26 +1,13 @@
 import React from 'react';
-import { Table } from 'antd';
-import { render, unmountComponentAtNode } from 'react-dom';
-import { act } from 'react-dom/test-utils';
-import { InventoryDataService } from './DataService';
-import { agentsColumns, nodesColumns, servicesColumns } from './panel.constants';
+import { mount } from 'enzyme';
+import { Table } from '../react-plugins-deps/components/Table/Table';
+import { AGENTS_COLUMNS, NODES_COLUMNS, SERVICES_COLUMNS } from './Inventory.constants';
+import { InventoryDataService } from './Inventory.tools';
 
 jest.mock('../react-plugins-deps/components/helpers/notification-manager');
 
+// FIXME: types
 describe('Inventory tables', () => {
-  let container: Element;
-  beforeEach(() => {
-    // setup a DOM element as a render target
-    container = document.createElement('div');
-    document.body.appendChild(container);
-  });
-
-  afterEach(() => {
-    // cleanup on exiting
-    unmountComponentAtNode(container);
-    container.remove();
-  });
-
   it('Agents table renders correct with right data', () => {
     const response = {
       pmm_agent: [{ agent_id: 'pmm-server', runs_on_node_id: 'pmm-server', connected: true }],
@@ -53,21 +40,17 @@ describe('Inventory tables', () => {
       ],
     };
 
-    act(() => {
-      render(
-        <Table
-          dataSource={InventoryDataService.generateStructure(response)}
-          rowKey={rec => rec.agent_id}
-          columns={agentsColumns}
-          pagination={false}
-          bordered
-          loading={false}
-        />,
-        container
-      );
-    });
+    const root = mount(
+      <Table
+        data={InventoryDataService.generateStructure(response as any)}
+        rowKey={rec => rec.agent_id}
+        columns={AGENTS_COLUMNS}
+        loading={false}
+      />
+    );
     // length is 5 because header is also tr
-    expect(container?.querySelectorAll('tr').length).toEqual(5);
+    expect(root.find('tr').length).toEqual(5);
+    root.unmount();
   });
 
   it('Services table renders correct with right data', () => {
@@ -82,21 +65,17 @@ describe('Inventory tables', () => {
         },
       ],
     };
-    act(() => {
-      render(
-        <Table
-          dataSource={InventoryDataService.generateStructure(response)}
-          rowKey={rec => rec.service_id}
-          columns={servicesColumns}
-          pagination={false}
-          bordered
-          loading={false}
-        />,
-        container
-      );
-    });
+    const root = mount(
+      <Table
+        data={InventoryDataService.generateStructure(response as any)}
+        rowKey={rec => rec.service_id}
+        columns={SERVICES_COLUMNS}
+        loading={false}
+      />
+    );
     // length is 2 because header is also tr
-    expect(container?.querySelectorAll('tr').length).toEqual(2);
+    expect(root.find('tr').length).toEqual(2);
+    root.unmount();
   });
 
   it('Nodes table renders correct with right data', () => {
@@ -106,20 +85,16 @@ describe('Inventory tables', () => {
         { node_id: 'pmm-server2', node_name: 'pmm-server2', address: '127.0.0.1' },
       ],
     };
-    act(() => {
-      render(
-        <Table
-          dataSource={InventoryDataService.generateStructure(response)}
-          rowKey={rec => rec.node_id}
-          columns={nodesColumns}
-          pagination={false}
-          bordered
-          loading={false}
-        />,
-        container
-      );
-    });
+    const root = mount(
+      <Table
+        data={InventoryDataService.generateStructure(response as any)}
+        rowKey={rec => rec.node_id}
+        columns={NODES_COLUMNS}
+        loading={false}
+      />
+    );
     // length is 3 because header is also tr
-    expect(container?.querySelectorAll('tr').length).toEqual(3);
+    expect(root.find('tr').length).toEqual(3);
+    root.unmount();
   });
 });

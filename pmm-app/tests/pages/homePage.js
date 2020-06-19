@@ -20,6 +20,7 @@ module.exports = {
     updateProgressModal: ".modal-content",
     reloadButtonAfterUpgrade: "button[ng-click='reloadAfterUpdate()'",
     pmmUpdateWidget: "#pmm-update-widget",
+    whatsNewLink: "a.text-primary.pmm-link",
     upToDateLocator: "//section[@class='state']/p[text()='You are up to date']",
     availableVersion: "#available_version > div > p",
     currentVersion: "#current_version > span",
@@ -87,7 +88,9 @@ module.exports = {
     I.seeElement(this.fields.checkUpdateButton);
     I.see('Last check:', this.fields.oldLastCheckSelector);
     assert.notEqual(await I.grabTextFrom(this.fields.availableVersion),
-        await I.grabTextFrom(this.fields.currentVersion), 'Available and Current versions match');
+      await I.grabTextFrom(this.fields.currentVersion),
+      'Available and Current versions match'
+    );
   },
 
   verifyPostUpdateWidgetIsPresent() {

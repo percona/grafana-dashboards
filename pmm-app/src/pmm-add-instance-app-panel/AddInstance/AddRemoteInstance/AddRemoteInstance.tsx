@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import React, { useState } from 'react';
 import './AddRemoteInstance.scss';
 import { InputField } from '../../../react-plugins-deps/components/FormComponents/Input/Input';
 import { TextAreaField } from '../../../react-plugins-deps/components/FormComponents/TextArea/TextArea';
@@ -176,7 +176,7 @@ const AddRemoteInstance = props => {
       onSubmit={onSubmit}
       initialValues={initialValues}
       validate={validateInstanceForm}
-      render={({ form, handleSubmit }): ReactElement => {
+      render={({ form, handleSubmit }) => {
         return (
           <form onSubmit={handleSubmit} className="add-instance-form app-theme-dark">
             <h5>{`Add remote ${instanceType} Instance`}</h5>

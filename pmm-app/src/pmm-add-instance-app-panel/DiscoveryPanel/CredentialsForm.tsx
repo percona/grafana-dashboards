@@ -1,5 +1,5 @@
 import { Form as FormFinal } from 'react-final-form';
-import React, { ReactElement } from 'react';
+import React from 'react';
 import { InputField } from '../../react-plugins-deps/components/FormComponents/Input/Input';
 import { PasswordField } from '../../react-plugins-deps/components/FormComponents/Password/Password';
 
@@ -16,7 +16,7 @@ const CredentialsForm = props => {
       validate={() => {
         return undefined;
       }}
-      render={({ form, handleSubmit }): ReactElement => {
+      render={({ form, handleSubmit }) => {
         return (
           <form onSubmit={handleSubmit} className="discovery-instance-form app-theme-dark">
             <div className="discovery-search-panel">

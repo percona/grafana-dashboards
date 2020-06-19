@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form as FormFinal } from 'react-final-form';
 import { css } from 'emotion';
 import { Button, FormElement, InputField, TextAreaField } from 'react-plugins-deps/components/FormComponents';
@@ -50,7 +50,7 @@ const AlertManager = props => {
   return (
     <FormFinal
       onSubmit={onSubmit}
-      render={({ form, handleSubmit }): ReactElement => {
+      render={({ form, handleSubmit }) => {
         useEffect(() => {
           form.initialize(props.settings);
         }, [props.settings]);

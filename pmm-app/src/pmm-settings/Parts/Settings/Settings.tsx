@@ -1,8 +1,8 @@
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Collapse } from 'antd';
 import { Form as FormFinal } from 'react-final-form';
 import { css } from 'emotion';
-import { showSuccessNotification, PluginTooltip } from 'react-plugins-deps/components/helpers';
+import { PluginTooltip, showSuccessNotification } from 'react-plugins-deps/components/helpers';
 import Validators from 'react-plugins-deps/components/validators/validators';
 import {
   Button,
@@ -136,7 +136,7 @@ const SettingsPart = props => {
       onSubmit={onSubmit}
       // This is the slider's default, since in controlled components defaultValue can't be used
       initialValues={{ metrics_resolutions_slider: 2 } as any}
-      render={({ form, handleSubmit }): ReactElement => {
+      render={({ form, handleSubmit }) => {
         useEffect(() => {
           if (!settings.data_retention && !settings.metrics_resolutions) {
             return;
