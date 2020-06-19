@@ -1,5 +1,4 @@
 import React, { MouseEvent, useCallback, useEffect, useState } from 'react';
-import moment from 'moment';
 
 import {
   AvailableUpdate,
@@ -9,6 +8,7 @@ import {
   UpdateInfoBox,
   UpdateModal,
 } from 'pmm-update/components';
+import { formatDate, formatDateWithTime } from './UpdatePanel.utils';
 
 import { getCurrentVersion, getUpdates, startUpdate, getUpdateStatus } from './UpdatePanel.service';
 import { Messages } from './UpdatePanel.messages';
@@ -126,26 +126,19 @@ export const UpdatePanel = () => {
 
     try {
       const data = await getUpdates();
+      const { last_check, latest, latest_news_url, update_available } = data;
+      const {
+        full_version: latest_full_version,
+        timestamp: latest_timestamp,
+        version: latest_version,
+      } = latest;
 
-      setNextVersion(data.latest.version || '');
-      setNextFullVersion(data.latest.full_version || '');
-      setLastCheckDate(
-        data.last_check
-          ? moment(data.last_check)
-              .locale('en')
-              .format('MMMM DD, H:mm')
-          : ''
-      );
-      setNewReleaseDate(
-        data.latest.timestamp
-          ? moment
-              .utc(data.latest.timestamp)
-              .locale('en')
-              .format('MMMM DD')
-          : ''
-      );
-      setNewsLink(data.latest_news_url || '');
-      setIsUpdateAvailable(data.update_available || false);
+      setNextVersion(latest_version || '');
+      setNextFullVersion(latest_full_version || '');
+      setLastCheckDate(last_check ? formatDateWithTime(last_check) : '');
+      setNewReleaseDate(latest_timestamp ? formatDate(latest_timestamp) : '');
+      setNewsLink(latest_news_url || '');
+      setIsUpdateAvailable(update_available || false);
       setIsDefaultView(false);
     } catch (e) {
       displayError(Messages.nothingToUpdate);
@@ -158,35 +151,26 @@ export const UpdatePanel = () => {
     setIsLoading(true);
     try {
       const data = await getCurrentVersion();
-      setNextVersion(data.latest.version || '');
-      setNextFullVersion(data.latest.full_version || '');
-      setLastCheckDate(
-        data.last_check
-          ? moment(data.last_check)
-              .locale('en')
-              .format('MMMM DD, H:mm')
-          : ''
-      );
-      setVersion(data.installed.version || '');
-      setFullVersion(data.installed.full_version || '');
-      setCurrentReleaseDate(
-        data.installed.timestamp
-          ? moment
-              .utc(data.installed.timestamp)
-              .locale('en')
-              .format('MMMM DD')
-          : ''
-      );
-      setNewReleaseDate(
-        data.latest.timestamp
-          ? moment
-              .utc(data.latest.timestamp)
-              .locale('en')
-              .format('MMMM DD')
-          : ''
-      );
-      setNewsLink(data.latest_news_url || '');
-      setIsUpdateAvailable(data.update_available || false);
+      const { last_check, latest, latest_news_url, installed, update_available } = data;
+      const {
+        full_version: latest_full_version,
+        timestamp: latest_timestamp,
+        version: latest_version,
+      } = latest;
+      const {
+        full_version: installed_full_version,
+        timestamp: installed_timestamp,
+        version: installed_version,
+      } = installed;
+      setNextVersion(latest_version || '');
+      setNextFullVersion(latest_full_version || '');
+      setLastCheckDate(last_check ? formatDateWithTime(last_check) : '');
+      setVersion(installed_version || '');
+      setFullVersion(installed_full_version || '');
+      setCurrentReleaseDate(installed_timestamp ? formatDate(installed_timestamp) : '');
+      setNewReleaseDate(latest_timestamp ? formatDate(latest_timestamp) : '');
+      setNewsLink(latest_news_url || '');
+      setIsUpdateAvailable(update_available || false);
       setIsDefaultView(false);
     } catch (e) {
       console.error(e);
