@@ -1,13 +1,12 @@
 // Just a stub test
 import React from 'react';
-import renderer from 'react-test-renderer';
+import { shallow } from 'enzyme';
 import { Latency } from './Latency';
 
 describe('Latency chart test', () => {
   it('Renders correct with empty props', () => {
-    const component = renderer.create(<Latency data={{}} />);
-    const tree = component.toJSON();
+    const component = shallow(<Latency data={{}} />);
 
-    expect(tree).toMatchSnapshot();
+    expect(component).toMatchSnapshot();
   });
 });

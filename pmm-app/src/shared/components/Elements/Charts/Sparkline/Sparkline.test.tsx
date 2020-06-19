@@ -1,6 +1,6 @@
 // Just a stub test
 import React from 'react';
-import renderer from 'react-test-renderer';
+import { shallow } from 'enzyme';
 import { Sparkline } from './Sparkline';
 
 jest.mock('react-tooltip');
@@ -735,9 +735,8 @@ describe('Polygon chart test', () => {
       ykey: 'metric',
     };
 
-    const component = renderer.create(<Sparkline {...polygonChartProps} />);
-    const tree = component.toJSON();
+    const component = shallow(<Sparkline {...polygonChartProps} />);
 
-    expect(tree).toMatchSnapshot();
+    expect(component).toMatchSnapshot();
   });
 });

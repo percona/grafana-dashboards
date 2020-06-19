@@ -1,4 +1,4 @@
-import { mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import React from 'react';
 import { TimeDistribution, getMetricDistribution } from './TimeDistribution';
 
@@ -4450,8 +4450,8 @@ describe('TimeDistributionChart chart test', () => {
     const TimeDistributionChartProps = {
       data: MOCK_METRICS,
     };
-    const root = mount(<TimeDistribution {...TimeDistributionChartProps} />);
+    const root = shallow(<TimeDistribution {...TimeDistributionChartProps} />);
 
-    expect(root.find('[data-qa="select-all"]').length).toEqual(1);
+    expect(root).toMatchSnapshot();
   });
 });
