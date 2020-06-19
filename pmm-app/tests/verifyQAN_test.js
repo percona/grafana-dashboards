@@ -413,6 +413,6 @@ xScenario(
     I.seeAttributesOnElements(qanPage.fields.nextPage, { 'aria-disabled': 'false' });
     I.seeElement(qanPage.fields.resetAll + ':disabled');
     I.seeElement(qanPage.fields.ellipsisButton);
-
+    I.seeElement(qanPage.fields.showSelectedDisabled);
   }
 );

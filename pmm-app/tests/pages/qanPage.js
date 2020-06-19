@@ -78,6 +78,7 @@ module.exports = {
     queryCountDetail: "//tr[@data-row-key='num_queries']//td[4]",
     load: "//tr[@data-row-key='query_time']//td[2]//div[1]//span[1]",
     avgLoad: "//tr[@data-row-key='lock_time']//td[2]//div[1]//span[1]",
+    showSelectedDisabled: "//div[@id='inner-filter-wrapper']/div[1]/button[1][@disabled]",
   },
 
   filterGroupLocator(filterName) {
