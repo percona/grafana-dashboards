@@ -40,10 +40,10 @@ module.exports = {
     I.waitForElement(this.fields.inventoryTable, 60);
     I.scrollPageToBottom();
     const numberOfServices = await I.grabNumberOfVisibleElements(
-`//tr[td[contains(text(), "${serviceId}")]]//span[contains(text(),"status: RUNNING")]`
+`//tr//td//span[contains(text(), "${serviceId}")]/../span[contains(text(), 'status: RUNNING')]`
     );
     if (/mysql|mongo|postgres|rds/gmi.test(service_name)) {
-      I.waitForVisible(`//tr[td[contains(text(), "${serviceId}")]]//span[contains(text(),"status: RUNNING")]`, 30);
+      I.waitForVisible(`//tr//td//span[contains(text(), "${serviceId}")]/../span[contains(text(), 'status: RUNNING')]`, 30);
       assert.equal(
           numberOfServices,
           2,
