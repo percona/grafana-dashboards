@@ -70,7 +70,7 @@ module.exports = {
   },
 
   async getNodeId(serviceName) {
-    const nodeIdLocator = this.fields.serviceIdLocatorPrefix + serviceName + '")]/following-sibling::td[5]';
+    const nodeIdLocator = this.fields.serviceIdLocatorPrefix + serviceName + '")]/../td[5]';
     return await I.grabTextFrom(nodeIdLocator);
   },
 
