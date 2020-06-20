@@ -20,6 +20,14 @@ exports.config = {
       username: process.env.GRAFANA_USERNAME,
       password: process.env.GRAFANA_PASSWORD,
     },
+    InfluxDBHelper: {
+      require: './tests/helper/codeceptjs-influxdbhelper.js',
+      username: 'admin',
+      password: process.env.REMOTE_MYSQL_PASSWORD,
+      host: process.env.QA_GRAFANA_HOST,
+      port: '8086',
+      dbname: 'selenium',
+    },
     REST: {
       endpoint: process.env.PMM_UI_URL || 'http://localhost/'
     }
