@@ -89,6 +89,12 @@ module.exports = {
     }
   },
 
+  performPageUp(timesPagesUp) {
+    for (let i = 0; i < timesPagesUp; i++) {
+      I.pressKey('PageUp');
+      I.wait(1);
+    }
+  },
   async grabReportNameWithNA(number) {
     const numOfElements = await I.grabNumberOfVisibleElements(this.fields.reportTitleWithNA);
     if (numOfElements > number) {
