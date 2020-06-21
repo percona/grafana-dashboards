@@ -1,17 +1,16 @@
 import { apiRequest } from 'react-plugins-deps/components/helpers/api';
+import {
+  GetUpdatesBody,
+  GetUpdateStatusBody,
+  GetUpdatesResponse,
+  GetUpdateStatusResponse,
+  StartUpdateResponse,
+} from 'pmm-update/types';
 
-interface GetUpdatesBody {
-  force: boolean;
-}
-
-interface GetUpdateStatusBody {
-  auth_token: string;
-  log_offset: number;
-}
-
-export const getUpdates = () => apiRequest.post<any, GetUpdatesBody>('/v1/Updates/Check', { force: true });
+export const getUpdates = () =>
+  apiRequest.post<GetUpdatesResponse, GetUpdatesBody>('/v1/Updates/Check', { force: true });
 export const getCurrentVersion = () =>
-  apiRequest.post<any, GetUpdatesBody>('/v1/Updates/Check', { force: false });
-export const startUpdate = () => apiRequest.post<any, {}>('/v1/Updates/Start', {});
+  apiRequest.post<GetUpdatesResponse, GetUpdatesBody>('/v1/Updates/Check', { force: false });
+export const startUpdate = () => apiRequest.post<StartUpdateResponse, {}>('/v1/Updates/Start', {});
 export const getUpdateStatus = (body: GetUpdateStatusBody) =>
-  apiRequest.post<any, GetUpdateStatusBody>('/v1/Updates/Status', body);
+  apiRequest.post<GetUpdateStatusResponse, GetUpdateStatusBody>('/v1/Updates/Status', body);
