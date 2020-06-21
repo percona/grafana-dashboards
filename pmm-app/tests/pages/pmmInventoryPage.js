@@ -40,10 +40,10 @@ module.exports = {
     I.waitForElement(this.fields.inventoryTable, 60);
     I.scrollPageToBottom();
     const numberOfServices = await I.grabNumberOfVisibleElements(
-`//tr[td[contains(text(), "${serviceId}")]]//span[contains(text(),"status: RUNNING")]`
+`//tr//td//span[contains(text(), "${serviceId}")]/../span[contains(text(), 'status: RUNNING')]`
     );
     if (/mysql|mongo|postgres|rds/gmi.test(service_name)) {
-      I.waitForVisible(`//tr[td[contains(text(), "${serviceId}")]]//span[contains(text(),"status: RUNNING")]`, 30);
+      I.waitForVisible(`//tr//td//span[contains(text(), "${serviceId}")]/../span[contains(text(), 'status: RUNNING')]`, 30);
       assert.equal(
           numberOfServices,
           2,
@@ -62,15 +62,15 @@ module.exports = {
     const nodeId = await this.getNodeId(serviceName);
     I.click(agentLinkLocator);
     // eslint-disable-next-line max-len
-    let flagExists = `//tr[td[contains(text(), "${nodeId}")]]//span[contains(text(),"enhanced_metrics_disabled: true")]`;
-    I.seeElement(flagExists);
+    const enhanceMetricsDisabled = `//tr//td//span[contains(text(), "${nodeId}")]/../span[contains(text(),"enhanced_metrics_disabled: true")]`;
+    I.seeElement(enhanceMetricsDisabled);
     // eslint-disable-next-line max-len
-    flagExists = `//tr[td[contains(text(), "${nodeId}")]]//span[contains(text(),"basic_metrics_disabled: true")]`;
-    I.seeElement(flagExists);
+    const basicMetricsDisabled = `//tr//td//span[contains(text(), "${nodeId}")]/../span[contains(text(),"basic_metrics_disabled: true")]`;
+    I.seeElement(basicMetricsDisabled);
   },
 
   async getNodeId(serviceName) {
-    const nodeIdLocator = this.fields.serviceIdLocatorPrefix + serviceName + '")]/following-sibling::td[5]';
+    const nodeIdLocator = this.fields.serviceIdLocatorPrefix + serviceName + '")]/../td[5]';
     return await I.grabTextFrom(nodeIdLocator);
   },
 
