@@ -1,130 +1,12 @@
+const assert = require('assert');
 Feature('QAN Dashboard');
 
 Before(async (I, qanPage, adminPage) => {
   I.Authorize();
-
   I.amOnPage(`${qanPage.url}?from=now-5m&to=now`);
-  // TODO: these two elements should be changed once new QAN is merged
-  await I.waitForElement(qanPage.fields.iframe, 60);
-  await I.switchTo(qanPage.fields.iframe);
-});
-
-Scenario('Verify QAN Filter groups exist  @not-pr-pipeline', async (I, adminPage, qanPage) => {
-  qanPage.waitForQANPageLoaded();
-  await qanPage.changeResultsPerPage(50);
-  qanPage.checkFilterGroups();
 });
 
 Scenario(
-  'Verify QAN Query Details section opened when user selects Query @not-pr-pipeline',
-  async (I, adminPage, qanPage) => {
-    qanPage.waitForQANPageLoaded();
-    qanPage._selectDetails(2);
-  }
-);
-
-xScenario('Verify data in Table and Query Details', async (I, adminPage, qanPage) => {
-  I.amOnPage(qanPage.url);
-  await I.waitForElement(qanPage.fields.iframe, 60);
-  adminPage.applyTimer('5m');
-  await I.switchTo(qanPage.fields.iframe); // switch to first iframe
-  I.wait(10);
-  qanPage.applyFilter('ps');
-  await qanPage.verifyDataSet(1);
-  await qanPage.verifyDataSet(2);
-  await qanPage.clearFilters();
-});
-
-Scenario('Verify QAN pagination @not-pr-pipeline', async (I, adminPage, qanPage) => {
-  qanPage.waitForQANPageLoaded();
-  qanPage.checkPagination();
-  await qanPage.checkSparkLines();
-  qanPage.checkTableHeaders();
-  //qanPage.checkServerList();
-  // I.switchTo();
-});
-
-xScenario(
-  'Verify Tables tab in Query Details for Database=postgres filter',
-  async (I, adminPage, qanPage) => {
-    const filterToApply = 'postgres';
-    qanPage.waitForQANPageLoaded();
-    qanPage.applyFilter(filterToApply);
-    qanPage._selectDetails(2);
-    qanPage.selectSectionInDetails(qanPage.fields.tablesTabInDetails);
-    await qanPage.verifyDetailsSectionDataExists(qanPage.tabs.tablesTab);
-  }
-);
-
-xScenario(
-  'Verify Tables tab in Query Details for Environment=pgsql-dev filter @not-pr-pipeline',
-  async (I, adminPage, qanPage) => {
-    const filterToApply = 'pgsql-dev';
-    qanPage.waitForQANPageLoaded();
-    await qanPage.expandAllFilter();
-    qanPage.applyFilter(filterToApply);
-    qanPage.waitForQANPageLoaded();
-    await qanPage._selectDetails(2);
-    qanPage.selectSectionInDetails(qanPage.fields.tablesTabInDetails);
-    await qanPage.verifyDetailsSectionDataExists(qanPage.tabs.tablesTab);
-  }
-);
-
-xScenario(
-  'Verify Explain tab in Query Details for Database=postgres filter @not-pr-pipeline',
-  async (I, adminPage, qanPage) => {
-    const filterToApply = 'postgres';
-    qanPage.waitForQANPageLoaded();
-    qanPage.applyFilter(filterToApply);
-    qanPage._selectDetails(2);
-    qanPage.selectSectionInDetails(qanPage.fields.explainTabInDetails);
-    await qanPage.verifyDetailsSectionDataExists(qanPage.tabs.explainTab);
-  }
-);
-
-Scenario(
-  'Verify Explain tab in Query Details for Environment=pgsql-dev filter @not-pr-pipeline',
-  async (I, adminPage, qanPage) => {
-    const filterToApply = 'pgsql-dev';
-    qanPage.waitForQANPageLoaded();
-    await qanPage.expandAllFilter();
-    qanPage.applyFilter(filterToApply);
-    qanPage.waitForQANPageLoaded();
-    await qanPage._selectDetails(2);
-    qanPage.selectSectionInDetails(qanPage.fields.explainTabInDetails);
-    await qanPage.verifyDetailsSectionDataExists(qanPage.tabs.explainTab);
-  }
-);
-
-xScenario('Verify adding new Column reflects in URL @not-pr-pipeline', async (I, adminPage, qanPage) => {
-  const columnName = 'Query Count with errors';
-  qanPage.waitForQANPageLoaded();
-  qanPage.addColumnToQAN(columnName);
-  qanPage.verifyURLContains(qanPage.urlParts.queryCountWithoutErrors);
-});
-
-xScenario(
-  'Verify adding new Database Filter reflects in URL @not-pr-pipeline',
-  async (I, adminPage, qanPage) => {
-    const filterToApply = 'local';
-    qanPage.waitForQANPageLoaded();
-    await qanPage.expandAllFilter();
-    I.wait(2);
-    qanPage.applyFilter(filterToApply);
-    qanPage.verifyURLContains(qanPage.urlParts.pmmManaged);
-  }
-);
-
-Scenario('Verify Main Metric change reflects in URL @not-pr-pipeline', async (I, adminPage, qanPage) => {
-  const metricToReplace = 'Load';
-  const newMetricName = 'Lock Time';
-  qanPage.waitForQANPageLoaded();
-  qanPage.changeMetricTo(metricToReplace, newMetricName);
-  qanPage.verifyURLContains(qanPage.urlParts.lockTime);
-});
-
-// TODO: Uncomment after new QAN will be merged
-xScenario(
   'PMM-T175 - Verify user is able to apply filter that has dots in label @not-pr-pipeline',
   async (I, qanPage) => {
     const serviceName = 'ps_5.7_0.0.0.0_1';
@@ -132,44 +14,40 @@ xScenario(
     const countBefore = await qanPage.getCountOfItems();
     qanPage.applyFilterNewQAN(serviceName);
     I.seeInCurrentUrl('service_name=' + serviceName);
-    I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);
     const countAfter = await qanPage.getCountOfItems();
     qanPage.verifyChangedCount(countBefore, countAfter);
   }
 );
 
-// TODO: Uncomment after new QAN will be merged
-xScenario(
+Scenario(
   'PMM-T172 - Verify that selecting a filter updates the table data and URL  @not-pr-pipeline',
   async (I, qanPage) => {
-    const environmentName = 'ps-prod';
+    const environmentName = 'ps-dev';
     qanPage.waitForNewQANPageLoaded();
     const countBefore = await qanPage.getCountOfItems();
     qanPage.applyFilterNewQAN(environmentName);
     I.seeInCurrentUrl('environment=' + environmentName);
-    I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);
     const countAfter = await qanPage.getCountOfItems();
     qanPage.verifyChangedCount(countBefore, countAfter);
   }
 );
 
-// TODO: Uncomment after new QAN will be merged
-xScenario('PMM-T126 - Verify user is able to Reset All filters @not-pr-pipeline', async (I, qanPage) => {
+Scenario('PMM-T126 - Verify user is able to Reset All filters @not-pr-pipeline', async (I, qanPage) => {
   const environmentName1 = 'ps-dev';
-  const environmentName2 = 'ps-prod';
+  const environmentName2 = 'pgsql-dev';
   qanPage.waitForNewQANPageLoaded();
   const countBefore = await qanPage.getCountOfItems();
   qanPage.applyFilterNewQAN(environmentName1);
-  I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);
   qanPage.applyFilterNewQAN(environmentName2);
   const countAfter = await qanPage.getCountOfItems();
   await qanPage.verifyChangedCount(countBefore, countAfter);
   I.click(qanPage.fields.resetAll);
-  I.waitForVisible(qanPage.fields.resetAll + ':disabled', 20);
+  I.waitForVisible(qanPage.fields.disabledResetAll, 30);
+  const countAfterReset = await qanPage.getCountOfItems();
+  assert.equal(countAfterReset >= countBefore, true, 'Count Should be Same or greater then');
 });
 
-// TODO: Uncomment after new QAN will be merged
-xScenario(
+Scenario(
   'PMM-T124 - Verify User is able to show all and show top 5 values for filter section @not-pr-pipeline',
   async (I, qanPage) => {
     const filterSection = 'Database';
@@ -183,15 +61,13 @@ xScenario(
   }
 );
 
-// TODO: Uncomment after new QAN will be merged
-xScenario(
-  'PMM-T125 - Verify user is able to Show only selected filter values and Show All filter values',
+Scenario(
+  'PMM-T125 - Verify user is able to Show only selected filter values and Show All filter values @not-pr-pipeline',
   async (I, qanPage) => {
     const environmentName1 = 'ps-dev';
-    const environmentName2 = 'ps-prod';
+    const environmentName2 = 'pgsql-dev';
     qanPage.waitForNewQANPageLoaded();
     qanPage.applyFilterNewQAN(environmentName1);
-    I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);
     qanPage.applyFilterNewQAN(environmentName2);
     I.waitForVisible(qanPage.fields.showSelected, 30);
     I.click(qanPage.fields.showSelected);
@@ -201,35 +77,32 @@ xScenario(
   }
 );
 
-// TODO: Uncomment after new QAN will be merged
-xScenario('PMM-T123 - Verify User is able to search for filter value', async (I, qanPage) => {
+Scenario('PMM-T123 - Verify User is able to search for filter value @not-pr-pipeline', async (I, qanPage) => {
   const filters = [
-    'ps-prod',
+    'ps-dev',
     'ps-dev-cluster',
     'pgsql-repl1',
+    'postgres',
     'local',
+    'mysql',
     'pmm-server',
     'postgresql',
+    'pmm-server-postgresql',
     'generic',
   ];
   qanPage.waitForNewQANPageLoaded();
   I.waitForElement(qanPage.fields.filterBy, 30);
   const countBefore = await qanPage.getCountOfItems();
   for (i = 0; i < filters.length; i++) {
-    await I.fillField(qanPage.fields.filterBy, filters[i]);
     qanPage.applyFilterNewQAN(filters[i]);
-    I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);
-    const countAfter = await qanPage.getCountOfItems();
+    let countAfter = await qanPage.getCountOfItems();
     await qanPage.verifyChangedCount(countBefore, countAfter);
     qanPage.applyFilterNewQAN(filters[i]);
-    I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);
-    await I.clearField(qanPage.fields.filterBy);
   }
 });
 
-// TODO: Uncomment after new QAN will be merged
-xScenario(
-  'PMM-T133, PMM-T132, PMM-T100 Check Changing Main Metric, PMM-T203 Verify user is able to search for columns by typing',
+Scenario(
+  'PMM-T133, PMM-T132, PMM-T100 Check Changing Main Metric, PMM-T203 Verify user is able to search for columns by typing @not-pr-pipeline',
   async (I, qanPage, dashboardPage) => {
     const metricName = 'Query Count with errors';
     const urlString = 'num_queries_with_errors';
@@ -251,9 +124,8 @@ xScenario(
   }
 );
 
-// TODO: Uncomment after new QAN will be merged
-xScenario(
-  'PMM-T99 Verify User is able to add new metric, PMM-T222 Verify `Add column` dropdown works',
+Scenario(
+  'PMM-T99 Verify User is able to add new metric, PMM-T222 Verify `Add column` dropdown works @not-pr-pipeline',
   async (I, qanPage, dashboardPage) => {
     const metricName = 'Query Count with errors';
     const urlString = 'num_queries_with_errors';
@@ -276,9 +148,8 @@ xScenario(
   }
 );
 
-// TODO: Uncomment after new QAN will be merged
-xScenario(
-  'PMM-T13 - Verify QAN has MongoDB, MySQL, PostgreSQl all three Service Types',
+Scenario(
+  'PMM-T13 - Verify QAN has MongoDB, MySQL, PostgreSQl all three Service Types @not-pr-pipeline',
   async (I, qanPage) => {
     const filters = ['mongodb', 'mysql', 'postgres'];
     qanPage.waitForNewQANPageLoaded();
@@ -287,18 +158,15 @@ xScenario(
     for (i = 0; i < filters.length; i++) {
       await I.fillField(qanPage.fields.filterBy, filters[i]);
       qanPage.applyFilterNewQAN(filters[i]);
-      I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);
       const countAfter = await qanPage.getCountOfItems();
       await qanPage.verifyChangedCount(countBefore, countAfter);
       qanPage.applyFilterNewQAN(filters[i]);
-      I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);
       await I.clearField(qanPage.fields.filterBy);
     }
   }
 );
 
-// TODO: Uncomment after new QAN will be merged
-xScenario('PMM-T128 - Verify pagination works correctly', async (I, qanPage) => {
+Scenario('PMM-T128 - Verify pagination works correctly @not-pr-pipeline', async (I, qanPage) => {
   qanPage.waitForNewQANPageLoaded();
   qanPage.verifySelectedCountPerPage('10 / page');
   I.seeAttributesOnElements(qanPage.fields.previousPage, { 'aria-disabled': 'true' });
@@ -320,21 +188,18 @@ xScenario('PMM-T128 - Verify pagination works correctly', async (I, qanPage) => 
   await qanPage.verifyCount('21-30');
 });
 
-// TODO: Uncomment after new QAN will be merged
-xScenario(
-  'PMM-T193 - Verify user is able to change per page elements display and pagination is updated according to this value, PMM-T256 - Verify that switching view from 10 to 50/100 pages works correctly',
+Scenario(
+  'PMM-T193 - Verify user is able to change per page elements display and pagination is updated according to this value, PMM-T256 - Verify that switching view from 10 to 50/100 pages works correctly @not-pr-pipeline',
   async (I, qanPage) => {
     qanPage.waitForNewQANPageLoaded();
     await qanPage.verifyRowCount(11);
     await qanPage.verifyCount('1-10');
     await qanPage.verifyPagesAndCount(10);
     qanPage.selectPagination('50 / page');
-    I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);
     await qanPage.verifyRowCount(51);
     await qanPage.verifyPagesAndCount(50);
     await qanPage.verifyCount('1-50');
     qanPage.selectPagination('100 / page');
-    I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);
     await qanPage.verifyRowCount(101);
     await qanPage.verifyPagesAndCount(100);
     await qanPage.verifyCount('1-100');
@@ -345,9 +210,8 @@ xScenario(
   }
 );
 
-// TODO: Uncomment after new QAN will be merged
-xScenario(
-  'PMM-T135 - Verify user is not able to add duplicate metric to the overview column',
+Scenario(
+  'PMM-T135 - Verify user is not able to add duplicate metric to the overview column @not-pr-pipeline',
   async (I, qanPage) => {
     const column = 'Load';
     qanPage.waitForNewQANPageLoaded();
@@ -359,9 +223,8 @@ xScenario(
   }
 );
 
-// TODO: Uncomment after new QAN will be merged
-xScenario(
-  'PMM-T219 - Verify that user is able to scroll up/down and resize the overview table',
+Scenario(
+  'PMM-T219 - Verify that user is able to scroll up/down and resize the overview table @not-pr-pipeline',
   async (I, qanPage) => {
     qanPage.waitForNewQANPageLoaded();
     const columnsToAdd = [
@@ -388,18 +251,47 @@ xScenario(
   }
 );
 
-// TODO: Uncomment after new QAN will be merged
-xScenario('PMM-T223 - Verify time metrics are AVG per query (not per second)', async (I, qanPage) => {
+Scenario(
+  'PMM-T223 - Verify time metrics are AVG per query (not per second) @not-pr-pipeline',
+  async (I, qanPage) => {
+    qanPage.waitForNewQANPageLoaded();
+    qanPage.applyFilterNewQAN('mysql');
+    I.waitForElement(qanPage.fields.querySelector, 30);
+    const queryTime = await I.grabTextFrom(qanPage.fields.queryTime);
+    I.moveCursorTo(qanPage.fields.querySelector);
+    I.click(qanPage.fields.querySelector);
+    I.waitForVisible(qanPage.getColumn('Lock Time'), 30);
+    await qanPage.verifyAvqQueryCount();
+    await qanPage.verifyAvgQueryTime();
+  }
+);
+
+Scenario('Check All Filter Groups Exists in the Filter Section @not-pr-pipeline', async (I, qanPage) => {
   qanPage.waitForNewQANPageLoaded();
-  qanPage.applyFilterNewQAN('mysql');
-  I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);
-  I.waitForElement(qanPage.fields.querySelector, 30);
-  const queryTime = await I.grabTextFrom(qanPage.fields.queryTime);
-  I.moveCursorTo(qanPage.fields.querySelector);
-  I.click(qanPage.fields.querySelector);
-  I.waitForVisible(qanPage.getColumn('Lock Time'), 30);
-  //await qanPage.verifyQueryTime(queryTime); //Blocked by bug: PMM-5382
-  await qanPage.verifyAvqQueryCount();
-  await qanPage.verifyAvgQueryTime();
-  await qanPage.verifyAvgLockTime();
+  for (i = 0; i < qanPage.filterGroups.length; i++) {
+    I.fillField(qanPage.fields.filterBy, qanPage.filterGroups[i]);
+    I.waitForVisible(qanPage.filterSectionLocator(qanPage.filterGroups[i]), 30);
+    I.seeElement(qanPage.filterSectionLocator(qanPage.filterGroups[i]));
+    I.clearField(qanPage.fields.filterBy);
+  }
 });
+
+Scenario(
+  'PMM-T156 Verify Queries are sorted by Load by Default Sorting from Max to Min, verify Sorting for Metrics works @not-pr-pipeline',
+  async (I, qanPage) => {
+    qanPage.waitForNewQANPageLoaded();
+    qanPage.applyFilterNewQAN('mysql');
+    I.waitForElement(qanPage.fields.querySelector, 30);
+    qanPage.verifyMetricsSorted('Load', 3, 'down');
+    qanPage.sortMetric('Load', 'up');
+    qanPage.verifyMetricsSorted('Load', 3, 'up');
+    qanPage.sortMetric('Query Count', 'down');
+    qanPage.verifyMetricsSorted('Query Count', 4, 'down');
+    qanPage.sortMetric('Query Count', 'up');
+    qanPage.verifyMetricsSorted('Query Count', 4, 'up');
+    qanPage.sortMetric('Query Time', 'down');
+    qanPage.verifyMetricsSorted('Query Time', 5, 'down');
+    qanPage.sortMetric('Query Time', 'up');
+    qanPage.verifyMetricsSorted('Query Time', 5, 'up');
+  }
+);
