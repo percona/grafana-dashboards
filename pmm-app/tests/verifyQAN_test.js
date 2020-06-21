@@ -9,7 +9,7 @@ Before(async (I, qanPage, adminPage) => {
 Scenario(
   'PMM-T175 - Verify user is able to apply filter that has dots in label @not-pr-pipeline',
   async (I, qanPage) => {
-    const serviceName = 'ps_5.7_0.0.0.0_1';
+    const serviceName = 'ps_5.7__1';
     qanPage.waitForNewQANPageLoaded();
     const countBefore = await qanPage.getCountOfItems();
     qanPage.applyFilterNewQAN(serviceName);
