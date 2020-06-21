@@ -428,7 +428,11 @@ module.exports = {
 
     //We divide by 300 because we are using last 5 mins filter.
     const result = (parseFloat(queryCountDetail) / 300).toFixed(2);
-    assert.equal(result, qpsvalue, 'Query Per Second doesnt match the expected value');
+    if (result <= 0.01) {
+      assert.equal('<0.01', qpsvalue, 'Query Per Second doesnt match the expected value');
+    } else {
+      assert.equal(result, qpsvalue, 'Query Per Second doesnt match the expected value');
+    }
   },
 
   async verifyAvgQueryTime() {
@@ -461,7 +465,7 @@ module.exports = {
     }
   },
 
-  sortMetric(metricName, sortOrder = "down") {
+  sortMetric(metricName, sortOrder = 'down') {
     const sortLocator = `//th//span[contains(text(),'${metricName}')]/ancestor::span//div[@title='Sort']`;
     I.waitForVisible(sortLocator, 30);
     I.click(sortLocator);
