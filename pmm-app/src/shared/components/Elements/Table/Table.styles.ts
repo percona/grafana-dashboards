@@ -19,7 +19,8 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       display: block;
       max-width: 100%;
       overflow-x: scroll;
-      overflow-y: hidden;
+      overflow-y: scroll;
+      max-height: 200px;
       border: 1px solid ${borderColor};
     `,
     table: css`
@@ -55,9 +56,24 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
 
         th {
           background-color: ${headerBackground};
+          position: -webkit-sticky; /* for Safari */
+          position: sticky;
+          top: 0;
+          z-index: 2;
         }
       }
-
+      tbody td:first-child {
+        position: -webkit-sticky; /* for Safari */
+        position: sticky;
+        left: 0;
+        z-index: 1;
+      }
+      th:first-child {
+        position: -webkit-sticky; /* for Safari */
+        position: sticky;
+        left: 0;
+        z-index: 3;
+      }
       .pagination {
         padding: 0.5rem;
       }

@@ -1,4 +1,4 @@
-import { Pagination, Table } from 'antd';
+import { Pagination } from 'antd';
 import React, {
   useCallback, useContext, useEffect, useState, useRef, FC, useMemo
 } from 'react';
@@ -9,6 +9,8 @@ import 'shared/components/Elements/Spinner/Spinner';
 import { useOverviewTable } from './Overview.hooks';
 import { styles } from '../../qan.styles';
 import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE, PAGE_SIZE_OPTIONS } from '../../qan.constants';
+import {NODES_COLUMNS} from "../../../../pmm-inventory/Inventory.constants";
+import { Table, SelectedTableRows } from 'shared/components/Elements/Table';
 
 export const Overview: FC = () => {
   const [total, setTotal] = useState(30);
@@ -83,23 +85,17 @@ export const Overview: FC = () => {
 
   return (
     <div className="table-wrapper" ref={tableWrapperRef}>
-      {useMemo(() => (
-        <div>
-          <Table
-            dataSource={overviewMetricsList.rows}
-            onChange={onTableChange}
-            columns={overviewMetricsList.columns}
-            size="small"
-            bordered
-            pagination={false}
-            scroll={{ y: height - 100, x: '100%' }}
-            rowClassName={getRowClassName}
-            loading={loading}
-            rowKey={(record: any) => (record.fingerprint + record.dimension)}
-            data-qa="qan-overview-table"
-          />
-        </div>
-      ), [overviewMetricsList, loading, onTableChange, height, getRowClassName])}
+      {console.log('123')}
+      <div>
+        <Table
+          columns={overviewMetricsList.columns}
+          data={overviewMetricsList.rows}
+          // rowSelection
+          // onRowSelection={(selected) => setSelectedRows(selected)}
+          noData={<h1>No nodes Available</h1>}
+          loading={loading}
+        />
+      </div>
       <div className={styles.overviewHeader}>
         <div className={styles.paginationWrapper}>
           <Pagination

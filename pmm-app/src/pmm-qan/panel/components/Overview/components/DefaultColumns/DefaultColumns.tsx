@@ -24,11 +24,11 @@ const getMainColumnWidth = (columns) => {
 };
 
 
-const rowNumberRender = (pageSize, pageNumber) => (text, record, index) => (
+const rowNumberRender = (pageSize, pageNumber) => (record, index) => (
   <div className={rowNumber}>{index === 0 ? '' : (pageNumber - 1) * pageSize + index}</div>
 );
 
-const dimensionColumnRender = (mainMetricColumnWidth) => (text, record, index) => (
+const dimensionColumnRender = (mainMetricColumnWidth) => (record, index) => (
   <div className={metricWrapper}>
     <div className={mainMetric(mainMetricColumnWidth, index === 0)}>
       {index === 0 ? 'TOTAL' : record.fingerprint || record.dimension || 'N/A'}
@@ -45,24 +45,24 @@ export const getDefaultColumns = (groupBy, pageNumber, pageSize, columns, onCell
   const mainMetricColumnWidth = getMainColumnWidth(columns);
 
   return [
+    // {
+    //   Header: '#',
+    //   // dataIndex: 'rowNumber',
+    //   // key: 'rowNumber',
+    //   // fixed: 'left',
+    //   // width: ROW_NUMBER_COLUMN_WIDTH,
+    //   accessor: rowNumberRender(pageSize, pageNumber),
+    // },
     {
-      title: '#',
-      dataIndex: 'rowNumber',
-      key: 'rowNumber',
-      fixed: 'left',
-      width: ROW_NUMBER_COLUMN_WIDTH,
-      render: rowNumberRender(pageSize, pageNumber),
-    },
-    {
-      dataIndex: 'mainMetric',
-      fixed: 'left',
+      // dataIndex: 'mainMetric',
+      // fixed: 'left',
       width: mainMetricColumnWidth,
-      title: () => <Dimension />,
-      ellipsis: true,
-      className: mainColumn,
-      key: 'dimension',
-      onCell,
-      render: dimensionColumnRender(mainMetricColumnWidth),
+      Header: 'Main column',
+      // ellipsis: true,
+      // className: mainColumn,
+      // key: 'dimension',
+      // onCell,
+      accessor: dimensionColumnRender(mainMetricColumnWidth),
     },
   ];
 };

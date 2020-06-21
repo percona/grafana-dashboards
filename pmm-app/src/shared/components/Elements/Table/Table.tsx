@@ -13,7 +13,7 @@ interface TableProps {
   rowKey?: (rec: any) => any;
 }
 
-const TableCheckbox = (props) => (
+const TableCheckbox = props => (
   <label className="checkbox-container checkbox-container--main no-gap">
     <input type="checkbox" {...props} indeterminate="false" />
     <span className="checkbox-container__checkmark" />
@@ -33,16 +33,21 @@ export const Table: FC<TableProps> = ({
   const styles = getStyles(theme);
   const {
     // @ts-ignore
-    getTableProps, getTableBodyProps, headerGroups, rows, prepareRow, selectedFlatRows
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    rows,
+    prepareRow,
+    selectedFlatRows,
   } = useTable(
     {
       columns,
       data,
     },
     useRowSelect,
-    (hooks) => {
+    hooks => {
       if (rowSelection) {
-        hooks.visibleColumns.push((columns) => [
+        hooks.visibleColumns.push(columns => [
           {
             id: 'selection',
             Header: ({ getToggleAllRowsSelectedProps }: any) => (
@@ -86,15 +91,20 @@ export const Table: FC<TableProps> = ({
             <thead>
               {headerGroups.map((headerGroup, i) => (
                 <tr data-qa="table-header" {...headerGroup.getHeaderGroupProps()} key={i}>
-                  {headerGroup.headers.map((column, index) => (
-                    <th
-                      {...column.getHeaderProps()}
-                      className={index === 0 && rowSelection ? styles.checkboxColumn : ''}
-                      key={index}
-                    >
-                      {column.render('Header')}
-                    </th>
-                  ))}
+                  {headerGroup.headers.map((column, index) => {
+                    const { HeaderAccessor } = column;
+                    return (
+                      <th
+                        {...column.getHeaderProps()}
+                        className={index === 0 && rowSelection ? styles.checkboxColumn : ''}
+                        key={index}
+                      >
+                        {console.log(column)}
+                        {HeaderAccessor ? <HeaderAccessor /> : column.render('Header')}
+                        {/*{column.render('Header')}*/}
+                      </th>
+                    );
+                  })}
                 </tr>
               ))}
             </thead>
