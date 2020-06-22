@@ -428,7 +428,7 @@ module.exports = {
 
     //We divide by 300 because we are using last 5 mins filter.
     const result = (parseFloat(queryCountDetail) / 300).toFixed(2);
-    if (result <= 0.01) {
+    if (result < 0.01) {
       assert.equal('<0.01', qpsvalue, 'Query Per Second doesnt match the expected value');
     } else {
       assert.equal(result, qpsvalue, 'Query Per Second doesnt match the expected value');
@@ -458,7 +458,7 @@ module.exports = {
     const queryCountDetail = await I.grabTextFrom(this.fields.queryCountDetail);
     const [load] = (await I.grabTextFrom(this.fields.load)).split(' ');
     const result = ((parseFloat(queryCountDetail) * parseFloat(perQueryStats)) / 300).toFixed(2);
-    if (result <= 0.01) {
+    if (result < 0.01) {
       assert.equal('<0.01', load, 'Load should be same!');
     } else {
       assert.equal(result, load, 'Load should be same!');
