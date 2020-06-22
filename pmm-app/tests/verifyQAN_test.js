@@ -416,3 +416,14 @@ xScenario(
     I.seeElement(qanPage.fields.showSelectedDisabled);
   }
 );
+
+Scenario(
+  'PMM-T122 - Verify QAN UI Elements are displayed',
+  async (I, qanPage) => {
+    qanPage.waitForNewQANPageLoaded();
+    I.waitForInvisible(qanPage.fields.spinnerLocator, 30);
+    I.waitForVisible(qanPage.fields.filterBy, 30);
+    I.waitForVisible(qanPage.fields.addColumnNewQAN, 30);
+    await qanPage.verifyRowCount(11);
+  }
+);
