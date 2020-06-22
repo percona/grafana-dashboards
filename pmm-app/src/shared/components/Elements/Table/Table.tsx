@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { ReactNode, FC, useEffect } from 'react';
 import {
   useRowSelect, useTable, Column, useSortBy

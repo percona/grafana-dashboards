@@ -1,7 +1,7 @@
 import { get } from 'lodash';
 import { humanize } from 'shared/components/helpers/Humanization';
 
-export const PAGE_SIZE_OPTIONS = ['10', '50', '100'];
+export const PAGE_SIZE_OPTIONS = ['10', '50', '100', '200', '300', '400', '500'];
 export const DEFAULT_PAGE_NUMBER = 1;
 export const DEFAULT_PAGE_SIZE = 10;
 export const MIN_SPLIT_SIZE = 300;
