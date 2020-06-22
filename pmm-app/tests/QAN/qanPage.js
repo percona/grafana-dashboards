@@ -178,7 +178,7 @@ module.exports = {
       '//app-details-table//app-details-row[' + row + ']//div[3]//span[2]'
     );
     const value = await I.grabTextFrom('//app-details-table//app-details-row[' + row + ']//div[3]//span[1]');
-    return { percentage: percentage, val: value };
+    return { percentage: percentage, val: value };  
   },
 
   waitForQANPageLoaded() {
