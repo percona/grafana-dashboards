@@ -333,9 +333,13 @@ Scenario('PMM-T122 - Verify QAN UI Elements are displayed', async (I, qanPage) =
   I.waitForVisible(qanPage.fields.filterBy, 30);
   I.waitForVisible(qanPage.fields.addColumnNewQAN, 30);
   await qanPage.verifyRowCount(11);
+  await qanPage.verifyPagesAndCount(10);
+  I.seeElement(qanPage.fields.environmentLabel);
+  I.click(qanPage.fields.querySelector);
+  I.waitForVisible(qanPage.getColumn('Lock Time'), 30);
 });
 
-Scenario(
+xScenario(
   'PMM-T156 Verify Queries are sorted by Load by Default Sorting from Max to Min, verify Sorting for Metrics works @not-pr-pipeline',
   async (I, qanPage) => {
     qanPage.waitForNewQANPageLoaded();

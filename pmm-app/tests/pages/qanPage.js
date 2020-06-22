@@ -90,6 +90,7 @@ module.exports = {
     overviewRowQueryCount: "//tr[4]//td[4]//span[contains(@class,'summarize')]",
     overviewRowQueryTime: "//tr[4]//td[5]//span[contains(@class,'summarize')]",
     showSelectedDisabled: "//div[@id='inner-filter-wrapper']/div[1]/button[1][@disabled]",
+    environmentLabel: "//span[contains(text(), 'Environment')]"
   },
 
   metricValueLocatorOverviewTable(column, row) {
