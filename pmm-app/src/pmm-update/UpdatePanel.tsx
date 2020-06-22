@@ -1,4 +1,4 @@
-import React, { MouseEvent, useCallback, useEffect, useState } from 'react';
+import React, { MouseEvent, useEffect, useState } from 'react';
 
 import {
   AvailableUpdate,
@@ -15,35 +15,39 @@ import * as styles from './UpdatePanel.styles';
 export const UpdatePanel = () => {
   const [forceUpdate, setForceUpdate] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [error, setError] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const [
-    { installedVersionDetails, lastCheckDate, nextVersionDetails, isUpdateAvailable }, errorMessage,
+    { installedVersionDetails, lastCheckDate, nextVersionDetails, isUpdateAvailable }, fetchVersionErrorMessage,
     isLoading,
     isDefaultView,
     getCurrentVersionDetails
   ] = useVersionDetails()
   const [output, updateErrorMessage, isUpdated, updateFailed, launchUpdate] = usePerformUpdate()
 
-  const handleCheckForUpdates = useCallback((e: MouseEvent) => {
+  const handleCheckForUpdates = (e: MouseEvent) => {
     if (e.altKey) {
       setForceUpdate(true);
     }
     getCurrentVersionDetails(true);
-  }, []);
+  };
 
   useEffect(() => {
-    setError(updateErrorMessage);
-    setTimeout(() => {
-      setError('');
+    const timeout = setTimeout(() => {
+      setErrorMessage('');
     }, 5000);
+
+    return () => {
+      clearTimeout(timeout)
+    }
+  }, [fetchVersionErrorMessage, updateErrorMessage])
+
+  useEffect(() => {
+    setErrorMessage(updateErrorMessage);
   }, [updateErrorMessage]);
 
   useEffect(() => {
-    setError(errorMessage);
-    setTimeout(() => {
-      setError('');
-    }, 5000);
-  }, [errorMessage]);
+    setErrorMessage(fetchVersionErrorMessage);
+  }, [fetchVersionErrorMessage]);
 
   const handleUpdate = () => {
     setShowModal(true);
@@ -78,7 +82,7 @@ export const UpdatePanel = () => {
         />
       </div>
       <UpdateModal
-        errorMessage={error}
+        errorMessage={errorMessage}
         isOpen={showModal}
         isUpdated={isUpdated}
         output={output}
