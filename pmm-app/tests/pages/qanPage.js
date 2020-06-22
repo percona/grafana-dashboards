@@ -88,7 +88,9 @@ module.exports = {
     avgLoad: "//tr[@data-row-key='lock_time']//td[2]//div[1]//span[1]",
     overviewRowLoad: "//tr[4]//td[3]//span[contains(@class,'summarize')]",
     overviewRowQueryCount: "//tr[4]//td[4]//span[contains(@class,'summarize')]",
+    overviewRowQueryCountTooltip: "//tr[4]//td[4]//span[contains(@class, 'ant-tooltip-open')]",
     overviewRowQueryTime: "//tr[4]//td[5]//span[contains(@class,'summarize')]",
+    overviewRowQueryTimeTooltip: "//tr[4]//td[5]//span[contains(@class,'ant-tooltip-open')]",
     showSelectedDisabled: "//div[@id='inner-filter-wrapper']/div[1]/button[1][@disabled]",
     environmentLabel: "//span[contains(text(), 'Environment')]"
   },

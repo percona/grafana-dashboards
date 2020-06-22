@@ -327,7 +327,7 @@ xScenario(
   }
 );
 
-Scenario('PMM-T122 - Verify QAN UI Elements are displayed', async (I, qanPage) => {
+xScenario('PMM-T122 - Verify QAN UI Elements are displayed', async (I, qanPage) => {
   qanPage.waitForNewQANPageLoaded();
   I.waitForInvisible(qanPage.fields.spinnerLocator, 30);
   I.waitForVisible(qanPage.fields.filterBy, 30);
@@ -356,5 +356,19 @@ xScenario(
     qanPage.verifyMetricsSorted('Query Time', 5, 'down');
     qanPage.sortMetric('Query Time', 'up');
     qanPage.verifyMetricsSorted('Query Time', 5, 'up');
+  }
+);
+
+// TODO: Uncomment after new QAN will be merged
+Scenario(
+  'PMM-T179 - Verify user is able to hover sparkline buckets and see correct tooltip',
+  async (I, qanPage) => {
+    qanPage.waitForNewQANPageLoaded();
+    I.moveCursorTo(qanPage.fields.overviewRowQueryCount);
+    I.waitForVisible(qanPage.fields.overviewRowQueryCountTooltip, 20);
+    I.moveCursorTo(qanPage.fields.overviewRowQueryTime);
+    I.waitForVisible(qanPage.fields.overviewRowQueryTimeTooltip, 20);
+    I.click(qanPage.fields.querySelector);
+    pause()
   }
 );
