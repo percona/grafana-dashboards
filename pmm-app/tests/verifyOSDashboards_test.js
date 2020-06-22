@@ -10,7 +10,7 @@ Scenario(
     I.amOnPage(dashboardPage.nodeSummaryDashboard.url);
     dashboardPage.waitForDashboardOpened();
     I.click(adminPage.fields.metricTitle);
-    adminPage.peformPageDown(1);
+    adminPage.peformPageDown(5);
     dashboardPage.verifyMetricsExistence(dashboardPage.nodeSummaryDashboard.metrics);
     await dashboardPage.verifyThereAreNoGraphsWithNA();
     await dashboardPage.verifyThereAreNoGraphsWithoutData(1);
