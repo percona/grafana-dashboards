@@ -8,6 +8,7 @@ describe('Failed::', () => {
     const root = shallow(<Failed failed={[1, 0, 1]} isSttEnabled hasNoAccess={false} />);
 
     const spans = root.find('div a > span');
+
     expect(spans.at(0).text()).toEqual('1');
     expect(spans.at(2).text()).toEqual('0');
     expect(spans.at(4).text()).toEqual('1');
