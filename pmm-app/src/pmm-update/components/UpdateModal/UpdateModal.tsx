@@ -6,15 +6,7 @@ import { Messages } from './UpdateModal.messages';
 import * as styles from './UpdateModal.styles';
 import { CenteredButton, UpdateModalHeader } from 'pmm-update/components';
 import { useClickOutside } from 'pmm-update/hooks';
-
-interface UpdateModalProps {
-  errorMessage: string;
-  isOpen: boolean;
-  isUpdated: boolean;
-  output: string;
-  updateFailed: boolean;
-  version: string;
-}
+import { UpdateModalProps } from 'pmm-update/types';
 
 export const UpdateModal = ({
   errorMessage,
