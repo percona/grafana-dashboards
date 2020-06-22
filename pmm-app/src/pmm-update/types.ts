@@ -43,3 +43,29 @@ export interface StartUpdateResponse {
   auth_token: string;
   log_offset: number;
 }
+
+export interface InstalledVersionDetails {
+  installedVersion: string;
+  installedFullVersion: string;
+  installedVersionDate: string;
+}
+
+export interface NextVersionDetails {
+  nextVersion: string;
+  nextFullVersion: string;
+  nextVersionDate: string;
+  newsLink: string;
+}
+
+export type CurrentOrNextVersionDetails = [
+  {
+    installedVersionDetails?: InstalledVersionDetails;
+    lastCheckDate?: string;
+    nextVersionDetails?: NextVersionDetails;
+    isUpdateAvailable?: boolean;
+  },
+  string,
+  boolean,
+  boolean,
+  (forceUpdate?: boolean) => void
+];

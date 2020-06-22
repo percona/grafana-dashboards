@@ -1,27 +1,30 @@
-import React, { MouseEvent } from 'react';
+import React from 'react';
 
+import { useToggleOnAltClick } from 'pmm-update/hooks';
 import { Messages } from './AvailableUpdate.messages';
 import * as styles from './AvailableUpdate.styles';
 
 interface AvailableUpdateProps {
-  onShowFullAvailableVersion: (e: MouseEvent) => void;
   newReleaseDate: string;
   newsLink: string;
-  nextVersion: string;
+  nextFullVersion: string;
+  nextVersion: string,
 }
 
 export const AvailableUpdate = ({
-  onShowFullAvailableVersion,
   newReleaseDate,
   newsLink,
+  nextFullVersion,
   nextVersion,
 }: AvailableUpdateProps) => {
+  const [showFullVersion, handleToggleShowFullVersion] = useToggleOnAltClick(false)
+
   return (
     <section className={styles.availableUpdate}>
-      <div onClick={onShowFullAvailableVersion}>
+      <div onClick={handleToggleShowFullVersion}>
         <p>{Messages.availableVersion}:&nbsp;</p>
         <p className={styles.availableUpdate_version}>
-          {nextVersion} <em>{newReleaseDate}</em>
+          {showFullVersion ? nextFullVersion : nextVersion} <em>{newReleaseDate}</em>
           {newsLink && (
             <a href={newsLink} rel="noreferrer" target="_blank">
               {Messages.whatsNew}

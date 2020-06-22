@@ -8,67 +8,32 @@ import {
   UpdateInfoBox,
   UpdateModal,
 } from 'pmm-update/components';
-import { formatDate, formatDateWithTime } from './UpdatePanel.utils';
+import { useVersionDetails } from 'pmm-update/hooks';
 
-import { getCurrentVersion, getUpdates, startUpdate, getUpdateStatus } from './UpdatePanel.service';
-import { Messages } from './UpdatePanel.messages';
+import { startUpdate, getUpdateStatus } from './UpdatePanel.service';
 import * as styles from './UpdatePanel.styles';
 
 export const UpdatePanel = () => {
-  const [version, setVersion] = useState('');
-  const [isUpdateAvailable, setIsUpdateAvailable] = useState(false);
-  const [isDefaultView, setIsDefaultView] = useState(false);
   const [forceUpdate, setForceUpdate] = useState(false);
-  const [newsLink, setNewsLink] = useState('');
-  const [nextVersion, setNextVersion] = useState('');
-  const [nextFullVersion, setNextFullVersion] = useState('');
-  const [fullVersion, setFullVersion] = useState('');
-  const [newReleaseDate, setNewReleaseDate] = useState('');
-  const [lastCheckDate, setLastCheckDate] = useState('');
   const [showModal, setShowModal] = useState(false);
-  const [currentReleaseDate, setCurrentReleaseDate] = useState('');
   const [updateFailed, setUpdateFailed] = useState(false);
-  const [versionCached, setVersionCached] = useState('');
-  const [nextVersionCached, setNextVersionCached] = useState('');
   const [isUpdated, setIsUpdated] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [error, setError] = useState('');
   const [output, setOutput] = useState('');
 
-  const displayError = useCallback(message => {
-    setErrorMessage(message);
+  const [
+    { installedVersionDetails, lastCheckDate, nextVersionDetails, isUpdateAvailable }, errorMessage,
+    isLoading,
+    isDefaultView,
+    getCurrentVersionDetails
+  ] = useVersionDetails()
+
+  useEffect(() => {
+    setError(errorMessage);
     setTimeout(() => {
-      setErrorMessage('');
+      setError('');
     }, 5000);
-  }, []);
-
-  const handleShowFullCurrentVersion = useCallback(
-    e => {
-      if (e.altKey) {
-        if (version !== fullVersion) {
-          setVersionCached(version);
-          setVersion(fullVersion);
-        } else {
-          setVersion(versionCached);
-        }
-      }
-    },
-    [version, fullVersion, versionCached]
-  );
-
-  const handleShowFullAvailableVersion = useCallback(
-    (e: MouseEvent) => {
-      if (e.altKey) {
-        if (nextVersion !== nextFullVersion) {
-          setNextVersionCached(nextVersion);
-          setNextVersion(nextFullVersion);
-        } else {
-          setNextVersion(nextVersionCached);
-        }
-      }
-    },
-    [nextVersion, nextFullVersion, nextVersionCached]
-  );
+  }, [errorMessage]);
 
   const updateLogs = useCallback(async (authToken: string, logOffset: number, errorsCount = 0) => {
     if (errorsCount > 600) {
@@ -82,6 +47,9 @@ export const UpdatePanel = () => {
 
     try {
       const data = await getUpdateStatus({ auth_token: authToken, log_offset: logOffset });
+      if (!data) {
+        throw Error('Invalid response received');
+      }
       const { done, log_offset, log_lines } = data;
       const updated = done ?? false;
       if (updated) {
@@ -94,7 +62,7 @@ export const UpdatePanel = () => {
       newErrorsCount = 0;
     } catch (e) {
       newErrorsCount += 1;
-      setErrorMessage(e.message);
+      setError(e.message);
     } finally {
       timeoutId = setTimeout(updateLogs, 500, authToken, newLogOffset, newErrorsCount);
     }
@@ -109,6 +77,9 @@ export const UpdatePanel = () => {
 
     try {
       const data = await startUpdate();
+      if (!data) {
+        throw Error('Invalid response received');
+      }
       const { auth_token, log_offset } = data;
       await updateLogs(auth_token, log_offset);
     } catch (e) {
@@ -117,106 +88,48 @@ export const UpdatePanel = () => {
     }
   }, [updateLogs]);
 
-  const handleCheckForUpdates = useCallback(async (e: MouseEvent) => {
-    setIsLoading(true);
-
+  const handleCheckForUpdates = useCallback((e: MouseEvent) => {
     if (e.altKey) {
       setForceUpdate(true);
     }
 
-    try {
-      const data = await getUpdates();
-      const { last_check, latest, latest_news_url, update_available } = data;
-      const {
-        full_version: latest_full_version,
-        timestamp: latest_timestamp,
-        version: latest_version,
-      } = latest;
-
-      setNextVersion(latest_version || '');
-      setNextFullVersion(latest_full_version || '');
-      setLastCheckDate(last_check ? formatDateWithTime(last_check) : '');
-      setNewReleaseDate(latest_timestamp ? formatDate(latest_timestamp) : '');
-      setNewsLink(latest_news_url || '');
-      setIsUpdateAvailable(update_available || false);
-      setIsDefaultView(false);
-    } catch (e) {
-      displayError(Messages.nothingToUpdate);
-    } finally {
-      setIsLoading(false);
-    }
+    getCurrentVersionDetails(true);
   }, []);
-
-  const getCurrentVersionDetails = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      const data = await getCurrentVersion();
-      const { last_check, latest, latest_news_url, installed, update_available } = data;
-      const {
-        full_version: latest_full_version,
-        timestamp: latest_timestamp,
-        version: latest_version,
-      } = latest;
-      const {
-        full_version: installed_full_version,
-        timestamp: installed_timestamp,
-        version: installed_version,
-      } = installed;
-      setNextVersion(latest_version || '');
-      setNextFullVersion(latest_full_version || '');
-      setLastCheckDate(last_check ? formatDateWithTime(last_check) : '');
-      setVersion(installed_version || '');
-      setFullVersion(installed_full_version || '');
-      setCurrentReleaseDate(installed_timestamp ? formatDate(installed_timestamp) : '');
-      setNewReleaseDate(latest_timestamp ? formatDate(latest_timestamp) : '');
-      setNewsLink(latest_news_url || '');
-      setIsUpdateAvailable(update_available || false);
-      setIsDefaultView(false);
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    getCurrentVersionDetails();
-  }, [getCurrentVersionDetails]);
 
   return (
     <>
       <div className={styles.panel}>
         <UpdateHeader
-          currentReleaseDate={currentReleaseDate}
-          onExpandVersion={handleShowFullCurrentVersion}
-          version={version}
+          currentReleaseDate={installedVersionDetails?.installedVersionDate ?? ''}
+          version={installedVersionDetails?.installedVersion ?? ''}
+          fullVersion={installedVersionDetails?.installedFullVersion ?? ''}
         />
         {isDefaultView && <UpdateInfoBox />}
         {!isUpdateAvailable && !isDefaultView && !forceUpdate ? <UpdateInfoBox upToDate /> : null}
         {isUpdateAvailable && !isDefaultView ? (
           <AvailableUpdate
-            onShowFullAvailableVersion={handleShowFullAvailableVersion}
-            newReleaseDate={newReleaseDate}
-            newsLink={newsLink}
-            nextVersion={nextVersion}
+            newReleaseDate={nextVersionDetails?.nextVersionDate ?? ''}
+            newsLink={nextVersionDetails?.newsLink ?? ''}
+            nextVersion={nextVersionDetails?.nextVersion ?? ''}
+            nextFullVersion={nextVersionDetails?.nextFullVersion ?? ''}
           />
         ) : null}
         {isUpdateAvailable || forceUpdate ? (
-          <UpdateButton onClick={handleUpdate} nextVersion={nextVersion} />
+          <UpdateButton onClick={handleUpdate} nextVersion={nextVersionDetails?.nextVersion ?? ''} />
         ) : null}
         <LastCheck
           onCheckForUpdates={handleCheckForUpdates}
-          lastCheckDate={lastCheckDate}
+          lastCheckDate={lastCheckDate ?? ''}
           isLoading={isLoading}
         />
       </div>
       <UpdateModal
-        errorMessage={errorMessage}
+        errorMessage={error}
         isOpen={showModal}
         isUpdated={isUpdated}
         output={output}
         updateFailed={updateFailed}
-        version={version}
+        version={installedVersionDetails?.installedVersion ?? ''}
       />
     </>
   );

@@ -1,20 +1,25 @@
-import React, { MouseEvent } from 'react';
+import React from 'react';
 
+import { useToggleOnAltClick } from 'pmm-update/hooks';
 import * as styles from './UpdateHeader.styles';
 
 interface LastCheckProps {
   currentReleaseDate: string;
-  onExpandVersion: (e: MouseEvent) => void;
+  fullVersion: string;
   version: string;
 }
 
-export const UpdateHeader = ({ currentReleaseDate, onExpandVersion, version }: LastCheckProps) => (
-  <header className={styles.updateHeader}>
-    <p onClick={onExpandVersion}>
-      Current version:{' '}
-      <span>
-        {version} <em>{currentReleaseDate}</em>
-      </span>
-    </p>
-  </header>
-);
+export const UpdateHeader = ({ currentReleaseDate, fullVersion, version }: LastCheckProps) => {
+  const [showFullVersion, handleToggleShowFullVersion] = useToggleOnAltClick(false)
+
+  return (
+    <header className={styles.updateHeader}>
+      <p onClick={handleToggleShowFullVersion}>
+        Current version:{' '}
+        <span>
+          {showFullVersion ? fullVersion : version} <em>{currentReleaseDate}</em>
+        </span>
+      </p>
+    </header>
+  );
+}
