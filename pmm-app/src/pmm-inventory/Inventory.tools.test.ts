@@ -72,6 +72,7 @@ describe('Inventory data service', () => {
         status: 'RUNNING',
       },
     ];
+
     // FIXME: types
     expect(InventoryDataService.generateStructure(response as any)).toEqual(testTransformedData);
   });

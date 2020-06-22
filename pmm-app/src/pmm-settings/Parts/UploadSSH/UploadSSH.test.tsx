@@ -2,7 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import UploadSSH from './UploadSSH';
 
-jest.mock('../../../react-plugins-deps/components/helpers/notification-manager');
+jest.mock('shared/components/helpers/notification-manager');
 
 describe('UploadSSH', () => {
   it('Upload SSH key renders without props', () => {
@@ -11,7 +11,7 @@ describe('UploadSSH', () => {
         settings={{
           ssh_key: 'test_ssh_key',
         }}
-      />
+      />,
     );
 
     expect(root).toMatchSnapshot();
