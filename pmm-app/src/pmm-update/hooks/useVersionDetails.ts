@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 
+import { useApiCall } from 'pmm-update/hooks';
 import { formatDate, formatDateWithTime } from 'pmm-update/UpdatePanel.utils';
 import { getCurrentVersion } from 'pmm-update/UpdatePanel.service';
 import {
@@ -9,42 +10,16 @@ import {
   NextVersionDetails,
 } from 'pmm-update/types';
 
-const useUpdateDetails = (forceUpdate: boolean) => {
-  const [data, setData] = useState<GetUpdatesResponse>();
-  const [errorMessage, setErrorMessage] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-
-  const getVersionDetails = async (forceUpdate = false) => {
-    setIsLoading(true);
-
-    try {
-      const response = await getCurrentVersion(forceUpdate);
-      if (!response) {
-        throw Error('Invalid response received');
-      }
-      setData(response);
-    } catch (e) {
-      console.error(e);
-      setErrorMessage(e);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    getVersionDetails(forceUpdate);
-  }, []);
-
-  return { data, errorMessage, isLoading, getVersionDetails };
-};
-
 export const useVersionDetails = (initialForceUpdate = false): CurrentOrNextVersionDetails => {
   const [isDefaultView, setIsDefaultView] = useState(false);
   const [nextVersionDetails, setNextVersionDetails] = useState<NextVersionDetails>();
   const [installedVersionDetails, setInstalledVersionDetails] = useState<InstalledVersionDetails>();
   const [lastCheckDate, setLastCheckDate] = useState('');
   const [isUpdateAvailable, setIsUpdateAvailable] = useState(false);
-  const { data, errorMessage, isLoading, getVersionDetails } = useUpdateDetails(initialForceUpdate);
+  const { data, errorMessage, isLoading, apiCall: getVersionDetails } = useApiCall<
+    GetUpdatesResponse | void,
+    boolean
+  >(getCurrentVersion, initialForceUpdate);
 
   useEffect(() => {
     if (!data) {
