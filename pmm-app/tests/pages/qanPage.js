@@ -1,4 +1,4 @@
-const I = actor();
+const { I, pmmSettingsPage } = inject();
 const assert = require('assert');
 module.exports = {
   url: 'graph/d/pmm-qan/pmm-query-analytics',
@@ -53,6 +53,11 @@ module.exports = {
     copyQueryButton: "//button[@id='copyQueryExample']",
     spinnerLocator: "//i[@data-qa='loading-spinner']",
     newQANPanelContent: '.panel-content',
+    countOfItems: "//ul[@data-qa='qan-pagination']/../span",
+    resetAll: '//button[@data-qa="qan-filters-reset-all"]',
+    disabledResetAll: '//button[@data-qa="qan-filters-reset-all" and @disabled ]',
+    newQANSpinnerLocator: "//i[@data-qa='loading-spinner']",
+    showSelected: "//button[@data-qa='qan-filters-show-selected']",
     countOfItems: "//span[@data-qa='qan-total-items']",
     resetAll: 'button#reset-all-filters',
     newQANSpinnerLocator: "//i[@class='fa fa-spinner fa-spin spinner ant-spin-dot']",
@@ -66,19 +71,33 @@ module.exports = {
     nextPage: '.ant-pagination-next',
     previousPage: '.ant-pagination-prev',
     ellipsisButton: '.ant-pagination-item-ellipsis',
+    tableRow: "(//table[@class='ant-table-fixed']//tbody[@class='ant-table-tbody'])[2]//tr",
     tableRow: "//td[@class='ant-table-row-cell-break-word']",
     resultPerPageCombobox: '.ant-pagination-options',
     addColumnNewQAN: '.add-columns',
     noDataIcon: 'div.ant-empty-image',
-    querySelector: '//tr[@data-row-key][4]//td[2]//div',
+    querySelector:
+      "(//table[@class='ant-table-fixed']//tbody[@class='ant-table-tbody'])[2]//tr[4]//td[2]//div//div",
     resizer: 'span.Resizer.horizontal',
-    queryTime: '//tr[@data-row-key][4]//td[5]',
-    lockTimeDetail: "//tr[@data-row-key='lock_time']//td[4]",
-    queryTimeDetail: "//tr[@data-row-key='query_time']//td[4]",
-    queryCountDetail: "//tr[@data-row-key='num_queries']//td[4]",
+    queryTime: '//tr[@data-row-key][4]//td[5]//span[1]',
+    lockTimeDetail: "//tr[@data-row-key='lock_time']//td[4]//span[1]",
+    queryTimeDetail: "//tr[@data-row-key='query_time']//td[4]//span[1]",
+    queryCountDetail: "//tr[@data-row-key='num_queries']//td[3]//span[1]",
+    qps: "//tr[@data-row-key='num_queries']//td[2]//span[1]",
     load: "//tr[@data-row-key='query_time']//td[2]//div[1]//span[1]",
     avgLoad: "//tr[@data-row-key='lock_time']//td[2]//div[1]//span[1]",
+    overviewRowLoad: "//tr[4]//td[3]//span[contains(@class,'summarize')]",
+    overviewRowQueryCount: "//tr[4]//td[4]//span[contains(@class,'summarize')]",
+    overviewRowQueryTime: "//tr[4]//td[5]//span[contains(@class,'summarize')]",
     showSelectedDisabled: "//div[@id='inner-filter-wrapper']/div[1]/button[1][@disabled]",
+  },
+
+  metricValueLocatorOverviewTable(column, row) {
+    return `//tr[${row}]//td[${column}]//span[contains(@class,'summarize')]`;
+  },
+
+  filterSectionLocator(filterSectionName) {
+    return `//span[contains(text(), '${filterSectionName}')]`;
   },
 
   filterGroupLocator(filterName) {
@@ -103,43 +122,6 @@ module.exports = {
     );
   },
 
-  checkPagination() {
-    I.waitForElement(this.fields.nextPageNavigation, 30);
-    I.click(this.fields.nextPageNavigation);
-    this.waitForQANPageLoaded();
-    I.waitForVisible(this.fields.nextPageNavigation, 30);
-    this._selectDetails(2);
-    I.seeElement(this.fields.nextPageNavigation);
-    I.click(this.fields.previousPageNavigation);
-    I.waitForVisible(this.fields.previousPageNavigation, 30);
-  },
-
-  checkServerList() {
-    I.click('//table//tr//th[2]//ng-select/div');
-    I.waitForElement("//table//tr//th[2]//ng-dropdown-panel//div//span[contains(text(), 'Server')]");
-    I.click("//table//tr//th[2]//ng-dropdown-panel//div//span[contains(text(), 'Server')]");
-    I.wait(5);
-    for (let i = 0; i < this.serverList.length; i++) {
-      I.seeElement("//table/tr/td[2]//span[contains(text(), '" + this.serverList[i] + "')]");
-    }
-  },
-
-  checkTableHeaders() {
-    for (let i = 0; i < this.tableHeader.length; i++) {
-      I.seeElement(this.tableHeaderLocator(this.tableHeader[i]));
-    }
-  },
-
-  async checkSparkLines() {
-    I.seeNumberOfVisibleElements('//table//tr//app-qan-table-cell[1]//div[1]//div[1]', 11);
-    // await I.screenshotElement("(//table//tr//app-qan-table-cell[1]//div[1]//div[1])[1]", "sparkline_qan");
-    // I.seeVisualDiff("sparkline_qan.png", {tolerance: 50, prepareBaseImage: true});
-    // for (let i = 0; i < 11; i++) {
-    //     await I.screenshotElement("(//table//tr//app-qan-table-cell[1]//div[1]//div[1])[" + (i+1) +"]", "sparkline_qan");
-    //     I.seeVisualDiff("sparkline_qan.png", {tolerance: 50, prepareBaseImage: false});
-    // }
-  },
-
   waitForFiltersLoad() {
     I.waitForVisible(this.filterGroupLocator(this.filterGroups[8]), 30);
   },
@@ -151,39 +133,12 @@ module.exports = {
     }
   },
 
-  async changeResultsPerPage(count) {
-    const numOfElementsResults = await I.grabNumberOfVisibleElements(this.fields.resultsPerPageDropDown);
-    if (numOfElementsResults === 0) {
-      for (let i = 0; i < 5; i++) {
-        I.pressKey('PageDown');
-        I.wait(2);
-      }
-    }
-    I.waitForVisible(this.fields.resultsPerPageDropDown, 30);
-    I.click(this.fields.resultsPerPageDropDown);
-    I.waitForVisible("//ng-select//span[contains(text(), '" + count + "')]", 30);
-    I.click("//ng-select//span[contains(text(), '" + count + "')]");
-    this.waitForQANPageLoaded();
-  },
-
   getFilterLocator(filterValue) {
     const filterLocator =
       "//section[@class='aside__filter-group']//span[contains(text(), '" +
       filterValue +
       "')]/../span[@class='checkbox-container__checkmark']";
     return filterLocator;
-  },
-
-  async verifyFilterExists(filterValue) {
-    const locator = this.getFilterLocator(filterValue);
-    I.waitForVisible(locator, 30);
-  },
-
-  applyFilter(filterValue) {
-    const filterLocator = this.getFilterLocator(filterValue);
-    I.waitForElement(filterLocator, 30);
-    I.click(filterLocator);
-    I.waitForVisible(this.fields.table, 30);
   },
 
   async expandAllFilter() {
@@ -268,7 +223,7 @@ module.exports = {
   async verifyDetailsSectionDataExists(tabElements) {
     this.waitForTabContentsLoaded(tabElements);
     const detailsText = await I.grabTextFrom(tabElements[0]);
-    assert.equal(detailsText.length > 0, true, `Empty Section in Details`);
+    assert.equal(detailsText.length > 0, true, 'Empty Section in Details');
   },
 
   async verifyDataSet(row) {
@@ -327,52 +282,32 @@ module.exports = {
     );
   },
 
-  addColumnToQAN(columnName) {
-    const columnNameLocator = this.fields.searchResult + columnName + "']";
-    I.click(this.fields.addColumn);
-    I.waitForVisible(this.fields.searchForColumn, 30);
-    I.fillField(this.fields.searchForColumn, columnName);
-    I.waitForVisible(columnNameLocator, 30);
-    I.click(columnNameLocator);
-    this.waitForQANPageLoaded();
-  },
-
-  changeMetricTo(metricToReplace, newMetric) {
-    const currentMetric = this.fields.qanMainMetric + metricToReplace + "']]";
-    const metricToSelect = this.fields.searchResult + newMetric + "']";
-    I.click(currentMetric);
-    I.waitForVisible(this.fields.searchForColumn, 30);
-    I.fillField(this.fields.searchForColumn, newMetric);
-    I.click(metricToSelect);
-    this.waitForQANPageLoaded();
-  },
-
-  async clearFilters() {
-    const numOfElementsFilters = await I.grabNumberOfVisibleElements(this.fields.filterSelection);
-    for (let i = 1; i <= numOfElementsFilters; i++) {
-      I.click(this.fields.filterSelection + '[' + i + ']');
-      I.waitForInvisible(this.fields.detailsTable, 30);
-    }
-  },
-
-  verifyURLContains(urlPart) {
-    I.waitInUrl('tz=browser&theme=dark', 30);
-    I.seeInCurrentUrl(urlPart);
-  },
-
   waitForNewQANPageLoaded() {
     I.waitForElement(this.fields.newQANPanelContent, 30);
     I.waitForElement(this.fields.querySelector, 30);
   },
 
   applyFilterNewQAN(filterName) {
+    const oldResultsCount = this.getCountOfItems();
+    I.fillField(this.fields.filterBy, filterName);
     const filterToAplly = `//span[contains(@class, 'checkbox-container__label-text') and contains(text(), '${filterName}')]`;
     I.waitForVisible(filterToAplly, 20);
     I.click(filterToAplly);
+    pmmSettingsPage.customClearField(this.fields.filterBy);
+    //Wait For Results count to be changed so we are sure filter was applied.
+    for (let i = 0; i < 5; i++) {
+      I.wait(1);
+      let newResultsCount = this.getCountOfItems();
+      if (newResultsCount != oldResultsCount) {
+        return;
+      }
+    }
   },
 
   async getCountOfItems() {
-    return await I.grabTextFrom(this.fields.countOfItems);
+    const resultsCount = (await I.grabTextFrom(this.fields.countOfItems)).split(' ');
+
+    return resultsCount[2];
   },
 
   verifyChangedCount(countBefore, countAfter) {
@@ -380,9 +315,10 @@ module.exports = {
   },
 
   async verifyFiltersSection(filterSection, expectedCount) {
-    const countOfFiltersInSection = await I.grabNumberOfVisibleElements(
-      `//span[contains(text(), '${filterSection}')]/parent::p/following-sibling::div/span/label[contains(@class, 'checkbox-container checkbox-container--main')]`
-    );
+    const seeFiltersFor = `//span[contains(text(), '${filterSection}')]/parent::p/following-sibling::div/span/label[contains(@class, 'checkbox-container checkbox-container--main')]`;
+    I.fillField(this.fields.filterBy, filterSection);
+    I.waitForVisible(`//span[contains(text(), '${filterSection}')]`, 30);
+    const countOfFiltersInSection = await I.grabNumberOfVisibleElements(seeFiltersFor);
     assert.equal(countOfFiltersInSection, expectedCount, `There should be '${expectedCount}' visible links`);
   },
 
@@ -438,11 +374,19 @@ module.exports = {
     I.click(item);
   },
 
-  selectPagination(option) {
-    I.waitForInvisible(this.fields.newQANSpinnerLocator, 30);
+  async selectPagination(option) {
     I.click(this.fields.resultPerPageCombobox);
     const optionToSelect = `//li[contains(@class, 'ant-select-dropdown-menu-item') and contains(text(), '${option}' )]`;
     I.click(optionToSelect);
+    //This proces is too fast and can cause false positives.
+    I.wait(5);
+    //Wait For Number of Rows to be changed, we wait for results in rows count change
+    for (let i = 0; i < 5; i++) {
+      let loadingProcess = await I.grabNumberOfVisibleElements(this.fields.newQANSpinnerLocator);
+      if (loadingProcess == 0) {
+        return;
+      }
+    }
   },
 
   async verifyRowCount(rowCount) {
@@ -452,21 +396,16 @@ module.exports = {
 
   async verifyPagesAndCount(itemsPerPage) {
     const count = await this.getCountOfItems();
-    let items = '';
-    if (itemsPerPage < 100) {
-      items = count.slice(8, count.length - 6);
-    } else {
-      items = count.slice(9, count.length - 6);
-    }
     const lastpage = await this.getPagesCount();
-    const result = parseInt(items) / parseInt(lastpage);
+    const result = count / lastpage;
     assert.equal(Math.ceil(result / 10) * 10, itemsPerPage, 'Pages do not match with total count');
   },
 
   async getPagesCount() {
-    const pagesCount = locate('li').before(this.fields.nextPage);
+    const pagesCount =
+      "//ul[@data-qa='qan-pagination']//li[contains(@class,'ant-pagination-item')][last()]//a";
     const pages = await I.grabTextFrom(pagesCount);
-    return pages[pages.length - 1];
+    return pages;
   },
 
   addSpecificColumn(columnName) {
@@ -481,17 +420,6 @@ module.exports = {
     I.seeElement(columnHeader);
   },
 
-  changeMetricInTable(columnName) {
-    const columnHeader = this.getColumn(columnName);
-    I.waitForVisible(columnHeader, 30);
-    I.click(columnHeader);
-  },
-
-  verifyChangedColumn(columnName) {
-    const columnHeader = this.getColumn(columnName);
-    I.waitForInvisible(columnHeader, 30);
-  },
-
   getColumn(column) {
     return `//span[contains(text(), '${column}')]`;
   },
@@ -500,38 +428,83 @@ module.exports = {
     return `//td[@class='ant-table-row-cell-break-word']//div[contains(text(), '${row}')]`;
   },
 
-  async verifyQueryTime(queryTime) {
-    const queryTimeDetial = await I.grabTextFrom(this.fields.queryTimeDetail);
-    assert.equal(queryTimeDetial, queryTime, 'Query times are not same!');
-  },
-
-  //These calculations and verifications needs to be improved https://jira.percona.com/browse/PMM-6140
   async verifyAvqQueryCount() {
-    const queryTimeDetial = await I.grabTextFrom(this.fields.queryTimeDetail);
+    const [qpsvalue] = (await I.grabTextFrom(this.fields.qps)).split(' ');
     const queryCountDetail = await I.grabTextFrom(this.fields.queryCountDetail);
-    const result = parseFloat(queryCountDetail) / 300;
-    const roundedResult = Math.round(parseFloat(result) * 10) / 10;
-    //TBD
+
+    //We divide by 300 because we are using last 5 mins filter.
+    const result = (parseFloat(queryCountDetail) / 300).toFixed(2);
+    if (result < 0.01) {
+      assert.equal('<0.01', qpsvalue, 'Query Per Second doesnt match the expected value');
+    } else {
+      assert.equal(result, qpsvalue, 'Query Per Second doesnt match the expected value');
+    }
   },
 
-  //These calculations and verifications needs to be improved https://jira.percona.com/browse/PMM-6140
   async verifyAvgQueryTime() {
-    const queryTimeDetail = await I.grabTextFrom(this.fields.queryTimeDetail);
+    // eslint-disable-next-line max-len
+    assert.equal(
+      await I.grabTextFrom(this.fields.overviewRowQueryCount),
+      await I.grabTextFrom(this.fields.qps),
+      'Query Count value in Overview and Detail should match'
+    );
+    // eslint-disable-next-line max-len
+    assert.equal(
+      await I.grabTextFrom(this.fields.overviewRowQueryTime),
+      await I.grabTextFrom(this.fields.queryTimeDetail),
+      'Query Time value in Overview and Detail should match'
+    );
+    let [perQueryStats, perQueryUnit] = (await I.grabTextFrom(this.fields.queryTimeDetail)).split(' ');
+    if (perQueryUnit == 'ms') {
+      perQueryStats = perQueryStats / 1000;
+    }
+    if (perQueryUnit == 'µs') {
+      perQueryStats = perQueryStats / 1000000;
+    }
     const queryCountDetail = await I.grabTextFrom(this.fields.queryCountDetail);
-    const load = await I.grabTextFrom(this.fields.load);
-    const result = (parseFloat(queryCountDetail) * (parseFloat(queryTimeDetail) / 1000)) / 300;
-    const roundedResult = Math.round(parseFloat(result) * 100) / 100;
-    assert.equal(roundedResult, parseFloat(load), 'Load should be same!');
+    const [load] = (await I.grabTextFrom(this.fields.load)).split(' ');
+    const result = ((parseFloat(queryCountDetail) * parseFloat(perQueryStats)) / 300).toFixed(2);
+    if (result < 0.01) {
+      assert.equal('<0.01', load, 'Load should be same!');
+    } else {
+      assert.equal(result, load, 'Load should be same!');
+    }
   },
 
-  //These calculations and verifications needs to be improved https://jira.percona.com/browse/PMM-6140
-  async verifyAvgLockTime() {
-    const avgLoad = await I.grabTextFrom(this.fields.avgLoad);
-    const lockTimeDetail = await I.grabTextFrom(this.fields.lockTimeDetail);
-    const queryCountDetail = await I.grabTextFrom(this.fields.queryCountDetail);
-    const result = (parseFloat(queryCountDetail) * (parseFloat(lockTimeDetail) / 1000000)) / 300;
-    if (result > parseFloat(avgLoad.slice(2, avgLoad.length))) {
-      assert.fail(result + ' should be smaller than ' + parseFloat(avgLoad.slice(2, avgLoad.length)));
+  sortMetric(metricName, sortOrder = 'down') {
+    const sortLocator = `//th//span[contains(text(),'${metricName}')]/ancestor::span//div[@title='Sort']`;
+    I.waitForVisible(sortLocator, 30);
+    I.click(sortLocator);
+    const sortIcon = `//div[@title='Sort']//i[@aria-label='icon: caret-${sortOrder}' and contains(@class, 'ant-table-column-sorter-${sortOrder} on')]`;
+    I.waitForVisible(sortIcon, 30);
+  },
+
+  async verifyMetricsSorted(metricName, metricColumnOrder, sortOrder = 'down') {
+    const resultRowCounts = await I.grabNumberOfVisibleElements(this.fields.tableRow);
+
+    for (i = 2; i < resultRowCounts; i++) {
+      let [metricValue] = this.metricValueLocatorOverviewTable(metricColumnOrder, i);
+      let [metricValueSecond] = this.metricValueLocatorOverviewTable(metricColumnOrder, i + 1);
+      if (metricValue.indexOf('<') > -1) {
+        [, metricValue] = metricValue.split('<');
+      }
+      if (metricValueSecond.indexOf('<') > -1) {
+        [, metricValueSecond] = metricValueSecond.split('<');
+      }
+      // eslint-disable-next-line max-len
+      if (sortOrder === 'down') {
+        assert.equal(
+          metricValue >= metricValueSecond,
+          true,
+          `Descending Sort of ${metricName} is Wrong Please check`
+        );
+      } else {
+        assert.equal(
+          metricValue <= metricValueSecond,
+          true,
+          `Ascending Sort of ${metricName} is Wrong Please check`
+        );
+      }
     }
   },
 };
