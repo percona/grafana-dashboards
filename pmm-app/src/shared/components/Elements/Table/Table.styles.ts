@@ -15,18 +15,20 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
 
   return {
     /* This will make the table scrollable when it gets too small */
-    tableWrap: css`
-      display: block;
-      max-width: 100%;
-      overflow-x: scroll;
-      overflow-y: scroll;
-      max-height: 200px;
-      border: 1px solid ${borderColor};
-    `,
+    tableWrap: (size) => css`
+        display: block;
+        max-width: ${`${size.x}px` || '100%'};
+        overflow-x: scroll;
+        overflow-y: scroll;
+        max-height: ${`${size.y}px` || 'auto'};
+        border: 1px solid ${borderColor};
+      `,
     table: css`
       /* This is required to make the table full-width */
       display: block;
       max-width: 100%;
+      border-collapse: separate; /* Don't collapse */
+      border-spacing: 0;
 
       table {
         /* Make sure the inner table is always as wide as needed */
@@ -44,7 +46,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
         td {
           background-color: ${backgroundColor};
           margin: 0;
-          padding: 0.5rem;
+          padding: 3px;
           border-bottom: 1px solid ${borderColor};
           border-right: 1px solid ${borderColor};
           color: ${textColor};
@@ -67,12 +69,15 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
         position: sticky;
         left: 0;
         z-index: 1;
+        border: 1px solid yellow;
+        outline: 1px solid ${borderColor};
       }
       th:first-child {
         position: -webkit-sticky; /* for Safari */
         position: sticky;
         left: 0;
         z-index: 3;
+        outline: 1px solid ${borderColor};
       }
       .pagination {
         padding: 0.5rem;
@@ -88,6 +93,16 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
     `,
     checkboxColumn: css`
       width: 20px;
+    `,
+    header: (width) => css`
+        min-width: ${width}px;
+        max-width: ${width}px;
+      `,
+    headerContent: css`
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
     `,
   };
 });

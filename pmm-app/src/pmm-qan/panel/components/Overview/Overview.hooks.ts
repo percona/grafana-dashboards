@@ -49,7 +49,8 @@ export const useOverviewTable = (setTotal): [DataInterface, boolean] => {
         const metricsColumns = columns.map((key, index) => getOverviewColumn(key, index, result.rows[0], orderBy, mainMetric));
 
         const allColumns = [...defaultColumns, ...metricsColumns];
-        console.log(allColumns)
+
+        console.log(allColumns);
         setData({ rows: result.rows, columns: allColumns });
         setLoading(false);
       } catch (e) {

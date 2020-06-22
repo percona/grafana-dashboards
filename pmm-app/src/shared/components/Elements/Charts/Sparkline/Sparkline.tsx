@@ -1,16 +1,19 @@
 // @ts-nocheck
 
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, {
+  useEffect, useMemo, useRef, useState
+} from 'react';
 import * as d3 from 'd3';
-import { area, axisBottom, curveStepAfter, scaleLinear } from 'd3';
+import {
+  area, axisBottom, curveStepAfter, scaleLinear
+} from 'd3';
 import * as moment from 'moment';
 import ReactTooltip from 'react-tooltip';
 import { humanize } from '../../../helpers/Humanization';
 import './Sparkline.scss';
 import { PolygonChartInterface } from './Sparkline.types';
-import { Table } from 'antd';
 
-const getMetricSparklineKey = metricName => {
+const getMetricSparklineKey = (metricName) => {
   switch (metricName) {
     case 'load':
       return 'load';
@@ -37,10 +40,9 @@ export const Sparkline = ({
   const ykey = getMetricSparklineKey(metricName);
   const appLoadPolygonChart = [...data] || [];
 
-  const getAdditionalPoint = (last, previous) =>
-    new Date(
-      (+moment.utc(last) || 0) - ((+moment.utc(previous) || 0) - (+moment.utc(last) || 0))
-    ).toISOString();
+  const getAdditionalPoint = (last, previous) => new Date(
+    (+moment.utc(last) || 0) - ((+moment.utc(previous) || 0) - (+moment.utc(last) || 0))
+  ).toISOString();
 
   // Adding additional point for display purposes
   // TODO: replace it with something better
@@ -53,16 +55,16 @@ export const Sparkline = ({
   });
 
   const [tooltip, setTooltip] = useState('');
-  const isMetricExists = metric => metric === 'NaN' || metric === undefined || metric === '';
+  const isMetricExists = (metric) => metric === 'NaN' || metric === undefined || metric === '';
 
-  const findYRange = array => {
-    const values = array.map(arrayItem => +arrayItem[ykey] || 0);
+  const findYRange = (array) => {
+    const values = array.map((arrayItem) => +arrayItem[ykey] || 0);
 
     return [Math.max(...values) || 1, Math.min(...values) || 0];
   };
 
-  const findXRange = array => {
-    const values = array.map(arrayItem => +moment.utc(arrayItem[xkey]) || 0);
+  const findXRange = (array) => {
+    const values = array.map((arrayItem) => +moment.utc(arrayItem[xkey]) || 0);
 
     return [Math.max(...values), Math.min(...values)];
   };
@@ -97,16 +99,16 @@ export const Sparkline = ({
       .domain([maxY, minY])
       .range([0, yAxisLength]);
 
-    const drawData = appLoadPolygonChart.map(item => ({
+    const drawData = appLoadPolygonChart.map((item) => ({
       x: scaleX(moment.utc(item.timestamp)),
       y: scaleY(isMetricExists(item[ykey]) ? 0 : Math.max(maxY / 15, item[ykey])) + margin || 0,
     }));
 
     const areaBar = area()
       .curve(curveStepAfter)
-      .x(d => d.x)
+      .x((d) => d.x)
       .y0(height - margin)
-      .y1(d => d.y);
+      .y1((d) => d.y);
 
     const g = svg.append('g');
     const focusG = svg.append('g');
@@ -141,7 +143,7 @@ export const Sparkline = ({
       const hoveredPoint = appLoadPolygonChart[indexOfStartPoint];
       const endPoint = appLoadPolygonChart[indexOfStartPoint - 1];
       const focusPointsRange = [hoveredPoint, endPoint];
-      const activeArea: any = focusPointsRange.map(item => ({
+      const activeArea: any = focusPointsRange.map((item) => ({
         x: scaleX(moment.utc(item[xkey])) || 0,
         y:
           scaleY(isMetricExists(endPoint[ykey]) ? 0 : Math.max(maxY / 15, endPoint[ykey]) || 0) + margin || 0,
@@ -150,8 +152,7 @@ export const Sparkline = ({
       const dateToShow = moment(endPoint[xkey]).format('YYYY-MM-DD HH:mm:ss');
 
       // eslint-disable-next-line max-len
-      const isTimeBased =
-        metricName.endsWith('_time') || metricName.endsWith('_wait') || metricName === 'load';
+      const isTimeBased = metricName.endsWith('_time') || metricName.endsWith('_wait') || metricName === 'load';
       const load = humanize.transform(value, 'number');
 
       focusBar.attr('d', areaBar(activeArea));
@@ -179,7 +180,7 @@ export const Sparkline = ({
       <>
         <div ref={ref} className="d3-bar-chart-container" data-tip={tooltip} />
         {console.log('rerender graph')}
-        {/*<div>231</div>*/}
+        {/* <div>231</div> */}
         <ReactTooltip
           className="sparkline-tooltip"
           place="bottom"

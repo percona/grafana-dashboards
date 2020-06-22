@@ -8,9 +8,7 @@ import {
   MAIN_METRIC_MIN_WIDTH,
   ROW_NUMBER_COLUMN_WIDTH,
 } from '../../Overview.constants';
-import {
-  mainColumn, mainMetric, metricWrapper, rowNumber, tooltipIcon,
-} from './DefaultColumns.styles';
+import { mainMetric, metricWrapper, tooltipIcon } from './DefaultColumns.styles';
 import { Dimension } from '../Dimension/Dimension';
 
 const getMainColumnWidth = (columns) => {
@@ -19,14 +17,13 @@ const getMainColumnWidth = (columns) => {
 
   return Math.max(
     width - (columns - 1) * FIXED_COLUMN_WIDTH - COLUMN_WIDTH * 1.8 - ROW_NUMBER_COLUMN_WIDTH - 2,
-    MAIN_METRIC_MIN_WIDTH,
+    MAIN_METRIC_MIN_WIDTH
   );
 };
 
-
-const rowNumberRender = (pageSize, pageNumber) => (record, index) => (
-  <div className={rowNumber}>{index === 0 ? '' : (pageNumber - 1) * pageSize + index}</div>
-);
+// const rowNumberRender = (pageSize, pageNumber) => (record, index) => (
+//   <div className={rowNumber}>{index === 0 ? '' : (pageNumber - 1) * pageSize + index}</div>
+// );
 
 const dimensionColumnRender = (mainMetricColumnWidth) => (record, index) => (
   <div className={metricWrapper}>
@@ -41,7 +38,7 @@ const dimensionColumnRender = (mainMetricColumnWidth) => (record, index) => (
   </div>
 );
 
-export const getDefaultColumns = (groupBy, pageNumber, pageSize, columns, onCell) => {
+export const getDefaultColumns = (groupBy, pageNumber, pageSize, columns) => {
   const mainMetricColumnWidth = getMainColumnWidth(columns);
 
   return [
@@ -58,6 +55,7 @@ export const getDefaultColumns = (groupBy, pageNumber, pageSize, columns, onCell
       // fixed: 'left',
       width: mainMetricColumnWidth,
       Header: 'Main column',
+      HeaderAccessor: () => <Dimension />,
       // ellipsis: true,
       // className: mainColumn,
       // key: 'dimension',

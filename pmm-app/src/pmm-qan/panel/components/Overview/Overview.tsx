@@ -1,16 +1,15 @@
 import { Pagination } from 'antd';
 import React, {
-  useCallback, useContext, useEffect, useState, useRef, FC, useMemo
+  FC, useCallback, useContext, useEffect, useRef, useState
 } from 'react';
 import scrollIntoView from 'scroll-into-view';
 import './Overview.scss';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
 import 'shared/components/Elements/Spinner/Spinner';
+import { Table } from 'shared/components/Elements/Table';
 import { useOverviewTable } from './Overview.hooks';
 import { styles } from '../../qan.styles';
 import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE, PAGE_SIZE_OPTIONS } from '../../qan.constants';
-import {NODES_COLUMNS} from "../../../../pmm-inventory/Inventory.constants";
-import { Table, SelectedTableRows } from 'shared/components/Elements/Table';
 
 export const Overview: FC = () => {
   const [total, setTotal] = useState(30);
@@ -52,9 +51,9 @@ export const Overview: FC = () => {
     return null;
   }, []);
 
-  const onTableChange = useCallback((pagination, filters, sorter) => {
-    contextActions.changeSort(sorter.columnKey);
-  }, []);
+  // const onTableChange = useCallback((pagination, filters, sorter) => {
+  //   contextActions.changeSort(sorter.columnKey);
+  // }, []);
 
   const getRowClassName = useCallback(
     (record, index) => {
@@ -85,13 +84,15 @@ export const Overview: FC = () => {
 
   return (
     <div className="table-wrapper" ref={tableWrapperRef}>
-      {console.log('123')}
       <div>
         <Table
           columns={overviewMetricsList.columns}
           data={overviewMetricsList.rows}
-          // rowSelection
-          // onRowSelection={(selected) => setSelectedRows(selected)}
+          rowClassName={getRowClassName}
+          onRowClick={(selected) => {
+            contextActions.selectQuery(selected.original.dimension, selected.index === 0);
+          }}
+          scroll={{ y: height - 100, x: '100%' }}
           noData={<h1>No nodes Available</h1>}
           loading={loading}
         />
@@ -111,7 +112,9 @@ export const Overview: FC = () => {
             onChange={changePageNumber}
             data-qa="qan-pagination"
           />
-          <span className={styles.showTotal} data-qa="qan-total-items">{showTotal}</span>
+          <span className={styles.showTotal} data-qa="qan-total-items">
+            {showTotal}
+          </span>
         </div>
       </div>
     </div>

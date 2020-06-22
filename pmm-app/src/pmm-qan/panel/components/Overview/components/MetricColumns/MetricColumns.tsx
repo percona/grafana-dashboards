@@ -34,7 +34,6 @@ const NonTimeMetric = ({
   </div>
 );
 
-
 const getSorting = (orderBy, metricName) => {
   if (orderBy === metricName) {
     return 'ascend';
@@ -46,7 +45,6 @@ const getSorting = (orderBy, metricName) => {
 
   return false;
 };
-
 
 const metricColumnRender = ({
   metricName, metric, totalValues, columnIndex
@@ -64,7 +62,9 @@ const metricColumnRender = ({
       {
         header: isTimeMetric ? 'Per query' : 'Per sec',
         // eslint-disable-next-line max-len
-        value: isTimeMetric ? humanize.transform(stats.avg, 'time') : humanize.transform(statPerSec, 'number'),
+        value: isTimeMetric
+          ? humanize.transform(stats.avg, 'time')
+          : humanize.transform(statPerSec, 'number'),
         key: 'qps',
       },
       {
@@ -163,7 +163,9 @@ export const getOverviewColumn = (metricName, columnIndex, totalValues, orderBy,
     sortDirections: ['descend', 'ascend'],
     width: columnIndex === 0 ? COLUMN_WIDTH * 1.8 : FIXED_COLUMN_WIDTH,
     Header: metricName,
-    // HeaderAccessor: <ManageColumns placeholder={metricName} currentMetric={metric} mainMetric={mainMetric} width="100%" />,
+    HeaderAccessor: () => (
+      <ManageColumns placeholder={metricName} currentMetric={metric} mainMetric={mainMetric} width="100%" />
+    ),
     accessor: metricColumnRender({
       metricName,
       metric,

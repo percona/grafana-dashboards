@@ -40,7 +40,8 @@ const QueryAnalyticsPanel: FC = () => {
           <div className={styles.splitterWrapper}>
             <SplitPane
               split="horizontal"
-              onDragFinished={() => setReload({})}
+              // onDragFinished={() => setReload({})}
+              onChange={() => setReload({})}
               className={styles.splitterWrapper}
               resizerStyle={{ display: querySelected ? '' : 'none' }}
               pane1Style={{

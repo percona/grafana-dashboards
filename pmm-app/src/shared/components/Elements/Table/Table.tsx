@@ -1,11 +1,17 @@
 import React, { ReactNode, FC, useEffect } from 'react';
-import { useRowSelect, useTable, Column } from 'react-table';
+import {
+  useRowSelect, useTable, Column, useSortBy
+} from 'react-table';
 import { Spinner, useTheme } from '@grafana/ui';
+import { cx } from 'emotion';
 import { getStyles } from './Table.styles';
 
 interface TableProps {
   rowSelection?: boolean;
   onRowSelection?: (selected: any) => void;
+  rowClassName?: any;
+  scroll?: any;
+  onRowClick?: any;
   columns: Column[];
   data: object[];
   noData?: ReactNode;
@@ -13,7 +19,7 @@ interface TableProps {
   rowKey?: (rec: any) => any;
 }
 
-const TableCheckbox = props => (
+const TableCheckbox = (props) => (
   <label className="checkbox-container checkbox-container--main no-gap">
     <input type="checkbox" {...props} indeterminate="false" />
     <span className="checkbox-container__checkmark" />
@@ -24,6 +30,9 @@ export const Table: FC<TableProps> = ({
   columns,
   rowSelection = false,
   onRowSelection,
+  scroll,
+  rowClassName,
+  onRowClick,
   data,
   noData,
   loading,
@@ -43,11 +52,13 @@ export const Table: FC<TableProps> = ({
     {
       columns,
       data,
+      manualSortBy: true,
     },
+    useSortBy,
     useRowSelect,
-    hooks => {
+    (hooks) => {
       if (rowSelection) {
-        hooks.visibleColumns.push(columns => [
+        hooks.visibleColumns.push((columns) => [
           {
             id: 'selection',
             Header: ({ getToggleAllRowsSelectedProps }: any) => (
@@ -75,7 +86,7 @@ export const Table: FC<TableProps> = ({
 
   return (
     <div className={styles.table}>
-      <div className={styles.tableWrap}>
+      <div className={styles.tableWrap(scroll)}>
         {loading ? (
           <div data-qa="table-loading" className={styles.empty}>
             <Spinner />
@@ -93,15 +104,39 @@ export const Table: FC<TableProps> = ({
                 <tr data-qa="table-header" {...headerGroup.getHeaderGroupProps()} key={i}>
                   {headerGroup.headers.map((column, index) => {
                     const { HeaderAccessor } = column;
+
+                    column.Header = () => HeaderAccessor();
+
                     return (
                       <th
                         {...column.getHeaderProps()}
-                        className={index === 0 && rowSelection ? styles.checkboxColumn : ''}
+                        className={cx(
+                          styles.header(column.width),
+                          index === 0 && rowSelection ? styles.checkboxColumn : ''
+                        )}
                         key={index}
+                        {...column.getSortByToggleProps()}
                       >
-                        {console.log(column)}
-                        {HeaderAccessor ? <HeaderAccessor /> : column.render('Header')}
-                        {/*{column.render('Header')}*/}
+                        <div className={styles.headerContent}>
+                          <div style={{ width: '80%' }}>{column.render('Header')}</div>
+                          <span style={{ display: 'flex', flexDirection: 'column' }}>
+                            {/* eslint-disable-next-line no-nested-ternary */}
+                            {column.isSorted ? (
+                              column.isSortedDesc ? (
+                                '🔽'
+                              ) : (
+                                ' 🔼'
+                              )
+                            ) : (
+                              <>
+                                {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
+                                <span>🔼</span>
+                                {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
+                                <span>🔽</span>
+                              </>
+                            )}
+                          </span>
+                        </div>
                       </th>
                     );
                   })}
@@ -113,7 +148,13 @@ export const Table: FC<TableProps> = ({
                 prepareRow(row);
 
                 return (
-                  <tr data-qa="table-row" {...row.getRowProps()} key={rowKey ? rowKey(row) : i}>
+                  <tr
+                    data-qa="table-row"
+                    className={rowClassName(row.original, row.index)}
+                    {...row.getRowProps()}
+                    key={rowKey ? rowKey(row) : i}
+                    onClick={() => onRowClick(row)}
+                  >
                     {row.cells.map((cell, index) => (
                       // eslint-disable-next-line react/jsx-key
                       <td
