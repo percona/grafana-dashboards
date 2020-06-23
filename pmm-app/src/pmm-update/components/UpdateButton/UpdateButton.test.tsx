@@ -10,7 +10,7 @@ describe('UpdateButton::', () => {
   const fakeHandleClick = jest.fn();
 
   it('should show the correct text', () => {
-    const wrapper = shallow(<UpdateButton onClick={fakeHandleClick} disabled nextVersion={nextVersion} />);
+    const wrapper = shallow(<UpdateButton onClick={fakeHandleClick} nextVersion={nextVersion} />);
 
     expect(wrapper.find(CenteredButton).props()).toHaveProperty('children', ['Update to ', nextVersion]);
 
@@ -26,7 +26,7 @@ describe('UpdateButton::', () => {
   });
 
   it('should call the passed onClick handler on Button click', () => {
-    const wrapper = shallow(<UpdateButton onClick={fakeHandleClick} disabled nextVersion={nextVersion} />);
+    const wrapper = shallow(<UpdateButton onClick={fakeHandleClick} nextVersion={nextVersion} />);
 
     wrapper.find(CenteredButton).simulate('click');
 
