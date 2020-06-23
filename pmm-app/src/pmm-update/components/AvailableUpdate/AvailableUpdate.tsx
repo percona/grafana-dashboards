@@ -6,9 +6,9 @@ import * as styles from './AvailableUpdate.styles';
 
 interface AvailableUpdateProps {
   newReleaseDate: string;
-  newsLink: string;
+  newsLink?: string;
   nextFullVersion: string;
-  nextVersion: string,
+  nextVersion: string;
 }
 
 export const AvailableUpdate = ({
@@ -17,7 +17,7 @@ export const AvailableUpdate = ({
   nextFullVersion,
   nextVersion,
 }: AvailableUpdateProps) => {
-  const [showFullVersion, handleToggleShowFullVersion] = useToggleOnAltClick(false)
+  const [showFullVersion, handleToggleShowFullVersion] = useToggleOnAltClick(false);
 
   return (
     <section className={styles.availableUpdate}>
@@ -26,9 +26,12 @@ export const AvailableUpdate = ({
         <p className={styles.availableUpdate_version}>
           {showFullVersion ? nextFullVersion : nextVersion} <em>{newReleaseDate}</em>
           {newsLink && (
-            <a href={newsLink} rel="noreferrer" target="_blank">
-              {Messages.whatsNew}
-            </a>
+            <>
+              {' '}
+              <a href={newsLink} rel="noreferrer" target="_blank">
+                {Messages.whatsNew}
+              </a>
+            </>
           )}
         </p>
       </div>
