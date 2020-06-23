@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { FC } from 'react';
 
 import { UpdateInfoBoxProps } from 'pmm-update/types';
 import { Messages } from './UpdateInfoBox.messages';
 import * as styles from './UpdateInfoBox.styles';
 
-export const UpdateInfoBox = ({ upToDate = false }: UpdateInfoBoxProps) => {
+export const UpdateInfoBox: FC<UpdateInfoBoxProps> = ({ upToDate = false }) => {
   return (
     <section className={styles.updateInfoBox}>
       {upToDate ? (

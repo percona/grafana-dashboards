@@ -1,4 +1,4 @@
-import React, { MouseEvent, useEffect, useState } from 'react';
+import React, { useEffect, useState, FC, MouseEvent } from 'react';
 
 import {
   AvailableUpdate,
@@ -12,7 +12,7 @@ import { useVersionDetails, usePerformUpdate } from 'pmm-update/hooks';
 
 import * as styles from './UpdatePanel.styles';
 
-export const UpdatePanel = () => {
+export const UpdatePanel: FC<{}> = () => {
   const [forceUpdate, setForceUpdate] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');

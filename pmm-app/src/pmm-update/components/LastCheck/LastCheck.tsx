@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Button, Spinner } from '@grafana/ui';
 
 import { LastCheckProps } from 'pmm-update/types';
 import * as styles from './LastCheck.styles';
 
-export const LastCheck = ({ lastCheckDate, onCheckForUpdates, isLoading = false }: LastCheckProps) => {
+export const LastCheck: FC<LastCheckProps> = ({ lastCheckDate, onCheckForUpdates, isLoading = false }) => {
   const icon = 'fa fa-refresh';
 
   return (

@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { FC } from 'react';
 
 import { UpdateModalHeaderProps } from 'pmm-update/types';
 import { Messages } from './UpdateModalHeader.messages';
 
-export const UpdateModalHeader = ({
+export const UpdateModalHeader: FC<UpdateModalHeaderProps> = ({
   errorMessage = '',
   isUpdated = false,
   updateFailed = false,
-}: UpdateModalHeaderProps) => (
+}) => (
   <>
     {isUpdated ? (
       <h4>{Messages.updateSucceeded}</h4>

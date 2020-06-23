@@ -1,16 +1,16 @@
-import React from 'react';
+import React, { FC } from 'react';
 
 import { AvailableUpdateProps } from 'pmm-update/types';
 import { useToggleOnAltClick } from 'pmm-update/hooks';
 import { Messages } from './AvailableUpdate.messages';
 import * as styles from './AvailableUpdate.styles';
 
-export const AvailableUpdate = ({
+export const AvailableUpdate: FC<AvailableUpdateProps> = ({
   newReleaseDate,
   newsLink,
   nextFullVersion,
   nextVersion,
-}: AvailableUpdateProps) => {
+}) => {
   const [showFullVersion, handleToggleShowFullVersion] = useToggleOnAltClick(false);
 
   return (

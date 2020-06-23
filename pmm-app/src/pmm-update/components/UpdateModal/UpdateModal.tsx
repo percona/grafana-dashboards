@@ -1,4 +1,4 @@
-import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useRef, useState, FC } from 'react';
 import { ClipboardButton, Icon } from '@grafana/ui';
 import { Modal } from '@grafana/ui';
 
@@ -8,14 +8,14 @@ import { CenteredButton, UpdateModalHeader } from 'pmm-update/components';
 import { useClickOutside } from 'pmm-update/hooks';
 import { UpdateModalProps } from 'pmm-update/types';
 
-export const UpdateModal = ({
+export const UpdateModal: FC<UpdateModalProps> = ({
   version,
   errorMessage = '',
   isOpen = false,
   isUpdated = false,
   output = '',
   updateFailed = false,
-}: UpdateModalProps) => {
+}) => {
   const outputRef = useRef<HTMLPreElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
   const [isOutputShown, setIsOutputShown] = useState(true);
