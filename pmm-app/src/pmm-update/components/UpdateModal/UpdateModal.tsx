@@ -61,7 +61,12 @@ export const UpdateModal = ({
             {!isUpdated ? (
               <div className="output-content">
                 <div className="output-header">
-                  <Icon className="output-collapse" name={chevronIcon} onClick={handleToggleShowOutput} />
+                  <Icon
+                    className="output-collapse"
+                    data-qa="modal-chevron-icon"
+                    name={chevronIcon}
+                    onClick={handleToggleShowOutput}
+                  />
                   <span>Log</span>
                   <ClipboardButton getText={copyToClipboard} className="text-right" variant="link" size="sm">
                     {Messages.copyToClipboard}
@@ -69,18 +74,20 @@ export const UpdateModal = ({
                 </div>
                 {isOutputShown && (
                   <div className="pre-scrollable output-value">
-                    <pre ref={outputRef}>{output}</pre>
+                    <pre data-qa="modal-output-pre" ref={outputRef}>
+                      {output}
+                    </pre>
                   </div>
                 )}
               </div>
             ) : (
               <>
                 <div className="text-center text-block">
-                  <h6>
+                  <h6 data-qa="modal-update-success-text">
                     {Messages.updateSuccessNotice} {version}
                   </h6>
                 </div>
-                <CenteredButton variant="primary" onClick={reloadAfterUpdate}>
+                <CenteredButton data-qa="modal-close" variant="primary" onClick={reloadAfterUpdate}>
                   Close
                 </CenteredButton>
               </>
