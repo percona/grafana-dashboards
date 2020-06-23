@@ -20,9 +20,9 @@ const TableCreate = (props) => {
     let id;
 
     if (databaseType === DATABASE.postgresql) {
-      id = await mysqlMethods.getShowCreateTables({ example, tableName });
-    } else if (databaseType === DATABASE.mysql) {
       id = await postgresqlMethods.getShowCreateTables({ example, tableName });
+    } else if (databaseType === DATABASE.mysql) {
+      id = await mysqlMethods.getShowCreateTables({ example, tableName });
     }
 
     const result = await useActionResult(id);

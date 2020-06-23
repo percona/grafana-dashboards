@@ -15,6 +15,7 @@ export const styles = {
   actionElement: css`
     padding: 4px 8px;
     cursor: pointer;
+    background-color: #3d3d3d;
   `,
   metricsTooltip: css`
     display: flex;
