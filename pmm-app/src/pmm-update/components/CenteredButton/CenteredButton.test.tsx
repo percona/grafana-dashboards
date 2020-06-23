@@ -1,6 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { Button } from '@grafana/ui';
+
 import { CenteredButton } from './CenteredButton';
 
 describe('CenteredButton::', () => {

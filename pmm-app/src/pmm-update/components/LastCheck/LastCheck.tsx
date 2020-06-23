@@ -4,12 +4,12 @@ import { Button, Spinner } from '@grafana/ui';
 import * as styles from './LastCheck.styles';
 
 interface LastCheckProps {
-  onCheckForUpdates: (e: MouseEvent) => void;
-  isLoading: boolean;
   lastCheckDate: string;
+  onCheckForUpdates: (e: MouseEvent) => void;
+  isLoading?: boolean;
 }
 
-export const LastCheck = ({ isLoading, lastCheckDate, onCheckForUpdates }: LastCheckProps) => {
+export const LastCheck = ({ lastCheckDate, onCheckForUpdates, isLoading = false }: LastCheckProps) => {
   const icon = 'fa fa-refresh';
 
   return (
