@@ -1,13 +1,8 @@
-import React, { MouseEvent } from 'react';
+import React from 'react';
 import { Button, Spinner } from '@grafana/ui';
 
+import { LastCheckProps } from 'pmm-update/types';
 import * as styles from './LastCheck.styles';
-
-interface LastCheckProps {
-  lastCheckDate: string;
-  onCheckForUpdates: (e: MouseEvent) => void;
-  isLoading?: boolean;
-}
 
 export const LastCheck = ({ lastCheckDate, onCheckForUpdates, isLoading = false }: LastCheckProps) => {
   const icon = 'fa fa-refresh';

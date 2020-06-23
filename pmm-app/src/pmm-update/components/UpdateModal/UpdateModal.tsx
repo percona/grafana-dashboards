@@ -9,12 +9,12 @@ import { useClickOutside } from 'pmm-update/hooks';
 import { UpdateModalProps } from 'pmm-update/types';
 
 export const UpdateModal = ({
-  errorMessage,
-  isOpen,
-  isUpdated,
-  output,
-  updateFailed,
   version,
+  errorMessage = '',
+  isOpen = false,
+  isUpdated = false,
+  output = '',
+  updateFailed = false,
 }: UpdateModalProps) => {
   const outputRef = useRef<HTMLPreElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);

@@ -1,15 +1,9 @@
 import React from 'react';
 
+import { AvailableUpdateProps } from 'pmm-update/types';
 import { useToggleOnAltClick } from 'pmm-update/hooks';
 import { Messages } from './AvailableUpdate.messages';
 import * as styles from './AvailableUpdate.styles';
-
-interface AvailableUpdateProps {
-  newReleaseDate: string;
-  newsLink?: string;
-  nextFullVersion: string;
-  nextVersion: string;
-}
 
 export const AvailableUpdate = ({
   newReleaseDate,

@@ -1,3 +1,5 @@
+import { MouseEvent } from 'react';
+
 type OpaqueTag<S extends string> = {
   readonly __tag: S;
 };
@@ -71,10 +73,45 @@ export type CurrentOrNextVersionDetails = [
 ];
 
 export interface UpdateModalProps {
-  errorMessage: string;
-  isOpen: boolean;
-  isUpdated: boolean;
-  output: string;
-  updateFailed: boolean;
   version: string;
+  errorMessage?: string;
+  isOpen?: boolean;
+  isUpdated?: boolean;
+  output?: string;
+  updateFailed?: boolean;
+}
+
+export interface LastCheckProps {
+  lastCheckDate: string;
+  onCheckForUpdates: (e: MouseEvent) => void;
+  isLoading?: boolean;
+}
+
+export interface UpdateHeaderProps {
+  currentReleaseDate: string;
+  fullVersion: string;
+  version: string;
+}
+
+export interface UpdateModalHeaderProps {
+  errorMessage?: string;
+  isUpdated?: boolean;
+  updateFailed?: boolean;
+}
+
+export interface UpdateInfoBoxProps {
+  upToDate?: boolean;
+}
+
+export interface UpdateButtonProps {
+  onClick: () => void;
+  nextVersion: string;
+  disabled?: boolean;
+}
+
+export interface AvailableUpdateProps {
+  newReleaseDate: string;
+  newsLink?: string;
+  nextFullVersion: string;
+  nextVersion: string;
 }

@@ -17,12 +17,13 @@ export const UpdatePanel = () => {
   const [showModal, setShowModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [
-    { installedVersionDetails, lastCheckDate, nextVersionDetails, isUpdateAvailable }, fetchVersionErrorMessage,
+    { installedVersionDetails, lastCheckDate, nextVersionDetails, isUpdateAvailable },
+    fetchVersionErrorMessage,
     isLoading,
     isDefaultView,
-    getCurrentVersionDetails
-  ] = useVersionDetails()
-  const [output, updateErrorMessage, isUpdated, updateFailed, launchUpdate] = usePerformUpdate()
+    getCurrentVersionDetails,
+  ] = useVersionDetails();
+  const [output, updateErrorMessage, isUpdated, updateFailed, launchUpdate] = usePerformUpdate();
 
   const handleCheckForUpdates = (e: MouseEvent) => {
     if (e.altKey) {
@@ -37,9 +38,9 @@ export const UpdatePanel = () => {
     }, 5000);
 
     return () => {
-      clearTimeout(timeout)
-    }
-  }, [fetchVersionErrorMessage, updateErrorMessage])
+      clearTimeout(timeout);
+    };
+  }, [fetchVersionErrorMessage, updateErrorMessage]);
 
   useEffect(() => {
     setErrorMessage(updateErrorMessage);

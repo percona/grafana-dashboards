@@ -1,15 +1,10 @@
 import React from 'react';
 
+import { UpdateHeaderProps } from 'pmm-update/types';
 import { useToggleOnAltClick } from 'pmm-update/hooks';
 import * as styles from './UpdateHeader.styles';
 
-interface LastCheckProps {
-  currentReleaseDate: string;
-  fullVersion: string;
-  version: string;
-}
-
-export const UpdateHeader = ({ currentReleaseDate, fullVersion, version }: LastCheckProps) => {
+export const UpdateHeader = ({ currentReleaseDate, fullVersion, version }: UpdateHeaderProps) => {
   const [showFullVersion, handleToggleShowFullVersion] = useToggleOnAltClick(false);
 
   return (

@@ -1,11 +1,8 @@
 import React from 'react';
 
+import { UpdateInfoBoxProps } from 'pmm-update/types';
 import { Messages } from './UpdateInfoBox.messages';
 import * as styles from './UpdateInfoBox.styles';
-
-interface UpdateInfoBoxProps {
-  upToDate?: boolean;
-}
 
 export const UpdateInfoBox = ({ upToDate = false }: UpdateInfoBoxProps) => {
   return (
