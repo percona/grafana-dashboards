@@ -10,7 +10,7 @@ interface LastCheckProps {
 }
 
 export const UpdateHeader = ({ currentReleaseDate, fullVersion, version }: LastCheckProps) => {
-  const [showFullVersion, handleToggleShowFullVersion] = useToggleOnAltClick(false)
+  const [showFullVersion, handleToggleShowFullVersion] = useToggleOnAltClick(false);
 
   return (
     <header className={styles.updateHeader}>
@@ -22,4 +22,4 @@ export const UpdateHeader = ({ currentReleaseDate, fullVersion, version }: LastC
       </p>
     </header>
   );
-}
+};
