@@ -95,7 +95,8 @@ export const Overview: FC = () => {
             scroll={{ y: height - 100, x: '100%' }}
             rowClassName={getRowClassName}
             loading={loading}
-            rowKey={(record: any) => (record.fingerprint + record.dimension)}
+            // TODO: (lunaticusgreen)rowKey works strange with TOTALS and some value, need to investigate it
+            // rowKey={(record: any) => (record.fingerprint + record.dimension)}
             data-qa="qan-overview-table"
           />
         </div>
