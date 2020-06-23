@@ -2,7 +2,17 @@ import React from 'react';
 
 import { Messages } from './UpdateModalHeader.messages';
 
-export const UpdateModalHeader = ({ isUpdated, updateFailed, errorMessage }) => (
+interface UpdateModalHeaderProps {
+  errorMessage?: string;
+  isUpdated?: boolean;
+  updateFailed?: boolean;
+}
+
+export const UpdateModalHeader = ({
+  errorMessage = '',
+  isUpdated = false,
+  updateFailed = false,
+}: UpdateModalHeaderProps) => (
   <>
     {isUpdated ? (
       <h4>{Messages.updateSucceeded}</h4>
