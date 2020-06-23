@@ -364,11 +364,15 @@ Scenario(
   'PMM-T179 - Verify user is able to hover sparkline buckets and see correct tooltip',
   async (I, qanPage) => {
     qanPage.waitForNewQANPageLoaded();
+    const queryCount = await I.grabTextFrom(qanPage.fields.overviewRowQueryCount);
     I.moveCursorTo(qanPage.fields.overviewRowQueryCount);
     I.waitForVisible(qanPage.fields.overviewRowQueryCountTooltip, 20);
+    await qanPage.verifyCountTooltip(queryCount);
+    const queryTime = await I.grabTextFrom(qanPage.fields.overviewRowQueryTime);
     I.moveCursorTo(qanPage.fields.overviewRowQueryTime);
     I.waitForVisible(qanPage.fields.overviewRowQueryTimeTooltip, 20);
+    await qanPage.verifyTimeTooltip(queryTime);
     I.click(qanPage.fields.querySelector);
-    pause()
+    //Didn't find way how to check tooltip in detail.
   }
 );

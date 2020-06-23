@@ -89,10 +89,12 @@ module.exports = {
     overviewRowLoad: "//tr[4]//td[3]//span[contains(@class,'summarize')]",
     overviewRowQueryCount: "//tr[4]//td[4]//span[contains(@class,'summarize')]",
     overviewRowQueryCountTooltip: "//tr[4]//td[4]//span[contains(@class, 'ant-tooltip-open')]",
+    overviewRowQueryCountTooltipText: "//tr[4]//td[4]//span[contains(@class, 'ant-tooltip-open')]//div//span",
     overviewRowQueryTime: "//tr[4]//td[5]//span[contains(@class,'summarize')]",
     overviewRowQueryTimeTooltip: "//tr[4]//td[5]//span[contains(@class,'ant-tooltip-open')]",
+    overviewRowQueryTimeTooltipText: "//tr[4]//td[5]//span[contains(@class,'ant-tooltip-open')]//div//span",
     showSelectedDisabled: "//div[@id='inner-filter-wrapper']/div[1]/button[1][@disabled]",
-    environmentLabel: "//span[contains(text(), 'Environment')]"
+    environmentLabel: "//span[contains(text(), 'Environment')]",
   },
 
   metricValueLocatorOverviewTable(column, row) {
@@ -509,5 +511,15 @@ module.exports = {
         );
       }
     }
+  },
+
+  async verifyCountTooltip(value) {
+    const tooltip = await I.grabTextFrom(this.fields.overviewRowQueryCountTooltipText);
+    assert.equal(tooltip[0], value, 'The tooltip has wrong value');
+  },
+
+  async verifyTimeTooltip(value) {
+    const tooltip = await I.grabTextFrom(this.fields.overviewRowQueryTimeTooltipText);
+    assert.equal(tooltip[0], value, 'The tooltip has wrong value');
   },
 };
