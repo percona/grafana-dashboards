@@ -64,9 +64,7 @@ export const METRIC_CATALOGUE = {
   },
   blk_read_time: {
     humanizeName: 'Reading Blocks Time',
-    tooltipText:
-      'Total time the statement spent reading blocks, in'
-      + ' milliseconds (if track_io_timing is enabled, otherwise zero)',
+    tooltipText: 'Total time (in milliseconds) the statement spent reading blocks (if track_io_timing is enabled, otherwise zero)',
     simpleName: 'blk_read_time',
     metricRelation: () => '',
     units: Units.PER_SEC,
@@ -80,8 +78,7 @@ export const METRIC_CATALOGUE = {
   },
   blk_write_time: {
     humanizeName: 'Writing Blocks Time',
-    tooltipText:
-      'Total time the statement spent writing blocks, in milliseconds (if track_io_timing is enabled, otherwise zero)',
+    tooltipText: 'Total time (in milliseconds) the statement spent writing blocks (if track_io_timing is enabled, otherwise zero)',
     simpleName: 'blk_write_time',
     metricRelation: () => '',
     units: Units.PER_SEC,
@@ -151,7 +148,7 @@ export const METRIC_CATALOGUE = {
   },
   shared_blks_dirtied: {
     humanizeName: 'Shared Blocks Dirtied',
-    tooltipText: 'Total number of shared blocks dirtied by the statement\n',
+    tooltipText: 'Total number of shared blocks dirtied by the statement',
     simpleName: 'shared_blks_dirtied',
     metricRelation: () => '',
     units: Units.NONE,
@@ -179,7 +176,7 @@ export const METRIC_CATALOGUE = {
   },
   shared_blks_read: {
     humanizeName: 'Shared Blocks Read',
-    tooltipText: 'Total number of shared blocks read by the statement\n',
+    tooltipText: 'Total number of shared blocks read by the statement',
     simpleName: 'shared_blks_read',
     metricRelation: () => '',
     units: Units.NONE,
@@ -221,7 +218,7 @@ export const METRIC_CATALOGUE = {
   },
   temp_blks_written: {
     humanizeName: 'Temp Blocks Written',
-    tooltipText: 'Total number of temp blocks written by the statement\n',
+    tooltipText: 'Total number of temp blocks written by the statement',
     simpleName: 'temp_blks_written',
     metricRelation: () => '',
     units: Units.NONE,
@@ -235,7 +232,7 @@ export const METRIC_CATALOGUE = {
   },
   num_queries: {
     humanizeName: 'Query Count',
-    tooltipText: 'Count',
+    tooltipText: 'Total number of queries',
     simpleName: 'num_queries',
     units: Units.QPS,
     metricRelation: () => '',
@@ -249,7 +246,7 @@ export const METRIC_CATALOGUE = {
   },
   num_queries_with_errors: {
     humanizeName: 'Query Count with errors',
-    tooltipText: 'Query Count with errors',
+    tooltipText: 'Total number of queries with errors',
     simpleName: 'num_queries_with_errors',
     metricRelation: () => '',
     units: Units.QPS,
@@ -263,7 +260,7 @@ export const METRIC_CATALOGUE = {
   },
   num_queries_with_warnings: {
     humanizeName: 'Query Count with warnings',
-    tooltipText: 'Query Count with warnings',
+    tooltipText: 'Total number of queries with warnings',
     simpleName: 'num_queries_with_warnings',
     metricRelation: () => '',
     units: Units.QPS,
@@ -277,7 +274,7 @@ export const METRIC_CATALOGUE = {
   },
   docs_scanned: {
     humanizeName: 'Docs scanned',
-    tooltipText: 'The number of scanned documents',
+    tooltipText: 'Number of scanned documents',
     simpleName: 'docs_scanned',
     metricRelation: (data) => {
       const mainMetric = get(data, ['docs_scanned', 'sum']);
@@ -300,7 +297,7 @@ export const METRIC_CATALOGUE = {
   },
   docs_returned: {
     humanizeName: 'Docs Returned',
-    tooltipText: 'The number of returned documents',
+    tooltipText: 'Number of returned documents',
     simpleName: 'docs_returned',
     metricRelation: () => '',
     units: Units.NONE,
@@ -314,7 +311,7 @@ export const METRIC_CATALOGUE = {
   },
   filesort: {
     humanizeName: 'Filesort',
-    tooltipText: 'The query used a filesort',
+    tooltipText: 'The query used a file sort',
     simpleName: 'filesort',
     metricRelation: (data) => {
       const mainMetric = get(data, ['filesort', 'sum']);
@@ -337,7 +334,7 @@ export const METRIC_CATALOGUE = {
   },
   filesort_on_disk: {
     humanizeName: 'Filesort on Disk',
-    tooltipText: 'The filesort was performed on disk',
+    tooltipText: 'A file sort was performed on disk',
     simpleName: 'filesort_on_disk',
     metricRelation: (data) => {
       const mainMetric = get(data, ['filesort_on_disk', 'sum']);
@@ -406,7 +403,7 @@ export const METRIC_CATALOGUE = {
   },
   innodb_io_r_bytes: {
     humanizeName: 'Innodb Read Bytes',
-    tooltipText: 'Similar to innodb_IO_r_ops, but the unit is bytes',
+    tooltipText: 'Like innodb_IO_r_ops, but in bytes',
     simpleName: 'innodb_io_r_bytes',
     metricRelation: (data) => {
       const mainMetric = get(data, ['innodb_io_r_bytes', 'sum']);
@@ -429,7 +426,7 @@ export const METRIC_CATALOGUE = {
   },
   innodb_io_r_ops: {
     humanizeName: 'Innodb IO Read Ops',
-    tooltipText: 'Counts the number of page read operations scheduled',
+    tooltipText: 'Number of page read operations scheduled',
     simpleName: 'innodb_io_r_ops',
     metricRelation: () => '',
     units: Units.PER_SEC,
@@ -443,7 +440,7 @@ export const METRIC_CATALOGUE = {
   },
   innodb_io_r_wait: {
     humanizeName: 'Innodb IO Read Wait',
-    tooltipText: 'Shows how long (in seconds) it took InnoDB to actually read the data from storage',
+    tooltipText: 'Time (in seconds) for InnoDB to read the data from storage',
     simpleName: 'innodb_io_r_wait',
     metricRelation: (data) => {
       const mainMetric = get(data, ['innodb_io_r_wait', 'avg']);
@@ -466,7 +463,7 @@ export const METRIC_CATALOGUE = {
   },
   innodb_pages_distinct: {
     humanizeName: 'Innodb Pages Distinct',
-    tooltipText: 'Counts approximately the number of unique pages the query accessed',
+    tooltipText: 'Approximate number of unique pages the query accessed',
     simpleName: 'innodb_pages_distinct',
     metricRelation: () => '',
     units: Units.NONE,
@@ -480,9 +477,7 @@ export const METRIC_CATALOGUE = {
   },
   innodb_queue_wait: {
     humanizeName: 'Innodb Queue Wait',
-    tooltipText:
-      'Shows how long ( in seconds) the query spent either waiting to'
-      + ' enter the InnoDB queue or inside that queue waiting for + execution',
+    tooltipText: 'Time (in seconds) the query spent either waiting to enter the InnoDB queue, or in it pending execution',
     simpleName: 'innodb_queue_wait',
     metricRelation: (data) => {
       const mainMetric = get(data, ['innodb_queue_wait', 'avg']);
@@ -505,7 +500,7 @@ export const METRIC_CATALOGUE = {
   },
   innodb_rec_lock_wait: {
     humanizeName: 'Innodb Rec Lock Wait',
-    tooltipText: 'Shows how long ( in seconds) the query waited for row locks',
+    tooltipText: 'Time (in seconds) the query waited for row locks',
     simpleName: 'innodb_rec_lock_wait',
     metricRelation: (data) => {
       const mainMetric = get(data, ['innodb_rec_lock_wait', 'avg']);
@@ -528,7 +523,7 @@ export const METRIC_CATALOGUE = {
   },
   load: {
     humanizeName: 'Load',
-    tooltipText: 'Load',
+    tooltipText: 'Percentage load on the system',
     simpleName: 'load',
     metricRelation: () => '',
     units: Units.LOAD,
@@ -542,7 +537,7 @@ export const METRIC_CATALOGUE = {
   },
   lock_time: {
     humanizeName: 'Lock Time',
-    tooltipText: 'The time to acquire locks in seconds',
+    tooltipText: 'Time (in seconds) to acquire locks',
     simpleName: 'lock_time',
     metricRelation: (data) => {
       const mainMetric = get(data, ['lock_time', 'avg']);
@@ -565,7 +560,7 @@ export const METRIC_CATALOGUE = {
   },
   merge_passes: {
     humanizeName: 'Merge Passes',
-    tooltipText: 'The number of merge passes that the sort algorithm has had to do',
+    tooltipText: 'Number of merge passes the sort algorithm performed',
     simpleName: 'merge_passes',
     metricRelation: (data) => {
       const mainMetric = get(data, ['merge_passes', 'sum']);
@@ -588,7 +583,7 @@ export const METRIC_CATALOGUE = {
   },
   no_good_index_used: {
     humanizeName: 'No Good Index Used',
-    tooltipText: 'The number of queries without good index',
+    tooltipText: 'Number of queries without a good index',
     simpleName: 'no_good_index_used',
     metricRelation: () => '',
     units: Units.NONE,
@@ -602,7 +597,7 @@ export const METRIC_CATALOGUE = {
   },
   no_index_used: {
     humanizeName: 'No index used',
-    tooltipText: 'The number of queries without index',
+    tooltipText: 'Number of queries without an index',
     simpleName: 'no_index_used',
     metricRelation: () => '',
     units: Units.NONE,
@@ -639,7 +634,7 @@ export const METRIC_CATALOGUE = {
   },
   query_length: {
     humanizeName: 'Query Length',
-    tooltipText: 'Shows how long the query is',
+    tooltipText: 'Query duration (in seconds)',
     simpleName: 'query_length',
     metricRelation: () => '',
     units: Units.PER_SEC,
@@ -653,7 +648,7 @@ export const METRIC_CATALOGUE = {
   },
   query_time: {
     humanizeName: 'Query Time',
-    tooltipText: 'The statement execution time in seconds',
+    tooltipText: 'Statement execution time (in seconds)',
     simpleName: 'query_time',
     metricRelation: () => '',
     units: Units.LOAD,
@@ -667,7 +662,7 @@ export const METRIC_CATALOGUE = {
   },
   response_length: {
     humanizeName: 'Response Length',
-    tooltipText: 'The response length of the query result in bytes',
+    tooltipText: 'Response length of the query result (in bytes)',
     simpleName: 'response_length',
     metricRelation: (data) => {
       const mainMetric = get(data, ['response_length', 'sum']);
@@ -690,7 +685,7 @@ export const METRIC_CATALOGUE = {
   },
   rows_affected: {
     humanizeName: 'Rows Affected',
-    tooltipText: 'Number of rows changed -UPDATE, DELETE, INSERT',
+    tooltipText: 'Number of rows changed by UPDATE, DELETE, or INSERT',
     simpleName: 'rows_affected',
     metricRelation: () => '',
     units: Units.PER_SEC,
@@ -704,7 +699,7 @@ export const METRIC_CATALOGUE = {
   },
   rows_examined: {
     humanizeName: 'Rows Examined',
-    tooltipText: 'Number of rows scanned -SELECT',
+    tooltipText: 'Number of rows scanned by SELECT',
     simpleName: 'rows_examined',
     metricRelation: (data) => {
       const mainMetric = get(data, ['rows_examined', 'sum']);
@@ -727,7 +722,7 @@ export const METRIC_CATALOGUE = {
   },
   rows_read: {
     humanizeName: 'Bytes Read',
-    tooltipText: 'The number of rows read from tables',
+    tooltipText: 'Number of rows read from tables',
     simpleName: 'rows_read',
     metricRelation: () => '',
     units: Units.PER_SEC,
@@ -741,7 +736,7 @@ export const METRIC_CATALOGUE = {
   },
   rows_sent: {
     humanizeName: 'Rows Sent',
-    tooltipText: 'The number of rows sent to the client',
+    tooltipText: 'Number of rows sent to the client',
     simpleName: 'rows_sent',
     metricRelation: () => '',
     units: Units.PER_SEC,
@@ -755,7 +750,7 @@ export const METRIC_CATALOGUE = {
   },
   select_full_range_join: {
     humanizeName: 'Select Full Range Join',
-    tooltipText: 'The number of joins that used a range search on a reference table',
+    tooltipText: 'Number of joins using a range search on a reference table',
     simpleName: 'select_full_range_join',
     metricRelation: () => '',
     units: Units.NONE,
@@ -769,7 +764,7 @@ export const METRIC_CATALOGUE = {
   },
   sort_range: {
     humanizeName: 'Sort Range',
-    tooltipText: 'The number of sorts that were done using ranges',
+    tooltipText: 'Number of sorts using ranges',
     simpleName: 'sort_range',
     metricRelation: () => '',
     units: Units.NONE,
@@ -783,7 +778,7 @@ export const METRIC_CATALOGUE = {
   },
   select_range: {
     humanizeName: 'Select Range',
-    tooltipText: 'The number of joins that used ranges on the first table',
+    tooltipText: 'Number of joins using ranges on the first table',
     simpleName: 'select_range',
     metricRelation: () => '',
     units: Units.NONE,
@@ -825,7 +820,7 @@ export const METRIC_CATALOGUE = {
   },
   sort_scan: {
     humanizeName: 'Sort Scan',
-    tooltipText: 'The number of sorts that were done by scanning the table',
+    tooltipText: 'The number of sorts that scanned the table',
     simpleName: 'sort_scan',
     metricRelation: () => '',
     units: Units.PER_SEC,
@@ -839,7 +834,7 @@ export const METRIC_CATALOGUE = {
   },
   tmp_disk_tables: {
     humanizeName: 'Tmp Disk Tables',
-    tooltipText: 'Number of temporary tables created on disk for the query',
+    tooltipText: 'The number of temporary tables created on disk for the query',
     simpleName: 'tmp_disk_tables',
     metricRelation: (data) => {
       const mainMetric = get(data, ['tmp_disk_tables', 'sum']);
@@ -885,7 +880,7 @@ export const METRIC_CATALOGUE = {
   },
   tmp_table_on_disk: {
     humanizeName: 'Tmp Table on Disk',
-    tooltipText: 'The queries temporary table was stored on disk',
+    tooltipText: 'The query\'s temporary table was stored on disk',
     simpleName: 'tmp_table_on_disk',
     metricRelation: (data) => {
       const mainMetric = get(data, ['tmp_table_on_disk', 'sum']);
@@ -908,7 +903,7 @@ export const METRIC_CATALOGUE = {
   },
   tmp_table_sizes: {
     humanizeName: 'Tmp Table Sizes',
-    tooltipText: 'Total Size in bytes for all temporary tables used in the query',
+    tooltipText: 'Total size (in bytes) for all temporary tables used in the query',
     simpleName: 'tmp_table_sizes',
     metricRelation: (data) => {
       const mainMetric = get(data, ['tmp_table_sizes', 'sum']);
