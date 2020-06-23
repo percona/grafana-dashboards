@@ -820,7 +820,7 @@ export const METRIC_CATALOGUE = {
   },
   sort_scan: {
     humanizeName: 'Sort Scan',
-    tooltipText: 'The number of sorts that scanned the table',
+    tooltipText: 'The number of sorts performed when scanning the table',
     simpleName: 'sort_scan',
     metricRelation: () => '',
     units: Units.PER_SEC,
