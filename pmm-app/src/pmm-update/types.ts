@@ -115,3 +115,7 @@ export interface AvailableUpdateProps {
   nextFullVersion: string;
   nextVersion: string;
 }
+
+export type UpdateStatus = [string, string, boolean, boolean, () => void];
+
+export type ApiCall<R, A> = [R | undefined, string, boolean, (args?: A) => void];

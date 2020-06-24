@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 
-export const useApiCall = <R, A>(apiFn: (apiFnArgs?: A) => Promise<R>, apiFnArgs?: A) => {
+import { ApiCall } from 'pmm-update/types';
+
+export const useApiCall = <R, A>(apiFn: (apiFnArgs?: A) => Promise<R>, apiFnArgs?: A): ApiCall<R, A> => {
   const [data, setData] = useState<R>();
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -26,5 +28,5 @@ export const useApiCall = <R, A>(apiFn: (apiFnArgs?: A) => Promise<R>, apiFnArgs
     apiCall(apiFnArgs);
   }, []);
 
-  return { data, errorMessage, isLoading, apiCall };
+  return [data, errorMessage, isLoading, apiCall];
 };

@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react';
 
 import { startUpdate, getUpdateStatus } from 'pmm-update/UpdatePanel.service';
+import { UpdateStatus } from 'pmm-update/types';
 
-const useInitializeUpdate = () => {
+type UseInitializeUpdateReturn = [string, number, boolean, () => void];
+
+const useInitializeUpdate = (): UseInitializeUpdateReturn => {
   const [updateFailed, setUpdateFailed] = useState(false);
   const [authToken, setAuthToken] = useState('');
   const [logOffset, setLogOffset] = useState(0);
@@ -22,22 +25,17 @@ const useInitializeUpdate = () => {
     }
   };
 
-  return { authToken, logOffset, updateFailed, initializeUpdate };
+  return [authToken, logOffset, updateFailed, initializeUpdate];
 };
 
-export const usePerformUpdate = (): [string, string, boolean, boolean, () => void] => {
+export const usePerformUpdate = (): UpdateStatus => {
   const [updateFailed, setUpdateFailed] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [output, setOutput] = useState('');
   const [isUpdated, setIsUpdated] = useState(false);
   const [timeoutId, setTimeoutId] = useState<number>();
 
-  const {
-    authToken,
-    logOffset,
-    updateFailed: initializationFailed,
-    initializeUpdate: launchUpdate,
-  } = useInitializeUpdate();
+  const [authToken, logOffset, initializationFailed, launchUpdate] = useInitializeUpdate();
 
   useEffect(() => {
     if (!authToken || typeof logOffset === 'undefined') {

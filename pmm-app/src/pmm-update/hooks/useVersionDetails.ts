@@ -11,15 +11,15 @@ import {
 } from 'pmm-update/types';
 
 export const useVersionDetails = (initialForceUpdate = false): CurrentOrNextVersionDetails => {
-  const [isDefaultView, setIsDefaultView] = useState(false);
+  const [isDefaultView, setIsDefaultView] = useState(true);
   const [nextVersionDetails, setNextVersionDetails] = useState<NextVersionDetails>();
   const [installedVersionDetails, setInstalledVersionDetails] = useState<InstalledVersionDetails>();
   const [lastCheckDate, setLastCheckDate] = useState('');
   const [isUpdateAvailable, setIsUpdateAvailable] = useState(false);
-  const { data, errorMessage, isLoading, apiCall: getVersionDetails } = useApiCall<
-    GetUpdatesResponse | void,
-    boolean
-  >(getCurrentVersion, initialForceUpdate);
+  const [data, errorMessage, isLoading, getVersionDetails] = useApiCall<GetUpdatesResponse | void, boolean>(
+    getCurrentVersion,
+    initialForceUpdate
+  );
 
   useEffect(() => {
     if (!data) {
