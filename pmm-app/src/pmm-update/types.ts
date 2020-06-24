@@ -119,3 +119,5 @@ export interface AvailableUpdateProps {
 export type UpdateStatus = [string, string, boolean, boolean, () => void];
 
 export type ApiCall<R, A> = [R | undefined, string, boolean, (args?: A) => void];
+
+export type UpdateInitialization = [string, number, boolean, () => void];

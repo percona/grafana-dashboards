@@ -1,32 +1,8 @@
 import { useEffect, useState } from 'react';
 
-import { startUpdate, getUpdateStatus } from 'pmm-update/UpdatePanel.service';
+import { getUpdateStatus } from 'pmm-update/UpdatePanel.service';
 import { UpdateStatus } from 'pmm-update/types';
-
-type UseInitializeUpdateReturn = [string, number, boolean, () => void];
-
-const useInitializeUpdate = (): UseInitializeUpdateReturn => {
-  const [updateFailed, setUpdateFailed] = useState(false);
-  const [authToken, setAuthToken] = useState('');
-  const [logOffset, setLogOffset] = useState(0);
-
-  const initializeUpdate = async () => {
-    try {
-      const data = await startUpdate();
-      if (!data) {
-        throw Error('Invalid response received');
-      }
-      const { auth_token, log_offset } = data;
-      setAuthToken(auth_token);
-      setLogOffset(log_offset);
-    } catch (e) {
-      setUpdateFailed(true);
-      console.error(e);
-    }
-  };
-
-  return [authToken, logOffset, updateFailed, initializeUpdate];
-};
+import { useInitializeUpdate } from './useInitializeUpdate';
 
 export const usePerformUpdate = (): UpdateStatus => {
   const [updateFailed, setUpdateFailed] = useState(false);
