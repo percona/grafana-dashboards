@@ -1,4 +1,5 @@
 Feature('Test Dashboards inside the PostgreSQL Folder');
+const allure = codeceptjs.container.plugins('allure');
 
 Before( async (I) => {
   I.Authorize();
