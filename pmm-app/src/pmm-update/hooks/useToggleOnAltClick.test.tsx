@@ -10,7 +10,7 @@ const HookWrapper: FC<{ hook: () => any }> = ({ hook }) => {
 };
 
 describe('useToggleOnAltClick', () => {
-  it('should toggle a boolean value on click on a compunent using the returned handler', async () => {
+  it('should toggle a boolean value on alt+click on a compunent using the returned handler', async () => {
     let wrapper: ReturnType<typeof mount> | undefined;
 
     await act(async () => {
@@ -30,6 +30,30 @@ describe('useToggleOnAltClick', () => {
     [toggleValue, handler] = wrapper?.find('div').prop('data-hook');
 
     expect(toggleValue).toEqual(true);
+
+    wrapper?.unmount();
+  });
+
+  it('should do nothing if alt is not pressed while clicking', async () => {
+    let wrapper: ReturnType<typeof mount> | undefined;
+
+    await act(async () => {
+      wrapper = mount(<HookWrapper hook={() => useToggleOnAltClick()} />);
+    });
+    wrapper?.update();
+
+    let [toggleValue, handler] = wrapper?.find('div').prop('data-hook');
+
+    expect(toggleValue).toEqual(false);
+
+    const testComponent = mount(<div onClick={handler} />);
+    testComponent.simulate('click', { altKey: false });
+
+    wrapper?.update();
+
+    [toggleValue, handler] = wrapper?.find('div').prop('data-hook');
+
+    expect(toggleValue).toEqual(false);
 
     wrapper?.unmount();
   });
