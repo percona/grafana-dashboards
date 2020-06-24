@@ -109,6 +109,7 @@ Scenario(
   'Verify Agents are RUNNING after Upgrade (UI) @pmm-upgrade @visual-test @not-pr-pipeline',
   async (I, adminPage, pmmInventoryPage) => {
     I.amOnPage(pmmInventoryPage.url);
+    adminPage.peformPageDown(5);
     for (const service of Object.values(serviceNames)) {
       await pmmInventoryPage.verifyAgentHasStatusRunning(service);
     }
