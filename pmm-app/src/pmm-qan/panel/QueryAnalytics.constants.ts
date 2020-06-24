@@ -311,7 +311,7 @@ export const METRIC_CATALOGUE = {
   },
   filesort: {
     humanizeName: 'Filesort',
-    tooltipText: 'The query used a file sort',
+    tooltipText: 'The query used a filesort',
     simpleName: 'filesort',
     metricRelation: (data) => {
       const mainMetric = get(data, ['filesort', 'sum']);
@@ -334,7 +334,7 @@ export const METRIC_CATALOGUE = {
   },
   filesort_on_disk: {
     humanizeName: 'Filesort on Disk',
-    tooltipText: 'A file sort was performed on disk',
+    tooltipText: 'A filesort was performed on disk',
     simpleName: 'filesort_on_disk',
     metricRelation: (data) => {
       const mainMetric = get(data, ['filesort_on_disk', 'sum']);
