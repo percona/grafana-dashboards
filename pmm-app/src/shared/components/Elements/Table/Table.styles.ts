@@ -30,20 +30,20 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       border-collapse: separate; /* Don't collapse */
       border-spacing: 0;
 
-      table {
+      .table {
         /* Make sure the inner table is always as wide as needed */
         width: 100%;
         border-spacing: 0;
 
-        tr {
+        .tr {
           :last-child {
-            td {
+            .td {
               border-bottom: 0;
             }
           }
         }
-        th,
-        td {
+        .th,
+        .td {
           background-color: ${backgroundColor};
           margin: 0;
           padding: 3px;
@@ -56,7 +56,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
           }
         }
 
-        th {
+        .th {
           background-color: ${headerBackground};
           position: -webkit-sticky; /* for Safari */
           position: sticky;
@@ -64,15 +64,14 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
           z-index: 2;
         }
       }
-      tbody td:first-child {
+      .tr .td:first-child {
         position: -webkit-sticky; /* for Safari */
         position: sticky;
         left: 0;
         z-index: 1;
-        border: 1px solid yellow;
         outline: 1px solid ${borderColor};
       }
-      th:first-child {
+      .th:first-child {
         position: -webkit-sticky; /* for Safari */
         position: sticky;
         left: 0;

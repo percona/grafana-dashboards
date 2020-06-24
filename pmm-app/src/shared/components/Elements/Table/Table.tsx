@@ -1,11 +1,41 @@
 // @ts-nocheck
-import React, { ReactNode, FC, useEffect } from 'react';
+import React, { FC, ReactNode, useEffect } from 'react';
 import {
-  useRowSelect, useTable, Column, useSortBy
+  Column, useBlockLayout, useRowSelect, useSortBy, useTable
 } from 'react-table';
 import { Spinner, useTheme } from '@grafana/ui';
-import { cx } from 'emotion';
+import { FixedSizeList } from 'react-window';
 import { getStyles } from './Table.styles';
+
+// const Styles = styled.div`
+//   padding: 1rem;
+//
+//   .table {
+//     display: inline-block;
+//     border-spacing: 0;
+//     border: 1px solid black;
+//
+//     .tr {
+//       :last-child {
+//         .td {
+//           border-bottom: 0;
+//         }
+//       }
+//     }
+//
+//     .th,
+//     .td {
+//       margin: 0;
+//       padding: 0.5rem;
+//       border-bottom: 1px solid black;
+//       border-right: 1px solid black;
+//
+//       :last-child {
+//         border-right: 0;
+//       }
+//     }
+//   }
+// `;
 
 interface TableProps {
   rowSelection?: boolean;
@@ -32,12 +62,12 @@ export const Table: FC<TableProps> = ({
   rowSelection = false,
   onRowSelection,
   scroll,
-  rowClassName,
-  onRowClick,
+  // rowClassName,
+  // onRowClick,
   data,
   noData,
   loading,
-  rowKey,
+  // rowKey,
 }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
@@ -49,6 +79,7 @@ export const Table: FC<TableProps> = ({
     rows,
     prepareRow,
     selectedFlatRows,
+    totalColumnsWidth,
   } = useTable(
     {
       columns,
@@ -76,7 +107,8 @@ export const Table: FC<TableProps> = ({
           ...columns,
         ]);
       }
-    }
+    },
+    useBlockLayout
   );
 
   useEffect(() => {
@@ -84,6 +116,30 @@ export const Table: FC<TableProps> = ({
       onRowSelection(selectedFlatRows);
     }
   }, [selectedFlatRows]);
+
+  const RenderRow = React.useCallback(
+    ({ index, style }) => {
+      const row = rows[index];
+
+      prepareRow(row);
+
+      return (
+        <div
+          {...row.getRowProps({
+            style,
+          })}
+          className="tr"
+        >
+          {row.cells.map((cell) => (
+            <div {...cell.getCellProps()} className="td">
+              {cell.render('Cell')}
+            </div>
+          ))}
+        </div>
+      );
+    },
+    [prepareRow, rows]
+  );
 
   return (
     <div className={styles.table}>
@@ -99,79 +155,120 @@ export const Table: FC<TableProps> = ({
           </div>
         ) : null}
         {rows.length && !loading ? (
-          <table {...getTableProps()}>
-            <thead>
-              {headerGroups.map((headerGroup, i) => (
-                <tr data-qa="table-header" {...headerGroup.getHeaderGroupProps()} key={i}>
-                  {headerGroup.headers.map((column, index) => {
-                    const { HeaderAccessor } = column;
-
-                    column.Header = () => HeaderAccessor();
-
-                    return (
-                      <th
-                        {...column.getHeaderProps()}
-                        className={cx(
-                          styles.header(column.width),
-                          index === 0 && rowSelection ? styles.checkboxColumn : ''
-                        )}
-                        key={index}
-                        {...column.getSortByToggleProps()}
-                      >
-                        <div className={styles.headerContent}>
-                          <div style={{ width: '80%' }}>{column.render('Header')}</div>
-                          <span style={{ display: 'flex', flexDirection: 'column' }}>
-                            {/* eslint-disable-next-line no-nested-ternary */}
-                            {column.isSorted ? (
-                              column.isSortedDesc ? (
-                                '🔽'
-                              ) : (
-                                ' 🔼'
-                              )
+          <div {...getTableProps()} className="table">
+            <div>
+              {headerGroups.map((headerGroup) => (
+                <div {...headerGroup.getHeaderGroupProps()} className="tr">
+                  {headerGroup.headers.map((column) => (
+                    <div {...column.getHeaderProps()} className="th">
+                      <div className={styles.headerContent}>
+                        <div style={{ width: '80%' }}>{column.render('Header')}</div>
+                        <span style={{ display: 'flex', flexDirection: 'column' }}>
+                          {/* eslint-disable-next-line no-nested-ternary */}
+                          {column.isSorted ? (
+                            column.isSortedDesc ? (
+                              '🔽'
                             ) : (
-                              <>
-                                {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
-                                <span>🔼</span>
-                                {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
-                                <span>🔽</span>
-                              </>
-                            )}
-                          </span>
-                        </div>
-                      </th>
-                    );
-                  })}
-                </tr>
+                              ' 🔼'
+                            )
+                          ) : (
+                            <>
+                              {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
+                              <span>🔼</span>
+                              {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
+                              <span>🔽</span>
+                            </>
+                          )}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               ))}
-            </thead>
-            <tbody {...getTableBodyProps()}>
-              {rows.map((row, i) => {
-                prepareRow(row);
+            </div>
 
-                return (
-                  <tr
-                    data-qa="table-row"
-                    className={rowClassName(row.original, row.index)}
-                    {...row.getRowProps()}
-                    key={rowKey ? rowKey(row) : i}
-                    onClick={() => onRowClick(row)}
-                  >
-                    {row.cells.map((cell, index) => (
-                      // eslint-disable-next-line react/jsx-key
-                      <td
-                        {...cell.getCellProps()}
-                        className={index === 0 && rowSelection ? styles.checkboxColumn : ''}
-                        key={index}
-                      >
-                        {cell.render('Cell')}
-                      </td>
-                    ))}
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        ) : null}
+            <div {...getTableBodyProps()}>
+              <FixedSizeList height={400} itemCount={rows.length} itemSize={35} width={totalColumnsWidth}>
+                {RenderRow}
+              </FixedSizeList>
+            </div>
+          </div>
+        ) // <div {...getTableProps()} className={'table'}>
+        //   <thead>
+        //     {headerGroups.map((headerGroup, i) => (
+        //       <tr data-qa="table-header" {...headerGroup.getHeaderGroupProps()} key={i}>
+        //         {headerGroup.headers.map((column, index) => {
+        //           const { HeaderAccessor } = column;
+        //
+        //           column.Header = () => HeaderAccessor();
+        //
+        //           return (
+        //             <th
+        //               {...column.getHeaderProps()}
+        //               className={cx(
+        //                 styles.header(column.width),
+        //                 index === 0 && rowSelection ? styles.checkboxColumn : ''
+        //               )}
+        //               key={index}
+        //               {...column.getSortByToggleProps()}
+        //             >
+        //               <div className={styles.headerContent}>
+        //                 <div style={{ width: '80%' }}>{column.render('Header')}</div>
+        //                 <span style={{ display: 'flex', flexDirection: 'column' }}>
+        //                   {/* eslint-disable-next-line no-nested-ternary */}
+        //                   {column.isSorted ? (
+        //                     column.isSortedDesc ? (
+        //                       '🔽'
+        //                     ) : (
+        //                       ' 🔼'
+        //                     )
+        //                   ) : (
+        //                     <>
+        //                       {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
+        //                       <span>🔼</span>
+        //                       {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
+        //                       <span>🔽</span>
+        //                     </>
+        //                   )}
+        //                 </span>
+        //               </div>
+        //             </th>
+        //           );
+        //         })}
+        //       </tr>
+        //     ))}
+        //   </thead>
+        //   <div {...getTableBodyProps()}>
+        //     <FixedSizeList height={400} itemCount={rows.length} itemSize={35} width={totalColumnsWidth}>
+        //       {RenderRow}
+        //     </FixedSizeList>
+        //     {/*{rows.map((row, i) => {*/}
+        //     {/*  prepareRow(row);*/}
+        //
+        //     {/*  return (*/}
+        //     {/*    <tr*/}
+        //     {/*      data-qa="table-row"*/}
+        //     {/*      className={rowClassName(row.original, row.index)}*/}
+        //     {/*      {...row.getRowProps()}*/}
+        //     {/*      key={rowKey ? rowKey(row) : i}*/}
+        //     {/*      onClick={() => onRowClick(row)}*/}
+        //     {/*    >*/}
+        //     {/*      {row.cells.map((cell, index) => (*/}
+        //     {/*        // eslint-disable-next-line react/jsx-key*/}
+        //     {/*        <td*/}
+        //     {/*          {...cell.getCellProps()}*/}
+        //     {/*          className={index === 0 && rowSelection ? styles.checkboxColumn : ''}*/}
+        //     {/*          key={index}*/}
+        //     {/*        >*/}
+        //     {/*          {cell.render('Cell')}*/}
+        //     {/*        </td>*/}
+        //     {/*      ))}*/}
+        //     {/*    </tr>*/}
+        //     {/*  );*/}
+        //     {/*})}*/}
+        //   </div>
+        // </div>
+          : null}
       </div>
     </div>
   );
