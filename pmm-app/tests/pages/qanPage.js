@@ -74,7 +74,7 @@ module.exports = {
     tableRow: "(//table[@class='ant-table-fixed']//tbody[@class='ant-table-tbody'])[2]//tr",
     tableRow: "//td[@class='ant-table-row-cell-break-word']",
     resultPerPageCombobox: '.ant-pagination-options',
-    addColumnNewQAN: '.add-columns',
+    addColumnNewQAN: "//span[contains(text(), 'Add column')]",
     noDataIcon: 'div.ant-empty-image',
     querySelector:
       "(//table[@class='ant-table-fixed']//tbody[@class='ant-table-tbody'])[2]//tr[4]//td[2]//div//div",
@@ -95,6 +95,8 @@ module.exports = {
     overviewRowQueryTimeTooltipText: "//tr[4]//td[5]//span[contains(@class,'ant-tooltip-open')]//div//span",
     showSelectedDisabled: "//div[@id='inner-filter-wrapper']/div[1]/button[1][@disabled]",
     environmentLabel: "//span[contains(text(), 'Environment')]",
+    innodbColumn: "//tr[2]//td[6]//span[contains(@class,'summarize')]",
+    loadValue: "//td[3]//span[contains(text(),'<0.01 load')]",
   },
 
   metricValueLocatorOverviewTable(column, row) {
@@ -476,7 +478,7 @@ module.exports = {
     }
   },
 
-  sortMetric(metricName, sortOrder = 'down') {
+  sortMetric(metricName, sortOrder) {
     const sortLocator = `//th//span[contains(text(),'${metricName}')]/ancestor::span//div[@title='Sort']`;
     I.waitForVisible(sortLocator, 30);
     I.click(sortLocator);

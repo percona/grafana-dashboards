@@ -360,7 +360,7 @@ xScenario(
 );
 
 // TODO: Uncomment after new QAN will be merged
-Scenario(
+xScenario(
   'PMM-T179 - Verify user is able to hover sparkline buckets and see correct tooltip',
   async (I, qanPage) => {
     qanPage.waitForNewQANPageLoaded();
@@ -374,5 +374,23 @@ Scenario(
     await qanPage.verifyTimeTooltip(queryTime);
     I.click(qanPage.fields.querySelector);
     //Didn't find way how to check tooltip in detail.
+  }
+);
+
+// TODO: Uncomment after new QAN will be merged
+xScenario(
+  'PMM-T204 - Verify small and N/A values on sparkline',
+  async (I, qanPage) => {
+    qanPage.waitForNewQANPageLoaded();
+    qanPage.sortMetric('Load', 'up');
+    I.moveCursorTo(qanPage.fields.loadValue);
+    //check tooltip
+    qanPage.applyFilterNewQAN('mongodb');
+    I.click(qanPage.fields.addColumnNewQAN);
+    qanPage.addSpecificColumn('Innodb');
+    qanPage.verifyAddedColumn('Innodb');
+    I.moveCursorTo(qanPage.fields.innodbColumn);
+    //add check tooltip
+    pause();
   }
 );
