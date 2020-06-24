@@ -64,7 +64,7 @@ export const METRIC_CATALOGUE = {
   },
   blk_read_time: {
     humanizeName: 'Reading Blocks Time',
-    tooltipText: 'Total time (in milliseconds) the statement spent reading blocks (if track_io_timing is enabled, otherwise zero)',
+    tooltipText: 'Total time (in seconds) the statement spent reading blocks (if track_io_timing is enabled, otherwise zero)',
     simpleName: 'blk_read_time',
     metricRelation: () => '',
     units: Units.PER_SEC,
@@ -78,7 +78,7 @@ export const METRIC_CATALOGUE = {
   },
   blk_write_time: {
     humanizeName: 'Writing Blocks Time',
-    tooltipText: 'Total time (in milliseconds) the statement spent writing blocks (if track_io_timing is enabled, otherwise zero)',
+    tooltipText: 'Total time (in seconds) the statement spent writing blocks (if track_io_timing is enabled, otherwise zero)',
     simpleName: 'blk_write_time',
     metricRelation: () => '',
     units: Units.PER_SEC,
