@@ -19,7 +19,7 @@ export const usePerformUpdate = (): UpdateStatus => {
     }
 
     const updateStatus = async (logOffset: number, errorsCount = 0) => {
-      if (errorsCount > 600) {
+      if (errorsCount > 600 || initializationFailed) {
         setUpdateFailed(true);
         return;
       }
@@ -61,7 +61,7 @@ export const usePerformUpdate = (): UpdateStatus => {
   }, [authToken, logOffset]);
 
   useEffect(() => {
-    setUpdateFailed(true);
+    setUpdateFailed(initializationFailed);
   }, [initializationFailed]);
 
   return [output, errorMessage, isUpdated, updateFailed, launchUpdate];
