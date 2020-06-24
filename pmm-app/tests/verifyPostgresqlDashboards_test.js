@@ -7,7 +7,7 @@ Before( async (I) => {
 
 Scenario(
   'Open the PostgreSQL Instance Summary Dashboard and verify Metrics are present and graphs are displayed @not-pr-pipeline',
-  async (I, dashboardPage) => {
+  async (I, dashboardPage, adminPage) => {
     allure.severity('normal');
     I.amOnPage(dashboardPage.postgresqlInstanceSummaryDashboard.url);
     dashboardPage.waitForDashboardOpened();
