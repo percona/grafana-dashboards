@@ -108,10 +108,7 @@ export interface UpdateButtonProps {
 }
 
 export interface AvailableUpdateProps {
-  newReleaseDate: string;
-  newsLink?: string;
-  nextFullVersion: string;
-  nextVersion: string;
+  nextVersionDetails: NextVersionDetails;
 }
 
 export type UpdateStatus = [string, string, boolean, boolean, () => void];

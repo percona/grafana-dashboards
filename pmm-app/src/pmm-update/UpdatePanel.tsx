@@ -62,12 +62,7 @@ export const UpdatePanel: FC<{}> = () => {
         {isDefaultView && <UpdateInfoBox />}
         {!isUpdateAvailable && !isDefaultView && !forceUpdate ? <UpdateInfoBox upToDate /> : null}
         {isUpdateAvailable && !isDefaultView ? (
-          <AvailableUpdate
-            newReleaseDate={nextVersionDetails?.nextVersionDate}
-            newsLink={nextVersionDetails?.newsLink}
-            nextVersion={nextVersionDetails?.nextVersion}
-            nextFullVersion={nextVersionDetails?.nextFullVersion}
-          />
+          <AvailableUpdate nextVersionDetails={nextVersionDetails} />
         ) : null}
         {isUpdateAvailable || forceUpdate ? (
           <UpdateButton onClick={handleUpdate} nextVersion={nextVersionDetails?.nextVersion} />
