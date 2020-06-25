@@ -23,11 +23,22 @@ Scenario(
     const [, dockerMinor, dockerPatch] = process.env.DOCKER_VERSION.split('.');
     const majorVersionDiff = pmmMinor - dockerMinor;
     const patchVersionDiff = pmmPatch - dockerPatch;
-    if (majorVersionDiff >= 1 && patchVersionDiff >= 0) {
+    if (patchVersionDiff >= 2) {
       I.waitForElement(homePage.fields.whatsNewLink, 30);
       I.seeElement(homePage.fields.whatsNewLink);
       const link = await I.grabAttributeFrom(homePage.fields.whatsNewLink, 'href');
       assert.equal(link.indexOf('https://per.co.na/pmm/') > -1, true, 'Whats New Link has an unexpected URL');
+    } else {
+      if (pmmMinor !== dockerMinor && majorVersionDiff !== 1) {
+        I.waitForElement(homePage.fields.whatsNewLink, 30);
+        I.seeElement(homePage.fields.whatsNewLink);
+        const link = await I.grabAttributeFrom(homePage.fields.whatsNewLink, 'href');
+        assert.equal(
+          link.indexOf('https://per.co.na/pmm/') > -1,
+          true,
+          'Whats New Link has an unexpected URL'
+        );
+      }
     }
   }
 );
