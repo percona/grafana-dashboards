@@ -88,9 +88,7 @@ export interface LastCheckProps {
 }
 
 export interface UpdateHeaderProps {
-  currentReleaseDate: string;
-  fullVersion: string;
-  version: string;
+  installedVersionDetails: InstalledVersionDetails;
 }
 
 export interface UpdateModalHeaderProps {

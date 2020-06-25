@@ -58,11 +58,7 @@ export const UpdatePanel: FC<{}> = () => {
   return (
     <>
       <div className={styles.panel}>
-        <UpdateHeader
-          currentReleaseDate={installedVersionDetails?.installedVersionDate}
-          version={installedVersionDetails?.installedVersion}
-          fullVersion={installedVersionDetails?.installedFullVersion}
-        />
+        <UpdateHeader installedVersionDetails={installedVersionDetails} />
         {isDefaultView && <UpdateInfoBox />}
         {!isUpdateAvailable && !isDefaultView && !forceUpdate ? <UpdateInfoBox upToDate /> : null}
         {isUpdateAvailable && !isDefaultView ? (
