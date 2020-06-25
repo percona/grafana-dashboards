@@ -73,7 +73,7 @@ const getServiceModel = (item: InventoryList) => {
   return orderBy(
     [].concat(...createParams),
     [(service: Model) => (service.service_name || '').toLowerCase()],
-    ['desc']
+    ['asc']
   );
 };
 
