@@ -6,8 +6,7 @@ Before(async (I, pmmSettingsPage) => {
   I.amOnPage(pmmSettingsPage.url);
 });
 
-Scenario('Open PMM Settings page and verify changing Metrics Resolution', async (I, pmmSettingsPage) => {
-  allure.severity('critical');
+Scenario('Open PMM Settings page and verify changing Metrics Resolution [critical]', async (I, pmmSettingsPage) => {
   const resolutionToApply = 'Low';
   pmmSettingsPage.waitForPmmSettingsPageLoaded();
   await pmmSettingsPage.selectMetricsResolution(resolutionToApply);
@@ -15,8 +14,7 @@ Scenario('Open PMM Settings page and verify changing Metrics Resolution', async 
   await pmmSettingsPage.verifyResolutionIsApplied(resolutionToApply);
 });
 
-xScenario('Open PMM Settings page and verify changing Data Retention', async (I, pmmSettingsPage) => {
-  allure.severity('critical');
+xScenario('Open PMM Settings page and verify changing Data Retention [critical]', async (I, pmmSettingsPage) => {
   const dataRetentionValue = '1';
   pmmSettingsPage.waitForPmmSettingsPageLoaded();
   pmmSettingsPage.changeDataRetentionValueTo(dataRetentionValue);
@@ -24,8 +22,7 @@ xScenario('Open PMM Settings page and verify changing Data Retention', async (I,
   await pmmSettingsPage.verifyDataRetentionValueApplied(dataRetentionValue);
 });
 
-Scenario('Open PMM Settings page and verify adding Alertmanager Rule', async (I, pmmSettingsPage) => {
-  allure.severity('critical');
+Scenario('Open PMM Settings page and verify adding Alertmanager Rule [critical]', async (I, pmmSettingsPage) => {
   const scheme = 'http://';
   const sectionNameToExpand = 'Alertmanager integration';
   pmmSettingsPage.waitForPmmSettingsPageLoaded();
@@ -40,8 +37,7 @@ Scenario('Open PMM Settings page and verify adding Alertmanager Rule', async (I,
   await pmmSettingsPage.verifyAlertmanagerRuleAdded(pmmSettingsPage.alertManager.ruleName);
 });
 
-xScenario('Open PMM Settings page and verify Editing Alertmanager Rule', async (I, pmmSettingsPage) => {
-  allure.severity('critical');
+xScenario('Open PMM Settings page and verify Editing Alertmanager Rule [critical]', async (I, pmmSettingsPage) => {
   const scheme = 'http://';
   const sectionNameToExpand = 'Alertmanager integration';
   pmmSettingsPage.waitForPmmSettingsPageLoaded();
@@ -57,7 +53,6 @@ xScenario('Open PMM Settings page and verify Editing Alertmanager Rule', async (
 });
 
 xScenario('Open PMM Settings page and verify clearing Alertmanager Rule', async (I, pmmSettingsPage) => {
-  allure.severity('normal');
   const sectionNameToExpand = 'Alertmanager integration';
   pmmSettingsPage.waitForPmmSettingsPageLoaded();
   pmmSettingsPage.collapseDefaultSection();
@@ -67,9 +62,8 @@ xScenario('Open PMM Settings page and verify clearing Alertmanager Rule', async 
 });
 
 Scenario(
-    'PMM-T253 Verify user can see correct tooltip for STT',
+    'PMM-T253 Verify user can see correct tooltip for STT [trivial]',
     async (I, pmmSettingsPage) => {
-      allure.severity('trivial');
       pmmSettingsPage.waitForPmmSettingsPageLoaded();
       I.moveCursorTo(pmmSettingsPage.fields.sttLabelTooltipSelector);
       await pmmSettingsPage.verifyTooltip(pmmSettingsPage.tooltips.stt);
@@ -79,7 +73,6 @@ Scenario(
 Scenario(
     'PMM-T253 Verify user can enable STT if Telemetry is enabled',
     async (I, pmmSettingsPage) => {
-      allure.severity('normal');
       await pmmSettingsPage.enableSTT();
       I.refreshPage();
       pmmSettingsPage.waitForPmmSettingsPageLoaded();

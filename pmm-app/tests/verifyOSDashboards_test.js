@@ -8,7 +8,6 @@ Before(async I => {
 Scenario(
     'Open the Node Summary Dashboard and verify Metrics are present and graphs are displayed @not-pr-pipeline',
     async (I, dashboardPage, adminPage) => {
-      allure.severity('normal');
       I.amOnPage(dashboardPage.nodeSummaryDashboard.url);
       dashboardPage.waitForDashboardOpened();
       I.click(adminPage.fields.metricTitle);
@@ -22,7 +21,6 @@ Scenario(
 Scenario(
     'Open the Nodes Compare Dashboard and verify Metrics are present and graphs are displayed @not-pr-pipeline',
     async (I, dashboardPage) => {
-      allure.severity('normal');
       I.amOnPage(dashboardPage.nodesCompareDashboard.url);
       dashboardPage.waitForDashboardOpened();
       await dashboardPage.expandEachDashboardRow();
@@ -35,7 +33,6 @@ Scenario(
 Scenario(
     'PMM-T165: Verify Annotation with Default Options @not-pr-pipeline',
     async (I, dashboardPage) => {
-      allure.severity('normal');
       const annotationTitle = 'pmm-annotate-without-tags';
       I.amOnPage(dashboardPage.nodeSummaryDashboard.url + "?from=now-15m&to=now");
       dashboardPage.waitForDashboardOpened();
@@ -47,7 +44,6 @@ Scenario(
 Scenario(
     'PMM-T166: Verify adding annotation with specified tags @not-pr-pipeline',
     async (I, dashboardPage) => {
-      allure.severity('normal');
       const annotationTitle2 = 'pmm-annotate-tags';
       const annotationTag1 = 'pmm-testing-tag1';
       const annotationTag2 = 'pmm-testing-tag2';

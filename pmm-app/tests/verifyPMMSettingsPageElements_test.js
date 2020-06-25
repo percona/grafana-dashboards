@@ -20,7 +20,7 @@ Scenario(
   }
 );
 
-Scenario('Open PMM Settings page and verify SSH Key Details Section Elements [normal]', async (I, pmmSettingsPage) => {
+Scenario('Open PMM Settings page and verify SSH Key Details Section Elements', async (I, pmmSettingsPage) => {
   const sectionNameToExpand = 'SSH Key Details';
   pmmSettingsPage.waitForPmmSettingsPageLoaded();
   pmmSettingsPage.collapseDefaultSection();
@@ -29,7 +29,7 @@ Scenario('Open PMM Settings page and verify SSH Key Details Section Elements [no
 });
 
 Scenario(
-  'Open PMM Settings page and verify Alertmanager integration Section Elements [normal]',
+  'Open PMM Settings page and verify Alertmanager integration Section Elements',
   async (I, pmmSettingsPage) => {
     const sectionNameToExpand = 'Alertmanager integration';
     pmmSettingsPage.waitForPmmSettingsPageLoaded();
@@ -39,7 +39,7 @@ Scenario(
   }
 );
 
-Scenario('Open PMM Settings page and verify Diagnostics Section Elements [normal]', async (I, pmmSettingsPage) => {
+Scenario('Open PMM Settings page and verify Diagnostics Section Elements', async (I, pmmSettingsPage) => {
   const sectionNameToExpand = 'Diagnostics';
   pmmSettingsPage.waitForPmmSettingsPageLoaded();
   pmmSettingsPage.collapseDefaultSection();
@@ -48,7 +48,7 @@ Scenario('Open PMM Settings page and verify Diagnostics Section Elements [normal
 });
 
 xScenario(
-  'Open PMM Settings page and verify validation for empty Data Retention value [normal]',
+  'Open PMM Settings page and verify validation for empty Data Retention value',
   async (I, pmmSettingsPage) => {
     const dataRetentionValue = '';
     pmmSettingsPage.waitForPmmSettingsPageLoaded();
@@ -58,7 +58,7 @@ xScenario(
 );
 
 Scenario(
-  'Open PMM Settings page and verify validation for text Data Retention value [normal]',
+  'Open PMM Settings page and verify validation for text Data Retention value',
   async (I, pmmSettingsPage) => {
     const dataRetentionValue = 'text ';
     pmmSettingsPage.waitForPmmSettingsPageLoaded();
@@ -68,7 +68,7 @@ Scenario(
 );
 
 xScenario(
-  'Open PMM Settings page and verify validation for decimal Data Retention value [normal]',
+  'Open PMM Settings page and verify validation for decimal Data Retention value',
   async (I, pmmSettingsPage) => {
     const dataRetentionValue = '15.5';
     pmmSettingsPage.waitForPmmSettingsPageLoaded();
@@ -78,7 +78,7 @@ xScenario(
 );
 
 Scenario(
-  'Open PMM Settings page and verify validation for out of range Data Retention value [normal]',
+  'Open PMM Settings page and verify validation for out of range Data Retention value',
   async (I, pmmSettingsPage) => {
     const dataRetentionValue = '2147483648';
     pmmSettingsPage.waitForPmmSettingsPageLoaded();
@@ -88,7 +88,7 @@ Scenario(
 );
 
 Scenario(
-  'Open PMM Settings page and verify validation for XSS Data Retention value [normal]',
+  'Open PMM Settings page and verify validation for XSS Data Retention value',
   async (I, pmmSettingsPage) => {
     const dataRetentionValue = '<script>alert(test);</script>';
     pmmSettingsPage.waitForPmmSettingsPageLoaded();
@@ -98,7 +98,7 @@ Scenario(
 );
 
 Scenario(
-  'Open PMM Settings page and verify validation for negative Data Retention value [normal]',
+  'Open PMM Settings page and verify validation for negative Data Retention value',
   async (I, pmmSettingsPage) => {
     const dataRetentionValue = '-1';
     pmmSettingsPage.waitForPmmSettingsPageLoaded();
@@ -107,7 +107,7 @@ Scenario(
   }
 );
 
-Scenario('Open PMM Settings page and verify validation for invalid SSH Key [normal]', async (I, pmmSettingsPage) => {
+Scenario('Open PMM Settings page and verify validation for invalid SSH Key', async (I, pmmSettingsPage) => {
   const sshKeyForTest = 'ssh-rsa testKey test@key.local';
   const sectionNameToExpand = 'SSH Key Details';
   pmmSettingsPage.waitForPmmSettingsPageLoaded();
@@ -117,7 +117,7 @@ Scenario('Open PMM Settings page and verify validation for invalid SSH Key [norm
   await pmmSettingsPage.verifyValidationPopUp(pmmSettingsPage.messages.invalidSSHKeyMessage);
 });
 
-xScenario('Open PMM Settings page and verify validation for empty SSH Key [normal]', async (I, pmmSettingsPage) => {
+xScenario('Open PMM Settings page and verify validation for empty SSH Key', async (I, pmmSettingsPage) => {
   const sshKeyForTest = '';
   const sectionNameToExpand = 'SSH Key Details';
   pmmSettingsPage.waitForPmmSettingsPageLoaded();
@@ -128,7 +128,7 @@ xScenario('Open PMM Settings page and verify validation for empty SSH Key [norma
 });
 
 xScenario(
-  'Open PMM Settings page and verify validation for empty Alert Manager fields [normal]',
+  'Open PMM Settings page and verify validation for empty Alert Manager fields',
   async (I, pmmSettingsPage) => {
     const urlAndRule = '';
     const sectionNameToExpand = 'Alertmanager integration';
@@ -141,7 +141,7 @@ xScenario(
 );
 
 xScenario(
-  'Open PMM Settings page and verify validation for Alertmanager URL without scheme [normal]',
+  'Open PMM Settings page and verify validation for Alertmanager URL without scheme',
   async (I, pmmSettingsPage) => {
     const urlWithoutScheme = 'invalid_url';
     const sectionNameToExpand = 'Alertmanager integration';
@@ -156,7 +156,7 @@ xScenario(
 );
 
 Scenario(
-  'Open PMM Settings page and verify validation for Alertmanager URL without host [normal]',
+  'Open PMM Settings page and verify validation for Alertmanager URL without host',
   async (I, pmmSettingsPage) => {
     const urlWithoutHost = 'http://';
     const sectionNameToExpand = 'Alertmanager integration';
@@ -171,7 +171,7 @@ Scenario(
 );
 
 Scenario(
-  'Open PMM Settings page and verify validation for invalid Alertmanager Rule [normal]',
+  'Open PMM Settings page and verify validation for invalid Alertmanager Rule',
   async (I, pmmSettingsPage) => {
     const rule = 'invalid_rule';
     const sectionNameToExpand = 'Alertmanager integration';
@@ -184,7 +184,7 @@ Scenario(
 );
 
 Scenario(
-  'PMM-T254 Verify validation for STT and Telemetry switches [normal]',
+  'PMM-T254 Verify validation for STT and Telemetry switches',
   async (I, pmmSettingsPage, settingsAPI) => {
     await settingsAPI.apiDisableSTT();
     I.amOnPage(pmmSettingsPage.url);
@@ -207,7 +207,7 @@ Scenario(
 
 //To be removed from Skip after https://jira.percona.com/browse/PMM-5791
 xScenario(
-  'PMM-T227 Open PMM Settings page and verify DATA_RETENTION value is set to 2 days [normal] @not-pr-pipeline',
+  'PMM-T227 Open PMM Settings page and verify DATA_RETENTION value is set to 2 days @not-pr-pipeline',
   async (I, pmmSettingsPage) => {
     const dataRetention = '2';
     pmmSettingsPage.waitForPmmSettingsPageLoaded();

@@ -10,24 +10,21 @@ Before(async (I, qanPage, adminPage) => {
   await I.switchTo(qanPage.fields.iframe);
 });
 
-Scenario('Verify QAN Filter groups exist  @not-pr-pipeline', async (I, adminPage, qanPage) => {
-  allure.severity('critical');
+Scenario('Verify QAN Filter groups exist [critical] @not-pr-pipeline', async (I, adminPage, qanPage) => {
   qanPage.waitForQANPageLoaded();
   await qanPage.changeResultsPerPage(50);
   qanPage.checkFilterGroups();
 });
 
 Scenario(
-    'Verify QAN Query Details section opened when user selects Query @not-pr-pipeline',
+    'Verify QAN Query Details section opened when user selects Query [critical] @not-pr-pipeline',
     async (I, adminPage, qanPage) => {
-      allure.severity('critical');
       qanPage.waitForQANPageLoaded();
       qanPage._selectDetails(2);
     }
 );
 
-xScenario('Verify data in Table and Query Details', async (I, adminPage, qanPage) => {
-  allure.severity('critical');
+xScenario('Verify data in Table and Query Details [critical]', async (I, adminPage, qanPage) => {
   I.amOnPage(qanPage.url);
   await I.waitForElement(qanPage.fields.iframe, 60);
   adminPage.applyTimer('5m');
@@ -40,7 +37,6 @@ xScenario('Verify data in Table and Query Details', async (I, adminPage, qanPage
 });
 
 Scenario('Verify QAN pagination @not-pr-pipeline', async (I, adminPage, qanPage) => {
-  allure.severity('normal');
   qanPage.waitForQANPageLoaded();
   qanPage.checkPagination();
   await qanPage.checkSparkLines();
@@ -52,7 +48,6 @@ Scenario('Verify QAN pagination @not-pr-pipeline', async (I, adminPage, qanPage)
 xScenario(
     'Verify Tables tab in Query Details for Database=postgres filter',
     async (I, adminPage, qanPage) => {
-      allure.severity('normal');
       const filterToApply = 'postgres';
       qanPage.waitForQANPageLoaded();
       qanPage.applyFilter(filterToApply);
@@ -65,7 +60,6 @@ xScenario(
 xScenario(
     'Verify Tables tab in Query Details for Environment=pgsql-dev filter @not-pr-pipeline',
     async (I, adminPage, qanPage) => {
-      allure.severity('normal');
       const filterToApply = 'pgsql-dev';
       qanPage.waitForQANPageLoaded();
       await qanPage.expandAllFilter();
@@ -80,7 +74,6 @@ xScenario(
 xScenario(
     'Verify Explain tab in Query Details for Database=postgres filter @not-pr-pipeline',
     async (I, adminPage, qanPage) => {
-      allure.severity('normal');
       const filterToApply = 'postgres';
       qanPage.waitForQANPageLoaded();
       qanPage.applyFilter(filterToApply);
@@ -93,7 +86,6 @@ xScenario(
 Scenario(
     'Verify Explain tab in Query Details for Environment=pgsql-dev filter @not-pr-pipeline',
     async (I, adminPage, qanPage) => {
-      allure.severity('normal');
       const filterToApply = 'pgsql-dev';
       qanPage.waitForQANPageLoaded();
       await qanPage.expandAllFilter();
@@ -105,8 +97,7 @@ Scenario(
     }
 );
 
-xScenario('Verify adding new Column reflects in URL @not-pr-pipeline', async (I, adminPage, qanPage) => {
-  allure.severity('critical');
+xScenario('Verify adding new Column reflects in URL [critical] @not-pr-pipeline', async (I, adminPage, qanPage) => {
   const columnName = 'Query Count with errors';
   qanPage.waitForQANPageLoaded();
   qanPage.addColumnToQAN(columnName);
@@ -114,9 +105,8 @@ xScenario('Verify adding new Column reflects in URL @not-pr-pipeline', async (I,
 });
 
 xScenario(
-    'Verify adding new Database Filter reflects in URL @not-pr-pipeline',
+    'Verify adding new Database Filter reflects in URL [critical] @not-pr-pipeline',
     async (I, adminPage, qanPage) => {
-      allure.severity('critical');
       const filterToApply = 'local';
       qanPage.waitForQANPageLoaded();
       await qanPage.expandAllFilter();
@@ -127,7 +117,6 @@ xScenario(
 );
 
 Scenario('Verify Main Metric change reflects in URL @not-pr-pipeline', async (I, adminPage, qanPage) => {
-  allure.severity('normal');
   const metricToReplace = 'Load';
   const newMetricName = 'Lock Time';
   qanPage.waitForQANPageLoaded();
@@ -139,7 +128,6 @@ Scenario('Verify Main Metric change reflects in URL @not-pr-pipeline', async (I,
 xScenario(
     'PMM-T175 - Verify user is able to apply filter that has dots in label @not-pr-pipeline',
     async (I, qanPage) => {
-      allure.severity('normal');
       const serviceName = 'ps_5.7_0.0.0.0_1';
       qanPage.waitForNewQANPageLoaded();
       const countBefore = await qanPage.getCountOfItems();
@@ -153,9 +141,8 @@ xScenario(
 
 // TODO: Uncomment after new QAN will be merged
 xScenario(
-    'PMM-T172 - Verify that selecting a filter updates the table data and URL  @not-pr-pipeline',
+    'PMM-T172 - Verify that selecting a filter updates the table data and URL [critical] @not-pr-pipeline',
     async (I, qanPage) => {
-      allure.severity('critical');
       const environmentName = 'ps-prod';
       qanPage.waitForNewQANPageLoaded();
       const countBefore = await qanPage.getCountOfItems();
@@ -169,7 +156,6 @@ xScenario(
 
 // TODO: Uncomment after new QAN will be merged
 xScenario('PMM-T126 - Verify user is able to Reset All filters @not-pr-pipeline', async (I, qanPage) => {
-  allure.severity('normal');
   const environmentName1 = 'ps-dev';
   const environmentName2 = 'ps-prod';
   qanPage.waitForNewQANPageLoaded();
@@ -187,7 +173,6 @@ xScenario('PMM-T126 - Verify user is able to Reset All filters @not-pr-pipeline'
 xScenario(
     'PMM-T124 - Verify User is able to show all and show top 5 values for filter section @not-pr-pipeline',
     async (I, qanPage) => {
-      allure.severity('normal');
       const filterSection = 'Database';
       qanPage.waitForNewQANPageLoaded();
       await qanPage.verifyFiltersSection(filterSection, 5);
@@ -203,7 +188,6 @@ xScenario(
 xScenario(
     'PMM-T125 - Verify user is able to Show only selected filter values and Show All filter values',
     async (I, qanPage) => {
-      allure.severity('normal');
       const environmentName1 = 'ps-dev';
       const environmentName2 = 'ps-prod';
       qanPage.waitForNewQANPageLoaded();
@@ -220,7 +204,6 @@ xScenario(
 
 // TODO: Uncomment after new QAN will be merged
 xScenario('PMM-T123 - Verify User is able to search for filter value', async (I, qanPage) => {
-  allure.severity('normal');
   const filters = [
     'ps-prod',
     'ps-dev-cluster',
@@ -247,9 +230,8 @@ xScenario('PMM-T123 - Verify User is able to search for filter value', async (I,
 
 // TODO: Uncomment after new QAN will be merged
 xScenario(
-    'PMM-T133, PMM-T132, PMM-T100 Check Changing Main Metric, PMM-T203 Verify user is able to search for columns by typing',
+    'PMM-T133, PMM-T132, PMM-T100 Check Changing Main Metric, PMM-T203 Verify user is able to search for columns by typing [critical]',
     async (I, qanPage, dashboardPage) => {
-      allure.severity('critical');
       const metricName = 'Query Count with errors';
       const urlString = 'num_queries_with_errors';
       I.waitForElement(qanPage.fields.newQANAddColumn, 30);
@@ -272,9 +254,8 @@ xScenario(
 
 // TODO: Uncomment after new QAN will be merged
 xScenario(
-    'PMM-T99 Verify User is able to add new metric, PMM-T222 Verify `Add column` dropdown works',
+    'PMM-T99 Verify User is able to add new metric, PMM-T222 Verify `Add column` dropdown works [critical]',
     async (I, qanPage, dashboardPage) => {
-      allure.severity('critical');
       const metricName = 'Query Count with errors';
       const urlString = 'num_queries_with_errors';
       I.waitForElement(qanPage.fields.newQANAddColumn, 30);
@@ -300,7 +281,6 @@ xScenario(
 xScenario(
     'PMM-T13 - Verify QAN has MongoDB, MySQL, PostgreSQl all three Service Types',
     async (I, qanPage) => {
-      allure.severity('normal');
       const filters = ['mongodb', 'mysql', 'postgres'];
       qanPage.waitForNewQANPageLoaded();
       I.waitForElement(qanPage.fields.filterBy, 30);
@@ -320,7 +300,6 @@ xScenario(
 
 // TODO: Uncomment after new QAN will be merged
 xScenario('PMM-T128 - Verify pagination works correctly', async (I, qanPage) => {
-  allure.severity('normal');
   qanPage.waitForNewQANPageLoaded();
   qanPage.verifySelectedCountPerPage('10 / page');
   I.seeAttributesOnElements(qanPage.fields.previousPage, {'aria-disabled': 'true'});
@@ -346,7 +325,6 @@ xScenario('PMM-T128 - Verify pagination works correctly', async (I, qanPage) => 
 xScenario(
     'PMM-T193 - Verify user is able to change per page elements display and pagination is updated according to this value, PMM-T256 - Verify that switching view from 10 to 50/100 pages works correctly',
     async (I, qanPage) => {
-      allure.severity('normal');
       qanPage.waitForNewQANPageLoaded();
       await qanPage.verifyRowCount(11);
       await qanPage.verifyCount('1-10');
@@ -372,7 +350,6 @@ xScenario(
 xScenario(
     'PMM-T135 - Verify user is not able to add duplicate metric to the overview column',
     async (I, qanPage) => {
-      allure.severity('normal');
       const column = 'Load';
       qanPage.waitForNewQANPageLoaded();
       qanPage.verifyAddedColumn(column);
@@ -385,9 +362,8 @@ xScenario(
 
 // TODO: Uncomment after new QAN will be merged
 xScenario(
-    'PMM-T219 - Verify that user is able to scroll up/down and resize the overview table',
+    'PMM-T219 - Verify that user is able to scroll up/down and resize the overview table [minor]',
     async (I, qanPage) => {
-      allure.severity('minor');
       qanPage.waitForNewQANPageLoaded();
       const columnsToAdd = [
         'Bytes Sent',
@@ -414,8 +390,7 @@ xScenario(
 );
 
 // TODO: Uncomment after new QAN will be merged
-xScenario('PMM-T223 - Verify time metrics are AVG per query (not per second)', async (I, qanPage) => {
-  allure.severity('critical');
+xScenario('PMM-T223 - Verify time metrics are AVG per query (not per second) [critical]', async (I, qanPage) => {
   qanPage.waitForNewQANPageLoaded();
   qanPage.applyFilterNewQAN('mysql');
   I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);

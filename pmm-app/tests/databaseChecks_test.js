@@ -8,9 +8,8 @@ Before(async (I) => {
 });
 
 Scenario(
-    'PMM-T294 Verify user is able to see message about Disabled STT in Checks panel at Home Page @not-pr-pipeline',
+    'PMM-T294 Verify user is able to see message about Disabled STT in Checks panel at Home Page [critical] @not-pr-pipeline',
     async (I, homePage, databaseChecksPage, settingsAPI) => {
-      allure.severity('critical');
       await settingsAPI.apiDisableSTT();
       I.amOnPage(homePage.url);
       I.waitForVisible(homePage.fields.sttDisabledFailedChecksPanelSelector, 30);
@@ -19,9 +18,8 @@ Scenario(
 );
 
 Scenario(
-    'PMM-T295 PMM-T276 Verify user is able to see message about Disabled STT at Database Checks page @not-pr-pipeline',
+    'PMM-T295 PMM-T276 Verify user is able to see message about Disabled STT at Database Checks page [critical] @not-pr-pipeline',
     async (I, databaseChecksPage, pmmSettingsPage, settingsAPI) => {
-      allure.severity('critical');
       await settingsAPI.apiDisableSTT();
       I.amOnPage(databaseChecksPage.url);
       I.waitForVisible(databaseChecksPage.fields.dbCheckPanelSelector, 30);
@@ -34,9 +32,8 @@ Scenario(
 );
 //Skipping test because of random failings, needs investigation
 xScenario(
-    'PMM-T233 PMM-T234 Verify user is able to access PMM Database Checks through UI and with URL @not-pr-pipeline',
+    'PMM-T233 PMM-T234 Verify user is able to access PMM Database Checks through UI and with URL [critical] @not-pr-pipeline',
     async (I, adminPage, databaseChecksPage, pmmSettingsPage, settingsAPI) => {
-      allure.severity('critical');
       await settingsAPI.apiEnableSTT();
       I.amOnPage(pmmSettingsPage.url);
       pmmSettingsPage.waitForPmmSettingsPageLoaded();
@@ -48,9 +45,8 @@ xScenario(
 );
 
 Scenario(
-    'PMM-T233 Verify user can see Number of failed checks at Home Page and open PMM Database Checks page from it @not-pr-pipeline',
+    'PMM-T233 Verify user can see Number of failed checks at Home Page and open PMM Database Checks page from it [critical] @not-pr-pipeline',
     async (I, homePage, databaseChecksPage, settingsAPI) => {
-      allure.severity('critical');
       await settingsAPI.apiEnableSTT();
       I.amOnPage(homePage.url);
       I.waitForVisible(homePage.fields.checksPanelSelector, 30);
@@ -61,9 +57,8 @@ Scenario(
 );
 
 Scenario(
-    'PMM-T236 Verify user is able to hover Failed Checks values and see tooltip @not-pr-pipeline',
+    'PMM-T236 Verify user is able to hover Failed Checks values and see tooltip [minor] @not-pr-pipeline',
     async (I, databaseChecksPage, settingsAPI) => {
-      allure.severity('minor');
       const row = 1;
       await settingsAPI.apiEnableSTT();
       I.amOnPage(databaseChecksPage.url);
@@ -74,9 +69,8 @@ Scenario(
 );
 
 Scenario(
-    'PMM-T241 Verify user can see correct service name for failed checks @not-pr-pipeline',
+    'PMM-T241 Verify user can see correct service name for failed checks [critical] @not-pr-pipeline',
     async (I, databaseChecksPage, settingsAPI) => {
-      allure.severity('critical');
       await settingsAPI.apiEnableSTT();
       I.amOnPage(databaseChecksPage.url);
       await databaseChecksPage.verifyDatabaseChecksPageOpened();

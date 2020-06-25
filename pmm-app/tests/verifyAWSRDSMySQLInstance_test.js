@@ -6,9 +6,8 @@ Before(async (I) => {
 });
 
 Scenario(
-    'PMM-T138 - Verify disabling enhanced metrics for RDS, PMM-T139 - Verify disabling basic metrics for RDS, PMM-T9 - Verify adding RDS instances, @not-pr-pipeline',
+    'PMM-T138 Verify disabling enhanced metrics for RDS, PMM-T139 Verify disabling basic metrics for RDS, PMM-T9 Verify adding RDS instances [critical] @not-pr-pipeline',
     async (I, remoteInstancesPage, pmmInventoryPage, homePage, qanPage, dashboardPage) => {
-      allure.severity('critical');
       const instanceIdToMonitor = 'rds-mysql56';
       const environment = 'RDS MySQL 5.6';
       I.amOnPage(remoteInstancesPage.url);
@@ -35,9 +34,8 @@ Scenario(
 );
 
 Scenario(
-    'Verify AWS RDS MySQL 5.6 instance has status running @pmm-post-update @not-pr-pipeline',
+    'Verify AWS RDS MySQL 5.6 instance has status running [critical] @pmm-post-update @not-pr-pipeline',
     async (I, remoteInstancesPage, pmmInventoryPage) => {
-      allure.severity('critical');
       const serviceName = 'rds-mysql56';
       I.amOnPage(pmmInventoryPage.url);
       pmmInventoryPage.verifyRemoteServiceIsDisplayed(serviceName);
@@ -48,7 +46,6 @@ Scenario(
 xScenario(
     'Verify QAN Filters contain AWS RDS MySQL 5.6 after it was added for monitoring @not-pr-pipeline',
     async (I, qanPage, adminPage) => {
-      allure.severity('normal');
       const environment = 'RDS MySQL 5.6';
       const filter = qanPage.getFilterLocator(environment);
       I.amOnPage(qanPage.url);
@@ -64,7 +61,6 @@ xScenario(
 xScenario(
     'Verify MySQL Instances Overview Dashboard for AWS RDS MySQL 5.6 data after it was added for monitoring',
     async (I, remoteInstancesPage, dashboardPage) => {
-      allure.severity('normal');
       I.amOnPage(remoteInstancesPage.dashboardMySQLOverviewWithFilters);
       dashboardPage.waitForDashboardOpened();
       await dashboardPage.expandEachDashboardRow();

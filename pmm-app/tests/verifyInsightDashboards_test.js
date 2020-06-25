@@ -9,7 +9,6 @@ Scenario(
     // eslint-disable-next-line max-len
     'Open Advanced Exploration Dashboard and verify Metrics are present and graphs are displayed @not-pr-pipeline',
     async (I, dashboardPage) => {
-      allure.severity('normal');
       I.amOnPage(dashboardPage.advancedDataExplorationDashboard.url);
       dashboardPage.waitForDashboardOpened();
       dashboardPage.verifyMetricsExistence(dashboardPage.advancedDataExplorationDashboard.metrics);
@@ -21,7 +20,6 @@ Scenario(
 Scenario(
     'Open Prometheus Dashboard and verify Metrics are present and graphs are displayed @not-pr-pipeline',
     async (I, adminPage, dashboardPage) => {
-      allure.severity('normal');
       I.amOnPage(dashboardPage.prometheusDashboard.url);
       dashboardPage.waitForDashboardOpened();
       await dashboardPage.expandEachDashboardRow();
@@ -35,7 +33,6 @@ Scenario(
     // eslint-disable-next-line max-len
     'Open the Prometheus Exporters Status Dashboard and verify Metrics are present and graphs are displayed @not-pr-pipeline',
     async (I, dashboardPage) => {
-      allure.severity('normal');
       I.amOnPage(dashboardPage.prometheusExporterStatusDashboard.url);
       dashboardPage.waitForDashboardOpened();
       await dashboardPage.expandEachDashboardRow();
@@ -49,7 +46,6 @@ Scenario(
     // eslint-disable-next-line max-len
     'Open the Prometheus Exporters Overview Dashboard and verify Metrics are present and graphs are displayed @not-pr-pipeline',
     async (I, dashboardPage) => {
-      allure.severity('normal');
       I.amOnPage(dashboardPage.prometheusExporterOverviewDashboard.url);
       dashboardPage.waitForDashboardOpened();
       dashboardPage.verifyMetricsExistence(dashboardPage.prometheusExporterOverviewDashboard.metrics);

@@ -9,7 +9,6 @@ Scenario(
     // eslint-disable-next-line max-len
     'Open the MySQL Overview Dashboard and verify Metrics are present and graphs are displayed @not-pr-pipeline',
     async (I, adminPage, dashboardPage) => {
-      allure.severity('normal');
       I.amOnPage(dashboardPage.mysqlInstanceSummaryDashboard.url);
       dashboardPage.waitForDashboardOpened();
       await dashboardPage.expandEachDashboardRow();
@@ -25,7 +24,6 @@ Scenario(
     // eslint-disable-next-line max-len
     'Open the ProxySQL Instance Summary Dashboard and verify Metrics are present and graphs are displayed @not-pr-pipeline',
     async (I, adminPage, dashboardPage) => {
-      allure.severity('normal');
       I.amOnPage(dashboardPage.proxysqlInstanceSummaryDashboard.url + "?from=now-5m&to=now");
       dashboardPage.waitForDashboardOpened();
       I.click(adminPage.fields.metricTitle);
@@ -40,7 +38,6 @@ Scenario(
     // eslint-disable-next-line max-len
     'Open the PXCGalera Cluster Summary Dashboard and verify Metrics are present and graphs are displayed @not-pr-pipeline',
     async (I, adminPage, dashboardPage) => {
-      allure.severity('normal');
       I.amOnPage(dashboardPage.pxcGaleraClusterSummaryDashboard.url + "?from=now-5m&to=now");
       dashboardPage.waitForDashboardOpened();
       I.click(adminPage.fields.metricTitle);
@@ -55,7 +52,6 @@ xScenario(
     // eslint-disable-next-line max-len
     'Open the MySQL Table Details Dashboard and verify Disable Tablestats Report shows no Data @not-pr-pipeline',
     async (I, adminPage, mysqlTableDetailsPage) => {
-      allure.severity('normal');
       I.amOnPage(mysqlTableDetailsPage.url);
       I.waitForElement(adminPage.fields.metricTitle, 30);
       adminPage.applyTimer('1m');

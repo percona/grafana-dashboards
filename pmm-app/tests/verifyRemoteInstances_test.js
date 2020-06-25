@@ -6,9 +6,8 @@ Before(async I => {
 });
 
 Scenario(
-    'Verify Remote MySQL Instance Addition @not-pr-pipeline',
+    'Verify Remote MySQL Instance Addition [critical] @not-pr-pipeline',
     async (I, adminPage, remoteInstancesPage, pmmInventoryPage) => {
-      allure.severity('critical');
       const mysql_service_name = 'mysql_remote_new';
       I.amOnPage(remoteInstancesPage.url);
       remoteInstancesPage.waitUntilRemoteInstancesPageLoaded();
@@ -21,9 +20,8 @@ Scenario(
 );
 
 Scenario(
-    'Verify is the remote instances are in Running Status @pmm-post-update @not-pr-pipeline',
+    'Verify is the remote instances are in Running Status [critical] @pmm-post-update @not-pr-pipeline',
     async (I, adminPage, remoteInstancesPage, pmmInventoryPage) => {
-      allure.severity('critical');
       const mysql_service_name = 'mysql_remote_new';
       I.amOnPage(pmmInventoryPage.url);
       pmmInventoryPage.verifyRemoteServiceIsDisplayed(mysql_service_name);
@@ -32,9 +30,8 @@ Scenario(
 );
 
 xScenario(
-    'Verify Remote MongoDB Instance Addition',
+    'Verify Remote MongoDB Instance Addition [critical]',
     async (I, adminPage, remoteInstancesPage, pmmInventoryPage) => {
-      allure.severity('critical');
       const mongodb_service_name = 'mongodb_remote_new';
       I.amOnPage(remoteInstancesPage.url);
       remoteInstancesPage.waitUntilRemoteInstancesPageLoaded();
@@ -47,9 +44,8 @@ xScenario(
 );
 
 Scenario(
-    'Verify Remote PostgreSQL Instance Addition @not-pr-pipeline',
+    'Verify Remote PostgreSQL Instance Addition [critical] @not-pr-pipeline',
     async (I, adminPage, remoteInstancesPage, pmmInventoryPage) => {
-      allure.severity('critical');
       const postgresql_service_name = 'postgresql_remote_new';
       I.amOnPage(remoteInstancesPage.url);
       remoteInstancesPage.waitUntilRemoteInstancesPageLoaded();
@@ -62,9 +58,8 @@ Scenario(
 );
 
 Scenario(
-    'Verify Remote ProxySQL Instance Addition @not-pr-pipeline',
+    'Verify Remote ProxySQL Instance Addition [critical] @not-pr-pipeline',
     async (I, adminPage, remoteInstancesPage, pmmInventoryPage) => {
-      allure.severity('critical');
       const proxysql_service_name = 'proxysql_remote_new';
       I.amOnPage(remoteInstancesPage.url);
       remoteInstancesPage.waitUntilRemoteInstancesPageLoaded();

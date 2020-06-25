@@ -32,7 +32,6 @@ AfterSuite(async (I) => {
 Scenario(
     'PMM-T358 Verify Failed checks panel at Home page for the viewer role (STT is enabled) @not-pr-pipeline',
     async (I, homePage, settingsAPI) => {
-      allure.severity('normal');
       await settingsAPI.apiEnableSTT();
       await I.Authorize(users.viewer.username, users.viewer.password);
       I.amOnPage(homePage.url);
@@ -45,7 +44,6 @@ Scenario(
 Scenario(
     'PMM-T360 Verify Failed checks panel at Home page for the admin role (STT is enabled) @not-pr-pipeline',
     async (I, homePage, settingsAPI) => {
-      allure.severity('normal');
       await settingsAPI.apiEnableSTT();
       await I.Authorize(users.admin.username, users.admin.password);
       I.amOnPage(homePage.url);
@@ -55,9 +53,8 @@ Scenario(
 );
 
 Scenario(
-    'PMM-T358 Verify Database Failed checks page for the viewer role (STT is enabled) @not-pr-pipeline',
+    'PMM-T358 Verify Database Failed checks page for the viewer role (STT is enabled) [critical] @not-pr-pipeline',
     async (I, databaseChecksPage, settingsAPI) => {
-      allure.severity('critical');
       await settingsAPI.apiEnableSTT();
       await I.Authorize(users.viewer.username, users.viewer.password);
       I.amOnPage(databaseChecksPage.url);
@@ -68,9 +65,8 @@ Scenario(
 );
 
 Scenario(
-    'PMM-T360 Verify Database Failed checks page for the admin role (STT is enabled) @not-pr-pipeline',
+    'PMM-T360 Verify Database Failed checks page for the admin role (STT is enabled) [critical] @not-pr-pipeline',
     async (I, databaseChecksPage, settingsAPI) => {
-      allure.severity('critical');
       await settingsAPI.apiEnableSTT();
       await I.Authorize(users.admin.username, users.admin.password);
       I.amOnPage(databaseChecksPage.url);
@@ -82,7 +78,6 @@ Scenario(
 Scenario(
     'PMM-T358 Verify Failed checks panel at Home page for the viewer role (STT is disabled) @not-pr-pipeline',
     async (I, homePage, settingsAPI) => {
-      allure.severity('normal');
       await settingsAPI.apiDisableSTT();
       await I.Authorize(users.viewer.username, users.viewer.password);
       I.amOnPage(homePage.url);
@@ -95,7 +90,6 @@ Scenario(
 Scenario(
     'PMM-T360 Verify Failed checks panel at Home page for the admin role (STT is disabled) @not-pr-pipeline',
     async (I, homePage, settingsAPI) => {
-      allure.severity('normal');
       await settingsAPI.apiDisableSTT();
       await I.Authorize(users.admin.username, users.admin.password);
       I.amOnPage(homePage.url);
@@ -105,9 +99,8 @@ Scenario(
 );
 
 Scenario(
-    'PMM-T358 Verify Database Failed checks page for the viewer role (STT is disabled) @not-pr-pipeline',
+    'PMM-T358 Verify Database Failed checks page for the viewer role (STT is disabled) [critical] @not-pr-pipeline',
     async (I, databaseChecksPage, settingsAPI) => {
-      allure.severity('critical');
       await settingsAPI.apiDisableSTT();
       await I.Authorize(users.viewer.username, users.viewer.password);
       I.amOnPage(databaseChecksPage.url);
@@ -118,9 +111,8 @@ Scenario(
 );
 
 Scenario(
-    'PMM-T360 Verify Database Failed checks page for the admin role (STT is disabled) @not-pr-pipeline',
+    'PMM-T360 Verify Database Failed checks page for the admin role (STT is disabled) [critical] @not-pr-pipeline',
     async (I, databaseChecksPage, settingsAPI) => {
-      allure.severity('critical');
       await settingsAPI.apiDisableSTT();
       await I.Authorize(users.admin.username, users.admin.password);
       I.amOnPage(databaseChecksPage.url);

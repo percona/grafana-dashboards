@@ -24,11 +24,22 @@ class Grafana extends Helper {
 
   async _before(test) {
     const allure = codeceptjs.container.plugins('allure');
-    if (test.title.includes('[critical]')) {
-      allure.severity('critical');
-    }
-    if (test.title.includes('[normal]')) {
-      allure.severity('normal');
+
+    switch (true) {
+      case test.title.includes('[blocker]'):
+        allure.severity('blocker');
+        break;
+      case test.title.includes('[critical]'):
+        allure.severity('critical');
+        break;
+      case test.title.includes('[minor]'):
+        allure.severity('minor');
+        break;
+      case test.title.includes('[trivial]'):
+        allure.severity('trivial');
+        break;
+      default:
+        allure.severity('normal');
     }
   }
 

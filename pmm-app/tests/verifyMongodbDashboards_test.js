@@ -9,7 +9,6 @@ Before(async (I) => {
 Scenario(
     'Open the MongoDB Instance Summary Dashboard and verify Metrics are present and graphs are displayed @not-pr-pipeline',
     async (I, dashboardPage) => {
-      allure.severity('normal');
       I.amOnPage(dashboardPage.mongodbOverviewDashboard.url);
       dashboardPage.waitForDashboardOpened();
       await dashboardPage.expandEachDashboardRow();
@@ -22,7 +21,6 @@ Scenario(
 Scenario(
     'Open the MongoDB Cluster Summary Dashboard and verify Metrics are present and graphs are displayed @not-pr-pipeline',
     async (I, adminPage, dashboardPage) => {
-      allure.severity('normal');
       I.amOnPage(dashboardPage.mongoDbClusterSummaryDashboard.url);
       dashboardPage.waitForDashboardOpened();
       I.click(adminPage.fields.metricTitle);
