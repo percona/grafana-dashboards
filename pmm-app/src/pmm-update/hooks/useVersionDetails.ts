@@ -12,8 +12,17 @@ import {
 
 export const useVersionDetails = (initialForceUpdate = false): CurrentOrNextVersionDetails => {
   const [isDefaultView, setIsDefaultView] = useState(true);
-  const [nextVersionDetails, setNextVersionDetails] = useState<NextVersionDetails>();
-  const [installedVersionDetails, setInstalledVersionDetails] = useState<InstalledVersionDetails>();
+  const [nextVersionDetails, setNextVersionDetails] = useState<NextVersionDetails>({
+    nextVersion: '',
+    nextFullVersion: '',
+    nextVersionDate: '',
+    newsLink: '',
+  });
+  const [installedVersionDetails, setInstalledVersionDetails] = useState<InstalledVersionDetails>({
+    installedVersion: '',
+    installedFullVersion: '',
+    installedVersionDate: '',
+  });
   const [lastCheckDate, setLastCheckDate] = useState('');
   const [isUpdateAvailable, setIsUpdateAvailable] = useState(false);
   const [data, errorMessage, isLoading, getVersionDetails] = useApiCall<GetUpdatesResponse | void, boolean>(

@@ -59,26 +59,26 @@ export const UpdatePanel: FC<{}> = () => {
     <>
       <div className={styles.panel}>
         <UpdateHeader
-          currentReleaseDate={installedVersionDetails?.installedVersionDate ?? ''}
-          version={installedVersionDetails?.installedVersion ?? ''}
-          fullVersion={installedVersionDetails?.installedFullVersion ?? ''}
+          currentReleaseDate={installedVersionDetails?.installedVersionDate}
+          version={installedVersionDetails?.installedVersion}
+          fullVersion={installedVersionDetails?.installedFullVersion}
         />
         {isDefaultView && <UpdateInfoBox />}
         {!isUpdateAvailable && !isDefaultView && !forceUpdate ? <UpdateInfoBox upToDate /> : null}
         {isUpdateAvailable && !isDefaultView ? (
           <AvailableUpdate
-            newReleaseDate={nextVersionDetails?.nextVersionDate ?? ''}
-            newsLink={nextVersionDetails?.newsLink ?? ''}
-            nextVersion={nextVersionDetails?.nextVersion ?? ''}
-            nextFullVersion={nextVersionDetails?.nextFullVersion ?? ''}
+            newReleaseDate={nextVersionDetails?.nextVersionDate}
+            newsLink={nextVersionDetails?.newsLink}
+            nextVersion={nextVersionDetails?.nextVersion}
+            nextFullVersion={nextVersionDetails?.nextFullVersion}
           />
         ) : null}
         {isUpdateAvailable || forceUpdate ? (
-          <UpdateButton onClick={handleUpdate} nextVersion={nextVersionDetails?.nextVersion ?? ''} />
+          <UpdateButton onClick={handleUpdate} nextVersion={nextVersionDetails?.nextVersion} />
         ) : null}
         <LastCheck
           onCheckForUpdates={handleCheckForUpdates}
-          lastCheckDate={lastCheckDate ?? ''}
+          lastCheckDate={lastCheckDate}
           isLoading={isLoading}
         />
       </div>
@@ -88,7 +88,7 @@ export const UpdatePanel: FC<{}> = () => {
         isUpdated={isUpdated}
         output={output}
         updateFailed={updateFailed}
-        version={installedVersionDetails?.installedVersion ?? ''}
+        version={installedVersionDetails?.installedVersion}
       />
     </>
   );

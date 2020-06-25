@@ -49,6 +49,18 @@ const fakeDataUndefinedLeafs = {
   update_available: undefined,
 };
 
+const emptyNextVersionDetails = {
+  nextVersion: '',
+  nextFullVersion: '',
+  nextVersionDate: '',
+  newsLink: '',
+};
+const emptyInstalledVersionDetails = {
+  installedVersion: '',
+  installedFullVersion: '',
+  installedVersionDate: '',
+};
+
 const mockedApiCall = jest.fn();
 
 const defaultMockedUseApiCallReturn = [undefined, '', true, mockedApiCall];
@@ -85,9 +97,9 @@ describe('useVersionDetails', () => {
       getVersionDetails,
     ] = wrapper?.find('div').prop('data-hook');
 
-    expect(installedVersionDetails).toBe(undefined);
+    expect(installedVersionDetails).toEqual(emptyInstalledVersionDetails);
     expect(lastCheckDate).toEqual('');
-    expect(nextVersionDetails).toBe(undefined);
+    expect(nextVersionDetails).toEqual(emptyNextVersionDetails);
     expect(isUpdateAvailable).toEqual(false);
     expect(errorMessage).toBe(defaultMockedUseApiCallReturn[1]);
     expect(isLoading).toEqual(defaultMockedUseApiCallReturn[2]);
@@ -117,21 +129,9 @@ describe('useVersionDetails', () => {
       getVersionDetails,
     ] = wrapper?.find('div').prop('data-hook');
 
-    const expectedNextVersionDetails = {
-      nextVersion: '',
-      nextFullVersion: '',
-      nextVersionDate: '',
-      newsLink: '',
-    };
-    const expectedInstalledVersionDetails = {
-      installedVersion: '',
-      installedFullVersion: '',
-      installedVersionDate: '',
-    };
-
-    expect(installedVersionDetails).toEqual(expectedInstalledVersionDetails);
+    expect(installedVersionDetails).toEqual(emptyInstalledVersionDetails);
     expect(lastCheckDate).toEqual('');
-    expect(nextVersionDetails).toEqual(expectedNextVersionDetails);
+    expect(nextVersionDetails).toEqual(emptyNextVersionDetails);
     expect(isUpdateAvailable).toEqual(false);
     expect(errorMessage).toBe('');
     expect(isLoading).toEqual(false);

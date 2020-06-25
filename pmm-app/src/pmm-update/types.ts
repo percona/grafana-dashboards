@@ -61,10 +61,10 @@ export interface NextVersionDetails {
 
 export type CurrentOrNextVersionDetails = [
   {
-    installedVersionDetails?: InstalledVersionDetails;
-    lastCheckDate?: string;
-    nextVersionDetails?: NextVersionDetails;
-    isUpdateAvailable?: boolean;
+    installedVersionDetails: InstalledVersionDetails;
+    lastCheckDate: string;
+    nextVersionDetails: NextVersionDetails;
+    isUpdateAvailable: boolean;
   },
   string,
   boolean,
