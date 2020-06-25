@@ -18,11 +18,11 @@ Scenario(
     }
 );
 
-Scenario.only(
+Scenario(
     'PMM-T295 PMM-T276 Verify user is able to see message about Disabled STT at Database Checks page @not-pr-pipeline',
     async (I, databaseChecksPage, pmmSettingsPage, settingsAPI) => {
       allure.severity('critical');
-      await settingsAPI.apiEnableSTT();
+      await settingsAPI.apiDisableSTT();
       I.amOnPage(databaseChecksPage.url);
       I.waitForVisible(databaseChecksPage.fields.dbCheckPanelSelector, 30);
       I.waitForVisible(databaseChecksPage.fields.disabledSTTMessageSelector, 30);
