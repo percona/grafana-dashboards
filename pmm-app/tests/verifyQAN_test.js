@@ -8,7 +8,7 @@ Before(async (I, qanPage, adminPage) => {
   await I.waitForElement(qanPage.fields.iframe, 60);
   await I.switchTo(qanPage.fields.iframe);
 });
-/*
+
 Scenario('Verify QAN Filter groups exist  @not-pr-pipeline', async (I, adminPage, qanPage) => {
   qanPage.waitForQANPageLoaded();
   await qanPage.changeResultsPerPage(50);
@@ -313,7 +313,7 @@ Scenario('Check All Filter Groups Exists in the Filter Section @not-pr-pipeline'
     I.clearField(qanPage.fields.filterBy);
   }
 });
-*/
+
 // TODO: Uncomment after new QAN will be merged
 xScenario(
   'PMM-T215 - Verify that buttons in QAN are disabled and visible on the screen',
