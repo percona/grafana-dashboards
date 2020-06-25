@@ -75,8 +75,11 @@ module.exports = {
   },
 
   async getServiceId(serviceName) {
+    const servicesLink = this.fields.pmmServicesSelector;
     const serviceIdLocator =
         `${this.fields.serviceIdLocatorPrefix}${serviceName}")]/preceding-sibling::td[2]`;
+    I.waitForElement(servicesLink, 30);
+    I.click(servicesLink);
     I.waitForVisible(serviceIdLocator, 30);
     const matchedServices = await I.grabNumberOfVisibleElements(serviceIdLocator);
     await assert.equal(
