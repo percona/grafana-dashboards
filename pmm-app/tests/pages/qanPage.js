@@ -96,7 +96,11 @@ module.exports = {
     showSelectedDisabled: "//div[@id='inner-filter-wrapper']/div[1]/button[1][@disabled]",
     environmentLabel: "//span[contains(text(), 'Environment')]",
     innodbColumn: "//tr[2]//td[6]//span[contains(@class,'summarize')]",
+    innodbColumnTooltip:
+      "//tr[2]//td[6]//span[contains(@class,'ant-tooltip-open')]//span[contains(@class,'summarize')]",
     loadValue: "//td[3]//span[contains(text(),'<0.01 load')]",
+    loadValueTooltip:
+      "//td[3]//span[contains(@class,'ant-tooltip-open')]//span[contains(text(),'<0.01 load')]",
   },
 
   metricValueLocatorOverviewTable(column, row) {
