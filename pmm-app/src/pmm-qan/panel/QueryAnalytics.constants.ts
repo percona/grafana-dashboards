@@ -721,7 +721,7 @@ export const METRIC_CATALOGUE = {
     },
   },
   rows_read: {
-    humanizeName: 'Bytes Read',
+    humanizeName: 'Rows Read',
     tooltipText: 'Number of rows read from tables',
     simpleName: 'rows_read',
     metricRelation: () => '',
