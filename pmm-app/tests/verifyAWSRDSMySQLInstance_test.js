@@ -1,5 +1,4 @@
 Feature('Monitoring AWS RDS MySQL DB');
-const allure = codeceptjs.container.plugins('allure');
 
 Before(async (I) => {
   I.Authorize();

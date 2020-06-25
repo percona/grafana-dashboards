@@ -1,5 +1,4 @@
 Feature('QAN Dashboard');
-const allure = codeceptjs.container.plugins('allure');
 
 Before(async (I, qanPage, adminPage) => {
   I.Authorize();
@@ -10,21 +9,21 @@ Before(async (I, qanPage, adminPage) => {
   await I.switchTo(qanPage.fields.iframe);
 });
 
-Scenario('Verify QAN Filter groups exist [critical] @not-pr-pipeline', async (I, adminPage, qanPage) => {
+Scenario('Verify QAN Filter groups exist @not-pr-pipeline', async (I, adminPage, qanPage) => {
   qanPage.waitForQANPageLoaded();
   await qanPage.changeResultsPerPage(50);
   qanPage.checkFilterGroups();
 });
 
 Scenario(
-    'Verify QAN Query Details section opened when user selects Query [critical] @not-pr-pipeline',
+    'Verify QAN Query Details section opened when user selects Query @not-pr-pipeline',
     async (I, adminPage, qanPage) => {
       qanPage.waitForQANPageLoaded();
       qanPage._selectDetails(2);
     }
 );
 
-xScenario('Verify data in Table and Query Details [critical]', async (I, adminPage, qanPage) => {
+xScenario('Verify data in Table and Query Details', async (I, adminPage, qanPage) => {
   I.amOnPage(qanPage.url);
   await I.waitForElement(qanPage.fields.iframe, 60);
   adminPage.applyTimer('5m');
@@ -97,7 +96,7 @@ Scenario(
     }
 );
 
-xScenario('Verify adding new Column reflects in URL [critical] @not-pr-pipeline', async (I, adminPage, qanPage) => {
+xScenario('Verify adding new Column reflects in URL @not-pr-pipeline', async (I, adminPage, qanPage) => {
   const columnName = 'Query Count with errors';
   qanPage.waitForQANPageLoaded();
   qanPage.addColumnToQAN(columnName);
@@ -105,7 +104,7 @@ xScenario('Verify adding new Column reflects in URL [critical] @not-pr-pipeline'
 });
 
 xScenario(
-    'Verify adding new Database Filter reflects in URL [critical] @not-pr-pipeline',
+    'Verify adding new Database Filter reflects in URL @not-pr-pipeline',
     async (I, adminPage, qanPage) => {
       const filterToApply = 'local';
       qanPage.waitForQANPageLoaded();
@@ -141,7 +140,7 @@ xScenario(
 
 // TODO: Uncomment after new QAN will be merged
 xScenario(
-    'PMM-T172 - Verify that selecting a filter updates the table data and URL [critical] @not-pr-pipeline',
+    'PMM-T172 - Verify that selecting a filter updates the table data and URL @not-pr-pipeline',
     async (I, qanPage) => {
       const environmentName = 'ps-prod';
       qanPage.waitForNewQANPageLoaded();
@@ -230,7 +229,7 @@ xScenario('PMM-T123 - Verify User is able to search for filter value', async (I,
 
 // TODO: Uncomment after new QAN will be merged
 xScenario(
-    'PMM-T133, PMM-T132, PMM-T100 Check Changing Main Metric, PMM-T203 Verify user is able to search for columns by typing [critical]',
+    'PMM-T133, PMM-T132, PMM-T100 Check Changing Main Metric, PMM-T203 Verify user is able to search for columns by typing',
     async (I, qanPage, dashboardPage) => {
       const metricName = 'Query Count with errors';
       const urlString = 'num_queries_with_errors';
@@ -254,7 +253,7 @@ xScenario(
 
 // TODO: Uncomment after new QAN will be merged
 xScenario(
-    'PMM-T99 Verify User is able to add new metric, PMM-T222 Verify `Add column` dropdown works [critical]',
+    'PMM-T99 Verify User is able to add new metric, PMM-T222 Verify `Add column` dropdown works',
     async (I, qanPage, dashboardPage) => {
       const metricName = 'Query Count with errors';
       const urlString = 'num_queries_with_errors';
@@ -362,7 +361,7 @@ xScenario(
 
 // TODO: Uncomment after new QAN will be merged
 xScenario(
-    'PMM-T219 - Verify that user is able to scroll up/down and resize the overview table [minor]',
+    'PMM-T219 - Verify that user is able to scroll up/down and resize the overview table',
     async (I, qanPage) => {
       qanPage.waitForNewQANPageLoaded();
       const columnsToAdd = [
@@ -390,7 +389,7 @@ xScenario(
 );
 
 // TODO: Uncomment after new QAN will be merged
-xScenario('PMM-T223 - Verify time metrics are AVG per query (not per second) [critical]', async (I, qanPage) => {
+xScenario('PMM-T223 - Verify time metrics are AVG per query (not per second)', async (I, qanPage) => {
   qanPage.waitForNewQANPageLoaded();
   qanPage.applyFilterNewQAN('mysql');
   I.waitForInvisible(qanPage.fields.newQANSpinnerLocator, 30);

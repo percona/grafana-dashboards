@@ -1,5 +1,4 @@
 Feature('to verify monitoried Remote Db instances');
-const allure = codeceptjs.container.plugins('allure');
 
 Before(async I => {
   I.Authorize();

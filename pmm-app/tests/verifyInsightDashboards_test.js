@@ -1,5 +1,4 @@
 Feature('Test Dashboards inside the Insights Folder');
-const allure = codeceptjs.container.plugins('allure');
 
 Before(async (I) => {
   I.Authorize();

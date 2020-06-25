@@ -1,5 +1,4 @@
 Feature('PMM Permission restrictions');
-const allure = codeceptjs.container.plugins('allure');
 let viewer;
 let admin;
 const users = {

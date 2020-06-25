@@ -1,5 +1,4 @@
 Feature('PMM Settings Page Functionality');
-const allure = codeceptjs.container.plugins('allure');
 
 Before(async (I, pmmSettingsPage) => {
   I.Authorize();

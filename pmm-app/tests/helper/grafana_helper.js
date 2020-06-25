@@ -35,9 +35,6 @@ class Grafana extends Helper {
       case test.title.includes('[minor]'):
         allure.severity('minor');
         break;
-      case test.title.includes('[trivial]'):
-        allure.severity('trivial');
-        break;
       default:
         allure.severity('normal');
     }

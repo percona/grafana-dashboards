@@ -1,6 +1,5 @@
 Feature('Database Failed Checks');
 const config = require('../pr.codecept.js').config.helpers.Playwright;
-const allure = codeceptjs.container.plugins('allure');
 const assert = require('assert');
 
 Before(async (I) => {
