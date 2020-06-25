@@ -1,7 +1,9 @@
+/* eslint-disable */
 import { MetricsPanelCtrl } from 'grafana/app/plugins/sdk';
 import AppEvents from 'grafana/app/core/app_events';
 import moment from 'moment';
 import $ from 'jquery';
+
 export class PanelCtrl extends MetricsPanelCtrl {
   /**
    * Urls to define panels templates
@@ -30,6 +32,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
     DONE: 'succeeded',
     ERROR: 'error',
   };
+
   /**
    * Possible errors during update process
    */
@@ -43,6 +46,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
    * Grafana param, define url of template that will be used for panel
    */
   static templateUrl: string = PanelCtrl.TEMPLATES.MAIN;
+
   /** @ngInject */
   constructor(public $scope, public $injector, public $http) {
     super($scope, $injector);
@@ -137,7 +141,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
       url: PanelCtrl.API.UPDATE_START,
     })
       .then(response => {
-        const data = response.data;
+        const { data } = response;
         $scope.updateAuthToken = data.auth_token;
         $scope.updateLogOffset = 'log_offset' in data ? data.log_offset : 0;
         $scope.getLog($scope, $http);
@@ -169,7 +173,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
       data: { force: false },
     })
       .then(res => {
-        const data = res.data;
+        const { data } = res;
         $scope.nextVersion = data.latest.version || '';
         $scope.nextFullVersion = data.latest.full_version || '';
         $scope.lastCheckDate = data.last_check
@@ -219,7 +223,7 @@ export class PanelCtrl extends MetricsPanelCtrl {
       data: { force: true },
     })
       .then(res => {
-        const data = res.data;
+        const { data } = res;
         $scope.nextVersion = data.latest.version || '';
         $scope.nextFullVersion = data.latest.full_version || '';
         $scope.lastCheckDate = data.last_check
@@ -262,10 +266,10 @@ export class PanelCtrl extends MetricsPanelCtrl {
       data: { auth_token: $scope.updateAuthToken, log_offset: $scope.updateLogOffset },
     })
       .then(response => {
-        const data = response.data;
+        const { data } = response;
         $scope.isUpdated = 'done' in data ? data.done : false;
         $scope.updateLogOffset = 'log_offset' in data ? data.log_offset : 0;
-        $scope.output += data.log_lines.join('\n') + '\n';
+        $scope.output += `${data.log_lines.join('\n')}\n`;
         $scope.updateCntErrors = 0;
         window.setTimeout(this.getLog.bind(this, $scope, $http), 500);
       })

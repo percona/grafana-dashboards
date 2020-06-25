@@ -33,37 +33,37 @@ const SettingsPanel = () => {
   useEffect(() => {
     (async () => {
       const response = await SettingsService.getSettings();
+
       updateSettings(response.settings);
     })();
   }, []);
+
   return (
     <div id="antd">
       <div className="app-theme-dark pmm-settings-panel">
         <Form
           onSubmit={() => {}}
-          render={() => {
-            return (
-              <Collapse
-                bordered={false}
-                defaultActiveKey={['1']}
-                onChange={() => {}}
-                style={customCollapseStyle}
-              >
-                <Panel header="Settings" key="1" style={customPanelStyle}>
-                  <SettingsPart settings={settings} />
-                </Panel>
-                <Panel header="SSH Key Details" key="2" style={customPanelStyle}>
-                  <UploadSSH settings={settings} />
-                </Panel>
-                <Panel header="Alertmanager integration" key="3" style={customPanelStyle}>
-                  <AlertManager settings={settings} />
-                </Panel>
-                <Panel header="Diagnostics" key="4" style={customPanelStyle}>
-                  <Diagnostics />
-                </Panel>
-              </Collapse>
-            );
-          }}
+          render={() => (
+            <Collapse
+              bordered={false}
+              defaultActiveKey={['1']}
+              onChange={() => {}}
+              style={customCollapseStyle}
+            >
+              <Panel header="Settings" key="1" style={customPanelStyle}>
+                <SettingsPart settings={settings} />
+              </Panel>
+              <Panel header="SSH Key Details" key="2" style={customPanelStyle}>
+                <UploadSSH settings={settings} />
+              </Panel>
+              <Panel header="Alertmanager integration" key="3" style={customPanelStyle}>
+                <AlertManager settings={settings} />
+              </Panel>
+              <Panel header="Diagnostics" key="4" style={customPanelStyle}>
+                <Diagnostics />
+              </Panel>
+            </Collapse>
+          )}
         />
       </div>
     </div>

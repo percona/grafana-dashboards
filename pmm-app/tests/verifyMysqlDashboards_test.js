@@ -53,7 +53,7 @@ xScenario(
   async (I, adminPage, mysqlTableDetailsPage) => {
     I.amOnPage(mysqlTableDetailsPage.url);
     I.waitForElement(adminPage.fields.metricTitle, 30);
-    adminPage.applyTimer('1m');
+    adminPage.applyTimeRange('Last 5 minutes');
     mysqlTableDetailsPage.verifyNoDataShow();
   }
 );
