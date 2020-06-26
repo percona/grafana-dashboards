@@ -47,7 +47,27 @@ const Details: FC = () => {
   const showExplainTab = databaseType !== DATABASE.postgresql && groupBy === 'queryid' && !totals;
   const showExamplesTab = groupBy === 'queryid' && !totals;
 
-  useEffect(() => changeActiveTab(TabKeys[openDetailsTab]), [queryId]);
+  useEffect(() => {
+    if (openDetailsTab === 'examples' && !showExamplesTab) {
+      changeActiveTab(TabKeys.details);
+
+      return;
+    }
+
+    if (openDetailsTab === 'tables' && !showTablesTab) {
+      changeActiveTab(TabKeys.tables);
+
+      return;
+    }
+
+    if (openDetailsTab === 'explain' && !showExplainTab) {
+      changeActiveTab(TabKeys.explain);
+
+      return;
+    }
+
+    changeActiveTab(TabKeys[openDetailsTab]);
+  }, [queryId]);
 
   return (
     <div className="query-analytics-details-grid query-analytics-details" data-qa="query-analytics-details">

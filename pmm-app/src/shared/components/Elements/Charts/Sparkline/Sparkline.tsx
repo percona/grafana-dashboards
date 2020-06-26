@@ -167,6 +167,7 @@ export const Sparkline = ({
     <>
       <div ref={ref} className="d3-bar-chart-container" data-tip={tooltip} />
       <ReactTooltip
+        data-qa="sparkline-tooltip"
         className="sparkline-tooltip"
         place="bottom"
         backgroundColor="#3274d9"

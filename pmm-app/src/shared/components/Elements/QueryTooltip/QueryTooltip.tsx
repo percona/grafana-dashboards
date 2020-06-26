@@ -16,6 +16,7 @@ export const QueryTooltip = ({
   <Tooltip
     placement="left"
     mouseEnterDelay={0}
+    data-qa="query-tooltip"
     overlayClassName="query-tooltip"
     title={() => (
       <div className="query-tooltip-data-wrapper">
