@@ -168,16 +168,6 @@ describe('Inventory data service', () => {
     const testTransformedData = [
       {
         custom_labels: [],
-        type: 'PostgreSQL',
-        isDeleted: false,
-        service_id: '/service_id/687ab427-4dfa-41e1-9600-fe229e755867',
-        service_name: 'pmm-server-postgresql',
-        node_id: 'pmm-server',
-        address: '127.0.0.1',
-        port: 5432,
-      },
-      {
-        custom_labels: [],
         type: 'MongoDB',
         isDeleted: false,
         service_id: '/service_id/0c84fe1a-67c1-4ee8-a463-d9fa0c1f72ac',
@@ -185,6 +175,16 @@ describe('Inventory data service', () => {
         node_id: '/node_id/ef292f80-e7d4-49f1-af28-78a542a8e40e',
         address: 'mongo',
         port: 27017,
+      },
+      {
+        custom_labels: [],
+        type: 'PostgreSQL',
+        isDeleted: false,
+        service_id: '/service_id/687ab427-4dfa-41e1-9600-fe229e755867',
+        service_name: 'pmm-server-postgresql',
+        node_id: 'pmm-server',
+        address: '127.0.0.1',
+        port: 5432,
       },
     ];
     // FIXME: types
