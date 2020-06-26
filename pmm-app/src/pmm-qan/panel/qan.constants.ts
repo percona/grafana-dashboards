@@ -403,7 +403,7 @@ export const METRIC_CATALOGUE = {
   },
   innodb_io_r_bytes: {
     humanizeName: 'Innodb Read Bytes',
-    tooltipText: 'Like innodb_IO_r_ops, but in bytes',
+    tooltipText: 'Total page read operations scheduled (in bytes)',
     simpleName: 'innodb_io_r_bytes',
     metricRelation: (data) => {
       const mainMetric = get(data, ['innodb_io_r_bytes', 'sum']);
