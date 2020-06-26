@@ -6,7 +6,7 @@ Before(async (I, qanPage) => {
 });
 
 Scenario(
-  'PMM-T146 Verify user is able to see  chart tooltip for time related metric @new-qan',
+  'PMM-T146 Verify user is able to see  chart tooltip for time related metric @new-qan @not-pr-pipeline',
   async (I, qanPage) => {
     const ROW_NUMBER = 1;
     const QUERY_TIME_COLUMN_NUMBER = 3;
@@ -17,7 +17,7 @@ Scenario(
 );
 
 Scenario(
-  'PMM-T151 Verify that hovering over a non-time metric displays a tooltip without a graph @new-qan',
+  'PMM-T151 Verify that hovering over a non-time metric displays a tooltip without a graph @new-qan @not-pr-pipeline',
   async (I, qanPage) => {
     const ROW_NUMBER = 1;
     const QUERY_COUNT_COLUMN_NUMBER = 2;
@@ -250,7 +250,7 @@ Scenario(
 );
 
 Scenario(
-  'PMM-T215 - Verify that buttons in QAN are disabled and visible on the screen',
+  'PMM-T215 - Verify that buttons in QAN are disabled and visible on the screen @not-pr-pipeline',
   async (I, qanPage) => {
     qanPage.waitForNewQANPageLoaded();
     I.seeAttributesOnElements(qanPage.fields.previousPage, { 'aria-disabled': 'true' });
@@ -261,7 +261,7 @@ Scenario(
   }
 );
 
-Scenario('PMM-T122 - Verify QAN UI Elements are displayed', async (I, qanPage) => {
+Scenario('PMM-T122 - Verify QAN UI Elements are displayed @not-pr-pipeline', async (I, qanPage) => {
   qanPage.waitForNewQANPageLoaded();
   I.waitForVisible(qanPage.fields.filterBy, 30);
   I.waitForVisible(qanPage.fields.addColumnNewQAN, 30);
@@ -311,7 +311,7 @@ Scenario(
   }
 );
 
-Scenario('PMM-T204 - Verify small and N/A values on sparkline', async (I, qanPage) => {
+Scenario('PMM-T204 - Verify small and N/A values on sparkline @not-pr-pipeline', async (I, qanPage) => {
   qanPage.waitForNewQANPageLoaded();
   qanPage.sortMetric('Load', 'up');
   I.moveCursorTo(qanPage.fields.loadValue);

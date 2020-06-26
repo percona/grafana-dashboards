@@ -10,8 +10,9 @@ Scenario(
   async (I, qanPage, adminPage) => {
     qanPage.waitForNewQANPageLoaded();
     qanPage.paginationGoTo(2);
+    adminPage.applyTimeRange('Last 3 hours');
     qanPage.waitForNewQANPageLoaded();
-    await qanPage.verifySelectedPageIs(2);
+    await qanPage.verifySelectedPageIs(1);
   }
 );
 
@@ -23,7 +24,7 @@ Scenario(
     qanPage.waitForNewQANPageLoaded();
     I.seeInCurrentUrl(TIME_RANGE_QUERY_PARAMS_BEFORE);
     adminPage.applyTimeRange('Last 3 hours');
-    qanPage.waitForResponsePath(qanPage.requests.getReportPath);
+    //qanPage.waitForResponsePath(qanPage.requests.getReportPath);
     qanPage.waitForNewQANPageLoaded();
     I.seeInCurrentUrl(TIME_RANGE_QUERY_PARAMS_AFTER);
   }
