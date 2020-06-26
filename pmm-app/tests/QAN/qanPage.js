@@ -1,9 +1,8 @@
 const { I, pmmSettingsPage } = inject();
 const moment = require('moment');
-const I = actor();
 const assert = require('assert');
 module.exports = {
-  url: 'graph/d/pmm-qan/pmm-query-analytics',
+  url: 'graph/d/pmm-qan/pmm-query-analytics?from=now-5m&to=now',
   filterGroups: [
     'Environment',
     'Cluster',
@@ -22,7 +21,7 @@ module.exports = {
   },
   serverList: ['PMM Server PostgreSQL', 'PGSQL_', 'PXC_NODE', 'mysql'],
   fields: {
-    table: '//table/tr[2]',
+    table: '//table//tr[2]',
     detailsTable: '//app-details-table//app-details-row[1]',
     filter: "//app-qan-filter//div[@class='ps-content']",
     filterCheckboxSelector: '.overview-filters input[type="checkbox"]',
@@ -48,20 +47,15 @@ module.exports = {
     copyQueryButton: "//button[@id='copyQueryExample']",
     spinnerLocator: "//i[@data-qa='loading-spinner']",
     newQANPanelContent: '.panel-content',
-    countOfItems: "//ul[@data-qa='qan-pagination']/../span",
     resetAll: '//button[@data-qa="qan-filters-reset-all"]',
     disabledResetAll: '//button[@data-qa="qan-filters-reset-all" and @disabled ]',
     newQANSpinnerLocator: "//i[@data-qa='loading-spinner']",
     showSelected: "//button[@data-qa='qan-filters-show-selected']",
     countOfItems: "//span[@data-qa='qan-total-items']",
-    resetAll: 'button#reset-all-filters',
-    newQANSpinnerLocator: "//i[@class='fa fa-spinner fa-spin spinner ant-spin-dot']",
-    showSelected: "//div[@id='inner-filter-wrapper']/div[1]/button[1]",
     filterBy: "//input[@data-qa='filters-search-field']",
     filterCheckboxes: '.checkbox-container__checkmark',
     newQANAddColumn: "//span[contains(text(), 'Add column')]",
     newQANMetricDropDown: '.ant-select-dropdown-menu-item',
-    newQANColumnSearchField: "div[style*='display: block;'] input"
     groupBySelector: '.group-by-selector',
     addColumnSelector: '.add-columns-selector',
     manageColumnsSelector: '.manage-columns-selector',
@@ -72,7 +66,6 @@ module.exports = {
     previousPage: '.ant-pagination-prev',
     ellipsisButton: '.ant-pagination-item-ellipsis',
     tableRow: "(//table[@class='ant-table-fixed']//tbody[@class='ant-table-tbody'])[2]//tr",
-    tableRow: "//td[@class='ant-table-row-cell-break-word']",
     resultPerPageCombobox: '.ant-pagination-options',
     addColumnNewQAN: "//span[contains(text(), 'Add column')]",
     noDataIcon: 'div.ant-empty-image',
@@ -93,7 +86,7 @@ module.exports = {
     overviewRowQueryTime: "//tr[4]//td[5]//span[contains(@class,'summarize')]",
     overviewRowQueryTimeTooltip: "//tr[4]//td[5]//span[contains(@class,'ant-tooltip-open')]",
     overviewRowQueryTimeTooltipText: "//tr[4]//td[5]//span[contains(@class,'ant-tooltip-open')]//div//span",
-    showSelectedDisabled: "//div[@id='inner-filter-wrapper']/div[1]/button[1][@disabled]",
+    showSelectedDisabled: '//button[@data-qa="qan-filters-show-selected" and @disabled ]',
     environmentLabel: "//span[contains(text(), 'Environment')]",
     innodbColumn: "//tr[2]//td[6]//span[contains(@class,'summarize')]",
     innodbColumnTooltip:
@@ -151,6 +144,8 @@ module.exports = {
 
   waitForFiltersLoad() {
     I.waitForVisible(this.filterGroupLocator(this.filterGroups[8]), 30);
+  },
+
   overviewMetricCellValueLocator(rowNumber, dataColumnNumber) {
     return `.ant-table-tbody tr:nth-child(${rowNumber}) td:nth-child(${dataColumnNumber + 2}) .summarize`;
   },
@@ -222,10 +217,12 @@ module.exports = {
 
   async getDetailsData(row) {
     const percentage = await I.grabTextFrom(
-      '//app-details-table//app-details-row[' + row + ']//div[3]//span[2]'
+        '//app-details-table//app-details-row[' + row + ']//div[3]//span[2]'
     );
     const value = await I.grabTextFrom('//app-details-table//app-details-row[' + row + ']//div[3]//span[1]');
-    return { percentage: percentage, val: value };
+    return {percentage: percentage, val: value};
+  },
+
   overviewRowLocator(rowNumber) {
     return `.table-wrapper .ant-table-content tr[data-row-key="${rowNumber}"]`;
   },
@@ -235,33 +232,28 @@ module.exports = {
     I.waitForClickable(this.fields.nextPageNavigation, 30);
   },
 
-  waitForDownloadOverviewTable() {
-    // TODO: fix bug with absent response
-    // this.waitForResponsePath(this.requests.getReportPath);
-    I.wait(5);
-    I.waitForInvisible(this.elements.spinBlur, 30);
-    I.dontSeeElement(this.elements.spinner);
-  },
-
-  waitForResponsePath(path) {
-    I.waitForResponse(request => {
+  async waitForResponsePath(path) {
+    await I.waitForResponse(request => {
       const url = require('url');
       const { pathname } = url.parse(request.url(), true);
       return path === pathname;
-    }, 10);
+    }, 60);
   },
 
   async verifyFiltersSectionIsPresent() {
     I.waitForElement(this.fields.filterCheckboxSelector, 30);
     I.seeElement(this.fields.filterCheckboxSelector);
   },
+
   async verifyColumnIsNotAvailable(columnName) {
     I.click(this.fields.addColumnSelector);
     I.dontSeeElement(`//ul/li[@label='${columnName}']`);
   },
+
   async verifySelectedPageIs(pageNumber) {
     I.seeElement(`.ant-pagination-item-active[title="${pageNumber}"]`);
   },
+
   async verifyMetricsMatch(rowNumber, dataColumnNumber) {
     const cellSelector = this.overviewMetricCellValueLocator(rowNumber, dataColumnNumber);
 
@@ -285,11 +277,14 @@ module.exports = {
     this.openMetricsSelect(columnName);
     I.dontSeeElement(this.fields.removeColumnButton, 30);
   },
+
   async verifyRowIsSelected(rowNumber) {
     const rowSelector = this.overviewRowLocator(rowNumber);
     I.seeCssPropertiesOnElements(`${rowSelector}.selected-overview-row`, {
       'background-color': 'rgb(35, 70, 130)',
     });
+  },
+
   async verifyDetailsSectionDataExists(tabElements) {
     this.waitForTabContentsLoaded(tabElements);
     const detailsText = await I.grabTextFrom(tabElements[0]);
@@ -301,10 +296,12 @@ module.exports = {
     I.forceClick(this.fields.groupBySelector);
     I.click(`//ul/li[@label='${groupBy}']`);
   },
+
   verifyGroupByIs(groupBy) {
     I.waitForElement(`[data-qa="group-by"] [title="${groupBy}"]`, 30);
     I.seeElement(`[data-qa="group-by"] [title="${groupBy}"]`);
   },
+
   changeSorting(columnNumber, sortDirection = 'down') {
     const sortingBlockSelector = this.overviewMetricSortingLocator(columnNumber);
     I.waitForElement(sortingBlockSelector, 30);
@@ -316,6 +313,7 @@ module.exports = {
     }
     I.wait(5);
   },
+
   verifySortingIs(columnNumber, sortDirection) {
     const sortingBlockSelector = this.overviewMetricSortingLocator(columnNumber);
     switch (sortDirection) {
@@ -331,12 +329,14 @@ module.exports = {
         break;
     }
   },
+
   addColumn(columnName) {
     I.waitForElement(this.fields.addColumnSelector, 30);
     I.click(this.fields.addColumnSelector);
     I.click(`//ul/li[@label='${columnName}']`);
-    this.waitForDownloadOverviewTable();
+    this.waitForNewQANPageLoaded();
   },
+
   changeColumn(oldColumnName, columnName) {
     const oldColumnSelector = `//span[text()='${oldColumnName}']`;
     const newColumnSelector = `//li[text()='${columnName}']`;
@@ -344,18 +344,21 @@ module.exports = {
     I.click(oldColumnSelector);
     I.waitForElement(newColumnSelector, 30);
     I.click(newColumnSelector);
-    this.waitForDownloadOverviewTable();
+    this.waitForNewQANPageLoaded();
   },
+
   removeColumn(columnName) {
     this.openMetricsSelect(columnName);
     I.waitForElement(this.fields.removeColumnButton, 30);
     I.click(this.fields.removeColumnButton);
-    this.waitForDownloadOverviewTable();
+    this.waitForNewQANPageLoaded();
   },
+
   async searchFilters(searchString) {
     I.waitForElement(`//input[@placeholder='Filters search...']`, 30);
     I.fillField(`//input[@placeholder='Filters search...']`, searchString);
   },
+
   async checkFiltersMatchSearch(searchString) {
     const remainingFilters = await I.grabTextFrom('.checkbox-container__label-text');
     assert.equal(
@@ -367,10 +370,12 @@ module.exports = {
         queryTimeData.percentage
     );
   },
+
   async searchMetrics(searchString) {
     I.waitForElement('.ant-select-open', 30);
     I.fillField('.ant-select-open input', searchString);
   },
+
   async checkMetricsListMatchesSearch(searchString) {
     const remainingMetrics = await I.grabTextFrom('.ant-select-dropdown-menu-item');
     assert.equal(
@@ -382,6 +387,7 @@ module.exports = {
         queryTimeData.val
     );
   },
+
   openMetricsSelect(columnName) {
     const columnSelector = this.manageColumnLocator(columnName);
     I.waitForElement(columnSelector, 30);
@@ -394,57 +400,65 @@ module.exports = {
     const remainingFilters = await I.grabTextFrom(selectedFilters);
     console.log(remainingFilters);
   },
+
   async getMainMetricGraphValue(graphSelector, xInPercent) {
     const axisSelector = `${graphSelector} .axis`;
     I.waitForElement(axisSelector, 30);
     I.scrollTo(axisSelector, xInPercent, 0);
     I.moveCursorTo(axisSelector, xInPercent, 0);
-    const tooltipStringValue = await I.grabAttributeFrom(graphSelector, 'data-tooltip');
+    const tooltipStringValue = await I.grabAttributeFrom(graphSelector, 'data-tip');
     return tooltipStringValue.substr(-19, 19);
   },
-  async getTimestamp(dateTime) {
-    return moment(dateTime).format('x');
-  },
+
   async verifyChronologicalOrderDateTime(dateTimeBefore, dateTimeAfter) {
     const timestampBefore = await this.getTimestamp(dateTimeBefore);
     const timestampAfter = await this.getTimestamp(dateTimeAfter);
     assert.equal(timestampAfter > timestampBefore, true);
   },
+
+  async getTimestamp(dateTime) {
+    return moment(dateTime).format('x');
+  },
+
   resetAllFilters() {
     I.waitForElement(this.elements.resetAllButton, 30);
     I.click(this.elements.resetAllButton);
   },
+
   selectFilter(filterCheckboxSelector) {
     I.waitForElement(filterCheckboxSelector, 30);
     I.checkOption(filterCheckboxSelector);
     this.waitForResponsePath(this.requests.getFiltersPath);
   },
+
   selectRow(rowNumber) {
     const rowSelector = this.overviewRowLocator(rowNumber);
     I.waitForElement(rowSelector, 60);
     I.forceClick(rowSelector);
-    this.waitForDownloadOverviewTable();
+    this.waitForNewQANPageLoaded();
   },
+
   paginationGoNext() {
     I.waitForElement(`//li[@title='Next Page']`, 30);
     I.click(`//li[@title='Next Page']`);
   },
+
   paginationGoPrevious() {
     I.waitForElement(`//li[@title='Previous Page']`, 30);
     I.click(`//li[@title='Previous Page']`);
   },
-  paginationGoLast() {},
-  paginationGoFirst() {},
   selectTableRow(rowNumber) {
     const rowSelector = `//tr[@data-row-key='${rowNumber}']`;
     I.waitForElement(rowSelector, 30);
     I.click(rowSelector);
   },
+
   paginationGoTo(pageNumber) {
     const pageSelector = `.ant-pagination-item[title = '${pageNumber}']`;
     I.waitForElement(pageSelector, 30);
     I.click(pageSelector);
   },
+
   showTooltip(rowNumber, dataColumnNumber) {
     const tooltipSelector = this.overviewMetricCellValueLocator(rowNumber, dataColumnNumber);
     I.waitForElement(tooltipSelector, 30);
@@ -453,12 +467,12 @@ module.exports = {
     I.waitForElement(this.elements.metricTooltip, 5);
     I.seeElement(this.elements.metricTooltip);
   },
+
   selectDetailsTab(tabName) {
     const tabSelector = `//div[@role='tab']/span[text()='${tabName}']`;
     I.waitForElement(tabSelector, 30);
     I.click(tabSelector);
-  }
-
+  },
 
   waitForNewQANPageLoaded() {
     I.waitForElement(this.fields.newQANPanelContent, 30);

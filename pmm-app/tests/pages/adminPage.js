@@ -6,7 +6,7 @@ module.exports = {
   url: 'graph/d/pmm-home/home-dashboard?orgId=1',
   fields: {
     navigation: "//i[contains(@class, 'navbar-page-btn__search')]",
-    timePickerMenu: "//div[@class='time-picker-buttons']//div//span[@class='select-button-value']",
+    timePickerMenu: "//button[@aria-label='TimePicker Open Button']",
     fromTime: '(//input[@input-datetime])[1]',
     applyCustomTimer: '//button[@ng-click="ctrl.applyCustom();"]',
     backToDashboard: "//button[@ng-click='ctrl.close()']",
@@ -53,7 +53,7 @@ module.exports = {
   },
 
   applyTimeRange(timeRange = 'Last 5 minutes') {
-    const timeRangeSelector = `//div[contains(text(), '${timeRange}')]`;
+    const timeRangeSelector = `//span[contains(text(), '${timeRange}')]`;
     I.waitForElement(this.fields.timePickerMenu, 30);
     I.forceClick(this.fields.timePickerMenu);
     I.waitForVisible(timeRangeSelector, 30);

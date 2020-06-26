@@ -5,52 +5,123 @@ Before((I, qanPage) => {
   I.amOnPage(qanPage.url);
 });
 
-Scenario('Open the QAN Dashboard and check existence of filters @new-qan', async (I, qanPage) => {
-  await qanPage.verifyFiltersSectionIsPresent();
+Scenario(
+  'PMM-T175 - Verify user is able to apply filter that has dots in label @not-pr-pipeline',
+  async (I, qanPage) => {
+    const serviceName = 'ps_5.7';
+
+    qanPage.waitForNewQANPageLoaded();
+    const countBefore = await qanPage.getCountOfItems();
+
+    qanPage.applyFilterNewQAN(serviceName);
+    I.seeInCurrentUrl(`service_name=${serviceName}`);
+    const countAfter = await qanPage.getCountOfItems();
+
+    qanPage.verifyChangedCount(countBefore, countAfter);
+  }
+);
+
+Scenario(
+  'PMM-T172 - Verify that selecting a filter updates the table data and URL  @not-pr-pipeline',
+  async (I, qanPage) => {
+    const environmentName = 'ps-dev';
+
+    qanPage.waitForNewQANPageLoaded();
+    const countBefore = await qanPage.getCountOfItems();
+
+    qanPage.applyFilterNewQAN(environmentName);
+    I.seeInCurrentUrl(`environment=${environmentName}`);
+    const countAfter = await qanPage.getCountOfItems();
+
+    qanPage.verifyChangedCount(countBefore, countAfter);
+  }
+);
+
+Scenario('PMM-T126 - Verify user is able to Reset All filters @not-pr-pipeline', async (I, qanPage) => {
+  const environmentName1 = 'ps-dev';
+  const environmentName2 = 'pgsql-dev';
+
+  qanPage.waitForNewQANPageLoaded();
+  const countBefore = await qanPage.getCountOfItems();
+
+  qanPage.applyFilterNewQAN(environmentName1);
+  qanPage.applyFilterNewQAN(environmentName2);
+  const countAfter = await qanPage.getCountOfItems();
+
+  await qanPage.verifyChangedCount(countBefore, countAfter);
+  I.click(qanPage.fields.resetAll);
+  I.waitForVisible(qanPage.fields.disabledResetAll, 30);
+  const countAfterReset = await qanPage.getCountOfItems();
+
+  assert.equal(countAfterReset >= countBefore, true, 'Count Should be Same or greater then');
 });
 
-xScenario(
-  'Open the QAN Dashboard switch between show all/selected correct',
-  async (I, adminPage, qanPage) => {}
+Scenario(
+  'PMM-T124 - Verify User is able to show all and show top 5 values for filter section @not-pr-pipeline',
+  async (I, qanPage) => {
+    const filterSection = 'Database';
+
+    qanPage.waitForNewQANPageLoaded();
+    await qanPage.verifyFiltersSection(filterSection, 5);
+    const countToShow = await qanPage.getCountOfFilters(filterSection);
+
+    qanPage.applyShowAllLink(filterSection);
+    await qanPage.verifyFiltersSection(filterSection, countToShow);
+    await qanPage.applyShowTop5Link(filterSection);
+    await qanPage.verifyFiltersSection(filterSection, 5);
+  }
 );
 
-xScenario(
-  'PMM-T123 Verify User is able to search for filter value @new-qan ',
-  async (I, adminPage, qanPage) => {}
+Scenario(
+  'PMM-T125 - Verify user is able to Show only selected filter values and Show All filter values @not-pr-pipeline',
+  async (I, qanPage) => {
+    const environmentName1 = 'ps-dev';
+    const environmentName2 = 'pgsql-dev';
+
+    qanPage.waitForNewQANPageLoaded();
+    qanPage.applyFilterNewQAN(environmentName1);
+    qanPage.applyFilterNewQAN(environmentName2);
+    I.waitForVisible(qanPage.fields.showSelected, 30);
+    I.click(qanPage.fields.showSelected);
+    await qanPage.verifyCountOfFilterLinks(2, false);
+    I.click(qanPage.fields.showSelected);
+    await qanPage.verifyCountOfFilterLinks(2, true);
+  }
 );
-xScenario(
-  'PMM-T124 Verify User is able to show all and show top 5 values for filter section @new-qan ',
-  async (I, adminPage, qanPage) => {}
-);
-xScenario(
-  'PMM-T125 Verify user is able to Show only selected filter values and Show All filter values @new-qan ',
-  async (I, adminPage, qanPage) => {}
-);
-xScenario('PMM-T126 Open the QAN Dashboard and check work of button "reset all" @new-qan', async (I, qanPage) => {
-  qanPage.selectFilter(qanPage.fields.filterCheckboxSelector);
-  qanPage.resetAllFilters();
-  I.dontSeeCheckboxIsChecked(qanPage.fields.filterCheckboxSelector);
+
+Scenario('PMM-T123 - Verify User is able to search for filter value @not-pr-pipeline', async (I, qanPage) => {
+  const filters = [
+    'ps-dev',
+    'ps-dev-cluster',
+    'pgsql-repl1',
+    'postgres',
+    'local',
+    'mysql',
+    'pmm-server',
+    'postgresql',
+    'pmm-server-postgresql',
+    'generic',
+  ];
+
+  qanPage.waitForNewQANPageLoaded();
+  I.waitForElement(qanPage.fields.filterBy, 30);
+  const countBefore = await qanPage.getCountOfItems();
+
+  for (i = 0; i < filters.length; i++) {
+    qanPage.applyFilterNewQAN(filters[i]);
+    const countAfter = await qanPage.getCountOfItems();
+
+    await qanPage.verifyChangedCount(countBefore, countAfter);
+    qanPage.applyFilterNewQAN(filters[i]);
+  }
 });
-xScenario(
-  'PMM-T172 Verify that selecting a filter updates the table data and URL @new-qan ',
-  async (I, adminPage, qanPage) => {}
-);
-xScenario(
-  "PMM-T175 Verify user is able to apply filter that has dots ('.') in label @new-qan ",
-  async (I, adminPage, qanPage) => {}
-);
-xScenario('PMM-T190 Verify user is able to see n/a filter @new-qan ', async (I, adminPage, qanPage) => {});
-xScenario(
-  'PMM-T191 Verify Reset all points the user to the default filters view @new-qan ',
-  async (I, adminPage, qanPage) => {}
-);
-xScenario(
-  'PMM-T192 Verify `show selected` and `reset all` disabled if nothing was selected @new-qan ',
-  async (I, adminPage, qanPage) => {}
-);
-xScenario('PMM-T211 Verify filters headers style @visual @new-qan ', async (I, adminPage, qanPage) => {});
-xScenario('PMM-T217 Verify filter by Service Name works @new-qan ', async (I, adminPage, qanPage) => {});
-xScenario(
-  'PMM-T221 Verify that all filter options are always visible (but some disabled) after selecting an item and % value is changed @new-qan ',
-  async (I, adminPage, qanPage) => {}
-);
+
+Scenario('Check All Filter Groups Exists in the Filter Section @not-pr-pipeline', async (I, qanPage) => {
+  qanPage.waitForNewQANPageLoaded();
+  for (i = 0; i < qanPage.filterGroups.length; i++) {
+    I.fillField(qanPage.fields.filterBy, qanPage.filterGroups[i]);
+    I.waitForVisible(qanPage.filterSectionLocator(qanPage.filterGroups[i]), 30);
+    I.seeElement(qanPage.filterSectionLocator(qanPage.filterGroups[i]));
+    I.clearField(qanPage.fields.filterBy);
+  }
+});
