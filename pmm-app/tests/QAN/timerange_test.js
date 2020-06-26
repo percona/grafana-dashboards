@@ -6,7 +6,7 @@ Before((I, qanPage) => {
 });
 
 Scenario(
-  'Open the QAN Dashboard and check that changing the time range resets current page to the first. @new-qan',
+  'Open the QAN Dashboard and check that changing the time range resets current page to the first. @new-qan @not-pr-pipeline',
   async (I, qanPage, adminPage) => {
     qanPage.waitForNewQANPageLoaded();
     qanPage.paginationGoTo(2);
