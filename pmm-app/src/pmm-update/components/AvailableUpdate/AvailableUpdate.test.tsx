@@ -1,5 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
+import { LinkButton } from '@grafana/ui';
 
 import { AvailableUpdate } from './AvailableUpdate';
 
@@ -7,7 +8,7 @@ jest.mock('../../../react-plugins-deps/components/helpers/notification-manager')
 
 const nextFullVersion = 'x.y.z-rc.j+1234567890';
 const nextVersion = 'x.y.z';
-const newsLink = 'https://percona.com';
+const newsLink = '';
 const nextVersionDate = '23 Jun';
 
 const nextVersionDetails = { nextVersionDate, nextVersion, nextFullVersion, newsLink };
@@ -35,8 +36,18 @@ describe('AvailableUpdate::', () => {
   });
 
   it('should show the news link if present', () => {
-    expect(wrapper?.find('section > div > p').length).toEqual(2);
-    expect(wrapper?.find('section > div > p > a').length).toEqual(1);
+    expect(wrapper?.find('section > div > p').find(LinkButton).length).toEqual(0);
+
+    const nextVersionDetails = {
+      nextVersionDate,
+      nextVersion,
+      nextFullVersion,
+      newsLink: 'https://percona.com',
+    };
+
+    wrapper = shallow(<AvailableUpdate nextVersionDetails={nextVersionDetails} />);
+
+    expect(wrapper?.find('section > div > p').find(LinkButton).length).toEqual(1);
   });
 
   it('should show the full version on alt-click', () => {
