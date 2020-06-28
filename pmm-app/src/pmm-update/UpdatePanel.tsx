@@ -3,7 +3,7 @@ import React, { useEffect, useState, FC, MouseEvent } from 'react';
 import {
   AvailableUpdate,
   LastCheck,
-  UpdateButton,
+  CenteredButton,
   CurrentVersion,
   InfoBox,
   ProgressModal,
@@ -65,7 +65,9 @@ export const UpdatePanel: FC<{}> = () => {
           <AvailableUpdate nextVersionDetails={nextVersionDetails} />
         ) : null}
         {isUpdateAvailable || forceUpdate ? (
-          <UpdateButton onClick={handleUpdate} nextVersion={nextVersionDetails?.nextVersion} />
+          <CenteredButton onClick={handleUpdate} icon="fa fa-download" variant="secondary">
+            Update to {nextVersionDetails?.nextVersion}
+          </CenteredButton>
         ) : null}
         <LastCheck
           onCheckForUpdates={handleCheckForUpdates}

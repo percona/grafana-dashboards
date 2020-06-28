@@ -101,12 +101,6 @@ export interface InfoBoxProps {
   upToDate?: boolean;
 }
 
-export interface UpdateButtonProps {
-  onClick: () => void;
-  nextVersion: string;
-  disabled?: boolean;
-}
-
 export interface AvailableUpdateProps {
   nextVersionDetails: NextVersionDetails;
 }
