@@ -1,6 +1,6 @@
 import { css } from 'emotion';
 
-export const updateInfoBox = css`
+export const infoBox = css`
   height: 65px;
   margin: 10px 0;
   display: flex;

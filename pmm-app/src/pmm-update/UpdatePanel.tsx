@@ -5,7 +5,7 @@ import {
   LastCheck,
   UpdateButton,
   CurrentVersion,
-  UpdateInfoBox,
+  InfoBox,
   ProgressModal,
 } from 'pmm-update/components';
 import { useVersionDetails, usePerformUpdate } from 'pmm-update/hooks';
@@ -59,8 +59,8 @@ export const UpdatePanel: FC<{}> = () => {
     <>
       <div className={styles.panel}>
         <CurrentVersion installedVersionDetails={installedVersionDetails} />
-        {isDefaultView && <UpdateInfoBox />}
-        {!isUpdateAvailable && !isDefaultView && !forceUpdate ? <UpdateInfoBox upToDate /> : null}
+        {isDefaultView && <InfoBox />}
+        {!isUpdateAvailable && !isDefaultView && !forceUpdate ? <InfoBox upToDate /> : null}
         {isUpdateAvailable && !isDefaultView ? (
           <AvailableUpdate nextVersionDetails={nextVersionDetails} />
         ) : null}

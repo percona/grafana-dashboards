@@ -1,8 +1,8 @@
 export { AvailableUpdate } from './AvailableUpdate/AvailableUpdate';
 export { CenteredButton } from './CenteredButton/CenteredButton';
-export { LastCheck } from './LastCheck/LastCheck';
-export { UpdateButton } from './UpdateButton/UpdateButton';
 export { CurrentVersion } from './CurrentVersion/CurrentVersion';
-export { UpdateInfoBox } from './UpdateInfoBox/UpdateInfoBox';
+export { InfoBox } from './InfoBox/InfoBox';
+export { LastCheck } from './LastCheck/LastCheck';
 export { ProgressModal } from './ProgressModal/ProgressModal';
 export { ProgressModalHeader } from './ProgressModalHeader/ProgressModalHeader';
+export { UpdateButton } from './UpdateButton/UpdateButton';

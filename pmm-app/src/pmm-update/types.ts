@@ -97,7 +97,7 @@ export interface ProgressModalHeaderProps {
   updateFailed?: boolean;
 }
 
-export interface UpdateInfoBoxProps {
+export interface InfoBoxProps {
   upToDate?: boolean;
 }
 

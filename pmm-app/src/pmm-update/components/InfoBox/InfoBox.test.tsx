@@ -1,12 +1,12 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { UpdateInfoBox } from './UpdateInfoBox';
-import { Messages } from './UpdateInfoBox.messages';
+import { InfoBox } from './InfoBox';
+import { Messages } from './InfoBox.messages';
 
-describe('UpdateInfoBox::', () => {
+describe('InfoBox::', () => {
   it('should show that there are no updates by default', () => {
-    const wrapper = shallow(<UpdateInfoBox />);
+    const wrapper = shallow(<InfoBox />);
 
     expect(wrapper.find('section > p').length).toEqual(2);
     expect(
@@ -26,7 +26,7 @@ describe('UpdateInfoBox::', () => {
   });
 
   it('should show a different message if upToDate is true', () => {
-    const wrapper = shallow(<UpdateInfoBox upToDate />);
+    const wrapper = shallow(<InfoBox upToDate />);
 
     expect(wrapper.find('section > p').length).toEqual(1);
     expect(
