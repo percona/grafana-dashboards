@@ -1,10 +1,11 @@
 import { css } from 'emotion';
 
 export const availableUpdate = css`
-  margin-top: 5px;
+  align-items: flex-start;
   display: flex;
   justify-content: flex-start;
-  align-items: flex-start;
+  line-height: 32px;
+  margin-top: 5px;
 
   > div {
     display: flex;
