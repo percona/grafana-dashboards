@@ -1,13 +1,12 @@
 import React, { FC } from 'react';
+import { LinkButton } from '@grafana/ui';
 
 import { AvailableUpdateProps } from 'pmm-update/types';
 import { useToggleOnAltClick } from 'pmm-update/hooks';
 import { Messages } from './AvailableUpdate.messages';
 import * as styles from './AvailableUpdate.styles';
 
-export const AvailableUpdate: FC<AvailableUpdateProps> = ({
-  nextVersionDetails
-}) => {
+export const AvailableUpdate: FC<AvailableUpdateProps> = ({ nextVersionDetails }) => {
   const [showFullVersion, handleToggleShowFullVersion] = useToggleOnAltClick(false);
 
   const { nextVersionDate, nextVersion, nextFullVersion, newsLink } = nextVersionDetails;
@@ -21,9 +20,9 @@ export const AvailableUpdate: FC<AvailableUpdateProps> = ({
           {newsLink && (
             <>
               {' '}
-              <a href={newsLink} rel="noreferrer" target="_blank">
+              <LinkButton rel="noreferrer" href={newsLink} target="_blank" variant="link">
                 {Messages.whatsNew}
-              </a>
+              </LinkButton>
             </>
           )}
         </p>

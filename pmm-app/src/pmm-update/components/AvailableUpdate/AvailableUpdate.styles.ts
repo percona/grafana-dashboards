@@ -13,15 +13,6 @@ export const availableUpdate = css`
   a {
     margin-left: 5px;
   }
-
-  a,
-  a:hover {
-    color: #27b4e7;
-  }
-
-  a:hover {
-    text-decoration: underline;
-  }
 `;
 
 export const availableUpdate_version = css`
