@@ -2,15 +2,15 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { ClipboardButton, Modal } from '@grafana/ui';
 
-import { CenteredButton, UpdateModal } from 'pmm-update/components';
+import { CenteredButton, ProgressModal } from 'pmm-update/components';
 
 jest.mock('../../../react-plugins-deps/components/helpers/notification-manager');
 
-describe('UpdateModal::', () => {
+describe('ProgressModal::', () => {
   const version = 'x.y.z';
 
   it('should be closed by default', () => {
-    const wrapper = shallow(<UpdateModal version={version} />);
+    const wrapper = shallow(<ProgressModal version={version} />);
 
     expect(wrapper.find(Modal).props()).toHaveProperty('isOpen', false);
 
@@ -18,7 +18,7 @@ describe('UpdateModal::', () => {
   });
 
   it('should show the update in progress if isUpdated is false', () => {
-    const wrapper = shallow(<UpdateModal version={version} />);
+    const wrapper = shallow(<ProgressModal version={version} />);
 
     expect(wrapper.find(ClipboardButton).length).toEqual(1);
     expect(wrapper.find('[data-qa="modal-chevron-icon"]').length).toEqual(1);
@@ -31,7 +31,7 @@ describe('UpdateModal::', () => {
   });
 
   it('should show a close button when isUpdated is true', () => {
-    const wrapper = shallow(<UpdateModal isUpdated version={version} />);
+    const wrapper = shallow(<ProgressModal isUpdated version={version} />);
 
     expect(wrapper.find('[data-qa="modal-update-success-text"]').length).toEqual(1);
     expect(wrapper.find(CenteredButton).length).toEqual(1);
@@ -44,7 +44,7 @@ describe('UpdateModal::', () => {
   });
 
   it('should toggle the update output on click on the chevron icon', () => {
-    const wrapper = shallow(<UpdateModal version={version} />);
+    const wrapper = shallow(<ProgressModal version={version} />);
     const chevron = wrapper.find('[data-qa="modal-chevron-icon"]');
     const chevronIconOpen = chevron.prop('name');
 
@@ -63,7 +63,7 @@ describe('UpdateModal::', () => {
     const mockedReload = jest.fn();
     location.reload = mockedReload;
 
-    const wrapper = shallow(<UpdateModal isUpdated version={version} />);
+    const wrapper = shallow(<ProgressModal isUpdated version={version} />);
 
     wrapper.find('[data-qa="modal-close"]').simulate('click');
 

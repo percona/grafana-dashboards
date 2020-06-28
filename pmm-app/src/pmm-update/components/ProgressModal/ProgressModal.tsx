@@ -2,13 +2,13 @@ import React, { useCallback, useLayoutEffect, useRef, useState, FC } from 'react
 import { ClipboardButton, Icon } from '@grafana/ui';
 import { Modal } from '@grafana/ui';
 
-import { Messages } from './UpdateModal.messages';
-import * as styles from './UpdateModal.styles';
+import { Messages } from './ProgressModal.messages';
+import * as styles from './ProgressModal.styles';
 import { CenteredButton, UpdateModalHeader } from 'pmm-update/components';
 import { useClickOutside } from 'pmm-update/hooks';
-import { UpdateModalProps } from 'pmm-update/types';
+import { ProgressModalProps } from 'pmm-update/types';
 
-export const UpdateModal: FC<UpdateModalProps> = ({
+export const ProgressModal: FC<ProgressModalProps> = ({
   version,
   errorMessage = '',
   isOpen = false,

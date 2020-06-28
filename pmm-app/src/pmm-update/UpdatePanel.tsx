@@ -6,7 +6,7 @@ import {
   UpdateButton,
   UpdateHeader,
   UpdateInfoBox,
-  UpdateModal,
+  ProgressModal,
 } from 'pmm-update/components';
 import { useVersionDetails, usePerformUpdate } from 'pmm-update/hooks';
 
@@ -73,7 +73,7 @@ export const UpdatePanel: FC<{}> = () => {
           isLoading={isLoading}
         />
       </div>
-      <UpdateModal
+      <ProgressModal
         errorMessage={errorMessage}
         isOpen={showModal}
         isUpdated={isUpdated}

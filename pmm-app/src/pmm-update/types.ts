@@ -72,7 +72,7 @@ export type CurrentOrNextVersionDetails = [
   (forceUpdate?: boolean) => void
 ];
 
-export interface UpdateModalProps {
+export interface ProgressModalProps {
   version: string;
   errorMessage?: string;
   isOpen?: boolean;
