@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
 
-import { UpdateModalHeaderProps } from 'pmm-update/types';
-import { Messages } from './UpdateModalHeader.messages';
+import { ProgressModalHeaderProps } from 'pmm-update/types';
+import { Messages } from './ProgressModalHeader.messages';
 
-export const UpdateModalHeader: FC<UpdateModalHeaderProps> = ({
+export const ProgressModalHeader: FC<ProgressModalHeaderProps> = ({
   errorMessage = '',
   isUpdated = false,
   updateFailed = false,

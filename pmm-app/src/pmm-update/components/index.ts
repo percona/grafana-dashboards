@@ -5,4 +5,4 @@ export { UpdateButton } from './UpdateButton/UpdateButton';
 export { CurrentVersion } from './CurrentVersion/CurrentVersion';
 export { UpdateInfoBox } from './UpdateInfoBox/UpdateInfoBox';
 export { ProgressModal } from './ProgressModal/ProgressModal';
-export { UpdateModalHeader } from './UpdateModalHeader/UpdateModalHeader';
+export { ProgressModalHeader } from './ProgressModalHeader/ProgressModalHeader';

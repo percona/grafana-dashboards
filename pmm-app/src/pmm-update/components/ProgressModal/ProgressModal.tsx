@@ -4,7 +4,7 @@ import { Modal } from '@grafana/ui';
 
 import { Messages } from './ProgressModal.messages';
 import * as styles from './ProgressModal.styles';
-import { CenteredButton, UpdateModalHeader } from 'pmm-update/components';
+import { CenteredButton, ProgressModalHeader } from 'pmm-update/components';
 import { useClickOutside } from 'pmm-update/hooks';
 import { ProgressModalProps } from 'pmm-update/types';
 
@@ -53,7 +53,7 @@ export const ProgressModal: FC<ProgressModalProps> = ({
       <div ref={modalRef} className="modal-dialog" role="document">
         <div className="modal-content">
           <div className="modal-body">
-            <UpdateModalHeader
+            <ProgressModalHeader
               isUpdated={isUpdated}
               updateFailed={updateFailed}
               errorMessage={errorMessage}

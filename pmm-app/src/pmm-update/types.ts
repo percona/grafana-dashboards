@@ -91,7 +91,7 @@ export interface CurrentVersionProps {
   installedVersionDetails: InstalledVersionDetails;
 }
 
-export interface UpdateModalHeaderProps {
+export interface ProgressModalHeaderProps {
   errorMessage?: string;
   isUpdated?: boolean;
   updateFailed?: boolean;
