@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { UpdateHeader } from './UpdateHeader';
+import { CurrentVersion } from './CurrentVersion';
 
 jest.mock('../../../react-plugins-deps/components/helpers/notification-manager');
 
@@ -15,11 +15,11 @@ const installedVersionDetails = {
   installedVersionDate,
 };
 
-describe('UpdateHeader::', () => {
+describe('CurrentVersion::', () => {
   let wrapper: ReturnType<typeof shallow> | undefined;
 
   beforeEach(() => {
-    wrapper = shallow(<UpdateHeader installedVersionDetails={installedVersionDetails} />);
+    wrapper = shallow(<CurrentVersion installedVersionDetails={installedVersionDetails} />);
   });
 
   afterEach(() => {
@@ -27,12 +27,12 @@ describe('UpdateHeader::', () => {
   });
 
   it('should show only the short version by default', () => {
-    expect(wrapper?.find('header > p > span').text()).toEqual(`${installedVersion} ${installedVersionDate}`);
+    expect(wrapper?.find('section > p > span').text()).toEqual(`${installedVersion} ${installedVersionDate}`);
   });
 
   it('should show the full version on alt-click', () => {
-    wrapper?.find('header > p').simulate('click', { altKey: true });
-    expect(wrapper?.find('header > p').text()).toEqual(
+    wrapper?.find('section > p').simulate('click', { altKey: true });
+    expect(wrapper?.find('section > p').text()).toEqual(
       `Current version: ${installedFullVersion} ${installedVersionDate}`
     );
   });

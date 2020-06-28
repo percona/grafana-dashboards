@@ -87,7 +87,7 @@ export interface LastCheckProps {
   isLoading?: boolean;
 }
 
-export interface UpdateHeaderProps {
+export interface CurrentVersionProps {
   installedVersionDetails: InstalledVersionDetails;
 }
 
