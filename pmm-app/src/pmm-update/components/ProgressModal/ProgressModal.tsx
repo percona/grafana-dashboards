@@ -64,6 +64,7 @@ export const ProgressModal: FC<ProgressModalProps> = ({
                   <Icon
                     className="output-collapse"
                     data-qa="modal-chevron-icon"
+                    // @ts-ignore
                     name={chevronIcon}
                     onClick={handleToggleShowOutput}
                   />

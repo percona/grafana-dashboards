@@ -65,6 +65,7 @@ export const UpdatePanel: FC<{}> = () => {
           <AvailableUpdate nextVersionDetails={nextVersionDetails} />
         ) : null}
         {isUpdateAvailable || forceUpdate ? (
+          // @ts-ignore
           <CenteredButton onClick={handleUpdate} icon="fa fa-download" variant="secondary">
             Update to {nextVersionDetails?.nextVersion}
           </CenteredButton>
