@@ -64,7 +64,7 @@ export const METRIC_CATALOGUE = {
   },
   blk_read_time: {
     humanizeName: 'Reading Blocks Time',
-    tooltipText: 'Total time (in seconds) the statement spent reading blocks (if track_io_timing is enabled, otherwise zero)',
+    tooltipText: 'Total time the statement spent reading blocks (if track_io_timing is enabled, otherwise zero)',
     simpleName: 'blk_read_time',
     metricRelation: () => '',
     units: Units.PER_SEC,
@@ -78,7 +78,7 @@ export const METRIC_CATALOGUE = {
   },
   blk_write_time: {
     humanizeName: 'Writing Blocks Time',
-    tooltipText: 'Total time (in seconds) the statement spent writing blocks (if track_io_timing is enabled, otherwise zero)',
+    tooltipText: 'Total time the statement spent writing blocks (if track_io_timing is enabled, otherwise zero)',
     simpleName: 'blk_write_time',
     metricRelation: () => '',
     units: Units.PER_SEC,
@@ -403,7 +403,7 @@ export const METRIC_CATALOGUE = {
   },
   innodb_io_r_bytes: {
     humanizeName: 'Innodb Read Bytes',
-    tooltipText: 'Total page read operations scheduled (in bytes)',
+    tooltipText: 'Total page read operations scheduled',
     simpleName: 'innodb_io_r_bytes',
     metricRelation: (data) => {
       const mainMetric = get(data, ['innodb_io_r_bytes', 'sum']);
@@ -440,7 +440,7 @@ export const METRIC_CATALOGUE = {
   },
   innodb_io_r_wait: {
     humanizeName: 'Innodb IO Read Wait',
-    tooltipText: 'Time (in seconds) for InnoDB to read the data from storage',
+    tooltipText: 'Time for InnoDB to read the data from storage',
     simpleName: 'innodb_io_r_wait',
     metricRelation: (data) => {
       const mainMetric = get(data, ['innodb_io_r_wait', 'avg']);
@@ -477,7 +477,7 @@ export const METRIC_CATALOGUE = {
   },
   innodb_queue_wait: {
     humanizeName: 'Innodb Queue Wait',
-    tooltipText: 'Time (in seconds) the query spent either waiting to enter the InnoDB queue, or in it pending execution',
+    tooltipText: 'Time the query spent either waiting to enter the InnoDB queue, or in it pending execution',
     simpleName: 'innodb_queue_wait',
     metricRelation: (data) => {
       const mainMetric = get(data, ['innodb_queue_wait', 'avg']);
@@ -500,7 +500,7 @@ export const METRIC_CATALOGUE = {
   },
   innodb_rec_lock_wait: {
     humanizeName: 'Innodb Rec Lock Wait',
-    tooltipText: 'Time (in seconds) the query waited for row locks',
+    tooltipText: 'Time the query waited for row locks',
     simpleName: 'innodb_rec_lock_wait',
     metricRelation: (data) => {
       const mainMetric = get(data, ['innodb_rec_lock_wait', 'avg']);
@@ -537,7 +537,7 @@ export const METRIC_CATALOGUE = {
   },
   lock_time: {
     humanizeName: 'Lock Time',
-    tooltipText: 'Time (in seconds) to acquire locks',
+    tooltipText: 'Time to acquire locks',
     simpleName: 'lock_time',
     metricRelation: (data) => {
       const mainMetric = get(data, ['lock_time', 'avg']);
@@ -634,7 +634,7 @@ export const METRIC_CATALOGUE = {
   },
   query_length: {
     humanizeName: 'Query Length',
-    tooltipText: 'Query duration (in seconds)',
+    tooltipText: 'Query duration',
     simpleName: 'query_length',
     metricRelation: () => '',
     units: Units.PER_SEC,
@@ -648,7 +648,7 @@ export const METRIC_CATALOGUE = {
   },
   query_time: {
     humanizeName: 'Query Time',
-    tooltipText: 'Statement execution time (in seconds)',
+    tooltipText: 'Statement execution time',
     simpleName: 'query_time',
     metricRelation: () => '',
     units: Units.LOAD,
@@ -662,7 +662,7 @@ export const METRIC_CATALOGUE = {
   },
   response_length: {
     humanizeName: 'Response Length',
-    tooltipText: 'Response length of the query result (in bytes)',
+    tooltipText: 'Response length of the query result',
     simpleName: 'response_length',
     metricRelation: (data) => {
       const mainMetric = get(data, ['response_length', 'sum']);
@@ -903,7 +903,7 @@ export const METRIC_CATALOGUE = {
   },
   tmp_table_sizes: {
     humanizeName: 'Tmp Table Sizes',
-    tooltipText: 'Total size (in bytes) for all temporary tables used in the query',
+    tooltipText: 'Total size for all temporary tables used in the query',
     simpleName: 'tmp_table_sizes',
     metricRelation: (data) => {
       const mainMetric = get(data, ['tmp_table_sizes', 'sum']);
