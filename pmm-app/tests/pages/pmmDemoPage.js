@@ -14,6 +14,7 @@ module.exports = {
     copyright: "//a[contains(text(), 'Copyright')]",
     legal: "//a[contains(text(), 'Legal')]",
     accessDenied: "//div[contains(@class, 'alert-title') and contains(text(), 'Access denied.')]",
+    title: "//span[contains(text(), 'Percona Monitoring and Management')]",
   },
 
   verifyCopyrightsAndLegal() {
