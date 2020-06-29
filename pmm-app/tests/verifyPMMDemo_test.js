@@ -21,5 +21,6 @@ Scenario(
   async (I, pmmDemoPage, pmmInventoryPage) => {
     I.amOnPage(pmmDemoPage.url + pmmInventoryPage.url);
     I.waitForVisible(pmmDemoPage.fields.accessDenied, 30);
+    
   }
 );
