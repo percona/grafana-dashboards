@@ -7,8 +7,8 @@ import './Overview.scss';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
 import 'shared/components/Elements/Spinner/Spinner';
 import { useOverviewTable } from './Overview.hooks';
-import { styles } from '../../qan.styles';
-import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE, PAGE_SIZE_OPTIONS } from '../../qan.constants';
+import { styles } from '../../QueryAnalytics.styles';
+import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE, PAGE_SIZE_OPTIONS } from '../../QueryAnalytics.constants';
 
 export const Overview: FC = () => {
   const [total, setTotal] = useState(30);
@@ -95,7 +95,8 @@ export const Overview: FC = () => {
             scroll={{ y: height - 100, x: '100%' }}
             rowClassName={getRowClassName}
             loading={loading}
-            rowKey={(record: any) => (record.fingerprint + record.dimension)}
+            // TODO: (lunaticusgreen)rowKey works strange with TOTALS and some value, need to investigate it
+            // rowKey={(record: any) => (record.fingerprint + record.dimension)}
             data-qa="qan-overview-table"
           />
         </div>

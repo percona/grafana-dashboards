@@ -18,7 +18,7 @@ export const Status = (props) => {
   const getStatuses = useCallback(async () => {
     let id;
 
-    if (databaseType === DATABASE.postgresql) {
+    if (databaseType === DATABASE.mysql) {
       id = await mysqlMethods.getStatuses(({ example, tableName }));
     }
 

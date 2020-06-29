@@ -27,7 +27,7 @@ export const styles = {
   `,
   filterHeader: css`
     margin-right: auto;
-    font-weight: 700;
+    font-weight: 400;
     font-size: 16px;
     color: rgba(255, 255, 255, 0.8);
   `,

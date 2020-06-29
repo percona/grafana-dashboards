@@ -2,7 +2,7 @@ import {
   apiRequestManagement,
   apiRequestQAN,
 } from 'shared/components/helpers/api';
-import { getLabelQueryParams } from 'pmm-qan/panel/qan.tools';
+import { getLabelQueryParams } from 'pmm-qan/panel/QueryAnalytics.tools';
 
 
 const getExample = async ({

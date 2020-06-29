@@ -1,5 +1,5 @@
 import React, {
-  FC, useContext, useMemo, useRef, useState
+  FC, useContext, useEffect, useMemo, useRef, useState
 } from 'react';
 import { Button, Input, Spin } from 'antd';
 import { Form } from 'react-final-form';
@@ -22,6 +22,12 @@ export const FiltersContainer = ({
   const [filter, setFilter] = useState('');
   const [showAll, showSetAll] = useState(true);
   const selectedCheckboxes = getSelectedCheckboxes(filters);
+
+  useEffect(() => {
+    if (!selectedCheckboxes) {
+      showSetAll(true);
+    }
+  }, [selectedCheckboxes]);
 
   return (
     <div ref={filtersWrapperRef}>

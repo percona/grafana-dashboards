@@ -20,9 +20,9 @@ export const Indexes = (props) => {
     let id;
 
     if (databaseType === DATABASE.postgresql) {
-      id = await mysqlMethods.getIndexes(({ example, tableName }));
-    } else if (databaseType === DATABASE.mysql) {
       id = await postgresqlMethods.getIndexes(({ example, tableName }));
+    } else if (databaseType === DATABASE.mysql) {
+      id = await mysqlMethods.getIndexes(({ example, tableName }));
     }
 
     const result = await useActionResult(id);

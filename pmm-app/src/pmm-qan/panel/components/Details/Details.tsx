@@ -4,7 +4,6 @@ import React, {
 import { Divider, Tabs } from 'antd';
 import './Details.scss';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
-import Fingerprint from './Fingerprint/Fingerprint';
 import Explain from './Explain/Explain';
 import Example from './Example/Example';
 import Metrics from './Metrics/Metrics';
@@ -14,6 +13,7 @@ import { DATABASE, TabKeys } from './Details.constants';
 import { DetailsContentProvider, DetailsProvider } from './Details.provider';
 import { styles } from './Details.styles';
 import { useMetricsDetails } from './Metrics/Metrics.hooks';
+import { Close } from '../../../../shared/components/Elements/Icons/Close';
 
 const { TabPane } = Tabs;
 const actionResult = {
@@ -47,17 +47,30 @@ const Details: FC = () => {
   const showExplainTab = databaseType !== DATABASE.postgresql && groupBy === 'queryid' && !totals;
   const showExamplesTab = groupBy === 'queryid' && !totals;
 
-  useEffect(() => changeActiveTab(TabKeys[openDetailsTab]), [queryId]);
+  useEffect(() => {
+    if (openDetailsTab === 'examples' && !showExamplesTab) {
+      changeActiveTab(TabKeys.details);
+
+      return;
+    }
+
+    if (openDetailsTab === 'tables' && !showTablesTab) {
+      changeActiveTab(TabKeys.tables);
+
+      return;
+    }
+
+    if (openDetailsTab === 'explain' && !showExplainTab) {
+      changeActiveTab(TabKeys.explain);
+
+      return;
+    }
+
+    changeActiveTab(TabKeys[openDetailsTab]);
+  }, [queryId]);
 
   return (
     <div className="query-analytics-details-grid query-analytics-details" data-qa="query-analytics-details">
-      <Fingerprint
-        totals={totals}
-        query={fingerprint}
-        queryId={queryId}
-        groupBy={groupBy}
-        closeDetails={closeDetails}
-      />
       <div className="details-tabs">
         <Divider className={styles.zeroMargin} />
         <Tabs
@@ -68,6 +81,7 @@ const Details: FC = () => {
           }}
           tabPosition="top"
           destroyInactiveTabPane
+          tabBarExtraContent={<Close className={styles.closeButton} onClick={closeDetails} />}
         >
           <TabPane tab={<span>Details</span>} key={TabKeys.details}>
             <Metrics databaseType={databaseType} totals={totals} metrics={metrics} loading={metricsLoading} />
