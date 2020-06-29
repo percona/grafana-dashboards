@@ -10,8 +10,7 @@ export const LastCheck: FC<LastCheckProps> = ({ lastCheckDate, onCheckForUpdates
     {isLoading ? (
       <Spinner />
     ) : (
-      // @ts-ignore
-      <Button variant="link" size="sm" onClick={onCheckForUpdates} icon="fa fa-refresh"></Button>
+      <Button variant="link" size="sm" onClick={onCheckForUpdates} icon={'fa fa-refresh' as any}></Button>
     )}
   </div>
 );
