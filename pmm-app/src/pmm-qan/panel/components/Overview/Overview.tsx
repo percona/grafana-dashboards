@@ -103,7 +103,7 @@ export const Overview: FC = () => {
             }}
             rowNumber={(index) => <div>{index === 0 ? '' : (pageNumber - 1) * pageSize + index}</div>}
             orderBy={orderBy}
-            noData={<h1>No nodes Available</h1>}
+            noData={<h1>No queries Available</h1>}
             loading={loading}
           />
         </div>
