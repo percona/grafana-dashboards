@@ -3,6 +3,7 @@ const { I } = inject();
 module.exports = {
   url: 'https://pmmdemo.percona.com/',
   mongoDBDashbordUrl: 'graph/d/mongodb-instance-overview/mongodb-instances-overview?orgId=1&refresh=1m',
+  settingPage: 'graph/d/pmm-settings/pmm-settings?orgId=1',
 
   fields: {
     copyrightsAndLegalPanel: "//a[contains(text(), 'Copyrights & Legal')]",
@@ -12,6 +13,7 @@ module.exports = {
     privacy: "//a[contains(text(), 'Privacy')]",
     copyright: "//a[contains(text(), 'Copyright')]",
     legal: "//a[contains(text(), 'Legal')]",
+    accessDenied: "//div[contains(@class, 'alert-title') and contains(text(), 'Access denied.')]",
   },
 
   verifyCopyrightsAndLegal() {

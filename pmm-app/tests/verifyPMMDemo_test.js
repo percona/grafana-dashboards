@@ -7,3 +7,8 @@ Scenario('PMM-T363 - Verify Copyrights & Legal section elements', async (I, pmmD
   I.amOnPage(pmmDemoPage.url + pmmDemoPage.mongoDBDashbordUrl);
   pmmDemoPage.verifyCopyrightsAndLegal();
 });
+
+Scenario('PMM-T364 - Verify PMM settings returns Access denied error', async (I, pmmDemoPage) => {
+  I.amOnPage(pmmDemoPage.url + pmmDemoPage.settingPage);
+  I.waitForVisible(pmmDemoPage.fields.accessDenied, 30);
+});
