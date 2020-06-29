@@ -6,7 +6,7 @@ import {
 } from 'antd';
 import { cx } from 'emotion';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
-import { METRIC_CATALOGUE } from 'pmm-qan/panel/qan.constants';
+import { METRIC_CATALOGUE } from 'pmm-qan/panel/QueryAnalytics.constants';
 import { styles } from './ManageColumns.styles';
 import './ManageColumns.scss';
 

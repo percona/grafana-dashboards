@@ -1,6 +1,6 @@
 import { getDataSourceSrv } from '@grafana/runtime';
 import { find } from 'lodash';
-import { DEFAULT_COLUMNS, FILTERS_NAMES } from '../qan.constants';
+import { DEFAULT_COLUMNS, FILTERS_NAMES } from '../QueryAnalytics.constants';
 import { ParseQueryParamDate } from '../../../shared/components/helpers/time-parameters-parser';
 
 const setFilters = (query) => FILTERS_NAMES.reduce((acc, filterName) => {

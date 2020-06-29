@@ -6,7 +6,7 @@ import { QueryAnalyticsProvider, UrlParametersProvider } from './provider/provid
 import {
   Overview, Filters, Details, ManageColumns
 } from './components';
-import { styles } from './qan.styles';
+import { styles } from './QueryAnalytics.styles';
 import 'shared/styles.scss';
 import 'shared/style.less';
 import './qan.scss';
@@ -44,7 +44,7 @@ const QueryAnalyticsPanel: FC = () => {
               className={styles.splitterWrapper}
               resizerStyle={{ display: querySelected ? '' : 'none' }}
               pane1Style={{
-                minHeight: querySelected ? '20%' : '100%',
+                minHeight: querySelected ? '30%' : '100%',
                 maxHeight: querySelected ? '60%' : '100%',
               }}
               pane2Style={{ minHeight: '20%', overflowY: 'scroll', zIndex: 999 }}

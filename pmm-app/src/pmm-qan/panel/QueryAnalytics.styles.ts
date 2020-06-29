@@ -26,6 +26,7 @@ export const styles = {
   `,
   manageColumnsWrapper: css`
     margin-left: auto;
+    margin-right: 2px;
   `,
   tableWrapper: css`
     min-height: 1000px;
