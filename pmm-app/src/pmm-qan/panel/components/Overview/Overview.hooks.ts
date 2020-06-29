@@ -1,5 +1,5 @@
 import {
-  useCallback, useContext, useEffect, useState
+  useContext, useEffect, useState
 } from 'react';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
 import OverviewService from './Overview.service';
@@ -9,7 +9,7 @@ import { getDefaultColumns } from './components/DefaultColumns/DefaultColumns';
 
 export const useOverviewTable = (setTotal): [DataInterface, boolean] => {
   const {
-    contextActions,
+    // contextActions,
     panelState: {
       labels, columns, pageNumber, pageSize, orderBy, from, to, groupBy, rawTime
     },
@@ -17,14 +17,6 @@ export const useOverviewTable = (setTotal): [DataInterface, boolean] => {
   const [data, setData] = useState<DataInterface>({ rows: [], columns: [] });
   const [loading, setLoading] = useState(false);
 
-  const onCell = useCallback(
-    (record, rowIndex) => ({
-      onClick: () => {
-        contextActions.selectQuery(record.dimension, rowIndex === 0);
-      },
-    }),
-    [data.rows]
-  );
 
   useEffect(() => {
     const updateInstances = async () => {
@@ -42,13 +34,15 @@ export const useOverviewTable = (setTotal): [DataInterface, boolean] => {
         });
 
         setTotal(result.total_rows);
-        const defaultColumns = getDefaultColumns(groupBy, pageNumber, pageSize, columns.length, onCell);
+        const defaultColumns = getDefaultColumns(groupBy, pageNumber, pageSize, columns.length);
 
         const mainMetric = columns[0];
         // eslint-disable-next-line max-len
         const metricsColumns = columns.map((key, index) => getOverviewColumn(key, index, result.rows[0], orderBy, mainMetric));
 
-        setData({ rows: result.rows, columns: [...defaultColumns, ...metricsColumns] });
+        const allColumns = [...defaultColumns, ...metricsColumns];
+
+        setData({ rows: result.rows, columns: allColumns });
         setLoading(false);
       } catch (e) {
         setLoading(false);
