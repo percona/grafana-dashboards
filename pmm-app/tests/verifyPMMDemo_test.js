@@ -34,3 +34,13 @@ Scenario(
     await pmmDemoPage.checkDBPanelText(text);
   }
 );
+
+Scenario(
+  'PMM-T367 - Verify PMM Database checks page doesnt display checks',
+  async (I, pmmDemoPage, databaseChecksPage) => {
+    const text = 'Insufficient access rights.';
+    I.amOnPage(pmmDemoPage.url + databaseChecksPage.url);
+    I.waitForVisible(pmmDemoPage.fields.dbCheckPanelNoAccess, 30);
+    await pmmDemoPage.checkDBPanelText(text);
+  }
+);
