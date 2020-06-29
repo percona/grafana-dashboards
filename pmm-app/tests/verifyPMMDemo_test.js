@@ -21,6 +21,16 @@ Scenario(
   async (I, pmmDemoPage, pmmInventoryPage) => {
     I.amOnPage(pmmDemoPage.url + pmmInventoryPage.url);
     I.waitForVisible(pmmDemoPage.fields.accessDenied, 30);
-    
+  }
+);
+
+Scenario(
+  'PMM-T366 - Verify Failed security checks doesnt display the result of check',
+  async (I, pmmDemoPage) => {
+    const text = 'Insufficient access rights.';
+    I.amOnPage(pmmDemoPage.url);
+    I.waitForVisible(pmmDemoPage.fields.failedSecurityChecks, 30);
+    I.waitForVisible(pmmDemoPage.fields.dbCheckPanelNoAccess, 30);
+    await pmmDemoPage.checkDBPanelText(text);
   }
 );
