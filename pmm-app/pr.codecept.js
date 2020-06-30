@@ -30,7 +30,7 @@ exports.config = {
       host: process.env.MONITORING_HOST,
       port: process.env.INFLUXDB_PORT || '8086',
       dbname: process.env.INFLUXDB_DBNAME || 'codeceptjs',
-      measurement: process.env.INFLUXDB_MEASUREMENT || 'testMethod',
+      measurement: process.env.INFLUXDB_MEASUREMENT || 'testmethod',
     },
   },
   include: {
