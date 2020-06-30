@@ -5,14 +5,14 @@ exports.config = {
       url: process.env.PMM_UI_URL || 'http://localhost/',
       restart: true,
       browser: 'chromium',
-      windowSize: "2560x1600",
+      windowSize: "1920x1080",
       waitForNavigation: 'networkidle0',
       waitForTimeout: 30000,
       getPageTimeout: 30000,
       waitForAction: 500,
       chromium: {
         ignoreHTTPSErrors: true,
-        args: ['--no-sandbox', '--window-size=2560,1600', '--disable-gpu', '--disable-dev-shm-usage', '--disable-setuid-sandbox'],
+        args: ['--no-sandbox', '--window-size=1920,1080', '--disable-gpu', '--disable-dev-shm-usage', '--disable-setuid-sandbox'],
       },
     },
     Grafana: {
@@ -25,6 +25,7 @@ exports.config = {
     }
   },
   include: {
+    pmmDemoPage: './tests/pages/pmmDemoPage.js',
     homePage: './tests/pages/homePage.js',
     remoteInstancesPage: './tests/pages/remoteInstancesPage.js',
     adminPage: './tests/pages/adminPage.js',
@@ -54,7 +55,11 @@ exports.config = {
       strategy: 'css',
       attribute: 'data-qa',
       showActual: false
-    }
+    },
+    allure: {
+      enabled: true,
+      outputDir: "tests/output/allure",
+    },
   },
   mocha: {
     reporterOptions: {

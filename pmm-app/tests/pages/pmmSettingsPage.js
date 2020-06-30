@@ -120,7 +120,7 @@ module.exports = {
     I.see('Data retention', this.fields.dataRetentionLabel);
     I.seeElement(this.fields.dataRetentionCount);
     I.see('Telemetry', this.fields.telemetryLabel);
-    I.seeElement(this.fields.callHomeSwitch);
+    I.seeElement(this.fields.telemetrySwitchSelector);
     I.see('Check for updates', this.fields.checkForUpdatesLabel);
     I.seeElement(this.fields.sttSwitchSelector);
   },
