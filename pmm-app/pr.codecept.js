@@ -25,8 +25,8 @@ exports.config = {
     },
     InfluxDBHelper: {
       require: 'codeceptjs-influxdbhelper',
-      username: process.env.INFLUXDB_USER,
-      password: process.env.INFLUXDB_USER_PASSWORD,
+      username: process.env.INFLUXDB_ADMIN_USER,
+      password: process.env.INFLUXDB_ADMIN_PASSWORD,
       host: process.env.MONITORING_HOST,
       port: process.env.INFLUXDB_PORT || '8086',
       dbname: process.env.INFLUXDB_DBNAME || 'codeceptjs',
