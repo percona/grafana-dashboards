@@ -55,13 +55,13 @@ const Details: FC = () => {
     }
 
     if (openDetailsTab === 'tables' && !showTablesTab) {
-      changeActiveTab(TabKeys.tables);
+      changeActiveTab(TabKeys.details);
 
       return;
     }
 
     if (openDetailsTab === 'explain' && !showExplainTab) {
-      changeActiveTab(TabKeys.explain);
+      changeActiveTab(TabKeys.details);
 
       return;
     }
