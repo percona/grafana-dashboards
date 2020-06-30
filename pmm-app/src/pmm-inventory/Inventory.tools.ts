@@ -1,4 +1,5 @@
-import { CustomLabel, ServicesList } from './Inventory.types';
+import { orderBy } from 'lodash';
+import { CustomLabel, InventoryList, ServicesList } from './Inventory.types';
 import { inventoryTypes } from './Inventory.constants';
 
 interface FulfilledPromiseResult {
@@ -38,9 +39,10 @@ interface Model {
   custom_labels: CustomLabel[];
   type: string;
   isDeleted: boolean;
+  [key: string]: any;
 }
 
-const getModel = (params, type): Model => {
+const getParams = (params, type): Model => {
   const { custom_labels, ...rest } = params;
   const labels =
     custom_labels && Object.keys(custom_labels).length
@@ -54,15 +56,43 @@ const getModel = (params, type): Model => {
   };
 };
 
-const generateStructure = (item: ServicesList) => {
-  const addType = Object.keys(item).map(type => new Object({ type, params: item[type] }));
-  const createParams = addType.map(agent =>
-    agent['params'].map(arrItem => {
-      const type = inventoryTypes[agent['type']] || '';
-      return getModel(arrItem, type);
-    })
+const getModel = (item: ServicesList) => {
+  const addType = Object.keys(item).map(type => ({ type, params: item[type] }));
+  return addType.map(agent =>
+    agent['params'].map(
+      (arrItem): Model => {
+        const type = inventoryTypes[agent['type']] || '';
+        return getParams(arrItem, type);
+      }
+    )
   );
-  return [].concat(...createParams);
 };
 
-export const InventoryDataService = { generateStructure };
+const getServiceModel = (item: InventoryList) => {
+  const createParams = getModel(item);
+  return orderBy(
+    [].concat(...createParams),
+    [(service: Model) => (service.service_name || '').toLowerCase()],
+    ['asc']
+  );
+};
+
+const getNodeModel = (item: InventoryList) => {
+  const createParams = getModel(item);
+  return orderBy(
+    [].concat(...createParams),
+    [(node: Model) => (node.node_name || '').toLowerCase()],
+    ['asc']
+  );
+};
+
+const getAgentModel = (item: InventoryList) => {
+  const createParams = getModel(item);
+  return orderBy([].concat(...createParams), [(agent: Model) => (agent.type || '').toLowerCase()], ['asc']);
+};
+
+export const InventoryDataService = {
+  getServiceModel,
+  getAgentModel,
+  getNodeModel,
+};
