@@ -34,6 +34,7 @@ exports.config = {
     },
   },
   include: {
+    pmmDemoPage: './tests/pages/pmmDemoPage.js',
     homePage: './tests/pages/homePage.js',
     remoteInstancesPage: './tests/pages/remoteInstancesPage.js',
     adminPage: './tests/pages/adminPage.js',
@@ -63,7 +64,11 @@ exports.config = {
       strategy: 'css',
       attribute: 'data-qa',
       showActual: false
-    }
+    },
+    allure: {
+      enabled: true,
+      outputDir: "tests/output/allure",
+    },
   },
   mocha: {
     reporterOptions: {
