@@ -25,6 +25,7 @@ exports.config = {
     }
   },
   include: {
+    pmmDemoPage: './tests/pages/pmmDemoPage.js',
     homePage: './tests/pages/homePage.js',
     remoteInstancesPage: './tests/pages/remoteInstancesPage.js',
     adminPage: './tests/pages/adminPage.js',
