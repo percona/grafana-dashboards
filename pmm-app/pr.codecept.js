@@ -55,7 +55,11 @@ exports.config = {
       strategy: 'css',
       attribute: 'data-qa',
       showActual: false
-    }
+    },
+    allure: {
+      enabled: true,
+      outputDir: "tests/output/allure",
+    },
   },
   mocha: {
     reporterOptions: {
