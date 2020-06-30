@@ -20,7 +20,7 @@ Scenario(
 );
 
 Scenario(
-  'PMM-T364 - Verify PMM settings returns Access denied error @not-pr-pipeline @pmm-demo',
+  'PMM-T365 - Verify PMM settings returns Access denied error @not-pr-pipeline @pmm-demo',
   async (I, pmmDemoPage, pmmInventoryPage) => {
     I.amOnPage(pmmDemoPage.url + pmmInventoryPage.url);
     I.waitForVisible(pmmDemoPage.fields.accessDenied, 30);
