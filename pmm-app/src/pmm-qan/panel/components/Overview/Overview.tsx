@@ -82,6 +82,15 @@ export const Overview: FC = () => {
     [querySelected, totals, queryId]
   );
 
+
+  const onSortChange = useCallback((data) => {
+    if (!data[0]) {
+      return;
+    }
+
+    contextActions.changeSort(data[0].desc ? data[0].id : `-${data[0].id}`);
+  }, [contextActions.changeSort]);
+
   return (
     <div className="table-wrapper" ref={tableWrapperRef}>
       {useMemo(() => (
@@ -94,13 +103,7 @@ export const Overview: FC = () => {
               contextActions.selectQuery(selected.original.dimension, selected.index === 0);
             }}
             scroll={{ y: Math.min(height, 550), x: '100%' }}
-            onSortChange={(data) => {
-              if (!data[0]) {
-                return;
-              }
-
-              contextActions.changeSort(data[0].desc ? data[0].id : `-${data[0].id}`);
-            }}
+            onSortChange={onSortChange}
             rowNumber={(index) => <div>{index === 0 ? '' : (pageNumber - 1) * pageSize + index}</div>}
             orderBy={orderBy}
             noData={<h1>No queries Available</h1>}

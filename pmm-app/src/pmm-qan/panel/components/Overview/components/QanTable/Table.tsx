@@ -151,7 +151,7 @@ export const Table: FC<TableProps> = ({
         </>
       );
     },
-    [prepareRow, rows]
+    [prepareRow, rows, rowClassName]
   );
 
   return (

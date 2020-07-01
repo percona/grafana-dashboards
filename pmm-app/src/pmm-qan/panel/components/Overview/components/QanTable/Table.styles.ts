@@ -34,6 +34,14 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
         width: 100%;
         border-spacing: 0;
 
+        .selected-overview-row {
+          .td {
+            background-color: #234682;
+          }
+        }
+        .tr {
+          cursor: pointer;
+        }
         .th,
         .td {
           background-color: ${backgroundColor};
