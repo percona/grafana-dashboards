@@ -9,7 +9,6 @@ import { getDefaultColumns } from './components/DefaultColumns/DefaultColumns';
 
 export const useOverviewTable = (setTotal): [DataInterface, boolean] => {
   const {
-    // contextActions,
     panelState: {
       labels, columns, pageNumber, pageSize, orderBy, from, to, groupBy, rawTime
     },

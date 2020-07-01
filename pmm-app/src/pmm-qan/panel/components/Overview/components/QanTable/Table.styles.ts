@@ -4,12 +4,13 @@ import { selectThemeVariant, stylesFactory } from '@grafana/ui';
 
 export const getStyles = stylesFactory((theme: GrafanaTheme) => {
   const backgroundColor = selectThemeVariant({ light: 'rgb(247, 247, 249)', dark: '#161719' }, theme.type);
-  // @ts-ignore
-  const borderColor = selectThemeVariant({ light: theme.colors.gray85, dark: '#292929' }, theme.type);
+  const borderColor = selectThemeVariant(
+    { light: (theme.colors as any).gray85, dark: '#292929' },
+    theme.type
+  );
   const headerBackground = selectThemeVariant({ light: 'rgb(247, 247, 249)', dark: '#3D3D3D' }, theme.type);
   const textColor = selectThemeVariant(
-    // @ts-ignore
-    { light: theme.colors.gray85, dark: 'rgba(255, 255, 255, 0.8)' },
+    { light: (theme.colors as any).gray85, dark: 'rgba(255, 255, 255, 0.8)' },
     theme.type
   );
 
@@ -17,10 +18,8 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
     /* This will make the table scrollable when it gets too small */
     tableWrap: (size) => css`
       display: block;
-      max-width: ${`${size.x}px` || '100%'};
-      // overflow-x: auto;
-      // overflow-y: scroll;
-      max-height: ${`${size.y}px` || 'auto'};
+      max-width: ${size.x ? `${size.x}px` : '100%'};
+      max-height: ${size.y ? `${size.y}px` : 'auto'};
       border: 1px solid ${borderColor};
     `,
     table: css`
@@ -169,6 +168,6 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
     tableBody: (height) => css`
       overflow: scroll;
       height: ${height - 70}px;
-    `
+    `,
   };
 });

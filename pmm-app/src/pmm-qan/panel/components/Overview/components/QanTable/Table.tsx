@@ -1,9 +1,8 @@
-// @ts-nocheck
 import React, {
-  FC, ReactElement, ReactNode, useEffect
+  FC, ReactElement, ReactNode, useEffect, useCallback
 } from 'react';
 import {
-  Column, useBlockLayout, useRowSelect, useSortBy, useTable
+  Column, TableOptions, TableState, useBlockLayout, useRowSelect, useSortBy, useTable
 } from 'react-table';
 import { Spinner, useTheme } from '@grafana/ui';
 import { cx } from 'emotion';
@@ -22,7 +21,7 @@ interface TableProps {
   loading?: boolean;
   orderBy?: string;
   rowKey?: (rec: any) => any;
-  rowNumber?: (number) => ReactElement | number
+  rowNumber?: (number) => ReactElement | number;
 }
 
 export const Table: FC<TableProps> = ({
@@ -41,7 +40,6 @@ export const Table: FC<TableProps> = ({
   const theme = useTheme();
   const styles = getStyles(theme);
   const {
-    // @ts-ignore
     getTableProps,
     getTableBodyProps,
     headerGroups,
@@ -49,16 +47,16 @@ export const Table: FC<TableProps> = ({
     prepareRow,
     selectedFlatRows,
     state,
-  } = useTable(
+  }: any = useTable(
     {
       columns,
       data,
       manualSortBy: true,
       disableSortRemove: true,
       initialState: {
-        sortBy: [{ id: orderBy.replace('-', ''), desc: !orderBy.startsWith('-') }],
-      },
-    },
+        sortBy: orderBy ? [{ id: orderBy.replace('-', ''), desc: !orderBy.startsWith('-') }] : [],
+      } as TableState,
+    } as TableOptions<any>,
     useSortBy,
     useRowSelect,
     (hooks) => {
@@ -90,11 +88,11 @@ export const Table: FC<TableProps> = ({
     }
   }, [selectedFlatRows]);
 
-  React.useEffect(() => {
-    onSortChange(state.sortBy);
-  }, [state.sortBy]);
+  useEffect(() => {
+    onSortChange((state as any).sortBy);
+  }, [(state as any).sortBy]);
 
-  const RenderRow = React.useCallback(
+  const RenderRow = useCallback(
     ({ index, style }) => {
       const row = rows[index];
 
@@ -105,7 +103,9 @@ export const Table: FC<TableProps> = ({
           {index === 0
             ? headerGroups.map((headerGroup) => (
               <div {...headerGroup.getHeaderGroupProps()} className={cx('tr', styles.headerRow)}>
-                {headerGroup.headers.map((column) => {
+                {headerGroup.headers.map((c) => {
+                  const column = c as any;
+
                   const { HeaderAccessor } = column;
 
                   column.Header = () => HeaderAccessor();
