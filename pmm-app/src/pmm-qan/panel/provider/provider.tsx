@@ -83,26 +83,14 @@ const actions = {
     },
     ['queryId', 'querySelected']
   ),
-  changeSort: (value) => (state) => {
-    let newOrderBy = '';
-
-    if (value === state.orderBy) {
-      newOrderBy = `-${value}`;
-    } else if (`-${value}` === state.orderBy) {
-      newOrderBy = `${value}`;
-    } else {
-      newOrderBy = `-${value}`;
-    }
-
-    return omit(
-      {
-        ...state,
-        orderBy: newOrderBy,
-        pageNumber: 1,
-      },
-      ['queryId', 'querySelected']
-    );
-  },
+  changeSort: (value) => (state) => omit(
+    {
+      ...state,
+      orderBy: value,
+      pageNumber: 1,
+    },
+    ['queryId', 'querySelected']
+  ),
   changeGroupBy: (value) => (state) => omit(
     {
       ...state,

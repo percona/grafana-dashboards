@@ -1,4 +1,4 @@
-import { Pagination, Table } from 'antd';
+import { Pagination } from 'antd';
 import React, {
   useCallback, useContext, useEffect, useState, useRef, FC, useMemo
 } from 'react';
@@ -9,6 +9,7 @@ import 'shared/components/Elements/Spinner/Spinner';
 import { useOverviewTable } from './Overview.hooks';
 import { styles } from '../../QueryAnalytics.styles';
 import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE, PAGE_SIZE_OPTIONS } from '../../QueryAnalytics.constants';
+import { Table } from './components/QanTable';
 
 export const Overview: FC = () => {
   const [total, setTotal] = useState(30);
@@ -19,7 +20,7 @@ export const Overview: FC = () => {
   const {
     contextActions,
     panelState: {
-      queryId, querySelected, totals, pageNumber, pageSize
+      queryId, querySelected, totals, pageNumber, pageSize, orderBy
     },
   } = useContext(QueryAnalyticsProvider);
   const tableWrapperRef = useRef<HTMLDivElement>(null);
@@ -81,23 +82,32 @@ export const Overview: FC = () => {
     [querySelected, totals, queryId]
   );
 
+
+  const onSortChange = useCallback((data) => {
+    if (!data[0]) {
+      return;
+    }
+
+    contextActions.changeSort(data[0].desc ? data[0].id : `-${data[0].id}`);
+  }, [contextActions.changeSort]);
+
   return (
     <div className="table-wrapper" ref={tableWrapperRef}>
       {useMemo(() => (
         <div>
           <Table
-            dataSource={overviewMetricsList.rows}
-            onChange={onTableChange}
             columns={overviewMetricsList.columns}
-            size="small"
-            bordered
-            pagination={false}
-            scroll={{ y: height - 100, x: '100%' }}
+            data={overviewMetricsList.rows}
             rowClassName={getRowClassName}
+            onRowClick={(selected) => {
+              contextActions.selectQuery(selected.original.dimension, selected.index === 0);
+            }}
+            scroll={{ y: Math.min(height, 550), x: '100%' }}
+            onSortChange={onSortChange}
+            rowNumber={(index) => <div>{index === 0 ? '' : (pageNumber - 1) * pageSize + index}</div>}
+            orderBy={orderBy}
+            noData={<h1>No queries Available</h1>}
             loading={loading}
-            // TODO: (lunaticusgreen)rowKey works strange with TOTALS and some value, need to investigate it
-            // rowKey={(record: any) => (record.fingerprint + record.dimension)}
-            data-qa="qan-overview-table"
           />
         </div>
       ), [overviewMetricsList, loading, onTableChange, height, getRowClassName])}
