@@ -22,14 +22,23 @@ exports.config = {
     },
     REST: {
       endpoint: process.env.PMM_UI_URL || 'http://localhost/'
-    }
+    },
+    InfluxDBHelper: {
+      require: 'codeceptjs-influxdbhelper',
+      username: process.env.INFLUXDB_ADMIN_USER,
+      password: process.env.INFLUXDB_ADMIN_PASSWORD,
+      host: process.env.MONITORING_HOST,
+      port: process.env.INFLUXDB_PORT || '8086',
+      dbname: process.env.INFLUXDB_DBNAME || 'codeceptjs',
+      measurement: process.env.INFLUXDB_MEASUREMENT || 'testmethod',
+    },
   },
   include: {
-    qanPage: './tests/QAN/qanPage.js',
-
+    pmmDemoPage: './tests/pages/pmmDemoPage.js',
     homePage: './tests/pages/homePage.js',
     remoteInstancesPage: './tests/pages/remoteInstancesPage.js',
     adminPage: './tests/pages/adminPage.js',
+    qanPage: './tests/pages/qanPage.js',
     pmmInventoryPage: './tests/pages/pmmInventoryPage.js',
     amiInstanceSetupPage: './tests/pages/amiInstanceSetupPage.js',
     pmmSettingsPage: './tests/pages/pmmSettingsPage.js',
@@ -55,7 +64,11 @@ exports.config = {
       strategy: 'css',
       attribute: 'data-qa',
       showActual: false
-    }
+    },
+    allure: {
+      enabled: true,
+      outputDir: "tests/output/allure",
+    },
   },
   mocha: {
     reporterOptions: {
@@ -85,7 +98,7 @@ exports.config = {
   teardown: null,
   hooks: [],
   gherkin: {},
-  tests: 'tests/**/*_test.js',
+  tests: 'tests/*_test.js',
   timeout: 10000,
   name: 'pmm-qa',
 };
