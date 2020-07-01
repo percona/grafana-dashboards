@@ -23,6 +23,11 @@ pipeline {
         REMOTE_PROXYSQL_HOST=credentials('qa-remote-proxysql-host')
         REMOTE_PROXYSQL_USER=credentials('qa-remote-proxysql-user')
         REMOTE_PROXYSQL_PASSWORD=credentials('qa-remote-proxysql-password')
+        INFLUXDB_ADMIN_USER=credentials('influxdb-admin-user')
+        INFLUXDB_ADMIN_PASSWORD=credentials('influxdb-admin-password')
+        INFLUXDB_USER=credentials('influxdb-user')
+        INFLUXDB_USER_PASSWORD=credentials('influxdb-user-password')
+        MONITORING_HOST=credentials('monitoring-host')
     }
     parameters {
         choice(

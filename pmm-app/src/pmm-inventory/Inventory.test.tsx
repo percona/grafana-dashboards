@@ -42,7 +42,7 @@ describe('Inventory tables', () => {
 
     const root = mount(
       <Table
-        data={InventoryDataService.generateStructure(response as any)}
+        data={InventoryDataService.getAgentModel(response as any)}
         rowKey={rec => rec.agent_id}
         columns={AGENTS_COLUMNS}
         loading={false}
@@ -67,7 +67,7 @@ describe('Inventory tables', () => {
     };
     const root = mount(
       <Table
-        data={InventoryDataService.generateStructure(response as any)}
+        data={InventoryDataService.getServiceModel(response as any)}
         rowKey={rec => rec.service_id}
         columns={SERVICES_COLUMNS}
         loading={false}
@@ -87,7 +87,7 @@ describe('Inventory tables', () => {
     };
     const root = mount(
       <Table
-        data={InventoryDataService.generateStructure(response as any)}
+        data={InventoryDataService.getNodeModel(response as any)}
         rowKey={rec => rec.node_id}
         columns={NODES_COLUMNS}
         loading={false}
