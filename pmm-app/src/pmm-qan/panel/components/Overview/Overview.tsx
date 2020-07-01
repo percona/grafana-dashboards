@@ -51,10 +51,6 @@ export const Overview: FC = () => {
     return null;
   }, []);
 
-  const onTableChange = useCallback((pagination, filters, sorter) => {
-    contextActions.changeSort(sorter.columnKey);
-  }, []);
-
   const getRowClassName = useCallback(
     (record, index) => {
       const SELECTED_ROW_CLASSNAME = 'selected-overview-row';
@@ -110,7 +106,7 @@ export const Overview: FC = () => {
             loading={loading}
           />
         </div>
-      ), [overviewMetricsList, loading, onTableChange, height, getRowClassName])}
+      ), [overviewMetricsList, loading, height, getRowClassName])}
       <div className={styles.overviewHeader}>
         <div className={styles.paginationWrapper}>
           <Pagination

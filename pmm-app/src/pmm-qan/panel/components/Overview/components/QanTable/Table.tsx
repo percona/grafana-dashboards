@@ -2,7 +2,13 @@ import React, {
   FC, ReactElement, ReactNode, useEffect, useCallback
 } from 'react';
 import {
-  Column, TableOptions, TableState, useBlockLayout, useRowSelect, useSortBy, useTable
+  Column,
+  TableOptions,
+  TableState,
+  useBlockLayout,
+  useRowSelect,
+  useSortBy,
+  useTable,
 } from 'react-table';
 import { Spinner, useTheme } from '@grafana/ui';
 import { cx } from 'emotion';
@@ -88,7 +94,15 @@ export const Table: FC<TableProps> = ({
     }
   }, [selectedFlatRows]);
 
+  let isFirstLoad = true;
+
   useEffect(() => {
+    if (isFirstLoad) {
+      isFirstLoad = false;
+
+      return;
+    }
+
     onSortChange((state as any).sortBy);
   }, [(state as any).sortBy]);
 
