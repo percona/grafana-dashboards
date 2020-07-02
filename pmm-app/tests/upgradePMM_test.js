@@ -33,7 +33,7 @@ Scenario(
 );
 
 Scenario(
-  'PMM-T288 Verify user can see Update widget before upgrade @visual-test @not-pr-pipeline',
+  'PMM-T288 Verify user can see Update widget before upgrade [critical] @visual-test @not-pr-pipeline',
   async (I, adminPage, homePage) => {
     I.amOnPage(homePage.url);
     await homePage.verifyPreUpdateWidgetIsPresent();
@@ -55,7 +55,7 @@ Scenario(
 );
 
 Scenario(
-  'Verify user is able to Upgrade PMM version @pmm-upgrade @visual-test @not-pr-pipeline',
+  'Verify user is able to Upgrade PMM version [blocker] @pmm-upgrade @visual-test @not-pr-pipeline',
   async (I, inventoryAPI, homePage) => {
     I.amOnPage(homePage.url);
     await homePage.upgradePMM();
@@ -63,7 +63,7 @@ Scenario(
 );
 
 Scenario(
-  'Verify Agents are RUNNING after Upgrade (API) @pmm-upgrade @visual-test @not-pr-pipeline',
+  'Verify Agents are RUNNING after Upgrade (API) [critical] @pmm-upgrade @visual-test @not-pr-pipeline',
   async (I, inventoryAPI) => {
     for (const service of Object.values(inventoryAPI.services)) {
       await inventoryAPI.verifyServiceExistsAndHasRunningStatus(service, serviceNames[service.service]);
@@ -72,7 +72,7 @@ Scenario(
 );
 
 Scenario(
-  'Verify user can see Update widget @pmm-upgrade @visual-test @not-pr-pipeline',
+  'Verify user can see Update widget [critical] @pmm-upgrade @visual-test @not-pr-pipeline',
   async (I, adminPage, homePage) => {
     I.amOnPage(homePage.url);
     homePage.verifyPostUpdateWidgetIsPresent();
@@ -106,7 +106,7 @@ Scenario(
 );
 
 Scenario(
-  'Verify Agents are RUNNING after Upgrade (UI) @pmm-upgrade @visual-test @not-pr-pipeline',
+  'Verify Agents are RUNNING after Upgrade (UI) [critical] @pmm-upgrade @visual-test @not-pr-pipeline',
   async (I, adminPage, pmmInventoryPage) => {
     I.amOnPage(pmmInventoryPage.url);
     for (const service of Object.values(serviceNames)) {

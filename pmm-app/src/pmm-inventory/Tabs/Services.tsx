@@ -30,7 +30,7 @@ export const Services = () => {
     setLoading(true);
     try {
       const result: ServicesList = await InventoryService.getServices();
-      setData(InventoryDataService.generateStructure(result));
+      setData(InventoryDataService.getServiceModel(result));
     } catch (e) {
     } finally {
       setLoading(false);

@@ -22,9 +22,19 @@ exports.config = {
     },
     REST: {
       endpoint: process.env.PMM_UI_URL || 'http://localhost/'
-    }
+    },
+    InfluxDBHelper: {
+      require: 'codeceptjs-influxdbhelper',
+      username: process.env.INFLUXDB_ADMIN_USER,
+      password: process.env.INFLUXDB_ADMIN_PASSWORD,
+      host: process.env.MONITORING_HOST,
+      port: process.env.INFLUXDB_PORT || '8086',
+      dbname: process.env.INFLUXDB_DBNAME || 'codeceptjs',
+      measurement: process.env.INFLUXDB_MEASUREMENT || 'testmethod',
+    },
   },
   include: {
+    pmmDemoPage: './tests/pages/pmmDemoPage.js',
     homePage: './tests/pages/homePage.js',
     remoteInstancesPage: './tests/pages/remoteInstancesPage.js',
     adminPage: './tests/pages/adminPage.js',
@@ -54,7 +64,11 @@ exports.config = {
       strategy: 'css',
       attribute: 'data-qa',
       showActual: false
-    }
+    },
+    allure: {
+      enabled: true,
+      outputDir: "tests/output/allure",
+    },
   },
   mocha: {
     reporterOptions: {
