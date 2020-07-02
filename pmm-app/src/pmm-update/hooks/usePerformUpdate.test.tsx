@@ -98,8 +98,14 @@ describe('usePerformUpdate', () => {
       log_lines: ['test'],
     }));
 
+    jest.useFakeTimers();
+
     await act(async () => {
       wrapper = mount(<HookWrapper hook={() => usePerformUpdate()} />);
+    });
+
+    await act(async () => {
+      jest.runAllTimers();
     });
 
     wrapper?.update();
@@ -112,6 +118,8 @@ describe('usePerformUpdate', () => {
     expect(updateFailed).toEqual(false);
 
     wrapper?.unmount();
+
+    jest.useRealTimers();
   });
 
   it('should return an error message if the API call response is invalid', async () => {
