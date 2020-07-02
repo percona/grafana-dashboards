@@ -5,6 +5,7 @@ export const styles = {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    word-break: keep-all;
   `,
   metricTooltip: css`
     text-align: center;

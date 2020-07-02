@@ -2,7 +2,9 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
 import { scaleLog } from 'd3';
+import Tooltip from 'antd/es/tooltip';
 import { humanize } from '../../../helpers/Humanization';
+import './Latency.scss';
 
 interface LatencyChartState {
   tooltip: string | undefined;
@@ -116,11 +118,20 @@ export class Latency extends Component<any, LatencyChartState> {
     const { tooltip } = this.state;
 
     return (
-      <div
-        className={`${className || ''} d3-bar-chart-container app-tooltip`}
-        ref="graphContainer"
-        data-tooltip={tooltip}
-      />
+      <>
+        <Tooltip
+          getPopupContainer={() => document.querySelector('#antd') || document.body}
+          placement="left"
+          overlayClassName="latency-tooltip"
+          title={(
+            <pre style={{ backgroundColor: 'transparent', border: 'none' }}>
+              <span>{tooltip}</span>
+            </pre>
+          )}
+        >
+          <div className={`${className || ''} d3-bar-chart-container`} ref="graphContainer" data-tip="" />
+        </Tooltip>
+      </>
     );
   }
 }
