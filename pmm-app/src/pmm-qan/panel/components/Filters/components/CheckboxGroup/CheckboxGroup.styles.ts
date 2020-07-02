@@ -34,7 +34,7 @@ export const styles = {
   divider: css`
     margin-top: 3px !important;
     margin-bottom: 12px !important;
-    height: 6px !important;
+    height: 2px !important;
     background-color: #3d3d3d !important;
   `,
   showModeSwitcher: css`
