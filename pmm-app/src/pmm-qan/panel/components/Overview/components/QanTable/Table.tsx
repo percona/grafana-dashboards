@@ -1,5 +1,5 @@
 import React, {
-  FC, ReactElement, ReactNode, useEffect, useCallback
+  FC, ReactElement, ReactNode, useEffect, useCallback, useState
 } from 'react';
 import {
   Column,
@@ -94,11 +94,11 @@ export const Table: FC<TableProps> = ({
     }
   }, [selectedFlatRows]);
 
-  let isFirstLoad = true;
+  const [firstLoad, setFirstLoad] = useState(true);
 
   useEffect(() => {
-    if (isFirstLoad) {
-      isFirstLoad = false;
+    if (firstLoad) {
+      setFirstLoad(false);
 
       return;
     }
