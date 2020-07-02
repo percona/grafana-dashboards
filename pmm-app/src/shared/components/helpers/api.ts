@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { showErrorNotification } from './notification-manager';
 
-class ApiRequest {
+export class ApiRequest {
   axiosInstance: axios.AxiosInstance;
 
   constructor(params) {

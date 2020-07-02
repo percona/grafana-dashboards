@@ -67,7 +67,7 @@ const Details: FC = () => {
     }
 
     changeActiveTab(TabKeys[openDetailsTab]);
-  }, [queryId]);
+  }, [queryId, openDetailsTab, showTablesTab, showExplainTab, showExamplesTab]);
 
   return (
     <div className="query-analytics-details-grid query-analytics-details" data-qa="query-analytics-details">
