@@ -177,6 +177,7 @@ jest.mock('shared/components/helpers/notification-manager', () => () => ({}));
 //     ],
 //   },
 // };
+
 xdescribe('Filters test', () => {
   xit('Renders correct with right props', () => {
     // const component = renderer.create(
@@ -190,6 +191,7 @@ xdescribe('Filters test', () => {
     // );
     //
     // const tree = component.toJSON();
+    //
     // expect(tree).toMatchSnapshot();
   });
 });
