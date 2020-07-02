@@ -1,9 +1,12 @@
+const remoteInstancesPage = require("./pages/remoteInstancesPage");
+const pmmInventoryPage = require("./pages/pmmInventoryPage");
+
 Feature('to verify monitoried Remote Db instances');
 
 Before(async I => {
   I.Authorize();
 });
-
+/*
 Scenario(
     'Verify Remote MySQL Instance Addition [critical] @not-pr-pipeline',
     async (I, adminPage, remoteInstancesPage, pmmInventoryPage) => {
@@ -69,3 +72,18 @@ Scenario(
       await pmmInventoryPage.verifyAgentHasStatusRunning(proxysql_service_name);
     }
 );
+*/
+Scenario(
+  'PMM-T339 - Verify MySQL service is removed on PMM Inventory page',
+  async (I, addInstanceAPI, pmmInventoryPage) => {
+    const serviceType = 'MySQL';
+    const serviceName = 'ToBeDelete';
+    //await addInstanceAPI.apiAddInstance(serviceType, serviceName);
+    I.amOnPage(pmmInventoryPage.url);
+    pmmInventoryPage.selectService(serviceName);
+    pause()
+    I.click(pmmInventoryPage.fields.deleteButton);
+  }
+);
+
+

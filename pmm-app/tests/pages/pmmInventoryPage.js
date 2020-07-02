@@ -16,6 +16,7 @@ module.exports = {
     nodesLinkOld: '//a[contains(text(), "Nodes")]',
     pmmAgentLocator: '//table//td[contains(text(), "PMM Agent")]',
     serviceIdLocatorPrefix: '//table//tr/td[4][contains(text(),"',
+    deleteButton: '//span[contains(text(), "Delete")]',
   },
 
   verifyOldMySQLRemoteServiceIsDisplayed(serviceName) {
@@ -87,4 +88,11 @@ module.exports = {
     const serviceId = await I.grabTextFrom(serviceIdLocator);
     return serviceId;
   },
+
+  selectService(serviceName){
+    const serviceIdLocator =
+    `${this.fields.serviceIdLocatorPrefix}${serviceName}")]/preceding-sibling::td[1]//span[@class='checkbox-container__checkmark']`;
+    I.waitForVisible(serviceIdLocator, 30);
+    I.click(serviceIdLocator);
+  }
 };
