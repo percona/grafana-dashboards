@@ -121,6 +121,7 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
     ...parseURL(query),
     rawTime,
   });
+  const [location, setLocation] = useState(window.location.search);
 
   useEffect(() => {
     refreshGrafanaVariables(panelState);
@@ -133,11 +134,38 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
   const wrapAction = (key) => (...value) => setContext(actions[key](...value));
 
   const [isFirstLoad, setFirstLoad] = useState(true);
+  const [previousTimeValues, setPreviousTimeValues] = useState({
+    from,
+    to,
+  });
 
   useEffect(() => {
     if (isFirstLoad) {
       return;
     }
+
+    if (from === previousTimeValues.from && to === previousTimeValues.to) {
+      return;
+    }
+
+    if (location === window.location.search) {
+      const newState = {
+        ...panelState,
+        from,
+        to,
+        rawTime,
+      };
+
+      setPreviousTimeValues({
+        from,
+        to,
+      });
+      setContext(newState);
+
+      return;
+    }
+
+    setLocation(window.location.search);
 
     if (panelState.rawTime.from !== rawTime.from || panelState.rawTime.to !== rawTime.to) {
       const newState = {
@@ -150,42 +178,13 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
       newState.pageNumber = 1;
       delete newState.queryId;
       delete newState.querySelected;
-
-      setContext(newState);
-    }
-  }, [rawTime.from, rawTime.to, panelState]);
-
-  // refresh
-  useEffect(() => {
-    // TODO: can't remove it because now grafana updates time variables even when it wasn't changed
-    const refreshButton = document.querySelector('.refresh-picker-buttons button');
-    const refreshHandle = () => {
-      const newState = {
-        ...panelState,
+      setPreviousTimeValues({
         from,
         to,
-        rawTime,
-      };
-
-      if (panelState.rawTime.from !== rawTime.from || panelState.rawTime.to !== rawTime.to) {
-        newState.pageNumber = 1;
-        delete newState.queryId;
-        delete newState.querySelected;
-      }
-
+      });
       setContext(newState);
-    };
-
-    if (refreshButton) {
-      refreshButton.addEventListener('click', refreshHandle);
     }
-
-    return () => {
-      if (refreshButton) {
-        refreshButton.removeEventListener('click', refreshHandle);
-      }
-    };
-  }, [panelState]);
+  }, [from, to, panelState]);
 
   useEffect(() => {
     setFirstLoad(false);
