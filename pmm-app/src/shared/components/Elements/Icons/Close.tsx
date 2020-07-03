@@ -1,8 +1,8 @@
 /* eslint max-len: 0 */
 
-import React from 'react';
+import React, { FC } from 'react';
 
-export const Close = (props) => (
+export const Close: FC = props => (
   <svg {...props} width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
     <g clipPath="url(#clip0)">
       <path
