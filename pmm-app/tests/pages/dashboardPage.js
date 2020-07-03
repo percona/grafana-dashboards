@@ -33,7 +33,8 @@ module.exports = {
     ],
   },
   advancedDataExplorationDashboard: {
-    url: 'graph/d/prometheus-advanced/advanced-data-exploration?orgId=1&refresh=1m&var-metric=go_gc_duration_seconds',
+    url:
+      'graph/d/prometheus-advanced/advanced-data-exploration?orgId=1&refresh=1m&var-metric=go_gc_duration_seconds',
     metrics: [
       'View Actual Metric Values (Gauge)',
       'View Metric Rate of Change (Counter)',
@@ -263,7 +264,7 @@ module.exports = {
       'Dynamic of Indexes',
       'Total Connections',
       'Current Connections Per Shard',
-      'Total Mongos Operations'
+      'Total Mongos Operations',
     ],
   },
   mysqlInstanceSummaryDashboard: {
@@ -303,6 +304,21 @@ module.exports = {
   },
   mongoDbInstanceOverview: {
     url: 'graph/d/mongodb-instance-overview/mongodb-instances-overview?orgId=1&refresh=1m',
+  },
+  homeDashboard: {
+    metrics: [
+      'CPU Busy',
+      'Mem Avail',
+      'Disk Reads',
+      'Disk Writes',
+      'Network IO',
+      'DB Conns',
+      'DB QPS',
+      'Virtual CPUs',
+      'RAM',
+      'Host uptime',
+      'DB uptime',
+    ],
   },
   mySQLInstanceOverview: {
     url: 'graph/d/mysql-instance-overview/mysql-instances-overview?orgId=1&from=now-2m&to=now&refresh=1m',
@@ -354,7 +370,7 @@ module.exports = {
       'MySQL Table Definition Cache',
       'Top 5 MySQL Opened Table Definitions',
       'Top 5 MySQL Open Table Definitions',
-      'Percentage of Open Table Definitions to Table Definition Cache'
+      'Percentage of Open Table Definitions to Table Definition Cache',
     ],
     serviceName:
       "//label[contains(text(), 'Service Name')]/following-sibling::value-select-dropdown/descendant::a[@class='variable-value-link']",
@@ -483,7 +499,7 @@ module.exports = {
     I.seeElement(existingFilter);
   },
 
-  async applyFilter(filterName, filterValue){
+  async applyFilter(filterName, filterValue) {
     // eslint-disable-next-line max-len
     const filterSelector = `(//a[@class='variable-value-link']//ancestor::div//label[contains(text(),'${filterName}')])[1]//parent::div//a[@ng-click]`;
     const filterValueSelector = `//span[contains(text(), '${filterValue}')]`;

@@ -4,7 +4,26 @@ const assert = require('assert');
 module.exports = {
   url: 'https://pmmdemo.percona.com/',
   mongoDBDashbordUrl: 'graph/d/mongodb-instance-overview/mongodb-instances-overview?orgId=1&refresh=1m',
-
+  monitoredDB: [
+    'pxc',
+    6,
+    'mongo',
+    10,
+    'ps',
+    2,
+    'pg',
+    1,
+    'pmm-server',
+    1,
+    'app',
+    1,
+    'rds',
+    2,
+    'mysql-azure',
+    1,
+    'proxysql1',
+    1,
+  ],
   fields: {
     copyrightsAndLegalPanel: "//a[contains(text(), 'Copyrights & Legal')]",
     policyText:
@@ -31,5 +50,9 @@ module.exports = {
   async checkDBPanelText(text) {
     const checkedText = await I.grabTextFrom(this.fields.dbCheckPanelNoAccess);
     assert.equal(checkedText, text, 'Check the DB security checks text');
+  },
+
+  getHostLocator(hostType) {
+    return `//p[contains(text(), '${hostType}')]`;
   },
 };
