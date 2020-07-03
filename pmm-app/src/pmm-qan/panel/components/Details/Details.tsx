@@ -1,4 +1,6 @@
-import React, { FC, useContext, useEffect, useState } from 'react';
+import React, {
+  FC, useContext, useEffect, useState
+} from 'react';
 import { Divider, Tabs, Button } from 'antd';
 import './Details.scss';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
@@ -11,7 +13,6 @@ import { DATABASE, TabKeys } from './Details.constants';
 import { DetailsContentProvider, DetailsProvider } from './Details.provider';
 import { styles } from './Details.styles';
 import { useMetricsDetails } from './Metrics/Metrics.hooks';
-import { Close } from '../../../../shared/components/Elements/Icons/Close';
 
 const { TabPane } = Tabs;
 const actionResult = {
@@ -23,7 +24,9 @@ const actionResult = {
 const Details: FC = () => {
   const {
     contextActions: { closeDetails, setActiveTab },
-    panelState: { queryId, groupBy, fingerprint, totals, openDetailsTab },
+    panelState: {
+      queryId, groupBy, fingerprint, totals, openDetailsTab
+    },
   } = useContext(QueryAnalyticsProvider);
   const {
     detailsState: {
@@ -71,17 +74,17 @@ const Details: FC = () => {
         <Divider className={styles.zeroMargin} />
         <Tabs
           activeKey={activeTab}
-          onChange={newTab => {
+          onChange={(newTab) => {
             changeActiveTab(newTab);
             setActiveTab(newTab);
           }}
           tabPosition="top"
           destroyInactiveTabPane
-          tabBarExtraContent={
+          tabBarExtraContent={(
             <Button type="default" size="small" onClick={closeDetails}>
               Close
             </Button>
-          }
+          )}
         >
           <TabPane tab={<span>Details</span>} key={TabKeys.details}>
             <Metrics databaseType={databaseType} totals={totals} metrics={metrics} loading={metricsLoading} />
