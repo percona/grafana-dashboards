@@ -133,7 +133,6 @@
             "id": 999,
             "isRootDashboard": false,
             "links": [],
-            "options": {},
             "targets": [
                 {
                     "expr": "",
@@ -163,7 +162,6 @@
             "id": 36,
             "links": [],
             "mode": "markdown",
-            "options": {},
             "style": {},
             "title": " ",
             "type": "text"
@@ -225,7 +223,6 @@
             "maxDataPoints": 100,
             "nullPointMode": "connected",
             "nullText": null,
-            "options": {},
             "postfix": "",
             "postfixFontSize": "50%",
             "prefix": "",
@@ -278,7 +275,7 @@
                 "#d44a3a"
             ],
             "datasource": null,
-            "decimals": 2,
+            "decimals": 0,
             "description": "The number of connections that were terminated uncleanly.",
             "format": "short",
             "gauge": {
@@ -300,10 +297,12 @@
             "mappingType": 1,
             "mappingTypes": [
                 {
+                    "$$hashKey": "object:276",
                     "name": "value to text",
                     "value": 1
                 },
                 {
+                    "$$hashKey": "object:277",
                     "name": "range to text",
                     "value": 2
                 }
@@ -311,7 +310,6 @@
             "maxDataPoints": 100,
             "nullPointMode": "connected",
             "nullText": null,
-            "options": {},
             "postfix": "",
             "postfixFontSize": "50%",
             "prefix": "",
@@ -347,6 +345,7 @@
             "valueFontSize": "50%",
             "valueMaps": [
                 {
+                    "$$hashKey": "object:279",
                     "op": "=",
                     "text": "N/A",
                     "value": "null"
@@ -383,7 +382,6 @@
             "legendSortBy": "-ms",
             "lineColor": "rgba(0,0,0,0.1)",
             "metricNameColor": "#000000",
-            "options": {},
             "pluginVersion": "6.5.1",
             "rangeMaps": [
                 {
@@ -504,10 +502,12 @@
             "mappingType": 1,
             "mappingTypes": [
                 {
+                    "$$hashKey": "object:242",
                     "name": "value to text",
                     "value": 1
                 },
                 {
+                    "$$hashKey": "object:243",
                     "name": "range to text",
                     "value": 2
                 }
@@ -515,7 +515,6 @@
             "maxDataPoints": 100,
             "nullPointMode": "connected",
             "nullText": null,
-            "options": {},
             "postfix": "",
             "postfixFontSize": "50%",
             "prefix": "",
@@ -551,6 +550,7 @@
             "valueFontSize": "50%",
             "valueMaps": [
                 {
+                    "$$hashKey": "object:245",
                     "op": "=",
                     "text": "N/A",
                     "value": "null"
@@ -568,7 +568,7 @@
                 "#d44a3a"
             ],
             "datasource": null,
-            "decimals": 2,
+            "decimals": 0,
             "description": "The number of times clients' connections issued commands that were denied.",
             "format": "short",
             "gauge": {
@@ -590,10 +590,12 @@
             "mappingType": 1,
             "mappingTypes": [
                 {
+                    "$$hashKey": "object:208",
                     "name": "value to text",
                     "value": 1
                 },
                 {
+                    "$$hashKey": "object:209",
                     "name": "range to text",
                     "value": 2
                 }
@@ -601,7 +603,6 @@
             "maxDataPoints": 100,
             "nullPointMode": "connected",
             "nullText": null,
-            "options": {},
             "postfix": "",
             "postfixFontSize": "50%",
             "prefix": "",
@@ -637,6 +638,7 @@
             "valueFontSize": "50%",
             "valueMaps": [
                 {
+                    "$$hashKey": "object:211",
                     "op": "=",
                     "text": "N/A",
                     "value": "null"
@@ -646,7 +648,7 @@
         },
         {
             "datasource": null,
-            "description": "",
+            "description": "Utilization percentage among clients while there were connections.",
             "gridPos": {
                 "h": 12,
                 "w": 12,
@@ -661,7 +663,10 @@
                         "mean"
                     ],
                     "defaults": {
-                        "decimals": 0,
+                        "color": {
+                            "mode": "thresholds"
+                        },
+                        "decimals": 2,
                         "links": [
                             {
                                 "targetBlank": true,
@@ -672,28 +677,34 @@
                         "mappings": [],
                         "max": 1,
                         "min": 0,
-                        "thresholds": [
-                            {
-                                "color": "green",
-                                "value": null
-                            },
-                            {
-                                "color": "red",
-                                "value": 70
-                            }
-                        ],
+                        "thresholds": {
+                            "mode": "absolute",
+                            "steps": [
+                                {
+                                    "color": "green",
+                                    "value": null
+                                },
+                                {
+                                    "color": "red",
+                                    "value": 70
+                                }
+                            ]
+                        },
                         "title": "",
                         "unit": "percentunit"
                     },
-                    "override": {},
+                    "overrides": [],
                     "values": false
                 },
-                "orientation": "horizontal"
+                "orientation": "horizontal",
+                "showUnfilled": true
             },
-            "pluginVersion": "6.5.1",
+            "pluginVersion": "6.7.4",
             "targets": [
                 {
                     "expr": "(increase(mysql_info_schema_user_statistics_connected_time_seconds_total{service_name=~\"$service_name\",user=~\"$username\"}[$__range])/$__range_ms) / \nignoring(user) group_left sum without(user) (\nincrease(mysql_info_schema_user_statistics_connected_time_seconds_total{service_name=~\"$service_name\",user=~\"$username\"}[$__range])/$__range_ms\n)",
+                    "hide": false,
+                    "instant": true,
                     "interval": "$interval",
                     "legendFormat": "{{user}}",
                     "refId": "B"
@@ -2960,7 +2971,6 @@
                     "maxDataPoints": 100,
                     "nullPointMode": "connected",
                     "nullText": null,
-                    "options": {},
                     "postfix": "s",
                     "postfixFontSize": "50%",
                     "prefix": "",
@@ -3013,7 +3023,6 @@
                     "id": 297,
                     "links": [],
                     "mode": "html",
-                    "options": {},
                     "timeFrom": null,
                     "timeShift": null,
                     "title": "Version",
@@ -3071,7 +3080,6 @@
                     "maxDataPoints": 100,
                     "nullPointMode": "connected",
                     "nullText": null,
-                    "options": {},
                     "postfix": "",
                     "postfixFontSize": "50%",
                     "prefix": "",
@@ -3156,7 +3164,6 @@
                     "maxDataPoints": 100,
                     "nullPointMode": "connected",
                     "nullText": null,
-                    "options": {},
                     "postfix": "",
                     "postfixFontSize": "50%",
                     "prefix": "",
@@ -3248,7 +3255,6 @@
                     "maxDataPoints": 100,
                     "nullPointMode": "connected",
                     "nullText": null,
-                    "options": {},
                     "postfix": "",
                     "postfixFontSize": "50%",
                     "prefix": "",
@@ -3340,7 +3346,6 @@
                     "maxDataPoints": 100,
                     "nullPointMode": "connected",
                     "nullText": null,
-                    "options": {},
                     "postfix": "",
                     "postfixFontSize": "50%",
                     "prefix": "",
@@ -3432,7 +3437,6 @@
                     "maxDataPoints": 100,
                     "nullPointMode": "connected",
                     "nullText": null,
-                    "options": {},
                     "postfix": "",
                     "postfixFontSize": "50%",
                     "prefix": "",
@@ -3493,7 +3497,6 @@
                     "id": 1000,
                     "links": [],
                     "mode": "html",
-                    "options": {},
                     "timeFrom": null,
                     "timeShift": null,
                     "title": "Service",
@@ -5492,7 +5495,7 @@
         }
     ],
     "refresh": "1m",
-    "schemaVersion": 21,
+    "schemaVersion": 22,
     "style": "dark",
     "tags": [
         "MySQL",
@@ -5599,6 +5602,29 @@
                 "name": "service_name",
                 "options": [],
                 "query": "label_values(mysql_info_schema_user_statistics_bytes_sent_total, service_name)",
+                "refresh": 2,
+                "regex": "",
+                "skipUrlSync": false,
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allValue": null,
+                "current": {},
+                "datasource": "Prometheus",
+                "definition": "label_values(mysql_info_schema_user_statistics_connected_time_seconds_total{service_name=\"$service_name\"},user)",
+                "hide": 0,
+                "includeAll": true,
+                "index": -1,
+                "label": "Username",
+                "multi": true,
+                "name": "username",
+                "options": [],
+                "query": "label_values(mysql_info_schema_user_statistics_connected_time_seconds_total{service_name=\"$service_name\"},user)",
                 "refresh": 2,
                 "regex": "",
                 "skipUrlSync": false,
@@ -5833,79 +5859,6 @@
                 "options": [],
                 "query": "label_values({__name__=~\"pg_up|mysql_up|mongodb_up|proxysql_mysql_status_active_transactions\"}, schema)",
                 "refresh": 1,
-                "regex": "",
-                "skipUrlSync": false,
-                "sort": 0,
-                "tagValuesQuery": "",
-                "tags": [],
-                "tagsQuery": "",
-                "type": "query",
-                "useTags": false
-            },
-            {
-                "allValue": null,
-                "current": {},
-                "datasource": "Prometheus",
-                "definition": "label_values(mysql_info_schema_user_statistics_connected_time_seconds_total{service_name=~\"$service_name\"},user)",
-                "hide": 0,
-                "includeAll": true,
-                "label": "Username",
-                "multi": true,
-                "name": "username",
-                "options": [
-                    {
-                        "selected": true,
-                        "text": "All",
-                        "value": "$__all"
-                    },
-                    {
-                        "selected": false,
-                        "text": "heartbeat",
-                        "value": "heartbeat"
-                    },
-                    {
-                        "selected": false,
-                        "text": "mysql.session",
-                        "value": "mysql.session"
-                    },
-                    {
-                        "selected": false,
-                        "text": "pmm-metrics",
-                        "value": "pmm-metrics"
-                    },
-                    {
-                        "selected": false,
-                        "text": "proxysql",
-                        "value": "proxysql"
-                    },
-                    {
-                        "selected": false,
-                        "text": "ps8w",
-                        "value": "ps8w"
-                    },
-                    {
-                        "selected": false,
-                        "text": "repl",
-                        "value": "repl"
-                    },
-                    {
-                        "selected": false,
-                        "text": "root",
-                        "value": "root"
-                    },
-                    {
-                        "selected": false,
-                        "text": "sbtest1",
-                        "value": "sbtest1"
-                    },
-                    {
-                        "selected": false,
-                        "text": "sys-schema-dumper",
-                        "value": "sys-schema-dumper"
-                    }
-                ],
-                "query": "label_values(mysql_info_schema_user_statistics_connected_time_seconds_total{service_name=~\"$service_name\"},user)",
-                "refresh": 0,
                 "regex": "",
                 "skipUrlSync": false,
                 "sort": 0,
