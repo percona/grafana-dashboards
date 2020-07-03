@@ -1,5 +1,5 @@
-const remoteInstancesPage = require("./pages/remoteInstancesPage");
-const pmmInventoryPage = require("./pages/pmmInventoryPage");
+const remoteInstancesPage = require('./pages/remoteInstancesPage');
+const pmmInventoryPage = require('./pages/pmmInventoryPage');
 
 Feature('to verify monitoried Remote Db instances');
 
@@ -78,12 +78,19 @@ Scenario(
   async (I, addInstanceAPI, pmmInventoryPage) => {
     const serviceType = 'MySQL';
     const serviceName = 'ToBeDelete';
-    //await addInstanceAPI.apiAddInstance(serviceType, serviceName);
+    await addInstanceAPI.apiAddInstance(serviceType, serviceName);
     I.amOnPage(pmmInventoryPage.url);
     pmmInventoryPage.selectService(serviceName);
-    pause()
     I.click(pmmInventoryPage.fields.deleteButton);
+    I.click(pmmInventoryPage.fields.proceedButton);
+    pmmInventoryPage.serviceExists(serviceName, false);
+    pmmInventoryPage.selectService(serviceName);
+    I.click(pmmInventoryPage.fields.deleteButton);
+    I.click(pmmInventoryPage.fields.forceModeCheckbox);
+    I.click(pmmInventoryPage.fields.proceedButton);
+    pmmInventoryPage.serviceExists(serviceName, true);
+    I.click(pmmInventoryPage.fields.nodesLink);
+    pmmInventoryPage.checkNodeExists(serviceName);
+    //add agent check
   }
 );
-
-

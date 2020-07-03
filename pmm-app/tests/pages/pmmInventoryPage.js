@@ -1,4 +1,4 @@
-const {I, pmmInventoryPage} = inject();
+const { I, pmmInventoryPage } = inject();
 const assert = require('assert');
 module.exports = {
   // insert your locators and methods here
@@ -17,6 +17,9 @@ module.exports = {
     pmmAgentLocator: '//table//td[contains(text(), "PMM Agent")]',
     serviceIdLocatorPrefix: '//table//tr/td[4][contains(text(),"',
     deleteButton: '//span[contains(text(), "Delete")]',
+    proceedButton: '//span[contains(text(), "Proceed")]',
+    forceModeCheckbox:
+      '//div[@data-qa="form-field-force"]/descendant::span[@class="checkbox-container__checkmark"]',
   },
 
   verifyOldMySQLRemoteServiceIsDisplayed(serviceName) {
@@ -41,14 +44,17 @@ module.exports = {
     I.waitForElement(this.fields.inventoryTable, 60);
     I.scrollPageToBottom();
     const numberOfServices = await I.grabNumberOfVisibleElements(
-`//tr//td//span[contains(text(), "${serviceId}")]/../span[contains(text(), 'status: RUNNING')]`
+      `//tr//td//span[contains(text(), "${serviceId}")]/../span[contains(text(), 'status: RUNNING')]`
     );
-    if (/mysql|mongo|postgres|rds/gmi.test(service_name)) {
-      I.waitForVisible(`//tr//td//span[contains(text(), "${serviceId}")]/../span[contains(text(), 'status: RUNNING')]`, 30);
+    if (/mysql|mongo|postgres|rds/gim.test(service_name)) {
+      I.waitForVisible(
+        `//tr//td//span[contains(text(), "${serviceId}")]/../span[contains(text(), 'status: RUNNING')]`,
+        30
+      );
       assert.equal(
-          numberOfServices,
-          2,
-          ' Service ID must have only 2 Agents running for different services' + serviceId
+        numberOfServices,
+        2,
+        ' Service ID must have only 2 Agents running for different services' + serviceId
       );
     } else {
       assert.equal(numberOfServices, 1, ' Service ID must have only 1 Agent running' + serviceId);
@@ -76,23 +82,35 @@ module.exports = {
   },
 
   async getServiceId(serviceName) {
-    const serviceIdLocator =
-        `${this.fields.serviceIdLocatorPrefix}${serviceName}")]/preceding-sibling::td[2]`;
+    const serviceIdLocator = `${this.fields.serviceIdLocatorPrefix}${serviceName}")]/preceding-sibling::td[2]`;
     I.waitForVisible(serviceIdLocator, 30);
     const matchedServices = await I.grabNumberOfVisibleElements(serviceIdLocator);
     await assert.equal(
-        matchedServices,
-        1,
-        'There must be only one entry for the newly added service with name ' + serviceName
+      matchedServices,
+      1,
+      'There must be only one entry for the newly added service with name ' + serviceName
     );
     const serviceId = await I.grabTextFrom(serviceIdLocator);
     return serviceId;
   },
 
-  selectService(serviceName){
-    const serviceIdLocator =
-    `${this.fields.serviceIdLocatorPrefix}${serviceName}")]/preceding-sibling::td[1]//span[@class='checkbox-container__checkmark']`;
-    I.waitForVisible(serviceIdLocator, 30);
-    I.click(serviceIdLocator);
-  }
+  selectService(serviceName) {
+    const serviceLocator = `${this.fields.serviceIdLocatorPrefix}${serviceName}")]/preceding-sibling::td/div[@data-qa="select-row"]`;
+    I.waitForVisible(serviceLocator, 30);
+    I.click(serviceLocator);
+  },
+
+  serviceExists(serviceName, deleted) {
+    const serviceLocator = `${this.fields.serviceIdLocatorPrefix}${serviceName}")]`;
+    if (deleted) {
+      I.waitForInvisible(serviceLocator, 30);
+    } else {
+      I.waitForVisible(serviceLocator, 30);
+    }
+  },
+
+  checkNodeExists(serviceName) {
+    const nodeName = `${this.fields.serviceIdLocatorPrefix}${serviceName}")]`;
+    I.waitForVisible(nodeName, 20);
+  },
 };
