@@ -170,7 +170,7 @@ Scenario(
 
 Scenario(
   // eslint-disable-next-line max-len
-  'Open Advanced Exploration Dashboard and verify Metrics are present and graphs are displayed [critical] @pmm-demo @not-pr-pipeline',
+  'PMM-T73 Open Advanced Exploration Dashboard and verify Metrics are present and graphs are displayed [critical] @pmm-demo @not-pr-pipeline',
   async (I, dashboardPage, pmmDemoPage) => {
     I.amOnPage(pmmDemoPage.url + dashboardPage.advancedDataExplorationDashboard.url);
     dashboardPage.waitForDashboardOpened();
@@ -181,7 +181,7 @@ Scenario(
 );
 
 Scenario(
-  'Open Prometheus Dashboard and verify Metrics are present and graphs are displayed [critical] @pmm-demo @not-pr-pipeline',
+  'PMM-T73 Open Prometheus Dashboard and verify Metrics are present and graphs are displayed [critical] @pmm-demo @not-pr-pipeline',
   async (I, adminPage, dashboardPage, pmmDemoPage) => {
     I.amOnPage(pmmDemoPage.url + dashboardPage.prometheusDashboard.url);
     dashboardPage.waitForDashboardOpened();
@@ -194,7 +194,7 @@ Scenario(
 
 Scenario(
   // eslint-disable-next-line max-len
-  'Open the Prometheus Exporters Status Dashboard and verify Metrics are present and graphs are displayed [critical] @pmm-demo @not-pr-pipeline',
+  'PMM-T72 Open the Prometheus Exporters Status Dashboard and verify Metrics are present and graphs are displayed [critical] @pmm-demo @not-pr-pipeline',
   async (I, dashboardPage, adminPage, pmmDemoPage) => {
     const nodeName = ['mongo-config-1', 'pg11', 'ps8'];
     I.amOnPage(pmmDemoPage.url + dashboardPage.prometheusExporterStatusDashboard.url);
@@ -212,7 +212,7 @@ Scenario(
 
 Scenario(
   // eslint-disable-next-line max-len
-  'Open the Prometheus Exporters Overview Dashboard and verify Metrics are present and graphs are displayed [critical] @pmm-demo @not-pr-pipeline',
+  'PMM-T72 Open the Prometheus Exporters Overview Dashboard and verify Metrics are present and graphs are displayed [critical] @pmm-demo @not-pr-pipeline',
   async (I, dashboardPage, adminPage, pmmDemoPage) => {
     const nodeName = ['mongo-config-1', 'pg11', 'ps8', 'pxc57-1', 'pxc80-1', 'mongo-rs1-1'];
     I.amOnPage(pmmDemoPage.url + dashboardPage.prometheusExporterOverviewDashboard.url);
