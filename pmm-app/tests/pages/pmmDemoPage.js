@@ -4,6 +4,10 @@ const assert = require('assert');
 module.exports = {
   url: 'https://pmmdemo.percona.com/',
   mongoDBDashbordUrl: 'graph/d/mongodb-instance-overview/mongodb-instances-overview?orgId=1&refresh=1m',
+  // eslint-disable-next-line max-len
+  advancedDataExplorationDashboardUrl:
+    // eslint-disable-next-line max-len
+    'graph/d/1oz9QMHmk/advanced-data-exploration?refresh=1m&var-metric=go_gc_duration_seconds&var-interval=$__auto_interval_interval&var-node_name=All',
   monitoredDB: [
     'pxc',
     6,
