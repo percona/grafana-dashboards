@@ -33,7 +33,7 @@ module.exports = {
     ],
   },
   advancedDataExplorationDashboard: {
-    url: 'graph/d/1oz9QMHmk/advanced-data-exploration?orgId=1&refresh=1m&var-metric=go_gc_duration_seconds',
+    url: 'graph/d/prometheus-advanced/advanced-data-exploration?orgId=1&refresh=1m&var-metric=go_gc_duration_seconds',
     metrics: [
       'View Actual Metric Values (Gauge)',
       'View Metric Rate of Change (Counter)',
