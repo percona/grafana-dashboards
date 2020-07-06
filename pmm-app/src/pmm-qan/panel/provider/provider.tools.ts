@@ -33,19 +33,21 @@ export const refreshGrafanaVariables = (state) => {
   });
   templateVariables[0].variableSrv.variableUpdated(templateVariables[0]);
 };
+
+export const getLabelsUrlString = (labels) => Object.keys(labels)
+  .map((key) => {
+    const variables = labels[key];
+
+    return variables.map((variable) => `var-${key}=${variable === 'na' ? '' : variable}`).join('&');
+  })
+  .filter(Boolean)
+  .join('&');
 export const generateURL = (state) => {
   // read parameters and create new url
   const {
     labels, columns, groupBy, queryId, orderBy, rawTime
   } = state;
-  const urlLabels = Object.keys(labels)
-    .map((key) => {
-      const variables = labels[key];
-
-      return variables.map((variable) => `var-${key}=${variable === 'na' ? '' : variable}`).join('&');
-    })
-    .filter(Boolean)
-    .join('&');
+  const urlLabels = getLabelsUrlString(labels);
   const urlColumnsQuery = columns ? `columns=${JSON.stringify(columns)}` : '';
   const urlGroupBy = groupBy ? `group_by=${groupBy}` : '';
   const urlFilterByQuery = queryId ? `filter_by=${queryId}` : '';

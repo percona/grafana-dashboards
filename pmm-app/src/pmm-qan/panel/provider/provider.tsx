@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { omit } from 'lodash';
 import {
-  generateURL, parseURL, refreshGrafanaVariables, setLabels
+  generateURL, parseURL, refreshGrafanaVariables, setLabels, getLabelsUrlString
 } from './provider.tools';
 import { QueryAnalyticsContext } from './provider.types';
 
@@ -121,7 +121,6 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
     ...parseURL(query),
     rawTime,
   });
-  const [location, setLocation] = useState(window.location.search);
 
   useEffect(() => {
     refreshGrafanaVariables(panelState);
@@ -148,7 +147,7 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
       return;
     }
 
-    if (location === window.location.search) {
+    if (getLabelsUrlString(panelState.labels) === getLabelsUrlString(parseURL(query).labels)) {
       const newState = {
         ...panelState,
         from,
@@ -164,8 +163,6 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
 
       return;
     }
-
-    setLocation(window.location.search);
 
     if (panelState.rawTime.from !== rawTime.from || panelState.rawTime.to !== rawTime.to) {
       const newState = {
