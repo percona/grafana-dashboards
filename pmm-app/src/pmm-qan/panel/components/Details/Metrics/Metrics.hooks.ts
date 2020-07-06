@@ -37,7 +37,7 @@ export const useMetricsDetails = (): [any[], boolean] => {
     };
 
     getMetrics();
-  }, [queryId, totals]);
+  }, [queryId, groupBy, from, to, labels, totals]);
 
   return [metrics, loading];
 };
