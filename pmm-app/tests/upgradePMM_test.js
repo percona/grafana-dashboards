@@ -15,7 +15,7 @@ Before(async I => {
 });
 
 Scenario(
-  'PMM-T289 Verify Whats New link is presented on Update Widget @pmm-upgrade @visual-test @not-pr-pipeline',
+  'PMM-T289 Verify Whats New link is presented on Update Widget @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
   async (I, homePage) => {
     I.amOnPage(homePage.url);
     //Whats New Link is added for the latest version hours before the release hence we need to skip checking on that, rest it should be available and checked.
@@ -33,7 +33,7 @@ Scenario(
 );
 
 Scenario(
-  'PMM-T288 Verify user can see Update widget before upgrade [critical] @visual-test @not-pr-pipeline',
+  'PMM-T288 Verify user can see Update widget before upgrade [critical]  @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
   async (I, adminPage, homePage) => {
     I.amOnPage(homePage.url);
     await homePage.verifyPreUpdateWidgetIsPresent();
@@ -41,7 +41,7 @@ Scenario(
 );
 
 Scenario(
-  'Verify user can create Remote Instances before upgrade and they are in RUNNNING status @pmm-upgrade @visual-test @not-pr-pipeline',
+  'Verify user can create Remote Instances before upgrade and they are in RUNNNING status @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
   async (I, homePage, inventoryAPI, addInstanceAPI) => {
     // Adding instances for monitoring
     for (const type of Object.values(addInstanceAPI.instanceTypes)) {
@@ -55,7 +55,7 @@ Scenario(
 );
 
 Scenario(
-  'Verify user is able to Upgrade PMM version [blocker] @pmm-upgrade @visual-test @not-pr-pipeline',
+  'Verify user is able to Upgrade PMM version [blocker] @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
   async (I, inventoryAPI, homePage) => {
     I.amOnPage(homePage.url);
     await homePage.upgradePMM();
@@ -63,7 +63,7 @@ Scenario(
 );
 
 Scenario(
-  'Verify Agents are RUNNING after Upgrade (API) [critical] @pmm-upgrade @visual-test @not-pr-pipeline',
+  'Verify Agents are RUNNING after Upgrade (API) [critical] @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
   async (I, inventoryAPI) => {
     for (const service of Object.values(inventoryAPI.services)) {
       await inventoryAPI.verifyServiceExistsAndHasRunningStatus(service, serviceNames[service.service]);
@@ -72,7 +72,7 @@ Scenario(
 );
 
 Scenario(
-  'Verify user can see Update widget [critical] @pmm-upgrade @visual-test @not-pr-pipeline',
+  'Verify user can see Update widget [critical] @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
   async (I, adminPage, homePage) => {
     I.amOnPage(homePage.url);
     homePage.verifyPostUpdateWidgetIsPresent();
@@ -80,7 +80,7 @@ Scenario(
 );
 
 Scenario(
-  'PMM-T262 Open PMM Settings page and verify DATA_RETENTION value is set to 2 days after upgrade @pmm-upgrade @visual-test @not-pr-pipeline',
+  'PMM-T262 Open PMM Settings page and verify DATA_RETENTION value is set to 2 days after upgrade @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
   async (I, pmmSettingsPage) => {
     const dataRetention = '2';
     I.amOnPage(pmmSettingsPage.url);
@@ -95,7 +95,7 @@ Scenario(
 );
 
 Scenario(
-  'Verify user can see News Panel @pmm-upgrade @visual-test @not-pr-pipeline',
+  'Verify user can see News Panel @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
   async (I, adminPage, homePage) => {
     I.amOnPage(homePage.url);
     I.waitForVisible(homePage.fields.newsPanelTitleSelector, 30);
@@ -106,7 +106,7 @@ Scenario(
 );
 
 Scenario(
-  'Verify Agents are RUNNING after Upgrade (UI) [critical] @pmm-upgrade @visual-test @not-pr-pipeline',
+  'Verify Agents are RUNNING after Upgrade (UI) [critical] @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
   async (I, adminPage, pmmInventoryPage) => {
     I.amOnPage(pmmInventoryPage.url);
     for (const service of Object.values(serviceNames)) {
@@ -116,7 +116,7 @@ Scenario(
 );
 
 Scenario(
-  'Verify QAN has specific filters for Remote Instances after Upgrade (UI) @pmm-upgrade @visual-test @not-pr-pipeline',
+  'Verify QAN has specific filters for Remote Instances after Upgrade (UI) @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
   async (I, qanPage, addInstanceAPI) => {
     I.amOnPage(qanPage.url);
     I.waitForVisible(qanPage.fields.iframe, 30);
