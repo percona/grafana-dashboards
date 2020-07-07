@@ -4,7 +4,7 @@ import {
   generateURL, parseURL, refreshGrafanaVariables, setLabels
 } from './provider.tools';
 import { QueryAnalyticsContext } from './provider.types';
-import { useGrafanaTimerangeChange } from './grafana.hooks';
+import { useGrafanaTimerangeChange } from './provider.hooks';
 
 const initialState = {} as QueryAnalyticsContext;
 
@@ -124,21 +124,29 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
   useGrafanaTimerangeChange({
     rawTime,
     onRefresh: (event) => {
+      console.log('refresh');
       const newState = {
         ...panelState,
         from: event.from.utc().format('YYYY-MM-DDTHH:mm:ssZ'),
         to: event.to.utc().format('YYYY-MM-DDTHH:mm:ssZ'),
-        rawTime,
+        rawTime: {
+          from: event.raw.from,
+          to: event.raw.to,
+        },
       };
 
       setContext(newState);
     },
     onTimeRangeChange: (event) => {
+      console.log('change time range');
       const newState = {
         ...panelState,
         from: event.from.utc().format('YYYY-MM-DDTHH:mm:ssZ'),
         to: event.to.utc().format('YYYY-MM-DDTHH:mm:ssZ'),
-        rawTime,
+        rawTime: {
+          from: event.raw.from,
+          to: event.raw.to,
+        },
       };
 
       newState.pageNumber = 1;
@@ -147,7 +155,6 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
       setContext(newState);
     },
   });
-
 
   useEffect(() => {
     refreshGrafanaVariables(panelState);

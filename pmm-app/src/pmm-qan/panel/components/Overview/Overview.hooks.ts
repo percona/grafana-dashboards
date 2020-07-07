@@ -10,7 +10,7 @@ import { getDefaultColumns } from './components/DefaultColumns/DefaultColumns';
 export const useOverviewTable = (setTotal): [DataInterface, boolean] => {
   const {
     panelState: {
-      labels, columns, pageNumber, pageSize, orderBy, from, to, groupBy, rawTime
+      labels, columns, pageNumber, pageSize, orderBy, from, to, groupBy
     },
   } = useContext(QueryAnalyticsProvider);
   const [data, setData] = useState<DataInterface>({ rows: [], columns: [] });
@@ -49,7 +49,7 @@ export const useOverviewTable = (setTotal): [DataInterface, boolean] => {
     };
 
     updateInstances().then(() => {});
-  }, [columns, pageNumber, pageSize, groupBy, labels, orderBy, from, to, rawTime]);
+  }, [columns, pageNumber, pageSize, groupBy, labels, orderBy, from, to]);
 
   return [data, loading];
 };
