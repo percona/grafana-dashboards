@@ -6,7 +6,7 @@ Feature('to verify monitoried Remote Db instances');
 Before(async I => {
   I.Authorize();
 });
-
+/*
 Scenario(
   'Verify Remote MySQL Instance Addition [critical] @not-pr-pipeline',
   async (I, adminPage, remoteInstancesPage, pmmInventoryPage) => {
@@ -72,14 +72,15 @@ Scenario(
     await pmmInventoryPage.verifyAgentHasStatusRunning(proxysql_service_name);
   }
 );
-
+*/
 Scenario(
   'PMM-T339 - Verify MySQL service is removed on PMM Inventory page',
   async (I, addInstanceAPI, pmmInventoryPage) => {
     const serviceType = 'MySQL';
-    const serviceName = 'ToBeDelete';
+    const serviceName = 'ServiceToDelete';
     await addInstanceAPI.apiAddInstance(serviceType, serviceName);
     I.amOnPage(pmmInventoryPage.url);
+    const serviceId = pmmInventoryPage.getServicesId(serviceName);
     pmmInventoryPage.selectService(serviceName);
     I.click(pmmInventoryPage.fields.deleteButton);
     I.click(pmmInventoryPage.fields.proceedButton);
@@ -89,8 +90,30 @@ Scenario(
     I.click(pmmInventoryPage.fields.forceModeCheckbox);
     I.click(pmmInventoryPage.fields.proceedButton);
     pmmInventoryPage.serviceExists(serviceName, true);
-    await pmmInventoryPage.getCountOfAgents(serviceName);
+    I.click(pmmInventoryPage.fields.agentsLink);
+    await pmmInventoryPage.getCountOfAgents(serviceId);
     I.click(pmmInventoryPage.fields.nodesLink);
     pmmInventoryPage.checkNodeExists(serviceName);
+  }
+);
+
+Scenario(
+  'PMM-T340 - Verify node with agents, services can be removed on PMM Inventory page',
+  async (I, addInstanceAPI, pmmInventoryPage) => {
+    const serviceType = 'MySQL';
+    const serviceName = 'NodeToDelete';
+    await addInstanceAPI.apiAddInstance(serviceType, serviceName);
+    I.amOnPage(pmmInventoryPage.url);
+    const serviceId = pmmInventoryPage.getServicesId(serviceName);
+    I.waitForVisible(pmmInventoryPage.fields.nodesLink, 30);
+    I.click(pmmInventoryPage.fields.nodesLink);
+    pmmInventoryPage.selectService(serviceName);
+    I.click(pmmInventoryPage.fields.deleteButton);
+    I.click(pmmInventoryPage.fields.forceModeCheckbox);
+    I.click(pmmInventoryPage.fields.proceedButton);
+    I.click(pmmInventoryPage.fields.pmmServicesSelector);
+    pmmInventoryPage.serviceExists(serviceName, true);
+    I.click(pmmInventoryPage.fields.agentsLink);
+    await pmmInventoryPage.getCountOfAgents(serviceId);
   }
 );

@@ -114,11 +114,13 @@ module.exports = {
     I.waitForVisible(nodeName, 20);
   },
 
-  async getCountOfAgents(serviceName) {
+  getServicesId(serviceName) {
     const serviceIdLocator = `${this.fields.serviceIdLocatorPrefix}${serviceName}")]/preceding-sibling::td[2]`;
-    I.waitForElement(this.fields.agentsLink, 20);
-    I.click(this.fields.agentsLink);
-    const countOfAgents = await I.grabNumberOfVisibleElements(serviceIdLocator);
+    return serviceIdLocator;
+  },
+
+  async getCountOfAgents(serviceId) {
+    const countOfAgents = await I.grabNumberOfVisibleElements(serviceId);
     assert.equal(countOfAgents, 0, 'The agents should be removed!');
   },
 };
