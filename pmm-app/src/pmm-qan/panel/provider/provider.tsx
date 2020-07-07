@@ -124,7 +124,6 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
   useGrafanaTimerangeChange({
     rawTime,
     onRefresh: (event) => {
-      console.log('refreshed');
       const newState = {
         ...panelState,
         from: event.from.utc().format('YYYY-MM-DDTHH:mm:ssZ'),
@@ -135,7 +134,6 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
       setContext(newState);
     },
     onTimeRangeChange: (event) => {
-      console.log('time rangeChanged');
       const newState = {
         ...panelState,
         from: event.from.utc().format('YYYY-MM-DDTHH:mm:ssZ'),

@@ -153,8 +153,17 @@ export const Table: FC<TableProps> = ({
             {...row.getRowProps({
               style,
             })}
-            className={cx('tr', rowClassName(row.original, row.index))}
-            onClick={() => onRowClick(row)}
+            className={cx('tr', `tr-${row.index}`, rowClassName(row.original, row.index))}
+            onClick={() => {
+              const selectedColumn = document.querySelector(`.tr-${row.index}`);
+              const tableBody = document.querySelector('.table-wrapper .table-body');
+
+              if (selectedColumn && tableBody) {
+                tableBody.scroll(0, (selectedColumn as HTMLElement).offsetTop - 55);
+              }
+
+              onRowClick(row);
+            }}
           >
             {row.cells.map((cell) => (
               <div {...cell.getCellProps()} className={cx('td', styles.tableCell)}>
@@ -184,7 +193,7 @@ export const Table: FC<TableProps> = ({
           ) : null}
           {rows.length && !loading ? (
             <div {...getTableProps()} className="table">
-              <div {...getTableBodyProps()} className={styles.tableBody(scroll.y)}>
+              <div {...getTableBodyProps()} className={cx('table-body', styles.tableBody(scroll.y))}>
                 {rows.map(RenderRow)}
               </div>
             </div>
