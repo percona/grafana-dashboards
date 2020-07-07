@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { omit } from 'lodash';
 import {
-  generateURL, parseURL, refreshGrafanaVariables, setLabels, getLabelsUrlString
+  generateURL, parseURL, refreshGrafanaVariables, setLabels
 } from './provider.tools';
 import { QueryAnalyticsContext } from './provider.types';
+import { useGrafanaTimerangeChange } from './grafana.hooks';
 
 const initialState = {} as QueryAnalyticsContext;
 
@@ -115,12 +116,40 @@ const actions = {
 export const UrlParametersProvider = ({ timeRange, children }) => {
   const query = new URLSearchParams(window.location.search);
   const rawTime = { ...timeRange.raw };
-  const from = timeRange.from.utc().format('YYYY-MM-DDTHH:mm:ssZ');
-  const to = timeRange.to.utc().format('YYYY-MM-DDTHH:mm:ssZ');
   const [panelState, setContext] = useState({
     ...parseURL(query),
     rawTime,
   });
+
+  useGrafanaTimerangeChange({
+    rawTime,
+    onRefresh: (event) => {
+      console.log('refreshed');
+      const newState = {
+        ...panelState,
+        from: event.from.utc().format('YYYY-MM-DDTHH:mm:ssZ'),
+        to: event.to.utc().format('YYYY-MM-DDTHH:mm:ssZ'),
+        rawTime,
+      };
+
+      setContext(newState);
+    },
+    onTimeRangeChange: (event) => {
+      console.log('time rangeChanged');
+      const newState = {
+        ...panelState,
+        from: event.from.utc().format('YYYY-MM-DDTHH:mm:ssZ'),
+        to: event.to.utc().format('YYYY-MM-DDTHH:mm:ssZ'),
+        rawTime,
+      };
+
+      newState.pageNumber = 1;
+      delete newState.queryId;
+      delete newState.querySelected;
+      setContext(newState);
+    },
+  });
+
 
   useEffect(() => {
     refreshGrafanaVariables(panelState);
@@ -131,61 +160,6 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
   }, [panelState]);
 
   const wrapAction = (key) => (...value) => setContext(actions[key](...value));
-
-  const [isFirstLoad, setFirstLoad] = useState(true);
-  const [previousTimeValues, setPreviousTimeValues] = useState({
-    from,
-    to,
-  });
-
-  useEffect(() => {
-    if (isFirstLoad) {
-      return;
-    }
-
-    if (from === previousTimeValues.from && to === previousTimeValues.to) {
-      return;
-    }
-
-    if (getLabelsUrlString(panelState.labels) === getLabelsUrlString(parseURL(query).labels)) {
-      const newState = {
-        ...panelState,
-        from,
-        to,
-        rawTime,
-      };
-
-      setPreviousTimeValues({
-        from,
-        to,
-      });
-      setContext(newState);
-
-      return;
-    }
-
-    if (panelState.rawTime.from !== rawTime.from || panelState.rawTime.to !== rawTime.to) {
-      const newState = {
-        ...panelState,
-        from,
-        to,
-        rawTime,
-      };
-
-      newState.pageNumber = 1;
-      delete newState.queryId;
-      delete newState.querySelected;
-      setPreviousTimeValues({
-        from,
-        to,
-      });
-      setContext(newState);
-    }
-  }, [from, to, panelState]);
-
-  useEffect(() => {
-    setFirstLoad(false);
-  }, []);
 
   return (
     <QueryAnalyticsProvider.Provider
