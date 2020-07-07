@@ -72,9 +72,9 @@ Scenario(
     await pmmInventoryPage.verifyAgentHasStatusRunning(proxysql_service_name);
   }
 );
-*/
+
 Scenario(
-  'PMM-T339 - Verify MySQL service is removed on PMM Inventory page',
+  'PMM-T339 - Verify MySQL service is removed on PMM Inventory page @not-pr-pipeline',
   async (I, addInstanceAPI, pmmInventoryPage) => {
     const serviceType = 'MySQL';
     const serviceName = 'ServiceToDelete';
@@ -98,7 +98,7 @@ Scenario(
 );
 
 Scenario(
-  'PMM-T340 - Verify node with agents, services can be removed on PMM Inventory page',
+  'PMM-T340 - Verify node with agents, services can be removed on PMM Inventory page @not-pr-pipeline',
   async (I, addInstanceAPI, pmmInventoryPage) => {
     const serviceType = 'MySQL';
     const serviceName = 'NodeToDelete';
@@ -115,5 +115,20 @@ Scenario(
     pmmInventoryPage.serviceExists(serviceName, true);
     I.click(pmmInventoryPage.fields.agentsLink);
     await pmmInventoryPage.getCountOfAgents(serviceId);
+  }
+);
+*/
+Scenario(
+  'PMM-T342 - Verify pmm-server node cannot be removed from PMM Inventory page @not-pr-pipeline',
+  async (I, pmmInventoryPage) => {
+    const node = 'pmm-server';
+    I.amOnPage(pmmInventoryPage.url);
+    I.waitForVisible(pmmInventoryPage.fields.nodesLink, 30);
+    I.click(pmmInventoryPage.fields.nodesLink);
+    pmmInventoryPage.selectService(node);
+    I.click(pmmInventoryPage.fields.deleteButton);
+    I.click(pmmInventoryPage.fields.forceModeCheckbox);
+    I.click(pmmInventoryPage.fields.proceedButton);
+    pmmInventoryPage.checkNodeExists(node);
   }
 );
