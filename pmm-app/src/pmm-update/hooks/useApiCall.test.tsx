@@ -4,10 +4,11 @@ import { mount } from 'enzyme';
 
 import { useApiCall } from './useApiCall';
 
-jest.mock('../../react-plugins-deps/components/helpers/notification-manager');
+jest.mock('shared/components/helpers/notification-manager');
 
 const HookWrapper: FC<{ hook: () => any }> = ({ hook }) => {
   const dataHook = hook ? hook() : undefined;
+
   return <div data-hook={dataHook} />;
 };
 
@@ -17,6 +18,7 @@ describe('useApiCall', () => {
   const fakeApiInvalid = jest.fn().mockImplementation(() => null);
   const fakeApiWithTimeout = jest.fn().mockImplementation(async () => {
     await new Promise(() => setTimeout(() => {}, 1000));
+
     return Promise.resolve(fakeData);
   });
 
@@ -54,6 +56,7 @@ describe('useApiCall', () => {
     wrapper?.update();
 
     const [data, errorMessage, isLoading, apiCall] = wrapper?.find('div').prop('data-hook');
+
     expect(data).toEqual(fakeData);
     expect(errorMessage).toEqual('');
     expect(isLoading).toEqual(false);
@@ -77,6 +80,7 @@ describe('useApiCall', () => {
     wrapper?.update();
 
     const [data, errorMessage, isLoading, apiCall] = wrapper?.find('div').prop('data-hook');
+
     expect(data).toBe(undefined);
     expect(errorMessage).toEqual(Error('Invalid response received'));
     expect(isLoading).toEqual(false);

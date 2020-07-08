@@ -4,10 +4,11 @@ import { mount } from 'enzyme';
 
 import { useApiCall, useVersionDetails } from 'pmm-update/hooks';
 
-jest.mock('../../react-plugins-deps/components/helpers/notification-manager');
+jest.mock('shared/components/helpers/notification-manager');
 
 const HookWrapper: FC<{ hook: () => any }> = ({ hook }) => {
   const dataHook = hook ? hook() : undefined;
+
   return <div data-hook={dataHook} />;
 };
 
@@ -90,7 +91,9 @@ describe('useVersionDetails', () => {
 
   it('should return sane defaults when data is undefined', async () => {
     const [
-      { installedVersionDetails, lastCheckDate, nextVersionDetails, isUpdateAvailable },
+      {
+        installedVersionDetails, lastCheckDate, nextVersionDetails, isUpdateAvailable
+      },
       errorMessage,
       isLoading,
       isDefaultView,
@@ -122,7 +125,9 @@ describe('useVersionDetails', () => {
     wrapper?.update();
 
     const [
-      { installedVersionDetails, lastCheckDate, nextVersionDetails, isUpdateAvailable },
+      {
+        installedVersionDetails, lastCheckDate, nextVersionDetails, isUpdateAvailable
+      },
       errorMessage,
       isLoading,
       isDefaultView,
@@ -154,7 +159,9 @@ describe('useVersionDetails', () => {
     wrapper?.update();
 
     const [
-      { installedVersionDetails, lastCheckDate, nextVersionDetails, isUpdateAvailable },
+      {
+        installedVersionDetails, lastCheckDate, nextVersionDetails, isUpdateAvailable
+      },
       errorMessage,
       isLoading,
       isDefaultView,

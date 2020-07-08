@@ -5,7 +5,7 @@ export const useToggleOnAltClick = (initialValue = false): [boolean, (e: MouseEv
 
   const handler = (e: MouseEvent) => {
     if (e.altKey) {
-      setToggleValue(currentValue => !currentValue);
+      setToggleValue((currentValue) => !currentValue);
     }
   };
 

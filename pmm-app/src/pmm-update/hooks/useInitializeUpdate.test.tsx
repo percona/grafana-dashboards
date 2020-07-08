@@ -2,13 +2,14 @@ import React, { FC } from 'react';
 import { act } from 'react-dom/test-utils';
 import { mount } from 'enzyme';
 
-import { useInitializeUpdate } from './useInitializeUpdate';
 import { startUpdate } from 'pmm-update/UpdatePanel.service';
+import { useInitializeUpdate } from './useInitializeUpdate';
 
-jest.mock('../../react-plugins-deps/components/helpers/notification-manager');
+jest.mock('shared/components/helpers/notification-manager');
 
 const HookWrapper: FC<{ hook: () => any }> = ({ hook }) => {
   const dataHook = hook ? hook() : undefined;
+
   return <div data-hook={dataHook} />;
 };
 

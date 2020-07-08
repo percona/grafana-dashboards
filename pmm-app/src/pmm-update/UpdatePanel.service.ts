@@ -1,4 +1,4 @@
-import { apiRequest } from 'react-plugins-deps/components/helpers/api';
+import { apiRequest } from 'shared/components/helpers/api';
 import {
   GetUpdatesBody,
   GetUpdateStatusBody,
@@ -7,8 +7,6 @@ import {
   StartUpdateResponse,
 } from 'pmm-update/types';
 
-export const getCurrentVersion = (forceUpdate = false) =>
-  apiRequest.post<GetUpdatesResponse, GetUpdatesBody>('/v1/Updates/Check', { force: forceUpdate });
+export const getCurrentVersion = (forceUpdate = false) => apiRequest.post<GetUpdatesResponse, GetUpdatesBody>('/v1/Updates/Check', { force: forceUpdate });
 export const startUpdate = () => apiRequest.post<StartUpdateResponse, {}>('/v1/Updates/Start', {});
-export const getUpdateStatus = (body: GetUpdateStatusBody) =>
-  apiRequest.post<GetUpdateStatusResponse, GetUpdateStatusBody>('/v1/Updates/Status', body);
+export const getUpdateStatus = (body: GetUpdateStatusBody) => apiRequest.post<GetUpdateStatusResponse, GetUpdateStatusBody>('/v1/Updates/Status', body);

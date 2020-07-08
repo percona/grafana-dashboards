@@ -1,4 +1,6 @@
-import React, { useEffect, useState, FC, MouseEvent } from 'react';
+import React, {
+  useEffect, useState, FC, MouseEvent
+} from 'react';
 
 import {
   AvailableUpdate,
@@ -17,7 +19,9 @@ export const UpdatePanel: FC<{}> = () => {
   const [showModal, setShowModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [
-    { installedVersionDetails, lastCheckDate, nextVersionDetails, isUpdateAvailable },
+    {
+      installedVersionDetails, lastCheckDate, nextVersionDetails, isUpdateAvailable
+    },
     fetchVersionErrorMessage,
     isLoading,
     isDefaultView,
@@ -29,6 +33,7 @@ export const UpdatePanel: FC<{}> = () => {
     if (e.altKey) {
       setForceUpdate(true);
     }
+
     getCurrentVersionDetails(true);
   };
 
@@ -66,7 +71,9 @@ export const UpdatePanel: FC<{}> = () => {
         ) : null}
         {isUpdateAvailable || forceUpdate ? (
           <CenteredButton onClick={handleUpdate} icon={'fa fa-download' as any} variant="secondary">
-            Update to {nextVersionDetails?.nextVersion}
+            Update to
+            {' '}
+            {nextVersionDetails?.nextVersion}
           </CenteredButton>
         ) : null}
         <LastCheck

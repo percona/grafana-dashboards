@@ -16,11 +16,7 @@ interface TableProps {
 }
 
 export const Table: FC<TableProps> = ({
-  columns,
-  data = [],
-  isSttEnabled,
-  hasNoAccess = false,
-  fetchAlerts = () => {},
+  columns, data = [], isSttEnabled, hasNoAccess = false
 }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
