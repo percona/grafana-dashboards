@@ -162,4 +162,10 @@ module.exports = {
       I.waitForVisible(agentIdLocator, 30);
     }
   },
+
+  selectAgentByID(id) {
+    const agentIdLocator = `//table//tr/td[2][contains(text(),"${id}")]/preceding-sibling::td/div[@data-qa="select-row"]`;
+    I.waitForVisible(agentIdLocator, 30);
+    I.click(agentIdLocator);
+  },
 };

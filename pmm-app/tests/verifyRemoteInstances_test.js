@@ -133,7 +133,7 @@ xScenario(
   }
 );
 
-Scenario(
+xScenario(
   'PMM-T343 - Verify agent can be removed on PMM Inventory page @not-pr-pipeline',
   async (I, pmmInventoryPage) => {
     const agentType = 'MySQL exporter';
@@ -154,5 +154,22 @@ Scenario(
     pmmInventoryPage.verifyNodesCount(countOfNodesBefore, countOfNodesAfter);
     I.click(pmmInventoryPage.fields.pmmServicesSelector);
     pmmInventoryPage.existsByid(serviceId, false);
+  }
+);
+
+Scenario(
+  'PMM-T345 - Verify removing pmm-agent on PMM Inventory page removes all associated agents @not-pr-pipeline',
+  async (I, pmmInventoryPage) => {
+    const agentID = 'pmm-server';
+    const agentType = 'PMM Agent';
+    I.amOnPage(pmmInventoryPage.url);
+    I.waitForVisible(pmmInventoryPage.fields.agentsLink, 20);
+    I.click(pmmInventoryPage.fields.agentsLink);
+    pmmInventoryPage.selectAgentByID(agentID);
+    I.click(pmmInventoryPage.fields.deleteButton);
+    I.click(pmmInventoryPage.fields.forceModeCheckbox);
+    I.click(pmmInventoryPage.fields.proceedButton);
+    pmmInventoryPage.existsByid(agentID, false);
+    pmmInventoryPage.selectAgent(agentType);
   }
 );
