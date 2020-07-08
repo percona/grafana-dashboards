@@ -39,6 +39,7 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
   }
 
   async fetchAlerts() {
+    this.setState({ isLoading: true });
     try {
       const dataSource = await CheckService.getActiveAlerts();
       this.setState({ dataSource });
@@ -89,6 +90,7 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
             columns={COLUMNS}
             isSttEnabled={isSttEnabled}
             hasNoAccess={hasNoAccess}
+            fetchAlerts={this.fetchAlerts}
           />
         )}
       </div>

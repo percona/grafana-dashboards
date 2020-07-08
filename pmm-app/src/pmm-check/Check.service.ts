@@ -24,6 +24,9 @@ export const CheckService = {
   async getSettings() {
     return apiRequest.post<Settings, {}>(API.SETTINGS, {}, true);
   },
+  rerunDbChecks(): Promise<void | {}> {
+    return apiRequest.post<{}, {}>('/v1/management/SecurityChecks/Start', {});
+  },
 };
 
 export const processData = (data: Alert[]): ActiveCheck[] => {

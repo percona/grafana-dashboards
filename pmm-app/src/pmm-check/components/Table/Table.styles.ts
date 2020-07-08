@@ -24,7 +24,10 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       background-color: ${backgroundColor};
     `,
     caption: css`
+      align-items: center;
+      display: flex;
       font-size: ${theme.typography.heading.h5};
+      justify-content: space-between;
       padding: ${headerPadding};
       border: 1px solid transparent;
     `,
