@@ -10,10 +10,15 @@ interface FailedProps {
 
 export const Failed: FC<FailedProps> = ({ failed }) => {
   const sum = failed.reduce((acc, val) => acc + val, 0);
+
   return (
     <div>
       <span className={styles.FailedDiv}>
-        {sum} ({failed.join(' / ')})
+        {sum}
+        {' '}
+        (
+        {failed.join(' / ')}
+        )
       </span>
       <Tooltip placement="top" theme="info" content={<TooltipText sum={sum} data={failed} />}>
         <span>

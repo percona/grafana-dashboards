@@ -1,10 +1,10 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { Table } from '../react-plugins-deps/components/Table/Table';
+import { Table } from 'shared/components/Elements/Table/Table';
 import { AGENTS_COLUMNS, NODES_COLUMNS, SERVICES_COLUMNS } from './Inventory.constants';
 import { InventoryDataService } from './Inventory.tools';
 
-jest.mock('../react-plugins-deps/components/helpers/notification-manager');
+jest.mock('shared/components/helpers/notification-manager');
 
 // FIXME: types
 describe('Inventory tables', () => {
@@ -43,11 +43,12 @@ describe('Inventory tables', () => {
     const root = mount(
       <Table
         data={InventoryDataService.getAgentModel(response as any)}
-        rowKey={rec => rec.agent_id}
+        rowKey={(rec) => rec.agent_id}
         columns={AGENTS_COLUMNS}
         loading={false}
       />
     );
+
     // length is 5 because header is also tr
     expect(root.find('tr').length).toEqual(5);
     root.unmount();
@@ -68,11 +69,12 @@ describe('Inventory tables', () => {
     const root = mount(
       <Table
         data={InventoryDataService.getServiceModel(response as any)}
-        rowKey={rec => rec.service_id}
+        rowKey={(rec) => rec.service_id}
         columns={SERVICES_COLUMNS}
         loading={false}
       />
     );
+
     // length is 2 because header is also tr
     expect(root.find('tr').length).toEqual(2);
     root.unmount();
@@ -88,11 +90,12 @@ describe('Inventory tables', () => {
     const root = mount(
       <Table
         data={InventoryDataService.getNodeModel(response as any)}
-        rowKey={rec => rec.node_id}
+        rowKey={(rec) => rec.node_id}
         columns={NODES_COLUMNS}
         loading={false}
       />
     );
+
     // length is 3 because header is also tr
     expect(root.find('tr').length).toEqual(3);
     root.unmount();

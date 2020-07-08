@@ -6,11 +6,11 @@ import AddRemoteInstance from './AddInstance/AddRemoteInstance/AddRemoteInstance
 import DiscoveryPanel from './DiscoveryPanel/DiscoveryPanel';
 import AddInstance from './AddInstance/AddInstance';
 import './panel.scss';
-import '../react-plugins-deps/style.less';
-import '../react-plugins-deps/styles.scss';
+import '../shared/style.less';
+import '../shared/styles.scss';
 
 const history = createBrowserHistory();
-const AddInstancePanel = props => {
+const AddInstancePanel = () => {
   const urlParams = new URLSearchParams(window.location.search);
   const instanceType = urlParams.get('instance_type') || '';
   const availableInstanceTypes = ['rds', 'postgresql', 'mysql', 'proxysql', 'mongodb', 'proxysql'];
@@ -18,8 +18,9 @@ const AddInstancePanel = props => {
     type: availableInstanceTypes.includes(instanceType) ? instanceType : '',
   });
 
-  const setSelectedInstance = instance => {
+  const setSelectedInstance = (instance) => {
     const url = new URL((window.location as unknown) as string);
+
     url.searchParams.set('instance_type', instance.type);
     selectInstance(instance);
     history.push(url.pathname + url.search);
@@ -30,7 +31,7 @@ const AddInstancePanel = props => {
       {!selectedInstance.type ? <AddInstance onSelectInstanceType={setSelectedInstance} /> : null}
       {selectedInstance.type && (
         <>
-          <Button type="link" onClick={setSelectedInstance.bind(null, { type: '' })}>
+          <Button type="link" onClick={() => setSelectedInstance({ type: '' })}>
             Return to instance select menu
           </Button>
           {selectedInstance.type === 'rds' ? (
@@ -44,12 +45,10 @@ const AddInstancePanel = props => {
   );
 };
 
-const AddPanel = () => {
-  return (
-    <Router history={history}>
-      <Route path="*" component={AddInstancePanel} />
-    </Router>
-  );
-};
+const AddPanel = () => (
+  <Router history={history}>
+    <Route path="*" component={AddInstancePanel} />
+  </Router>
+);
 
 export default AddPanel;

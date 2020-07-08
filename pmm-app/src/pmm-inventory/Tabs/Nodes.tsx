@@ -1,10 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Button, HorizontalGroup, Modal } from '@grafana/ui';
 import { Form } from 'react-final-form';
-import { Table, SelectedTableRows } from 'react-plugins-deps/components/Table';
-import { showSuccessNotification } from 'react-plugins-deps/components/helpers';
-import { CheckboxField, FormElement } from 'react-plugins-deps/components/FormComponents';
+import { Table } from 'shared/components/Elements/Table/Table';
+import { showSuccessNotification } from 'shared/components/helpers';
+import { CheckboxField, FormElement } from 'shared/components/Form';
 import { filterFulfilled, InventoryDataService, processPromiseResults } from 'pmm-inventory/Inventory.tools';
+import { SelectedTableRows } from 'shared/components/Elements/Table/Table.types';
 import { InventoryService } from '../Inventory.service';
 import { NodesList } from '../Inventory.types';
 import { NODES_COLUMNS } from '../Inventory.constants';
@@ -27,8 +28,10 @@ export const NodesTab = () => {
     setLoading(true);
     try {
       const result: NodesList = await InventoryService.getNodes();
+
       setData(InventoryDataService.getNodeModel(result));
     } catch (e) {
+      console.error(e);
     } finally {
       setLoading(false);
     }
@@ -41,12 +44,12 @@ export const NodesTab = () => {
   const removeNodes = useCallback(async (nodes: Array<SelectedTableRows<Node>>, forceMode) => {
     try {
       setLoading(true);
-      const requests = nodes.map(node =>
-        InventoryService.removeNode({ node_id: node.original.node_id, force: forceMode })
-      );
+      // eslint-disable-next-line max-len
+      const requests = nodes.map((node) => InventoryService.removeNode({ node_id: node.original.node_id, force: forceMode }));
 
       const results = await processPromiseResults(requests);
       const successfullyDeleted = results.filter(filterFulfilled).length;
+
       showSuccessNotification({
         message: `${successfullyDeleted} of ${nodes.length} nodes successfully deleted`,
       });
@@ -75,64 +78,66 @@ export const NodesTab = () => {
         </Button>
       </div>
       <Modal
-        title={
+        title={(
           <div className="modal-header-title">
             <span className="p-l-1">Confirm action</span>
           </div>
-        }
+        )}
         isOpen={modalVisible}
         onDismiss={() => setModalVisible(false)}
       >
         <Form
           onSubmit={() => {}}
-          render={({ form, handleSubmit }) => {
-            return (
-              <form onSubmit={handleSubmit}>
-                <>
-                  <h4 className={styles.confirmationText}>
-                    Are you sure that you want to permanently delete {selected.length}{' '}
-                    {selected.length === 1 ? 'node' : 'nodes'}?
-                  </h4>
-                  <FormElement
-                    dataQa="form-field-force"
-                    label="Force mode"
-                    element={
-                      <CheckboxField
-                        name="force"
-                        label={
-                          'Force mode is going to delete all ' +
-                          'agents and services associated with the nodes'
+          render={({ form, handleSubmit }) => (
+            <form onSubmit={handleSubmit}>
+              <>
+                <h4 className={styles.confirmationText}>
+                  Are you sure that you want to permanently delete
+                  {' '}
+                  {selected.length}
+                  {' '}
+                  {selected.length === 1 ? 'node' : 'nodes'}
+                  ?
+                </h4>
+                <FormElement
+                  dataQa="form-field-force"
+                  label="Force mode"
+                  element={(
+                    <CheckboxField
+                      name="force"
+                      label={
+                          'Force mode is going to delete all '
+                          + 'agents and services associated with the nodes'
                         }
-                      />
-                    }
-                  />
-                  <HorizontalGroup justify="space-between" spacing="md">
-                    <Button variant="secondary" size="md" onClick={() => setModalVisible(false)}>
-                      Cancel
-                    </Button>
-                    <Button
-                      size="md"
-                      onClick={() => {
-                        removeNodes(selected, form.getState().values.force);
-                        setModalVisible(false);
-                      }}
-                      variant="destructive"
-                      className={styles.destructiveButton}
-                    >
-                      Proceed
-                    </Button>
-                  </HorizontalGroup>
-                </>
-              </form>
-            );
-          }}
+                    />
+                    )}
+                />
+                <HorizontalGroup justify="space-between" spacing="md">
+                  <Button variant="secondary" size="md" onClick={() => setModalVisible(false)}>
+                    Cancel
+                  </Button>
+                  <Button
+                    size="md"
+                    onClick={() => {
+                      removeNodes(selected, form.getState().values.force);
+                      setModalVisible(false);
+                    }}
+                    variant="destructive"
+                    className={styles.destructiveButton}
+                  >
+                    Proceed
+                  </Button>
+                </HorizontalGroup>
+              </>
+            </form>
+          )}
         />
       </Modal>
       <Table
         columns={NODES_COLUMNS}
         data={data}
         rowSelection
-        onRowSelection={selected => setSelectedRows(selected)}
+        onRowSelection={(selected) => setSelectedRows(selected)}
         noData={<h1>No nodes Available</h1>}
         loading={loading}
       />

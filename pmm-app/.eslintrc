@@ -1,18 +1,83 @@
 {
-  "extends": ["@grafana/eslint-config", "plugin:react/recommended"],
+  "extends": ["@grafana/eslint-config", "plugin:react/recommended", "airbnb"],
+  "env": {
+    "jest/globals": true,
+    "browser": true
+  },
   "root": true,
   "settings": {
     "react": {
       "version": "detect"
+    },
+    "import/resolver": {
+      "node": {
+        "extensions": [".ts", ".tsx"]
+      }
     }
   },
+  "plugins": ["react-hooks", "jest", "eslint-plugin-no-inline-styles"],
   "rules": {
+    "comma-dangle": [
+      "error",
+      {
+        "arrays": "only-multiline",
+        "objects": "only-multiline",
+        "imports": "only-multiline",
+        "exports": "only-multiline",
+        "functions": "only-multiline"
+      }
+    ],
     "no-restricted-imports": 0,
+    "no-param-reassign": ["error", { "ignorePropertyModificationsForRegex": ["^acc$"] }],
     "react/jsx-curly-brace-presence": ["error"],
     "react/jsx-boolean-value": ["error"],
-    "react/prop-types": [0],
-    "react/display-name": [0],
+    "react/jsx-filename-extension": ["off"],
+    // We need spread to create HOCs
+    "react/jsx-props-no-spreading": ["off"],
+    "react/prop-types": ["off"],
+    "react/display-name": ["off"],
+    "max-len": ["error", { "code": 110, "ignoreStrings": true }],
+    "prettier/prettier": ["off"],
     "quotes": ["error", "single"],
-    "max-len": ["error", { "code": 110 }]
+    "import/extensions": ["off"],
+    "import/no-extraneous-dependencies": [
+      "error",
+      { "devDependencies": true, "optionalDependencies": false, "peerDependencies": false }
+    ],
+    "import/prefer-default-export": ["off"],
+    "import/no-unresolved": ["off"],
+    // no-unused-vars doesn't work with typescript
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": ["error"],
+    // We use a lot of snake case variables in code interacting with API
+    "camelcase": ["off"],
+    // It's more convinient to declare big helpers functions below the main method
+    "no-use-before-define": ["off"],
+    // Don't need these
+    "jsx-a11y": ["off"],
+    "jsx-a11y/anchor-is-valid": ["off"],
+    "jsx-a11y/click-events-have-key-events": ["off"],
+    "jsx-a11y/no-static-element-interactions": ["off"],
+    "jsx-a11y/label-has-associated-control": ["off"],
+    "no-dupe-args": ["error"],
+    "no-new-object": ["error"],
+    // "no-magic-numbers": ["error"],
+    "padding-line-between-statements": [
+      "error",
+      { "blankLine": "always", "prev": "*", "next": "return" },
+      { "blankLine": "always", "prev": "import", "next": "*" },
+      { "blankLine": "any", "prev": "import", "next": "import" },
+      { "blankLine": "always", "prev": "function", "next": "*" },
+      { "blankLine": "always", "prev": "if", "next": "*" },
+      { "blankLine": "always", "prev": "for", "next": "*" },
+      { "blankLine": "always", "prev": ["const", "let", "var"], "next": "*" },
+      { "blankLine": "any", "prev": ["const", "let", "var"], "next": ["const", "let", "var"] }
+    ],
+    // "no-inline-styles/no-inline-styles": [2],
+    // ENABLE LATER
+    "max-classes-per-file": ["off"],
+    "no-shadow": ["off"],
+    "react/no-array-index-key": ["off"],
+    "@typescript-eslint/ban-ts-ignore": ["off"]
   }
 }

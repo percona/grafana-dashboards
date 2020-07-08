@@ -5,8 +5,8 @@ import { PanelProps } from '@grafana/data';
 import { Spinner } from '@grafana/ui';
 import { CheckPanelOptions, Settings, FailedChecks } from 'pmm-check/types';
 import { CheckService } from 'pmm-check/Check.service';
-import * as styles from './CheckPanel.styles';
 import { Failed } from 'pmm-check-home/components';
+import * as styles from './CheckPanel.styles';
 
 export interface CheckPanelProps extends PanelProps<CheckPanelOptions> {}
 
@@ -20,37 +20,26 @@ export interface CheckPanelState {
 const history = createBrowserHistory();
 
 export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> {
-  state: CheckPanelState = {
-    failedChecks: undefined,
-    hasNoAccess: false,
-    isSttEnabled: false,
-    isLoading: true,
-  };
-
   constructor(props: CheckPanelProps) {
     super(props);
     this.fetchAlerts = this.fetchAlerts.bind(this);
     this.getSettings = this.getSettings.bind(this);
+    this.state = {
+      failedChecks: undefined,
+      hasNoAccess: false,
+      isSttEnabled: false,
+      isLoading: true,
+    };
   }
 
   componentDidMount() {
     this.getSettings();
   }
 
-  async fetchAlerts() {
-    try {
-      const failedChecks = await CheckService.getFailedChecks();
-      this.setState({ failedChecks });
-    } catch (err) {
-      console.error(err);
-    } finally {
-      this.setState({ isLoading: false });
-    }
-  }
-
   async getSettings() {
     try {
       const resp = (await CheckService.getSettings()) as Settings;
+
       this.setState({ isSttEnabled: !!resp.settings?.stt_enabled });
       this.setState({ hasNoAccess: false });
       if (resp.settings?.stt_enabled) {
@@ -63,12 +52,28 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
       if (err.response?.status === 401) {
         this.setState({ hasNoAccess: true });
       }
+
       console.error(err);
     }
   }
 
+
+  async fetchAlerts() {
+    try {
+      const failedChecks = await CheckService.getFailedChecks();
+
+      this.setState({ failedChecks });
+    } catch (err) {
+      console.error(err);
+    } finally {
+      this.setState({ isLoading: false });
+    }
+  }
+
   render() {
-    const { isSttEnabled, failedChecks, isLoading, hasNoAccess } = this.state;
+    const {
+      isSttEnabled, failedChecks, isLoading, hasNoAccess
+    } = this.state;
 
     return (
       <div className={styles.panel} data-qa="db-check-panel-home">
@@ -79,7 +84,7 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
   }
 }
 
-export const CheckPanelRouter: FC<CheckPanelProps> = props => (
+export const CheckPanelRouter: FC<CheckPanelProps> = (props) => (
   <Router history={history}>
     <Route>
       <CheckPanel {...props} />
