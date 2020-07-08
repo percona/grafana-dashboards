@@ -6,23 +6,21 @@ interface TableHeaderProps {
 }
 
 export const TableHeader: FC<TableHeaderProps> = ({ columns }) => {
-  const widths = columns.map(col => col.width);
-  const titles = columns.map(col => col.title);
+  const widths = columns.map((col) => col.width);
+  const titles = columns.map((col) => col.title);
 
   return (
     <>
       <colgroup>
-        {widths.map((width, key) => {
-          return width ? (
-            <col key={key} style={{ width: `${width}px`, minWidth: `${width}px` }} />
-          ) : (
-            <col key={key} />
-          );
-        })}
+        {widths.map((width, key) => (
+          // eslint-disable-next-line react/no-array-index-key
+          <col key={key} style={width ? { width: `${width}px`, minWidth: `${width}px` } : {}} />
+        ))}
       </colgroup>
       <thead>
         <tr>
           {titles.map((title, key) => (
+            // eslint-disable-next-line react/no-array-index-key
             <th key={key}>{title}</th>
           ))}
         </tr>

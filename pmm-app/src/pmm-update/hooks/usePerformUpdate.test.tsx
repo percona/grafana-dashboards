@@ -7,10 +7,11 @@ import { getUpdateStatus } from 'pmm-update/UpdatePanel.service';
 
 const fakeLaunchUpdate = jest.fn();
 
-jest.mock('../../react-plugins-deps/components/helpers/notification-manager');
+jest.mock('shared/components/helpers/notification-manager');
 
 const HookWrapper: FC<{ hook: () => any }> = ({ hook }) => {
   const dataHook = hook ? hook() : undefined;
+
   return <div data-hook={dataHook} />;
 };
 

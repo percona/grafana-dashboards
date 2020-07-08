@@ -6,6 +6,7 @@ import { useClickOutside } from './useClickOutside';
 
 const HookWrapper: FC<{ hook: () => any }> = ({ hook }) => {
   const dataHook = hook ? hook() : undefined;
+
   return <div data-hook={dataHook} />;
 };
 
@@ -16,9 +17,10 @@ describe('useClickOutside', () => {
     const mockedHandler = jest.fn();
 
     const parent = document.createElement('div');
+
     document.body.appendChild(parent);
 
-    let ref = createRef<HTMLDivElement>();
+    const ref = createRef<HTMLDivElement>();
 
     mount(<div data-qa="referred" ref={ref} />, { attachTo: parent });
 

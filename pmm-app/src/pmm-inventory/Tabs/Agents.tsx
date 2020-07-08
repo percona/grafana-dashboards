@@ -1,14 +1,15 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Button, HorizontalGroup, Modal } from '@grafana/ui';
 import { Form } from 'react-final-form';
-import { Table, SelectedTableRows } from 'react-plugins-deps/components/Table';
-import { showSuccessNotification } from 'react-plugins-deps/components/helpers';
+import { Table } from 'shared/components/Elements/Table/Table';
+import { showSuccessNotification } from 'shared/components/helpers';
 import { filterFulfilled, InventoryDataService, processPromiseResults } from 'pmm-inventory/Inventory.tools';
-import { CheckboxField, FormElement } from 'react-plugins-deps/components/FormComponents';
+import { CheckboxField, FormElement } from 'shared/components/Form';
+import { AgentsList } from 'pmm-inventory/Inventory.types';
+import { SelectedTableRows } from 'shared/components/Elements/Table/Table.types';
 import { InventoryService } from '../Inventory.service';
 import { AGENTS_COLUMNS } from '../Inventory.constants';
 import { styles } from './Tabs.styles';
-import { AgentsList } from 'pmm-inventory/Inventory.types';
 
 interface Agent {
   agent_id: string;
@@ -25,8 +26,10 @@ export const Agents = () => {
     setLoading(true);
     try {
       const result: AgentsList = await InventoryService.getAgents();
+
       setData(InventoryDataService.getAgentModel(result));
     } catch (e) {
+      console.error(e);
     } finally {
       setLoading(false);
     }
@@ -39,12 +42,12 @@ export const Agents = () => {
   const removeAgents = useCallback(async (agents: Array<SelectedTableRows<Agent>>, forceMode) => {
     try {
       setLoading(true);
-      const requests = agents.map(agent =>
-        InventoryService.removeAgent({ agent_id: agent.original.agent_id, force: forceMode })
-      );
+      // eslint-disable-next-line max-len
+      const requests = agents.map((agent) => InventoryService.removeAgent({ agent_id: agent.original.agent_id, force: forceMode }));
       const results = await processPromiseResults(requests);
 
       const successfullyDeleted = results.filter(filterFulfilled).length;
+
       showSuccessNotification({
         message: `${successfullyDeleted} of ${agents.length} agents successfully deleted`,
       });
@@ -73,61 +76,60 @@ export const Agents = () => {
         </Button>
       </div>
       <Modal
-        title={
+        title={(
           <div className="modal-header-title">
             <span className="p-l-1">Confirm action</span>
           </div>
-        }
+        )}
         isOpen={modalVisible}
         onDismiss={() => setModalVisible(false)}
       >
         <Form
           onSubmit={() => {}}
-          render={({ form, handleSubmit }) => {
-            return (
-              <form onSubmit={handleSubmit}>
-                <>
-                  <h4 className={styles.confirmationText}>
-                    Are you sure that you want to permanently delete {selected.length}{' '}
-                    {selected.length === 1 ? 'agent' : 'agents'}?
-                  </h4>
-                  <FormElement
-                    dataQa="form-field-force"
-                    label="Force mode"
-                    element={
-                      <CheckboxField
-                        name="force"
-                        label="Force mode is going to delete all associated agents"
-                      />
-                    }
-                  />
-                  <HorizontalGroup justify="space-between" spacing="md">
-                    <Button variant="secondary" size="md" onClick={() => setModalVisible(false)}>
-                      Cancel
-                    </Button>
-                    <Button
-                      size="md"
-                      onClick={() => {
-                        removeAgents(selected, form.getState().values.force);
-                        setModalVisible(false);
-                      }}
-                      variant="destructive"
-                      className={styles.destructiveButton}
-                    >
-                      Proceed
-                    </Button>
-                  </HorizontalGroup>
-                </>
-              </form>
-            );
-          }}
+          render={({ form, handleSubmit }) => (
+            <form onSubmit={handleSubmit}>
+              <>
+                <h4 className={styles.confirmationText}>
+                  Are you sure that you want to permanently delete
+                  {' '}
+                  {selected.length}
+                  {' '}
+                  {selected.length === 1 ? 'agent' : 'agents'}
+                  ?
+                </h4>
+                <FormElement
+                  dataQa="form-field-force"
+                  label="Force mode"
+                  element={
+                    <CheckboxField name="force" label="Force mode is going to delete all associated agents" />
+                  }
+                />
+                <HorizontalGroup justify="space-between" spacing="md">
+                  <Button variant="secondary" size="md" onClick={() => setModalVisible(false)}>
+                    Cancel
+                  </Button>
+                  <Button
+                    size="md"
+                    onClick={() => {
+                      removeAgents(selected, form.getState().values.force);
+                      setModalVisible(false);
+                    }}
+                    variant="destructive"
+                    className={styles.destructiveButton}
+                  >
+                    Proceed
+                  </Button>
+                </HorizontalGroup>
+              </>
+            </form>
+          )}
         />
       </Modal>
       <Table
         columns={AGENTS_COLUMNS}
         data={data}
         rowSelection
-        onRowSelection={selected => setSelectedRows(selected)}
+        onRowSelection={(selected) => setSelectedRows(selected)}
         noData={<h1>No agents Available</h1>}
         loading={loading}
       />

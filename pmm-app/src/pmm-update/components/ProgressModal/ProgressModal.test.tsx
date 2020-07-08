@@ -4,7 +4,7 @@ import { ClipboardButton, Modal } from '@grafana/ui';
 
 import { CenteredButton, ProgressModal } from 'pmm-update/components';
 
-jest.mock('../../../react-plugins-deps/components/helpers/notification-manager');
+jest.mock('shared/components/helpers/notification-manager');
 
 describe('ProgressModal::', () => {
   const version = 'x.y.z';
@@ -59,8 +59,11 @@ describe('ProgressModal::', () => {
   });
 
   it('should reload the page when the close button is clicked', () => {
+    // eslint-disable-next-line no-restricted-globals
     const originalReload = location.reload;
     const mockedReload = jest.fn();
+
+    // eslint-disable-next-line no-restricted-globals
     location.reload = mockedReload;
 
     const wrapper = shallow(<ProgressModal isUpdated version={version} />);
@@ -69,6 +72,7 @@ describe('ProgressModal::', () => {
 
     expect(mockedReload).toBeCalledTimes(1);
 
+    // eslint-disable-next-line no-restricted-globals
     location.reload = originalReload;
   });
 });

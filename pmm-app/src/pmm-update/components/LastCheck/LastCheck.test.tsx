@@ -11,7 +11,7 @@ describe('LastCheck::', () => {
   it('should show the passed last check date', () => {
     const wrapper = shallow(<LastCheck onCheckForUpdates={fakeHandleClick} lastCheckDate={lastCheckDate} />);
 
-    expect(wrapper.find('div > p').text()).toEqual(`Last check: ${lastCheckDate}`);
+    expect(wrapper.find('div > p').text()).toEqual(`Last check:${lastCheckDate}`);
 
     wrapper.unmount();
   });

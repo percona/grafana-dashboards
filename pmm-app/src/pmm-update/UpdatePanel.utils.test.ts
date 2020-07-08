@@ -1,5 +1,5 @@
-import { formatDate, formatDateWithTime } from './UpdatePanel.utils';
 import { ISOTimestamp } from 'pmm-update/types';
+import { formatDate, formatDateWithTime } from './UpdatePanel.utils';
 
 describe('UpdatePanel utils', () => {
   const timestamp1 = '2020-06-08T19:16:57Z';
