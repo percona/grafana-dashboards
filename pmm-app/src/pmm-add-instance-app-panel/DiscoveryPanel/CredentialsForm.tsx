@@ -29,7 +29,7 @@ const CredentialsForm = (props) => {
               placeholder="AMAZON_RDS_SECRET_ACCESS_KEY"
               required
             />
-            <button type="button" className="button button--dark" id="addInstance">
+            <button type="submit" className="button button--dark" id="addInstance">
               Discover
             </button>
           </div>
