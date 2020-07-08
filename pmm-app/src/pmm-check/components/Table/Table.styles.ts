@@ -16,20 +16,11 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
     theme.type
   );
   const cellPadding = '12px 8px';
-  const headerPadding = '10px 8px';
 
   return {
     wrapper: css`
       overflow: auto;
       background-color: ${backgroundColor};
-    `,
-    caption: css`
-      align-items: center;
-      display: flex;
-      font-size: ${theme.typography.heading.h5};
-      justify-content: space-between;
-      padding: ${headerPadding};
-      border: 1px solid transparent;
     `,
     table: css`
       border-collapse: collapse;

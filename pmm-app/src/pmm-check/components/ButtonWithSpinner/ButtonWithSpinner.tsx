@@ -7,8 +7,13 @@ interface ButtonWithSpinnerProps extends ButtonProps {
   isLoading?: boolean;
 }
 
-export const ButtonWithSpinner: FC<ButtonWithSpinnerProps> = ({ children, isLoading = false, ...props }) => (
-  <Button className={styles.Button} variant="secondary" size="md" {...props}>
+export const ButtonWithSpinner: FC<ButtonWithSpinnerProps> = ({
+  children,
+  disabled,
+  isLoading = false,
+  ...props
+}) => (
+  <Button className={styles.Button} variant="secondary" size="md" disabled={isLoading || disabled} {...props}>
     {isLoading ? <Spinner /> : children}
   </Button>
 );

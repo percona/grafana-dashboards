@@ -3,11 +3,12 @@ import { createBrowserHistory } from 'history';
 import { PanelProps } from '@grafana/data';
 import { Spinner } from '@grafana/ui';
 import { Router, Route } from 'react-router-dom';
+import { Table, ButtonWithSpinner } from 'pmm-check/components';
 import { CheckPanelOptions, ActiveCheck, Settings } from './types';
 import { CheckService } from './Check.service';
 import { COLUMNS } from './CheckPanel.constants';
-import { Table } from './components/Table';
 import * as styles from './CheckPanel.styles';
+import { Messages } from './CheckPanel.messages';
 
 export interface CheckPanelProps extends PanelProps<CheckPanelOptions> {}
 
@@ -16,6 +17,7 @@ export interface CheckPanelState {
   hasNoAccess: boolean;
   isLoading: boolean;
   isSttEnabled: boolean;
+  isRerunChecksLoading: boolean;
 }
 
 const history = createBrowserHistory();
@@ -26,16 +28,31 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
     hasNoAccess: false,
     isLoading: true,
     isSttEnabled: false,
+    isRerunChecksLoading: false,
   };
 
   constructor(props: CheckPanelProps) {
     super(props);
     this.fetchAlerts = this.fetchAlerts.bind(this);
     this.getSettings = this.getSettings.bind(this);
+    this.handleRerunChecksClick = this.handleRerunChecksClick.bind(this);
   }
 
   componentDidMount() {
     this.getSettings();
+  }
+
+  async handleRerunChecksClick() {
+    this.setState({ isRerunChecksLoading: true });
+    try {
+      await CheckService.rerunDbChecks();
+    } catch (e) {
+      console.error(e);
+    }
+    setTimeout(() => {
+      this.setState({ isRerunChecksLoading: false });
+      this.fetchAlerts();
+    }, 10000);
   }
 
   async fetchAlerts() {
@@ -78,20 +95,34 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
 
     return (
       <div className={styles.panel} data-qa="db-check-panel">
-        {isLoading && (
+        {isLoading ? (
           <div className={styles.spinner}>
             <Spinner />
           </div>
-        )}
-        {!isLoading && (
-          <Table
-            caption={title}
-            data={dataSource}
-            columns={COLUMNS}
-            isSttEnabled={isSttEnabled}
-            hasNoAccess={hasNoAccess}
-            fetchAlerts={this.fetchAlerts}
-          />
+        ) : (
+          <>
+            <div className={styles.header}>
+              {title && (
+                <div className={styles.title} data-qa="db-check-panel-title">
+                  {title}
+                </div>
+              )}
+              <ButtonWithSpinner
+                onClick={this.handleRerunChecksClick}
+                isLoading={this.state.isRerunChecksLoading}
+                disabled={hasNoAccess}
+              >
+                {Messages.rerunDbChecks}
+              </ButtonWithSpinner>
+            </div>
+            <Table
+              data={dataSource}
+              columns={COLUMNS}
+              isSttEnabled={isSttEnabled}
+              hasNoAccess={hasNoAccess}
+              fetchAlerts={this.fetchAlerts}
+            />
+          </>
         )}
       </div>
     );

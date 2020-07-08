@@ -10,17 +10,6 @@ import { TableBody } from './TableBody';
 jest.mock('../../../react-plugins-deps/components/helpers/notification-manager');
 
 describe('Table::', () => {
-  it('should render the caption passed as a parameter', () => {
-    const root = shallow(<Table caption="Simple Table" columns={COLUMNS} isSttEnabled data={[]} />);
-
-    expect(
-      root
-        .find('[data-qa="db-check-panel-table-caption"]')
-        .at(0)
-        .text()
-    ).toEqual('Simple Table');
-  });
-
   it('should render no caption if it was not passed to the table', () => {
     const root = shallow(<Table caption="" columns={COLUMNS} isSttEnabled data={[]} />);
 

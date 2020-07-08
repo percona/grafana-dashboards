@@ -24,6 +24,29 @@ const CheckPanelRouter: FC<CheckPanelProps> = props => {
 describe('CheckPanel::', () => {
   CheckPanel.prototype.componentDidMount = jest.fn();
 
+  it('should render the title passed as a prop', async () => {
+    const props = {
+      options: {
+        title: 'DB CHECKS',
+      },
+    } as CheckPanelProps;
+
+    const wrapper: ReactWrapper<CheckPanelProps, {}, any> = mount(<CheckPanelRouter {...props} />);
+
+    const root = wrapper.find(CheckPanel) as ReactWrapper<CheckPanelProps, CheckPanelState, CheckPanel>;
+    root.setState({ isLoading: false });
+    wrapper.update();
+
+    expect(
+      wrapper
+        .find('[data-qa="db-check-panel-title"]')
+        .at(0)
+        .text()
+    ).toEqual('DB CHECKS');
+
+    wrapper.unmount();
+  });
+
   it('should render a spinner on start', async () => {
     const props = {
       width: 1200,
