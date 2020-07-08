@@ -159,12 +159,12 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
   const { variableSrv } = templateVariables[0];
   // eslint-disable-next-line no-underscore-dangle
 
+  const [from, setFrom] = useState(rawTime.from);
+  const [to, setTo] = useState(rawTime.to);
+
   useEffect(() => {
     // eslint-disable-next-line no-underscore-dangle
     const handler = variableSrv.dashboard.events.emitter._events['time-range-updated'][0];
-
-    let { from } = rawTime;
-    let { to } = rawTime;
 
     const updateHandler = (event) => {
       if (from !== event.raw.from || to !== event.raw.to) {
@@ -173,15 +173,17 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
         onRefresh(event);
       }
 
-      from = event.raw.from;
-      to = event.raw.to;
+      setFrom(event.raw.from);
+      setTo(event.raw.to);
+      // from = event.raw.from;
+      // to = event.raw.to;
     };
 
     handler.fn = updateHandler;
 
     // eslint-disable-next-line  no-underscore-dangle
     variableSrv.dashboard.events.emitter._events['time-range-updated'] = [handler];
-  }, [panelState, rawTime]);
+  }, [panelState, from, to]);
 
   useEffect(() => {
     refreshGrafanaVariables(panelState);
