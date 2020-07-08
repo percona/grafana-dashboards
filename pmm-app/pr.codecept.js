@@ -5,7 +5,7 @@ exports.config = {
       url: process.env.PMM_UI_URL || 'http://localhost/',
       restart: true,
       browser: 'chromium',
-      windowSize: "1920x1080",
+      windowSize: '1920x1080',
       waitForNavigation: 'networkidle0',
       waitForTimeout: 30000,
       getPageTimeout: 30000,
@@ -22,13 +22,23 @@ exports.config = {
     },
     REST: {
       endpoint: process.env.PMM_UI_URL || 'http://localhost/'
-    }
+    },
+    InfluxDBHelper: {
+      require: 'codeceptjs-influxdbhelper',
+      username: process.env.INFLUXDB_ADMIN_USER,
+      password: process.env.INFLUXDB_ADMIN_PASSWORD,
+      host: process.env.MONITORING_HOST,
+      port: process.env.INFLUXDB_PORT || '8086',
+      dbname: process.env.INFLUXDB_DBNAME || 'codeceptjs',
+      measurement: process.env.INFLUXDB_MEASUREMENT || 'testmethod',
+    },
   },
   include: {
+    pmmDemoPage: './tests/pages/pmmDemoPage.js',
     homePage: './tests/pages/homePage.js',
     remoteInstancesPage: './tests/pages/remoteInstancesPage.js',
     adminPage: './tests/pages/adminPage.js',
-    qanPage: './tests/pages/qanPage.js',
+    qanPage: './tests/QAN/qanPage.js',
     pmmInventoryPage: './tests/pages/pmmInventoryPage.js',
     amiInstanceSetupPage: './tests/pages/amiInstanceSetupPage.js',
     pmmSettingsPage: './tests/pages/pmmSettingsPage.js',
@@ -54,7 +64,11 @@ exports.config = {
       strategy: 'css',
       attribute: 'data-qa',
       showActual: false
-    }
+    },
+    allure: {
+      enabled: true,
+      outputDir: 'tests/output/allure',
+    },
   },
   mocha: {
     reporterOptions: {
