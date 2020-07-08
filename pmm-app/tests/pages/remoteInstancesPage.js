@@ -46,7 +46,7 @@ module.exports = {
     skipConnectionCheck: '//input[@name=\'skip_connection_check\']/following-sibling::span[2]',
     availabilityZone: '//input[@placeholder="*Availability Zone"]',
     addInstanceDiv: '//div[@class=\'view\']',
-    addAWSRDSMySQLbtn: '//a[text()[contains(.,\'Add an AWS RDS MySQL or Aurora MySQL Instance\')]]',
+    addAWSRDSMySQLbtn: "//a[text()[contains(.,'Add an AWS RDS MySQL or Aurora MySQL Instance')]]",
     accessKeyInput: '//input[@name=\'aws_access_key\']',
     secretKeyInput: '//input[@name=\'aws_secret_key\']',
     discoverBtn: '#addInstance',

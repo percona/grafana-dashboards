@@ -98,7 +98,7 @@ exports.config = {
   teardown: null,
   hooks: [],
   gherkin: {},
-  tests: 'tests/**/*_test.js',
+  tests: 'tests/*_test.js',
   timeout: 10000,
   name: 'pmm-qa',
 };
