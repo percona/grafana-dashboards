@@ -20,6 +20,7 @@ module.exports = {
     proceedButton: '//span[contains(text(), "Proceed")]',
     forceModeCheckbox:
       '//div[@data-qa="form-field-force"]/descendant::span[@class="checkbox-container__checkmark"]',
+    tableCheckbox: '//div[@data-qa="select-row"]',
   },
 
   verifyOldMySQLRemoteServiceIsDisplayed(serviceName) {
@@ -122,5 +123,43 @@ module.exports = {
   async getCountOfAgents(serviceId) {
     const countOfAgents = await I.grabNumberOfVisibleElements(serviceId);
     assert.equal(countOfAgents, 0, 'The agents should be removed!');
+  },
+
+  selectAgent(agentType) {
+    const agentLocator = `//table//tr/td[3][contains(text(),"${agentType}")]/preceding-sibling::td/div[@data-qa="select-row"]`;
+    I.waitForVisible(agentLocator, 30);
+    I.click(agentLocator);
+  },
+
+  async getAgentServiceID(agentType) {
+    const serviceIdLocator = `//table//tr/td[3][contains(text(),"${agentType}")]/following-sibling::td//span[contains(text(), 'service_id:')]`;
+    I.waitForVisible(serviceIdLocator, 30);
+    const serviceIDs = await I.grabTextFrom(serviceIdLocator);
+    return serviceIDs[0].slice(12, serviceIDs[0].lenght);
+  },
+
+  async getAgentID(agentType) {
+    const agentIdLocator = `//table//tr/td[3][contains(text(),"${agentType}")]/preceding-sibling::td`;
+    I.waitForVisible(agentIdLocator, 30);
+    const agentIDs = await I.grabTextFrom(agentIdLocator);
+    return agentIDs[1];
+  },
+
+  async getNodeCount() {
+    I.waitForVisible(this.fields.tableCheckbox);
+    return await I.grabNumberOfVisibleElements(this.fields.tableCheckbox);
+  },
+
+  verifyNodesCount(before, after) {
+    assert.equal(before, after, 'The count of nodes should be same! Check the data!');
+  },
+
+  existsByid(id, deleted) {
+    const agentIdLocator = `//table//tr/td[2][contains(text(),"${id}")]`;
+    if (deleted) {
+      I.waitForInvisible(agentIdLocator, 30);
+    } else {
+      I.waitForVisible(agentIdLocator, 30);
+    }
   },
 };
