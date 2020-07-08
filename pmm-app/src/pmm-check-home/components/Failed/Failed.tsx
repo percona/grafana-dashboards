@@ -46,6 +46,7 @@ export const Failed: FC<FailedProps> = ({ failed = [0, 0, 0], isSttEnabled, hasN
   }
 
   const [critical, major, trivial] = failed;
+
   return (
     <div data-qa="db-check-panel-has-checks">
       <Tooltip placement="top" theme="info" content={<TooltipText sum={sum} data={failed} />}>
