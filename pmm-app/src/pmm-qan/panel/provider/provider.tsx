@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { omit } from 'lodash';
+import { getDataSourceSrv } from '@grafana/runtime';
 import {
   generateURL, parseURL, refreshGrafanaVariables, setLabels
 } from './provider.tools';
 import { QueryAnalyticsContext } from './provider.types';
-import { useGrafanaTimerangeChange } from './provider.hooks';
 
 const initialState = {} as QueryAnalyticsContext;
 
@@ -121,40 +121,67 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
     rawTime,
   });
 
-  useGrafanaTimerangeChange({
-    rawTime,
-    onRefresh: (event) => {
-      console.log('refresh');
-      const newState = {
-        ...panelState,
-        from: event.from.utc().format('YYYY-MM-DDTHH:mm:ssZ'),
-        to: event.to.utc().format('YYYY-MM-DDTHH:mm:ssZ'),
-        rawTime: {
-          from: event.raw.from,
-          to: event.raw.to,
-        },
-      };
 
-      setContext(newState);
-    },
-    onTimeRangeChange: (event) => {
-      console.log('change time range');
-      const newState = {
-        ...panelState,
-        from: event.from.utc().format('YYYY-MM-DDTHH:mm:ssZ'),
-        to: event.to.utc().format('YYYY-MM-DDTHH:mm:ssZ'),
-        rawTime: {
-          from: event.raw.from,
-          to: event.raw.to,
-        },
-      };
+  const onRefresh = useCallback((event) => {
+    const newState = {
+      ...panelState,
+      from: event.from.utc().format('YYYY-MM-DDTHH:mm:ssZ'),
+      to: event.to.utc().format('YYYY-MM-DDTHH:mm:ssZ'),
+      rawTime: {
+        from: event.raw.from,
+        to: event.raw.to,
+      },
+    };
 
-      newState.pageNumber = 1;
-      delete newState.queryId;
-      delete newState.querySelected;
-      setContext(newState);
-    },
-  });
+    setContext(newState);
+  }, [panelState]);
+
+  const onTimeRangeChange = useCallback((event) => {
+    const newState = {
+      ...panelState,
+      from: event.from.utc().format('YYYY-MM-DDTHH:mm:ssZ'),
+      to: event.to.utc().format('YYYY-MM-DDTHH:mm:ssZ'),
+      rawTime: {
+        from: event.raw.from,
+        to: event.raw.to,
+      },
+    };
+
+    newState.pageNumber = 1;
+    delete newState.queryId;
+    delete newState.querySelected;
+    setContext(newState);
+  }, [panelState]);
+
+  const dataSource = getDataSourceSrv();
+
+  const templateVariables = (dataSource as any).templateSrv.variables;
+  const { variableSrv } = templateVariables[0];
+  // eslint-disable-next-line no-underscore-dangle
+
+  useEffect(() => {
+    // eslint-disable-next-line no-underscore-dangle
+    const handler = variableSrv.dashboard.events.emitter._events['time-range-updated'][0];
+
+    let { from } = rawTime;
+    let { to } = rawTime;
+
+    const updateHandler = (event) => {
+      if (from !== event.raw.from || to !== event.raw.to) {
+        onTimeRangeChange(event);
+      } else {
+        onRefresh(event);
+      }
+
+      from = event.raw.from;
+      to = event.raw.to;
+    };
+
+    handler.fn = updateHandler;
+
+    // eslint-disable-next-line  no-underscore-dangle
+    variableSrv.dashboard.events.emitter._events['time-range-updated'] = [handler];
+  }, [panelState, rawTime]);
 
   useEffect(() => {
     refreshGrafanaVariables(panelState);
