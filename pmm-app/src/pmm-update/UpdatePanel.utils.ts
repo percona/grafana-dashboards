@@ -4,7 +4,6 @@ import { ISOTimestamp } from 'pmm-update/types';
 
 const timestampToEnLocale = (timestamp: ISOTimestamp) => moment(timestamp).locale('en');
 
-export const formatDateWithTime = (timestamp: ISOTimestamp) =>
-  timestampToEnLocale(timestamp).format('MMMM DD, H:mm');
+export const formatDateWithTime = (timestamp: ISOTimestamp) => timestampToEnLocale(timestamp).format('MMMM DD, H:mm');
 
 export const formatDate = (timestamp: ISOTimestamp) => timestampToEnLocale(timestamp).format('MMMM DD');

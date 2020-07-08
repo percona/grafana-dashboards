@@ -12,9 +12,11 @@ export const useApiCall = <R, A>(apiFn: (apiFnArgs?: A) => Promise<R>, apiFnArgs
 
     try {
       const response = await apiFn(apiFnArgs);
+
       if (!response) {
         throw Error('Invalid response received');
       }
+
       setData(response);
     } catch (e) {
       console.error(e);

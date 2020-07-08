@@ -1,12 +1,14 @@
-import React, { useCallback, useLayoutEffect, useRef, useState, FC } from 'react';
-import { ClipboardButton, Icon } from '@grafana/ui';
-import { Modal } from '@grafana/ui';
+import React, {
+  useCallback, useLayoutEffect, useRef, useState, FC
+} from 'react';
+import { ClipboardButton, Icon, Modal } from '@grafana/ui';
 
-import { Messages } from './ProgressModal.messages';
-import * as styles from './ProgressModal.styles';
+
 import { CenteredButton, ProgressModalHeader } from 'pmm-update/components';
 import { useClickOutside } from 'pmm-update/hooks';
 import { ProgressModalProps } from 'pmm-update/types';
+import * as styles from './ProgressModal.styles';
+import { Messages } from './ProgressModal.messages';
 
 export const ProgressModal: FC<ProgressModalProps> = ({
   version,
@@ -22,6 +24,7 @@ export const ProgressModal: FC<ProgressModalProps> = ({
 
   useClickOutside(modalRef, () => {
     if (isUpdated) {
+      // eslint-disable-next-line no-restricted-globals
       location.reload(true);
     }
   });
@@ -36,10 +39,11 @@ export const ProgressModal: FC<ProgressModalProps> = ({
   }, []);
 
   const handleToggleShowOutput = () => {
-    setIsOutputShown(isOutputShown => !isOutputShown);
+    setIsOutputShown((isOutputShown) => !isOutputShown);
   };
 
   const reloadAfterUpdate = () => {
+    // eslint-disable-next-line no-restricted-globals
     location.reload(true);
   };
 
@@ -84,7 +88,9 @@ export const ProgressModal: FC<ProgressModalProps> = ({
               <>
                 <div className="text-center text-block">
                   <h6 data-qa="modal-update-success-text">
-                    {Messages.updateSuccessNotice} {version}
+                    {Messages.updateSuccessNotice}
+                    {' '}
+                    {version}
                   </h6>
                 </div>
                 <CenteredButton data-qa="modal-close" variant="primary" onClick={reloadAfterUpdate}>
@@ -95,7 +101,7 @@ export const ProgressModal: FC<ProgressModalProps> = ({
           </div>
         </div>
       </div>
-      <div className="backdrop"></div>
+      <div className="backdrop" />
     </Modal>
   );
 };

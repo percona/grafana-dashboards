@@ -21,11 +21,13 @@ export const usePerformUpdate = (): UpdateStatus => {
     const updateStatus = async (logOffset: number, errorsCount = 0, isUpdated = false) => {
       if (isUpdated) {
         setIsUpdated(isUpdated);
+
         return;
       }
 
       if (errorsCount > 600 || initializationFailed) {
         setUpdateFailed(true);
+
         return;
       }
 
@@ -35,12 +37,16 @@ export const usePerformUpdate = (): UpdateStatus => {
 
       try {
         const response = await getUpdateStatus({ auth_token: authToken, log_offset: logOffset });
+
         if (!response) {
           throw Error('Invalid response received');
         }
+
         const { done, log_offset, log_lines } = response;
-        setOutput(previousOutput => {
+
+        setOutput((previousOutput) => {
           const logLines = log_lines ?? [];
+
           return `${previousOutput}${logLines.join('\n')}\n`;
         });
         newLogOffset = logOffset + log_offset ?? 0;
@@ -51,12 +57,14 @@ export const usePerformUpdate = (): UpdateStatus => {
         setErrorMessage(e.message);
       } finally {
         const timeout = setTimeout(updateStatus, 500, newLogOffset, newErrorsCount, newIsUpdated);
+
         setTimeoutId(timeout);
       }
     };
 
     updateStatus(logOffset, 0);
 
+    // eslint-disable-next-line consistent-return
     return () => {
       clearTimeout(timeoutId);
     };

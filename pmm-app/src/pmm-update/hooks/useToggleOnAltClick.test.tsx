@@ -6,6 +6,7 @@ import { useToggleOnAltClick } from './useToggleOnAltClick';
 
 const HookWrapper: FC<{ hook: () => any }> = ({ hook }) => {
   const dataHook = hook ? hook() : undefined;
+
   return <div data-hook={dataHook} />;
 };
 
@@ -23,6 +24,7 @@ describe('useToggleOnAltClick', () => {
     expect(toggleValue).toEqual(false);
 
     const testComponent = mount(<div onClick={handler} />);
+
     testComponent.simulate('click', { altKey: true });
 
     wrapper?.update();
@@ -47,6 +49,7 @@ describe('useToggleOnAltClick', () => {
     expect(toggleValue).toEqual(false);
 
     const testComponent = mount(<div onClick={handler} />);
+
     testComponent.simulate('click', { altKey: false });
 
     wrapper?.update();
