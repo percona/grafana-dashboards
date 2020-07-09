@@ -50,33 +50,6 @@ module.exports = {
     );
   },
 
-  /*
-   Refreshing page (30 times refresh timeout) until checks appear
-   Alertmanager receives checks results every 30 seconds
-   So 30 tries should be enough to get results
-   */
-  async waitForCheckResultsToAppearInPanel() {
-    let results;
-    let disabledSTT;
-    for (let i = 0; i < 30; i++) {
-      I.waitForVisible(this.fields.checksPanelSelector, 30);
-      I.wait(1);
-      results = await I.grabNumberOfVisibleElements(this.fields.sttFailedChecksPanelSelector);
-      disabledSTT = await I.grabNumberOfVisibleElements(this.fields.sttDisabledFailedChecksPanelSelector);
-      if (disabledSTT) {
-        await settingsAPI.apiEnableSTT();
-        I.amOnPage(this.url);
-        continue
-      }
-      if (results > 0) {
-        I.waitForVisible(this.fields.sttFailedChecksPanelSelector, 30);
-        break
-      }
-      I.refreshPage();
-    }
-    assert.equal(true, results > 0, 'Checks have not appeared at Home Page');
-  },
-
   async verifyPreUpdateWidgetIsPresent() {
     I.waitForVisible(this.fields.pmmUpdateWidget, 60);
     I.waitForElement(this.fields.triggerUpdate, 180);

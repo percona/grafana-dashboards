@@ -61,42 +61,27 @@ module.exports = {
         break;
     }
   },
-  /*
-   Refreshing page (30 times refresh timeout) until checks appear
-   Alertmanager receives checks results every 30 seconds
-   So 30 tries should be enough to get results
-   */
-  async waitForChecksToLoad() {
-    let results;
-    let disabledSTT;
-    for (let i = 0; i < 30; i++) {
-      I.waitForVisible(this.fields.dbCheckPanelSelector, 30);
-      I.wait(1);
-      results = await I.grabNumberOfVisibleElements(this.fields.serviceNameSelector);
-      disabledSTT = await I.grabNumberOfVisibleElements(this.fields.disabledSTTMessageSelector);
-      if (disabledSTT) {
-        I.amOnPage(pmmSettingsPage.url);
-        await pmmSettingsPage.enableSTT();
-        I.amOnPage(this.url);
-        continue
-      }
-      if (results > 0) {
-        I.waitForVisible(this.fields.serviceNameSelector, 30);
-        return
-      }
-      I.refreshPage();
-    }
-  },
 
   // Method used to verify elements on a page depending on STT state
+  // Contains if statements to avoid situations when another test disables STT
+  // while we expect it to be enabled and vice versa
   async verifyDatabaseChecksPageOpened(stt = 'enabled'){
+    I.waitForVisible(this.fields.dbCheckPanelSelector, 30);
+    const disabledSTT = await I.grabNumberOfVisibleElements(this.fields.disabledSTTMessageSelector);
     switch (stt) {
       case 'enabled':
-        await this.waitForChecksToLoad();
+        if (disabledSTT) {
+          await pmmSettingsPage.apiEnableSTT();
+          I.refreshPage();
+        }
         I.waitForVisible(this.fields.serviceNameHeaderSelector, 30);
         this.verifyDatabaseChecksPageElements(stt);
         break;
       case 'disabled':
+        if (!disabledSTT) {
+          await pmmSettingsPage.apiDisableSTT();
+          I.refreshPage();
+        }
         this.verifyDatabaseChecksPageElements(stt);
         break;
     }
