@@ -32,6 +32,7 @@ xdescribe('CheckPanel::', () => {
     const wrapper: ReactWrapper<CheckPanelProps, {}, any> = mount(<CheckPanelRouter {...props} />);
 
     const root = wrapper.find(CheckPanel) as ReactWrapper<CheckPanelProps, CheckPanelState, CheckPanel>;
+
     root.setState({ isLoading: false });
     wrapper.update();
 

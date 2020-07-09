@@ -41,19 +41,6 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
     this.getSettings();
   }
 
-  async handleRerunChecksClick() {
-    this.setState({ isRerunChecksLoading: true });
-    try {
-      await CheckService.rerunDbChecks();
-    } catch (e) {
-      console.error(e);
-    }
-    setTimeout(() => {
-      this.setState({ isRerunChecksLoading: false });
-      this.fetchAlerts();
-    }, 10000);
-  }
-
   async getSettings() {
     try {
       const resp = (await CheckService.getSettings()) as Settings;
@@ -76,6 +63,19 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
     }
   }
 
+  async handleRerunChecksClick() {
+    this.setState({ isRerunChecksLoading: true });
+    try {
+      await CheckService.rerunDbChecks();
+    } catch (e) {
+      console.error(e);
+    }
+    setTimeout(() => {
+      this.setState({ isRerunChecksLoading: false });
+      this.fetchAlerts();
+    }, 10000);
+  }
+
   async fetchAlerts() {
     try {
       const dataSource = await CheckService.getActiveAlerts();
@@ -93,7 +93,7 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
       options: { title },
     } = this.props;
     const {
-      dataSource, isSttEnabled, isLoading, hasNoAccess
+      dataSource, isSttEnabled, isLoading, hasNoAccess, isRerunChecksLoading
     } = this.state;
 
     return (
@@ -112,7 +112,7 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
               )}
               <ButtonWithSpinner
                 onClick={this.handleRerunChecksClick}
-                isLoading={this.state.isRerunChecksLoading}
+                isLoading={isRerunChecksLoading}
                 disabled={hasNoAccess}
               >
                 {Messages.rerunDbChecks}
