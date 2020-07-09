@@ -3,6 +3,9 @@ import { css } from 'emotion';
 const headerPadding = '10px 8px';
 
 export const panel = css`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   margin-top: 1em;
 `;
 export const spinner = css`
