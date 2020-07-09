@@ -5,6 +5,9 @@ export const styles = {
     font-size: 16px;
     color: rgba(255, 255, 255, 0.8);
   `,
+  placeholderPadding: css`
+    padding-left: 11px;
+  `,
   iconMargin: css`
     margin-right: 4px;
   `,
@@ -16,6 +19,10 @@ export const styles = {
     padding: 4px 8px;
     cursor: pointer;
     background-color: #3d3d3d;
+    transition: background 0.3s ease;
+    &:hover {
+      background-color: #2d2e2f;
+    }
   `,
   metricsTooltip: css`
     display: flex;
