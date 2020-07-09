@@ -1,5 +1,6 @@
-import { Table } from 'antd';
 import React from 'react';
+import { Table } from 'shared/components/Elements/Table/Table';
+import { styles } from './InstancesTable.styles';
 
 const getEngineType = (type) => {
   switch (type) {
@@ -18,41 +19,29 @@ const InstancesTable = (props) => {
   const { instances, onSelectInstance, credentials } = props;
   const columns = [
     {
-      title: 'Region',
-      dataIndex: 'region',
-      key: 'region',
-      className: 'discovery-column',
+      Header: 'Region',
+      accessor: 'region',
     },
     {
-      title: 'Availability Zone',
-      dataIndex: 'az',
-      key: 'az',
-      className: 'discovery-column',
+      Header: 'Availability Zone',
+      accessor: 'az',
     },
     {
-      title: 'Engine',
-      dataIndex: 'type',
-      className: 'discovery-column',
+      Header: 'Engine',
       // eslint-disable-next-line max-len
-      render: (element, instance) => (instance.engine ? `${getEngineType(instance.engine)}  ${instance.engine_version}` : 'nothing'),
+      accessor: (element) => (element.engine ? `${getEngineType(element.engine)}  ${element.engine_version}` : 'nothing'),
     },
     {
-      title: 'Instance ID',
-      dataIndex: 'instance_id',
-      key: 'instance_id',
-      className: 'discovery-column',
+      Header: 'Instance ID',
+      accessor: 'instance_id',
     },
     {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
-      className: 'discovery-column',
-      render: (element) => element.split(':')[0],
+      Header: 'Address',
+      accessor: (element) => element.address.split(':')[0],
     },
     {
-      title: 'Action',
-      className: 'discovery-column',
-      render: (element) => {
+      Header: 'Action',
+      accessor: (element) => {
         let type = '';
 
         switch (element.engine) {
@@ -78,14 +67,9 @@ const InstancesTable = (props) => {
   ];
 
   return instances && instances.length ? (
-    <Table
-      dataSource={instances}
-      pagination={false}
-      bordered={false}
-      columns={columns}
-      rowClassName={() => 'discovery-table-row'}
-      size="small"
-    />
+    <div className={styles.tableWrapper}>
+      <Table columns={columns} data={instances} />
+    </div>
   ) : null;
 };
 
