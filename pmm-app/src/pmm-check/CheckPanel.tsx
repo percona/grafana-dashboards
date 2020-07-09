@@ -17,7 +17,7 @@ export interface CheckPanelState {
   hasNoAccess: boolean;
   isLoading: boolean;
   isSttEnabled: boolean;
-  isRerunChecksLoading: boolean;
+  isRunChecksRequestPending: boolean;
 }
 
 const history = createBrowserHistory();
@@ -27,13 +27,13 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
     super(props);
     this.fetchAlerts = this.fetchAlerts.bind(this);
     this.getSettings = this.getSettings.bind(this);
-    this.handleRerunChecksClick = this.handleRerunChecksClick.bind(this);
+    this.handleRunChecksClick = this.handleRunChecksClick.bind(this);
     this.state = {
       dataSource: undefined,
       hasNoAccess: false,
       isLoading: true,
       isSttEnabled: false,
-      isRerunChecksLoading: false,
+      isRunChecksRequestPending: false,
     };
   }
 
@@ -63,15 +63,15 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
     }
   }
 
-  async handleRerunChecksClick() {
-    this.setState({ isRerunChecksLoading: true });
+  async handleRunChecksClick() {
+    this.setState({ isRunChecksRequestPending: true });
     try {
-      await CheckService.rerunDbChecks();
+      await CheckService.runDbChecks();
     } catch (e) {
       console.error(e);
     }
     setTimeout(() => {
-      this.setState({ isRerunChecksLoading: false });
+      this.setState({ isRunChecksRequestPending: false });
       this.fetchAlerts();
     }, 10000);
   }
@@ -93,7 +93,7 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
       options: { title },
     } = this.props;
     const {
-      dataSource, isSttEnabled, isLoading, hasNoAccess, isRerunChecksLoading
+      dataSource, isSttEnabled, isLoading, hasNoAccess, isRunChecksRequestPending
     } = this.state;
 
     return (
@@ -111,11 +111,11 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
                 </div>
               )}
               <ButtonWithSpinner
-                onClick={this.handleRerunChecksClick}
-                isLoading={isRerunChecksLoading}
+                onClick={this.handleRunChecksClick}
+                isLoading={isRunChecksRequestPending}
                 disabled={hasNoAccess}
               >
-                {Messages.rerunDbChecks}
+                {Messages.runDbChecks}
               </ButtonWithSpinner>
             </div>
             <Table
