@@ -7,7 +7,7 @@ interface DetailsProps {
 
 export const Details: FC<DetailsProps> = ({ details }) => (
   <ul className={styles.List}>
-    {details.map((detail) => (
+    {details.reverse().map((detail) => (
       <li key={detail}>
         <span className={styles.Disk}>&#8858;</span>
         {detail}
