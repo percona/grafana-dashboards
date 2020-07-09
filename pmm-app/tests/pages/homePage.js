@@ -1,4 +1,4 @@
-const {I, settingsAPI} = inject();
+const { I, settingsAPI } = inject();
 const assert = require('assert');
 
 module.exports = {
@@ -8,27 +8,29 @@ module.exports = {
   requestEnd: '/v1/Updates/Check',
   fields: {
     systemsUnderMonitoringCount:
-        "//span[@class='panel-title-text' and contains(text(), 'Systems under monitoring')]//../../../..//span[@class='singlestat-panel-value']",
+        '//span[@class=\'panel-title-text\' and contains(text(), \'Systems under monitoring\')]//../../../..//span[@class=\'singlestat-panel-value\']',
     dbUnderMonitoringCount:
-        "//span[@class='panel-title-text' and contains(text(), 'Monitored DB Instances')]//../../../..//span[@class='singlestat-panel-value']",
+        '//span[@class=\'panel-title-text\' and contains(text(), \'Monitored DB Instances\')]//../../../..//span[@class=\'singlestat-panel-value\']',
     dashboardHeaderText: 'Percona Monitoring and Management',
-    dashboardHeaderLocator: "//div[contains(@class, 'dashboard-header')]",
-    checkUpdateButton: "#refresh",
-    oldLastCheckSelector: "#pmm-update-widget > .last-check-wrapper p",
-    lastCheckSelector: ".last-check-wrapper > p",
-    triggerUpdate: "button[ng-click='update()']",
-    updateProgressModal: ".modal-content",
-    reloadButtonAfterUpgrade: "button[ng-click='reloadAfterUpdate()'",
-    pmmUpdateWidget: "#pmm-update-widget",
-    whatsNewLink: "a.text-primary.pmm-link",
-    upToDateLocator: "//section[@class='state']/p[text()='You are up to date']",
-    availableVersion: "#available_version > div > p",
-    currentVersion: "#current_version > span",
-    sttDisabledFailedChecksPanelSelector: "$db-check-panel-settings-link",
-    sttFailedChecksPanelSelector: "$db-check-panel-has-checks",
-    checksPanelSelector: "$db-check-panel-home",
-    newsPanelTitleSelector: "//span[@class='panel-title-text' and text() = 'Percona News']",
-    newsPanelContentSelector: "//span[contains(text(), 'Percona News')]/ancestor::div[contains(@class, 'panel-container')]//div[contains(@class, 'view')]",
+    dashboardHeaderLocator: '//div[contains(@class, \'dashboard-header\')]',
+    checkUpdateButtonOld: '#refresh',
+    checkUpdateButton: '//div[@id=\'panel-1337\']//i[contains(@class,\'fa-refresh\')]',
+    oldLastCheckSelector: '#pmm-update-widget > .last-check-wrapper p',
+    lastCheckSelector: '//div[@id=\'panel-1337\']//div/div[2]/div/div/p',
+    triggerUpdate: 'button[ng-click=\'update()\']',
+    updateProgressModal: '.modal-content',
+    reloadButtonAfterUpgrade: 'button[ng-click=\'reloadAfterUpdate()\'',
+    pmmUpdateWidget: '#panel-1337',
+    whatsNewLink: 'a.text-primary.pmm-link',
+    upToDateLocator: '//section/p[text()=\'You are up to date\']',
+    availableVersion: '#available_version > div > p',
+    currentVersionOld: '#current_version > span',
+    currentVersion: '//div/section[1]/p/span',
+    sttDisabledFailedChecksPanelSelector: '$db-check-panel-settings-link',
+    sttFailedChecksPanelSelector: '$db-check-panel-has-checks',
+    checksPanelSelector: '$db-check-panel-home',
+    newsPanelTitleSelector: '//span[@class=\'panel-title-text\' and text() = \'Percona News\']',
+    newsPanelContentSelector: '//span[contains(text(), \'Percona News\')]/ancestor::div[contains(@class, \'panel-container\')]//div[contains(@class, \'view\')]',
     noAccessRightsSelector: '$db-check-panel-no-access',
   },
 
@@ -37,16 +39,19 @@ module.exports = {
     I.waitForElement(this.fields.triggerUpdate, 180);
     I.seeElement(this.fields.triggerUpdate);
     const available_version = await I.grabTextFrom(this.fields.availableVersion);
+
     I.click(this.fields.triggerUpdate);
     I.waitForElement(this.fields.updateProgressModal, 30);
     I.waitForText('Update in progress', 30, this.fields.updateProgressModal);
     I.waitForText('Successfully updated', 1200, this.fields.updateProgressModal);
     I.click(this.fields.reloadButtonAfterUpgrade);
     I.waitForVisible(this.fields.upToDateLocator, 30);
+    const newVersion = (await I.grabTextFrom(this.fields.currentVersion)).split(' ');
+
     assert.equal(
-        await I.grabTextFrom(this.fields.currentVersion),
-        available_version,
-        'Update operation failed'
+      newVersion.indexOf(available_version) > -1,
+      false,
+      'Update operation failed'
     );
   },
 
@@ -58,6 +63,7 @@ module.exports = {
   async waitForCheckResultsToAppearInPanel() {
     let results;
     let disabledSTT;
+
     for (let i = 0; i < 30; i++) {
       I.waitForVisible(this.fields.checksPanelSelector, 30);
       I.wait(1);
@@ -66,14 +72,17 @@ module.exports = {
       if (disabledSTT) {
         await settingsAPI.apiEnableSTT();
         I.amOnPage(this.url);
-        continue
+        continue;
       }
+
       if (results > 0) {
         I.waitForVisible(this.fields.sttFailedChecksPanelSelector, 30);
-        break
+        break;
       }
+
       I.refreshPage();
     }
+
     assert.equal(true, results > 0, 'Checks have not appeared at Home Page');
   },
 
@@ -81,16 +90,15 @@ module.exports = {
     I.waitForVisible(this.fields.pmmUpdateWidget, 60);
     I.waitForElement(this.fields.triggerUpdate, 180);
     I.seeElement(this.fields.availableVersion);
-    I.seeElement(this.fields.currentVersion);
+    I.seeElement(this.fields.currentVersionOld);
     I.seeElement(this.fields.triggerUpdate);
     I.dontSeeElement(this.fields.upToDateLocator);
-    I.seeElement(this.fields.currentVersion);
-    I.seeElement(this.fields.checkUpdateButton);
+    I.seeElement(this.fields.currentVersionOld);
+    I.seeElement(this.fields.checkUpdateButtonOld);
     I.see('Last check:', this.fields.oldLastCheckSelector);
     assert.notEqual(await I.grabTextFrom(this.fields.availableVersion),
-      await I.grabTextFrom(this.fields.currentVersion),
-      'Available and Current versions match'
-    );
+      await I.grabTextFrom(this.fields.currentVersionOld),
+      'Available and Current versions match');
   },
 
   verifyPostUpdateWidgetIsPresent() {
@@ -106,8 +114,8 @@ module.exports = {
 
   async verifyVisibleService(serviceName) {
     I.scrollPageToBottom();
-    const serviceExists =
-        "//div[@class='react-grid-item']/descendant::p[contains(text(),'" + serviceName + "')]";
+    const serviceExists = `//div[@class='react-grid-item']/descendant::p[contains(text(),'${serviceName}')]`;
+
     I.waitForElement(serviceExists, 30);
     I.seeElement(serviceExists);
   },

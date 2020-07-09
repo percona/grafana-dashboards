@@ -70,7 +70,7 @@ module.exports = {
     addColumnNewQAN: "//span[contains(text(), 'Add column')]",
     noDataIcon: 'div.ant-empty-image',
     querySelector:
-      "(//table[@class='ant-table-fixed']//tbody[@class='ant-table-tbody'])[2]//tr[4]//td[2]//div//div",
+      "//div[@class='tr tr-2']//div[@role='cell'][2]//div//div",
     resizer: 'span.Resizer.horizontal',
     queryTime: '//tr[@data-row-key][4]//td[5]//span[1]',
     lockTimeDetail: "//tr[@data-row-key='lock_time']//td[4]//span[1]",
