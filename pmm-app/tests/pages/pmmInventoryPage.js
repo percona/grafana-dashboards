@@ -168,4 +168,22 @@ module.exports = {
     I.waitForVisible(agentIdLocator, 30);
     I.click(agentIdLocator);
   },
+
+  deleteWithForceOpt() {
+    I.click(this.fields.deleteButton);
+    I.click(this.fields.forceModeCheckbox);
+    I.click(this.fields.proceedButton);
+  },
+
+  async getCountOfItems() {
+    return await I.grabNumberOfVisibleElements(`//table//tr/td/div[@data-qa="select-row"]`);
+  },
+
+  async checkAllNotDeletedAgents(text) {
+    const count = await this.getCountOfItems();
+    const otherDetails = await I.grabNumberOfVisibleElements(
+      `//table//tr/td[4]//span[contains(text(), "${text}")]`
+    );
+    assert.equal(count, otherDetails, 'Check data!');
+  },
 };

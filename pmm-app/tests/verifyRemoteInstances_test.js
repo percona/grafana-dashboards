@@ -6,7 +6,7 @@ Feature('to verify monitoried Remote Db instances');
 Before(async I => {
   I.Authorize();
 });
-/*
+
 Scenario(
   'Verify Remote MySQL Instance Addition [critical] @not-pr-pipeline',
   async (I, adminPage, remoteInstancesPage, pmmInventoryPage) => {
@@ -86,9 +86,7 @@ Scenario(
     I.click(pmmInventoryPage.fields.proceedButton);
     pmmInventoryPage.serviceExists(serviceName, false);
     pmmInventoryPage.selectService(serviceName);
-    I.click(pmmInventoryPage.fields.deleteButton);
-    I.click(pmmInventoryPage.fields.forceModeCheckbox);
-    I.click(pmmInventoryPage.fields.proceedButton);
+    pmmInventoryPage.deleteWithForceOpt();
     pmmInventoryPage.serviceExists(serviceName, true);
     I.click(pmmInventoryPage.fields.agentsLink);
     await pmmInventoryPage.getCountOfAgents(serviceId);
@@ -108,17 +106,15 @@ Scenario(
     I.waitForVisible(pmmInventoryPage.fields.nodesLink, 30);
     I.click(pmmInventoryPage.fields.nodesLink);
     pmmInventoryPage.selectService(serviceName);
-    I.click(pmmInventoryPage.fields.deleteButton);
-    I.click(pmmInventoryPage.fields.forceModeCheckbox);
-    I.click(pmmInventoryPage.fields.proceedButton);
+    pmmInventoryPage.deleteWithForceOpt();
     I.click(pmmInventoryPage.fields.pmmServicesSelector);
     pmmInventoryPage.serviceExists(serviceName, true);
     I.click(pmmInventoryPage.fields.agentsLink);
     await pmmInventoryPage.getCountOfAgents(serviceId);
   }
 );
-*/
-xScenario(
+
+Scenario(
   'PMM-T342 - Verify pmm-server node cannot be removed from PMM Inventory page @not-pr-pipeline',
   async (I, pmmInventoryPage) => {
     const node = 'pmm-server';
@@ -126,14 +122,12 @@ xScenario(
     I.waitForVisible(pmmInventoryPage.fields.nodesLink, 30);
     I.click(pmmInventoryPage.fields.nodesLink);
     pmmInventoryPage.selectService(node);
-    I.click(pmmInventoryPage.fields.deleteButton);
-    I.click(pmmInventoryPage.fields.forceModeCheckbox);
-    I.click(pmmInventoryPage.fields.proceedButton);
+    pmmInventoryPage.deleteWithForceOpt();
     pmmInventoryPage.checkNodeExists(node);
   }
 );
 
-xScenario(
+Scenario(
   'PMM-T343 - Verify agent can be removed on PMM Inventory page @not-pr-pipeline',
   async (I, pmmInventoryPage) => {
     const agentType = 'MySQL exporter';
@@ -166,10 +160,12 @@ Scenario(
     I.waitForVisible(pmmInventoryPage.fields.agentsLink, 20);
     I.click(pmmInventoryPage.fields.agentsLink);
     pmmInventoryPage.selectAgentByID(agentID);
-    I.click(pmmInventoryPage.fields.deleteButton);
-    I.click(pmmInventoryPage.fields.forceModeCheckbox);
-    I.click(pmmInventoryPage.fields.proceedButton);
+    pmmInventoryPage.deleteWithForceOpt();
     pmmInventoryPage.existsByid(agentID, false);
     pmmInventoryPage.selectAgent(agentType);
+    const agentIDToDelete = await pmmInventoryPage.getAgentID(agentType);
+    pmmInventoryPage.deleteWithForceOpt();
+    pmmInventoryPage.existsByid(agentIDToDelete, true);
+    await pmmInventoryPage.checkAllNotDeletedAgents(agentID);
   }
 );
