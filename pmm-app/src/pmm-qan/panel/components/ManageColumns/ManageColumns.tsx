@@ -22,6 +22,10 @@ export const ManageColumns = (props) => {
   } = useContext(QueryAnalyticsProvider);
   const [availableColumns, setAvailableColumns] = useState(Object.values(METRIC_CATALOGUE));
   const [isDropdownOpen, setDropdownOpen] = useState(false);
+  const extraSelectProps = {
+    dropdownAlign: { overflow: { adjustX: true } },
+    getPopupContainer: (trigger) => trigger.parentNode
+  };
 
   useEffect(() => {
     setAvailableColumns(
@@ -129,6 +133,7 @@ export const ManageColumns = (props) => {
         dropdownClassName={`${onlyAdd ? 'add' : 'manage'}-columns-selector-dropdown`}
         dropdownRender={dropdownRender}
         data-qa="manage-columns-selector"
+        {...extraSelectProps}
       >
         {availableColumns.map((item) => (
           <Option key={item.simpleName} label={item.humanizeName}>
