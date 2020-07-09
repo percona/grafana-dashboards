@@ -19,7 +19,7 @@ const CheckPanelRouter: FC<CheckPanelProps> = (props) => (
   </MemoryRouter>
 );
 
-xdescribe('CheckPanel::', () => {
+describe('CheckPanel::', () => {
   CheckPanel.prototype.componentDidMount = jest.fn();
 
   it('should render the title passed as a prop', async () => {
