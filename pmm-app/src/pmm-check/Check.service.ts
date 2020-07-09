@@ -1,8 +1,10 @@
 import { apiRequest } from '../shared/components/helpers/api';
 import { API } from '../shared/core';
-import { ActiveCheck, Alert, AlertRequestParams, FailedChecks, Settings } from './types';
+import {
+  ActiveCheck, Alert, AlertRequestParams, FailedChecks, Settings
+} from './types';
 
-export const makeApiUrl: (segment: string) => string = segment => `${API.ALERTMANAGER}/${segment}`;
+export const makeApiUrl: (segment: string) => string = (segment) => `${API.ALERTMANAGER}/${segment}`;
 
 /**
  * A service-like object to store the API methods
@@ -33,7 +35,7 @@ export const CheckService = {
 
 export const processData = (data: Alert[]): ActiveCheck[] => {
   const result: Record<string, Array<{ summary: string; description: string; severity: string }>> = data
-    .filter(alert => !!alert.labels.stt_check)
+    .filter((alert) => !!alert.labels.stt_check)
     .reduce((acc, alert) => {
       const {
         labels,
@@ -75,7 +77,7 @@ export const processData = (data: Alert[]): ActiveCheck[] => {
       },
       [0, 0, 0] as FailedChecks
     );
-    const details = value.map(val => `${val.summary}${val.description ? `: ${val.description}` : ''}`);
+    const details = value.map((val) => `${val.summary}${val.description ? `: ${val.description}` : ''}`);
 
     return {
       key: String(i),
@@ -86,16 +88,15 @@ export const processData = (data: Alert[]): ActiveCheck[] => {
   });
 };
 
-export const sumFailedChecks = (checks: ActiveCheck[]): FailedChecks =>
-  checks
-    .map(rec => rec.failed)
-    .reduce(
-      (acc, failed) => {
-        acc[0] += failed[0];
-        acc[1] += failed[1];
-        acc[2] += failed[2];
+export const sumFailedChecks = (checks: ActiveCheck[]): FailedChecks => (checks)
+  .map((rec) => rec.failed)
+  .reduce(
+    (acc, failed) => {
+      acc[0] += failed[0];
+      acc[1] += failed[1];
+      acc[2] += failed[2];
 
-        return acc;
-      },
-      [0, 0, 0]
-    );
+      return acc;
+    },
+    [0, 0, 0]
+  );
