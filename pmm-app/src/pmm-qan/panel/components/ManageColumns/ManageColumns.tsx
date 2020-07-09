@@ -7,6 +7,7 @@ import {
 import { cx } from 'emotion';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
 import { METRIC_CATALOGUE } from 'pmm-qan/panel/QueryAnalytics.constants';
+import { OptionContent } from './OptionContent/OptionContent';
 import { styles } from './ManageColumns.styles';
 import './ManageColumns.scss';
 
@@ -100,20 +101,6 @@ export const ManageColumns = (props) => {
     </div>
   );
 
-  const OptionContent = ({ humanizeName, tooltipText, serviceTypes }) => (
-    <div className={styles.optionWrapper}>
-      <div className={styles.optionText}>
-        <span className={styles.optionTitle}>{humanizeName}</span>
-        <span className={styles.optionDescription}>{tooltipText}</span>
-      </div>
-      <div className={styles.tagWrapper}>
-        {serviceTypes.map((type) => (
-          <span className={styles.tag}>{type}</span>
-        ))}
-      </div>
-    </div>
-  );
-
   return (
     <div className={!onlyAdd ? 'manage-columns' : 'add-columns'} onClick={(e) => e.stopPropagation()}>
       <Select
@@ -137,7 +124,11 @@ export const ManageColumns = (props) => {
       >
         {availableColumns.map((item) => (
           <Option key={item.simpleName} label={item.humanizeName}>
-            <OptionContent {...item} />
+            <OptionContent
+              title={item.humanizeName}
+              description={item.tooltipText}
+              tags={item.serviceTypes}
+            />
           </Option>
         ))}
       </Select>
