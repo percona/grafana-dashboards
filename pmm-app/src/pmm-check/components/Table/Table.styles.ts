@@ -22,8 +22,8 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       background-color: ${backgroundColor};
       display: flex;
       flex-direction: column;
+      margin-bottom: 1em;
       overflow: auto;
-      padding-bottom: 1em;
     `,
     table: css`
       border-collapse: collapse;
