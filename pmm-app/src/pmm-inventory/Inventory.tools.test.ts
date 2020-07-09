@@ -140,6 +140,7 @@ describe('Inventory data service', () => {
         status: 'RUNNING',
       },
     ];
+
     // FIXME: types
     expect(InventoryDataService.getAgentModel(response as any)).toEqual(testTransformedData);
   });
@@ -187,6 +188,7 @@ describe('Inventory data service', () => {
         port: 5432,
       },
     ];
+
     // FIXME: types
     expect(InventoryDataService.getServiceModel(response as any)).toEqual(testTransformedData);
   });
@@ -222,6 +224,7 @@ describe('Inventory data service', () => {
         address: '127.0.0.1',
       },
     ];
+
     // FIXME: types
     expect(InventoryDataService.getNodeModel(response as any)).toEqual(testTransformedData);
   });
