@@ -21,6 +21,7 @@ export const ManageColumns = (props) => {
     panelState: { columns },
   } = useContext(QueryAnalyticsProvider);
   const [availableColumns, setAvailableColumns] = useState(Object.values(METRIC_CATALOGUE));
+  const [isDropdownOpen, setDropdownOpen] = useState(false);
 
   useEffect(() => {
     setAvailableColumns(
@@ -67,8 +68,12 @@ export const ManageColumns = (props) => {
     </Tooltip>
   ) : (
     <div className={styles.placeholder}>
-      <i className={cx('fa fa-plus-circle', styles.iconMargin)} />
-      <span> Add column</span>
+      {!isDropdownOpen && (
+        <div>
+          <i className={cx('fa fa-plus-circle', styles.iconMargin)} />
+          <span>Add column</span>
+        </div>
+      )}
     </div>
   ));
 
@@ -91,6 +96,20 @@ export const ManageColumns = (props) => {
     </div>
   );
 
+  const OptionContent = ({ humanizeName, tooltipText, serviceTypes }) => (
+    <div className={styles.optionWrapper}>
+      <div className={styles.optionText}>
+        <span className={styles.optionTitle}>{humanizeName}</span>
+        <span className={styles.optionDescription}>{tooltipText}</span>
+      </div>
+      <div className={styles.tagWrapper}>
+        {serviceTypes.map((type) => (
+          <span className={styles.tag}>{type}</span>
+        ))}
+      </div>
+    </div>
+  );
+
   return (
     <div className={!onlyAdd ? 'manage-columns' : 'add-columns'} onClick={(e) => e.stopPropagation()}>
       <Select
@@ -102,6 +121,7 @@ export const ManageColumns = (props) => {
           .toLowerCase()
           .includes(value.toLowerCase())}
         onChange={changeColumn}
+        onDropdownVisibleChange={(open) => setDropdownOpen(open)}
         dropdownMatchSelectWidth={false}
         value={undefined}
         showArrow={false}
@@ -112,7 +132,7 @@ export const ManageColumns = (props) => {
       >
         {availableColumns.map((item) => (
           <Option key={item.simpleName} label={item.humanizeName}>
-            {item.humanizeName}
+            <OptionContent {...item} />
           </Option>
         ))}
       </Select>
