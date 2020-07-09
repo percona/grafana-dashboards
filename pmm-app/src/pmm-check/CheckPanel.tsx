@@ -4,6 +4,7 @@ import { PanelProps } from '@grafana/data';
 import { Spinner } from '@grafana/ui';
 import { Router, Route } from 'react-router-dom';
 import { Table, ButtonWithSpinner } from 'pmm-check/components';
+import { showSuccessNotification } from 'shared/components/helpers';
 import { CheckPanelOptions, ActiveCheck, Settings } from './types';
 import { CheckService } from './Check.service';
 import { COLUMNS } from './CheckPanel.constants';
@@ -70,9 +71,14 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
     } catch (e) {
       console.error(e);
     }
-    setTimeout(() => {
+    setTimeout(async () => {
       this.setState({ isRunChecksRequestPending: false });
-      this.fetchAlerts();
+      try {
+        await this.fetchAlerts();
+        showSuccessNotification({ message: 'Done running DB checks. The latest results are displayed.' });
+      } catch (e) {
+        console.log(e);
+      }
     }, 10000);
   }
 
