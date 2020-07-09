@@ -36,8 +36,12 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       thead {
         tr {
           th {
-            padding: ${cellPadding};
+            background-color: ${backgroundColor};
             border: 1px solid ${borderColor};
+            box-shadow: 0 1px 0 ${borderColor}, 0 -1px 0 ${borderColor};
+            padding: ${cellPadding};
+            position: sticky;
+            top: 0;
             word-wrap: break-word;
           }
         }
