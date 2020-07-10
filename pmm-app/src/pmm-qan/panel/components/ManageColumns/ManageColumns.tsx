@@ -72,7 +72,7 @@ export const ManageColumns = (props) => {
       </div>
     </Tooltip>
   ) : (
-    <div className={styles.placeholder}>
+    <div className={styles.placeholderAdd}>
       {!isDropdownOpen && (
         <div>
           <i className={cx('fa fa-plus-circle', styles.iconMargin)} />
@@ -106,7 +106,7 @@ export const ManageColumns = (props) => {
       <Select
         optionLabelProp="label"
         showSearch
-        style={{ width: width || '160px' }}
+        style={{ width: width || '125px' }}
         placeholder={<Placeholder />}
         filterOption={(value, option) => String(option.props.label)
           .toLowerCase()

@@ -1,9 +1,15 @@
 import { css } from 'emotion';
 
+const placeholderColor = 'rgba(255, 255, 255, 0.8)';
+
 export const styles = {
   placeholder: css`
     font-size: 16px;
-    color: rgba(255, 255, 255, 0.8);
+    color: ${placeholderColor};
+  `,
+  placeholderAdd: css`
+    font-size: 14px;
+    color: ${placeholderColor};
   `,
   placeholderPadding: css`
     padding-left: 11px;

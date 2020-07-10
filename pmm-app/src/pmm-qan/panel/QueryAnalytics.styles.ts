@@ -6,7 +6,7 @@ export const styles = {
     align-items: baseline;
     padding: 5px 0px;
     height: 50px;
-    padding-top: 15px;
+    padding-top: 13px;
   `,
   overviewTitle: css`
     margin: 3px;
