@@ -72,7 +72,7 @@ export const humanize = {
         break;
       case 'percent':
         if (metricValue !== 0 && metricValue < 0.0001) {
-          res = '<0.01';
+          res = '<0.01%';
         } else if (metricValue === 1) {
           res = '100%';
         } else {
@@ -81,8 +81,8 @@ export const humanize = {
 
         break;
       case 'percentRounded':
-        if (metricValue !== 0 && metricValue < 0.0001) {
-          res = '<0.01';
+        if (metricValue !== 0 && metricValue < 0.01) {
+          res = '<1%';
         } else {
           res = numeral(metricValue).format('0%');
         }
