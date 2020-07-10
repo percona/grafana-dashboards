@@ -18,6 +18,7 @@ export const styles = {
   optionDescription: css`
     color: #8e8e8e;
     font-size: 10px;
+    line-height: 1.5em;
   `,
   tagWrapper: css`
     margin-left: 4px;
