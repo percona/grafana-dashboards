@@ -3,7 +3,7 @@ import { css } from 'emotion';
 export const styles = {
   overviewHeader: css`
     display: flex;
-    align-items: baseline;
+    justify-content: flex-end;
     padding: 5px 0px;
     height: 50px;
     padding-top: 13px;
@@ -25,7 +25,6 @@ export const styles = {
     color: rgba(255, 255, 255, 0.8);
   `,
   manageColumnsWrapper: css`
-    margin-left: auto;
     margin-right: 2px;
   `,
   tableWrapper: css`
