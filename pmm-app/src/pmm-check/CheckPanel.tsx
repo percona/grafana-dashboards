@@ -83,6 +83,8 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
   }
 
   async fetchAlerts() {
+    this.setState({ isLoading: true });
+
     try {
       const dataSource = await CheckService.getActiveAlerts();
 
