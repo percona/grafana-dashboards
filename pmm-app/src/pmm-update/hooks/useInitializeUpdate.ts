@@ -11,10 +11,13 @@ export const useInitializeUpdate = (): UpdateInitialization => {
   const initializeUpdate = async () => {
     try {
       const data = await startUpdate();
+
       if (!data) {
         throw Error('Invalid response received');
       }
+
       const { auth_token, log_offset } = data;
+
       setAuthToken(auth_token);
       setLogOffset(log_offset);
     } catch (e) {

@@ -34,13 +34,17 @@ export const useVersionDetails = (initialForceUpdate = false): CurrentOrNextVers
     if (!data) {
       return;
     }
-    const { last_check, latest, latest_news_url, installed, update_available } = data;
+
+    const {
+      last_check, latest, latest_news_url, installed, update_available
+    } = data;
     const { full_version: latestFullVersion, timestamp: latestTimestamp, version: latestVersion } = latest;
     const {
       full_version: installedFullVersion,
       timestamp: installedVersionTimestamp,
       version: installedVersion,
     } = installed;
+
     setNextVersionDetails({
       nextVersion: latestVersion ?? '',
       nextFullVersion: latestFullVersion ?? '',
@@ -58,7 +62,9 @@ export const useVersionDetails = (initialForceUpdate = false): CurrentOrNextVers
   }, [data]);
 
   return [
-    { installedVersionDetails, lastCheckDate, nextVersionDetails, isUpdateAvailable },
+    {
+      installedVersionDetails, lastCheckDate, nextVersionDetails, isUpdateAvailable
+    },
     errorMessage,
     isLoading,
     isDefaultView,

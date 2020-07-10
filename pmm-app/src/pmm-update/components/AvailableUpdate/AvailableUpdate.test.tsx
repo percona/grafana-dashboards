@@ -4,14 +4,16 @@ import { LinkButton } from '@grafana/ui';
 
 import { AvailableUpdate } from './AvailableUpdate';
 
-jest.mock('../../../react-plugins-deps/components/helpers/notification-manager');
+jest.mock('shared/components/helpers/notification-manager');
 
 const nextFullVersion = 'x.y.z-rc.j+1234567890';
 const nextVersion = 'x.y.z';
 const newsLink = '';
 const nextVersionDate = '23 Jun';
 
-const nextVersionDetails = { nextVersionDate, nextVersion, nextFullVersion, newsLink };
+const nextVersionDetails = {
+  nextVersionDate, nextVersion, nextFullVersion, newsLink
+};
 
 describe('AvailableUpdate::', () => {
   let wrapper: ReturnType<typeof shallow> | undefined;

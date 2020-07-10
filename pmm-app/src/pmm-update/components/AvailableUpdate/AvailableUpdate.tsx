@@ -9,14 +9,21 @@ import * as styles from './AvailableUpdate.styles';
 export const AvailableUpdate: FC<AvailableUpdateProps> = ({ nextVersionDetails }) => {
   const [showFullVersion, handleToggleShowFullVersion] = useToggleOnAltClick(false);
 
-  const { nextVersionDate, nextVersion, nextFullVersion, newsLink } = nextVersionDetails;
+  const {
+    nextVersionDate, nextVersion, nextFullVersion, newsLink
+  } = nextVersionDetails;
 
   return (
     <section className={styles.availableUpdate}>
       <div onClick={handleToggleShowFullVersion}>
-        <p>{Messages.availableVersion}:&nbsp;</p>
+        <p>
+          {Messages.availableVersion}
+          :&nbsp;
+        </p>
         <p className={styles.availableUpdate_version}>
-          {showFullVersion ? nextFullVersion : nextVersion} <em>{nextVersionDate}</em>
+          {showFullVersion ? nextFullVersion : nextVersion}
+          {' '}
+          <em>{nextVersionDate}</em>
           {newsLink && (
             <>
               {' '}
