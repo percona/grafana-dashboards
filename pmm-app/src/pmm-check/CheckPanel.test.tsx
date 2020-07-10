@@ -2,8 +2,8 @@ import React, { FC } from 'react';
 import { MemoryRouter, Route } from 'react-router-dom';
 import { mount, ReactWrapper } from 'enzyme';
 import { Spinner } from '@grafana/ui';
+import { ButtonWithSpinner, Table } from 'pmm-check/components';
 import { CheckPanel, CheckPanelProps, CheckPanelState } from './CheckPanel';
-import { Table } from './components/Table';
 
 import { activeCheckStub } from './__mocks__/stubs';
 
@@ -72,7 +72,7 @@ describe('CheckPanel::', () => {
     wrapper.unmount();
   });
 
-  it('should render a Table once finished loading', async () => {
+  it('should render a Table and a ButtonWithSpinner once finished loading', async () => {
     const props = {
       options: {
         title: 'DB CHECKS',
@@ -90,9 +90,33 @@ describe('CheckPanel::', () => {
     expect(root.state().hasNoAccess).toEqual(false);
 
     const table = wrapper.find('[data-qa="db-check-panel"]').find(Table);
+    const buttonWithSpinner = wrapper.find('[data-qa="db-check-panel"]').find(ButtonWithSpinner);
 
     // Check if the table is rendered, the rest is tested by the Table itself
     expect(table.length).toEqual(1);
+    expect(buttonWithSpinner.length).toEqual(1);
+
+    wrapper.unmount();
+  });
+
+  it('should show ButtonWithSpinner disabled if hasNoAccess is true', async () => {
+    const props = {
+      options: {
+        title: 'DB CHECKS',
+      },
+    } as CheckPanelProps;
+
+    const wrapper: ReactWrapper<CheckPanelProps, {}, any> = mount(<CheckPanelRouter {...props} />);
+
+    const root = wrapper.find(CheckPanel) as ReactWrapper<CheckPanelProps, CheckPanelState, CheckPanel>;
+
+    root.setState({ isLoading: false });
+    root.setState({ hasNoAccess: true });
+    wrapper.update();
+
+    const buttonWithSpinner = wrapper.find('[data-qa="db-check-panel"]').find(ButtonWithSpinner);
+
+    expect(buttonWithSpinner.props()).toHaveProperty('disabled', true);
 
     wrapper.unmount();
   });
