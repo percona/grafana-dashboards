@@ -12,7 +12,7 @@ export const styles = {
     color: ${placeholderColor};
   `,
   placeholderPadding: css`
-    padding-left: 11px;
+    padding-left: 3px;
   `,
   iconMargin: css`
     margin-right: 4px;
