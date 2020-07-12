@@ -113,11 +113,9 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
         ) : (
           <>
             <div className={styles.header}>
-              {title && (
-                <div className={styles.title} data-qa="db-check-panel-title">
-                  {title}
-                </div>
-              )}
+              <div className={styles.title} data-qa="db-check-panel-title">
+                {title ?? ''}
+              </div>
               <ButtonWithSpinner
                 onClick={this.handleRunChecksClick}
                 isLoading={isRunChecksRequestPending}
