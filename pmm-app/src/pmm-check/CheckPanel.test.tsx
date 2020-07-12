@@ -4,6 +4,7 @@ import { mount, ReactWrapper } from 'enzyme';
 import { Spinner } from '@grafana/ui';
 import { ButtonWithSpinner, Table } from 'pmm-check/components';
 import { CheckPanel, CheckPanelProps, CheckPanelState } from './CheckPanel';
+import { CheckService } from './Check.service';
 
 import { activeCheckStub } from './__mocks__/stubs';
 
@@ -117,6 +118,34 @@ describe('CheckPanel::', () => {
     const buttonWithSpinner = wrapper.find('[data-qa="db-check-panel"]').find(ButtonWithSpinner);
 
     expect(buttonWithSpinner.props()).toHaveProperty('disabled', true);
+
+    wrapper.unmount();
+  });
+
+  it('should call the API to run checks if clicked on the run checks button', async () => {
+    const props = {
+      options: {
+        title: 'DB CHECKS',
+      },
+    } as CheckPanelProps;
+
+    const wrapper: ReactWrapper<CheckPanelProps, {}, any> = mount(<CheckPanelRouter {...props} />);
+
+    const root = wrapper.find(CheckPanel) as ReactWrapper<CheckPanelProps, CheckPanelState, CheckPanel>;
+
+    const spy = jest.spyOn(CheckService, 'runDbChecks');
+
+    wrapper.update();
+
+    root.setState({ isLoading: false });
+    wrapper.update();
+
+    const buttonWithSpinner = wrapper.find('[data-qa="db-check-panel"]').find(ButtonWithSpinner);
+
+    buttonWithSpinner.simulate('click');
+    expect(spy).toBeCalledTimes(1);
+
+    buttonWithSpinner.simulate('click');
 
     wrapper.unmount();
   });

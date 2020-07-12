@@ -2,7 +2,6 @@ import { ActiveCheck, FailedChecks, Alert } from '../types';
 
 import { alertsStub } from './stubs';
 
-
 /**
  * A mock version of CheckService
  */
@@ -12,6 +11,9 @@ export const CheckService = {
   },
   async getFailedChecks(): Promise<FailedChecks | undefined> {
     return sumFailedChecks(processData(alertsStub as Alert[]));
+  },
+  async runDbChecks(): Promise<void | {}> {
+    return {};
   },
 };
 
@@ -70,7 +72,7 @@ export const processData = (data: Alert[]): ActiveCheck[] => {
   });
 };
 
-export const sumFailedChecks = (checks: ActiveCheck[]): FailedChecks => checks
+export const sumFailedChecks = (checks: ActiveCheck[]): FailedChecks => (checks)
   .map((rec) => rec.failed)
   .reduce(
     (acc, failed) => {
