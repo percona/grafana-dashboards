@@ -21,37 +21,26 @@ export interface CheckPanelState {
 const history = createBrowserHistory();
 
 export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> {
-  state = {
-    dataSource: undefined,
-    hasNoAccess: false,
-    isLoading: true,
-    isSttEnabled: false,
-  };
-
   constructor(props: CheckPanelProps) {
     super(props);
     this.fetchAlerts = this.fetchAlerts.bind(this);
     this.getSettings = this.getSettings.bind(this);
+    this.state = {
+      dataSource: undefined,
+      hasNoAccess: false,
+      isLoading: true,
+      isSttEnabled: false,
+    };
   }
 
   componentDidMount() {
     this.getSettings();
   }
 
-  async fetchAlerts() {
-    try {
-      const dataSource = await CheckService.getActiveAlerts();
-      this.setState({ dataSource });
-    } catch (err) {
-      console.error(err);
-    } finally {
-      this.setState({ isLoading: false });
-    }
-  }
-
   async getSettings() {
     try {
       const resp = (await CheckService.getSettings()) as Settings;
+
       this.setState({ isSttEnabled: !!resp.settings?.stt_enabled });
       this.setState({ hasNoAccess: false });
 
@@ -65,7 +54,20 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
       if (err.response?.status === 401) {
         this.setState({ hasNoAccess: true });
       }
+
       console.error(err);
+    }
+  }
+
+  async fetchAlerts() {
+    try {
+      const dataSource = await CheckService.getActiveAlerts();
+
+      this.setState({ dataSource });
+    } catch (err) {
+      console.error(err);
+    } finally {
+      this.setState({ isLoading: false });
     }
   }
 
@@ -73,7 +75,9 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
     const {
       options: { title },
     } = this.props;
-    const { dataSource, isSttEnabled, isLoading, hasNoAccess } = this.state;
+    const {
+      dataSource, isSttEnabled, isLoading, hasNoAccess
+    } = this.state;
 
     return (
       <div className={styles.panel} data-qa="db-check-panel">
@@ -96,7 +100,7 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
   }
 }
 
-export const CheckPanelRouter: FC<CheckPanelProps> = props => (
+export const CheckPanelRouter: FC<CheckPanelProps> = (props) => (
   <Router history={history}>
     <Route>
       <CheckPanel {...props} />
