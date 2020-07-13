@@ -56,7 +56,7 @@ export const CheckboxGroup: FC<CheckboxGroupProps> = ({
             />
           </span>
           <span className={styles.percentage}>
-            <span>{valueExists ? humanize.transform(item.main_metric_percent, 'percentRounded') : null}</span>
+            <span>{valueExists ? humanize.transform(item.main_metric_percent, 'percent') : null}</span>
           </span>
         </div>
       );
