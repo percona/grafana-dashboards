@@ -5,7 +5,7 @@ import { mount } from 'enzyme';
 import { startUpdate } from 'pmm-update/UpdatePanel.service';
 import { useInitializeUpdate } from './useInitializeUpdate';
 
-jest.mock('../../react-plugins-deps/components/helpers/notification-manager');
+jest.mock('shared/components/helpers/notification-manager');
 
 const HookWrapper: FC<{ hook: () => any }> = ({ hook }) => {
   const dataHook = hook ? hook() : undefined;

@@ -6,7 +6,7 @@ import { InfoBox, ProgressModal } from 'pmm-update/components';
 import { usePerformUpdate, useVersionDetails } from 'pmm-update/hooks';
 import { UpdatePanel } from 'pmm-update/UpdatePanel';
 
-jest.mock('../react-plugins-deps/components/helpers/notification-manager');
+jest.mock('shared/components/helpers/notification-manager');
 
 // NOTE (nicolalamacchia): these mocks are here because some test cases alter them
 jest.mock('./hooks/useVersionDetails', () => ({

@@ -4,7 +4,7 @@ import { LinkButton } from '@grafana/ui';
 
 import { AvailableUpdate } from './AvailableUpdate';
 
-jest.mock('../../../react-plugins-deps/components/helpers/notification-manager');
+jest.mock('shared/components/helpers/notification-manager');
 
 const nextFullVersion = 'x.y.z-rc.j+1234567890';
 const nextVersion = 'x.y.z';

@@ -26,6 +26,7 @@ export const ProgressModal: FC<ProgressModalProps> = ({
 
   useClickOutside(modalRef, () => {
     if (isUpdated) {
+      // eslint-disable-next-line no-restricted-globals
       location.reload(true);
     }
   });
@@ -44,6 +45,7 @@ export const ProgressModal: FC<ProgressModalProps> = ({
   };
 
   const reloadAfterUpdate = () => {
+    // eslint-disable-next-line no-restricted-globals
     location.reload(true);
   };
 

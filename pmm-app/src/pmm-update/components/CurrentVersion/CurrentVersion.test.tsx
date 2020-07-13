@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 
 import { CurrentVersion } from './CurrentVersion';
 
-jest.mock('../../../react-plugins-deps/components/helpers/notification-manager');
+jest.mock('shared/components/helpers/notification-manager');
 
 const installedFullVersion = 'x.y.z-rc.j+1234567890';
 const installedVersion = 'x.y.z';
