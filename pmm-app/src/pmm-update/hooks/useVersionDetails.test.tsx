@@ -170,13 +170,13 @@ describe('useVersionDetails', () => {
 
     const expectedNextVersionDetails = {
       nextFullVersion: fakeData.latest.full_version,
-      nextVersionDate: 'June 09',
+      nextVersionDate: 'June 09, 2020',
       nextVersion: fakeData.latest.version,
       newsLink: 'https://percona.com',
     };
     const expectedInstalledVersionDetails = {
       installedFullVersion: fakeData.installed.full_version,
-      installedVersionDate: 'June 08',
+      installedVersionDate: 'June 08, 2020',
       installedVersion: fakeData.installed.version,
     };
 

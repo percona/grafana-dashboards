@@ -1,19 +1,23 @@
 import React, { FC } from 'react';
-import { Button, Spinner } from '@grafana/ui';
+import { Button } from '@grafana/ui';
 
 import { LastCheckProps } from 'pmm-update/types';
 import * as styles from './LastCheck.styles';
 
-export const LastCheck: FC<LastCheckProps> = ({ lastCheckDate, onCheckForUpdates, isLoading = false }) => (
+export const LastCheck: FC<LastCheckProps> = ({ lastCheckDate, onCheckForUpdates, disabled = false }) => (
   <div className={styles.lastCheck}>
     <p>
       Last check:
-      {lastCheckDate}
+      {' '}
+      <span data-qa="udpate-last-check">{lastCheckDate}</span>
     </p>
-    {isLoading ? (
-      <Spinner />
-    ) : (
-      <Button variant="link" size="sm" onClick={onCheckForUpdates} icon={'fa fa-refresh' as any} />
-    )}
+    <Button
+      data-qa="update-last-check-button"
+      variant="link"
+      size="sm"
+      onClick={onCheckForUpdates}
+      icon={'fa fa-refresh' as any}
+      disabled={disabled}
+    />
   </div>
 );
