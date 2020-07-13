@@ -668,9 +668,9 @@ export const METRIC_CATALOGUE = {
   },
   query_length: {
     humanizeName: 'Query Length',
-    tooltipText: 'Query duration',
+    tooltipText: 'Shows how long the query is',
     simpleName: 'query_length',
-    serviceTypes: ['all'],
+    serviceTypes: ['mysql'],
     metricRelation: () => '',
     units: Units.PER_SEC,
     pipeTypes: {
