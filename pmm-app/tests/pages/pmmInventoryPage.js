@@ -19,8 +19,8 @@ module.exports = {
     deleteButton: '//span[contains(text(), "Delete")]',
     proceedButton: '//span[contains(text(), "Proceed")]',
     forceModeCheckbox:
-      '//div[@data-qa="form-field-force"]/descendant::span[@class="checkbox-container__checkmark"]',
-    tableCheckbox: '//div[@data-qa="select-row"]',
+      'div[data-qa="form-field-force"] span.checkbox-container__checkmark',
+    tableCheckbox: 'div[data-qa="select-row"]',
   },
 
   verifyOldMySQLRemoteServiceIsDisplayed(serviceName) {
