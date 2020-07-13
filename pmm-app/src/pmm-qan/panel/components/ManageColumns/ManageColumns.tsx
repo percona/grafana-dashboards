@@ -66,7 +66,7 @@ export const ManageColumns = (props) => {
       placement="topLeft"
     >
       <div>
-        <span className={`${styles.placeholder} ${styles.placeholderPadding}`}>
+        <span className={cx(styles.placeholder, styles.placeholderPadding)}>
           {placeholder && METRIC_CATALOGUE[placeholder].humanizeName}
         </span>
       </div>
