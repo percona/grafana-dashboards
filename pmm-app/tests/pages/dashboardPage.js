@@ -320,6 +320,7 @@ module.exports = {
       "//span[contains(text(),'No Data')]//ancestor::div[contains(@class,'panel-container')]//span[contains(@class,'panel-title-text')]",
     collapsedDashboardRow: "//div[@class='dashboard-row dashboard-row--collapsed']/a",
     annotationMarker: "(//div[contains(@class,'events_marker')])",
+    clearSelection: "//a[@ng-click='vm.clearSelections()']",
   },
 
   annotationLocator(annotationNumber) {
@@ -427,5 +428,24 @@ module.exports = {
       serviceName +
       "')]";
     I.seeElement(existingFilter);
+  },
+  
+  async applyFilter(filterName, filterValue) {
+    // eslint-disable-next-line max-len
+    const filterSelector = `(//a[@class='variable-value-link']//ancestor::div//label[contains(text(),'${filterName}')])[1]//parent::div//a[@ng-click]`;
+    const filterValueSelector = `//span[contains(text(), '${filterValue}')]`;
+    // eslint-disable-next-line max-len
+    const filterNameSelector = `(//a[@class='variable-value-link']//ancestor::div//label[contains(text(),'${filterName}')])[1]`;
+    I.waitForElement(filterSelector, 30);
+    I.click(filterSelector);
+    I.waitForElement(filterValueSelector, 30);
+    let numOfElements = await I.grabNumberOfVisibleElements(this.fields.clearSelection);
+    if (numOfElements === 1) {
+      I.click(this.fields.clearSelection);
+    }
+    I.waitForElement(filterValueSelector, 30);
+    I.click(filterValueSelector);
+    I.waitForElement(filterNameSelector, 30);
+    I.click(filterNameSelector);
   },
 };
