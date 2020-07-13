@@ -14,24 +14,21 @@ interface RejectedPromiseResult {
 
 type PromiseResult = FulfilledPromiseResult | RejectedPromiseResult;
 
-export const processPromiseResults = (requests: Array<Promise<any>>): Promise<PromiseResult[]> =>
-  Promise.all(
-    requests.map(promise =>
-      promise
-        .then(
-          (value): FulfilledPromiseResult => ({
-            status: 'fulfilled',
-            value,
-          })
-        )
-        .catch(
-          (reason): RejectedPromiseResult => ({
-            status: 'rejected',
-            reason,
-          })
-        )
+export const processPromiseResults = (requests: Array<Promise<any>>): Promise<PromiseResult[]> => Promise.all(
+  requests.map((promise) => promise
+    .then(
+      (value): FulfilledPromiseResult => ({
+        status: 'fulfilled',
+        value,
+      })
     )
-  );
+    .catch(
+      (reason): RejectedPromiseResult => ({
+        status: 'rejected',
+        reason,
+      })
+    ))
+);
 
 export const filterFulfilled = ({ status }: { status: PromiseResult['status'] }) => status === 'fulfilled';
 
@@ -44,10 +41,10 @@ interface Model {
 
 const getParams = (params, type): Model => {
   const { custom_labels, ...rest } = params;
-  const labels =
-    custom_labels && Object.keys(custom_labels).length
-      ? Object.entries<string>(custom_labels).map<CustomLabel>(([key, value]) => ({ key, value }))
-      : [];
+  const labels = custom_labels && Object.keys(custom_labels).length
+    ? Object.entries<string>(custom_labels).map<CustomLabel>(([key, value]) => ({ key, value }))
+    : [];
+
   return {
     custom_labels: labels,
     type,
@@ -57,19 +54,20 @@ const getParams = (params, type): Model => {
 };
 
 const getModel = (item: ServicesList) => {
-  const addType = Object.keys(item).map(type => ({ type, params: item[type] }));
-  return addType.map(agent =>
-    agent['params'].map(
-      (arrItem): Model => {
-        const type = inventoryTypes[agent['type']] || '';
-        return getParams(arrItem, type);
-      }
-    )
-  );
+  const addType = Object.keys(item).map((type) => ({ type, params: item[type] }));
+
+  return addType.map((agent) => agent.params.map(
+    (arrItem): Model => {
+      const type = inventoryTypes[agent.type] || '';
+
+      return getParams(arrItem, type);
+    }
+  ));
 };
 
 const getServiceModel = (item: InventoryList) => {
   const createParams = getModel(item);
+
   return orderBy(
     [].concat(...createParams),
     [(service: Model) => (service.service_name || '').toLowerCase()],
@@ -79,6 +77,7 @@ const getServiceModel = (item: InventoryList) => {
 
 const getNodeModel = (item: InventoryList) => {
   const createParams = getModel(item);
+
   return orderBy(
     [].concat(...createParams),
     [(node: Model) => (node.node_name || '').toLowerCase()],
@@ -88,6 +87,7 @@ const getNodeModel = (item: InventoryList) => {
 
 const getAgentModel = (item: InventoryList) => {
   const createParams = getModel(item);
+
   return orderBy([].concat(...createParams), [(agent: Model) => (agent.type || '').toLowerCase()], ['asc']);
 };
 
