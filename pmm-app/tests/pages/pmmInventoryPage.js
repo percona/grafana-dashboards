@@ -18,8 +18,7 @@ module.exports = {
     serviceIdLocatorPrefix: '//table//tr/td[4][contains(text(),"',
     deleteButton: '//span[contains(text(), "Delete")]',
     proceedButton: '//span[contains(text(), "Proceed")]',
-    forceModeCheckbox:
-      'div[data-qa="form-field-force"] span.checkbox-container__checkmark',
+    forceModeCheckbox: 'div[data-qa="form-field-force"] span.checkbox-container__checkmark',
     tableCheckbox: 'div[data-qa="select-row"]',
   },
 
