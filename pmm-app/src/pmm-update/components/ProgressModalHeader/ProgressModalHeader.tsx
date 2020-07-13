@@ -9,7 +9,6 @@ export const ProgressModalHeader: FC<ProgressModalHeaderProps> = ({
   updateFailed = false,
 }) => (
   <>
-    {/* eslint-disable-next-line no-nested-ternary */}
     {isUpdated ? (
       <h4>{Messages.updateSucceeded}</h4>
     ) : !updateFailed ? (

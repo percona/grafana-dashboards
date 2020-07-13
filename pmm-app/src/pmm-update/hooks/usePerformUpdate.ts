@@ -64,7 +64,6 @@ export const usePerformUpdate = (): UpdateStatus => {
 
     updateStatus(logOffset, 0);
 
-    // eslint-disable-next-line consistent-return
     return () => {
       clearTimeout(timeoutId);
     };

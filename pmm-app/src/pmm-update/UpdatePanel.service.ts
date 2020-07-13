@@ -1,4 +1,4 @@
-import { apiRequest } from 'shared/components/helpers/api';
+import { apiRequest } from 'react-plugins-deps/components/helpers/api';
 import {
   GetUpdatesBody,
   GetUpdateStatusBody,

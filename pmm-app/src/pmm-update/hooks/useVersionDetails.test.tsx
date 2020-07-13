@@ -4,7 +4,7 @@ import { mount } from 'enzyme';
 
 import { useApiCall, useVersionDetails } from 'pmm-update/hooks';
 
-jest.mock('shared/components/helpers/notification-manager');
+jest.mock('../../react-plugins-deps/components/helpers/notification-manager');
 
 const HookWrapper: FC<{ hook: () => any }> = ({ hook }) => {
   const dataHook = hook ? hook() : undefined;
@@ -170,13 +170,13 @@ describe('useVersionDetails', () => {
 
     const expectedNextVersionDetails = {
       nextFullVersion: fakeData.latest.full_version,
-      nextVersionDate: 'June 09',
+      nextVersionDate: 'June 09, 2020',
       nextVersion: fakeData.latest.version,
       newsLink: 'https://percona.com',
     };
     const expectedInstalledVersionDetails = {
       installedFullVersion: fakeData.installed.full_version,
-      installedVersionDate: 'June 08',
+      installedVersionDate: 'June 08, 2020',
       installedVersion: fakeData.installed.version,
     };
 

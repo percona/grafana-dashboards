@@ -7,7 +7,7 @@ import { getUpdateStatus } from 'pmm-update/UpdatePanel.service';
 
 const fakeLaunchUpdate = jest.fn();
 
-jest.mock('shared/components/helpers/notification-manager');
+jest.mock('../../react-plugins-deps/components/helpers/notification-manager');
 
 const HookWrapper: FC<{ hook: () => any }> = ({ hook }) => {
   const dataHook = hook ? hook() : undefined;
@@ -42,7 +42,7 @@ describe('usePerformUpdate', () => {
     mockedGetUpdateStatus.mockRestore();
   });
 
-  it('should return the correct values if the update initialization was successful', async () => {
+  it('should return the correct values if the upgrade initialization was successful', async () => {
     let wrapper: ReturnType<typeof mount> | undefined;
 
     await act(async () => {
@@ -90,7 +90,7 @@ describe('usePerformUpdate', () => {
     wrapper?.unmount();
   });
 
-  it('should return isUpdated equal to true if the update succeeded', async () => {
+  it('should return isUpdated equal to true if the upgrade succeeded', async () => {
     let wrapper: ReturnType<typeof mount> | undefined;
 
     (getUpdateStatus as jest.Mock).mockImplementation(() => ({

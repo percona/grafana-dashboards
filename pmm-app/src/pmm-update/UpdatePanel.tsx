@@ -1,14 +1,10 @@
 import React, {
   useEffect, useState, FC, MouseEvent
 } from 'react';
+import { Button, Spinner } from '@grafana/ui';
 
 import {
-  AvailableUpdate,
-  LastCheck,
-  CenteredButton,
-  CurrentVersion,
-  InfoBox,
-  ProgressModal,
+  AvailableUpdate, CurrentVersion, InfoBox, LastCheck, ProgressModal
 } from 'pmm-update/components';
 import { useVersionDetails, usePerformUpdate } from 'pmm-update/hooks';
 
@@ -38,6 +34,8 @@ export const UpdatePanel: FC<{}> = () => {
   };
 
   useEffect(() => {
+    setErrorMessage(fetchVersionErrorMessage || updateErrorMessage);
+
     const timeout = setTimeout(() => {
       setErrorMessage('');
     }, 5000);
@@ -46,14 +44,6 @@ export const UpdatePanel: FC<{}> = () => {
       clearTimeout(timeout);
     };
   }, [fetchVersionErrorMessage, updateErrorMessage]);
-
-  useEffect(() => {
-    setErrorMessage(updateErrorMessage);
-  }, [updateErrorMessage]);
-
-  useEffect(() => {
-    setErrorMessage(fetchVersionErrorMessage);
-  }, [fetchVersionErrorMessage]);
 
   const handleUpdate = () => {
     setShowModal(true);
@@ -64,22 +54,32 @@ export const UpdatePanel: FC<{}> = () => {
     <>
       <div className={styles.panel}>
         <CurrentVersion installedVersionDetails={installedVersionDetails} />
-        {isDefaultView && <InfoBox />}
-        {!isUpdateAvailable && !isDefaultView && !forceUpdate ? <InfoBox upToDate /> : null}
         {isUpdateAvailable && !isDefaultView ? (
           <AvailableUpdate nextVersionDetails={nextVersionDetails} />
         ) : null}
-        {isUpdateAvailable || forceUpdate ? (
-          <CenteredButton onClick={handleUpdate} icon={'fa fa-download' as any} variant="secondary">
-            Update to
-            {' '}
-            {nextVersionDetails?.nextVersion}
-          </CenteredButton>
-        ) : null}
+        {isLoading ? (
+          <div className={styles.middleSectionWrapper}>
+            <Spinner />
+          </div>
+        ) : (
+          <>
+            {isUpdateAvailable || forceUpdate ? (
+              <div className={styles.middleSectionWrapper}>
+                <Button onClick={handleUpdate} icon={'fa fa-download' as any} variant="secondary">
+                  Upgrade to
+                  {' '}
+                  {nextVersionDetails?.nextVersion}
+                </Button>
+              </div>
+            ) : (
+              <InfoBox upToDate={!isDefaultView && !forceUpdate} />
+            )}
+          </>
+        )}
         <LastCheck
+          disabled={isLoading}
           onCheckForUpdates={handleCheckForUpdates}
           lastCheckDate={lastCheckDate}
-          isLoading={isLoading}
         />
       </div>
       <ProgressModal
