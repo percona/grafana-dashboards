@@ -77,7 +77,7 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
         await this.fetchAlerts();
         showSuccessNotification({ message: 'Done running DB checks. The latest results are displayed.' });
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
     }, 10000);
   }

@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { act } from 'react-dom/test-utils';
 import { MemoryRouter, Route } from 'react-router-dom';
 import { mount, ReactWrapper } from 'enzyme';
 import { Spinner } from '@grafana/ui';
@@ -145,7 +146,152 @@ describe('CheckPanel::', () => {
     buttonWithSpinner.simulate('click');
     expect(spy).toBeCalledTimes(1);
 
+    wrapper.unmount();
+  });
+
+  it('should log errors if the API call to fetch checks fails', async () => {
+    const props = {
+      options: {
+        title: 'DB CHECKS',
+      },
+    } as CheckPanelProps;
+
+    const originalConsoleError = console.error;
+
+    console.error = jest.fn();
+
+    jest.useFakeTimers();
+
+    const wrapper: ReactWrapper<CheckPanelProps, {}, any> = mount(<CheckPanelRouter {...props} />);
+
+    const root = wrapper.find(CheckPanel) as ReactWrapper<CheckPanelProps, CheckPanelState, CheckPanel>;
+
+    root.setState({ isLoading: false });
+    wrapper.update();
+
+    const buttonWithSpinner = wrapper.find('[data-qa="db-check-panel"]').find(ButtonWithSpinner);
+
+    root.instance().fetchAlerts = jest.fn(() => { throw Error('Test error'); });
+
+    await act(async () => {
+      buttonWithSpinner.simulate('click');
+    });
+
+    await act(async () => {
+      jest.runAllTimers();
+    });
+    wrapper.update();
+
+    expect(console.error).toBeCalledTimes(1);
+    expect(console.error).toBeCalledWith(Error('Test error'));
+
+    console.error = originalConsoleError;
+
+    jest.useRealTimers();
+
+    wrapper.unmount();
+  });
+
+  it('should log errors if the API call to run checks fails', async () => {
+    const props = {
+      options: {
+        title: 'DB CHECKS',
+      },
+    } as CheckPanelProps;
+
+    const originalConsoleError = console.error;
+
+    console.error = jest.fn();
+
+    const wrapper: ReactWrapper<CheckPanelProps, {}, any> = mount(<CheckPanelRouter {...props} />);
+
+    const root = wrapper.find(CheckPanel) as ReactWrapper<CheckPanelProps, CheckPanelState, CheckPanel>;
+
+    root.setState({ isLoading: false });
+    wrapper.update();
+
+    const buttonWithSpinner = wrapper.find('[data-qa="db-check-panel"]').find(ButtonWithSpinner);
+
+    CheckService.runDbChecks = jest.fn(() => { throw Error('Test error'); });
+
     buttonWithSpinner.simulate('click');
+
+    expect(console.error).toBeCalledTimes(1);
+    expect(console.error).toBeCalledWith(Error('Test error'));
+
+    console.error = originalConsoleError;
+
+    (CheckService.runDbChecks as jest.Mock).mockClear();
+
+    wrapper.unmount();
+  });
+
+  it('should call the API to fetch alerts after the one to run checks', async () => {
+    const props = {
+      options: {
+        title: 'DB CHECKS',
+      },
+    } as CheckPanelProps;
+
+    jest.useFakeTimers();
+
+    const wrapper: ReactWrapper<CheckPanelProps, {}, any> = mount(<CheckPanelRouter {...props} />);
+
+    const root = wrapper.find(CheckPanel) as ReactWrapper<CheckPanelProps, CheckPanelState, CheckPanel>;
+
+    root.setState({ isLoading: false });
+    wrapper.update();
+
+    const buttonWithSpinner = wrapper.find('[data-qa="db-check-panel"]').find(ButtonWithSpinner);
+
+    root.instance().fetchAlerts = jest.fn();
+    expect((root.instance().fetchAlerts as jest.Mock).mock.calls.length).toEqual(0);
+
+    await act(async () => {
+      buttonWithSpinner.simulate('click');
+    });
+
+    await act(async () => {
+      jest.runAllTimers();
+    });
+    wrapper.update();
+    expect((root.instance().fetchAlerts as jest.Mock).mock.calls.length).toEqual(1);
+
+    jest.useRealTimers();
+
+    wrapper.unmount();
+  });
+
+  it('should set the request pending state correctly', async () => {
+    const props = {
+      options: {
+        title: 'DB CHECKS',
+      },
+    } as CheckPanelProps;
+
+    jest.useFakeTimers();
+
+    const wrapper: ReactWrapper<CheckPanelProps, {}, any> = mount(<CheckPanelRouter {...props} />);
+
+    const root = wrapper.find(CheckPanel) as ReactWrapper<CheckPanelProps, CheckPanelState, CheckPanel>;
+
+    root.setState({ isLoading: false });
+    wrapper.update();
+
+    const buttonWithSpinner = wrapper.find('[data-qa="db-check-panel"]').find(ButtonWithSpinner);
+
+    await act(async () => {
+      buttonWithSpinner.simulate('click');
+    });
+
+    expect(root.state().isRunChecksRequestPending).toBe(true);
+    await act(async () => {
+      jest.runAllTimers();
+    });
+    wrapper.update();
+    expect(root.state().isRunChecksRequestPending).toBe(false);
+
+    jest.useRealTimers();
 
     wrapper.unmount();
   });
