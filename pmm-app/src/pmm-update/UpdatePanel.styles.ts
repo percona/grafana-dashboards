@@ -1,9 +1,10 @@
 import { css } from 'emotion';
 
 export const panel = css`
+  display: flex;
+  flex-direction: column;
   position: relative;
   height: 100%;
-  padding-top: 5px;
 
   p {
     margin-bottom: 0;
@@ -15,4 +16,11 @@ export const panel = css`
       margin-bottom: 0.1rem;
     }
   }
+`;
+
+export const middleSectionWrapper = css`
+  align-items: center;
+  display: flex;
+  flex: 1;
+  justify-content: center;
 `;
