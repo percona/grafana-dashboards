@@ -5,7 +5,7 @@ import { ButtonWithSpinner } from './ButtonWithSpinner';
 
 describe('CheckPanel::', () => {
   it('should hide the spinner by default', () => {
-    const wrapper = shallow(<ButtonWithSpinner />);
+    const wrapper = shallow(<ButtonWithSpinner>Test text</ButtonWithSpinner>);
 
     expect(
       wrapper
@@ -13,12 +13,17 @@ describe('CheckPanel::', () => {
         .find(Spinner)
         .length
     ).toEqual(0);
+    expect(
+      wrapper
+        .find(Button)
+        .text()
+    ).toEqual('Test text');
 
     wrapper.unmount();
   });
 
-  it('should show a spinner if isLoading is set', () => {
-    const wrapper = shallow(<ButtonWithSpinner isLoading />);
+  it('should show children if not loading', () => {
+    const wrapper = shallow(<ButtonWithSpinner isLoading>Test text</ButtonWithSpinner>);
 
     expect(
       wrapper
@@ -26,6 +31,11 @@ describe('CheckPanel::', () => {
         .find(Spinner)
         .length
     ).toEqual(1);
+    expect(
+      wrapper
+        .find(Button)
+        .text()
+    ).not.toContain('Test text');
 
     wrapper.unmount();
   });
