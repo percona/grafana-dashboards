@@ -498,7 +498,7 @@ module.exports = {
       "')]";
     I.seeElement(existingFilter);
   },
-
+  
   async applyFilter(filterName, filterValue) {
     // eslint-disable-next-line max-len
     const filterSelector = `(//a[@class='variable-value-link']//ancestor::div//label[contains(text(),'${filterName}')])[1]//parent::div//a[@ng-click]`;
