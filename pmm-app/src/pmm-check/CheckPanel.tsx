@@ -73,12 +73,8 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
     }
     setTimeout(async () => {
       this.setState({ isRunChecksRequestPending: false });
-      try {
-        await this.fetchAlerts();
-        showSuccessNotification({ message: 'Done running DB checks. The latest results are displayed.' });
-      } catch (e) {
-        console.error(e);
-      }
+      await this.fetchAlerts();
+      showSuccessNotification({ message: 'Done running DB checks. The latest results are displayed.' });
     }, 10000);
   }
 

@@ -171,7 +171,7 @@ describe('CheckPanel::', () => {
 
     const buttonWithSpinner = wrapper.find('[data-qa="db-check-panel"]').find(ButtonWithSpinner);
 
-    root.instance().fetchAlerts = jest.fn(() => { throw Error('Test error'); });
+    CheckService.getActiveAlerts = jest.fn(() => { throw Error('Test error'); });
 
     await act(async () => {
       buttonWithSpinner.simulate('click');
@@ -187,6 +187,7 @@ describe('CheckPanel::', () => {
 
     console.error = originalConsoleError;
 
+    (CheckService.getActiveAlerts as jest.Mock).mockClear();
     jest.useRealTimers();
 
     wrapper.unmount();
