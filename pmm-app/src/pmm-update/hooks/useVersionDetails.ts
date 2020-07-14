@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { useApiCall } from 'pmm-update/hooks';
-import { formatDate, formatDateWithTime } from 'pmm-update/UpdatePanel.utils';
+import { formatDateWithYear, formatDateWithTime } from 'pmm-update/UpdatePanel.utils';
 import { getCurrentVersion } from 'pmm-update/UpdatePanel.service';
 import {
   CurrentOrNextVersionDetails,
@@ -48,13 +48,13 @@ export const useVersionDetails = (initialForceUpdate = false): CurrentOrNextVers
     setNextVersionDetails({
       nextVersion: latestVersion ?? '',
       nextFullVersion: latestFullVersion ?? '',
-      nextVersionDate: latestTimestamp ? formatDate(latestTimestamp) : '',
+      nextVersionDate: latestTimestamp ? formatDateWithYear(latestTimestamp) : '',
       newsLink: latest_news_url ?? '',
     });
     setInstalledVersionDetails({
       installedVersion: installedVersion ?? '',
       installedFullVersion: installedFullVersion ?? '',
-      installedVersionDate: installedVersionTimestamp ? formatDate(installedVersionTimestamp) : '',
+      installedVersionDate: installedVersionTimestamp ? formatDateWithYear(installedVersionTimestamp) : '',
     });
     setLastCheckDate(last_check ? formatDateWithTime(last_check) : '');
     setIsUpdateAvailable(update_available ?? false);

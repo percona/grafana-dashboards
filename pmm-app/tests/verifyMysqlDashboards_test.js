@@ -10,6 +10,7 @@ Scenario(
     async (I, adminPage, dashboardPage) => {
       I.amOnPage(dashboardPage.mysqlInstanceSummaryDashboard.url);
       dashboardPage.waitForDashboardOpened();
+      await dashboardPage.applyFilter('Service Name', 'ps_5.7');
       await dashboardPage.expandEachDashboardRow();
       I.click(adminPage.fields.metricTitle);
       adminPage.peformPageDown(5);

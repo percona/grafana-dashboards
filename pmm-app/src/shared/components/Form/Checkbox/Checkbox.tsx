@@ -1,5 +1,6 @@
 import React from 'react';
 import { useField } from 'react-final-form';
+import { OverflowTooltip } from '../../Elements/OverflowTooltip/OverflowTooptip';
 import './Checkbox.scss';
 
 interface CheckboxFieldInterface {
@@ -26,7 +27,9 @@ export const CheckboxField = ({
         data-qa={dataQa}
       />
       <span className="checkbox-container__checkmark" />
-      <span className="checkbox-container__label-text">{label}</span>
+      <OverflowTooltip className="checkbox-container__label-text">
+        {label}
+      </OverflowTooltip>
     </label>
   );
 };

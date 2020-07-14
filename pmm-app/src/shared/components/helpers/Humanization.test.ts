@@ -85,16 +85,46 @@ describe('Humanize', () => {
     expect(result).toBe('2.00');
   });
 
-  it('should return 200.00% if input is 2 and name is percent', () => {
+  it('should return 200% if input is 2 and name is percent', () => {
     const result = humanize.transform(2, 'percent');
 
-    expect(result).toBe('200.00%');
+    expect(result).toBe('200%');
   });
 
-  it('should return <0.01 if input is 0.0000001 and name is percent', () => {
+  it('should return 200.23% if input is 2.0023 and name is percent', () => {
+    const result = humanize.transform(2.0023, 'percent');
+
+    expect(result).toBe('200.23%');
+  });
+
+  it('should return <0.01% if input is 0.0000001 and name is percent', () => {
     const result = humanize.transform(0.0000001, 'percent');
 
-    expect(result).toBe('<0.01');
+    expect(result).toBe('<0.01%');
+  });
+
+  it('should return 76% if input is 0.7564 and name is percentRounded', () => {
+    const result = humanize.transform(0.7564, 'percentRounded');
+
+    expect(result).toBe('76%');
+  });
+
+  it('should return 75% if input is 0.753 and name is percentRounded', () => {
+    const result = humanize.transform(0.753, 'percentRounded');
+
+    expect(result).toBe('75%');
+  });
+
+  it('should return 1% if input is 0.01 and name is percentRounded', () => {
+    const result = humanize.transform(0.01, 'percentRounded');
+
+    expect(result).toBe('1%');
+  });
+
+  it('should return <0.01% if input is 0.0000001 and name is percentRounded', () => {
+    const result = humanize.transform(0.0000001, 'percentRounded');
+
+    expect(result).toBe('<0.01%');
   });
 
   it('should return <0.01 if input is 0.001', () => {
