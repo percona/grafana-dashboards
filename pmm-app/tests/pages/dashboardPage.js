@@ -268,7 +268,7 @@ module.exports = {
     ],
   },
   mysqlInstanceSummaryDashboard: {
-    url: 'graph/d/mysql-instance-summary/mysql-instance-summary',
+    url: 'graph/d/mysql-instance-summary/mysql-instance-summary?orgId=1&refresh=1m&from=now-5m&to=now',
     metrics: [
       'MySQL Uptime',
       'Current QPS',
@@ -508,7 +508,7 @@ module.exports = {
     I.waitForElement(filterSelector, 30);
     I.click(filterSelector);
     I.waitForElement(filterValueSelector, 30);
-    let numOfElements = await I.grabNumberOfVisibleElements(this.fields.clearSelection);
+    const numOfElements = await I.grabNumberOfVisibleElements(this.fields.clearSelection);
     if (numOfElements === 1) {
       I.click(this.fields.clearSelection);
     }

@@ -21,7 +21,7 @@ export const QueryTooltip = ({
     title={() => (
       <div className="query-tooltip-data-wrapper">
         {queryId ? <h5 style={{ margin: '10px' }}>{`Query Id: ${queryId}`}</h5> : null}
-        {query ? <Highlight language="sql">{sqlFormatter.format(query)}</Highlight> : null}
+        {query ? <Highlight language="sql">{sqlFormatter.format(query, { language: 'pl/sql' })}</Highlight> : null}
       </div>
     )}
   >
