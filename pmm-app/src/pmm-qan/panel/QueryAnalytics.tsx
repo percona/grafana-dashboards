@@ -33,9 +33,7 @@ const QueryAnalyticsPanel: FC = () => {
       <div className="query-analytics-data">
         <div className={styles.getContainerWrapper(size)}>
           <div className={styles.overviewHeader}>
-            <div className={styles.manageColumnsWrapper}>
-              <ManageColumns onlyAdd />
-            </div>
+            <ManageColumns onlyAdd />
           </div>
           <div className={styles.splitterWrapper}>
             <SplitPane

@@ -14,26 +14,34 @@ export const AvailableUpdate: FC<AvailableUpdateProps> = ({ nextVersionDetails }
   } = nextVersionDetails;
 
   return (
-    <section className={styles.availableUpdate}>
-      <div onClick={handleToggleShowFullVersion}>
-        <p>
-          {Messages.availableVersion}
-          :&nbsp;
-        </p>
-        <p className={styles.availableUpdate_version}>
-          {showFullVersion ? nextFullVersion : nextVersion}
-          {' '}
-          <em>{nextVersionDate}</em>
-          {newsLink && (
-            <>
-              {' '}
-              <LinkButton rel="noreferrer" href={newsLink} target="_blank" variant="link">
-                {Messages.whatsNew}
-              </LinkButton>
-            </>
-          )}
-        </p>
-      </div>
+    <section className={styles.availableUpdate} onClick={handleToggleShowFullVersion}>
+      <p>
+        {Messages.availableVersion}
+        :&nbsp;
+      </p>
+      <p className={styles.availableUpdateVersion}>
+        <span data-qa="update-latest-version">{showFullVersion ? nextFullVersion : nextVersion}</span>
+        {' '}
+        <span data-qa="update-latest-release-date" className={styles.releaseDate}>
+          (
+          {nextVersionDate}
+          )
+        </span>
+        {newsLink && (
+          <>
+            {' '}
+            <LinkButton
+              className={styles.whatsNewLink}
+              rel="noreferrer"
+              href={newsLink}
+              target="_blank"
+              variant="link"
+            >
+              {Messages.whatsNew}
+            </LinkButton>
+          </>
+        )}
+      </p>
     </section>
   );
 };

@@ -1,8 +1,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { ClipboardButton, Modal } from '@grafana/ui';
+import { Button, ClipboardButton, Modal } from '@grafana/ui';
 
-import { CenteredButton, ProgressModal } from 'pmm-update/components';
+import { ProgressModal } from 'pmm-update/components';
 
 jest.mock('shared/components/helpers/notification-manager');
 
@@ -17,7 +17,7 @@ describe('ProgressModal::', () => {
     wrapper.unmount();
   });
 
-  it('should show the update in progress if isUpdated is false', () => {
+  it('should show the upgrade in progress if isUpdated is false', () => {
     const wrapper = shallow(<ProgressModal version={version} />);
 
     expect(wrapper.find(ClipboardButton).length).toEqual(1);
@@ -25,7 +25,7 @@ describe('ProgressModal::', () => {
     expect(wrapper.find('[data-qa="modal-output-pre"]').length).toEqual(1);
 
     expect(wrapper.find('[data-qa="modal-update-success-text"]').length).toEqual(0);
-    expect(wrapper.find(CenteredButton).length).toEqual(0);
+    expect(wrapper.find(Button).length).toEqual(0);
 
     wrapper.unmount();
   });
@@ -34,7 +34,7 @@ describe('ProgressModal::', () => {
     const wrapper = shallow(<ProgressModal isUpdated version={version} />);
 
     expect(wrapper.find('[data-qa="modal-update-success-text"]').length).toEqual(1);
-    expect(wrapper.find(CenteredButton).length).toEqual(1);
+    expect(wrapper.find(Button).length).toEqual(1);
 
     expect(wrapper.find(ClipboardButton).length).toEqual(0);
     expect(wrapper.find('[data-qa="modal-chevron-icon"]').length).toEqual(0);
@@ -43,7 +43,7 @@ describe('ProgressModal::', () => {
     wrapper.unmount();
   });
 
-  it('should toggle the update output on click on the chevron icon', () => {
+  it('should toggle the upgrade output on click on the chevron icon', () => {
     const wrapper = shallow(<ProgressModal version={version} />);
     const chevron = wrapper.find('[data-qa="modal-chevron-icon"]');
     const chevronIconOpen = chevron.prop('name');
