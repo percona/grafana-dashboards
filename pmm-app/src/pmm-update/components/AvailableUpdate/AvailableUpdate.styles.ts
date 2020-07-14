@@ -3,8 +3,9 @@ import { css } from 'emotion';
 export const availableUpdate = css`
   align-items: flex-start;
   display: flex;
+  font-weight: bold;
   justify-content: flex-start;
-  line-height: 32px;
+  line-height: 1.2;
   margin-top: 5px;
 
   > div {
@@ -16,7 +17,16 @@ export const availableUpdate = css`
   }
 `;
 
-export const availableUpdate_version = css`
+export const availableUpdateVersion = css`
   font-size: 14px;
   margin-bottom: 7px;
+`;
+
+export const whatsNewLink = css`
+  height: 1em;
+  padding: 0;
+`;
+
+export const releaseDate = css`
+  font-size: 12px;
 `;

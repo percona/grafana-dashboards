@@ -7,6 +7,7 @@ import {
 import { cx } from 'emotion';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
 import { METRIC_CATALOGUE } from 'pmm-qan/panel/QueryAnalytics.constants';
+import { OptionContent } from './OptionContent/OptionContent';
 import { styles } from './ManageColumns.styles';
 import './ManageColumns.scss';
 
@@ -21,6 +22,11 @@ export const ManageColumns = (props) => {
     panelState: { columns },
   } = useContext(QueryAnalyticsProvider);
   const [availableColumns, setAvailableColumns] = useState(Object.values(METRIC_CATALOGUE));
+  const [isDropdownOpen, setDropdownOpen] = useState(false);
+  const extraSelectProps = {
+    dropdownAlign: { overflow: { adjustX: true } },
+    getPopupContainer: (trigger) => trigger.parentNode
+  };
 
   useEffect(() => {
     setAvailableColumns(
@@ -60,15 +66,19 @@ export const ManageColumns = (props) => {
       placement="topLeft"
     >
       <div>
-        <span className={styles.placeholder}>
+        <span className={cx(styles.placeholder, styles.placeholderPadding)}>
           {placeholder && METRIC_CATALOGUE[placeholder].humanizeName}
         </span>
       </div>
     </Tooltip>
   ) : (
-    <div className={styles.placeholder}>
-      <i className={cx('fa fa-plus-circle', styles.iconMargin)} />
-      <span> Add column</span>
+    <div className={styles.placeholderAdd}>
+      {!isDropdownOpen && (
+        <div>
+          <i className={cx('fa fa-plus-circle', styles.iconMargin)} />
+          <span>Add column</span>
+        </div>
+      )}
     </div>
   ));
 
@@ -96,12 +106,13 @@ export const ManageColumns = (props) => {
       <Select
         optionLabelProp="label"
         showSearch
-        style={{ width: width || '160px' }}
+        style={{ width: width || '125px' }}
         placeholder={<Placeholder />}
         filterOption={(value, option) => String(option.props.label)
           .toLowerCase()
           .includes(value.toLowerCase())}
         onChange={changeColumn}
+        onDropdownVisibleChange={(open) => setDropdownOpen(open)}
         dropdownMatchSelectWidth={false}
         value={undefined}
         showArrow={false}
@@ -109,10 +120,15 @@ export const ManageColumns = (props) => {
         dropdownClassName={`${onlyAdd ? 'add' : 'manage'}-columns-selector-dropdown`}
         dropdownRender={dropdownRender}
         data-qa="manage-columns-selector"
+        {...extraSelectProps}
       >
         {availableColumns.map((item) => (
           <Option key={item.simpleName} label={item.humanizeName}>
-            {item.humanizeName}
+            <OptionContent
+              title={item.humanizeName}
+              description={item.tooltipText}
+              tags={item.serviceTypes}
+            />
           </Option>
         ))}
       </Select>
