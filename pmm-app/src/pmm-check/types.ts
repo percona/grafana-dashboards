@@ -1,5 +1,5 @@
 export interface CheckPanelOptions {
-  title: string;
+  title?: string;
 }
 
 export interface Column {

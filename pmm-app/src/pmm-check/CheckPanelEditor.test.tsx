@@ -43,6 +43,20 @@ describe('CheckPanelEditor::', () => {
     expect(InputField.props()).toHaveProperty('value', props.options.title);
   });
 
+  it('should have an empty string as default value if title is not specified', () => {
+    const panelEditorProps = {
+      ...props,
+      options: {
+      },
+    };
+
+    const wrapper = shallow(<CheckPanelEditor {...panelEditorProps} />);
+
+    const InputField = wrapper.find('[data-qa="check-panel-editor-title-input"]');
+
+    expect(InputField.props()).toHaveProperty('value', '');
+  });
+
   it('should render the title passed as a prop', () => {
     const InputField = wrapper.find('[data-qa="check-panel-editor-title-input"]');
 
