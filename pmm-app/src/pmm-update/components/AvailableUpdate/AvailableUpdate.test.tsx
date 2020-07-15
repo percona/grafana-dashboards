@@ -27,18 +27,18 @@ describe('AvailableUpdate::', () => {
   });
 
   it('should show only the short version by default', () => {
-    expect(wrapper?.find('section > div > p').length).toEqual(2);
-    expect(wrapper?.find('section > div > p > em').length).toEqual(1);
+    expect(wrapper?.find('section > p').length).toEqual(2);
+    expect(wrapper?.find('section > p > span').length).toEqual(2);
     expect(
       wrapper
-        ?.find('section > div > p')
+        ?.find('section > p')
         .at(1)
         .text()
-    ).toEqual(`${nextVersion} ${nextVersionDate}`);
+    ).toEqual(`${nextVersion} (${nextVersionDate})`);
   });
 
   it('should show the news link if present', () => {
-    expect(wrapper?.find('section > div > p').find(LinkButton).length).toEqual(0);
+    expect(wrapper?.find('section > p').find(LinkButton).length).toEqual(0);
 
     const nextVersionDetails = {
       nextVersionDate,
@@ -49,16 +49,16 @@ describe('AvailableUpdate::', () => {
 
     wrapper = shallow(<AvailableUpdate nextVersionDetails={nextVersionDetails} />);
 
-    expect(wrapper?.find('section > div > p').find(LinkButton).length).toEqual(1);
+    expect(wrapper?.find('section > p').find(LinkButton).length).toEqual(1);
   });
 
   it('should show the full version on alt-click', () => {
-    wrapper?.find('section > div').simulate('click', { altKey: true });
+    wrapper?.find('section').simulate('click', { altKey: true });
     expect(
       wrapper
-        ?.find('section > div > p')
+        ?.find('section > p')
         .at(1)
         .text()
-    ).toEqual(`${nextFullVersion} ${nextVersionDate}`);
+    ).toEqual(`${nextFullVersion} (${nextVersionDate})`);
   });
 });
