@@ -7,7 +7,7 @@ module.exports = {
   // eslint-disable-next-line max-len
   advancedDataExplorationDashboardUrl:
     // eslint-disable-next-line max-len
-    'graph/d/1oz9QMHmk/advanced-data-exploration?refresh=1m&var-metric=go_gc_duration_seconds&var-interval=$__auto_interval_interval&var-node_name=All',
+    'graph/d/prometheus-advanced/advanced-data-exploration?refresh=1m&var-metric=go_gc_duration_seconds&var-interval=$__auto_interval_interval&var-node_name=All',
   monitoredDB: [
     'pxc',
     6,
