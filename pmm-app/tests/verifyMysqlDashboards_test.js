@@ -4,21 +4,21 @@ Before(async (I) => {
   I.Authorize();
 });
 
-// Need to skip to look into detail later, will fix it
+//Need to skip to look into detail later, will fix it
 xScenario(
-  // eslint-disable-next-line max-len
-  'Open the MySQL Overview Dashboard and verify Metrics are present and graphs are displayed @not-pr-pipeline',
-  async (I, adminPage, dashboardPage) => {
-    I.amOnPage(dashboardPage.mysqlInstanceSummaryDashboard.url);
-    dashboardPage.waitForDashboardOpened();
-    await dashboardPage.applyFilter('Service Name', 'ps_5.7');
-    await dashboardPage.expandEachDashboardRow();
-    I.click(adminPage.fields.metricTitle);
-    adminPage.peformPageDown(5);
-    dashboardPage.verifyMetricsExistence(dashboardPage.mysqlInstanceSummaryDashboard.metrics);
-    await dashboardPage.verifyThereAreNoGraphsWithNA();
-    await dashboardPage.verifyThereAreNoGraphsWithoutData(3);
-  }
+    // eslint-disable-next-line max-len
+    'Open the MySQL Overview Dashboard and verify Metrics are present and graphs are displayed @not-pr-pipeline',
+    async (I, adminPage, dashboardPage) => {
+      I.amOnPage(dashboardPage.mysqlInstanceSummaryDashboard.url);
+      dashboardPage.waitForDashboardOpened();
+      await dashboardPage.applyFilter('Service Name', 'ps_5.7');
+      await dashboardPage.expandEachDashboardRow();
+      I.click(adminPage.fields.metricTitle);
+      adminPage.peformPageDown(5);
+      dashboardPage.verifyMetricsExistence(dashboardPage.mysqlInstanceSummaryDashboard.metrics);
+      await dashboardPage.verifyThereAreNoGraphsWithNA();
+      await dashboardPage.verifyThereAreNoGraphsWithoutData(3);
+    }
 );
 
 Scenario(
