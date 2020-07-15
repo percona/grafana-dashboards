@@ -69,53 +69,62 @@ export const Overview: FC = () => {
     [querySelected, totals, queryId]
   );
 
+  const onSortChange = useCallback(
+    (data) => {
+      if (!data[0]) {
+        return;
+      }
 
-  const onSortChange = useCallback((data) => {
-    if (!data[0]) {
-      return;
-    }
-
-    contextActions.changeSort(data[0].desc ? data[0].id : `-${data[0].id}`);
-  }, [contextActions.changeSort]);
+      contextActions.changeSort(data[0].desc ? data[0].id : `-${data[0].id}`);
+    },
+    [contextActions.changeSort]
+  );
 
   return (
     <div className="table-wrapper" ref={tableWrapperRef}>
-      {useMemo(() => (
-        <div>
-          <Table
-            columns={overviewMetricsList.columns}
-            data={overviewMetricsList.rows}
-            rowClassName={getRowClassName}
-            onRowClick={(selected) => {
-              contextActions.selectQuery(selected.original.dimension, selected.index === 0);
-            }}
-            scroll={{ y: Math.min(height, 550), x: '100%' }}
-            onSortChange={onSortChange}
-            rowNumber={(index) => <div>{index === 0 ? '' : (pageNumber - 1) * pageSize + index}</div>}
-            orderBy={orderBy}
-            noData={<h1>No queries Available</h1>}
-            loading={loading}
-          />
+      {useMemo(
+        () => (
+          <div>
+            <Table
+              columns={overviewMetricsList.columns}
+              data={overviewMetricsList.rows.length > 1 ? overviewMetricsList.rows : []}
+              rowClassName={getRowClassName}
+              onRowClick={(selected) => {
+                contextActions.selectQuery(selected.original.dimension, selected.index === 0);
+              }}
+              scroll={{ y: Math.min(height, 550), x: '100%' }}
+              onSortChange={onSortChange}
+              rowNumber={(index) => <div>{index === 0 ? '' : (pageNumber - 1) * pageSize + index}</div>}
+              orderBy={orderBy}
+              noData={<h1>No queries available for this filters combination</h1>}
+              loading={loading}
+            />
+          </div>
+        ),
+        [overviewMetricsList, loading, height, getRowClassName]
+      )}
+      {overviewMetricsList.rows.length > 1 ? (
+        <div className={styles.overviewHeader}>
+          <div className={styles.paginationWrapper}>
+            <Pagination
+              showSizeChanger
+              pageSizeOptions={PAGE_SIZE_OPTIONS}
+              defaultCurrent={DEFAULT_PAGE_NUMBER}
+              defaultPageSize={DEFAULT_PAGE_SIZE}
+              showTotal={renderShowTotal}
+              current={pageNumber}
+              pageSize={pageSize}
+              total={total}
+              onShowSizeChange={changePageSize}
+              onChange={changePageNumber}
+              data-qa="qan-pagination"
+            />
+            <span className={styles.showTotal} data-qa="qan-total-items">
+              {showTotal}
+            </span>
+          </div>
         </div>
-      ), [overviewMetricsList, loading, height, getRowClassName])}
-      <div className={styles.overviewHeader}>
-        <div className={styles.paginationWrapper}>
-          <Pagination
-            showSizeChanger
-            pageSizeOptions={PAGE_SIZE_OPTIONS}
-            defaultCurrent={DEFAULT_PAGE_NUMBER}
-            defaultPageSize={DEFAULT_PAGE_SIZE}
-            showTotal={renderShowTotal}
-            current={pageNumber}
-            pageSize={pageSize}
-            total={total}
-            onShowSizeChange={changePageSize}
-            onChange={changePageNumber}
-            data-qa="qan-pagination"
-          />
-          <span className={styles.showTotal} data-qa="qan-total-items">{showTotal}</span>
-        </div>
-      </div>
+      ) : null}
     </div>
   );
 };
