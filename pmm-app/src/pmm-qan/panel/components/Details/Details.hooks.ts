@@ -150,6 +150,7 @@ export const useDetailsState = (): boolean => {
       } finally {
         setLoading(false);
       }
+      setLoading(false);
     })();
   }, [queryId]);
 
