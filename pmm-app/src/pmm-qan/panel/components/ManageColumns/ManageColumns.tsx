@@ -143,7 +143,7 @@ export const ManageColumns = (props) => {
         {...extraSelectProps}
       >
         {availableColumns.map((item) => (
-          <Option key={item.simpleName} label={item.humanizeName} disabled={!item.isMetricAvailable}>
+          <Option key={item.simpleName} label={item.humanizeName}>
             <OptionContent
               title={item.humanizeName}
               description={item.tooltipText}
