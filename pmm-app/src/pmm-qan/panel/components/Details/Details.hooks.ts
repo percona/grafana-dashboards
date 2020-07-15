@@ -147,8 +147,9 @@ export const useDetailsState = (): boolean => {
         });
       } catch (e) {
         console.error(e);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     })();
   }, [queryId]);
 
