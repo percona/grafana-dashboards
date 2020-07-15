@@ -17,7 +17,7 @@ const getExample = async ({
     tables,
   };
 
-  return apiRequestQAN.post<any, any>('/ObjectDetails/GetQueryExample', data);
+  return apiRequestQAN.postCancelable<any, any>('/ObjectDetails/GetQueryExample', data);
 };
 
 const getActionResult = (body) => apiRequestManagement.post<any, any>('/Actions/Get', body);

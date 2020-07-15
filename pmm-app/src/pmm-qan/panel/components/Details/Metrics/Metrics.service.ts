@@ -15,7 +15,7 @@ export const getMetrics = async ({
     totals,
   };
 
-  return apiRequestQAN.post<any, any>('/ObjectDetails/GetMetrics', body);
+  return apiRequestQAN.postCancelable<any, any>('/ObjectDetails/GetMetrics', body);
 };
 
 

@@ -1,9 +1,11 @@
 // @ts-nocheck
-import axios from 'axios';
+import axios, { CancelToken, CancelTokenSource } from 'axios';
 import { showErrorNotification } from './notification-manager';
 
 export class ApiRequest {
   axiosInstance: axios.AxiosInstance;
+
+  cancelTokensMap: { [id: string]: CancelTokenSource } = {};
 
   constructor(params) {
     this.axiosInstance = axios.create({
@@ -11,7 +13,7 @@ export class ApiRequest {
     });
   }
 
-  async get<T, B>(path: string, query?: { params: B; cancelToken?: any }): Promise<void | T> {
+  async get<T, B>(path: string, query?: { params: B; cancelToken?: CancelToken }): Promise<void | T> {
     return this.axiosInstance
       .get<T>(path, query)
       .then((response): T => response.data)
@@ -25,12 +27,13 @@ export class ApiRequest {
       });
   }
 
-  async post<T, B>(path: string, body: B, disableNotifications = false): Promise<void | T> {
+  // eslint-disable-next-line max-len
+  async post<T, B>(path: string, body: B, disableNotifications = false, cancelToken?: CancelToken): Promise<void | T> {
     return this.axiosInstance
-      .post<T>(path, body)
+      .post<T>(path, body, { cancelToken })
       .then((response): T => response.data)
       .catch((e): void => {
-        if (!disableNotifications) {
+        if (!disableNotifications && !axios.isCancel(e)) {
           showErrorNotification({ message: e.response.data?.message ?? 'Unknown error' });
         }
 
@@ -54,6 +57,22 @@ export class ApiRequest {
       .catch((): void => {
         // Notify.error(e.message);
       });
+  }
+
+  async postCancelable<T, B>(path: string, body: B, disableNotifications = false): Promise<void | T> {
+    return this.post(path, body, disableNotifications, this.getCancelToken(path, 'post'));
+  }
+
+  private getCancelToken(path: string, method: string) {
+    const key = `${path}${method}`;
+
+    if (this.cancelTokensMap[key]) {
+      this.cancelTokensMap[key].cancel();
+    }
+
+    this.cancelTokensMap[key] = axios.CancelToken.source();
+
+    return this.cancelTokensMap[key].token;
   }
 }
 
