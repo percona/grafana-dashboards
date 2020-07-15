@@ -71,6 +71,7 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
     } catch (e) {
       console.error(e);
     }
+    // TODO (nicolalamacchia): remove this timeout when the API will become synchronous
     setTimeout(async () => {
       this.setState({ isRunChecksRequestPending: false });
       await this.fetchAlerts();
