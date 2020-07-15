@@ -38,7 +38,7 @@ const Details: FC = () => {
     },
   } = useContext(DetailsProvider);
 
-  useDetailsState();
+  const loading = useDetailsState();
   const [metrics, metricsLoading] = useMetricsDetails();
 
   const [activeTab, changeActiveTab] = useState(TabKeys[openDetailsTab]);
@@ -91,7 +91,12 @@ const Details: FC = () => {
           </TabPane>
           {showExamplesTab ? (
             <TabPane tab={<span>Examples</span>} key={TabKeys.examples}>
-              <Example fingerprint={fingerprint} databaseType={databaseType} examples={examples} />
+              <Example
+                fingerprint={fingerprint}
+                databaseType={databaseType}
+                examples={examples}
+                loading={loading}
+              />
             </TabPane>
           ) : null}
           {showExplainTab ? (
@@ -105,7 +110,12 @@ const Details: FC = () => {
           ) : null}
           {showTablesTab ? (
             <TabPane tab={<span>Tables</span>} key={TabKeys.tables} disabled={totals}>
-              <TableCreateContainer databaseType={databaseType} examples={examples} tables={tables} />
+              <TableCreateContainer
+                databaseType={databaseType}
+                examples={examples}
+                tables={tables}
+                loading={loading}
+              />
             </TabPane>
           ) : null}
         </Tabs>
