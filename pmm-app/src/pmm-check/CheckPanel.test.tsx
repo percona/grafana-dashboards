@@ -101,6 +101,48 @@ describe('CheckPanel::', () => {
     wrapper.unmount();
   });
 
+  it('should call an API to get settings', async () => {
+    const props = {
+      options: {
+        title: 'DB CHECKS',
+      },
+    } as CheckPanelProps;
+
+    const wrapper: ReactWrapper<CheckPanelProps, {}, any> = mount(<CheckPanelRouter {...props} />);
+    const root = wrapper.find(CheckPanel) as ReactWrapper<CheckPanelProps, CheckPanelState, CheckPanel>;
+
+    const spy = jest.spyOn(CheckService, 'getSettings');
+
+    await root.instance().getSettings();
+    wrapper.update();
+
+    expect(spy).toBeCalledTimes(1);
+
+    wrapper.unmount();
+  });
+
+  it.skip('should get settings after mount', async () => {
+    const props = {
+      options: {
+        title: 'DB CHECKS',
+      },
+    } as CheckPanelProps;
+
+    (CheckPanel.prototype.componentDidMount as jest.Mock).mockRestore();
+    const spy = jest.spyOn(CheckPanel.prototype, 'getSettings');
+
+    const wrapper: ReactWrapper<CheckPanelProps, {}, any> = mount(<CheckPanelRouter {...props} />);
+    const root = wrapper.find(CheckPanel) as ReactWrapper<CheckPanelProps, CheckPanelState, CheckPanel>;
+
+    root.instance().componentDidMount();
+
+    wrapper.update();
+
+    expect(spy).toBeCalledTimes(1);
+
+    wrapper.unmount();
+  });
+
   it('should show ButtonWithSpinner disabled if hasNoAccess is true', async () => {
     const props = {
       options: {
