@@ -132,8 +132,7 @@ describe('CheckPanel::', () => {
 
     const root = wrapper.find(CheckPanel) as ReactWrapper<CheckPanelProps, CheckPanelState, CheckPanel>;
 
-    root.setState({ isLoading: false });
-    root.setState({ hasNoAccess: true });
+    root.setState({ isLoading: false, hasNoAccess: true });
     wrapper.update();
 
     const buttonWithSpinner = wrapper.find('[data-qa="db-check-panel"]').find(ButtonWithSpinner);
