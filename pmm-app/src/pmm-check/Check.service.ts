@@ -75,7 +75,7 @@ export const processData = (data: Alert[]): ActiveCheck[] => {
 
         return acc;
       },
-      [0, 0, 0] as FailedChecks
+      [0, 0, 0] as FailedChecks,
     );
     const details = value.map((val) => `${val.summary}${val.description ? `: ${val.description}` : ''}`);
 
@@ -88,7 +88,7 @@ export const processData = (data: Alert[]): ActiveCheck[] => {
   });
 };
 
-export const sumFailedChecks = (checks: ActiveCheck[]): FailedChecks => (checks)
+export const sumFailedChecks = (checks: ActiveCheck[]): FailedChecks => checks
   .map((rec) => rec.failed)
   .reduce(
     (acc, failed) => {
