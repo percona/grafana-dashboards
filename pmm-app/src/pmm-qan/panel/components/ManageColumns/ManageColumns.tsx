@@ -13,15 +13,31 @@ import './ManageColumns.scss';
 
 const { Option } = Select;
 
+const getMetricsAvailability = (tags, availableMetrics) => {
+  if (!availableMetrics) {
+    return true;
+  }
+
+  if (tags.includes('all')) {
+    return true;
+  }
+
+  if (availableMetrics.filter((value) => tags.includes(value)).length) {
+    return true;
+  }
+
+  return false;
+};
+
 export const ManageColumns = (props) => {
   const {
     onlyAdd, currentMetric, placeholder, width, mainMetric
   } = props;
   const {
     contextActions,
-    panelState: { columns },
+    panelState: { columns, availableMetrics },
   } = useContext(QueryAnalyticsProvider);
-  const [availableColumns, setAvailableColumns] = useState(Object.values(METRIC_CATALOGUE));
+  const [availableColumns, setAvailableColumns] = useState<any[]>(Object.values(METRIC_CATALOGUE));
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const extraSelectProps = {
     dropdownAlign: { overflow: { adjustX: true } },
@@ -29,10 +45,17 @@ export const ManageColumns = (props) => {
   };
 
   useEffect(() => {
+    const filterByExistent = (metric) => !columns.find((item) => item === metric.simpleName);
+    const filterByAvailable = (item) => getMetricsAvailability(item.serviceTypes, availableMetrics);
+    const filterByNotAvailable = (item) => !getMetricsAvailability(item.serviceTypes, availableMetrics);
+    const metricsList = Object.values(METRIC_CATALOGUE).filter(filterByExistent);
+
     setAvailableColumns(
-      Object.values(METRIC_CATALOGUE).filter((metric) => !columns.find((item) => item === metric.simpleName))
+      [...metricsList.filter(filterByAvailable).map((item) => ({ ...item, isMetricAvailable: true })),
+        ...metricsList.filter(filterByNotAvailable)
+      ]
     );
-  }, [columns]);
+  }, [columns, availableMetrics]);
 
   const changeColumn = useCallback(
     (column) => {
@@ -101,6 +124,7 @@ export const ManageColumns = (props) => {
     </div>
   );
 
+
   return (
     <div className={!onlyAdd ? 'manage-columns' : 'add-columns'} onClick={(e) => e.stopPropagation()}>
       <Select
@@ -128,6 +152,7 @@ export const ManageColumns = (props) => {
               title={item.humanizeName}
               description={item.tooltipText}
               tags={item.serviceTypes}
+              isMetricAvailable={item.isMetricAvailable}
             />
           </Option>
         ))}

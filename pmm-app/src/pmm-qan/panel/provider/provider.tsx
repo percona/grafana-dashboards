@@ -15,6 +15,7 @@ const actions = {
   setLabels: (value) => (state) => omit({ ...state, labels: setLabels(value), pageNumber: 1 }, ['queryId', 'querySelected']),
   resetLabels: () => (state) => omit({ ...state, labels: {}, pageNumber: 1 }, ['queryId', 'querySelected']),
   setActiveTab: (value) => (state) => ({ ...state, openDetailsTab: value }),
+  setAvailableMetrics: (value) => (state) => ({ ...state, availableMetrics: value }),
   selectQuery: (value, totals) => (state) => ({
     ...state,
     queryId: value,

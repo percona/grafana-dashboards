@@ -4,7 +4,12 @@ import useWindowSize from 'shared/components/helpers/WindowSize.hooks';
 import FiltersService from './Filters.service';
 import { FILTERS_BODY_HEIGHT, FILTERS_HEADER_SIZE, FILTERS_MARGIN_BOTTOM } from './Filters.constants';
 
-export const useFilters = () => {
+
+export const useFilters = (): {
+  error: any,
+  loading: boolean;
+  filters: any;
+} => {
   const [filters, setFilters] = useState({});
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);

@@ -99,6 +99,18 @@ export const Filters: FC = () => {
   const { filters, loading } = useFilters();
   const initialValues = useInitialFilterValues();
 
+  useEffect(() => {
+    if (!filters.service_type) {
+      return;
+    }
+
+    const notEmpty = filters.service_type.name.filter(({ main_metric_per_sec }) => main_metric_per_sec);
+
+    const availableMetrics = notEmpty.map(({ value }) => value);
+
+    contextActions.setAvailableMetrics(availableMetrics);
+  }, [filters]);
+
   return useMemo(() => (
     <Form
       onSubmit={() => {}}

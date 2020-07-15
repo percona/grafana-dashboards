@@ -22,6 +22,7 @@ interface QueryAnalyticsPanelState {
   fingerprint?: string;
   controlSum?: string;
   rawTime: RawTime;
+  availableMetrics?: string[];
 }
 
 export interface QueryAnalyticsContext {

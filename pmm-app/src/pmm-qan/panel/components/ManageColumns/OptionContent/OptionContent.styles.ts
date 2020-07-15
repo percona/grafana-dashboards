@@ -12,6 +12,9 @@ export const styles = {
     max-width: 75%;
     white-space: normal;
   `,
+  disabledMetric: css`
+    opacity: 0.5;
+  `,
   optionTitle: css`
     color: #d8d9da;
   `,
