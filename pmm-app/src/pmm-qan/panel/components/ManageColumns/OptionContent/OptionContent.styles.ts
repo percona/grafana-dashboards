@@ -21,14 +21,15 @@ export const styles = {
   optionDescription: css`
     color: #8e8e8e;
     font-size: 10px;
-    line-height: 1.5em;
+    line-height: 1.25em;
+    margin-top: 0.2em;
   `,
   tagWrapper: css`
     margin-left: 4px;
   `,
   tag: css`
     background-color: #646464;
-    border: 1px solid #8A8A8A;
+    border: 1px solid #8a8a8a;
     border-radius: 3px;
     color: #f2f2f2;
     font-size: 11px;

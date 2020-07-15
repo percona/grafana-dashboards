@@ -41,7 +41,7 @@ export const ManageColumns = (props) => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const extraSelectProps = {
     dropdownAlign: { overflow: { adjustX: true } },
-    getPopupContainer: (trigger) => trigger.parentNode
+    getPopupContainer: (trigger) => trigger.parentNode,
   };
 
   useEffect(() => {
@@ -50,11 +50,10 @@ export const ManageColumns = (props) => {
     const filterByNotAvailable = (item) => !getMetricsAvailability(item.serviceTypes, availableMetrics);
     const metricsList = Object.values(METRIC_CATALOGUE).filter(filterByExistent);
 
-    setAvailableColumns(
-      [...metricsList.filter(filterByAvailable).map((item) => ({ ...item, isMetricAvailable: true })),
-        ...metricsList.filter(filterByNotAvailable)
-      ]
-    );
+    setAvailableColumns([
+      ...metricsList.filter(filterByAvailable).map((item) => ({ ...item, isMetricAvailable: true })),
+      ...metricsList.filter(filterByNotAvailable),
+    ]);
   }, [columns, availableMetrics]);
 
   const changeColumn = useCallback(
@@ -78,9 +77,7 @@ export const ManageColumns = (props) => {
     <Tooltip
       title={() => (
         <div className={styles.metricsTooltip}>
-          <b className={styles.placeholder}>
-            {placeholder && METRIC_CATALOGUE[placeholder].humanizeName}
-          </b>
+          <b className={styles.placeholder}>{placeholder && METRIC_CATALOGUE[placeholder].humanizeName}</b>
           <span className={styles.placeholder}>
             {placeholder && METRIC_CATALOGUE[placeholder].tooltipText}
           </span>
@@ -97,10 +94,10 @@ export const ManageColumns = (props) => {
   ) : (
     <div className={styles.placeholderAdd}>
       {!isDropdownOpen && (
-        <div>
-          <i className={cx('fa fa-plus-circle', styles.iconMargin)} />
-          <span>Add column</span>
-        </div>
+      <div>
+        <i className={cx('fa fa-plus-circle', styles.iconMargin)} />
+        <span>Add column</span>
+      </div>
       )}
     </div>
   ));
@@ -124,7 +121,6 @@ export const ManageColumns = (props) => {
     </div>
   );
 
-
   return (
     <div className={!onlyAdd ? 'manage-columns' : 'add-columns'} onClick={(e) => e.stopPropagation()}>
       <Select
@@ -147,12 +143,12 @@ export const ManageColumns = (props) => {
         {...extraSelectProps}
       >
         {availableColumns.map((item) => (
-          <Option key={item.simpleName} label={item.humanizeName}>
+          <Option key={item.simpleName} label={item.humanizeName} disabled={!item.isMetricAvailable}>
             <OptionContent
               title={item.humanizeName}
               description={item.tooltipText}
               tags={item.serviceTypes}
-              isMetricAvailable={item.isMetricAvailable}
+              disabled={item.isMetricAvailable}
             />
           </Option>
         ))}

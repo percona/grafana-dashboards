@@ -24,10 +24,10 @@ export const styles = {
   actionElement: css`
     padding: 4px 8px;
     cursor: pointer;
-    background-color: #3d3d3d;
+    background-color: #2e2e2e;
     transition: background 0.3s ease;
     &:hover {
-      background-color: #2d2e2f;
+      background-color: #242424;
     }
   `,
   metricsTooltip: css`
