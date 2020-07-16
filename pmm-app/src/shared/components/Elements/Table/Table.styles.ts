@@ -18,7 +18,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
     tableWrap: css`
       display: block;
       max-width: 100%;
-      overflow-x: scroll;
+      overflow-x: auto;
       overflow-y: hidden;
       border: 1px solid ${borderColor};
     `,

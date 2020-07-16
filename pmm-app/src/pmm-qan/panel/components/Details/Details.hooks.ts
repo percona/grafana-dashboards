@@ -79,6 +79,7 @@ export const useDetailsState = () => {
   useEffect(() => {
     (async () => {
       try {
+        contextActions.resetDetailsToDefault();
         // 1. Get examples, we need it to get all addditional data
         const result = await DetailsService.getExample({
           filterBy: queryId,
@@ -95,10 +96,12 @@ export const useDetailsState = () => {
         let jsonExplain;
         let classicExplain;
 
-        // debugger
         // 2. Get explains
         try {
-          if (databaseType === DATABASE.mysql) {
+          if (!notEmptyExample.length) {
+            jsonExplain = {};
+            classicExplain = {};
+          } else if (databaseType === DATABASE.mysql) {
             const traditionalExplainActionId = await mysqlMethods.getExplainTraditional({
               example: notEmptyExample[0],
             });
@@ -114,6 +117,7 @@ export const useDetailsState = () => {
         } catch (e) {
           console.error(e);
         }
+
 
         // 3. Get tables
         let tables;

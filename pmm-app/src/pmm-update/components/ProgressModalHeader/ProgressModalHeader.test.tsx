@@ -5,7 +5,7 @@ import { ProgressModalHeader } from './ProgressModalHeader';
 import { Messages } from './ProgressModalHeader.messages';
 
 describe('ProgressModalHeader::', () => {
-  it('should show that the update is in progress by default', () => {
+  it('should show that the upgrade is in progress by default', () => {
     const wrapper = shallow(<ProgressModalHeader />);
 
     expect(wrapper.find('h4').text()).toEqual(Messages.updateInProgress);
@@ -13,7 +13,7 @@ describe('ProgressModalHeader::', () => {
     wrapper.unmount();
   });
 
-  it('should show that the update succeeded if isUpdated is true', () => {
+  it('should show that the upgrade succeeded if isUpdated is true', () => {
     const wrapper = shallow(<ProgressModalHeader isUpdated />);
 
     expect(wrapper.find('h4').text()).toEqual(Messages.updateSucceeded);
@@ -29,7 +29,7 @@ describe('ProgressModalHeader::', () => {
     wrapper.unmount();
   });
 
-  it('should show the passed error message if the update failed', () => {
+  it('should show the passed error message if the upgrade failed', () => {
     const errorMessage = 'Test Error';
     const wrapper = shallow(<ProgressModalHeader updateFailed errorMessage={errorMessage} />);
 
