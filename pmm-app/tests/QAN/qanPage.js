@@ -22,30 +22,9 @@ module.exports = {
   serverList: ['PMM Server PostgreSQL', 'PGSQL_', 'PXC_NODE', 'mysql'],
   fields: {
     table: '//table//tr[2]',
-    detailsTable: '//app-details-table//app-details-row[1]',
-    filter: "//app-qan-filter//div[@class='ps-content']",
     filterCheckboxSelector: '.overview-filters input[type="checkbox"]',
-    search: '//app-qan-search//input',
-    pagination: "//ul[@role='navigation']",
     nextPageNavigation: "//ul[@role='navigation']//li[last()]",
-    previousPageNavigation: "//ul[@role='navigation']//li[1]",
-    pmmImage: '//footer/img',
-    pmmVersion: '//footer/small',
-    paginationArrow: "(//ul[@class='ngx-pagination']/li)[last()]",
-    addColumn: "//button[@class='add-column-btn']",
-    total: "//span[contains(text(), 'TOTAL')]",
-    columns: '//tbody//app-qan-table-header-cell',
-    fifty: "//div[@id='ad0800a556c8']/span",
-    hundred: "//div[@id='a305c6a9fc9e']",
     iframe: "//div[@class='panel-content']//iframe",
-    filterSelection: "(//div[@class='chips']//button)",
-    resultsPerPageDropDown: "//div[@class='results-per-page']/ng-select",
-    tablesTabInDetails: "//a[@id='tables']",
-    explainTabInDetails: "//a[@id='explain']",
-    classicSectionContents: "//div[@id='classicPanel']//span",
-    tablesTabContents: "//div[@class='card-body']//pre",
-    copyQueryButton: "//button[@id='copyQueryExample']",
-    spinnerLocator: "//i[@data-qa='loading-spinner']",
     newQANPanelContent: '.panel-content',
     resetAll: '//button[@data-qa="qan-filters-reset-all"]',
     disabledResetAll: '//button[@data-qa="qan-filters-reset-all" and @disabled ]',
@@ -58,7 +37,6 @@ module.exports = {
     newQANMetricDropDown: '.ant-select-dropdown-menu-item',
     groupBySelector: '.group-by-selector',
     addColumnSelector: '.add-columns-selector',
-    manageColumnsSelector: '.manage-columns-selector',
     removeColumnButton: "//div[text()='Remove column']",
     newQANColumnSearchField: "div[style*='display: block;'] input",
     resultsPerPageValue: '.ant-select-selection-selected-value',
@@ -69,16 +47,13 @@ module.exports = {
     resultPerPageCombobox: '.ant-pagination-options',
     addColumnNewQAN: "//span[contains(text(), 'Add column')]",
     noDataIcon: 'div.ant-empty-image',
-    querySelector: "div.tr-3",
+    querySelector: 'div.tr-3',
     resizer: 'span.Resizer.horizontal',
     queryTime: '//tr[@data-row-key][4]//td[5]//span[1]',
-    lockTimeDetail: "//tr[@data-row-key='lock_time']//td[4]//span[1]",
     queryTimeDetail: "//tr[@data-row-key='query_time']//td[4]//span[1]",
     queryCountDetail: "//tr[@data-row-key='num_queries']//td[3]//span[1]",
     qps: "//tr[@data-row-key='num_queries']//td[2]//span[1]",
     load: "//tr[@data-row-key='query_time']//td[2]//div[1]//span[1]",
-    avgLoad: "//tr[@data-row-key='lock_time']//td[2]//div[1]//span[1]",
-    overviewRowLoad: "//tr[4]//td[3]//span[contains(@class,'summarize')]",
     overviewRowQueryCount: "//tr[4]//td[4]//span[contains(@class,'summarize')]",
     overviewRowQueryCountTooltip: "//tr[4]//td[4]//span[contains(@class, 'ant-tooltip-open')]",
     overviewRowQueryCountTooltipText: "//tr[4]//td[4]//span[contains(@class, 'ant-tooltip-open')]//div//span",
@@ -216,10 +191,10 @@ module.exports = {
 
   async getDetailsData(row) {
     const percentage = await I.grabTextFrom(
-        '//app-details-table//app-details-row[' + row + ']//div[3]//span[2]'
+      '//app-details-table//app-details-row[' + row + ']//div[3]//span[2]'
     );
     const value = await I.grabTextFrom('//app-details-table//app-details-row[' + row + ']//div[3]//span[1]');
-    return {percentage: percentage, val: value};
+    return { percentage: percentage, val: value };
   },
 
   overviewRowLocator(rowNumber) {
