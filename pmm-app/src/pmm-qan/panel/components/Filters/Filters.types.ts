@@ -3,4 +3,5 @@ export interface FiltersContainerProps {
   form: any;
   labels: object;
   filters: any;
+  disabled?: boolean;
 }

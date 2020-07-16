@@ -23,7 +23,7 @@ const actionResult = {
 
 const Details: FC = () => {
   const {
-    contextActions: { closeDetails, setActiveTab },
+    contextActions: { closeDetails, setActiveTab, setLoadingDetails },
     panelState: {
       queryId, groupBy, fingerprint, totals, openDetailsTab
     },
@@ -68,6 +68,8 @@ const Details: FC = () => {
     changeActiveTab(TabKeys[openDetailsTab]);
   }, [queryId, openDetailsTab, showTablesTab, showExplainTab, showExamplesTab]);
 
+  useEffect(() => setLoadingDetails(loading || metricsLoading), [loading, metricsLoading]);
+
   return (
     <div className="query-analytics-details-grid query-analytics-details" data-qa="query-analytics-details">
       <div className="details-tabs">
@@ -95,7 +97,7 @@ const Details: FC = () => {
                 fingerprint={fingerprint}
                 databaseType={databaseType}
                 examples={examples}
-                loading={loading}
+                loading={loading || metricsLoading}
               />
             </TabPane>
           ) : null}
