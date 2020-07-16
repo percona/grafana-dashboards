@@ -1,4 +1,5 @@
 Feature('Test QAN filters');
+const assert = require('assert');
 
 Before((I, qanPage) => {
   I.Authorize();
