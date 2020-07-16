@@ -170,19 +170,19 @@ Scenario(
   'PMM-T193 - Verify user is able to change per page elements display and pagination is updated according to this value, PMM-T256 - Verify that switching view from 10 to 50/100 pages works correctly @not-pr-pipeline',
   async (I, qanPage) => {
     qanPage.waitForNewQANPageLoaded();
-    await qanPage.verifyRowCount(11);
+    await qanPage.verifyRowCount(12);
     await qanPage.verifyCount('1-10');
     await qanPage.verifyPagesAndCount(10);
     qanPage.selectPagination('50 / page');
-    await qanPage.verifyRowCount(51);
+    await qanPage.verifyRowCount(52);
     await qanPage.verifyPagesAndCount(50);
     await qanPage.verifyCount('1-50');
     qanPage.selectPagination('100 / page');
-    await qanPage.verifyRowCount(101);
+    await qanPage.verifyRowCount(102);
     await qanPage.verifyPagesAndCount(100);
     await qanPage.verifyCount('1-100');
     qanPage.selectPagination('10 / page');
-    await qanPage.verifyRowCount(11);
+    await qanPage.verifyRowCount(12);
     await qanPage.verifyCount('1-10');
     await qanPage.verifyPagesAndCount(10);
   }
@@ -227,9 +227,9 @@ Scenario(
     I.waitForVisible(qanPage.fields.querySelector);
     I.click(qanPage.fields.querySelector);
     I.scrollTo(qanPage.getRow('10'));
-    I.waitForVisible(qanPage.getColumn('Full Scan'), 30);
-    I.dragAndDrop(qanPage.fields.resizer, qanPage.getColumn('Full Scan'));
-    I.scrollTo(qanPage.getColumn('No index used'));
+    I.waitForVisible(qanPage.getColumn('Query Time'), 30);
+    I.dragAndDrop(qanPage.fields.resizer, qanPage.getColumn('Query Time'));
+    I.scrollTo(qanPage.getColumn('Query Time'));
   }
 );
 
@@ -265,7 +265,7 @@ Scenario('PMM-T122 - Verify QAN UI Elements are displayed @not-pr-pipeline', asy
   qanPage.waitForNewQANPageLoaded();
   I.waitForVisible(qanPage.fields.filterBy, 30);
   I.waitForVisible(qanPage.fields.addColumnNewQAN, 30);
-  await qanPage.verifyRowCount(11);
+  await qanPage.verifyRowCount(12);
   await qanPage.verifyPagesAndCount(10);
   I.seeElement(qanPage.fields.environmentLabel);
   I.click(qanPage.fields.querySelector);

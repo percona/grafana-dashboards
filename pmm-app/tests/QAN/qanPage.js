@@ -43,18 +43,18 @@ module.exports = {
     nextPage: '.ant-pagination-next',
     previousPage: '.ant-pagination-prev',
     ellipsisButton: '.ant-pagination-item-ellipsis',
-    tableRow: "(//table[@class='ant-table-fixed']//tbody[@class='ant-table-tbody'])[2]//tr",
+    tableRow: 'div.tr',
     resultPerPageCombobox: '.ant-pagination-options',
     addColumnNewQAN: "//span[contains(text(), 'Add column')]",
     noDataIcon: 'div.ant-empty-image',
     querySelector: 'div.tr-3',
     resizer: 'span.Resizer.horizontal',
-    queryTime: '//tr[@data-row-key][4]//td[5]//span[1]',
+    queryTime: 'div.tr-3 > div:nth-child(5)',
     queryTimeDetail: "//tr[@data-row-key='query_time']//td[4]//span[1]",
     queryCountDetail: "//tr[@data-row-key='num_queries']//td[3]//span[1]",
     qps: "//tr[@data-row-key='num_queries']//td[2]//span[1]",
     load: "//tr[@data-row-key='query_time']//td[2]//div[1]//span[1]",
-    overviewRowQueryCount: "//tr[4]//td[4]//span[contains(@class,'summarize')]",
+    overviewRowQueryCount: 'div.tr-3 > div:nth-child(4)',
     overviewRowQueryCountTooltip: "//tr[4]//td[4]//span[contains(@class, 'ant-tooltip-open')]",
     overviewRowQueryCountTooltipText: "//tr[4]//td[4]//span[contains(@class, 'ant-tooltip-open')]//div//span",
     overviewRowQueryTime: "//tr[4]//td[5]//span[contains(@class,'summarize')]",
@@ -575,7 +575,7 @@ module.exports = {
   },
 
   addSpecificColumn(columnName) {
-    const column = `//li[contains(text(), '${columnName}')]`;
+    const column = `//span[contains(text(), '${columnName}')]`;
     I.waitForVisible(column, 30);
     I.click(column);
   },
@@ -591,7 +591,7 @@ module.exports = {
   },
 
   getRow(row) {
-    return `//td[@class='ant-table-row-cell-break-word']//div[contains(text(), '${row}')]`;
+    return `//div[contains(text(), '${row}')]`;
   },
 
   async verifyAvqQueryCount() {
