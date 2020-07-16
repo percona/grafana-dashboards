@@ -5,6 +5,7 @@ import {
   Divider, Icon, Select, Tooltip
 } from 'antd';
 import { cx } from 'emotion';
+import { sortBy } from 'lodash';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
 import { METRIC_CATALOGUE } from 'pmm-qan/panel/QueryAnalytics.constants';
 import { OptionContent } from './OptionContent/OptionContent';
@@ -48,7 +49,8 @@ export const ManageColumns = (props) => {
     const filterByExistent = (metric) => !columns.find((item) => item === metric.simpleName);
     const filterByAvailable = (item) => getMetricsAvailability(item.serviceTypes, availableMetrics);
     const filterByNotAvailable = (item) => !getMetricsAvailability(item.serviceTypes, availableMetrics);
-    const metricsList = Object.values(METRIC_CATALOGUE).filter(filterByExistent);
+    const availableMetrics = Object.values(METRIC_CATALOGUE).filter(filterByExistent);
+    const metricsList = sortBy(availableMetrics, [(metric) => metric.humanizeName.toLowerCase()], ['desc']);
 
     setAvailableColumns([
       ...metricsList.filter(filterByAvailable).map((item) => ({ ...item, isMetricAvailable: true })),
