@@ -20,7 +20,7 @@ export const TableBody: FC<TableBodyProps> = ({ data }) => (
           <td>
             <Failed failed={failed} />
           </td>
-          <td>
+          <td style={{ padding: 0 }}>
             <Details details={details} />
           </td>
         </tr>

@@ -8,12 +8,12 @@ import { selectThemeVariant, stylesFactory } from '@grafana/ui';
 export const getStyles = stylesFactory((theme: GrafanaTheme) => {
   const backgroundColor = selectThemeVariant(
     { light: 'rgb(247, 247, 249)', dark: 'rgb(22, 23, 25)' },
-    theme.type
+    theme.type,
   );
   const borderColor = selectThemeVariant(
     // @ts-ignore
     { light: theme.colors.gray85, dark: theme.colors.dark7 },
-    theme.type
+    theme.type,
   );
   const cellPadding = '12px 8px';
 
