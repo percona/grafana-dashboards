@@ -2,14 +2,14 @@ import { get } from 'lodash';
 import { humanize } from 'shared/components/helpers/Humanization';
 
 enum PageSizes {
-  low= 25,
-  medium = 50,
-  high = 100
+  low= '25',
+  medium = '50',
+  high = '100'
 }
 
 export const PAGE_SIZE_OPTIONS = [PageSizes.low, PageSizes.medium, PageSizes.high];
 export const DEFAULT_PAGE_NUMBER = 1;
-export const DEFAULT_PAGE_SIZE = PageSizes.low;
+export const DEFAULT_PAGE_SIZE = +PageSizes.low;
 export const MIN_SPLIT_SIZE = 300;
 // percent
 export const SPACE_DISTRIBUTION_OVERVIEW = 40;
