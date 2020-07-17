@@ -9,6 +9,8 @@ enum PageSizes {
 
 export const PAGE_SIZE_OPTIONS = [PageSizes.low, PageSizes.medium, PageSizes.high];
 export const DEFAULT_PAGE_NUMBER = 1;
+// We're using type coercion because of antd interface issue
+// it should be changed after antd pagination will be removed
 export const DEFAULT_PAGE_SIZE = +PageSizes.low;
 export const MIN_SPLIT_SIZE = 300;
 // percent
