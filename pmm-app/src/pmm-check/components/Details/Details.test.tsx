@@ -2,25 +2,46 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { Details } from './Details';
 
+jest.mock('shared/components/helpers/notification-manager');
+
 export const DATA_SOURCE = [
   {
     key: '1',
     name: 'sandbox-mysql.acme.com',
     // critical, major, trivial
     failed: [1, 1, 0],
-    details: ['The root password is empty', 'MySQL 5.1 is not the latest major version'],
+    details: [
+      {
+        description: 'The root password is empty',
+        labels: {}
+      },
+      {
+        description: 'MySQL 5.1 is not the latest major version',
+        labels: {}
+      }
+    ]
   },
   {
     key: '2',
     name: 'pmm-server-postgresql',
     failed: [0, 1, 0],
-    details: ['PMM Server is not the latest major version'],
+    details: [
+      {
+        description: 'PMM Server is not the latest major version',
+        labels: {}
+      },
+    ]
   },
   {
     key: '3',
     name: 'mongodb-inst-rpl-1',
     failed: [1, 0, 0],
-    details: ['MongoDB admin password does not meet the complexity requirement'],
+    details: [
+      {
+        description: 'MongoDB admin password does not meet the complexity requirement',
+        labels: {}
+      },
+    ]
   },
 ];
 

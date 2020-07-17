@@ -7,6 +7,8 @@ import { Table } from './Table';
 import { TableHeader } from './TableHeader';
 import { TableBody } from './TableBody';
 
+jest.mock('shared/components/helpers/notification-manager');
+
 describe('Table::', () => {
   it('should render the link to Settings when STT is disabled', () => {
     const root = shallow(<Table columns={COLUMNS} isSttEnabled={false} data={[]} />);
