@@ -16,7 +16,7 @@ export const makeSilencePayload = (labels: Labels) => {
     matchers: formatMatchers(labels),
     startsAt: nowUTCISO as ISOTimestamp,
     endsAt: tomorrowUTCISO as ISOTimestamp,
-    createdBy: '',
+    createdBy: window.grafanaBootData.user.name,
     comment: '',
     id: ''
   });
