@@ -10,6 +10,7 @@ import { CheckService } from './Check.service';
 import { COLUMNS } from './CheckPanel.constants';
 import * as styles from './CheckPanel.styles';
 import { Messages } from './CheckPanel.messages';
+import { AlertsReloadContext } from './Check.context';
 
 export interface CheckPanelProps extends PanelProps<CheckPanelOptions> {}
 
@@ -121,13 +122,14 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
                 {Messages.runDbChecks}
               </ButtonWithSpinner>
             </div>
-            <Table
-              data={dataSource}
-              columns={COLUMNS}
-              isSttEnabled={isSttEnabled}
-              hasNoAccess={hasNoAccess}
-              fetchAlerts={this.fetchAlerts}
-            />
+            <AlertsReloadContext.Provider value={{ fetchAlerts: this.fetchAlerts }}>
+              <Table
+                data={dataSource}
+                columns={COLUMNS}
+                isSttEnabled={isSttEnabled}
+                hasNoAccess={hasNoAccess}
+              />
+            </AlertsReloadContext.Provider>
           </>
         )}
       </div>

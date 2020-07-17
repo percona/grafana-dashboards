@@ -11,7 +11,7 @@ export const TableBody: FC<TableBodyProps> = ({ data }) => (
   <tbody>
     {data.map((row) => {
       const {
-        key, name, failed, details,
+        key, name, failed, details
       } = row;
 
       return (

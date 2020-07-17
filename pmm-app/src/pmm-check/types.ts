@@ -1,3 +1,7 @@
+import { WeakOpaque, ISOTimestamp } from 'shared/core/types';
+
+export type SilenceId = WeakOpaque<string, 'SilenceId'>;
+
 export interface CheckPanelOptions {
   title?: string;
 }
@@ -24,7 +28,7 @@ export interface ActiveCheck {
   key: string;
   name: string;
   failed: FailedChecks;
-  details: string[];
+  details: Array<{ description: string, labels: { [key: string]: string }}>;
 }
 
 export interface Alert {
@@ -50,4 +54,32 @@ export interface Settings {
     stt_enabled?: boolean;
     telemetry_enabled?: boolean;
   };
+}
+
+interface SilenceMatcher {
+  name: string;
+  value: string;
+  isRegex: boolean;
+}
+
+export interface SilenceBody {
+  matchers: SilenceMatcher[];
+  startsAt: ISOTimestamp;
+  endsAt: ISOTimestamp;
+  createdBy: string;
+  comment: string;
+  id: string;
+}
+
+export interface SilenceResponse {
+  silenceID: SilenceId;
+}
+
+export type Labels = { [key: string]: string };
+
+export interface DetailsProps {
+  details: Array<{
+    description: string;
+    labels: Labels;
+  }>,
 }

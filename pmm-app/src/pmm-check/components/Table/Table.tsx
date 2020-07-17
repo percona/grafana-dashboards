@@ -12,11 +12,10 @@ interface TableProps {
   data?: ActiveCheck[];
   hasNoAccess?: boolean;
   isSttEnabled: boolean;
-  fetchAlerts?: () => void;
 }
 
 export const Table: FC<TableProps> = ({
-  columns, data = [], isSttEnabled, hasNoAccess = false
+  columns, data = [], isSttEnabled, hasNoAccess = false,
 }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
