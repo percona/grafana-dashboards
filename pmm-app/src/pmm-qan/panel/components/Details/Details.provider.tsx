@@ -28,7 +28,15 @@ const actions = {
 
     return newState;
   },
-  resetDetailsToDefault: () => (state) => ({ ...initialState.detailsState, databaseType: state.databaseType })
+  resetDetailsToDefault: () => (state) => {
+    const newState = {
+      ...initialState.detailsState,
+      databaseType: state.databaseType,
+      examples: state.examples
+    };
+
+    return newState;
+  },
 };
 
 export const DetailsContentProvider: FC = ({ children }) => {
