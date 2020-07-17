@@ -7,6 +7,12 @@ export const DEFAULTS: CheckPanelOptions = {
   title: 'Failed Database Checks',
 };
 
+export const SEVERITIES_ORDER = {
+  error: 0,
+  warning: 1,
+  notice: 2,
+};
+
 export const SEVERITY: SeverityMap = {
   error: 'Critical',
   warning: 'Major',
@@ -25,6 +31,11 @@ export const COLUMNS: Column[] = [
     key: 'failed',
     render: Failed,
     width: 200,
+  },
+  {
+    title: 'Severity',
+    dataIndex: 'severity',
+    key: 'severity',
   },
   {
     title: 'Details',

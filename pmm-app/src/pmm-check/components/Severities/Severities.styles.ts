@@ -13,7 +13,3 @@ export const ListItem = css`
     border-bottom: 1px solid #292a2d;
   }
 `;
-
-export const SilenceButton = css`
-  margin-left: 15px;
-`;
