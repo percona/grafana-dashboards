@@ -23,7 +23,7 @@ const getMetricsAvailability = (tags, availableMetrics) => {
     return true;
   }
 
-  if (availableMetrics.filter((value) => tags.includes(value)).length) {
+  if (availableMetrics.find((value) => tags.includes(value))) {
     return true;
   }
 
