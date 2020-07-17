@@ -29,7 +29,7 @@ Scenario(
 
 Scenario(
   'Open the QAN Dashboard and check that sorting works correctly after sorting by another column. @new-qan',
-  async (I, qanPage, adminPage) => {
+  async qanPage => {
     qanPage.changeSorting(3, 'up');
     qanPage.verifySortingIs(3, 'up');
     qanPage.changeSorting(1, 'down');
@@ -39,34 +39,21 @@ Scenario(
 );
 
 Scenario(
-  'PMM-T135 Verify that a duplicate of the metric cannot be added to the overview table @new-qan',
-  async (I, qanPage) => {
-    const COLUMN_NAME = 'Bytes Sent';
-
-    qanPage.addColumn(COLUMN_NAME);
-    await qanPage.verifyColumnIsNotAvailable(COLUMN_NAME);
-  }
-);
-
-Scenario(
   'PMM-T156 Verify that by default, queries are sorted by Load, from max to min @new-qan',
-  async (I, adminPage, qanPage) => {
+  async qanPage => {
     qanPage.waitForNewQANPageLoaded();
     qanPage.verifySortingIs(1, 'down');
   }
 );
 
-Scenario(
-  'PMM-T183 Verify that "Group by" in the overview table can be changed @new-qan',
-  async (I, adminPage, qanPage) => {
-    qanPage.changeGroupBy('Database');
-    qanPage.verifyGroupByIs('Database');
-  }
-);
+Scenario('PMM-T183 Verify that "Group by" in the overview table can be changed @new-qan', async qanPage => {
+  qanPage.changeGroupBy('Database');
+  qanPage.verifyGroupByIs('Database');
+});
 
 Scenario(
   'PMM-T187 Verify that the selected row in the overview table is highlighted @new-qan',
-  async (I, adminPage, qanPage) => {
+  async qanPage => {
     qanPage.selectRow('2');
     qanPage.verifyRowIsSelected('2');
   }
@@ -79,21 +66,21 @@ Scenario(
     const urlString = 'num_queries_with_errors';
 
     I.waitForElement(qanPage.fields.newQANAddColumn, 30);
-    I.waitForElement(qanPage.tableHeaderColumnLocator('Load'), 30);
-    I.click(qanPage.tableHeaderColumnLocator('Load'));
+    I.waitForElement(qanPage.getColumn('Load'), 30);
+    I.click(qanPage.getColumn('Load'));
     I.waitForElement(qanPage.fields.newQANMetricDropDown, 30);
-    I.fillField(qanPage.fields.newQANColumnSearchField, metricName);
+    I.fillField(qanPage.fields.searchFieldForColumn, metricName);
     I.click(dashboardPage.fields.metricTitle);
-    I.waitForElement(qanPage.tableHeaderColumnLocator(metricName), 30);
-    I.seeElement(qanPage.tableHeaderColumnLocator(metricName));
-    I.dontSeeElement(qanPage.tableHeaderColumnLocator('Load'));
+    I.waitForElement(qanPage.getColumn(metricName), 30);
+    I.seeElement(qanPage.getColumn(metricName));
+    I.dontSeeElement(qanPage.getColumn('Load'));
     I.seeInCurrentUrl(urlString);
     const url = await I.grabCurrentUrl();
 
     I.amOnPage(url);
     I.waitForElement(qanPage.fields.newQANAddColumn, 30);
-    I.waitForElement(qanPage.tableHeaderColumnLocator(metricName), 30);
-    I.dontSeeElement(qanPage.tableHeaderColumnLocator('Load'));
+    I.waitForElement(qanPage.getColumn(metricName), 30);
+    I.dontSeeElement(qanPage.getColumn('Load'));
   }
 );
 
@@ -104,22 +91,22 @@ Scenario(
     const urlString = 'num_queries_with_errors';
 
     I.waitForElement(qanPage.fields.newQANAddColumn, 30);
-    I.waitForElement(qanPage.tableHeaderColumnLocator('Load'), 30);
+    I.waitForElement(qanPage.getColumn('Load'), 30);
     I.click(qanPage.fields.newQANAddColumn);
     I.waitForElement(qanPage.fields.newQANMetricDropDown, 30);
-    I.fillField(qanPage.fields.newQANColumnSearchField, metricName);
+    I.fillField(qanPage.fields.searchFieldForColumn, metricName);
     I.click(dashboardPage.fields.metricTitle);
-    I.waitForElement(qanPage.tableHeaderColumnLocator(metricName), 30);
-    I.seeElement(qanPage.tableHeaderColumnLocator(metricName));
-    I.seeElement(qanPage.tableHeaderColumnLocator('Load'));
+    I.waitForElement(qanPage.getColumn(metricName), 30);
+    I.seeElement(qanPage.getColumn(metricName));
+    I.seeElement(qanPage.getColumn('Load'));
     I.seeInCurrentUrl(urlString);
     const url = await I.grabCurrentUrl();
 
     I.amOnPage(url);
     I.waitForElement(qanPage.fields.newQANAddColumn, 30);
-    I.waitForElement(qanPage.tableHeaderColumnLocator(metricName), 30);
-    I.seeElement(qanPage.tableHeaderColumnLocator('Load'));
-    I.seeElement(qanPage.tableHeaderColumnLocator(metricName));
+    I.waitForElement(qanPage.getColumn(metricName), 30);
+    I.seeElement(qanPage.getColumn('Load'));
+    I.seeElement(qanPage.getColumn(metricName));
   }
 );
 
@@ -168,7 +155,7 @@ Scenario('PMM-T128 - Verify pagination works correctly @not-pr-pipeline', async 
 
 Scenario(
   'PMM-T193 - Verify user is able to change per page elements display and pagination is updated according to this value, PMM-T256 - Verify that switching view from 10 to 50/100 pages works correctly @not-pr-pipeline',
-  async (I, qanPage) => {
+  async qanPage => {
     qanPage.waitForNewQANPageLoaded();
     await qanPage.verifyRowCount(12);
     await qanPage.verifyCount('1-10');
@@ -196,7 +183,7 @@ Scenario(
     qanPage.waitForNewQANPageLoaded();
     qanPage.verifyAddedColumn(column);
     I.click(qanPage.fields.addColumnNewQAN);
-    I.fillField(qanPage.fields.addColumnNewQAN, column);
+    I.fillField(qanPage.fields.searchFieldForColumn, column);
     I.waitForVisible(qanPage.fields.noDataIcon, 30);
     I.seeElement(qanPage.fields.noDataIcon);
   }
@@ -267,7 +254,7 @@ Scenario('PMM-T122 - Verify QAN UI Elements are displayed @not-pr-pipeline', asy
   I.waitForVisible(qanPage.fields.addColumnNewQAN, 30);
   await qanPage.verifyRowCount(12);
   await qanPage.verifyPagesAndCount(10);
-  I.seeElement(qanPage.fields.environmentLabel);
+  I.waitForVisible(qanPage.fields.environmentLabel, 30);
   I.click(qanPage.fields.querySelector);
   I.waitForVisible(qanPage.getColumn('Lock Time'), 30);
 });

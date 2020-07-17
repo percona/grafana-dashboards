@@ -34,6 +34,7 @@ module.exports = {
     filterBy: "//input[@data-qa='filters-search-field']",
     filterCheckboxes: '.checkbox-container__checkmark',
     newQANAddColumn: "//span[contains(text(), 'Add column')]",
+    searchFieldForColumn: 'input.ant-select-search__field',
     newQANMetricDropDown: '.ant-select-dropdown-menu-item',
     groupBySelector: '.group-by-selector',
     addColumnSelector: '.add-columns-selector',
@@ -57,7 +58,7 @@ module.exports = {
     overviewRowQueryCount: 'div.tr-3 > div:nth-child(4)',
     overviewRowQueryCountTooltip: "//tr[4]//td[4]//span[contains(@class, 'ant-tooltip-open')]",
     overviewRowQueryCountTooltipText: "//tr[4]//td[4]//span[contains(@class, 'ant-tooltip-open')]//div//span",
-    overviewRowQueryTime: "//tr[4]//td[5]//span[contains(@class,'summarize')]",
+    overviewRowQueryTime: 'div.tr-3 > div:nth-child(5)',
     overviewRowQueryTimeTooltip: "//tr[4]//td[5]//span[contains(@class,'ant-tooltip-open')]",
     overviewRowQueryTimeTooltipText: "//tr[4]//td[5]//span[contains(@class,'ant-tooltip-open')]//div//span",
     showSelectedDisabled: '//button[@data-qa="qan-filters-show-selected" and @disabled ]',
@@ -198,7 +199,7 @@ module.exports = {
   },
 
   overviewRowLocator(rowNumber) {
-    return `.table-wrapper .ant-table-content tr[data-row-key="${rowNumber}"]`;
+    return `div.tr-${rowNumber}`;
   },
 
   waitForQANPageLoaded() {
