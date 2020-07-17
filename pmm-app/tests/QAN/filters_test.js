@@ -50,7 +50,7 @@ Scenario('PMM-T126 - Verify user is able to Reset All filters @not-pr-pipeline',
   const countAfter = await qanPage.getCountOfItems();
 
   await qanPage.verifyChangedCount(countBefore, countAfter);
-  I.click(qanPage.fields.resetAll);
+  I.click(qanPage.elements.resetAllButton);
   I.waitForVisible(qanPage.fields.disabledResetAll, 30);
   const countAfterReset = await qanPage.getCountOfItems();
 
