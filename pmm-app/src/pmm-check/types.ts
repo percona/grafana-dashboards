@@ -92,3 +92,7 @@ export interface DetailsItem {
 export interface TableDataAlertDetailsProps {
   detailsItem: DetailsItem
 }
+
+export interface AlertsReload {
+  fetchAlerts: () => void;
+}

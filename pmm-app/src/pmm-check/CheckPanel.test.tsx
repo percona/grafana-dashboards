@@ -118,6 +118,8 @@ describe('CheckPanel::', () => {
 
     expect(spy).toBeCalledTimes(1);
 
+    spy.mockClear();
+
     wrapper.unmount();
   });
 
@@ -164,6 +166,8 @@ describe('CheckPanel::', () => {
 
     buttonWithSpinner.simulate('click');
     expect(spy).toBeCalledTimes(1);
+
+    spy.mockClear();
 
     wrapper.unmount();
   });

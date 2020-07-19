@@ -1,7 +1,4 @@
 import { createContext } from 'react';
-
-interface AlertsReload {
-  fetchAlerts: () => void;
-}
+import { AlertsReload } from 'pmm-check/types';
 
 export const AlertsReloadContext = createContext<AlertsReload>({ fetchAlerts: () => {} });
