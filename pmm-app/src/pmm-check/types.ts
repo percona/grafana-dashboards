@@ -83,3 +83,12 @@ export interface DetailProps {
     labels: Labels;
   },
 }
+
+export interface DetailsItem {
+  description: string;
+  labels: Labels
+}
+
+export interface TableDataAlertDetailsProps {
+  detailsItem: DetailsItem
+}
