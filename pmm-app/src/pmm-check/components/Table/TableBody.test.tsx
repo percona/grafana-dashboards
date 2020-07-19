@@ -9,7 +9,7 @@ describe('TableBody::', () => {
   it('should render a table body with 3 rows', () => {
     const root = shallow(<TableBody data={activeCheckStub} />);
 
-    expect(root.find('tbody > tr').length).toEqual(3);
+    expect(root.find('tbody > tr').length).toEqual(4);
   });
 
   it('should render a specific text in the first row/col', () => {

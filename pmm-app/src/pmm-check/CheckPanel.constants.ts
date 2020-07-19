@@ -1,4 +1,4 @@
-import { Details, Failed } from './components';
+import { Failed } from './components';
 import { CheckPanelOptions, Column, SeverityMap } from './types';
 
 export const PMM_SETTINGS_URL = '/graph/d/pmm-settings/pmm-settings';
@@ -41,6 +41,10 @@ export const COLUMNS: Column[] = [
     title: 'Details',
     dataIndex: 'details',
     key: 'details',
-    render: Details,
+  },
+  {
+    title: 'Actions',
+    dataIndex: 'actions',
+    key: 'actions',
   },
 ];

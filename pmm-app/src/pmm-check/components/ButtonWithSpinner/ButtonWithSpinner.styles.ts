@@ -4,5 +4,5 @@ export const Button = css`
   align-items: center;
   display: flex;
   flex-direction: column;
-  width: 140px;
+  width: 100%;
 `;

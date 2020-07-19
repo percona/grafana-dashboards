@@ -27,3 +27,7 @@ export const title = css`
   padding: ${headerPadding};
   border: 1px solid transparent;
 `;
+
+export const runChecksButton = css`
+  width: 140px;
+`;

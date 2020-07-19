@@ -1,6 +1,6 @@
 import { WeakOpaque, ISOTimestamp } from 'shared/core/types';
 
-export type SilenceId = WeakOpaque<string, 'SilenceId'>;
+export type SilenceID = WeakOpaque<string, 'SilenceID'>;
 
 export interface CheckPanelOptions {
   title?: string;
@@ -72,14 +72,14 @@ export interface SilenceBody {
 }
 
 export interface SilenceResponse {
-  silenceID: SilenceId;
+  silenceID: SilenceID;
 }
 
 export type Labels = { [key: string]: string };
 
-export interface DetailsProps {
-  details: Array<{
+export interface DetailProps {
+  details: {
     description: string;
     labels: Labels;
-  }>,
+  },
 }
