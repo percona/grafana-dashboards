@@ -14,8 +14,6 @@ export const TableBody: FC<TableBodyProps> = ({ data }) => (
         key, name, failed, details
       } = row;
 
-      console.log(key);
-
       return (
         <Fragment key={key}>
           <tr>
