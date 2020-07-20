@@ -1,6 +1,5 @@
 import moment from 'moment';
 import { Labels } from 'pmm-check/types';
-import { ISOTimestamp } from 'shared/core/types';
 
 const formatMatchers = (labels: Labels) => Object.keys(labels).map((key) => ({
   name: key,
@@ -14,8 +13,8 @@ export const makeSilencePayload = (labels: Labels) => {
 
   return ({
     matchers: formatMatchers(labels),
-    startsAt: nowUTCISO as ISOTimestamp,
-    endsAt: tomorrowUTCISO as ISOTimestamp,
+    startsAt: nowUTCISO,
+    endsAt: tomorrowUTCISO,
     createdBy: window.grafanaBootData.user.name,
     comment: '',
     id: ''

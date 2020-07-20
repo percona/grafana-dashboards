@@ -1,7 +1,3 @@
-import { WeakOpaque, ISOTimestamp } from 'shared/core/types';
-
-export type SilenceID = WeakOpaque<string, 'SilenceID'>;
-
 export interface CheckPanelOptions {
   title?: string;
 }
@@ -64,15 +60,15 @@ interface SilenceMatcher {
 
 export interface SilenceBody {
   matchers: SilenceMatcher[];
-  startsAt: ISOTimestamp;
-  endsAt: ISOTimestamp;
+  startsAt: string;
+  endsAt: string;
   createdBy: string;
   comment: string;
   id: string;
 }
 
 export interface SilenceResponse {
-  silenceID: SilenceID;
+  silenceID: string;
 }
 
 export type Labels = { [key: string]: string };
