@@ -7,13 +7,16 @@ const serviceNames = {
   rds: 'mysql_rds_uprgade_service',
 };
 
-const [, pmmMinor, pmmPatch] = process.env.PMM_SERVER_LATEST.split('.');
-const [, dockerMinor, dockerPatch] = process.env.DOCKER_VERSION.split('.');
-const majorVersionDiff = pmmMinor - dockerMinor;
-const patchVersionDiff = pmmPatch - dockerPatch;
+// For running on local env set PMM_SERVER_LATEST and DOCKER_VERSION variables
+function getVersions() {
+  const [, pmmMinor, pmmPatch] = process.env.PMM_SERVER_LATEST.split('.');
+  const [, dockerMinor, dockerPatch] = process.env.DOCKER_VERSION.split('.');
+  const majorVersionDiff = pmmMinor - dockerMinor;
+  const patchVersionDiff = pmmPatch - dockerPatch;
+  const current = `2.${dockerMinor}`;
 
-// Variable for using different selectors in different versions
-const current = `2.${dockerMinor}`;
+  return {majorVersionDiff, patchVersionDiff, current}
+}
 
 Feature('PMM server Upgrade Tests and Executing test cases related to Upgrade Testing Cycle');
 
@@ -25,9 +28,10 @@ Before(async I => {
 Scenario(
   'PMM-T289 Verify Whats New link is presented on Update Widget @pmm-upgrade @visual-test @not-pr-pipeline',
   async (I, homePage) => {
+    const versions = getVersions();
     I.amOnPage(homePage.url);
     //Whats New Link is added for the latest version hours before the release hence we need to skip checking on that, rest it should be available and checked.
-    if (majorVersionDiff >= 1 && patchVersionDiff >= 0) {
+    if (versions.majorVersionDiff >= 1 && versions.patchVersionDiff >= 0) {
       I.waitForElement(homePage.fields.whatsNewLink, 30);
       I.seeElement(homePage.fields.whatsNewLink);
       const link = await I.grabAttributeFrom(homePage.fields.whatsNewLink, 'href');
@@ -39,8 +43,9 @@ Scenario(
 Scenario(
   'PMM-T288 Verify user can see Update widget before upgrade [critical] @visual-test @not-pr-pipeline',
   async (I, adminPage, homePage) => {
+    const versions = getVersions();
     I.amOnPage(homePage.url);
-    await homePage.verifyPreUpdateWidgetIsPresent(current);
+    await homePage.verifyPreUpdateWidgetIsPresent(versions.current);
   }
 );
 
@@ -61,8 +66,9 @@ Scenario(
 Scenario(
   'Verify user is able to Upgrade PMM version [blocker] @pmm-upgrade @visual-test @not-pr-pipeline',
   async (I, inventoryAPI, homePage) => {
+    const versions = getVersions();
     I.amOnPage(homePage.url);
-    await homePage.upgradePMM(current);
+    await homePage.upgradePMM(versions.current);
   }
 );
 
@@ -90,7 +96,7 @@ Scenario(
     I.amOnPage(pmmSettingsPage.url);
     pmmSettingsPage.waitForPmmSettingsPageLoaded();
     const dataRetentionActualValue = await I.grabValueFrom(pmmSettingsPage.fields.dataRetentionCount);
-    assert(
+    assert.equal(
       dataRetention,
       dataRetentionActualValue,
       'The Value for Data Retention is not the same as passed via Docker Environment Variable'
