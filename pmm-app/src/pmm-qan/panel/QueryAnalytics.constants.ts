@@ -683,7 +683,7 @@ export const METRIC_CATALOGUE = {
   },
   query_time: {
     humanizeName: 'Query Time',
-    tooltipText: 'Statement execution time',
+    tooltipText: 'Average statement execution time',
     simpleName: 'query_time',
     serviceTypes: ['all'],
     metricRelation: () => '',
