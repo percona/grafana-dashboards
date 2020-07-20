@@ -7,6 +7,14 @@ const serviceNames = {
   rds: 'mysql_rds_uprgade_service',
 };
 
+const [, pmmMinor, pmmPatch] = process.env.PMM_SERVER_LATEST.split('.');
+const [, dockerMinor, dockerPatch] = process.env.DOCKER_VERSION.split('.');
+const majorVersionDiff = pmmMinor - dockerMinor;
+const patchVersionDiff = pmmPatch - dockerPatch;
+
+// Variable for using different selectors in different versions
+const current = `2.${dockerMinor}`;
+
 Feature('PMM server Upgrade Tests and Executing test cases related to Upgrade Testing Cycle');
 
 Before(async I => {
@@ -19,10 +27,6 @@ Scenario(
   async (I, homePage) => {
     I.amOnPage(homePage.url);
     //Whats New Link is added for the latest version hours before the release hence we need to skip checking on that, rest it should be available and checked.
-    const [, pmmMinor, pmmPatch] = process.env.PMM_SERVER_LATEST.split('.');
-    const [, dockerMinor, dockerPatch] = process.env.DOCKER_VERSION.split('.');
-    const majorVersionDiff = pmmMinor - dockerMinor;
-    const patchVersionDiff = pmmPatch - dockerPatch;
     if (majorVersionDiff >= 1 && patchVersionDiff >= 0) {
       I.waitForElement(homePage.fields.whatsNewLink, 30);
       I.seeElement(homePage.fields.whatsNewLink);
@@ -36,7 +40,7 @@ Scenario(
   'PMM-T288 Verify user can see Update widget before upgrade [critical] @visual-test @not-pr-pipeline',
   async (I, adminPage, homePage) => {
     I.amOnPage(homePage.url);
-    await homePage.verifyPreUpdateWidgetIsPresent();
+    await homePage.verifyPreUpdateWidgetIsPresent(current);
   }
 );
 
@@ -58,7 +62,7 @@ Scenario(
   'Verify user is able to Upgrade PMM version [blocker] @pmm-upgrade @visual-test @not-pr-pipeline',
   async (I, inventoryAPI, homePage) => {
     I.amOnPage(homePage.url);
-    await homePage.upgradePMM();
+    await homePage.upgradePMM(current);
   }
 );
 
@@ -75,7 +79,7 @@ Scenario(
   'Verify user can see Update widget [critical] @pmm-upgrade @visual-test @not-pr-pipeline',
   async (I, adminPage, homePage) => {
     I.amOnPage(homePage.url);
-    homePage.verifyPostUpdateWidgetIsPresent();
+    await homePage.verifyPostUpdateWidgetIsPresent();
   }
 );
 
