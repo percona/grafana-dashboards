@@ -101,7 +101,7 @@ module.exports = {
   },
 
   overviewMetricCellValueLocator(rowNumber, dataColumnNumber) {
-    return `.ant-table-tbody tr:nth-child(${rowNumber}) td:nth-child(${dataColumnNumber + 2}) .summarize`;
+    return `div.tr-${rowNumber} > div:nth-child(${dataColumnNumber + 2})`;
   },
 
   overviewMetricSortingLocator(сolumnNumber) {

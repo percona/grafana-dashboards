@@ -59,7 +59,7 @@ Scenario('PMM-T126 - Verify user is able to Reset All filters @not-pr-pipeline',
 
 Scenario(
   'PMM-T124 - Verify User is able to show all and show top 5 values for filter section @not-pr-pipeline',
-  async (I, qanPage) => {
+  async (qanPage) => {
     const filterSection = 'Database';
 
     qanPage.waitForNewQANPageLoaded();
