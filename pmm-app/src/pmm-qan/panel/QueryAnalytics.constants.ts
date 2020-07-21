@@ -262,7 +262,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Query Count with errors',
     tooltipText: 'Total number of queries with errors',
     simpleName: 'num_queries_with_errors',
-    serviceTypes: ['all'],
+    serviceTypes: ['mysql'],
     metricRelation: () => '',
     units: Units.QPS,
     pipeTypes: {
@@ -277,7 +277,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Query Count with warnings',
     tooltipText: 'Total number of queries with warnings',
     simpleName: 'num_queries_with_warnings',
-    serviceTypes: ['all'],
+    serviceTypes: ['mysql'],
     metricRelation: () => '',
     units: Units.QPS,
     pipeTypes: {
