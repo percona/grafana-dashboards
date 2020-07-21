@@ -15,7 +15,10 @@ export const Diagnostics: FC = () => {
 
   return (
     <div className={styles.diagnosticsWrapper}>
-      <div className={styles.diagnosticsLabel}>
+      <div
+        className={styles.diagnosticsLabel}
+        data-qa="diagnostics-label"
+      >
         {label}
         <Tooltip content={tooltip}>
           <div>
@@ -27,6 +30,7 @@ export const Diagnostics: FC = () => {
         icon={'fa fa-download' as any}
         href="/logs.zip"
         className={styles.diagnosticsButton}
+        data-qa="diagnostics-button"
       >
         {action}
       </LinkButton>
