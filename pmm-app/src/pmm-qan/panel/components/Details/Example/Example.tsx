@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
 import { Spin } from 'antd';
-import { Databases } from '../Details.constants';
 import { getExample } from './Example.tools';
 import { ExampleInterface } from './Example.types';
 import { Messages } from '../Details.messages';
+import { Databases } from '../Details.types';
 
 const Example: FC<ExampleInterface> = ({
   fingerprint,

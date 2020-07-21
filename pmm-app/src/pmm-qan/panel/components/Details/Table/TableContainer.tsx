@@ -4,11 +4,11 @@ import TableCreate from './components/Table/Table';
 import { styles } from '../Explain/Explain.styles';
 import { Indexes } from './components/Indexes/Indexes';
 import { Status } from './components/Status/Status';
-import { Databases } from '../Details.constants';
 import { TableTabs } from './TableContainer.constants';
 import { TableContainerProps } from './TableContainer.types';
 import { useTables } from './TableContainer.hooks';
 import { Messages } from '../Details.messages';
+import { Databases } from '../Details.types';
 
 const { TabPane } = Tabs;
 const { Panel } = Collapse;

@@ -1,9 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Spin } from 'antd';
 import Highlight from 'react-highlight.js';
-import { ActionResult } from '../../../Details.types';
+import { ActionResult, Databases } from '../../../Details.types';
 import { mysqlMethods, postgresqlMethods } from '../../../database-models';
-import { Databases } from '../../../Details.constants';
 import { useActionResult } from '../../../Details.tools';
 
 // TODO: refactor example parameters passing

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Databases } from '../Details.constants';
 import { mongodbMethods, mysqlMethods } from '../database-models';
 import { useActionResult } from '../Details.tools';
+import { Databases } from '../Details.types';
 
 const actionResult = {
   error: '',
@@ -12,7 +12,6 @@ const actionResult = {
 export const useExplains = (examples, databaseType): any[] => {
   const [jsonExplain, setJsonExplain] = useState(actionResult);
   const [classicExplain, setClassicExplain] = useState(actionResult);
-  // 2. Get explains
 
   useEffect(() => {
     const getExplains = async () => {

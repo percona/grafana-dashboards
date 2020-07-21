@@ -4,9 +4,9 @@ import { Latency, Sparkline, TimeDistribution } from 'shared/components/Elements
 import { humanize } from 'shared/components/helpers/Humanization';
 import { Info } from 'shared/components/Elements/Icons/Info';
 import { styles } from './Metrics.styles';
-import { Databases } from '../Details.constants';
 import { MetricsTabs } from './Metrics.constants';
 import { MetricsProps } from './Metrics.types';
+import { Databases } from '../Details.types';
 
 const { Panel } = Collapse;
 

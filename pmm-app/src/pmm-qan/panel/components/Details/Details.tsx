@@ -9,10 +9,11 @@ import Example from './Example/Example';
 import Metrics from './Metrics/Metrics';
 import TableCreateContainer from './Table/TableContainer';
 import { useDetails } from './Details.hooks';
-import { Databases, TabKeys } from './Details.constants';
+import { TabKeys } from './Details.constants';
 import { styles } from './Details.styles';
 import { useMetricsDetails } from './Metrics/Metrics.hooks';
 import { Messages } from './Details.messages';
+import { Databases } from './Details.types';
 
 const { TabPane } = Tabs;
 

@@ -4,9 +4,3 @@ export const TabKeys = {
   explain: 'explain',
   tables: 'tables',
 };
-
-export enum Databases {
-  postgresql= 'postgresql',
-  mongodb = 'mongodb',
-  mysql ='mysql',
-}

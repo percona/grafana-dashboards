@@ -1,8 +1,8 @@
 import Highlight from 'react-highlight.js';
 import React from 'react';
 import sqlFormatter from 'sql-formatter';
-import { Databases } from '../Details.constants';
 import { ReactJSON } from '../../../../../shared/components/Elements/ReactJSON/ReactJSON';
+import { Databases } from '../Details.types';
 
 export const getExample = (databaseType) => (example: any): any => {
   if (databaseType === Databases.mongodb) {

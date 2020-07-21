@@ -1,9 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Spin, Table } from 'antd';
-import { ActionResult } from '../../../Details.types';
+import { ActionResult, Databases } from '../../../Details.types';
 import { mysqlMethods, postgresqlMethods } from '../../../database-models';
 import { processTableData } from '../../TableContainer.tools';
-import { Databases } from '../../../Details.constants';
 import { useActionResult } from '../../../Details.tools';
 import { Messages } from '../../../Details.messages';
 

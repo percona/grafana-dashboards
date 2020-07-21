@@ -4,10 +4,10 @@ import { Collapse, Spin, Table } from 'antd';
 import { ReactJSON } from 'shared/components/Elements/ReactJSON/ReactJSON';
 import { processClassicExplain } from './Explain.tools';
 import { styles } from './Explain.styles';
-import { Databases } from '../Details.constants';
 import { ClassicExplain, ExplainProps, ExplainTabs } from './Explain.types';
 import { useExplains } from './Explain.hooks';
 import { Messages } from '../Details.messages';
+import { Databases } from '../Details.types';
 
 const { Panel } = Collapse;
 
