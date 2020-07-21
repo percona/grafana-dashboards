@@ -10,35 +10,20 @@ import Metrics from './Metrics/Metrics';
 import TableCreateContainer from './Table/TableContainer';
 import { useDetailsState } from './Details.hooks';
 import { DATABASE, TabKeys } from './Details.constants';
-import { DetailsContentProvider, DetailsProvider } from './Details.provider';
 import { styles } from './Details.styles';
 import { useMetricsDetails } from './Metrics/Metrics.hooks';
 
 const { TabPane } = Tabs;
-const actionResult = {
-  error: '',
-  loading: true,
-  value: null,
-};
 
-const Details: FC = () => {
+export const DetailsSection: FC = () => {
   const {
     contextActions: { closeDetails, setActiveTab, setLoadingDetails },
     panelState: {
       queryId, groupBy, fingerprint, totals, openDetailsTab
     },
   } = useContext(QueryAnalyticsProvider);
-  const {
-    detailsState: {
-      databaseType,
-      classicExplain = actionResult,
-      jsonExplain = actionResult,
-      examples,
-      tables,
-    },
-  } = useContext(DetailsProvider);
 
-  const loading = useDetailsState();
+  const [loading, examples, databaseType] = useDetailsState();
   const [metrics, metricsLoading] = useMetricsDetails();
 
   const [activeTab, changeActiveTab] = useState(TabKeys[openDetailsTab]);
@@ -104,8 +89,9 @@ const Details: FC = () => {
           {showExplainTab ? (
             <TabPane tab={<span>Explain</span>} key={TabKeys.explain} disabled={totals}>
               <Explain
-                classicExplain={classicExplain}
-                jsonExplain={jsonExplain}
+                // classicExplain={classicExplain}
+                // jsonExplain={jsonExplain}
+                examples={examples}
                 databaseType={databaseType}
               />
             </TabPane>
@@ -115,7 +101,7 @@ const Details: FC = () => {
               <TableCreateContainer
                 databaseType={databaseType}
                 examples={examples}
-                tables={tables}
+                // tables={tables}
                 loading={loading}
               />
             </TabPane>
@@ -125,9 +111,3 @@ const Details: FC = () => {
     </div>
   );
 };
-
-export const DetailsSection = () => (
-  <DetailsContentProvider>
-    <Details />
-  </DetailsContentProvider>
-);

@@ -1,11 +1,8 @@
 import { useContext, useEffect, useState } from 'react';
-import { get } from 'lodash';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
-import { DetailsProvider } from './Details.provider';
 import { DATABASE } from './Details.constants';
 import DetailsService from './Details.service';
-import { mysqlMethods, mongodbMethods } from './database-models';
-import { ActionResult } from './Details.types';
+import { ActionResult, DatabasesType } from './Details.types';
 
 export const useActionResult = async (actionId): Promise<ActionResult> => {
   let intervalId;
@@ -66,23 +63,20 @@ export const useActionResult = async (actionId): Promise<ActionResult> => {
   });
 };
 
-export const useDetailsState = (): boolean => {
+export const useDetailsState = (): [boolean, any, DatabasesType] => {
   const {
     panelState: {
       queryId, groupBy, from, to, labels
     },
   } = useContext(QueryAnalyticsProvider);
-  const {
-    contextActions,
-  } = useContext(DetailsProvider);
   const [loading, setLoading] = useState<boolean>(false);
+  const [examples, setExamples] = useState<any>([]);
+  const [databaseType, setDatabaseType] = useState<string>(DATABASE.mysql);
 
   useEffect(() => {
     (async () => {
       try {
         setLoading(true);
-        contextActions.resetDetailsToDefault();
-        // 1. Get examples, we need it to get all addditional data
         const result = await DetailsService.getExample({
           filterBy: queryId,
           groupBy,
@@ -94,57 +88,8 @@ export const useDetailsState = (): boolean => {
         const examples = result.query_examples;
         const databaseType = result.query_examples[0].service_type;
 
-        const notEmptyExample = examples.filter((example) => example.example);
-        let jsonExplain;
-        let classicExplain;
-
-        // 2. Get explains
-        try {
-          if (!notEmptyExample.length) {
-            jsonExplain = {};
-            classicExplain = {};
-          } else if (databaseType === DATABASE.mysql) {
-            const traditionalExplainActionId = await mysqlMethods.getExplainTraditional({
-              example: notEmptyExample[0],
-            });
-            const jsonExplainActionId = await mysqlMethods.getExplainJSON({ example: notEmptyExample[0] });
-
-            jsonExplain = await useActionResult(jsonExplainActionId);
-            classicExplain = await useActionResult(traditionalExplainActionId);
-          } else if (databaseType === DATABASE.mongodb) {
-            const jsonExplainActionId = await mongodbMethods.getExplainJSON({ example: notEmptyExample[0] });
-
-            jsonExplain = await useActionResult(jsonExplainActionId);
-          }
-        } catch (e) {
-          console.error(e);
-        }
-
-
-        // 3. Get tables
-        let tables;
-
-        if (databaseType === DATABASE.mysql && jsonExplain.value) {
-          const parsedJSON = JSON.parse(jsonExplain.value);
-
-          tables = [
-            get(parsedJSON, 'query_block.table.table_name')
-              || get(parsedJSON, 'query_block.ordering_operation.grouping_operation.table.table_name'),
-          ].filter(Boolean);
-        }
-
-        if (databaseType === DATABASE.postgresql && examples) {
-          tables = examples[0].tables || [];
-        }
-
-        // 4. Store data to context
-        contextActions.setFoundData({
-          examples,
-          databaseType,
-          jsonExplain,
-          classicExplain,
-          tables,
-        });
+        setExamples(examples);
+        setDatabaseType(databaseType);
       } catch (e) {
         console.error(e);
       } finally {
@@ -153,5 +98,5 @@ export const useDetailsState = (): boolean => {
     })();
   }, [queryId]);
 
-  return loading;
+  return [loading, examples, databaseType];
 };

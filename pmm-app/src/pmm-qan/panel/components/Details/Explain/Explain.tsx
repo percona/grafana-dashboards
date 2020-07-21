@@ -7,16 +7,17 @@ import { styles } from './Explain.styles';
 import { DATABASE } from '../Details.constants';
 import { ExplainTabs } from './Explain.constants';
 import { ExplainProps } from './Explain.types';
+import { useExplains } from './Explain.hooks';
 
 const { Panel } = Collapse;
 
 
 const Explain: FC<ExplainProps> = ({
-  classicExplain,
-  jsonExplain,
   databaseType,
+  examples
 }) => {
   const [data, setData] = useState({ columns: [], rows: [] });
+  const [jsonExplain, classicExplain] = useExplains(examples, databaseType);
 
   useEffect(() => {
     setData(processClassicExplain(classicExplain.value));

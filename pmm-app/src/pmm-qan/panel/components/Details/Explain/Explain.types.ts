@@ -4,4 +4,5 @@ export interface ExplainProps {
   classicExplain: ActionResult;
   jsonExplain: ActionResult;
   databaseType: DatabasesType;
+  examples: any;
 }
