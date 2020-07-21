@@ -7,6 +7,7 @@ import { styles } from './Explain.styles';
 import { Databases } from '../Details.constants';
 import { ClassicExplain, ExplainProps, ExplainTabs } from './Explain.types';
 import { useExplains } from './Explain.hooks';
+import { Messages } from '../Details.messages';
 
 const { Panel } = Collapse;
 
@@ -44,7 +45,7 @@ const Explain: FC<ExplainProps> = ({
               ) : null}
               {/* eslint-disable-next-line max-len */}
               {!classicExplain.error && !classicExplain.loading && !data.rows.length ? (
-                <pre>No classic explain found</pre>
+                <pre>{Messages.noClassicExplain}</pre>
               ) : null}
             </Spin>
           </Panel>
@@ -56,7 +57,7 @@ const Explain: FC<ExplainProps> = ({
               <ReactJSON json={JSON.parse(jsonExplain.value)} />
             ) : null}
             {!jsonExplain.error && !jsonExplain.loading && !jsonExplain.value ? (
-              <pre>No JSON explain found</pre>
+              <pre>{Messages.noJsonExplain}</pre>
             ) : null}
           </Spin>
         </Panel>

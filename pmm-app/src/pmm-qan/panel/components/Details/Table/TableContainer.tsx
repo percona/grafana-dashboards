@@ -8,6 +8,7 @@ import { Databases } from '../Details.constants';
 import { TableTabs } from './TableContainer.constants';
 import { TableContainerProps } from './TableContainer.types';
 import { useTables } from './TableContainer.hooks';
+import { Messages } from '../Details.messages';
 
 const { TabPane } = Tabs;
 const { Panel } = Collapse;
@@ -58,7 +59,7 @@ const TableCreateContainer: FC<TableContainerProps> = ({
         </Tabs>
       ) : (
         <div>
-          <pre> Couldn&apos;t get tables info neither from example nor explain </pre>
+          <pre>{Messages.cantExtractTables}</pre>
         </div>
       )}
     </Spin>

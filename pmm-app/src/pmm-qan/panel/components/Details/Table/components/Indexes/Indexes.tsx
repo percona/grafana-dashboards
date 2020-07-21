@@ -5,6 +5,7 @@ import { mysqlMethods, postgresqlMethods } from '../../../database-models';
 import { processTableData } from '../../TableContainer.tools';
 import { Databases } from '../../../Details.constants';
 import { useActionResult } from '../../../Details.tools';
+import {Messages} from "../../../Details.messages";
 
 export const Indexes = (props) => {
   const { tableName, databaseType, example } = props;
@@ -49,7 +50,7 @@ export const Indexes = (props) => {
             bordered
           />
         ) : null}
-        {!indexes.error && !data.rows.length ? <pre> No data found</pre> : null}
+        {!indexes.error && !data.rows.length ? <pre>{Messages.noDataFound}</pre> : null}
       </Spin>
     </div>
   );
