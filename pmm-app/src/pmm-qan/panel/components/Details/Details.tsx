@@ -23,7 +23,7 @@ const actionResult = {
 
 const Details: FC = () => {
   const {
-    contextActions: { closeDetails, setActiveTab },
+    contextActions: { closeDetails, setActiveTab, setLoadingDetails },
     panelState: {
       queryId, groupBy, fingerprint, totals, openDetailsTab
     },
@@ -38,7 +38,7 @@ const Details: FC = () => {
     },
   } = useContext(DetailsProvider);
 
-  useDetailsState();
+  const loading = useDetailsState();
   const [metrics, metricsLoading] = useMetricsDetails();
 
   const [activeTab, changeActiveTab] = useState(TabKeys[openDetailsTab]);
@@ -68,6 +68,8 @@ const Details: FC = () => {
     changeActiveTab(TabKeys[openDetailsTab]);
   }, [queryId, openDetailsTab, showTablesTab, showExplainTab, showExamplesTab]);
 
+  useEffect(() => setLoadingDetails(loading || metricsLoading), [loading, metricsLoading]);
+
   return (
     <div className="query-analytics-details-grid query-analytics-details" data-qa="query-analytics-details">
       <div className="details-tabs">
@@ -91,7 +93,12 @@ const Details: FC = () => {
           </TabPane>
           {showExamplesTab ? (
             <TabPane tab={<span>Examples</span>} key={TabKeys.examples}>
-              <Example fingerprint={fingerprint} databaseType={databaseType} examples={examples} />
+              <Example
+                fingerprint={fingerprint}
+                databaseType={databaseType}
+                examples={examples}
+                loading={loading || metricsLoading}
+              />
             </TabPane>
           ) : null}
           {showExplainTab ? (
@@ -105,7 +112,12 @@ const Details: FC = () => {
           ) : null}
           {showTablesTab ? (
             <TabPane tab={<span>Tables</span>} key={TabKeys.tables} disabled={totals}>
-              <TableCreateContainer databaseType={databaseType} examples={examples} tables={tables} />
+              <TableCreateContainer
+                databaseType={databaseType}
+                examples={examples}
+                tables={tables}
+                loading={loading}
+              />
             </TabPane>
           ) : null}
         </Tabs>

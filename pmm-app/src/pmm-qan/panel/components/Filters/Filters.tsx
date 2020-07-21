@@ -4,6 +4,7 @@ import React, {
 import { Button, Input, Spin } from 'antd';
 import { Form } from 'react-final-form';
 import ScrollArea from 'react-scrollbar';
+import { cx } from 'emotion';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
 import { Filter } from 'shared/components/Elements/Icons/Filter';
 import { CheckboxGroup } from './components/CheckboxGroup/CheckboxGroup';
@@ -14,7 +15,7 @@ import { getSelectedCheckboxes } from './Filters.tools';
 import { FiltersContainerProps } from './Filters.types';
 
 export const FiltersContainer = ({
-  contextActions, form, labels, filters
+  contextActions, form, labels, filters, disabled
 }: FiltersContainerProps) => {
   const filtersWrapperRef = useRef<HTMLDivElement>(null);
 
@@ -30,7 +31,7 @@ export const FiltersContainer = ({
   }, [selectedCheckboxes]);
 
   return (
-    <div ref={filtersWrapperRef}>
+    <div ref={filtersWrapperRef} className={cx({ [styles.filtersDisabled]: disabled })}>
       <div className={styles.filtersHeader}>
         <h5 className={styles.title}>Filters</h5>
         <Button
@@ -94,7 +95,7 @@ export const FiltersContainer = ({
 export const Filters: FC = () => {
   const {
     contextActions,
-    panelState: { labels = {} },
+    panelState: { labels = {}, loadingDetails },
   } = useContext(QueryAnalyticsProvider);
   const { filters, loading } = useFilters();
   const initialValues = useInitialFilterValues();
@@ -111,10 +112,11 @@ export const Filters: FC = () => {
               form={form}
               labels={labels}
               filters={filters}
+              disabled={loadingDetails}
             />
           </form>
         </Spin>
       )}
     />
-  ), [contextActions, filters, loading, initialValues, labels]);
+  ), [contextActions, filters, loading, loadingDetails, initialValues, labels]);
 };

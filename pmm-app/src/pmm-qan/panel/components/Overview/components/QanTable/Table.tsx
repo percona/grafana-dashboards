@@ -26,6 +26,7 @@ interface TableProps {
   noData?: ReactNode;
   loading?: boolean;
   orderBy?: string;
+  disabled?: boolean;
   rowKey?: (rec: any) => any;
   rowNumber?: (number) => ReactElement | number;
 }
@@ -42,6 +43,7 @@ export const Table: FC<TableProps> = ({
   data,
   noData,
   loading,
+  disabled,
 }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
@@ -179,7 +181,7 @@ export const Table: FC<TableProps> = ({
 
   return (
     <div>
-      <div className={styles.table}>
+      <div className={cx(styles.table, { [styles.tableDisabled]: disabled })}>
         <div className={styles.tableWrap(scroll)}>
           {loading ? (
             <div data-qa="table-loading" className={styles.empty(scroll.y)}>
