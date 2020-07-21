@@ -12,6 +12,7 @@ import { useDetails } from './Details.hooks';
 import { Databases, TabKeys } from './Details.constants';
 import { styles } from './Details.styles';
 import { useMetricsDetails } from './Metrics/Metrics.hooks';
+import { Messages } from './Details.messages';
 
 const { TabPane } = Tabs;
 
@@ -32,19 +33,19 @@ export const DetailsSection: FC = () => {
   const showExamplesTab = groupBy === 'queryid' && !totals;
 
   useEffect(() => {
-    if (openDetailsTab === 'examples' && !showExamplesTab) {
+    if (openDetailsTab === TabKeys.examples && !showExamplesTab) {
       changeActiveTab(TabKeys.details);
 
       return;
     }
 
-    if (openDetailsTab === 'tables' && !showTablesTab) {
+    if (openDetailsTab === TabKeys.tables && !showTablesTab) {
       changeActiveTab(TabKeys.details);
 
       return;
     }
 
-    if (openDetailsTab === 'explain' && !showExplainTab) {
+    if (openDetailsTab === TabKeys.explain && !showExplainTab) {
       changeActiveTab(TabKeys.details);
 
       return;
@@ -69,15 +70,15 @@ export const DetailsSection: FC = () => {
           destroyInactiveTabPane
           tabBarExtraContent={(
             <Button type="default" size="small" onClick={closeDetails}>
-              Close
+              {Messages.closeDetails}
             </Button>
           )}
         >
-          <TabPane tab={<span>Details</span>} key={TabKeys.details}>
+          <TabPane tab={<span>{Messages.tabs.details.tab}</span>} key={TabKeys.details}>
             <Metrics databaseType={databaseType} totals={totals} metrics={metrics} loading={metricsLoading} />
           </TabPane>
           {showExamplesTab ? (
-            <TabPane tab={<span>Examples</span>} key={TabKeys.examples}>
+            <TabPane tab={<span>{Messages.tabs.examples.tab}</span>} key={TabKeys.examples}>
               <Example
                 fingerprint={fingerprint}
                 databaseType={databaseType}
@@ -87,7 +88,7 @@ export const DetailsSection: FC = () => {
             </TabPane>
           ) : null}
           {showExplainTab ? (
-            <TabPane tab={<span>Explain</span>} key={TabKeys.explain} disabled={totals}>
+            <TabPane tab={<span>{Messages.tabs.explains.tab}</span>} key={TabKeys.explain} disabled={totals}>
               <Explain
                 examples={examples}
                 databaseType={databaseType}
@@ -95,11 +96,10 @@ export const DetailsSection: FC = () => {
             </TabPane>
           ) : null}
           {showTablesTab ? (
-            <TabPane tab={<span>Tables</span>} key={TabKeys.tables} disabled={totals}>
+            <TabPane tab={<span>{Messages.tabs.tables.tab}</span>} key={TabKeys.tables} disabled={totals}>
               <TableCreateContainer
                 databaseType={databaseType}
                 examples={examples}
-                // tables={tables}
                 loading={loading}
               />
             </TabPane>

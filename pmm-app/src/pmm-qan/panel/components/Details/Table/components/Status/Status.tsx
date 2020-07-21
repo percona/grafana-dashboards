@@ -5,7 +5,7 @@ import { mysqlMethods } from '../../../database-models';
 import { processTableData } from '../../TableContainer.tools';
 import { Databases } from '../../../Details.constants';
 import { useActionResult } from '../../../Details.tools';
-import {Messages} from "../../../Details.messages";
+import { Messages } from '../../../Details.messages';
 
 export const Status = (props) => {
   const { tableName, databaseType, example } = props;

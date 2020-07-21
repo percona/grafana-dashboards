@@ -5,7 +5,7 @@ import { mysqlMethods, postgresqlMethods } from '../../../database-models';
 import { processTableData } from '../../TableContainer.tools';
 import { Databases } from '../../../Details.constants';
 import { useActionResult } from '../../../Details.tools';
-import {Messages} from "../../../Details.messages";
+import { Messages } from '../../../Details.messages';
 
 export const Indexes = (props) => {
   const { tableName, databaseType, example } = props;
