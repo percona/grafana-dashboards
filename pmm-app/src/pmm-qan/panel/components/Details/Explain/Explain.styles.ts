@@ -17,4 +17,7 @@ export const styles = {
     color: white !important;
     text-color: white !important;
   `,
+  spinnerWrapper: css`
+    padding: 5px;
+  `,
 };
