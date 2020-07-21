@@ -4,7 +4,7 @@ import { useActionResult } from '../../../Details.hooks';
 import { ActionResult } from '../../../Details.types';
 import { mysqlMethods, postgresqlMethods } from '../../../database-models';
 import { processTableData } from '../../TableContainer.tools';
-import { DATABASE } from '../../../Details.constants';
+import { Databases } from '../../../Details.constants';
 
 export const Indexes = (props) => {
   const { tableName, databaseType, example } = props;
@@ -19,9 +19,9 @@ export const Indexes = (props) => {
   const getIndexes = useCallback(async () => {
     let id;
 
-    if (databaseType === DATABASE.postgresql) {
+    if (databaseType === Databases.postgresql) {
       id = await postgresqlMethods.getIndexes(({ example, tableName }));
-    } else if (databaseType === DATABASE.mysql) {
+    } else if (databaseType === Databases.mysql) {
       id = await mysqlMethods.getIndexes(({ example, tableName }));
     }
 

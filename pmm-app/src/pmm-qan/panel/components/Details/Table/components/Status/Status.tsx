@@ -4,7 +4,7 @@ import { useActionResult } from '../../../Details.hooks';
 import { ActionResult } from '../../../Details.types';
 import { mysqlMethods } from '../../../database-models';
 import { processTableData } from '../../TableContainer.tools';
-import { DATABASE } from '../../../Details.constants';
+import { Databases } from '../../../Details.constants';
 
 export const Status = (props) => {
   const { tableName, databaseType, example } = props;
@@ -18,7 +18,7 @@ export const Status = (props) => {
   const getStatuses = useCallback(async () => {
     let id;
 
-    if (databaseType === DATABASE.mysql) {
+    if (databaseType === Databases.mysql) {
       id = await mysqlMethods.getStatuses(({ example, tableName }));
     }
 

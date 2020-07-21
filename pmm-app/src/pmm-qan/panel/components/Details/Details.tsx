@@ -9,7 +9,7 @@ import Example from './Example/Example';
 import Metrics from './Metrics/Metrics';
 import TableCreateContainer from './Table/TableContainer';
 import { useDetailsState } from './Details.hooks';
-import { DATABASE, TabKeys } from './Details.constants';
+import { Databases, TabKeys } from './Details.constants';
 import { styles } from './Details.styles';
 import { useMetricsDetails } from './Metrics/Metrics.hooks';
 
@@ -27,8 +27,8 @@ export const DetailsSection: FC = () => {
   const [metrics, metricsLoading] = useMetricsDetails();
 
   const [activeTab, changeActiveTab] = useState(TabKeys[openDetailsTab]);
-  const showTablesTab = databaseType !== DATABASE.mongodb && groupBy === 'queryid' && !totals;
-  const showExplainTab = databaseType !== DATABASE.postgresql && groupBy === 'queryid' && !totals;
+  const showTablesTab = databaseType !== Databases.mongodb && groupBy === 'queryid' && !totals;
+  const showExplainTab = databaseType !== Databases.postgresql && groupBy === 'queryid' && !totals;
   const showExamplesTab = groupBy === 'queryid' && !totals;
 
   useEffect(() => {

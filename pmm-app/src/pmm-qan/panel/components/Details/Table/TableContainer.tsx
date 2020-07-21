@@ -4,7 +4,7 @@ import TableCreate from './components/Table/Table';
 import { styles } from '../Explain/Explain.styles';
 import { Indexes } from './components/Indexes/Indexes';
 import { Status } from './components/Status/Status';
-import { DATABASE } from '../Details.constants';
+import { Databases } from '../Details.constants';
 import { TableTabs } from './TableContainer.constants';
 import { TableContainerProps } from './TableContainer.types';
 import { useTables } from './TableContainer.hooks';
@@ -34,7 +34,7 @@ const TableCreateContainer: FC<TableContainerProps> = ({
                     schema={examples[0].schema}
                   />
                 </Panel>
-                {databaseType === DATABASE.mysql ? (
+                {databaseType === Databases.mysql ? (
                   <Panel header={TableTabs.status} key={TableTabs.status} className={styles.panel}>
                     <Status
                       tableName={table}

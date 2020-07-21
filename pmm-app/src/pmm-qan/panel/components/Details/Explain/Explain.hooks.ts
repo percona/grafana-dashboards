@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { DATABASE } from '../Details.constants';
+import { Databases } from '../Details.constants';
 import { mongodbMethods, mysqlMethods } from '../database-models';
 import { useActionResult } from '../Details.hooks';
 
@@ -26,7 +26,7 @@ export const useExplains = (examples, databaseType): any[] => {
           return;
         }
 
-        if (databaseType === DATABASE.mysql) {
+        if (databaseType === Databases.mysql) {
           const traditionalExplainActionId = await mysqlMethods.getExplainTraditional({
             example: notEmptyExample[0],
           });
@@ -37,7 +37,7 @@ export const useExplains = (examples, databaseType): any[] => {
 
           setJsonExplain(jsonResult);
           setClassicExplain(classicResult);
-        } else if (databaseType === DATABASE.mongodb) {
+        } else if (databaseType === Databases.mongodb) {
           const jsonExplainActionId = await mongodbMethods.getExplainJSON({ example: notEmptyExample[0] });
 
           const jsonResult = await useActionResult(jsonExplainActionId);

@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Spin } from 'antd';
-import { DATABASE } from '../Details.constants';
+import { Databases } from '../Details.constants';
 import { getExample } from './Example.tools';
 import { ExampleInterface } from './Example.types';
 
@@ -11,7 +11,7 @@ const Example: FC<ExampleInterface> = ({
   loading
 }) => {
   const isExample = examples && examples.filter((example) => example.example).length;
-  const isPostgresql = databaseType === DATABASE.postgresql;
+  const isPostgresql = databaseType === Databases.postgresql;
 
   return (
     <Spin spinning={loading}>

@@ -5,12 +5,6 @@ export const TabKeys = {
   tables: 'tables',
 };
 
-export const DATABASE = {
-  postgresql: 'postgresql',
-  mongodb: 'mongodb',
-  mysql: 'mysql',
-};
-
 export enum Databases {
   postgresql= 'postgresql',
   mongodb = 'mongodb',

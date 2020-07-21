@@ -4,7 +4,7 @@ import Highlight from 'react-highlight.js';
 import { useActionResult } from '../../../Details.hooks';
 import { ActionResult } from '../../../Details.types';
 import { mysqlMethods, postgresqlMethods } from '../../../database-models';
-import { DATABASE } from '../../../Details.constants';
+import { Databases } from '../../../Details.constants';
 
 // TODO: refactor example parameters passing
 
@@ -19,9 +19,9 @@ const TableCreate = (props) => {
   const getDatabase = useCallback(async () => {
     let id;
 
-    if (databaseType === DATABASE.postgresql) {
+    if (databaseType === Databases.postgresql) {
       id = await postgresqlMethods.getShowCreateTables({ example, tableName });
-    } else if (databaseType === DATABASE.mysql) {
+    } else if (databaseType === Databases.mysql) {
       id = await mysqlMethods.getShowCreateTables({ example, tableName });
     }
 

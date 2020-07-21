@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { get } from 'lodash';
-import { DATABASE } from '../Details.constants';
+import { Databases } from '../Details.constants';
 import { useExplains } from '../Explain/Explain.hooks';
 
 export const useTables = (examples, databaseType): any[] => {
@@ -9,7 +9,7 @@ export const useTables = (examples, databaseType): any[] => {
 
   useEffect(() => {
     const getTables = async () => {
-      if (databaseType === DATABASE.mysql && jsonExplain.value) {
+      if (databaseType === Databases.mysql && jsonExplain.value) {
         const parsedJSON = JSON.parse(jsonExplain.value);
 
         const tablesResult = [
@@ -20,7 +20,7 @@ export const useTables = (examples, databaseType): any[] => {
         setTables(tablesResult);
       }
 
-      if (databaseType === DATABASE.postgresql && examples) {
+      if (databaseType === Databases.postgresql && examples) {
         const tablesResult = examples[0].tables || [];
 
         setTables(tablesResult);
