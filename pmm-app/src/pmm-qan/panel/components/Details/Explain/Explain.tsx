@@ -4,7 +4,7 @@ import { Collapse, Spin, Table } from 'antd';
 import { ReactJSON } from 'shared/components/Elements/ReactJSON/ReactJSON';
 import { processClassicExplain } from './Explain.tools';
 import { styles } from './Explain.styles';
-import { DATABASE } from '../Details.constants';
+import { Databases } from '../Details.constants';
 import { ExplainTabs } from './Explain.constants';
 import { ExplainProps } from './Explain.types';
 import { useExplains } from './Explain.hooks';
@@ -30,7 +30,7 @@ const Explain: FC<ExplainProps> = ({
         defaultActiveKey={[ExplainTabs.classic, ExplainTabs.json]}
         className={styles.collapse}
       >
-        {databaseType !== DATABASE.mongodb ? (
+        {databaseType !== Databases.mongodb ? (
           <Panel header={ExplainTabs.classic} key={ExplainTabs.classic} className={styles.panel}>
             <Spin spinning={classicExplain.loading} wrapperClassName={styles.spinnerWrapper}>
               {classicExplain.error ? <pre>{classicExplain.error}</pre> : null}

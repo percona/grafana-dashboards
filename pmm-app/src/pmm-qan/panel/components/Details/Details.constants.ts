@@ -10,3 +10,9 @@ export const DATABASE = {
   mongodb: 'mongodb',
   mysql: 'mysql',
 };
+
+export enum Databases {
+  postgresql= 'postgresql',
+  mongodb = 'mongodb',
+  mysql ='mysql',
+}

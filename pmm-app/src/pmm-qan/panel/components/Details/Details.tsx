@@ -89,8 +89,6 @@ export const DetailsSection: FC = () => {
           {showExplainTab ? (
             <TabPane tab={<span>Explain</span>} key={TabKeys.explain} disabled={totals}>
               <Explain
-                // classicExplain={classicExplain}
-                // jsonExplain={jsonExplain}
                 examples={examples}
                 databaseType={databaseType}
               />

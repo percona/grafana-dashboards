@@ -15,7 +15,6 @@ const { Panel } = Collapse;
 const TableCreateContainer: FC<TableContainerProps> = ({
   databaseType,
   examples,
-  // tables,
   loading
 }) => {
   const [tables] = useTables(examples, databaseType);

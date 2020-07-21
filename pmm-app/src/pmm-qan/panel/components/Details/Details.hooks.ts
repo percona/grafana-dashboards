@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
-import { DATABASE } from './Details.constants';
+import { Databases } from './Details.constants';
 import DetailsService from './Details.service';
 import { ActionResult, DatabasesType } from './Details.types';
 
@@ -71,7 +71,7 @@ export const useDetailsState = (): [boolean, any, DatabasesType] => {
   } = useContext(QueryAnalyticsProvider);
   const [loading, setLoading] = useState<boolean>(false);
   const [examples, setExamples] = useState<any>([]);
-  const [databaseType, setDatabaseType] = useState<string>(DATABASE.mysql);
+  const [databaseType, setDatabaseType] = useState<DatabasesType>(Databases.mysql);
 
   useEffect(() => {
     (async () => {
