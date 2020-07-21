@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Spin, Table } from 'antd';
-import { useActionResult } from '../../../Details.hooks';
 import { ActionResult } from '../../../Details.types';
 import { mysqlMethods } from '../../../database-models';
 import { processTableData } from '../../TableContainer.tools';
 import { Databases } from '../../../Details.constants';
+import { useActionResult } from '../../../Details.tools';
 
 export const Status = (props) => {
   const { tableName, databaseType, example } = props;

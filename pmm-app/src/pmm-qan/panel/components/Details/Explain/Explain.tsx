@@ -5,8 +5,7 @@ import { ReactJSON } from 'shared/components/Elements/ReactJSON/ReactJSON';
 import { processClassicExplain } from './Explain.tools';
 import { styles } from './Explain.styles';
 import { Databases } from '../Details.constants';
-import { ExplainTabs } from './Explain.constants';
-import { ExplainProps } from './Explain.types';
+import { ClassicExplain, ExplainProps, ExplainTabs } from './Explain.types';
 import { useExplains } from './Explain.hooks';
 
 const { Panel } = Collapse;
@@ -16,7 +15,7 @@ const Explain: FC<ExplainProps> = ({
   databaseType,
   examples
 }) => {
-  const [data, setData] = useState({ columns: [], rows: [] });
+  const [data, setData] = useState<ClassicExplain>({ columns: [], rows: [] });
   const [jsonExplain, classicExplain] = useExplains(examples, databaseType);
 
   useEffect(() => {

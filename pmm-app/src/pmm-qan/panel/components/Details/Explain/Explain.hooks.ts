@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Databases } from '../Details.constants';
 import { mongodbMethods, mysqlMethods } from '../database-models';
-import { useActionResult } from '../Details.hooks';
+import { useActionResult } from '../Details.tools';
 
 const actionResult = {
   error: '',

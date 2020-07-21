@@ -8,7 +8,7 @@ import Explain from './Explain/Explain';
 import Example from './Example/Example';
 import Metrics from './Metrics/Metrics';
 import TableCreateContainer from './Table/TableContainer';
-import { useDetailsState } from './Details.hooks';
+import { useDetails } from './Details.hooks';
 import { Databases, TabKeys } from './Details.constants';
 import { styles } from './Details.styles';
 import { useMetricsDetails } from './Metrics/Metrics.hooks';
@@ -23,7 +23,7 @@ export const DetailsSection: FC = () => {
     },
   } = useContext(QueryAnalyticsProvider);
 
-  const [loading, examples, databaseType] = useDetailsState();
+  const [loading, examples, databaseType] = useDetails();
   const [metrics, metricsLoading] = useMetricsDetails();
 
   const [activeTab, changeActiveTab] = useState(TabKeys[openDetailsTab]);
