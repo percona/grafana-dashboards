@@ -1,6 +1,7 @@
 const {I} = inject();
 const assert = require('assert');
-const lastCheckRegex = /^(?:(((Jan?|Ma(r?|y)|Jul(y)?|Aug?|Oct?|Dec?)\ 31)|((Jan?|Ma(r?|y)|Apr?|Ju((ly?)|(ne?))|Aug?|Oct?|(Sep(t)?|Nov|Dec)?)\ (0?[1-9]|([12]\d)|30))|(Feb?\ (0?[1-9]|1\d|2[0-8]|(29(?=,\ ((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00)))))))\,) (?:[0-1]?[0-9]|[2][1-4]):[0-5]?[0-9]?\s??$/gim;
+// The original regex source is https://regexlib.com/REDetails.aspx?regexp_id=5055
+const lastCheckRegex = /^(?:(((Jan?|Ma(r?|y)|Jul(y)?|Aug?|Oct?|Dec?) 31)|((Jan?|Ma(r?|y)|Apr?|Ju((ly?)|(ne?))|Aug?|Oct?|(Sep(t)?|Nov|Dec)?) (0?[1-9]|([12]\d)|30))|(Feb? (0?[1-9]|1\d|2[0-8]|(29(?=, ))))),) (?:[0-1]?[0-9]|[2][1-4]):[0-5]?[0-9]?\s??$/gim;
 
 module.exports = {
   // insert your locators and methods here
@@ -29,7 +30,7 @@ module.exports = {
         successUpgradeMsgSelector: ".modal-content",
         lastCheckSelector: ".last-check-wrapper > p",
         triggerUpdate: "button[ng-click='update()']",
-        reloadButtonAfterUpgrade: "button[ng-click='reloadAfterUpdate()'",
+        reloadButtonAfterUpgrade: "button[ng-click='reloadAfterUpdate()']",
         upToDateLocator: "//div[@class='panel-content']//section/p[text()='You are up to date']",
         availableVersion: "#available_version > div > p",
         currentVersion: "#current_version > span",

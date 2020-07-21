@@ -129,9 +129,9 @@ Scenario(
   'Verify QAN has specific filters for Remote Instances after Upgrade (UI) @pmm-upgrade @visual-test @not-pr-pipeline',
   async (I, qanPage, addInstanceAPI) => {
     I.amOnPage(qanPage.url);
-    I.waitForVisible(qanPage.fields.iframe, 30);
-    I.switchTo(qanPage.fields.iframe);
+    qanPage.waitForFiltersLoad();
     await qanPage.expandAllFilter();
+
     // Checking that Cluster filters are still in QAN after Upgrade
     for (const name of Object.values(addInstanceAPI.clusterNames)) {
       // For now we can't see the cluster names in QAN for ProxySQL and MongoDB
