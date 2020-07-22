@@ -19,7 +19,7 @@ export const getMainColumnWidth = (columns) => {
   const width = +((container && container.clientWidth) || 0);
 
   return Math.max(
-    width - getAllColumns(columns) + FIXED_COLUMN_WIDTH,
+    width - getAllColumns(columns) + FIXED_COLUMN_WIDTH - 2,
     MAIN_METRIC_MIN_WIDTH
   );
 };
@@ -28,12 +28,12 @@ export const getAllColumnsWidth = (mainColumnWidth, columns) => {
   const container = document.querySelector('.table-wrapper');
   const width = +((container && container.clientWidth) || 0);
 
-  return Math.max(getAllColumns(columns) + mainColumnWidth - FIXED_COLUMN_WIDTH, width);
+  return Math.max(getAllColumns(columns) + mainColumnWidth - FIXED_COLUMN_WIDTH, width) - 2;
 };
 
-const dimensionColumnRender = (mainMetricColumnWidth) => (record, index) => (
+const dimensionColumnRender = (record, index) => (
   <div className={metricWrapper}>
-    <div className={mainMetric(mainMetricColumnWidth, index === 0)}>
+    <div className={mainMetric(index === 0)}>
       {index === 0 ? 'TOTAL' : record.fingerprint || record.dimension || 'N/A'}
     </div>
     {index !== 0 && record.fingerprint ? (
@@ -44,15 +44,10 @@ const dimensionColumnRender = (mainMetricColumnWidth) => (record, index) => (
   </div>
 );
 
-export const getDefaultColumns = (groupBy, pageNumber, pageSize, columns) => {
-  const mainMetricColumnWidth = getMainColumnWidth(columns);
-
-  return [
-    {
-      // width: mainMetricColumnWidth,
-      Header: 'Main column',
-      HeaderAccessor: () => <Dimension />,
-      accessor: dimensionColumnRender(mainMetricColumnWidth),
-    },
-  ];
-};
+export const getDefaultColumns = () => [
+  {
+    Header: 'Main column',
+    HeaderAccessor: () => <Dimension />,
+    accessor: dimensionColumnRender,
+  },
+];

@@ -14,6 +14,7 @@ import { Spinner, useTheme } from '@grafana/ui';
 import { cx } from 'emotion';
 import { getStyles } from './Table.styles';
 import { getMainColumnWidth, getAllColumnsWidth } from '../DefaultColumns/DefaultColumns';
+import useWindowSize from '../../../../../../shared/components/helpers/WindowSize.hooks';
 
 interface TableProps {
   rowSelection?: boolean;
@@ -46,8 +47,11 @@ export const Table: FC<TableProps> = ({
   loading,
   disabled,
 }) => {
+  const windowSize = useWindowSize();
+
   useEffect(() => {
     setTimeout(() => {
+      console.log('321');
       const width = getMainColumnWidth(columns.length);
 
       document.querySelectorAll('.tr>div:nth-child(2)').forEach((element) => {
@@ -56,8 +60,22 @@ export const Table: FC<TableProps> = ({
       document.querySelectorAll('.tr').forEach((element) => {
         (element as any).style.width = `${getAllColumnsWidth(width, columns.length)}px`;
       });
-    }, 100);
+    }, 150);
   });
+
+  useEffect(() => {
+    setTimeout(() => {
+      console.log('321');
+      const width = getMainColumnWidth(columns.length);
+
+      document.querySelectorAll('.tr>div:nth-child(2)').forEach((element) => {
+        (element as any).style.width = `${width}px`;
+      });
+      document.querySelectorAll('.tr').forEach((element) => {
+        (element as any).style.width = `${getAllColumnsWidth(width, columns.length)}px`;
+      });
+    }, 150);
+  }, [windowSize]);
 
   const theme = useTheme();
   const styles = getStyles(theme);
