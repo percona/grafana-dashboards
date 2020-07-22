@@ -1,11 +1,9 @@
 // @ts-nocheck
-import axios, { CancelToken, CancelTokenSource } from 'axios';
+import axios, { CancelToken } from 'axios';
 import { showErrorNotification } from './notification-manager';
 
 export class ApiRequest {
   axiosInstance: axios.AxiosInstance;
-
-  cancelTokensMap: { [id: string]: CancelTokenSource } = {};
 
   constructor(params) {
     this.axiosInstance = axios.create({
@@ -57,22 +55,6 @@ export class ApiRequest {
       .catch((): void => {
         // Notify.error(e.message);
       });
-  }
-
-  async postCancelable<T, B>(path: string, body: B, disableNotifications = false): Promise<void | T> {
-    return this.post(path, body, disableNotifications, this.getCancelToken(path, 'post'));
-  }
-
-  private getCancelToken(path: string, method: string) {
-    const key = `${path}${method}`;
-
-    if (this.cancelTokensMap[key]) {
-      this.cancelTokensMap[key].cancel();
-    }
-
-    this.cancelTokensMap[key] = axios.CancelToken.source();
-
-    return this.cancelTokensMap[key].token;
   }
 }
 
