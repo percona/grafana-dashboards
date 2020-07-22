@@ -1,14 +1,21 @@
 import React, { FC } from 'react';
-import { DATABASE } from '../Details.constants';
+import { Spin } from 'antd';
 import { getExample } from './Example.tools';
 import { ExampleInterface } from './Example.types';
+import { Messages } from '../Details.messages';
+import { Databases } from '../Details.types';
 
-const Example: FC<ExampleInterface> = ({ fingerprint, databaseType, examples }) => {
+const Example: FC<ExampleInterface> = ({
+  fingerprint,
+  databaseType,
+  examples,
+  loading
+}) => {
   const isExample = examples && examples.filter((example) => example.example).length;
-  const isPostgresql = databaseType === DATABASE.postgresql;
+  const isPostgresql = databaseType === Databases.postgresql;
 
   return (
-    <div>
+    <Spin spinning={loading}>
       {isPostgresql && fingerprint ? getExample(databaseType)(fingerprint) : null}
       {!isPostgresql && isExample
         ? examples
@@ -17,8 +24,8 @@ const Example: FC<ExampleInterface> = ({ fingerprint, databaseType, examples }) 
           .map(getExample(databaseType))
         : null}
       {/* eslint-disable-next-line max-len */}
-      {(!isPostgresql && !isExample) || (isPostgresql && !fingerprint) ? <pre>Sorry, no examples found for this query</pre> : null}
-    </div>
+      {(!isPostgresql && !isExample) || (isPostgresql && !fingerprint) ? <pre>{Messages.noExamplesFound}</pre> : null}
+    </Spin>
   );
 };
 

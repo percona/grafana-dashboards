@@ -8,58 +8,45 @@ import Explain from './Explain/Explain';
 import Example from './Example/Example';
 import Metrics from './Metrics/Metrics';
 import TableCreateContainer from './Table/TableContainer';
-import { useDetailsState } from './Details.hooks';
-import { DATABASE, TabKeys } from './Details.constants';
-import { DetailsContentProvider, DetailsProvider } from './Details.provider';
+import { useDetails } from './Details.hooks';
+import { TabKeys } from './Details.constants';
 import { styles } from './Details.styles';
 import { useMetricsDetails } from './Metrics/Metrics.hooks';
+import { Messages } from './Details.messages';
+import { Databases } from './Details.types';
 
 const { TabPane } = Tabs;
-const actionResult = {
-  error: '',
-  loading: true,
-  value: null,
-};
 
-const Details: FC = () => {
+export const DetailsSection: FC = () => {
   const {
-    contextActions: { closeDetails, setActiveTab },
+    contextActions: { closeDetails, setActiveTab, setLoadingDetails },
     panelState: {
       queryId, groupBy, fingerprint, totals, openDetailsTab
     },
   } = useContext(QueryAnalyticsProvider);
-  const {
-    detailsState: {
-      databaseType,
-      classicExplain = actionResult,
-      jsonExplain = actionResult,
-      examples,
-      tables,
-    },
-  } = useContext(DetailsProvider);
 
-  useDetailsState();
+  const [loading, examples, databaseType] = useDetails();
   const [metrics, metricsLoading] = useMetricsDetails();
 
   const [activeTab, changeActiveTab] = useState(TabKeys[openDetailsTab]);
-  const showTablesTab = databaseType !== DATABASE.mongodb && groupBy === 'queryid' && !totals;
-  const showExplainTab = databaseType !== DATABASE.postgresql && groupBy === 'queryid' && !totals;
+  const showTablesTab = databaseType !== Databases.mongodb && groupBy === 'queryid' && !totals;
+  const showExplainTab = databaseType !== Databases.postgresql && groupBy === 'queryid' && !totals;
   const showExamplesTab = groupBy === 'queryid' && !totals;
 
   useEffect(() => {
-    if (openDetailsTab === 'examples' && !showExamplesTab) {
+    if (openDetailsTab === TabKeys.examples && !showExamplesTab) {
       changeActiveTab(TabKeys.details);
 
       return;
     }
 
-    if (openDetailsTab === 'tables' && !showTablesTab) {
+    if (openDetailsTab === TabKeys.tables && !showTablesTab) {
       changeActiveTab(TabKeys.details);
 
       return;
     }
 
-    if (openDetailsTab === 'explain' && !showExplainTab) {
+    if (openDetailsTab === TabKeys.explain && !showExplainTab) {
       changeActiveTab(TabKeys.details);
 
       return;
@@ -67,6 +54,8 @@ const Details: FC = () => {
 
     changeActiveTab(TabKeys[openDetailsTab]);
   }, [queryId, openDetailsTab, showTablesTab, showExplainTab, showExamplesTab]);
+
+  useEffect(() => setLoadingDetails(loading || metricsLoading), [loading, metricsLoading]);
 
   return (
     <div className="query-analytics-details-grid query-analytics-details" data-qa="query-analytics-details">
@@ -82,30 +71,38 @@ const Details: FC = () => {
           destroyInactiveTabPane
           tabBarExtraContent={(
             <Button type="default" size="small" onClick={closeDetails}>
-              Close
+              {Messages.closeDetails}
             </Button>
           )}
         >
-          <TabPane tab={<span>Details</span>} key={TabKeys.details}>
+          <TabPane tab={<span>{Messages.tabs.details.tab}</span>} key={TabKeys.details}>
             <Metrics databaseType={databaseType} totals={totals} metrics={metrics} loading={metricsLoading} />
           </TabPane>
           {showExamplesTab ? (
-            <TabPane tab={<span>Examples</span>} key={TabKeys.examples}>
-              <Example fingerprint={fingerprint} databaseType={databaseType} examples={examples} />
+            <TabPane tab={<span>{Messages.tabs.examples.tab}</span>} key={TabKeys.examples}>
+              <Example
+                fingerprint={fingerprint}
+                databaseType={databaseType}
+                examples={examples}
+                loading={loading || metricsLoading}
+              />
             </TabPane>
           ) : null}
           {showExplainTab ? (
-            <TabPane tab={<span>Explain</span>} key={TabKeys.explain} disabled={totals}>
+            <TabPane tab={<span>{Messages.tabs.explains.tab}</span>} key={TabKeys.explain} disabled={totals}>
               <Explain
-                classicExplain={classicExplain}
-                jsonExplain={jsonExplain}
+                examples={examples}
                 databaseType={databaseType}
               />
             </TabPane>
           ) : null}
           {showTablesTab ? (
-            <TabPane tab={<span>Tables</span>} key={TabKeys.tables} disabled={totals}>
-              <TableCreateContainer databaseType={databaseType} examples={examples} tables={tables} />
+            <TabPane tab={<span>{Messages.tabs.tables.tab}</span>} key={TabKeys.tables} disabled={totals}>
+              <TableCreateContainer
+                databaseType={databaseType}
+                examples={examples}
+                loading={loading}
+              />
             </TabPane>
           ) : null}
         </Tabs>
@@ -113,9 +110,3 @@ const Details: FC = () => {
     </div>
   );
 };
-
-export const DetailsSection = () => (
-  <DetailsContentProvider>
-    <Details />
-  </DetailsContentProvider>
-);

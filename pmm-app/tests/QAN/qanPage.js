@@ -121,7 +121,7 @@ module.exports = {
     getFiltersPath: '/v0/qan/Filters/Get',
   },
   filterGroupLocator(filterName) {
-    return "//div[@class='filter-group__title']//span[contains(text(), '" + filterName + "')]";
+    return "//div[@class='overview-filters']//span[contains(text(), '" + filterName + "')]";
   },
 
   tableHeaderLocator(tableHeader) {
@@ -170,11 +170,9 @@ module.exports = {
   },
 
   getFilterLocator(filterValue) {
-    const filterLocator =
-      "//section[@class='aside__filter-group']//span[contains(text(), '" +
-      filterValue +
-      "')]/../span[@class='checkbox-container__checkmark']";
-    return filterLocator;
+    return "//span[@class='checkbox-container__label-text' and text()='" +
+        filterValue +
+        "']/preceding-sibling::span[@class='checkbox-container__checkmark']";
   },
 
   async expandAllFilter() {

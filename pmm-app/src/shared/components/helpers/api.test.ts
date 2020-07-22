@@ -13,6 +13,7 @@ jest.mock('axios', () => ({
     delete: mockNoop,
     patch: mockNoop,
   })),
+  isCancel: jest.fn()
 }));
 
 jest.mock('shared/components/helpers/notification-manager');
