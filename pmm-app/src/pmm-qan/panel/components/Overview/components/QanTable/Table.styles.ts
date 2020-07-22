@@ -177,5 +177,9 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       overflow: scroll;
       height: ${height - 70}px;
     `,
+    tableDisabled: css`
+      opacity: 0.6;
+      pointer-events: none;
+    `,
   };
 });

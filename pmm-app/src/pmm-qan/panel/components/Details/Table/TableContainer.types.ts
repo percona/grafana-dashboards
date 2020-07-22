@@ -4,4 +4,5 @@ export interface TableContainerProps {
   databaseType: DatabasesType;
   examples: any[];
   tables: string[];
+  loading?: boolean;
 }

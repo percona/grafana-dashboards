@@ -11,8 +11,13 @@ import { TableContainerProps } from './TableContainer.types';
 const { TabPane } = Tabs;
 const { Panel } = Collapse;
 
-const TableCreateContainer: FC<TableContainerProps> = ({ databaseType, examples, tables }) => (
-  <Spin spinning={false}>
+const TableCreateContainer: FC<TableContainerProps> = ({
+  databaseType,
+  examples,
+  tables,
+  loading
+}) => (
+  <Spin spinning={loading}>
     {tables && tables.length ? (
       <Tabs defaultActiveKey="0" onChange={() => {}} tabPosition="top">
         {tables.map((table) => (
