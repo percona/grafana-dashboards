@@ -31,7 +31,7 @@ const Explain: FC<ExplainProps> = ({
       >
         {databaseType !== DATABASE.mongodb ? (
           <Panel header={ExplainTabs.classic} key={ExplainTabs.classic} className={styles.panel}>
-            <Spin spinning={classicExplain.loading}>
+            <Spin spinning={classicExplain.loading} wrapperClassName={styles.spinnerWrapper}>
               {classicExplain.error ? <pre>{classicExplain.error}</pre> : null}
               {!classicExplain.error && !classicExplain.loading && data.rows.length ? (
                 <Table
@@ -50,7 +50,7 @@ const Explain: FC<ExplainProps> = ({
           </Panel>
         ) : null}
         <Panel header={ExplainTabs.json} key={ExplainTabs.json} className={styles.panel}>
-          <Spin spinning={jsonExplain.loading}>
+          <Spin spinning={jsonExplain.loading} wrapperClassName={styles.spinnerWrapper}>
             {!jsonExplain.loading && jsonExplain.error ? <pre>{jsonExplain.error}</pre> : null}
             {!jsonExplain.error && !jsonExplain.loading && jsonExplain.value ? (
               <ReactJSON json={JSON.parse(jsonExplain.value)} />
