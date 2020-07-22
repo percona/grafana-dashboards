@@ -80,7 +80,7 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
     }, 10000);
   }
 
-  async fetchAlerts() {
+  async fetchAlerts(): Promise<void> {
     this.setState({ isLoading: true });
 
     try {

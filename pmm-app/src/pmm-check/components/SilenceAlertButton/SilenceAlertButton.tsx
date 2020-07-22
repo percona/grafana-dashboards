@@ -19,7 +19,7 @@ export const SilenceAlertButton: FC<SilenceAlertButtonProps> = ({ labels }) => {
     setRequestPending(true);
     try {
       await CheckService.silenceAlert(silencePayload);
-      alertsReloadContext.fetchAlerts();
+      await alertsReloadContext.fetchAlerts();
     } catch (e) {
       console.error(e);
     } finally {

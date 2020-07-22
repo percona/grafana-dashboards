@@ -90,5 +90,5 @@ export interface TableDataAlertDetailsProps {
 }
 
 export interface AlertsReload {
-  fetchAlerts: () => void;
+  fetchAlerts: () => Promise<void>;
 }
