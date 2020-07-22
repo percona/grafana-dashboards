@@ -1,4 +1,6 @@
-export const processClassicExplain = (classic) => {
+import { ClassicExplain } from './Explain.types';
+
+export const processClassicExplain = (classic): ClassicExplain => {
   if (!classic) {
     return { columns: [], rows: [] };
   }

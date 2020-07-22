@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Spin, Table } from 'antd';
-import { useActionResult } from '../../../Details.hooks';
-import { ActionResult } from '../../../Details.types';
+import { ActionResult, Databases } from '../../../Details.types';
 import { mysqlMethods, postgresqlMethods } from '../../../database-models';
 import { processTableData } from '../../TableContainer.tools';
-import { DATABASE } from '../../../Details.constants';
+import { useActionResult } from '../../../Details.tools';
+import { Messages } from '../../../Details.messages';
 
 export const Indexes = (props) => {
   const { tableName, databaseType, example } = props;
@@ -19,9 +19,9 @@ export const Indexes = (props) => {
   const getIndexes = useCallback(async () => {
     let id;
 
-    if (databaseType === DATABASE.postgresql) {
+    if (databaseType === Databases.postgresql) {
       id = await postgresqlMethods.getIndexes(({ example, tableName }));
-    } else if (databaseType === DATABASE.mysql) {
+    } else if (databaseType === Databases.mysql) {
       id = await mysqlMethods.getIndexes(({ example, tableName }));
     }
 
@@ -49,7 +49,7 @@ export const Indexes = (props) => {
             bordered
           />
         ) : null}
-        {!indexes.error && !data.rows.length ? <pre> No data found</pre> : null}
+        {!indexes.error && !data.rows.length ? <pre>{Messages.noDataFound}</pre> : null}
       </Spin>
     </div>
   );
