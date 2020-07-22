@@ -135,7 +135,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
 
       .sort-by:before,
       .sort-by:after {
-        border: 5px solid transparent;
+        border: 6px solid transparent;
         content: '';
         display: block;
         height: 0;
@@ -146,7 +146,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       }
       .sort-by:before {
         border-bottom-color: gray;
-        margin-top: -11px;
+        margin-top: -13px;
       }
       .sort-by:after {
         border-top-color: gray;
