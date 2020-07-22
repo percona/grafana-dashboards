@@ -11,14 +11,24 @@ import {
 import { mainMetric, metricWrapper, tooltipIcon } from './DefaultColumns.styles';
 import { Dimension } from '../Dimension/Dimension';
 
-const getMainColumnWidth = (columns) => {
+// eslint-disable-next-line max-len
+const getAllColumns = (columns) => (columns - 1) * FIXED_COLUMN_WIDTH + COLUMN_WIDTH * 1.8 + ROW_NUMBER_COLUMN_WIDTH;
+
+export const getMainColumnWidth = (columns) => {
   const container = document.querySelector('.table-wrapper');
   const width = +((container && container.clientWidth) || 0);
 
   return Math.max(
-    width - (columns - 1) * FIXED_COLUMN_WIDTH - COLUMN_WIDTH * 1.8 - ROW_NUMBER_COLUMN_WIDTH - 2,
+    width - getAllColumns(columns) + FIXED_COLUMN_WIDTH,
     MAIN_METRIC_MIN_WIDTH
   );
+};
+
+export const getAllColumnsWidth = (mainColumnWidth, columns) => {
+  const container = document.querySelector('.table-wrapper');
+  const width = +((container && container.clientWidth) || 0);
+
+  return Math.max(getAllColumns(columns) + mainColumnWidth - FIXED_COLUMN_WIDTH, width);
 };
 
 const dimensionColumnRender = (mainMetricColumnWidth) => (record, index) => (
@@ -39,7 +49,7 @@ export const getDefaultColumns = (groupBy, pageNumber, pageSize, columns) => {
 
   return [
     {
-      width: mainMetricColumnWidth,
+      // width: mainMetricColumnWidth,
       Header: 'Main column',
       HeaderAccessor: () => <Dimension />,
       accessor: dimensionColumnRender(mainMetricColumnWidth),

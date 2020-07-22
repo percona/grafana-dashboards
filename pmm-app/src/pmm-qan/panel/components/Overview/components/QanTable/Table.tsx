@@ -13,6 +13,7 @@ import {
 import { Spinner, useTheme } from '@grafana/ui';
 import { cx } from 'emotion';
 import { getStyles } from './Table.styles';
+import { getMainColumnWidth, getAllColumnsWidth } from '../DefaultColumns/DefaultColumns';
 
 interface TableProps {
   rowSelection?: boolean;
@@ -45,6 +46,19 @@ export const Table: FC<TableProps> = ({
   loading,
   disabled,
 }) => {
+  useEffect(() => {
+    setTimeout(() => {
+      const width = getMainColumnWidth(columns.length);
+
+      document.querySelectorAll('.tr>div:nth-child(2)').forEach((element) => {
+        (element as any).style.width = `${width}px`;
+      });
+      document.querySelectorAll('.tr').forEach((element) => {
+        (element as any).style.width = `${getAllColumnsWidth(width, columns.length)}px`;
+      });
+    }, 100);
+  });
+
   const theme = useTheme();
   const styles = getStyles(theme);
   const {
