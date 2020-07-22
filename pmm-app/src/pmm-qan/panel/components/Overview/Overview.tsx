@@ -19,7 +19,7 @@ export const Overview: FC = () => {
   const {
     contextActions,
     panelState: {
-      queryId, querySelected, totals, pageNumber, pageSize, orderBy
+      queryId, querySelected, totals, pageNumber, pageSize, orderBy, loadingDetails
     },
   } = useContext(QueryAnalyticsProvider);
   const tableWrapperRef = useRef<HTMLDivElement>(null);
@@ -95,9 +95,10 @@ export const Overview: FC = () => {
             orderBy={orderBy}
             noData={<h1>No queries Available</h1>}
             loading={loading}
+            disabled={loadingDetails}
           />
         </div>
-      ), [overviewMetricsList, loading, height, getRowClassName])}
+      ), [overviewMetricsList, loading, loadingDetails, height, getRowClassName])}
       <div className={styles.overviewHeader}>
         <div className={styles.paginationWrapper}>
           <Pagination
@@ -112,6 +113,7 @@ export const Overview: FC = () => {
             onShowSizeChange={changePageSize}
             onChange={changePageNumber}
             data-qa="qan-pagination"
+            disabled={loadingDetails}
           />
           <span className={styles.showTotal} data-qa="qan-total-items">{showTotal}</span>
         </div>

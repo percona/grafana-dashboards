@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { get } from 'lodash';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
 import { DetailsProvider } from './Details.provider';
@@ -66,7 +66,7 @@ export const useActionResult = async (actionId): Promise<ActionResult> => {
   });
 };
 
-export const useDetailsState = () => {
+export const useDetailsState = (): boolean => {
   const {
     panelState: {
       queryId, groupBy, from, to, labels
@@ -75,10 +75,12 @@ export const useDetailsState = () => {
   const {
     contextActions,
   } = useContext(DetailsProvider);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     (async () => {
       try {
+        setLoading(true);
         contextActions.resetDetailsToDefault();
         // 1. Get examples, we need it to get all addditional data
         const result = await DetailsService.getExample({
@@ -145,7 +147,11 @@ export const useDetailsState = () => {
         });
       } catch (e) {
         console.error(e);
+      } finally {
+        setLoading(false);
       }
     })();
   }, [queryId]);
+
+  return loading;
 };
