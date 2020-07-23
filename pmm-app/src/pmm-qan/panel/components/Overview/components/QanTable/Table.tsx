@@ -53,10 +53,10 @@ export const Table: FC<TableProps> = ({
     setTimeout(() => {
       const width = getMainColumnWidth(columns.length);
 
-      document.querySelectorAll('.tr>div:nth-child(2)').forEach((element) => {
+      document.querySelectorAll('.table-body .tr>div:nth-child(2)').forEach((element) => {
         (element as HTMLElement).style.width = `${width}px`;
       });
-      document.querySelectorAll('.tr').forEach((element) => {
+      document.querySelectorAll('.table-body .tr').forEach((element) => {
         (element as HTMLElement).style.width = `${getAllColumnsWidth(width, columns.length)}px`;
       });
     }, 150);
