@@ -6,9 +6,8 @@ Before(async (I) => {
 
 Scenario(
     'PMM-T138 Verify disabling enhanced metrics for RDS, PMM-T139 Verify disabling basic metrics for RDS, PMM-T9 Verify adding RDS instances [critical] @not-pr-pipeline',
-    async (I, remoteInstancesPage, pmmInventoryPage, homePage, qanPage, dashboardPage) => {
+    async (I, remoteInstancesPage, pmmInventoryPage) => {
       const instanceIdToMonitor = 'rds-mysql56';
-      const environment = 'RDS MySQL 5.6';
       I.amOnPage(remoteInstancesPage.url);
       remoteInstancesPage.waitUntilRemoteInstancesPageLoaded().openAddAWSRDSMySQLPage();
       remoteInstancesPage.discoverRDS();
@@ -20,15 +19,6 @@ Scenario(
       pmmInventoryPage.verifyRemoteServiceIsDisplayed(instanceIdToMonitor);
       await pmmInventoryPage.verifyAgentHasStatusRunning(instanceIdToMonitor);
       await pmmInventoryPage.verifyMetricsFlags(instanceIdToMonitor);
-      //skipping verification of the filter in MySQL Instance Overview for now
-      //skipping verification of the filter in QAN. Will be fixed with new QAN tests
-      /*
-      I.amOnPage(dashboardPage.mySQLInstanceOverview.url);
-      await dashboardPage.verifyExisitngServiceName(instanceIdToMonitor);
-      I.amOnPage(qanPage.url + '?orgId=1&from=now-5m&to=now');
-      await I.switchTo(qanPage.fields.iframe);
-      await qanPage.verifyFilterExists(environment);
-      */
     }
 );
 
@@ -42,27 +32,43 @@ Scenario(
     }
 );
 
-xScenario(
+Scenario(
     'Verify QAN Filters contain AWS RDS MySQL 5.6 after it was added for monitoring @not-pr-pipeline',
-    async (I, qanPage, adminPage) => {
-      const environment = 'RDS MySQL 5.6';
-      const filter = qanPage.getFilterLocator(environment);
+    async (I, qanPage, remoteInstancesPage) => {
+      const filters = remoteInstancesPage.rds;
       I.amOnPage(qanPage.url);
-      await I.waitForElement(qanPage.fields.iframe, 60);
-      adminPage.applyTimer('5m');
-      await I.switchTo(qanPage.fields.iframe);
-      qanPage.waitForQANPageLoaded();
+      qanPage.waitForFiltersLoad();
       await qanPage.expandAllFilter();
-      I.seeElement(filter);
+      for (const filter of Object.values(filters)) {
+        const name = qanPage.getFilterLocator(filter);
+        I.waitForVisible(name, 30);
+        I.seeElement(name);
+      }
     }
 );
 
-xScenario(
+Scenario(
     'Verify MySQL Instances Overview Dashboard for AWS RDS MySQL 5.6 data after it was added for monitoring',
-    async (I, remoteInstancesPage, dashboardPage) => {
-      I.amOnPage(remoteInstancesPage.dashboardMySQLOverviewWithFilters);
+    async (I, dashboardPage) => {
+      I.amOnPage(dashboardPage.mySQLInstanceOverview.urlWithRDSFilter);
       dashboardPage.waitForDashboardOpened();
       await dashboardPage.expandEachDashboardRow();
-      dashboardPage.verifyThereIsNoGraphsWithNA();
+      await dashboardPage.verifyThereAreNoGraphsWithNA();
+      await dashboardPage.verifyThereAreNoGraphsWithoutData();
+    }
+);
+
+Scenario(
+    'Verify MySQL Instances Overview Dashboard contains AWS RDS MySQL 5.6 filters',
+    async (I, dashboardPage, remoteInstancesPage) => {
+      const filters = remoteInstancesPage.rds;
+      I.amOnPage(dashboardPage.mySQLInstanceOverview.url);
+      dashboardPage.waitForDashboardOpened();
+      for (const key of Object.keys(filters)) {
+        const locator = dashboardPage.expandFilters(key);
+        await within(locator, () => {
+          I.seeElement(locate('span').withText(filters[key]));
+        });
+      }
     }
 );

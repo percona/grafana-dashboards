@@ -29,8 +29,8 @@ Scenario(
           {href: `${config.url}${pmmSettingsPage.url}`});
     }
 );
-//Skipping test because of random failings, needs investigation
-xScenario(
+
+Scenario(
     'PMM-T233 PMM-T234 Verify user is able to access PMM Database Checks through UI and with URL [critical] @not-pr-pipeline',
     async (I, adminPage, databaseChecksPage, pmmSettingsPage, settingsAPI) => {
       await settingsAPI.apiEnableSTT();
