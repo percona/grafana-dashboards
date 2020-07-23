@@ -19,6 +19,7 @@ import { MetricsResolution } from './components/MetricsResolution/MetricsResolut
 import { Advanced } from './components/Advanced/Advanced';
 import { SettingsService, LoadingCallback } from './Settings.service';
 import { Settings } from './Settings.types';
+import { SSHKey } from './components/SSHKey/SSHKey';
 
 
 export const SettingsPanel: FC = () => {
@@ -90,6 +91,13 @@ export const SettingsPanel: FC = () => {
                   dataRetention={settings.dataRetention}
                   telemetryEnabled={!!settings.telemetryEnabled}
                   sttEnabled={!!settings.sttEnabled}
+                  updateSettings={updateSettings}
+                />
+                )}
+          {tabs[2].active
+                && (
+                <SSHKey
+                  sshKey={settings.sshKey ? settings.sshKey : ''}
                   updateSettings={updateSettings}
                 />
                 )}

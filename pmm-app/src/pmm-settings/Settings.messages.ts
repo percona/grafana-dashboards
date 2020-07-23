@@ -27,6 +27,11 @@ export const Messages = {
     },
     tooltip: 'This setting defines how frequently the data will be collected.'
   },
+  ssh: {
+    action: 'Apply SSH key',
+    label: 'SSH key',
+    tooltip: 'Public SSH key to let you login into the server using SSH.'
+  },
   service: {
     success: 'Settings updated'
   },

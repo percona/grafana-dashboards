@@ -36,7 +36,7 @@ export const getSettingsStyles = stylesFactory((theme: GrafanaTheme) => {
       }
     `,
     actionButton: css`
-      font-size: 12px;
+      font-size: ${theme.typography.size.sm};
       margin-top: ${theme.spacing.sm};
       width: fit-content;
       i {
@@ -45,6 +45,14 @@ export const getSettingsStyles = stylesFactory((theme: GrafanaTheme) => {
       span {
         display: flex;
       }
-    `
+    `,
+    textarea: css`
+      background-color: #3d3d3d;
+      border: ${theme.border.width.sm} solid #c4c4c4;
+      border-radius: ${theme.border.radius.sm};
+      font-size: ${theme.typography.size.sm};
+      line-height: ${theme.typography.lineHeight.md};
+      padding: ${theme.spacing.formSpacingBase / 4}px ${theme.spacing.formSpacingBase}px;
+    `,
   };
 });
