@@ -8,7 +8,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => ({
       flex-direction: column;
     `,
   resolutionsRadioButtonGroup: css`
-      font-size: 12px;
+      font-size: ${theme.typography.size.sm};
       padding: ${theme.spacing.lg} 0 ${theme.spacing.xl} 0;
     `,
   resolutionInput: css`

@@ -28,10 +28,10 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       width: 70px;
     `,
     label: css`
-      font-size: 12px;
+      font-size: ${theme.typography.size.sm};
     `,
     retentionUnitslabel: css`
-      font-size: 12px;
+      font-size: ${theme.typography.size.sm};
       margin-left: ${theme.spacing.sm};
     `,
     switchDisabled: css`
