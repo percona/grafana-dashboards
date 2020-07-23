@@ -12,7 +12,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
     `,
     radioButtonLabel: css`
       align-items: center;
-      background: ${colors.black};
+      background: ${colors.formInputBg};
       border: ${theme.border.width.sm} solid ${colors.pageHeaderBorder};
       border-radius: ${theme.border.radius.sm};
       color: ${colors.gray4};

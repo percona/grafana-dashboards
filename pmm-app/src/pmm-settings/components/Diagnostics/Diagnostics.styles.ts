@@ -26,6 +26,9 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       &:hover {
         background: ${colors.gray15};
       }
+      &:focus {
+        background: ${colors.gray15};
+      }
     `
   };
 });
