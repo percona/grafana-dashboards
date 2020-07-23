@@ -48,7 +48,7 @@ Scenario(
 );
 
 Scenario(
-    'Verify MySQL Instances Overview Dashboard for AWS RDS MySQL 5.6 data after it was added for monitoring',
+    'Verify MySQL Instances Overview Dashboard for AWS RDS MySQL 5.6 data after it was added for monitoring @not-pr-pipeline',
     async (I, dashboardPage) => {
       I.amOnPage(dashboardPage.mySQLInstanceOverview.urlWithRDSFilter);
       dashboardPage.waitForDashboardOpened();
@@ -59,7 +59,7 @@ Scenario(
 );
 
 Scenario(
-    'Verify MySQL Instances Overview Dashboard contains AWS RDS MySQL 5.6 filters',
+    'Verify MySQL Instances Overview Dashboard contains AWS RDS MySQL 5.6 filters @not-pr-pipeline',
     async (I, dashboardPage, remoteInstancesPage) => {
       const filters = remoteInstancesPage.rds;
       I.amOnPage(dashboardPage.mySQLInstanceOverview.url);
