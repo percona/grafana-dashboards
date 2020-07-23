@@ -11,6 +11,13 @@ export const Messages = {
     sttLabel: 'Security Threat Tool',
     sttTooltip: 'Enable Security Threat Tool and get updated checks from Percona.'
   },
+  alertmanager: {
+    action: 'Apply Alertmanager settings',
+    rulesLabel: 'Prometheus Alerting rules',
+    rulesTooltip: 'Alerting rules in the YAML configuration format.',
+    urlLabel: 'Alertmanager URL',
+    urlTooltip: 'The URL of the external Alertmanager to use.'
+  },
   diagnostics: {
     action: 'Download PMM Server Logs',
     label: 'Diagnostics',

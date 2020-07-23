@@ -13,13 +13,14 @@ import {
 import { cx } from 'emotion';
 import { TabsVertical } from 'shared/components/Elements/TabsVertical/TabsVertical';
 import { Diagnostics } from './components/Diagnostics/Diagnostics';
-import { Messages } from './Settings.messages';
-import { getSettingsStyles } from './Settings.styles';
 import { MetricsResolution } from './components/MetricsResolution/MetricsResolution';
+import { SSHKey } from './components/SSHKey/SSHKey';
+import { AlertManager } from './components/AlertManager/AlertManager';
 import { Advanced } from './components/Advanced/Advanced';
 import { SettingsService, LoadingCallback } from './Settings.service';
 import { Settings } from './Settings.types';
-import { SSHKey } from './components/SSHKey/SSHKey';
+import { Messages } from './Settings.messages';
+import { getSettingsStyles } from './Settings.styles';
 
 
 export const SettingsPanel: FC = () => {
@@ -97,7 +98,15 @@ export const SettingsPanel: FC = () => {
           {tabs[2].active
                 && (
                 <SSHKey
-                  sshKey={settings.sshKey ? settings.sshKey : ''}
+                  sshKey={settings.sshKey || ''}
+                  updateSettings={updateSettings}
+                />
+                )}
+          {tabs[3].active
+                && (
+                <AlertManager
+                  alertManagerUrl={settings.alertManagerUrl || ''}
+                  alertManagerRules={settings.alertManagerRules || ''}
                   updateSettings={updateSettings}
                 />
                 )}
