@@ -26,9 +26,11 @@ module.exports = {
     return locate('ul > li > a').withText(title);
   },
 
-  selectItemFromPMMDropdown(title) {
+  async selectItemFromPMMDropdown(title) {
+    title = this.dropdownMenuItemLocator(title);
     I.click(this.fields.pmmDropdownMenuSelector);
-    I.click(this.dropdownMenuItemLocator(title));
+    I.waitForVisible(title, 30);
+    I.click(title);
   },
 
   async navigateToDashboard(folderName, dashboardName) {

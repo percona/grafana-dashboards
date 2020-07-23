@@ -8,6 +8,7 @@ module.exports = {
     'Cluster',
     'Replication Set',
     'Database',
+      'Schema',
     'Node Name',
     'Service Name',
     'User Name',
@@ -134,12 +135,12 @@ module.exports = {
     return `(//span[@class='ant-table-header-column'])//span[contains(text(), '${columnHeader}')]`;
   },
 
-  filterGroupCountSelector(groupName) {
-    return (
-      "//section[@class='aside__filter-group']//span[contains(text(), '" +
-      groupName +
-      "')]/../button[contains(text(), 'See all')]"
-    );
+  showAllLocator(groupName) {
+    return `//span[contains(text(), '${groupName}')]/../span[contains(text(), 'Show all')]`
+  },
+
+  showTop5Locator(groupName) {
+    return `//span[contains(text(), '${groupName}')]/../span[contains(text(), 'Show top 5')]`
   },
 
   waitForFiltersLoad() {
@@ -176,19 +177,17 @@ module.exports = {
   },
 
   async expandAllFilter() {
-    for (let i = 0; i < 4; i++) {
+    for (const i in this.filterGroups) {
       // eslint-disable-next-line max-len
-      let numOfElementsFilterCount = await I.grabNumberOfVisibleElements(
-        this.filterGroupCountSelector(this.filterGroups[i])
+      const numOfElementsFilterCount = await I.grabNumberOfVisibleElements(
+        this.showAllLocator(this.filterGroups[i])
       );
-      if (numOfElementsFilterCount === 1) {
+      if (numOfElementsFilterCount) {
         // eslint-disable-next-line max-len
-        I.click(this.filterGroupCountSelector(this.filterGroups[i]));
+        I.click(this.showAllLocator(this.filterGroups[i]));
         // eslint-disable-next-line max-len
         I.waitForVisible(
-          "//section[@class='aside__filter-group']//span[contains(text(), '" +
-            this.filterGroups[i] +
-            "')]/../button[contains(text(), 'Show top 5')]"
+            this.showTop5Locator(this.filterGroups[i]), 30
         );
       }
     }
