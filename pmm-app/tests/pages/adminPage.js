@@ -21,13 +21,9 @@ module.exports = {
   },
 
   // introducing methods
-  dropdownMenuItemLocator(title) {
-    // eslint-disable-next-line no-undef
-    return locate('ul > li > a').withText(title);
-  },
 
   async selectItemFromPMMDropdown(title) {
-    title = this.dropdownMenuItemLocator(title);
+    title = `//li/a[text()='${title}']`;
     I.click(this.fields.pmmDropdownMenuSelector);
     I.waitForVisible(title, 30);
     I.click(title);

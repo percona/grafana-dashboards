@@ -31,8 +31,8 @@ Scenario(
       await pmmInventoryPage.verifyAgentHasStatusRunning(serviceName);
     }
 );
-
-Scenario(
+// Skipping the tests because QAN does not get any data right after instance was added for monitoring
+xScenario(
     'Verify QAN Filters contain AWS RDS MySQL 5.6 after it was added for monitoring @not-pr-pipeline',
     async (I, qanPage, remoteInstancesPage) => {
       const filters = remoteInstancesPage.rds;
