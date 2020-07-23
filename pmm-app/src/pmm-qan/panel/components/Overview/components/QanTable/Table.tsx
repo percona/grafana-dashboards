@@ -49,33 +49,21 @@ export const Table: FC<TableProps> = ({
 }) => {
   const windowSize = useWindowSize();
 
-  useEffect(() => {
+  const changeMainColumnWidth = useCallback(() => {
     setTimeout(() => {
-      console.log('321');
       const width = getMainColumnWidth(columns.length);
 
       document.querySelectorAll('.tr>div:nth-child(2)').forEach((element) => {
-        (element as any).style.width = `${width}px`;
+        (element as HTMLElement).style.width = `${width}px`;
       });
       document.querySelectorAll('.tr').forEach((element) => {
-        (element as any).style.width = `${getAllColumnsWidth(width, columns.length)}px`;
+        (element as HTMLElement).style.width = `${getAllColumnsWidth(width, columns.length)}px`;
       });
     }, 150);
-  });
+  }, [columns]);
 
-  useEffect(() => {
-    setTimeout(() => {
-      console.log('321');
-      const width = getMainColumnWidth(columns.length);
-
-      document.querySelectorAll('.tr>div:nth-child(2)').forEach((element) => {
-        (element as any).style.width = `${width}px`;
-      });
-      document.querySelectorAll('.tr').forEach((element) => {
-        (element as any).style.width = `${getAllColumnsWidth(width, columns.length)}px`;
-      });
-    }, 150);
-  }, [windowSize]);
+  useEffect(changeMainColumnWidth);
+  useEffect(changeMainColumnWidth, [windowSize]);
 
   const theme = useTheme();
   const styles = getStyles(theme);
