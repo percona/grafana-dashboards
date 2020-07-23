@@ -4,6 +4,14 @@ import { css } from 'emotion';
 
 export const getSettingsStyles = stylesFactory((theme: GrafanaTheme) => {
   const { spacing } = theme;
+  const { colors }: any = theme;
+  const input = `
+    background-color: ${colors.formInputBg};
+    border: ${theme.border.width.sm} solid ${colors.pageHeaderBorder};
+    border-radius: ${theme.border.radius.sm};
+    font-size: ${theme.typography.size.sm};
+    padding: ${theme.spacing.formSpacingBase / 4}px ${theme.spacing.formSpacingBase}px;
+  `;
 
   return {
     settingsWrapper: css`
@@ -46,20 +54,12 @@ export const getSettingsStyles = stylesFactory((theme: GrafanaTheme) => {
       }
     `,
     textarea: css`
-      background-color: #3d3d3d;
-      border: ${theme.border.width.sm} solid #c4c4c4;
-      border-radius: ${theme.border.radius.sm};
-      font-size: ${theme.typography.size.sm};
+      ${input}
       line-height: ${theme.typography.lineHeight.md};
-      padding: ${theme.spacing.formSpacingBase / 4}px ${theme.spacing.formSpacingBase}px;
     `,
     input: css`
-      background-color: #3d3d3d;
-      border: ${theme.border.width.sm} solid #c4c4c4;
-      border-radius: ${theme.border.radius.sm};
-      font-size: ${theme.typography.size.sm};
+      ${input}
       min-height: ${theme.height.md};
-      padding: ${theme.spacing.formSpacingBase / 4}px ${theme.spacing.formSpacingBase}px;
     `,
   };
 });
