@@ -27,9 +27,6 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
     retentionInput: css`
       width: 70px;
     `,
-    label: css`
-      font-size: ${theme.typography.size.sm};
-    `,
     retentionUnitslabel: css`
       font-size: ${theme.typography.size.sm};
       margin-left: ${theme.spacing.sm};

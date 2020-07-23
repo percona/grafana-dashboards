@@ -36,7 +36,6 @@ export const getSettingsStyles = stylesFactory((theme: GrafanaTheme) => {
       }
     `,
     actionButton: css`
-      font-size: ${theme.typography.size.sm};
       margin-top: ${theme.spacing.sm};
       width: fit-content;
       i {

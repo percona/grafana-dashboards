@@ -29,17 +29,17 @@ export const MetricsResolution: FC<MetricsResolutionProps> = ({ metricsResolutio
     metrics: { action, label, tooltip },
     tooltipLinkText,
   } = Messages;
-  const onChangeInput = (key: string, value: string) =>
+  const onChangeInput = (key: string, value: string) => {
     updateResolutions({ ...updatedResolutions, [key]: value });
+  };
   const applyChanges = () => {
-    console.log('UPDATE SETTINGS');
     updateSettings({ metrics_resolutions: addUnits(updatedResolutions) }, setLoading);
   };
 
   useEffect(() => {
     if (resolution !== 'custom') {
       updateResolutions(
-        removeUnits(defaultResolutions[resolutionsOptions.findIndex(r => r.key === resolution)])
+        removeUnits(defaultResolutions[resolutionsOptions.findIndex((r) => r.key === resolution)])
       );
     }
   }, [resolution]);
@@ -61,14 +61,14 @@ export const MetricsResolution: FC<MetricsResolutionProps> = ({ metricsResolutio
         name="resolutions"
         dataQa="metrics-resolution-radio-button-group"
         className={styles.resolutionsRadioButtonGroup}
-        onChange={key => setResolution(key)}
+        onChange={(key) => setResolution(key)}
       />
       <input
         type="number"
         className={styles.resolutionInput}
         value={updatedResolutions.lr}
         disabled={resolution !== 'custom'}
-        onChange={e => onChangeInput('lr', e.target.value)}
+        onChange={(e) => onChangeInput('lr', e.target.value)}
         data-qa="metrics-resolution-lr-input"
       />
       <input
@@ -76,7 +76,7 @@ export const MetricsResolution: FC<MetricsResolutionProps> = ({ metricsResolutio
         className={styles.resolutionInput}
         value={updatedResolutions.mr}
         disabled={resolution !== 'custom'}
-        onChange={e => onChangeInput('mr', e.target.value)}
+        onChange={(e) => onChangeInput('mr', e.target.value)}
         data-qa="metrics-resolution-mr-input"
       />
       <input
@@ -84,7 +84,7 @@ export const MetricsResolution: FC<MetricsResolutionProps> = ({ metricsResolutio
         className={styles.resolutionInput}
         value={updatedResolutions.hr}
         disabled={resolution !== 'custom'}
-        onChange={e => onChangeInput('hr', e.target.value)}
+        onChange={(e) => onChangeInput('hr', e.target.value)}
         data-qa="metrics-resolution-hr-input"
       />
       <Button
