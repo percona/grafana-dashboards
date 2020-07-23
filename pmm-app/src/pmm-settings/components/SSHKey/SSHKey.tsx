@@ -41,6 +41,7 @@ export const SSHKey: FC<SSHKeyProps> = ({ sshKey, updateSettings }) => {
       <textarea
         className={cx(settingsStyles.textarea, styles.textarea)}
         value={key}
+        data-qa="ssh-key"
         onChange={(e) => setKey(e.target.value)}
       />
       <Button
