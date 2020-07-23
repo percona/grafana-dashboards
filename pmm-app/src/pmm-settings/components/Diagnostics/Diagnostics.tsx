@@ -5,18 +5,20 @@ import {
   Tooltip,
   useTheme
 } from '@grafana/ui';
+import { Messages } from 'pmm-settings/Settings.messages';
+import { getSettingsStyles } from 'pmm-settings/Settings.styles';
 import { getStyles } from './Diagnostics.styles';
-import { Messages } from '../../Settings.messages';
 
 export const Diagnostics: FC = () => {
   const theme = useTheme();
   const styles = getStyles(theme);
+  const settingsStyles = getSettingsStyles(theme);
   const { diagnostics: { action, label, tooltip } } = Messages;
 
   return (
     <div className={styles.diagnosticsWrapper}>
       <div
-        className={styles.diagnosticsLabel}
+        className={settingsStyles.labelWrapper}
         data-qa="diagnostics-label"
       >
         {label}
