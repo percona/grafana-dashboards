@@ -7,7 +7,7 @@ Before(async (I) => {
 Scenario(
     'PMM-T138 Verify disabling enhanced metrics for RDS, PMM-T139 Verify disabling basic metrics for RDS, PMM-T9 Verify adding RDS instances [critical] @not-pr-pipeline',
     async (I, remoteInstancesPage, pmmInventoryPage) => {
-      const instanceIdToMonitor = 'rds-mysql56';
+      const instanceIdToMonitor = remoteInstancesPage.rds['Service Name'];
       I.amOnPage(remoteInstancesPage.url);
       remoteInstancesPage.waitUntilRemoteInstancesPageLoaded().openAddAWSRDSMySQLPage();
       remoteInstancesPage.discoverRDS();
@@ -25,7 +25,7 @@ Scenario(
 Scenario(
     'Verify AWS RDS MySQL 5.6 instance has status running [critical] @pmm-post-update @not-pr-pipeline',
     async (I, remoteInstancesPage, pmmInventoryPage) => {
-      const serviceName = 'rds-mysql56';
+      const serviceName = remoteInstancesPage.rds['Service Name'];
       I.amOnPage(pmmInventoryPage.url);
       pmmInventoryPage.verifyRemoteServiceIsDisplayed(serviceName);
       await pmmInventoryPage.verifyAgentHasStatusRunning(serviceName);
