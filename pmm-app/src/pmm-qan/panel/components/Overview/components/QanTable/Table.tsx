@@ -12,9 +12,9 @@ import {
 } from 'react-table';
 import { Spinner, useTheme } from '@grafana/ui';
 import { cx } from 'emotion';
+import useWindowSize from 'shared/components/helpers/WindowSize.hooks';
 import { getStyles } from './Table.styles';
 import { getMainColumnWidth, getAllColumnsWidth } from '../DefaultColumns/DefaultColumns';
-import useWindowSize from "shared/components/helpers/WindowSize.hooks";
 
 interface TableProps {
   rowSelection?: boolean;
@@ -47,7 +47,6 @@ export const Table: FC<TableProps> = ({
   loading,
   disabled,
 }) => {
-
   useWindowSize();
 
   const changeMainColumnWidth = useCallback(() => {
