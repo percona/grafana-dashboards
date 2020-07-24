@@ -1,5 +1,4 @@
 import React from 'react';
-import { act } from 'react-dom/test-utils';
 import { mount, shallow } from 'enzyme';
 import { Input } from '@grafana/ui';
 import { InputLabel } from 'shared/components/Form';
