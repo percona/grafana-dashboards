@@ -3,7 +3,7 @@ import { cx } from 'emotion';
 import { Button, Spinner, useTheme } from '@grafana/ui';
 import { getSettingsStyles } from 'pmm-settings/Settings.styles';
 import { Messages } from 'pmm-settings/Settings.messages';
-import { GUI_DOC_URL, DATA_RETENTION_URL } from 'pmm-settings/Settings.constants';
+import { DATA_RETENTION_URL } from 'pmm-settings/Settings.constants';
 import { LoadingCallback } from 'pmm-settings/Settings.service';
 import { LinkTooltip } from 'shared/components/Elements/LinkTooltip/LinkTooltip';
 import { getStyles } from './Advanced.styles';
@@ -34,10 +34,13 @@ export const Advanced: FC<AdvancedProps> = ({
       retentionTooltip,
       retentionUnits,
       telemetryLabel,
+      telemetryLink,
       telemetryTooltip,
       updatesLabel,
+      updatesLink,
       updatesTooltip,
       sttLabel,
+      sttLink,
       sttTooltip
     }, tooltipLinkText
   } = Messages;
@@ -95,7 +98,7 @@ export const Advanced: FC<AdvancedProps> = ({
             label={telemetryLabel}
             tooltip={telemetryTooltip}
             tooltipLinkText={tooltipLinkText}
-            link={`${GUI_DOC_URL}#server-admin-gui-telemetry`}
+            link={telemetryLink}
             checked={telemetry}
             className={cx({ [styles.switchDisabled]: stt })}
             onChange={() => setTelemetry(!telemetry)}
@@ -105,7 +108,7 @@ export const Advanced: FC<AdvancedProps> = ({
             label={updatesLabel}
             tooltip={updatesTooltip}
             tooltipLinkText={tooltipLinkText}
-            link={`${GUI_DOC_URL}#check-for-updates`}
+            link={updatesLink}
             checked={false}
             className={styles.switchDisabled}
             dataQa="advanced-updates-switch"
@@ -114,7 +117,7 @@ export const Advanced: FC<AdvancedProps> = ({
             label={sttLabel}
             tooltip={sttTooltip}
             tooltipLinkText={tooltipLinkText}
-            link={`${GUI_DOC_URL}#security-threat-tool`}
+            link={sttLink}
             checked={stt}
             className={cx({ [styles.switchDisabled]: !telemetry })}
             onChange={() => setStt(!stt)}

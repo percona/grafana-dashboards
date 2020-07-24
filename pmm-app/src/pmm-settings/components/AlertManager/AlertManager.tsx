@@ -3,7 +3,6 @@ import { Button, Spinner, useTheme } from '@grafana/ui';
 import { cx } from 'emotion';
 import { getSettingsStyles } from 'pmm-settings/Settings.styles';
 import { Messages } from 'pmm-settings/Settings.messages';
-import { GUI_DOC_URL } from 'pmm-settings/Settings.constants';
 import { LoadingCallback } from 'pmm-settings/Settings.service';
 import { LinkTooltip } from 'shared/components/Elements/LinkTooltip/LinkTooltip';
 import { getStyles } from './AlertManager.styles';
@@ -26,8 +25,10 @@ export const AlertManager: FC<AlertManagerProps> = ({
     alertmanager: {
       action,
       rulesLabel,
+      rulesLink,
       rulesTooltip,
       urlLabel,
+      urlLink,
       urlTooltip
     },
     tooltipLinkText
@@ -62,7 +63,7 @@ export const AlertManager: FC<AlertManagerProps> = ({
         <span>{urlLabel}</span>
         <LinkTooltip
           tooltipText={urlTooltip}
-          link={`${GUI_DOC_URL}#prometheus-alertmanager-integration`}
+          link={urlLink}
           linkText={tooltipLinkText}
           icon="info-circle"
         />
@@ -77,7 +78,7 @@ export const AlertManager: FC<AlertManagerProps> = ({
         <span>{rulesLabel}</span>
         <LinkTooltip
           tooltipText={rulesTooltip}
-          link={`${GUI_DOC_URL}#prometheus-alertmanager-integration`}
+          link={rulesLink}
           linkText={tooltipLinkText}
           icon="info-circle"
         />

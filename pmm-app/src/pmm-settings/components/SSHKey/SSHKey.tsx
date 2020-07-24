@@ -3,7 +3,6 @@ import { Button, Spinner, useTheme } from '@grafana/ui';
 import { cx } from 'emotion';
 import { getSettingsStyles } from 'pmm-settings/Settings.styles';
 import { Messages } from 'pmm-settings/Settings.messages';
-import { GUI_DOC_URL } from 'pmm-settings/Settings.constants';
 import { LoadingCallback } from 'pmm-settings/Settings.service';
 import { LinkTooltip } from 'shared/components/Elements/LinkTooltip/LinkTooltip';
 import { getStyles } from './SSHKey.styles';
@@ -17,7 +16,14 @@ export const SSHKey: FC<SSHKeyProps> = ({ sshKey, updateSettings }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
   const settingsStyles = getSettingsStyles(theme);
-  const { ssh: { action, label, tooltip }, tooltipLinkText } = Messages;
+  const {
+    ssh: {
+      action,
+      label,
+      link,
+      tooltip
+    }, tooltipLinkText
+  } = Messages;
   const [key, setKey] = useState(sshKey);
   const [loading, setLoading] = useState(false);
 
@@ -33,7 +39,7 @@ export const SSHKey: FC<SSHKeyProps> = ({ sshKey, updateSettings }) => {
         <span>{label}</span>
         <LinkTooltip
           tooltipText={tooltip}
-          link={`${GUI_DOC_URL}#ssh-key-details`}
+          link={link}
           linkText={tooltipLinkText}
           icon="info-circle"
         />

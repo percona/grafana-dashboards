@@ -6,7 +6,6 @@ import { getSettingsStyles } from 'pmm-settings/Settings.styles';
 import { Messages } from 'pmm-settings/Settings.messages';
 import { LoadingCallback } from 'pmm-settings/Settings.service';
 import { MetricsResolutions } from 'pmm-settings/Settings.types';
-import { GUI_DOC_URL } from 'pmm-settings/Settings.constants';
 import { LinkTooltip } from 'shared/components/Elements/LinkTooltip/LinkTooltip';
 import { resolutionsOptions, defaultResolutions } from './MetricsResolution.constants';
 import { getStyles } from './MetricsResolution.styles';
@@ -26,7 +25,12 @@ export const MetricsResolution: FC<MetricsResolutionProps> = ({ metricsResolutio
   const [updatedResolutions, updateResolutions] = useState(initialResolutions);
   const [loading, setLoading] = useState(false);
   const {
-    metrics: { action, label, tooltip },
+    metrics: {
+      action,
+      label,
+      link,
+      tooltip
+    },
     tooltipLinkText,
   } = Messages;
   const onChangeInput = (key: string, value: string) => {
@@ -50,7 +54,7 @@ export const MetricsResolution: FC<MetricsResolutionProps> = ({ metricsResolutio
         <span>{label}</span>
         <LinkTooltip
           tooltipText={tooltip}
-          link={`${GUI_DOC_URL}#server-admin-gui-metrics-resolution`}
+          link={link}
           linkText={tooltipLinkText}
           icon="info-circle"
         />
