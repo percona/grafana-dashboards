@@ -90,17 +90,32 @@ Scenario(
   }
 );
 
-Scenario('PMM-T123 - Verify User is able to search for filter value @not-pr-pipeline @qan', async (I, qanPage, qanActions) => {
+Scenario('PMM-T123 - Verify User is able to search for DB types @not-pr-pipeline @qan', async (I, qanPage, qanActions) => {
   const filters = [
-    'ps-dev',
-    'ps-dev-cluster',
-    'pgsql-repl1',
     'postgres',
     'mysql',
     'pmm-server',
     'postgresql',
-    'pmm-server-postgresql',
-    'generic',
+  ];
+
+  qanActions.waitForNewQANPageLoaded();
+  I.waitForElement(qanPage.fields.filterBy, 30);
+  const countBefore = await qanActions.getCountOfItems();
+
+  for (i = 0; i < filters.length; i++) {
+    qanActions.applyFilterNewQAN(filters[i]);
+    const countAfter = await qanActions.getCountOfItems();
+
+    await qanActions.verifyChangedCount(countBefore, countAfter);
+    qanActions.applyFilterNewQAN(filters[i]);
+  }
+});
+
+Scenario('PMM-T123 - Verify User is able to search Env & Cluster @not-pr-pipeline @qan', async (I, qanPage, qanActions) => {
+  const filters = [
+    'ps-dev',
+    'ps-dev-cluster',
+    'pgsql-repl1',
   ];
 
   qanActions.waitForNewQANPageLoaded();
