@@ -14,6 +14,7 @@ import { Spinner, useTheme } from '@grafana/ui';
 import { cx } from 'emotion';
 import { getStyles } from './Table.styles';
 import { getMainColumnWidth, getAllColumnsWidth } from '../DefaultColumns/DefaultColumns';
+import useWindowSize from "shared/components/helpers/WindowSize.hooks";
 
 interface TableProps {
   rowSelection?: boolean;
@@ -46,6 +47,9 @@ export const Table: FC<TableProps> = ({
   loading,
   disabled,
 }) => {
+
+  useWindowSize();
+
   const changeMainColumnWidth = useCallback(() => {
     setTimeout(() => {
       const width = getMainColumnWidth(columns.length);
