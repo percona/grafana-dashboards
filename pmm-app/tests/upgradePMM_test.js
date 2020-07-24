@@ -7,6 +7,17 @@ const serviceNames = {
   rds: 'mysql_rds_uprgade_service',
 };
 
+// For running on local env set PMM_SERVER_LATEST and DOCKER_VERSION variables
+function getVersions() {
+  const [, pmmMinor, pmmPatch] = process.env.PMM_SERVER_LATEST.split('.');
+  const [, dockerMinor, dockerPatch] = process.env.DOCKER_VERSION.split('.');
+  const majorVersionDiff = pmmMinor - dockerMinor;
+  const patchVersionDiff = pmmPatch - dockerPatch;
+  const current = `2.${dockerMinor}`;
+
+  return {majorVersionDiff, patchVersionDiff, current}
+}
+
 Feature('PMM server Upgrade Tests and Executing test cases related to Upgrade Testing Cycle');
 
 Before(async I => {
@@ -17,13 +28,10 @@ Before(async I => {
 Scenario(
   'PMM-T289 Verify Whats New link is presented on Update Widget @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
   async (I, homePage) => {
+    const versions = getVersions();
     I.amOnPage(homePage.url);
     //Whats New Link is added for the latest version hours before the release hence we need to skip checking on that, rest it should be available and checked.
-    const [, pmmMinor, pmmPatch] = process.env.PMM_SERVER_LATEST.split('.');
-    const [, dockerMinor, dockerPatch] = process.env.DOCKER_VERSION.split('.');
-    const majorVersionDiff = pmmMinor - dockerMinor;
-    const patchVersionDiff = pmmPatch - dockerPatch;
-    if (majorVersionDiff >= 1 && patchVersionDiff >= 0) {
+    if (versions.majorVersionDiff >= 1 && versions.patchVersionDiff >= 0) {
       I.waitForElement(homePage.fields.whatsNewLink, 30);
       I.seeElement(homePage.fields.whatsNewLink);
       const link = await I.grabAttributeFrom(homePage.fields.whatsNewLink, 'href');
@@ -35,8 +43,9 @@ Scenario(
 Scenario(
   'PMM-T288 Verify user can see Update widget before upgrade [critical]  @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
   async (I, adminPage, homePage) => {
+    const versions = getVersions();
     I.amOnPage(homePage.url);
-    await homePage.verifyPreUpdateWidgetIsPresent();
+    await homePage.verifyPreUpdateWidgetIsPresent(versions.current);
   }
 );
 
@@ -57,8 +66,9 @@ Scenario(
 Scenario(
   'Verify user is able to Upgrade PMM version [blocker] @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
   async (I, inventoryAPI, homePage) => {
+    const versions = getVersions();
     I.amOnPage(homePage.url);
-    await homePage.upgradePMM();
+    await homePage.upgradePMM(versions.current);
   }
 );
 
@@ -75,7 +85,7 @@ Scenario(
   'Verify user can see Update widget [critical] @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
   async (I, adminPage, homePage) => {
     I.amOnPage(homePage.url);
-    homePage.verifyPostUpdateWidgetIsPresent();
+    await homePage.verifyPostUpdateWidgetIsPresent();
   }
 );
 
@@ -86,7 +96,7 @@ Scenario(
     I.amOnPage(pmmSettingsPage.url);
     pmmSettingsPage.waitForPmmSettingsPageLoaded();
     const dataRetentionActualValue = await I.grabValueFrom(pmmSettingsPage.fields.dataRetentionCount);
-    assert(
+    assert.equal(
       dataRetention,
       dataRetentionActualValue,
       'The Value for Data Retention is not the same as passed via Docker Environment Variable'
@@ -108,8 +118,8 @@ Scenario(
 Scenario(
   'Verify Agents are RUNNING after Upgrade (UI) [critical] @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
   async (I, adminPage, pmmInventoryPage) => {
-    I.amOnPage(pmmInventoryPage.url);
     for (const service of Object.values(serviceNames)) {
+      I.amOnPage(pmmInventoryPage.url);
       await pmmInventoryPage.verifyAgentHasStatusRunning(service);
     }
   }
@@ -119,9 +129,9 @@ Scenario(
   'Verify QAN has specific filters for Remote Instances after Upgrade (UI) @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
   async (I, qanPage, addInstanceAPI) => {
     I.amOnPage(qanPage.url);
-    I.waitForVisible(qanPage.fields.iframe, 30);
-    I.switchTo(qanPage.fields.iframe);
+    qanPage.waitForFiltersLoad();
     await qanPage.expandAllFilter();
+
     // Checking that Cluster filters are still in QAN after Upgrade
     for (const name of Object.values(addInstanceAPI.clusterNames)) {
       // For now we can't see the cluster names in QAN for ProxySQL and MongoDB

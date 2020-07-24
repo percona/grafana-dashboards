@@ -5,4 +5,5 @@ export interface ExampleInterface {
   databaseType: DatabasesType;
   // TODO: update examples interface
   examples: any[];
+  loading?: boolean;
 }
