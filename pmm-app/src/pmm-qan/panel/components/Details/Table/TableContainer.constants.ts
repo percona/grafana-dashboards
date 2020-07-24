@@ -1,5 +1,7 @@
+import { Messages } from '../Details.messages';
+
 export const TableTabs = {
-  table: 'Table',
-  indexes: 'Indexes',
-  status: 'Status',
+  table: Messages.tabs.tables.sections.table,
+  indexes: Messages.tabs.tables.sections.indexes,
+  status: Messages.tabs.tables.sections.status,
 };
