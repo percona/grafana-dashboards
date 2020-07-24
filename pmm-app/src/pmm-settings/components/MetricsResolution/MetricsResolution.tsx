@@ -4,17 +4,18 @@ import { isEqual } from 'lodash';
 import { RadioButtonGroup } from 'shared/components/Form/Radio/RadioButtonGroup';
 import { getSettingsStyles } from 'pmm-settings/Settings.styles';
 import { Messages } from 'pmm-settings/Settings.messages';
+import { MetricsResolutions } from 'pmm-settings/Settings.types';
 import { LinkTooltip } from 'shared/components/Elements/LinkTooltip/LinkTooltip';
 import { resolutionsOptions, defaultResolutions } from './MetricsResolution.constants';
 import { getStyles } from './MetricsResolution.styles';
 import { getResolutionValue, removeUnits, addUnits } from './MetricsResolution.utils';
-import { MetricsResolutionProps } from './MetricsResolution.types';
+import { MetricsResolutionProps, MetricsResolutionPresets, MetricsResolutionIntervals } from './MetricsResolution.types';
 
 export const MetricsResolution: FC<MetricsResolutionProps> = ({ metricsResolutions, updateSettings }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
   const settingsStyles = getSettingsStyles(theme);
-  const initialResolutions = removeUnits(metricsResolutions);
+  const initialResolutions: MetricsResolutions = removeUnits(metricsResolutions);
   const [resolution, setResolution] = useState(getResolutionValue(metricsResolutions).key);
   const [updatedResolutions, updateResolutions] = useState(initialResolutions);
   const [loading, setLoading] = useState(false);
@@ -35,7 +36,7 @@ export const MetricsResolution: FC<MetricsResolutionProps> = ({ metricsResolutio
   };
 
   useEffect(() => {
-    if (resolution !== 'custom') {
+    if (resolution !== MetricsResolutionPresets.custom) {
       updateResolutions(
         removeUnits(defaultResolutions[resolutionsOptions.findIndex((r) => r.key === resolution)])
       );
@@ -65,24 +66,24 @@ export const MetricsResolution: FC<MetricsResolutionProps> = ({ metricsResolutio
         type="number"
         className={styles.resolutionInput}
         value={updatedResolutions.lr}
-        disabled={resolution !== 'custom'}
-        onChange={(e) => onChangeInput('lr', e.target.value)}
+        disabled={resolution !== MetricsResolutionPresets.custom}
+        onChange={(e) => onChangeInput(MetricsResolutionIntervals.lr, e.target.value)}
         data-qa="metrics-resolution-lr-input"
       />
       <input
         type="number"
         className={styles.resolutionInput}
         value={updatedResolutions.mr}
-        disabled={resolution !== 'custom'}
-        onChange={(e) => onChangeInput('mr', e.target.value)}
+        disabled={resolution !== MetricsResolutionPresets.custom}
+        onChange={(e) => onChangeInput(MetricsResolutionIntervals.mr, e.target.value)}
         data-qa="metrics-resolution-mr-input"
       />
       <input
         type="number"
         className={styles.resolutionInput}
         value={updatedResolutions.hr}
-        disabled={resolution !== 'custom'}
-        onChange={(e) => onChangeInput('hr', e.target.value)}
+        disabled={resolution !== MetricsResolutionPresets.custom}
+        onChange={(e) => onChangeInput(MetricsResolutionIntervals.hr, e.target.value)}
         data-qa="metrics-resolution-hr-input"
       />
       <Button

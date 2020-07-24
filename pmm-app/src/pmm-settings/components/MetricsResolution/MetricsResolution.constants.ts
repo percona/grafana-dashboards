@@ -1,14 +1,15 @@
 import { SelectableValue } from '@grafana/data';
 import { Messages } from 'pmm-settings/Settings.messages';
 import { MetricsResolutions } from 'pmm-settings/Settings.types';
+import { MetricsResolutionPresets } from './MetricsResolution.types';
 
 const { metrics: { options } } = Messages;
 
 export const resolutionsOptions: SelectableValue[] = [
-  { key: 'rare', value: options.rare },
-  { key: 'standard', value: options.standard },
-  { key: 'frequent', value: options.frequent },
-  { key: 'custom', value: options.custom },
+  { key: MetricsResolutionPresets.rare, value: options.rare },
+  { key: MetricsResolutionPresets.standard, value: options.standard },
+  { key: MetricsResolutionPresets.frequent, value: options.frequent },
+  { key: MetricsResolutionPresets.custom, value: options.custom },
 ];
 
 export const defaultResolutions: MetricsResolutions[] = [
