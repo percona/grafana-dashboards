@@ -7,6 +7,7 @@ import {
 } from '@grafana/ui';
 import { Messages } from 'pmm-settings/Settings.messages';
 import { getSettingsStyles } from 'pmm-settings/Settings.styles';
+import { Download } from 'shared/components/Elements/Icons/Download';
 import { getStyles } from './Diagnostics.styles';
 
 export const Diagnostics: FC = () => {
@@ -29,12 +30,12 @@ export const Diagnostics: FC = () => {
         </Tooltip>
       </div>
       <LinkButton
-        icon={'fa fa-download' as any}
         href="/logs.zip"
         className={styles.diagnosticsButton}
         data-qa="diagnostics-button"
       >
-        {action}
+        <Download />
+        <span>{action}</span>
       </LinkButton>
     </div>
   );

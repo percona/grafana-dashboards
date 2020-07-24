@@ -29,6 +29,13 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       &:focus {
         background: ${colors.gray15};
       }
+      span {
+        align-items: flex-end;
+        display: flex;
+      }
+      svg {
+        margin-right: ${theme.spacing.sm};
+      }
     `
   };
 });
