@@ -6,7 +6,7 @@ Before(async (I, qanPage) => {
 });
 
 Scenario(
-  'PMM-T146 Verify user is able to see  chart tooltip for time related metric @new-qan @not-pr-pipeline',
+  'PMM-T146 Verify user is able to see  chart tooltip for time related metric  @not-pr-pipeline @qan',
   async (I, qanPage, qanActions) => {
     const ROW_NUMBER = 1;
     const QUERY_TIME_COLUMN_NUMBER = 3;
@@ -17,7 +17,7 @@ Scenario(
 );
 
 Scenario(
-  'PMM-T151 Verify that hovering over a non-time metric displays a tooltip without a graph @new-qan @not-pr-pipeline',
+  'PMM-T151 Verify that hovering over a non-time metric displays a tooltip without a graph @not-pr-pipeline @qan',
   async (I, qanPage, qanActions) => {
     const ROW_NUMBER = 1;
     const QUERY_COUNT_COLUMN_NUMBER = 2;
@@ -30,7 +30,7 @@ Scenario(
 
 // Need to be removed from Skipped when better locator for Sorting buttons implemented
 xScenario(
-  'Open the QAN Dashboard and check that sorting works correctly after sorting by another column. @new-qan',
+  'Open the QAN Dashboard and check that sorting works correctly after sorting by another column. @qan',
   async (qanPage, qanActions) => {
     qanActions.changeSorting(3, 'up');
     qanActions.verifySortingIs(3, 'up');
@@ -42,20 +42,20 @@ xScenario(
 
 // Need to be removed from Skipped when better locator for Sorting buttons implemented
 xScenario(
-  'PMM-T156 Verify that by default, queries are sorted by Load, from max to min @new-qan',
+  'PMM-T156 Verify that by default, queries are sorted by Load, from max to min @qan',
   async (qanPage, qanActions) => {
     qanActions.waitForNewQANPageLoaded();
     qanActions.verifySortingIs(1, 'down');
   }
 );
 
-Scenario('PMM-T183 Verify that "Group by" in the overview table can be changed @new-qan', async (qanPage, qanActions) => {
+Scenario('PMM-T183 Verify that "Group by" in the overview table can be changed @qan', async (qanPage, qanActions) => {
   qanActions.changeGroupBy('Database');
   qanActions.verifyGroupByIs('Database');
 });
 
 Scenario(
-  'PMM-T187 Verify that the selected row in the overview table is highlighted @new-qan',
+  'PMM-T187 Verify that the selected row in the overview table is highlighted @qan',
   async (qanPage, qanActions) => {
     qanActions.selectRow('2');
     qanActions.verifyRowIsSelected('2');
@@ -63,7 +63,7 @@ Scenario(
 );
 
 Scenario(
-  'PMM-T133, PMM-T132, PMM-T100 Check Changing Main Metric, PMM-T203 Verify user is able to search for columns by typing @not-pr-pipeline',
+  'PMM-T133, PMM-T132, PMM-T100 Check Changing Main Metric, PMM-T203 Verify user is able to search for columns by typing @not-pr-pipeline @qan',
   async (I, qanPage, dashboardPage, qanActions) => {
     const metricName = 'Query Count with errors';
     const urlString = 'num_queries_with_errors';
@@ -88,7 +88,7 @@ Scenario(
 );
 
 Scenario(
-  'PMM-T99 Verify User is able to add new metric, PMM-T222 Verify `Add column` dropdown works @not-pr-pipeline',
+  'PMM-T99 Verify User is able to add new metric, PMM-T222 Verify `Add column` dropdown works @not-pr-pipeline @qan',
   async (I, qanPage, dashboardPage, qanActions) => {
     const metricName = 'Query Count with errors';
     const urlString = 'num_queries_with_errors';
@@ -114,7 +114,7 @@ Scenario(
 );
 
 Scenario(
-  'PMM-T13 - Verify QAN has MongoDB, MySQL, PostgreSQl all three Service Types @not-pr-pipeline',
+  'PMM-T13 - Verify QAN has MongoDB, MySQL, PostgreSQl all three Service Types @not-pr-pipeline @qan',
   async (I, qanPage, qanActions) => {
     const filters = ['mongodb', 'mysql', 'postgres'];
 
@@ -135,7 +135,7 @@ Scenario(
 );
 
 Scenario(
-  'PMM-T135 - Verify user is not able to add duplicate metric to the overview column @not-pr-pipeline',
+  'PMM-T135 - Verify user is not able to add duplicate metric to the overview column @not-pr-pipeline @qan',
   async (I, qanPage, qanActions) => {
     const column = 'Load';
 
@@ -149,7 +149,7 @@ Scenario(
 );
 
 Scenario(
-  'PMM-T219 - Verify that user is able to scroll up/down and resize the overview table @not-pr-pipeline',
+  'PMM-T219 - Verify that user is able to scroll up/down and resize the overview table @not-pr-pipeline @qan',
   async (I, qanPage, qanActions) => {
     qanActions.waitForNewQANPageLoaded();
     const columnsToAdd = [
@@ -180,7 +180,7 @@ Scenario(
 );
 
 Scenario(
-  'PMM-T215 - Verify that buttons in QAN are disabled and visible on the screen @not-pr-pipeline',
+  'PMM-T215 - Verify that buttons in QAN are disabled and visible on the screen @not-pr-pipeline @qan',
   async (I, qanPage, qanActions) => {
     qanActions.waitForNewQANPageLoaded();
     I.seeAttributesOnElements(qanPage.fields.previousPage, { 'aria-disabled': 'true' });
@@ -191,7 +191,7 @@ Scenario(
   }
 );
 
-Scenario('PMM-T122 - Verify QAN UI Elements are displayed @not-pr-pipeline', async (I, qanPage, qanActions) => {
+Scenario('PMM-T122 - Verify QAN UI Elements are displayed @not-pr-pipeline @qan', async (I, qanPage, qanActions) => {
   qanActions.waitForNewQANPageLoaded();
   qanActions.applyFilterNewQAN('mysql');
   I.waitForVisible(qanPage.fields.filterBy, 30);
@@ -206,7 +206,7 @@ Scenario('PMM-T122 - Verify QAN UI Elements are displayed @not-pr-pipeline', asy
 
 // Need to be fixed as soon as better locators for Sorting are implemented
 xScenario(
-  'PMM-T156 Verify Queries are sorted by Load by Default Sorting from Max to Min, verify Sorting for Metrics works @not-pr-pipeline',
+  'PMM-T156 Verify Queries are sorted by Load by Default Sorting from Max to Min, verify Sorting for Metrics works @not-pr-pipeline @qan',
   async (I, qanPage, qanActions) => {
     qanActions.waitForNewqanActionsStepLoaded();
     qanActions.applyFilterNewQAN('mysql');
@@ -244,7 +244,7 @@ Scenario(
 );
 
 // Need to Skip this until Sort can be interacted with
-xScenario('PMM-T204 - Verify small and N/A values on sparkline @not-pr-pipeline', async (I, qanPage, qanActions) => {
+xScenario('PMM-T204 - Verify small and N/A values on sparkline @not-pr-pipeline @qan', async (I, qanPage, qanActions) => {
   qanActions.waitForNewQANPageLoaded();
   qanActions.sortMetric('Load', 'up');
   I.moveCursorTo(qanPage.fields.loadValue);

@@ -5,7 +5,7 @@ Before((I, qanPage) => {
   I.amOnPage(qanPage.url);
 });
 
-Scenario('Open the QAN Dashboard and select row @not-pr-pipeline', async (I, adminPage, qanPage, qanActions) => {
+Scenario('Open the QAN Dashboard and select row @qan @not-pr-pipeline', async (I, adminPage, qanPage, qanActions) => {
     qanActions.selectTableRow(4);
   I.see('Query');
   I.see('Details', qanPage.fields.detailsSectionTab);
@@ -14,7 +14,7 @@ Scenario('Open the QAN Dashboard and select row @not-pr-pipeline', async (I, adm
 });
 
 Scenario(
-  'PMM-T223 - Verify time metrics are AVG per query (not per second) @not-pr-pipeline',
+  'PMM-T223 - Verify time metrics are AVG per query (not per second) @qan @not-pr-pipeline',
   async (I, qanPage, qanActions) => {
       qanActions.waitForNewQANPageLoaded();
       qanActions.applyFilterNewQAN('mysql');

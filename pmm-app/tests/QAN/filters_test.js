@@ -7,7 +7,7 @@ Before((I, qanPage, qanActions) => {
 });
 
 Scenario(
-  'PMM-T175 - Verify user is able to apply filter that has dots in label @not-pr-pipeline',
+  'PMM-T175 - Verify user is able to apply filter that has dots in label @not-pr-pipeline @qan',
   async (I, qanPage, qanActions) => {
     const serviceName = 'ps_5.7';
 
@@ -23,7 +23,7 @@ Scenario(
 );
 
 Scenario(
-  'PMM-T172 - Verify that selecting a filter updates the table data and URL  @not-pr-pipeline',
+  'PMM-T172 - Verify that selecting a filter updates the table data and URL  @not-pr-pipeline @qan',
   async (I, qanPage, qanActions) => {
     const environmentName = 'ps-dev';
 
@@ -38,7 +38,7 @@ Scenario(
   }
 );
 
-Scenario('PMM-T126 - Verify user is able to Reset All filters @not-pr-pipeline', async (I, qanPage, qanActions) => {
+Scenario('PMM-T126 - Verify user is able to Reset All filters @not-pr-pipeline @qan', async (I, qanPage, qanActions) => {
   const environmentName1 = 'ps-dev';
   const environmentName2 = 'pgsql-dev';
 
@@ -58,7 +58,7 @@ Scenario('PMM-T126 - Verify user is able to Reset All filters @not-pr-pipeline',
 });
 
 Scenario(
-  'PMM-T124 - Verify User is able to show all and show top 5 values for filter section @not-pr-pipeline',
+  'PMM-T124 - Verify User is able to show all and show top 5 values for filter section @not-pr-pipeline @qan',
   async (qanPage, qanActions) => {
     const filterSection = 'Database';
 
@@ -74,7 +74,7 @@ Scenario(
 );
 
 Scenario(
-  'PMM-T125 - Verify user is able to Show only selected filter values and Show All filter values @not-pr-pipeline',
+  'PMM-T125 - Verify user is able to Show only selected filter values and Show All filter values @not-pr-pipeline @qan',
   async (I, qanPage, qanActions) => {
     const environmentName1 = 'ps-dev';
     const environmentName2 = 'pgsql-dev';
@@ -90,7 +90,7 @@ Scenario(
   }
 );
 
-Scenario('PMM-T123 - Verify User is able to search for filter value @not-pr-pipeline', async (I, qanPage, qanActions) => {
+Scenario('PMM-T123 - Verify User is able to search for filter value @not-pr-pipeline @qan', async (I, qanPage, qanActions) => {
   const filters = [
     'ps-dev',
     'ps-dev-cluster',
@@ -116,7 +116,7 @@ Scenario('PMM-T123 - Verify User is able to search for filter value @not-pr-pipe
   }
 });
 
-Scenario('Check All Filter Groups Exists in the Filter Section @not-pr-pipeline', async (I, qanPage, qanActions) => {
+Scenario('Check All Filter Groups Exists in the Filter Section @not-pr-pipeline @qan', async (I, qanPage, qanActions) => {
   qanActions.waitForNewQANPageLoaded();
   for (i = 0; i < qanPage.filterGroups.length; i++) {
     I.fillField(qanPage.fields.filterBy, qanPage.filterGroups[i]);
@@ -126,7 +126,7 @@ Scenario('Check All Filter Groups Exists in the Filter Section @not-pr-pipeline'
   }
 });
 
-Scenario('PMM-T128 - Verify pagination works correctly @not-pr-pipeline', async (I, qanPage, qanActions) => {
+Scenario('PMM-T128 - Verify pagination works correctly @not-pr-pipeline @qan', async (I, qanPage, qanActions) => {
   qanActions.waitForNewQANPageLoaded();
   qanActions.verifySelectedCountPerPage('25 / page');
   const countOfItems = await qanActions.getCountOfItems();
@@ -169,7 +169,7 @@ Scenario('PMM-T128 - Verify pagination works correctly @not-pr-pipeline', async 
 });
 
 Scenario(
-  'PMM-T193 - Verify user is able to change per page elements display and pagination is updated according to this value, PMM-T256 - Verify that switching view from 10 to 50/100 pages works correctly @not-pr-pipeline',
+  'PMM-T193 - Verify user is able to change per page elements display and pagination is updated according to this value, PMM-T256 - Verify that switching view from 10 to 50/100 pages works correctly @not-pr-pipeline @qan',
   async (qanPage, qanActions) => {
     qanActions.waitForNewQANPageLoaded();
     const countOfItems = await qanActions.getCountOfItems();
