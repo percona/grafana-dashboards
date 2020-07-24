@@ -1,4 +1,4 @@
-import React, { FC, useRef } from 'react';
+import React, { FC, useCallback, useRef } from 'react';
 import { cx } from 'emotion';
 import { Input as BaseInput, useTheme } from '@grafana/ui';
 import { Props as InputProps } from '@grafana/ui/components/Input/Input';
@@ -21,12 +21,20 @@ export const NumericInput: FC<NumericInputProps> = ({
   const theme = useTheme();
   const styles = getStyles(theme);
 
+  const dispatchChangeEvent = useCallback(() => {
+    const event = new Event('change', { bubbles: true });
+
+    inputRef?.current?.dispatchEvent(event);
+  }, [inputRef]);
+
   const stepUp = () => {
     inputRef?.current?.stepUp();
+    dispatchChangeEvent();
   };
 
   const stepDown = () => {
     inputRef?.current?.stepDown();
+    dispatchChangeEvent();
   };
 
   return (
