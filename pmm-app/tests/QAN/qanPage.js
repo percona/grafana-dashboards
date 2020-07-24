@@ -1,4 +1,4 @@
-const { I, pmmSettingsPage } = inject();
+const {I, pmmSettingsPage} = inject();
 const moment = require('moment');
 const assert = require('assert');
 module.exports = {
@@ -8,7 +8,7 @@ module.exports = {
     'Cluster',
     'Replication Set',
     'Database',
-      'Schema',
+    'Schema',
     'Node Name',
     'Service Name',
     'User Name',
@@ -71,7 +71,7 @@ module.exports = {
     addColumnNewQAN: "//span[contains(text(), 'Add column')]",
     noDataIcon: 'div.ant-empty-image',
     querySelector:
-      "(//table[@class='ant-table-fixed']//tbody[@class='ant-table-tbody'])[2]//tr[4]//td[2]//div//div",
+        "(//table[@class='ant-table-fixed']//tbody[@class='ant-table-tbody'])[2]//tr[4]//td[2]//div//div",
     resizer: 'span.Resizer.horizontal',
     queryTime: '//tr[@data-row-key][4]//td[5]//span[1]',
     lockTimeDetail: "//tr[@data-row-key='lock_time']//td[4]//span[1]",
@@ -91,10 +91,10 @@ module.exports = {
     environmentLabel: "//span[contains(text(), 'Environment')]",
     innodbColumn: "//tr[2]//td[6]//span[contains(@class,'summarize')]",
     innodbColumnTooltip:
-      "//tr[2]//td[6]//span[contains(@class,'ant-tooltip-open')]//span[contains(@class,'summarize')]",
+        "//tr[2]//td[6]//span[contains(@class,'ant-tooltip-open')]//span[contains(@class,'summarize')]",
     loadValue: "//td[3]//span[contains(text(),'<0.01 load')]",
     loadValueTooltip:
-      "//td[3]//span[contains(@class,'ant-tooltip-open')]//span[contains(text(),'<0.01 load')]",
+        "//td[3]//span[contains(@class,'ant-tooltip-open')]//span[contains(text(),'<0.01 load')]",
   },
 
   metricValueLocatorOverviewTable(column, row) {
@@ -127,7 +127,7 @@ module.exports = {
 
   tableHeaderLocator(tableHeader) {
     return (
-      "//ng-select//span[contains(@class, 'ng-value-label') and contains(text(), '" + tableHeader + "')]"
+        "//ng-select//span[contains(@class, 'ng-value-label') and contains(text(), '" + tableHeader + "')]"
     );
   },
 
@@ -180,7 +180,7 @@ module.exports = {
     for (const i in this.filterGroups) {
       // eslint-disable-next-line max-len
       const numOfElementsFilterCount = await I.grabNumberOfVisibleElements(
-        this.showAllLocator(this.filterGroups[i])
+          this.showAllLocator(this.filterGroups[i])
       );
       if (numOfElementsFilterCount) {
         // eslint-disable-next-line max-len
@@ -195,21 +195,21 @@ module.exports = {
 
   async _getData(row, column) {
     const percentage = await I.grabTextFrom(
-      "//table//tr[@ng-reflect-router-link='details/," +
+        "//table//tr[@ng-reflect-router-link='details/," +
         (row - 1) +
         "']//app-qan-table-cell[" +
         column +
         ']//div[1]//div[3]'
     );
     const value = await I.grabTextFrom(
-      "//table//tr[@ng-reflect-router-link='details/," +
+        "//table//tr[@ng-reflect-router-link='details/," +
         (row - 1) +
         "']//app-qan-table-cell[" +
         column +
         ']//div[1]//div[2]'
     );
 
-    return { percentage: percentage, val: value };
+    return {percentage: percentage, val: value};
   },
 
   async getDetailsData(row) {
@@ -232,7 +232,7 @@ module.exports = {
   async waitForResponsePath(path) {
     await I.waitForResponse(request => {
       const url = require('url');
-      const { pathname } = url.parse(request.url(), true);
+      const {pathname} = url.parse(request.url(), true);
       return path === pathname;
     }, 60);
   },
@@ -359,9 +359,9 @@ module.exports = {
   async checkFiltersMatchSearch(searchString) {
     const remainingFilters = await I.grabTextFrom('.checkbox-container__label-text');
     assert.equal(
-      detailsQueryTimeData.percentage.indexOf(queryTimeData.percentage) > -1,
-      true,
-      "Details Query Time Percentage Doesn't Match expected " +
+        detailsQueryTimeData.percentage.indexOf(queryTimeData.percentage) > -1,
+        true,
+        "Details Query Time Percentage Doesn't Match expected " +
         detailsQueryTimeData.percentage +
         ' to contain ' +
         queryTimeData.percentage
@@ -376,9 +376,9 @@ module.exports = {
   async checkMetricsListMatchesSearch(searchString) {
     const remainingMetrics = await I.grabTextFrom('.ant-select-dropdown-menu-item');
     assert.equal(
-      detailsQueryTimeData.val.indexOf(queryTimeData.val) > -1,
-      true,
-      "Details Query Time value Doesn't Match expected " +
+        detailsQueryTimeData.val.indexOf(queryTimeData.val) > -1,
+        true,
+        "Details Query Time value Doesn't Match expected " +
         detailsQueryTimeData.val +
         ' to contain ' +
         queryTimeData.val
@@ -592,7 +592,7 @@ module.exports = {
 
   async getPagesCount() {
     const pagesCount =
-      "//ul[@data-qa='qan-pagination']//li[contains(@class,'ant-pagination-item')][last()]//a";
+        "//ul[@data-qa='qan-pagination']//li[contains(@class,'ant-pagination-item')][last()]//a";
     const pages = await I.grabTextFrom(pagesCount);
     return pages;
   },
@@ -633,15 +633,15 @@ module.exports = {
   async verifyAvgQueryTime() {
     // eslint-disable-next-line max-len
     assert.equal(
-      await I.grabTextFrom(this.fields.overviewRowQueryCount),
-      await I.grabTextFrom(this.fields.qps),
-      'Query Count value in Overview and Detail should match'
+        await I.grabTextFrom(this.fields.overviewRowQueryCount),
+        await I.grabTextFrom(this.fields.qps),
+        'Query Count value in Overview and Detail should match'
     );
     // eslint-disable-next-line max-len
     assert.equal(
-      await I.grabTextFrom(this.fields.overviewRowQueryTime),
-      await I.grabTextFrom(this.fields.queryTimeDetail),
-      'Query Time value in Overview and Detail should match'
+        await I.grabTextFrom(this.fields.overviewRowQueryTime),
+        await I.grabTextFrom(this.fields.queryTimeDetail),
+        'Query Time value in Overview and Detail should match'
     );
     let [perQueryStats, perQueryUnit] = (await I.grabTextFrom(this.fields.queryTimeDetail)).split(' ');
     if (perQueryUnit == 'ms') {
@@ -683,15 +683,15 @@ module.exports = {
       // eslint-disable-next-line max-len
       if (sortOrder === 'down') {
         assert.equal(
-          metricValue >= metricValueSecond,
-          true,
-          `Descending Sort of ${metricName} is Wrong Please check`
+            metricValue >= metricValueSecond,
+            true,
+            `Descending Sort of ${metricName} is Wrong Please check`
         );
       } else {
         assert.equal(
-          metricValue <= metricValueSecond,
-          true,
-          `Ascending Sort of ${metricName} is Wrong Please check`
+            metricValue <= metricValueSecond,
+            true,
+            `Ascending Sort of ${metricName} is Wrong Please check`
         );
       }
     }
