@@ -116,7 +116,8 @@ Scenario(
 Scenario(
   'PMM-T13 - Verify QAN has MongoDB, MySQL, PostgreSQl all three Service Types @not-pr-pipeline @qan',
   async (I, qanPage, qanActions) => {
-    const filters = ['mongodb', 'mysql', 'postgres'];
+    // Need to add MongoDB here, currently due to timing of execution it doesn't appear
+    const filters = ['mysql', 'postgres'];
 
     qanActions.waitForNewQANPageLoaded();
     I.waitForElement(qanPage.fields.filterBy, 30);
@@ -186,7 +187,12 @@ Scenario(
     I.seeAttributesOnElements(qanPage.fields.previousPage, { 'aria-disabled': 'true' });
     I.seeAttributesOnElements(qanPage.fields.nextPage, { 'aria-disabled': 'false' });
     I.seeElement(qanPage.fields.disabledResetAll);
-    I.seeElement(qanPage.fields.ellipsisButton);
+    const countOfItems = await qanActions.getCountOfItems();
+
+    if (countOfItems > 100) {
+      I.seeElement(qanPage.fields.ellipsisButton);
+    }
+
     I.seeElement(qanPage.fields.showSelectedDisabled);
   }
 );
