@@ -12,6 +12,7 @@ import {
 } from 'react-table';
 import { Spinner, useTheme } from '@grafana/ui';
 import { cx } from 'emotion';
+import useWindowSize from 'shared/components/helpers/WindowSize.hooks';
 import { getStyles } from './Table.styles';
 import { getMainColumnWidth, getAllColumnsWidth } from '../DefaultColumns/DefaultColumns';
 
@@ -46,6 +47,8 @@ export const Table: FC<TableProps> = ({
   loading,
   disabled,
 }) => {
+  useWindowSize();
+
   const changeMainColumnWidth = useCallback(() => {
     setTimeout(() => {
       const width = getMainColumnWidth(columns.length);
