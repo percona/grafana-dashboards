@@ -2,7 +2,6 @@ import React, { FC } from 'react';
 import { Switch, useTheme } from '@grafana/ui';
 import { getSettingsStyles } from 'pmm-settings/Settings.styles';
 import { LinkTooltip } from 'shared/components/Elements/LinkTooltip/LinkTooltip';
-import { getStyles } from './Advanced.styles';
 
 
 export interface SwitchRowProps {
@@ -27,14 +26,13 @@ export const SwitchRow: FC<SwitchRowProps> = ({
   onChange
 }) => {
   const theme = useTheme();
-  const styles = getStyles(theme);
   const settingsStyles = getSettingsStyles(theme);
 
   return (
     <tr>
       <td>
         <div className={settingsStyles.labelWrapper}>
-          <span className={styles.label}>{label}</span>
+          <span>{label}</span>
           <LinkTooltip
             tooltipText={tooltip}
             link={link}
