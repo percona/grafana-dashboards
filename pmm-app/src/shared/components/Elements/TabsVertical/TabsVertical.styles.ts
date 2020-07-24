@@ -1,13 +1,17 @@
-import { stylesFactory } from '@grafana/ui';
+import { stylesFactory, selectThemeVariant } from '@grafana/ui';
 import { GrafanaTheme } from '@grafana/data';
 import { css } from 'emotion';
 
 export const getStyles = stylesFactory((theme: GrafanaTheme) => {
   const { colors }: any = theme;
+  const backgroundColor = selectThemeVariant(
+    { light: colors.gray98, dark: colors.dark3 },
+    theme.type,
+  );
 
   return {
     tabsWrapper: css`
-      background: ${colors.dark3};
+      background: ${backgroundColor};
     `,
     tabs: css`
       li {
