@@ -1,7 +1,7 @@
 import { getDataSourceSrv } from '@grafana/runtime';
 import { find } from 'lodash';
-import { DEFAULT_COLUMNS, FILTERS_NAMES } from '../QueryAnalytics.constants';
-import { ParseQueryParamDate } from '../../../shared/components/helpers/time-parameters-parser';
+import { ParseQueryParamDate } from 'shared/components/helpers/time-parameters-parser';
+import { DEFAULT_COLUMNS, FILTERS_NAMES, DEFAULT_PAGE_SIZE } from '../QueryAnalytics.constants';
 
 const setFilters = (query) => FILTERS_NAMES.reduce((acc, filterName) => {
   const filters = query.getAll(`var-${filterName}`);
@@ -84,7 +84,7 @@ export const parseURL = (query) => ({
   columns: JSON.parse(query.get('columns')) || DEFAULT_COLUMNS,
   labels: setFilters(query),
   pageNumber: 1,
-  pageSize: 10,
+  pageSize: DEFAULT_PAGE_SIZE,
   orderBy: query.get('order_by') || `-${(JSON.parse(query.get('columns')) || DEFAULT_COLUMNS)[0]}`,
   queryId: query.get('filter_by'),
   totals: query.get('totals') === 'true',

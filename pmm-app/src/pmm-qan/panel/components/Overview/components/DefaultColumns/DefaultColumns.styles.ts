@@ -19,12 +19,12 @@ export const metricWrapper = css`
   padding: 0 5px;
 `;
 
-export const mainMetric = (mainMetricColumnWidth, isTotal) => css`
+export const mainMetric = (isTotal) => css`
   word-wrap: break-word !important;
   word-break: break-word !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
   white-space: nowrap !important;
-  max-width: ${mainMetricColumnWidth - 40}px !important;
+  max-width: calc(100% - 15px);
   color: ${isTotal ? '#8AA4FF' : 'rgba(32, 215, 255, 0.8)'};
 `;
