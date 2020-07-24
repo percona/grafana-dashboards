@@ -15,3 +15,10 @@ export interface MetricsResolutions {
   mr: string;
   lr: string;
 }
+
+export enum TabKeys {
+  metrics = 'metrics',
+  advanced = 'advanced',
+  ssh = 'ssh',
+  alertManager = 'alertManager'
+}

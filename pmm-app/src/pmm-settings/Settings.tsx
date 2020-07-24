@@ -18,7 +18,7 @@ import { SSHKey } from './components/SSHKey/SSHKey';
 import { AlertManager } from './components/AlertManager/AlertManager';
 import { Advanced } from './components/Advanced/Advanced';
 import { SettingsService, LoadingCallback } from './Settings.service';
-import { Settings } from './Settings.types';
+import { Settings, TabKeys } from './Settings.types';
 import { Messages } from './Settings.messages';
 import { getSettingsStyles } from './Settings.styles';
 
@@ -35,10 +35,10 @@ export const SettingsPanel: FC = () => {
   } = Messages.tabs;
   const tabs = useMemo(
     () => [
-      { label: metrics, key: 'metrics', active: activeTab === 'metrics' },
-      { label: advanced, key: 'advanced', active: activeTab === 'advanced' },
-      { label: ssh, key: 'ssh', active: activeTab === 'ssh' },
-      { label: alertManager, key: 'alertManager', active: activeTab === 'alertManager' },
+      { label: metrics, key: TabKeys.metrics, active: activeTab === TabKeys.metrics },
+      { label: advanced, key: TabKeys.advanced, active: activeTab === TabKeys.advanced },
+      { label: ssh, key: TabKeys.ssh, active: activeTab === TabKeys.ssh },
+      { label: alertManager, key: TabKeys.alertManager, active: activeTab === TabKeys.alertManager },
     ],
     [activeTab]
   );
