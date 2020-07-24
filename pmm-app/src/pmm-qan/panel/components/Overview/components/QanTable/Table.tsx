@@ -13,6 +13,7 @@ import {
 import { Spinner, useTheme } from '@grafana/ui';
 import { cx } from 'emotion';
 import { getStyles } from './Table.styles';
+import { getMainColumnWidth, getAllColumnsWidth } from '../DefaultColumns/DefaultColumns';
 
 interface TableProps {
   rowSelection?: boolean;
@@ -45,6 +46,21 @@ export const Table: FC<TableProps> = ({
   loading,
   disabled,
 }) => {
+  const changeMainColumnWidth = useCallback(() => {
+    setTimeout(() => {
+      const width = getMainColumnWidth(columns.length);
+
+      document.querySelectorAll('.table-body .tr>div:nth-child(2)').forEach((element) => {
+        (element as HTMLElement).style.width = `${width}px`;
+      });
+      document.querySelectorAll('.table-body .tr').forEach((element) => {
+        (element as HTMLElement).style.width = `${getAllColumnsWidth(width, columns.length)}px`;
+      });
+    }, 150);
+  }, [columns]);
+
+  useEffect(changeMainColumnWidth);
+
   const theme = useTheme();
   const styles = getStyles(theme);
   const {
@@ -140,9 +156,9 @@ export const Table: FC<TableProps> = ({
                       <div className={styles.headerContent}>
                         <div className="header-wrapper">{column.render('Header')}</div>
                         {column.sortable ? (
-                          <span className={styles.sortBy} {...column.getSortByToggleProps()}>
+                          <a className={styles.sortBy} {...column.getSortByToggleProps()} data-qa="sort-by-control">
                             <span className={`sort-by ${sorted}`} />
-                          </span>
+                          </a>
                         ) : null}
                       </div>
                     </div>
