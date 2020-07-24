@@ -4,17 +4,11 @@ import { isEqual } from 'lodash';
 import { RadioButtonGroup } from 'shared/components/Form/Radio/RadioButtonGroup';
 import { getSettingsStyles } from 'pmm-settings/Settings.styles';
 import { Messages } from 'pmm-settings/Settings.messages';
-import { LoadingCallback } from 'pmm-settings/Settings.service';
-import { MetricsResolutions } from 'pmm-settings/Settings.types';
 import { LinkTooltip } from 'shared/components/Elements/LinkTooltip/LinkTooltip';
 import { resolutionsOptions, defaultResolutions } from './MetricsResolution.constants';
 import { getStyles } from './MetricsResolution.styles';
 import { getResolutionValue, removeUnits, addUnits } from './MetricsResolution.utils';
-
-export interface MetricsResolutionProps {
-  metricsResolutions: MetricsResolutions;
-  updateSettings: (body: any, callback: LoadingCallback) => void;
-}
+import { MetricsResolutionProps } from './MetricsResolution.types';
 
 export const MetricsResolution: FC<MetricsResolutionProps> = ({ metricsResolutions, updateSettings }) => {
   const theme = useTheme();

@@ -2,18 +2,8 @@ import React, { FC } from 'react';
 import { Switch, useTheme } from '@grafana/ui';
 import { getSettingsStyles } from 'pmm-settings/Settings.styles';
 import { LinkTooltip } from 'shared/components/Elements/LinkTooltip/LinkTooltip';
+import { SwitchRowProps } from './SwitchRow.types';
 
-
-export interface SwitchRowProps {
-  label: string;
-  tooltip: string;
-  tooltipLinkText: string;
-  link: string;
-  checked: boolean;
-  className?: string;
-  dataQa?: string;
-  onChange?: () => void;
-}
 
 export const SwitchRow: FC<SwitchRowProps> = ({
   label,

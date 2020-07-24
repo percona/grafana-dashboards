@@ -3,14 +3,9 @@ import { Button, Spinner, useTheme } from '@grafana/ui';
 import { cx } from 'emotion';
 import { getSettingsStyles } from 'pmm-settings/Settings.styles';
 import { Messages } from 'pmm-settings/Settings.messages';
-import { LoadingCallback } from 'pmm-settings/Settings.service';
 import { LinkTooltip } from 'shared/components/Elements/LinkTooltip/LinkTooltip';
 import { getStyles } from './SSHKey.styles';
-
-export interface SSHKeyProps {
-  sshKey: string;
-  updateSettings: (body: any, callback: LoadingCallback) => void;
-}
+import { SSHKeyProps } from './SSHKey.types';
 
 export const SSHKey: FC<SSHKeyProps> = ({ sshKey, updateSettings }) => {
   const theme = useTheme();

@@ -3,15 +3,9 @@ import { Button, Spinner, useTheme } from '@grafana/ui';
 import { cx } from 'emotion';
 import { getSettingsStyles } from 'pmm-settings/Settings.styles';
 import { Messages } from 'pmm-settings/Settings.messages';
-import { LoadingCallback } from 'pmm-settings/Settings.service';
 import { LinkTooltip } from 'shared/components/Elements/LinkTooltip/LinkTooltip';
 import { getStyles } from './AlertManager.styles';
-
-export interface AlertManagerProps {
-  alertManagerUrl: string;
-  alertManagerRules: string;
-  updateSettings: (body: any, callback: LoadingCallback) => void;
-}
+import { AlertManagerProps } from './AlertManager.types';
 
 export const AlertManager: FC<AlertManagerProps> = ({
   alertManagerUrl,

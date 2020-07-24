@@ -4,19 +4,12 @@ import { Button, Spinner, useTheme } from '@grafana/ui';
 import { getSettingsStyles } from 'pmm-settings/Settings.styles';
 import { Messages } from 'pmm-settings/Settings.messages';
 import { DATA_RETENTION_URL } from 'pmm-settings/Settings.constants';
-import { LoadingCallback } from 'pmm-settings/Settings.service';
 import { LinkTooltip } from 'shared/components/Elements/LinkTooltip/LinkTooltip';
 import { getStyles } from './Advanced.styles';
 import { transformSecondsToDays } from './Advanced.utils';
 import { SECONDS_IN_DAY } from './Advanced.constants';
+import { AdvancedProps } from './Advanced.types';
 import { SwitchRow } from './SwitchRow';
-
-export interface AdvancedProps {
-  dataRetention: string;
-  telemetryEnabled: boolean;
-  sttEnabled: boolean;
-  updateSettings: (body: any, callback: LoadingCallback) => void;
-}
 
 export const Advanced: FC<AdvancedProps> = ({
   dataRetention,
