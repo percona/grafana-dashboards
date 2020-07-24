@@ -156,9 +156,9 @@ export const Table: FC<TableProps> = ({
                       <div className={styles.headerContent}>
                         <div className="header-wrapper">{column.render('Header')}</div>
                         {column.sortable ? (
-                          <span className={styles.sortBy} {...column.getSortByToggleProps()}>
+                          <a className={styles.sortBy} {...column.getSortByToggleProps()} data-qa="sort-by-control">
                             <span className={`sort-by ${sorted}`} />
-                          </span>
+                          </a>
                         ) : null}
                       </div>
                     </div>
