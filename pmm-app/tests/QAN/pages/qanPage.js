@@ -35,7 +35,7 @@ module.exports = {
     nextPage: '.ant-pagination-next',
     previousPage: '.ant-pagination-prev',
     ellipsisButton: '.ant-pagination-item-ellipsis',
-    tableRow: '//div[contains(@class,"tr-") and @role="row"]',
+    tableRow: 'div.tr',
     resultPerPageCombobox: '.ant-pagination-options',
     addColumnNewQAN: '//span[contains(text(), \'Add column\')]',
     noDataIcon: 'div.ant-empty-image',
@@ -47,11 +47,11 @@ module.exports = {
     qps: '//tr[@data-row-key=\'num_queries\']//td[2]//span[1]',
     load: '//tr[@data-row-key=\'query_time\']//td[2]//div[1]//span[1]',
     overviewRowQueryCount: 'div.tr-3 > div:nth-child(4)',
-    overviewRowQueryCountTooltip: '//tr[4]//td[4]//span[contains(@class, \'ant-tooltip-open\')]',
-    overviewRowQueryCountTooltipText: '//tr[4]//td[4]//span[contains(@class, \'ant-tooltip-open\')]//div//span',
+    overviewRowQueryCountTooltip: '//div[@class=\'ant-tooltip overview-column-tooltip ant-tooltip-placement-left\']',
+    overviewRowQueryCountTooltipText: '//div[@class=\'ant-tooltip overview-column-tooltip ant-tooltip-placement-left\']//div[@data-qa="qps"]',
     overviewRowQueryTime: 'div.tr-3 > div:nth-child(5)',
-    overviewRowQueryTimeTooltip: '//tr[4]//td[5]//span[contains(@class,\'ant-tooltip-open\')]',
-    overviewRowQueryTimeTooltipText: '//tr[4]//td[5]//span[contains(@class,\'ant-tooltip-open\')]//div//span',
+    overviewRowQueryTimeTooltip: '//div[@class=\'ant-tooltip overview-column-tooltip ant-tooltip-placement-left\']',
+    overviewRowQueryTimeTooltipText: '//div[@class=\'ant-tooltip overview-column-tooltip ant-tooltip-placement-left\']//div[@data-qa="qps"]',
     showSelectedDisabled: '//button[@data-qa="qan-filters-show-selected" and @disabled ]',
     environmentLabel: '//span[contains(text(), \'Environment\')]',
     innodbColumn: '//tr[2]//td[6]//span[contains(@class,\'summarize\')]',
@@ -107,7 +107,7 @@ module.exports = {
   },
 
   overviewMetricSortingLocator(сolumnNumber) {
-    return `th.ant-table-column-has-actions:nth-child(${сolumnNumber + 2}) div[title="Sort"]`;
+    return `div.tr:first-child > div:nth-child(${сolumnNumber}) span > span.sort-by`;
   },
 
   manageColumnLocator(columnName) {

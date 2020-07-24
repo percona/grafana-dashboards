@@ -7,61 +7,64 @@ Before(async (I, qanPage) => {
 
 Scenario(
   'PMM-T146 Verify user is able to see  chart tooltip for time related metric @new-qan @not-pr-pipeline',
-  async (I, qanPage) => {
+  async (I, qanPage, qanActions) => {
     const ROW_NUMBER = 1;
     const QUERY_TIME_COLUMN_NUMBER = 3;
 
-    qanPage.showTooltip(ROW_NUMBER, QUERY_TIME_COLUMN_NUMBER);
+    qanActions.showTooltip(ROW_NUMBER, QUERY_TIME_COLUMN_NUMBER);
     I.seeElement(qanPage.elements.latencyChart);
   }
 );
 
 Scenario(
   'PMM-T151 Verify that hovering over a non-time metric displays a tooltip without a graph @new-qan @not-pr-pipeline',
-  async (I, qanPage) => {
+  async (I, qanPage, qanActions) => {
     const ROW_NUMBER = 1;
     const QUERY_COUNT_COLUMN_NUMBER = 2;
 
-    qanPage.showTooltip(ROW_NUMBER, QUERY_COUNT_COLUMN_NUMBER);
+    qanActions.showTooltip(ROW_NUMBER, QUERY_COUNT_COLUMN_NUMBER);
     I.dontSeeElement(qanPage.elements.latencyChart);
   }
 );
 
-Scenario(
+
+// Need to be removed from Skipped when better locator for Sorting buttons implemented
+xScenario(
   'Open the QAN Dashboard and check that sorting works correctly after sorting by another column. @new-qan',
-  async qanPage => {
-    qanPage.changeSorting(3, 'up');
-    qanPage.verifySortingIs(3, 'up');
-    qanPage.changeSorting(1, 'down');
-    qanPage.verifySortingIs(1, 'down');
-    qanPage.verifySortingIs(3, '');
+  async (qanPage, qanActions) => {
+    qanActions.changeSorting(3, 'up');
+    qanActions.verifySortingIs(3, 'up');
+    qanActions.changeSorting(1, 'down');
+    qanActions.verifySortingIs(1, 'down');
+    qanActions.verifySortingIs(3, '');
   }
 );
 
-Scenario(
+// Need to be removed from Skipped when better locator for Sorting buttons implemented
+xScenario(
   'PMM-T156 Verify that by default, queries are sorted by Load, from max to min @new-qan',
-  async qanPage => {
-    qanPage.waitForNewQANPageLoaded();
-    qanPage.verifySortingIs(1, 'down');
+  async (qanPage, qanActions) => {
+    qanActions.waitForNewQANPageLoaded();
+    qanActions.verifySortingIs(1, 'down');
   }
 );
 
-Scenario('PMM-T183 Verify that "Group by" in the overview table can be changed @new-qan', async qanPage => {
-  qanPage.changeGroupBy('Database');
-  qanPage.verifyGroupByIs('Database');
+Scenario('PMM-T183 Verify that "Group by" in the overview table can be changed @new-qan', async (qanPage, qanActions) => {
+  qanActions.changeGroupBy('Database');
+  qanActions.verifyGroupByIs('Database');
 });
 
 Scenario(
   'PMM-T187 Verify that the selected row in the overview table is highlighted @new-qan',
-  async qanPage => {
-    qanPage.selectRow('2');
-    qanPage.verifyRowIsSelected('2');
+  async (qanPage, qanActions) => {
+    qanActions.selectRow('2');
+    qanActions.verifyRowIsSelected('2');
   }
 );
 
 Scenario(
   'PMM-T133, PMM-T132, PMM-T100 Check Changing Main Metric, PMM-T203 Verify user is able to search for columns by typing @not-pr-pipeline',
-  async (I, qanPage, dashboardPage) => {
+  async (I, qanPage, dashboardPage, qanActions) => {
     const metricName = 'Query Count with errors';
     const urlString = 'num_queries_with_errors';
 
@@ -86,7 +89,7 @@ Scenario(
 
 Scenario(
   'PMM-T99 Verify User is able to add new metric, PMM-T222 Verify `Add column` dropdown works @not-pr-pipeline',
-  async (I, qanPage, dashboardPage) => {
+  async (I, qanPage, dashboardPage, qanActions) => {
     const metricName = 'Query Count with errors';
     const urlString = 'num_queries_with_errors';
 
@@ -112,76 +115,76 @@ Scenario(
 
 Scenario(
   'PMM-T13 - Verify QAN has MongoDB, MySQL, PostgreSQl all three Service Types @not-pr-pipeline',
-  async (I, qanPage) => {
+  async (I, qanPage, qanActions) => {
     const filters = ['mongodb', 'mysql', 'postgres'];
 
-    qanPage.waitForNewQANPageLoaded();
+    qanActions.waitForNewQANPageLoaded();
     I.waitForElement(qanPage.fields.filterBy, 30);
-    const countBefore = await qanPage.getCountOfItems();
+    const countBefore = await qanActions.getCountOfItems();
 
     for (i = 0; i < filters.length; i++) {
       await I.fillField(qanPage.fields.filterBy, filters[i]);
-      qanPage.applyFilterNewQAN(filters[i]);
-      const countAfter = await qanPage.getCountOfItems();
+      qanActions.applyFilterNewQAN(filters[i]);
+      const countAfter = await qanActions.getCountOfItems();
 
-      await qanPage.verifyChangedCount(countBefore, countAfter);
-      qanPage.applyFilterNewQAN(filters[i]);
+      await qanActions.verifyChangedCount(countBefore, countAfter);
+      qanActions.applyFilterNewQAN(filters[i]);
       await I.clearField(qanPage.fields.filterBy);
     }
   }
 );
 
-Scenario('PMM-T128 - Verify pagination works correctly @not-pr-pipeline', async (I, qanPage) => {
-  qanPage.waitForNewQANPageLoaded();
-  qanPage.verifySelectedCountPerPage('10 / page');
+Scenario('PMM-T128 - Verify pagination works correctly @not-pr-pipeline', async (I, qanPage, qanActions) => {
+  qanActions.waitForNewQANPageLoaded();
+  qanActions.verifySelectedCountPerPage('25 / page');
   I.seeAttributesOnElements(qanPage.fields.previousPage, { 'aria-disabled': 'true' });
   I.click(qanPage.fields.nextPage);
-  qanPage.verifyActiveItem(2);
-  await qanPage.verifyCount('11-20');
+  qanActions.verifyActiveItem(2);
+  await qanActions.verifyCount('26-50');
   I.click(qanPage.fields.previousPage);
-  qanPage.verifyActiveItem(1);
-  await qanPage.verifyCount('1-10');
+  qanActions.verifyActiveItem(1);
+  await qanActions.verifyCount('1-25');
   I.seeAttributesOnElements(qanPage.fields.previousPage, { 'aria-disabled': 'true' });
   I.click(qanPage.fields.ellipsisButton);
-  qanPage.verifyActiveItem(6);
-  await qanPage.verifyCount('51-60');
+  qanActions.verifyActiveItem(6);
+  await qanActions.verifyCount('126-150');
   I.click(qanPage.fields.ellipsisButton);
-  qanPage.verifyActiveItem(1);
-  await qanPage.verifyCount('1-10');
-  qanPage.selectPage(3);
-  qanPage.verifyActiveItem(3);
-  await qanPage.verifyCount('21-30');
+  qanActions.verifyActiveItem(1);
+  await qanActions.verifyCount('1-25');
+  qanActions.selectPage(3);
+  qanActions.verifyActiveItem(3);
+  await qanActions.verifyCount('51-75');
 });
 
 Scenario(
   'PMM-T193 - Verify user is able to change per page elements display and pagination is updated according to this value, PMM-T256 - Verify that switching view from 10 to 50/100 pages works correctly @not-pr-pipeline',
-  async qanPage => {
-    qanPage.waitForNewQANPageLoaded();
-    await qanPage.verifyRowCount(12);
-    await qanPage.verifyCount('1-10');
-    await qanPage.verifyPagesAndCount(10);
-    qanPage.selectPagination('50 / page');
-    await qanPage.verifyRowCount(52);
-    await qanPage.verifyPagesAndCount(50);
-    await qanPage.verifyCount('1-50');
-    qanPage.selectPagination('100 / page');
-    await qanPage.verifyRowCount(102);
-    await qanPage.verifyPagesAndCount(100);
-    await qanPage.verifyCount('1-100');
-    qanPage.selectPagination('10 / page');
-    await qanPage.verifyRowCount(12);
-    await qanPage.verifyCount('1-10');
-    await qanPage.verifyPagesAndCount(10);
+  async (qanPage, qanActions) => {
+    qanActions.waitForNewQANPageLoaded();
+    await qanActions.verifyRowCount(27);
+    await qanActions.verifyCount('1-25');
+    await qanActions.verifyPagesAndCount(25);
+    await qanActions.selectPagination('50 / page');
+    await qanActions.verifyRowCount(52);
+    await qanActions.verifyPagesAndCount(50);
+    await qanActions.verifyCount('1-50');
+    await qanActions.selectPagination('100 / page');
+    await qanActions.verifyRowCount(102);
+    await qanActions.verifyPagesAndCount(100);
+    await qanActions.verifyCount('1-100');
+    await qanActions.selectPagination('25 / page');
+    await qanActions.verifyRowCount(27);
+    await qanActions.verifyCount('1-25');
+    await qanActions.verifyPagesAndCount(25);
   }
 );
 
 Scenario(
   'PMM-T135 - Verify user is not able to add duplicate metric to the overview column @not-pr-pipeline',
-  async (I, qanPage) => {
+  async (I, qanPage, qanActions) => {
     const column = 'Load';
 
-    qanPage.waitForNewQANPageLoaded();
-    qanPage.verifyAddedColumn(column);
+    qanActions.waitForNewQANPageLoaded();
+    qanActions.verifyAddedColumn(column);
     I.click(qanPage.fields.addColumnNewQAN);
     I.fillField(qanPage.fields.searchFieldForColumn, column);
     I.waitForVisible(qanPage.fields.noDataIcon, 30);
@@ -191,8 +194,8 @@ Scenario(
 
 Scenario(
   'PMM-T219 - Verify that user is able to scroll up/down and resize the overview table @not-pr-pipeline',
-  async (I, qanPage) => {
-    qanPage.waitForNewQANPageLoaded();
+  async (I, qanPage, qanActions) => {
+    qanActions.waitForNewQANPageLoaded();
     const columnsToAdd = [
       'Bytes Sent',
       'Reading Blocks Time',
@@ -205,7 +208,7 @@ Scenario(
 
     for (i = 0; i < columnsToAdd.length; i++) {
       I.click(qanPage.fields.addColumnNewQAN);
-      qanPage.addSpecificColumn(columnsToAdd[i]);
+      qanActions.addSpecificColumn(columnsToAdd[i]);
     }
 
     I.waitForElement(qanPage.getColumn('Local Blocks Written'), 30);
@@ -221,25 +224,9 @@ Scenario(
 );
 
 Scenario(
-  'PMM-T223 - Verify time metrics are AVG per query (not per second) @not-pr-pipeline',
-  async (I, qanPage) => {
-    qanPage.waitForNewQANPageLoaded();
-    qanPage.applyFilterNewQAN('mysql');
-    I.waitForElement(qanPage.fields.querySelector, 30);
-    const queryTime = await I.grabTextFrom(qanPage.fields.queryTime);
-
-    I.moveCursorTo(qanPage.fields.querySelector);
-    I.click(qanPage.fields.querySelector);
-    I.waitForVisible(qanPage.getColumn('Lock Time'), 30);
-    await qanPage.verifyAvqQueryCount();
-    await qanPage.verifyAvgQueryTime();
-  }
-);
-
-Scenario(
   'PMM-T215 - Verify that buttons in QAN are disabled and visible on the screen @not-pr-pipeline',
-  async (I, qanPage) => {
-    qanPage.waitForNewQANPageLoaded();
+  async (I, qanPage, qanActions) => {
+    qanActions.waitForNewQANPageLoaded();
     I.seeAttributesOnElements(qanPage.fields.previousPage, { 'aria-disabled': 'true' });
     I.seeAttributesOnElements(qanPage.fields.nextPage, { 'aria-disabled': 'false' });
     I.seeElement(qanPage.fields.disabledResetAll);
@@ -248,65 +235,68 @@ Scenario(
   }
 );
 
-Scenario('PMM-T122 - Verify QAN UI Elements are displayed @not-pr-pipeline', async (I, qanPage) => {
-  qanPage.waitForNewQANPageLoaded();
+Scenario('PMM-T122 - Verify QAN UI Elements are displayed @not-pr-pipeline', async (I, qanPage, qanActions) => {
+  qanActions.waitForNewQANPageLoaded();
+  qanActions.applyFilterNewQAN('mysql');
   I.waitForVisible(qanPage.fields.filterBy, 30);
   I.waitForVisible(qanPage.fields.addColumnNewQAN, 30);
-  await qanPage.verifyRowCount(12);
-  await qanPage.verifyPagesAndCount(10);
+  await qanActions.verifyRowCount(27);
+  await qanActions.verifyPagesAndCount(25);
   I.waitForVisible(qanPage.fields.environmentLabel, 30);
   I.click(qanPage.fields.querySelector);
   I.waitForVisible(qanPage.getColumn('Lock Time'), 30);
 });
 
-Scenario(
+
+// Need to be fixed as soon as better locators for Sorting are implemented
+xScenario(
   'PMM-T156 Verify Queries are sorted by Load by Default Sorting from Max to Min, verify Sorting for Metrics works @not-pr-pipeline',
-  async (I, qanPage) => {
-    qanPage.waitForNewQANPageLoaded();
-    qanPage.applyFilterNewQAN('mysql');
+  async (I, qanPage, qanActions) => {
+    qanActions.waitForNewqanActionsStepLoaded();
+    qanActions.applyFilterNewQAN('mysql');
     I.waitForElement(qanPage.fields.querySelector, 30);
-    qanPage.verifyMetricsSorted('Load', 3, 'down');
-    qanPage.sortMetric('Load', 'up');
-    qanPage.verifyMetricsSorted('Load', 3, 'up');
-    qanPage.sortMetric('Query Count', 'down');
-    qanPage.verifyMetricsSorted('Query Count', 4, 'down');
-    qanPage.sortMetric('Query Count', 'up');
-    qanPage.verifyMetricsSorted('Query Count', 4, 'up');
-    qanPage.sortMetric('Query Time', 'down');
-    qanPage.verifyMetricsSorted('Query Time', 5, 'down');
+    await qanActions.verifyMetricsSorted('Load', 3, 'down');
+    qanActions.sortMetric('Load', 'up');
+    await qanActions.verifyMetricsSorted('Load', 3, 'up');
+    qanActions.sortMetric('Query Count', 'down');
+    await qanActions.verifyMetricsSorted('Query Count', 4, 'down');
+    qanActions.sortMetric('Query Count', 'up');
+    await qanActions.verifyMetricsSorted('Query Count', 4, 'up');
+    qanActions.sortMetric('Query Time', 'down');
+    await qanPage.verifyMetricsSorted('Query Time', 5, 'down');
     qanPage.sortMetric('Query Time', 'up');
-    qanPage.verifyMetricsSorted('Query Time', 5, 'up');
+    await qanPage.verifyMetricsSorted('Query Time', 5, 'up');
   }
 );
 
 Scenario(
   'PMM-T179 - Verify user is able to hover sparkline buckets and see correct tooltip',
-  async (I, qanPage) => {
-    qanPage.waitForNewQANPageLoaded();
-    const queryCount = await I.grabTextFrom(qanPage.fields.overviewRowQueryCount);
+  async (I, qanPage, qanActions) => {
+    qanActions.waitForNewQANPageLoaded();
+    const [queryCount] = (await I.grabTextFrom(qanPage.fields.overviewRowQueryCount)).split(' ');
 
     I.moveCursorTo(qanPage.fields.overviewRowQueryCount);
     I.waitForVisible(qanPage.fields.overviewRowQueryCountTooltip, 20);
-    await qanPage.verifyCountTooltip(queryCount);
+    await qanActions.verifyCountTooltip(queryCount);
     const queryTime = await I.grabTextFrom(qanPage.fields.overviewRowQueryTime);
 
     I.moveCursorTo(qanPage.fields.overviewRowQueryTime);
     I.waitForVisible(qanPage.fields.overviewRowQueryTimeTooltip, 20);
-    await qanPage.verifyTimeTooltip(queryTime);
+    await qanActions.verifyTimeTooltip(`Per query : ${queryTime}`);
     I.click(qanPage.fields.querySelector);
-    // Didn't find way how to check tooltip in detail.
   }
 );
 
-Scenario('PMM-T204 - Verify small and N/A values on sparkline @not-pr-pipeline', async (I, qanPage) => {
-  qanPage.waitForNewQANPageLoaded();
-  qanPage.sortMetric('Load', 'up');
+// Need to Skip this until Sort can be interacted with
+xScenario('PMM-T204 - Verify small and N/A values on sparkline @not-pr-pipeline', async (I, qanPage, qanActions) => {
+  qanActions.waitForNewQANPageLoaded();
+  qanActions.sortMetric('Load', 'up');
   I.moveCursorTo(qanPage.fields.loadValue);
   I.waitForVisible(qanPage.fields.loadValueTooltip, 10);
-  qanPage.applyFilterNewQAN('mongodb_cluster');
+  qanActions.applyFilterNewQAN('mongodb_cluster');
   I.click(qanPage.fields.addColumnNewQAN);
-  qanPage.addSpecificColumn('Innodb');
-  qanPage.verifyAddedColumn('Innodb');
+  qanActions.addSpecificColumn('Innodb');
+  qanActions.verifyAddedColumn('Innodb');
   I.moveCursorTo(qanPage.fields.innodbColumn);
   I.dontSeeElement(qanPage.fields.innodbColumnTooltip);
 });

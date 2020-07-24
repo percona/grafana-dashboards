@@ -7,43 +7,45 @@ Before((I, qanPage) => {
 
 Scenario(
   'Open the QAN Dashboard and check that changing the time range resets current page to the first. @new-qan @not-pr-pipeline',
-  async (I, qanPage, adminPage) => {
-    qanPage.waitForNewQANPageLoaded();
-    qanPage.paginationGoTo(2);
+  async (I, qanPage, adminPage, qanActions) => {
+    qanActions.waitForNewQANPageLoaded();
+    qanActions.paginationGoTo(2);
     adminPage.applyTimeRange('Last 3 hours');
-    qanPage.waitForNewQANPageLoaded();
-    await qanPage.verifySelectedPageIs(1);
+    qanActions.waitForNewQANPageLoaded();
+    await qanActions.verifySelectedPageIs(1);
   }
 );
 
 Scenario(
   'Open the QAN Dashboard and check that changing the time range updates the overview table and URL. @new-qan',
-  async (I, qanPage, adminPage) => {
+  async (I, qanPage, adminPage, qanActions) => {
     const TIME_RANGE_QUERY_PARAMS_BEFORE = 'from=now-5m&to=now';
     const TIME_RANGE_QUERY_PARAMS_AFTER = 'from=now-3h&to=now';
-    qanPage.waitForNewQANPageLoaded();
+
+    qanActions.waitForNewQANPageLoaded();
     I.seeInCurrentUrl(TIME_RANGE_QUERY_PARAMS_BEFORE);
     adminPage.applyTimeRange('Last 3 hours');
-    //qanPage.waitForResponsePath(qanPage.requests.getReportPath);
-    qanPage.waitForNewQANPageLoaded();
+    // qanPage.waitForResponsePath(qanPage.requests.getReportPath);
+    qanActions.waitForNewQANPageLoaded();
     I.seeInCurrentUrl(TIME_RANGE_QUERY_PARAMS_AFTER);
   }
 );
 
 Scenario(
   'Open the QAN Dashboard and check that changing the time range doesn\'t clear "Group by". @new-qan',
-  async (I, qanPage, adminPage) => {
-    qanPage.changeGroupBy('Client Host');
+  async (I, qanPage, adminPage, qanActions) => {
+    qanActions.changeGroupBy('Client Host');
     adminPage.applyTimeRange('Last 24 hours');
-    qanPage.verifyGroupByIs('Client Host');
+    qanActions.verifyGroupByIs('Client Host');
   }
 );
 
-Scenario(
-  "Open the QAN Dashboard and check that changing the time range doesn't reset sorting. @new-qan",
-  async (I, qanPage, adminPage) => {
-    qanPage.changeSorting(3, 'up');
+//Need to skip until we fix Sorting Locator and make it easy for Automation
+xScenario(
+  'Open the QAN Dashboard and check that changing the time range doesn\'t reset sorting. @new-qan',
+  async (I, qanPage, adminPage, qanActions) => {
+    await qanActions.changeSorting(3, 'up');
     adminPage.applyTimeRange('Last 24 hours');
-    qanPage.verifySortingIs(3, 'up');
+    qanActions.verifySortingIs(3, 'up');
   }
 );
