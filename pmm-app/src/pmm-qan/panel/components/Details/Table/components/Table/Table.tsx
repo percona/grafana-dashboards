@@ -1,10 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Spin } from 'antd';
 import Highlight from 'react-highlight.js';
-import { useActionResult } from '../../../Details.hooks';
-import { ActionResult } from '../../../Details.types';
+import { ActionResult, Databases } from '../../../Details.types';
 import { mysqlMethods, postgresqlMethods } from '../../../database-models';
-import { DATABASE } from '../../../Details.constants';
+import { useActionResult } from '../../../Details.tools';
 
 // TODO: refactor example parameters passing
 
@@ -19,9 +18,9 @@ const TableCreate = (props) => {
   const getDatabase = useCallback(async () => {
     let id;
 
-    if (databaseType === DATABASE.postgresql) {
+    if (databaseType === Databases.postgresql) {
       id = await postgresqlMethods.getShowCreateTables({ example, tableName });
-    } else if (databaseType === DATABASE.mysql) {
+    } else if (databaseType === Databases.mysql) {
       id = await mysqlMethods.getShowCreateTables({ example, tableName });
     }
 

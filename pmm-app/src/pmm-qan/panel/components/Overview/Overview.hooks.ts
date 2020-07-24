@@ -33,7 +33,7 @@ export const useOverviewTable = (setTotal): [DataInterface, boolean] => {
         });
 
         setTotal(result.total_rows);
-        const defaultColumns = getDefaultColumns(groupBy, pageNumber, pageSize, columns.length);
+        const defaultColumns = getDefaultColumns();
 
         const mainMetric = columns[0];
         // eslint-disable-next-line max-len

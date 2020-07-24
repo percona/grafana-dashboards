@@ -131,10 +131,11 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
     sortBy: css`
       display: flex;
       flex-direction: column;
+      padding: 10px;
 
       .sort-by:before,
       .sort-by:after {
-        border: 4px solid transparent;
+        border: 6px solid transparent;
         content: '';
         display: block;
         height: 0;
@@ -145,7 +146,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       }
       .sort-by:before {
         border-bottom-color: gray;
-        margin-top: -9px;
+        margin-top: -13px;
       }
       .sort-by:after {
         border-top-color: gray;
@@ -176,6 +177,10 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
     tableBody: (height) => css`
       overflow: scroll;
       height: ${height - 70}px;
+    `,
+    tableDisabled: css`
+      opacity: 0.6;
+      pointer-events: none;
     `,
   };
 });

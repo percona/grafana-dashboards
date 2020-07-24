@@ -19,6 +19,10 @@ export const styles = {
     padding-top: 15px !important;
     justify-content: space-between;
   `,
+  filtersDisabled: css`
+    opacity: 0.6;
+    pointer-events: none;
+  `,
   showAllButton: css`
     padding: 0 !important;
     height: auto;

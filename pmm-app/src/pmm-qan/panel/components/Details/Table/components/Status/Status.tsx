@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Spin, Table } from 'antd';
-import { useActionResult } from '../../../Details.hooks';
-import { ActionResult } from '../../../Details.types';
+import { ActionResult, Databases } from '../../../Details.types';
 import { mysqlMethods } from '../../../database-models';
 import { processTableData } from '../../TableContainer.tools';
-import { DATABASE } from '../../../Details.constants';
+import { useActionResult } from '../../../Details.tools';
+import { Messages } from '../../../Details.messages';
 
 export const Status = (props) => {
   const { tableName, databaseType, example } = props;
@@ -18,7 +18,7 @@ export const Status = (props) => {
   const getStatuses = useCallback(async () => {
     let id;
 
-    if (databaseType === DATABASE.mysql) {
+    if (databaseType === Databases.mysql) {
       id = await mysqlMethods.getStatuses(({ example, tableName }));
     }
 
@@ -46,7 +46,7 @@ export const Status = (props) => {
             bordered
           />
         ) : null}
-        {!status.error && !data.rows.length ? <pre> No data found</pre> : null}
+        {!status.error && !data.rows.length ? <pre>{Messages.noDataFound}</pre> : null}
       </Spin>
     </div>
   );
