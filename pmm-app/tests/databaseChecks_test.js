@@ -35,8 +35,8 @@ xScenario(
     async (I, adminPage, databaseChecksPage, pmmSettingsPage, settingsAPI) => {
       await settingsAPI.apiEnableSTT();
       I.amOnPage(pmmSettingsPage.url);
-      pmmSettingsPage.waitForPmmSettingsPageLoaded();
-      adminPage.selectItemFromPMMDropdown('PMM Database Checks');
+          await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+          adminPage.selectItemFromPMMDropdown('PMM Database Checks');
       I.waitForVisible(databaseChecksPage.fields.dbCheckPanelSelector, 30);
       I.amOnPage(databaseChecksPage.url);
       I.waitForVisible(databaseChecksPage.fields.dbCheckPanelSelector, 30);
