@@ -4,35 +4,36 @@ import { Messages } from './Settings.messages';
 import { Settings } from './Settings.types';
 
 export type LoadingCallback = (value: boolean) => void;
+export type SettingsCallback = (settings: Settings) => void;
 
 export const SettingsService = {
-  async getSettings(callback: LoadingCallback) {
-    let response: any = null;
+  async getSettings(setLoading: LoadingCallback, setSettings: SettingsCallback) {
+    let response: any;
 
     try {
-      callback(true);
+      setLoading(true);
       response = await apiRequest.post<any, any>('/v1/Settings/Get', {});
-      response = toModel(response.settings);
+      setSettings(toModel(response.settings));
     } catch (e) {
       console.error(e);
     } finally {
-      callback(false);
+      setLoading(false);
     }
 
     return response;
   },
-  async setSettings(body, callback: LoadingCallback) {
-    let response: any = null;
+  async setSettings(body, setLoading: LoadingCallback) {
+    let response: any;
 
     try {
-      callback(true);
+      setLoading(true);
       response = await apiRequest.post<any, any>('/v1/Settings/Change', body);
       response = toModel(response.settings);
       showSuccessNotification({ message: Messages.service.success });
     } catch (e) {
       console.error(e);
     } finally {
-      callback(false);
+      setLoading(false);
     }
 
     return response;

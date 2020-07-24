@@ -53,9 +53,7 @@ export const SettingsPanel: FC = () => {
   };
 
   useEffect(() => {
-    (async () => {
-      setSettings(await SettingsService.getSettings(setLoading));
-    })();
+    SettingsService.getSettings(setLoading, setSettings);
   }, []);
 
   return (
