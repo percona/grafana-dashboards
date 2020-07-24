@@ -11,6 +11,7 @@ export const useTables = (examples, databaseType): any[] => {
   useEffect(() => {
     const getTables = async () => {
       setLoading(true);
+      setTables([]);
       if (databaseType === Databases.mysql && jsonExplain.value) {
         const parsedJSON = JSON.parse(jsonExplain.value);
 
