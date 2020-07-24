@@ -24,16 +24,16 @@ export const NumericInput: FC<NumericInputProps> = ({
   const dispatchChangeEvent = useCallback(() => {
     const event = new Event('change', { bubbles: true });
 
-    inputRef?.current?.dispatchEvent(event);
+    inputRef.current!.dispatchEvent(event);
   }, [inputRef]);
 
   const stepUp = () => {
-    inputRef?.current?.stepUp();
+    inputRef.current!.stepUp();
     dispatchChangeEvent();
   };
 
   const stepDown = () => {
-    inputRef?.current?.stepDown();
+    inputRef.current!.stepDown();
     dispatchChangeEvent();
   };
 
