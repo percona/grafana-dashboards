@@ -5,7 +5,7 @@ Before((I, qanPage) => {
   I.amOnPage(qanPage.url);
 });
 
-Scenario('Open the QAN Dashboard and select row', async (I, adminPage, qanPage, qanActions) => {
+Scenario('Open the QAN Dashboard and select row @not-pr-pipeline', async (I, adminPage, qanPage, qanActions) => {
     qanActions.selectTableRow(4);
   I.see('Query');
   I.see('Details', qanPage.fields.detailsSectionTab);
