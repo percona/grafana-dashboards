@@ -35,7 +35,7 @@ export const AlertManager: FC<AlertManagerProps> = ({
   const [url, setUrl] = useState(alertManagerUrl);
   const [rules, setRules] = useState(alertManagerRules);
   const [loading, setLoading] = useState(false);
-  const disableAction = () => (
+  const isActionDisabled = () => (
     url === alertManagerUrl
     && rules === alertManagerRules
   );
@@ -91,7 +91,7 @@ export const AlertManager: FC<AlertManagerProps> = ({
       <Button
         className={settingsStyles.actionButton}
         variant="secondary"
-        disabled={disableAction() || loading}
+        disabled={isActionDisabled() || loading}
         onClick={applyChanges}
       >
         {loading && <Spinner />}

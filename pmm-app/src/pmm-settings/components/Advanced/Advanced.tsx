@@ -46,7 +46,7 @@ export const Advanced: FC<AdvancedProps> = ({
   const [telemetry, setTelemetry] = useState(telemetryEnabled);
   const [stt, setStt] = useState(sttEnabled);
   const [loading, setLoading] = useState(false);
-  const disableAction = () => (
+  const isActionDisabled = () => (
     +retentionDays === initialRetentionDays
     && telemetry === telemetryEnabled
     && stt === sttEnabled
@@ -125,7 +125,7 @@ export const Advanced: FC<AdvancedProps> = ({
       <Button
         className={settingsStyles.actionButton}
         variant="secondary"
-        disabled={disableAction() || loading}
+        disabled={isActionDisabled() || loading}
         onClick={applyChanges}
       >
         {loading && <Spinner />}
