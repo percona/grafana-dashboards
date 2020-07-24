@@ -7,7 +7,7 @@ import { DATA_RETENTION_URL } from 'pmm-settings/Settings.constants';
 import { LoadingCallback } from 'pmm-settings/Settings.service';
 import { LinkTooltip } from 'shared/components/Elements/LinkTooltip/LinkTooltip';
 import { getStyles } from './Advanced.styles';
-import { transformToDays } from './Advanced.utils';
+import { transformSecondsToDays } from './Advanced.utils';
 import { SECONDS_IN_DAY } from './Advanced.constants';
 import { SwitchRow } from './SwitchRow';
 
@@ -44,7 +44,7 @@ export const Advanced: FC<AdvancedProps> = ({
       sttTooltip
     }, tooltipLinkText
   } = Messages;
-  const initialRetentionDays = transformToDays(dataRetention);
+  const initialRetentionDays = transformSecondsToDays(dataRetention);
   const [retentionDays, setRetentionDays] = useState(initialRetentionDays);
   const [telemetry, setTelemetry] = useState(telemetryEnabled);
   const [stt, setStt] = useState(sttEnabled);

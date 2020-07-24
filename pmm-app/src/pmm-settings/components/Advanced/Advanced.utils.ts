@@ -1,6 +1,6 @@
 import { HOURS, MINUTES_IN_HOUR, SECONDS_IN_DAY } from './Advanced.constants';
 
-export const transformToDays = (dataRetention: string) => {
+export const transformSecondsToDays = (dataRetention: string) => {
   const [count, units] = [+dataRetention.slice(0, -1), dataRetention.slice(-1)];
 
   switch (units) {
