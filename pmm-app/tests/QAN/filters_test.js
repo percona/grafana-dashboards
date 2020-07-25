@@ -153,7 +153,7 @@ Scenario('PMM-T128 - Verify pagination works correctly @not-pr-pipeline @qan', a
       qanActions.verifyActiveItem(2);
       await qanActions.verifyCount(`26-${countOfItems}`);
       break;
-    case countOfItems <= 100:
+    case countOfItems <= 100 && countOfItems > 50:
       I.seeAttributesOnElements(qanPage.fields.previousPage, { 'aria-disabled': 'true' });
       I.click(qanPage.fields.nextPage);
       qanActions.verifyActiveItem(2);
@@ -184,7 +184,7 @@ Scenario('PMM-T128 - Verify pagination works correctly @not-pr-pipeline @qan', a
 });
 
 Scenario(
-  'PMM-T193 - Verify user is able to change per page elements display and pagination is updated according to this value, PMM-T256 - Verify that switching view from 10 to 50/100 pages works correctly @not-pr-pipeline @qan',
+  'PMM-T193 - Verify user is able to change per page elements display and pagination is updated according to this value, PMM-T256 - Verify that switching view from 25 to 50/100 pages works correctly @not-pr-pipeline @qan',
   async (qanPage, qanActions) => {
     qanActions.waitForNewQANPageLoaded();
     const countOfItems = await qanActions.getCountOfItems();
@@ -195,7 +195,7 @@ Scenario(
         await qanActions.verifyCount('1-25');
         await qanActions.verifyPagesAndCount(25);
         break;
-      case countOfItems <= 100:
+      case countOfItems <= 100 && countOfItems > 50:
         await qanActions.verifyRowCount(27);
         await qanActions.verifyCount('1-25');
         await qanActions.verifyPagesAndCount(25);
