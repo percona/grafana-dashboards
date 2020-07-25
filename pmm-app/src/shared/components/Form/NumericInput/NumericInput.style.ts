@@ -1,9 +1,8 @@
 import { css } from 'emotion';
-// import { GrafanaTheme } from '@grafana/data'
+import { GrafanaTheme } from '@grafana/data';
 import { stylesFactory } from '@grafana/ui';
 
-// export const getStyles = stylesFactory((theme: GrafanaTheme) => {
-export const getStyles = stylesFactory((theme) => {
+export const getStyles = stylesFactory((theme: GrafanaTheme) => {
   const arrow = css`
     position: absolute;
     right: 0.3em;
