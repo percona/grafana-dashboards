@@ -4,8 +4,7 @@ Before(async (I) => {
   I.Authorize();
 });
 
-// Need to skip to be fixed later
-xScenario(
+Scenario(
   'PMM-T138 Verify disabling enhanced metrics for RDS, PMM-T139 Verify disabling basic metrics for RDS, PMM-T9 Verify adding RDS instances [critical] @not-pr-pipeline',
   async (I, remoteInstancesPage, pmmInventoryPage, homePage, qanPage, dashboardPage) => {
     const instanceIdToMonitor = 'rds-mysql56';
@@ -34,8 +33,7 @@ xScenario(
   }
 );
 
-// Need to Skip to avoid random failures on job
-xScenario(
+Scenario(
   'Verify AWS RDS MySQL 5.6 instance has status running [critical] @pmm-post-update @not-pr-pipeline',
   async (I, remoteInstancesPage, pmmInventoryPage) => {
     const serviceName = 'rds-mysql56';

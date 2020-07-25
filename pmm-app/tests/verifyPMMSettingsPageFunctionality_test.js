@@ -5,9 +5,9 @@ Before(async (I, pmmSettingsPage) => {
   I.amOnPage(pmmSettingsPage.url);
 });
 
-//Skipped to avoid tests breaks, need to investigate more
-xScenario('Open PMM Settings page and verify changing Metrics Resolution [critical]', async (I, pmmSettingsPage) => {
+Scenario('Open PMM Settings page and verify changing Metrics Resolution [critical]', async (I, pmmSettingsPage) => {
   const resolutionToApply = 'Low';
+
   pmmSettingsPage.waitForPmmSettingsPageLoaded();
   await pmmSettingsPage.selectMetricsResolution(resolutionToApply);
   await pmmSettingsPage.verifySuccessfulPopUp(pmmSettingsPage.messages.successPopUpMessage);
@@ -16,44 +16,51 @@ xScenario('Open PMM Settings page and verify changing Metrics Resolution [critic
 
 xScenario('Open PMM Settings page and verify changing Data Retention [critical]', async (I, pmmSettingsPage) => {
   const dataRetentionValue = '1';
+
   pmmSettingsPage.waitForPmmSettingsPageLoaded();
   pmmSettingsPage.changeDataRetentionValueTo(dataRetentionValue);
   await pmmSettingsPage.verifySuccessfulPopUp(pmmSettingsPage.messages.successPopUpMessage);
   await pmmSettingsPage.verifyDataRetentionValueApplied(dataRetentionValue);
 });
 
+// eslint-disable-next-line no-undef
 Scenario('Open PMM Settings page and verify adding Alertmanager Rule [critical]', async (I, pmmSettingsPage) => {
   const scheme = 'http://';
   const sectionNameToExpand = 'Alertmanager integration';
+
   pmmSettingsPage.waitForPmmSettingsPageLoaded();
   pmmSettingsPage.collapseDefaultSection();
   await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.sectionButtonText.addAlert);
   pmmSettingsPage.addAlertmanagerRule(
-      scheme + pmmSettingsPage.alertManager.ip + pmmSettingsPage.alertManager.service,
-      pmmSettingsPage.alertManager.rule
+    scheme + pmmSettingsPage.alertManager.ip + pmmSettingsPage.alertManager.service,
+    pmmSettingsPage.alertManager.rule
   );
   await pmmSettingsPage.verifySuccessfulPopUp(pmmSettingsPage.messages.successAlertmanagerMessage);
   pmmSettingsPage.openAlertsManagerUi();
   await pmmSettingsPage.verifyAlertmanagerRuleAdded(pmmSettingsPage.alertManager.ruleName);
 });
 
+// eslint-disable-next-line no-undef
 xScenario('Open PMM Settings page and verify Editing Alertmanager Rule [critical]', async (I, pmmSettingsPage) => {
   const scheme = 'http://';
   const sectionNameToExpand = 'Alertmanager integration';
+
   pmmSettingsPage.waitForPmmSettingsPageLoaded();
   pmmSettingsPage.collapseDefaultSection();
   await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.sectionButtonText.addAlert);
   pmmSettingsPage.addAlertmanagerRule(
-      scheme + pmmSettingsPage.alertManager.ip + pmmSettingsPage.alertManager.service,
-      pmmSettingsPage.alertManager.editRule
+    scheme + pmmSettingsPage.alertManager.ip + pmmSettingsPage.alertManager.service,
+    pmmSettingsPage.alertManager.editRule
   );
   await pmmSettingsPage.verifySuccessfulPopUp(pmmSettingsPage.messages.successAlertmanagerMessage);
   pmmSettingsPage.openAlertsManagerUi();
   await pmmSettingsPage.verifyAlertmanagerRuleAdded(pmmSettingsPage.alertManager.editRuleName);
 });
 
+// eslint-disable-next-line no-undef
 xScenario('Open PMM Settings page and verify clearing Alertmanager Rule', async (I, pmmSettingsPage) => {
   const sectionNameToExpand = 'Alertmanager integration';
+
   pmmSettingsPage.waitForPmmSettingsPageLoaded();
   pmmSettingsPage.collapseDefaultSection();
   await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.sectionButtonText.addAlert);
@@ -61,25 +68,27 @@ xScenario('Open PMM Settings page and verify clearing Alertmanager Rule', async 
   await pmmSettingsPage.verifySuccessfulPopUp(pmmSettingsPage.messages.successAlertmanagerMessage);
 });
 
+// eslint-disable-next-line no-undef
 Scenario(
-    'PMM-T253 Verify user can see correct tooltip for STT [trivial]',
-    async (I, pmmSettingsPage) => {
-      pmmSettingsPage.waitForPmmSettingsPageLoaded();
-      I.moveCursorTo(pmmSettingsPage.fields.sttLabelTooltipSelector);
-      await pmmSettingsPage.verifyTooltip(pmmSettingsPage.tooltips.stt);
-    }
+  'PMM-T253 Verify user can see correct tooltip for STT [trivial]',
+  async (I, pmmSettingsPage) => {
+    pmmSettingsPage.waitForPmmSettingsPageLoaded();
+    I.moveCursorTo(pmmSettingsPage.fields.sttLabelTooltipSelector);
+    await pmmSettingsPage.verifyTooltip(pmmSettingsPage.tooltips.stt);
+  }
 );
 
+// eslint-disable-next-line no-undef
 Scenario(
-    'PMM-T253 Verify user can enable STT if Telemetry is enabled',
-    async (I, pmmSettingsPage) => {
-      await pmmSettingsPage.enableSTT();
-      I.refreshPage();
-      pmmSettingsPage.waitForPmmSettingsPageLoaded();
-      pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelector, 'on');
-      I.click(pmmSettingsPage.fields.sttSwitchSelector);
-      pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelector, 'off');
-      I.click(pmmSettingsPage.fields.applyButton);
-      await pmmSettingsPage.verifySuccessfulPopUp(pmmSettingsPage.messages.successPopUpMessage);
-    }
+  'PMM-T253 Verify user can enable STT if Telemetry is enabled',
+  async (I, pmmSettingsPage) => {
+    await pmmSettingsPage.enableSTT();
+    I.refreshPage();
+    pmmSettingsPage.waitForPmmSettingsPageLoaded();
+    pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelector, 'on');
+    I.click(pmmSettingsPage.fields.sttSwitchSelector);
+    pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelector, 'off');
+    I.click(pmmSettingsPage.fields.applyButton);
+    await pmmSettingsPage.verifySuccessfulPopUp(pmmSettingsPage.messages.successPopUpMessage);
+  }
 );
