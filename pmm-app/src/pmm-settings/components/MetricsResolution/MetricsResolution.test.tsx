@@ -18,9 +18,9 @@ describe('MetricsResolution::', () => {
     const standardRes = removeUnits(defaultResolutions[1]);
 
     expect(radioLabel.prop('className')).toContain('active');
-    expect(lrInput.prop('value')).toEqual(standardRes.lr);
-    expect(mrInput.prop('value')).toEqual(standardRes.mr);
-    expect(hrInput.prop('value')).toEqual(standardRes.hr);
+    expect(lrInput.find('input').prop('value')).toEqual(standardRes.lr);
+    expect(mrInput.find('input').prop('value')).toEqual(standardRes.mr);
+    expect(hrInput.find('input').prop('value')).toEqual(standardRes.hr);
   });
 
   it('Renders correctly with props for rare resolution', () => {
@@ -36,9 +36,9 @@ describe('MetricsResolution::', () => {
     const standardRes = removeUnits(defaultResolutions[0]);
 
     expect(radioLabel.prop('className')).toContain('active');
-    expect(lrInput.prop('value')).toEqual(standardRes.lr);
-    expect(mrInput.prop('value')).toEqual(standardRes.mr);
-    expect(hrInput.prop('value')).toEqual(standardRes.hr);
+    expect(lrInput.find('input').prop('value')).toEqual(standardRes.lr);
+    expect(mrInput.find('input').prop('value')).toEqual(standardRes.mr);
+    expect(hrInput.find('input').prop('value')).toEqual(standardRes.hr);
   });
 
   it('Renders correctly with props for frequent resolution', () => {
@@ -54,9 +54,9 @@ describe('MetricsResolution::', () => {
     const standardRes = removeUnits(defaultResolutions[2]);
 
     expect(radioLabel.prop('className')).toContain('active');
-    expect(lrInput.prop('value')).toEqual(standardRes.lr);
-    expect(mrInput.prop('value')).toEqual(standardRes.mr);
-    expect(hrInput.prop('value')).toEqual(standardRes.hr);
+    expect(lrInput.find('input').prop('value')).toEqual(standardRes.lr);
+    expect(mrInput.find('input').prop('value')).toEqual(standardRes.mr);
+    expect(hrInput.find('input').prop('value')).toEqual(standardRes.hr);
   });
 
   it('Renders correctly with props for custom resolution', () => {
@@ -71,9 +71,9 @@ describe('MetricsResolution::', () => {
     const hrInput = root.find('[data-qa="metrics-resolution-hr-input"]');
 
     expect(radioLabel.prop('className')).toContain('active');
-    expect(lrInput.prop('value')).toEqual('400');
-    expect(mrInput.prop('value')).toEqual('100');
-    expect(hrInput.prop('value')).toEqual('50');
+    expect(lrInput.find('input').prop('value')).toEqual('400');
+    expect(mrInput.find('input').prop('value')).toEqual('100');
+    expect(hrInput.find('input').prop('value')).toEqual('50');
   });
 
   it('Changes input values when changing resolution', () => {
@@ -95,9 +95,9 @@ describe('MetricsResolution::', () => {
     const standardRes = removeUnits(defaultResolutions[2]);
 
     expect(radioLabelFrequent.prop('className')).toContain('active');
-    expect(lrInput.prop('value')).toEqual(standardRes.lr);
-    expect(mrInput.prop('value')).toEqual(standardRes.mr);
-    expect(hrInput.prop('value')).toEqual(standardRes.hr);
+    expect(lrInput.find('input').prop('value')).toEqual(standardRes.lr);
+    expect(mrInput.find('input').prop('value')).toEqual(standardRes.mr);
+    expect(hrInput.find('input').prop('value')).toEqual(standardRes.hr);
   });
 
   it('Disables apply changes on initial values', () => {
@@ -117,8 +117,12 @@ describe('MetricsResolution::', () => {
       updateSettings={updateSettings}
     />);
 
-    root.find('[data-qa="metrics-resolution-lr-input"]').simulate('change', { target: { value: '70' } });
-    root.find('button').simulate('click');
+    root.find('[data-qa="metrics-resolution-lr-input"]')
+      .find('input')
+      .simulate('change', { target: { value: '70' } });
+    root.find('[data-qa="metrics-resolution-button"]')
+      .find('button')
+      .simulate('click');
 
     expect(updateSettings).toHaveBeenCalled();
   });

@@ -6,7 +6,13 @@ import { getSettingsStyles } from 'pmm-settings/Settings.styles';
 import { Messages } from 'pmm-settings/Settings.messages';
 import { MetricsResolutions } from 'pmm-settings/Settings.types';
 import { LinkTooltip } from 'shared/components/Elements/LinkTooltip/LinkTooltip';
-import { resolutionsOptions, defaultResolutions } from './MetricsResolution.constants';
+import { NumericInput } from 'shared/components/Form';
+import {
+  resolutionsOptions,
+  defaultResolutions,
+  resolutionMin,
+  resolutionMax
+} from './MetricsResolution.constants';
 import { getStyles } from './MetricsResolution.styles';
 import { getResolutionValue, removeUnits, addUnits } from './MetricsResolution.utils';
 import { MetricsResolutionProps, MetricsResolutionPresets, MetricsResolutionIntervals } from './MetricsResolution.types';
@@ -24,7 +30,12 @@ export const MetricsResolution: FC<MetricsResolutionProps> = ({ metricsResolutio
       action,
       label,
       link,
-      tooltip
+      tooltip,
+      intervals: {
+        low,
+        medium,
+        high
+      }
     },
     tooltipLinkText,
   } = Messages;
@@ -62,29 +73,35 @@ export const MetricsResolution: FC<MetricsResolutionProps> = ({ metricsResolutio
         className={styles.resolutionsRadioButtonGroup}
         onChange={(key) => setResolution(key)}
       />
-      <input
-        type="number"
+      <NumericInput
         className={styles.resolutionInput}
         value={updatedResolutions.lr}
         disabled={resolution !== MetricsResolutionPresets.custom}
-        onChange={(e) => onChangeInput(MetricsResolutionIntervals.lr, e.target.value)}
+        onChange={(e: any) => onChangeInput(MetricsResolutionIntervals.lr, e.target.value)}
         data-qa="metrics-resolution-lr-input"
+        label={low}
+        min={resolutionMin}
+        max={resolutionMax}
       />
-      <input
-        type="number"
+      <NumericInput
         className={styles.resolutionInput}
         value={updatedResolutions.mr}
         disabled={resolution !== MetricsResolutionPresets.custom}
-        onChange={(e) => onChangeInput(MetricsResolutionIntervals.mr, e.target.value)}
+        onChange={(e: any) => onChangeInput(MetricsResolutionIntervals.mr, e.target.value)}
         data-qa="metrics-resolution-mr-input"
+        label={medium}
+        min={resolutionMin}
+        max={resolutionMax}
       />
-      <input
-        type="number"
+      <NumericInput
         className={styles.resolutionInput}
         value={updatedResolutions.hr}
         disabled={resolution !== MetricsResolutionPresets.custom}
-        onChange={(e) => onChangeInput(MetricsResolutionIntervals.hr, e.target.value)}
+        onChange={(e: any) => onChangeInput(MetricsResolutionIntervals.hr, e.target.value)}
         data-qa="metrics-resolution-hr-input"
+        label={high}
+        min={resolutionMin}
+        max={resolutionMax}
       />
       <Button
         className={settingsStyles.actionButton}

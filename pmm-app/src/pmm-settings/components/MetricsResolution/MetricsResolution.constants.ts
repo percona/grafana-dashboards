@@ -29,3 +29,6 @@ export const defaultResolutions: MetricsResolutions[] = [
     lr: '30s',
   },
 ];
+
+export const resolutionMin = 1;
+export const resolutionMax = 1000;

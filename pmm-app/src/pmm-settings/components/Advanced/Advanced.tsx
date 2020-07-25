@@ -5,9 +5,10 @@ import { getSettingsStyles } from 'pmm-settings/Settings.styles';
 import { Messages } from 'pmm-settings/Settings.messages';
 import { DATA_RETENTION_URL } from 'pmm-settings/Settings.constants';
 import { LinkTooltip } from 'shared/components/Elements/LinkTooltip/LinkTooltip';
+import { NumericInput } from 'shared/components/Form';
 import { getStyles } from './Advanced.styles';
 import { transformSecondsToDays } from './Advanced.utils';
-import { SECONDS_IN_DAY } from './Advanced.constants';
+import { SECONDS_IN_DAY, MIN_DAYS, MAX_DAYS } from './Advanced.constants';
 import { AdvancedProps } from './Advanced.types';
 import { SwitchRow } from './SwitchRow';
 
@@ -76,13 +77,13 @@ export const Advanced: FC<AdvancedProps> = ({
                 />
               </div>
             </td>
-            <td>
-              <input
-                type="number"
-                className={styles.retentionInput}
+            <td className={styles.retentionInputWrapper}>
+              <NumericInput
                 value={retentionDays}
-                onChange={(e) => setRetentionDays(e.target.value)}
+                onChange={(e: any) => setRetentionDays(e.target.value)}
                 data-qa="advanced-retention-input"
+                min={MIN_DAYS}
+                max={MAX_DAYS}
               />
               <span className={styles.retentionUnitslabel}>{retentionUnits}</span>
             </td>
@@ -123,6 +124,7 @@ export const Advanced: FC<AdvancedProps> = ({
         variant="secondary"
         disabled={isActionDisabled() || loading}
         onClick={applyChanges}
+        data-qa="advanced-button"
       >
         {loading && <Spinner />}
         {action}

@@ -40,6 +40,11 @@ export const Messages = {
       frequent: 'Frequent',
       custom: 'Custom',
     },
+    intervals: {
+      low: 'Low',
+      medium: 'Medium',
+      high: 'High'
+    },
     tooltip: 'This setting defines how frequently the data will be collected.'
   },
   ssh: {

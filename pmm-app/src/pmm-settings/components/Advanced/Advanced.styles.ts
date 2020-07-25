@@ -24,8 +24,12 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
         background: ${colors.blue95};
       }
     `,
-    retentionInput: css`
-      width: 70px;
+    retentionInputWrapper: css`
+      align-items: center;
+      display: flex;
+      input {
+        width: 60px;
+      }
     `,
     retentionUnitslabel: css`
       font-size: ${theme.typography.size.sm};

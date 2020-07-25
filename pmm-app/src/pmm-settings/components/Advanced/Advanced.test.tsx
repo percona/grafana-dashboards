@@ -13,7 +13,7 @@ describe('Advanced::', () => {
     />);
     const retentionInput = root.find('[data-qa="advanced-retention-input"]');
 
-    expect(retentionInput.prop('value')).toEqual(15);
+    expect(retentionInput.find('input').prop('value')).toEqual(15);
   });
 
   it('Cant change telemetry when stt is on', () => {
@@ -49,8 +49,12 @@ describe('Advanced::', () => {
       updateSettings={updateSettings}
     />);
 
-    root.find('[data-qa="advanced-retention-input"]').simulate('change', { target: { value: '70' } });
-    root.find('button').simulate('click');
+    root.find('[data-qa="advanced-retention-input"]')
+      .find('input')
+      .simulate('change', { target: { value: '70' } });
+    root.find('[data-qa="advanced-button"]')
+      .find('button')
+      .simulate('click');
 
     expect(updateSettings).toHaveBeenCalled();
   });
