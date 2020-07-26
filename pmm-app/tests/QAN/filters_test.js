@@ -96,6 +96,7 @@ Scenario('PMM-T123 - Verify User is able to search for DB types @not-pr-pipeline
     'mysql',
     'pmm-server',
     'postgresql',
+    'mongodb'
   ];
 
   qanActions.waitForNewQANPageLoaded();

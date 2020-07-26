@@ -116,8 +116,7 @@ Scenario(
 Scenario(
   'PMM-T13 - Verify QAN has MongoDB, MySQL, PostgreSQl all three Service Types @not-pr-pipeline @qan',
   async (I, qanPage, qanActions) => {
-    // Need to add MongoDB here, currently due to timing of execution it doesn't appear
-    const filters = ['mysql', 'postgres'];
+    const filters = ['mongodb', 'mysql', 'postgres'];
 
     qanActions.waitForNewQANPageLoaded();
     I.waitForElement(qanPage.fields.filterBy, 30);
