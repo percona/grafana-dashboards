@@ -2,7 +2,7 @@ export const Messages = {
   noExamplesFound: 'Sorry, no examples found for this query',
   noClassicExplain: 'No classic explain found',
   noJsonExplain: 'No JSON explain found',
-  cantExtractTables: 'Couldn&apos;t get tables info neither from example nor explain',
+  cantExtractTables: 'No table info from example nor explain',
   noDataFound: 'No data found',
   closeDetails: 'Close',
   tabs: {

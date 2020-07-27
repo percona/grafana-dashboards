@@ -29,18 +29,18 @@ Scenario(
       { href: `${config.url}${pmmSettingsPage.url}` });
   }
 );
-//Skipping test because of random failings, needs investigation
-xScenario(
-  'PMM-T233 PMM-T234 Verify user is able to access PMM Database Checks through UI and with URL [critical] @not-pr-pipeline',
-  async (I, adminPage, databaseChecksPage, pmmSettingsPage, settingsAPI) => {
-    await settingsAPI.apiEnableSTT();
-    I.amOnPage(pmmSettingsPage.url);
-    await pmmSettingsPage.waitForPmmSettingsPageLoaded();
-    adminPage.selectItemFromPMMDropdown('PMM Database Checks');
-    I.waitForVisible(databaseChecksPage.fields.dbCheckPanelSelector, 30);
-    I.amOnPage(databaseChecksPage.url);
-    I.waitForVisible(databaseChecksPage.fields.dbCheckPanelSelector, 30);
-  }
+
+Scenario(
+    'PMM-T233 PMM-T234 Verify user is able to access PMM Database Checks through UI and with URL [critical] @not-pr-pipeline',
+    async (I, adminPage, databaseChecksPage, pmmSettingsPage, settingsAPI) => {
+      await settingsAPI.apiEnableSTT();
+      I.amOnPage(pmmSettingsPage.url);
+      pmmSettingsPage.waitForPmmSettingsPageLoaded();
+      await adminPage.selectItemFromPMMDropdown('PMM Database Checks');
+      I.waitForVisible(databaseChecksPage.fields.dbCheckPanelSelector, 30);
+      I.amOnPage(databaseChecksPage.url);
+      I.waitForVisible(databaseChecksPage.fields.dbCheckPanelSelector, 30);
+    }
 );
 
 Scenario(
