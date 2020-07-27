@@ -1,4 +1,4 @@
-const { I } = inject();
+const { I, adminPage } = inject();
 const assert = require('assert');
 
 module.exports = {
@@ -33,7 +33,8 @@ module.exports = {
     ],
   },
   advancedDataExplorationDashboard: {
-    url: 'graph/d/prometheus-advanced/advanced-data-exploration?orgId=1&refresh=1m&var-metric=go_gc_duration_seconds',
+    url:
+      'graph/d/prometheus-advanced/advanced-data-exploration?orgId=1&refresh=1m&var-metric=go_gc_duration_seconds',
     metrics: [
       'View Actual Metric Values (Gauge)',
       'View Metric Rate of Change (Counter)',
@@ -263,7 +264,7 @@ module.exports = {
       'Dynamic of Indexes',
       'Total Connections',
       'Current Connections Per Shard',
-      'Total Mongos Operations'
+      'Total Mongos Operations',
     ],
   },
   mysqlInstanceSummaryDashboard: {
@@ -301,9 +302,76 @@ module.exports = {
       'MySQL Table Definition Cache',
     ],
   },
-
+  mongoDbInstanceOverview: {
+    url: 'graph/d/mongodb-instance-overview/mongodb-instances-overview?orgId=1&refresh=1m',
+  },
+  homeDashboard: {
+    metrics: [
+      'CPU Busy',
+      'Mem Avail',
+      'Disk Reads',
+      'Disk Writes',
+      'Network IO',
+      'DB Conns',
+      'DB QPS',
+      'Virtual CPUs',
+      'RAM',
+      'Host uptime',
+      'DB uptime',
+    ],
+  },
   mySQLInstanceOverview: {
     url: 'graph/d/mysql-instance-overview/mysql-instances-overview?orgId=1&from=now-2m&to=now&refresh=1m',
+    metrics: [
+      'Services',
+      'Min MySQL Uptime',
+      'Max MySQL Uptime',
+      'Total Current QPS',
+      'Total InnoDB Buffer Pool Size',
+      'Top MySQL Used Connections',
+      'Top MySQL Client Threads Connected',
+      'Top MySQL Active Client Threads',
+      'Top MySQL Threads Cached',
+      'Top 5 MySQL Client Threads Connected',
+      'MySQL Client Threads Connected',
+      'Top 5 MySQL Active Client Threads',
+      'MySQL Idle Client Threads',
+      'Top 5 MySQL Thread Cached',
+      'Percentage of Cached MySQL Threads',
+      'Top MySQL Queries',
+      'Top MySQL Questions',
+      'Top InnoDB I/O Data Reads',
+      'Top InnoDB I/O Data Writes',
+      'Top Data Fsyncs',
+      'Top 5 MySQL Queries',
+      'MySQL QPS',
+      'Top 5 MySQL Questions',
+      'MySQL Questions in Queries',
+      'Top 5 Data Reads',
+      'Percentage of Data Read',
+      'Top 5 Data Writes',
+      'Percentage of Data Writes',
+      'Top 5 Data Fsyncs',
+      'Percentage of Data Fsyncs',
+      'Top MySQL Questions',
+      'Top MySQL Selects',
+      'Top MySQL Sorts',
+      'Top MySQL Aborted Connections',
+      'Top MySQL Table Locks',
+      'MySQL Temporary Objects',
+      'Top 5 MySQL Selects',
+      'MySQL Selects',
+      'Top 5 MySQL Sorts',
+      'MySQL Sorts',
+      'MySQL Query Cache Size',
+      'MySQL Used Query Cache',
+      'Top 5 MySQL File Openings',
+      'Top Open Cache Miss Ratio',
+      'MySQL Table Definition Cache',
+      'Top 5 MySQL Opened Table Definitions',
+      'Top 5 MySQL Open Table Definitions',
+      'Percentage of Open Table Definitions to Table Definition Cache',
+    ],
     serviceName:
       "//label[contains(text(), 'Service Name')]/following-sibling::value-select-dropdown/descendant::a[@class='variable-value-link']",
   },
@@ -413,6 +481,7 @@ module.exports = {
       const rowToExpand = `${this.fields.collapsedDashboardRow}[contains(text(), '${sectionName[0]}')]`;
       I.click(rowToExpand);
       I.wait(0.5);
+      adminPage.peformPageDown(1);
     }
   },
 
@@ -439,7 +508,7 @@ module.exports = {
     I.waitForElement(filterSelector, 30);
     I.click(filterSelector);
     I.waitForElement(filterValueSelector, 30);
-    let numOfElements = await I.grabNumberOfVisibleElements(this.fields.clearSelection);
+    const numOfElements = await I.grabNumberOfVisibleElements(this.fields.clearSelection);
     if (numOfElements === 1) {
       I.click(this.fields.clearSelection);
     }
