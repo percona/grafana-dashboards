@@ -178,14 +178,11 @@ module.exports = {
 
   async expandAllFilter() {
     for (const i in this.filterGroups) {
-      // eslint-disable-next-line max-len
       const numOfElementsFilterCount = await I.grabNumberOfVisibleElements(
           this.showAllLocator(this.filterGroups[i])
       );
       if (numOfElementsFilterCount) {
-        // eslint-disable-next-line max-len
         I.click(this.showAllLocator(this.filterGroups[i]));
-        // eslint-disable-next-line max-len
         I.waitForVisible(
             this.showTop5Locator(this.filterGroups[i]), 30
         );
