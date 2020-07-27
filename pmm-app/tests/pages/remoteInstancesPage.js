@@ -11,12 +11,12 @@ module.exports = {
   // setting locators
   url: 'graph/d/pmm-add-instance/pmm-add-instance?orgId=1',
   addMySQLRemoteURL: 'graph/d/pmm-add-instance/pmm-add-instance?instance_type=mysql',
-  dashboardMySQLOverviewWithFilters:
-    'graph/d/mysql-instance-overview/mysql-instances-overview?orgId=1&'
-    + 'from=now-5m&to=now&refresh=1m&var-interval=$__auto_interval_interval&var-region=us-east-1&var-environment='
-    + 'RDS%20MySQL%205.6&var-cluster=rds56-cluster&var-replication_set=rds56-replication&var-node_name=rds-mysql56'
-    + '&var-service_name=rds-mysql56&&var-az=us-east-1c&var-node_type=remote_rds&var-node_model=&var-database=All'
-    + '&var-service_type=&var-schema=',
+  rds: {
+    'Service Name': 'rds-mysql56',
+    'Environment': 'RDS MySQL 5.6',
+    'Replication Set': 'rds56-replication',
+    'Cluster': 'rds56-cluster'
+  },
   fields: {
     pageHeaderText: 'PMM Add Instance',
     iframe: '//div[@class=\'panel-content\']//iframe',
