@@ -48,6 +48,16 @@ export const Advanced: FC<AdvancedProps> = ({
     && telemetry === telemetryEnabled
     && stt === sttEnabled
   );
+  const stepUp = (max: number) => () => {
+    if (retentionDays < max) {
+      setRetentionDays(+retentionDays + 1);
+    }
+  };
+  const stepDown = (min: number) => () => {
+    if (retentionDays > min) {
+      setRetentionDays(+retentionDays - 1);
+    }
+  };
 
   const applyChanges = () => {
     const body = {
@@ -82,8 +92,8 @@ export const Advanced: FC<AdvancedProps> = ({
                 value={retentionDays}
                 onChange={(e: any) => setRetentionDays(e.target.value)}
                 data-qa="advanced-retention-input"
-                min={MIN_DAYS}
-                max={MAX_DAYS}
+                stepUp={stepUp(MAX_DAYS)}
+                stepDown={stepDown(MIN_DAYS)}
               />
               <span className={styles.retentionUnitslabel}>{retentionUnits}</span>
             </td>

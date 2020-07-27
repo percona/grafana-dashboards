@@ -45,6 +45,20 @@ export const MetricsResolution: FC<MetricsResolutionProps> = ({ metricsResolutio
   const applyChanges = () => {
     updateSettings({ metrics_resolutions: addUnits(updatedResolutions) }, setLoading);
   };
+  const stepUp = (key: string, max: number) => () => {
+    const value = +updatedResolutions[key];
+
+    if (value < max) {
+      onChangeInput(key, `${value + 1}`);
+    }
+  };
+  const stepDown = (key: string, min: number) => () => {
+    const value = +updatedResolutions[key];
+
+    if (value > min) {
+      onChangeInput(key, `${value - 1}`);
+    }
+  };
 
   useEffect(() => {
     if (resolution !== MetricsResolutionPresets.custom) {
@@ -80,8 +94,8 @@ export const MetricsResolution: FC<MetricsResolutionProps> = ({ metricsResolutio
         onChange={(e: any) => onChangeInput(MetricsResolutionIntervals.lr, e.target.value)}
         data-qa="metrics-resolution-lr-input"
         label={low}
-        min={resolutionMin}
-        max={resolutionMax}
+        stepUp={stepUp(MetricsResolutionIntervals.lr, resolutionMax)}
+        stepDown={stepDown(MetricsResolutionIntervals.lr, resolutionMin)}
       />
       <NumericInput
         className={styles.resolutionInput}
@@ -90,8 +104,8 @@ export const MetricsResolution: FC<MetricsResolutionProps> = ({ metricsResolutio
         onChange={(e: any) => onChangeInput(MetricsResolutionIntervals.mr, e.target.value)}
         data-qa="metrics-resolution-mr-input"
         label={medium}
-        min={resolutionMin}
-        max={resolutionMax}
+        stepUp={stepUp(MetricsResolutionIntervals.mr, resolutionMax)}
+        stepDown={stepDown(MetricsResolutionIntervals.mr, resolutionMin)}
       />
       <NumericInput
         className={styles.resolutionInput}
@@ -100,8 +114,8 @@ export const MetricsResolution: FC<MetricsResolutionProps> = ({ metricsResolutio
         onChange={(e: any) => onChangeInput(MetricsResolutionIntervals.hr, e.target.value)}
         data-qa="metrics-resolution-hr-input"
         label={high}
-        min={resolutionMin}
-        max={resolutionMax}
+        stepUp={stepUp(MetricsResolutionIntervals.hr, resolutionMax)}
+        stepDown={stepDown(MetricsResolutionIntervals.hr, resolutionMin)}
       />
       <Button
         className={settingsStyles.actionButton}
