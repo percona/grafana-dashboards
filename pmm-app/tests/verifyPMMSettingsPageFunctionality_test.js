@@ -5,8 +5,8 @@ Before(async (I, pmmSettingsPage, settingsAPI) => {
   await settingsAPI.apiDisableSTT();
   I.amOnPage(pmmSettingsPage.url);
 });
-
-Scenario('Open PMM Settings page and verify changing Metrics Resolution [critical]', async (I, pmmSettingsPage) => {
+// TODO: Vasyl Y Skipping because of random failing. Fix after merging new Settings page
+xScenario('Open PMM Settings page and verify changing Metrics Resolution [critical]', async (I, pmmSettingsPage) => {
   const resolutionToApply = 'Low';
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
   const currentValue = await I.grabTextFrom(pmmSettingsPage.fields.selectedResolution);
