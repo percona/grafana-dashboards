@@ -4,9 +4,3 @@ export const TabKeys = {
   explain: 'explain',
   tables: 'tables',
 };
-
-export const DATABASE = {
-  postgresql: 'postgresql',
-  mongodb: 'mongodb',
-  mysql: 'mysql',
-};

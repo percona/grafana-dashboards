@@ -9,7 +9,7 @@ export const LastCheck: FC<LastCheckProps> = ({ lastCheckDate, onCheckForUpdates
     <p>
       Last check:
       {' '}
-      <span data-qa="udpate-last-check">{lastCheckDate}</span>
+      <span data-qa="update-last-check">{lastCheckDate}</span>
     </p>
     <Button
       data-qa="update-last-check-button"
