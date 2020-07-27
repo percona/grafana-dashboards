@@ -39,8 +39,8 @@ Scenario('Open PMM Settings page and verify adding Alertmanager Rule [critical]'
   pmmSettingsPage.collapseDefaultSection();
   await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.sectionButtonText.addAlert);
   pmmSettingsPage.addAlertmanagerRule(
-      scheme + pmmSettingsPage.alertManager.ip + pmmSettingsPage.alertManager.service,
-      pmmSettingsPage.alertManager.rule
+    scheme + pmmSettingsPage.alertManager.ip + pmmSettingsPage.alertManager.service,
+    pmmSettingsPage.alertManager.rule
   );
   await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.successAlertmanagerMessage);
   pmmSettingsPage.openAlertsManagerUi();
@@ -48,28 +48,28 @@ Scenario('Open PMM Settings page and verify adding Alertmanager Rule [critical]'
 });
 
 Scenario(
-    'PMM-T253 Verify user can see correct tooltip for STT [trivial]',
-    async (I, pmmSettingsPage) => {
-      await pmmSettingsPage.waitForPmmSettingsPageLoaded();
-      I.moveCursorTo(pmmSettingsPage.fields.sttLabelTooltipSelector);
-      await pmmSettingsPage.verifyTooltip(pmmSettingsPage.tooltips.stt);
-    }
+  'PMM-T253 Verify user can see correct tooltip for STT [trivial]',
+  async (I, pmmSettingsPage) => {
+    await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+    I.moveCursorTo(pmmSettingsPage.fields.sttLabelTooltipSelector);
+    await pmmSettingsPage.verifyTooltip(pmmSettingsPage.tooltips.stt);
+  }
 );
 
 Scenario(
-    'PMM-T253 Verify user can enable STT if Telemetry is enabled',
-    async (I, pmmSettingsPage) => {
-      await pmmSettingsPage.waitForPmmSettingsPageLoaded();
-      I.click(pmmSettingsPage.fields.sttSwitchSelector);
-      pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelector, 'on');
-      I.click(pmmSettingsPage.fields.applyButton);
-      await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
-      I.refreshPage();
-      await pmmSettingsPage.waitForPmmSettingsPageLoaded();
-      pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelector, 'on');
-      I.click(pmmSettingsPage.fields.sttSwitchSelector);
-      pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelector, 'off');
-      I.click(pmmSettingsPage.fields.applyButton);
-      await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
-    }
+  'PMM-T253 Verify user can enable STT if Telemetry is enabled',
+  async (I, pmmSettingsPage) => {
+    await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+    I.click(pmmSettingsPage.fields.sttSwitchSelector);
+    pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelector, 'on');
+    I.click(pmmSettingsPage.fields.applyButton);
+    await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
+    I.refreshPage();
+    await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+    pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelector, 'on');
+    I.click(pmmSettingsPage.fields.sttSwitchSelector);
+    pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelector, 'off');
+    I.click(pmmSettingsPage.fields.applyButton);
+    await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
+  }
 );
