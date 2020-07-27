@@ -11,7 +11,7 @@ interface NumericInputProps extends InputProps {
 }
 
 export const NumericInput: FC<NumericInputProps> = ({
-  className = '',
+  className,
   disabled = false,
   label = '',
   labelWidth,
@@ -38,7 +38,7 @@ export const NumericInput: FC<NumericInputProps> = ({
   };
 
   return (
-    <span className={styles.wrapper}>
+    <span className={cx(styles.wrapper, className)}>
       {label && (
         <div>
           <InputLabel style={labelWidth ? { width: labelWidth * 8, minWidth: 0 } : undefined}>
@@ -52,10 +52,7 @@ export const NumericInput: FC<NumericInputProps> = ({
           ref={inputRef}
           type="number"
           disabled={disabled}
-          className={cx(
-            label ? styles.baseInputWithLabel : styles.baseInput,
-            className
-          )}
+          className={label ? styles.baseInputWithLabel : styles.baseInput}
         />
         {!disabled && (
           <>

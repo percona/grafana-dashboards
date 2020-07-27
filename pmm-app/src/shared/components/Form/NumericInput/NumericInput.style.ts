@@ -2,15 +2,15 @@ import { css } from 'emotion';
 import { GrafanaTheme } from '@grafana/data';
 import { stylesFactory } from '@grafana/ui';
 
-export const getStyles = stylesFactory((theme: GrafanaTheme) => {
-  const arrow = css`
-    position: absolute;
-    right: 0.3em;
-    width: 0;
-    height: 0;
-    border-style: solid;
-  `;
+const arrow = css`
+  position: absolute;
+  right: 0.3em;
+  width: 0;
+  height: 0;
+  border-style: solid;
+`;
 
+export const getStyles = stylesFactory((theme: GrafanaTheme) => {
   const button = css`
     position: absolute;
     border: none;
@@ -37,7 +37,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
 
     input {
       box-sizing: border-box;
-      border-radius: 3px;
+      border-radius: ${theme.border.radius.md};
       padding-right: 1.4em;
     }
 

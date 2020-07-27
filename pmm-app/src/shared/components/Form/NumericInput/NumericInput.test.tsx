@@ -28,7 +28,7 @@ describe('NumericInput::', () => {
   it('should hide arrow buttons when disabled', () => {
     const wrapper = shallow(<NumericInput className="testClass" />);
 
-    expect(wrapper.find(Input).at(0).hasClass('testClass')).toBe(true);
+    expect(wrapper.at(0).hasClass('testClass')).toBe(true);
 
     wrapper.unmount();
   });

@@ -6,8 +6,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => ({
   inputLabel: css`
       align-items: center;
       background-color: ${theme.colors.bg3};
-      border-radius: 3px 0 0 3px;
-      color: ${theme.colors.text};
+      border-radius: ${theme.border.radius.md} 0 0 ${theme.border.radius.md};
       display: flex;
       font-family: ${theme.typography.fontFamily.sansSerif};
       font-size: ${theme.typography.size.md};

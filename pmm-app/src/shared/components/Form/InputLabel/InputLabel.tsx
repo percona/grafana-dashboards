@@ -5,7 +5,11 @@ import { getStyles } from './InputLabel.style';
 
 type InputLabelProps = React.LabelHTMLAttributes<HTMLLabelElement>;
 
-export const InputLabel: FC<InputLabelProps> = forwardRef<HTMLLabelElement, InputLabelProps>(({ children, className = '', ...props }, ref) => {
+export const InputLabel: FC<InputLabelProps> = forwardRef<HTMLLabelElement, InputLabelProps>(({
+  children,
+  className,
+  ...props
+}, ref) => {
   const theme = useTheme();
   const styles = getStyles(theme);
 
