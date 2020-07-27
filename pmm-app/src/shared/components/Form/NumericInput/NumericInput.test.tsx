@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount, shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 import { Input } from '@grafana/ui';
 import { InputLabel } from 'shared/components/Form';
 import { NumericInput } from './NumericInput';
