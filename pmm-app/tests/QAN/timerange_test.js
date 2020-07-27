@@ -25,7 +25,6 @@ Scenario(
     qanActions.waitForNewQANPageLoaded();
     I.seeInCurrentUrl(TIME_RANGE_QUERY_PARAMS_BEFORE);
     adminPage.applyTimeRange('Last 3 hours');
-    // qanPage.waitForResponsePath(qanPage.requests.getReportPath);
     qanActions.waitForNewQANPageLoaded();
     I.seeInCurrentUrl(TIME_RANGE_QUERY_PARAMS_AFTER);
   }

@@ -188,8 +188,6 @@ Scenario(
     const countOfItems = await qanActions.getCountOfItems();
 
     await qanActions.verifyRowCount(27);
-    console.log(`Count of Items ${countOfItems}`);
-
     if (countOfItems <= 50) {
       await qanActions.verifyCount('1-25');
       await qanActions.verifyPagesAndCount(25);
