@@ -18,6 +18,8 @@ export const useExplains = (examples, databaseType): any[] => {
       const notEmptyExample = examples ? examples.filter((example) => example.example) : [];
 
       try {
+        setJsonExplain(actionResult);
+        setClassicExplain(actionResult);
         if (!notEmptyExample.length) {
           setJsonExplain({ ...actionResult, loading: false });
           setClassicExplain({ ...actionResult, loading: false });
