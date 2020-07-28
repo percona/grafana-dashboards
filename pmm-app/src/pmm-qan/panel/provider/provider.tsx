@@ -158,33 +158,37 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
   const dataSource = getDataSourceSrv();
 
   const templateVariables = (dataSource as any).templateSrv.variables;
+  console.log(templateVariables, dataSource)
   const { variableSrv } = templateVariables[0];
+  console.log(templateVariables, dataSource, variableSrv)
+
   // eslint-disable-next-line no-underscore-dangle
 
   const [from, setFrom] = useState(rawTime.from);
   const [to, setTo] = useState(rawTime.to);
 
   useEffect(() => {
-    // eslint-disable-next-line no-underscore-dangle
-    const handler = variableSrv.dashboard.events.emitter._events['time-range-updated'][0];
-
-    const updateHandler = (event) => {
-      if (from !== event.raw.from || to !== event.raw.to) {
-        onTimeRangeChange(event);
-      } else {
-        onRefresh(event);
-      }
-
-      setFrom(event.raw.from);
-      setTo(event.raw.to);
-      // from = event.raw.from;
-      // to = event.raw.to;
-    };
-
-    handler.fn = updateHandler;
-
-    // eslint-disable-next-line  no-underscore-dangle
-    variableSrv.dashboard.events.emitter._events['time-range-updated'] = [handler];
+    // console.log(variableSrv)
+    //
+    // // eslint-disable-next-line no-underscore-dangle
+    // const handler = variableSrv.dashboard.events.emitter._events['time-range-updated'][0];
+    // const updateHandler = (event) => {
+    //   if (from !== event.raw.from || to !== event.raw.to) {
+    //     onTimeRangeChange(event);
+    //   } else {
+    //     onRefresh(event);
+    //   }
+    //
+    //   setFrom(event.raw.from);
+    //   setTo(event.raw.to);
+    //   // from = event.raw.from;
+    //   // to = event.raw.to;
+    // };
+    //
+    // handler.fn = updateHandler;
+    //
+    // // eslint-disable-next-line  no-underscore-dangle
+    // variableSrv.dashboard.events.emitter._events['time-range-updated'] = [handler];
   }, [panelState, from, to]);
 
   useEffect(() => {

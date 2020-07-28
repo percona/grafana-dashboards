@@ -19,19 +19,19 @@ export const refreshGrafanaVariables = (state) => {
   const dataSource = getDataSourceSrv();
   const templateVariables = (dataSource as any).templateSrv.variables;
 
-  FILTERS_NAMES.forEach((filter) => {
-    const variables = find(templateVariables, { name: filter.replace('var-', '') });
-
-    if (!variables) {
-      return;
-    }
-
-    variables.current = {
-      text: state.labels[filter] || ['All'],
-      value: state.labels[filter] || ['All'],
-    };
-  });
-  templateVariables[0].variableSrv.variableUpdated(templateVariables[0]);
+  // FILTERS_NAMES.forEach((filter) => {
+  //   const variables = find(templateVariables, { name: filter.replace('var-', '') });
+  //
+  //   if (!variables) {
+  //     return;
+  //   }
+  //
+  //   variables.current = {
+  //     text: state.labels[filter] || ['All'],
+  //     value: state.labels[filter] || ['All'],
+  //   };
+  // });
+  // templateVariables[0].variableSrv.variableUpdated(templateVariables[0]);
 };
 
 export const getLabelsUrlString = (labels) => Object.keys(labels)
