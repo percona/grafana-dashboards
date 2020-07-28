@@ -1,7 +1,11 @@
-import { ActiveCheck, FailedChecks, Alert } from '../types';
+import {
+  SEVERITIES_ORDER
+} from 'pmm-check/CheckPanel.constants';
+import {
+  ActiveCheck, Alert, FailedChecks, Settings, SilenceResponse
+} from 'pmm-check/types';
 
 import { alertsStub } from './stubs';
-
 
 /**
  * A mock version of CheckService
@@ -13,10 +17,22 @@ export const CheckService = {
   async getFailedChecks(): Promise<FailedChecks | undefined> {
     return sumFailedChecks(processData(alertsStub as Alert[]));
   },
+  async runDbChecks(): Promise<void | {}> {
+    return {};
+  },
+  async silenceAlert(): Promise<void | SilenceResponse> {
+    return { silenceID: 'test' };
+  },
+  async getSettings(): Promise<Settings | {}> {
+    return {};
+  },
 };
 
 export const processData = (data: Alert[]): ActiveCheck[] => {
-  const result: Record<string, Array<{ summary: string; description: string; severity: string }>> = data
+  const result: Record<
+    string,
+    Array<{ summary: string; description: string; severity: string; labels: { [key: string]: string } }>
+  > = data
     .filter((alert) => !!alert.labels.stt_check)
     .reduce((acc, alert) => {
       const {
@@ -29,7 +45,12 @@ export const processData = (data: Alert[]): ActiveCheck[] => {
         return acc;
       }
 
-      const item = { summary, description, severity: labels.severity };
+      const item = {
+        summary,
+        description,
+        severity: labels.severity,
+        labels,
+      };
 
       if (acc[serviceName]) {
         acc[serviceName] = acc[serviceName].concat(item);
@@ -44,22 +65,33 @@ export const processData = (data: Alert[]): ActiveCheck[] => {
     const failed = value.reduce(
       (acc, val) => {
         if (val.severity === 'error') {
-          acc[0] += 1;
+          acc[SEVERITIES_ORDER.error] += 1;
         }
 
         if (val.severity === 'warning') {
-          acc[1] += 1;
+          acc[SEVERITIES_ORDER.warning] += 1;
         }
 
         if (val.severity === 'notice') {
-          acc[2] += 1;
+          acc[SEVERITIES_ORDER.notice] += 1;
         }
 
         return acc;
       },
-      [0, 0, 0] as FailedChecks
+      [0, 0, 0] as FailedChecks,
     );
-    const details = value.map((val) => `${val.summary}${val.description ? `: ${val.description}` : ''}`);
+
+    const details = value
+      .map((val) => ({
+        description: `${val.summary}${val.description ? `: ${val.description}` : ''}`,
+        labels: val.labels ?? [],
+      }))
+      .sort((a, b) => {
+        const aSeverity = a.labels.severity;
+        const bSeverity = b.labels.severity;
+
+        return SEVERITIES_ORDER[aSeverity] - SEVERITIES_ORDER[bSeverity];
+      });
 
     return {
       key: String(i),

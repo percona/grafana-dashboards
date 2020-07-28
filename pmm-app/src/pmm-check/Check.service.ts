@@ -1,8 +1,15 @@
-import { apiRequest } from '../shared/components/helpers/api';
-import { API } from '../shared/core';
+import { API } from 'shared/core';
+import { apiRequest } from 'shared/components/helpers/api';
 import {
-  ActiveCheck, Alert, AlertRequestParams, FailedChecks, Settings,
-} from './types';
+  ActiveCheck,
+  Alert,
+  AlertRequestParams,
+  FailedChecks,
+  Settings,
+  SilenceBody,
+  SilenceResponse,
+} from 'pmm-check/types';
+import { SEVERITIES_ORDER } from 'pmm-check/CheckPanel.constants';
 
 export const makeApiUrl: (segment: string) => string = (segment) => `${API.ALERTMANAGER}/${segment}`;
 
@@ -24,14 +31,22 @@ export const CheckService = {
 
     return Array.isArray(data) && data.length ? sumFailedChecks(processData(data as Alert[])) : undefined;
   },
-
   async getSettings() {
     return apiRequest.post<Settings, {}>(API.SETTINGS, {}, true);
+  },
+  silenceAlert(body: SilenceBody): Promise<void | SilenceResponse> {
+    return apiRequest.post<SilenceResponse, SilenceBody>(makeApiUrl('silences'), body);
+  },
+  runDbChecks(): Promise<void | {}> {
+    return apiRequest.post<{}, {}>('/v1/management/SecurityChecks/Start', {});
   },
 };
 
 export const processData = (data: Alert[]): ActiveCheck[] => {
-  const result: Record<string, Array<{ summary: string; description: string; severity: string }>> = data
+  const result: Record<
+    string,
+    Array<{ summary: string; description: string; severity: string; labels: { [key: string]: string } }>
+  > = data
     .filter((alert) => !!alert.labels.stt_check)
     .reduce((acc, alert) => {
       const {
@@ -44,7 +59,12 @@ export const processData = (data: Alert[]): ActiveCheck[] => {
         return acc;
       }
 
-      const item = { summary, description, severity: labels.severity };
+      const item = {
+        summary,
+        description,
+        severity: labels.severity,
+        labels,
+      };
 
       if (acc[serviceName]) {
         acc[serviceName] = acc[serviceName].concat(item);
@@ -59,22 +79,33 @@ export const processData = (data: Alert[]): ActiveCheck[] => {
     const failed = value.reduce(
       (acc, val) => {
         if (val.severity === 'error') {
-          acc[0] += 1;
+          acc[SEVERITIES_ORDER.error] += 1;
         }
 
         if (val.severity === 'warning') {
-          acc[1] += 1;
+          acc[SEVERITIES_ORDER.warning] += 1;
         }
 
         if (val.severity === 'notice') {
-          acc[2] += 1;
+          acc[SEVERITIES_ORDER.notice] += 1;
         }
 
         return acc;
       },
       [0, 0, 0] as FailedChecks,
     );
-    const details = value.map((val) => `${val.summary}${val.description ? `: ${val.description}` : ''}`);
+
+    const details = value
+      .map((val) => ({
+        description: `${val.summary}${val.description ? `: ${val.description}` : ''}`,
+        labels: val.labels ?? [],
+      }))
+      .sort((a, b) => {
+        const aSeverity = a.labels.severity;
+        const bSeverity = b.labels.severity;
+
+        return SEVERITIES_ORDER[aSeverity] - SEVERITIES_ORDER[bSeverity];
+      });
 
     return {
       key: String(i),
