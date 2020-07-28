@@ -19,7 +19,7 @@ function getVersions() {
   return {
     majorVersionDiff,
     patchVersionDiff,
-    current
+    current,
   };
 }
 
@@ -44,7 +44,7 @@ Scenario(
 
       assert.equal(link.indexOf('https://per.co.na/pmm/') > -1, true, 'Whats New Link has an unexpected URL');
     }
-  }
+  },
 );
 
 Scenario(
@@ -54,7 +54,7 @@ Scenario(
 
     I.amOnPage(homePage.url);
     await homePage.verifyPreUpdateWidgetIsPresent(versions.current);
-  }
+  },
 );
 
 Scenario(
@@ -69,7 +69,7 @@ Scenario(
     for (const service of Object.values(inventoryAPI.services)) {
       await inventoryAPI.verifyServiceExistsAndHasRunningStatus(service, serviceNames[service.service]);
     }
-  }
+  },
 );
 
 Scenario(
@@ -79,7 +79,7 @@ Scenario(
 
     I.amOnPage(homePage.url);
     await homePage.upgradePMM(versions.current);
-  }
+  },
 );
 
 Scenario(
@@ -88,7 +88,7 @@ Scenario(
     for (const service of Object.values(inventoryAPI.services)) {
       await inventoryAPI.verifyServiceExistsAndHasRunningStatus(service, serviceNames[service.service]);
     }
-  }
+  },
 );
 
 Scenario(
@@ -96,7 +96,7 @@ Scenario(
   async (I, adminPage, homePage) => {
     I.amOnPage(homePage.url);
     await homePage.verifyPostUpdateWidgetIsPresent();
-  }
+  },
 );
 
 Scenario(
@@ -111,9 +111,9 @@ Scenario(
     assert.equal(
       dataRetention,
       dataRetentionActualValue,
-      'The Value for Data Retention is not the same as passed via Docker Environment Variable'
+      'The Value for Data Retention is not the same as passed via Docker Environment Variable',
     );
-  }
+  },
 );
 
 Scenario(
@@ -125,7 +125,7 @@ Scenario(
     const newsItems = await I.grabNumberOfVisibleElements(`${homePage.fields.newsPanelContentSelector}/div`);
 
     assert.ok(newsItems > 1, 'News Panel is empty');
-  }
+  },
 );
 
 Scenario(
@@ -135,7 +135,7 @@ Scenario(
       I.amOnPage(pmmInventoryPage.url);
       await pmmInventoryPage.verifyAgentHasStatusRunning(service);
     }
-  }
+  },
 );
 
 Scenario(
@@ -157,5 +157,5 @@ Scenario(
       I.waitForVisible(filter, 30);
       I.seeElement(filter);
     }
-  }
+  },
 );

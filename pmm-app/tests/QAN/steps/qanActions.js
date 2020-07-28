@@ -332,8 +332,7 @@ module.exports = {
     }
   },
 
-  sortMetric(metricName, sortOrder) {
-    // eslint-disable-next-line max-len
+  sortMetric(metricName) {
     const sortLocator = `//span[contains(text(),'${metricName}')]/ancestor::div[@role="columnheader"]//div//span[@title='Toggle SortBy']`;
 
     I.waitForVisible(sortLocator, 30);

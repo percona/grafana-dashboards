@@ -2,8 +2,6 @@ const { I, pmmInventoryPage } = inject();
 const assert = require('assert');
 
 module.exports = {
-  // insert your locators and methods here
-  // setting locators
   url: 'graph/d/pmm-inventory/pmm-inventory?orgId=1',
   fields: {
     iframe: '//div[@class="panel-content"]//iframe',
@@ -46,18 +44,18 @@ module.exports = {
     I.waitForElement(this.fields.inventoryTable, 60);
     I.scrollPageToBottom();
     const numberOfServices = await I.grabNumberOfVisibleElements(
-      `//tr//td//span[contains(text(), "${serviceId}")]/../span[contains(text(), 'status: RUNNING')]`
+      `//tr//td//span[contains(text(), "${serviceId}")]/../span[contains(text(), 'status: RUNNING')]`,
     );
 
     if (/mysql|mongo|postgres|rds/gim.test(service_name)) {
       I.waitForVisible(
         `//tr//td//span[contains(text(), "${serviceId}")]/../span[contains(text(), 'status: RUNNING')]`,
-        30
+        30,
       );
       assert.equal(
         numberOfServices,
         2,
-        ` Service ID must have only 2 Agents running for different services${serviceId}`
+        ` Service ID must have only 2 Agents running for different services${serviceId}`,
       );
     } else {
       assert.equal(numberOfServices, 1, ` Service ID must have only 1 Agent running${serviceId}`);
@@ -73,11 +71,9 @@ module.exports = {
     const nodeId = await this.getNodeId(serviceName);
 
     I.click(agentLinkLocator);
-    // eslint-disable-next-line max-len
     const enhanceMetricsDisabled = `//tr//td//span[contains(text(), "${nodeId}")]/../span[contains(text(),"enhanced_metrics_disabled: true")]`;
 
     I.seeElement(enhanceMetricsDisabled);
-    // eslint-disable-next-line max-len
     const basicMetricsDisabled = `//tr//td//span[contains(text(), "${nodeId}")]/../span[contains(text(),"basic_metrics_disabled: true")]`;
 
     I.seeElement(basicMetricsDisabled);
@@ -98,7 +94,7 @@ module.exports = {
     await assert.equal(
       matchedServices,
       1,
-      `There must be only one entry for the newly added service with name ${serviceName}`
+      `There must be only one entry for the newly added service with name ${serviceName}`,
     );
     const serviceId = await I.grabTextFrom(serviceIdLocator);
 
@@ -205,7 +201,7 @@ module.exports = {
   async checkAllNotDeletedAgents(text) {
     const count = await this.getCountOfItems();
     const otherDetails = await I.grabNumberOfVisibleElements(
-      `//table//tr/td[4]//span[contains(text(), "${text}")]`
+      `//table//tr/td[4]//span[contains(text(), "${text}")]`,
     );
 
     assert.equal(count, otherDetails, 'Check data!');
