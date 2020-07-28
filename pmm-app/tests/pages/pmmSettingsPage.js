@@ -1,7 +1,7 @@
 const { I } = inject();
-const assert = require('assert');
 
-const locateLabel = dataQA => locate(`[data-qa="${dataQA}"]`).find('span');
+const locateLabel = dataQA => locate(`[data-qa="${dataQA}"]`)
+  .find('span');
 
 module.exports = {
   // insert your locators and methods here
@@ -44,6 +44,7 @@ module.exports = {
   messages: {
     successPopUpMessage: 'Settings updated',
     invalidDataDurationMessage: 'Value should be in range from 1 to 3650',
+    invalidDataDurationPopUpMessage: 'data_retention: should be a natural number of days',
     requiredFieldMessage: 'Required field',
     invalidSSHKeyMessage: 'Invalid SSH key.',
     successAlertmanagerMessage: 'Alert manager settings updated',
@@ -76,85 +77,47 @@ module.exports = {
     downloadLogs: 'Download PMM Server Logs',
   },
   fields: {
-    addAlertRuleButton: "//span[text()='Apply Alertmanager settings']/parent::button",
-    addSSHKeyButton: "//span[text()='Apply SSH key']/parent::button",
-    alertRulesInput: "//textarea[@name='alert_manager_rules' and @placeholder='Alerting rules']",
-    alertURLInput: "//input[@name='alert_manager_url' and @placeholder='Enter URL']",
+    addAlertRuleButton: '//span[text()="Apply Alertmanager settings"]/parent::button',
+    addSSHKeyButton: '//span[text()="Apply SSH key"]/parent::button',
+    alertRulesInput: '//textarea[@name="alert_manager_rules" and @placeholder="Alerting rules"]',
+    alertURLInput: '//input[@name="alert_manager_url" and @placeholder="Enter URL"]',
     alertingRules: locateLabel('form-field-alerting-rules'),
     amUrlLabel: locateLabel('form-field-am-url'),
-    applyButton: "//button[@type='submit']",
-    callHomeSwitch: "//button[@class='toggle-field ant-switch ant-switch-checked']",
+    applyButton: '//button[@type="submit"]',
+    callHomeSwitch: '//button[@class="toggle-field ant-switch ant-switch-checked"]',
     checkForUpdatesLabel: locateLabel('form-field-check-for-updates'),
-    dataRetentionCount: "//input[@name='data_retention_count']",
+    dataRetentionCount: locate('input')
+      .withAttr({ name: 'data_retention_count' }),
     dataRetentionLabel: locateLabel('form-field-data-retention'),
-    diagnosticsSectionRow: "//div[@class='ant-row']",
-    downloadLogsButton: "//a[@class='ant-btn' and @href='/logs.zip']",
-    iframe: "//div[@class='panel-content']//iframe",
-    metricsResolution: "//div[@class='ant-slider-mark']/span[text()='",
+    diagnosticsSectionRow: '//div[@class="ant-row"]',
+    downloadLogsButton: '//a[@class="ant-btn" and @href="/logs.zip"]',
+    iframe: '//div[@class="panel-content"]//iframe',
+    metricsResolution: '//div[@class="ant-slider-mark"]/span[text()="',
     metricsResolutionLabel: locateLabel('form-field-metrics'),
-    metricsResolutionSlider: "//div[@class='ant-slider-rail']",
-    popUpTitle: "//div[@class='alert-title']",
-    sectionHeader: "//div[@class='ant-collapse-header']",
-    selectedResolution: "//span[@class='ant-slider-mark-text ant-slider-mark-text-active']",
-    sshKeyInput: "//textarea[@name='ssh_key' and @placeholder='Enter ssh key']",
+    metricsResolutionSlider: '.ant-slider-rail',
+    popUpTitle: '//div[@class="alert-title"]',
+    sectionHeader: '//div[@class="ant-collapse-header"]',
+    selectedResolution: 'span.ant-slider-mark-text-active',
+    sshKeyInput: '//textarea[@name="ssh_key" and @placeholder="Enter ssh key"]',
     sshKeyLabel: locateLabel('form-field-ssh-key'),
-    sttLabelTooltipSelector: "//span[text()='Security Threat Tool']/following-sibling::span/i",
-    sttSwitchSelector: "//span[text()='Security Threat Tool']/parent::div/following-sibling::div/button",
-    subSectionHeader: "//following-sibling::div//div[@class='ant-collapse-header']",
-    telemetrySwitchSelector: "//span[text()='Telemetry']/parent::div/following-sibling::div/button",
+    sttLabelTooltipSelector: '//span[text()="Security Threat Tool"]/following-sibling::span/i',
+    sttSwitchSelector: '//span[text()="Security Threat Tool"]/parent::div/following-sibling::div/button',
+    subSectionHeader: '//following-sibling::div//div[@class="ant-collapse-header"]',
+    telemetrySwitchSelector: '[data-qa="form-field-telemetry"] button',
     telemetryLabel: locateLabel('form-field-telemetry'),
     tooltipSelector: '.ant-tooltip-inner',
     validationMessage: 'span.error-message',
+    expandedSection: '.ant-collapse-content-active'
   },
 
-  waitForPmmSettingsPageLoaded() {
-    I.waitForVisible(this.fields.applyButton, 30);
-    I.waitForVisible(this.fields.sectionHeader, 30);
-    I.waitForVisible(this.fields.telemetrySwitchSelector, 30);
-    I.waitForVisible(this.fields.sttSwitchSelector, 30);
-  },
-
-  verifySettingsSectionElements() {
-    I.see('Metrics resolution', this.fields.metricsResolutionLabel);
-    I.seeElement(this.fields.metricsResolutionSlider);
-    I.see('Data retention', this.fields.dataRetentionLabel);
-    I.seeElement(this.fields.dataRetentionCount);
-    I.see('Telemetry', this.fields.telemetryLabel);
-    I.seeElement(this.fields.telemetrySwitchSelector);
-    I.see('Check for updates', this.fields.checkForUpdatesLabel);
-    I.seeElement(this.fields.sttSwitchSelector);
-  },
-
-  verifySSHKeyDetailsSectionElements() {
-    I.see('SSH key', this.fields.sshKeyLabel);
-    I.seeElement(this.fields.sshKeyInput);
-  },
-
-  verifyAlertmanagerSectionElements() {
-    I.see('Alertmanager URL', this.fields.amUrlLabel);
-    I.see('Prometheus Alerting rules', this.fields.alertingRules);
-    I.seeElement(this.fields.alertURLInput);
-    I.seeElement(this.fields.alertRulesInput);
-  },
-
-  verifyDiagnosticsElements() {
-    I.see(this.diagnosticsText, this.fields.diagnosticsSectionRow);
-  },
-
-  async verifySectionHeaders() {
-    for (let i = 0; i < this.sectionHeaderList.length; i++) {
-      const elementText = await I.grabTextFrom(this.fields.sectionHeader);
-      assert.equal(
-        elementText[i],
-        this.sectionHeaderList[i],
-        `${this.sectionHeaderList[i]} section does not exist"`
-      );
-    }
-  },
-
-  async waitForButton(contentLocator) {
-    I.waitForVisible(contentLocator, 30);
-    I.waitForEnabled(contentLocator, 30);
+  async waitForPmmSettingsPageLoaded() {
+    I.waitForVisible(this.fields.expandedSection, 30);
+    await within(this.fields.expandedSection, () => {
+      I.waitForVisible(this.fields.applyButton, 30);
+      I.waitForVisible(this.fields.sectionHeader, 30);
+      I.waitForVisible(this.fields.telemetrySwitchSelector, 30);
+      I.waitForVisible(this.fields.sttSwitchSelector, 30);
+    });
   },
 
   async expandSection(sectionName, expectedContentLocatorText) {
@@ -162,7 +125,7 @@ module.exports = {
     const contentLocator =
       sectionExpandLocator + `/following-sibling::div//span[text()='${expectedContentLocatorText}']`;
     I.click(sectionExpandLocator);
-    await this.waitForButton(contentLocator, expectedContentLocatorText);
+    I.waitForVisible(contentLocator, 30);
   },
 
   collapseSection(sectionName) {
@@ -175,79 +138,19 @@ module.exports = {
     this.collapseSection('Settings');
   },
 
-  async verifySectionExpanded(contentLocator, contentLocatorText) {
-    const textInside = await I.grabTextFrom(contentLocator);
-    assert.equal(
-      textInside,
-      contentLocatorText,
-      `there is no ${contentLocatorText} button, we have ${textInside}`
-    );
-  },
-
-  waitForPopUp() {
+  async verifyPopUpMessage(successMessage) {
     I.waitForVisible(this.fields.popUpTitle, 30);
-  },
-
-  waitForValidationMessage() {
-    I.waitForVisible(this.fields.validationMessage, 30);
-  },
-
-  async verifyPopUpMessage(validationMessage) {
-    const alertText = await I.grabTextFrom(this.fields.popUpTitle);
-    assert.equal(
-      alertText.toString().split(',')[0],
-      validationMessage,
-      `Unexpected popup message! 
-        Expected to see ${validationMessage} instead of ${alertText}`
-    );
-  },
-
-  async verifyMessage(validationMessage) {
-    const validationText = await I.grabTextFrom(this.fields.validationMessage);
-    assert.equal(
-      validationText.toString().split(',')[0],
-      validationMessage,
-      `Unexpected popup message! 
-        Expected to see ${validationMessage} instead of ${validationText}`
-    );
-  },
-
-  async verifySuccessfulPopUp(successMessage) {
-    await this.waitForPopUp();
-    await this.verifyPopUpMessage(successMessage);
-  },
-
-  async verifyValidationPopUp(validationMessage) {
-    await this.waitForPopUp();
-    await this.verifyPopUpMessage(validationMessage);
+    I.see(successMessage, this.fields.popUpTitle);
   },
 
   async verifyValidationMessage(validationMessage) {
-    await this.waitForValidationMessage();
-    await this.verifyMessage(validationMessage);
+    I.waitForVisible(this.fields.validationMessage, 30);
+    I.see(validationMessage, this.fields.validationMessage);
   },
 
   async selectMetricsResolution(resolution) {
-    I.click(this.fields.metricsResolution + resolution + "']");
+    I.click(this.fields.metricsResolution + resolution + '"]');
     I.click(this.fields.applyButton);
-  },
-
-  async verifyResolutionIsApplied(resolution) {
-    I.refreshPage();
-    this.waitForPmmSettingsPageLoaded();
-    const selectedResolutionText = await I.grabTextFrom(this.fields.selectedResolution);
-
-    assert.equal(
-      selectedResolutionText,
-      resolution,
-      `Resolution ${resolution} was not saved,
-        actual resolution is ${selectedResolutionText}`
-    );
-  },
-
-  async verifyResolutionAndDataRetentionApplied(resolutionValue, dataRetentionValue) {
-    await this.verifyResolutionIsApplied(resolutionValue);
-    await this.verifyDataRetentionValueApplied(dataRetentionValue);
   },
 
   customClearField(field) {
@@ -259,26 +162,8 @@ module.exports = {
   changeDataRetentionValueTo(days) {
     this.customClearField(this.fields.dataRetentionCount);
     I.fillField(this.fields.dataRetentionCount, days);
-    I.waitForClickable(this.fields.applyButton, 30);
     I.moveCursorTo(this.fields.applyButton);
     I.click(this.fields.applyButton);
-  },
-
-  changeDataRetentionValue(days) {
-    this.customClearField(this.fields.dataRetentionCount);
-    I.fillField(this.fields.dataRetentionCount, days);
-    I.wait(2);
-  },
-
-  async verifyDataRetentionValueApplied(seconds) {
-    this.waitForPmmSettingsPageLoaded();
-    const selectedTimeValue = await I.grabAttributeFrom(this.fields.dataRetentionCount, 'value');
-    assert.equal(
-      selectedTimeValue,
-      seconds,
-      `Data Retention value ${seconds} was not saved, 
-        actual value is ${selectedTimeValue}`
-    );
   },
 
   addSSHKey(keyValue) {
@@ -296,17 +181,6 @@ module.exports = {
 
   openAlertsManagerUi() {
     I.amOnPage(this.prometheusAlertUrl);
-  },
-
-  async enableSTT(){
-    this.waitForPmmSettingsPageLoaded();
-    const disabledStt = await I.grabNumberOfVisibleElements(this.fields.sttSwitchSelector + `[@aria-checked='false']`);
-    if (disabledStt) {
-      I.click(this.fields.sttSwitchSelector);
-      this.verifySwitch(this.fields.sttSwitchSelector, 'on');
-      I.click(this.fields.applyButton);
-      await this.verifySuccessfulPopUp(this.messages.successPopUpMessage);
-    }
   },
 
   async verifyAlertmanagerRuleAdded(ruleName) {
@@ -341,7 +215,8 @@ module.exports = {
   },
 
   verifySwitchStateIs(switchSelector, enabled = true) {
-    switchSelector = switchSelector + '[@disabled]';
+    switchSelector = locate(switchSelector)
+      .withAttr({ disabled: '' });
     if (!enabled) {
       I.seeElement(switchSelector);
     } else {
