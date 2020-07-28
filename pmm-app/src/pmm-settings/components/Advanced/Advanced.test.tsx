@@ -9,6 +9,7 @@ describe('Advanced::', () => {
       dataRetention="1296000s"
       telemetryEnabled={false}
       sttEnabled={false}
+      updatesDisabled
       updateSettings={() => {}}
     />);
     const retentionInput = root.find('[data-qa="advanced-retention-input"]');
@@ -21,6 +22,7 @@ describe('Advanced::', () => {
       dataRetention="1296000s"
       telemetryEnabled
       sttEnabled
+      updatesDisabled
       updateSettings={() => {}}
     />);
     const telemetrySwitch = root.find('[data-qa="advanced-telemetry-switch"]').find('input');
@@ -33,6 +35,7 @@ describe('Advanced::', () => {
       dataRetention="1296000s"
       telemetryEnabled={false}
       sttEnabled={false}
+      updatesDisabled
       updateSettings={() => {}}
     />);
     const sttSwitch = root.find('[data-qa="advanced-stt-switch"]').find('input');
@@ -46,6 +49,7 @@ describe('Advanced::', () => {
       dataRetention="1296000s"
       telemetryEnabled={false}
       sttEnabled={false}
+      updatesDisabled
       updateSettings={updateSettings}
     />);
 

@@ -89,6 +89,7 @@ export const SettingsPanel: FC = () => {
                 <Advanced
                   dataRetention={settings.dataRetention}
                   telemetryEnabled={!!settings.telemetryEnabled}
+                  updatesDisabled={!!settings.updatesDisabled}
                   sttEnabled={!!settings.sttEnabled}
                   updateSettings={updateSettings}
                 />

@@ -15,6 +15,7 @@ import { SwitchRow } from './SwitchRow';
 export const Advanced: FC<AdvancedProps> = ({
   dataRetention,
   telemetryEnabled,
+  updatesDisabled,
   sttEnabled,
   updateSettings
 }) => {
@@ -113,7 +114,7 @@ export const Advanced: FC<AdvancedProps> = ({
             tooltip={updatesTooltip}
             tooltipLinkText={tooltipLinkText}
             link={updatesLink}
-            checked={false}
+            checked={!updatesDisabled}
             className={styles.switchDisabled}
             dataQa="advanced-updates-switch"
           />
