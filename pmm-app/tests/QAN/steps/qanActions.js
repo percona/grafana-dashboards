@@ -266,8 +266,7 @@ module.exports = {
   },
 
   async getPagesCount() {
-    const pagesCount =
-      '//ul[@data-qa="qan-pagination"]//li[contains(@class,"ant-pagination-item")][last()]//a';
+    const pagesCount = '//ul[@data-qa="qan-pagination"]//li[contains(@class,"ant-pagination-item")][last()]//a';
     const pages = await I.grabTextFrom(pagesCount);
 
     return pages;
@@ -345,7 +344,7 @@ module.exports = {
   async verifyMetricsSorted(metricName, metricColumnOrder, sortOrder = 'down') {
     const resultRowCounts = await I.grabNumberOfVisibleElements(qanPage.fields.tableRow);
 
-    for (i = 2; i < resultRowCounts; i++) {
+    for (let i = 2; i < resultRowCounts; i++) {
       let [metricValue] = this.metricValueLocatorOverviewTable(metricColumnOrder, i);
       let [metricValueSecond] = this.metricValueLocatorOverviewTable(metricColumnOrder, i + 1);
 

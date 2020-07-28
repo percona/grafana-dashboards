@@ -124,9 +124,9 @@ module.exports = {
     version >= 2.9 ? (version = 'latest') : version;
     version in this.fields.updateWidget
       ? (locators = {
-          ...this.fields.updateWidget.base,
-          ...this.fields.updateWidget[version],
-        })
+        ...this.fields.updateWidget.base,
+        ...this.fields.updateWidget[version],
+      })
       : (locators = this.fields.updateWidget.base);
 
     return locators;
