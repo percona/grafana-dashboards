@@ -15,7 +15,11 @@ function getVersions() {
   const patchVersionDiff = pmmPatch - dockerPatch;
   const current = `2.${dockerMinor}`;
 
-  return {majorVersionDiff, patchVersionDiff, current}
+  return {
+    majorVersionDiff,
+    patchVersionDiff,
+    current
+  };
 }
 
 Feature('PMM server Upgrade Tests and Executing test cases related to Upgrade Testing Cycle');
@@ -94,7 +98,7 @@ Scenario(
   async (I, pmmSettingsPage) => {
     const dataRetention = '2';
     I.amOnPage(pmmSettingsPage.url);
-    pmmSettingsPage.waitForPmmSettingsPageLoaded();
+    await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     const dataRetentionActualValue = await I.grabValueFrom(pmmSettingsPage.fields.dataRetentionCount);
     assert.equal(
       dataRetention,
