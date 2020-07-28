@@ -2,9 +2,9 @@ import { get } from 'lodash';
 import { humanize } from 'shared/components/helpers/Humanization';
 
 enum PageSizes {
-  low= '25',
+  low = '25',
   medium = '50',
-  high = '100'
+  high = '100',
 }
 
 export const PAGE_SIZE_OPTIONS = [PageSizes.low, PageSizes.medium, PageSizes.high];
@@ -71,7 +71,8 @@ export const METRIC_CATALOGUE = {
   },
   blk_read_time: {
     humanizeName: 'Reading Blocks Time',
-    tooltipText: 'Total time the statement spent reading blocks (if track_io_timing is enabled, otherwise zero)',
+    tooltipText:
+      'Total time the statement spent reading blocks (if track_io_timing is enabled, otherwise zero)',
     simpleName: 'blk_read_time',
     serviceTypes: ['postgresql'],
     metricRelation: () => '',
@@ -86,7 +87,8 @@ export const METRIC_CATALOGUE = {
   },
   blk_write_time: {
     humanizeName: 'Writing Blocks Time',
-    tooltipText: 'Total time the statement spent writing blocks (if track_io_timing is enabled, otherwise zero)',
+    tooltipText:
+      'Total time the statement spent writing blocks (if track_io_timing is enabled, otherwise zero)',
     simpleName: 'blk_write_time',
     serviceTypes: ['postgresql'],
     metricRelation: () => '',
@@ -935,7 +937,7 @@ export const METRIC_CATALOGUE = {
   },
   tmp_table_on_disk: {
     humanizeName: 'Tmp Table on Disk',
-    tooltipText: 'The query\'s temporary table was stored on disk',
+    tooltipText: "The query's temporary table was stored on disk",
     simpleName: 'tmp_table_on_disk',
     serviceTypes: ['mysql'],
     metricRelation: (data) => {

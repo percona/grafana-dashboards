@@ -10,19 +10,19 @@ module.exports = {
   requestEnd: '/v1/Updates/Check',
   fields: {
     systemsUnderMonitoringCount:
-      '//span[@class="panel-title-text\' and contains(text(), \'Systems under monitoring\')]//../../../..//span[@class=\'singlestat-panel-value\']',
+      '//span[@class="panel-title-text" and contains(text(), "Systems under monitoring")]//../../../..//span[@class="singlestat-panel-value"]',
     dbUnderMonitoringCount:
-      '//span[@class=\'panel-title-text\' and contains(text(), \'Monitored DB Instances\')]//../../../..//span[@class=\'singlestat-panel-value\']',
+      '//span[@class="panel-title-text" and contains(text(), "Monitored DB Instances")]//../../../..//span[@class="singlestat-panel-value"]',
     dashboardHeaderText: 'Percona Monitoring and Management',
-    dashboardHeaderLocator: '//div[contains(@class, \'dashboard-header\')]',
+    dashboardHeaderLocator: '//div[contains(@class, "dashboard-header")]',
     oldLastCheckSelector: '#pmm-update-widget > .last-check-wrapper p',
     whatsNewLink: 'a.text-primary.pmm-link',
     sttDisabledFailedChecksPanelSelector: '$db-check-panel-settings-link',
     sttFailedChecksPanelSelector: '$db-check-panel-has-checks',
     checksPanelSelector: '$db-check-panel-home',
-    newsPanelTitleSelector: '//span[@class=\'panel-title-text\' and text() = \'Percona News\']',
+    newsPanelTitleSelector: '//span[@class="panel-title-text" and text() = "Percona News"]',
     newsPanelContentSelector:
-      '//span[contains(text(), \'Percona News\')]/ancestor::div[contains(@class, \'panel-container\')]//div[contains(@class, \'view\')]',
+      '//span[contains(text(), "Percona News")]/ancestor::div[contains(@class, "panel-container")]//div[contains(@class, "view")]',
     noAccessRightsSelector: '$db-check-panel-no-access',
     updateWidget: {
       base: {
@@ -30,9 +30,9 @@ module.exports = {
         updateProgressModal: '.modal-content',
         successUpgradeMsgSelector: '.modal-content',
         lastCheckSelector: '.last-check-wrapper > p',
-        triggerUpdate: 'button[ng-click=\'update()\']',
-        reloadButtonAfterUpgrade: 'button[ng-click=\'reloadAfterUpdate()\']',
-        upToDateLocator: '//div[@class=\'panel-content\']//section/p[text()=\'You are up to date\']',
+        triggerUpdate: 'button[ng-click="update()"]',
+        reloadButtonAfterUpgrade: 'button[ng-click="reloadAfterUpdate()"]',
+        upToDateLocator: '//div[@class="panel-content"]//section/p[text()="You are up to date"]',
         availableVersion: '#available_version > div > p',
         currentVersion: '#current_version > span',
         inProgressMessage: 'Update in progress',
@@ -42,8 +42,8 @@ module.exports = {
         checkUpdateButton: '$update-last-check-button',
         currentVersion: '$update-installed-version',
         lastCheckSelector: '$update-last-check',
-        triggerUpdate: '//button//span[contains(text(), \'Upgrade to\')]',
-        updateProgressModal: '//div/h4[text()=\'Upgrade in progress\']',
+        triggerUpdate: '//button//span[contains(text(), "Upgrade to")]',
+        updateProgressModal: '//div/h4[text()="Upgrade in progress"]',
         successUpgradeMsgSelector: '$modal-update-success-text',
         reloadButtonAfterUpgrade: '$modal-close',
         availableVersion: '$update-latest-version',
@@ -124,9 +124,9 @@ module.exports = {
     version >= 2.9 ? (version = 'latest') : version;
     version in this.fields.updateWidget
       ? (locators = {
-        ...this.fields.updateWidget.base,
-        ...this.fields.updateWidget[version],
-      })
+          ...this.fields.updateWidget.base,
+          ...this.fields.updateWidget[version],
+        })
       : (locators = this.fields.updateWidget.base);
 
     return locators;

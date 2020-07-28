@@ -6,14 +6,14 @@ module.exports = {
   fields: {
     pageHeaderText: 'MySQL Table Details',
     notAvailableMetrics: '//span[contains(text(), "N/A")]',
-    systemChartsToggle: '//a[contains(text(), \'Node Summary\')]',
-    noDataToShow: '//span[contains(text(), \'No data to show\')]',
+    systemChartsToggle: '//a[contains(text(), "Node Summary")]',
+    noDataToShow: '//span[contains(text(), "No data to show")]',
     serviceNameDropDown:
-      '(//a[@class=\'variable-value-link\']//ancestor::div//label[contains(text(),\'Service Name\')])[1]//parent::div//a[@ng-click]',
-    clearSelection: '//a[@ng-click=\'vm.clearSelections()\']',
-    disabledServiceName: '//span[contains(text(), \'ps_dts\')]',
+      '(//a[@class="variable-value-link"]//ancestor::div//label[contains(text(),"Service Name")])[1]//parent::div//a[@ng-click]',
+    clearSelection: '//a[@ng-click="vm.clearSelections()"]',
+    disabledServiceName: '//span[contains(text(), "ps_dts")]',
     serviceName:
-      '(//a[@class=\'variable-value-link\']//ancestor::div//label[contains(text(),\'Service Name\')])[1]',
+      '(//a[@class="variable-value-link"]//ancestor::div//label[contains(text(),"Service Name")])[1]',
   },
   metrics: [
     'Largest Tables by Row Count',

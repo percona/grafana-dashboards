@@ -38,7 +38,7 @@ module.exports = {
     disableBasicMetrics: '//input[@name="disable_basic_metrics"]/following-sibling::span[2]',
     disableEnhancedMetrics: '//input[@name="disable_enhanced_metrics"]/following-sibling::span[2]',
     discoverBtn: '#addInstance',
-    discoveryResults: 'tbody[role=\'rowgroup\']',
+    discoveryResults: 'tbody[role="rowgroup"]',
     discoveryRowWithId: '//tr/td[text()="',
     environment: '//input[contains(@placeholder, "Environment")]',
     hostName: '//input[contains(@placeholder,"*Hostname")]',
