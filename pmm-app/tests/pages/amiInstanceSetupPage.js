@@ -5,7 +5,7 @@ module.exports = {
   // setting locators
   url: '/setup',
   fields: {
-    instanceId: "//input[@placeholder='Instance ID']",
+    instanceId: '//input[@placeholder=\'Instance ID\']',
   },
   submitButton: 'Submit',
 

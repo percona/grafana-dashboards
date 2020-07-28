@@ -54,7 +54,7 @@ xScenario('PMM-T183 Verify that "Group by" in the overview table can be changed 
   qanActions.verifyGroupByIs('Database');
 });
 
-//Need to be skipped for change in locator
+// Need to be skipped for change in locator
 xScenario(
   'PMM-T187 Verify that the selected row in the overview table is highlighted @qan',
   async (qanPage, qanActions) => {

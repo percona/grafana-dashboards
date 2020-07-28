@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-undef
-const {I} = inject();
+const { I } = inject();
 const assert = require('assert');
 
 module.exports = {
@@ -110,9 +110,9 @@ module.exports = {
       const reportTitle = await I.grabTextFrom(this.fields.reportTitleWithNA);
 
       assert.equal(
-          numOfElements > number,
-          false,
-          `${numOfElements} Reports with N/A found on dashboard ${reportTitle}`
+        numOfElements > number,
+        false,
+        `${numOfElements} Reports with N/A found on dashboard ${reportTitle}`
       );
     }
   },

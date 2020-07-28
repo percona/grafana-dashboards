@@ -30,16 +30,16 @@ Scenario(
 );
 
 Scenario(
-    'PMM-T233 PMM-T234 Verify user is able to access PMM Database Checks through UI and with URL [critical] @not-pr-pipeline',
-    async (I, adminPage, databaseChecksPage, pmmSettingsPage, settingsAPI) => {
-      await settingsAPI.apiEnableSTT();
-      I.amOnPage(pmmSettingsPage.url);
-      await pmmSettingsPage.waitForPmmSettingsPageLoaded();
-      await adminPage.selectItemFromPMMDropdown('PMM Database Checks');
-      I.waitForVisible(databaseChecksPage.fields.dbCheckPanelSelector, 30);
-      I.amOnPage(databaseChecksPage.url);
-      I.waitForVisible(databaseChecksPage.fields.dbCheckPanelSelector, 30);
-    }
+  'PMM-T233 PMM-T234 Verify user is able to access PMM Database Checks through UI and with URL [critical] @not-pr-pipeline',
+  async (I, adminPage, databaseChecksPage, pmmSettingsPage, settingsAPI) => {
+    await settingsAPI.apiEnableSTT();
+    I.amOnPage(pmmSettingsPage.url);
+    await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+    await adminPage.selectItemFromPMMDropdown('PMM Database Checks');
+    I.waitForVisible(databaseChecksPage.fields.dbCheckPanelSelector, 30);
+    I.amOnPage(databaseChecksPage.url);
+    I.waitForVisible(databaseChecksPage.fields.dbCheckPanelSelector, 30);
+  }
 );
 
 Scenario(
@@ -58,6 +58,7 @@ Scenario(
   'PMM-T236 Verify user is able to hover Failed Checks values and see tooltip [minor] @not-pr-pipeline',
   async (I, databaseChecksPage, settingsAPI) => {
     const row = 1;
+
     await settingsAPI.apiEnableSTT();
     I.amOnPage(databaseChecksPage.url);
     await databaseChecksPage.verifyDatabaseChecksPageOpened();

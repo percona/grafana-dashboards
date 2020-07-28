@@ -16,7 +16,7 @@ Scenario(
   }
 );
 
-//Need to be fixed 
+// Need to be fixed
 xScenario(
   'Open the QAN Dashboard and check that changing the time range updates the overview table and URL. @qan',
   async (I, qanPage, adminPage, qanActions) => {
@@ -40,7 +40,7 @@ Scenario(
   }
 );
 
-//Need to skip until we fix Sorting Locator and make it easy for Automation
+// Need to skip until we fix Sorting Locator and make it easy for Automation
 xScenario(
   'Open the QAN Dashboard and check that changing the time range doesn\'t reset sorting. @qan',
   async (I, qanPage, adminPage, qanActions) => {

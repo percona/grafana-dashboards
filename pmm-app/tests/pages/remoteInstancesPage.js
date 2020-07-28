@@ -19,13 +19,13 @@ module.exports = {
   addMySQLRemoteURL: 'graph/d/pmm-add-instance/pmm-add-instance?instance_type=mysql',
   rds: {
     'Service Name': 'rds-mysql56',
-    'Environment': 'RDS MySQL 5.6',
+    Environment: 'RDS MySQL 5.6',
     'Replication Set': 'rds56-replication',
-    'Cluster': 'rds56-cluster'
+    Cluster: 'rds56-cluster'
   },
   fields: {
     accessKeyInput: '//input[@name="aws_access_key"]',
-    addAWSRDSMySQLbtn: "//a[text()[contains(.,'Add an AWS RDS MySQL or Aurora MySQL Instance')]]",
+    addAWSRDSMySQLbtn: '//a[text()[contains(.,\'Add an AWS RDS MySQL or Aurora MySQL Instance\')]]',
     addInstanceDiv: '//div[@class="view"]',
     addInstancesList: '//nav[@class="navigation"]',
     addMongoDBRemote: '//a[text()[contains(.,"Add a Remote MongoDB Instance")]]',
@@ -38,7 +38,7 @@ module.exports = {
     disableBasicMetrics: '//input[@name="disable_basic_metrics"]/following-sibling::span[2]',
     disableEnhancedMetrics: '//input[@name="disable_enhanced_metrics"]/following-sibling::span[2]',
     discoverBtn: '#addInstance',
-    discoveryResults: "tbody[role='rowgroup']",
+    discoveryResults: 'tbody[role=\'rowgroup\']',
     discoveryRowWithId: '//tr/td[text()="',
     environment: '//input[contains(@placeholder, "Environment")]',
     hostName: '//input[contains(@placeholder,"*Hostname")]',

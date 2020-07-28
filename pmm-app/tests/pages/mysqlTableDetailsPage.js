@@ -5,15 +5,15 @@ module.exports = {
   urlWithRecent: 'graph/d/mysql-table/mysql-table-details?refresh=1m&orgId=1&from=now-1m&to=now',
   fields: {
     pageHeaderText: 'MySQL Table Details',
-    notAvailableMetrics: "//span[contains(text(), 'N/A')]",
-    systemChartsToggle: "//a[contains(text(), 'Node Summary')]",
-    noDataToShow: "//span[contains(text(), 'No data to show')]",
+    notAvailableMetrics: '//span[contains(text(), \'N/A\')]',
+    systemChartsToggle: '//a[contains(text(), \'Node Summary\')]',
+    noDataToShow: '//span[contains(text(), \'No data to show\')]',
     serviceNameDropDown:
-      "(//a[@class='variable-value-link']//ancestor::div//label[contains(text(),'Service Name')])[1]//parent::div//a[@ng-click]",
-    clearSelection: "//a[@ng-click='vm.clearSelections()']",
-    disabledServiceName: "//span[contains(text(), 'ps_dts')]",
+      '(//a[@class=\'variable-value-link\']//ancestor::div//label[contains(text(),\'Service Name\')])[1]//parent::div//a[@ng-click]',
+    clearSelection: '//a[@ng-click=\'vm.clearSelections()\']',
+    disabledServiceName: '//span[contains(text(), \'ps_dts\')]',
     serviceName:
-      "(//a[@class='variable-value-link']//ancestor::div//label[contains(text(),'Service Name')])[1]",
+      '(//a[@class=\'variable-value-link\']//ancestor::div//label[contains(text(),\'Service Name\')])[1]',
   },
   metrics: [
     'Largest Tables by Row Count',
@@ -23,7 +23,7 @@ module.exports = {
 
   graphsLocator(metricName) {
     return (
-      "//span[text()='" + metricName + "']//ancestor::div[contains(@class, 'panel-container')]//span[contains(text(), 'No data to show')]"
+      `//span[text()='${metricName}']//ancestor::div[contains(@class, 'panel-container')]//span[contains(text(), 'No data to show')]`
     );
   },
 
@@ -39,7 +39,7 @@ module.exports = {
     I.waitForVisible(this.graphsLocator(this.metrics[0]), 30);
     I.waitForVisible(this.graphsLocator(this.metrics[1]), 30);
     I.waitForVisible(this.graphsLocator(this.metrics[2]), 30);
-    for (let i in this.metrics) {
+    for (const i in this.metrics) {
       I.seeElement(this.graphsLocator(this.metrics[i]));
     }
   },

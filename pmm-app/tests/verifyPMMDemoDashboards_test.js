@@ -5,6 +5,7 @@ Scenario(
   'PMM-T319 Open the MySQL Instance Overview Dashboard and verify Metrics are present and graphs are displayed [critical] @pmm-demo @not-ui-pipeline @not-pr-pipeline',
   async (I, adminPage, dashboardPage, pmmDemoPage) => {
     const serviceName = ['ps8-mysql', 'pxc57-3-mysql', 'ps8-slave-mysql'];
+
     I.amOnPage(pmmDemoPage.url + dashboardPage.mySQLInstanceOverview.url);
     dashboardPage.waitForDashboardOpened();
     adminPage.peformPageDown(5);
@@ -25,6 +26,7 @@ Scenario(
   'PMM-T319 Open the MySQL Summary Dashboard and verify Metrics are present and graphs are displayed [critical] @pmm-demo @not-ui-pipeline @not-pr-pipeline',
   async (I, adminPage, dashboardPage, pmmDemoPage) => {
     const serviceName = ['ps8-mysql', 'pxc57-3-mysql', 'ps8-slave-mysql'];
+
     I.amOnPage(pmmDemoPage.url + dashboardPage.mysqlInstanceSummaryDashboard.url);
     dashboardPage.waitForDashboardOpened();
     adminPage.peformPageDown(5);
@@ -44,6 +46,7 @@ Scenario(
   'PMM-T69 Open the PostgreSQL Instance Summary Dashboard and verify Metrics are present and graphs are displayed [critical] @pmm-demo @not-ui-pipeline @not-pr-pipeline',
   async (I, dashboardPage, adminPage, pmmDemoPage) => {
     const serviceName = ['pg11-postgresql', 'pmm-server-postgresql'];
+
     I.amOnPage(pmmDemoPage.url + dashboardPage.postgresqlInstanceSummaryDashboard.url);
     dashboardPage.waitForDashboardOpened();
     adminPage.peformPageDown(5);
@@ -65,6 +68,7 @@ Scenario(
   'PMM-T70 Open the MongoDB Instance Summary Dashboard and verify Metrics are present and graphs are displayed [critical] @pmm-demo @not-ui-pipeline @not-pr-pipeline',
   async (I, adminPage, dashboardPage, pmmDemoPage) => {
     const serviceName = ['mongo-config-1-mongodb', 'mongo-rs1-1-mongodb', 'mongo-rs2-1-mongodb'];
+
     I.amOnPage(pmmDemoPage.url + dashboardPage.mongodbOverviewDashboard.url);
     dashboardPage.waitForDashboardOpened();
     adminPage.peformPageDown(10);
@@ -98,6 +102,7 @@ Scenario(
   'PMM-T307 MongoDB Instances Overview dashboard and verify Metrics are present and graphs are displayed [critical] @pmm-demo @not-ui-pipeline @not-pr-pipeline',
   async (I, adminPage, dashboardPage, pmmDemoPage) => {
     const serviceName = ['mongo-config-1-mongodb', 'mongo-rs1-1-mongodb', 'mongo-rs2-1-mongodb'];
+
     I.amOnPage(pmmDemoPage.url + dashboardPage.mongoDbInstanceOverview.url);
     dashboardPage.waitForDashboardOpened();
     adminPage.peformPageDown(1);
@@ -141,6 +146,7 @@ Scenario(
   'PMM-T72 Open the Prometheus Exporters Status Dashboard and verify Metrics are present and graphs are displayed [critical] @pmm-demo @not-ui-pipeline @not-pr-pipeline',
   async (I, dashboardPage, adminPage, pmmDemoPage) => {
     const nodeName = ['mongo-config-1', 'pg11', 'ps8'];
+
     I.amOnPage(pmmDemoPage.url + dashboardPage.prometheusExporterStatusDashboard.url);
     dashboardPage.waitForDashboardOpened();
     await dashboardPage.expandEachDashboardRow();
@@ -159,6 +165,7 @@ Scenario(
   'PMM-T72 Open the Prometheus Exporters Overview Dashboard and verify Metrics are present and graphs are displayed [critical] @pmm-demo @not-ui-pipeline @not-pr-pipeline',
   async (I, dashboardPage, adminPage, pmmDemoPage) => {
     const nodeName = ['mongo-config-1', 'pg11', 'ps8', 'pxc57-1', 'pxc80-1', 'mongo-rs1-1'];
+
     I.amOnPage(pmmDemoPage.url + dashboardPage.prometheusExporterOverviewDashboard.url);
     dashboardPage.waitForDashboardOpened();
     adminPage.peformPageDown(2);
@@ -180,7 +187,7 @@ Scenario(
     dashboardPage.waitForDashboardOpened();
     I.click(adminPage.fields.metricTitle);
     adminPage.peformPageDown(10);
-    for (i = 0; i < pmmDemoPage.monitoredDB.length; i = i + 2) {
+    for (i = 0; i < pmmDemoPage.monitoredDB.length; i += 2) {
       I.waitForElement(pmmDemoPage.getHostLocator(pmmDemoPage.monitoredDB[i]), 30);
       I.seeElement(pmmDemoPage.getHostLocator(pmmDemoPage.monitoredDB[i]));
       I.seeNumberOfVisibleElements(
@@ -188,6 +195,7 @@ Scenario(
         pmmDemoPage.monitoredDB[i + 1]
       );
     }
+
     dashboardPage.verifyMetricsExistence(dashboardPage.homeDashboard.metrics);
   }
 );

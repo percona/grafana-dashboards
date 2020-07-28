@@ -1,5 +1,7 @@
 const assert = require('assert');
+
 const { I } = inject();
+
 module.exports = {
   // methods for preparing state of application before test
   services: {
@@ -23,17 +25,20 @@ module.exports = {
 
   async verifyServiceExistsAndHasRunningStatus(service, serviceName) {
     let responseService;
+
     // 30 sec ping for getting created service name
     for (let i = 0; i < 30; i++) {
       const services = await this.apiGetServices(service.serviceType);
-      responseService = services.data[service.service].find(obj => {
-        return obj.service_name === serviceName;
-      });
+
+      responseService = services.data[service.service].find((obj) => obj.service_name === serviceName);
       if (responseService !== undefined) break;
-      await new Promise(r => setTimeout(r, 1000));
+
+      await new Promise((r) => setTimeout(r, 1000));
     }
+
     assert.ok(responseService !== undefined, `Service ${serviceName} was not found`);
     const agents = await this.waitForRunningState(responseService.service_id);
+
     assert.ok(agents, `One or more agents are not running for ${service.service}`);
   },
 
@@ -44,11 +49,14 @@ module.exports = {
       const areRunning = Object.values(agents.data)
         .flat(Infinity)
         .every(({ status }) => status === 'RUNNING');
+
       if (areRunning) {
         return agents;
       }
-      await new Promise(r => setTimeout(r, 1000));
+
+      await new Promise((r) => setTimeout(r, 1000));
     }
+
     return false;
   },
 
@@ -57,6 +65,7 @@ module.exports = {
       service_id: serviceId,
     };
     const headers = { Authorization: `Basic ${await I.getAuth()}` };
+
     return I.sendPostRequest('v1/inventory/Agents/List', body, headers);
   },
 
@@ -65,6 +74,7 @@ module.exports = {
       service_type: serviceType,
     };
     const headers = { Authorization: `Basic ${await I.getAuth()}` };
+
     return I.sendPostRequest('v1/inventory/Services/List', body, headers);
   },
 };
