@@ -180,7 +180,9 @@ export const Table: FC<TableProps> = ({
               const tableBody = document.querySelector('.table-wrapper .table-body');
 
               if (selectedColumn && tableBody) {
-                tableBody.scroll(0, (selectedColumn as HTMLElement).offsetTop - 55);
+                setTimeout(() => {
+                  tableBody.scroll(0, (selectedColumn as HTMLElement).offsetTop - 55);
+                });
               }
 
               onRowClick(row);

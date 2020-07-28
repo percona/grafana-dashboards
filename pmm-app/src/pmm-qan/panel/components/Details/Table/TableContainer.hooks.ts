@@ -6,9 +6,12 @@ import { Databases } from '../Details.types';
 export const useTables = (examples, databaseType): any[] => {
   const [jsonExplain, classicExplain] = useExplains(examples, databaseType);
   const [tables, setTables] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const getTables = async () => {
+      setLoading(true);
+      setTables([]);
       if (databaseType === Databases.mysql && jsonExplain.value) {
         const parsedJSON = JSON.parse(jsonExplain.value);
 
@@ -25,10 +28,12 @@ export const useTables = (examples, databaseType): any[] => {
 
         setTables(tablesResult);
       }
+
+      setLoading(false);
     };
 
     getTables();
   }, [jsonExplain, classicExplain, examples, databaseType]);
 
-  return [tables];
+  return [tables, loading];
 };
