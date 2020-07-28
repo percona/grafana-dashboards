@@ -2,34 +2,28 @@ Feature('PMM Settings Page Functionality');
 
 Before(async (I, pmmSettingsPage, settingsAPI) => {
   I.Authorize();
-  await settingsAPI.apiDisableSTT();
+  await settingsAPI.restoreSettingsDefaults();
   I.amOnPage(pmmSettingsPage.url);
 });
 // TODO: Vasyl Y Skipping because of random failing. Fix after merging new Settings page
 xScenario('Open PMM Settings page and verify changing Metrics Resolution [critical]', async (I, pmmSettingsPage) => {
   const resolutionToApply = 'Low';
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
-  const currentValue = await I.grabTextFrom(pmmSettingsPage.fields.selectedResolution);
   await pmmSettingsPage.selectMetricsResolution(resolutionToApply);
   await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
   I.refreshPage();
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
   I.waitForText(resolutionToApply, 30, pmmSettingsPage.fields.selectedResolution);
-  await pmmSettingsPage.selectMetricsResolution(currentValue);
-  await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
 });
 
 Scenario('Open PMM Settings page and verify changing Data Retention [critical]', async (I, pmmSettingsPage) => {
   const dataRetentionValue = '1';
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
-  const currentValue = await I.grabValueFrom(pmmSettingsPage.fields.dataRetentionCount);
   pmmSettingsPage.changeDataRetentionValueTo(dataRetentionValue);
   await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
   I.refreshPage();
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
   I.waitForValue(pmmSettingsPage.fields.dataRetentionCount, dataRetentionValue, 30);
-  pmmSettingsPage.changeDataRetentionValueTo(currentValue);
-  await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
 });
 
 Scenario('Open PMM Settings page and verify adding Alertmanager Rule [critical]', async (I, pmmSettingsPage) => {
@@ -67,9 +61,5 @@ Scenario(
     I.refreshPage();
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelector, 'on');
-    I.click(pmmSettingsPage.fields.sttSwitchSelector);
-    pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelector, 'off');
-    I.click(pmmSettingsPage.fields.applyButton);
-    await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
   }
 );

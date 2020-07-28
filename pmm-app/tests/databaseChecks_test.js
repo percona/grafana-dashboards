@@ -1,6 +1,5 @@
 Feature('Database Failed Checks');
 const config = require('../pr.codecept.js').config.helpers.Playwright;
-const assert = require('assert');
 
 Before(async (I) => {
   I.Authorize();
@@ -35,7 +34,7 @@ Scenario(
     async (I, adminPage, databaseChecksPage, pmmSettingsPage, settingsAPI) => {
       await settingsAPI.apiEnableSTT();
       I.amOnPage(pmmSettingsPage.url);
-      pmmSettingsPage.waitForPmmSettingsPageLoaded();
+      await pmmSettingsPage.waitForPmmSettingsPageLoaded();
       await adminPage.selectItemFromPMMDropdown('PMM Database Checks');
       I.waitForVisible(databaseChecksPage.fields.dbCheckPanelSelector, 30);
       I.amOnPage(databaseChecksPage.url);
