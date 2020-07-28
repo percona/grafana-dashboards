@@ -24,6 +24,7 @@ export const MetricsResolution: FC<MetricsResolutionProps> = ({ metricsResolutio
   const initialResolutions: MetricsResolutions = removeUnits(metricsResolutions);
   const [resolution, setResolution] = useState(getResolutionValue(metricsResolutions).key);
   const [updatedResolutions, updateResolutions] = useState(initialResolutions);
+  const [customResolutions, updateCustomResolutions] = useState(initialResolutions);
   const [loading, setLoading] = useState(false);
   const {
     metrics: {
@@ -41,24 +42,34 @@ export const MetricsResolution: FC<MetricsResolutionProps> = ({ metricsResolutio
   } = Messages;
   const onChangeInput = (key: string, value: string) => {
     updateResolutions({ ...updatedResolutions, [key]: value });
+    updateCustomResolutions({ ...customResolutions, [key]: value });
   };
   const applyChanges = () => {
-    updateSettings({ metrics_resolutions: addUnits(updatedResolutions) }, setLoading);
+    updateSettings({
+      metrics_resolutions: resolution === MetricsResolutionPresets.custom
+        ? addUnits(customResolutions)
+        : addUnits(updatedResolutions)
+    }, setLoading);
   };
   const stepUp = (key: string, max: number) => () => {
-    const value = +updatedResolutions[key];
+    const value = +customResolutions[key];
 
     if (value < max) {
       onChangeInput(key, `${value + 1}`);
     }
   };
   const stepDown = (key: string, min: number) => () => {
-    const value = +updatedResolutions[key];
+    const value = +customResolutions[key];
 
     if (value > min) {
       onChangeInput(key, `${value - 1}`);
     }
   };
+  const isActionDisabled = () => (
+    resolution === MetricsResolutionPresets.custom
+      ? isEqual(initialResolutions, customResolutions)
+      : isEqual(initialResolutions, updatedResolutions)
+  );
 
   useEffect(() => {
     if (resolution !== MetricsResolutionPresets.custom) {
@@ -89,7 +100,7 @@ export const MetricsResolution: FC<MetricsResolutionProps> = ({ metricsResolutio
       />
       <NumericInput
         className={styles.resolutionInput}
-        value={updatedResolutions.lr}
+        value={resolution === MetricsResolutionPresets.custom ? customResolutions.lr : updatedResolutions.lr}
         disabled={resolution !== MetricsResolutionPresets.custom}
         onChange={(e: any) => onChangeInput(MetricsResolutionIntervals.lr, e.target.value)}
         data-qa="metrics-resolution-lr-input"
@@ -99,7 +110,7 @@ export const MetricsResolution: FC<MetricsResolutionProps> = ({ metricsResolutio
       />
       <NumericInput
         className={styles.resolutionInput}
-        value={updatedResolutions.mr}
+        value={resolution === MetricsResolutionPresets.custom ? customResolutions.mr : updatedResolutions.mr}
         disabled={resolution !== MetricsResolutionPresets.custom}
         onChange={(e: any) => onChangeInput(MetricsResolutionIntervals.mr, e.target.value)}
         data-qa="metrics-resolution-mr-input"
@@ -109,7 +120,7 @@ export const MetricsResolution: FC<MetricsResolutionProps> = ({ metricsResolutio
       />
       <NumericInput
         className={styles.resolutionInput}
-        value={updatedResolutions.hr}
+        value={resolution === MetricsResolutionPresets.custom ? customResolutions.hr : updatedResolutions.hr}
         disabled={resolution !== MetricsResolutionPresets.custom}
         onChange={(e: any) => onChangeInput(MetricsResolutionIntervals.hr, e.target.value)}
         data-qa="metrics-resolution-hr-input"
@@ -120,7 +131,7 @@ export const MetricsResolution: FC<MetricsResolutionProps> = ({ metricsResolutio
       <Button
         className={settingsStyles.actionButton}
         variant="secondary"
-        disabled={isEqual(initialResolutions, updatedResolutions) || loading}
+        disabled={isActionDisabled() || loading}
         onClick={applyChanges}
         data-qa="metrics-resolution-button"
       >
