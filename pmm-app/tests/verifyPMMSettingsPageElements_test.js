@@ -1,4 +1,12 @@
-const assert = require('assert');
+const page = require('./pages/pmmSettingsPage');
+
+const validationValues = ['text ', '2147483648', '-1', '<script>alert(test);</script>'];
+
+let dataRetentionTable = new DataTable(['value', 'message']);
+for (const i in validationValues) {
+  dataRetentionTable.add([validationValues[i], page.messages.invalidDataDurationMessage]);
+}
+dataRetentionTable.add(['', page.messages.requiredFieldMessage]);
 
 Feature('PMM Settings Page Elements and Validations');
 
@@ -8,179 +16,128 @@ Before(async (I, pmmSettingsPage) => {
 });
 
 Scenario(
-  'Open PMM Settings page, verify Section Headers and Settings Section Elements [critical]',
+  'Verify Section Headers and Settings Section Elements [critical]',
   async (I, pmmSettingsPage) => {
-    pmmSettingsPage.waitForPmmSettingsPageLoaded();
-    await pmmSettingsPage.verifySectionHeaders();
-    await pmmSettingsPage.verifySectionExpanded(
-      pmmSettingsPage.fields.applyButton,
-      pmmSettingsPage.sectionButtonText.applyChanges
-    );
-    pmmSettingsPage.verifySettingsSectionElements();
+    await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+    for (const i in pmmSettingsPage.sectionHeaderList) {
+      I.see(pmmSettingsPage.sectionHeaderList[i], pmmSettingsPage.fields.sectionHeader);
+    }
+    I.see(pmmSettingsPage.sectionButtonText.applyChanges, pmmSettingsPage.fields.applyButton);
+
+    await within(pmmSettingsPage.fields.expandedSection, () => {
+      I.see('Metrics resolution', pmmSettingsPage.fields.metricsResolutionLabel);
+      I.seeElement(pmmSettingsPage.fields.metricsResolutionSlider);
+      I.see('Data retention', pmmSettingsPage.fields.dataRetentionLabel);
+      I.seeElement(pmmSettingsPage.fields.dataRetentionCount);
+      I.see('Telemetry', pmmSettingsPage.fields.telemetryLabel);
+      I.seeElement(pmmSettingsPage.fields.telemetrySwitchSelector);
+      I.see('Check for updates', pmmSettingsPage.fields.checkForUpdatesLabel);
+      I.seeElement(pmmSettingsPage.fields.sttSwitchSelector);
+    });
   }
 );
 
-Scenario('Open PMM Settings page and verify SSH Key Details Section Elements', async (I, pmmSettingsPage) => {
+Scenario('Verify SSH Key Details Section Elements', async (I, pmmSettingsPage) => {
   const sectionNameToExpand = 'SSH Key Details';
-  pmmSettingsPage.waitForPmmSettingsPageLoaded();
+  await pmmSettingsPage.waitForPmmSettingsPageLoaded();
   pmmSettingsPage.collapseDefaultSection();
   await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.sectionButtonText.applySSHKey);
-  pmmSettingsPage.verifySSHKeyDetailsSectionElements();
+  I.see('SSH key', pmmSettingsPage.fields.sshKeyLabel);
+  I.seeElement(pmmSettingsPage.fields.sshKeyInput);
 });
 
 Scenario(
-  'Open PMM Settings page and verify Alertmanager integration Section Elements',
+  'Verify Alertmanager integration Section Elements',
   async (I, pmmSettingsPage) => {
     const sectionNameToExpand = 'Alertmanager integration';
-    pmmSettingsPage.waitForPmmSettingsPageLoaded();
+    await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     pmmSettingsPage.collapseDefaultSection();
     await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.sectionButtonText.addAlert);
-    pmmSettingsPage.verifyAlertmanagerSectionElements();
+    I.see('Alertmanager URL', pmmSettingsPage.fields.amUrlLabel);
+    I.see('Prometheus Alerting rules', pmmSettingsPage.fields.alertingRules);
+    I.seeElement(pmmSettingsPage.fields.alertURLInput);
+    I.seeElement(pmmSettingsPage.fields.alertRulesInput);
   }
 );
 
-// TODO: (lunaticusgreen) temporarily commented, fix before merge
-xScenario('Open PMM Settings page and verify Diagnostics Section Elements', async (I, pmmSettingsPage) => {
+Scenario('Verify Diagnostics Section Elements', async (I, pmmSettingsPage) => {
   const sectionNameToExpand = 'Diagnostics';
-  pmmSettingsPage.waitForPmmSettingsPageLoaded();
+  await pmmSettingsPage.waitForPmmSettingsPageLoaded();
   pmmSettingsPage.collapseDefaultSection();
   await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.sectionButtonText.downloadLogs);
-  pmmSettingsPage.verifyDiagnosticsElements();
+  I.see(pmmSettingsPage.diagnosticsText, `${pmmSettingsPage.fields.expandedSection} div`);
 });
 
-xScenario(
-  'Open PMM Settings page and verify validation for empty Data Retention value',
-  async (I, pmmSettingsPage) => {
-    const dataRetentionValue = '';
-    pmmSettingsPage.waitForPmmSettingsPageLoaded();
-    await pmmSettingsPage.changeDataRetentionValueTo(dataRetentionValue);
-    await pmmSettingsPage.verifyValidationMessage(pmmSettingsPage.messages.requiredFieldMessage);
-  }
-);
+Data(dataRetentionTable)
+  .Scenario(
+    'Verify validation for Data Retention field',
+    async (I, pmmSettingsPage, current) => {
+      await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+      await pmmSettingsPage.changeDataRetentionValueTo(current.value);
+      await pmmSettingsPage.verifyValidationMessage(current.message);
+    }
+  );
 
 Scenario(
-  'Open PMM Settings page and verify validation for text Data Retention value',
-  async (I, pmmSettingsPage) => {
-    const dataRetentionValue = 'text ';
-    pmmSettingsPage.waitForPmmSettingsPageLoaded();
-    await pmmSettingsPage.changeDataRetentionValueTo(dataRetentionValue);
-    await pmmSettingsPage.verifyValidationMessage(pmmSettingsPage.messages.invalidDataDurationMessage);
-  }
-);
-
-xScenario(
-  'Open PMM Settings page and verify validation for decimal Data Retention value',
+  'Verify validation for decimal Data Retention value',
   async (I, pmmSettingsPage) => {
     const dataRetentionValue = '15.5';
-    pmmSettingsPage.waitForPmmSettingsPageLoaded();
+    await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     await pmmSettingsPage.changeDataRetentionValueTo(dataRetentionValue);
-    await pmmSettingsPage.verifyValidationMessage(pmmSettingsPage.messages.invalidDataDurationMessage);
+    await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.invalidDataDurationPopUpMessage);
   }
 );
 
-Scenario(
-  'Open PMM Settings page and verify validation for out of range Data Retention value',
-  async (I, pmmSettingsPage) => {
-    const dataRetentionValue = '2147483648';
-    pmmSettingsPage.waitForPmmSettingsPageLoaded();
-    await pmmSettingsPage.changeDataRetentionValueTo(dataRetentionValue);
-    await pmmSettingsPage.verifyValidationMessage(pmmSettingsPage.messages.invalidDataDurationMessage);
-  }
-);
-
-Scenario(
-  'Open PMM Settings page and verify validation for XSS Data Retention value',
-  async (I, pmmSettingsPage) => {
-    const dataRetentionValue = '<script>alert(test);</script>';
-    pmmSettingsPage.waitForPmmSettingsPageLoaded();
-    await pmmSettingsPage.changeDataRetentionValueTo(dataRetentionValue);
-    await pmmSettingsPage.verifyValidationMessage(pmmSettingsPage.messages.invalidDataDurationMessage);
-  }
-);
-
-Scenario(
-  'Open PMM Settings page and verify validation for negative Data Retention value',
-  async (I, pmmSettingsPage) => {
-    const dataRetentionValue = '-1';
-    pmmSettingsPage.waitForPmmSettingsPageLoaded();
-    await pmmSettingsPage.changeDataRetentionValueTo(dataRetentionValue);
-    await pmmSettingsPage.verifyValidationMessage(pmmSettingsPage.messages.invalidDataDurationMessage);
-  }
-);
-
-Scenario('Open PMM Settings page and verify validation for invalid SSH Key', async (I, pmmSettingsPage) => {
+Scenario('Verify validation for invalid SSH Key', async (I, pmmSettingsPage) => {
   const sshKeyForTest = 'ssh-rsa testKey test@key.local';
   const sectionNameToExpand = 'SSH Key Details';
-  pmmSettingsPage.waitForPmmSettingsPageLoaded();
+  await pmmSettingsPage.waitForPmmSettingsPageLoaded();
   pmmSettingsPage.collapseDefaultSection();
   await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.sectionButtonText.applySSHKey);
   pmmSettingsPage.addSSHKey(sshKeyForTest);
-  await pmmSettingsPage.verifyValidationPopUp(pmmSettingsPage.messages.invalidSSHKeyMessage);
+  await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.invalidSSHKeyMessage);
 });
 
-xScenario('Open PMM Settings page and verify validation for empty SSH Key', async (I, pmmSettingsPage) => {
-  const sshKeyForTest = '';
-  const sectionNameToExpand = 'SSH Key Details';
-  pmmSettingsPage.waitForPmmSettingsPageLoaded();
-  pmmSettingsPage.collapseDefaultSection();
-  await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.sectionButtonText.applySSHKey);
-  pmmSettingsPage.addSSHKey(sshKeyForTest);
-  await pmmSettingsPage.verifyValidationPopUp(pmmSettingsPage.messages.invalidSSHKeyMessage);
-});
-
-xScenario(
-  'Open PMM Settings page and verify validation for empty Alert Manager fields',
-  async (I, pmmSettingsPage) => {
-    const urlAndRule = '';
-    const sectionNameToExpand = 'Alertmanager integration';
-    pmmSettingsPage.waitForPmmSettingsPageLoaded();
-    pmmSettingsPage.collapseDefaultSection();
-    await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.sectionButtonText.addAlert);
-    pmmSettingsPage.addAlertmanagerRule(urlAndRule, urlAndRule);
-    // await pmmSettingsPage.verifyValidationPopUp(pmmSettingsPage.popUpMessages.invalidAlertmanagerURLMessage);
-  }
-);
-
-xScenario(
-  'Open PMM Settings page and verify validation for Alertmanager URL without scheme',
+Scenario(
+  'Verify validation for Alertmanager URL without scheme',
   async (I, pmmSettingsPage) => {
     const urlWithoutScheme = 'invalid_url';
     const sectionNameToExpand = 'Alertmanager integration';
-    pmmSettingsPage.waitForPmmSettingsPageLoaded();
+    await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     pmmSettingsPage.collapseDefaultSection();
     await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.sectionButtonText.addAlert);
     pmmSettingsPage.addAlertmanagerRule(urlWithoutScheme, '');
-    await pmmSettingsPage.verifyValidationPopUp(
+    await pmmSettingsPage.verifyPopUpMessage(
       pmmSettingsPage.messages.invalidAlertmanagerMissingSchemeMessage
     );
   }
 );
 
 Scenario(
-  'Open PMM Settings page and verify validation for Alertmanager URL without host',
+  'Verify validation for Alertmanager URL without host',
   async (I, pmmSettingsPage) => {
     const urlWithoutHost = 'http://';
     const sectionNameToExpand = 'Alertmanager integration';
-    pmmSettingsPage.waitForPmmSettingsPageLoaded();
+    await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     pmmSettingsPage.collapseDefaultSection();
     await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.sectionButtonText.addAlert);
     pmmSettingsPage.addAlertmanagerRule(urlWithoutHost, '');
-    await pmmSettingsPage.verifyValidationPopUp(
+    await pmmSettingsPage.verifyPopUpMessage(
       pmmSettingsPage.messages.invalidAlertmanagerMissingHostMessage
     );
   }
 );
 
 Scenario(
-  'Open PMM Settings page and verify validation for invalid Alertmanager Rule',
+  'Verify validation for invalid Alertmanager Rule',
   async (I, pmmSettingsPage) => {
     const rule = 'invalid_rule';
     const sectionNameToExpand = 'Alertmanager integration';
-    pmmSettingsPage.waitForPmmSettingsPageLoaded();
+    await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     pmmSettingsPage.collapseDefaultSection();
     await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.sectionButtonText.addAlert);
     pmmSettingsPage.addAlertmanagerRule('', rule);
-    await pmmSettingsPage.verifyValidationPopUp(pmmSettingsPage.messages.invalidAlertmanagerRulesMessage);
+    await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.invalidAlertmanagerRulesMessage);
   }
 );
 
@@ -189,7 +146,7 @@ Scenario(
   async (I, pmmSettingsPage, settingsAPI) => {
     await settingsAPI.apiDisableSTT();
     I.amOnPage(pmmSettingsPage.url);
-    pmmSettingsPage.waitForPmmSettingsPageLoaded();
+    await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.telemetrySwitchSelector, 'on');
     pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelector, 'off');
     I.click(pmmSettingsPage.fields.telemetrySwitchSelector);
@@ -211,12 +168,7 @@ xScenario(
   'PMM-T227 Open PMM Settings page and verify DATA_RETENTION value is set to 2 days @not-pr-pipeline',
   async (I, pmmSettingsPage) => {
     const dataRetention = '2';
-    pmmSettingsPage.waitForPmmSettingsPageLoaded();
-    const dataRetentionActualValue = await I.grabValueFrom(pmmSettingsPage.fields.dataRetentionCount);
-    assert(
-      dataRetention,
-      dataRetentionActualValue,
-      'The Value for Data Retention is not the same as passed via Docker Environment Variable'
-    );
+    await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+    I.waitForValue(pmmSettingsPage.fields.dataRetentionCount, dataRetention, 30);
   }
 );
