@@ -1,4 +1,4 @@
-const { I, pmmInventoryPage, pmmSettingsPage } = inject();
+const { I, pmmInventoryPage, settingsAPI } = inject();
 const assert = require('assert');
 // xpath used here because locate('th').withText('') method does not work correctly
 const locateChecksHeader = header => `//th[text()='${header}']`;
@@ -71,7 +71,7 @@ module.exports = {
     switch (stt) {
       case 'enabled':
         if (disabledSTT) {
-          await pmmSettingsPage.apiEnableSTT();
+          await settingsAPI.apiEnableSTT();
           I.refreshPage();
         }
         I.waitForVisible(this.fields.serviceNameHeaderSelector, 30);
@@ -79,7 +79,7 @@ module.exports = {
         break;
       case 'disabled':
         if (!disabledSTT) {
-          await pmmSettingsPage.apiDisableSTT();
+          await settingsAPI.apiDisableSTT();
           I.refreshPage();
         }
         this.verifyDatabaseChecksPageElements(stt);
@@ -90,12 +90,12 @@ module.exports = {
   // Compares values in tooltip with values in table
   async compareTooltipValues(rowNumber = 1) {
     let tableNumbers = await I.grabTextFrom(this.numberOfFailedChecksLocator(rowNumber));
-    let tooltipTotalNumber = await I.grabTextFrom(this.fields.totalFailedChecksTooltipSelector);
-    let tooltipNumbers = await I.grabTextFrom(this.fields.failedChecksTooltipSelector);
+    const tooltipTotalNumber = await I.grabTextFrom(this.fields.totalFailedChecksTooltipSelector);
+    const tooltipNumbers = await I.grabTextFrom(this.fields.failedChecksTooltipSelector);
     tableNumbers = tableNumbers.split(/[^0-9]+/g);
     tableNumbers.pop();
     tooltipNumbers.shift();
-    let detailsFromTable = `Critical – ${tableNumbers[1]}\nMajor – ${tableNumbers[2]}\nTrivial – ${tableNumbers[3]}`;
+    const detailsFromTable = `Critical – ${tableNumbers[1]}\nMajor – ${tableNumbers[2]}\nTrivial – ${tableNumbers[3]}`;
     assert.equal(`Failed checks: ${tableNumbers[0]}`, tooltipTotalNumber);
     assert.equal(detailsFromTable, tooltipNumbers);
   },
