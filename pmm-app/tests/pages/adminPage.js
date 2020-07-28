@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-undef
-const { I } = inject();
+const {I} = inject();
 const assert = require('assert');
 
 module.exports = {
@@ -15,20 +15,18 @@ module.exports = {
     discardChanges: '//button[@ng-click=\'ctrl.discard()\']',
     metricTitle: '//div[@class=\'panel-title\']',
     reportTitleWithNA:
-      '//span[contains(text(), \'N/A\')]//ancestor::div[contains(@class,\'panel-container\')]//span[contains(@class,\'panel-title-text\')]',
+        '//span[contains(text(), \'N/A\')]//ancestor::div[contains(@class,\'panel-container\')]//span[contains(@class,\'panel-title-text\')]',
     // eslint-disable-next-line no-undef
     pmmDropdownMenuSelector: locate('a[data-toggle="dropdown"] > span').withText('PMM')
   },
 
   // introducing methods
-  dropdownMenuItemLocator(title) {
-    // eslint-disable-next-line no-undef
-    return locate('ul > li > a').withText(title);
-  },
 
-  selectItemFromPMMDropdown(title) {
+  async selectItemFromPMMDropdown(title) {
+    title = `//li/a[text()='${title}']`;
     I.click(this.fields.pmmDropdownMenuSelector);
-    I.click(this.dropdownMenuItemLocator(title));
+    I.waitForVisible(title, 30);
+    I.click(title);
   },
 
   async navigateToDashboard(folderName, dashboardName) {
@@ -112,9 +110,9 @@ module.exports = {
       const reportTitle = await I.grabTextFrom(this.fields.reportTitleWithNA);
 
       assert.equal(
-        numOfElements > number,
-        false,
-        `${numOfElements} Reports with N/A found on dashboard ${reportTitle}`
+          numOfElements > number,
+          false,
+          `${numOfElements} Reports with N/A found on dashboard ${reportTitle}`
       );
     }
   },
