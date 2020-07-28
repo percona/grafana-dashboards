@@ -8,7 +8,6 @@ import { TableHeader } from './TableHeader';
 import { TableBody } from './TableBody';
 
 interface TableProps {
-  caption?: string;
   columns: Column[];
   data?: ActiveCheck[];
   hasNoAccess?: boolean;
@@ -16,7 +15,7 @@ interface TableProps {
 }
 
 export const Table: FC<TableProps> = ({
-  caption, columns, data = [], isSttEnabled, hasNoAccess = false
+  columns, data = [], isSttEnabled, hasNoAccess = false,
 }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
@@ -25,9 +24,6 @@ export const Table: FC<TableProps> = ({
   if (hasNoAccess) {
     return (
       <>
-        <div className={styles.caption} data-qa="db-check-panel-table-caption">
-          {caption}
-        </div>
         <div className={styles.wrapper}>
           <div className={styles.empty} data-qa="db-check-panel-no-access">
             Insufficient access rights.
@@ -39,11 +35,6 @@ export const Table: FC<TableProps> = ({
 
   return (
     <>
-      {caption && (
-        <div className={styles.caption} data-qa="db-check-panel-table-caption">
-          {caption}
-        </div>
-      )}
       <div className={styles.wrapper}>
         {!isSttEnabled && (
           <div className={styles.empty} data-qa="db-check-panel-settings-link">
