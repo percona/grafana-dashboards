@@ -10,9 +10,9 @@ module.exports = {
   requestEnd: '/v1/Updates/Check',
   fields: {
     systemsUnderMonitoringCount:
-        '//span[@class=\'panel-title-text\' and contains(text(), \'Systems under monitoring\')]//../../../..//span[@class=\'singlestat-panel-value\']',
+      '//span[@class="panel-title-text\' and contains(text(), \'Systems under monitoring\')]//../../../..//span[@class=\'singlestat-panel-value\']',
     dbUnderMonitoringCount:
-        '//span[@class=\'panel-title-text\' and contains(text(), \'Monitored DB Instances\')]//../../../..//span[@class=\'singlestat-panel-value\']',
+      '//span[@class=\'panel-title-text\' and contains(text(), \'Monitored DB Instances\')]//../../../..//span[@class=\'singlestat-panel-value\']',
     dashboardHeaderText: 'Percona Monitoring and Management',
     dashboardHeaderLocator: '//div[contains(@class, \'dashboard-header\')]',
     oldLastCheckSelector: '#pmm-update-widget > .last-check-wrapper p',
@@ -21,7 +21,8 @@ module.exports = {
     sttFailedChecksPanelSelector: '$db-check-panel-has-checks',
     checksPanelSelector: '$db-check-panel-home',
     newsPanelTitleSelector: '//span[@class=\'panel-title-text\' and text() = \'Percona News\']',
-    newsPanelContentSelector: '//span[contains(text(), \'Percona News\')]/ancestor::div[contains(@class, \'panel-container\')]//div[contains(@class, \'view\')]',
+    newsPanelContentSelector:
+      '//span[contains(text(), \'Percona News\')]/ancestor::div[contains(@class, \'panel-container\')]//div[contains(@class, \'view\')]',
     noAccessRightsSelector: '$db-check-panel-no-access',
     updateWidget: {
       base: {
@@ -35,7 +36,7 @@ module.exports = {
         availableVersion: '#available_version > div > p',
         currentVersion: '#current_version > span',
         inProgressMessage: 'Update in progress',
-        successUpgradeMessage: 'Successfully updated'
+        successUpgradeMessage: 'Successfully updated',
       },
       latest: {
         checkUpdateButton: '$update-last-check-button',
@@ -47,7 +48,7 @@ module.exports = {
         reloadButtonAfterUpgrade: '$modal-close',
         availableVersion: '$update-latest-version',
         inProgressMessage: 'Upgrade in progress',
-        successUpgradeMessage: 'PMM has been successfully upgraded to version'
+        successUpgradeMessage: 'PMM has been successfully upgraded to version',
       },
     },
   },
@@ -70,7 +71,7 @@ module.exports = {
     assert.equal(
       await I.grabTextFrom(locators.currentVersion),
       available_version.split(' ')[0],
-      'Update operation failed'
+      'Update operation failed',
     );
   },
 
@@ -86,9 +87,11 @@ module.exports = {
     I.seeElement(locators.currentVersion);
     I.seeElement(locators.checkUpdateButton);
     I.see('Last check:');
-    assert.notEqual(await I.grabTextFrom(locators.availableVersion),
+    assert.notEqual(
+      await I.grabTextFrom(locators.availableVersion),
       await I.grabTextFrom(locators.currentVersion),
-      'Available and Current versions match');
+      'Available and Current versions match',
+    );
   },
 
   async verifyPostUpdateWidgetIsPresent() {
@@ -118,13 +121,13 @@ module.exports = {
   getLocators(version) {
     let locators;
 
-    version >= 2.9 ? version = 'latest' : version;
+    version >= 2.9 ? (version = 'latest') : version;
     version in this.fields.updateWidget
-      ? locators = {
+      ? (locators = {
         ...this.fields.updateWidget.base,
-        ...this.fields.updateWidget[version]
-      }
-      : locators = this.fields.updateWidget.base;
+        ...this.fields.updateWidget[version],
+      })
+      : (locators = this.fields.updateWidget.base);
 
     return locators;
   },

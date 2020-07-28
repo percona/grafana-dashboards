@@ -1,7 +1,6 @@
 const { I } = inject();
 
-const locateLabel = (dataQA) => locate(`[data-qa="${dataQA}"]`)
-  .find('span');
+const locateLabel = (dataQA) => locate(`[data-qa="${dataQA}"]`).find('span');
 
 module.exports = {
   // insert your locators and methods here
@@ -67,7 +66,6 @@ module.exports = {
       link:
         'https://www.percona.com/doc/percona-monitoring-and-management/2.x/manage/server-admin-gui.html#security-threat-tool',
     },
-
   },
 
   sectionButtonText: {
@@ -86,8 +84,7 @@ module.exports = {
     applyButton: '//button[@type="submit"]',
     callHomeSwitch: '//button[@class="toggle-field ant-switch ant-switch-checked"]',
     checkForUpdatesLabel: locateLabel('form-field-check-for-updates'),
-    dataRetentionCount: locate('input')
-      .withAttr({ name: 'data_retention_count' }),
+    dataRetentionCount: locate('input').withAttr({ name: 'data_retention_count' }),
     dataRetentionLabel: locateLabel('form-field-data-retention'),
     diagnosticsSectionRow: '//div[@class="ant-row"]',
     downloadLogsButton: '//a[@class="ant-btn" and @href="/logs.zip"]',
@@ -107,7 +104,7 @@ module.exports = {
     telemetryLabel: locateLabel('form-field-telemetry'),
     tooltipSelector: '.ant-tooltip-inner',
     validationMessage: 'span.error-message',
-    expandedSection: '.ant-collapse-content-active'
+    expandedSection: '.ant-collapse-content-active',
   },
 
   async waitForPmmSettingsPageLoaded() {
@@ -220,13 +217,12 @@ module.exports = {
   },
 
   verifySwitchStateIs(switchSelector, enabled = true) {
-    switchSelector = locate(switchSelector)
-      .withAttr({ disabled: '' });
+    const switchLocator = locate(switchSelector).withAttr({ disabled: '' });
+
     if (!enabled) {
-      I.seeElement(switchSelector);
+      I.seeElement(switchLocator);
     } else {
-      I.dontSeeElement(switchSelector);
+      I.dontSeeElement(switchLocator);
     }
   },
-
 };

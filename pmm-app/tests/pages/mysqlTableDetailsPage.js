@@ -5,7 +5,7 @@ module.exports = {
   urlWithRecent: 'graph/d/mysql-table/mysql-table-details?refresh=1m&orgId=1&from=now-1m&to=now',
   fields: {
     pageHeaderText: 'MySQL Table Details',
-    notAvailableMetrics: '//span[contains(text(), \'N/A\')]',
+    notAvailableMetrics: '//span[contains(text(), "N/A")]',
     systemChartsToggle: '//a[contains(text(), \'Node Summary\')]',
     noDataToShow: '//span[contains(text(), \'No data to show\')]',
     serviceNameDropDown:
@@ -22,9 +22,7 @@ module.exports = {
   ],
 
   graphsLocator(metricName) {
-    return (
-      `//span[text()='${metricName}']//ancestor::div[contains(@class, 'panel-container')]//span[contains(text(), 'No data to show')]`
-    );
+    return `//span[text()='${metricName}']//ancestor::div[contains(@class, 'panel-container')]//span[contains(text(), 'No data to show')]`;
   },
 
   verifyNoDataShow() {

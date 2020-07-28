@@ -13,7 +13,7 @@ module.exports = {
     mongodb: 'mongodb_remote_new',
     mysql: 'mysql_remote_new',
     postgresql: 'postgresql_remote_new',
-    proxysql: 'proxysql_remote_new'
+    proxysql: 'proxysql_remote_new',
   },
   url: 'graph/d/pmm-add-instance/pmm-add-instance?orgId=1',
   addMySQLRemoteURL: 'graph/d/pmm-add-instance/pmm-add-instance?instance_type=mysql',
@@ -21,11 +21,11 @@ module.exports = {
     'Service Name': 'rds-mysql56',
     Environment: 'RDS MySQL 5.6',
     'Replication Set': 'rds56-replication',
-    Cluster: 'rds56-cluster'
+    Cluster: 'rds56-cluster',
   },
   fields: {
     accessKeyInput: '//input[@name="aws_access_key"]',
-    addAWSRDSMySQLbtn: '//a[text()[contains(.,\'Add an AWS RDS MySQL or Aurora MySQL Instance\')]]',
+    addAWSRDSMySQLbtn: '//a[text()[contains(.,"Add an AWS RDS MySQL or Aurora MySQL Instance")]]',
     addInstanceDiv: '//div[@class="view"]',
     addInstancesList: '//nav[@class="navigation"]',
     addMongoDBRemote: '//a[text()[contains(.,"Add a Remote MongoDB Instance")]]',

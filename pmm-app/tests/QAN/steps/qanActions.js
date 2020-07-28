@@ -4,19 +4,14 @@ const assert = require('assert');
 module.exports = {
   async expandAllFilter() {
     for (let i = 0; i < 4; i++) {
-      // eslint-disable-next-line max-len
       const numOfElementsFilterCount = await I.grabNumberOfVisibleElements(
-        qanPage.filterGroupCountSelector(qanPage.filterGroups[i])
+        qanPage.filterGroupCountSelector(qanPage.filterGroups[i]),
       );
 
       if (numOfElementsFilterCount === 1) {
-        // eslint-disable-next-line max-len
         I.click(qanPage.filterGroupCountSelector(qanPage.filterGroups[i]));
-        // eslint-disable-next-line max-len
         I.waitForVisible(
-          `//section[@class='aside__filter-group']//span[contains(text(), '${
-            qanPage.filterGroups[i]
-          }')]/../button[contains(text(), 'Show top 5')]`
+          `//section[@class='aside__filter-group']//span[contains(text(), '${qanPage.filterGroups[i]}')]/../button[contains(text(), 'Show top 5')]`,
         );
       }
     }
@@ -157,7 +152,7 @@ module.exports = {
       I.wait(1);
       const newResultsCount = this.getCountOfItems();
 
-      if (newResultsCount != oldResultsCount) {
+      if (newResultsCount !== oldResultsCount) {
         return;
       }
     }
@@ -250,7 +245,7 @@ module.exports = {
     for (let i = 0; i < 5; i++) {
       const loadingProcess = await I.grabNumberOfVisibleElements(qanPage.fields.newQANSpinnerLocator);
 
-      if (loadingProcess == 0) {
+      if (loadingProcess === 0) {
         return;
       }
     }
@@ -271,7 +266,7 @@ module.exports = {
   },
 
   async getPagesCount() {
-    const pagesCount = '//ul[@data-qa=\'qan-pagination\']//li[contains(@class,\'ant-pagination-item\')][last()]//a';
+    const pagesCount = '//ul[@data-qa="qan-pagination\']//li[contains(@class,\'ant-pagination-item\')][last()]//a';
     const pages = await I.grabTextFrom(pagesCount);
 
     return pages;
@@ -306,25 +301,23 @@ module.exports = {
   },
 
   async verifyAvgQueryTime() {
-    // eslint-disable-next-line max-len
     assert.equal(
       await I.grabTextFrom(qanPage.fields.overviewRowQueryCount),
       await I.grabTextFrom(qanPage.fields.qps),
-      'Query Count value in Overview and Detail should match'
+      'Query Count value in Overview and Detail should match',
     );
-    // eslint-disable-next-line max-len
     assert.equal(
       await I.grabTextFrom(qanPage.fields.overviewRowQueryTime),
       await I.grabTextFrom(qanPage.fields.queryTimeDetail),
-      'Query Time value in Overview and Detail should match'
+      'Query Time value in Overview and Detail should match',
     );
     let [perQueryStats, perQueryUnit] = (await I.grabTextFrom(qanPage.fields.queryTimeDetail)).split(' ');
 
-    if (perQueryUnit == 'ms') {
+    if (perQueryUnit === 'ms') {
       perQueryStats /= 1000;
     }
 
-    if (perQueryUnit == 'µs') {
+    if (perQueryUnit === 'µs') {
       perQueryStats /= 1000000;
     }
 
@@ -345,7 +338,6 @@ module.exports = {
 
     I.waitForVisible(sortLocator, 30);
     I.click(sortLocator);
-    // eslint-disable-next-line max-len
     I.waitForVisible(sortLocator, 30);
   },
 
@@ -364,18 +356,17 @@ module.exports = {
         [, metricValueSecond] = metricValueSecond.split('<');
       }
 
-      // eslint-disable-next-line max-len
       if (sortOrder === 'down') {
         assert.equal(
           metricValue >= metricValueSecond,
           true,
-          `Descending Sort of ${metricName} is Wrong Please check`
+          `Descending Sort of ${metricName} is Wrong Please check`,
         );
       } else {
         assert.equal(
           metricValue <= metricValueSecond,
           true,
-          `Ascending Sort of ${metricName} is Wrong Please check`
+          `Ascending Sort of ${metricName} is Wrong Please check`,
         );
       }
     }
@@ -383,7 +374,9 @@ module.exports = {
 
   async verifyCountTooltip(value) {
     // need to filter out value for per query
-    const [,,, tooltip] = (await I.grabTextFrom(qanPage.fields.overviewRowQueryCountTooltipText)).split(' ');
+    const [, , , tooltip] = (await I.grabTextFrom(qanPage.fields.overviewRowQueryCountTooltipText)).split(
+      ' ',
+    );
 
     assert.equal(tooltip, value, 'The tooltip has wrong value');
   },
@@ -412,5 +405,4 @@ module.exports = {
 
     return resultsCount[2];
   },
-
 };

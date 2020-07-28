@@ -373,26 +373,27 @@ module.exports = {
       'Percentage of Open Table Definitions to Table Definition Cache',
     ],
     serviceName:
-      '//label[contains(text(), \'Service Name\')]/following-sibling::value-select-dropdown/descendant::a[@class=\'variable-value-link\']',
-    urlWithRDSFilter: 'graph/d/mysql-instance-overview/mysql-instances-overview?orgId=1&'
-        + 'from=now-5m&to=now&refresh=1m&var-interval=$__auto_interval_interval&var-region=All&'
-        + 'var-environment=All&var-cluster=rds56-cluster&var-replication_set=All&var-az=&'
-        + 'var-node_type=All&var-node_model=&var-database=All&var-service_type=All&var-schema=All',
+      '//label[contains(text(), "Service Name")]/following-sibling::value-select-dropdown/descendant::a[@class="variable-value-link"]',
+    urlWithRDSFilter:
+      'graph/d/mysql-instance-overview/mysql-instances-overview?orgId=1&'
+      + 'from=now-5m&to=now&refresh=1m&var-interval=$__auto_interval_interval&var-region=All&'
+      + 'var-environment=All&var-cluster=rds56-cluster&var-replication_set=All&var-az=&'
+      + 'var-node_type=All&var-node_model=&var-database=All&var-service_type=All&var-schema=All',
   },
 
   fields: {
-    notAvailableMetrics: '//span[contains(text(), \'N/A\')]',
-    notAvailableDataPoints: '//div[contains(text(),\'No data\')]',
-    metricTitle: '//div[@class=\'panel-title\']',
+    notAvailableMetrics: '//span[contains(text(), "N/A")]',
+    notAvailableDataPoints: '//div[contains(text(),"No data")]',
+    metricTitle: '//div[@class="panel-title"]',
     reportTitleWithNA:
-      '//span[contains(text(), \'N/A\')]//ancestor::div[contains(@class,\'panel-container\')]//span[contains(@class,\'panel-title-text\')]',
+      '//span[contains(text(), "N/A")]//ancestor::div[contains(@class,"panel-container")]//span[contains(@class,"panel-title-text")]',
     reportTitleWithNoData:
-      '//div[contains(text(),\'No data\')]//ancestor::div[contains(@class,\'panel-container\')]//span[contains(@class,\'panel-title-text\')]',
+      '//div[contains(text(),"No data")]//ancestor::div[contains(@class,"panel-container")]//span[contains(@class,"panel-title-text")]',
     otherReportTitleWithNoData:
-      '//span[contains(text(),\'No Data\')]//ancestor::div[contains(@class,\'panel-container\')]//span[contains(@class,\'panel-title-text\')]',
-    collapsedDashboardRow: '//div[@class=\'dashboard-row dashboard-row--collapsed\']/a',
-    annotationMarker: '(//div[contains(@class,\'events_marker\')])',
-    clearSelection: '//a[@ng-click=\'vm.clearSelections()\']',
+      '//span[contains(text(),"No Data")]//ancestor::div[contains(@class,"panel-container")]//span[contains(@class,"panel-title-text")]',
+    collapsedDashboardRow: '//div[@class="dashboard-row dashboard-row--collapsed"]/a',
+    annotationMarker: '(//div[contains(@class,"events_marker")])',
+    clearSelection: '//a[@ng-click="vm.clearSelections()"]',
   },
 
   annotationLocator(annotationNumber) {
@@ -450,12 +451,7 @@ module.exports = {
     assert.equal(
       actualNumber <= expectedNumber,
       true,
-      `Expected ${
-        expectedNumber
-      } Elements with but found ${
-        actualNumber
-      }. Report Names are ${
-        titles}`
+      `Expected ${expectedNumber} Elements with but found ${actualNumber}. Report Names are ${titles}`,
     );
   },
 
@@ -469,9 +465,9 @@ module.exports = {
     let sectionsToExpand;
     const sections = await I.grabTextFrom(this.fields.collapsedDashboardRow);
 
-    if (halfToExpand == 1) {
+    if (halfToExpand === 1) {
       sectionsToExpand = sections.slice(0, sections.length / 2);
-    } else if (halfToExpand == 2) {
+    } else if (halfToExpand === 2) {
       sectionsToExpand = sections.slice(sections.length / 2, sections.length);
     } else {
       sectionsToExpand = sections;

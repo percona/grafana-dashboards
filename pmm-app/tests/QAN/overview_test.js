@@ -13,7 +13,7 @@ Scenario(
 
     qanActions.showTooltip(ROW_NUMBER, QUERY_TIME_COLUMN_NUMBER);
     I.seeElement(qanPage.elements.latencyChart);
-  }
+  },
 );
 
 Scenario(
@@ -24,9 +24,8 @@ Scenario(
 
     qanActions.showTooltip(ROW_NUMBER, QUERY_COUNT_COLUMN_NUMBER);
     I.dontSeeElement(qanPage.elements.latencyChart);
-  }
+  },
 );
-
 
 // Need to be removed from Skipped when better locator for Sorting buttons implemented
 xScenario(
@@ -37,7 +36,7 @@ xScenario(
     qanActions.changeSorting(1, 'down');
     qanActions.verifySortingIs(1, 'down');
     qanActions.verifySortingIs(3, '');
-  }
+  },
 );
 
 // Need to be removed from Skipped when better locator for Sorting buttons implemented
@@ -46,13 +45,16 @@ xScenario(
   async (qanPage, qanActions) => {
     qanActions.waitForNewQANPageLoaded();
     qanActions.verifySortingIs(1, 'down');
-  }
+  },
 );
 // Skipping because of a random failing at PR tests execution
-xScenario('PMM-T183 Verify that "Group by" in the overview table can be changed @qan', async (qanPage, qanActions) => {
-  qanActions.changeGroupBy('Database');
-  qanActions.verifyGroupByIs('Database');
-});
+xScenario(
+  'PMM-T183 Verify that "Group by" in the overview table can be changed @qan',
+  async (qanPage, qanActions) => {
+    qanActions.changeGroupBy('Database');
+    qanActions.verifyGroupByIs('Database');
+  },
+);
 
 // Need to be skipped for change in locator
 xScenario(
@@ -60,7 +62,7 @@ xScenario(
   async (qanPage, qanActions) => {
     qanActions.selectRow('2');
     qanActions.verifyRowIsSelected('2');
-  }
+  },
 );
 
 Scenario(
@@ -85,7 +87,7 @@ Scenario(
     I.waitForElement(qanPage.fields.newQANAddColumn, 30);
     I.waitForElement(qanPage.getColumn(metricName), 30);
     I.dontSeeElement(qanPage.getColumn('Load'));
-  }
+  },
 );
 
 Scenario(
@@ -111,7 +113,7 @@ Scenario(
     I.waitForElement(qanPage.getColumn(metricName), 30);
     I.seeElement(qanPage.getColumn('Load'));
     I.seeElement(qanPage.getColumn(metricName));
-  }
+  },
 );
 
 Scenario(
@@ -123,7 +125,7 @@ Scenario(
     I.waitForElement(qanPage.fields.filterBy, 30);
     const countBefore = await qanActions.getCountOfItems();
 
-    for (i = 0; i < filters.length; i++) {
+    for (let i = 0; i < filters.length; i++) {
       await I.fillField(qanPage.fields.filterBy, filters[i]);
       qanActions.applyFilterNewQAN(filters[i]);
       const countAfter = await qanActions.getCountOfItems();
@@ -132,7 +134,7 @@ Scenario(
       qanActions.applyFilterNewQAN(filters[i]);
       await I.clearField(qanPage.fields.filterBy);
     }
-  }
+  },
 );
 
 Scenario(
@@ -146,7 +148,7 @@ Scenario(
     I.fillField(qanPage.fields.searchFieldForColumn, column);
     I.waitForVisible(qanPage.fields.noDataIcon, 30);
     I.seeElement(qanPage.fields.noDataIcon);
-  }
+  },
 );
 
 Scenario(
@@ -163,7 +165,7 @@ Scenario(
       'Full Scan',
     ];
 
-    for (i = 0; i < columnsToAdd.length; i++) {
+    for (let i = 0; i < columnsToAdd.length; i++) {
       I.click(qanPage.fields.addColumnNewQAN);
       qanActions.addSpecificColumn(columnsToAdd[i]);
     }
@@ -177,7 +179,7 @@ Scenario(
     I.waitForVisible(qanPage.getColumn('Query Time'), 30);
     I.dragAndDrop(qanPage.fields.resizer, qanPage.getColumn('Query Time'));
     I.scrollTo(qanPage.getColumn('Query Time'));
-  }
+  },
 );
 
 Scenario(
@@ -194,21 +196,23 @@ Scenario(
     }
 
     I.seeElement(qanPage.fields.showSelectedDisabled);
-  }
+  },
 );
 
-Scenario('PMM-T122 - Verify QAN UI Elements are displayed @not-pr-pipeline @qan', async (I, qanPage, qanActions) => {
-  qanActions.waitForNewQANPageLoaded();
-  qanActions.applyFilterNewQAN('mysql');
-  I.waitForVisible(qanPage.fields.filterBy, 30);
-  I.waitForVisible(qanPage.fields.addColumnNewQAN, 30);
-  await qanActions.verifyRowCount(27);
-  await qanActions.verifyPagesAndCount(25);
-  I.waitForVisible(qanPage.fields.environmentLabel, 30);
-  I.click(qanPage.fields.querySelector);
-  I.waitForVisible(qanPage.getColumn('Lock Time'), 30);
-});
-
+Scenario(
+  'PMM-T122 - Verify QAN UI Elements are displayed @not-pr-pipeline @qan',
+  async (I, qanPage, qanActions) => {
+    qanActions.waitForNewQANPageLoaded();
+    qanActions.applyFilterNewQAN('mysql');
+    I.waitForVisible(qanPage.fields.filterBy, 30);
+    I.waitForVisible(qanPage.fields.addColumnNewQAN, 30);
+    await qanActions.verifyRowCount(27);
+    await qanActions.verifyPagesAndCount(25);
+    I.waitForVisible(qanPage.fields.environmentLabel, 30);
+    I.click(qanPage.fields.querySelector);
+    I.waitForVisible(qanPage.getColumn('Lock Time'), 30);
+  },
+);
 
 // Need to be fixed as soon as better locators for Sorting are implemented
 xScenario(
@@ -228,7 +232,7 @@ xScenario(
     await qanPage.verifyMetricsSorted('Query Time', 5, 'down');
     qanPage.sortMetric('Query Time', 'up');
     await qanPage.verifyMetricsSorted('Query Time', 5, 'up');
-  }
+  },
 );
 
 Scenario(
@@ -246,19 +250,22 @@ Scenario(
     I.waitForVisible(qanPage.fields.overviewRowQueryTimeTooltip, 20);
     await qanActions.verifyTimeTooltip(`Per query : ${queryTime}`);
     I.click(qanPage.fields.querySelector);
-  }
+  },
 );
 
 // Need to Skip this until Sort can be interacted with
-xScenario('PMM-T204 - Verify small and N/A values on sparkline @not-pr-pipeline @qan', async (I, qanPage, qanActions) => {
-  qanActions.waitForNewQANPageLoaded();
-  qanActions.sortMetric('Load', 'up');
-  I.moveCursorTo(qanPage.fields.loadValue);
-  I.waitForVisible(qanPage.fields.loadValueTooltip, 10);
-  qanActions.applyFilterNewQAN('mongodb_cluster');
-  I.click(qanPage.fields.addColumnNewQAN);
-  qanActions.addSpecificColumn('Innodb');
-  qanActions.verifyAddedColumn('Innodb');
-  I.moveCursorTo(qanPage.fields.innodbColumn);
-  I.dontSeeElement(qanPage.fields.innodbColumnTooltip);
-});
+xScenario(
+  'PMM-T204 - Verify small and N/A values on sparkline @not-pr-pipeline @qan',
+  async (I, qanPage, qanActions) => {
+    qanActions.waitForNewQANPageLoaded();
+    qanActions.sortMetric('Load', 'up');
+    I.moveCursorTo(qanPage.fields.loadValue);
+    I.waitForVisible(qanPage.fields.loadValueTooltip, 10);
+    qanActions.applyFilterNewQAN('mongodb_cluster');
+    I.click(qanPage.fields.addColumnNewQAN);
+    qanActions.addSpecificColumn('Innodb');
+    qanActions.verifyAddedColumn('Innodb');
+    I.moveCursorTo(qanPage.fields.innodbColumn);
+    I.dontSeeElement(qanPage.fields.innodbColumnTooltip);
+  },
+);

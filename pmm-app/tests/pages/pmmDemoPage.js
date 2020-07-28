@@ -29,7 +29,7 @@ module.exports = {
     1,
   ],
   fields: {
-    copyrightsAndLegalPanel: '//a[contains(text(), \'Copyrights & Legal\')]',
+    copyrightsAndLegalPanel: '//a[contains(text(), "Copyrights & Legal")]',
     policyText:
       '//p[contains(text(), \'MySQL and InnoDB are trademarks of Oracle Corp. Proudly running Percona Server. Copyright (c) 2006-2020 Percona LLC.\')]',
     termsOfUse: '//a[contains(text(), \'Terms of Use\')]',

@@ -10,7 +10,7 @@ Scenario(
     dashboardPage.waitForDashboardOpened();
     adminPage.peformPageDown(5);
     await dashboardPage.expandEachDashboardRow();
-    for (i = 0; i < serviceName.length; i++) {
+    for (let i = 0; i < serviceName.length; i++) {
       await dashboardPage.applyFilter('Service Name', serviceName[i]);
       I.click(adminPage.fields.metricTitle);
       adminPage.peformPageDown(5);
@@ -18,7 +18,7 @@ Scenario(
       await dashboardPage.verifyThereAreNoGraphsWithNA();
       await dashboardPage.verifyThereAreNoGraphsWithoutData(1);
     }
-  }
+  },
 );
 
 Scenario(
@@ -31,7 +31,7 @@ Scenario(
     dashboardPage.waitForDashboardOpened();
     adminPage.peformPageDown(5);
     await dashboardPage.expandEachDashboardRow();
-    for (i = 0; i < serviceName.length; i++) {
+    for (let i = 0; i < serviceName.length; i++) {
       await dashboardPage.applyFilter('Service Name', serviceName[i]);
       I.click(adminPage.fields.metricTitle);
       adminPage.peformPageDown(5);
@@ -39,7 +39,7 @@ Scenario(
       await dashboardPage.verifyThereAreNoGraphsWithNA();
       await dashboardPage.verifyThereAreNoGraphsWithoutData(2);
     }
-  }
+  },
 );
 
 Scenario(
@@ -52,7 +52,7 @@ Scenario(
     adminPage.peformPageDown(5);
     await dashboardPage.expandEachDashboardRow();
     // Need to fix the scroll better, wait for ScrollTo() fix in playwright.
-    for (i = 0; i < serviceName.length; i++) {
+    for (let i = 0; i < serviceName.length; i++) {
       await dashboardPage.applyFilter('Service Name', serviceName[i]);
       I.click(adminPage.fields.metricTitle);
       adminPage.peformPageDown(5);
@@ -61,7 +61,7 @@ Scenario(
       await dashboardPage.verifyThereAreNoGraphsWithNA();
       await dashboardPage.verifyThereAreNoGraphsWithoutData(0);
     }
-  }
+  },
 );
 
 Scenario(
@@ -73,7 +73,7 @@ Scenario(
     dashboardPage.waitForDashboardOpened();
     adminPage.peformPageDown(10);
     await dashboardPage.expandEachDashboardRow();
-    for (i = 0; i < serviceName.length; i++) {
+    for (let i = 0; i < serviceName.length; i++) {
       await dashboardPage.applyFilter('Service Name', serviceName[i]);
       I.click(adminPage.fields.metricTitle);
       adminPage.peformPageDown(5);
@@ -81,7 +81,7 @@ Scenario(
       await dashboardPage.verifyThereAreNoGraphsWithNA();
       await dashboardPage.verifyThereAreNoGraphsWithoutData();
     }
-  }
+  },
 );
 
 // Need to skip due to rework on MongoDB Cluster Summary Dashboard
@@ -95,7 +95,7 @@ xScenario(
     dashboardPage.verifyMetricsExistence(dashboardPage.mongoDbClusterSummaryDashboard.metrics);
     await dashboardPage.verifyThereAreNoGraphsWithNA();
     await dashboardPage.verifyThereAreNoGraphsWithoutData(0);
-  }
+  },
 );
 
 Scenario(
@@ -107,14 +107,14 @@ Scenario(
     dashboardPage.waitForDashboardOpened();
     adminPage.peformPageDown(1);
     await dashboardPage.expandEachDashboardRow();
-    for (i = 0; i < serviceName.length; i++) {
+    for (let i = 0; i < serviceName.length; i++) {
       await dashboardPage.applyFilter('Service Name', serviceName[i]);
       I.click(adminPage.fields.metricTitle);
       adminPage.peformPageDown(5);
       await dashboardPage.verifyThereAreNoGraphsWithNA();
       await dashboardPage.verifyThereAreNoGraphsWithoutData(1);
     }
-  }
+  },
 );
 
 Scenario(
@@ -126,7 +126,7 @@ Scenario(
     dashboardPage.verifyMetricsExistence(dashboardPage.advancedDataExplorationDashboard.metrics);
     await dashboardPage.verifyThereAreNoGraphsWithNA();
     await dashboardPage.verifyThereAreNoGraphsWithoutData(0);
-  }
+  },
 );
 
 Scenario(
@@ -138,7 +138,7 @@ Scenario(
     dashboardPage.verifyMetricsExistence(dashboardPage.prometheusDashboard.metrics);
     await dashboardPage.verifyThereAreNoGraphsWithNA(0);
     await dashboardPage.verifyThereAreNoGraphsWithoutData(0);
-  }
+  },
 );
 
 Scenario(
@@ -150,14 +150,14 @@ Scenario(
     I.amOnPage(pmmDemoPage.url + dashboardPage.prometheusExporterStatusDashboard.url);
     dashboardPage.waitForDashboardOpened();
     await dashboardPage.expandEachDashboardRow();
-    for (i = 0; i < nodeName.length; i++) {
+    for (let i = 0; i < nodeName.length; i++) {
       await dashboardPage.applyFilter('Node Name', nodeName[i]);
       I.click(adminPage.fields.metricTitle);
       dashboardPage.verifyMetricsExistence(dashboardPage.prometheusExporterStatusDashboard.metrics);
       await dashboardPage.verifyThereAreNoGraphsWithNA(3);
       await dashboardPage.verifyThereAreNoGraphsWithoutData(24);
     }
-  }
+  },
 );
 
 Scenario(
@@ -169,7 +169,7 @@ Scenario(
     I.amOnPage(pmmDemoPage.url + dashboardPage.prometheusExporterOverviewDashboard.url);
     dashboardPage.waitForDashboardOpened();
     adminPage.peformPageDown(2);
-    for (i = 0; i < nodeName.length; i++) {
+    for (let i = 0; i < nodeName.length; i++) {
       await dashboardPage.applyFilter('Node Name', nodeName[i]);
       I.click(adminPage.fields.metricTitle);
       adminPage.peformPageDown(2);
@@ -177,7 +177,7 @@ Scenario(
       await dashboardPage.verifyThereAreNoGraphsWithNA(0);
       await dashboardPage.verifyThereAreNoGraphsWithoutData();
     }
-  }
+  },
 );
 
 Scenario(
@@ -187,15 +187,15 @@ Scenario(
     dashboardPage.waitForDashboardOpened();
     I.click(adminPage.fields.metricTitle);
     adminPage.peformPageDown(10);
-    for (i = 0; i < pmmDemoPage.monitoredDB.length; i += 2) {
+    for (let i = 0; i < pmmDemoPage.monitoredDB.length; i += 2) {
       I.waitForElement(pmmDemoPage.getHostLocator(pmmDemoPage.monitoredDB[i]), 30);
       I.seeElement(pmmDemoPage.getHostLocator(pmmDemoPage.monitoredDB[i]));
       I.seeNumberOfVisibleElements(
         pmmDemoPage.getHostLocator(pmmDemoPage.monitoredDB[i]),
-        pmmDemoPage.monitoredDB[i + 1]
+        pmmDemoPage.monitoredDB[i + 1],
       );
     }
 
     dashboardPage.verifyMetricsExistence(dashboardPage.homeDashboard.metrics);
-  }
+  },
 );
