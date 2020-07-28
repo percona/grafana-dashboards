@@ -25,7 +25,7 @@ export const ManageColumns = (props) => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const extraSelectProps = {
     dropdownAlign: { overflow: { adjustX: true } },
-    getPopupContainer: (trigger) => trigger.parentNode
+    getPopupContainer: (trigger) => trigger.closest('.panel-content')
   };
 
   useEffect(() => {
