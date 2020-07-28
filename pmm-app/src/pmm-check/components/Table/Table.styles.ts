@@ -16,17 +16,14 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
     theme.type,
   );
   const cellPadding = '12px 8px';
-  const headerPadding = '10px 8px';
 
   return {
     wrapper: css`
-      overflow: auto;
       background-color: ${backgroundColor};
-    `,
-    caption: css`
-      font-size: ${theme.typography.heading.h5};
-      padding: ${headerPadding};
-      border: 1px solid transparent;
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 1em;
+      overflow: auto;
     `,
     table: css`
       border-collapse: collapse;
@@ -39,8 +36,12 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       thead {
         tr {
           th {
-            padding: ${cellPadding};
+            background-color: ${backgroundColor};
             border: 1px solid ${borderColor};
+            box-shadow: 0 1px 0 ${borderColor}, 0 -1px 0 ${borderColor};
+            padding: ${cellPadding};
+            position: sticky;
+            top: 0;
             word-wrap: break-word;
           }
         }

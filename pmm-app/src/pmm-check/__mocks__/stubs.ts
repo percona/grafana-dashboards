@@ -3,21 +3,77 @@ import { ActiveCheck } from '../types';
 export const activeCheckStub: ActiveCheck[] = [
   {
     details: [
-      'root password is empty: The root password is empty',
-      'MySQL is outdated: MySQL 5.1 is not the latest major version',
+      {
+        description: 'root password is empty: The root password is empty',
+        labels: {
+          agent_id: 'pmm-server',
+          agent_type: 'pmm-agent',
+          alertname: 'pmm_agent_outdated',
+          node_id: 'pmm-server',
+          node_name: 'pmm-server',
+          node_type: 'generic',
+          service_name: 'sandbox-mysql.acme.com',
+          severity: 'error',
+          stt_check: '1',
+        },
+      },
+      {
+        description: 'MySQL is outdated: MySQL 5.1 is not the latest major version',
+        labels: {
+          agent_id: 'pmm-server',
+          agent_type: 'pmm-agent',
+          alertname: 'pmm_agent_outdated',
+          node_id: 'pmm-server',
+          node_name: 'pmm-server',
+          node_type: 'generic',
+          service_name: 'sandbox-mysql.acme.com',
+          severity: 'notice',
+          stt_check: '1',
+        },
+      }
     ],
     failed: [1, 0, 1],
     key: '0',
     name: 'sandbox-mysql.acme.com',
   },
   {
-    details: ['pmm-server is outdated: PMM Server is not the latest major version'],
+    details: [
+      {
+        description: 'pmm-server is outdated: PMM Server is not the latest major version',
+        labels: {
+          agent_id: 'pmm-server',
+          agent_type: 'pmm-agent',
+          alertname: 'pmm_agent_outdated',
+          node_id: 'pmm-server',
+          node_name: 'pmm-server',
+          node_type: 'generic',
+          service_name: 'pmm-server-postgresql',
+          severity: 'warning',
+          stt_check: '1',
+        },
+      },
+    ],
     failed: [0, 1, 0],
     key: '1',
     name: 'pmm-server-postgresql',
   },
   {
-    details: ['MongoDB password is weak: MongoDB admin password does not meet the complexity requirement'],
+    details: [
+      {
+        description: 'MongoDB password is weak: MongoDB admin password does not meet the complexity requirement',
+        labels: {
+          agent_id: 'pmm-server',
+          agent_type: 'pmm-agent',
+          alertname: 'pmm_agent_outdated',
+          node_id: 'pmm-server',
+          node_name: 'pmm-server',
+          node_type: 'generic',
+          service_name: 'mongodb-inst-rpl-1',
+          severity: 'warning',
+          stt_check: '1',
+        },
+      },
+    ],
     failed: [0, 1, 0],
     key: '2',
     name: 'mongodb-inst-rpl-1',
