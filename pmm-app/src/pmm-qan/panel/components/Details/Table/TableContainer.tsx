@@ -16,9 +16,8 @@ const { Panel } = Collapse;
 const TableCreateContainer: FC<TableContainerProps> = ({
   databaseType,
   examples,
-  loading
 }) => {
-  const [tables] = useTables(examples, databaseType);
+  const [tables, loading] = useTables(examples, databaseType);
 
   return (
     <Spin spinning={loading}>

@@ -101,7 +101,6 @@ export const DetailsSection: FC = () => {
               <TableCreateContainer
                 databaseType={databaseType}
                 examples={examples}
-                loading={loading}
               />
             </TabPane>
           ) : null}
