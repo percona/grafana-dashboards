@@ -17,10 +17,11 @@ module.exports = {
   },
 
   async selectItemFromPMMDropdown(title) {
-    title = `//li/a[text()='${title}']`;
+    const titleLocator = `//li/a[text()='${title}']`;
+
     I.click(this.fields.pmmDropdownMenuSelector);
-    I.waitForVisible(title, 30);
-    I.click(title);
+    I.waitForVisible(titleLocator, 30);
+    I.click(titleLocator);
   },
 
   async navigateToDashboard(folderName, dashboardName) {

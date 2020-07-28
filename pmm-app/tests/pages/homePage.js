@@ -121,7 +121,11 @@ module.exports = {
   getLocators(version) {
     let locators;
 
-    version >= 2.9 ? (version = 'latest') : version;
+    if (version >= 2.9) {
+      // eslint-disable-next-line no-param-reassign
+      version = 'latest';
+    }
+
     version in this.fields.updateWidget
       ? (locators = {
         ...this.fields.updateWidget.base,

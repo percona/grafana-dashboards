@@ -11,8 +11,11 @@ Scenario(
     await settingsAPI.apiDisableSTT();
     I.amOnPage(homePage.url);
     I.waitForVisible(homePage.fields.sttDisabledFailedChecksPanelSelector, 30);
-    I.see(databaseChecksPage.messages.homePagePanelMessage, homePage.fields.sttDisabledFailedChecksPanelSelector);
-  }
+    I.see(
+      databaseChecksPage.messages.homePagePanelMessage,
+      homePage.fields.sttDisabledFailedChecksPanelSelector,
+    );
+  },
 );
 
 Scenario(
@@ -22,11 +25,15 @@ Scenario(
     I.amOnPage(databaseChecksPage.url);
     I.waitForVisible(databaseChecksPage.fields.dbCheckPanelSelector, 30);
     I.waitForVisible(databaseChecksPage.fields.disabledSTTMessageSelector, 30);
-    I.see(databaseChecksPage.messages.disabledSTTMessage, databaseChecksPage.fields.disabledSTTMessageSelector);
+    I.see(
+      databaseChecksPage.messages.disabledSTTMessage,
+      databaseChecksPage.fields.disabledSTTMessageSelector,
+    );
     I.seeElement(databaseChecksPage.fields.disabledSTTMessageLinkSelector);
-    I.seeAttributesOnElements(databaseChecksPage.fields.disabledSTTMessageLinkSelector,
-      { href: `${config.url}${pmmSettingsPage.url}` });
-  }
+    I.seeAttributesOnElements(databaseChecksPage.fields.disabledSTTMessageLinkSelector, {
+      href: `${config.url}${pmmSettingsPage.url}`,
+    });
+  },
 );
 
 Scenario(
@@ -39,7 +46,7 @@ Scenario(
     I.waitForVisible(databaseChecksPage.fields.dbCheckPanelSelector, 30);
     I.amOnPage(databaseChecksPage.url);
     I.waitForVisible(databaseChecksPage.fields.dbCheckPanelSelector, 30);
-  }
+  },
 );
 
 Scenario(
@@ -51,7 +58,7 @@ Scenario(
     I.waitForVisible(homePage.fields.sttFailedChecksPanelSelector, 30);
     I.doubleClick(homePage.fields.sttFailedChecksPanelSelector);
     await databaseChecksPage.verifyDatabaseChecksPageOpened();
-  }
+  },
 );
 
 Scenario(
@@ -64,7 +71,7 @@ Scenario(
     await databaseChecksPage.verifyDatabaseChecksPageOpened();
     databaseChecksPage.mouseOverInfoIcon(row);
     await databaseChecksPage.compareTooltipValues(row);
-  }
+  },
 );
 
 Scenario(
@@ -74,5 +81,5 @@ Scenario(
     I.amOnPage(databaseChecksPage.url);
     await databaseChecksPage.verifyDatabaseChecksPageOpened();
     await databaseChecksPage.verifyServiceNamesExistence();
-  }
+  },
 );

@@ -311,6 +311,7 @@ module.exports = {
       await I.grabTextFrom(qanPage.fields.queryTimeDetail),
       'Query Time value in Overview and Detail should match',
     );
+    // eslint-disable-next-line prefer-const
     let [perQueryStats, perQueryUnit] = (await I.grabTextFrom(qanPage.fields.queryTimeDetail)).split(' ');
 
     if (perQueryUnit === 'ms') {

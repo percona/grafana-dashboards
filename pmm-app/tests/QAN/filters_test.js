@@ -1,7 +1,7 @@
 Feature('Test QAN filters');
 const assert = require('assert');
 
-Before((I, qanPage, qanActions) => {
+Before((I, qanPage) => {
   I.Authorize();
   I.amOnPage(qanPage.url);
 });

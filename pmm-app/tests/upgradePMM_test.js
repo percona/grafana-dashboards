@@ -36,7 +36,8 @@ Scenario(
     const versions = getVersions();
 
     I.amOnPage(homePage.url);
-    // Whats New Link is added for the latest version hours before the release hence we need to skip checking on that, rest it should be available and checked.
+    // Whats New Link is added for the latest version hours before the release,
+    // hence we need to skip checking on that, rest it should be available and checked.
     if (versions.majorVersionDiff >= 1 && versions.patchVersionDiff >= 0) {
       I.waitForElement(homePage.fields.whatsNewLink, 30);
       I.seeElement(homePage.fields.whatsNewLink);
@@ -148,14 +149,12 @@ Scenario(
     // Checking that Cluster filters are still in QAN after Upgrade
     for (const name of Object.values(addInstanceAPI.clusterNames)) {
       // For now we can't see the cluster names in QAN for ProxySQL and MongoDB
-      if (name === addInstanceAPI.clusterNames.proxysql || name === addInstanceAPI.clusterNames.mongodb) {
-        continue;
+      if (name !== addInstanceAPI.clusterNames.proxysql && name !== addInstanceAPI.clusterNames.mongodb) {
+        const filter = qanPage.getFilterLocator(name);
+
+        I.waitForVisible(filter, 30);
+        I.seeElement(filter);
       }
-
-      const filter = qanPage.getFilterLocator(name);
-
-      I.waitForVisible(filter, 30);
-      I.seeElement(filter);
     }
   },
 );

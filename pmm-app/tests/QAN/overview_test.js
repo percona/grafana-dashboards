@@ -67,7 +67,7 @@ xScenario(
 
 Scenario(
   'PMM-T133, PMM-T132, PMM-T100 Check Changing Main Metric, PMM-T203 Verify user is able to search for columns by typing @not-pr-pipeline @qan',
-  async (I, qanPage, dashboardPage, qanActions) => {
+  async (I, qanPage, dashboardPage) => {
     const metricName = 'Query Count with errors';
     const urlString = 'num_queries_with_errors';
 
@@ -92,7 +92,7 @@ Scenario(
 
 Scenario(
   'PMM-T99 Verify User is able to add new metric, PMM-T222 Verify `Add column` dropdown works @not-pr-pipeline @qan',
-  async (I, qanPage, dashboardPage, qanActions) => {
+  async (I, qanPage, dashboardPage) => {
     const metricName = 'Query Count with errors';
     const urlString = 'num_queries_with_errors';
 
