@@ -25,17 +25,17 @@ module.exports = {
       + '        summary: "Instance {{ $labels.instance }} down"\n'
       + '        description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 20 seconds."',
     editRule:
-      'groups:\n' +
-      '  - name: AutoTestAlertsEdited\n' +
-      '    rules:\n' +
-      '    - alert: InstanceDown\n' +
-      '      expr: up == 0\n' +
-      '      for: 60s\n' +
-      '      labels:\n' +
-      '        severity: critical\n' +
-      '      annotations:\n' +
-      '        summary: "Instance {{ $labels.instance }} down"\n' +
-      '        description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than {{ sec }} seconds."',
+      'groups:\n'
+      + '  - name: AutoTestAlertsEdited\n'
+      + '    rules:\n'
+      + '    - alert: InstanceDown\n'
+      + '      expr: up == 0\n'
+      + '      for: 60s\n'
+      + '      labels:\n'
+      + '        severity: critical\n'
+      + '      annotations:\n'
+      + '        summary: "Instance {{ $labels.instance }} down"\n'
+      + '        description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than {{ sec }} seconds."',
     ruleName: 'AutoTestAlerts',
     editRuleName: 'AutoTestAlertsEdited',
   },
@@ -129,6 +129,7 @@ module.exports = {
   },
   async expandSection(sectionName, expectedContentLocator) {
     const sectionExpandLocator = `//ul[@data-qa="settings-tabs"]//li[contains(text(), '${sectionName}')]`;
+
     I.click(sectionExpandLocator);
     I.waitForVisible(expectedContentLocator, 30);
   },
@@ -144,14 +145,14 @@ module.exports = {
   },
 
   async selectMetricsResolution(resolution) {
-    I.click(this.fields.metricsResolution + resolution + '"]');
+    I.click(`${this.fields.metricsResolution + resolution}"]`);
     I.click(this.fields.metricsResolutionButton);
   },
 
   async verifySelectedResolution(resolution) {
-    const selector = this.fields.metricsResolution + resolution + '"]';
+    const selector = `${this.fields.metricsResolution + resolution}"]`;
     const className = await I.grabAttributeFrom(selector, 'class');
-    
+
     assert.equal(className.includes('active'), true, 'Metric resolution should be active');
   },
 
@@ -219,7 +220,7 @@ module.exports = {
 
   async verifySwitchStateIs(switchSelector, enabled = true) {
     const className = await I.grabAttributeFrom(switchSelector, 'class');
-    
+
     if (enabled) {
       assert.equal(className.includes('disabled'), false, 'Switch should be enabled');
     } else {

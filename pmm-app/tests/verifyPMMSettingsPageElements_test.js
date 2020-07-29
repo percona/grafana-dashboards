@@ -37,6 +37,7 @@ Scenario(
 
 Scenario('Verify SSH Key Section Elements', async (I, pmmSettingsPage) => {
   const sectionNameToExpand = 'SSH key';
+
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
   await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.sshKeyButton);
   I.see('SSH key', pmmSettingsPage.fields.sshKeyLabel);
@@ -47,6 +48,7 @@ Scenario(
   'Verify Advanced Section Elements',
   async (I, pmmSettingsPage) => {
     const sectionNameToExpand = 'Advanced settings';
+
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.advancedButton);
     I.see('Data retention', pmmSettingsPage.fields.advancedLabel);
@@ -66,6 +68,7 @@ Scenario(
   'Verify Alertmanager integration Section Elements',
   async (I, pmmSettingsPage) => {
     const sectionNameToExpand = 'Alertmanager integration';
+
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.alertmanagerButton);
     I.see('Alertmanager URL', pmmSettingsPage.fields.alertmanagerUrlLabel);
@@ -78,6 +81,7 @@ Scenario(
 Scenario('Verify validation for invalid SSH Key', async (I, pmmSettingsPage) => {
   const sshKeyForTest = 'ssh-rsa testKey test@key.local';
   const sectionNameToExpand = 'SSH key';
+
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
   await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.sshKeyButton);
   pmmSettingsPage.addSSHKey(sshKeyForTest);
@@ -133,6 +137,7 @@ Scenario(
     await settingsAPI.apiDisableSTT();
     I.amOnPage(pmmSettingsPage.url);
     const sectionNameToExpand = 'Advanced settings';
+
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.advancedButton);
     pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.telemetrySwitchSelector, 'on');

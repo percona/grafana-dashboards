@@ -10,7 +10,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => ({
   textarea: css`
     margin: ${theme.spacing.md} 0;
     min-height: 150px;
-    width: 330px;
+    width: 600px;
   `,
   input: css`
     margin: ${theme.spacing.md} 0;

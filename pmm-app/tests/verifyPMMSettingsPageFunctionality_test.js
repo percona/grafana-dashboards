@@ -7,6 +7,7 @@ Before(async (I, pmmSettingsPage, settingsAPI) => {
 });
 Scenario('Open PMM Settings page and verify changing Metrics Resolution [critical]', async (I, pmmSettingsPage) => {
   const resolutionToApply = 'Rare';
+
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
   await pmmSettingsPage.selectMetricsResolution(resolutionToApply);
   await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
@@ -18,6 +19,7 @@ Scenario('Open PMM Settings page and verify changing Metrics Resolution [critica
 Scenario('Open PMM Settings page and verify changing Data Retention [critical]', async (I, pmmSettingsPage) => {
   const dataRetentionValue = '1';
   const sectionNameToExpand = 'Advanced settings';
+
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
   await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.advancedButton);
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
@@ -38,7 +40,7 @@ Scenario('Open PMM Settings page and verify adding Alertmanager Rule [critical]'
   await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.alertmanagerButton);
   pmmSettingsPage.addAlertmanagerRule(
     scheme + pmmSettingsPage.alertManager.ip + pmmSettingsPage.alertManager.service,
-    pmmSettingsPage.alertManager.editRule.replace('{{ sec }}', Math.random()*100000)
+    pmmSettingsPage.alertManager.editRule.replace('{{ sec }}', Math.random() * 100000)
   );
   await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
   pmmSettingsPage.openAlertsManagerUi();
@@ -49,6 +51,7 @@ Scenario(
   'PMM-T253 Verify user can see correct tooltip for STT [trivial]',
   async (I, pmmSettingsPage) => {
     const sectionNameToExpand = 'Advanced settings';
+
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.advancedButton);
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
@@ -61,6 +64,7 @@ Scenario(
   'PMM-T253 Verify user can enable STT if Telemetry is enabled',
   async (I, pmmSettingsPage) => {
     const sectionNameToExpand = 'Advanced settings';
+
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.advancedButton);
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
