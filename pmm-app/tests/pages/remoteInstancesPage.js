@@ -178,13 +178,13 @@ module.exports = {
   },
 
   verifyInstanceIsDiscovered(instanceIdToMonitor) {
-    const instanceIdLocator = `${this.fields.discoveryRowWithId}${instanceIdToMonitor}']`;
+    const instanceIdLocator = `${this.fields.discoveryRowWithId}${instanceIdToMonitor}"]`;
 
     I.seeElement(instanceIdLocator);
   },
 
   startMonitoringOfInstance(instanceIdToMonitor) {
-    const instanceIdLocator = `${this.fields.discoveryRowWithId}${instanceIdToMonitor}']`;
+    const instanceIdLocator = `${this.fields.discoveryRowWithId}${instanceIdToMonitor}"]`;
     const startMonitoringInstanceBtn = `${instanceIdLocator}${this.fields.startMonitoring}`;
 
     I.waitForVisible(instanceIdLocator, 30);

@@ -15,7 +15,7 @@ module.exports = {
     dbCheckPanelEmptySelector: "$db-check-panel-table-empty",
     sttEnabledDBCheckPanelSelector: "$db-check-panel-home",
     disabledSTTMessageSelector: "$db-check-panel-settings-link",
-    serviceNameSelector: "tbody > tr > td:first-child",
+    serviceNameSelector: "tr > td[rowspan]:first-child",
     totalFailedChecksTooltipSelector: ".popper > div > div > div:first-of-type",
     failedChecksTooltipSelector: ".popper > div > div > div",
     serviceNameHeaderSelector: locateChecksHeader('Service name'),
