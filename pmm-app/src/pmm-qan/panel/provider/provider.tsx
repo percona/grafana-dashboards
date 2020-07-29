@@ -4,7 +4,6 @@ import { parseURL, refreshGrafanaVariables, setLabels } from './provider.tools';
 import { QueryAnalyticsContext } from './provider.types';
 
 const initialState = {} as QueryAnalyticsContext;
-
 export const QueryAnalyticsProvider = React.createContext<QueryAnalyticsContext>(initialState);
 
 export const UrlParametersProvider = ({ timeRange, children }) => {
