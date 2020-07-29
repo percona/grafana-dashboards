@@ -937,7 +937,7 @@ export const METRIC_CATALOGUE = {
   },
   tmp_table_on_disk: {
     humanizeName: 'Tmp Table on Disk',
-    tooltipText: "The query's temporary table was stored on disk",
+    tooltipText: 'The query\'s temporary table was stored on disk',
     simpleName: 'tmp_table_on_disk',
     serviceTypes: ['mysql'],
     metricRelation: (data) => {
