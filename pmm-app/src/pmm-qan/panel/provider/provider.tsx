@@ -1,13 +1,15 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { omit } from 'lodash';
-import { getDataSourceSrv } from '@grafana/runtime';
+import { getDataSourceSrv, getTemplateSrv, getLocationSrv} from '@grafana/runtime';
+import * as data from '@grafana/data';
+import * as ui from '@grafana/ui';
 import {
   generateURL, parseURL, refreshGrafanaVariables, setLabels
 } from './provider.tools';
 import { QueryAnalyticsContext } from './provider.types';
 
 const initialState = {} as QueryAnalyticsContext;
-
+console.log('data + ui', data, getLocationSrv)
 export const QueryAnalyticsProvider = React.createContext<QueryAnalyticsContext>(initialState);
 
 const actions = {
@@ -193,10 +195,10 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
 
   useEffect(() => {
     refreshGrafanaVariables(panelState);
-    const newUrl = generateURL(panelState);
+    // const newUrl = generateURL(panelState);
 
     // eslint-disable-next-line no-restricted-globals
-    history.pushState({}, 'test', newUrl);
+    // history.pushState({}, 'test', newUrl);
   }, [panelState]);
 
   const wrapAction = (key) => (...value) => setContext(actions[key](...value));
