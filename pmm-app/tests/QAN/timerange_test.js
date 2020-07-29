@@ -13,10 +13,10 @@ Scenario(
     adminPage.applyTimeRange('Last 3 hours');
     qanActions.waitForNewQANPageLoaded();
     await qanActions.verifySelectedPageIs(1);
-  }
+  },
 );
 
-//Need to be fixed 
+// Need to be fixed
 xScenario(
   'Open the QAN Dashboard and check that changing the time range updates the overview table and URL. @qan',
   async (I, qanPage, adminPage, qanActions) => {
@@ -28,24 +28,24 @@ xScenario(
     adminPage.applyTimeRange('Last 3 hours');
     qanActions.waitForNewQANPageLoaded();
     I.seeInCurrentUrl(TIME_RANGE_QUERY_PARAMS_AFTER);
-  }
+  },
 );
 
 Scenario(
-  'Open the QAN Dashboard and check that changing the time range doesn\'t clear "Group by". @qan',
+  'Open the QAN Dashboard and check that changing the time range doesn"t clear "Group by". @qan',
   async (I, qanPage, adminPage, qanActions) => {
     qanActions.changeGroupBy('Client Host');
     adminPage.applyTimeRange('Last 24 hours');
     qanActions.verifyGroupByIs('Client Host');
-  }
+  },
 );
 
-//Need to skip until we fix Sorting Locator and make it easy for Automation
+// Need to skip until we fix Sorting Locator and make it easy for Automation
 xScenario(
   'Open the QAN Dashboard and check that changing the time range doesn\'t reset sorting. @qan',
   async (I, qanPage, adminPage, qanActions) => {
     await qanActions.changeSorting(3, 'up');
     adminPage.applyTimeRange('Last 24 hours');
     qanActions.verifySortingIs(3, 'up');
-  }
+  },
 );

@@ -33,6 +33,7 @@ Scenario('Open PMM Settings page and verify changing Data Retention [critical]',
 Scenario('Open PMM Settings page and verify adding Alertmanager Rule [critical]', async (I, pmmSettingsPage) => {
   const scheme = 'http://';
   const sectionNameToExpand = 'Alertmanager integration';
+
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
   await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.alertmanagerButton);
   pmmSettingsPage.addAlertmanagerRule(

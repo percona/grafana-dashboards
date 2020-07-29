@@ -2,10 +2,12 @@ const page = require('./pages/pmmSettingsPage');
 
 const validationValues = ['text ', '2147483648', '-1', '<script>alert(test);</script>'];
 
-let dataRetentionTable = new DataTable(['value', 'message']);
+const dataRetentionTable = new DataTable(['value', 'message']);
+
 for (const i in validationValues) {
   dataRetentionTable.add([validationValues[i], page.messages.invalidDataDurationMessage]);
 }
+
 dataRetentionTable.add(['', page.messages.requiredFieldMessage]);
 
 Feature('PMM Settings Page Elements and Validations');
@@ -87,6 +89,7 @@ Scenario(
   async (I, pmmSettingsPage) => {
     const urlWithoutScheme = 'invalid_url';
     const sectionNameToExpand = 'Alertmanager integration';
+
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.alertmanagerButton);
     pmmSettingsPage.addAlertmanagerRule(urlWithoutScheme, '');
@@ -101,6 +104,7 @@ Scenario(
   async (I, pmmSettingsPage) => {
     const urlWithoutHost = 'http://';
     const sectionNameToExpand = 'Alertmanager integration';
+
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.alertmanagerButton);
     pmmSettingsPage.addAlertmanagerRule(urlWithoutHost, '');
@@ -115,6 +119,7 @@ Scenario(
   async (I, pmmSettingsPage) => {
     const rule = 'invalid_rule';
     const sectionNameToExpand = 'Alertmanager integration';
+
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.alertmanagerButton);
     pmmSettingsPage.addAlertmanagerRule('', rule);
@@ -146,11 +151,12 @@ Scenario(
   }
 );
 
-//To be removed from Skip after https://jira.percona.com/browse/PMM-5791
+// To be removed from Skip after https://jira.percona.com/browse/PMM-5791
 xScenario(
   'PMM-T227 Open PMM Settings page and verify DATA_RETENTION value is set to 2 days @not-pr-pipeline',
   async (I, pmmSettingsPage) => {
     const dataRetention = '2';
+
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     I.waitForValue(pmmSettingsPage.fields.dataRetentionCount, dataRetention, 30);
   }

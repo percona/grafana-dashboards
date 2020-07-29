@@ -1,32 +1,29 @@
 const { I } = inject();
 const assert = require('assert');
 
-const locateLabel = dataQA => locate(`[data-qa="${dataQA}"]`)
-  .find('span');
+const locateLabel = (dataQA) => locate(`[data-qa="${dataQA}"]`).find('span');
 
 module.exports = {
-  // insert your locators and methods here
-  // setting locators
   url: 'graph/d/pmm-settings/pmm-settings',
   prometheusAlertUrl: '/prometheus/alerts',
   diagnosticsText:
-    'You can download server logs to make the problem detection simpler. ' +
-    'Please include this file if you are submitting a bug report.',
+    'You can download server logs to make the problem detection simpler. '
+    + 'Please include this file if you are submitting a bug report.',
   alertManager: {
     ip: process.env.VM_IP,
     service: ':9093/#/alerts',
     rule:
-      'groups:\n' +
-      '  - name: AutoTestAlerts\n' +
-      '    rules:\n' +
-      '    - alert: InstanceDown\n' +
-      '      expr: up == 0\n' +
-      '      for: 20s\n' +
-      '      labels:\n' +
-      '        severity: critical\n' +
-      '      annotations:\n' +
-      '        summary: "Instance {{ $labels.instance }} down"\n' +
-      '        description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 20 seconds."',
+      'groups:\n'
+      + '  - name: AutoTestAlerts\n'
+      + '    rules:\n'
+      + '    - alert: InstanceDown\n'
+      + '      expr: up == 0\n'
+      + '      for: 20s\n'
+      + '      labels:\n'
+      + '        severity: critical\n'
+      + '      annotations:\n'
+      + '        summary: "Instance {{ $labels.instance }} down"\n'
+      + '        description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 20 seconds."',
     editRule:
       'groups:\n' +
       '  - name: AutoTestAlertsEdited\n' +
@@ -72,7 +69,6 @@ module.exports = {
       link:
         'https://www.percona.com/doc/percona-monitoring-and-management/2.x/manage/server-admin-gui.html#security-threat-tool',
     },
-
   },
 
   fields: {
@@ -192,12 +188,15 @@ module.exports = {
   async verifyAlertmanagerRuleAdded(ruleName) {
     for (let i = 0; i < 10; i++) {
       const notLoaded = await I.grabNumberOfVisibleElements(`//td[contains(text(), '${ruleName}')]`);
+
       if (notLoaded) {
         break;
       }
+
       I.refreshPage();
       I.wait(1);
     }
+
     I.see(ruleName);
   },
 
@@ -214,6 +213,7 @@ module.exports = {
       case 'off':
         I.dontSeeCheckboxIsChecked(switchSelector);
         break;
+      default:
     }
   },
 
@@ -226,5 +226,4 @@ module.exports = {
       assert.equal(className.includes('disabled'), true, 'Switch should be disabled');
     }
   },
-
 };
