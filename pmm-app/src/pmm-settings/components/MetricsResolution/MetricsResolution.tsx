@@ -81,7 +81,10 @@ export const MetricsResolution: FC<MetricsResolutionProps> = ({ metricsResolutio
 
   return (
     <div className={styles.resolutionsWrapper}>
-      <div className={settingsStyles.labelWrapper}>
+      <div
+        className={settingsStyles.labelWrapper}
+        data-qa="metrics-resolution-label"
+      >
         <span>{label}</span>
         <LinkTooltip
           tooltipText={tooltip}

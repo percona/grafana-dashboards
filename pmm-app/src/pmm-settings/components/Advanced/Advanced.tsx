@@ -78,7 +78,10 @@ export const Advanced: FC<AdvancedProps> = ({
         <tbody>
           <tr>
             <td>
-              <div className={settingsStyles.labelWrapper}>
+              <div
+                className={settingsStyles.labelWrapper}
+                data-qa="advanced-label"
+              >
                 <span>{retentionLabel}</span>
                 <LinkTooltip
                   tooltipText={retentionTooltip}

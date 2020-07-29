@@ -73,6 +73,7 @@ export const SettingsPanel: FC = () => {
       </TabsVertical>
       <TabContent
         className={cx(styles.tabContentWrapper, { [styles.settingsLoading]: loading })}
+        data-qa="settings-tab-content"
       >
         {loading && <Spinner />}
         {(!loading && settings) && (

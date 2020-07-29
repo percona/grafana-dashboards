@@ -53,7 +53,10 @@ export const AlertManager: FC<AlertManagerProps> = ({
 
   return (
     <div className={styles.alertManagerWrapper}>
-      <div className={settingsStyles.labelWrapper}>
+      <div
+        className={settingsStyles.labelWrapper}
+        data-qa="alertmanager-url-label"
+      >
         <span>{urlLabel}</span>
         <LinkTooltip
           tooltipText={urlTooltip}
@@ -68,7 +71,10 @@ export const AlertManager: FC<AlertManagerProps> = ({
         data-qa="alertmanager-url"
         onChange={(e) => setUrl(e.target.value)}
       />
-      <div className={cx(settingsStyles.labelWrapper, styles.rulesLabel)}>
+      <div
+        className={cx(settingsStyles.labelWrapper, styles.rulesLabel)}
+        data-qa="alertmanager-rules-label"
+      >
         <span>{rulesLabel}</span>
         <LinkTooltip
           tooltipText={rulesTooltip}
@@ -88,6 +94,7 @@ export const AlertManager: FC<AlertManagerProps> = ({
         variant="secondary"
         disabled={isActionDisabled() || loading}
         onClick={applyChanges}
+        data-qa="alertmanager-button"
       >
         {loading && <Spinner />}
         {action}

@@ -30,7 +30,10 @@ export const SSHKey: FC<SSHKeyProps> = ({ sshKey, updateSettings }) => {
 
   return (
     <div className={styles.sshKeyWrapper}>
-      <div className={settingsStyles.labelWrapper}>
+      <div
+        className={settingsStyles.labelWrapper}
+        data-qa="ssh-key-label"
+      >
         <span>{label}</span>
         <LinkTooltip
           tooltipText={tooltip}
@@ -50,6 +53,7 @@ export const SSHKey: FC<SSHKeyProps> = ({ sshKey, updateSettings }) => {
         variant="secondary"
         disabled={sshKey === key || loading}
         onClick={applyChanges}
+        data-qa="ssh-key-button"
       >
         {loading && <Spinner />}
         {action}
