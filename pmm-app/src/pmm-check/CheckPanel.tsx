@@ -3,11 +3,14 @@ import { createBrowserHistory } from 'history';
 import { PanelProps } from '@grafana/data';
 import { Spinner } from '@grafana/ui';
 import { Router, Route } from 'react-router-dom';
+import { Table, ButtonWithSpinner } from 'pmm-check/components';
+import { showSuccessNotification } from 'shared/components/helpers';
 import { CheckPanelOptions, ActiveCheck, Settings } from './types';
 import { CheckService } from './Check.service';
 import { COLUMNS } from './CheckPanel.constants';
-import { Table } from './components/Table';
 import * as styles from './CheckPanel.styles';
+import { Messages } from './CheckPanel.messages';
+import { AlertsReloadContext } from './Check.context';
 
 export interface CheckPanelProps extends PanelProps<CheckPanelOptions> {}
 
@@ -16,6 +19,7 @@ export interface CheckPanelState {
   hasNoAccess: boolean;
   isLoading: boolean;
   isSttEnabled: boolean;
+  isRunChecksRequestPending: boolean;
 }
 
 const history = createBrowserHistory();
@@ -25,11 +29,13 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
     super(props);
     this.fetchAlerts = this.fetchAlerts.bind(this);
     this.getSettings = this.getSettings.bind(this);
+    this.handleRunChecksClick = this.handleRunChecksClick.bind(this);
     this.state = {
       dataSource: undefined,
       hasNoAccess: false,
       isLoading: true,
       isSttEnabled: false,
+      isRunChecksRequestPending: false,
     };
   }
 
@@ -59,7 +65,24 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
     }
   }
 
-  async fetchAlerts() {
+  async handleRunChecksClick() {
+    this.setState({ isRunChecksRequestPending: true });
+    try {
+      await CheckService.runDbChecks();
+    } catch (e) {
+      console.error(e);
+    }
+    // TODO (nicolalamacchia): remove this timeout when the API will become synchronous
+    setTimeout(async () => {
+      this.setState({ isRunChecksRequestPending: false });
+      await this.fetchAlerts();
+      showSuccessNotification({ message: 'Done running DB checks. The latest results are displayed.' });
+    }, 10000);
+  }
+
+  async fetchAlerts(): Promise<void> {
+    this.setState({ isLoading: true });
+
     try {
       const dataSource = await CheckService.getActiveAlerts();
 
@@ -76,24 +99,39 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
       options: { title },
     } = this.props;
     const {
-      dataSource, isSttEnabled, isLoading, hasNoAccess
+      dataSource, isSttEnabled, isLoading, hasNoAccess, isRunChecksRequestPending
     } = this.state;
 
     return (
       <div className={styles.panel} data-qa="db-check-panel">
-        {isLoading && (
+        {isLoading ? (
           <div className={styles.spinner}>
             <Spinner />
           </div>
-        )}
-        {!isLoading && (
-          <Table
-            caption={title}
-            data={dataSource}
-            columns={COLUMNS}
-            isSttEnabled={isSttEnabled}
-            hasNoAccess={hasNoAccess}
-          />
+        ) : (
+          <>
+            <div className={styles.header}>
+              <div className={styles.title} data-qa="db-check-panel-title">
+                {title ?? ''}
+              </div>
+              <ButtonWithSpinner
+                onClick={this.handleRunChecksClick}
+                isLoading={isRunChecksRequestPending}
+                disabled={hasNoAccess}
+                className={styles.runChecksButton}
+              >
+                {Messages.runDbChecks}
+              </ButtonWithSpinner>
+            </div>
+            <AlertsReloadContext.Provider value={{ fetchAlerts: this.fetchAlerts }}>
+              <Table
+                data={dataSource}
+                columns={COLUMNS}
+                isSttEnabled={isSttEnabled}
+                hasNoAccess={hasNoAccess}
+              />
+            </AlertsReloadContext.Provider>
+          </>
         )}
       </div>
     );
