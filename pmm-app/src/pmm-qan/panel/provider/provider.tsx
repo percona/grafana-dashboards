@@ -6,7 +6,6 @@ import {
 import { QueryAnalyticsContext } from './provider.types';
 
 const initialState = {} as QueryAnalyticsContext;
-
 export const QueryAnalyticsProvider = React.createContext<QueryAnalyticsContext>(initialState);
 
 const actions = {
