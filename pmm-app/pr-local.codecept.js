@@ -29,7 +29,8 @@ exports.config = {
     homePage: './tests/pages/homePage.js',
     remoteInstancesPage: './tests/pages/remoteInstancesPage.js',
     adminPage: './tests/pages/adminPage.js',
-    qanPage: './tests/QAN/qanPage.js',
+    qanPage: './tests/QAN/pages/qanPage.js',
+    qanActions: './tests/QAN/steps/qanActions.js',
     pmmInventoryPage: './tests/pages/pmmInventoryPage.js',
     amiInstanceSetupPage: './tests/pages/amiInstanceSetupPage.js',
     pmmSettingsPage: './tests/pages/pmmSettingsPage.js',
@@ -89,7 +90,7 @@ exports.config = {
   teardown: null,
   hooks: [],
   gherkin: {},
-  tests: 'tests/*_test.js',
+  tests: 'tests/**/*_test.js',
   timeout: 10000,
   name: 'pmm-qa',
 };
