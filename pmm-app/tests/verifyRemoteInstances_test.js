@@ -12,7 +12,10 @@ Before(async (I) => {
   I.Authorize();
 });
 
-Data(instances)
+//TODO: unskip the mongodb tests after resolving a creds issue
+Data(instances.filter(instance =>
+  instance.name !== 'mongodb'
+))
   .Scenario(
     'Verify Remote Instance Addition [critical] @not-pr-pipeline',
     async (I, remoteInstancesPage, current) => {
@@ -26,7 +29,9 @@ Data(instances)
     }
   );
 
-Data(instances)
+Data(instances.filter(instance =>
+  instance.name !== 'mongodb'
+))
   .Scenario(
     'Verify Remote Instance has Status Running [critical] @not-pr-pipeline',
     async (I, remoteInstancesPage, pmmInventoryPage, current) => {
