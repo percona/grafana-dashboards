@@ -559,7 +559,7 @@ export const METRIC_CATALOGUE = {
   },
   load: {
     humanizeName: 'Load',
-    tooltipText: 'Percentage load on the system',
+    tooltipText: 'Average Active Queries',
     simpleName: 'load',
     serviceTypes: ['all'],
     metricRelation: () => '',
