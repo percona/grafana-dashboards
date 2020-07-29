@@ -211,6 +211,7 @@ module.exports = {
         expectedSwitch = { 'aria-checked': 'false' };
         I.seeAttributesOnElements(switchSelector, expectedSwitch);
         break;
+      default:
     }
   },
 

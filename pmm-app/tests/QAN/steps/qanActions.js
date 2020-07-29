@@ -55,7 +55,7 @@ module.exports = {
       case 'down':
         I.seeElement(`${sortingBlockSelector}.desc`);
         break;
-      case '':
+      default:
         I.dontSeeElement(`${sortingBlockSelector}.asc`);
         I.dontSeeElement(`${sortingBlockSelector}.desc`);
         break;

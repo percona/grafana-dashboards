@@ -1,7 +1,5 @@
 const Helper = codecept_helper;
 const assert = require('assert');
-const { saveVideo } = require('playwright-video');
-const fs = require('fs');
 
 class Grafana extends Helper {
   constructor(config) {
@@ -24,6 +22,7 @@ class Grafana extends Helper {
     );
   }
 
+  // eslint-disable-next-line no-underscore-dangle, class-methods-use-this
   async _before(test) {
     const allure = codeceptjs.container.plugins('allure');
 

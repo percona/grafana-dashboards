@@ -31,11 +31,11 @@ module.exports = {
 
   // Info icon locator in Failed Checks column for showing tooltip with additional information
   failedChecksInfoLocator(rowNumber = 1) {
-    return (`//tbody/tr[${rowNumber}]/td[1]/following-sibling::td/div/span[2]`);
+    return `//tbody/tr[${rowNumber}]/td[1]/following-sibling::td/div/span[2]`;
   },
   // Locator for checks results in Failed Checks column
   numberOfFailedChecksLocator(rowNumber = 1) {
-    return (`//tbody/tr[${rowNumber}]/td[1]/following-sibling::td/div/span[1]`);
+    return `//tbody/tr[${rowNumber}]/td[1]/following-sibling::td/div/span[1]`;
   },
   /*
    Method for verifying elements on a page when STT is enabled and disabled
@@ -60,6 +60,7 @@ module.exports = {
         I.dontSeeElement(this.fields.noOfFailedChecksHeaderSelector);
         I.dontSeeElement(this.fields.detailsHeaderSelector);
         break;
+      default:
     }
   },
 
@@ -88,6 +89,7 @@ module.exports = {
 
         this.verifyDatabaseChecksPageElements(stt);
         break;
+      default:
     }
   },
 
@@ -129,5 +131,5 @@ module.exports = {
     serviceNames.forEach((name) => {
       I.see(name, pmmInventoryPage.fields.inventoryTableColumn);
     });
-  }
+  },
 };

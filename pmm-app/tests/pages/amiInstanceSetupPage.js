@@ -15,6 +15,6 @@ module.exports = {
     I.fillField(this.fields.instanceId, instanceID);
     I.click(this.submitButton);
     I.wait(10);
-    I.waitForElement(loginPage.fields.username, 60);
+    // I.waitForElement(loginPage.fields.username, 60);
   },
 };

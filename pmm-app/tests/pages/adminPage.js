@@ -8,7 +8,7 @@ module.exports = {
     timePickerMenu: '//button[@aria-label="TimePicker Open Button"]',
     fromTime: '(//input[@input-datetime])[1]',
     applyCustomTimer: '//button[@ng-click="ctrl.applyCustom();"]',
-    backToDashboard: '//button[@ng-click="ctrl.close()"]',
+    backToDashboard: '//button[@ng-click=\'ctrl.close()\']',
     discardChanges: '//button[@ng-click="ctrl.discard()"]',
     metricTitle: '//div[@class="panel-title"]',
     reportTitleWithNA:
