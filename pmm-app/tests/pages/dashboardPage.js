@@ -1,4 +1,4 @@
-const { I } = inject();
+const { I, adminPage } = inject();
 const assert = require('assert');
 
 module.exports = {
@@ -33,7 +33,8 @@ module.exports = {
     ],
   },
   advancedDataExplorationDashboard: {
-    url: 'graph/d/prometheus-advanced/advanced-data-exploration?orgId=1&refresh=1m&var-metric=go_gc_duration_seconds',
+    url:
+      'graph/d/prometheus-advanced/advanced-data-exploration?orgId=1&refresh=1m&var-metric=go_gc_duration_seconds',
     metrics: [
       'View Actual Metric Values (Gauge)',
       'View Metric Rate of Change (Counter)',
@@ -263,7 +264,7 @@ module.exports = {
       'Dynamic of Indexes',
       'Total Connections',
       'Current Connections Per Shard',
-      'Total Mongos Operations'
+      'Total Mongos Operations',
     ],
   },
   mysqlInstanceSummaryDashboard: {
@@ -301,26 +302,98 @@ module.exports = {
       'MySQL Table Definition Cache',
     ],
   },
-
+  mongoDbInstanceOverview: {
+    url: 'graph/d/mongodb-instance-overview/mongodb-instances-overview?orgId=1&refresh=1m',
+  },
+  homeDashboard: {
+    metrics: [
+      'CPU Busy',
+      'Mem Avail',
+      'Disk Reads',
+      'Disk Writes',
+      'Network IO',
+      'DB Conns',
+      'DB QPS',
+      'Virtual CPUs',
+      'RAM',
+      'Host uptime',
+      'DB uptime',
+    ],
+  },
   mySQLInstanceOverview: {
     url: 'graph/d/mysql-instance-overview/mysql-instances-overview?orgId=1&from=now-2m&to=now&refresh=1m',
+    metrics: [
+      'Services',
+      'Min MySQL Uptime',
+      'Max MySQL Uptime',
+      'Total Current QPS',
+      'Total InnoDB Buffer Pool Size',
+      'Top MySQL Used Connections',
+      'Top MySQL Client Threads Connected',
+      'Top MySQL Active Client Threads',
+      'Top MySQL Threads Cached',
+      'Top 5 MySQL Client Threads Connected',
+      'MySQL Client Threads Connected',
+      'Top 5 MySQL Active Client Threads',
+      'MySQL Idle Client Threads',
+      'Top 5 MySQL Thread Cached',
+      'Percentage of Cached MySQL Threads',
+      'Top MySQL Queries',
+      'Top MySQL Questions',
+      'Top InnoDB I/O Data Reads',
+      'Top InnoDB I/O Data Writes',
+      'Top Data Fsyncs',
+      'Top 5 MySQL Queries',
+      'MySQL QPS',
+      'Top 5 MySQL Questions',
+      'MySQL Questions in Queries',
+      'Top 5 Data Reads',
+      'Percentage of Data Read',
+      'Top 5 Data Writes',
+      'Percentage of Data Writes',
+      'Top 5 Data Fsyncs',
+      'Percentage of Data Fsyncs',
+      'Top MySQL Questions',
+      'Top MySQL Selects',
+      'Top MySQL Sorts',
+      'Top MySQL Aborted Connections',
+      'Top MySQL Table Locks',
+      'MySQL Temporary Objects',
+      'Top 5 MySQL Selects',
+      'MySQL Selects',
+      'Top 5 MySQL Sorts',
+      'MySQL Sorts',
+      'MySQL Query Cache Size',
+      'MySQL Used Query Cache',
+      'Top 5 MySQL File Openings',
+      'Top Open Cache Miss Ratio',
+      'MySQL Table Definition Cache',
+      'Top 5 MySQL Opened Table Definitions',
+      'Top 5 MySQL Open Table Definitions',
+      'Percentage of Open Table Definitions to Table Definition Cache',
+    ],
     serviceName:
-      "//label[contains(text(), 'Service Name')]/following-sibling::value-select-dropdown/descendant::a[@class='variable-value-link']",
+      '//label[contains(text(), "Service Name")]/following-sibling::value-select-dropdown/descendant::a[@class="variable-value-link"]',
+    urlWithRDSFilter:
+      'graph/d/mysql-instance-overview/mysql-instances-overview?orgId=1&'
+      + 'from=now-5m&to=now&refresh=1m&var-interval=$__auto_interval_interval&var-region=All&'
+      + 'var-environment=All&var-cluster=rds56-cluster&var-replication_set=All&var-az=&'
+      + 'var-node_type=All&var-node_model=&var-database=All&var-service_type=All&var-schema=All',
   },
 
   fields: {
-    notAvailableMetrics: "//span[contains(text(), 'N/A')]",
-    notAvailableDataPoints: "//div[contains(text(),'No data')]",
-    metricTitle: "//div[@class='panel-title']",
+    notAvailableMetrics: '//span[contains(text(), "N/A")]',
+    notAvailableDataPoints: '//div[contains(text(),"No data")]',
+    metricTitle: '//div[@class="panel-title"]',
     reportTitleWithNA:
-      "//span[contains(text(), 'N/A')]//ancestor::div[contains(@class,'panel-container')]//span[contains(@class,'panel-title-text')]",
+      '//span[contains(text(), "N/A")]//ancestor::div[contains(@class,"panel-container")]//span[contains(@class,"panel-title-text")]',
     reportTitleWithNoData:
-      "//div[contains(text(),'No data')]//ancestor::div[contains(@class,'panel-container')]//span[contains(@class,'panel-title-text')]",
+      '//div[contains(text(),"No data")]//ancestor::div[contains(@class,"panel-container")]//span[contains(@class,"panel-title-text")]',
     otherReportTitleWithNoData:
-      "//span[contains(text(),'No Data')]//ancestor::div[contains(@class,'panel-container')]//span[contains(@class,'panel-title-text')]",
-    collapsedDashboardRow: "//div[@class='dashboard-row dashboard-row--collapsed']/a",
-    annotationMarker: "(//div[contains(@class,'events_marker')])",
-    clearSelection: "//a[@ng-click='vm.clearSelections()']",
+      '//span[contains(text(),"No Data")]//ancestor::div[contains(@class,"panel-container")]//span[contains(@class,"panel-title-text")]',
+    collapsedDashboardRow: '//div[@class="dashboard-row dashboard-row--collapsed"]/a',
+    annotationMarker: '(//div[contains(@class,"events_marker")])',
+    clearSelection: '//a[@ng-click="vm.clearSelections()"]',
   },
 
   annotationLocator(annotationNumber) {
@@ -343,29 +416,33 @@ module.exports = {
 
   // introducing methods
   verifyMetricsExistence(metrics) {
-    for (let i in metrics) {
+    for (const i in metrics) {
       I.seeElement(this.graphsLocator(metrics[i]));
     }
   },
 
   graphsLocator(metricName) {
-    return "//span[contains(text(), '" + metricName + "')]";
+    return `//span[contains(text(), '${metricName}')]`;
   },
 
   async verifyThereAreNoGraphsWithNA(acceptableNACount = 0) {
     const numberOfNAElements = await I.grabNumberOfVisibleElements(this.fields.notAvailableMetrics);
-    console.log('number of N/A elements is = ' + numberOfNAElements);
+
+    console.log(`number of N/A elements is = ${numberOfNAElements}`);
     if (numberOfNAElements > acceptableNACount) {
       const titles = await this.grabFailedReportTitles(this.fields.reportTitleWithNA);
+
       await this.printFailedReportNames(acceptableNACount, numberOfNAElements, titles);
     }
   },
 
   async verifyThereAreNoGraphsWithoutData(acceptableNoDataCount = 0) {
     const numberOfNoDataElements = await I.grabNumberOfVisibleElements(this.fields.notAvailableDataPoints);
-    console.log('number of No Data elements is = ' + numberOfNoDataElements);
+
+    console.log(`number of No Data elements is = ${numberOfNoDataElements}`);
     if (numberOfNoDataElements > acceptableNoDataCount) {
       const titles = await this.grabFailedReportTitles(this.fields.reportTitleWithNoData);
+
       await this.printFailedReportNames(acceptableNoDataCount, numberOfNoDataElements, titles);
     }
   },
@@ -374,45 +451,47 @@ module.exports = {
     assert.equal(
       actualNumber <= expectedNumber,
       true,
-      'Expected ' +
-        expectedNumber +
-        ' Elements with but found ' +
-        actualNumber +
-        '. Report Names are ' +
-        titles
+      `Expected ${expectedNumber} Elements with but found ${actualNumber}. Report Names are ${titles}`,
     );
   },
 
   async grabFailedReportTitles(selector) {
     const reportNames = await I.grabTextFrom(selector);
+
     return reportNames;
   },
 
   async expandEachDashboardRow(halfToExpand) {
     let sectionsToExpand;
     const sections = await I.grabTextFrom(this.fields.collapsedDashboardRow);
-    if (halfToExpand == 1) {
+
+    if (halfToExpand === 1) {
       sectionsToExpand = sections.slice(0, sections.length / 2);
-    } else if (halfToExpand == 2) {
+    } else if (halfToExpand === 2) {
       sectionsToExpand = sections.slice(sections.length / 2, sections.length);
     } else {
       sectionsToExpand = sections;
     }
+
     await this.expandRows(sectionsToExpand);
   },
 
   async expandRows(sectionsToExpand) {
     let sections;
+
     if (typeof sectionsToExpand === 'string') {
       sections = [sectionsToExpand];
     } else {
       sections = sectionsToExpand;
     }
+
     for (let i = 0; i < sections.length; i++) {
       const sectionName = sections[i].toString().split('(');
       const rowToExpand = `${this.fields.collapsedDashboardRow}[contains(text(), '${sectionName[0]}')]`;
+
       I.click(rowToExpand);
       I.wait(0.5);
+      adminPage.peformPageDown(1);
     }
   },
 
@@ -420,29 +499,31 @@ module.exports = {
     I.waitForElement(this.fields.metricTitle, 30);
   },
 
-  async verifyExisitngServiceName(serviceName) {
-    I.waitForElement(this.mySQLInstanceOverview.serviceName, 30);
-    I.click(this.mySQLInstanceOverview.serviceName);
-    const existingFilter =
-      "//span[@class='variable-option-icon']/following-sibling::span[contains(text(), '" +
-      serviceName +
-      "')]";
-    I.seeElement(existingFilter);
+  expandFilters(filterType) {
+    const filterLocator = `//label[contains(text(), '${filterType}')]/following-sibling::value-select-dropdown`;
+
+    I.waitForElement(filterLocator, 30);
+    I.click(filterLocator);
+
+    return filterLocator;
   },
-  
+
   async applyFilter(filterName, filterValue) {
     // eslint-disable-next-line max-len
     const filterSelector = `(//a[@class='variable-value-link']//ancestor::div//label[contains(text(),'${filterName}')])[1]//parent::div//a[@ng-click]`;
     const filterValueSelector = `//span[contains(text(), '${filterValue}')]`;
     // eslint-disable-next-line max-len
     const filterNameSelector = `(//a[@class='variable-value-link']//ancestor::div//label[contains(text(),'${filterName}')])[1]`;
+
     I.waitForElement(filterSelector, 30);
     I.click(filterSelector);
     I.waitForElement(filterValueSelector, 30);
-    let numOfElements = await I.grabNumberOfVisibleElements(this.fields.clearSelection);
+    const numOfElements = await I.grabNumberOfVisibleElements(this.fields.clearSelection);
+
     if (numOfElements === 1) {
       I.click(this.fields.clearSelection);
     }
+
     I.waitForElement(filterValueSelector, 30);
     I.click(filterValueSelector);
     I.waitForElement(filterNameSelector, 30);

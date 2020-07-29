@@ -1,7 +1,7 @@
-import React, { FC } from 'react';
+import React, { FC, Fragment } from 'react';
 import { ActiveCheck } from 'pmm-check/types';
 import { Failed } from '../Failed/Failed';
-import { Details } from '../Details/Details';
+import { TableDataAlertDetails } from './TableDataAlertDetails';
 
 interface TableBodyProps {
   data: ActiveCheck[];
@@ -11,19 +11,24 @@ export const TableBody: FC<TableBodyProps> = ({ data }) => (
   <tbody>
     {data.map((row) => {
       const {
-        key, name, failed, details,
+        key, name, failed, details
       } = row;
 
       return (
-        <tr key={key}>
-          <td>{name}</td>
-          <td>
-            <Failed failed={failed} />
-          </td>
-          <td>
-            <Details details={details} />
-          </td>
-        </tr>
+        <Fragment key={key}>
+          <tr>
+            <td rowSpan={details.length}>{name}</td>
+            <td rowSpan={details.length}>
+              <Failed failed={failed} />
+            </td>
+            <TableDataAlertDetails detailsItem={details[0]} />
+          </tr>
+          {details.slice(1).map((detailsItem, i) => (
+            <tr key={`${key}-${i}`}>
+              <TableDataAlertDetails detailsItem={detailsItem} />
+            </tr>
+          ))}
+        </Fragment>
       );
     })}
   </tbody>

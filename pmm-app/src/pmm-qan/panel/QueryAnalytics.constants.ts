@@ -1,9 +1,15 @@
 import { get } from 'lodash';
 import { humanize } from 'shared/components/helpers/Humanization';
 
-export const PAGE_SIZE_OPTIONS = ['10', '50', '100'];
+enum PageSizes {
+  low = '25',
+  medium = '50',
+  high = '100',
+}
+
+export const PAGE_SIZE_OPTIONS = [PageSizes.low, PageSizes.medium, PageSizes.high];
 export const DEFAULT_PAGE_NUMBER = 1;
-export const DEFAULT_PAGE_SIZE = 10;
+export const DEFAULT_PAGE_SIZE = +PageSizes.low;
 export const MIN_SPLIT_SIZE = 300;
 // percent
 export const SPACE_DISTRIBUTION_OVERVIEW = 40;
@@ -65,7 +71,8 @@ export const METRIC_CATALOGUE = {
   },
   blk_read_time: {
     humanizeName: 'Reading Blocks Time',
-    tooltipText: 'Total time the statement spent reading blocks (if track_io_timing is enabled, otherwise zero)',
+    tooltipText:
+      'Total time the statement spent reading blocks (if track_io_timing is enabled, otherwise zero)',
     simpleName: 'blk_read_time',
     serviceTypes: ['postgresql'],
     metricRelation: () => '',
@@ -80,7 +87,8 @@ export const METRIC_CATALOGUE = {
   },
   blk_write_time: {
     humanizeName: 'Writing Blocks Time',
-    tooltipText: 'Total time the statement spent writing blocks (if track_io_timing is enabled, otherwise zero)',
+    tooltipText:
+      'Total time the statement spent writing blocks (if track_io_timing is enabled, otherwise zero)',
     simpleName: 'blk_write_time',
     serviceTypes: ['postgresql'],
     metricRelation: () => '',

@@ -18,6 +18,7 @@ export class CheckPanelEditor extends PureComponent<PanelEditorProps<CheckPanelO
       <div className="section gf-form-group">
         <h5 className="section-heading">Panel Options</h5>
         <LegacyForms.FormField
+          data-qa="check-panel-editor-title-input"
           label="Title"
           labelWidth={5}
           inputWidth={20}

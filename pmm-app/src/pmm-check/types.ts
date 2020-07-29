@@ -1,5 +1,5 @@
 export interface CheckPanelOptions {
-  title: string;
+  title?: string;
 }
 
 export interface Column {
@@ -24,7 +24,7 @@ export interface ActiveCheck {
   key: string;
   name: string;
   failed: FailedChecks;
-  details: string[];
+  details: Array<{ description: string, labels: { [key: string]: string }}>;
 }
 
 export interface Alert {
@@ -50,4 +50,45 @@ export interface Settings {
     stt_enabled?: boolean;
     telemetry_enabled?: boolean;
   };
+}
+
+interface SilenceMatcher {
+  name: string;
+  value: string;
+  isRegex: boolean;
+}
+
+export interface SilenceBody {
+  matchers: SilenceMatcher[];
+  startsAt: string;
+  endsAt: string;
+  createdBy: string;
+  comment: string;
+  id: string;
+}
+
+export interface SilenceResponse {
+  silenceID: string;
+}
+
+export type Labels = { [key: string]: string };
+
+export interface DetailProps {
+  details: {
+    description: string;
+    labels: Labels;
+  },
+}
+
+export interface DetailsItem {
+  description: string;
+  labels: Labels
+}
+
+export interface TableDataAlertDetailsProps {
+  detailsItem: DetailsItem
+}
+
+export interface AlertsReload {
+  fetchAlerts: () => Promise<void>;
 }

@@ -4,19 +4,20 @@ import { Collapse, Spin, Table } from 'antd';
 import { ReactJSON } from 'shared/components/Elements/ReactJSON/ReactJSON';
 import { processClassicExplain } from './Explain.tools';
 import { styles } from './Explain.styles';
-import { DATABASE } from '../Details.constants';
-import { ExplainTabs } from './Explain.constants';
-import { ExplainProps } from './Explain.types';
+import { ClassicExplain, ExplainProps, ExplainTabs } from './Explain.types';
+import { useExplains } from './Explain.hooks';
+import { Messages } from '../Details.messages';
+import { Databases } from '../Details.types';
 
 const { Panel } = Collapse;
 
 
 const Explain: FC<ExplainProps> = ({
-  classicExplain,
-  jsonExplain,
   databaseType,
+  examples
 }) => {
-  const [data, setData] = useState({ columns: [], rows: [] });
+  const [data, setData] = useState<ClassicExplain>({ columns: [], rows: [] });
+  const [jsonExplain, classicExplain] = useExplains(examples, databaseType);
 
   useEffect(() => {
     setData(processClassicExplain(classicExplain.value));
@@ -29,9 +30,9 @@ const Explain: FC<ExplainProps> = ({
         defaultActiveKey={[ExplainTabs.classic, ExplainTabs.json]}
         className={styles.collapse}
       >
-        {databaseType !== DATABASE.mongodb ? (
+        {databaseType !== Databases.mongodb ? (
           <Panel header={ExplainTabs.classic} key={ExplainTabs.classic} className={styles.panel}>
-            <Spin spinning={classicExplain.loading}>
+            <Spin spinning={classicExplain.loading} wrapperClassName={styles.spinnerWrapper}>
               {classicExplain.error ? <pre>{classicExplain.error}</pre> : null}
               {!classicExplain.error && !classicExplain.loading && data.rows.length ? (
                 <Table
@@ -44,19 +45,19 @@ const Explain: FC<ExplainProps> = ({
               ) : null}
               {/* eslint-disable-next-line max-len */}
               {!classicExplain.error && !classicExplain.loading && !data.rows.length ? (
-                <pre>No classic explain found</pre>
+                <pre>{Messages.noClassicExplain}</pre>
               ) : null}
             </Spin>
           </Panel>
         ) : null}
         <Panel header={ExplainTabs.json} key={ExplainTabs.json} className={styles.panel}>
-          <Spin spinning={jsonExplain.loading}>
+          <Spin spinning={jsonExplain.loading} wrapperClassName={styles.spinnerWrapper}>
             {!jsonExplain.loading && jsonExplain.error ? <pre>{jsonExplain.error}</pre> : null}
             {!jsonExplain.error && !jsonExplain.loading && jsonExplain.value ? (
               <ReactJSON json={JSON.parse(jsonExplain.value)} />
             ) : null}
             {!jsonExplain.error && !jsonExplain.loading && !jsonExplain.value ? (
-              <pre>No JSON explain found</pre>
+              <pre>{Messages.noJsonExplain}</pre>
             ) : null}
           </Spin>
         </Panel>

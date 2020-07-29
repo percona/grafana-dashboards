@@ -1,4 +1,6 @@
+import { Messages } from '../Details.messages';
+
 export const MetricsTabs = {
-  distribution: 'Query time distribution',
-  metrics: 'Metrics',
+  distribution: Messages.tabs.details.sections.timeDistribution,
+  metrics: Messages.tabs.details.sections.metrics
 };

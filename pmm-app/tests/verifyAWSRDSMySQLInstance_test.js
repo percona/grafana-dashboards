@@ -5,64 +5,76 @@ Before(async (I) => {
 });
 
 Scenario(
-    'PMM-T138 Verify disabling enhanced metrics for RDS, PMM-T139 Verify disabling basic metrics for RDS, PMM-T9 Verify adding RDS instances [critical] @not-pr-pipeline',
-    async (I, remoteInstancesPage, pmmInventoryPage, homePage, qanPage, dashboardPage) => {
-      const instanceIdToMonitor = 'rds-mysql56';
-      const environment = 'RDS MySQL 5.6';
-      I.amOnPage(remoteInstancesPage.url);
-      remoteInstancesPage.waitUntilRemoteInstancesPageLoaded().openAddAWSRDSMySQLPage();
-      remoteInstancesPage.discoverRDS();
-      remoteInstancesPage.verifyInstanceIsDiscovered(instanceIdToMonitor);
-      remoteInstancesPage.startMonitoringOfInstance(instanceIdToMonitor);
-      remoteInstancesPage.verifyAddInstancePageOpened();
-      remoteInstancesPage.fillRemoteRDSMySQLFields();
-      remoteInstancesPage.createRemoteInstance(instanceIdToMonitor);
-      pmmInventoryPage.verifyRemoteServiceIsDisplayed(instanceIdToMonitor);
-      await pmmInventoryPage.verifyAgentHasStatusRunning(instanceIdToMonitor);
-      await pmmInventoryPage.verifyMetricsFlags(instanceIdToMonitor);
-      //skipping verification of the filter in MySQL Instance Overview for now
-      //skipping verification of the filter in QAN. Will be fixed with new QAN tests
-      /*
-      I.amOnPage(dashboardPage.mySQLInstanceOverview.url);
-      await dashboardPage.verifyExisitngServiceName(instanceIdToMonitor);
-      I.amOnPage(qanPage.url + '?orgId=1&from=now-5m&to=now');
-      await I.switchTo(qanPage.fields.iframe);
-      await qanPage.verifyFilterExists(environment);
-      */
-    }
+  'PMM-T138 Verify disabling enhanced metrics for RDS, PMM-T139 Verify disabling basic metrics for RDS, PMM-T9 Verify adding RDS instances [critical] @not-pr-pipeline',
+  async (I, remoteInstancesPage, pmmInventoryPage) => {
+    const instanceIdToMonitor = remoteInstancesPage.rds['Service Name'];
+
+    I.amOnPage(remoteInstancesPage.url);
+    remoteInstancesPage.waitUntilRemoteInstancesPageLoaded().openAddAWSRDSMySQLPage();
+    remoteInstancesPage.discoverRDS();
+    remoteInstancesPage.verifyInstanceIsDiscovered(instanceIdToMonitor);
+    remoteInstancesPage.startMonitoringOfInstance(instanceIdToMonitor);
+    remoteInstancesPage.verifyAddInstancePageOpened();
+    remoteInstancesPage.fillRemoteRDSMySQLFields();
+    remoteInstancesPage.createRemoteInstance(instanceIdToMonitor);
+    pmmInventoryPage.verifyRemoteServiceIsDisplayed(instanceIdToMonitor);
+    await pmmInventoryPage.verifyAgentHasStatusRunning(instanceIdToMonitor);
+    await pmmInventoryPage.verifyMetricsFlags(instanceIdToMonitor);
+  }
 );
 
 Scenario(
-    'Verify AWS RDS MySQL 5.6 instance has status running [critical] @pmm-post-update @not-pr-pipeline',
-    async (I, remoteInstancesPage, pmmInventoryPage) => {
-      const serviceName = 'rds-mysql56';
-      I.amOnPage(pmmInventoryPage.url);
-      pmmInventoryPage.verifyRemoteServiceIsDisplayed(serviceName);
-      await pmmInventoryPage.verifyAgentHasStatusRunning(serviceName);
+  'Verify AWS RDS MySQL 5.6 instance has status running [critical] @pmm-post-update @not-pr-pipeline',
+  async (I, remoteInstancesPage, pmmInventoryPage) => {
+    const serviceName = remoteInstancesPage.rds['Service Name'];
+
+    I.amOnPage(pmmInventoryPage.url);
+    pmmInventoryPage.verifyRemoteServiceIsDisplayed(serviceName);
+    await pmmInventoryPage.verifyAgentHasStatusRunning(serviceName);
+  }
+);
+// Skipping the tests because QAN does not get any data right after instance was added for monitoring
+xScenario(
+  'Verify QAN Filters contain AWS RDS MySQL 5.6 after it was added for monitoring @not-pr-pipeline',
+  async (I, qanPage, remoteInstancesPage) => {
+    const filters = remoteInstancesPage.rds;
+
+    I.amOnPage(qanPage.url);
+    qanPage.waitForFiltersLoad();
+    await qanPage.expandAllFilter();
+    for (const filter of Object.values(filters)) {
+      const name = qanPage.getFilterLocator(filter);
+
+      I.waitForVisible(name, 30);
+      I.seeElement(name);
     }
+  }
 );
 
-xScenario(
-    'Verify QAN Filters contain AWS RDS MySQL 5.6 after it was added for monitoring @not-pr-pipeline',
-    async (I, qanPage, adminPage) => {
-      const environment = 'RDS MySQL 5.6';
-      const filter = qanPage.getFilterLocator(environment);
-      I.amOnPage(qanPage.url);
-      await I.waitForElement(qanPage.fields.iframe, 60);
-      adminPage.applyTimer('5m');
-      await I.switchTo(qanPage.fields.iframe);
-      qanPage.waitForQANPageLoaded();
-      await qanPage.expandAllFilter();
-      I.seeElement(filter);
-    }
+Scenario(
+  'Verify MySQL Instances Overview Dashboard for AWS RDS MySQL 5.6 data after it was added for monitoring @not-pr-pipeline',
+  async (I, dashboardPage) => {
+    I.amOnPage(dashboardPage.mySQLInstanceOverview.urlWithRDSFilter);
+    dashboardPage.waitForDashboardOpened();
+    await dashboardPage.expandEachDashboardRow();
+    await dashboardPage.verifyThereAreNoGraphsWithNA();
+    await dashboardPage.verifyThereAreNoGraphsWithoutData(2);
+  }
 );
 
-xScenario(
-    'Verify MySQL Instances Overview Dashboard for AWS RDS MySQL 5.6 data after it was added for monitoring',
-    async (I, remoteInstancesPage, dashboardPage) => {
-      I.amOnPage(remoteInstancesPage.dashboardMySQLOverviewWithFilters);
-      dashboardPage.waitForDashboardOpened();
-      await dashboardPage.expandEachDashboardRow();
-      dashboardPage.verifyThereIsNoGraphsWithNA();
+Scenario(
+  'Verify MySQL Instances Overview Dashboard contains AWS RDS MySQL 5.6 filters @not-pr-pipeline',
+  async (I, dashboardPage, remoteInstancesPage) => {
+    const filters = remoteInstancesPage.rds;
+
+    I.amOnPage(dashboardPage.mySQLInstanceOverview.url);
+    dashboardPage.waitForDashboardOpened();
+    for (const key of Object.keys(filters)) {
+      const locator = dashboardPage.expandFilters(key);
+
+      await within(locator, () => {
+        I.seeElement(locate('span').withText(filters[key]));
+      });
     }
+  }
 );

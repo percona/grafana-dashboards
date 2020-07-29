@@ -1,4 +1,5 @@
 Feature('Test QAN filters');
+const assert = require('assert');
 
 Before((I, qanPage) => {
   I.Authorize();
@@ -6,122 +7,219 @@ Before((I, qanPage) => {
 });
 
 Scenario(
-  'PMM-T175 - Verify user is able to apply filter that has dots in label @not-pr-pipeline',
-  async (I, qanPage) => {
+  'PMM-T175 - Verify user is able to apply filter that has dots in label @not-pr-pipeline @qan',
+  async (I, qanPage, qanActions) => {
     const serviceName = 'ps_5.7';
 
-    qanPage.waitForNewQANPageLoaded();
-    const countBefore = await qanPage.getCountOfItems();
+    qanActions.waitForNewQANPageLoaded();
+    const countBefore = await qanActions.getCountOfItems();
 
-    qanPage.applyFilterNewQAN(serviceName);
+    qanActions.applyFilterNewQAN(serviceName);
     I.seeInCurrentUrl(`service_name=${serviceName}`);
-    const countAfter = await qanPage.getCountOfItems();
+    const countAfter = await qanActions.getCountOfItems();
 
-    qanPage.verifyChangedCount(countBefore, countAfter);
-  }
+    qanActions.verifyChangedCount(countBefore, countAfter);
+  },
 );
 
 Scenario(
-  'PMM-T172 - Verify that selecting a filter updates the table data and URL  @not-pr-pipeline',
-  async (I, qanPage) => {
+  'PMM-T172 - Verify that selecting a filter updates the table data and URL  @not-pr-pipeline @qan',
+  async (I, qanPage, qanActions) => {
     const environmentName = 'ps-dev';
 
-    qanPage.waitForNewQANPageLoaded();
-    const countBefore = await qanPage.getCountOfItems();
+    qanActions.waitForNewQANPageLoaded();
+    const countBefore = await qanActions.getCountOfItems();
 
-    qanPage.applyFilterNewQAN(environmentName);
+    qanActions.applyFilterNewQAN(environmentName);
     I.seeInCurrentUrl(`environment=${environmentName}`);
-    const countAfter = await qanPage.getCountOfItems();
+    const countAfter = await qanActions.getCountOfItems();
 
-    qanPage.verifyChangedCount(countBefore, countAfter);
-  }
-);
-
-Scenario('PMM-T126 - Verify user is able to Reset All filters @not-pr-pipeline', async (I, qanPage) => {
-  const environmentName1 = 'ps-dev';
-  const environmentName2 = 'pgsql-dev';
-
-  qanPage.waitForNewQANPageLoaded();
-  const countBefore = await qanPage.getCountOfItems();
-
-  qanPage.applyFilterNewQAN(environmentName1);
-  qanPage.applyFilterNewQAN(environmentName2);
-  const countAfter = await qanPage.getCountOfItems();
-
-  await qanPage.verifyChangedCount(countBefore, countAfter);
-  I.click(qanPage.fields.resetAll);
-  I.waitForVisible(qanPage.fields.disabledResetAll, 30);
-  const countAfterReset = await qanPage.getCountOfItems();
-
-  assert.equal(countAfterReset >= countBefore, true, 'Count Should be Same or greater then');
-});
-
-Scenario(
-  'PMM-T124 - Verify User is able to show all and show top 5 values for filter section @not-pr-pipeline',
-  async (I, qanPage) => {
-    const filterSection = 'Database';
-
-    qanPage.waitForNewQANPageLoaded();
-    await qanPage.verifyFiltersSection(filterSection, 5);
-    const countToShow = await qanPage.getCountOfFilters(filterSection);
-
-    qanPage.applyShowAllLink(filterSection);
-    await qanPage.verifyFiltersSection(filterSection, countToShow);
-    await qanPage.applyShowTop5Link(filterSection);
-    await qanPage.verifyFiltersSection(filterSection, 5);
-  }
+    qanActions.verifyChangedCount(countBefore, countAfter);
+  },
 );
 
 Scenario(
-  'PMM-T125 - Verify user is able to Show only selected filter values and Show All filter values @not-pr-pipeline',
-  async (I, qanPage) => {
+  'PMM-T126 - Verify user is able to Reset All filters @not-pr-pipeline @qan',
+  async (I, qanPage, qanActions) => {
     const environmentName1 = 'ps-dev';
     const environmentName2 = 'pgsql-dev';
 
-    qanPage.waitForNewQANPageLoaded();
-    qanPage.applyFilterNewQAN(environmentName1);
-    qanPage.applyFilterNewQAN(environmentName2);
-    I.waitForVisible(qanPage.fields.showSelected, 30);
-    I.click(qanPage.fields.showSelected);
-    await qanPage.verifyCountOfFilterLinks(2, false);
-    I.click(qanPage.fields.showSelected);
-    await qanPage.verifyCountOfFilterLinks(2, true);
-  }
+    qanActions.waitForNewQANPageLoaded();
+    const countBefore = await qanActions.getCountOfItems();
+
+    qanActions.applyFilterNewQAN(environmentName1);
+    qanActions.applyFilterNewQAN(environmentName2);
+    const countAfter = await qanActions.getCountOfItems();
+
+    await qanActions.verifyChangedCount(countBefore, countAfter);
+    I.click(qanPage.elements.resetAllButton);
+    I.waitForVisible(qanPage.fields.disabledResetAll, 30);
+    const countAfterReset = await qanActions.getCountOfItems();
+
+    assert.equal(countAfterReset >= countBefore, true, 'Count Should be Same or greater then');
+  },
 );
 
-Scenario('PMM-T123 - Verify User is able to search for filter value @not-pr-pipeline', async (I, qanPage) => {
-  const filters = [
-    'ps-dev',
-    'ps-dev-cluster',
-    'pgsql-repl1',
-    'postgres',
-    'local',
-    'mysql',
-    'pmm-server',
-    'postgresql',
-    'pmm-server-postgresql',
-    'generic',
-  ];
+Scenario(
+  'PMM-T124 - Verify User is able to show all and show top 5 values for filter section @not-pr-pipeline @qan',
+  async (qanPage, qanActions) => {
+    const filterSection = 'Database';
 
-  qanPage.waitForNewQANPageLoaded();
-  I.waitForElement(qanPage.fields.filterBy, 30);
-  const countBefore = await qanPage.getCountOfItems();
+    qanActions.waitForNewQANPageLoaded();
+    await qanActions.verifyFiltersSection(filterSection, 5);
+    const countToShow = await qanActions.getCountOfFilters(filterSection);
 
-  for (i = 0; i < filters.length; i++) {
-    qanPage.applyFilterNewQAN(filters[i]);
-    const countAfter = await qanPage.getCountOfItems();
+    qanActions.applyShowAllLink(filterSection);
+    await qanActions.verifyFiltersSection(filterSection, countToShow);
+    await qanActions.applyShowTop5Link(filterSection);
+    await qanActions.verifyFiltersSection(filterSection, 5);
+  },
+);
 
-    await qanPage.verifyChangedCount(countBefore, countAfter);
-    qanPage.applyFilterNewQAN(filters[i]);
-  }
-});
+Scenario(
+  'PMM-T125 - Verify user is able to Show only selected filter values and Show All filter values @not-pr-pipeline @qan',
+  async (I, qanPage, qanActions) => {
+    const environmentName1 = 'ps-dev';
+    const environmentName2 = 'pgsql-dev';
 
-Scenario('Check All Filter Groups Exists in the Filter Section @not-pr-pipeline', async (I, qanPage) => {
-  qanPage.waitForNewQANPageLoaded();
-  for (i = 0; i < qanPage.filterGroups.length; i++) {
-    I.fillField(qanPage.fields.filterBy, qanPage.filterGroups[i]);
-    I.waitForVisible(qanPage.filterSectionLocator(qanPage.filterGroups[i]), 30);
-    I.seeElement(qanPage.filterSectionLocator(qanPage.filterGroups[i]));
-    I.clearField(qanPage.fields.filterBy);
-  }
-});
+    qanActions.waitForNewQANPageLoaded();
+    qanActions.applyFilterNewQAN(environmentName1);
+    qanActions.applyFilterNewQAN(environmentName2);
+    I.waitForVisible(qanPage.fields.showSelected, 30);
+    I.click(qanPage.fields.showSelected);
+    await qanActions.verifyCountOfFilterLinks(2, false);
+    I.click(qanPage.fields.showSelected);
+    await qanActions.verifyCountOfFilterLinks(2, true);
+  },
+);
+
+Scenario(
+  'PMM-T123 - Verify User is able to search for DB types @not-pr-pipeline @qan',
+  async (I, qanPage, qanActions) => {
+    const filters = ['postgres', 'mysql', 'pmm-server', 'postgresql', 'mongodb'];
+
+    qanActions.waitForNewQANPageLoaded();
+    I.waitForElement(qanPage.fields.filterBy, 30);
+    const countBefore = await qanActions.getCountOfItems();
+
+    for (let i = 0; i < filters.length; i++) {
+      qanActions.applyFilterNewQAN(filters[i]);
+      const countAfter = await qanActions.getCountOfItems();
+
+      await qanActions.verifyChangedCount(countBefore, countAfter);
+      qanActions.applyFilterNewQAN(filters[i]);
+    }
+  },
+);
+
+Scenario(
+  'PMM-T123 - Verify User is able to search Env & Cluster @not-pr-pipeline @qan',
+  async (I, qanPage, qanActions) => {
+    const filters = ['ps-dev', 'ps-dev-cluster', 'pgsql-repl1'];
+
+    qanActions.waitForNewQANPageLoaded();
+    I.waitForElement(qanPage.fields.filterBy, 30);
+    const countBefore = await qanActions.getCountOfItems();
+
+    for (let i = 0; i < filters.length; i++) {
+      qanActions.applyFilterNewQAN(filters[i]);
+      const countAfter = await qanActions.getCountOfItems();
+
+      await qanActions.verifyChangedCount(countBefore, countAfter);
+      qanActions.applyFilterNewQAN(filters[i]);
+    }
+  },
+);
+
+Scenario(
+  'Check All Filter Groups Exists in the Filter Section @not-pr-pipeline @qan',
+  async (I, qanPage, qanActions) => {
+    qanActions.waitForNewQANPageLoaded();
+    for (let i = 0; i < qanPage.filterGroups.length; i++) {
+      I.fillField(qanPage.fields.filterBy, qanPage.filterGroups[i]);
+      I.waitForVisible(qanPage.filterSectionLocator(qanPage.filterGroups[i]), 30);
+      I.seeElement(qanPage.filterSectionLocator(qanPage.filterGroups[i]));
+      I.clearField(qanPage.fields.filterBy);
+    }
+  },
+);
+
+Scenario(
+  'PMM-T128 - Verify pagination works correctly @not-pr-pipeline @qan',
+  async (I, qanPage, qanActions) => {
+    qanActions.waitForNewQANPageLoaded();
+    qanActions.verifySelectedCountPerPage('25 / page');
+    const countOfItems = await qanActions.getCountOfItems();
+
+    console.log(`Count of Items ${countOfItems}`);
+    if (countOfItems <= 50) {
+      I.seeAttributesOnElements(qanPage.fields.previousPage, { 'aria-disabled': 'true' });
+      I.click(qanPage.fields.nextPage);
+      qanActions.verifyActiveItem(2);
+      await qanActions.verifyCount(`26-${countOfItems}`);
+    } else if (countOfItems <= 100 && countOfItems > 50) {
+      I.seeAttributesOnElements(qanPage.fields.previousPage, { 'aria-disabled': 'true' });
+      I.click(qanPage.fields.nextPage);
+      qanActions.verifyActiveItem(2);
+      await qanActions.verifyCount('26-50');
+      qanActions.verifyActiveItem(1);
+      await qanActions.verifyCount('1-25');
+    } else {
+      I.seeAttributesOnElements(qanPage.fields.previousPage, { 'aria-disabled': 'true' });
+      I.click(qanPage.fields.nextPage);
+      qanActions.verifyActiveItem(2);
+      await qanActions.verifyCount('26-50');
+      I.click(qanPage.fields.previousPage);
+      qanActions.verifyActiveItem(1);
+      await qanActions.verifyCount('1-25');
+      I.seeAttributesOnElements(qanPage.fields.previousPage, { 'aria-disabled': 'true' });
+      I.click(qanPage.fields.ellipsisButton);
+      qanActions.verifyActiveItem(6);
+      await qanActions.verifyCount('126-150');
+      I.click(qanPage.fields.ellipsisButton);
+      qanActions.verifyActiveItem(1);
+      await qanActions.verifyCount('1-25');
+      qanActions.selectPage(3);
+      qanActions.verifyActiveItem(3);
+      await qanActions.verifyCount('51-75');
+    }
+  },
+);
+
+Scenario(
+  'PMM-T193 - Verify user is able to change per page elements display and pagination is updated according to this value, PMM-T256 - Verify that switching view from 25 to 50/100 pages works correctly @not-pr-pipeline @qan',
+  async (qanPage, qanActions) => {
+    qanActions.waitForNewQANPageLoaded();
+    const countOfItems = await qanActions.getCountOfItems();
+
+    await qanActions.verifyRowCount(27);
+    if (countOfItems <= 50) {
+      await qanActions.verifyCount('1-25');
+      await qanActions.verifyPagesAndCount(25);
+    } else if (countOfItems <= 100 && countOfItems > 50) {
+      await qanActions.verifyCount('1-25');
+      await qanActions.verifyPagesAndCount(25);
+      await qanActions.selectPagination('50 / page');
+      await qanActions.verifyRowCount(52);
+      await qanActions.verifyPagesAndCount(50);
+      await qanActions.verifyCount('1-50');
+      await qanActions.selectPagination('100 / page');
+      await qanActions.verifyCount('1-100');
+    } else {
+      await qanActions.verifyCount('1-25');
+      await qanActions.verifyPagesAndCount(25);
+      await qanActions.selectPagination('50 / page');
+      await qanActions.verifyRowCount(52);
+      await qanActions.verifyPagesAndCount(50);
+      await qanActions.verifyCount('1-50');
+      await qanActions.selectPagination('100 / page');
+      await qanActions.verifyRowCount(102);
+      await qanActions.verifyPagesAndCount(100);
+      await qanActions.verifyCount('1-100');
+      await qanActions.selectPagination('25 / page');
+      await qanActions.verifyRowCount(27);
+      await qanActions.verifyCount('1-25');
+      await qanActions.verifyPagesAndCount(25);
+    }
+  },
+);

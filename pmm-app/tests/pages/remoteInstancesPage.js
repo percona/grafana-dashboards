@@ -9,52 +9,58 @@ module.exports = {
 
   // insert your locators and methods here
   // setting locators
+  services: {
+    mongodb: 'mongodb_remote_new',
+    mysql: 'mysql_remote_new',
+    postgresql: 'postgresql_remote_new',
+    proxysql: 'proxysql_remote_new',
+  },
   url: 'graph/d/pmm-add-instance/pmm-add-instance?orgId=1',
   addMySQLRemoteURL: 'graph/d/pmm-add-instance/pmm-add-instance?instance_type=mysql',
-  dashboardMySQLOverviewWithFilters:
-    'graph/d/mysql-instance-overview/mysql-instances-overview?orgId=1&'
-    + 'from=now-5m&to=now&refresh=1m&var-interval=$__auto_interval_interval&var-region=us-east-1&var-environment='
-    + 'RDS%20MySQL%205.6&var-cluster=rds56-cluster&var-replication_set=rds56-replication&var-node_name=rds-mysql56'
-    + '&var-service_name=rds-mysql56&&var-az=us-east-1c&var-node_type=remote_rds&var-node_model=&var-database=All'
-    + '&var-service_type=&var-schema=',
+  rds: {
+    'Service Name': 'rds-mysql56',
+    Environment: 'RDS MySQL 5.6',
+    'Replication Set': 'rds56-replication',
+    Cluster: 'rds56-cluster',
+  },
   fields: {
-    pageHeaderText: 'PMM Add Instance',
-    iframe: '//div[@class=\'panel-content\']//iframe',
-    remoteInstanceTitleLocator: '//section[@class=\'content-wrapper\']/h3',
-    remoteInstanceTitle: 'How to Add an Instance',
-    addInstancesList: '//nav[@class=\'navigation\']',
-    addMongoDBRemote: '//a[text()[contains(.,\'Add a Remote MongoDB Instance\')]]',
-    addMySqlRemote: '//a[text()[contains(.,\'Add a Remote MySQL Instance\')]]',
-    addPostgreSQLRemote: '//a[text()[contains(.,\'Add a Remote PostgreSQL Instance\')]]',
-    addProxySQLRemote: '//a[text()[contains(.,\'Add a Remote ProxySQL Instance\')]]',
-    hostName: '//input[contains(@placeholder,\'*Hostname\')]',
-    serviceName: '//input[@placeholder=\'Service name (default: Hostname)\']',
-    portNumber: '//input[contains(@placeholder, \'Port\')]',
-    userName: '//input[contains(@placeholder, \'Username\')]',
-    password: '//input[contains(@placeholder, \'Password\')]',
-    environment: '//input[contains(@placeholder, \'Environment\')]',
-    cluster: '//input[contains(@placeholder, \'Cluster\')]',
-    replicationSet: '//input[contains(@placeholder, \'Replication set\')]',
+    accessKeyInput: '//input[@name="aws_access_key"]',
+    addAWSRDSMySQLbtn: '//a[text()[contains(.,"Add an AWS RDS MySQL or Aurora MySQL Instance")]]',
+    addInstanceDiv: '//div[@class="view"]',
+    addInstancesList: '//nav[@class="navigation"]',
+    addMongoDBRemote: '//a[text()[contains(.,"Add a Remote MongoDB Instance")]]',
+    addMySqlRemote: '//a[text()[contains(.,"Add a Remote MySQL Instance")]]',
+    addPostgreSQLRemote: '//a[text()[contains(.,"Add a Remote PostgreSQL Instance")]]',
+    addProxySQLRemote: '//a[text()[contains(.,"Add a Remote ProxySQL Instance")]]',
     addService: '#addInstance',
-    skipTLS: '//input[@name=\'tls_skip_verify\']',
-    useTLS: '//input[@name=\'tls\']',
-    usePgStatStatements: '//input[@name=\'qan_postgresql_pgstatements_agent\']',
-    useQANMongoDBProfiler: '//input[@name=\'qan_mongodb_profiler\']',
-    usePerformanceSchema: '//input[@name=\'qan_mysql_perfschema\']',
-    usePerformanceSchema2: '//input[@name=\'qan_mysql_perfschema\']/following-sibling::span[2]',
-    skipTLSL: '//input[@name=\'tls_skip_verify\']/following-sibling::span[2]',
-    skipConnectionCheck: '//input[@name=\'skip_connection_check\']/following-sibling::span[2]',
     availabilityZone: '//input[@placeholder="*Availability Zone"]',
-    addInstanceDiv: '//div[@class=\'view\']',
-    addAWSRDSMySQLbtn: "//a[text()[contains(.,'Add an AWS RDS MySQL or Aurora MySQL Instance')]]",
-    accessKeyInput: '//input[@name=\'aws_access_key\']',
-    secretKeyInput: '//input[@name=\'aws_secret_key\']',
+    cluster: '//input[contains(@placeholder, "Cluster")]',
+    disableBasicMetrics: '//input[@name="disable_basic_metrics"]/following-sibling::span[2]',
+    disableEnhancedMetrics: '//input[@name="disable_enhanced_metrics"]/following-sibling::span[2]',
     discoverBtn: '#addInstance',
-    discoveryResults: "tbody[role='rowgroup']",
-    discoveryRowWithId: '//tr/td[text()=\'',
+    discoveryResults: 'tbody[role="rowgroup"]',
+    discoveryRowWithId: '//tr/td[text()="',
+    environment: '//input[contains(@placeholder, "Environment")]',
+    hostName: '//input[contains(@placeholder,"*Hostname")]',
+    iframe: '//div[@class="panel-content"]//iframe',
+    pageHeaderText: 'PMM Add Instance',
+    password: '//input[contains(@placeholder, "Password")]',
+    portNumber: '//input[contains(@placeholder, "Port")]',
+    remoteInstanceTitle: 'How to Add an Instance',
+    remoteInstanceTitleLocator: '//section[@class="content-wrapper"]/h3',
+    replicationSet: '//input[contains(@placeholder, "Replication set")]',
+    secretKeyInput: '//input[@name="aws_secret_key"]',
+    serviceName: '//input[@placeholder="Service name (default: Hostname)"]',
+    skipConnectionCheck: '//input[@name="skip_connection_check"]/following-sibling::span[2]',
+    skipTLS: '//input[@name="tls_skip_verify"]',
+    skipTLSL: '//input[@name="tls_skip_verify"]/following-sibling::span[2]',
     startMonitoring: '/following-sibling::td/a',
-    disableEnhancedMetrics: '//input[@name=\'disable_enhanced_metrics\']/following-sibling::span[2]',
-    disableBasicMetrics: '//input[@name=\'disable_basic_metrics\']/following-sibling::span[2]',
+    usePerformanceSchema2: '//input[@name="qan_mysql_perfschema"]/following-sibling::span[2]',
+    usePerformanceSchema: '//input[@name="qan_mysql_perfschema"]',
+    usePgStatStatements: '//input[@name="qan_postgresql_pgstatements_agent"]',
+    useQANMongoDBProfiler: '//input[@name="qan_mongodb_profiler"]',
+    useTLS: '//input[@name="tls"]',
+    userName: '//input[contains(@placeholder, "Username")]',
   },
 
   waitUntilRemoteInstancesPageLoaded() {
@@ -89,7 +95,7 @@ module.exports = {
   fillRemoteFields(serviceName) {
     // eslint-disable-next-line default-case
     switch (serviceName) {
-      case 'mysql_remote_new':
+      case this.services.mysql:
         I.fillField(this.fields.hostName, process.env.REMOTE_MYSQL_HOST);
         I.fillField(this.fields.userName, process.env.REMOTE_MYSQL_USER);
         I.fillField(this.fields.password, process.env.REMOTE_MYSQL_PASSWORD);
@@ -101,7 +107,7 @@ module.exports = {
         I.fillField(this.fields.environment, 'remote-mysql');
         I.fillField(this.fields.cluster, 'remote-mysql-cluster');
         break;
-      case 'mongodb_remote_new':
+      case this.services.mongodb:
         I.fillField(this.fields.hostName, process.env.REMOTE_MONGODB_HOST);
         I.fillField(this.fields.userName, process.env.REMOTE_MONGODB_USER);
         I.fillField(this.fields.password, process.env.REMOTE_MONGODB_PASSWORD);
@@ -109,7 +115,7 @@ module.exports = {
         I.fillField(this.fields.environment, 'remote-mongodb');
         I.fillField(this.fields.cluster, 'remote-mongodb-cluster');
         break;
-      case 'postgresql_remote_new':
+      case this.services.postgresql:
         I.fillField(this.fields.hostName, process.env.REMOTE_POSTGRESQL_HOST);
         I.fillField(this.fields.userName, process.env.REMOTE_POSTGRESQL_USER);
         I.fillField(this.fields.password, process.env.REMOTE_POSTGRESSQL_PASSWORD);
@@ -117,7 +123,7 @@ module.exports = {
         I.fillField(this.fields.environment, 'remote-postgres');
         I.fillField(this.fields.cluster, 'remote-postgres-cluster');
         break;
-      case 'proxysql_remote_new':
+      case this.services.proxysql:
         I.fillField(this.fields.hostName, process.env.REMOTE_PROXYSQL_HOST);
         I.fillField(this.fields.userName, process.env.REMOTE_PROXYSQL_USER);
         I.fillField(this.fields.password, process.env.REMOTE_PROXYSQL_PASSWORD);
@@ -135,11 +141,11 @@ module.exports = {
     I.click(this.fields.skipTLSL);
     // eslint-disable-next-line default-case
     switch (serviceName) {
-      case 'mongodb_remote_new':
+      case this.services.mongodb:
         I.click(this.fields.useTLS);
         I.click(this.fields.useQANMongoDBProfiler);
         break;
-      case 'postgresql_remote_new':
+      case this.services.postgresql:
         I.click(this.fields.useTLS);
         I.click(this.fields.usePgStatStatements);
         break;
@@ -150,7 +156,6 @@ module.exports = {
     }
     I.click(this.fields.addService);
     I.waitForVisible(pmmInventoryPage.fields.agentsLink, 30);
-    I.waitForClickable(pmmInventoryPage.fields.agentsLink, 30);
 
     return pmmInventoryPage;
   },
@@ -159,7 +164,6 @@ module.exports = {
     I.click(this.fields.addAWSRDSMySQLbtn);
     I.waitForVisible(this.fields.accessKeyInput, 30);
     I.waitForVisible(this.fields.secretKeyInput, 30);
-    I.waitForClickable(this.fields.discoverBtn, 30);
   },
 
   discoverRDS() {
@@ -174,13 +178,13 @@ module.exports = {
   },
 
   verifyInstanceIsDiscovered(instanceIdToMonitor) {
-    const instanceIdLocator = `${this.fields.discoveryRowWithId}${instanceIdToMonitor}']`;
+    const instanceIdLocator = `${this.fields.discoveryRowWithId}${instanceIdToMonitor}"]`;
 
     I.seeElement(instanceIdLocator);
   },
 
   startMonitoringOfInstance(instanceIdToMonitor) {
-    const instanceIdLocator = `${this.fields.discoveryRowWithId}${instanceIdToMonitor}']`;
+    const instanceIdLocator = `${this.fields.discoveryRowWithId}${instanceIdToMonitor}"]`;
     const startMonitoringInstanceBtn = `${instanceIdLocator}${this.fields.startMonitoring}`;
 
     I.waitForVisible(instanceIdLocator, 30);

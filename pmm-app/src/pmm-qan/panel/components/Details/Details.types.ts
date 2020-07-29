@@ -18,3 +18,9 @@ export interface Details {
   contextActions: any;
   detailsState: DetailsState;
 }
+
+export enum Databases {
+  postgresql = 'postgresql',
+  mongodb = 'mongodb',
+  mysql = 'mysql',
+}
