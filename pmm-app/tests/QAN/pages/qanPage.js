@@ -1,5 +1,4 @@
 const { I } = inject();
-const assert = require('assert');
 
 module.exports = {
   url: 'graph/d/pmm-qan/pmm-query-analytics?from=now-5m&to=now',
@@ -26,10 +25,12 @@ module.exports = {
     filterCheckboxes: '.checkbox-container__checkmark',
     groupBySelector: '.group-by-selector',
     innodbColumn: '//tr[2]//td[6]//span[contains(@class,"summarize")]',
-    innodbColumnTooltip: '//tr[2]//td[6]//span[contains(@class,"ant-tooltip-open")]//span[contains(@class,"summarize")]',
+    innodbColumnTooltip:
+      '//tr[2]//td[6]//span[contains(@class,"ant-tooltip-open")]//span[contains(@class,"summarize")]',
     load: '//tr[@data-row-key="query_time"]//td[2]//div[1]//span[1]',
     loadValue: '//td[3]//span[contains(text(),"<0.01 load")]',
-    loadValueTooltip: '//td[3]//span[contains(@class,"ant-tooltip-open")]//span[contains(text(),"<0.01 load")]',
+    loadValueTooltip:
+      '//td[3]//span[contains(@class,"ant-tooltip-open")]//span[contains(text(),"<0.01 load")]',
     newQANAddColumn: '//span[contains(text(), "Add column")]',
     newQANMetricDropDown: '.ant-select-dropdown-menu-item',
     newQANPanelContent: '.panel-content',
@@ -38,11 +39,15 @@ module.exports = {
     nextPageNavigation: '//ul[@role="navigation"]//li[last()]',
     noDataIcon: 'div.ant-empty-image',
     overviewRowQueryCount: 'div.tr-3 > div:nth-child(4)',
-    overviewRowQueryCountTooltip: '//div[@class="ant-tooltip overview-column-tooltip ant-tooltip-placement-left"]',
-    overviewRowQueryCountTooltipText: '//div[@class="ant-tooltip overview-column-tooltip ant-tooltip-placement-left"]//div[@data-qa="qps"]',
+    overviewRowQueryCountTooltip:
+      '//div[@class="ant-tooltip overview-column-tooltip ant-tooltip-placement-left"]',
+    overviewRowQueryCountTooltipText:
+      '//div[@class="ant-tooltip overview-column-tooltip ant-tooltip-placement-left"]//div[@data-qa="qps"]',
     overviewRowQueryTime: 'div.tr-3 > div:nth-child(5)',
-    overviewRowQueryTimeTooltip: '//div[@class="ant-tooltip overview-column-tooltip ant-tooltip-placement-left"]',
-    overviewRowQueryTimeTooltipText: '//div[@class="ant-tooltip overview-column-tooltip ant-tooltip-placement-left"]//div[@data-qa="qps"]',
+    overviewRowQueryTimeTooltip:
+      '//div[@class="ant-tooltip overview-column-tooltip ant-tooltip-placement-left"]',
+    overviewRowQueryTimeTooltipText:
+      '//div[@class="ant-tooltip overview-column-tooltip ant-tooltip-placement-left"]//div[@data-qa="qps"]',
     previousPage: '.ant-pagination-prev',
     qps: '//tr[@data-row-key="num_queries"]//td[2]//span[1]',
     queryCountDetail: '//tr[@data-row-key="num_queries"]//td[3]//span[1]',
@@ -88,11 +93,7 @@ module.exports = {
   },
 
   filterGroupCountSelector(groupName) {
-    return (
-      `//section[@class='aside__filter-group']//span[contains(text(), '${
-        groupName
-      }')]/../button[contains(text(), 'See all')]`
-    );
+    return `//section[@class='aside__filter-group']//span[contains(text(), '${groupName}')]/../button[contains(text(), 'See all')]`;
   },
 
   waitForFiltersLoad() {
@@ -112,9 +113,7 @@ module.exports = {
   },
 
   getFilterLocator(filterValue) {
-    const filterLocator = `//section[@class='aside__filter-group']//span[contains(text(), '${
-      filterValue
-    }')]/../span[@class='checkbox-container__checkmark']`;
+    const filterLocator = `//section[@class='aside__filter-group']//span[contains(text(), '${filterValue}')]/../span[@class='checkbox-container__checkmark']`;
 
     return filterLocator;
   },

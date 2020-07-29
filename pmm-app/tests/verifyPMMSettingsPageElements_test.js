@@ -2,10 +2,12 @@ const page = require('./pages/pmmSettingsPage');
 
 const validationValues = ['text ', '2147483648', '-1', '<script>alert(test);</script>'];
 
-let dataRetentionTable = new DataTable(['value', 'message']);
+const dataRetentionTable = new DataTable(['value', 'message']);
+
 for (const i in validationValues) {
   dataRetentionTable.add([validationValues[i], page.messages.invalidDataDurationMessage]);
 }
+
 dataRetentionTable.add(['', page.messages.requiredFieldMessage]);
 
 Feature('PMM Settings Page Elements and Validations');
@@ -22,6 +24,7 @@ Scenario(
     for (const i in pmmSettingsPage.sectionHeaderList) {
       I.see(pmmSettingsPage.sectionHeaderList[i], pmmSettingsPage.fields.sectionHeader);
     }
+
     I.see(pmmSettingsPage.sectionButtonText.applyChanges, pmmSettingsPage.fields.applyButton);
 
     await within(pmmSettingsPage.fields.expandedSection, () => {
@@ -39,6 +42,7 @@ Scenario(
 
 Scenario('Verify SSH Key Details Section Elements', async (I, pmmSettingsPage) => {
   const sectionNameToExpand = 'SSH Key Details';
+
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
   pmmSettingsPage.collapseDefaultSection();
   await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.sectionButtonText.applySSHKey);
@@ -50,6 +54,7 @@ Scenario(
   'Verify Alertmanager integration Section Elements',
   async (I, pmmSettingsPage) => {
     const sectionNameToExpand = 'Alertmanager integration';
+
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     pmmSettingsPage.collapseDefaultSection();
     await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.sectionButtonText.addAlert);
@@ -62,6 +67,7 @@ Scenario(
 
 Scenario('Verify Diagnostics Section Elements', async (I, pmmSettingsPage) => {
   const sectionNameToExpand = 'Diagnostics';
+
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
   pmmSettingsPage.collapseDefaultSection();
   await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.sectionButtonText.downloadLogs);
@@ -82,6 +88,7 @@ Scenario(
   'Verify validation for decimal Data Retention value',
   async (I, pmmSettingsPage) => {
     const dataRetentionValue = '15.5';
+
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     await pmmSettingsPage.changeDataRetentionValueTo(dataRetentionValue);
     await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.invalidDataDurationPopUpMessage);
@@ -91,6 +98,7 @@ Scenario(
 Scenario('Verify validation for invalid SSH Key', async (I, pmmSettingsPage) => {
   const sshKeyForTest = 'ssh-rsa testKey test@key.local';
   const sectionNameToExpand = 'SSH Key Details';
+
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
   pmmSettingsPage.collapseDefaultSection();
   await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.sectionButtonText.applySSHKey);
@@ -103,6 +111,7 @@ Scenario(
   async (I, pmmSettingsPage) => {
     const urlWithoutScheme = 'invalid_url';
     const sectionNameToExpand = 'Alertmanager integration';
+
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     pmmSettingsPage.collapseDefaultSection();
     await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.sectionButtonText.addAlert);
@@ -118,6 +127,7 @@ Scenario(
   async (I, pmmSettingsPage) => {
     const urlWithoutHost = 'http://';
     const sectionNameToExpand = 'Alertmanager integration';
+
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     pmmSettingsPage.collapseDefaultSection();
     await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.sectionButtonText.addAlert);
@@ -133,6 +143,7 @@ Scenario(
   async (I, pmmSettingsPage) => {
     const rule = 'invalid_rule';
     const sectionNameToExpand = 'Alertmanager integration';
+
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     pmmSettingsPage.collapseDefaultSection();
     await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.sectionButtonText.addAlert);
@@ -163,11 +174,12 @@ Scenario(
   }
 );
 
-//To be removed from Skip after https://jira.percona.com/browse/PMM-5791
+// To be removed from Skip after https://jira.percona.com/browse/PMM-5791
 xScenario(
   'PMM-T227 Open PMM Settings page and verify DATA_RETENTION value is set to 2 days @not-pr-pipeline',
   async (I, pmmSettingsPage) => {
     const dataRetention = '2';
+
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     I.waitForValue(pmmSettingsPage.fields.dataRetentionCount, dataRetention, 30);
   }

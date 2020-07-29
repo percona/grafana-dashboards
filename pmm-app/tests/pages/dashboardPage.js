@@ -373,26 +373,27 @@ module.exports = {
       'Percentage of Open Table Definitions to Table Definition Cache',
     ],
     serviceName:
-      "//label[contains(text(), 'Service Name')]/following-sibling::value-select-dropdown/descendant::a[@class='variable-value-link']",
-    urlWithRDSFilter: 'graph/d/mysql-instance-overview/mysql-instances-overview?orgId=1&'
-        + 'from=now-5m&to=now&refresh=1m&var-interval=$__auto_interval_interval&var-region=All&'
-        + 'var-environment=All&var-cluster=rds56-cluster&var-replication_set=All&var-az=&'
-        + 'var-node_type=All&var-node_model=&var-database=All&var-service_type=All&var-schema=All',
+      '//label[contains(text(), "Service Name")]/following-sibling::value-select-dropdown/descendant::a[@class="variable-value-link"]',
+    urlWithRDSFilter:
+      'graph/d/mysql-instance-overview/mysql-instances-overview?orgId=1&'
+      + 'from=now-5m&to=now&refresh=1m&var-interval=$__auto_interval_interval&var-region=All&'
+      + 'var-environment=All&var-cluster=rds56-cluster&var-replication_set=All&var-az=&'
+      + 'var-node_type=All&var-node_model=&var-database=All&var-service_type=All&var-schema=All',
   },
 
   fields: {
-    notAvailableMetrics: "//span[contains(text(), 'N/A')]",
-    notAvailableDataPoints: "//div[contains(text(),'No data')]",
-    metricTitle: "//div[@class='panel-title']",
+    notAvailableMetrics: '//span[contains(text(), "N/A")]',
+    notAvailableDataPoints: '//div[contains(text(),"No data")]',
+    metricTitle: '//div[@class="panel-title"]',
     reportTitleWithNA:
-      "//span[contains(text(), 'N/A')]//ancestor::div[contains(@class,'panel-container')]//span[contains(@class,'panel-title-text')]",
+      '//span[contains(text(), "N/A")]//ancestor::div[contains(@class,"panel-container")]//span[contains(@class,"panel-title-text")]',
     reportTitleWithNoData:
-      "//div[contains(text(),'No data')]//ancestor::div[contains(@class,'panel-container')]//span[contains(@class,'panel-title-text')]",
+      '//div[contains(text(),"No data")]//ancestor::div[contains(@class,"panel-container")]//span[contains(@class,"panel-title-text")]',
     otherReportTitleWithNoData:
-      "//span[contains(text(),'No Data')]//ancestor::div[contains(@class,'panel-container')]//span[contains(@class,'panel-title-text')]",
-    collapsedDashboardRow: "//div[@class='dashboard-row dashboard-row--collapsed']/a",
-    annotationMarker: "(//div[contains(@class,'events_marker')])",
-    clearSelection: "//a[@ng-click='vm.clearSelections()']",
+      '//span[contains(text(),"No Data")]//ancestor::div[contains(@class,"panel-container")]//span[contains(@class,"panel-title-text")]',
+    collapsedDashboardRow: '//div[@class="dashboard-row dashboard-row--collapsed"]/a',
+    annotationMarker: '(//div[contains(@class,"events_marker")])',
+    clearSelection: '//a[@ng-click="vm.clearSelections()"]',
   },
 
   annotationLocator(annotationNumber) {
@@ -415,29 +416,33 @@ module.exports = {
 
   // introducing methods
   verifyMetricsExistence(metrics) {
-    for (let i in metrics) {
+    for (const i in metrics) {
       I.seeElement(this.graphsLocator(metrics[i]));
     }
   },
 
   graphsLocator(metricName) {
-    return "//span[contains(text(), '" + metricName + "')]";
+    return `//span[contains(text(), '${metricName}')]`;
   },
 
   async verifyThereAreNoGraphsWithNA(acceptableNACount = 0) {
     const numberOfNAElements = await I.grabNumberOfVisibleElements(this.fields.notAvailableMetrics);
-    console.log('number of N/A elements is = ' + numberOfNAElements);
+
+    console.log(`number of N/A elements is = ${numberOfNAElements}`);
     if (numberOfNAElements > acceptableNACount) {
       const titles = await this.grabFailedReportTitles(this.fields.reportTitleWithNA);
+
       await this.printFailedReportNames(acceptableNACount, numberOfNAElements, titles);
     }
   },
 
   async verifyThereAreNoGraphsWithoutData(acceptableNoDataCount = 0) {
     const numberOfNoDataElements = await I.grabNumberOfVisibleElements(this.fields.notAvailableDataPoints);
-    console.log('number of No Data elements is = ' + numberOfNoDataElements);
+
+    console.log(`number of No Data elements is = ${numberOfNoDataElements}`);
     if (numberOfNoDataElements > acceptableNoDataCount) {
       const titles = await this.grabFailedReportTitles(this.fields.reportTitleWithNoData);
+
       await this.printFailedReportNames(acceptableNoDataCount, numberOfNoDataElements, titles);
     }
   },
@@ -446,43 +451,44 @@ module.exports = {
     assert.equal(
       actualNumber <= expectedNumber,
       true,
-      'Expected ' +
-        expectedNumber +
-        ' Elements with but found ' +
-        actualNumber +
-        '. Report Names are ' +
-        titles
+      `Expected ${expectedNumber} Elements with but found ${actualNumber}. Report Names are ${titles}`,
     );
   },
 
   async grabFailedReportTitles(selector) {
     const reportNames = await I.grabTextFrom(selector);
+
     return reportNames;
   },
 
   async expandEachDashboardRow(halfToExpand) {
     let sectionsToExpand;
     const sections = await I.grabTextFrom(this.fields.collapsedDashboardRow);
-    if (halfToExpand == 1) {
+
+    if (halfToExpand === 1) {
       sectionsToExpand = sections.slice(0, sections.length / 2);
-    } else if (halfToExpand == 2) {
+    } else if (halfToExpand === 2) {
       sectionsToExpand = sections.slice(sections.length / 2, sections.length);
     } else {
       sectionsToExpand = sections;
     }
+
     await this.expandRows(sectionsToExpand);
   },
 
   async expandRows(sectionsToExpand) {
     let sections;
+
     if (typeof sectionsToExpand === 'string') {
       sections = [sectionsToExpand];
     } else {
       sections = sectionsToExpand;
     }
+
     for (let i = 0; i < sections.length; i++) {
       const sectionName = sections[i].toString().split('(');
       const rowToExpand = `${this.fields.collapsedDashboardRow}[contains(text(), '${sectionName[0]}')]`;
+
       I.click(rowToExpand);
       I.wait(0.5);
       adminPage.peformPageDown(1);
@@ -495,9 +501,11 @@ module.exports = {
 
   expandFilters(filterType) {
     const filterLocator = `//label[contains(text(), '${filterType}')]/following-sibling::value-select-dropdown`;
+
     I.waitForElement(filterLocator, 30);
     I.click(filterLocator);
-    return filterLocator
+
+    return filterLocator;
   },
 
   async applyFilter(filterName, filterValue) {
@@ -506,13 +514,16 @@ module.exports = {
     const filterValueSelector = `//span[contains(text(), '${filterValue}')]`;
     // eslint-disable-next-line max-len
     const filterNameSelector = `(//a[@class='variable-value-link']//ancestor::div//label[contains(text(),'${filterName}')])[1]`;
+
     I.waitForElement(filterSelector, 30);
     I.click(filterSelector);
     I.waitForElement(filterValueSelector, 30);
     const numOfElements = await I.grabNumberOfVisibleElements(this.fields.clearSelection);
+
     if (numOfElements === 1) {
       I.click(this.fields.clearSelection);
     }
+
     I.waitForElement(filterValueSelector, 30);
     I.click(filterValueSelector);
     I.waitForElement(filterNameSelector, 30);

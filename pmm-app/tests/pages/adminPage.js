@@ -1,32 +1,27 @@
-// eslint-disable-next-line no-undef
-const {I} = inject();
+const { I } = inject();
 const assert = require('assert');
 
 module.exports = {
-  // insert your locators and methods here
-  // setting locators
   url: 'graph/d/pmm-home/home-dashboard?orgId=1',
   fields: {
-    navigation: '//i[contains(@class, \'navbar-page-btn__search\')]',
-    timePickerMenu: '//button[@aria-label=\'TimePicker Open Button\']',
+    navigation: '//i[contains(@class, "navbar-page-btn__search")]',
+    timePickerMenu: '//button[@aria-label="TimePicker Open Button"]',
     fromTime: '(//input[@input-datetime])[1]',
     applyCustomTimer: '//button[@ng-click="ctrl.applyCustom();"]',
     backToDashboard: '//button[@ng-click=\'ctrl.close()\']',
-    discardChanges: '//button[@ng-click=\'ctrl.discard()\']',
-    metricTitle: '//div[@class=\'panel-title\']',
+    discardChanges: '//button[@ng-click="ctrl.discard()"]',
+    metricTitle: '//div[@class="panel-title"]',
     reportTitleWithNA:
-        '//span[contains(text(), \'N/A\')]//ancestor::div[contains(@class,\'panel-container\')]//span[contains(@class,\'panel-title-text\')]',
-    // eslint-disable-next-line no-undef
-    pmmDropdownMenuSelector: locate('a[data-toggle="dropdown"] > span').withText('PMM')
+      '//span[contains(text(), "N/A")]//ancestor::div[contains(@class,"panel-container")]//span[contains(@class,"panel-title-text")]',
+    pmmDropdownMenuSelector: locate('a[data-toggle="dropdown"] > span').withText('PMM'),
   },
 
-  // introducing methods
-
   async selectItemFromPMMDropdown(title) {
-    title = `//li/a[text()='${title}']`;
+    const titleLocator = `//li/a[text()='${title}']`;
+
     I.click(this.fields.pmmDropdownMenuSelector);
-    I.waitForVisible(title, 30);
-    I.click(title);
+    I.waitForVisible(titleLocator, 30);
+    I.click(titleLocator);
   },
 
   async navigateToDashboard(folderName, dashboardName) {
@@ -81,7 +76,6 @@ module.exports = {
     I.click(this.fields.metricTitle);
     I.wait(10);
     I.click(this.fields.metricTitle);
-    // eslint-disable-next-line no-plusplus
     for (let i = 0; i < timesPageDown; i++) {
       I.pressKey('PageDown');
       I.wait(2);
@@ -89,7 +83,6 @@ module.exports = {
   },
 
   peformPageDown(timesPagesDown) {
-    // eslint-disable-next-line no-plusplus
     for (let i = 0; i < timesPagesDown; i++) {
       I.pressKey('PageDown');
       I.wait(1);
@@ -97,7 +90,6 @@ module.exports = {
   },
 
   performPageUp(timesPagesUp) {
-    // eslint-disable-next-line no-plusplus
     for (let i = 0; i < timesPagesUp; i++) {
       I.pressKey('PageUp');
       I.wait(1);
@@ -110,9 +102,9 @@ module.exports = {
       const reportTitle = await I.grabTextFrom(this.fields.reportTitleWithNA);
 
       assert.equal(
-          numOfElements > number,
-          false,
-          `${numOfElements} Reports with N/A found on dashboard ${reportTitle}`
+        numOfElements > number,
+        false,
+        `${numOfElements} Reports with N/A found on dashboard ${reportTitle}`,
       );
     }
   },
