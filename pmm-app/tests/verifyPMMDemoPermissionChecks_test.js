@@ -31,6 +31,7 @@ Scenario(
   'PMM-T366 - Verify Failed security checks doesnt display the result of check @not-pr-pipeline [critical] @pmm-demo @not-ui-pipeline',
   async (I, pmmDemoPage) => {
     const text = 'Insufficient access rights.';
+
     I.amOnPage(pmmDemoPage.url);
     I.waitForVisible(pmmDemoPage.fields.failedSecurityChecks, 30);
     I.waitForVisible(pmmDemoPage.fields.dbCheckPanelNoAccess, 30);
@@ -42,6 +43,7 @@ Scenario(
   'PMM-T367 - Verify PMM Database checks page doesnt display checks @not-pr-pipeline [critical] @pmm-demo @not-ui-pipeline',
   async (I, pmmDemoPage, databaseChecksPage) => {
     const text = 'Insufficient access rights.';
+
     I.amOnPage(pmmDemoPage.url + databaseChecksPage.url);
     I.waitForVisible(pmmDemoPage.fields.dbCheckPanelNoAccess, 30);
     await pmmDemoPage.checkDBPanelText(text);
