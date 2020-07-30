@@ -5,27 +5,31 @@ Before(async (I, pmmSettingsPage, settingsAPI) => {
   await settingsAPI.restoreSettingsDefaults();
   I.amOnPage(pmmSettingsPage.url);
 });
-// TODO: Vasyl Y Skipping because of random failing. Fix after merging new Settings page
-xScenario('Open PMM Settings page and verify changing Metrics Resolution [critical]', async (I, pmmSettingsPage) => {
-  const resolutionToApply = 'Low';
+Scenario('Open PMM Settings page and verify changing Metrics Resolution [critical]', async (I, pmmSettingsPage) => {
+  const resolutionToApply = 'Rare';
 
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
   await pmmSettingsPage.selectMetricsResolution(resolutionToApply);
   await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
   I.refreshPage();
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
-  I.waitForText(resolutionToApply, 30, pmmSettingsPage.fields.selectedResolution);
+  await pmmSettingsPage.verifySelectedResolution(resolutionToApply);
 });
 
 Scenario('Open PMM Settings page and verify changing Data Retention [critical]', async (I, pmmSettingsPage) => {
   const dataRetentionValue = '1';
+  const sectionNameToExpand = 'Advanced settings';
 
+  await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+  await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.advancedButton);
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
   pmmSettingsPage.changeDataRetentionValueTo(dataRetentionValue);
   await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
   I.refreshPage();
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
-  I.waitForValue(pmmSettingsPage.fields.dataRetentionCount, dataRetentionValue, 30);
+  await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.advancedButton);
+  await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+  I.waitForValue(pmmSettingsPage.fields.dataRetentionInput, dataRetentionValue, 30);
 });
 
 Scenario('Open PMM Settings page and verify adding Alertmanager Rule [critical]', async (I, pmmSettingsPage) => {
@@ -33,13 +37,12 @@ Scenario('Open PMM Settings page and verify adding Alertmanager Rule [critical]'
   const sectionNameToExpand = 'Alertmanager integration';
 
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
-  pmmSettingsPage.collapseDefaultSection();
-  await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.sectionButtonText.addAlert);
+  await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.alertmanagerButton);
   pmmSettingsPage.addAlertmanagerRule(
     scheme + pmmSettingsPage.alertManager.ip + pmmSettingsPage.alertManager.service,
-    pmmSettingsPage.alertManager.rule
+    pmmSettingsPage.alertManager.editRule.replace('{{ sec }}', Math.random() * 100000)
   );
-  await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.successAlertmanagerMessage);
+  await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
   pmmSettingsPage.openAlertsManagerUi();
   await pmmSettingsPage.verifyAlertmanagerRuleAdded(pmmSettingsPage.alertManager.ruleName);
 });
@@ -47,6 +50,10 @@ Scenario('Open PMM Settings page and verify adding Alertmanager Rule [critical]'
 Scenario(
   'PMM-T253 Verify user can see correct tooltip for STT [trivial]',
   async (I, pmmSettingsPage) => {
+    const sectionNameToExpand = 'Advanced settings';
+
+    await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+    await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.advancedButton);
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     I.moveCursorTo(pmmSettingsPage.fields.sttLabelTooltipSelector);
     await pmmSettingsPage.verifyTooltip(pmmSettingsPage.tooltips.stt);
@@ -56,12 +63,18 @@ Scenario(
 Scenario(
   'PMM-T253 Verify user can enable STT if Telemetry is enabled',
   async (I, pmmSettingsPage) => {
+    const sectionNameToExpand = 'Advanced settings';
+
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
-    I.click(pmmSettingsPage.fields.sttSwitchSelector);
+    await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.advancedButton);
+    await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+    I.click(pmmSettingsPage.fields.sttSwitchClickable);
     pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelector, 'on');
-    I.click(pmmSettingsPage.fields.applyButton);
+    I.click(pmmSettingsPage.fields.advancedButton);
     await pmmSettingsPage.verifyPopUpMessage(pmmSettingsPage.messages.successPopUpMessage);
     I.refreshPage();
+    await pmmSettingsPage.waitForPmmSettingsPageLoaded();
+    await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.advancedButton);
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelector, 'on');
   }
