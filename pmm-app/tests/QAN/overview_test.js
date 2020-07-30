@@ -47,18 +47,17 @@ xScenario(
     qanActions.verifySortingIs(1, 'down');
   },
 );
-// Skipping because of a random failing at PR tests execution
-xScenario(
-  'PMM-T183 Verify that "Group by" in the overview table can be changed @qan',
+
+Scenario(
+  'PMM-T183 Verify that "Group by" in the overview table can be changed @qan @not-pr-pipeline',
   async (qanPage, qanActions) => {
     qanActions.changeGroupBy('Database');
     qanActions.verifyGroupByIs('Database');
   },
 );
 
-// Need to be skipped for change in locator
-xScenario(
-  'PMM-T187 Verify that the selected row in the overview table is highlighted @qan',
+Scenario(
+  'PMM-T187 Verify that the selected row in the overview table is highlighted @qan @not-pr-pipeline',
   async (qanPage, qanActions) => {
     qanActions.selectRow('2');
     qanActions.verifyRowIsSelected('2');
