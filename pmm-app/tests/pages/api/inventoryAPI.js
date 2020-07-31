@@ -9,10 +9,6 @@ module.exports = {
       serviceType: 'MYSQL_SERVICE',
       service: 'mysql',
     },
-    mongodb: {
-      serviceType: 'MONGODB_SERVICE',
-      service: 'mongodb',
-    },
     postgresql: {
       serviceType: 'POSTGRESQL_SERVICE',
       service: 'postgresql',
