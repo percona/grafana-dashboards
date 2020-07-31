@@ -1,15 +1,12 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { omit } from 'lodash';
-import { getDataSourceSrv, getTemplateSrv, getLocationSrv} from '@grafana/runtime';
-import * as data from '@grafana/data';
-import * as ui from '@grafana/ui';
 import {
-  generateURL, parseURL, refreshGrafanaVariables, setLabels
+  parseURL, refreshGrafanaVariables, setLabels
 } from './provider.tools';
 import { QueryAnalyticsContext } from './provider.types';
 
 const initialState = {} as QueryAnalyticsContext;
-console.log('data + ui', data, getLocationSrv)
+
 export const QueryAnalyticsProvider = React.createContext<QueryAnalyticsContext>(initialState);
 
 const actions = {
@@ -107,7 +104,7 @@ const actions = {
   closeDetails: () => (state) => omit(
     {
       ...state,
-      loadingDetails: false
+      loadingDetails: false,
     },
     ['queryId', 'querySelected']
   ),
@@ -119,87 +116,65 @@ const actions = {
 
 export const UrlParametersProvider = ({ timeRange, children }) => {
   const query = new URLSearchParams(window.location.search);
-  const rawTime = { ...timeRange.raw };
+
   const [panelState, setContext] = useState({
     ...parseURL(query),
-    rawTime,
+    rawTime: {
+      from: timeRange.raw.from,
+      to: timeRange.raw.to,
+    },
   });
 
-
-  const onRefresh = useCallback((event) => {
-    const newState = {
-      ...panelState,
-      from: event.from.utc().format('YYYY-MM-DDTHH:mm:ssZ'),
-      to: event.to.utc().format('YYYY-MM-DDTHH:mm:ssZ'),
-      rawTime: {
-        from: event.raw.from,
-        to: event.raw.to,
-      },
-    };
-
-    setContext(newState);
-  }, [panelState]);
-
-  const onTimeRangeChange = useCallback((event) => {
-    const newState = {
-      ...panelState,
-      from: event.from.utc().format('YYYY-MM-DDTHH:mm:ssZ'),
-      to: event.to.utc().format('YYYY-MM-DDTHH:mm:ssZ'),
-      rawTime: {
-        from: event.raw.from,
-        to: event.raw.to,
-      },
-    };
-
-    newState.pageNumber = 1;
-    delete newState.queryId;
-    delete newState.querySelected;
-    setContext(newState);
-  }, [panelState]);
-
-  const dataSource = getDataSourceSrv();
-
-  const templateVariables = (dataSource as any).templateSrv.variables;
-  console.log(templateVariables, dataSource)
-  const { variableSrv } = templateVariables[0];
-  console.log(templateVariables, dataSource, variableSrv)
-
-  // eslint-disable-next-line no-underscore-dangle
-
-  const [from, setFrom] = useState(rawTime.from);
-  const [to, setTo] = useState(rawTime.to);
-
   useEffect(() => {
-    // console.log(variableSrv)
-    //
-    // // eslint-disable-next-line no-underscore-dangle
-    // const handler = variableSrv.dashboard.events.emitter._events['time-range-updated'][0];
-    // const updateHandler = (event) => {
-    //   if (from !== event.raw.from || to !== event.raw.to) {
-    //     onTimeRangeChange(event);
-    //   } else {
-    //     onRefresh(event);
-    //   }
-    //
-    //   setFrom(event.raw.from);
-    //   setTo(event.raw.to);
-    //   // from = event.raw.from;
-    //   // to = event.raw.to;
-    // };
-    //
-    // handler.fn = updateHandler;
-    //
-    // // eslint-disable-next-line  no-underscore-dangle
-    // variableSrv.dashboard.events.emitter._events['time-range-updated'] = [handler];
-  }, [panelState, from, to]);
+    setContext({
+      ...panelState,
+      rawTime: {
+        from: timeRange.raw.from,
+        to: timeRange.raw.to,
+      },
+    });
+  }, [timeRange.raw.from, timeRange.raw.to]);
 
   useEffect(() => {
     refreshGrafanaVariables(panelState);
-    // const newUrl = generateURL(panelState);
-
-    // eslint-disable-next-line no-restricted-globals
-    // history.pushState({}, 'test', newUrl);
   }, [panelState]);
+
+  const [from, setFrom] = useState(timeRange.raw.from);
+  const [to, setTo] = useState(timeRange.raw.to);
+
+  useEffect(() => {
+    if (from === timeRange.raw.from && to === timeRange.raw.to) {
+      const newState = {
+        ...panelState,
+        from: timeRange.from.utc().format('YYYY-MM-DDTHH:mm:ssZ'),
+        to: timeRange.to.utc().format('YYYY-MM-DDTHH:mm:ssZ'),
+        rawTime: {
+          from: timeRange.raw.from,
+          to: timeRange.raw.to,
+        },
+      };
+
+      setContext(newState);
+    } else {
+      const newState = {
+        ...panelState,
+        from: timeRange.from.utc().format('YYYY-MM-DDTHH:mm:ssZ'),
+        to: timeRange.to.utc().format('YYYY-MM-DDTHH:mm:ssZ'),
+        rawTime: {
+          from: timeRange.raw.from,
+          to: timeRange.raw.to,
+        },
+      };
+
+      newState.pageNumber = 1;
+      delete newState.queryId;
+      delete newState.querySelected;
+      setContext(newState);
+    }
+
+    setFrom(timeRange.raw.from);
+    setTo(timeRange.raw.to);
+  }, [timeRange, from, to]);
 
   const wrapAction = (key) => (...value) => setContext(actions[key](...value));
 
