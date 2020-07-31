@@ -222,7 +222,8 @@ module.exports = {
     ],
   },
   postgresqlInstanceOverviewDashboard: {
-    url: '/graph/d/postgresql-instance-overview/postgresql-instances-overview',
+    //had to be changed after the PMM-6386 bug will be fixed
+    url: 'graph/d/postgresql-instance-overview/postgresql-instances-overview',
     metrics: [
       'Services',
       'Max Active Connections',
@@ -264,7 +265,7 @@ module.exports = {
       'Top 5 Duration of Active Transactions',
       'Duration of Active Transactions',
       'Top 5 Duration of Other Transactions',
-      'Durations of Other Transactions',
+      'Duration of Other Transactions',
       'Top 5 Number of Temp Files',
       'Number of Temp Files',
       'Top 5 Size of Temp Files',
@@ -289,7 +290,7 @@ module.exports = {
       'Max Blocks Writes',
       'Max Blocks Reads',
       'Max Allocated Buffers',
-      'Total Written Files to Disk',
+      'Total Written Files to disk',
       'Total Files Synchronization to Disk',
       'Top 5 Read Operations with Blocks',
       'Read Operations with Blocks',
@@ -305,8 +306,8 @@ module.exports = {
       'Written by the background writer',
       'Top 5 Written during checkpoints',
       'Written during checkpoints',
-      'Top 5 Files Synchronization to Disk',
-      'Files Synchronization to Disk',
+      'Top 5 Files Synchronization to disk',
+      'Files Synchronization to disk',
       'Top 5 Written Files to Disk',
       'Written Files to Disk',
     ],
