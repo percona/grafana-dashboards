@@ -1,8 +1,6 @@
-import { getDataSourceSrv } from '@grafana/runtime';
-import { find } from 'lodash';
+import { getLocationSrv } from '@grafana/runtime';
 import { ParseQueryParamDate } from 'shared/components/helpers/time-parameters-parser';
-import { DEFAULT_COLUMNS, FILTERS_NAMES, DEFAULT_PAGE_SIZE } from '../QueryAnalytics.constants';
-import { getDataSourceSrv, getTemplateSrv, getLocationSrv} from '@grafana/runtime';
+import { DEFAULT_COLUMNS, DEFAULT_PAGE_SIZE, FILTERS_NAMES } from '../QueryAnalytics.constants';
 
 const setFilters = (query) => FILTERS_NAMES.reduce((acc, filterName) => {
   const filters = query.getAll(`var-${filterName}`);
@@ -16,44 +14,41 @@ const setFilters = (query) => FILTERS_NAMES.reduce((acc, filterName) => {
   return acc;
 }, {});
 
+interface GrafanaVariables {
+  columns?: string;
+  group_by?: string;
+  filter_by?: string;
+  order_by?: string;
+  from?: string;
+  to?: string;
+  query_selected?: string;
+  details_tab?: string;
+  [key: string]: any;
+}
 export const refreshGrafanaVariables = (state) => {
-  // const dataSource = getDataSourceSrv();
-  // const templateVariables = (dataSource as any).templateSrv.variables;
-
-  // FILTERS_NAMES.forEach((filter) => {
-  //   const variables = find(templateVariables, { name: filter.replace('var-', '') });
-  //
-  //   if (!variables) {
-  //     return;
-  //   }
-  //
-  //   variables.current = {
-  //     text: state.labels[filter] || ['All'],
-  //     value: state.labels[filter] || ['All'],
-  //   };
-  // });
-  // templateVariables[0].variableSrv.variableUpdated(templateVariables[0]);
-  console.log(state)
-  // read parameters and create new url
   const {
     labels, columns, groupBy, queryId, orderBy, rawTime
   } = state;
 
-  const variablesQuery = {}
-  // const urlLabels = getLabelsUrlString(labels);
+  const variablesQuery: GrafanaVariables = {};
+
   Object.keys(labels).forEach((key) => {
     const variables = labels[key];
-    variablesQuery[`var-${key}`] = variables.map((variable) => variable === 'na' ? '' : variable);
+
+    variablesQuery[`var-${key}`] = variables.map((variable) => (variable === 'na' ? '' : variable));
   });
   if (columns) {
-    variablesQuery.columns = JSON.stringify(columns)
+    variablesQuery.columns = JSON.stringify(columns);
   }
+
   if (groupBy) {
     variablesQuery.group_by = groupBy;
   }
+
   if (queryId) {
     variablesQuery.filter_by = queryId;
   }
+
   if (orderBy) {
     variablesQuery.order_by = orderBy;
   }
@@ -61,6 +56,7 @@ export const refreshGrafanaVariables = (state) => {
   if (rawTime && rawTime.from) {
     variablesQuery.from = rawTime.from;
   }
+
   if (rawTime && rawTime.to) {
     variablesQuery.to = rawTime.to;
   }
@@ -75,96 +71,11 @@ export const refreshGrafanaVariables = (state) => {
     variablesQuery.details_tab = state.openDetailsTab;
   }
 
-  // const urlColumnsQuery = columns ? `columns=${JSON.stringify(columns)}` : '';
-  // const urlGroupBy = groupBy ? `group_by=${groupBy}` : '';
-  // const urlFilterByQuery = queryId ? `filter_by=${queryId}` : '';
-  // const urlOrderBy = orderBy ? `order_by=${orderBy}` : '';
-  // const urlFrom = rawTime && rawTime.from ? `from=${rawTime.from}` : '';
-  // const urlTo = rawTime && rawTime.to ? `to=${rawTime.to}` : '';
-  // const totals = `totals=${state.totals}`;
-  // const querySelected = state.querySelected ? `query_selected=${state.querySelected}` : '';
-  // const openDetailsTab = state.openDetailsTab ? `details_tab=${state.openDetailsTab}` : '';
-
-  console.log('url new state', variablesQuery)
   getLocationSrv().update({
     query: variablesQuery
-  })
-  console.log('Dune!')
-  // const uriQueryParams = [
-  //   urlColumnsQuery,
-  //   urlFilterByQuery,
-  //   urlLabels,
-  //   urlOrderBy,
-  //   urlGroupBy,
-  //   urlFrom,
-  //   urlTo,
-  //   totals,
-  //   querySelected,
-  //   openDetailsTab,
-  // ]
-  //   .filter(Boolean)
-  //   .join('&');
-  //
-  // // TODO: replace crutch with right redirect
-  // return encodeURI(`${window.location.pathname}?${uriQueryParams}`);
-
-
-
+  });
 };
 
-export const getLabelsUrlString = (labels) => Object.keys(labels)
-  .map((key) => {
-    const variables = labels[key];
-
-    return variables.map((variable) => `var-${key}=${variable === 'na' ? '' : variable}`).join('&');
-  })
-  .filter(Boolean)
-  .join('&');
-export const generateURL = (state) => {
-  // read parameters and create new url
-  const {
-    labels, columns, groupBy, queryId, orderBy, rawTime
-  } = state;
-
-  const variablesQuery = {}
-  const urlLabels = getLabelsUrlString(labels);
-  const urlColumnsQuery = columns ? `columns=${JSON.stringify(columns)}` : '';
-  const urlGroupBy = groupBy ? `group_by=${groupBy}` : '';
-  const urlFilterByQuery = queryId ? `filter_by=${queryId}` : '';
-  const urlOrderBy = orderBy ? `order_by=${orderBy}` : '';
-  const urlFrom = rawTime && rawTime.from ? `from=${rawTime.from}` : '';
-  const urlTo = rawTime && rawTime.to ? `to=${rawTime.to}` : '';
-  const totals = `totals=${state.totals}`;
-  const querySelected = state.querySelected ? `query_selected=${state.querySelected}` : '';
-  const openDetailsTab = state.openDetailsTab ? `details_tab=${state.openDetailsTab}` : '';
-
-  // getLocationSrv().update({
-  //   query: {
-  //     details_tab: openDetailsTab
-  //   }
-  // })
-
-  const uriQueryParams = [
-    urlColumnsQuery,
-    urlFilterByQuery,
-    urlLabels,
-    urlOrderBy,
-    urlGroupBy,
-    urlFrom,
-    urlTo,
-    totals,
-    querySelected,
-    openDetailsTab,
-  ]
-    .filter(Boolean)
-    .join('&');
-
-  // TODO: replace crutch with right redirect
-  return encodeURI(`${window.location.pathname}?${uriQueryParams}`);
-
-
-
-};
 export const parseURL = (query) => ({
   from: ParseQueryParamDate.transform(query.get('from') || 'now-12h', 'from'),
   to: ParseQueryParamDate.transform(query.get('to') || 'now', 'to')
