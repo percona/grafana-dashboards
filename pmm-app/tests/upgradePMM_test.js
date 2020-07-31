@@ -138,7 +138,8 @@ Scenario(
   },
 );
 
-Scenario(
+//Temp 
+xScenario(
   'Verify QAN has specific filters for Remote Instances after Upgrade (UI) @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
   async (I, qanPage, addInstanceAPI) => {
     I.amOnPage(qanPage.url);
