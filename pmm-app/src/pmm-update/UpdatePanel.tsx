@@ -88,7 +88,7 @@ export const UpdatePanel: FC<{}> = () => {
         isUpdated={isUpdated}
         output={output}
         updateFailed={updateFailed}
-        version={installedVersionDetails?.installedVersion}
+        version={nextVersionDetails?.nextVersion}
       />
     </>
   );
