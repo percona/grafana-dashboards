@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Collapse, Spin, Tabs } from 'antd';
+import { Collapse, Tabs } from 'antd';
 import TableCreate from './components/Table/Table';
 import { styles } from '../Explain/Explain.styles';
 import { Indexes } from './components/Indexes/Indexes';
@@ -17,51 +17,49 @@ const TableCreateContainer: FC<TableContainerProps> = ({
   databaseType,
   examples,
 }) => {
-  const [tables, loading] = useTables(examples, databaseType);
+  const [tables] = useTables(examples, databaseType);
 
   return (
-    <Spin spinning={loading}>
-      {tables && tables.length ? (
-        <Tabs defaultActiveKey="0" onChange={() => {}} tabPosition="top">
-          {tables.map((table) => (
-            <TabPane tab={<span>{table}</span>} key={table}>
-              <Collapse bordered={false} defaultActiveKey={[TableTabs.table]} className={styles.collapse}>
-                <Panel header={TableTabs.table} key={TableTabs.table} className={styles.panel}>
-                  <TableCreate
+    tables && tables.length ? (
+      <Tabs defaultActiveKey="0" onChange={() => {}} tabPosition="top">
+        {tables.map((table) => (
+          <TabPane tab={<span>{table}</span>} key={table}>
+            <Collapse bordered={false} defaultActiveKey={[TableTabs.table]} className={styles.collapse}>
+              <Panel header={TableTabs.table} key={TableTabs.table} className={styles.panel}>
+                <TableCreate
+                  tableName={table}
+                  example={examples[0]}
+                  databaseType={databaseType}
+                  schema={examples[0].schema}
+                />
+              </Panel>
+              {databaseType === Databases.mysql ? (
+                <Panel header={TableTabs.status} key={TableTabs.status} className={styles.panel}>
+                  <Status
                     tableName={table}
                     example={examples[0]}
                     databaseType={databaseType}
                     schema={examples[0].schema}
                   />
                 </Panel>
-                {databaseType === Databases.mysql ? (
-                  <Panel header={TableTabs.status} key={TableTabs.status} className={styles.panel}>
-                    <Status
-                      tableName={table}
-                      example={examples[0]}
-                      databaseType={databaseType}
-                      schema={examples[0].schema}
-                    />
-                  </Panel>
-                ) : null}
-                <Panel header={TableTabs.indexes} key={TableTabs.indexes} className={styles.panel}>
-                  <Indexes
-                    tableName={table}
-                    example={examples[0]}
-                    databaseType={databaseType}
-                    schema={examples[0].schema}
-                  />
-                </Panel>
-              </Collapse>
-            </TabPane>
-          ))}
-        </Tabs>
-      ) : (
-        <div>
-          <pre>{Messages.cantExtractTables}</pre>
-        </div>
-      )}
-    </Spin>
+              ) : null}
+              <Panel header={TableTabs.indexes} key={TableTabs.indexes} className={styles.panel}>
+                <Indexes
+                  tableName={table}
+                  example={examples[0]}
+                  databaseType={databaseType}
+                  schema={examples[0].schema}
+                />
+              </Panel>
+            </Collapse>
+          </TabPane>
+        ))}
+      </Tabs>
+    ) : (
+      <div>
+        <pre>{Messages.cantExtractTables}</pre>
+      </div>
+    )
   );
 };
 

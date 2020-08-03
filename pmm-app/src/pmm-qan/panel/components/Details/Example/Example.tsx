@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Spin } from 'antd';
+import { Overlay } from 'shared/components/Elements/Overlay/Overlay';
 import { getExample } from './Example.tools';
 import { ExampleInterface } from './Example.types';
 import { Messages } from '../Details.messages';
@@ -15,7 +15,7 @@ const Example: FC<ExampleInterface> = ({
   const isPostgresql = databaseType === Databases.postgresql;
 
   return (
-    <Spin spinning={loading}>
+    <Overlay isPending={loading}>
       {isPostgresql && fingerprint ? getExample(databaseType)(fingerprint) : null}
       {!isPostgresql && isExample
         ? examples
@@ -25,7 +25,7 @@ const Example: FC<ExampleInterface> = ({
         : null}
       {/* eslint-disable-next-line max-len */}
       {(!isPostgresql && !isExample) || (isPostgresql && !fingerprint) ? <pre>{Messages.noExamplesFound}</pre> : null}
-    </Spin>
+    </Overlay>
   );
 };
 
