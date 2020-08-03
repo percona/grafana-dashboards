@@ -2,7 +2,6 @@ import React, {
   useEffect, useState, FC, MouseEvent
 } from 'react';
 import { Button, Spinner } from '@grafana/ui';
-
 import {
   AvailableUpdate, CurrentVersion, InfoBox, LastCheck, ProgressModal
 } from 'pmm-update/components';
