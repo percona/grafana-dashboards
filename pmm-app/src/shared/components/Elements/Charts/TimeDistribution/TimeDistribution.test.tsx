@@ -634,7 +634,7 @@ const MOCK_METRICS = [
   },
   {
     name: 'Query Time',
-    tooltip: 'The statement execution time in seconds',
+    tooltip: 'The average statement execution time in seconds',
     pipeTypes: {
       ratePipe: 'number',
       sumPipe: 'time',
