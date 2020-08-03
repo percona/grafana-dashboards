@@ -11,35 +11,30 @@ describe('Overlay::', () => {
         <p>Child 2</p>
       </Overlay>
     );
+    const wrapper = root.find('[data-qa="pmm-overlay-wrapper"]');
 
-    expect(root.find('div').children().length).toEqual(2);
+    expect(wrapper.children().length).toEqual(2);
   });
 
   it('Renders overlay and spinner while pending', () => {
     const root = mount(
-      <Overlay
-        isPending
-        dataQa="data-qa-overlay"
-      >
+      <Overlay isPending>
         <p>Test</p>
       </Overlay>
     );
-    const overlay = root.find('data-qa-overlay');
+    const wrapper = root.find('[data-qa="pmm-overlay-wrapper"]');
 
-    expect(overlay).toBeTruthy();
-    expect(overlay.find('i')).toBeTruthy();
+    expect(wrapper.children().length).toBe(2);
+    expect(wrapper.childAt(0).find('i')).toBeTruthy();
   });
 
   it('Doesnt render overlay if not pending', () => {
     const root = mount(
-      <Overlay
-        isPending={false}
-        dataQa="data-qa-overlay"
-      >
+      <Overlay isPending={false}>
         <p>Test</p>
       </Overlay>
     );
 
-    expect(root.find('data-qa-overlay').exists()).toBeFalsy();
+    expect(root.find('i').exists()).toBeFalsy();
   });
 });
