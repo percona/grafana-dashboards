@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Collapse, Tabs } from 'antd';
-import TableCreate from './components/Table/Table';
+import { TableCreate } from './components/TableCreate/TableCreate';
 import { styles } from '../Explain/Explain.styles';
 import { Indexes } from './components/Indexes/Indexes';
 import { Status } from './components/Status/Status';
@@ -30,7 +30,6 @@ const TableCreateContainer: FC<TableContainerProps> = ({
                   tableName={table}
                   example={examples[0]}
                   databaseType={databaseType}
-                  schema={examples[0].schema}
                 />
               </Panel>
               {databaseType === Databases.mysql ? (
@@ -39,7 +38,6 @@ const TableCreateContainer: FC<TableContainerProps> = ({
                     tableName={table}
                     example={examples[0]}
                     databaseType={databaseType}
-                    schema={examples[0].schema}
                   />
                 </Panel>
               ) : null}
@@ -48,7 +46,6 @@ const TableCreateContainer: FC<TableContainerProps> = ({
                   tableName={table}
                   example={examples[0]}
                   databaseType={databaseType}
-                  schema={examples[0].schema}
                 />
               </Panel>
             </Collapse>

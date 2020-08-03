@@ -1,14 +1,18 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {
+  FC, useCallback, useEffect, useState
+} from 'react';
 import Highlight from 'react-highlight.js';
 import { Overlay } from 'shared/components/Elements/Overlay/Overlay';
 import { ActionResult, Databases } from '../../../Details.types';
 import { mysqlMethods, postgresqlMethods } from '../../../database-models';
 import { useActionResult } from '../../../Details.tools';
+import { TableProps } from '../Table.types';
 
-// TODO: refactor example parameters passing
-
-const TableCreate = (props) => {
-  const { tableName, databaseType, example } = props;
+export const TableCreate: FC<TableProps> = ({
+  tableName,
+  databaseType,
+  example
+}) => {
   const [showCreateTable, setShowCreateTable] = useState<ActionResult>({
     error: '',
     loading: true,
@@ -42,5 +46,3 @@ const TableCreate = (props) => {
     </Overlay>
   );
 };
-
-export default TableCreate;
