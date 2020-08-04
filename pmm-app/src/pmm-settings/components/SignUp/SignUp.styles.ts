@@ -17,7 +17,9 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => ({
     vertical-align: baseline;
   `,
   checkboxWrapper: css`
-    label { text-align: left }
+    label {
+      text-align: left
+    }
   `,
   checkboxLabel: css`
     display: inline-block;
