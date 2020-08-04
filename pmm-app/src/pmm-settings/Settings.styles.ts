@@ -6,7 +6,7 @@ export const getSettingsStyles = stylesFactory((theme: GrafanaTheme) => {
   const { spacing } = theme;
   const { colors }: any = theme;
   const mq = `@media (max-width: ${theme.breakpoints.md})`;
-  const input = `
+  const input = css`
     background-color: ${colors.formInputBg};
     border: ${theme.border.width.sm} solid ${colors.pageHeaderBorder};
     border-radius: ${theme.border.radius.sm};
@@ -42,6 +42,8 @@ export const getSettingsStyles = stylesFactory((theme: GrafanaTheme) => {
     tabContentWrapper: css`
       border-left: ${theme.border.width.sm} solid ${theme.colors.pageHeaderBorder};
       padding: 0 0 0 60px;
+      position: relative;
+      width: 100%;
       ${mq} {
         border: none;
         padding: 0;
