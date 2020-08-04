@@ -55,7 +55,7 @@ export const SignUp: FC = () => {
                 />
               </div>
             </Field>
-            <Button type="submit" disabled={submitting || pristine}>{Messages.signUp}</Button>
+            <Button className={styles.submitButton} type="submit" disabled={submitting || pristine}>{Messages.signUp}</Button>
           </form>
         )}
       />

@@ -34,4 +34,9 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => ({
     max-width: 300px;
     width: 100%;
   `,
+  submitButton: css`
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  `
 }));
