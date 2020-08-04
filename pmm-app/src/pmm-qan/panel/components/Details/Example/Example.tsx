@@ -16,8 +16,8 @@ const Example: FC<ExampleInterface> = ({
 
   return (
     <Spin spinning={loading}>
-      {isPostgresql && fingerprint ? getExample(databaseType)(fingerprint) : null}
-      {!isPostgresql && isExample
+      {isPostgresql && fingerprint && !loading ? getExample(databaseType)(fingerprint) : null}
+      {!isPostgresql && isExample && !loading
         ? examples
           .filter((example) => example.example)
           .map((example) => example.example)
