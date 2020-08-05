@@ -15,7 +15,7 @@ const Example: FC<ExampleInterface> = ({
   const isPostgresql = databaseType === Databases.postgresql;
 
   return (
-    <Overlay isPending={loading}>
+    <Overlay isPending={loading} size={35}>
       {isPostgresql && fingerprint ? getExample(databaseType)(fingerprint) : null}
       {!isPostgresql && isExample
         ? examples

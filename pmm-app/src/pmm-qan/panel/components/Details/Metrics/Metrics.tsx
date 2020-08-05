@@ -100,7 +100,7 @@ const Metrics: FC<MetricsProps> = ({
   ];
 
   return (
-    <Overlay isPending={loading} className="metrics-wrapper">
+    <Overlay isPending={loading} className="metrics-wrapper" size={35}>
       <Collapse
         bordered={false}
         defaultActiveKey={[MetricsTabs.distribution, MetricsTabs.metrics]}
