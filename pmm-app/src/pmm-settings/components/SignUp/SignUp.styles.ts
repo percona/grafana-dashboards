@@ -2,6 +2,12 @@ import { css } from 'emotion';
 import { GrafanaTheme } from '@grafana/data';
 import { stylesFactory } from '@grafana/ui';
 
+const centeredButton = css`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`;
+
 export const getStyles = stylesFactory((theme: GrafanaTheme) => ({
   legend: css`
     color: ${(theme.colors as any).formLegend};
@@ -20,6 +26,10 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => ({
     label {
       text-align: left
     }
+
+    &.invalid input + span {
+      box-shadow: inset 0 0 5px #e02f44;
+    }
   `,
   checkboxLabel: css`
     display: inline-block;
@@ -37,8 +47,10 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => ({
     width: 100%;
   `,
   submitButton: css`
-    width: 100%;
-    display: flex;
-    justify-content: center;
-  `
+    ${centeredButton}
+    margin-bottom: 15px;
+  `,
+  signInButton: css`
+    ${centeredButton}
+  `,
 }));

@@ -1,5 +1,6 @@
 export const Messages = {
   signUp: 'Sign up',
+  signIn: 'Sign in',
   termsOfService: 'Terms of Service',
   privacyPolicy: 'Privacy Policy',
   notificationSettings: 'Notification Settings',
