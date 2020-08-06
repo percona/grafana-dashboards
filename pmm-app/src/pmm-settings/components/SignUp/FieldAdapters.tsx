@@ -5,6 +5,7 @@ import {
   useTheme,
 } from '@grafana/ui';
 import { getStyles } from './FieldAdapters.styles';
+// TODO (nicolalamacchia): use Grafana's components once migration to Grafana v7 is complete
 import { Checkbox } from './Checkbox';
 import { Field } from './Field';
 
