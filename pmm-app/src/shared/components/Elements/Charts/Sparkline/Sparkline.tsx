@@ -1,6 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+  useEffect, useRef, useState, RefObject
+} from 'react';
 import { scaleLinear } from 'd3';
-import * as moment from 'moment';
+import moment from 'moment';
 import ReactTooltip from 'react-tooltip';
 import { humanize } from '../../../helpers/Humanization';
 import { PolygonChartInterface } from './Sparkline.types';
@@ -55,7 +57,7 @@ export const Sparkline = ({
     }
 
     return b.point - a.point;
-  })
+  });
 
   const xAxisLength = width - 2 * margin;
   const yAxisLength = height - 2 * margin;
@@ -73,16 +75,17 @@ export const Sparkline = ({
   const drawData = appLoadPolygonChart.map((item) => ({
     x: scaleX(moment.utc(item.timestamp)),
     y: scaleY(isMetricExists(item[ykey]) ? 0 : Math.max(maxY / 15, item[ykey])),
-  }))
+  }));
 
-  const sparklineCanvas = useRef<HTMLCanvasElement>();
+  const sparklineCanvas = useRef();
 
   useEffect(() => {
     if (!sparklineCanvas.current) {
       return;
     }
 
-    const ctx = sparklineCanvas.current.getContext('2d');
+    const ctx = sparklineCanvas.current.getContext('2d') as CanvasRenderingContext2D;
+
     const drawBar = (barIndex: number, color: string, minHeight?: boolean): void => {
       ctx.fillStyle = color;
       const height = drawData[barIndex].y;
@@ -113,7 +116,7 @@ export const Sparkline = ({
     };
 
     sparklineCanvas.current.addEventListener('mousemove', (e) => {
-      const columnNumber = Math.floor(e.offsetX / (GRAPH_WIDTH / (drawData.length - 1));
+      const columnNumber = Math.floor(e.offsetX / (GRAPH_WIDTH / (drawData.length - 1)));
 
       setTooltip(createTooltip(columnNumber));
 
@@ -184,7 +187,7 @@ export const Sparkline = ({
 
       const columnNumber = e.detail;
 
-      drawBar(columnNumber, 'blue');
+      drawBar(columnNumber, '#00e6e6');
     };
 
     document.addEventListener('sync-graphs', drawHighlighted, false);
@@ -198,7 +201,7 @@ export const Sparkline = ({
   return (
     <>
       <canvas
-        ref={sparklineCanvas}
+        ref={sparklineCanvas as RefObject<any>}
         style={{ background: 'transparent' }}
         width={GRAPH_WIDTH}
         height={BAR_HEIGHT}
@@ -212,10 +215,7 @@ export const Sparkline = ({
         backgroundColor="#3274d9"
         arrowColor="#3274d9"
         id="test"
-        getContent={() => {
-          // console.log('tooltip', tooltip)
-          return tooltip
-        }}
+        getContent={() => tooltip}
       />
     </>
   );
