@@ -8,7 +8,7 @@ Before((I, qanPage) => {
 
 Scenario(
   'PMM-T175 - Verify user is able to apply filter that has dots in label @not-pr-pipeline @qan',
-  async (I, qanPage, qanActions) => {
+  async (I, qanActions) => {
     const serviceName = 'ps_5.7';
 
     qanActions.waitForNewQANPageLoaded();
@@ -62,7 +62,7 @@ Scenario(
 
 Scenario(
   'PMM-T124 - Verify User is able to show all and show top 5 values for filter section @not-pr-pipeline @qan',
-  async (qanPage, qanActions) => {
+  async (qanActions) => {
     const filterSection = 'Database';
 
     qanActions.waitForNewQANPageLoaded();
@@ -151,7 +151,6 @@ Scenario(
     qanActions.verifySelectedCountPerPage('25 / page');
     const countOfItems = await qanActions.getCountOfItems();
 
-    console.log(`Count of Items ${countOfItems}`);
     if (countOfItems <= 50) {
       I.seeAttributesOnElements(qanPage.fields.previousPage, { 'aria-disabled': 'true' });
       I.click(qanPage.fields.nextPage);
@@ -188,7 +187,7 @@ Scenario(
 
 Scenario(
   'PMM-T193 - Verify user is able to change per page elements display and pagination is updated according to this value, PMM-T256 - Verify that switching view from 25 to 50/100 pages works correctly @not-pr-pipeline @qan',
-  async (qanPage, qanActions) => {
+  async (qanActions) => {
     qanActions.waitForNewQANPageLoaded();
     const countOfItems = await qanActions.getCountOfItems();
 
@@ -221,5 +220,26 @@ Scenario(
       await qanActions.verifyCount('1-25');
       await qanActions.verifyPagesAndCount(25);
     }
+  },
+);
+
+Scenario(
+  'PMM-T191 - Verify Reset All and Show Selected filters @not-pr-pipeline @qan',
+  async (I, qanPage, qanActions) => {
+    const environmentName1 = 'ps-dev';
+    const environmentName2 = 'pgsql-dev';
+    qanActions.waitForNewQANPageLoaded();
+    qanActions.applyFilterNewQAN(environmentName1);
+    qanActions.applyFilterNewQAN(environmentName2);
+    I.click(qanPage.fields.showSelected);
+    await qanActions.verifyCountOfFilterLinks(2, false);
+    I.click(qanPage.fields.resetAllButton);
+    await qanActions.verifyCountOfFilterLinks(2, true);
+
+    qanActions.applyFilterNewQAN(environmentName1);
+    I.click(qanPage.fields.showSelected);
+    await qanActions.verifyCountOfFilterLinks(1, false);
+    qanActions.applyFilterNewQAN(environmentName1);
+    await qanActions.verifyCountOfFilterLinks(1, true);
   },
 );

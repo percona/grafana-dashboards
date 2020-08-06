@@ -19,6 +19,7 @@ module.exports = {
     countOfItems: '//span[@data-qa="qan-total-items"]',
     detailsSectionTab: '//div[@role="tab"]',
     disabledResetAll: '//button[@data-qa="qan-filters-reset-all" and @disabled ]',
+    resetAllButton: '//button[@data-qa="qan-filters-reset-all"]',
     ellipsisButton: '.ant-pagination-item-ellipsis',
     environmentLabel: '//span[contains(text(), "Environment")]',
     filterBy: '//input[@data-qa="filters-search-field"]',
