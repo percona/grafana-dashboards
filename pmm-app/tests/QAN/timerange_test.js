@@ -32,7 +32,7 @@ xScenario(
 );
 
 Scenario(
-  'Open the QAN Dashboard and check that changing the time range doesn"t clear "Group by". @qan',
+  'Open the QAN Dashboard and check that changing the time range doesn"t clear "Group by". @not-pr-pipeline @qan',
   async (I, qanPage, adminPage, qanActions) => {
     qanActions.changeGroupBy('Client Host');
     adminPage.applyTimeRange('Last 24 hours');
