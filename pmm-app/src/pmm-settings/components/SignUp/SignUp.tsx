@@ -8,12 +8,11 @@ import {
   Input,
   useTheme,
 } from '@grafana/ui';
-import * as GrafanaUI from '@grafana/ui';
 import { cx } from 'emotion';
 import { getStyles } from './SignUp.styles';
 import { Messages } from './SignUp.messages';
-
-const { Field, Checkbox } = (GrafanaUI as any).Forms;
+import { Checkbox } from './Checkbox';
+import { Field } from './Field';
 
 const required = (value: string | boolean | undefined) => (value ? undefined : 'Required');
 const validEmail = (value: string) => {
