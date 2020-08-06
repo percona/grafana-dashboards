@@ -3,12 +3,12 @@ import { GrafanaTheme } from '@grafana/data';
 import { selectThemeVariant, stylesFactory } from '@grafana/ui';
 
 export const getStyles = stylesFactory((theme: GrafanaTheme) => {
-  const backgroundColor = selectThemeVariant({ light: 'rgb(247, 247, 249)', dark: '#161719' }, theme.type);
+  const backgroundColor = selectThemeVariant({ light: 'rgb(247, 247, 249)', dark: 'transparent' }, theme.type);
   const borderColor = selectThemeVariant(
     { light: (theme.colors as any).gray85, dark: '#292929' },
     theme.type
   );
-  const headerBackground = selectThemeVariant({ light: 'rgb(247, 247, 249)', dark: '#3D3D3D' }, theme.type);
+  const headerBackground = selectThemeVariant({ light: 'rgb(247, 247, 249)', dark: '#202226' }, theme.type);
   const textColor = selectThemeVariant(
     { light: (theme.colors as any).gray85, dark: 'rgba(255, 255, 255, 0.8)' },
     theme.type
@@ -72,7 +72,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
         position: sticky;
         left: 0;
         z-index: 1;
-        outline: 1px solid ${borderColor};
+        // outline: 1px solid ${borderColor};
       }
 
       .tr .td:nth-child(2) {
@@ -80,21 +80,21 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
         position: sticky;
         left: 40px;
         z-index: 1;
-        outline: 1px solid ${borderColor};
+        // outline: 1px solid ${borderColor};
       }
       .th:first-child {
         position: -webkit-sticky; /* for Safari */
         position: sticky;
         left: 0;
         z-index: 3;
-        outline: 1px solid ${borderColor};
+        // outline: 1px solid ${borderColor};
       }
       .th:nth-child(2) {
         position: -webkit-sticky; /* for Safari */
         position: sticky;
         left: 40px;
         z-index: 3;
-        outline: 1px solid ${borderColor};
+        // outline: 1px solid ${borderColor};
       }
       .pagination {
         padding: 0.5rem;
