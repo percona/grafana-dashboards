@@ -4,9 +4,10 @@ import { stylesFactory } from '@grafana/ui';
 
 export const getStyles = stylesFactory((theme: GrafanaTheme) => ({
   errorMessage: css`
+    color: ${(theme.colors as any).red};
     font-size: 10px;
     height: 10px;
-    margin-top: 2px;
-    color: ${(theme.colors as any).red};
+    line-height: 1;
+    margin-top: 3px;
   `,
 }));

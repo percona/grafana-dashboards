@@ -23,7 +23,7 @@ export const InputFieldAdapter = ({
           className={cx(className, { invalid: meta.touched && meta.error })}
           title={meta.touched ? meta.error : ''}
         />
-        <div className={styles.errorMessage}>{meta.touched && meta.error}</div>
+        <div data-qa="input-field-error-message" className={styles.errorMessage}>{meta.touched && meta.error}</div>
       </>
     </Field>
   );
@@ -39,7 +39,7 @@ export const CheckboxFieldAdapter = ({
     <Field>
       <div className={cx(className, { invalid: meta.touched && meta.error })}>
         <Checkbox {...input} {...props} />
-        <div className={styles.errorMessage}>{meta.touched && meta.error}</div>
+        <div data-qa="checkbox-field-error-message" className={styles.errorMessage}>{meta.touched && meta.error}</div>
       </div>
     </Field>
   );
