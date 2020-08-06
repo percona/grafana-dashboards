@@ -5,5 +5,9 @@ export const Messages = {
   privacyPolicy: 'Privacy Policy',
   notificationSettings: 'Notification Settings',
   agreementFirstPart: 'Signin in means you agree with our',
-  agreementSecondPart: 'and our default'
+  agreementSecondPart: 'and our default',
+  errors: {
+    invalidEmail: 'Insert a valid email address',
+    requiredField: 'This field is required',
+  },
 };

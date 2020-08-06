@@ -28,7 +28,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => ({
     }
 
     &.invalid input + span {
-      box-shadow: inset 0 0 5px #e02f44;
+      box-shadow: inset 0 0 5px ${(theme.colors as any).red};
     }
   `,
   checkboxLabel: css`
@@ -37,7 +37,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => ({
     padding-right: 8px;
   `,
   formWrapper: css`
-    align-items: center;
+    align-items: start;
     display: flex;
     flex-direction: column;
     margin-right: 60px;

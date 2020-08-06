@@ -5,51 +5,24 @@ import { Form as FinalForm, Field as FinalField } from 'react-final-form';
 import {
   Button,
   LinkButton,
-  Input,
   useTheme,
 } from '@grafana/ui';
-import { cx } from 'emotion';
 import { getStyles } from './SignUp.styles';
 import { Messages } from './SignUp.messages';
-import { Checkbox } from './Checkbox';
-import { Field } from './Field';
+import { InputFieldAdapter, CheckboxFieldAdapter } from './FieldAdapters';
+import { TERMS_OF_SERVICE_URL, PRIVACY_POLICY_URL, NOTIFICATION_SETTINGS_URL } from './SignUp.constants';
 
-const required = (value: string | boolean | undefined) => (value ? undefined : 'Required');
+const required = (value: string | boolean | undefined) => (value ? undefined : Messages.errors.requiredField);
 const validEmail = (value: string) => {
   const emailRe = RegExp(''
     + '^[a-zA-Z0-9.!#$%&\'*+/=?^_`{|}~-]+@[a-zA-Z0-9]'
     + '(?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?'
     + '(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$');
 
-  return emailRe.test(value) ? undefined : 'Invalid email address';
+  return emailRe.test(value) ? undefined : Messages.errors.invalidEmail;
 };
 const composeValidators = (...validators: Array<(value: any) => any>) => (value: any) => validators.reduce(
   (error, validator) => error || validator(value), undefined
-);
-
-const InputFieldAdapter = ({
-  input, className, label, meta, ...props
-}) => (
-  <Field label={label}>
-    <>
-      <Input
-        {...input}
-        {...props}
-        className={cx(className, { invalid: meta.touched && meta.error })}
-        title={meta.touched ? meta.error : ''}
-      />
-    </>
-  </Field>
-);
-
-const CheckboxFieldAdapter = ({
-  input, className, meta, ...props
-}) => (
-  <Field>
-    <div className={cx(className, { invalid: meta.touched && meta.error })}>
-      <Checkbox {...input} {...props} />
-    </div>
-  </Field>
 );
 
 export const SignUp: FC = () => {
@@ -60,15 +33,15 @@ export const SignUp: FC = () => {
     <span className={styles.checkboxLabel}>
       {Messages.agreementFirstPart}
       {' '}
-      <LinkButton className={styles.link} variant="link" href="#">{Messages.termsOfService}</LinkButton>
+      <LinkButton className={styles.link} variant="link" href={TERMS_OF_SERVICE_URL}>{Messages.termsOfService}</LinkButton>
       ,
       {' '}
-      <LinkButton className={styles.link} variant="link" href="#">{Messages.privacyPolicy}</LinkButton>
+      <LinkButton className={styles.link} variant="link" href={PRIVACY_POLICY_URL}>{Messages.privacyPolicy}</LinkButton>
       ,
       {' '}
       {Messages.agreementSecondPart}
       {' '}
-      <LinkButton className={styles.link} variant="link" href="#">{Messages.notificationSettings}</LinkButton>
+      <LinkButton className={styles.link} variant="link" href={NOTIFICATION_SETTINGS_URL}>{Messages.notificationSettings}</LinkButton>
     </span>
   );
 
