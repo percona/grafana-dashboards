@@ -243,3 +243,12 @@ Scenario(
     await qanActions.verifyCountOfFilterLinks(1, true);
   },
 );
+
+Scenario(
+  'PMM-T190 - Verify user is able to see n/a filter @not-pr-pipeline @qan',
+  async (I, qanPage, qanActions) => {
+    qanActions.waitForNewQANPageLoaded();
+    I.fillField(qanPage.fields.filterBy, 'n/a');
+    await qanActions.verifyCountOfFilterLinks(0, true);
+  },
+);
