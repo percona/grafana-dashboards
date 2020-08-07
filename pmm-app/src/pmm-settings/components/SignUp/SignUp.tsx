@@ -18,6 +18,12 @@ import { required, validEmail, composeValidators } from './SignUp.validators';
 import { SignUpData, SignUpProps } from './types';
 import { LoggedIn } from './LoggedIn/LoggedIn';
 
+const signUp = async (signUpData: SignUpData) => {
+  // XXX: stub for the actual sign up API call
+  signUpData;
+  await new Promise((resolve) => setTimeout(resolve, 1500));
+};
+
 export const SignUp: FC<SignUpProps> = ({ userEmail }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
@@ -38,12 +44,6 @@ export const SignUp: FC<SignUpProps> = ({ userEmail }) => {
       <LinkButton className={styles.link} variant="link" href={NOTIFICATION_SETTINGS_URL}>{Messages.notificationSettings}</LinkButton>
     </span>
   );
-
-  const signUp = async (signUpData: SignUpData) => {
-    // XXX: stub for the actual sign up API call
-    signUpData;
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-  };
 
   const handleSignUpFormSubmit = async (signUpData: SignUpData) => {
     try {
