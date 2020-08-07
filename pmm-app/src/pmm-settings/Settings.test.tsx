@@ -15,7 +15,7 @@ describe('SettingsPanel::', () => {
 
     const tabs = root.find('[data-qa="settings-tabs"]');
 
-    expect(tabs.children().length).toBe(4);
+    expect(tabs.children().length).toBe(5);
     expect(root.childAt(0).children().length).toBe(3);
   });
 });
