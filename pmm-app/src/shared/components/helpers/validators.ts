@@ -27,6 +27,12 @@ const validators = {
     return value >= from && value <= to ? undefined : `Value should be in range from ${from} to ${to}`;
   },
 
+  validateEmail: (value: string) => {
+    const emailRe = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+
+    return emailRe.test(value) ? undefined : 'Invalid email address';
+  },
+
   validateKeyValue: (value) => {
     if (
       value
@@ -43,8 +49,9 @@ const validators = {
 
   required: (value) => (value ? undefined : 'Required field'),
 
-  // eslint-disable-next-line max-len
-  compose: (...validators) => (value) => validators.reduce((error, validator) => error || validator(value), undefined),
+  compose: (...validators) => (value) => validators.reduce(
+    (error, validator) => error || validator(value), undefined
+  ),
 };
 
 export default validators;

@@ -8,8 +8,6 @@ export const Messages = {
   agreementSecondPart: 'and our default',
   signUpSucceeded: 'You have successfully created your credentials',
   errors: {
-    invalidEmail: 'Insert a valid email address',
-    requiredField: 'This field is required',
     signUpFailed: 'There was a problem during the sign up process, please try again',
   },
 };

@@ -10,11 +10,11 @@ import {
 } from '@grafana/ui';
 import { showSuccessNotification, showErrorNotification } from 'shared/components/helpers';
 import { ButtonWithSpinner } from 'shared/components/Form';
+import validators from 'shared/components/helpers/validators';
 import { getStyles } from './SignUp.styles';
 import { Messages } from './SignUp.messages';
 import { InputFieldAdapter, CheckboxFieldAdapter } from './FieldAdapters/FieldAdapters';
 import { TERMS_OF_SERVICE_URL, PRIVACY_POLICY_URL, NOTIFICATION_SETTINGS_URL } from './SignUp.constants';
-import { required, validEmail, composeValidators } from './SignUp.validators';
 import { SignUpData, SignUpProps } from './types';
 import { LoggedIn } from './LoggedIn/LoggedIn';
 
@@ -68,7 +68,7 @@ export const SignUp: FC<SignUpProps> = ({ userEmail }) => {
         name="email"
         label="Email"
         component={InputFieldAdapter}
-        validate={composeValidators(required, validEmail)}
+        validate={validators.compose(validators.required, validators.validateEmail)}
       />
       <FinalField
         data-qa="sign-up-password-input"
@@ -76,7 +76,7 @@ export const SignUp: FC<SignUpProps> = ({ userEmail }) => {
         label="Password"
         type="password"
         component={InputFieldAdapter}
-        validate={required}
+        validate={validators.required}
         autoComplete="on"
       />
       <FinalField
@@ -85,7 +85,7 @@ export const SignUp: FC<SignUpProps> = ({ userEmail }) => {
         label={<CheckboxLabel />}
         name="agreement"
         component={CheckboxFieldAdapter}
-        validate={required}
+        validate={validators.required}
         type="checkbox"
       />
       <ButtonWithSpinner
