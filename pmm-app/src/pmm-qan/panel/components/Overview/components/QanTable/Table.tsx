@@ -223,7 +223,7 @@ export const Table: FC<TableProps> = ({
               <RSC
                 {...getTableBodyProps()}
                 className={cx('table-body')}
-                style={{ width: scroll.x - 21, height: scroll.y - 70 }}
+                style={{ height: scroll.y - 70 }}
                 contentProps={{
                   className: styles.scrollableContent
                 }}

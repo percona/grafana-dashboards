@@ -44,7 +44,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
         }
         .tr {
           cursor: pointer;
-          border-right: 21px solid;
+          border-right: 21px solid transparent;
           box-sizing: content-box !important;
         }
         .th,
@@ -94,12 +94,6 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
         z-index: 3;
         // outline: 1px solid ${borderColor};
       }
-
-      // .td:last-child,
-      // .th:last-child {
-      //   margin-right: 19px;
-      // }
-
       .th:nth-child(2) {
         position: -webkit-sticky; /* for Safari */
         position: sticky;
@@ -186,11 +180,6 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       display: flex !important;
       align-items: center !important;
       justify-content: center !important;
-    `,
-    tableBody: (height, width) => css`
-      // overflow: scroll;
-      height: ${height - 70}px;
-      width: ${width + 20}px;
     `,
     tableDisabled: css`
       opacity: 0.6;
