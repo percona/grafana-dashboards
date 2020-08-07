@@ -7,7 +7,8 @@ export interface Settings {
   awsPartitions: string[];
   alertManagerUrl: string;
   alertManagerRules: string;
-  sttEnabled: boolean
+  sttEnabled: boolean;
+  saasUserEmail?: string;
 }
 
 export interface MetricsResolutions {
