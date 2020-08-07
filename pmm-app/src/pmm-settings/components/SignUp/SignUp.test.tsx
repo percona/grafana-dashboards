@@ -11,4 +11,11 @@ describe('SignUp::', () => {
 
     expect(submitButton.props()).toHaveProperty('disabled');
   });
+
+  it('Should show a page saying that the user is logged in if a not undefined email is passed', () => {
+    const root = mount(<SignUp userEmail="test@example.com" />);
+    const submitButton = root.find('[data-qa="sign-up-submit-button"]').at(0);
+
+    expect(submitButton.props()).toHaveProperty('disabled');
+  });
 });
