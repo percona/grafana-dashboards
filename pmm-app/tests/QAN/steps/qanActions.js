@@ -140,7 +140,6 @@ module.exports = {
 
   applyFilterNewQAN(filterName) {
     const oldResultsCount = this.getCountOfItems();
-
     I.fillField(qanPage.fields.filterBy, filterName);
     const filterToAplly = `//span[contains(@class, 'checkbox-container__label-text') and contains(text(), '${filterName}')]`;
 
@@ -156,6 +155,12 @@ module.exports = {
         return;
       }
     }
+  },
+
+  applyFilterInSection(section, filter) {
+    const filterLocator = `//span[contains(text(), '${section}')]/parent::p/following-sibling::div//span[contains(@class, 'checkbox-container__label-text') and contains(text(), '${filter}')]`;
+    I.waitForVisible(filterLocator, 20);
+    I.click(filterLocator);
   },
 
   verifyChangedCount(countBefore, countAfter) {
@@ -266,7 +271,8 @@ module.exports = {
   },
 
   async getPagesCount() {
-    const pagesCount = '//ul[@data-qa="qan-pagination"]//li[contains(@class,"ant-pagination-item")][last()]//a';
+    const pagesCount =
+      '//ul[@data-qa="qan-pagination"]//li[contains(@class,"ant-pagination-item")][last()]//a';
     const pages = await I.grabTextFrom(pagesCount);
 
     return pages;

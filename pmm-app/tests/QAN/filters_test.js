@@ -252,3 +252,20 @@ Scenario(
     await qanActions.verifyCountOfFilterLinks(0, true);
   },
 );
+
+Scenario(
+  'PMM-T390 - Verify that we show info message when empty result is returned @not-pr-pipeline @qan',
+  async (I, qanPage, qanActions) => {
+    const serviceName = 'ps_5.7';
+    const db1 = 'postgres'
+    const db2 = 'n/a';
+    const section = 'Database';
+
+    qanActions.waitForNewQANPageLoaded();
+    qanActions.applyFilterInSection(section,db1);
+    qanActions.applyFilterInSection(section,db2);
+    qanActions.applyFilterNewQAN(serviceName);
+    qanActions.applyFilterInSection(section,db2);
+    I.waitForElement(qanPage.fields.noQueries,20);
+  },
+);
