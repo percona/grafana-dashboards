@@ -5,10 +5,7 @@ export const required = (value: string | boolean | undefined) => (
 );
 
 export const validEmail = (value: string) => {
-  const emailRe = RegExp(''
-    + '^[a-zA-Z0-9.!#$%&\'*+/=?^_`{|}~-]+@[a-zA-Z0-9]'
-    + '(?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?'
-    + '(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$');
+  const emailRe = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
   return emailRe.test(value) ? undefined : Messages.errors.invalidEmail;
 };
