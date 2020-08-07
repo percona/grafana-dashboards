@@ -1,13 +1,14 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import { SignUp } from './SignUp';
+import { LoggedIn } from './LoggedIn/LoggedIn';
 
 jest.mock('shared/components/helpers/notification-manager');
 
 describe('SignUp::', () => {
   it('Should show a sign up form if an undefined email is passed', () => {
     const root = mount(<SignUp userEmail={undefined} />);
-    const loggedInEmail = root.find('[data-qa="logged-in-email"]').at(0);
+    const loggedInEmail = root.find(LoggedIn).at(0);
     const submitFrom = root.find('[data-qa="sign-up-form"]').at(0);
 
     expect(loggedInEmail).toHaveLength(0);
@@ -23,7 +24,7 @@ describe('SignUp::', () => {
 
   it('Should show a page saying that the user is logged in if a not undefined email is passed', () => {
     const root = mount(<SignUp userEmail="test@example.com" />);
-    const loggedInEmail = root.find('[data-qa="logged-in-email"]').at(0);
+    const loggedInEmail = root.find(LoggedIn).at(0);
 
     expect(loggedInEmail).toHaveLength(1);
   });
