@@ -12,7 +12,7 @@ import { showSuccessNotification, showErrorNotification } from 'shared/component
 import { ButtonWithSpinner } from 'shared/components/Form';
 import { getStyles } from './SignUp.styles';
 import { Messages } from './SignUp.messages';
-import { InputFieldAdapter, CheckboxFieldAdapter } from './FieldAdapters';
+import { InputFieldAdapter, CheckboxFieldAdapter } from './FieldAdapters/FieldAdapters';
 import { TERMS_OF_SERVICE_URL, PRIVACY_POLICY_URL, NOTIFICATION_SETTINGS_URL } from './SignUp.constants';
 import { required, validEmail, composeValidators } from './SignUp.validators';
 import { SignUpData, SignUpProps } from './types';

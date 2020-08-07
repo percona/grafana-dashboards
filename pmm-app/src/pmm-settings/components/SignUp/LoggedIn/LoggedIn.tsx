@@ -5,7 +5,7 @@ import {
 } from '@grafana/ui';
 import { Messages } from './LoggedIn.messages';
 import { getStyles } from './LoggedIn.styles';
-
+import { SIGN_OUT_URL } from './LoggedIn.constants';
 
 interface LoggedInProps {
   email: string;
@@ -20,7 +20,7 @@ export const LoggedIn: FC<LoggedInProps> = ({ email }) => {
       <header className={styles.title}>{Messages.title}</header>
       <p>{Messages.info}</p>
       <p className={styles.email}><u>{email}</u></p>
-      <LinkButton variant="link">{Messages.signOut}</LinkButton>
+      <LinkButton variant="link" href={SIGN_OUT_URL}>{Messages.signOut}</LinkButton>
     </section>
   );
 };
