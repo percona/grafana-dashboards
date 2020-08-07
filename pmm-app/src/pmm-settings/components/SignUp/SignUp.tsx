@@ -29,7 +29,7 @@ export const SignUp: FC<SignUpProps> = ({ userEmail }) => {
   const styles = getStyles(theme);
   const [loggedInEmail, setLoggedInEmail] = useState(userEmail);
 
-  const checkboxLabel = (
+  const CheckboxLabel = () => (
     <span data-qa="sign-up-agreement-checkbox-label" className={styles.checkboxLabel}>
       {Messages.agreementFirstPart}
       {' '}
@@ -82,7 +82,7 @@ export const SignUp: FC<SignUpProps> = ({ userEmail }) => {
       <FinalField
         data-qa="sign-up-agreement-checkbox"
         className={styles.checkboxWrapper}
-        label={checkboxLabel}
+        label={<CheckboxLabel />}
         name="agreement"
         component={CheckboxFieldAdapter}
         validate={required}
