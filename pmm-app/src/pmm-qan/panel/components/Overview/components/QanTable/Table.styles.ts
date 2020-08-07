@@ -6,16 +6,19 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
   const backgroundColor = selectThemeVariant({ light: 'rgb(247, 247, 249)', dark: '#0b0c0e' }, theme.type);
   const borderColor = selectThemeVariant(
     { light: (theme.colors as any).gray85, dark: '#292929' },
-    theme.type
+    theme.type,
   );
   const headerBackground = selectThemeVariant({ light: 'rgb(247, 247, 249)', dark: '#202226' }, theme.type);
   const textColor = selectThemeVariant(
     { light: (theme.colors as any).gray85, dark: 'rgba(255, 255, 255, 0.8)' },
-    theme.type
+    theme.type,
   );
 
   return {
     /* This will make the table scrollable when it gets too small */
+    scrollableContent: css`
+      padding-bottom: 21px !important;
+    `,
     tableWrap: (size) => css`
       display: block;
       max-width: ${size.x ? `${size.x}px` : '100%'};
@@ -41,6 +44,8 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
         }
         .tr {
           cursor: pointer;
+          border-right: 21px solid;
+          box-sizing: content-box !important;
         }
         .th,
         .td {
@@ -89,6 +94,12 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
         z-index: 3;
         // outline: 1px solid ${borderColor};
       }
+
+      // .td:last-child,
+      // .th:last-child {
+      //   margin-right: 19px;
+      // }
+
       .th:nth-child(2) {
         position: -webkit-sticky; /* for Safari */
         position: sticky;
@@ -176,9 +187,10 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       align-items: center !important;
       justify-content: center !important;
     `,
-    tableBody: (height) => css`
-      overflow: scroll;
+    tableBody: (height, width) => css`
+      // overflow: scroll;
       height: ${height - 70}px;
+      width: ${width + 20}px;
     `,
     tableDisabled: css`
       opacity: 0.6;

@@ -6,7 +6,7 @@ import {
   COLUMN_WIDTH,
   FIXED_COLUMN_WIDTH,
   MAIN_METRIC_MIN_WIDTH,
-  ROW_NUMBER_COLUMN_WIDTH,
+  ROW_NUMBER_COLUMN_WIDTH, SCROLLBAR_WIDTH,
 } from '../../Overview.constants';
 import { mainMetric, metricWrapper, tooltipIcon } from './DefaultColumns.styles';
 import { Dimension } from '../Dimension/Dimension';
@@ -19,7 +19,7 @@ export const getMainColumnWidth = (columns) => {
   const width = +((container && container.clientWidth) || 0);
 
   return Math.max(
-    width - getAllColumns(columns) + FIXED_COLUMN_WIDTH - 2,
+    width - getAllColumns(columns) + FIXED_COLUMN_WIDTH - SCROLLBAR_WIDTH - 2,
     MAIN_METRIC_MIN_WIDTH
   );
 };
@@ -28,7 +28,7 @@ export const getAllColumnsWidth = (mainColumnWidth, columns) => {
   const container = document.querySelector('.table-wrapper');
   const width = +((container && container.clientWidth) || 0);
 
-  return Math.max(getAllColumns(columns) + mainColumnWidth - FIXED_COLUMN_WIDTH, width) - 2;
+  return Math.max(getAllColumns(columns) + mainColumnWidth - FIXED_COLUMN_WIDTH, width) - SCROLLBAR_WIDTH - 2;
 };
 
 const dimensionColumnRender = (record, index) => (
