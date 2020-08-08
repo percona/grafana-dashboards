@@ -16,7 +16,7 @@ module.exports = {
     'ps',
     2,
     'pg',
-    1,
+    2,
     'pmm-server',
     1,
     'app',
