@@ -66,14 +66,14 @@ export const SignUp: FC<SignUpProps> = ({ userEmail }) => {
       <FinalField
         data-qa="sign-up-email-input"
         name="email"
-        label="Email"
+        label={Messages.emailLabel}
         component={InputFieldAdapter}
         validate={validators.compose(validators.required, validators.validateEmail)}
       />
       <FinalField
         data-qa="sign-up-password-input"
         name="newPassword"
-        label="Password"
+        label={Messages.passwordLabel}
         type="password"
         component={InputFieldAdapter}
         validate={validators.required}
