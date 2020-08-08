@@ -1,7 +1,7 @@
 const { I } = inject();
 const assert = require('assert');
 // The original regex source is https://regexlib.com/REDetails.aspx?regexp_id=5055
-const lastCheckRegex = /^(?:(((Jan?|Ma(r?|y)|Jul(y)?|Aug?|Oct?|Dec?) 31)|((Jan?|Ma(r?|y)|Apr?|Ju((ly?)|(ne?))|Aug?|Oct?|(Sep(t)?|Nov|Dec)?) (0?[1-9]|([12]\d)|30))|(Feb? (0?[1-9]|1\d|2[0-8]|(29(?=, ))))),) (?:[0-1]?[0-9]|[2][1-4]):[0-5]?[0-9]?\s??$/gim;
+//const lastCheckRegex = /^(?:(((Jan?|Ma(r?|y)|Jul(y)?|Aug?|Oct?|Dec?) 31)|((Jan?|Ma(r?|y)|Apr?|Ju((ly?)|(ne?))|Aug?|Oct?|(Sep(t)?|Nov|Dec)?) (0?[1-9]|([12]\d)|30))|(Feb? (0?[1-9]|1\d|2[0-8]|(29(?=, ))))),) (?:[0-1]?[0-9]|[2][1-4]):[0-5]?[0-9]?\s??$/gim;
 
 module.exports = {
   // insert your locators and methods here
@@ -104,7 +104,7 @@ module.exports = {
     I.seeElement(locators.upToDateLocator);
     I.seeElement(locators.currentVersion);
     I.seeElement(locators.checkUpdateButton);
-    const date = await I.grabTextFrom(locators.lastCheckSelector);
+    //const date = await I.grabTextFrom(locators.lastCheckSelector);
 
     // Skipping regex Logic
     //assert.ok(lastCheckRegex.test(date), `Last Check Date has unexpected pattern: ${date}`);
