@@ -34,7 +34,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => ({
   checkboxLabel: css`
     display: inline-block;
     line-height: 1.7;
-    padding-right: 8px;
+    padding-right: ${theme.spacing.formInputPaddingHorizontal};
   `,
   formWrapper: css`
     align-items: start;
@@ -48,7 +48,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => ({
   `,
   submitButton: css`
     ${centeredButton}
-    margin-bottom: 15px;
+    margin-bottom: ${theme.spacing.formInputMargin};
   `,
   signInButton: css`
     ${centeredButton}
