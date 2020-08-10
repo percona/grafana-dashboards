@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import { Button, Input, Spin } from 'antd';
 import { Form } from 'react-final-form';
-import ScrollArea from 'react-scrollbar';
+import ReactScrollbar from 'react-scrollbars-custom';
 import { cx } from 'emotion';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
 import { Filter } from 'shared/components/Elements/Icons/Filter';
@@ -15,7 +15,11 @@ import { getSelectedCheckboxes } from './Filters.tools';
 import { FiltersContainerProps } from './Filters.types';
 
 export const FiltersContainer = ({
-  contextActions, form, labels, filters, disabled
+  contextActions,
+  form,
+  labels,
+  filters,
+  disabled,
 }: FiltersContainerProps) => {
   const filtersWrapperRef = useRef<HTMLDivElement>(null);
 
@@ -58,7 +62,13 @@ export const FiltersContainer = ({
           Reset All
         </Button>
       </div>
-      <ScrollArea className={styles.getFiltersWrapper(height)}>
+      <ReactScrollbar
+        className={styles.getFiltersWrapper(height)}
+        contentProps={{
+          className: styles.filtersContentArea,
+        }}
+        disableTrackYWidthCompensation
+      >
         <Input
           suffix={<Filter />}
           placeholder="Filter by..."
@@ -87,7 +97,7 @@ export const FiltersContainer = ({
             />
           );
         })}
-      </ScrollArea>
+      </ReactScrollbar>
     </div>
   );
 };
@@ -100,23 +110,26 @@ export const Filters: FC = () => {
   const { filters, loading } = useFilters();
   const initialValues = useInitialFilterValues();
 
-  return useMemo(() => (
-    <Form
-      onSubmit={() => {}}
-      initialValues={initialValues}
-      render={({ form, handleSubmit }) => (
-        <Spin spinning={loading}>
-          <form onSubmit={handleSubmit} onChange={() => contextActions.setLabels(form.getState().values)}>
-            <FiltersContainer
-              contextActions={contextActions}
-              form={form}
-              labels={labels}
-              filters={filters}
-              disabled={loadingDetails}
-            />
-          </form>
-        </Spin>
-      )}
-    />
-  ), [contextActions, filters, loading, loadingDetails, initialValues, labels]);
+  return useMemo(
+    () => (
+      <Form
+        onSubmit={() => {}}
+        initialValues={initialValues}
+        render={({ form, handleSubmit }) => (
+          <Spin spinning={loading}>
+            <form onSubmit={handleSubmit} onChange={() => contextActions.setLabels(form.getState().values)}>
+              <FiltersContainer
+                contextActions={contextActions}
+                form={form}
+                labels={labels}
+                filters={filters}
+                disabled={loadingDetails}
+              />
+            </form>
+          </Spin>
+        )}
+      />
+    ),
+    [contextActions, filters, loading, loadingDetails, initialValues, labels],
+  );
 };
