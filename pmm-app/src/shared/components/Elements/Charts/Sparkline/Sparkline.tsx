@@ -193,9 +193,7 @@ export const Sparkline = ({
     document.addEventListener('sync-graphs', drawHighlighted, false);
 
     // eslint-disable-next-line consistent-return
-    return () => {
-      document.removeEventListener('sync-graphs', drawHighlighted);
-    };
+    return () => document.removeEventListener('sync-graphs', drawHighlighted);
   }, [sparklineCanvas]);
 
   return (
