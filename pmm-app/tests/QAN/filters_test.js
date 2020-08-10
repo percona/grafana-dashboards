@@ -257,15 +257,28 @@ Scenario(
   'PMM-T390 - Verify that we show info message when empty result is returned @not-pr-pipeline @qan',
   async (I, qanPage, qanActions) => {
     const serviceName = 'ps_5.7';
-    const db1 = 'postgres'
+    const db1 = 'postgres';
     const db2 = 'n/a';
     const section = 'Database';
 
     qanActions.waitForNewQANPageLoaded();
-    qanActions.applyFilterInSection(section,db1);
-    qanActions.applyFilterInSection(section,db2);
+    qanActions.applyFilterInSection(section, db1);
+    qanActions.applyFilterInSection(section, db2);
     qanActions.applyFilterNewQAN(serviceName);
-    qanActions.applyFilterInSection(section,db2);
-    I.waitForElement(qanPage.fields.noQueries,20);
+    qanActions.applyFilterInSection(section, db2);
+    I.waitForElement(qanPage.fields.noQueries, 20);
+  },
+);
+
+Scenario(
+  'PMM-T221 - Verify that all filter options are always visible (but some disabled) after selecting an item and % value is changed @not-pr-pipeline @qan',
+  async (I, qanPage, qanActions) => {
+    const serviceType = 'mysql';
+    qanActions.waitForNewQANPageLoaded();
+    
+    const countBefore = await qanActions.getCountOfItems();
+    qanActions.applyFilterNewQAN(serviceType);
+    const countAfter = await qanActions.getCountOfItems();
+    await qanActions.verifyChangedCount(countBefore, countAfter);
   },
 );
