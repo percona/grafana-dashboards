@@ -15,7 +15,6 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
   );
 
   return {
-    /* This will make the table scrollable when it gets too small */
     scrollableContent: css`
       padding-bottom: 21px !important;
     `,

@@ -60,7 +60,7 @@ export const DetailsSection: FC = () => {
 
   return (
     <div className="query-analytics-details-grid query-analytics-details" data-qa="query-analytics-details">
-      <RSC style={{ height: '600px' }}>
+      <RSC className={styles.scrollbarArea}>
         <div className="details-tabs">
           <Divider className={styles.zeroMargin} />
           <Tabs
