@@ -18,7 +18,7 @@ xScenario(
     dashboardPage.verifyMetricsExistence(dashboardPage.mysqlInstanceSummaryDashboard.metrics);
     await dashboardPage.verifyThereAreNoGraphsWithNA();
     await dashboardPage.verifyThereAreNoGraphsWithoutData(3);
-  }
+  },
 );
 
 Scenario(
@@ -32,7 +32,7 @@ Scenario(
     await dashboardPage.verifyMetricsExistence(dashboardPage.proxysqlInstanceSummaryDashboard.metrics);
     await dashboardPage.verifyThereAreNoGraphsWithNA();
     await dashboardPage.verifyThereAreNoGraphsWithoutData(8);
-  }
+  },
 ).retry(2);
 
 Scenario(
@@ -46,7 +46,7 @@ Scenario(
     dashboardPage.verifyMetricsExistence(dashboardPage.pxcGaleraClusterSummaryDashboard.metrics);
     await dashboardPage.verifyThereAreNoGraphsWithNA();
     await dashboardPage.verifyThereAreNoGraphsWithoutData(2);
-  }
+  },
 ).retry(2);
 
 xScenario(
@@ -57,5 +57,19 @@ xScenario(
     I.waitForElement(adminPage.fields.metricTitle, 30);
     adminPage.applyTimer('1m');
     mysqlTableDetailsPage.verifyNoDataShow();
-  }
+  },
+);
+
+Scenario(
+  'PMM-T324 - Verify MySQL - MySQL User Details dashboard @not-pr-pipeline',
+  async (I, dashboardPage, adminPage) => {
+    I.amOnPage(dashboardPage.mysqlUserDetailsDashboard.url);
+    dashboardPage.waitForDashboardOpened();
+    adminPage.peformPageDown(5);
+    await dashboardPage.expandEachDashboardRow();
+    adminPage.performPageUp(5);
+    dashboardPage.verifyMetricsExistence(dashboardPage.mysqlUserDetailsDashboard.metrics);
+    await dashboardPage.verifyThereAreNoGraphsWithNA();
+    await dashboardPage.verifyThereAreNoGraphsWithoutData(1);
+  },
 );

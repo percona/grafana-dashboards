@@ -3,6 +3,7 @@ import React, { FC } from 'react';
 import { Latency, Sparkline, TimeDistribution } from 'shared/components/Elements/Charts';
 import { humanize } from 'shared/components/helpers/Humanization';
 import { Info } from 'shared/components/Elements/Icons/Info';
+import { Overlay } from 'shared/components/Elements/Overlay/Overlay';
 import { styles } from './Metrics.styles';
 import { MetricsTabs } from './Metrics.constants';
 import { MetricsProps } from './Metrics.types';
@@ -99,7 +100,7 @@ const Metrics: FC<MetricsProps> = ({
   ];
 
   return (
-    <div className="metrics-wrapper">
+    <Overlay isPending={loading} className="metrics-wrapper" size={35}>
       <Collapse
         bordered={false}
         defaultActiveKey={[MetricsTabs.distribution, MetricsTabs.metrics]}
@@ -117,12 +118,11 @@ const Metrics: FC<MetricsProps> = ({
             pagination={false}
             size="small"
             bordered
-            loading={loading}
             rowKey="metricName"
           />
         </Panel>
       </Collapse>
-    </div>
+    </Overlay>
   );
 };
 
