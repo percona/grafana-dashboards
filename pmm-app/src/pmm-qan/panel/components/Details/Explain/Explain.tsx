@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { FC, useEffect, useState } from 'react';
-import { Collapse, Spin, Table } from 'antd';
+import { Collapse, Table } from 'antd';
 import { ReactJSON } from 'shared/components/Elements/ReactJSON/ReactJSON';
+import { Overlay } from 'shared/components/Elements/Overlay/Overlay';
 import { processClassicExplain } from './Explain.tools';
 import { styles } from './Explain.styles';
 import { ClassicExplain, ExplainProps, ExplainTabs } from './Explain.types';
@@ -32,9 +33,9 @@ const Explain: FC<ExplainProps> = ({
       >
         {databaseType !== Databases.mongodb ? (
           <Panel header={ExplainTabs.classic} key={ExplainTabs.classic} className={styles.panel}>
-            <Spin spinning={classicExplain.loading} wrapperClassName={styles.spinnerWrapper}>
+            <Overlay isPending={classicExplain.loading}>
               {classicExplain.error ? <pre>{classicExplain.error}</pre> : null}
-              {!classicExplain.error && !classicExplain.loading && data.rows.length ? (
+              {!classicExplain.error && data.rows.length ? (
                 <Table
                   dataSource={data.rows}
                   columns={data.columns}
@@ -43,23 +44,22 @@ const Explain: FC<ExplainProps> = ({
                   bordered
                 />
               ) : null}
-              {/* eslint-disable-next-line max-len */}
-              {!classicExplain.error && !classicExplain.loading && !data.rows.length ? (
+              {!classicExplain.error && !data.rows.length ? (
                 <pre>{Messages.noClassicExplain}</pre>
               ) : null}
-            </Spin>
+            </Overlay>
           </Panel>
         ) : null}
         <Panel header={ExplainTabs.json} key={ExplainTabs.json} className={styles.panel}>
-          <Spin spinning={jsonExplain.loading} wrapperClassName={styles.spinnerWrapper}>
-            {!jsonExplain.loading && jsonExplain.error ? <pre>{jsonExplain.error}</pre> : null}
-            {!jsonExplain.error && !jsonExplain.loading && jsonExplain.value ? (
+          <Overlay isPending={jsonExplain.loading}>
+            {jsonExplain.error ? <pre>{jsonExplain.error}</pre> : null}
+            {!jsonExplain.error && jsonExplain.value ? (
               <ReactJSON json={JSON.parse(jsonExplain.value)} />
             ) : null}
-            {!jsonExplain.error && !jsonExplain.loading && !jsonExplain.value ? (
+            {!jsonExplain.error && !jsonExplain.value ? (
               <pre>{Messages.noJsonExplain}</pre>
             ) : null}
-          </Spin>
+          </Overlay>
         </Panel>
       </Collapse>
     </div>

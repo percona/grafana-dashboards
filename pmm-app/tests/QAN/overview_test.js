@@ -236,7 +236,7 @@ xScenario(
 );
 
 Scenario(
-  'PMM-T179 - Verify user is able to hover sparkline buckets and see correct tooltip @qan',
+  'PMM-T179 - Verify user is able to hover sparkline buckets and see correct tooltip @not-pr-pipeline @qan',
   async (I, qanPage, qanActions) => {
     qanActions.waitForNewQANPageLoaded();
     const [queryCount] = (await I.grabTextFrom(qanPage.fields.overviewRowQueryCount)).split(' ');
