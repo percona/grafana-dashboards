@@ -167,12 +167,15 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
     `,
     tableCell: css`
       display: flex !important;
-      justify-content: space-between !important;
+      justify-content: flex-end !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      padding-right: 8px !important;
     `,
     rowNumberCell: css`
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
     `,
     tableBody: (height) => css`
       overflow: scroll;

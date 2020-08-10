@@ -138,7 +138,7 @@ export const Table: FC<TableProps> = ({
           {index === 0
             ? headerGroups.map((headerGroup) => (
               <div {...headerGroup.getHeaderGroupProps()} className={cx('tr', styles.headerRow)}>
-                {headerGroup.headers.map((c) => {
+                {headerGroup.headers.map((c, index) => {
                   const column = c as any;
 
                   const { HeaderAccessor } = column;
@@ -155,7 +155,7 @@ export const Table: FC<TableProps> = ({
                   }
 
                   return (
-                    <div {...column.getHeaderProps()} className="th">
+                    <div {...column.getHeaderProps()} className={cx('th', index === 0 ? styles.rowNumberCell : '')}>
                       <div className={styles.headerContent}>
                         <div className="header-wrapper">{column.render('Header')}</div>
                         {column.sortable ? (
