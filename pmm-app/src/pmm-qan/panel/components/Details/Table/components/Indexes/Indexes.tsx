@@ -1,13 +1,19 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {
+  FC, useCallback, useEffect, useState
+} from 'react';
 import { Spin, Table } from 'antd';
 import { ActionResult, Databases } from '../../../Details.types';
 import { mysqlMethods, postgresqlMethods } from '../../../database-models';
 import { processTableData } from '../../TableContainer.tools';
 import { useActionResult } from '../../../Details.tools';
 import { Messages } from '../../../Details.messages';
+import { TableProps } from '../Table.types';
 
-export const Indexes = (props) => {
-  const { tableName, databaseType, example } = props;
+export const Indexes: FC<TableProps> = ({
+  tableName,
+  databaseType,
+  example
+}) => {
   const [data, setData] = useState<{ columns: any[]; rows: any[] }>({ columns: [], rows: [] });
   const [indexes, setIndexes] = useState<ActionResult>({
     error: '',

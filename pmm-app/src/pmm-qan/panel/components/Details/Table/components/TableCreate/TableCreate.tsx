@@ -1,14 +1,18 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { Spin } from 'antd';
+import React, {
+  FC, useCallback, useEffect, useState
+} from 'react';
 import Highlight from 'react-highlight.js';
+import { Overlay } from 'shared/components/Elements/Overlay/Overlay';
 import { ActionResult, Databases } from '../../../Details.types';
 import { mysqlMethods, postgresqlMethods } from '../../../database-models';
 import { useActionResult } from '../../../Details.tools';
+import { TableProps } from '../Table.types';
 
-// TODO: refactor example parameters passing
-
-const TableCreate = (props) => {
-  const { tableName, databaseType, example } = props;
+export const TableCreate: FC<TableProps> = ({
+  tableName,
+  databaseType,
+  example
+}) => {
   const [showCreateTable, setShowCreateTable] = useState<ActionResult>({
     error: '',
     loading: true,
@@ -34,16 +38,11 @@ const TableCreate = (props) => {
   }, [databaseType]);
 
   return (
-    <Spin spinning={showCreateTable.loading}>
-      <div>
-        {showCreateTable.loading ? <pre>{showCreateTable.loading}</pre> : null}
-        {!showCreateTable.loading && showCreateTable.error ? <pre>{showCreateTable.error}</pre> : null}
-        {!showCreateTable.loading && !showCreateTable.error ? (
-          <Highlight language="sql">{showCreateTable.value}</Highlight>
-        ) : null}
-      </div>
-    </Spin>
+    <Overlay isPending={showCreateTable.loading}>
+      {showCreateTable.error ? <pre>{showCreateTable.error}</pre> : null}
+      {!showCreateTable.error ? (
+        <Highlight language="sql">{showCreateTable.value}</Highlight>
+      ) : null}
+    </Overlay>
   );
 };
-
-export default TableCreate;

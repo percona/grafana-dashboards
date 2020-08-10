@@ -16,5 +16,19 @@ Scenario(
     dashboardPage.verifyMetricsExistence(dashboardPage.postgresqlInstanceSummaryDashboard.metrics);
     await dashboardPage.verifyThereAreNoGraphsWithNA();
     await dashboardPage.verifyThereAreNoGraphsWithoutData(1);
-  }
+  },
+);
+
+Scenario(
+  'PMM-T394 - PostgreSQL Instance Overview Dashboard metrics @not-pr-pipeline',
+  async (I, dashboardPage, adminPage) => {
+    I.amOnPage(dashboardPage.postgresqlInstanceOverviewDashboard.url);
+    dashboardPage.waitForDashboardOpened();
+    adminPage.peformPageDown(5);
+    await dashboardPage.expandEachDashboardRow();
+    adminPage.performPageUp(5);
+    dashboardPage.verifyMetricsExistence(dashboardPage.postgresqlInstanceOverviewDashboard.metrics);
+    await dashboardPage.verifyThereAreNoGraphsWithNA();
+    await dashboardPage.verifyThereAreNoGraphsWithoutData(1);
+  },
 );
