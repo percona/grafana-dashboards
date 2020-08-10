@@ -220,7 +220,7 @@ export const Table: FC<TableProps> = ({
           ) : null}
           {rows.length && !loading ? (
             <div {...getTableProps()} className="table">
-              <RSC
+              <ReactScrollbar
                 {...getTableBodyProps()}
                 className={cx('table-body')}
                 style={{ height: scroll.y - 70 }}
@@ -229,7 +229,7 @@ export const Table: FC<TableProps> = ({
                 }}
               >
                 {rows.map(RenderRow)}
-              </RSC>
+              </ReactScrollbar>
             </div>
           ) : null}
         </div>

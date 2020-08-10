@@ -4,7 +4,7 @@ import React, {
 import { Divider, Tabs, Button } from 'antd';
 import './Details.scss';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
-import RSC from 'react-scrollbars-custom';
+import ReactScrollbar from 'react-scrollbars-custom';
 import Explain from './Explain/Explain';
 import Example from './Example/Example';
 import Metrics from './Metrics/Metrics';
@@ -60,7 +60,7 @@ export const DetailsSection: FC = () => {
 
   return (
     <div className="query-analytics-details-grid query-analytics-details" data-qa="query-analytics-details">
-      <RSC className={styles.scrollbarArea}>
+      <ReactScrollbar className={styles.scrollbarArea}>
         <div className="details-tabs">
           <Divider className={styles.zeroMargin} />
           <Tabs
@@ -111,7 +111,7 @@ export const DetailsSection: FC = () => {
             ) : null}
           </Tabs>
         </div>
-      </RSC>
+      </ReactScrollbar>
     </div>
   );
 };
