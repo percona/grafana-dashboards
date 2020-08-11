@@ -94,7 +94,7 @@ module.exports = {
     iframe: '//div[@class="panel-content"]//iframe',
     metricsResolutionButton: '[data-qa="metrics-resolution-button"]',
     metricsResolution: '//div[@data-qa="metrics-resolution-radio-button-group"]/label[text()="',
-    metricsResolutionLabel: locateLabel('metrics-resolution-label'),
+    metricsResolutionLabel: '[data-qa="metrics-resolution-label"]',
     metricsResolutionRadio: '[data-qa="metrics-resolution-radio-button-group"]',
     lowInput: '[data-qa="metrics-resolution-lr-input"]',
     mediumInput: '[data-qa="metrics-resolution-mr-input"]',
