@@ -83,7 +83,7 @@ export const SignUp: FC<SignUpProps> = ({ userEmail }) => {
         label={<CheckboxLabel />}
         name="agreement"
         component={CheckboxFieldAdapter}
-        validate={validators.required}
+        validate={validators.requiredTrue}
         type="checkbox"
       />
       <ButtonWithSpinner
