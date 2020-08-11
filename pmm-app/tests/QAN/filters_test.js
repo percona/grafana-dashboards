@@ -281,7 +281,6 @@ Scenario(
     const countOfFilters = await I.grabNumberOfVisibleElements(qanPage.fields.filterCheckboxes);
     const countBefore = await qanActions.getCountOfItems();
     const percentageBefore = await qanActions.getPercentage('Service Type', serviceType);
-    console.log(percentageBefore);
     qanActions.applyFilterNewQAN(serviceType);
     const countAfter = await qanActions.getCountOfItems();
     pmmSettingsPage.customClearField(qanPage.fields.filterBy);
