@@ -73,6 +73,7 @@ module.exports = {
     I.click(agentLinkLocator);
     const enhanceMetricsDisabled = `//tr//td//span[contains(text(), "${nodeId}")]/../span[contains(text(),"enhanced_metrics_disabled: true")]`;
 
+    I.waitForElement(enhanceMetricsDisabled, 30);
     I.seeElement(enhanceMetricsDisabled);
     const basicMetricsDisabled = `//tr//td//span[contains(text(), "${nodeId}")]/../span[contains(text(),"basic_metrics_disabled: true")]`;
 
