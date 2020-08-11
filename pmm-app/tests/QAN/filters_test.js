@@ -272,13 +272,26 @@ Scenario(
 
 Scenario(
   'PMM-T221 - Verify that all filter options are always visible (but some disabled) after selecting an item and % value is changed @not-pr-pipeline @qan',
-  async (I, qanPage, qanActions) => {
+  async (I, qanPage, qanActions, pmmSettingsPage) => {
     const serviceType = 'mysql';
+    const environment = 'pgsql-dev';
+    const serviceName = 'ps_5.7';
+
     qanActions.waitForNewQANPageLoaded();
-    
+    const countOfFilters = await I.grabNumberOfVisibleElements(qanPage.fields.filterCheckboxes);
     const countBefore = await qanActions.getCountOfItems();
+    const percentageBefore = await qanActions.getPercentage('Service Type', serviceType);
+    console.log(percentageBefore);
     qanActions.applyFilterNewQAN(serviceType);
     const countAfter = await qanActions.getCountOfItems();
+    pmmSettingsPage.customClearField(qanPage.fields.filterBy);
+
     await qanActions.verifyChangedCount(countBefore, countAfter);
+    await qanActions.verifyCountOfFilterLinks(countOfFilters, false);
+    qanActions.checkDisabledFilter('Environment', environment);
+    qanActions.applyFilterNewQAN(serviceName);
+    pmmSettingsPage.customClearField(qanPage.fields.filterBy);
+    const percentageAfter = await qanActions.getPercentage('Service Type', serviceType);
+    qanActions.checkChangedPercentage(percentageBefore, percentageAfter);
   },
 );

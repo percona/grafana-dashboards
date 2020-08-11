@@ -163,6 +163,21 @@ module.exports = {
     I.click(filterLocator);
   },
 
+  checkDisabledFilter(section, filter) {
+    const filterLocator = `//span[contains(text(), '${section}')]/parent::p/following-sibling::div//input[contains(@name, '${filter}') and @disabled]`;
+    I.waitForVisible(filterLocator, 20);
+  },
+
+  async getPercentage(filterType, filter) {
+    return await I.grabTextFrom(
+      `//span[contains(text(), '${filterType}')]/../../descendant::span[contains(text(), '${filter}')]/../../following-sibling::span/span`,
+    );
+  },
+
+  checkChangedPercentage(before, after) {
+    assert.notEqual(before, after, 'The percentage should be changed!');
+  },
+
   verifyChangedCount(countBefore, countAfter) {
     assert.notEqual(countAfter, countBefore, 'Data should be changed');
   },
