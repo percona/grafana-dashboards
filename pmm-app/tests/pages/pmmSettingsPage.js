@@ -145,6 +145,7 @@ module.exports = {
   },
 
   async selectMetricsResolution(resolution) {
+    I.waitForElement(`${this.fields.metricsResolution + resolution}"]`, 30);
     I.click(`${this.fields.metricsResolution + resolution}"]`);
     I.click(this.fields.metricsResolutionButton);
   },
