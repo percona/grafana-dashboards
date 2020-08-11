@@ -6,7 +6,8 @@ import {
   COLUMN_WIDTH,
   FIXED_COLUMN_WIDTH,
   MAIN_METRIC_MIN_WIDTH,
-  ROW_NUMBER_COLUMN_WIDTH, SCROLLBAR_WIDTH,
+  ROW_NUMBER_COLUMN_WIDTH,
+  SCROLLBAR_WIDTH,
 } from '../../Overview.constants';
 import { mainMetric, metricWrapper, tooltipIcon } from './DefaultColumns.styles';
 import { Dimension } from '../Dimension/Dimension';
@@ -14,21 +15,23 @@ import { Dimension } from '../Dimension/Dimension';
 // eslint-disable-next-line max-len
 const getAllColumns = (columns) => (columns - 1) * FIXED_COLUMN_WIDTH + COLUMN_WIDTH * 1.8 + ROW_NUMBER_COLUMN_WIDTH;
 
+// Get width of a main column based on a number of available metrics columns
 export const getMainColumnWidth = (columns) => {
   const container = document.querySelector('.table-wrapper');
   const width = +((container && container.clientWidth) || 0);
 
   return Math.max(
-    width - getAllColumns(columns) + FIXED_COLUMN_WIDTH - SCROLLBAR_WIDTH - 2,
+    width - getAllColumns(columns) + FIXED_COLUMN_WIDTH - SCROLLBAR_WIDTH,
     MAIN_METRIC_MIN_WIDTH
   );
 };
 
+// Get width of all columns together to calculate container size
 export const getAllColumnsWidth = (mainColumnWidth, columns) => {
   const container = document.querySelector('.table-wrapper');
   const width = +((container && container.clientWidth) || 0);
 
-  return Math.max(getAllColumns(columns) + mainColumnWidth - FIXED_COLUMN_WIDTH, width) - SCROLLBAR_WIDTH - 2;
+  return Math.max(getAllColumns(columns) + mainColumnWidth - FIXED_COLUMN_WIDTH, width) - SCROLLBAR_WIDTH;
 };
 
 const dimensionColumnRender = (record, index) => (
