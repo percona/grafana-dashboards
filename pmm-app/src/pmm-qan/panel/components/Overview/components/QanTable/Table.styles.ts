@@ -94,7 +94,6 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
         position: sticky;
         left: 40px;
         z-index: 3;
-        // outline: 1px solid ${borderColor};
       }
       .pagination {
         padding: 0.5rem;
