@@ -26,6 +26,7 @@ Scenario(
     }
 
     await within(pmmSettingsPage.fields.tabContent, () => {
+      I.waitForElement(pmmSettingsPage.fields.metricsResolutionLabel, 30);
       I.see('Metrics resolution, sec', pmmSettingsPage.fields.metricsResolutionLabel);
       I.seeElement(pmmSettingsPage.fields.metricsResolutionRadio);
       I.seeElement(pmmSettingsPage.fields.lowInput);
