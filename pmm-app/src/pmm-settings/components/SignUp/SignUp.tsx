@@ -109,7 +109,7 @@ export const SignUp: FC<SignUpProps> = ({ userEmail }) => {
   return (
     // TODO (nicolalamacchia): improve this once the sign in component is ready
     <>
-      {typeof loggedInEmail !== 'undefined'
+      {loggedInEmail != null
         ? <LoggedIn email={loggedInEmail} />
         : (
           <div data-qa="sign-up-form-wrapper" className={styles.formWrapper}>
