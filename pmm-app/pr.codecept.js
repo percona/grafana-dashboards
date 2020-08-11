@@ -28,6 +28,7 @@ exports.config = {
     },
     REST: {
       endpoint: process.env.PMM_UI_URL || 'http://localhost/',
+      timeout: 20000,
     },
     InfluxDBHelper: {
       require: 'codeceptjs-influxdbhelper',
