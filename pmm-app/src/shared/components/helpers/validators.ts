@@ -49,6 +49,8 @@ const validators = {
 
   required: (value) => (value ? undefined : 'Required field'),
 
+  requiredTrue: (value: boolean) => (value === true ? undefined : 'Required field'),
+
   compose: (...validators) => (value) => validators.reduce(
     (error, validator) => error || validator(value), undefined
   ),

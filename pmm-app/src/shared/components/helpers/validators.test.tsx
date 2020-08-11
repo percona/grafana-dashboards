@@ -45,6 +45,16 @@ describe('validateKeyValue test', () => {
   });
 });
 
+describe('Validate field is true', () => {
+  it('should return undefined if the passed value is true', () => {
+    expect(validators.requiredTrue(true)).toBeUndefined();
+  });
+
+  it('should return an error if the passed value is not true', () => {
+    expect(validators.requiredTrue(false)).toEqual('Required field');
+  });
+});
+
 describe('Validate email', () => {
   // NOTE (nicolalamacchia): some of these tests were taken from Chromium's source code
   test('email validator should return undefined if the passed email is valid', () => {
