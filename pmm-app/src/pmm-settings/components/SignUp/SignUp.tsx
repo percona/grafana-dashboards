@@ -2,7 +2,7 @@ import React, {
   FC,
   useState
 } from 'react';
-import { Form as FinalForm, Field as FinalField, FormRenderProps } from 'react-final-form';
+import { Form, Field, FormRenderProps } from 'react-final-form';
 import {
   Button,
   LinkButton,
@@ -34,11 +34,9 @@ export const SignUp: FC<SignUpProps> = ({ userEmail }) => {
       {Messages.agreementFirstPart}
       {' '}
       <LinkButton className={styles.link} variant="link" href={TERMS_OF_SERVICE_URL}>{Messages.termsOfService}</LinkButton>
-      ,
-      {' '}
+      {', '}
       <LinkButton className={styles.link} variant="link" href={PRIVACY_POLICY_URL}>{Messages.privacyPolicy}</LinkButton>
-      ,
-      {' '}
+      {', '}
       {Messages.agreementSecondPart}
       {' '}
       <LinkButton className={styles.link} variant="link" href={NOTIFICATION_SETTINGS_URL}>{Messages.notificationSettings}</LinkButton>
@@ -63,14 +61,14 @@ export const SignUp: FC<SignUpProps> = ({ userEmail }) => {
       <legend className={styles.legend}>
         {Messages.signUp}
       </legend>
-      <FinalField
+      <Field
         data-qa="sign-up-email-input"
         name="email"
         label={Messages.emailLabel}
         component={InputFieldAdapter}
         validate={validators.compose(validators.required, validators.validateEmail)}
       />
-      <FinalField
+      <Field
         data-qa="sign-up-password-input"
         name="newPassword"
         label={Messages.passwordLabel}
@@ -79,7 +77,7 @@ export const SignUp: FC<SignUpProps> = ({ userEmail }) => {
         validate={validators.required}
         autoComplete="on"
       />
-      <FinalField
+      <Field
         data-qa="sign-up-agreement-checkbox"
         className={styles.checkboxWrapper}
         label={<CheckboxLabel />}
@@ -115,7 +113,7 @@ export const SignUp: FC<SignUpProps> = ({ userEmail }) => {
         ? <LoggedIn email={loggedInEmail} />
         : (
           <div data-qa="sign-up-form-wrapper" className={styles.formWrapper}>
-            <FinalForm
+            <Form
               onSubmit={handleSignUpFormSubmit}
               render={InnerForm}
             />
