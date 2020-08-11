@@ -35,7 +35,7 @@ Scenario(
   async (I, dashboardPage) => {
     const annotationTitle = 'pmm-annotate-without-tags';
 
-    I.amOnPage(`${dashboardPage.nodeSummaryDashboard.url}?from=now-15m&to=now`);
+    I.amOnPage(`${dashboardPage.nodeSummaryDashboard.url}`);
     dashboardPage.waitForDashboardOpened();
     dashboardPage.verifyAnnotationsLoaded('pmm-annotate-without-tags', 1);
     I.seeElement(dashboardPage.annotationText(annotationTitle));
@@ -50,7 +50,7 @@ Scenario(
     const annotationTag2 = 'pmm-testing-tag2';
     const defaultAnnotation = 'pmm_annotation';
 
-    I.amOnPage(`${dashboardPage.nodeSummaryDashboard.url}?from=now-15m&to=now`);
+    I.amOnPage(`${dashboardPage.nodeSummaryDashboard.url}`);
     dashboardPage.waitForDashboardOpened();
     dashboardPage.verifyAnnotationsLoaded('pmm-annotate-tags', 2);
     I.seeElement(dashboardPage.annotationText(annotationTitle2));
