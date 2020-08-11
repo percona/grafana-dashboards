@@ -47,8 +47,8 @@ xScenario(
     qanActions.verifySortingIs(1, 'down');
   },
 );
-// Skipping because of a random failing at PR tests execution
-xScenario(
+
+Scenario(
   'PMM-T183 Verify that "Group by" in the overview table can be changed @qan',
   async (qanPage, qanActions) => {
     qanActions.changeGroupBy('Database');
@@ -56,8 +56,8 @@ xScenario(
   },
 );
 
-// Need to be skipped for change in locator
-xScenario(
+
+Scenario(
   'PMM-T187 Verify that the selected row in the overview table is highlighted @qan',
   async (qanPage, qanActions) => {
     qanActions.selectRow('2');

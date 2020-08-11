@@ -16,8 +16,7 @@ Scenario(
   },
 );
 
-// Need to be fixed
-xScenario(
+Scenario(
   'Open the QAN Dashboard and check that changing the time range updates the overview table and URL. @qan',
   async (I, qanPage, adminPage, qanActions) => {
     const TIME_RANGE_QUERY_PARAMS_BEFORE = 'from=now-5m&to=now';
