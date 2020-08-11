@@ -20,6 +20,7 @@ export const getSettingsStyles = stylesFactory((theme: GrafanaTheme) => {
   return {
     settingsWrapper: css`
       display: flex;
+      flex-wrap: wrap;
       margin-top: ${spacing.lg};
       ${mq} {
         flex-direction: column;
@@ -32,7 +33,7 @@ export const getSettingsStyles = stylesFactory((theme: GrafanaTheme) => {
     tabsWrapper: css`
       margin-right: 40px;
       height: fit-content;
-      width: 230px;
+      min-width: 230px;
       ${mq} {
         margin-right: 0;
         margin-bottom: ${spacing.lg};
@@ -43,7 +44,6 @@ export const getSettingsStyles = stylesFactory((theme: GrafanaTheme) => {
       border-left: ${theme.border.width.sm} solid ${theme.colors.pageHeaderBorder};
       padding: 0 0 0 60px;
       position: relative;
-      width: 100%;
       ${mq} {
         border: none;
         padding: 0;
