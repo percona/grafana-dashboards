@@ -1,4 +1,5 @@
 const { I } = inject();
+const assert = require('assert');
 
 const locateLabel = (dataQA) => locate(`[data-qa="${dataQA}"]`).find('span');
 
@@ -34,7 +35,7 @@ module.exports = {
       + '        severity: critical\n'
       + '      annotations:\n'
       + '        summary: "Instance {{ $labels.instance }} down"\n'
-      + '        description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 20 seconds."',
+      + '        description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than {{ sec }} seconds."',
     ruleName: 'AutoTestAlerts',
     editRuleName: 'AutoTestAlertsEdited',
   },
@@ -44,94 +45,93 @@ module.exports = {
     invalidDataDurationPopUpMessage: 'data_retention: should be a natural number of days',
     requiredFieldMessage: 'Required field',
     invalidSSHKeyMessage: 'Invalid SSH key.',
-    successAlertmanagerMessage: 'Alert manager settings updated',
+    successAlertmanagerMessage: 'Alertmanager settings updated',
     invalidAlertmanagerMissingSchemeMessage:
       'Invalid alert_manager_url: invalid_url - missing protocol scheme.',
     invalidAlertmanagerMissingHostMessage: 'Invalid alert_manager_url: http:// - missing host.',
     invalidAlertmanagerRulesMessage: 'Invalid alerting rules.',
   },
-  sectionHeaderList: [
-    'Settings',
+  sectionTabsList: [
+    'Metrics resolution',
     'Advanced settings',
-    'SSH Key Details',
-    'Alertmanager integration',
-    'Diagnostics',
+    'SSH key',
+    'Alertmanager integration'
   ],
+  sectionButtonText: {
+    applyChanges: 'Apply changes',
+    applySSHKey: 'Apply SSH key',
+    applyAlertmanager: 'Apply Alertmanager settings',
+  },
 
   tooltips: {
     stt: {
-      text: 'Enable Security Threat Tool and get updated checks from Percona',
+      text: 'Enable Security Threat Tool and get updated checks from Percona.',
       link:
         'https://www.percona.com/doc/percona-monitoring-and-management/2.x/manage/server-admin-gui.html#security-threat-tool',
     },
   },
 
-  sectionButtonText: {
-    applyChanges: 'Apply changes',
-    applySSHKey: 'Apply SSH key',
-    addAlert: 'Apply Alertmanager settings',
-    downloadLogs: 'Download PMM Server Logs',
-  },
   fields: {
+    advancedLabel: '[data-qa="advanced-label"]',
+    advancedButton: '[data-qa="advanced-button"]',
     addAlertRuleButton: '//span[text()="Apply Alertmanager settings"]/parent::button',
-    addSSHKeyButton: '//span[text()="Apply SSH key"]/parent::button',
-    alertRulesInput: '//textarea[@name="alert_manager_rules" and @placeholder="Alerting rules"]',
-    alertURLInput: '//input[@name="alert_manager_url" and @placeholder="Enter URL"]',
+    alertRulesInput: '[data-qa="alertmanager-rules"]',
+    alertURLInput: '[data-qa="alertmanager-url"]',
     alertingRules: locateLabel('form-field-alerting-rules'),
+    alertmanagerUrlLabel: '[data-qa="alertmanager-url-label"]',
+    alertmanagerRulesLabel: '[data-qa="alertmanager-rules-label"]',
+    alertmanagerButton: '[data-qa="alertmanager-button"]',
     amUrlLabel: locateLabel('form-field-am-url'),
     applyButton: '//button[@type="submit"]',
     callHomeSwitch: '//button[@class="toggle-field ant-switch ant-switch-checked"]',
-    checkForUpdatesLabel: locateLabel('form-field-check-for-updates'),
-    dataRetentionCount: locate('input').withAttr({ name: 'data_retention_count' }),
+    checkForUpdatesLabel: '//div[@data-qa="settings-tab-content"]//tr[3]//td[1]//span',
+    checkForUpdatesSwitch: '//div[@data-qa="settings-tab-content"]//tr[3]//td[2]//input',
+    dataRetentionInput: '[data-qa="advanced-retention-input"]',
     dataRetentionLabel: locateLabel('form-field-data-retention'),
-    diagnosticsSectionRow: '//div[@class="ant-row"]',
+    diagnosticsButton: '[data-qa="diagnostics-button"]',
+    diagnosticsLabel: '[data-qa="diagnostics-label"]',
     downloadLogsButton: '//a[@class="ant-btn" and @href="/logs.zip"]',
     iframe: '//div[@class="panel-content"]//iframe',
-    metricsResolution: '//div[@class="ant-slider-mark"]/span[text()="',
-    metricsResolutionLabel: locateLabel('form-field-metrics'),
-    metricsResolutionSlider: '.ant-slider-rail',
+    metricsResolutionButton: '[data-qa="metrics-resolution-button"]',
+    metricsResolution: '//div[@data-qa="metrics-resolution-radio-button-group"]/label[text()="',
+    metricsResolutionLabel: '[data-qa="metrics-resolution-label"]',
+    metricsResolutionRadio: '[data-qa="metrics-resolution-radio-button-group"]',
+    lowInput: '[data-qa="metrics-resolution-lr-input"]',
+    mediumInput: '[data-qa="metrics-resolution-mr-input"]',
+    highInput: '[data-qa="metrics-resolution-hr-input"]',
     popUpTitle: '//div[@class="alert-title"]',
     sectionHeader: '//div[@class="ant-collapse-header"]',
     selectedResolution: 'span.ant-slider-mark-text-active',
-    sshKeyInput: '//textarea[@name="ssh_key" and @placeholder="Enter ssh key"]',
-    sshKeyLabel: locateLabel('form-field-ssh-key'),
-    sttLabelTooltipSelector: '//span[text()="Security Threat Tool"]/following-sibling::span/i',
-    sttSwitchSelector: '//span[text()="Security Threat Tool"]/parent::div/following-sibling::div/button',
+    sshKeyInput: '[data-qa="ssh-key"]',
+    sshKeyLabel: locateLabel('ssh-key-label'),
+    sshKeyButton: '[data-qa="ssh-key-button"]',
+    sttLabel: '//div[@data-qa="settings-tab-content"]//tr[4]//td[1]//span',
+    sttLabelTooltipSelector: '//div[@data-qa="settings-tab-content"]//tr[4]//td[1]//i',
+    sttSwitchSelector: '//div[@data-qa="settings-tab-content"]//tr[4]//td[2]//input',
+    sttSwitchSelectorLabel: '//div[@data-qa="settings-tab-content"]//tr[4]//td[2]//label',
+    sttSwitchClickable: '//div[@data-qa="settings-tab-content"]//tr[4]//td[2]//span',
     subSectionHeader: '//following-sibling::div//div[@class="ant-collapse-header"]',
-    telemetrySwitchSelector: '[data-qa="form-field-telemetry"] button',
-    telemetryLabel: locateLabel('form-field-telemetry'),
-    tooltipSelector: '.ant-tooltip-inner',
+    telemetrySwitchSelector: '//div[@data-qa="settings-tab-content"]//tr[2]//td[2]//input',
+    telemetrySwitchSelectorLabel: '//div[@data-qa="settings-tab-content"]//tr[2]//td[2]//label',
+    telemetrySwitchClickable: '//div[@data-qa="settings-tab-content"]//tr[2]//td[2]//span',
+    telemetryLabel: '//div[@data-qa="settings-tab-content"]//tr[2]//td[1]//span',
+    tooltipSelector: '.popper__background',
     validationMessage: 'span.error-message',
-    expandedSection: '.ant-collapse-content-active',
+    tabsSection: '[data-qa="settings-tabs"]',
+    tabContent: '[data-qa="settings-tab-content"]'
   },
 
   async waitForPmmSettingsPageLoaded() {
-    I.waitForVisible(this.fields.expandedSection, 30);
-    await within(this.fields.expandedSection, () => {
-      I.waitForVisible(this.fields.applyButton, 30);
-      I.waitForVisible(this.fields.sectionHeader, 30);
-      I.waitForVisible(this.fields.telemetrySwitchSelector, 30);
-      I.waitForVisible(this.fields.sttSwitchSelector, 30);
-    });
+    I.waitForVisible(this.fields.tabsSection, 30);
+    I.waitForVisible(this.fields.tabContent, 30);
+    I.waitForVisible(this.fields.diagnosticsLabel, 30);
+    I.waitForVisible(this.fields.diagnosticsButton, 30);
   },
-
-  async expandSection(sectionName, expectedContentLocatorText) {
-    const sectionExpandLocator = `${this.fields.sectionHeader}[contains(text(), '${sectionName}')]`;
-    const contentLocator = `${sectionExpandLocator}/following-sibling::div//span[text()='${expectedContentLocatorText}']`;
+  async expandSection(sectionName, expectedContentLocator) {
+    const sectionExpandLocator = `//ul[@data-qa="settings-tabs"]//li[contains(text(), '${sectionName}')]`;
 
     I.click(sectionExpandLocator);
-    I.waitForVisible(contentLocator, 30);
-  },
-
-  collapseSection(sectionName) {
-    const sectionHeaderLocator = `${this.fields.sectionHeader}[contains(text(), '${sectionName}')]`;
-
-    I.click(sectionHeaderLocator);
-    I.waitForInvisible(this.fields.applyButton, 30);
-  },
-
-  collapseDefaultSection() {
-    this.collapseSection('Settings');
+    I.waitForVisible(expectedContentLocator, 30);
   },
 
   async verifyPopUpMessage(successMessage) {
@@ -145,8 +145,16 @@ module.exports = {
   },
 
   async selectMetricsResolution(resolution) {
+    I.waitForElement(`${this.fields.metricsResolution + resolution}"]`, 30);
     I.click(`${this.fields.metricsResolution + resolution}"]`);
-    I.click(this.fields.applyButton);
+    I.click(this.fields.metricsResolutionButton);
+  },
+
+  async verifySelectedResolution(resolution) {
+    const selector = `${this.fields.metricsResolution + resolution}"]`;
+    const className = await I.grabAttributeFrom(selector, 'class');
+
+    assert.equal(className.includes('active'), true, 'Metric resolution should be active');
   },
 
   customClearField(field) {
@@ -156,15 +164,15 @@ module.exports = {
   },
 
   changeDataRetentionValueTo(days) {
-    this.customClearField(this.fields.dataRetentionCount);
-    I.fillField(this.fields.dataRetentionCount, days);
-    I.moveCursorTo(this.fields.applyButton);
-    I.click(this.fields.applyButton);
+    this.customClearField(this.fields.dataRetentionInput);
+    I.fillField(this.fields.dataRetentionInput, days);
+    I.moveCursorTo(this.fields.advancedButton);
+    I.click(this.fields.advancedButton);
   },
 
   addSSHKey(keyValue) {
     I.fillField(this.fields.sshKeyInput, keyValue);
-    I.click(this.fields.addSSHKeyButton);
+    I.click(this.fields.sshKeyButton);
   },
 
   addAlertmanagerRule(url, rule) {
@@ -172,7 +180,7 @@ module.exports = {
     I.fillField(this.fields.alertURLInput, url);
     this.customClearField(this.fields.alertRulesInput);
     I.fillField(this.fields.alertRulesInput, rule);
-    I.click(this.fields.addAlertRuleButton);
+    I.click(this.fields.alertmanagerButton);
   },
 
   openAlertsManagerUi() {
@@ -200,28 +208,24 @@ module.exports = {
   },
 
   verifySwitch(switchSelector, expectedSwitchState = 'on') {
-    let expectedSwitch;
-
     switch (expectedSwitchState) {
       case 'on':
-        expectedSwitch = { 'aria-checked': 'true' };
-        I.seeAttributesOnElements(switchSelector, expectedSwitch);
+        I.seeCheckboxIsChecked(switchSelector);
         break;
       case 'off':
-        expectedSwitch = { 'aria-checked': 'false' };
-        I.seeAttributesOnElements(switchSelector, expectedSwitch);
+        I.dontSeeCheckboxIsChecked(switchSelector);
         break;
       default:
     }
   },
 
-  verifySwitchStateIs(switchSelector, enabled = true) {
-    const switchLocator = locate(switchSelector).withAttr({ disabled: '' });
+  async verifySwitchStateIs(switchSelector, enabled = true) {
+    const className = await I.grabAttributeFrom(switchSelector, 'class');
 
-    if (!enabled) {
-      I.seeElement(switchLocator);
+    if (enabled) {
+      assert.equal(className.includes('disabled'), false, 'Switch should be enabled');
     } else {
-      I.dontSeeElement(switchLocator);
+      assert.equal(className.includes('disabled'), true, 'Switch should be disabled');
     }
   },
 };
