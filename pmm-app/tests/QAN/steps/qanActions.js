@@ -174,10 +174,6 @@ module.exports = {
     );
   },
 
-  checkChangedPercentage(before, after) {
-    assert.notEqual(before, after, 'The percentage should be changed!');
-  },
-
   verifyChangedCount(countBefore, countAfter) {
     assert.notEqual(countAfter, countBefore, 'Data should be changed');
   },

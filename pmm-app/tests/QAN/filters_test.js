@@ -291,6 +291,6 @@ Scenario(
     qanActions.applyFilterNewQAN(serviceName);
     pmmSettingsPage.customClearField(qanPage.fields.filterBy);
     const percentageAfter = await qanActions.getPercentage('Service Type', serviceType);
-    qanActions.checkChangedPercentage(percentageBefore, percentageAfter);
+    qanActions.verifyChangedCount(percentageBefore, percentageAfter);
   },
 );
