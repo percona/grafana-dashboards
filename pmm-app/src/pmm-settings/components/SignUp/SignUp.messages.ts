@@ -4,7 +4,7 @@ export const Messages = {
   termsOfService: 'Terms of Service',
   privacyPolicy: 'Privacy Policy',
   notificationSettings: 'Notification Settings',
-  agreementFirstPart: 'Signin in means you agree with our',
+  agreementFirstPart: 'Signing in means you agree with our',
   agreementSecondPart: 'and our default',
   signUpSucceeded: 'You have successfully created your credentials',
   passwordLabel: 'Password',
