@@ -155,7 +155,7 @@ Scenario(
     pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.telemetrySwitchSelector, 'on');
     await pmmSettingsPage.verifySwitchStateIs(pmmSettingsPage.fields.telemetrySwitchSelectorLabel, false);
   }
-);
+).retry(2);
 
 // To be removed from Skip after https://jira.percona.com/browse/PMM-5791
 xScenario(
