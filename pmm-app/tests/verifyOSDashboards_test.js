@@ -16,7 +16,7 @@ Scenario(
     await dashboardPage.verifyThereAreNoGraphsWithNA();
     await dashboardPage.verifyThereAreNoGraphsWithoutData(1);
   }
-).retry(2);
+);
 
 Scenario(
   'Open the Nodes Compare Dashboard and verify Metrics are present and graphs are displayed @not-pr-pipeline',
@@ -28,7 +28,7 @@ Scenario(
     await dashboardPage.verifyThereAreNoGraphsWithNA(1);
     await dashboardPage.verifyThereAreNoGraphsWithoutData(19);
   }
-).retry(2);
+);
 
 Scenario(
   'PMM-T165: Verify Annotation with Default Options @not-pr-pipeline',
@@ -40,7 +40,7 @@ Scenario(
     dashboardPage.verifyAnnotationsLoaded('pmm-annotate-without-tags', 1);
     I.seeElement(dashboardPage.annotationText(annotationTitle));
   }
-).retry(2);
+);
 
 //Need to skip to avoid failure, investigate and fix it soon
 xScenario(
@@ -59,4 +59,4 @@ xScenario(
     I.seeElement(dashboardPage.annotationTagText(annotationTag2));
     I.seeElement(dashboardPage.annotationTagText(defaultAnnotation));
   }
-).retry(2);
+);
