@@ -5,7 +5,7 @@ module.exports = {
   // insert your locators and methods here
   // setting locators
   nodesCompareDashboard: {
-    url: 'graph/d/node-instance-compare/nodes-compare',
+    url: 'graph/d/node-instance-compare/nodes-compare?orgId=1&refresh=1m&from=now-5m&to=now',
     metrics: [
       'System Info',
       'System Uptime',
@@ -91,7 +91,7 @@ module.exports = {
     ],
   },
   prometheusExporterStatusDashboard: {
-    url: 'graph/d/prometheus-status/prometheus-exporter-status',
+    url: 'graph/d/prometheus-status/prometheus-exporter-status?orgId=1&refresh=1m&from=now-5m&to=now',
     metrics: [
       'CPU Usage',
       'Memory Usage',
@@ -113,7 +113,7 @@ module.exports = {
     ],
   },
   nodeSummaryDashboard: {
-    url: 'graph/d/node-instance-summary/node-summary',
+    url: 'graph/d/node-instance-summary/node-summary?orgId=1&refresh=1m&from=now-15m&to=now',
     metrics: [
       'System Uptime',
       'Virtual CPUs',
@@ -138,7 +138,7 @@ module.exports = {
     ],
   },
   prometheusExporterOverviewDashboard: {
-    url: 'graph/d/prometheus-overview/prometheus-exporters-overview',
+    url: 'graph/d/prometheus-overview/prometheus-exporters-overview?orgId=1&refresh=1m&from=now-5m&to=now',
     metrics: [
       'Avg CPU Usage per Node',
       'Avg Memory Usage per Node',
