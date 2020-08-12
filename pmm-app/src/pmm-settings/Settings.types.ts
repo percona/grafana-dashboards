@@ -7,7 +7,8 @@ export interface Settings {
   awsPartitions: string[];
   alertManagerUrl: string;
   alertManagerRules: string;
-  sttEnabled: boolean
+  sttEnabled: boolean;
+  saasUserEmail?: string;
 }
 
 export interface MetricsResolutions {
@@ -20,5 +21,6 @@ export enum TabKeys {
   metrics = 'metrics',
   advanced = 'advanced',
   ssh = 'ssh',
-  alertManager = 'alertManager'
+  alertManager = 'alertManager',
+  signUp = 'signUp',
 }

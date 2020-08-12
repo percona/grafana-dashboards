@@ -9,3 +9,4 @@ export { TextAreaField } from './TextArea/TextArea';
 export { ToggleField } from './Toggle/Toggle';
 export { NumericInput } from './NumericInput/NumericInput';
 export { InputLabel } from './InputLabel/InputLabel';
+export { ButtonWithSpinner } from './ButtonWithSpinner/ButtonWithSpinner';

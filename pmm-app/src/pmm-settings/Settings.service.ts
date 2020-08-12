@@ -49,5 +49,6 @@ const toModel = (response: any): Settings => ({
   sshKey: response.ssh_key,
   alertManagerUrl: response.alert_manager_url,
   alertManagerRules: response.alert_manager_rules,
-  sttEnabled: response.stt_enabled
+  sttEnabled: response.stt_enabled,
+  saasUserEmail: response.saas?.email,
 });
