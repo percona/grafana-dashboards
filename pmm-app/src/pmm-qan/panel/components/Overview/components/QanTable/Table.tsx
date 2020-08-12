@@ -12,7 +12,7 @@ import {
 } from 'react-table';
 import { Spinner, useTheme } from '@grafana/ui';
 import { cx } from 'emotion';
-import useWindowSize from 'shared/components/helpers/WindowSize.hooks';
+import useWindowSize from 'shared/components/hooks/WindowSize.hooks';
 import { getStyles } from './Table.styles';
 import { getMainColumnWidth, getAllColumnsWidth } from '../DefaultColumns/DefaultColumns';
 
