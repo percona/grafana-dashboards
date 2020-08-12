@@ -172,7 +172,7 @@
             },
             "gridPos": {
                 "h": 2,
-                "w": 2,
+                "w": 4,
                 "x": 0,
                 "y": 4
             },
@@ -250,8 +250,8 @@
             "description": "",
             "gridPos": {
                 "h": 2,
-                "w": 4,
-                "x": 2,
+                "w": 5,
+                "x": 4,
                 "y": 4
             },
             "id": 1001,
@@ -267,8 +267,8 @@
             "description": "The version of the PostgreSQL instance.",
             "gridPos": {
                 "h": 2,
-                "w": 2,
-                "x": 6,
+                "w": 5,
+                "x": 9,
                 "y": 4
             },
             "id": 65,
@@ -276,96 +276,6 @@
             "mode": "html",
             "title": "Version",
             "type": "text"
-        },
-        {
-            "cacheTimeout": null,
-            "colorBackground": false,
-            "colorValue": false,
-            "colors": [
-                "#299c46",
-                "rgba(237, 129, 40, 0.89)",
-                "#d44a3a"
-            ],
-            "datasource": "Prometheus",
-            "decimals": 0,
-            "description": "The maximum number of client connections allowed.  Change this value with care as there are some memory resources that are allocated on a per-client basis, so setting max_connections higher will generally increase overall PostgreSQL memory usage.",
-            "format": "short",
-            "gauge": {
-                "maxValue": 100,
-                "minValue": 0,
-                "show": false,
-                "thresholdLabels": false,
-                "thresholdMarkers": true
-            },
-            "gridPos": {
-                "h": 2,
-                "w": 3,
-                "x": 8,
-                "y": 4
-            },
-            "id": 86,
-            "interval": null,
-            "links": [
-                {
-                    "targetBlank": true,
-                    "title": "GUC-MAX-CONNECTIONS",
-                    "url": "https://www.postgresql.org/docs/current/static/runtime-config-connection.html#GUC-MAX-CONNECTIONS"
-                }
-            ],
-            "mappingType": 1,
-            "mappingTypes": [
-                {
-                    "name": "value to text",
-                    "value": 1
-                },
-                {
-                    "name": "range to text",
-                    "value": 2
-                }
-            ],
-            "maxDataPoints": 100,
-            "nullPointMode": "connected",
-            "nullText": null,
-            "postfix": "",
-            "postfixFontSize": "50%",
-            "prefix": "",
-            "prefixFontSize": "50%",
-            "rangeMaps": [
-                {
-                    "from": "null",
-                    "text": "N/A",
-                    "to": "null"
-                }
-            ],
-            "sparkline": {
-                "fillColor": "rgba(31, 118, 189, 0.18)",
-                "full": false,
-                "lineColor": "rgb(31, 120, 193)",
-                "show": true
-            },
-            "tableColumn": "",
-            "targets": [
-                {
-                    "expr": "avg by (service_name) (max_over_time(pg_settings_max_connections{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_max_connections{service_name=~\"$service_name\"}[5m]))",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "",
-                    "refId": "A"
-                }
-            ],
-            "thresholds": "",
-            "title": "Max Connections",
-            "type": "singlestat",
-            "valueFontSize": "50%",
-            "valueMaps": [
-                {
-                    "op": "=",
-                    "text": "N/A",
-                    "value": "null"
-                }
-            ],
-            "valueName": "current"
         },
         {
             "cacheTimeout": null,
@@ -389,8 +299,8 @@
             },
             "gridPos": {
                 "h": 2,
-                "w": 2,
-                "x": 11,
+                "w": 5,
+                "x": 14,
                 "y": 4
             },
             "id": 67,
@@ -467,99 +377,6 @@
             ],
             "datasource": "Prometheus",
             "decimals": 2,
-            "description": "The setting wal_buffers defines how much memory is used for caching the write-ahead log entries. Generally this value is small (3% of shared_buffers value), but it may need to be modified for heavily loaded servers.",
-            "format": "bytes",
-            "gauge": {
-                "maxValue": 100,
-                "minValue": 0,
-                "show": false,
-                "thresholdLabels": false,
-                "thresholdMarkers": true
-            },
-            "gridPos": {
-                "h": 2,
-                "w": 3,
-                "x": 13,
-                "y": 4
-            },
-            "id": 68,
-            "interval": null,
-            "links": [
-                {
-                    "title": "GUC-WAL-BUFFERS",
-                    "url": "https://www.postgresql.org/docs/current/static/runtime-config-wal.html#GUC-WAL-BUFFERS"
-                },
-                {
-                    "targetBlank": true,
-                    "title": "GUC-SHARED-BUFFERS",
-                    "url": "https://www.postgresql.org/docs/current/static/runtime-config-resource.html#GUC-SHARED-BUFFERS"
-                }
-            ],
-            "mappingType": 1,
-            "mappingTypes": [
-                {
-                    "name": "value to text",
-                    "value": 1
-                },
-                {
-                    "name": "range to text",
-                    "value": 2
-                }
-            ],
-            "maxDataPoints": 100,
-            "nullPointMode": "connected",
-            "nullText": null,
-            "postfix": "",
-            "postfixFontSize": "50%",
-            "prefix": "",
-            "prefixFontSize": "50%",
-            "rangeMaps": [
-                {
-                    "from": "null",
-                    "text": "N/A",
-                    "to": "null"
-                }
-            ],
-            "sparkline": {
-                "fillColor": "rgba(31, 118, 189, 0.18)",
-                "full": false,
-                "lineColor": "rgb(31, 120, 193)",
-                "show": true
-            },
-            "tableColumn": "",
-            "targets": [
-                {
-                    "expr": "avg by (service_name) (max_over_time(pg_settings_wal_buffers_bytes{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_wal_buffers_bytes{service_name=~\"$service_name\"}[5m]))",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "refId": "A"
-                }
-            ],
-            "thresholds": "",
-            "title": "Disk-Page Buffers",
-            "type": "singlestat",
-            "valueFontSize": "50%",
-            "valueMaps": [
-                {
-                    "op": "=",
-                    "text": "N/A",
-                    "value": "null"
-                }
-            ],
-            "valueName": "current"
-        },
-        {
-            "cacheTimeout": null,
-            "colorBackground": false,
-            "colorValue": false,
-            "colors": [
-                "#299c46",
-                "rgba(237, 129, 40, 0.89)",
-                "#d44a3a"
-            ],
-            "datasource": "Prometheus",
-            "decimals": 2,
             "description": "The parameter work_mem defines the amount of memory assigned for internal sort operations and hash tables before writing to temporary disk files.  The default is 4MB.",
             "format": "bytes",
             "gauge": {
@@ -571,8 +388,8 @@
             },
             "gridPos": {
                 "h": 2,
-                "w": 3,
-                "x": 16,
+                "w": 5,
+                "x": 19,
                 "y": 4
             },
             "id": 69,
@@ -641,96 +458,6 @@
         {
             "cacheTimeout": null,
             "colorBackground": false,
-            "colorValue": false,
-            "colors": [
-                "#299c46",
-                "rgba(237, 129, 40, 0.89)",
-                "#d44a3a"
-            ],
-            "datasource": "Prometheus",
-            "decimals": 2,
-            "description": "PostgreSQL's effective_cache_size variable tunes how much RAM you expect to be available for disk caching.  Generally adding Linux free+cached will give you a good idea.  This value is used by the query planner whether plans will fit in memory, and when defined too low, can lead to some plans rejecting certain indexes.",
-            "format": "bytes",
-            "gauge": {
-                "maxValue": 100,
-                "minValue": 0,
-                "show": false,
-                "thresholdLabels": false,
-                "thresholdMarkers": true
-            },
-            "gridPos": {
-                "h": 2,
-                "w": 3,
-                "x": 19,
-                "y": 4
-            },
-            "id": 70,
-            "interval": null,
-            "links": [
-                {
-                    "targetBlank": true,
-                    "title": "GUC-EFFECTIVE-CACHE-SIZE",
-                    "url": "https://www.postgresql.org/docs/current/static/runtime-config-query.html#GUC-EFFECTIVE-CACHE-SIZE"
-                }
-            ],
-            "mappingType": 1,
-            "mappingTypes": [
-                {
-                    "name": "value to text",
-                    "value": 1
-                },
-                {
-                    "name": "range to text",
-                    "value": 2
-                }
-            ],
-            "maxDataPoints": 100,
-            "nullPointMode": "connected",
-            "nullText": null,
-            "postfix": "",
-            "postfixFontSize": "50%",
-            "prefix": "",
-            "prefixFontSize": "50%",
-            "rangeMaps": [
-                {
-                    "from": "null",
-                    "text": "N/A",
-                    "to": "null"
-                }
-            ],
-            "sparkline": {
-                "fillColor": "rgba(31, 118, 189, 0.18)",
-                "full": false,
-                "lineColor": "rgb(31, 120, 193)",
-                "show": true
-            },
-            "tableColumn": "",
-            "targets": [
-                {
-                    "expr": "avg by (service_name) (max_over_time(pg_settings_effective_cache_size_bytes{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_effective_cache_size_bytes{service_name=~\"$service_name\"}[5m]))",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "",
-                    "refId": "A"
-                }
-            ],
-            "thresholds": "",
-            "title": "Disk Cache Size",
-            "type": "singlestat",
-            "valueFontSize": "50%",
-            "valueMaps": [
-                {
-                    "op": "=",
-                    "text": "N/A",
-                    "value": "null"
-                }
-            ],
-            "valueName": "current"
-        },
-        {
-            "cacheTimeout": null,
-            "colorBackground": false,
             "colorValue": true,
             "colors": [
                 "#d44a3a",
@@ -749,9 +476,9 @@
             },
             "gridPos": {
                 "h": 2,
-                "w": 2,
-                "x": 22,
-                "y": 4
+                "w": 4,
+                "x": 0,
+                "y": 6
             },
             "id": 85,
             "interval": null,
@@ -827,13 +554,375 @@
             "valueName": "current"
         },
         {
+            "cacheTimeout": null,
+            "colorBackground": false,
+            "colorPostfix": true,
+            "colorValue": true,
+            "colors": [
+                "#d44a3a",
+                "rgba(237, 129, 40, 0.89)",
+                "#299c46"
+            ],
+            "datasource": "Prometheus",
+            "decimals": 1,
+            "description": "",
+            "format": "s",
+            "gauge": {
+                "maxValue": 100,
+                "minValue": 0,
+                "show": false,
+                "thresholdLabels": false,
+                "thresholdMarkers": true
+            },
+            "gridPos": {
+                "h": 2,
+                "w": 5,
+                "x": 4,
+                "y": 6
+            },
+            "id": 86,
+            "interval": null,
+            "links": [],
+            "mappingType": 1,
+            "mappingTypes": [
+                {
+                    "$$hashKey": "object:921",
+                    "name": "value to text",
+                    "value": 1
+                },
+                {
+                    "$$hashKey": "object:922",
+                    "name": "range to text",
+                    "value": 2
+                }
+            ],
+            "maxDataPoints": 100,
+            "nullPointMode": "connected",
+            "nullText": null,
+            "postfix": "s",
+            "postfixFontSize": "50%",
+            "prefix": "",
+            "prefixFontSize": "50%",
+            "rangeMaps": [
+                {
+                    "from": "null",
+                    "text": "N/A",
+                    "to": "null"
+                }
+            ],
+            "sparkline": {
+                "fillColor": "rgba(31, 118, 189, 0.18)",
+                "full": false,
+                "lineColor": "rgb(31, 120, 193)",
+                "show": false
+            },
+            "tableColumn": "",
+            "targets": [
+                {
+                    "expr": "avg by (service_name) (pg_postmaster_uptime_seconds{service_name=~\"$service_name\"})",
+                    "format": "time_series",
+                    "instant": true,
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": "3600,86400",
+            "title": "Uptime",
+            "type": "singlestat",
+            "valueFontSize": "50%",
+            "valueMaps": [
+                {
+                    "$$hashKey": "object:924",
+                    "op": "=",
+                    "text": "N/A",
+                    "value": "null"
+                }
+            ],
+            "valueName": "current"
+        },
+        {
+            "cacheTimeout": null,
+            "colorBackground": false,
+            "colorValue": false,
+            "colors": [
+                "#299c46",
+                "rgba(237, 129, 40, 0.89)",
+                "#d44a3a"
+            ],
+            "datasource": "Prometheus",
+            "decimals": 0,
+            "description": "The maximum number of client connections allowed.  Change this value with care as there are some memory resources that are allocated on a per-client basis, so setting max_connections higher will generally increase overall PostgreSQL memory usage.",
+            "format": "short",
+            "gauge": {
+                "maxValue": 100,
+                "minValue": 0,
+                "show": false,
+                "thresholdLabels": false,
+                "thresholdMarkers": true
+            },
+            "gridPos": {
+                "h": 2,
+                "w": 5,
+                "x": 9,
+                "y": 6
+            },
+            "id": 1005,
+            "interval": null,
+            "links": [
+                {
+                    "targetBlank": true,
+                    "title": "GUC-MAX-CONNECTIONS",
+                    "url": "https://www.postgresql.org/docs/current/static/runtime-config-connection.html#GUC-MAX-CONNECTIONS"
+                }
+            ],
+            "mappingType": 1,
+            "mappingTypes": [
+                {
+                    "name": "value to text",
+                    "value": 1
+                },
+                {
+                    "name": "range to text",
+                    "value": 2
+                }
+            ],
+            "maxDataPoints": 100,
+            "nullPointMode": "connected",
+            "nullText": null,
+            "postfix": "",
+            "postfixFontSize": "50%",
+            "prefix": "",
+            "prefixFontSize": "50%",
+            "rangeMaps": [
+                {
+                    "from": "null",
+                    "text": "N/A",
+                    "to": "null"
+                }
+            ],
+            "sparkline": {
+                "fillColor": "rgba(31, 118, 189, 0.18)",
+                "full": false,
+                "lineColor": "rgb(31, 120, 193)",
+                "show": true
+            },
+            "tableColumn": "",
+            "targets": [
+                {
+                    "expr": "avg by (service_name) (max_over_time(pg_settings_max_connections{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_max_connections{service_name=~\"$service_name\"}[5m]))",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": "",
+            "title": "Max Connections",
+            "type": "singlestat",
+            "valueFontSize": "50%",
+            "valueMaps": [
+                {
+                    "op": "=",
+                    "text": "N/A",
+                    "value": "null"
+                }
+            ],
+            "valueName": "current"
+        },
+        {
+            "cacheTimeout": null,
+            "colorBackground": false,
+            "colorValue": false,
+            "colors": [
+                "#299c46",
+                "rgba(237, 129, 40, 0.89)",
+                "#d44a3a"
+            ],
+            "datasource": "Prometheus",
+            "decimals": 2,
+            "description": "PostgreSQL's effective_cache_size variable tunes how much RAM you expect to be available for disk caching.  Generally adding Linux free+cached will give you a good idea.  This value is used by the query planner whether plans will fit in memory, and when defined too low, can lead to some plans rejecting certain indexes.",
+            "format": "bytes",
+            "gauge": {
+                "maxValue": 100,
+                "minValue": 0,
+                "show": false,
+                "thresholdLabels": false,
+                "thresholdMarkers": true
+            },
+            "gridPos": {
+                "h": 2,
+                "w": 5,
+                "x": 14,
+                "y": 6
+            },
+            "id": 70,
+            "interval": null,
+            "links": [
+                {
+                    "targetBlank": true,
+                    "title": "GUC-EFFECTIVE-CACHE-SIZE",
+                    "url": "https://www.postgresql.org/docs/current/static/runtime-config-query.html#GUC-EFFECTIVE-CACHE-SIZE"
+                }
+            ],
+            "mappingType": 1,
+            "mappingTypes": [
+                {
+                    "name": "value to text",
+                    "value": 1
+                },
+                {
+                    "name": "range to text",
+                    "value": 2
+                }
+            ],
+            "maxDataPoints": 100,
+            "nullPointMode": "connected",
+            "nullText": null,
+            "postfix": "",
+            "postfixFontSize": "50%",
+            "prefix": "",
+            "prefixFontSize": "50%",
+            "rangeMaps": [
+                {
+                    "from": "null",
+                    "text": "N/A",
+                    "to": "null"
+                }
+            ],
+            "sparkline": {
+                "fillColor": "rgba(31, 118, 189, 0.18)",
+                "full": false,
+                "lineColor": "rgb(31, 120, 193)",
+                "show": true
+            },
+            "tableColumn": "",
+            "targets": [
+                {
+                    "expr": "avg by (service_name) (max_over_time(pg_settings_effective_cache_size_bytes{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_effective_cache_size_bytes{service_name=~\"$service_name\"}[5m]))",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "legendFormat": "",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": "",
+            "title": "Disk Cache Size",
+            "type": "singlestat",
+            "valueFontSize": "50%",
+            "valueMaps": [
+                {
+                    "op": "=",
+                    "text": "N/A",
+                    "value": "null"
+                }
+            ],
+            "valueName": "current"
+        },
+        {
+            "cacheTimeout": null,
+            "colorBackground": false,
+            "colorValue": false,
+            "colors": [
+                "#299c46",
+                "rgba(237, 129, 40, 0.89)",
+                "#d44a3a"
+            ],
+            "datasource": "Prometheus",
+            "decimals": 2,
+            "description": "The setting wal_buffers defines how much memory is used for caching the write-ahead log entries. Generally this value is small (3% of shared_buffers value), but it may need to be modified for heavily loaded servers.",
+            "format": "bytes",
+            "gauge": {
+                "maxValue": 100,
+                "minValue": 0,
+                "show": false,
+                "thresholdLabels": false,
+                "thresholdMarkers": true
+            },
+            "gridPos": {
+                "h": 2,
+                "w": 5,
+                "x": 19,
+                "y": 6
+            },
+            "id": 68,
+            "interval": null,
+            "links": [
+                {
+                    "title": "GUC-WAL-BUFFERS",
+                    "url": "https://www.postgresql.org/docs/current/static/runtime-config-wal.html#GUC-WAL-BUFFERS"
+                },
+                {
+                    "targetBlank": true,
+                    "title": "GUC-SHARED-BUFFERS",
+                    "url": "https://www.postgresql.org/docs/current/static/runtime-config-resource.html#GUC-SHARED-BUFFERS"
+                }
+            ],
+            "mappingType": 1,
+            "mappingTypes": [
+                {
+                    "name": "value to text",
+                    "value": 1
+                },
+                {
+                    "name": "range to text",
+                    "value": 2
+                }
+            ],
+            "maxDataPoints": 100,
+            "nullPointMode": "connected",
+            "nullText": null,
+            "postfix": "",
+            "postfixFontSize": "50%",
+            "prefix": "",
+            "prefixFontSize": "50%",
+            "rangeMaps": [
+                {
+                    "from": "null",
+                    "text": "N/A",
+                    "to": "null"
+                }
+            ],
+            "sparkline": {
+                "fillColor": "rgba(31, 118, 189, 0.18)",
+                "full": false,
+                "lineColor": "rgb(31, 120, 193)",
+                "show": true
+            },
+            "tableColumn": "",
+            "targets": [
+                {
+                    "expr": "avg by (service_name) (max_over_time(pg_settings_wal_buffers_bytes{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(pg_settings_wal_buffers_bytes{service_name=~\"$service_name\"}[5m]))",
+                    "format": "time_series",
+                    "interval": "$interval",
+                    "intervalFactor": 1,
+                    "refId": "A"
+                }
+            ],
+            "thresholds": "",
+            "title": "Disk-Page Buffers",
+            "type": "singlestat",
+            "valueFontSize": "50%",
+            "valueMaps": [
+                {
+                    "op": "=",
+                    "text": "N/A",
+                    "value": "null"
+                }
+            ],
+            "valueName": "current"
+        },
+        {
             "collapsed": false,
             "datasource": null,
             "gridPos": {
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 6
+                "y": 8
             },
             "id": 74,
             "panels": [],
@@ -855,7 +944,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 7
+                "y": 9
             },
             "hiddenSeries": false,
             "id": 23,
@@ -973,7 +1062,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 7
+                "y": 9
             },
             "hiddenSeries": false,
             "id": 34,
@@ -1079,7 +1168,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 15
+                "y": 17
             },
             "id": 76,
             "panels": [],
@@ -1099,7 +1188,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 16
+                "y": 18
             },
             "hiddenSeries": false,
             "id": 36,
@@ -1227,7 +1316,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 16
+                "y": 18
             },
             "hiddenSeries": false,
             "id": 24,
@@ -1335,7 +1424,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 24
+                "y": 26
             },
             "hiddenSeries": false,
             "id": 25,
@@ -1447,7 +1536,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 32
+                "y": 34
             },
             "id": 78,
             "panels": [],
@@ -1467,7 +1556,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 33
+                "y": 35
             },
             "hiddenSeries": false,
             "id": 26,
@@ -1575,7 +1664,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 33
+                "y": 35
             },
             "hiddenSeries": false,
             "id": 18,
@@ -1667,7 +1756,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 41
+                "y": 43
             },
             "id": 80,
             "panels": [],
@@ -1688,7 +1777,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 42
+                "y": 44
             },
             "hiddenSeries": false,
             "id": 48,
@@ -1785,7 +1874,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 42
+                "y": 44
             },
             "hiddenSeries": false,
             "id": 49,
@@ -1898,7 +1987,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 50
+                "y": 52
             },
             "hiddenSeries": false,
             "id": 1003,
@@ -1995,7 +2084,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 50
+                "y": 52
             },
             "hiddenSeries": false,
             "id": 1004,
@@ -2095,7 +2184,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 58
+                "y": 60
             },
             "id": 82,
             "panels": [],
@@ -2118,7 +2207,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 59
+                "y": 61
             },
             "hiddenSeries": false,
             "id": 3,
@@ -2316,7 +2405,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 59
+                "y": 61
             },
             "hiddenSeries": false,
             "id": 61,
@@ -2452,7 +2541,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 67
+                "y": 69
             },
             "id": 84,
             "panels": [],
@@ -2472,7 +2561,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 68
+                "y": 70
             },
             "hiddenSeries": false,
             "id": 50,
@@ -2585,7 +2674,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 68
+                "y": 70
             },
             "hiddenSeries": false,
             "id": 2,
@@ -2935,7 +3024,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 76
+                "y": 78
             },
             "id": 72,
             "panels": [],
@@ -2956,7 +3045,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 77
+                "y": 79
             },
             "hiddenSeries": false,
             "id": 28,
@@ -3097,7 +3186,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 12,
-                "y": 77
+                "y": 79
             },
             "hiddenSeries": false,
             "id": 14,
@@ -3196,7 +3285,7 @@
                 "h": 8,
                 "w": 12,
                 "x": 0,
-                "y": 85
+                "y": 87
             },
             "hiddenSeries": false,
             "id": 22,
@@ -3302,7 +3391,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 93
+                "y": 95
             },
             "id": 60,
             "panels": [
@@ -3333,7 +3422,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 94
+                "y": 96
             },
             "id": 291,
             "panels": [
