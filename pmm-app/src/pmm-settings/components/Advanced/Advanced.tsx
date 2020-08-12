@@ -1,6 +1,8 @@
 import React, { FC, useState } from 'react';
 import { cx } from 'emotion';
-import { Button, Spinner, useTheme } from '@grafana/ui';
+import {
+  Button, Spinner, useTheme
+} from '@grafana/ui';
 import { getSettingsStyles } from 'pmm-settings/Settings.styles';
 import { Messages } from 'pmm-settings/Settings.messages';
 import { DATA_RETENTION_URL } from 'pmm-settings/Settings.constants';

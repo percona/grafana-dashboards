@@ -61,6 +61,7 @@ export const Messages = {
     advanced: 'Advanced settings',
     ssh: 'SSH key',
     alertManager: 'Alertmanager integration',
+    signUp: 'Sign up',
   },
   tooltipLinkText: 'Read more'
 };

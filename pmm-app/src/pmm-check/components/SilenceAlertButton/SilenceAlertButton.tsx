@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import { Labels } from 'pmm-check/types';
 import { AlertsReloadContext } from 'pmm-check/Check.context';
 import { CheckService } from 'pmm-check/Check.service';
-import { ButtonWithSpinner } from 'pmm-check/components';
+import { ButtonWithSpinner } from 'shared/components/Form';
 import { makeSilencePayload } from './SilenceAlertButton.utils';
 
 interface SilenceAlertButtonProps {

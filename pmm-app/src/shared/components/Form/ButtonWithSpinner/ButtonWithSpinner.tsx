@@ -15,7 +15,7 @@ export const ButtonWithSpinner: FC<ButtonWithSpinnerProps> = ({
   isLoading = false,
   ...props
 }) => (
-  <Button className={cx(styles.Button, className)} variant="secondary" size="md" disabled={isLoading || disabled} {...props}>
+  <Button className={cx(styles.Button, className)} size="md" disabled={isLoading || disabled} {...props}>
     {isLoading ? <Spinner /> : children}
   </Button>
 );
