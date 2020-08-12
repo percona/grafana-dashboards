@@ -29,8 +29,8 @@ Scenario(
 
 // Need to be removed from Skipped when better locator for Sorting buttons implemented
 xScenario(
-  'Open the QAN Dashboard and check that sorting works correctly after sorting by another column. @qan',
-  async (qanPage, qanActions) => {
+  'Open the QAN Dashboard and check that sorting works correctly after sorting by another column. @not-pr-pipeline @qan',
+  async (qanActions) => {
     qanActions.changeSorting(3, 'up');
     qanActions.verifySortingIs(3, 'up');
     qanActions.changeSorting(1, 'down');
@@ -41,25 +41,24 @@ xScenario(
 
 // Need to be removed from Skipped when better locator for Sorting buttons implemented
 xScenario(
-  'PMM-T156 Verify that by default, queries are sorted by Load, from max to min @qan',
-  async (qanPage, qanActions) => {
+  'PMM-T156 Verify that by default, queries are sorted by Load, from max to min @not-pr-pipeline @qan',
+  async (qanActions) => {
     qanActions.waitForNewQANPageLoaded();
     qanActions.verifySortingIs(1, 'down');
   },
 );
-// Skipping because of a random failing at PR tests execution
-xScenario(
-  'PMM-T183 Verify that "Group by" in the overview table can be changed @qan',
-  async (qanPage, qanActions) => {
+
+Scenario(
+  'PMM-T183 Verify that "Group by" in the overview table can be changed @not-pr-pipeline @qan',
+  async (qanActions) => {
     qanActions.changeGroupBy('Database');
     qanActions.verifyGroupByIs('Database');
   },
 );
 
-// Need to be skipped for change in locator
-xScenario(
-  'PMM-T187 Verify that the selected row in the overview table is highlighted @qan',
-  async (qanPage, qanActions) => {
+Scenario(
+  'PMM-T187 Verify that the selected row in the overview table is highlighted @not-pr-pipeline @qan',
+  async (qanActions) => {
     qanActions.selectRow('2');
     qanActions.verifyRowIsSelected('2');
   },
