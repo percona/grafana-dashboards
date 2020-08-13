@@ -113,7 +113,7 @@ module.exports = {
     ],
   },
   nodeSummaryDashboard: {
-    url: 'graph/d/node-instance-summary/node-summary?orgId=1&refresh=1m&from=now-15m&to=now',
+    url: 'graph/d/node-instance-summary/node-summary?orgId=1&refresh=1m&from=now-30m&to=now',
     metrics: [
       'System Uptime',
       'Virtual CPUs',
