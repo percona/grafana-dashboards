@@ -146,3 +146,11 @@ Scenario(
     await pmmInventoryPage.checkAllNotDeletedAgents(agentID);
   }
 );
+
+Scenario(
+  'PMM-T371 - Verify sorting in Inventory page @not-pr-pipeline',
+  async (I, pmmInventoryPage) => {
+    I.amOnPage(pmmInventoryPage.url);
+    
+  }
+);
