@@ -111,6 +111,7 @@ export const Advanced: FC<AdvancedProps> = ({
             link={telemetryLink}
             checked={telemetry}
             className={cx({ [styles.switchDisabled]: stt })}
+            disabled={stt}
             onChange={() => setTelemetry(!telemetry)}
             dataQa="advanced-telemetry-switch"
           />
@@ -121,6 +122,7 @@ export const Advanced: FC<AdvancedProps> = ({
             link={updatesLink}
             checked={!updatesDisabled}
             className={styles.switchDisabled}
+            disabled
             dataQa="advanced-updates-switch"
           />
           <SwitchRow
@@ -130,6 +132,7 @@ export const Advanced: FC<AdvancedProps> = ({
             link={sttLink}
             checked={stt}
             className={cx({ [styles.switchDisabled]: !telemetry })}
+            disabled={!telemetry}
             onChange={() => setStt(!stt)}
             dataQa="advanced-stt-switch"
           />
@@ -137,7 +140,6 @@ export const Advanced: FC<AdvancedProps> = ({
       </table>
       <Button
         className={settingsStyles.actionButton}
-        variant="secondary"
         disabled={isActionDisabled() || loading}
         onClick={applyChanges}
         data-qa="advanced-button"

@@ -133,7 +133,6 @@ export const MetricsResolution: FC<MetricsResolutionProps> = ({ metricsResolutio
       />
       <Button
         className={settingsStyles.actionButton}
-        variant="secondary"
         disabled={isActionDisabled() || loading}
         onClick={applyChanges}
         data-qa="metrics-resolution-button"

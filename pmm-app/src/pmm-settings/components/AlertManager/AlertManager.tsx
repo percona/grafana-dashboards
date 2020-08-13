@@ -1,5 +1,7 @@
 import React, { FC, useState } from 'react';
-import { Button, Spinner, useTheme } from '@grafana/ui';
+import {
+  Button, Input, Spinner, TextArea, useTheme
+} from '@grafana/ui';
 import { cx } from 'emotion';
 import { getSettingsStyles } from 'pmm-settings/Settings.styles';
 import { Messages } from 'pmm-settings/Settings.messages';
@@ -52,7 +54,7 @@ export const AlertManager: FC<AlertManagerProps> = ({
   };
 
   return (
-    <div className={styles.alertManagerWrapper}>
+    <div className={cx(settingsStyles.wrapper, styles.alertManagerWrapper)}>
       <div
         className={settingsStyles.labelWrapper}
         data-qa="alertmanager-url-label"
@@ -65,11 +67,11 @@ export const AlertManager: FC<AlertManagerProps> = ({
           icon="info-circle"
         />
       </div>
-      <input
-        className={cx(settingsStyles.input, styles.input)}
+      <Input
+        className={styles.input}
         value={url}
         data-qa="alertmanager-url"
-        onChange={(e) => setUrl(e.target.value)}
+        onChange={(e: any) => setUrl(e.target.value)}
       />
       <div
         className={cx(settingsStyles.labelWrapper, styles.rulesLabel)}
@@ -83,15 +85,14 @@ export const AlertManager: FC<AlertManagerProps> = ({
           icon="info-circle"
         />
       </div>
-      <textarea
-        className={cx(settingsStyles.textarea, styles.textarea)}
+      <TextArea
+        className={styles.textarea}
         value={rules}
         data-qa="alertmanager-rules"
-        onChange={(e) => setRules(e.target.value)}
+        onChange={(e: any) => setRules(e.target.value)}
       />
       <Button
         className={settingsStyles.actionButton}
-        variant="secondary"
         disabled={isActionDisabled() || loading}
         onClick={applyChanges}
         data-qa="alertmanager-button"

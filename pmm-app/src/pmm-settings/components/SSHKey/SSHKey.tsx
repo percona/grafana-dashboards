@@ -1,6 +1,8 @@
 import React, { FC, useState } from 'react';
-import { Button, Spinner, useTheme } from '@grafana/ui';
 import { cx } from 'emotion';
+import {
+  Button, Spinner, TextArea, useTheme
+} from '@grafana/ui';
 import { getSettingsStyles } from 'pmm-settings/Settings.styles';
 import { Messages } from 'pmm-settings/Settings.messages';
 import { LinkTooltip } from 'shared/components/Elements/LinkTooltip/LinkTooltip';
@@ -29,7 +31,7 @@ export const SSHKey: FC<SSHKeyProps> = ({ sshKey, updateSettings }) => {
   };
 
   return (
-    <div className={styles.sshKeyWrapper}>
+    <div className={cx(settingsStyles.wrapper, styles.sshKeyWrapper)}>
       <div
         className={settingsStyles.labelWrapper}
         data-qa="ssh-key-label"
@@ -42,15 +44,14 @@ export const SSHKey: FC<SSHKeyProps> = ({ sshKey, updateSettings }) => {
           icon="info-circle"
         />
       </div>
-      <textarea
-        className={cx(settingsStyles.textarea, styles.textarea)}
+      <TextArea
+        className={styles.textarea}
         value={key}
         data-qa="ssh-key"
-        onChange={(e) => setKey(e.target.value)}
+        onChange={(e: any) => setKey(e.target.value)}
       />
       <Button
         className={settingsStyles.actionButton}
-        variant="secondary"
         disabled={sshKey === key || loading}
         onClick={applyChanges}
         data-qa="ssh-key-button"

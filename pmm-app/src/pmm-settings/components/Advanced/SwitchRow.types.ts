@@ -4,6 +4,7 @@ export interface SwitchRowProps {
   tooltipLinkText: string;
   link: string;
   checked: boolean;
+  disabled?: boolean;
   className?: string;
   dataQa?: string;
   onChange?: () => void;

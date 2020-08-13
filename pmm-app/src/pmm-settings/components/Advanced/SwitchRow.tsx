@@ -11,6 +11,7 @@ export const SwitchRow: FC<SwitchRowProps> = ({
   tooltipLinkText,
   link,
   checked,
+  disabled,
   className,
   dataQa,
   onChange
@@ -31,10 +32,10 @@ export const SwitchRow: FC<SwitchRowProps> = ({
           />
         </div>
       </td>
-      <td>
+      <td className={className}>
         <Switch
-          checked={checked}
-          className={className}
+          value={checked}
+          disabled={disabled}
           onChange={onChange}
           data-qa={dataQa}
         />
