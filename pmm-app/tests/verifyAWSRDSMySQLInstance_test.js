@@ -63,7 +63,7 @@ Scenario(
 );
 
 Scenario(
-  'Verify MySQL Instances Overview Dashboard contains AWS RDS MySQL 5.6 filters @not-pr-pipeline',
+  'Verify MySQL Instances Overview Dashboard contains AWS RDS MySQL 5.6 filters @not-ui-pipeline @nightly @not-pr-pipeline',
   async (I, dashboardPage, remoteInstancesPage) => {
     const filters = remoteInstancesPage.rds;
 
