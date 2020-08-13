@@ -26,6 +26,7 @@ Scenario(
     }
 
     await within(pmmSettingsPage.fields.tabContent, () => {
+      I.waitForElement(pmmSettingsPage.fields.metricsResolutionLabel, 30);
       I.see('Metrics resolution, sec', pmmSettingsPage.fields.metricsResolutionLabel);
       I.seeElement(pmmSettingsPage.fields.metricsResolutionRadio);
       I.seeElement(pmmSettingsPage.fields.lowInput);
@@ -131,7 +132,8 @@ Scenario(
   }
 );
 
-Scenario(
+//Skip, need to investigate will roll back
+xScenario(
   'PMM-T254 Verify validation for STT and Telemetry switches',
   async (I, pmmSettingsPage, settingsAPI) => {
     await settingsAPI.apiDisableSTT();
@@ -154,7 +156,7 @@ Scenario(
     pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.telemetrySwitchSelector, 'on');
     await pmmSettingsPage.verifySwitchStateIs(pmmSettingsPage.fields.telemetrySwitchSelectorLabel, false);
   }
-);
+).retry(2);
 
 // To be removed from Skip after https://jira.percona.com/browse/PMM-5791
 xScenario(

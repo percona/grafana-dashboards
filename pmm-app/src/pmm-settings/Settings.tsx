@@ -8,15 +8,13 @@ import {
   Spinner,
   TabContent,
   Tab,
-  useTheme
+  useTheme,
 } from '@grafana/ui';
 import { cx } from 'emotion';
 import { TabsVertical } from 'shared/components/Elements/TabsVertical/TabsVertical';
-import { Diagnostics } from './components/Diagnostics/Diagnostics';
-import { MetricsResolution } from './components/MetricsResolution/MetricsResolution';
-import { SSHKey } from './components/SSHKey/SSHKey';
-import { AlertManager } from './components/AlertManager/AlertManager';
-import { Advanced } from './components/Advanced/Advanced';
+import {
+  SignUp, Diagnostics, MetricsResolution, SSHKey, AlertManager, Advanced
+} from 'pmm-settings/components';
 import { SettingsService, LoadingCallback } from './Settings.service';
 import { Settings, TabKeys } from './Settings.types';
 import { Messages } from './Settings.messages';
@@ -31,7 +29,8 @@ export const SettingsPanel: FC = () => {
     metrics,
     advanced,
     ssh,
-    alertManager
+    alertManager,
+    signUp,
   } = Messages.tabs;
   const tabs = useMemo(
     () => [
@@ -39,6 +38,7 @@ export const SettingsPanel: FC = () => {
       { label: advanced, key: TabKeys.advanced, active: activeTab === TabKeys.advanced },
       { label: ssh, key: TabKeys.ssh, active: activeTab === TabKeys.ssh },
       { label: alertManager, key: TabKeys.alertManager, active: activeTab === TabKeys.alertManager },
+      { label: signUp, key: TabKeys.signUp, active: activeTab === TabKeys.signUp },
     ],
     [activeTab]
   );
@@ -110,6 +110,8 @@ export const SettingsPanel: FC = () => {
                   updateSettings={updateSettings}
                 />
                 )}
+          {tabs[4].active
+                && <SignUp userEmail={settings.saasUserEmail} />}
         </>
         )}
       </TabContent>

@@ -3,7 +3,8 @@ import { act } from 'react-dom/test-utils';
 import { MemoryRouter, Route } from 'react-router-dom';
 import { mount, ReactWrapper } from 'enzyme';
 import { Spinner } from '@grafana/ui';
-import { ButtonWithSpinner, Table } from 'pmm-check/components';
+import { Table } from 'pmm-check/components';
+import { ButtonWithSpinner } from 'shared/components/Form';
 import { CheckPanel, CheckPanelProps, CheckPanelState } from './CheckPanel';
 import { CheckService } from './Check.service';
 

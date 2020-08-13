@@ -19,6 +19,7 @@ module.exports = {
     countOfItems: '//span[@data-qa="qan-total-items"]',
     detailsSectionTab: '//div[@role="tab"]',
     disabledResetAll: '//button[@data-qa="qan-filters-reset-all" and @disabled ]',
+    resetAllButton: '//button[@data-qa="qan-filters-reset-all"]',
     ellipsisButton: '.ant-pagination-item-ellipsis',
     environmentLabel: '//span[contains(text(), "Environment")]',
     filterBy: '//input[@data-qa="filters-search-field"]',
@@ -63,6 +64,7 @@ module.exports = {
     showSelectedDisabled: '//button[@data-qa="qan-filters-show-selected" and @disabled ]',
     table: '//table//tr[2]',
     tableRow: 'div.tr',
+    noQueries: "//h1[contains(text(), 'No queries available for this combination of filters')]",
   },
 
   metricValueLocatorOverviewTable(column, row) {

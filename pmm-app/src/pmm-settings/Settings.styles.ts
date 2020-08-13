@@ -6,7 +6,7 @@ export const getSettingsStyles = stylesFactory((theme: GrafanaTheme) => {
   const { spacing } = theme;
   const { colors }: any = theme;
   const mq = `@media (max-width: ${theme.breakpoints.md})`;
-  const input = `
+  const input = css`
     background-color: ${colors.formInputBg};
     border: ${theme.border.width.sm} solid ${colors.pageHeaderBorder};
     border-radius: ${theme.border.radius.sm};
@@ -20,6 +20,7 @@ export const getSettingsStyles = stylesFactory((theme: GrafanaTheme) => {
   return {
     settingsWrapper: css`
       display: flex;
+      flex-wrap: wrap;
       margin-top: ${spacing.lg};
       ${mq} {
         flex-direction: column;
@@ -32,7 +33,7 @@ export const getSettingsStyles = stylesFactory((theme: GrafanaTheme) => {
     tabsWrapper: css`
       margin-right: 40px;
       height: fit-content;
-      width: 230px;
+      min-width: 230px;
       ${mq} {
         margin-right: 0;
         margin-bottom: ${spacing.lg};
@@ -42,6 +43,7 @@ export const getSettingsStyles = stylesFactory((theme: GrafanaTheme) => {
     tabContentWrapper: css`
       border-left: ${theme.border.width.sm} solid ${theme.colors.pageHeaderBorder};
       padding: 0 0 0 60px;
+      position: relative;
       ${mq} {
         border: none;
         padding: 0;
