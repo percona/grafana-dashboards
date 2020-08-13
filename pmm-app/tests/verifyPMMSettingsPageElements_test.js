@@ -132,7 +132,7 @@ Scenario(
   }
 );
 
-//Skip, need to investigate will roll back
+// Skip, need to investigate will roll back
 xScenario(
   'PMM-T254 Verify validation for STT and Telemetry switches',
   async (I, pmmSettingsPage, settingsAPI) => {

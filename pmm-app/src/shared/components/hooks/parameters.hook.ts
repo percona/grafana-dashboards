@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import { getLocationSrv } from '@grafana/runtime';
 
-export const useUrlState = (key: string, defaultValue?: string): [string, (parameter: string) => void] => {
+type ParameterHook = (key: string, defaultValue?: string) => [string, (parameter: string) => void];
+
+const useQueryParams: ParameterHook = (key, defaultValue) => {
   const query = new URLSearchParams(window.location.search);
-  const [value, setValue] = useState<string>(defaultValue || '');
+  const [value, setValue] = useState<string>(defaultValue ?? '');
 
   const setParameter = (parameter) => {
     getLocationSrv().update({
@@ -15,8 +17,10 @@ export const useUrlState = (key: string, defaultValue?: string): [string, (param
   };
 
   useEffect(() => {
-    if (query.get(key)) {
-      setValue(query.get(key) || '');
+    const queryValue = query.get(key);
+
+    if (queryValue) {
+      setValue(queryValue);
     } else {
       setParameter(value);
     }
@@ -24,3 +28,5 @@ export const useUrlState = (key: string, defaultValue?: string): [string, (param
 
   return [value, setParameter];
 };
+
+export default useQueryParams;

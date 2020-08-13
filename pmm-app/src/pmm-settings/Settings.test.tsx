@@ -5,7 +5,8 @@ import { SettingsPanel } from './Settings';
 
 jest.mock('shared/components/helpers/notification-manager');
 jest.mock('../shared/components/hooks/parameters.hook', () => ({
-  useUrlState: jest.fn(() => ['metrics-resolution', jest.fn()]),
+  __esModule: true, // this property makes it work
+  default: jest.fn(() => ['metrics-resolution', jest.fn()]),
 }));
 
 describe('SettingsPanel::', () => {

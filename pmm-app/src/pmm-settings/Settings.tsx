@@ -19,11 +19,11 @@ import { SettingsService, LoadingCallback } from './Settings.service';
 import { Settings, TabKeys } from './Settings.types';
 import { Messages } from './Settings.messages';
 import { getSettingsStyles } from './Settings.styles';
-import { useUrlState } from '../shared/components/hooks/parameters.hook';
+import useQueryParams from '../shared/components/hooks/parameters.hook';
 
 
 export const SettingsPanel: FC = () => {
-  const [activeTab, setActiveTab] = useUrlState('menu', TabKeys.metrics);
+  const [activeTab, setActiveTab] = useQueryParams('menu', TabKeys.metrics);
   const theme = useTheme();
   const styles = getSettingsStyles(theme);
   const {
