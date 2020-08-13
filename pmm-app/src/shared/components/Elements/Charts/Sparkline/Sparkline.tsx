@@ -1,5 +1,5 @@
 import React, {
-  useEffect, useRef, useState, RefObject
+  useEffect, useRef, useState, RefObject, MutableRefObject
 } from 'react';
 import { scaleLinear } from 'd3';
 import moment from 'moment';
@@ -77,7 +77,7 @@ export const Sparkline = ({
     y: scaleY(isMetricExists(item[ykey]) ? 0 : Math.max(maxY / 15, item[ykey])),
   }));
 
-  const sparklineCanvas = useRef();
+  const sparklineCanvas: MutableRefObject<HTMLCanvasElement | undefined> = useRef();
 
   useEffect(() => {
     if (!sparklineCanvas.current) {
@@ -139,6 +139,7 @@ export const Sparkline = ({
       });
     });
 
+    // TODO: code for zoom feature
     // sparklineCanvas.current.addEventListener('mousedown', (e) => {
     //   const startPoint = e.offsetX;
     //   let endPoint = null;
