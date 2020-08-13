@@ -418,6 +418,7 @@ module.exports = {
   },
 
   async getCountOfItems() {
+    I.waitForInvisible(qanPage.elements.spinner, 30);
     const resultsCount = (await I.grabTextFrom(qanPage.fields.countOfItems)).split(' ');
 
     return resultsCount[2];
