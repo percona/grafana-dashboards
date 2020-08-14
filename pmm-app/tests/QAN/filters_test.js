@@ -278,6 +278,9 @@ Scenario(
     const serviceName = 'ps_5.7';
 
     qanActions.waitForNewQANPageLoaded();
+    //change to 30 minutes for apply ps_5.7 value in filter
+    I.click(qanPage.elements.timeRangePickerButton);
+    I.click(qanPage.fields.Minutes30Value);
     const countOfFilters = await I.grabNumberOfVisibleElements(qanPage.fields.filterCheckboxes);
     const countBefore = await qanActions.getCountOfItems();
     const percentageBefore = await qanActions.getPercentage('Service Type', serviceType);
