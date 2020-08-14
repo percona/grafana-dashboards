@@ -42,8 +42,7 @@ Scenario(
   }
 );
 
-//Need to skip to avoid failure, investigate and fix it soon
-xScenario(
+Scenario(
   'PMM-T166: Verify adding annotation with specified tags @not-ui-pipeline @nightly @not-pr-pipeline',
   async (I, dashboardPage) => {
     const annotationTitle2 = 'pmm-annotate-tags';
