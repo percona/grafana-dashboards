@@ -19,6 +19,7 @@ module.exports = {
     proceedButton: '//span[contains(text(), "Proceed")]',
     forceModeCheckbox: 'div[data-qa="form-field-force"] span.checkbox-container__checkmark',
     tableCheckbox: 'div[data-qa="select-row"]',
+    tableRow: 'tr[data-qa="table-row"]',
   },
 
   verifyOldMySQLRemoteServiceIsDisplayed(serviceName) {
@@ -206,5 +207,9 @@ module.exports = {
     );
 
     assert.equal(count, otherDetails, 'Check data!');
+  },
+
+  async getCellValue(index, column) {
+    return await I.grabTextFrom(`//tr[@data-qa="table-row"][${index}]/td[${column}]`);
   },
 };

@@ -11,7 +11,7 @@ Feature('Remote DB Instances');
 Before(async (I) => {
   I.Authorize();
 });
-
+/*
 // TODO: unskip the mongodb tests after resolving a creds issue
 Data(instances.filter((instance) => instance.name !== 'mongodb'))
   .Scenario(
@@ -146,11 +146,14 @@ Scenario(
     await pmmInventoryPage.checkAllNotDeletedAgents(agentID);
   }
 );
-
-Scenario(
-  'PMM-T371 - Verify sorting in Inventory page @not-pr-pipeline',
-  async (I, pmmInventoryPage) => {
-    I.amOnPage(pmmInventoryPage.url);
-    
+*/
+Scenario('PMM-T371 - Verify sorting in Inventory page @not-pr-pipeline', async (I, pmmInventoryPage) => {
+  I.amOnPage(pmmInventoryPage.url);
+  I.waitForVisible(pmmInventoryPage.fields.tableRow, 20);
+  const countOfRows = await I.grabNumberOfVisibleElements(pmmInventoryPage.fields.tableRow);
+  let serviceNames = new Array(countOfRows);
+  for (i = 1; i <= countOfRows; i++) {
+    serviceNames[i] = await pmmInventoryPage.getCellValue(i, 4);
   }
-);
+  console.log(serviceNames);
+});
