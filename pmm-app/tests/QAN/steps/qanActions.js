@@ -271,7 +271,7 @@ module.exports = {
   async verifyRowCount(rowCount) {
     const count = await I.grabNumberOfVisibleElements(qanPage.fields.tableRow);
 
-    assert.equal(count, rowCount, `Row count should be ${expectedCount} instead of ${count}`);
+    assert.equal(count, rowCount, `Row count should be ${rowCount} instead of ${count}`);
   },
 
   async verifyPagesAndCount(itemsPerPage) {
