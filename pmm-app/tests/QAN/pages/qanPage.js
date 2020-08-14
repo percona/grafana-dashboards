@@ -65,7 +65,7 @@ module.exports = {
     table: '//table//tr[2]',
     tableRow: 'div.tr',
     noQueries: "//h1[contains(text(), 'No queries available for this combination of filters')]",
-    Minutes30Value: "//span[contains(text(), 'Last 30 minutes')]",
+    Last12HoursValue: "//span[contains(text(), 'Last 12 hours')]",
   },
 
   metricValueLocatorOverviewTable(column, row) {

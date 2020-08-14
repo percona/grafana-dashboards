@@ -5,7 +5,7 @@ Before((I, qanPage) => {
   I.Authorize();
   I.amOnPage(qanPage.url);
 });
-
+/*
 Scenario(
   'PMM-T175 - Verify user is able to apply filter that has dots in label @not-pr-pipeline @qan',
   async (I, qanActions) => {
@@ -269,7 +269,7 @@ Scenario(
     I.waitForElement(qanPage.fields.noQueries, 20);
   },
 );
-
+*/
 Scenario(
   'PMM-T221 - Verify that all filter options are always visible (but some disabled) after selecting an item and % value is changed @not-pr-pipeline @qan',
   async (I, qanPage, qanActions, pmmSettingsPage) => {
@@ -278,9 +278,9 @@ Scenario(
     const serviceName = 'ps_5.7';
 
     qanActions.waitForNewQANPageLoaded();
-    //change to 30 minutes for apply ps_5.7 value in filter
+    //change to 12 hours for apply ps_5.7 value in filter
     I.click(qanPage.elements.timeRangePickerButton);
-    I.click(qanPage.fields.Minutes30Value);
+    I.click(qanPage.fields.Last12HoursValue);
     const countOfFilters = await I.grabNumberOfVisibleElements(qanPage.fields.filterCheckboxes);
     const countBefore = await qanActions.getCountOfItems();
     const percentageBefore = await qanActions.getPercentage('Service Type', serviceType);
