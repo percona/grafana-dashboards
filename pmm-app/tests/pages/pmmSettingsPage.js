@@ -152,6 +152,8 @@ module.exports = {
 
   async verifySelectedResolution(resolution) {
     const selector = `${this.fields.metricsResolution + resolution}"]`;
+    
+    I.waitForElement(selector, 30);
     const className = await I.grabAttributeFrom(selector, 'class');
 
     assert.equal(className.includes('active'), true, 'Metric resolution should be active');

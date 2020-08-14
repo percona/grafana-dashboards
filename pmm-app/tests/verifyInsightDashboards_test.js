@@ -17,7 +17,7 @@ Scenario(
 );
 
 Scenario(
-  'Open Prometheus Dashboard and verify Metrics are present and graphs are displayed @not-pr-pipeline',
+  'Open Prometheus Dashboard and verify Metrics are present and graphs are displayed @not-ui-pipeline @nightly @not-pr-pipeline',
   async (I, adminPage, dashboardPage) => {
     I.amOnPage(dashboardPage.prometheusDashboard.url);
     dashboardPage.waitForDashboardOpened();
@@ -30,7 +30,7 @@ Scenario(
 
 Scenario(
   // eslint-disable-next-line max-len
-  'Open the Prometheus Exporters Status Dashboard and verify Metrics are present and graphs are displayed @not-pr-pipeline',
+  'Open the Prometheus Exporters Status Dashboard and verify Metrics are present and graphs are displayed @not-ui-pipeline @nightly @not-pr-pipeline',
   async (I, dashboardPage, adminPage) => {
     I.amOnPage(dashboardPage.prometheusExporterStatusDashboard.url);
     dashboardPage.waitForDashboardOpened();
@@ -47,7 +47,7 @@ Scenario(
 //Need to Skip to avoid false positive, investigate and fix
 xScenario(
   // eslint-disable-next-line max-len
-  'Open the Prometheus Exporters Overview Dashboard and verify Metrics are present and graphs are displayed @not-pr-pipeline',
+  'Open the Prometheus Exporters Overview Dashboard and verify Metrics are present and graphs are displayed @not-ui-pipeline @nightly @not-pr-pipeline',
   async (I, dashboardPage, adminPage) => {
     I.amOnPage(dashboardPage.prometheusExporterOverviewDashboard.url);
     dashboardPage.waitForDashboardOpened();
