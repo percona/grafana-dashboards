@@ -56,11 +56,11 @@ Scenario(
     I.see('Telemetry', pmmSettingsPage.fields.telemetryLabel);
     I.see('Check for updates', pmmSettingsPage.fields.checkForUpdatesLabel);
     I.see('Security Threat Tool', pmmSettingsPage.fields.sttLabel);
-    I.seeElement(pmmSettingsPage.fields.telemetrySwitchSelector);
+    I.seeElement(pmmSettingsPage.fields.telemetrySwitchSelectorInput);
     I.seeElement(pmmSettingsPage.fields.telemetryLabel);
     I.seeElement(pmmSettingsPage.fields.checkForUpdatesSwitch);
     I.seeElement(pmmSettingsPage.fields.checkForUpdatesLabel);
-    I.seeElement(pmmSettingsPage.fields.sttSwitchSelector);
+    I.seeElement(pmmSettingsPage.fields.sttSwitchSelectorInput);
     I.seeElement(pmmSettingsPage.fields.sttLabel);
   }
 );
@@ -143,18 +143,18 @@ xScenario(
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.advancedButton);
     pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.telemetrySwitchSelector, 'on');
-    pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelector, 'off');
-    I.click(pmmSettingsPage.fields.telemetrySwitchClickable);
-    pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.telemetrySwitchSelector, 'off');
-    await pmmSettingsPage.verifySwitchStateIs(pmmSettingsPage.fields.sttSwitchSelectorLabel, false);
-    I.click(pmmSettingsPage.fields.telemetrySwitchClickable);
-    pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.telemetrySwitchSelector, 'on');
-    await pmmSettingsPage.verifySwitchStateIs(pmmSettingsPage.fields.sttSwitchSelectorLabel, true);
-    I.click(pmmSettingsPage.fields.sttSwitchClickable);
-    pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelector, 'on');
-    await pmmSettingsPage.verifySwitchStateIs(pmmSettingsPage.fields.sttSwitchSelectorLabel, true);
-    pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.telemetrySwitchSelector, 'on');
-    await pmmSettingsPage.verifySwitchStateIs(pmmSettingsPage.fields.telemetrySwitchSelectorLabel, false);
+    pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelectorInput, 'off');
+    I.click(pmmSettingsPage.fields.telemetrySwitchSelector);
+    pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.telemetrySwitchSelectorInput, 'off');
+    await pmmSettingsPage.verifySwitchStateIs(pmmSettingsPage.fields.sttSwitchSelector, false);
+    I.click(pmmSettingsPage.fields.telemetrySwitchSelector);
+    pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.telemetrySwitchSelectorInput, 'on');
+    await pmmSettingsPage.verifySwitchStateIs(pmmSettingsPage.fields.sttSwitchSelector, true);
+    I.click(pmmSettingsPage.fields.sttSwitchSelector);
+    pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelectorInput, 'on');
+    await pmmSettingsPage.verifySwitchStateIs(pmmSettingsPage.fields.sttSwitchSelector, true);
+    pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.telemetrySwitchSelectorInput, 'on');
+    await pmmSettingsPage.verifySwitchStateIs(pmmSettingsPage.fields.telemetrySwitchSelector, false);
   }
 ).retry(2);
 
