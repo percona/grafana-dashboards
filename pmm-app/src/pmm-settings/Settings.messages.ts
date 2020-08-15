@@ -26,7 +26,7 @@ export const Messages = {
     urlTooltip: 'The URL of the external Alertmanager to use.'
   },
   diagnostics: {
-    action: 'Download PMM Server Logs',
+    action: 'Download server diagnostics data',
     label: 'Diagnostics',
     tooltip: 'You can download server logs to make the problem detection simpler. Please include this file if you are submitting a bug report.',
   },
