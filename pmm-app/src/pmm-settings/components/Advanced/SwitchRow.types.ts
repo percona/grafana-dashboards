@@ -1,11 +1,10 @@
 export interface SwitchRowProps {
-  label: string;
-  tooltip: string;
-  tooltipLinkText: string;
-  link: string;
-  checked: boolean;
+  label?: string;
+  tooltip?: string;
+  tooltipLinkText?: string;
+  link?: string;
   disabled?: boolean;
   className?: string;
   dataQa?: string;
-  onChange?: () => void;
+  input: any;
 }

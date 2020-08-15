@@ -17,6 +17,13 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => ({
     input {
       width: 60px;
     }
+    div {
+      margin: 0;
+      div:nth-child(2) {
+        position: absolute;
+        z-index: 2;
+      }
+    }
   `,
   retentionUnitslabel: css`
     font-size: ${theme.typography.size.sm};

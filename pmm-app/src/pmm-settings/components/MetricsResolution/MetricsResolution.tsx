@@ -1,12 +1,13 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, useState } from 'react';
+import { Form, Field } from 'react-final-form';
 import { Button, Spinner, useTheme } from '@grafana/ui';
-import { isEqual } from 'lodash';
 import { RadioButtonGroup } from 'shared/components/Form/Radio/RadioButtonGroup';
 import { getSettingsStyles } from 'pmm-settings/Settings.styles';
 import { Messages } from 'pmm-settings/Settings.messages';
 import { MetricsResolutions } from 'pmm-settings/Settings.types';
 import { LinkTooltip } from 'shared/components/Elements/LinkTooltip/LinkTooltip';
-import { NumericInput } from 'shared/components/Form';
+import { NumericInputField } from 'shared/components/Form';
+import validators from 'shared/components/helpers/validators';
 import {
   resolutionsOptions,
   defaultResolutions,
@@ -23,7 +24,6 @@ export const MetricsResolution: FC<MetricsResolutionProps> = ({ metricsResolutio
   const settingsStyles = getSettingsStyles(theme);
   const initialResolutions: MetricsResolutions = removeUnits(metricsResolutions);
   const [resolution, setResolution] = useState(getResolutionValue(metricsResolutions).key);
-  const [updatedResolutions, updateResolutions] = useState(initialResolutions);
   const [customResolutions, updateCustomResolutions] = useState(initialResolutions);
   const [loading, setLoading] = useState(false);
   const {
@@ -40,106 +40,104 @@ export const MetricsResolution: FC<MetricsResolutionProps> = ({ metricsResolutio
     },
     tooltipLinkText,
   } = Messages;
-  const onChangeInput = (key: string, value: string) => {
-    updateResolutions({ ...updatedResolutions, [key]: value });
-    updateCustomResolutions({ ...customResolutions, [key]: value });
+  const changeResolutions = (state: any, changeValue: any, newResolutions: MetricsResolutions) => {
+    Object.keys(newResolutions).forEach(
+      (key) => changeValue(state, MetricsResolutionIntervals[key], () => newResolutions[key])
+    );
   };
-  const applyChanges = () => {
-    updateSettings({
-      metrics_resolutions: resolution === MetricsResolutionPresets.custom
-        ? addUnits(customResolutions)
-        : addUnits(updatedResolutions)
-    }, setLoading);
-  };
-  const stepUp = (key: string, max: number) => () => {
-    const value = +customResolutions[key];
-
-    if (value < max) {
-      onChangeInput(key, `${value + 1}`);
+  const setNewResolutions = ([newResolution], state: any, { changeValue }) => {
+    if (resolution === MetricsResolutionPresets.custom) {
+      updateCustomResolutions(state.formState.values as MetricsResolutions);
     }
-  };
-  const stepDown = (key: string, min: number) => () => {
-    const value = +customResolutions[key];
 
-    if (value > min) {
-      onChangeInput(key, `${value - 1}`);
+    if (newResolution !== MetricsResolutionPresets.custom) {
+      const newResolutionKey = resolutionsOptions.findIndex((r) => r.key === newResolution);
+      const resolutions = removeUnits(defaultResolutions[newResolutionKey]);
+
+      changeResolutions(state, changeValue, resolutions);
+    } else {
+      changeResolutions(state, changeValue, customResolutions);
     }
+
+    setResolution(newResolution);
   };
-  const isActionDisabled = () => (
-    resolution === MetricsResolutionPresets.custom
-      ? isEqual(initialResolutions, customResolutions)
-      : isEqual(initialResolutions, updatedResolutions)
+  const resolutionValidators = validators.compose(
+    validators.required,
+    validators.range(resolutionMin, resolutionMax)
   );
-
-  useEffect(() => {
-    if (resolution !== MetricsResolutionPresets.custom) {
-      updateResolutions(
-        removeUnits(defaultResolutions[resolutionsOptions.findIndex((r) => r.key === resolution)])
-      );
-    }
-  }, [resolution]);
+  const applyChanges = (values: MetricsResolutions) => {
+    updateSettings({ metrics_resolutions: addUnits(values) }, setLoading);
+  };
 
   return (
     <div className={styles.resolutionsWrapper}>
-      <div
-        className={settingsStyles.labelWrapper}
-        data-qa="metrics-resolution-label"
-      >
-        <span>{label}</span>
-        <LinkTooltip
-          tooltipText={tooltip}
-          link={link}
-          linkText={tooltipLinkText}
-          icon="info-circle"
-        />
-      </div>
-      <RadioButtonGroup
-        options={resolutionsOptions}
-        selected={resolution}
-        name="resolutions"
-        dataQa="metrics-resolution-radio-button-group"
-        className={styles.resolutionsRadioButtonGroup}
-        onChange={(key) => setResolution(key)}
+      <Form
+        mutators={{ setNewResolutions }}
+        onSubmit={applyChanges}
+        initialValues={initialResolutions}
+        render={({
+          form, handleSubmit, valid, pristine
+        }) => (
+          <form onSubmit={handleSubmit}>
+            <div
+              className={settingsStyles.labelWrapper}
+              data-qa="metrics-resolution-label"
+            >
+              <span>{label}</span>
+              <LinkTooltip
+                tooltipText={tooltip}
+                link={link}
+                linkText={tooltipLinkText}
+                icon="info-circle"
+              />
+            </div>
+            <RadioButtonGroup
+              options={resolutionsOptions}
+              selected={resolution}
+              name="resolutions"
+              dataQa="metrics-resolution-radio-button-group"
+              className={styles.resolutionsRadioButtonGroup}
+              onChange={form.mutators.setNewResolutions}
+            />
+            <Field
+              name={MetricsResolutionIntervals.lr}
+              label={low}
+              className={styles.resolutionInput}
+              disabled={resolution !== MetricsResolutionPresets.custom}
+              dataQa="metrics-resolution-lr-input"
+              component={NumericInputField}
+              validate={resolutionValidators}
+            />
+            <Field
+              name={MetricsResolutionIntervals.mr}
+              label={medium}
+              className={styles.resolutionInput}
+              disabled={resolution !== MetricsResolutionPresets.custom}
+              dataQa="metrics-resolution-mr-input"
+              component={NumericInputField}
+              validate={resolutionValidators}
+            />
+            <Field
+              name={MetricsResolutionIntervals.hr}
+              label={high}
+              className={styles.resolutionInput}
+              disabled={resolution !== MetricsResolutionPresets.custom}
+              dataQa="metrics-resolution-hr-input"
+              component={NumericInputField}
+              validate={resolutionValidators}
+            />
+            <Button
+              className={settingsStyles.actionButton}
+              type="submit"
+              disabled={!valid || pristine || loading}
+              data-qa="metrics-resolution-button"
+            >
+              {loading && <Spinner />}
+              {action}
+            </Button>
+          </form>
+        )}
       />
-      <NumericInput
-        className={styles.resolutionInput}
-        value={resolution === MetricsResolutionPresets.custom ? customResolutions.lr : updatedResolutions.lr}
-        disabled={resolution !== MetricsResolutionPresets.custom}
-        onChange={(e: any) => onChangeInput(MetricsResolutionIntervals.lr, e.target.value)}
-        data-qa="metrics-resolution-lr-input"
-        label={low}
-        stepUp={stepUp(MetricsResolutionIntervals.lr, resolutionMax)}
-        stepDown={stepDown(MetricsResolutionIntervals.lr, resolutionMin)}
-      />
-      <NumericInput
-        className={styles.resolutionInput}
-        value={resolution === MetricsResolutionPresets.custom ? customResolutions.mr : updatedResolutions.mr}
-        disabled={resolution !== MetricsResolutionPresets.custom}
-        onChange={(e: any) => onChangeInput(MetricsResolutionIntervals.mr, e.target.value)}
-        data-qa="metrics-resolution-mr-input"
-        label={medium}
-        stepUp={stepUp(MetricsResolutionIntervals.mr, resolutionMax)}
-        stepDown={stepDown(MetricsResolutionIntervals.mr, resolutionMin)}
-      />
-      <NumericInput
-        className={styles.resolutionInput}
-        value={resolution === MetricsResolutionPresets.custom ? customResolutions.hr : updatedResolutions.hr}
-        disabled={resolution !== MetricsResolutionPresets.custom}
-        onChange={(e: any) => onChangeInput(MetricsResolutionIntervals.hr, e.target.value)}
-        data-qa="metrics-resolution-hr-input"
-        label={high}
-        stepUp={stepUp(MetricsResolutionIntervals.hr, resolutionMax)}
-        stepDown={stepDown(MetricsResolutionIntervals.hr, resolutionMin)}
-      />
-      <Button
-        className={settingsStyles.actionButton}
-        disabled={isActionDisabled() || loading}
-        onClick={applyChanges}
-        data-qa="metrics-resolution-button"
-      >
-        {loading && <Spinner />}
-        {action}
-      </Button>
     </div>
   );
 };

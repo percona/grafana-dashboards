@@ -11,7 +11,6 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => ({
     padding: ${theme.spacing.lg} 0 ${theme.spacing.xl} 0;
   `,
   resolutionInput: css`
-    margin-bottom: ${theme.spacing.md};
     input {
       width: 60px;
     }

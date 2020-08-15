@@ -7,14 +7,13 @@ import { SwitchRowProps } from './SwitchRow.types';
 
 export const SwitchRow: FC<SwitchRowProps> = ({
   label,
-  tooltip,
-  tooltipLinkText,
-  link,
-  checked,
+  tooltip = '',
+  tooltipLinkText = '',
+  link = '',
   disabled,
   className,
   dataQa,
-  onChange
+  input
 }) => {
   const theme = useTheme();
   const settingsStyles = getSettingsStyles(theme);
@@ -34,9 +33,9 @@ export const SwitchRow: FC<SwitchRowProps> = ({
       </td>
       <td className={className}>
         <Switch
-          value={checked}
+          {...input}
+          value={input.checked}
           disabled={disabled}
-          onChange={onChange}
           data-qa={dataQa}
         />
       </td>

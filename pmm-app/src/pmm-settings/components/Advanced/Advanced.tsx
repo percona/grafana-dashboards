@@ -1,4 +1,5 @@
 import React, { FC, useState } from 'react';
+import { Field, Form } from 'react-final-form';
 import { cx } from 'emotion';
 import {
   Button, Spinner, useTheme
@@ -7,7 +8,8 @@ import { getSettingsStyles } from 'pmm-settings/Settings.styles';
 import { Messages } from 'pmm-settings/Settings.messages';
 import { DATA_RETENTION_URL } from 'pmm-settings/Settings.constants';
 import { LinkTooltip } from 'shared/components/Elements/LinkTooltip/LinkTooltip';
-import { NumericInput } from 'shared/components/Form';
+import { NumericInputField } from 'shared/components/Form';
+import validators from 'shared/components/helpers/validators';
 import { getStyles } from './Advanced.styles';
 import { transformSecondsToDays } from './Advanced.utils';
 import { SECONDS_IN_DAY, MIN_DAYS, MAX_DAYS } from './Advanced.constants';
@@ -41,30 +43,20 @@ export const Advanced: FC<AdvancedProps> = ({
       sttTooltip
     }, tooltipLinkText
   } = Messages;
-  const initialRetentionDays = transformSecondsToDays(dataRetention);
-  const [retentionDays, setRetentionDays] = useState(initialRetentionDays);
-  const [telemetry, setTelemetry] = useState(telemetryEnabled);
-  const [stt, setStt] = useState(sttEnabled);
+  const initialValues = {
+    retention: transformSecondsToDays(dataRetention),
+    telemetry: telemetryEnabled,
+    updates: !updatesDisabled,
+    stt: sttEnabled
+  };
   const [loading, setLoading] = useState(false);
-  const isActionDisabled = () => (
-    +retentionDays === initialRetentionDays
-    && telemetry === telemetryEnabled
-    && stt === sttEnabled
+  const retentionValidators = validators.compose(
+    validators.required,
+    validators.range(MIN_DAYS, MAX_DAYS)
   );
-  const stepUp = (max: number) => () => {
-    if (retentionDays < max) {
-      setRetentionDays(+retentionDays + 1);
-    }
-  };
-  const stepDown = (min: number) => () => {
-    if (retentionDays > min) {
-      setRetentionDays(+retentionDays - 1);
-    }
-  };
-
-  const applyChanges = () => {
+  const applyChanges = ({ retention, telemetry, stt }) => {
     const body = {
-      data_retention: `${+retentionDays * SECONDS_IN_DAY}s`,
+      data_retention: `${+retention * SECONDS_IN_DAY}s`,
       disable_telemetry: !telemetry,
       enable_telemetry: telemetry,
       disable_stt: !stt,
@@ -76,77 +68,90 @@ export const Advanced: FC<AdvancedProps> = ({
 
   return (
     <div className={styles.advancedWrapper}>
-      <table>
-        <tbody>
-          <tr>
-            <td>
-              <div
-                className={settingsStyles.labelWrapper}
-                data-qa="advanced-label"
-              >
-                <span>{retentionLabel}</span>
-                <LinkTooltip
-                  tooltipText={retentionTooltip}
-                  link={DATA_RETENTION_URL}
-                  linkText={tooltipLinkText}
-                  icon="info-circle"
+      <Form
+        onSubmit={applyChanges}
+        initialValues={initialValues}
+        render={({
+          values, handleSubmit, valid, pristine
+        }) => (
+          <form onSubmit={handleSubmit}>
+            <table>
+              <tbody>
+                <tr>
+                  <td>
+                    <div
+                      className={settingsStyles.labelWrapper}
+                      data-qa="advanced-label"
+                    >
+                      <span>{retentionLabel}</span>
+                      <LinkTooltip
+                        tooltipText={retentionTooltip}
+                        link={DATA_RETENTION_URL}
+                        linkText={tooltipLinkText}
+                        icon="info-circle"
+                      />
+                    </div>
+                  </td>
+                  <td className={styles.retentionInputWrapper}>
+                    <Field
+                      name="retention"
+                      dataQa="advanced-retention-input"
+                      component={NumericInputField}
+                      validate={retentionValidators}
+                    />
+                    <span className={styles.retentionUnitslabel}>{retentionUnits}</span>
+                  </td>
+                </tr>
+                <Field
+                  name="telemetry"
+                  type="checkbox"
+                  label={telemetryLabel}
+                  tooltip={telemetryTooltip}
+                  tooltipLinkText={tooltipLinkText}
+                  link={telemetryLink}
+                  className={cx({ [styles.switchDisabled]: values.stt })}
+                  disabled={values.stt}
+                  dataQa="advanced-telemetry-switch"
+                  component={SwitchRow}
                 />
-              </div>
-            </td>
-            <td className={styles.retentionInputWrapper}>
-              <NumericInput
-                value={retentionDays}
-                onChange={(e: any) => setRetentionDays(e.target.value)}
-                data-qa="advanced-retention-input"
-                stepUp={stepUp(MAX_DAYS)}
-                stepDown={stepDown(MIN_DAYS)}
-              />
-              <span className={styles.retentionUnitslabel}>{retentionUnits}</span>
-            </td>
-          </tr>
-          <SwitchRow
-            label={telemetryLabel}
-            tooltip={telemetryTooltip}
-            tooltipLinkText={tooltipLinkText}
-            link={telemetryLink}
-            checked={telemetry}
-            className={cx({ [styles.switchDisabled]: stt })}
-            disabled={stt}
-            onChange={() => setTelemetry(!telemetry)}
-            dataQa="advanced-telemetry-switch"
-          />
-          <SwitchRow
-            label={updatesLabel}
-            tooltip={updatesTooltip}
-            tooltipLinkText={tooltipLinkText}
-            link={updatesLink}
-            checked={!updatesDisabled}
-            className={styles.switchDisabled}
-            disabled
-            dataQa="advanced-updates-switch"
-          />
-          <SwitchRow
-            label={sttLabel}
-            tooltip={sttTooltip}
-            tooltipLinkText={tooltipLinkText}
-            link={sttLink}
-            checked={stt}
-            className={cx({ [styles.switchDisabled]: !telemetry })}
-            disabled={!telemetry}
-            onChange={() => setStt(!stt)}
-            dataQa="advanced-stt-switch"
-          />
-        </tbody>
-      </table>
-      <Button
-        className={settingsStyles.actionButton}
-        disabled={isActionDisabled() || loading}
-        onClick={applyChanges}
-        data-qa="advanced-button"
-      >
-        {loading && <Spinner />}
-        {action}
-      </Button>
+                <Field
+                  name="updates"
+                  type="checkbox"
+                  label={updatesLabel}
+                  tooltip={updatesTooltip}
+                  tooltipLinkText={tooltipLinkText}
+                  link={updatesLink}
+                  className={styles.switchDisabled}
+                  disabled
+                  dataQa="advanced-updates-switch"
+                  component={SwitchRow}
+                />
+                <Field
+                  name="stt"
+                  type="checkbox"
+                  label={sttLabel}
+                  tooltip={sttTooltip}
+                  tooltipLinkText={tooltipLinkText}
+                  link={sttLink}
+                  className={cx({ [styles.switchDisabled]: !values.telemetry })}
+                  disabled={!values.telemetry}
+                  dataQa="advanced-stt-switch"
+                  component={SwitchRow}
+                />
+              </tbody>
+            </table>
+            <Button
+              className={settingsStyles.actionButton}
+              type="submit"
+              disabled={!valid || pristine || loading}
+              data-qa="advanced-button"
+            >
+              {loading && <Spinner />}
+              {action}
+            </Button>
+          </form>
+        )}
+      />
     </div>
   );
 };
