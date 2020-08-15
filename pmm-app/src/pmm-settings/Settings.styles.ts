@@ -36,6 +36,7 @@ export const getSettingsStyles = stylesFactory((theme: GrafanaTheme) => {
     `,
     tabContentWrapper: css`
       border-left: ${theme.border.width.sm} solid ${theme.colors.pageHeaderBorder};
+      flex: 1;
       padding: 0 0 0 60px;
       position: relative;
       ${mq} {
