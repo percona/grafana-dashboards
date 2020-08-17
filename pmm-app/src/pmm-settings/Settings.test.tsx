@@ -4,10 +4,7 @@ import { mount } from 'enzyme';
 import { SettingsPanel } from './Settings';
 
 jest.mock('shared/components/helpers/notification-manager');
-jest.mock('../shared/components/hooks/parameters.hook', () => ({
-  __esModule: true, // this property makes it work
-  default: jest.fn(() => ['metrics-resolution', jest.fn()]),
-}));
+jest.mock('shared/components/hooks/parameters.hook');
 
 describe('SettingsPanel::', () => {
   it('Renders correctly', async () => {
