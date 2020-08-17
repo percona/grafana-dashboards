@@ -57,11 +57,11 @@ export const Messages = {
     success: 'Settings updated'
   },
   tabs: {
-    metrics: 'Metrics resolution',
-    advanced: 'Advanced settings',
-    ssh: 'SSH key',
-    alertManager: 'Alertmanager integration',
-    signUp: 'Sign up',
+    metrics: 'Metrics Resolution',
+    advanced: 'Advanced Settings',
+    ssh: 'SSH Key',
+    alertManager: 'Alertmanager Integration',
+    signUp: 'Sign Up',
   },
   tooltipLinkText: 'Read more'
 };
