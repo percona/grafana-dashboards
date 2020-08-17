@@ -132,8 +132,7 @@ Scenario(
   }
 );
 
-//Skip, need to investigate will roll back
-xScenario(
+Scenario(
   'PMM-T254 Verify validation for STT and Telemetry switches',
   async (I, pmmSettingsPage, settingsAPI) => {
     await settingsAPI.apiDisableSTT();
@@ -156,7 +155,7 @@ xScenario(
     pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.telemetrySwitchSelector, 'on');
     await pmmSettingsPage.verifySwitchStateIs(pmmSettingsPage.fields.telemetrySwitchSelectorLabel, false);
   }
-).retry(2);
+);
 
 // To be removed from Skip after https://jira.percona.com/browse/PMM-5791
 xScenario(
