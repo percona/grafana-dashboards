@@ -805,7 +805,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "avg by (service_name) (max(max_over_time(mongodb_mongod_replset_member_replication_lag{set=\"$replset\",service_name=~\"$service_name\"}[$interval]) > 0) by (service_name,set) or max(max_over_time(mongodb_mongod_replset_member_replication_lag{set=\"$replset\",service_name=~\"$service_name\"}[5m]) > 0) by (service_name,set))",
+                    "expr": "avg by (service_name) (max(max_over_time(mongodb_mongod_replset_member_replication_lag{set=\"$replset\",service_name=~\"$secondary\"}[$interval]) > 0) by (service_name,set) or max(max_over_time(mongodb_mongod_replset_member_replication_lag{set=\"$replset\",service_name=~\"$secondary\"}[5m]) > 0) by (service_name,set))",
                     "interval": "$interval",
                     "intervalFactor": 1,
                     "legendFormat": "{{service_name}}",
@@ -813,7 +813,8 @@
                     "step": 300
                 },
                 {
-                    "expr": "avg by (set) (max(max_over_time(mongodb_mongod_replset_member_replication_lag{set=\"$replset\",service_name=~\"$service_name\"}[$interval]) > 0) by (service_name,set) or max(max_over_time(mongodb_mongod_replset_member_replication_lag{set=\"$replset\",service_name=~\"$service_name\"}[5m]) > 0) by (service_name,set))",
+                    "expr": "avg by (set) (max(max_over_time(mongodb_mongod_replset_member_replication_lag{set=\"$replset\",service_name=~\"$secondary\"}[$interval]) > 0) by (service_name,set) or max(max_over_time(mongodb_mongod_replset_member_replication_lag{set=\"$replset\",service_name=~\"$seconadry\"}[5m]) > 0) by (service_name,set))",
+                    "hide": true,
                     "interval": "$interval",
                     "legendFormat": "Avg",
                     "refId": "B"
@@ -7848,6 +7849,29 @@
                 "tagValuesQuery": null,
                 "tags": [],
                 "tagsQuery": null,
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allValue": null,
+                "current": {},
+                "datasource": "Prometheus",
+                "definition": "query_result(mongodb_mongod_replset_my_state{cluster=~\"$cluster\",set=\"$replset\"}==2)",
+                "hide": 2,
+                "includeAll": true,
+                "index": -1,
+                "label": "Secondary",
+                "multi": true,
+                "name": "secondary",
+                "options": [],
+                "query": "query_result(mongodb_mongod_replset_my_state{cluster=~\"$cluster\",set=\"$replset\"}==2)",
+                "refresh": 2,
+                "regex": "/.*service_name=\"(.*)\",service_type.*/",
+                "skipUrlSync": false,
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
                 "type": "query",
                 "useTags": false
             }

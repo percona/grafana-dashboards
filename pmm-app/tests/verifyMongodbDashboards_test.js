@@ -5,7 +5,7 @@ Before(async (I) => {
 });
 
 Scenario(
-  'Open the MongoDB Instance Summary Dashboard and verify Metrics are present and graphs are displayed @not-pr-pipeline',
+  'Open the MongoDB Instance Summary Dashboard and verify Metrics are present and graphs are displayed @not-ui-pipeline @nightly @not-pr-pipeline',
   async (I, dashboardPage) => {
     I.amOnPage(dashboardPage.mongodbOverviewDashboard.url);
     dashboardPage.waitForDashboardOpened();
@@ -17,7 +17,7 @@ Scenario(
 );
 
 Scenario(
-  'Open the MongoDB Cluster Summary Dashboard and verify Metrics are present and graphs are displayed @not-pr-pipeline',
+  'Open the MongoDB Cluster Summary Dashboard and verify Metrics are present and graphs are displayed @not-ui-pipeline @nightly @not-pr-pipeline',
   async (I, adminPage, dashboardPage) => {
     I.amOnPage(dashboardPage.mongoDbClusterSummaryDashboard.url);
     dashboardPage.waitForDashboardOpened();
