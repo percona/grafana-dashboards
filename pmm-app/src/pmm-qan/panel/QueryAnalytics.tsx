@@ -57,12 +57,8 @@ const QueryAnalyticsPanel: FC = () => {
   );
 };
 
-export default (props) => {
-  console.log('grafana props', props);
-
-  return (
-    <UrlParametersProvider {...props}>
-      <QueryAnalyticsPanel />
-    </UrlParametersProvider>
-  );
-};
+export default (props) => (
+  <UrlParametersProvider {...props}>
+    <QueryAnalyticsPanel />
+  </UrlParametersProvider>
+);
