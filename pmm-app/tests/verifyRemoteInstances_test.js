@@ -11,33 +11,31 @@ Feature('Remote DB Instances');
 Before(async (I) => {
   I.Authorize();
 });
-/*
+
 // TODO: unskip the mongodb tests after resolving a creds issue
-Data(instances.filter((instance) => instance.name !== 'mongodb'))
-  .Scenario(
-    'Verify Remote Instance Addition [critical] @not-pr-pipeline',
-    async (I, remoteInstancesPage, current) => {
-      const serviceName = remoteInstancesPage.services[current.name];
+Data(instances.filter((instance) => instance.name !== 'mongodb')).Scenario(
+  'Verify Remote Instance Addition [critical] @not-pr-pipeline',
+  async (I, remoteInstancesPage, current) => {
+    const serviceName = remoteInstancesPage.services[current.name];
 
-      I.amOnPage(remoteInstancesPage.url);
-      remoteInstancesPage.waitUntilRemoteInstancesPageLoaded();
-      remoteInstancesPage.openAddRemotePage(current.name);
-      remoteInstancesPage.fillRemoteFields(serviceName);
-      remoteInstancesPage.createRemoteInstance(serviceName);
-    }
-  );
+    I.amOnPage(remoteInstancesPage.url);
+    remoteInstancesPage.waitUntilRemoteInstancesPageLoaded();
+    remoteInstancesPage.openAddRemotePage(current.name);
+    remoteInstancesPage.fillRemoteFields(serviceName);
+    remoteInstancesPage.createRemoteInstance(serviceName);
+  },
+);
 
-Data(instances.filter((instance) => instance.name !== 'mongodb'))
-  .Scenario(
-    'Verify Remote Instance has Status Running [critical] @not-pr-pipeline',
-    async (I, remoteInstancesPage, pmmInventoryPage, current) => {
-      const serviceName = remoteInstancesPage.services[current.name];
+Data(instances.filter((instance) => instance.name !== 'mongodb')).Scenario(
+  'Verify Remote Instance has Status Running [critical] @not-pr-pipeline',
+  async (I, remoteInstancesPage, pmmInventoryPage, current) => {
+    const serviceName = remoteInstancesPage.services[current.name];
 
-      I.amOnPage(pmmInventoryPage.url);
-      pmmInventoryPage.verifyRemoteServiceIsDisplayed(serviceName);
-      await pmmInventoryPage.verifyAgentHasStatusRunning(serviceName);
-    }
-  );
+    I.amOnPage(pmmInventoryPage.url);
+    pmmInventoryPage.verifyRemoteServiceIsDisplayed(serviceName);
+    await pmmInventoryPage.verifyAgentHasStatusRunning(serviceName);
+  },
+);
 
 Scenario(
   'PMM-T339 - Verify MySQL service is removed on PMM Inventory page @not-pr-pipeline',
@@ -60,7 +58,7 @@ Scenario(
     await pmmInventoryPage.getCountOfAgents(serviceId);
     I.click(pmmInventoryPage.fields.nodesLink);
     pmmInventoryPage.checkNodeExists(serviceName);
-  }
+  },
 );
 
 Scenario(
@@ -81,7 +79,7 @@ Scenario(
     pmmInventoryPage.serviceExists(serviceName, true);
     I.click(pmmInventoryPage.fields.agentsLink);
     await pmmInventoryPage.getCountOfAgents(serviceId);
-  }
+  },
 );
 
 Scenario(
@@ -95,7 +93,7 @@ Scenario(
     pmmInventoryPage.selectService(node);
     pmmInventoryPage.deleteWithForceOpt();
     pmmInventoryPage.checkNodeExists(node);
-  }
+  },
 );
 
 Scenario(
@@ -123,7 +121,7 @@ Scenario(
     pmmInventoryPage.verifyNodesCount(countOfNodesBefore, countOfNodesAfter);
     I.click(pmmInventoryPage.fields.pmmServicesSelector);
     pmmInventoryPage.existsByid(serviceId, false);
-  }
+  },
 );
 
 Scenario(
@@ -144,16 +142,23 @@ Scenario(
     pmmInventoryPage.deleteWithForceOpt();
     pmmInventoryPage.existsByid(agentIDToDelete, true);
     await pmmInventoryPage.checkAllNotDeletedAgents(agentID);
-  }
+  },
 );
-*/
+
 Scenario('PMM-T371 - Verify sorting in Inventory page @not-pr-pipeline', async (I, pmmInventoryPage) => {
   I.amOnPage(pmmInventoryPage.url);
   I.waitForVisible(pmmInventoryPage.fields.tableRow, 20);
   const countOfRows = await I.grabNumberOfVisibleElements(pmmInventoryPage.fields.tableRow);
   let serviceNames = new Array(countOfRows);
-  for (i = 1; i <= countOfRows; i++) {
-    serviceNames[i] = await pmmInventoryPage.getCellValue(i, 4);
+  let forSort = new Array(countOfRows);
+
+  for (i = 0; i <= serviceNames.length - 1; i++) {
+    serviceNames[i] = await pmmInventoryPage.getCellValue(i + 1, 4);
+    forSort[i] = await pmmInventoryPage.getCellValue(i + 1, 4);
   }
-  console.log(serviceNames);
+
+  forSort.sort();
+  for (i = 0; i <= serviceNames.length - 1; i++) {
+    pmmInventoryPage.checkData(serviceNames[i], forSort[i]);
+  }
 });

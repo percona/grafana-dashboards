@@ -210,6 +210,11 @@ module.exports = {
   },
 
   async getCellValue(index, column) {
-    return await I.grabTextFrom(`//tr[@data-qa="table-row"][${index}]/td[${column}]`);
+    const value = await I.grabTextFrom(`//tr[@data-qa="table-row"][${index}]/td[${column}]`);
+    return value.toLowerCase();
+  },
+
+  checkData(value1, value2) {
+    assert.equal(value1, value2, `The first value: ${value1} is not same as second value: ${value2}`);
   },
 };
