@@ -145,7 +145,7 @@ Scenario(
   },
 );
 
-Scenario('PMM-T371 - Verify sorting in Inventory page @not-pr-pipeline', async (I, pmmInventoryPage) => {
+Scenario('PMM-T371 - Verify sorting in Inventory page(Services tab) @not-pr-pipeline', async (I, pmmInventoryPage) => {
   I.amOnPage(pmmInventoryPage.url);
   I.waitForVisible(pmmInventoryPage.fields.tableRow, 20);
   const countOfRows = await I.grabNumberOfVisibleElements(pmmInventoryPage.fields.tableRow);
