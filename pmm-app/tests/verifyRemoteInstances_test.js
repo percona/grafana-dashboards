@@ -145,20 +145,69 @@ Scenario(
   },
 );
 
-Scenario('PMM-T371 - Verify sorting in Inventory page(Services tab) @not-pr-pipeline', async (I, pmmInventoryPage) => {
-  I.amOnPage(pmmInventoryPage.url);
-  I.waitForVisible(pmmInventoryPage.fields.tableRow, 20);
-  const countOfRows = await I.grabNumberOfVisibleElements(pmmInventoryPage.fields.tableRow);
-  let serviceNames = new Array(countOfRows);
-  let forSort = new Array(countOfRows);
+Scenario(
+  'PMM-T371 - Verify sorting in Inventory page(Services tab) @not-pr-pipeline',
+  async (I, pmmInventoryPage) => {
+    I.amOnPage(pmmInventoryPage.url);
+    I.waitForVisible(pmmInventoryPage.fields.tableRow, 20);
+    const countOfRows = await I.grabNumberOfVisibleElements(pmmInventoryPage.fields.tableRow);
+    let serviceNames = new Array(countOfRows);
+    let forSort = new Array(countOfRows);
 
-  for (i = 0; i <= serviceNames.length - 1; i++) {
-    serviceNames[i] = await pmmInventoryPage.getCellValue(i + 1, 4);
-    forSort[i] = await pmmInventoryPage.getCellValue(i + 1, 4);
-  }
+    for (i = 0; i <= serviceNames.length - 1; i++) {
+      serviceNames[i] = await pmmInventoryPage.getCellValue(i + 1, 4);
+      forSort[i] = await pmmInventoryPage.getCellValue(i + 1, 4);
+    }
 
-  forSort.sort();
-  for (i = 0; i <= serviceNames.length - 1; i++) {
-    pmmInventoryPage.checkData(serviceNames[i], forSort[i]);
-  }
-});
+    forSort.sort();
+    for (i = 0; i <= serviceNames.length - 1; i++) {
+      pmmInventoryPage.checkData(serviceNames[i], forSort[i]);
+    }
+  },
+);
+
+Scenario(
+  'PMM-T371 - Verify sorting in Inventory page(Agents tab) @not-pr-pipeline',
+  async (I, pmmInventoryPage) => {
+    I.amOnPage(pmmInventoryPage.url);
+    I.waitForVisible(pmmInventoryPage.fields.agentsLink, 20);
+    I.click(pmmInventoryPage.fields.agentsLink);
+    I.waitForVisible(pmmInventoryPage.fields.tableRow, 20);
+    const countOfRows = await I.grabNumberOfVisibleElements(pmmInventoryPage.fields.tableRow);
+    let agentTypes = new Array(countOfRows);
+    let forSort = new Array(countOfRows);
+
+    for (i = 0; i <= agentTypes.length - 1; i++) {
+      agentTypes[i] = await pmmInventoryPage.getCellValue(i + 1, 3);
+      forSort[i] = await pmmInventoryPage.getCellValue(i + 1, 3);
+    }
+
+    forSort.sort();
+    for (i = 0; i <= agentTypes.length - 1; i++) {
+      pmmInventoryPage.checkData(agentTypes[i], forSort[i]);
+    }
+  },
+);
+
+Scenario(
+  'PMM-T371 - Verify sorting in Inventory page(Nodes tab) @not-pr-pipeline',
+  async (I, pmmInventoryPage) => {
+    I.amOnPage(pmmInventoryPage.url);
+    I.waitForVisible(pmmInventoryPage.fields.nodesLink, 20);
+    I.click(pmmInventoryPage.fields.nodesLink);
+    I.waitForVisible(pmmInventoryPage.fields.tableRow, 20);
+    const countOfRows = await I.grabNumberOfVisibleElements(pmmInventoryPage.fields.tableRow);
+    let nodeNames = new Array(countOfRows);
+    let forSort = new Array(countOfRows);
+
+    for (i = 0; i <= nodeNames.length - 1; i++) {
+      nodeNames[i] = await pmmInventoryPage.getCellValue(i + 1, 4);
+      forSort[i] = await pmmInventoryPage.getCellValue(i + 1, 4);
+    }
+
+    forSort.sort();
+    for (i = 0; i <= nodeNames.length - 1; i++) {
+      pmmInventoryPage.checkData(nodeNames[i], forSort[i]);
+    }
+  },
+);
