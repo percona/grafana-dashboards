@@ -18,7 +18,7 @@ Scenario('Open PMM Settings page and verify changing Metrics Resolution [critica
 
 Scenario('Open PMM Settings page and verify changing Data Retention [critical]', async (I, pmmSettingsPage) => {
   const dataRetentionValue = '1';
-  const sectionNameToExpand = 'Advanced settings';
+  const sectionNameToExpand = pmmSettingsPage.sectionTabsList.advanced;
 
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
   await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.advancedButton);
@@ -34,7 +34,7 @@ Scenario('Open PMM Settings page and verify changing Data Retention [critical]',
 
 Scenario('Open PMM Settings page and verify adding Alertmanager Rule [critical]', async (I, pmmSettingsPage) => {
   const scheme = 'http://';
-  const sectionNameToExpand = 'Alertmanager integration';
+  const sectionNameToExpand = pmmSettingsPage.sectionTabsList.alertmanager;
 
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
   await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.alertmanagerButton);
@@ -50,7 +50,7 @@ Scenario('Open PMM Settings page and verify adding Alertmanager Rule [critical]'
 Scenario(
   'PMM-T253 Verify user can see correct tooltip for STT [trivial]',
   async (I, pmmSettingsPage) => {
-    const sectionNameToExpand = 'Advanced settings';
+    const sectionNameToExpand = pmmSettingsPage.sectionTabsList.advanced;
 
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.advancedButton);
@@ -63,7 +63,7 @@ Scenario(
 Scenario(
   'PMM-T253 Verify user can enable STT if Telemetry is enabled',
   async (I, pmmSettingsPage) => {
-    const sectionNameToExpand = 'Advanced settings';
+    const sectionNameToExpand = pmmSettingsPage.sectionTabsList.advanced;
 
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.advancedButton);

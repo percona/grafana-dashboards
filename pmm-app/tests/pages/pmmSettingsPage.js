@@ -51,12 +51,12 @@ module.exports = {
     invalidAlertmanagerMissingHostMessage: 'Invalid alert_manager_url: http:// - missing host.',
     invalidAlertmanagerRulesMessage: 'Invalid alerting rules.',
   },
-  sectionTabsList: [
-    'Metrics resolution',
-    'Advanced settings',
-    'SSH key',
-    'Alertmanager integration'
-  ],
+  sectionTabsList: {
+    metrics: 'Metrics Resolution',
+    advanced: 'Advanced Settings',
+    ssh: 'SSH Key',
+    alertmanager: 'Alertmanager Integration'
+  },
   sectionButtonText: {
     applyChanges: 'Apply changes',
     applySSHKey: 'Apply SSH key',

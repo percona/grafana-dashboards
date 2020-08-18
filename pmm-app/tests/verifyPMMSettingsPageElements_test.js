@@ -21,9 +21,9 @@ Scenario(
   'Verify Section Tabs and Metrics Section Elements [critical]',
   async (I, pmmSettingsPage) => {
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
-    for (const i in pmmSettingsPage.sectionTabsList) {
-      I.see(pmmSettingsPage.sectionTabsList[i], pmmSettingsPage.fields.tabsSection);
-    }
+    Object.values(pmmSettingsPage.sectionTabsList).forEach((value) => {
+      I.see(value, pmmSettingsPage.fields.tabsSection);
+    });
 
     await within(pmmSettingsPage.fields.tabContent, () => {
       I.waitForElement(pmmSettingsPage.fields.metricsResolutionLabel, 30);
@@ -37,7 +37,7 @@ Scenario(
 );
 
 Scenario('Verify SSH Key Section Elements', async (I, pmmSettingsPage) => {
-  const sectionNameToExpand = 'SSH key';
+  const sectionNameToExpand = pmmSettingsPage.sectionTabsList.ssh;
 
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
   await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.sshKeyButton);
@@ -48,7 +48,7 @@ Scenario('Verify SSH Key Section Elements', async (I, pmmSettingsPage) => {
 Scenario(
   'Verify Advanced Section Elements',
   async (I, pmmSettingsPage) => {
-    const sectionNameToExpand = 'Advanced settings';
+    const sectionNameToExpand = pmmSettingsPage.sectionTabsList.advanced;
 
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.advancedButton);
@@ -68,7 +68,7 @@ Scenario(
 Scenario(
   'Verify Alertmanager integration Section Elements',
   async (I, pmmSettingsPage) => {
-    const sectionNameToExpand = 'Alertmanager integration';
+    const sectionNameToExpand = pmmSettingsPage.sectionTabsList.alertmanager;
 
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.alertmanagerButton);
@@ -81,7 +81,7 @@ Scenario(
 
 Scenario('Verify validation for invalid SSH Key', async (I, pmmSettingsPage) => {
   const sshKeyForTest = 'ssh-rsa testKey test@key.local';
-  const sectionNameToExpand = 'SSH key';
+  const sectionNameToExpand = pmmSettingsPage.sectionTabsList.ssh;
 
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
   await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.sshKeyButton);
@@ -93,7 +93,7 @@ Scenario(
   'Verify validation for Alertmanager URL without scheme',
   async (I, pmmSettingsPage) => {
     const urlWithoutScheme = 'invalid_url';
-    const sectionNameToExpand = 'Alertmanager integration';
+    const sectionNameToExpand = pmmSettingsPage.sectionTabsList.alertmanager;
 
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.alertmanagerButton);
@@ -108,7 +108,7 @@ Scenario(
   'Verify validation for Alertmanager URL without host',
   async (I, pmmSettingsPage) => {
     const urlWithoutHost = 'http://';
-    const sectionNameToExpand = 'Alertmanager integration';
+    const sectionNameToExpand = pmmSettingsPage.sectionTabsList.alertmanager;
 
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.alertmanagerButton);
@@ -123,7 +123,7 @@ Scenario(
   'Verify validation for invalid Alertmanager Rule',
   async (I, pmmSettingsPage) => {
     const rule = 'invalid_rule';
-    const sectionNameToExpand = 'Alertmanager integration';
+    const sectionNameToExpand = pmmSettingsPage.sectionTabsList.alertmanager;
 
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.alertmanagerButton);
@@ -138,7 +138,7 @@ xScenario(
   async (I, pmmSettingsPage, settingsAPI) => {
     await settingsAPI.apiDisableSTT();
     I.amOnPage(pmmSettingsPage.url);
-    const sectionNameToExpand = 'Advanced settings';
+    const sectionNameToExpand = pmmSettingsPage.sectionTabsList.advanced;
 
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.advancedButton);

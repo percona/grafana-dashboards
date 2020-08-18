@@ -1,5 +1,6 @@
 import React, { FC, useState } from 'react';
 import { cx } from 'emotion';
+import { Field, Form } from 'react-final-form';
 import {
   Button, Spinner, TextArea, useTheme
 } from '@grafana/ui';
@@ -21,10 +22,9 @@ export const SSHKey: FC<SSHKeyProps> = ({ sshKey, updateSettings }) => {
       tooltip
     }, tooltipLinkText
   } = Messages;
-  const [key, setKey] = useState(sshKey);
   const [loading, setLoading] = useState(false);
-
-  const applyChanges = () => {
+  const isEqual = (a: string, b: string) => (!(a && !b) || a === b);
+  const applyChanges = ({ key }) => {
     const body = { ssh_key: key };
 
     updateSettings(body, setLoading);
@@ -32,33 +32,46 @@ export const SSHKey: FC<SSHKeyProps> = ({ sshKey, updateSettings }) => {
 
   return (
     <div className={cx(settingsStyles.wrapper, styles.sshKeyWrapper)}>
-      <div
-        className={settingsStyles.labelWrapper}
-        data-qa="ssh-key-label"
-      >
-        <span>{label}</span>
-        <LinkTooltip
-          tooltipText={tooltip}
-          link={link}
-          linkText={tooltipLinkText}
-          icon="info-circle"
-        />
-      </div>
-      <TextArea
-        className={styles.textarea}
-        value={key}
-        data-qa="ssh-key"
-        onChange={(e: any) => setKey(e.target.value)}
+      <Form
+        onSubmit={applyChanges}
+        initialValues={{ key: sshKey }}
+        render={({ handleSubmit, pristine }) => (
+          <form onSubmit={handleSubmit}>
+            <div
+              className={settingsStyles.labelWrapper}
+              data-qa="ssh-key-label"
+            >
+              <span>{label}</span>
+              <LinkTooltip
+                tooltipText={tooltip}
+                link={link}
+                linkText={tooltipLinkText}
+                icon="info-circle"
+              />
+            </div>
+            <Field
+              name="key"
+              isEqual={isEqual}
+              render={({ input }) => (
+                <TextArea
+                  {...input}
+                  className={styles.textarea}
+                  data-qa="ssh-key"
+                />
+              )}
+            />
+            <Button
+              className={settingsStyles.actionButton}
+              type="submit"
+              disabled={pristine || loading}
+              data-qa="ssh-key-button"
+            >
+              {loading && <Spinner />}
+              {action}
+            </Button>
+          </form>
+        )}
       />
-      <Button
-        className={settingsStyles.actionButton}
-        disabled={sshKey === key || loading}
-        onClick={applyChanges}
-        data-qa="ssh-key-button"
-      >
-        {loading && <Spinner />}
-        {action}
-      </Button>
     </div>
   );
 };
