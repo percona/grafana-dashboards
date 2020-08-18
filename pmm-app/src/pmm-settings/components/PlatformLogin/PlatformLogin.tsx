@@ -4,20 +4,15 @@ import { Button, LinkButton, useTheme } from '@grafana/ui';
 import { showSuccessNotification, showErrorNotification } from 'shared/components/helpers';
 import { ButtonWithSpinner } from 'shared/components/Form';
 import validators from 'shared/components/helpers/validators';
-import { getStyles } from './SignUp.styles';
-import { Messages } from './SignUp.messages';
+import { getStyles } from './PlatformLogin.styles';
+import { Messages } from './PlatformLogin.messages';
 import { InputFieldAdapter, CheckboxFieldAdapter } from './FieldAdapters/FieldAdapters';
-import { TERMS_OF_SERVICE_URL, PRIVACY_POLICY_URL, NOTIFICATION_SETTINGS_URL } from './SignUp.constants';
-import { SignUpData, SignUpProps } from './types';
+import { TERMS_OF_SERVICE_URL, PRIVACY_POLICY_URL, NOTIFICATION_SETTINGS_URL } from './PlatformLogin.constants';
+import { Credentials, SignUpProps } from './types';
 import { LoggedIn } from './LoggedIn/LoggedIn';
+import { PlatformLoginService } from './PlatformLogin.service';
 
-const signUp = async (signUpData: SignUpData) => {
-  // XXX: stub for the actual sign up API call
-  signUpData;
-  await new Promise((resolve) => setTimeout(resolve, 1500));
-};
-
-export const SignUp: FC<SignUpProps> = ({ userEmail }) => {
+export const PlatformLogin: FC<SignUpProps> = ({ userEmail }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
   const [loggedInEmail, setLoggedInEmail] = useState(userEmail);
@@ -42,18 +37,37 @@ export const SignUp: FC<SignUpProps> = ({ userEmail }) => {
     </span>
   );
 
-  const handleSignUpFormSubmit = async (signUpData: SignUpData) => {
+  const handleSignUpFormSubmit = async (credentials: Credentials) => {
     try {
-      await signUp(signUpData);
-      setLoggedInEmail(signUpData.email);
-      showSuccessNotification({ message: Messages.signUpSucceeded });
+      const result = await PlatformLoginService.signUp(credentials);
+
+      if (result.email) {
+        setLoggedInEmail(result.email);
+        showSuccessNotification({ message: Messages.signUpSucceeded });
+        showSuccessNotification({ message: `${Messages.loginSucceeded} ${result.email}` });
+      }
     } catch (e) {
       console.error(e);
       showErrorNotification({ message: Messages.errors.signUpFailed });
     }
   };
 
-  const InnerForm: FC<FormRenderProps<SignUpData>> = ({
+  const handleSignInFormSubmit = async (credentials: Credentials) => {
+    try {
+      const result = await PlatformLoginService.signIn(credentials);
+
+      if (result.email) {
+        setLoggedInEmail(result.email);
+        showSuccessNotification({ message: Messages.signUpSucceeded });
+        showSuccessNotification({ message: `${Messages.loginSucceeded} ${result.email}` });
+      }
+    } catch (e) {
+      console.error(e);
+      showErrorNotification({ message: Messages.errors.signUpFailed });
+    }
+  };
+
+  const InnerForm: FC<FormRenderProps<Credentials>> = ({
     pristine, submitting, valid, handleSubmit
   }) => (
     <form data-qa="sign-up-form" className={styles.form} onSubmit={handleSubmit}>
@@ -67,7 +81,7 @@ export const SignUp: FC<SignUpProps> = ({ userEmail }) => {
       />
       <Field
         data-qa="sign-up-password-input"
-        name="newPassword"
+        name="password"
         label={Messages.passwordLabel}
         type="password"
         component={InputFieldAdapter}
@@ -90,7 +104,7 @@ export const SignUp: FC<SignUpProps> = ({ userEmail }) => {
         disabled={!valid || submitting || pristine}
         isLoading={submitting}
       >
-        {Messages.signUp}
+        {Messages.perconaPlatform}
       </ButtonWithSpinner>
       <Button
         data-qa="sign-up-to-sign-in-button"

@@ -13,7 +13,7 @@ import {
 import { cx } from 'emotion';
 import { TabsVertical } from 'shared/components/Elements/TabsVertical/TabsVertical';
 import {
-  SignUp, Diagnostics, MetricsResolution, SSHKey, AlertManager, Advanced
+  PlatformLogin, Diagnostics, MetricsResolution, SSHKey, AlertManager, Advanced
 } from 'pmm-settings/components';
 import { SettingsService, LoadingCallback } from './Settings.service';
 import { Settings, TabKeys } from './Settings.types';
@@ -31,7 +31,7 @@ export const SettingsPanel: FC = () => {
     advanced,
     ssh,
     alertManager,
-    signUp,
+    perconaPlatform,
   } = Messages.tabs;
   const tabs = useMemo(
     () => [
@@ -39,7 +39,7 @@ export const SettingsPanel: FC = () => {
       { label: advanced, key: TabKeys.advanced, active: activeTab === TabKeys.advanced },
       { label: ssh, key: TabKeys.ssh, active: activeTab === TabKeys.ssh },
       { label: alertManager, key: TabKeys.alertManager, active: activeTab === TabKeys.alertManager },
-      { label: signUp, key: TabKeys.signUp, active: activeTab === TabKeys.signUp },
+      { label: perconaPlatform, key: TabKeys.perconaPlatform, active: activeTab === TabKeys.perconaPlatform },
     ],
     [activeTab]
   );
@@ -112,7 +112,7 @@ export const SettingsPanel: FC = () => {
                 />
                 )}
           {tabs[4].active
-                && <SignUp userEmail={settings.saasUserEmail} />}
+                && <PlatformLogin userEmail={settings.saasUserEmail} />}
         </>
         )}
       </TabContent>

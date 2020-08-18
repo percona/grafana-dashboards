@@ -1,5 +1,5 @@
 export const Messages = {
-  signUp: 'Sign up',
+  perconaPlatform: 'Sign up',
   signIn: 'Sign in',
   termsOfService: 'Terms of Service',
   privacyPolicy: 'Privacy Policy',
@@ -7,6 +7,7 @@ export const Messages = {
   agreementFirstPart: 'Signing in means you agree with our',
   agreementSecondPart: 'and our default',
   signUpSucceeded: 'You have successfully created your credentials',
+  loginSucceeded: 'You are logged in as',
   passwordLabel: 'Password',
   emailLabel: 'Email',
   errors: {
