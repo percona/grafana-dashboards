@@ -13,11 +13,10 @@ Scenario(
     let serviceNames = new Array(countOfRows);
     let forSort = new Array(countOfRows);
 
-    for (i = 0; i <= serviceNames.length - 1; i++) {
-      serviceNames[i] = await pmmInventoryPage.getCellValue(i + 1, 4);
-      forSort[i] = await pmmInventoryPage.getCellValue(i + 1, 4);
+    for (i = 1; i <= serviceNames.length; i++) {
+      serviceNames[i - 1] = await pmmInventoryPage.getCellValue(i, 4);
+      forSort[i - 1] = serviceNames[i - 1];
     }
-
     forSort.sort();
     for (i = 0; i <= serviceNames.length - 1; i++) {
       pmmInventoryPage.checkData(serviceNames[i], forSort[i]);
@@ -36,9 +35,9 @@ Scenario(
     let agentTypes = new Array(countOfRows);
     let forSort = new Array(countOfRows);
 
-    for (i = 0; i <= agentTypes.length - 1; i++) {
-      agentTypes[i] = await pmmInventoryPage.getCellValue(i + 1, 3);
-      forSort[i] = await pmmInventoryPage.getCellValue(i + 1, 3);
+    for (i = 1; i <= agentTypes.length; i++) {
+      agentTypes[i - 1] = await pmmInventoryPage.getCellValue(i, 3);
+      forSort[i - 1] = agentTypes[i - 1];
     }
 
     forSort.sort();
@@ -59,9 +58,9 @@ Scenario(
     let nodeNames = new Array(countOfRows);
     let forSort = new Array(countOfRows);
 
-    for (i = 0; i <= nodeNames.length - 1; i++) {
-      nodeNames[i] = await pmmInventoryPage.getCellValue(i + 1, 4);
-      forSort[i] = await pmmInventoryPage.getCellValue(i + 1, 4);
+    for (i = 1; i <= nodeNames.length; i++) {
+      nodeNames[i - 1] = await pmmInventoryPage.getCellValue(i, 4);
+      forSort[i - 1] = nodeNames[i - 1];
     }
 
     forSort.sort();
