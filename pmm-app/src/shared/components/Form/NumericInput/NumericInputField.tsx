@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import { Field } from '@grafana/ui';
 import { NumericInput } from './NumericInput';
-import { styles } from './NumericInputField.styles';
 
 interface NumericInputFieldProps {
   className?: string;
@@ -24,7 +23,6 @@ export const NumericInputField: FC<NumericInputFieldProps> = ({
     invalid={meta?.error}
     error={meta?.error}
     disabled={disabled}
-    className={styles.fieldWrapper}
   >
     <NumericInput
       {...input}
