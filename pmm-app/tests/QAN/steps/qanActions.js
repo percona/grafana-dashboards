@@ -175,7 +175,11 @@ module.exports = {
   },
 
   verifyChangedCount(countBefore, countAfter) {
-    assert.notEqual(countAfter, countBefore, `The value ${countBefore} should not be equal to ${countAfter}`);
+    assert.notEqual(
+      countAfter,
+      countBefore,
+      `After applying Filter value ${countBefore} should not be equal to ${countAfter}`,
+    );
   },
 
   async verifyFiltersSection(filterSection, expectedCount) {
