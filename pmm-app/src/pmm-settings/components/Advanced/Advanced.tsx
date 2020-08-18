@@ -75,71 +75,67 @@ export const Advanced: FC<AdvancedProps> = ({
           values, handleSubmit, valid, pristine
         }) => (
           <form onSubmit={handleSubmit}>
-            <table>
-              <tbody>
-                <tr>
-                  <td>
-                    <div
-                      className={settingsStyles.labelWrapper}
-                      data-qa="advanced-label"
-                    >
-                      <span>{retentionLabel}</span>
-                      <LinkTooltip
-                        tooltipText={retentionTooltip}
-                        link={DATA_RETENTION_URL}
-                        linkText={tooltipLinkText}
-                        icon="info-circle"
-                      />
-                    </div>
-                  </td>
-                  <td className={styles.retentionInputWrapper}>
-                    <Field
-                      name="retention"
-                      dataQa="advanced-retention-input"
-                      component={NumericInputField}
-                      validate={retentionValidators}
-                    />
-                    <span className={styles.retentionUnitslabel}>{retentionUnits}</span>
-                  </td>
-                </tr>
+            <div className={styles.advancedRow}>
+              <div className={styles.advancedCol}>
+                <div
+                  className={settingsStyles.labelWrapper}
+                  data-qa="advanced-label"
+                >
+                  <span>{retentionLabel}</span>
+                  <LinkTooltip
+                    tooltipText={retentionTooltip}
+                    link={DATA_RETENTION_URL}
+                    linkText={tooltipLinkText}
+                    icon="info-circle"
+                  />
+                </div>
+              </div>
+              <div className={styles.retentionInputWrapper}>
                 <Field
-                  name="telemetry"
-                  type="checkbox"
-                  label={telemetryLabel}
-                  tooltip={telemetryTooltip}
-                  tooltipLinkText={tooltipLinkText}
-                  link={telemetryLink}
-                  className={cx({ [styles.switchDisabled]: values.stt })}
-                  disabled={values.stt}
-                  dataQa="advanced-telemetry-switch"
-                  component={SwitchRow}
+                  name="retention"
+                  dataQa="advanced-retention-input"
+                  component={NumericInputField}
+                  validate={retentionValidators}
                 />
-                <Field
-                  name="updates"
-                  type="checkbox"
-                  label={updatesLabel}
-                  tooltip={updatesTooltip}
-                  tooltipLinkText={tooltipLinkText}
-                  link={updatesLink}
-                  className={styles.switchDisabled}
-                  disabled
-                  dataQa="advanced-updates-switch"
-                  component={SwitchRow}
-                />
-                <Field
-                  name="stt"
-                  type="checkbox"
-                  label={sttLabel}
-                  tooltip={sttTooltip}
-                  tooltipLinkText={tooltipLinkText}
-                  link={sttLink}
-                  className={cx({ [styles.switchDisabled]: !values.telemetry })}
-                  disabled={!values.telemetry}
-                  dataQa="advanced-stt-switch"
-                  component={SwitchRow}
-                />
-              </tbody>
-            </table>
+                <span className={styles.retentionUnitslabel}>{retentionUnits}</span>
+              </div>
+            </div>
+            <Field
+              name="telemetry"
+              type="checkbox"
+              label={telemetryLabel}
+              tooltip={telemetryTooltip}
+              tooltipLinkText={tooltipLinkText}
+              link={telemetryLink}
+              className={cx({ [styles.switchDisabled]: values.stt })}
+              disabled={values.stt}
+              dataQa="advanced-telemetry"
+              component={SwitchRow}
+            />
+            <Field
+              name="updates"
+              type="checkbox"
+              label={updatesLabel}
+              tooltip={updatesTooltip}
+              tooltipLinkText={tooltipLinkText}
+              link={updatesLink}
+              className={styles.switchDisabled}
+              disabled
+              dataQa="advanced-updates"
+              component={SwitchRow}
+            />
+            <Field
+              name="stt"
+              type="checkbox"
+              label={sttLabel}
+              tooltip={sttTooltip}
+              tooltipLinkText={tooltipLinkText}
+              link={sttLink}
+              className={cx({ [styles.switchDisabled]: !values.telemetry })}
+              disabled={!values.telemetry}
+              dataQa="advanced-stt"
+              component={SwitchRow}
+            />
             <Button
               className={settingsStyles.actionButton}
               type="submit"

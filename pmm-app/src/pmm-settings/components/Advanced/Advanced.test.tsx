@@ -25,7 +25,7 @@ describe('Advanced::', () => {
       updatesDisabled
       updateSettings={() => {}}
     />);
-    const telemetrySwitch = root.find('[data-qa="advanced-telemetry-switch"]').find('input');
+    const telemetrySwitch = root.find('[data-qa="advanced-telemetry"]').find('input');
 
     expect(telemetrySwitch.prop('disabled')).toBeTruthy();
   });
@@ -38,7 +38,7 @@ describe('Advanced::', () => {
       updatesDisabled
       updateSettings={() => {}}
     />);
-    const sttSwitch = root.find('[data-qa="advanced-stt-switch"]').find('input');
+    const sttSwitch = root.find('[data-qa="advanced-stt"]').find('input');
 
     expect(sttSwitch.prop('disabled')).toBeTruthy();
   });

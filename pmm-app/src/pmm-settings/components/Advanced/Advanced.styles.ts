@@ -4,12 +4,18 @@ import { css } from 'emotion';
 
 export const getStyles = stylesFactory((theme: GrafanaTheme) => ({
   advancedWrapper: css`
-    table {
+    form {
       width: 300px;
     }
-    tr {
-      border-bottom: ${theme.spacing.md} solid transparent;
-    }
+  `,
+  advancedRow: css`
+    display: flex;
+    padding-bottom: ${theme.spacing.md};
+  `,
+  advancedCol: css`
+    align-items: center;
+    display: flex;
+    width: 180px;
   `,
   retentionInputWrapper: css`
     align-items: center;
@@ -19,9 +25,8 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => ({
     }
     div {
       margin: 0;
-      div:nth-child(2) {
+      div[class*="-error"] {
         position: absolute;
-        z-index: 2;
       }
     }
   `,
