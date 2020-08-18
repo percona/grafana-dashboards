@@ -1,7 +1,6 @@
-export interface SignUpData {
+export interface Credentials {
   email: string;
-  newPassword: string;
-  agreement: boolean;
+  password: string;
 }
 
 export interface SignUpProps {
