@@ -542,6 +542,7 @@ module.exports = {
     annotationMarker: '(//div[contains(@class,"events_marker")])',
     clearSelection: '//a[@ng-click="vm.clearSelections()"]',
     Last12HoursValue: "//span[contains(text(), 'Last 12 hours')]",
+    Last2Days: "//span[contains(text(), 'Last 2 days')]"
   },
 
   annotationLocator(annotationNumber) {
