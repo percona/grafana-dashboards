@@ -1,6 +1,8 @@
 import React, { FC } from 'react';
-import { Field } from '@grafana/ui';
+import { cx } from 'emotion';
+import { useTheme } from '@grafana/ui';
 import { NumericInput } from './NumericInput';
+import { getStyles } from './NumericInputField.styles';
 
 interface NumericInputFieldProps {
   className?: string;
@@ -18,18 +20,21 @@ export const NumericInputField: FC<NumericInputFieldProps> = ({
   dataQa,
   input,
   meta
-}) => (
-  <Field
-    invalid={meta?.error}
-    error={meta?.error}
-    disabled={disabled}
-  >
-    <NumericInput
-      {...input}
-      className={className}
-      disabled={disabled}
-      data-qa={dataQa}
-      label={label}
-    />
-  </Field>
-);
+}) => {
+  const theme = useTheme();
+  const styles = getStyles(theme);
+
+  // TODO: remove error message from here once we have custom Field
+  return (
+    <div>
+      <NumericInput
+        {...input}
+        className={cx(className, { [styles.invalid]: meta?.error })}
+        disabled={disabled}
+        data-qa={dataQa}
+        label={label}
+      />
+      <div className={styles.errorMessage}>{meta?.error}</div>
+    </div>
+  );
+};
