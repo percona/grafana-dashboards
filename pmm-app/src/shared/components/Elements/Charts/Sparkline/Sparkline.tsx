@@ -1,6 +1,7 @@
 import React, {
   useEffect, useRef, useState, RefObject, MutableRefObject
 } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import { scaleLinear } from 'd3';
 import moment from 'moment';
 import ReactTooltip from 'react-tooltip';
@@ -13,6 +14,7 @@ import {
   getMetricSparklineKey,
   isMetricExists,
 } from './Sparkline.tools';
+import { styles } from './Sparkline.styles';
 
 const updateGraphs = (columnNumber) => {
   const event = new CustomEvent('sync-graphs', { detail: columnNumber });
@@ -197,15 +199,17 @@ export const Sparkline = ({
     return () => document.removeEventListener('sync-graphs', drawHighlighted);
   }, [sparklineCanvas]);
 
+  const id = uuidv4();
+
   return (
     <>
       <canvas
         ref={sparklineCanvas as RefObject<any>}
-        style={{ background: 'transparent' }}
+        className={styles.graphWrapper}
         width={GRAPH_WIDTH}
         height={BAR_HEIGHT}
         data-tip={tooltip}
-        data-for="test"
+        data-for={`sparkline-tooltip-${id}`}
       />
       <ReactTooltip
         data-qa="sparkline-tooltip"
@@ -213,8 +217,7 @@ export const Sparkline = ({
         place="bottom"
         backgroundColor="#3274d9"
         arrowColor="#3274d9"
-        id="test"
-        getContent={() => tooltip}
+        id={`sparkline-tooltip-${id}`}
       />
     </>
   );
