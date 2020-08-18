@@ -1,13 +1,6 @@
-import React, {
-  FC,
-  useState
-} from 'react';
+import React, { FC, useState } from 'react';
 import { Form, Field, FormRenderProps } from 'react-final-form';
-import {
-  Button,
-  LinkButton,
-  useTheme,
-} from '@grafana/ui';
+import { Button, LinkButton, useTheme } from '@grafana/ui';
 import { showSuccessNotification, showErrorNotification } from 'shared/components/helpers';
 import { ButtonWithSpinner } from 'shared/components/Form';
 import validators from 'shared/components/helpers/validators';
@@ -33,13 +26,19 @@ export const SignUp: FC<SignUpProps> = ({ userEmail }) => {
     <span data-qa="sign-up-agreement-checkbox-label" className={styles.checkboxLabel}>
       {Messages.agreementFirstPart}
       {' '}
-      <LinkButton className={styles.link} variant="link" href={TERMS_OF_SERVICE_URL}>{Messages.termsOfService}</LinkButton>
+      <LinkButton className={styles.link} variant="link" href={TERMS_OF_SERVICE_URL}>
+        {Messages.termsOfService}
+      </LinkButton>
       {', '}
-      <LinkButton className={styles.link} variant="link" href={PRIVACY_POLICY_URL}>{Messages.privacyPolicy}</LinkButton>
+      <LinkButton className={styles.link} variant="link" href={PRIVACY_POLICY_URL}>
+        {Messages.privacyPolicy}
+      </LinkButton>
       {', '}
       {Messages.agreementSecondPart}
       {' '}
-      <LinkButton className={styles.link} variant="link" href={NOTIFICATION_SETTINGS_URL}>{Messages.notificationSettings}</LinkButton>
+      <LinkButton className={styles.link} variant="link" href={NOTIFICATION_SETTINGS_URL}>
+        {Messages.notificationSettings}
+      </LinkButton>
     </span>
   );
 
@@ -58,9 +57,7 @@ export const SignUp: FC<SignUpProps> = ({ userEmail }) => {
     pristine, submitting, valid, handleSubmit
   }) => (
     <form data-qa="sign-up-form" className={styles.form} onSubmit={handleSubmit}>
-      <legend className={styles.legend}>
-        {Messages.signUp}
-      </legend>
+      <legend className={styles.legend}>{Messages.signUp}</legend>
       <Field
         data-qa="sign-up-email-input"
         name="email"
@@ -99,7 +96,8 @@ export const SignUp: FC<SignUpProps> = ({ userEmail }) => {
         data-qa="sign-up-to-sign-in-button"
         className={styles.signInButton}
         type="button"
-        variant="destructive"
+        variant="secondary"
+        disabled
       >
         {Messages.signIn}
       </Button>
@@ -109,16 +107,13 @@ export const SignUp: FC<SignUpProps> = ({ userEmail }) => {
   return (
     // TODO (nicolalamacchia): improve this once the sign in component is ready
     <>
-      {loggedInEmail != null
-        ? <LoggedIn email={loggedInEmail} />
-        : (
-          <div data-qa="sign-up-form-wrapper" className={styles.formWrapper}>
-            <Form
-              onSubmit={handleSignUpFormSubmit}
-              render={InnerForm}
-            />
-          </div>
-        )}
+      {loggedInEmail != null ? (
+        <LoggedIn email={loggedInEmail} />
+      ) : (
+        <div data-qa="sign-up-form-wrapper" className={styles.formWrapper}>
+          <Form onSubmit={handleSignUpFormSubmit} render={InnerForm} />
+        </div>
+      )}
     </>
   );
 };
