@@ -11,10 +11,36 @@ We can help you, more information on the [link](https://www.percona.com/communit
 ## Local setup
 
 The easiest way to setup a development environment is to use [Docker Compose](https://docs.docker.com/compose).
+That environment bundles a number of tools to help you populate the panels with sample data.
 
 ```
 cd pmm-app
 docker-compose up -d
+npm run dev
+```
+
+For a much simpler development environment you could create a local file `docker-compose.local.yml` inside of `pmm-app` folder:
+
+```yml
+version: "3"
+services:
+  pmm-server:
+    container_name: pmm-server
+    image: percona/pmm-server:2
+    environment:
+      - DISABLE_TELEMETRY=1
+    volumes:
+      - ./dist:/var/lib/grafana/plugins/pmm-app/dist
+    ports:
+      - 80:80
+    restart: always
+```
+
+Then to run it:
+
+```bash
+cd pmm-app
+docker-compose -f ./docker-compose.local.yml up -d
 npm run dev
 ```
 
@@ -39,20 +65,23 @@ npm run dev
         git add .
         git commit -m "PMM-5053 Add a tooltip for Head Block widget for Prometheus Dashboard"
 
-8.  Push your branch into your repository. Check that your branch only contains code relevant to the issue.
+8.  Run the tests with `npm run test` and make sure all the tests pass.
+
+9.  Push your branch into your repository. Check that your branch only contains code relevant to the issue.
 
     git push origin PMM-5053-dbazhenov-tooltip
 
-9.  Make a Pull Request from your branch to the right branch in percona/grafana-dashboards.
+10. Make a Pull Request from your branch to the right branch in percona/grafana-dashboards.
+
 
     Example: from dbazhenov:PMM-5053-dbazhenov-tooltip to percona:PMM-2.0
 
-10. Your Pull Request must pass certain checks, i.e. Jenkins CI, and Contributor License Agreement.
+11. Your Pull Request must pass certain checks, i.e. Jenkins CI, and Contributor License Agreement.
 
     You need to open the Contributor License Agreement page, read it, and confirm it.
 
-11. Wait for our experts to review your code. You may need to answer questions or to address requests for changes.
+12. Wait for our experts to review your code. You may need to answer questions or to address requests for changes.
 
-12. Our Engineers will merge your branch into the release branch by themselves.
+13. Our Engineers will merge your branch into the release branch by themselves.
 
-13. Congratulations, you have become a contributor. Thanks for contributing to open source!
+14. Congratulations, you have become a contributor. Thanks for contributing to open source!
