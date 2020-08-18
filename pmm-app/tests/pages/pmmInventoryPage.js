@@ -209,8 +209,8 @@ module.exports = {
     assert.equal(count, otherDetails, 'Check data!');
   },
 
-  async getCellValue(index, column) {
-    const value = await I.grabTextFrom(`//tr[@data-qa="table-row"][${index}]/td[${column}]`);
+  async getCellValue(rowNumber, columnNumber) {
+    const value = await I.grabTextFrom(`//tr[@data-qa="table-row"][${rowNumber}]/td[${columnNumber}]`);
     return value.toLowerCase();
   },
 

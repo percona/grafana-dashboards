@@ -146,7 +146,7 @@ Scenario(
 );
 
 Scenario(
-  'PMM-T371 - Verify sorting in Inventory page(Services tab) @not-pr-pipeline',
+  'PMM-T371 - Verify sorting in Inventory page(Services tab) @not-pr-pipeline @not-ui-pipeline @nightly',
   async (I, pmmInventoryPage) => {
     I.amOnPage(pmmInventoryPage.url);
     I.waitForVisible(pmmInventoryPage.fields.tableRow, 20);
@@ -167,7 +167,7 @@ Scenario(
 );
 
 Scenario(
-  'PMM-T371 - Verify sorting in Inventory page(Agents tab) @not-pr-pipeline',
+  'PMM-T371 - Verify sorting in Inventory page(Agents tab) @not-pr-pipeline @not-ui-pipeline @nightly',
   async (I, pmmInventoryPage) => {
     I.amOnPage(pmmInventoryPage.url);
     I.waitForVisible(pmmInventoryPage.fields.agentsLink, 20);
@@ -190,7 +190,7 @@ Scenario(
 );
 
 Scenario(
-  'PMM-T371 - Verify sorting in Inventory page(Nodes tab) @not-pr-pipeline',
+  'PMM-T371 - Verify sorting in Inventory page(Nodes tab) @not-pr-pipeline @not-ui-pipeline @nightly',
   async (I, pmmInventoryPage) => {
     I.amOnPage(pmmInventoryPage.url);
     I.waitForVisible(pmmInventoryPage.fields.nodesLink, 20);
