@@ -278,7 +278,7 @@ Scenario(
     const serviceName = 'ps_5.7';
 
     qanActions.waitForNewQANPageLoaded();
-    //change to 12 hours for apply ps_5.7 value in filter
+    //change to 2 days for apply ps_5.7 value in filter
     I.click(qanPage.elements.timeRangePickerButton);
     I.click(dashboardPage.fields.Last2Days);
     const countBefore = await qanActions.getCountOfItems();
