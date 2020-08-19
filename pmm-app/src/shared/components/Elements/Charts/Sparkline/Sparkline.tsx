@@ -172,7 +172,7 @@ export const Sparkline = ({
     //     e.stopPropagation();
     //   };
     //
-    //   sparklineCanvas.current.addEventListener('mouseup', mouseUpHandler);
+    //   sparklineCanvas.current.addEventListemer('mouseup', mouseUpHandler);
     //   sparklineCanvas.current.addEventListener('mousemove', mouseMove);
     // });
     ctx.clearRect(0, 0, 300, 30);
@@ -208,7 +208,7 @@ export const Sparkline = ({
         className={styles.graphWrapper}
         width={GRAPH_WIDTH}
         height={BAR_HEIGHT}
-        data-tip={tooltip}
+        data-tip=""
         data-for={`sparkline-tooltip-${id}`}
       />
       <ReactTooltip
@@ -218,6 +218,7 @@ export const Sparkline = ({
         backgroundColor="#3274d9"
         arrowColor="#3274d9"
         id={`sparkline-tooltip-${id}`}
+        getContent={() => tooltip}
       />
     </>
   );
