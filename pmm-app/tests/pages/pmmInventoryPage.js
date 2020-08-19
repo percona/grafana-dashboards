@@ -220,7 +220,7 @@ module.exports = {
     const rowCount = await I.grabNumberOfVisibleElements(this.fields.tableRow);
     let tmp;
 
-    for (i = 0; i < rowCount; i++) {
+    for (let i = 0; i < rowCount; i++) {
       const cellValue = await this.getCellValue(i + 1, columnNumber);
 
       if (i == 0) {
@@ -232,7 +232,7 @@ module.exports = {
           break;
         }
 
-        // Save the value for the next run
+        // Update the tmp value for the next comparison
         tmp = cellValue;
       }
     }
