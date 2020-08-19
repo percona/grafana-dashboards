@@ -1,5 +1,3 @@
-export const TERMS_OF_SERVICE_URL = '#';
+export const TERMS_OF_SERVICE_URL = 'https://per.co.na/pmm/platform-terms';
 
-export const PRIVACY_POLICY_URL = '#';
-
-export const NOTIFICATION_SETTINGS_URL = '#';
+export const PRIVACY_POLICY_URL = 'https://per.co.na/pmm/platform-privacy';

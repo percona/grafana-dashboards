@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Field, Form, FormRenderProps } from 'react-final-form';
 import { LinkButton, useTheme } from '@grafana/ui';
-import { Credentials } from './types';
+import { Credentials, LoginFormProps } from './types';
 import { Messages } from './PlatformLogin.messages';
 import { CheckboxFieldAdapter, InputFieldAdapter } from './FieldAdapters/FieldAdapters';
 import validators from '../../../shared/components/helpers/validators';
@@ -9,9 +9,9 @@ import { ButtonWithSpinner } from '../../../shared/components/Form';
 import { getStyles } from './PlatformLogin.styles';
 import { PlatformLoginService } from './PlatformLogin.service';
 import { showErrorNotification, showSuccessNotification } from '../../../shared/components/helpers';
-import { NOTIFICATION_SETTINGS_URL, PRIVACY_POLICY_URL, TERMS_OF_SERVICE_URL } from './PlatformLogin.constants';
+import { PRIVACY_POLICY_URL, TERMS_OF_SERVICE_URL } from './PlatformLogin.constants';
 
-export const SignUp = ({ setLoggedInEmail, changeMode }) => {
+export const SignUp = ({ changeMode, getSettings }: LoginFormProps) => {
   const theme = useTheme();
   const styles = getStyles(theme);
 
@@ -20,9 +20,9 @@ export const SignUp = ({ setLoggedInEmail, changeMode }) => {
       const result = await PlatformLoginService.signUp(credentials);
 
       if (result.email) {
-        setLoggedInEmail(result.email);
+        getSettings();
         showSuccessNotification({ message: Messages.signUpSucceeded });
-        showSuccessNotification({ message: `${Messages.loginSucceeded} ${result.email}` });
+        showSuccessNotification({ message: `${Messages.loginSucceeded} ${credentials.email}` });
       }
     } catch (e) {
       console.error(e);
@@ -32,20 +32,13 @@ export const SignUp = ({ setLoggedInEmail, changeMode }) => {
 
   const CheckboxLabel = () => (
     <span data-qa="sign-up-agreement-checkbox-label" className={styles.checkboxLabel}>
-      {Messages.agreementFirstPart}
-      {' '}
+      {`${Messages.agreementFirstPart} `}
       <LinkButton className={styles.link} variant="link" href={TERMS_OF_SERVICE_URL}>
         {Messages.termsOfService}
       </LinkButton>
-      {', '}
+      {` ${Messages.agreementSecondPart} `}
       <LinkButton className={styles.link} variant="link" href={PRIVACY_POLICY_URL}>
         {Messages.privacyPolicy}
-      </LinkButton>
-      {', '}
-      {Messages.agreementSecondPart}
-      {' '}
-      <LinkButton className={styles.link} variant="link" href={NOTIFICATION_SETTINGS_URL}>
-        {Messages.notificationSettings}
       </LinkButton>
     </span>
   );
@@ -109,7 +102,7 @@ export const SignUp = ({ setLoggedInEmail, changeMode }) => {
         data-qa="sign-up-to-sign-in-button"
         className={styles.signInButton}
         type="button"
-        variant="secondary"
+        variant="link"
         onClick={changeMode}
         disabled={submitting}
       >
