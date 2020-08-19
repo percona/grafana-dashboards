@@ -52,12 +52,13 @@ export const Table: FC<TableProps> = ({
   const changeMainColumnWidth = useCallback(() => {
     setTimeout(() => {
       const width = getMainColumnWidth(columns.length);
+      const allColumnsWidth = getAllColumnsWidth(width, columns.length);
 
       document.querySelectorAll('.table-body .tr>div:nth-child(2)').forEach((element) => {
         (element as HTMLElement).style['min-width'] = `${width}px`;
       });
       document.querySelectorAll('.table-body .tr').forEach((element) => {
-        (element as HTMLElement).style['min-width'] = `${getAllColumnsWidth(width, columns.length)}px`;
+        (element as HTMLElement).style['min-width'] = `${allColumnsWidth}px`;
       });
     }, 150);
   }, [columns]);
