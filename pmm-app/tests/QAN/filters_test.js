@@ -5,7 +5,7 @@ Before((I, qanPage) => {
   I.Authorize();
   I.amOnPage(qanPage.url);
 });
-/*
+
 Scenario(
   'PMM-T175 - Verify user is able to apply filter that has dots in label @not-pr-pipeline @qan',
   async (I, qanActions) => {
@@ -269,7 +269,7 @@ Scenario(
     I.waitForElement(qanPage.fields.noQueries, 20);
   },
 );
-*/
+
 Scenario(
   'PMM-T221 - Verify that all filter options are always visible (but some disabled) after selecting an item and % value is changed @not-pr-pipeline @qan',
   async (I, qanPage, qanActions, pmmSettingsPage, dashboardPage) => {
