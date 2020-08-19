@@ -228,7 +228,9 @@ module.exports = {
         tmp = cellValue;
       } else {
         if (tmp.localeCompare(cellValue) === 1) {
-          assert.fail('The array is not sorted correctly from a-z');
+          assert.fail(
+            `The array is not sorted correctly from a-z: value ${cellValue} should come after ${tmp}, not before`,
+          );
           break;
         }
 
