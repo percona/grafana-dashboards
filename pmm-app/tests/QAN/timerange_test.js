@@ -41,7 +41,7 @@ Scenario(
 
 // Need to skip until we fix Sorting Locator and make it easy for Automation
 xScenario(
-  "Open the QAN Dashboard and check that changing the time range doesn't reset sorting. @not-pr-pipeline @qan",
+  'Open the QAN Dashboard and check that changing the time range doesn\'t reset sorting. @not-pr-pipeline @qan',
   async (adminPage, qanActions) => {
     await qanActions.changeSorting(3, 'up');
     adminPage.applyTimeRange('Last 24 hours');

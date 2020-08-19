@@ -36,7 +36,7 @@ export const NumericInput: FC<NumericInputProps> = ({
       )}
       <span className={styles.inputWrapper}>
         <BaseInput
-          {...props}
+          {...props as any}
           ref={inputRef}
           type="number"
           disabled={disabled}
