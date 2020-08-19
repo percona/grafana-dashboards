@@ -1,8 +1,5 @@
 import React, { FC } from 'react';
-import {
-  LinkButton,
-  useTheme,
-} from '@grafana/ui';
+import { LinkButton, useTheme } from '@grafana/ui';
 import { Messages } from './LoggedIn.messages';
 import { getStyles } from './LoggedIn.styles';
 import { SIGN_OUT_URL } from './LoggedIn.constants';
