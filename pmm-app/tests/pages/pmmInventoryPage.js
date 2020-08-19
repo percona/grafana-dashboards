@@ -216,19 +216,20 @@ module.exports = {
 
   async checkSort(columnNumber) {
     I.waitForVisible(this.fields.tableRow, 20);
-    const countOfRows = await I.grabNumberOfVisibleElements(this.fields.tableRow);
-    const serviceNames = new Array(countOfRows);
+    const rowCount = await I.grabNumberOfVisibleElements(this.fields.tableRow);
     let tmp;
-    for (i = 0; i <= serviceNames.length - 1; i++) {
-      serviceNames[i] = await this.getCellValue(i + 1, columnNumber);
+
+    for (i = 0; i < rowCount; i++) {
+      const cellValue = await this.getCellValue(i + 1, columnNumber);
       if (i == 0) {
-        tmp = serviceNames[i];
-      }
-      if (i > 0) {
-        tmp = serviceNames[i - 1];
-        if (tmp.localeCompare(serviceNames[i]) === 1) {
+        // Do nothing for the first run
+        tmp = cellValue;
+      } else {
+        if (tmp.localeCompare(cellValue) === 1) {
           assert.fail('The array is not sorted correctly from a-z');
         }
+        // Save the value for the next run
+        tmp = cellValue;
       }
     }
   },
