@@ -211,6 +211,7 @@ module.exports = {
 
   async getCellValue(rowNumber, columnNumber) {
     const value = await I.grabTextFrom(`//tr[@data-qa="table-row"][${rowNumber}]/td[${columnNumber}]`);
+
     return value.toLowerCase();
   },
 
@@ -221,13 +222,16 @@ module.exports = {
 
     for (i = 0; i < rowCount; i++) {
       const cellValue = await this.getCellValue(i + 1, columnNumber);
+
       if (i == 0) {
         // Do nothing for the first run
         tmp = cellValue;
       } else {
         if (tmp.localeCompare(cellValue) === 1) {
           assert.fail('The array is not sorted correctly from a-z');
+          break;
         }
+
         // Save the value for the next run
         tmp = cellValue;
       }
