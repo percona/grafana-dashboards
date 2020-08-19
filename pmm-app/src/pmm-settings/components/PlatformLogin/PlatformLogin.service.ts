@@ -3,7 +3,7 @@ import { Credentials } from './types';
 
 export const PlatformLoginService = {
   async signUp(credentials: Credentials) {
-    let response: any;
+    let response: any = {};
 
     try {
       response = await apiRequest.post<any, any>('/v1/Platform/SignUp', credentials);
@@ -14,7 +14,7 @@ export const PlatformLoginService = {
     return response;
   },
   async signIn(credentials: Credentials) {
-    let response: any;
+    let response: any = {};
 
     try {
       response = await apiRequest.post<any, any>('/v1/Platform/SignIn', credentials);
