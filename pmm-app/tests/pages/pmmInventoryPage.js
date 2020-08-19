@@ -214,7 +214,22 @@ module.exports = {
     return value.toLowerCase();
   },
 
-  checkData(value1, value2) {
-    assert.equal(value1, value2, `The first value: ${value1} is not same as second value: ${value2}`);
+  async checkSort(columnNumber) {
+    I.waitForVisible(this.fields.tableRow, 20);
+    const countOfRows = await I.grabNumberOfVisibleElements(this.fields.tableRow);
+    const serviceNames = new Array(countOfRows);
+    let tmp;
+    for (i = 0; i <= serviceNames.length - 1; i++) {
+      serviceNames[i] = await this.getCellValue(i + 1, columnNumber);
+      if (i == 0) {
+        tmp = serviceNames[i];
+      }
+      if (i > 0) {
+        tmp = serviceNames[i - 1];
+        if (tmp.localeCompare(serviceNames[i]) === 1) {
+          assert.fail('The array is not sorted correctly from a-z');
+        }
+      }
+    }
   },
 };
