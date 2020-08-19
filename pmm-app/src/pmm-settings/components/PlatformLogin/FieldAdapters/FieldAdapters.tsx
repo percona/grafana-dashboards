@@ -1,9 +1,6 @@
 import React from 'react';
 import { cx } from 'emotion';
-import {
-  Input,
-  useTheme,
-} from '@grafana/ui';
+import { Input, useTheme } from '@grafana/ui';
 import { getStyles } from './FieldAdapters.styles';
 // TODO (nicolalamacchia): use Grafana's components once migration to Grafana v7 is complete
 import { Checkbox } from './Checkbox';
