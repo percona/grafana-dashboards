@@ -1,6 +1,6 @@
 import React, { HTMLProps, useCallback } from 'react';
 import { GrafanaTheme } from '@grafana/data';
-import { useTheme, stylesFactory } from '@grafana/ui';
+import { stylesFactory, useTheme } from '@grafana/ui';
 import { css, cx } from 'emotion';
 
 export interface CheckboxProps extends Omit<HTMLProps<HTMLInputElement>, 'value'> {

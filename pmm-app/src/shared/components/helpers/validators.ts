@@ -11,6 +11,13 @@ const validators = {
     return 'Port should be a number and between the range of 0 and 65535';
   },
 
+  matches: (field, message) => (value, values) => {
+    if (value === values[field]) {
+      return undefined;
+    }
+
+    return message;
+  },
   validateRange: (value, from, to) => {
     if (!value) {
       return '';
