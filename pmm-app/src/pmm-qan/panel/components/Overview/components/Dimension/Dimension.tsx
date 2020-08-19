@@ -1,6 +1,7 @@
 import React, { FC, useContext } from 'react';
 import { Select } from 'antd';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
+import { Search } from '../Search/Search';
 import { styles } from './Dimension.styles';
 import { DIMENSIONS_OPTIONS } from './Dimension.constants';
 import './Dimension.scss';
@@ -10,7 +11,7 @@ const { Option } = Select;
 export const Dimension: FC = () => {
   const {
     contextActions,
-    panelState: { groupBy },
+    panelState: { groupBy, search },
   } = useContext(QueryAnalyticsProvider);
 
   return (
@@ -29,6 +30,10 @@ export const Dimension: FC = () => {
           </Option>
         ))}
       </Select>
+      <Search
+        initialValue={search}
+        handleSearch={contextActions.setSearch}
+      />
     </div>
   );
 };

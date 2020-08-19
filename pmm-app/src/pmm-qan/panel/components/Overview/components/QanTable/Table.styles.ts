@@ -122,7 +122,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       align-items: center;
 
       .header-wrapper {
-        width: 80%;
+        width: 100%;
       }
     `,
     tableWrapper: css`

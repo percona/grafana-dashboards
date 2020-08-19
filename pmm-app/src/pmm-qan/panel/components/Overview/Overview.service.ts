@@ -17,6 +17,7 @@ export default {
       main_metric: columns[0],
       period_start_from: body.from,
       period_start_to: body.to,
+      search: body.search
     };
 
     return apiRequestQAN.post<any, any>('/GetReport', request);
