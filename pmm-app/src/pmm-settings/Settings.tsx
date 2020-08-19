@@ -53,8 +53,12 @@ export const SettingsPanel: FC = () => {
     }
   };
 
+  const getSettings = () => {
+    SettingsService.getSettings(setLoading, setSettings).then();
+  };
+
   useEffect(() => {
-    SettingsService.getSettings(setLoading, setSettings);
+    getSettings();
   }, []);
 
   return (
@@ -112,7 +116,7 @@ export const SettingsPanel: FC = () => {
                 />
                 )}
           {tabs[4].active
-                && <PlatformLogin userEmail={settings.saasUserEmail} />}
+                && <PlatformLogin userEmail={settings.saasUserEmail} getSettings={getSettings} />}
         </>
         )}
       </TabContent>
