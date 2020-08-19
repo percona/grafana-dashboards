@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Field, Form, FormRenderProps } from 'react-final-form';
 import { Button, useTheme } from '@grafana/ui';
-import { Credentials } from './types';
+import { Credentials, LoginFormProps } from './types';
 import { Messages } from './PlatformLogin.messages';
 import { InputFieldAdapter } from './FieldAdapters/FieldAdapters';
 import validators from '../../../shared/components/helpers/validators';
@@ -11,7 +11,7 @@ import { PlatformLoginService } from './PlatformLogin.service';
 import { showErrorNotification, showSuccessNotification } from '../../../shared/components/helpers';
 
 
-export const SignIn = ({ setLoggedInEmail, changeMode }) => {
+export const SignIn = ({ changeMode, getSettings }: LoginFormProps) => {
   const theme = useTheme();
   const styles = getStyles(theme);
 
@@ -20,9 +20,9 @@ export const SignIn = ({ setLoggedInEmail, changeMode }) => {
       const result = await PlatformLoginService.signIn(credentials);
 
       if (result.email) {
-        setLoggedInEmail(result.email);
+        getSettings();
         showSuccessNotification({ message: Messages.signUpSucceeded });
-        showSuccessNotification({ message: `${Messages.loginSucceeded} ${result.email}` });
+        showSuccessNotification({ message: `${Messages.loginSucceeded} ${credentials.email}` });
       }
     } catch (e) {
       console.error(e);
@@ -72,7 +72,7 @@ export const SignIn = ({ setLoggedInEmail, changeMode }) => {
         type="button"
         onClick={changeMode}
         disabled={submitting}
-        variant="secondary"
+        variant="link"
       >
         {Messages.perconaPlatform}
       </ButtonWithSpinner>

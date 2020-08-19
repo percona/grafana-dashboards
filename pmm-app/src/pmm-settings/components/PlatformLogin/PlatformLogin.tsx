@@ -6,22 +6,21 @@ import { LoggedIn } from './LoggedIn/LoggedIn';
 import { SignIn } from './SignIn';
 import { SignUp } from './SignUp';
 
-export const PlatformLogin: FC<SignUpProps> = ({ userEmail }) => {
+export const PlatformLogin: FC<SignUpProps> = ({ userEmail, getSettings }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
-  const [loggedInEmail, setLoggedInEmail] = useState(userEmail);
   const [isSignInMode, setMode] = useState(true);
   const toggleMode = () => setMode(!isSignInMode);
 
   return (
     <>
-      {loggedInEmail != null ? (
-        <LoggedIn email={loggedInEmail} />
+      {userEmail != null ? (
+        <LoggedIn email={userEmail} />
       ) : (
         <div data-qa="sign-up-form-wrapper" className={styles.formWrapper}>
           {isSignInMode
-            ? <SignIn setLoggedInEmail={setLoggedInEmail} changeMode={toggleMode} />
-            : <SignUp setLoggedInEmail={setLoggedInEmail} changeMode={toggleMode} />}
+            ? <SignIn getSettings={getSettings} changeMode={toggleMode} />
+            : <SignUp getSettings={getSettings} changeMode={toggleMode} />}
         </div>
       )}
     </>
