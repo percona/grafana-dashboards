@@ -219,16 +219,20 @@ module.exports = {
     const rowCount = await I.grabNumberOfVisibleElements(this.fields.tableRow);
     let tmp;
 
-    for (i = 0; i < rowCount; i++) {
+    for (let i = 0; i < rowCount; i++) {
       const cellValue = await this.getCellValue(i + 1, columnNumber);
       if (i === 0) {
         // Do nothing for the first run
         tmp = cellValue;
       } else {
         if (tmp.localeCompare(cellValue) === 1) {
-          assert.fail('The array is not sorted correctly from a-z');
+          assert.fail(
+            `The array is not sorted correctly from a-z: value ${cellValue} should come after ${tmp}, not before`,
+          );
+          break;
         }
-        // Save the value for the next run
+
+        // Update the tmp value for the next comparison
         tmp = cellValue;
       }
     }
