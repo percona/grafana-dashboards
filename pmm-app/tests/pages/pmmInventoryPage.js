@@ -19,7 +19,7 @@ module.exports = {
     proceedButton: '//span[contains(text(), "Proceed")]',
     forceModeCheckbox: 'div[data-qa="form-field-force"] span.checkbox-container__checkmark',
     tableCheckbox: 'div[data-qa="select-row"]',
-    tableRow: 'tr[data-qa="table-row"]',
+    tableRow: '//tr[@data-qa="table-row"]',
   },
 
   verifyOldMySQLRemoteServiceIsDisplayed(serviceName) {
@@ -210,7 +210,7 @@ module.exports = {
   },
 
   async getCellValue(rowNumber, columnNumber) {
-    const value = await I.grabTextFrom(`//tr[@data-qa="table-row"][${rowNumber}]/td[${columnNumber}]`);
+    const value = await I.grabTextFrom(this.fields.tableRow + `[${rowNumber}]/td[${columnNumber}]`);
     return value.toLowerCase();
   },
 
@@ -221,7 +221,7 @@ module.exports = {
 
     for (i = 0; i < rowCount; i++) {
       const cellValue = await this.getCellValue(i + 1, columnNumber);
-      if (i == 0) {
+      if (i === 0) {
         // Do nothing for the first run
         tmp = cellValue;
       } else {
