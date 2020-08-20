@@ -18,9 +18,9 @@ export interface MetricsResolutions {
 }
 
 export enum TabKeys {
-  metrics = 'metrics',
-  advanced = 'advanced',
-  ssh = 'ssh',
-  alertManager = 'alertManager',
+  metrics = 'metrics-resolution',
+  advanced = 'advanced-settings',
+  ssh = 'ssh-key',
+  alertManager = 'am-integration',
   signUp = 'signUp',
 }
