@@ -1,6 +1,7 @@
 export const Messages = {
   perconaPlatform: 'Sign up',
   signIn: 'Sign in',
+  toSignIn: 'Back to Sign in',
   termsOfService: 'Terms of Service',
   privacyPolicy: 'Privacy Policy',
   notificationSettings: 'Notification Settings',
