@@ -13,6 +13,5 @@ export const Messages = {
   emailLabel: 'Email',
   errors: {
     signUpFailed: 'There was a problem during the sign up process, please try again',
-    passwordMismatch: 'Passwords should match'
   },
 };
