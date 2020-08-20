@@ -11,7 +11,7 @@ import { getStyles } from './PlatformLogin.styles';
 import { PlatformLoginService } from './PlatformLogin.service';
 import { PRIVACY_POLICY_URL, TERMS_OF_SERVICE_URL } from './PlatformLogin.constants';
 
-export const SignUp = ({ changeMode, getSettings }: LoginFormProps) => {
+export const SignUp: FC<LoginFormProps> = ({ changeMode, getSettings }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
 
