@@ -68,7 +68,7 @@ export const SignUp = ({ changeMode, getSettings }: LoginFormProps) => {
         autoComplete="on"
       />
       <Field
-        data-qa="sign-up-password-input"
+        data-qa="sign-up-confirm-password-input"
         name="confirm-password"
         label={Messages.confirmPasswordLabel}
         type="password"
