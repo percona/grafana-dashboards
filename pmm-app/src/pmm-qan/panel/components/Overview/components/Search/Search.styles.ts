@@ -10,23 +10,28 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => ({
     width: 100%;
   `,
   searchInput: css`
-    background: transparent;
-    border: none;
-    box-shadow: none;
-    &::placeholder {
-      color: ${theme.colors.textWeak};
-    }
-    &:focus {
+    input {
+      background: transparent;
+      border: none;
       box-shadow: none;
+      &::placeholder {
+        color: ${theme.colors.textWeak};
+      }
+      &:focus {
+        box-shadow: none;
+      }
     }
   `,
   searchButton: css`
     background: transparent;
+    border: none;
     &:focus,
     &:hover {
       background: transparent;
+      border: none;
+      box-shadow: none;
     }
-    i {
+    svg {
       &:hover {
         color: ${theme.colors.linkHover};
       }
