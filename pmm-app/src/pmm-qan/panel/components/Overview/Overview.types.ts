@@ -10,7 +10,7 @@ export interface OverviewServiceInterface {
   pageSize: number;
   pageNumber: number;
   groupBy?: string;
-  search?: string;
+  dimensionSearchText?: string;
 }
 
 interface RowInterface {

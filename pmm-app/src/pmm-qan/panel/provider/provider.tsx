@@ -128,6 +128,10 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
     setSearch: ({ search }) => (state) => ({
       ...state,
       search
+    }),
+    setDimensionSearchText: ({ search }) => (state) => ({
+      ...state,
+      dimensionSearchText: search
     })
   };
 

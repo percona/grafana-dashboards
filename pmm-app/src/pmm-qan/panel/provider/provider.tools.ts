@@ -24,11 +24,11 @@ interface GrafanaVariables {
   query_selected?: string;
   details_tab?: string;
   [key: string]: any;
-  search?: string;
+  dimensionSearchText?: string;
 }
 export const refreshGrafanaVariables = (state) => {
   const {
-    labels, columns, groupBy, queryId, orderBy, rawTime, search
+    labels, columns, groupBy, queryId, orderBy, rawTime, dimensionSearchText
   } = state;
 
   const variablesQuery: GrafanaVariables = {};
@@ -62,8 +62,8 @@ export const refreshGrafanaVariables = (state) => {
     variablesQuery.to = rawTime.to;
   }
 
-  if (search) {
-    variablesQuery.search = search;
+  if (dimensionSearchText) {
+    variablesQuery.dimensionSearchText = dimensionSearchText;
   }
 
   variablesQuery.totals = String(state.totals);
@@ -96,7 +96,7 @@ export const parseURL = (query) => ({
   querySelected: !!query.get('filter_by') || query.get('query_selected') === 'true',
   groupBy: query.get('group_by') || 'queryid',
   openDetailsTab: query.get('details_tab') || 'details',
-  search: query.get('search') || ''
+  dimensionSearchText: query.get('dimensionSearchText') || ''
 });
 export const setLabels = (filters) => Object.keys(filters)
   .filter((filter) => filters[filter])

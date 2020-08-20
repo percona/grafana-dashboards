@@ -23,7 +23,7 @@ interface QueryAnalyticsPanelState {
   controlSum?: string;
   rawTime: RawTime;
   loadingDetails?: boolean;
-  search?: string;
+  dimensionSearchText?: string;
 }
 
 export interface QueryAnalyticsContext {

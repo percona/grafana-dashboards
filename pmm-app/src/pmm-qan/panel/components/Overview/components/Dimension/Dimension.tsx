@@ -11,7 +11,7 @@ const { Option } = Select;
 export const Dimension: FC = () => {
   const {
     contextActions,
-    panelState: { groupBy, search },
+    panelState: { groupBy, dimensionSearchText },
   } = useContext(QueryAnalyticsProvider);
 
   return (
@@ -31,8 +31,8 @@ export const Dimension: FC = () => {
         ))}
       </Select>
       <Search
-        initialValue={search}
-        handleSearch={contextActions.setSearch}
+        initialValue={dimensionSearchText}
+        handleSearch={contextActions.setDimensionSearchText}
       />
     </div>
   );
