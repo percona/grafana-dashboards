@@ -647,17 +647,17 @@ module.exports = {
   },
 
   expandFilters(filterType) {
-    const filterLocator = `//label[contains(text(), '${filterType}')]/following-sibling::value-select-dropdown`;
+    const filterGroupLocator = `//label[contains(text(), '${filterType}')]/parent::div`;
 
-    I.waitForElement(filterLocator, 30);
-    I.click(filterLocator);
+    I.waitForElement(`${filterGroupLocator}//a`, 30);
+    I.click(`${filterGroupLocator}//a`);
 
-    return filterLocator;
+    return filterGroupLocator;
   },
 
   async applyFilter(filterName, filterValue) {
     // eslint-disable-next-line max-len
-    const filterSelector = `(//a[@class='variable-value-link']//ancestor::div//label[contains(text(),'${filterName}')])[1]//parent::div//a[@ng-click]`;
+    const filterSelector = `(//a[@class='variable-value-link']//ancestor::div//label[contains(text(),'${filterName}')])[1]//parent::div//a`;
     const filterValueSelector = `//span[contains(text(), '${filterValue}')]`;
     // eslint-disable-next-line max-len
     const filterNameSelector = `(//a[@class='variable-value-link']//ancestor::div//label[contains(text(),'${filterName}')])[1]`;
