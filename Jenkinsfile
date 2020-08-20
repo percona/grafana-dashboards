@@ -131,11 +131,7 @@ pipeline {
             script {
                 if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {
                     slackSend channel: '#pmm-ci', color: '#00FF00', message: "[${JOB_NAME}]: build finished"
-                    junit 'pmm-app/tests/output/parallel_chunk*/*.xml'
-                    publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'pmm-app/tests/output/', reportFiles: 'combine_results.html', reportName: 'HTML Report', reportTitles: ''])
                 } else {
-                    junit 'pmm-app/tests/output/parallel_chunk*/*.xml'
-                    publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'pmm-app/tests/output/', reportFiles: 'combine_results.html', reportName: 'HTML Report', reportTitles: ''])
                     slackSend channel: '#pmm-ci', color: '#FF0000', message: "[${JOB_NAME}]: build ${currentBuild.result}"
                     archiveArtifacts artifacts: 'pmm-app/tests/output/parallel_chunk*/*.png'
                 }
