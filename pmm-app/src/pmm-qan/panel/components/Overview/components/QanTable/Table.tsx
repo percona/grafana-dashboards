@@ -13,6 +13,7 @@ import {
 import { Spinner, useTheme } from '@grafana/ui';
 import { cx } from 'emotion';
 import useWindowSize from 'shared/components/hooks/WindowSize.hooks';
+import { Scrollbar } from 'shared/components/Elements/Scrollbar/Scrollbar';
 import { getStyles } from './Table.styles';
 import { getMainColumnWidth, getAllColumnsWidth } from '../DefaultColumns/DefaultColumns';
 
