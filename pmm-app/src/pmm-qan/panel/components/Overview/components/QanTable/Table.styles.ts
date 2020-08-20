@@ -15,9 +15,6 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
   );
 
   return {
-    scrollableContent: css`
-      padding-bottom: 21px !important;
-    `,
     tableWrap: (size) => css`
       display: block;
       max-width: ${size.x ? `${size.x}px` : '100%'};
@@ -30,6 +27,10 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       max-width: 100%;
       border-collapse: separate; /* Don't collapse */
       border-spacing: 0;
+
+      .simplebar-mask {
+        margin-right: -21px !important;
+      }
 
       .table {
         /* Make sure the inner table is always as wide as needed */

@@ -3,10 +3,10 @@ import React, {
 } from 'react';
 import { Button, Input, Spin } from 'antd';
 import { Form } from 'react-final-form';
-import ReactScrollbar from 'react-scrollbars-custom';
 import { cx } from 'emotion';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
 import { Filter } from 'shared/components/Elements/Icons/Filter';
+import { Scrollbar } from 'shared/components/Elements/Scrollbar/Scrollbar';
 import { CheckboxGroup } from './components/CheckboxGroup/CheckboxGroup';
 import { FILTERS_BODY_HEIGHT, FILTERS_GROUPS } from './Filters.constants';
 import { styles } from './Filters.styles';
@@ -62,13 +62,7 @@ export const FiltersContainer = ({
           Reset All
         </Button>
       </div>
-      <ReactScrollbar
-        className={styles.getFiltersWrapper(height)}
-        contentProps={{
-          className: styles.filtersContentArea,
-        }}
-        disableTrackYWidthCompensation
-      >
+      <Scrollbar className={styles.getFiltersWrapper(height)}>
         <Input
           suffix={<Filter />}
           placeholder="Filter by..."
@@ -97,7 +91,7 @@ export const FiltersContainer = ({
             />
           );
         })}
-      </ReactScrollbar>
+      </Scrollbar>
     </div>
   );
 };

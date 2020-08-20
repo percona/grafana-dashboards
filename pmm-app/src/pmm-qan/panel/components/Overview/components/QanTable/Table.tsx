@@ -221,26 +221,16 @@ export const Table: FC<TableProps> = ({
           ) : null}
           {rows.length && !loading ? (
             <div {...getTableProps()} className="table">
-              <ReactScrollbar
+              <div
                 {...getTableBodyProps()}
                 className={cx('table-body')}
                 style={{ height: scroll.y - 70 }}
-                permanentTrackY
-                contentProps={{
-                  renderer: (props) => {
-                    const { elementRef, ...restProps } = props;
-
-                    // Need it to compensate negative margin in case of horizontal scrollbar presence
-                    const horizontalScrollbar: HTMLElement = document.querySelector('.table-body .ScrollbarsCustom-TrackX') as HTMLDivElement;
-                    const isHorizonalScrollVisible = horizontalScrollbar && horizontalScrollbar.style.display !== 'none';
-
-                    return <div {...restProps} ref={elementRef} className={cx('ScrollbarsCustom-Content', { [styles.scrollableContent]: isHorizonalScrollVisible })} />;
-                  }
-                }}
-
               >
-                {rows.map(RenderRow)}
-              </ReactScrollbar>
+                <Scrollbar style={{ maxHeight: scroll.y - 70 }}>
+                  {rows.map(RenderRow)}
+                </Scrollbar>
+              </div>
+
             </div>
           ) : null}
         </div>
