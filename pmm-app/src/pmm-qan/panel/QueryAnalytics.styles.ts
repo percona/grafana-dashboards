@@ -7,6 +7,12 @@ export const styles = {
     padding: 13px 2px 5px 0px;
     height: 50px;
   `,
+  overviewFooter: css`
+    display: flex;
+    justify-content: flex-start;
+    padding: 13px 2px 5px 0px;
+    height: 50px;
+  `,
   overviewTitle: css`
     margin: 3px;
     margin-right: 40px;

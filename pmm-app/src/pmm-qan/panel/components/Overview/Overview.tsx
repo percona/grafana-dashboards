@@ -105,7 +105,7 @@ export const Overview: FC = () => {
         [overviewMetricsList, loading, loadingDetails, height, getRowClassName]
       )}
       {overviewMetricsList.rows.length > 1 ? (
-        <div className={styles.overviewHeader}>
+        <div className={styles.overviewFooter}>
           <div className={styles.paginationWrapper}>
             <Pagination
               showSizeChanger
