@@ -4,6 +4,7 @@ import { mount } from 'enzyme';
 import { SettingsPanel } from './Settings';
 
 jest.mock('shared/components/helpers/notification-manager');
+jest.mock('shared/components/hooks/parameters.hook');
 
 describe('SettingsPanel::', () => {
   it('Renders correctly', async () => {
