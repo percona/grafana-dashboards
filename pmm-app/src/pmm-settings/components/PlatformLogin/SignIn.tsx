@@ -3,7 +3,7 @@ import { Field, Form, FormRenderProps } from 'react-final-form';
 import { Button, useTheme } from '@grafana/ui';
 import validators from 'shared/components/helpers/validators';
 import { ButtonWithSpinner } from 'shared/components/Form';
-import { showErrorNotification, showSuccessNotification } from 'shared/components/helpers';
+import { showSuccessNotification } from 'shared/components/helpers';
 import { Credentials, LoginFormProps } from './types';
 import { Messages } from './PlatformLogin.messages';
 import { InputFieldAdapter } from './FieldAdapters/FieldAdapters';
@@ -20,10 +20,9 @@ export const SignIn = ({ changeMode, getSettings }: LoginFormProps) => {
       await PlatformLoginService.signIn(credentials);
 
       getSettings();
-      showSuccessNotification({ message: `${Messages.loginSucceeded} ${credentials.email}` });
+      showSuccessNotification({ message: `${Messages.signInSucceeded} ${credentials.email}` });
     } catch (e) {
       console.error(e);
-      showErrorNotification({ message: Messages.errors.signUpFailed });
     }
   };
 
