@@ -47,7 +47,7 @@ export const SignUp: FC<LoginFormProps> = ({ changeMode, getSettings }) => {
     handleSubmit,
   }) => (
     <form data-qa="sign-up-form" className={styles.form} onSubmit={handleSubmit}>
-      <legend className={styles.legend}>{Messages.perconaPlatform}</legend>
+      <legend className={styles.legend}>{Messages.signUp}</legend>
       <Field
         data-qa="sign-up-email-input"
         name="email"
@@ -83,7 +83,7 @@ export const SignUp: FC<LoginFormProps> = ({ changeMode, getSettings }) => {
         disabled={!valid || submitting || pristine}
         isLoading={submitting}
       >
-        {Messages.perconaPlatform}
+        {Messages.signUp}
       </ButtonWithSpinner>
       <ButtonWithSpinner
         data-qa="sign-up-to-sign-in-button"
