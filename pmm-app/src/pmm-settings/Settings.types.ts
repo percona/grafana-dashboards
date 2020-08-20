@@ -8,7 +8,7 @@ export interface Settings {
   alertManagerUrl: string;
   alertManagerRules: string;
   sttEnabled: boolean;
-  saasUserEmail?: string;
+  platformEmail?: string;
 }
 
 export interface MetricsResolutions {
