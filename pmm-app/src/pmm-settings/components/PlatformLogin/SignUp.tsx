@@ -68,15 +68,6 @@ export const SignUp: FC<LoginFormProps> = ({ changeMode, getSettings }) => {
         autoComplete="on"
       />
       <Field
-        data-qa="sign-up-confirm-password-input"
-        name="confirm-password"
-        label={Messages.confirmPasswordLabel}
-        type="password"
-        component={InputFieldAdapter}
-        validate={validators.matches('password', Messages.errors.passwordMismatch)}
-        autoComplete="on"
-      />
-      <Field
         data-qa="sign-up-agreement-checkbox"
         className={styles.checkboxWrapper}
         label={<CheckboxLabel />}
