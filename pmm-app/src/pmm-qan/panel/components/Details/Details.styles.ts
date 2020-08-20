@@ -5,6 +5,6 @@ export const styles = {
     margin: 0 !important;
   `,
   scrollbarArea: css`
-    height: 600px;
+    min-height: 600px;
   `,
 };
