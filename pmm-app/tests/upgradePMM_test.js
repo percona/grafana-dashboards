@@ -107,7 +107,8 @@ Scenario(
 
     I.amOnPage(pmmSettingsPage.url);
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
-    const dataRetentionActualValue = await I.grabValueFrom(pmmSettingsPage.fields.dataRetentionCount);
+    await pmmSettingsPage.expandSection('Advanced settings', pmmSettingsPage.fields.advancedButton);
+    const dataRetentionActualValue = await I.grabValueFrom(pmmSettingsPage.fields.dataRetentionInput);
 
     assert.equal(
       dataRetention,
