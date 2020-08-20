@@ -116,7 +116,7 @@ export const SettingsPanel: FC = () => {
                 />
                 )}
           {tabs[4].active
-                && <PlatformLogin userEmail={settings.saasUserEmail} getSettings={getSettings} />}
+                && <PlatformLogin userEmail={settings.platformEmail} getSettings={getSettings} />}
         </>
         )}
       </TabContent>

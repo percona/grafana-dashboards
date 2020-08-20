@@ -1,14 +1,14 @@
 import React, { FC } from 'react';
 import { Field, Form, FormRenderProps } from 'react-final-form';
 import { Button, useTheme } from '@grafana/ui';
+import validators from 'shared/components/helpers/validators';
+import { ButtonWithSpinner } from 'shared/components/Form';
+import { showErrorNotification, showSuccessNotification } from 'shared/components/helpers';
 import { Credentials, LoginFormProps } from './types';
 import { Messages } from './PlatformLogin.messages';
 import { InputFieldAdapter } from './FieldAdapters/FieldAdapters';
-import validators from '../../../shared/components/helpers/validators';
-import { ButtonWithSpinner } from '../../../shared/components/Form';
 import { getStyles } from './PlatformLogin.styles';
 import { PlatformLoginService } from './PlatformLogin.service';
-import { showErrorNotification, showSuccessNotification } from '../../../shared/components/helpers';
 
 
 export const SignIn = ({ changeMode, getSettings }: LoginFormProps) => {
@@ -17,13 +17,10 @@ export const SignIn = ({ changeMode, getSettings }: LoginFormProps) => {
 
   const handleSignInFormSubmit = async (credentials: Credentials) => {
     try {
-      const result = await PlatformLoginService.signIn(credentials);
+      await PlatformLoginService.signIn(credentials);
 
-      if (result.email) {
-        getSettings();
-        showSuccessNotification({ message: Messages.signUpSucceeded });
-        showSuccessNotification({ message: `${Messages.loginSucceeded} ${credentials.email}` });
-      }
+      getSettings();
+      showSuccessNotification({ message: `${Messages.loginSucceeded} ${credentials.email}` });
     } catch (e) {
       console.error(e);
       showErrorNotification({ message: Messages.errors.signUpFailed });
