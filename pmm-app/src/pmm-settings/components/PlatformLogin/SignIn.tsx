@@ -69,7 +69,7 @@ export const SignIn: FC<LoginFormProps> = ({ changeMode, getSettings }) => {
         disabled={submitting}
         variant="link"
       >
-        {Messages.perconaPlatform}
+        {Messages.signUp}
       </ButtonWithSpinner>
     </form>
   );

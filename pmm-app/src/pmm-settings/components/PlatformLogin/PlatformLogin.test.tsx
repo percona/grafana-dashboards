@@ -5,7 +5,7 @@ import { LoggedIn } from './LoggedIn/LoggedIn';
 
 jest.mock('shared/components/helpers/notification-manager');
 
-describe('SignUp::', () => {
+describe('Platform login::', () => {
   it('Should show a login form if an undefined email is passed', () => {
     const root = mount(<PlatformLogin getSettings={jest.fn()} userEmail={undefined} />);
     const loggedInEmail = root.find(LoggedIn).at(0);
