@@ -9,7 +9,7 @@ Scenario(
   async (I, dashboardPage, adminPage) => {
     I.amOnPage(dashboardPage.nodeSummaryDashboard.url);
     dashboardPage.waitForDashboardOpened();
-    await dashboardPage.applyFilter("Node Name", "pmm-server");
+    await dashboardPage.applyFilter('Node Name', 'pmm-server');
     I.click(adminPage.fields.metricTitle);
     adminPage.peformPageDown(5);
     dashboardPage.verifyMetricsExistence(dashboardPage.nodeSummaryDashboard.metrics);

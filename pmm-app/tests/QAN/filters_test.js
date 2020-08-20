@@ -228,6 +228,7 @@ Scenario(
   async (I, qanPage, qanActions) => {
     const environmentName1 = 'ps-dev';
     const environmentName2 = 'pgsql-dev';
+
     qanActions.waitForNewQANPageLoaded();
     qanActions.applyFilterNewQAN(environmentName1);
     qanActions.applyFilterNewQAN(environmentName2);
@@ -281,8 +282,10 @@ Scenario(
     const countOfFilters = await I.grabNumberOfVisibleElements(qanPage.fields.filterCheckboxes);
     const countBefore = await qanActions.getCountOfItems();
     const percentageBefore = await qanActions.getPercentage('Service Type', serviceType);
+
     qanActions.applyFilterNewQAN(serviceType);
     const countAfter = await qanActions.getCountOfItems();
+
     pmmSettingsPage.customClearField(qanPage.fields.filterBy);
 
     await qanActions.verifyChangedCount(countBefore, countAfter);
@@ -291,6 +294,7 @@ Scenario(
     qanActions.applyFilterNewQAN(serviceName);
     pmmSettingsPage.customClearField(qanPage.fields.filterBy);
     const percentageAfter = await qanActions.getPercentage('Service Type', serviceType);
+
     qanActions.verifyChangedCount(percentageBefore, percentageAfter);
   },
 );
