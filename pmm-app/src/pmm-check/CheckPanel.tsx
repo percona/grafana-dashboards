@@ -120,7 +120,6 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
                 isLoading={isRunChecksRequestPending}
                 disabled={hasNoAccess}
                 className={styles.runChecksButton}
-                variant="primary"
               >
                 {Messages.runDbChecks}
               </ButtonWithSpinner>
