@@ -11,7 +11,7 @@ import { getStyles } from './PlatformLogin.styles';
 import { PlatformLoginService } from './PlatformLogin.service';
 
 
-export const SignIn = ({ changeMode, getSettings }: LoginFormProps) => {
+export const SignIn: FC<LoginFormProps> = ({ changeMode, getSettings }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
 
