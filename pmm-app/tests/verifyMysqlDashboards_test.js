@@ -32,7 +32,7 @@ Scenario(
     await dashboardPage.verifyThereAreNoGraphsWithNA();
     await dashboardPage.verifyThereAreNoGraphsWithoutData(8);
   },
-).retry(2);
+);
 
 Scenario(
   // eslint-disable-next-line max-len
