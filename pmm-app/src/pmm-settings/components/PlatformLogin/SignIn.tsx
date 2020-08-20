@@ -32,7 +32,6 @@ export const SignIn = ({ changeMode, getSettings }: LoginFormProps) => {
     submitting,
     valid,
     handleSubmit,
-    form,
   }) => (
     <form data-qa="sign-in-form" className={styles.form} onSubmit={handleSubmit}>
       <legend className={styles.legend}>{Messages.signIn}</legend>
