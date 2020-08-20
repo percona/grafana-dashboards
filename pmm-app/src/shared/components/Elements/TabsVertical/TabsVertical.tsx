@@ -1,5 +1,4 @@
 import React, { ReactNode, FC } from 'react';
-import { cx } from 'emotion';
 import { useTheme } from '@grafana/ui';
 import { getStyles } from './TabsVertical.styles';
 
@@ -14,7 +13,7 @@ export const TabsVertical: FC<TabsVerticalProps> = ({ children, className, dataQ
   const styles = getStyles(theme);
 
   return (
-    <div className={cx(styles.tabsWrapper, className)}>
+    <div className={className}>
       <ul data-qa={dataQa} className={styles.tabs}>{children}</ul>
     </div>
   );

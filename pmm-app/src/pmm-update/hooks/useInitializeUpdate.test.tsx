@@ -17,7 +17,9 @@ const HookWrapper: FC<{ hook: () => any }> = ({ hook }) => {
 jest.mock('../UpdatePanel.service', () => ({
   startUpdate: jest.fn(),
 }));
+
 const mockedStartUpdate = startUpdate as jest.Mock;
+const originalConsoleError = jest.fn();
 
 describe('useInitializeUpdate', () => {
   beforeEach(() => {
@@ -26,10 +28,13 @@ describe('useInitializeUpdate', () => {
       auth_token: 'test',
       log_offset: 1337,
     }));
+
+    console.error = jest.fn();
   });
 
   afterEach(() => {
     mockedStartUpdate.mockRestore();
+    console.error = originalConsoleError;
   });
 
   it('should return the correct values if the api call is pending', async () => {
