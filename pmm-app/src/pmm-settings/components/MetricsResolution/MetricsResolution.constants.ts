@@ -31,4 +31,4 @@ export const defaultResolutions: MetricsResolutions[] = [
 ];
 
 export const resolutionMin = 1;
-export const resolutionMax = 1000;
+export const resolutionMax = 1000000000;

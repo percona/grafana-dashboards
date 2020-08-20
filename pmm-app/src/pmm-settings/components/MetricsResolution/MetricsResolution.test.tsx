@@ -120,9 +120,7 @@ describe('MetricsResolution::', () => {
     root.find('[data-qa="metrics-resolution-lr-input"]')
       .find('input')
       .simulate('change', { target: { value: '70' } });
-    root.find('[data-qa="metrics-resolution-button"]')
-      .find('button')
-      .simulate('click');
+    root.find('form').simulate('submit');
 
     expect(updateSettings).toHaveBeenCalled();
   });
