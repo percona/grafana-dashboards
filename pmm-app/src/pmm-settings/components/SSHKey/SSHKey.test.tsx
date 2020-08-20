@@ -30,7 +30,7 @@ describe('SSHKey::', () => {
     />);
 
     root.find('textarea').simulate('change', { target: { value: 'new key' } });
-    root.find('button').simulate('click');
+    root.find('form').simulate('submit');
 
     expect(updateSettings).toHaveBeenCalled();
   });

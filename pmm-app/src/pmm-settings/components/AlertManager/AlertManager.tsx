@@ -1,5 +1,8 @@
 import React, { FC, useState } from 'react';
-import { Button, Spinner, useTheme } from '@grafana/ui';
+import { Field, Form } from 'react-final-form';
+import {
+  Button, Input, Spinner, TextArea, useTheme
+} from '@grafana/ui';
 import { cx } from 'emotion';
 import { getSettingsStyles } from 'pmm-settings/Settings.styles';
 import { Messages } from 'pmm-settings/Settings.messages';
@@ -27,14 +30,13 @@ export const AlertManager: FC<AlertManagerProps> = ({
     },
     tooltipLinkText
   } = Messages;
-  const [url, setUrl] = useState(alertManagerUrl);
-  const [rules, setRules] = useState(alertManagerRules);
   const [loading, setLoading] = useState(false);
-  const isActionDisabled = () => (
-    url === alertManagerUrl
-    && rules === alertManagerRules
-  );
-  const applyChanges = () => {
+  const initialValues = {
+    url: alertManagerUrl,
+    rules: alertManagerRules
+  };
+  const isEqual = (a: string, b: string) => ((!a && !b) || a === b);
+  const applyChanges = ({ url, rules }) => {
     const body: any = {
       alert_manager_url: url,
       alert_manager_rules: rules
@@ -52,53 +54,70 @@ export const AlertManager: FC<AlertManagerProps> = ({
   };
 
   return (
-    <div className={styles.alertManagerWrapper}>
-      <div
-        className={settingsStyles.labelWrapper}
-        data-qa="alertmanager-url-label"
-      >
-        <span>{urlLabel}</span>
-        <LinkTooltip
-          tooltipText={urlTooltip}
-          link={urlLink}
-          linkText={tooltipLinkText}
-          icon="info-circle"
-        />
-      </div>
-      <input
-        className={cx(settingsStyles.input, styles.input)}
-        value={url}
-        data-qa="alertmanager-url"
-        onChange={(e) => setUrl(e.target.value)}
+    <div className={cx(settingsStyles.wrapper, styles.alertManagerWrapper)}>
+      <Form
+        onSubmit={applyChanges}
+        initialValues={initialValues}
+        render={({ handleSubmit, pristine }) => (
+          <form onSubmit={handleSubmit}>
+            <div
+              className={settingsStyles.labelWrapper}
+              data-qa="alertmanager-url-label"
+            >
+              <span>{urlLabel}</span>
+              <LinkTooltip
+                tooltipText={urlTooltip}
+                link={urlLink}
+                linkText={tooltipLinkText}
+                icon="info-circle"
+              />
+            </div>
+            <Field
+              name="url"
+              isEqual={isEqual}
+              render={({ input }) => (
+                <Input
+                  {...input}
+                  className={styles.input}
+                  data-qa="alertmanager-url"
+                />
+              )}
+            />
+            <div
+              className={cx(settingsStyles.labelWrapper, styles.rulesLabel)}
+              data-qa="alertmanager-rules-label"
+            >
+              <span>{rulesLabel}</span>
+              <LinkTooltip
+                tooltipText={rulesTooltip}
+                link={rulesLink}
+                linkText={tooltipLinkText}
+                icon="info-circle"
+              />
+            </div>
+            <Field
+              name="rules"
+              isEqual={isEqual}
+              render={({ input }) => (
+                <TextArea
+                  {...input}
+                  className={styles.textarea}
+                  data-qa="alertmanager-rules"
+                />
+              )}
+            />
+            <Button
+              className={settingsStyles.actionButton}
+              type="submit"
+              disabled={pristine || loading}
+              data-qa="alertmanager-button"
+            >
+              {loading && <Spinner />}
+              {action}
+            </Button>
+          </form>
+        )}
       />
-      <div
-        className={cx(settingsStyles.labelWrapper, styles.rulesLabel)}
-        data-qa="alertmanager-rules-label"
-      >
-        <span>{rulesLabel}</span>
-        <LinkTooltip
-          tooltipText={rulesTooltip}
-          link={rulesLink}
-          linkText={tooltipLinkText}
-          icon="info-circle"
-        />
-      </div>
-      <textarea
-        className={cx(settingsStyles.textarea, styles.textarea)}
-        value={rules}
-        data-qa="alertmanager-rules"
-        onChange={(e) => setRules(e.target.value)}
-      />
-      <Button
-        className={settingsStyles.actionButton}
-        variant="secondary"
-        disabled={isActionDisabled() || loading}
-        onClick={applyChanges}
-        data-qa="alertmanager-button"
-      >
-        {loading && <Spinner />}
-        {action}
-      </Button>
     </div>
   );
 };
