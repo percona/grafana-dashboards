@@ -93,7 +93,7 @@ export const SignUp: FC<LoginFormProps> = ({ changeMode, getSettings }) => {
         onClick={changeMode}
         disabled={submitting}
       >
-        Back to login
+        {Messages.toSignIn}
       </ButtonWithSpinner>
     </form>
   );
