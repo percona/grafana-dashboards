@@ -45,7 +45,6 @@ export const SignUp = ({ changeMode, getSettings }: LoginFormProps) => {
     submitting,
     valid,
     handleSubmit,
-    form,
   }) => (
     <form data-qa="sign-up-form" className={styles.form} onSubmit={handleSubmit}>
       <legend className={styles.legend}>{Messages.perconaPlatform}</legend>
