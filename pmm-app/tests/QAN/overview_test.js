@@ -176,6 +176,7 @@ Scenario(
     I.click(qanPage.fields.querySelector);
     I.scrollTo(qanPage.getRow('10'));
     I.waitForVisible(qanPage.getColumn('Query Time'), 30);
+    I.waitForVisible(qanPage.fields.resizer, 30);
     I.dragAndDrop(qanPage.fields.resizer, qanPage.getColumn('Query Time'));
     I.scrollTo(qanPage.getColumn('Query Time'));
   },
