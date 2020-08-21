@@ -1,7 +1,7 @@
 export const Messages = {
   signUp: 'Sign up',
-  signIn: 'Sign in',
-  toSignIn: 'Back to Sign in',
+  login: 'Login',
+  toSignIn: 'Back to login',
   termsOfService: 'Terms of Service',
   privacyPolicy: 'Privacy Policy',
   notificationSettings: 'Notification Settings',
