@@ -1,6 +1,4 @@
-import React, {
-  FC, useContext, useEffect, useMemo, useRef, useState
-} from 'react';
+import React, { FC, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { Button, Input, Spin } from 'antd';
 import { Form } from 'react-final-form';
 import { cx } from 'emotion';
@@ -14,13 +12,7 @@ import { useFilters, useFiltersContainerHeight, useInitialFilterValues } from '.
 import { getSelectedCheckboxes } from './Filters.tools';
 import { FiltersContainerProps } from './Filters.types';
 
-export const FiltersContainer = ({
-  contextActions,
-  form,
-  labels,
-  filters,
-  disabled,
-}: FiltersContainerProps) => {
+const FiltersContainer: FC<FiltersContainerProps> = ({ contextActions, form, labels, filters, disabled }) => {
   const filtersWrapperRef = useRef<HTMLDivElement>(null);
 
   const height = useFiltersContainerHeight(FILTERS_BODY_HEIGHT, filtersWrapperRef);
@@ -80,14 +72,11 @@ export const FiltersContainer = ({
           return (
             <CheckboxGroup
               key={name}
-              {...{
-                name,
-                items: filters[dataKey].name,
-                group: dataKey,
-                showAll,
-                filter,
-                labels,
-              }}
+              name={name}
+              items={filters[dataKey].name}
+              group={dataKey}
+              showAll={showAll}
+              filter={filter}
             />
           );
         })}
