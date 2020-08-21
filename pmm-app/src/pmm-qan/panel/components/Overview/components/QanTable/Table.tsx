@@ -9,6 +9,7 @@ import {
   useRowSelect,
   useSortBy,
   useTable,
+  HeaderGroup,
 } from 'react-table';
 import { Spinner, useTheme } from '@grafana/ui';
 import { cx } from 'emotion';
@@ -130,11 +131,9 @@ export const Table: FC<TableProps> = ({
     onSortChange((state as any).sortBy);
   }, [(state as any).sortBy]);
 
-  const RenderHeader = (headerGroup) => (
+  const RenderHeader = (headerGroup: HeaderGroup) => (
     <div {...headerGroup.getHeaderGroupProps()} className={cx('tr', styles.headerRow)}>
-      {headerGroup.headers.map((c) => {
-        const column = c as any;
-
+      {headerGroup.headers.map((column: any) => {
         const { HeaderAccessor } = column;
 
         column.Header = () => HeaderAccessor();
