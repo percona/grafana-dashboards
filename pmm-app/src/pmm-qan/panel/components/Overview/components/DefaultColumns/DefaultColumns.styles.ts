@@ -6,7 +6,7 @@ import { GrafanaTheme } from '@grafana/data';
 export const getStyles = stylesFactory((theme: GrafanaTheme) => {
   const metricTextColor = selectThemeVariant(
     // @ts-ignore
-    { light: 'blue', dark: 'rgba(32, 215, 255, 0.8)' },
+    { light: '#202226', dark: 'rgba(32, 215, 255, 0.8)' },
     theme.type,
   );
 

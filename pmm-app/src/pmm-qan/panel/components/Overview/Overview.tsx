@@ -6,11 +6,17 @@ import './Overview.scss';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
 import 'shared/components/Elements/Spinner/Spinner';
 import { useOverviewTable } from './Overview.hooks';
-import { styles } from '../../QueryAnalytics.styles';
 import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE, PAGE_SIZE_OPTIONS } from '../../QueryAnalytics.constants';
 import { Table } from './components/QanTable';
+import {useTheme} from "@grafana/ui";
+import {getStyles} from "../../QueryAnalytics.styles";
 
 export const Overview: FC = () => {
+  const theme = useTheme();
+  const styles = getStyles(theme);
+
+  const theme = useTheme();
+  const styles = getStyles(theme);
   const [total, setTotal] = useState(30);
   const [overviewMetricsList, loading] = useOverviewTable(setTotal);
   const [height, setHeight] = useState(400);

@@ -6,12 +6,16 @@ import { QueryAnalyticsProvider, UrlParametersProvider } from './provider/provid
 import {
   Overview, Filters, Details, ManageColumns
 } from './components';
-import { styles } from './QueryAnalytics.styles';
 import 'shared/styles.scss';
 import 'shared/style.less';
 import './qan.scss';
+import {useTheme} from "@grafana/ui";
+import {getStyles} from "./QueryAnalytics.styles";
 
 const QueryAnalyticsPanel: FC = () => {
+  const theme = useTheme();
+  const styles = getStyles(theme);
+
   const {
     panelState: { querySelected },
   } = useContext(QueryAnalyticsProvider);
