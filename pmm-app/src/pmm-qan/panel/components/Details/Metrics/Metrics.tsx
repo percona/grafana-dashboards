@@ -4,11 +4,11 @@ import { Latency, Sparkline, TimeDistribution } from 'shared/components/Elements
 import { humanize } from 'shared/components/helpers/Humanization';
 import { Info } from 'shared/components/Elements/Icons/Info';
 import { Overlay } from 'shared/components/Elements/Overlay/Overlay';
+import { useTheme } from '@grafana/ui';
 import { MetricsTabs } from './Metrics.constants';
 import { MetricsProps } from './Metrics.types';
 import { Databases } from '../Details.types';
-import {useTheme} from "@grafana/ui";
-import {getStyles} from "./Metrics.styles";
+import { getStyles } from './Metrics.styles';
 
 const { Panel } = Collapse;
 
@@ -20,11 +20,11 @@ const Metrics: FC<MetricsProps> = ({
 
   const mainColumn = (text, item) => (
     <span className={styles.metricColumn}>
-    <span>{item.name}</span>
-    <Tooltip title={item.tooltip} placement="leftTop">
-      <Info className={styles.metricTooltipIcon} />
-    </Tooltip>
-  </span>
+      <span>{item.name}</span>
+      <Tooltip title={item.tooltip} placement="leftTop">
+        <Info className={styles.metricTooltipIcon} />
+      </Tooltip>
+    </span>
   );
 
   const rateColumn = (totals) => (text, item) => {
@@ -37,9 +37,9 @@ const Metrics: FC<MetricsProps> = ({
 
     return (
       <div className={styles.metricColumn}>
-      <span className={styles.metricData}>
-        {`${item.isRate ? humanize.transform(item.metric.rate, item.pipeTypes.ratePipe) : '0'} ${item.units}`}
-      </span>
+        <span className={styles.metricData}>
+          {`${item.isRate ? humanize.transform(item.metric.rate, item.pipeTypes.ratePipe) : '0'} ${item.units}`}
+        </span>
         <span className={styles.sparkline}>{item.sparkline && <Sparkline {...polygonChartProps} />}</span>
       </div>
     );
@@ -70,11 +70,11 @@ const Metrics: FC<MetricsProps> = ({
 
     return (
       <div className={styles.metricColumn}>
-      <span className={styles.perQueryStats}>
-        {item.metric.avg
-          ? humanize.transform(item.metric.avg, item.pipeTypes.perQueryStatsPipe)
-          : (+item.metric.sum / +item.queryCount).toFixed(2) || '0'}
-      </span>
+        <span className={styles.perQueryStats}>
+          {item.metric.avg
+            ? humanize.transform(item.metric.avg, item.pipeTypes.perQueryStatsPipe)
+            : (+item.metric.sum / +item.queryCount).toFixed(2) || '0'}
+        </span>
         {item.isLatencyChart && <Latency {...latencyChartProps} />}
       </div>
     );

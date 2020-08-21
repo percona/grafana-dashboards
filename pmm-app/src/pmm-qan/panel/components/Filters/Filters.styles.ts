@@ -44,5 +44,4 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
     height: auto;
   `,
   };
-
 });

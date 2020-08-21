@@ -1,7 +1,7 @@
 import React from 'react';
 import { useField } from 'react-final-form';
+import { useTheme } from '@grafana/ui';
 import { OverflowTooltip } from '../../Elements/OverflowTooltip/OverflowTooptip';
-import {useTheme} from "@grafana/ui";
 import { getCheckboxStyles } from './Checkbox.styles';
 
 interface CheckboxFieldInterface {

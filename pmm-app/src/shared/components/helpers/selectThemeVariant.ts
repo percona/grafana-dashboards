@@ -20,7 +20,7 @@ export const getThemeParameters = (theme): Themes => {
 
 
   return {
-    mainTextColor: mainTextColor,
+    mainTextColor,
     table: {
       backgroundColor,
       borderColor,

@@ -9,8 +9,8 @@ import {
 import 'shared/styles.scss';
 import 'shared/style.less';
 import './qan.scss';
-import {useTheme} from "@grafana/ui";
-import {getStyles} from "./QueryAnalytics.styles";
+import { useTheme } from '@grafana/ui';
+import { getStyles } from './QueryAnalytics.styles';
 
 const QueryAnalyticsPanel: FC = () => {
   const theme = useTheme();

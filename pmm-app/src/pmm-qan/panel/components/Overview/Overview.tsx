@@ -5,11 +5,11 @@ import React, {
 import './Overview.scss';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
 import 'shared/components/Elements/Spinner/Spinner';
+import { useTheme } from '@grafana/ui';
 import { useOverviewTable } from './Overview.hooks';
 import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE, PAGE_SIZE_OPTIONS } from '../../QueryAnalytics.constants';
 import { Table } from './components/QanTable';
-import {useTheme} from "@grafana/ui";
-import {getStyles} from "../../QueryAnalytics.styles";
+import { getStyles } from '../../QueryAnalytics.styles';
 
 export const Overview: FC = () => {
   const theme = useTheme();
