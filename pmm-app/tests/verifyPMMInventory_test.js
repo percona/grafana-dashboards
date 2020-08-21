@@ -1,6 +1,3 @@
-const { isAssertionExpression } = require('typescript');
-const assert = require('assert');
-
 Feature('Inventory page');
 
 Before(async (I) => {
