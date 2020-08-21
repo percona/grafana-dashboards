@@ -1,7 +1,8 @@
 import React from 'react';
 import { useField } from 'react-final-form';
 import { OverflowTooltip } from '../../Elements/OverflowTooltip/OverflowTooptip';
-import './Checkbox.scss';
+import {useTheme} from "@grafana/ui";
+import { getCheckboxStyles } from './Checkbox.styles';
 
 interface CheckboxFieldInterface {
   required?: boolean;
@@ -16,9 +17,11 @@ export const CheckboxField = ({
   name, label, required, disabled, dataQa
 }: CheckboxFieldInterface) => {
   const field = useField(name, { type: 'checkbox' });
+  const theme = useTheme();
+  const styles = getCheckboxStyles(theme);
 
   return (
-    <label className="checkbox-container checkbox-container--main">
+    <label className={styles.checkboxContainer}>
       <input
         {...field.input}
         type="checkbox"
