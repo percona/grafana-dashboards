@@ -3,7 +3,7 @@ import { Field, Form, FormRenderProps } from 'react-final-form';
 import { Button, useTheme } from '@grafana/ui';
 import validators from 'shared/components/helpers/validators';
 import { ButtonWithSpinner } from 'shared/components/Form';
-import { showSuccessNotification } from 'shared/components/helpers';
+import { showErrorNotification, showSuccessNotification } from 'shared/components/helpers';
 import { Credentials, LoginFormProps } from './types';
 import { Messages } from './PlatformLogin.messages';
 import { InputFieldAdapter } from './FieldAdapters/FieldAdapters';
@@ -23,6 +23,7 @@ export const SignIn: FC<LoginFormProps> = ({ changeMode, getSettings }) => {
       showSuccessNotification({ message: `${Messages.signInSucceeded} ${credentials.email}` });
     } catch (e) {
       console.error(e);
+      showErrorNotification({ message: Messages.errors.signInFailed });
     }
   };
 
