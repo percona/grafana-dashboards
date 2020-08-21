@@ -51,17 +51,15 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
   `,
     collapse: css`
     background: #1f1d1d !important;
-    margin-bottom: 10 !important;
-    border: 1 !important;
+    margin-bottom: 10px !important;
     border-color: white !important;
     color: white !important;
     text-color: white !important;
   `,
     panel: css`
     background: transparent !important;
-    margin-bottom: 10 !important;
-    border: 1 !important;
-    border-color: black !important;
+    margin-bottom: 10px !important;
+    border: none !important;
     color: white !important;
     text-color: white !important;
   `,
