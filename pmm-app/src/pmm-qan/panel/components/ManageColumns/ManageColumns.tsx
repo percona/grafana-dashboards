@@ -8,12 +8,16 @@ import { cx } from 'emotion';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
 import { METRIC_CATALOGUE } from 'pmm-qan/panel/QueryAnalytics.constants';
 import { OptionContent } from './OptionContent/OptionContent';
-import { styles } from './ManageColumns.styles';
 import './ManageColumns.scss';
+import { useTheme } from '@grafana/ui';
+import { getStyles } from './ManageColumns.styles';
 
 const { Option } = Select;
 
 export const ManageColumns = (props) => {
+  const theme = useTheme();
+  const styles = getStyles(theme);
+
   const {
     onlyAdd, currentMetric, placeholder, width, mainMetric
   } = props;
@@ -83,7 +87,7 @@ export const ManageColumns = (props) => {
   ));
 
   const dropdownRender = (menu) => (
-    <div className="add-column-wrapper">
+    <div className={styles.addColumnWrapper}>
       {menu}
       {!onlyAdd ? <Divider className={styles.dividerMargin} /> : null}
       {!onlyAdd && columns.length > 1 ? (
@@ -102,7 +106,7 @@ export const ManageColumns = (props) => {
   );
 
   return (
-    <div className={!onlyAdd ? 'manage-columns' : 'add-columns'} onClick={(e) => e.stopPropagation()}>
+    <div className={!onlyAdd ? styles.manageColumns : styles.addColumns} onClick={(e) => e.stopPropagation()}>
       <Select
         optionLabelProp="label"
         showSearch

@@ -2,16 +2,15 @@ import React, { FC, useState } from 'react';
 import { Divider } from 'antd';
 import { CheckboxField } from 'shared/components/Form/Checkbox/Checkbox';
 import { humanize } from 'shared/components/helpers/Humanization';
-import {getStyles} from './CheckboxGroup.styles';
+import { useTheme } from '@grafana/ui';
+import { getStyles } from './CheckboxGroup.styles';
 import { TOP_LIMIT } from './CheckboxGroup.constants';
 import { CheckboxGroupProps } from './CheckboxGroup.types';
-import {useTheme} from "@grafana/ui";
 
 
 export const CheckboxGroup: FC<CheckboxGroupProps> = ({
   name, items, group, showAll, filter: searchFilterBy,
 }) => {
-
   const theme = useTheme();
   const styles = getStyles(theme);
 

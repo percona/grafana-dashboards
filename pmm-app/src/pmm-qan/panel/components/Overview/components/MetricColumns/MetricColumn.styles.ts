@@ -1,43 +1,50 @@
 import { css } from 'emotion';
+import { selectThemeVariant, stylesFactory } from '@grafana/ui';
+import { GrafanaTheme } from '@grafana/data';
+import { getThemeParameters } from 'shared/components/helpers/selectThemeVariant';
 
-export const styles = {
-  tooltipHeader: css`
+export const getStyles = stylesFactory((theme: GrafanaTheme) => {
+  const parameters = getThemeParameters(theme);
+
+  return {
+    tooltipHeader: css`
     padding: 10px;
     padding-left: 30px;
     font-size: 14px;
   `,
-  tooltipDivider: css`
+    tooltipDivider: css`
     background: #363434 !important;
     margin: 0 !important;
   `,
-  tooltipLatencyDivider: css`
+    tooltipLatencyDivider: css`
     background: #666666 !important;
     margin: 0 !important;
   `,
-  metricsWrapper: css`
+    metricsWrapper: css`
     padding-left: 20px !important;
     padding-right: 20px !important;
     padding-bottom: 10px !important;
   `,
-  singleMetricWrapper: css`
+    singleMetricWrapper: css`
     margin-top: 15px !important;
     margin-bottom: 15px !important;
   `,
-  metricName: css`
+    metricName: css`
     margin-left: 10px !important;
   `,
-  metricsListDivider: css`
+    metricsListDivider: css`
     background: #a9a9a9 !important;
     margin: 0 !important;
   `,
-  summarize: (value) => css`
+    summarize: (value) => css`
     margin-left: 'auto';
     cursor: ${value && value !== 'NaN' ? 'help' : ''};
-    color: 'rgba(255,255,255,0.8)';
+    color: ${parameters.mainTextColor};
   `,
-  metricStyle: css`
+    metricStyle: css`
     display: flex;
     flex-direction: column;
     align-items: flex-end;
   `,
-};
+  };
+});

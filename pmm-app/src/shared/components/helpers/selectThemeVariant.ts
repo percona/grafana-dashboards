@@ -16,6 +16,6 @@ export const getThemeParameters = (theme): Themes => {
   const tableHeaderBackground = selectThemeVariant({ light: 'rgb(247, 247, 249)', dark: '#3D3D3D' }, theme.type);
 
   return {
-    mainTextColor: themeBasicColor,
+    mainTextColor: mainTextColor,
   };
 };

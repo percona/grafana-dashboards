@@ -148,7 +148,7 @@ export const Table: FC<TableProps> = ({
         }
 
         return (
-          <div {...column.getHeaderProps()} className="th">
+          <div {...column.getHeaderProps()} className={cx('th', { [styles.rowNumberCell]: index === 0 })}>
             <div className={styles.headerContent}>
               <div className="header-wrapper">{column.render('Header')}</div>
               {column.sortable ? (

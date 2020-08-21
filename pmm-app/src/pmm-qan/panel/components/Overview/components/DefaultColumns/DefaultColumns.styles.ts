@@ -1,30 +1,39 @@
 import { css } from 'emotion';
 
-export const rowNumber = css`
-  word-wrap: normal;
-  word-break: normal;
-`;
+import { selectThemeVariant, stylesFactory } from '@grafana/ui';
+import { GrafanaTheme } from '@grafana/data';
 
-export const mainColumn = css`
-  cursor: pointer;
-`;
+export const getStyles = stylesFactory((theme: GrafanaTheme) => {
+  const metricTextColor = selectThemeVariant(
+    // @ts-ignore
+    { light: 'blue', dark: 'rgba(32, 215, 255, 0.8)' },
+    theme.type,
+  );
 
-export const tooltipIcon = css`
+  const totalTextColor = selectThemeVariant(
+    // @ts-ignore
+    { light: 'red', dark: '#8AA4FF' },
+    theme.type,
+  );
+
+  return {
+    getMainMetric: (isTotal) => css`
+      word-wrap: break-word !important;
+      word-break: break-word !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      white-space: nowrap !important;
+      max-width: calc(100% - 15px);
+      color: ${isTotal ? totalTextColor : metricTextColor};
+    `,
+    metricWrapper: css`
+      display: flex;
+      align-items: center;
+      width: 100%;
+      padding: 0 5px;
+    `,
+    tooltipIcon: css`
   margin-left: auto;
-`;
-export const metricWrapper = css`
-  display: flex;
-  align-items: center;
-  width: 100%;
-  padding: 0 5px;
-`;
-
-export const mainMetric = (isTotal) => css`
-  word-wrap: break-word !important;
-  word-break: break-word !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-  white-space: nowrap !important;
-  max-width: calc(100% - 15px);
-  color: ${isTotal ? '#8AA4FF' : 'rgba(32, 215, 255, 0.8)'};
-`;
+`
+  };
+});
