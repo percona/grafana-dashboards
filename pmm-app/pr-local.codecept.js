@@ -12,7 +12,13 @@ exports.config = {
       waitForAction: 500,
       chromium: {
         ignoreHTTPSErrors: true,
-        args: ['--no-sandbox', '--window-size=1920,1080', '--disable-gpu', '--disable-dev-shm-usage', '--disable-setuid-sandbox'],
+        args: [
+          '--no-sandbox',
+          '--window-size=1920,1080',
+          '--disable-gpu',
+          '--disable-dev-shm-usage',
+          '--disable-setuid-sandbox',
+        ],
       },
     },
     Grafana: {
@@ -21,25 +27,25 @@ exports.config = {
       password: process.env.GRAFANA_PASSWORD,
     },
     REST: {
-      endpoint: process.env.PMM_UI_URL || 'http://localhost/'
+      endpoint: process.env.PMM_UI_URL || 'http://localhost/',
     },
   },
   include: {
-    pmmDemoPage: './tests/pages/pmmDemoPage.js',
-    homePage: './tests/pages/homePage.js',
-    remoteInstancesPage: './tests/pages/remoteInstancesPage.js',
+    addInstanceAPI: './tests/pages/api/addInstanceAPI.js',
     adminPage: './tests/pages/adminPage.js',
-    qanPage: './tests/QAN/pages/qanPage.js',
-    qanActions: './tests/QAN/steps/qanActions.js',
-    pmmInventoryPage: './tests/pages/pmmInventoryPage.js',
     amiInstanceSetupPage: './tests/pages/amiInstanceSetupPage.js',
-    pmmSettingsPage: './tests/pages/pmmSettingsPage.js',
-    mysqlTableDetailsPage: './tests/pages/mysqlTableDetailsPage.js',
     dashboardPage: './tests/pages/dashboardPage.js',
     databaseChecksPage: './tests/pages/databaseChecksPage.js',
-    settingsAPI: './tests/pages/api/settingsAPI.js',
-    addInstanceAPI: './tests/pages/api/addInstanceAPI.js',
+    homePage: './tests/pages/homePage.js',
     inventoryAPI: './tests/pages/api/inventoryAPI.js',
+    mysqlTableDetailsPage: './tests/pages/mysqlTableDetailsPage.js',
+    pmmDemoPage: './tests/pages/pmmDemoPage.js',
+    pmmInventoryPage: './tests/pages/pmmInventoryPage.js',
+    pmmSettingsPage: './tests/pages/pmmSettingsPage.js',
+    qanActions: './tests/QAN/steps/qanActions.js',
+    qanPage: './tests/QAN/pages/qanPage.js',
+    remoteInstancesPage: './tests/pages/remoteInstancesPage.js',
+    settingsAPI: './tests/pages/api/settingsAPI.js',
   },
   multiple: {
     parallel: {
@@ -55,7 +61,7 @@ exports.config = {
       enabled: true,
       strategy: 'css',
       attribute: 'data-qa',
-      showActual: false
+      showActual: false,
     },
     allure: {
       enabled: true,

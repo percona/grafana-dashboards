@@ -1,9 +1,8 @@
-// @ts-nocheck
-import axios, { CancelToken } from 'axios';
+import axios, { CancelToken, AxiosInstance } from 'axios';
 import { showErrorNotification } from './notification-manager';
 
 export class ApiRequest {
-  axiosInstance: axios.AxiosInstance;
+  axiosInstance: AxiosInstance;
 
   constructor(params) {
     this.axiosInstance = axios.create({
@@ -25,8 +24,12 @@ export class ApiRequest {
       });
   }
 
-  // eslint-disable-next-line max-len
-  async post<T, B>(path: string, body: B, disableNotifications = false, cancelToken?: CancelToken): Promise<void | T> {
+  async post<T, B>(
+    path: string,
+    body: B,
+    disableNotifications = false,
+    cancelToken?: CancelToken,
+  ): Promise<void | T> {
     return this.axiosInstance
       .post<T>(path, body, { cancelToken })
       .then((response): T => response.data)
