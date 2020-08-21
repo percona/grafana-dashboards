@@ -26,7 +26,7 @@ export const Messages = {
     urlTooltip: 'The URL of the external Alertmanager to use.'
   },
   diagnostics: {
-    action: 'Download PMM Server Logs',
+    action: 'Download server diagnostics',
     label: 'Diagnostics',
     tooltip: 'You can download server logs to make the problem detection simpler. Please include this file if you are submitting a bug report.',
   },
@@ -57,11 +57,11 @@ export const Messages = {
     success: 'Settings updated'
   },
   tabs: {
-    metrics: 'Metrics resolution',
-    advanced: 'Advanced settings',
-    ssh: 'SSH key',
-    alertManager: 'Alertmanager integration',
-    signUp: 'Sign up',
+    metrics: 'Metrics Resolution',
+    advanced: 'Advanced Settings',
+    ssh: 'SSH Key',
+    alertManager: 'Alertmanager Integration',
+    signUp: 'Sign Up',
   },
   tooltipLinkText: 'Read more'
 };

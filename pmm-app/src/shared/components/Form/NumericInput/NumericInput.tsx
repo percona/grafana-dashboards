@@ -1,15 +1,13 @@
-import React, { FC, useRef } from 'react';
+import React, { FC, useCallback, useRef } from 'react';
 import { cx } from 'emotion';
 import { Input as BaseInput, useTheme } from '@grafana/ui';
 import { Props as InputProps } from '@grafana/ui/components/Input/Input';
 import { InputLabel } from 'shared/components/Form';
 import { getStyles } from './NumericInput.style';
 
-interface NumericInputProps extends InputProps {
+export interface NumericInputProps extends InputProps {
   label?: string;
   labelWidth?: number;
-  stepUp?: () => void;
-  stepDown?: () => void;
 }
 
 export const NumericInput: FC<NumericInputProps> = ({
@@ -17,13 +15,27 @@ export const NumericInput: FC<NumericInputProps> = ({
   disabled = false,
   label = '',
   labelWidth,
-  stepUp,
-  stepDown,
   ...props
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const theme = useTheme();
   const styles = getStyles(theme);
+
+  const dispatchChangeEvent = useCallback(() => {
+    const event = new Event('change', { bubbles: true });
+
+    inputRef.current!.dispatchEvent(event);
+  }, [inputRef]);
+
+  const stepUp = () => {
+    inputRef.current!.stepUp();
+    dispatchChangeEvent();
+  };
+
+  const stepDown = () => {
+    inputRef.current!.stepDown();
+    dispatchChangeEvent();
+  };
 
   return (
     <span className={cx(styles.wrapper, className)}>
