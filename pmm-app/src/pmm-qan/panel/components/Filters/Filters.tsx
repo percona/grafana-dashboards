@@ -9,14 +9,18 @@ import { Filter } from 'shared/components/Elements/Icons/Filter';
 import { Scrollbar } from 'shared/components/Elements/Scrollbar/Scrollbar';
 import { CheckboxGroup } from './components/CheckboxGroup/CheckboxGroup';
 import { FILTERS_BODY_HEIGHT, FILTERS_GROUPS } from './Filters.constants';
-import { styles } from './Filters.styles';
 import { useFilters, useFiltersContainerHeight, useInitialFilterValues } from './Filters.hooks';
 import { getSelectedCheckboxes } from './Filters.tools';
 import { FiltersContainerProps } from './Filters.types';
+import {useTheme} from "@grafana/ui";
+import {getStyles} from "./Filters.styles";
 
-const FiltersContainer: FC<FiltersContainerProps> = ({
-  contextActions, form, filters, disabled
+export const FiltersContainer: FC<FiltersContainerProps> = ({
+  contextActions, form, labels, filters, disabled
 }) => {
+  const theme = useTheme();
+  const styles = getStyles(theme);
+
   const filtersWrapperRef = useRef<HTMLDivElement>(null);
 
   const height = useFiltersContainerHeight(FILTERS_BODY_HEIGHT, filtersWrapperRef);

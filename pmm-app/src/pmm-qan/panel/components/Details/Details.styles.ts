@@ -30,6 +30,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
 
       .ant-collapse-header {
         background-color: ${parameters.table.headerBackground} !important;
+        color: ${parameters.mainTextColor} !important;
       }
       .ant-tabs-tab {
         color: ${parameters.mainTextColor} !important;
