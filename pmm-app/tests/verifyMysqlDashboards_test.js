@@ -61,3 +61,14 @@ Scenario(
     await dashboardPage.verifyThereAreNoGraphsWithoutData(1);
   },
 );
+
+Scenario(
+  'PMM-T396 - Verify that parameters are passed from MySQL User Details dashboard to QAN @not-pr-pipeline',
+  async (I, dashboardPage) => {
+    I.amOnPage(dashboardPage.mysqlUserDetailsDashboard.url);
+    dashboardPage.waitForDashboardOpened();
+    I.click(dashboardPage.fields.timeRangePickerButton);
+    I.click(dashboardPage.fields.last12hours);
+    dashboardPage.applyFilter('Service Name', 'ps_5.7');
+  },
+);
