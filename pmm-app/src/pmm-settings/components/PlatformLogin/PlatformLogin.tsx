@@ -15,7 +15,7 @@ export const PlatformLogin: FC<SignUpProps> = ({ userEmail, getSettings }) => {
   return (
     <>
       {userEmail != null ? (
-        <LoggedIn email={userEmail} getSettings={getSettings} />
+        <LoggedIn email={userEmail} />
       ) : (
         <div data-qa="sign-up-form-wrapper" className={styles.formWrapper}>
           {isSignInMode
