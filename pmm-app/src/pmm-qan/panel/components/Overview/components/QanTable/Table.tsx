@@ -227,7 +227,7 @@ export const Table: FC<TableProps> = ({
                 className={cx('table-body')}
                 style={{ height: scroll.y - 70 }}
               >
-                <Scrollbar style={{ maxHeight: scroll.y - 70 }}>
+                <Scrollbar forceVisible="x" style={{ maxHeight: scroll.y - 70 }}>
                   {rows.map(RenderRow)}
                 </Scrollbar>
               </div>
