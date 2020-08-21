@@ -4,11 +4,11 @@ import { Button, useTheme } from '@grafana/ui';
 import validators from 'shared/components/helpers/validators';
 import { ButtonWithSpinner } from 'shared/components/Form';
 import { showErrorNotification, showSuccessNotification } from 'shared/components/helpers';
-import { Credentials, LoginFormProps } from './types';
-import { Messages } from './PlatformLogin.messages';
-import { InputFieldAdapter } from './FieldAdapters/FieldAdapters';
-import { getStyles } from './PlatformLogin.styles';
-import { PlatformLoginService } from './PlatformLogin.service';
+import { Credentials, LoginFormProps } from '../types';
+import { Messages } from '../PlatformLogin.messages';
+import { InputFieldAdapter } from '../FieldAdapters/FieldAdapters';
+import { getStyles } from '../PlatformLogin.styles';
+import { PlatformLoginService } from '../PlatformLogin.service';
 
 
 export const SignIn: FC<LoginFormProps> = ({ changeMode, getSettings }) => {

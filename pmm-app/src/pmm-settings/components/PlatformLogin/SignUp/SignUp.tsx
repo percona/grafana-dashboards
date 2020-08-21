@@ -4,12 +4,12 @@ import { LinkButton, useTheme } from '@grafana/ui';
 import validators from 'shared/components/helpers/validators';
 import { ButtonWithSpinner } from 'shared/components/Form';
 import { showErrorNotification, showSuccessNotification } from 'shared/components/helpers';
-import { Credentials, LoginFormProps } from './types';
-import { Messages } from './PlatformLogin.messages';
-import { CheckboxFieldAdapter, InputFieldAdapter } from './FieldAdapters/FieldAdapters';
-import { getStyles } from './PlatformLogin.styles';
-import { PlatformLoginService } from './PlatformLogin.service';
-import { PRIVACY_POLICY_URL, TERMS_OF_SERVICE_URL } from './PlatformLogin.constants';
+import { Credentials, LoginFormProps } from '../types';
+import { Messages } from '../PlatformLogin.messages';
+import { CheckboxFieldAdapter, InputFieldAdapter } from '../FieldAdapters/FieldAdapters';
+import { getStyles } from '../PlatformLogin.styles';
+import { PlatformLoginService } from '../PlatformLogin.service';
+import { PRIVACY_POLICY_URL, TERMS_OF_SERVICE_URL } from '../PlatformLogin.constants';
 
 export const SignUp: FC<LoginFormProps> = ({ changeMode, getSettings }) => {
   const theme = useTheme();
