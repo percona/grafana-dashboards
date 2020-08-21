@@ -17,11 +17,6 @@ module.exports = {
     }
   },
 
-  waitForQANPageLoaded() {
-    I.waitForVisible(qanPage.fields.table, 30);
-    I.waitForClickable(qanPage.fields.nextPageNavigation, 30);
-  },
-
   changeGroupBy(groupBy = 'Client Host') {
     I.waitForElement(qanPage.fields.groupBySelector, 30);
     I.forceClick(qanPage.fields.groupBySelector);
