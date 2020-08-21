@@ -53,13 +53,22 @@ const validators = {
 
     return undefined;
   },
+  password: (usernameField) => (value, values) => {
+    const passwordRegexp = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})');
+    const notIncludesUsername = new RegExp(`^((?!${values[usernameField]}).)*$`, 'i');
 
+    if (passwordRegexp.test(value) && notIncludesUsername.test(value)) {
+      return undefined;
+    }
+
+    return 'Password must contain at least 8 characters, including UPPER/lower case and numbers, must not contain username';
+  },
   required: (value) => (value ? undefined : 'Required field'),
 
   requiredTrue: (value: boolean) => (value === true ? undefined : 'Required field'),
 
-  compose: (...validators) => (value) => validators.reduce(
-    (error, validator) => error || validator(value), undefined
+  compose: (...validators) => (value, values) => validators.reduce(
+    (error, validator) => error || validator(value, values), undefined
   ),
 };
 
