@@ -3,8 +3,8 @@ import { useTheme } from '@grafana/ui';
 import { getStyles } from './PlatformLogin.styles';
 import { SignUpProps } from './types';
 import { LoggedIn } from './LoggedIn/LoggedIn';
-import { SignIn } from './SignIn';
-import { SignUp } from './SignUp';
+import { SignIn } from './SignIn/SignIn';
+import { SignUp } from './SignUp/SignUp';
 
 export const PlatformLogin: FC<SignUpProps> = ({ userEmail, getSettings }) => {
   const theme = useTheme();
