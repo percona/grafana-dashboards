@@ -7,9 +7,11 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => ({
     align-items: center;
     display: flex;
     margin-left: ${theme.spacing.sm};
+    justify-content: flex-end;
     width: 100%;
   `,
   searchInput: css`
+    max-width: 150px;
     input {
       background: transparent;
       border: none;
