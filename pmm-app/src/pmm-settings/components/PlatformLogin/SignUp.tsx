@@ -64,7 +64,7 @@ export const SignUp: FC<LoginFormProps> = ({ changeMode, getSettings }) => {
         label={Messages.passwordLabel}
         type="password"
         component={InputFieldAdapter}
-        validate={validators.required}
+        validate={validators.compose(validators.required, validators.password('email'))}
         autoComplete="on"
       />
       <Field
