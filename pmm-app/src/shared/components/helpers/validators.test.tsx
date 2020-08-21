@@ -111,7 +111,7 @@ describe('validators compose', () => {
     const rangeValidator = validators.range(0, 100);
     const validate = validators.compose(rangeValidator, validators.required);
 
-    expect(validate(undefined)).toEqual('Required field');
+    expect(validate(undefined, {})).toEqual('Required field');
   });
 
   it('return correct validation error when value is in the middle of range', () => {
@@ -121,6 +121,6 @@ describe('validators compose', () => {
     const rangeValidator = validators.range(from, to);
     const validate = validators.compose(rangeValidator, validators.required);
 
-    expect(validate(120)).toEqual(errorMessage);
+    expect(validate(120, {})).toEqual(errorMessage);
   });
 });
