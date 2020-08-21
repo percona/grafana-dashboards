@@ -57,10 +57,10 @@ export const Messages = {
     success: 'Settings updated'
   },
   tabs: {
-    metrics: 'Metrics resolution',
-    advanced: 'Advanced settings',
-    ssh: 'SSH key',
-    alertManager: 'Alertmanager integration',
+    metrics: 'Metrics Resolution',
+    advanced: 'Advanced Settings',
+    ssh: 'SSH Key',
+    alertManager: 'Alertmanager Integration',
     perconaPlatform: 'Percona Platform',
   },
   tooltipLinkText: 'Read more'
