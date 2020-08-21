@@ -4,78 +4,82 @@ import { Latency, Sparkline, TimeDistribution } from 'shared/components/Elements
 import { humanize } from 'shared/components/helpers/Humanization';
 import { Info } from 'shared/components/Elements/Icons/Info';
 import { Overlay } from 'shared/components/Elements/Overlay/Overlay';
-import { styles } from './Metrics.styles';
 import { MetricsTabs } from './Metrics.constants';
 import { MetricsProps } from './Metrics.types';
 import { Databases } from '../Details.types';
+import {useTheme} from "@grafana/ui";
+import {getStyles} from "./Metrics.styles";
 
 const { Panel } = Collapse;
 
-const mainColumn = (text, item) => (
-  <span className={styles.metricColumn}>
+const Metrics: FC<MetricsProps> = ({
+  databaseType, totals, metrics, loading
+}) => {
+  const theme = useTheme();
+  const styles = getStyles(theme);
+
+  const mainColumn = (text, item) => (
+    <span className={styles.metricColumn}>
     <span>{item.name}</span>
     <Tooltip title={item.tooltip} placement="leftTop">
       <Info className={styles.metricTooltipIcon} />
     </Tooltip>
   </span>
-);
+  );
 
-const rateColumn = (totals) => (text, item) => {
-  const polygonChartProps = {
-    data: item.sparkline,
-    ykey: 'metric',
-    metricName: item.metricName,
-    color: totals ? 'rgba(223, 159, 85, 0.8)' : undefined,
-  };
+  const rateColumn = (totals) => (text, item) => {
+    const polygonChartProps = {
+      data: item.sparkline,
+      ykey: 'metric',
+      metricName: item.metricName,
+      color: totals ? 'rgba(223, 159, 85, 0.8)' : undefined,
+    };
 
-  return (
-    <div className={styles.metricColumn}>
+    return (
+      <div className={styles.metricColumn}>
       <span className={styles.metricData}>
         {`${item.isRate ? humanize.transform(item.metric.rate, item.pipeTypes.ratePipe) : '0'} ${item.units}`}
       </span>
-      <span className={styles.sparkline}>{item.sparkline && <Sparkline {...polygonChartProps} />}</span>
-    </div>
-  );
-};
-
-const sumColumn = (text, item) => (
-  <>
-    <div>
-      {item.isSum && (
-        <span className={styles.sum}>{humanize.transform(item.metric.sum, item.pipeTypes.sumPipe) || 0}</span>
-      )}
-      {item.percentOfTotal ? (
-        <span className={styles.percentOfTotal}>{`${item.percentOfTotal}% of total`}</span>
-      ) : null}
-    </div>
-    {item.complexMetric ? (
-      <div>
-        <span className={styles.complexMetric}>{item.complexMetric}</span>
+        <span className={styles.sparkline}>{item.sparkline && <Sparkline {...polygonChartProps} />}</span>
       </div>
-    ) : null}
-  </>
-);
-
-const perQueryStatsColumn = (text, item) => {
-  const latencyChartProps = {
-    data: item.metric,
+    );
   };
 
-  return (
-    <div className={styles.metricColumn}>
+  const sumColumn = (text, item) => (
+    <>
+      <div>
+        {item.isSum && (
+          <span className={styles.sum}>{humanize.transform(item.metric.sum, item.pipeTypes.sumPipe) || 0}</span>
+        )}
+        {item.percentOfTotal ? (
+          <span className={styles.percentOfTotal}>{`${item.percentOfTotal}% of total`}</span>
+        ) : null}
+      </div>
+      {item.complexMetric ? (
+        <div>
+          <span className={styles.complexMetric}>{item.complexMetric}</span>
+        </div>
+      ) : null}
+    </>
+  );
+
+  const perQueryStatsColumn = (text, item) => {
+    const latencyChartProps = {
+      data: item.metric,
+    };
+
+    return (
+      <div className={styles.metricColumn}>
       <span className={styles.perQueryStats}>
         {item.metric.avg
           ? humanize.transform(item.metric.avg, item.pipeTypes.perQueryStatsPipe)
           : (+item.metric.sum / +item.queryCount).toFixed(2) || '0'}
       </span>
-      {item.isLatencyChart && <Latency {...latencyChartProps} />}
-    </div>
-  );
-};
+        {item.isLatencyChart && <Latency {...latencyChartProps} />}
+      </div>
+    );
+  };
 
-const Metrics: FC<MetricsProps> = ({
-  databaseType, totals, metrics, loading
-}) => {
   const columns = [
     {
       title: 'Metric',
