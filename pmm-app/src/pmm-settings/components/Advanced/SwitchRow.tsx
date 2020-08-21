@@ -3,24 +3,29 @@ import { Switch, useTheme } from '@grafana/ui';
 import { getSettingsStyles } from 'pmm-settings/Settings.styles';
 import { LinkTooltip } from 'shared/components/Elements/LinkTooltip/LinkTooltip';
 import { SwitchRowProps } from './SwitchRow.types';
+import { getStyles } from './Advanced.styles';
 
 
 export const SwitchRow: FC<SwitchRowProps> = ({
   label,
-  tooltip,
-  tooltipLinkText,
-  link,
-  checked,
+  tooltip = '',
+  tooltipLinkText = '',
+  link = '',
+  disabled,
   className,
   dataQa,
-  onChange
+  input
 }) => {
   const theme = useTheme();
   const settingsStyles = getSettingsStyles(theme);
+  const styles = getStyles(theme);
 
   return (
-    <tr>
-      <td>
+    <div
+      className={styles.advancedRow}
+      data-qa={dataQa}
+    >
+      <div className={styles.advancedCol}>
         <div className={settingsStyles.labelWrapper}>
           <span>{label}</span>
           <LinkTooltip
@@ -30,15 +35,14 @@ export const SwitchRow: FC<SwitchRowProps> = ({
             icon="info-circle"
           />
         </div>
-      </td>
-      <td>
+      </div>
+      <div className={className}>
         <Switch
-          checked={checked}
-          className={className}
-          onChange={onChange}
-          data-qa={dataQa}
+          {...input}
+          value={input.checked}
+          disabled={disabled}
         />
-      </td>
-    </tr>
+      </div>
+    </div>
   );
 };

@@ -25,9 +25,9 @@ describe('Advanced::', () => {
       updatesDisabled
       updateSettings={() => {}}
     />);
-    const telemetrySwitch = root.find('[data-qa="advanced-telemetry-switch"]').find('input');
+    const telemetrySwitch = root.find('[data-qa="advanced-telemetry"]').find('input');
 
-    expect(telemetrySwitch.prop('className')).toContain('disabled');
+    expect(telemetrySwitch.prop('disabled')).toBeTruthy();
   });
 
   it('Cant change stt when telemetry is off', () => {
@@ -38,9 +38,9 @@ describe('Advanced::', () => {
       updatesDisabled
       updateSettings={() => {}}
     />);
-    const sttSwitch = root.find('[data-qa="advanced-stt-switch"]').find('input');
+    const sttSwitch = root.find('[data-qa="advanced-stt"]').find('input');
 
-    expect(sttSwitch.prop('className')).toContain('disabled');
+    expect(sttSwitch.prop('disabled')).toBeTruthy();
   });
 
   it('Calls apply changes', () => {
@@ -56,9 +56,7 @@ describe('Advanced::', () => {
     root.find('[data-qa="advanced-retention-input"]')
       .find('input')
       .simulate('change', { target: { value: '70' } });
-    root.find('[data-qa="advanced-button"]')
-      .find('button')
-      .simulate('click');
+    root.find('form').simulate('submit');
 
     expect(updateSettings).toHaveBeenCalled();
   });

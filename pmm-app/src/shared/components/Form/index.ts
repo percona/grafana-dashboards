@@ -7,6 +7,7 @@ export { SelectField } from './Select/Select';
 export { SliderField } from './Slider/Slider';
 export { TextAreaField } from './TextArea/TextArea';
 export { ToggleField } from './Toggle/Toggle';
+export { NumericInputField } from './NumericInput/NumericInputField';
 export { NumericInput } from './NumericInput/NumericInput';
 export { InputLabel } from './InputLabel/InputLabel';
 export { ButtonWithSpinner } from './ButtonWithSpinner/ButtonWithSpinner';

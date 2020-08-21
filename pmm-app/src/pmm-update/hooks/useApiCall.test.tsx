@@ -5,6 +5,7 @@ import { mount } from 'enzyme';
 import { useApiCall } from './useApiCall';
 
 jest.mock('shared/components/helpers/notification-manager');
+const originalConsoleError = console.error;
 
 const HookWrapper: FC<{ hook: () => any }> = ({ hook }) => {
   const dataHook = hook ? hook() : undefined;
@@ -12,10 +13,18 @@ const HookWrapper: FC<{ hook: () => any }> = ({ hook }) => {
   return <div data-hook={dataHook} />;
 };
 
-describe('useApiCall', () => {
+describe('useApiCall::', () => {
+  beforeEach(() => {
+    console.error = jest.fn();
+  });
+
+  afterEach(() => {
+    console.error = originalConsoleError;
+  });
+
   const fakeData = 42;
-  const fakeApi = jest.fn().mockImplementation(() => fakeData);
-  const fakeApiInvalid = jest.fn().mockImplementation(() => null);
+  const fakeApi = jest.fn().mockImplementation(() => Promise.resolve(fakeData));
+  const fakeApiInvalid = jest.fn().mockImplementation(() => Promise.resolve(null));
   const fakeApiWithTimeout = jest.fn().mockImplementation(async () => {
     await new Promise(() => setTimeout(() => {}, 1000));
 

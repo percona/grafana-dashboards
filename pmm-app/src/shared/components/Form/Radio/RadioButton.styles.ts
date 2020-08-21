@@ -3,13 +3,13 @@ import { GrafanaTheme } from '@grafana/data';
 import { css } from 'emotion';
 
 export const getStyles = stylesFactory((theme: GrafanaTheme) => {
-  const { colors }: any = theme;
+  const { colors, palette }: any = theme;
   const textColor = selectThemeVariant(
-    { light: colors.text, dark: colors.gray4 },
+    { light: colors.text, dark: palette.gray4 },
     theme.type,
   );
   const textColorHover = selectThemeVariant(
-    { light: colors.dark1, dark: colors.white },
+    { light: palette.dark1, dark: palette.white },
     theme.type,
   );
 
@@ -34,12 +34,12 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       }
     `,
     radioButtonActive: css`
-      background: ${colors.greenBase};
+      background: ${palette.greenBase};
       border: ${theme.border.width.sm} solid ${colors.pageHeaderBorder};
-      color: ${colors.white};      
+      color: ${palette.white};      
       label: active;
       &:hover {
-        color: ${colors.white};
+        color: ${palette.white};
       }
     `,
   };
