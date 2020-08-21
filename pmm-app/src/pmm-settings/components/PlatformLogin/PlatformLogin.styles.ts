@@ -40,11 +40,11 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => ({
     align-items: start;
     display: flex;
     flex-direction: column;
-    margin-right: 60px;
+    margin-right: 30px;
   `,
   form: css`
     max-width: 300px;
-    min-width: 300px;
+    min-width: 150px;
     width: 100%;
   `,
   submitButton: css`
