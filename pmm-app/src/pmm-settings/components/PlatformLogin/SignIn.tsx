@@ -33,7 +33,7 @@ export const SignIn: FC<LoginFormProps> = ({ changeMode, getSettings }) => {
     handleSubmit,
   }) => (
     <form data-qa="sign-in-form" className={styles.form} onSubmit={handleSubmit}>
-      <legend className={styles.legend}>{Messages.signIn}</legend>
+      <legend className={styles.legend}>{Messages.login}</legend>
       <Field
         data-qa="sign-in-email-input"
         name="email"
@@ -59,7 +59,7 @@ export const SignIn: FC<LoginFormProps> = ({ changeMode, getSettings }) => {
         type="submit"
         disabled={!valid || submitting || pristine}
       >
-        {Messages.signIn}
+        {Messages.login}
       </Button>
       <ButtonWithSpinner
         data-qa="sign-in-to-sign-up-button"
