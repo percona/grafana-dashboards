@@ -6,6 +6,9 @@ export const TIME_METRICS = [
   'innodb_io_r_wait',
   'innodb_queue_wait',
   'innodb_rec_lock_wait',
+  // PG metrics
+  'cpu_user_time',
+  'cpu_sys_time'
 ];
 
 export const METRICS_COLORS = {
@@ -15,6 +18,9 @@ export const METRICS_COLORS = {
   innodb_io_r_wait: '#3c3c3c',
   innodb_queue_wait: '#7e4291',
   innodb_rec_lock_wait: '#e97e03',
+  // PG metrics
+  cpu_user_time: 'yellow',
+  cpu_sys_time: 'pink',
 };
 
 export const PERCENT_COUNT = 100;
