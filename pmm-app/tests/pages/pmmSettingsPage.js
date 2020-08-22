@@ -51,12 +51,12 @@ module.exports = {
     invalidAlertmanagerMissingHostMessage: 'Invalid alert_manager_url: http:// - missing host.',
     invalidAlertmanagerRulesMessage: 'Invalid alerting rules.',
   },
-  sectionTabsList: [
-    'Metrics resolution',
-    'Advanced settings',
-    'SSH key',
-    'Alertmanager integration'
-  ],
+  sectionTabsList: {
+    metrics: 'Metrics Resolution',
+    advanced: 'Advanced Settings',
+    ssh: 'SSH Key',
+    alertmanager: 'Alertmanager Integration'
+  },
   sectionButtonText: {
     applyChanges: 'Apply changes',
     applySSHKey: 'Apply SSH key',
@@ -84,8 +84,8 @@ module.exports = {
     amUrlLabel: locateLabel('form-field-am-url'),
     applyButton: '//button[@type="submit"]',
     callHomeSwitch: '//button[@class="toggle-field ant-switch ant-switch-checked"]',
-    checkForUpdatesLabel: '//div[@data-qa="settings-tab-content"]//tr[3]//td[1]//span',
-    checkForUpdatesSwitch: '//div[@data-qa="settings-tab-content"]//tr[3]//td[2]//input',
+    checkForUpdatesLabel: '//div[@data-qa="advanced-updates"]//div//span',
+    checkForUpdatesSwitch: '//div[@data-qa="advanced-updates"]//div[2]//input',
     dataRetentionInput: '[data-qa="advanced-retention-input"]',
     dataRetentionLabel: locateLabel('form-field-data-retention'),
     diagnosticsButton: '[data-qa="diagnostics-button"]',
@@ -94,7 +94,7 @@ module.exports = {
     iframe: '//div[@class="panel-content"]//iframe',
     metricsResolutionButton: '[data-qa="metrics-resolution-button"]',
     metricsResolution: '//div[@data-qa="metrics-resolution-radio-button-group"]/label[text()="',
-    metricsResolutionLabel: locateLabel('metrics-resolution-label'),
+    metricsResolutionLabel: '[data-qa="metrics-resolution-label"]',
     metricsResolutionRadio: '[data-qa="metrics-resolution-radio-button-group"]',
     lowInput: '[data-qa="metrics-resolution-lr-input"]',
     mediumInput: '[data-qa="metrics-resolution-mr-input"]',
@@ -105,16 +105,14 @@ module.exports = {
     sshKeyInput: '[data-qa="ssh-key"]',
     sshKeyLabel: locateLabel('ssh-key-label'),
     sshKeyButton: '[data-qa="ssh-key-button"]',
-    sttLabel: '//div[@data-qa="settings-tab-content"]//tr[4]//td[1]//span',
-    sttLabelTooltipSelector: '//div[@data-qa="settings-tab-content"]//tr[4]//td[1]//i',
-    sttSwitchSelector: '//div[@data-qa="settings-tab-content"]//tr[4]//td[2]//input',
-    sttSwitchSelectorLabel: '//div[@data-qa="settings-tab-content"]//tr[4]//td[2]//label',
-    sttSwitchClickable: '//div[@data-qa="settings-tab-content"]//tr[4]//td[2]//span',
+    sttLabel: '//div[@data-qa="advanced-stt"]//div//span',
+    sttLabelTooltipSelector: '//div[@data-qa="advanced-stt"]//div//div//div//div',
+    sttSwitchSelectorInput: '//div[@data-qa="advanced-stt"]//div[2]//input',
+    sttSwitchSelector: '//div[@data-qa="advanced-stt"]//div[2]//label',
     subSectionHeader: '//following-sibling::div//div[@class="ant-collapse-header"]',
-    telemetrySwitchSelector: '//div[@data-qa="settings-tab-content"]//tr[2]//td[2]//input',
-    telemetrySwitchSelectorLabel: '//div[@data-qa="settings-tab-content"]//tr[2]//td[2]//label',
-    telemetrySwitchClickable: '//div[@data-qa="settings-tab-content"]//tr[2]//td[2]//span',
-    telemetryLabel: '//div[@data-qa="settings-tab-content"]//tr[2]//td[1]//span',
+    telemetrySwitchSelectorInput: '//div[@data-qa="advanced-telemetry"]//div[2]//input',
+    telemetrySwitchSelector: '//div[@data-qa="advanced-telemetry"]//div[2]//label',
+    telemetryLabel: '//div[@data-qa="advanced-telemetry"]//div//span',
     tooltipSelector: '.popper__background',
     validationMessage: 'span.error-message',
     tabsSection: '[data-qa="settings-tabs"]',
@@ -145,12 +143,15 @@ module.exports = {
   },
 
   async selectMetricsResolution(resolution) {
+    I.waitForElement(`${this.fields.metricsResolution + resolution}"]`, 30);
     I.click(`${this.fields.metricsResolution + resolution}"]`);
     I.click(this.fields.metricsResolutionButton);
   },
 
   async verifySelectedResolution(resolution) {
     const selector = `${this.fields.metricsResolution + resolution}"]`;
+
+    I.waitForElement(selector, 30);
     const className = await I.grabAttributeFrom(selector, 'class');
 
     assert.equal(className.includes('active'), true, 'Metric resolution should be active');

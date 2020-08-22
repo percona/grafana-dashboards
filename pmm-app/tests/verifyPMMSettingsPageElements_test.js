@@ -21,9 +21,9 @@ Scenario(
   'Verify Section Tabs and Metrics Section Elements [critical]',
   async (I, pmmSettingsPage) => {
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
-    for (const i in pmmSettingsPage.sectionTabsList) {
-      I.see(pmmSettingsPage.sectionTabsList[i], pmmSettingsPage.fields.tabsSection);
-    }
+    Object.values(pmmSettingsPage.sectionTabsList).forEach((value) => {
+      I.see(value, pmmSettingsPage.fields.tabsSection);
+    });
 
     await within(pmmSettingsPage.fields.tabContent, () => {
       I.waitForElement(pmmSettingsPage.fields.metricsResolutionLabel, 30);
@@ -37,7 +37,7 @@ Scenario(
 );
 
 Scenario('Verify SSH Key Section Elements', async (I, pmmSettingsPage) => {
-  const sectionNameToExpand = 'SSH key';
+  const sectionNameToExpand = pmmSettingsPage.sectionTabsList.ssh;
 
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
   await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.sshKeyButton);
@@ -48,7 +48,7 @@ Scenario('Verify SSH Key Section Elements', async (I, pmmSettingsPage) => {
 Scenario(
   'Verify Advanced Section Elements',
   async (I, pmmSettingsPage) => {
-    const sectionNameToExpand = 'Advanced settings';
+    const sectionNameToExpand = pmmSettingsPage.sectionTabsList.advanced;
 
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.advancedButton);
@@ -56,11 +56,11 @@ Scenario(
     I.see('Telemetry', pmmSettingsPage.fields.telemetryLabel);
     I.see('Check for updates', pmmSettingsPage.fields.checkForUpdatesLabel);
     I.see('Security Threat Tool', pmmSettingsPage.fields.sttLabel);
-    I.seeElement(pmmSettingsPage.fields.telemetrySwitchSelector);
+    I.seeElement(pmmSettingsPage.fields.telemetrySwitchSelectorInput);
     I.seeElement(pmmSettingsPage.fields.telemetryLabel);
     I.seeElement(pmmSettingsPage.fields.checkForUpdatesSwitch);
     I.seeElement(pmmSettingsPage.fields.checkForUpdatesLabel);
-    I.seeElement(pmmSettingsPage.fields.sttSwitchSelector);
+    I.seeElement(pmmSettingsPage.fields.sttSwitchSelectorInput);
     I.seeElement(pmmSettingsPage.fields.sttLabel);
   }
 );
@@ -68,7 +68,7 @@ Scenario(
 Scenario(
   'Verify Alertmanager integration Section Elements',
   async (I, pmmSettingsPage) => {
-    const sectionNameToExpand = 'Alertmanager integration';
+    const sectionNameToExpand = pmmSettingsPage.sectionTabsList.alertmanager;
 
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.alertmanagerButton);
@@ -81,7 +81,7 @@ Scenario(
 
 Scenario('Verify validation for invalid SSH Key', async (I, pmmSettingsPage) => {
   const sshKeyForTest = 'ssh-rsa testKey test@key.local';
-  const sectionNameToExpand = 'SSH key';
+  const sectionNameToExpand = pmmSettingsPage.sectionTabsList.ssh;
 
   await pmmSettingsPage.waitForPmmSettingsPageLoaded();
   await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.sshKeyButton);
@@ -93,7 +93,7 @@ Scenario(
   'Verify validation for Alertmanager URL without scheme',
   async (I, pmmSettingsPage) => {
     const urlWithoutScheme = 'invalid_url';
-    const sectionNameToExpand = 'Alertmanager integration';
+    const sectionNameToExpand = pmmSettingsPage.sectionTabsList.alertmanager;
 
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.alertmanagerButton);
@@ -108,7 +108,7 @@ Scenario(
   'Verify validation for Alertmanager URL without host',
   async (I, pmmSettingsPage) => {
     const urlWithoutHost = 'http://';
-    const sectionNameToExpand = 'Alertmanager integration';
+    const sectionNameToExpand = pmmSettingsPage.sectionTabsList.alertmanager;
 
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.alertmanagerButton);
@@ -123,7 +123,7 @@ Scenario(
   'Verify validation for invalid Alertmanager Rule',
   async (I, pmmSettingsPage) => {
     const rule = 'invalid_rule';
-    const sectionNameToExpand = 'Alertmanager integration';
+    const sectionNameToExpand = pmmSettingsPage.sectionTabsList.alertmanager;
 
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.alertmanagerButton);
@@ -132,30 +132,31 @@ Scenario(
   }
 );
 
-Scenario(
+// Skip, need to investigate will roll back
+xScenario(
   'PMM-T254 Verify validation for STT and Telemetry switches',
   async (I, pmmSettingsPage, settingsAPI) => {
     await settingsAPI.apiDisableSTT();
     I.amOnPage(pmmSettingsPage.url);
-    const sectionNameToExpand = 'Advanced settings';
+    const sectionNameToExpand = pmmSettingsPage.sectionTabsList.advanced;
 
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.advancedButton);
     pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.telemetrySwitchSelector, 'on');
-    pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelector, 'off');
-    I.click(pmmSettingsPage.fields.telemetrySwitchClickable);
-    pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.telemetrySwitchSelector, 'off');
-    await pmmSettingsPage.verifySwitchStateIs(pmmSettingsPage.fields.sttSwitchSelectorLabel, false);
-    I.click(pmmSettingsPage.fields.telemetrySwitchClickable);
-    pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.telemetrySwitchSelector, 'on');
-    await pmmSettingsPage.verifySwitchStateIs(pmmSettingsPage.fields.sttSwitchSelectorLabel, true);
-    I.click(pmmSettingsPage.fields.sttSwitchClickable);
-    pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelector, 'on');
-    await pmmSettingsPage.verifySwitchStateIs(pmmSettingsPage.fields.sttSwitchSelectorLabel, true);
-    pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.telemetrySwitchSelector, 'on');
-    await pmmSettingsPage.verifySwitchStateIs(pmmSettingsPage.fields.telemetrySwitchSelectorLabel, false);
+    pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelectorInput, 'off');
+    I.click(pmmSettingsPage.fields.telemetrySwitchSelector);
+    pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.telemetrySwitchSelectorInput, 'off');
+    await pmmSettingsPage.verifySwitchStateIs(pmmSettingsPage.fields.sttSwitchSelector, false);
+    I.click(pmmSettingsPage.fields.telemetrySwitchSelector);
+    pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.telemetrySwitchSelectorInput, 'on');
+    await pmmSettingsPage.verifySwitchStateIs(pmmSettingsPage.fields.sttSwitchSelector, true);
+    I.click(pmmSettingsPage.fields.sttSwitchSelector);
+    pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelectorInput, 'on');
+    await pmmSettingsPage.verifySwitchStateIs(pmmSettingsPage.fields.sttSwitchSelector, true);
+    pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.telemetrySwitchSelectorInput, 'on');
+    await pmmSettingsPage.verifySwitchStateIs(pmmSettingsPage.fields.telemetrySwitchSelector, false);
   }
-);
+).retry(2);
 
 // To be removed from Skip after https://jira.percona.com/browse/PMM-5791
 xScenario(

@@ -31,7 +31,7 @@ Scenario(
     );
     I.seeElement(databaseChecksPage.fields.disabledSTTMessageLinkSelector);
     I.seeAttributesOnElements(databaseChecksPage.fields.disabledSTTMessageLinkSelector, {
-      href: `${config.url}${pmmSettingsPage.url}`,
+      href: `${config.url}${pmmSettingsPage.url}?menu=advanced-settings`,
     });
   },
 );

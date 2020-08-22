@@ -4,22 +4,17 @@ import { css } from 'emotion';
 
 export const getSettingsStyles = stylesFactory((theme: GrafanaTheme) => {
   const { spacing } = theme;
-  const { colors }: any = theme;
   const mq = `@media (max-width: ${theme.breakpoints.md})`;
-  const input = `
-    background-color: ${colors.formInputBg};
-    border: ${theme.border.width.sm} solid ${colors.pageHeaderBorder};
-    border-radius: ${theme.border.radius.sm};
-    font-size: ${theme.typography.size.sm};
-    padding: ${theme.spacing.formSpacingBase / 4}px ${theme.spacing.formSpacingBase}px;
+
+  return {
+    wrapper: css`
     ${mq} {
       width: 100%;
     }
-  `;
-
-  return {
+  `,
     settingsWrapper: css`
       display: flex;
+      flex-wrap: wrap;
       margin-top: ${spacing.lg};
       ${mq} {
         flex-direction: column;
@@ -32,7 +27,7 @@ export const getSettingsStyles = stylesFactory((theme: GrafanaTheme) => {
     tabsWrapper: css`
       margin-right: 40px;
       height: fit-content;
-      width: 230px;
+      min-width: 230px;
       ${mq} {
         margin-right: 0;
         margin-bottom: ${spacing.lg};
@@ -41,7 +36,9 @@ export const getSettingsStyles = stylesFactory((theme: GrafanaTheme) => {
     `,
     tabContentWrapper: css`
       border-left: ${theme.border.width.sm} solid ${theme.colors.pageHeaderBorder};
+      flex: 1;
       padding: 0 0 0 60px;
+      position: relative;
       ${mq} {
         border: none;
         padding: 0;
@@ -56,7 +53,7 @@ export const getSettingsStyles = stylesFactory((theme: GrafanaTheme) => {
     `,
     labelWrapper: css`
       display: flex;
-      i {
+      svg {
         margin-left: ${theme.spacing.xs};
       }
     `,
@@ -69,14 +66,6 @@ export const getSettingsStyles = stylesFactory((theme: GrafanaTheme) => {
       span {
         display: flex;
       }
-    `,
-    textarea: css`
-      ${input}
-      line-height: ${theme.typography.lineHeight.md};
-    `,
-    input: css`
-      ${input}
-      min-height: ${theme.height.md};
     `,
   };
 });

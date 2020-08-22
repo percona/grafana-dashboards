@@ -3,8 +3,9 @@ import { createBrowserHistory } from 'history';
 import { PanelProps } from '@grafana/data';
 import { Spinner } from '@grafana/ui';
 import { Router, Route } from 'react-router-dom';
-import { Table, ButtonWithSpinner } from 'pmm-check/components';
+import { Table } from 'pmm-check/components';
 import { showSuccessNotification } from 'shared/components/helpers';
+import { ButtonWithSpinner } from 'shared/components/Form';
 import { CheckPanelOptions, ActiveCheck, Settings } from './types';
 import { CheckService } from './Check.service';
 import { COLUMNS } from './CheckPanel.constants';
@@ -112,7 +113,7 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
           <>
             <div className={styles.header}>
               <div className={styles.title} data-qa="db-check-panel-title">
-                {title ?? ''}
+                {title}
               </div>
               <ButtonWithSpinner
                 onClick={this.handleRunChecksClick}

@@ -17,11 +17,6 @@ module.exports = {
     }
   },
 
-  waitForQANPageLoaded() {
-    I.waitForVisible(qanPage.fields.table, 30);
-    I.waitForClickable(qanPage.fields.nextPageNavigation, 30);
-  },
-
   changeGroupBy(groupBy = 'Client Host') {
     I.waitForElement(qanPage.fields.groupBySelector, 30);
     I.forceClick(qanPage.fields.groupBySelector);
@@ -158,8 +153,31 @@ module.exports = {
     }
   },
 
+  applyFilterInSection(section, filter) {
+    const filterLocator = `//span[contains(text(), '${section}')]/parent::p/following-sibling::div//span[contains(@class, 'checkbox-container__label-text') and contains(text(), '${filter}')]`;
+
+    I.waitForVisible(filterLocator, 20);
+    I.click(filterLocator);
+  },
+
+  checkDisabledFilter(section, filter) {
+    const filterLocator = `//span[contains(text(), '${section}')]/parent::p/following-sibling::div//input[contains(@name, '${filter}') and @disabled]`;
+
+    I.waitForVisible(filterLocator, 20);
+  },
+
+  async getPercentage(filterType, filter) {
+    return await I.grabTextFrom(
+      `//span[contains(text(), '${filterType}')]/../../descendant::span[contains(text(), '${filter}')]/../../following-sibling::span/span`,
+    );
+  },
+
   verifyChangedCount(countBefore, countAfter) {
-    assert.notEqual(countAfter, countBefore, 'Data should be changed');
+    assert.notEqual(
+      countAfter,
+      countBefore,
+      `After applying Filter value ${countBefore} should not be equal to ${countAfter}`,
+    );
   },
 
   async verifyFiltersSection(filterSection, expectedCount) {
@@ -193,19 +211,20 @@ module.exports = {
     I.waitForVisible(showTop5Link, 30);
     const top5Link = await I.grabTextFrom(showTop5Link);
 
-    assert.equal(top5Link, 'Show top 5', 'Link is not correct');
+    assert.equal(top5Link, 'Show top 5', 'Link is incorrect');
     I.click(showTop5Link);
   },
 
   async verifyCountOfFilterLinks(expectedCount, before) {
+    I.waitForInvisible(qanPage.elements.spinner, 30);
     const count = await I.grabNumberOfVisibleElements(qanPage.fields.filterCheckboxes);
 
     if (!before) {
-      assert.equal(count, expectedCount);
+      assert.equal(count, expectedCount, `The value ${expectedCount} should be equal to ${count}`);
     }
 
     if (before) {
-      assert.notEqual(count, expectedCount);
+      assert.notEqual(count, expectedCount, `The value ${expectedCount} should not be equal to ${count}`);
     }
   },
 
@@ -225,7 +244,7 @@ module.exports = {
   async verifyCount(expectedCount) {
     const count = await I.grabTextFrom(qanPage.fields.countOfItems);
 
-    assert.equal(count.includes(expectedCount), true, 'The count is incorrect!');
+    assert.equal(count.includes(expectedCount), true, `The value ${expectedCount} should include ${count}`);
   },
 
   selectPage(page) {
@@ -254,7 +273,7 @@ module.exports = {
   async verifyRowCount(rowCount) {
     const count = await I.grabNumberOfVisibleElements(qanPage.fields.tableRow);
 
-    assert.equal(count, rowCount, 'Row count is incorrect!');
+    assert.equal(count, rowCount, `Row count should be ${rowCount} instead of ${count}`);
   },
 
   async verifyPagesAndCount(itemsPerPage) {
@@ -401,6 +420,7 @@ module.exports = {
   },
 
   async getCountOfItems() {
+    I.waitForInvisible(qanPage.elements.spinner, 30);
     const resultsCount = (await I.grabTextFrom(qanPage.fields.countOfItems)).split(' ');
 
     return resultsCount[2];

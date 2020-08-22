@@ -3,7 +3,8 @@ import { act } from 'react-dom/test-utils';
 import { MemoryRouter, Route } from 'react-router-dom';
 import { mount, ReactWrapper } from 'enzyme';
 import { Spinner } from '@grafana/ui';
-import { ButtonWithSpinner, Table } from 'pmm-check/components';
+import { Table } from 'pmm-check/components';
+import { ButtonWithSpinner } from 'shared/components/Form';
 import { CheckPanel, CheckPanelProps, CheckPanelState } from './CheckPanel';
 import { CheckService } from './Check.service';
 
@@ -12,6 +13,7 @@ import { activeCheckStub } from './__mocks__/stubs';
 jest.mock('shared/components/helpers/notification-manager');
 
 jest.mock('./Check.service');
+const originalConsoleError = jest.fn();
 
 const CheckPanelRouter: FC<CheckPanelProps> = (props) => (
   <MemoryRouter>
@@ -22,6 +24,14 @@ const CheckPanelRouter: FC<CheckPanelProps> = (props) => (
 );
 
 describe('CheckPanel::', () => {
+  beforeEach(() => {
+    console.error = jest.fn();
+  });
+
+  afterEach(() => {
+    console.error = originalConsoleError;
+  });
+
   CheckPanel.prototype.componentDidMount = jest.fn();
 
   it('should render the title passed as a prop', async () => {
@@ -42,7 +52,7 @@ describe('CheckPanel::', () => {
       wrapper
         .find('[data-qa="db-check-panel-title"]')
         .at(0)
-        .text()
+        .text(),
     ).toEqual('DB CHECKS');
 
     wrapper.unmount();
@@ -179,10 +189,6 @@ describe('CheckPanel::', () => {
       },
     } as CheckPanelProps;
 
-    const originalConsoleError = console.error;
-
-    console.error = jest.fn();
-
     jest.useFakeTimers();
 
     const wrapper: ReactWrapper<CheckPanelProps, {}, any> = mount(<CheckPanelRouter {...props} />);
@@ -194,7 +200,9 @@ describe('CheckPanel::', () => {
 
     const buttonWithSpinner = wrapper.find('[data-qa="db-check-panel"]').find(ButtonWithSpinner);
 
-    CheckService.getActiveAlerts = jest.fn(() => { throw Error('Test error'); });
+    CheckService.getActiveAlerts = jest.fn(() => {
+      throw Error('Test error');
+    });
 
     await act(async () => {
       buttonWithSpinner.simulate('click');
@@ -207,8 +215,6 @@ describe('CheckPanel::', () => {
 
     expect(console.error).toBeCalledTimes(1);
     expect(console.error).toBeCalledWith(Error('Test error'));
-
-    console.error = originalConsoleError;
 
     (CheckService.getActiveAlerts as jest.Mock).mockClear();
     jest.useRealTimers();
@@ -223,10 +229,6 @@ describe('CheckPanel::', () => {
       },
     } as CheckPanelProps;
 
-    const originalConsoleError = console.error;
-
-    console.error = jest.fn();
-
     const wrapper: ReactWrapper<CheckPanelProps, {}, any> = mount(<CheckPanelRouter {...props} />);
 
     const root = wrapper.find(CheckPanel) as ReactWrapper<CheckPanelProps, CheckPanelState, CheckPanel>;
@@ -236,14 +238,14 @@ describe('CheckPanel::', () => {
 
     const buttonWithSpinner = wrapper.find('[data-qa="db-check-panel"]').find(ButtonWithSpinner);
 
-    CheckService.runDbChecks = jest.fn(() => { throw Error('Test error'); });
+    CheckService.runDbChecks = jest.fn(() => {
+      throw Error('Test error');
+    });
 
     buttonWithSpinner.simulate('click');
 
     expect(console.error).toBeCalledTimes(1);
     expect(console.error).toBeCalledWith(Error('Test error'));
-
-    console.error = originalConsoleError;
 
     (CheckService.runDbChecks as jest.Mock).mockClear();
 

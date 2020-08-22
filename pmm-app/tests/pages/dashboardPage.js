@@ -5,7 +5,7 @@ module.exports = {
   // insert your locators and methods here
   // setting locators
   nodesCompareDashboard: {
-    url: 'graph/d/node-instance-compare/nodes-compare',
+    url: 'graph/d/node-instance-compare/nodes-compare?orgId=1&refresh=1m&from=now-5m&to=now',
     metrics: [
       'System Info',
       'System Uptime',
@@ -91,7 +91,7 @@ module.exports = {
     ],
   },
   prometheusExporterStatusDashboard: {
-    url: 'graph/d/prometheus-status/prometheus-exporter-status',
+    url: 'graph/d/prometheus-status/prometheus-exporter-status?orgId=1&refresh=1m&from=now-5m&to=now',
     metrics: [
       'CPU Usage',
       'Memory Usage',
@@ -113,7 +113,7 @@ module.exports = {
     ],
   },
   nodeSummaryDashboard: {
-    url: 'graph/d/node-instance-summary/node-summary',
+    url: 'graph/d/node-instance-summary/node-summary?orgId=1&refresh=1m&from=now-30m&to=now',
     metrics: [
       'System Uptime',
       'Virtual CPUs',
@@ -138,7 +138,7 @@ module.exports = {
     ],
   },
   prometheusExporterOverviewDashboard: {
-    url: 'graph/d/prometheus-overview/prometheus-exporters-overview',
+    url: 'graph/d/prometheus-overview/prometheus-exporters-overview?orgId=1&refresh=1m&from=now-5m&to=now',
     metrics: [
       'Avg CPU Usage per Node',
       'Avg Memory Usage per Node',
@@ -222,7 +222,7 @@ module.exports = {
     ],
   },
   postgresqlInstanceOverviewDashboard: {
-    //had to be changed after the PMM-6386 bug will be fixed
+    // had to be changed after the PMM-6386 bug will be fixed
     url: 'graph/d/postgresql-instance-overview/postgresql-instances-overview',
     metrics: [
       'Services',
@@ -541,6 +541,8 @@ module.exports = {
     collapsedDashboardRow: '//div[@class="dashboard-row dashboard-row--collapsed"]/a',
     annotationMarker: '(//div[contains(@class,"events_marker")])',
     clearSelection: '//a[@ng-click="vm.clearSelections()"]',
+    Last12HoursValue: "//span[contains(text(), 'Last 12 hours')]",
+    Last2Days: "//span[contains(text(), 'Last 2 days')]"
   },
 
   annotationLocator(annotationNumber) {
@@ -647,17 +649,17 @@ module.exports = {
   },
 
   expandFilters(filterType) {
-    const filterLocator = `//label[contains(text(), '${filterType}')]/following-sibling::value-select-dropdown`;
+    const filterGroupLocator = `//label[contains(text(), '${filterType}')]/parent::div`;
 
-    I.waitForElement(filterLocator, 30);
-    I.click(filterLocator);
+    I.waitForElement(`${filterGroupLocator}//a`, 30);
+    I.click(`${filterGroupLocator}//a`);
 
-    return filterLocator;
+    return filterGroupLocator;
   },
 
   async applyFilter(filterName, filterValue) {
     // eslint-disable-next-line max-len
-    const filterSelector = `(//a[@class='variable-value-link']//ancestor::div//label[contains(text(),'${filterName}')])[1]//parent::div//a[@ng-click]`;
+    const filterSelector = `(//a[@class='variable-value-link']//ancestor::div//label[contains(text(),'${filterName}')])[1]//parent::div//a`;
     const filterValueSelector = `//span[contains(text(), '${filterValue}')]`;
     // eslint-disable-next-line max-len
     const filterNameSelector = `(//a[@class='variable-value-link']//ancestor::div//label[contains(text(),'${filterName}')])[1]`;
