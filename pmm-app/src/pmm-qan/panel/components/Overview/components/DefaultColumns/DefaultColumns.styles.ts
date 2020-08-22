@@ -31,6 +31,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       align-items: center;
       width: 100%;
       padding: 0 5px;
+      justify-content: space-between;
     `,
     tooltipIcon: css`
   margin-left: auto;
