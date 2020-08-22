@@ -19,8 +19,8 @@ export const METRICS_COLORS = {
   innodb_queue_wait: '#7e4291',
   innodb_rec_lock_wait: '#e97e03',
   // PG metrics
-  cpu_user_time: 'yellow',
-  cpu_sys_time: 'pink',
+  cpu_user_time: '#a87067',
+  cpu_sys_time: '#bdd5b6',
 };
 
 export const PERCENT_COUNT = 100;
