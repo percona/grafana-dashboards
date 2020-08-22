@@ -15,7 +15,6 @@ module.exports = {
   instanceTypes: {
     mysql: 'MySQL',
     postgresql: 'PostgreSQL',
-    mongodb: 'MongoDB',
     proxysql: 'ProxySQL',
     rds: 'RDS'
   },

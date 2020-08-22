@@ -3,7 +3,6 @@ const assert = require('assert');
 const serviceNames = {
   mysql: 'mysql_upgrade_service',
   postgresql: 'postgres_upgrade_service',
-  mongodb: 'mongodb_upgrade_service',
   proxysql: 'proxysql_upgrade_service',
   rds: 'mysql_rds_uprgade_service',
 };
@@ -140,7 +139,8 @@ Scenario(
   },
 );
 
-Scenario(
+//Temp 
+xScenario(
   'Verify QAN has specific filters for Remote Instances after Upgrade (UI) @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
   async (I, qanPage, addInstanceAPI) => {
     I.amOnPage(qanPage.url);
