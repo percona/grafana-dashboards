@@ -1,5 +1,5 @@
 import { css } from 'emotion';
-import { selectThemeVariant, stylesFactory } from '@grafana/ui';
+import { stylesFactory } from '@grafana/ui';
 import { GrafanaTheme } from '@grafana/data';
 import { getThemeParameters } from 'shared/components/helpers/selectThemeVariant';
 

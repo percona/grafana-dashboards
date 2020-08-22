@@ -1,7 +1,6 @@
-
 import { css } from 'emotion';
 import { GrafanaTheme } from '@grafana/data';
-import { selectThemeVariant, stylesFactory } from '@grafana/ui';
+import { stylesFactory } from '@grafana/ui';
 import { getThemeParameters } from 'shared/components/helpers/selectThemeVariant';
 
 export const getStyles = stylesFactory((theme: GrafanaTheme) => {

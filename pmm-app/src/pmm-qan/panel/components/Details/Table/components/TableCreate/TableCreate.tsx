@@ -1,10 +1,11 @@
 import React, {
   FC, useCallback, useEffect, useState
 } from 'react';
-import Highlight from 'react-highlight.js';
 import { Overlay } from 'shared/components/Elements/Overlay/Overlay';
 import { ActionResult, getActionResult } from 'shared/components/Actions';
 import { Databases } from '../../../Details.types';
+import { HighlightWrapper } from 'shared/components/Elements/HighlightWrapper/HighlightWrapper';
+import { ActionResult, Databases } from '../../../Details.types';
 import { mysqlMethods, postgresqlMethods } from '../../../database-models';
 import { TableProps } from '../Table.types';
 
@@ -36,7 +37,9 @@ export const TableCreate: FC<TableProps> = ({ tableName, databaseType, example }
   return (
     <Overlay isPending={showCreateTable.loading}>
       {showCreateTable.error ? <pre>{showCreateTable.error}</pre> : null}
-      {!showCreateTable.error ? <Highlight language="sql">{showCreateTable.value}</Highlight> : null}
+      {!showCreateTable.error ? (
+        <HighlightWrapper language="sql">{showCreateTable.value}</HighlightWrapper>
+      ) : null}
     </Overlay>
   );
 };

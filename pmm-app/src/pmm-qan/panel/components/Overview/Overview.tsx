@@ -1,6 +1,6 @@
 import { Pagination } from 'antd';
 import React, {
-  useCallback, useContext, useEffect, useState, useRef, FC, useMemo
+  FC, useCallback, useContext, useEffect, useMemo, useRef, useState
 } from 'react';
 import './Overview.scss';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
@@ -15,8 +15,6 @@ export const Overview: FC = () => {
   const theme = useTheme();
   const styles = getStyles(theme);
 
-  const theme = useTheme();
-  const styles = getStyles(theme);
   const [total, setTotal] = useState(30);
   const [overviewMetricsList, loading] = useOverviewTable(setTotal);
   const [height, setHeight] = useState(400);

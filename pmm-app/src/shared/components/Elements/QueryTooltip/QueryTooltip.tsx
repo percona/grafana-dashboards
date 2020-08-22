@@ -1,8 +1,8 @@
 import { Tooltip } from 'antd';
-import Highlight from 'react-highlight.js';
 import React from 'react';
 import './QueryTooltip.scss';
 import sqlFormatter from 'sql-formatter';
+import { HighlightWrapper } from '../HighlightWrapper/HighlightWrapper';
 
 interface QueryTooltipProps {
   query: string;
@@ -21,7 +21,7 @@ export const QueryTooltip = ({
     title={() => (
       <div className="query-tooltip-data-wrapper">
         {queryId ? <h5 style={{ margin: '10px' }}>{`Query Id: ${queryId}`}</h5> : null}
-        {query ? <Highlight language="sql">{sqlFormatter.format(query, { language: 'pl/sql' })}</Highlight> : null}
+        {query ? <HighlightWrapper language="sql">{sqlFormatter.format(query, { language: 'pl/sql' })}</HighlightWrapper> : null}
       </div>
     )}
   >

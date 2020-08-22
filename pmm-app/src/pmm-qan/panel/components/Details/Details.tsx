@@ -1,7 +1,7 @@
 import React, {
   FC, useContext, useEffect, useState
 } from 'react';
-import { Divider, Tabs, Button } from 'antd';
+import { Button, Divider, Tabs } from 'antd';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
 import { useTheme } from '@grafana/ui';
 import { cx } from 'emotion';

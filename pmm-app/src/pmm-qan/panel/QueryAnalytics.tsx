@@ -2,14 +2,14 @@ import React, {
   FC, useContext, useEffect, useRef, useState
 } from 'react';
 import SplitPane from 'react-split-pane';
+import { useTheme } from '@grafana/ui';
 import { QueryAnalyticsProvider, UrlParametersProvider } from './provider/provider';
 import {
-  Overview, Filters, Details, ManageColumns
+  Details, Filters, ManageColumns, Overview
 } from './components';
 import 'shared/styles.scss';
 import 'shared/style.less';
 import './qan.scss';
-import { useTheme } from '@grafana/ui';
 import { getStyles } from './QueryAnalytics.styles';
 
 const QueryAnalyticsPanel: FC = () => {

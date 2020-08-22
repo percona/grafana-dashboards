@@ -49,7 +49,9 @@ const Metrics: FC<MetricsProps> = ({
     <>
       <div>
         {item.isSum && (
-          <span className={styles.sum}>{humanize.transform(item.metric.sum, item.pipeTypes.sumPipe) || 0}</span>
+          <span className={styles.sum}>
+            {humanize.transform(item.metric.sum, item.pipeTypes.sumPipe) || 0}
+          </span>
         )}
         {item.percentOfTotal ? (
           <span className={styles.percentOfTotal}>{`${item.percentOfTotal}% of total`}</span>
