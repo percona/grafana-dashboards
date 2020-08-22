@@ -3,19 +3,17 @@ import { css } from 'emotion';
 export const styles = {
   getFiltersWrapper: (height) => css`
     border: 1px solid rgb(40, 40, 40);
-    padding: 10px 16px;
-    overflow-y: scroll;
     height: ${height}px;
+    padding: 10px 16px !important;
   `,
-  filtersContentArea: css``,
   filtersField: css`
     width: 100%;
   `,
   filtersHeader: css`
     display: flex;
     align-items: baseline;
-    padding: 15px 0px 5px !important;
-    height: 50px !important;
+    padding: 15px 0px 5px;
+    height: 50px;
     justify-content: space-between;
   `,
   filtersDisabled: css`

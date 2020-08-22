@@ -30,6 +30,8 @@ const FiltersContainer: FC<FiltersContainerProps> = ({
     }
   }, [selectedCheckboxes]);
 
+  console.log('height', height);
+
   return (
     <div ref={filtersWrapperRef} className={cx({ [styles.filtersDisabled]: disabled })}>
       <div className={styles.filtersHeader}>
@@ -70,20 +72,16 @@ const FiltersContainer: FC<FiltersContainerProps> = ({
           className={styles.filtersField}
           data-qa="filters-search-field"
         />
-        {FILTERS_GROUPS.filter((group) => filters[group.dataKey]).map((group) => {
-          const { name, dataKey } = group;
-
-          return (
-            <CheckboxGroup
-              key={name}
-              name={name}
-              items={filters[dataKey].name}
-              group={dataKey}
-              showAll={showAll}
-              filter={filter}
-            />
-          );
-        })}
+        {FILTERS_GROUPS.filter((group) => filters[group.dataKey]).map(({ name, dataKey }) => (
+          <CheckboxGroup
+            key={name}
+            name={name}
+            items={filters[dataKey].name}
+            group={dataKey}
+            showAll={showAll}
+            filter={filter}
+          />
+        ))}
       </Scrollbar>
     </div>
   );
