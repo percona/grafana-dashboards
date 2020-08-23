@@ -1,6 +1,4 @@
-import React, {
-  FC, useContext, useEffect, useMemo, useRef, useState
-} from 'react';
+import React, { FC, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { Button, Input, Spin } from 'antd';
 import { Form } from 'react-final-form';
 import { cx } from 'emotion';
@@ -14,9 +12,7 @@ import { useFilters, useFiltersContainerHeight, useInitialFilterValues } from '.
 import { getSelectedCheckboxes } from './Filters.tools';
 import { FiltersContainerProps } from './Filters.types';
 
-const FiltersContainer: FC<FiltersContainerProps> = ({
-  contextActions, form, filters, disabled
-}) => {
+const FiltersContainer: FC<FiltersContainerProps> = ({ contextActions, form, filters, disabled }) => {
   const filtersWrapperRef = useRef<HTMLDivElement>(null);
 
   const height = useFiltersContainerHeight(FILTERS_BODY_HEIGHT, filtersWrapperRef);
@@ -29,8 +25,6 @@ const FiltersContainer: FC<FiltersContainerProps> = ({
       showSetAll(true);
     }
   }, [selectedCheckboxes]);
-
-  console.log('height', height);
 
   return (
     <div ref={filtersWrapperRef} className={cx({ [styles.filtersDisabled]: disabled })}>
