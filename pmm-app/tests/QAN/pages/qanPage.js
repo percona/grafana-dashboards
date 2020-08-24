@@ -84,7 +84,7 @@ module.exports = {
     spinBlur: 'div.ant-spin-blur',
     spinner: 'i.fa-spinner',
     tableRowSelector: '.ant-table-scroll .ant-table-tbody tr:first-of-type .overview-main-column div',
-    timeRangePickerButton: '.time-picker-button-select',
+    timeRangePickerButton: '.navbar-button--tight',
   },
   requests: {
     getReportPath: '/v0/qan/GetReport',

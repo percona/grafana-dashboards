@@ -66,11 +66,7 @@ export const processData = (data: Alert[]): ActiveCheck[] => {
         labels,
       };
 
-      if (acc[serviceName]) {
-        acc[serviceName] = acc[serviceName].concat(item);
-      } else {
-        acc[serviceName] = [item];
-      }
+      acc[serviceName] = (acc[serviceName] ?? []).concat(item);
 
       return acc;
     }, {});
