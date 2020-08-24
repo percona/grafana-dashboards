@@ -61,7 +61,7 @@ const validators = {
       return undefined;
     }
 
-    return 'Password must contain at least 8 characters, including UPPER/lower case and numbers, must not contain username';
+    return 'Must contain at least 8 characters, including UPPER and lower case and numbers, must not contain username';
   },
   required: (value) => (value ? undefined : 'Required field'),
 
