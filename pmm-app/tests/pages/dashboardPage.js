@@ -542,8 +542,10 @@ module.exports = {
     annotationMarker: '(//div[contains(@class,"events_marker")])',
     clearSelection: '//a[@ng-click="vm.clearSelections()"]',
     Last12HoursValue: "//span[contains(text(), 'Last 12 hours')]",
-    Last2Days: "//span[contains(text(), 'Last 2 days')]"
+    Last2Days: "//span[contains(text(), 'Last 2 days')]",
     timeRangePickerButton: '.btn.navbar-button.navbar-button--tight',
+    rootUser: "//div[contains(text(), 'root')]",
+    dataLinkForRoot: "//div[contains(text(), 'Data links')]/..//a",
   },
 
   annotationLocator(annotationNumber) {
@@ -678,5 +680,14 @@ module.exports = {
     I.click(filterValueSelector);
     I.waitForElement(filterNameSelector, 30);
     I.click(filterNameSelector);
+  },
+
+  async verifyTimeRange(timeRange) {
+    const timeRangeGrabbed = await I.grabTextFrom(this.fields.timeRangePickerButton);
+    assert.equal(
+      timeRangeGrabbed,
+      timeRange,
+      `Grabbed time range: ${timeRangeGrabbed} is not equal to expected time Range: ${timeRange}`,
+    );
   },
 };

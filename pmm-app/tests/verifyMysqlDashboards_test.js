@@ -64,11 +64,28 @@ Scenario(
 
 Scenario(
   'PMM-T396 - Verify that parameters are passed from MySQL User Details dashboard to QAN @not-pr-pipeline',
-  async (I, dashboardPage) => {
+  async (I, dashboardPage, qanActions) => {
+    const filters = ['ps_5.7_0.0.0.0_1', 'root'];
+    const timeRange = 'Last 12 hours,';
+
     I.amOnPage(dashboardPage.mysqlUserDetailsDashboard.url);
     dashboardPage.waitForDashboardOpened();
+    I.waitForVisible(dashboardPage.fields.timeRangePickerButton, 20);
     I.click(dashboardPage.fields.timeRangePickerButton);
-    I.click(dashboardPage.fields.last12hours);
-    dashboardPage.applyFilter('Service Name', 'ps_5.7');
+    I.click(dashboardPage.fields.Last12HoursValue);
+    await dashboardPage.applyFilter('Service Name', 'ps_5.7');
+    I.waitForVisible(dashboardPage.fields.rootUser, 20);
+    I.click(dashboardPage.fields.rootUser);
+    I.waitForVisible(dashboardPage.fields.dataLinkForRoot);
+    I.click(dashboardPage.fields.dataLinkForRoot);
+    I.wait(5);
+    I.switchToNextTab(1);
+    I.waitInUrl(
+      '/graph/d/pmm-qan/pmm-query-analytics?var-service_name=ps_5.7_0.0.0.0_1&var-username=root',
+      30,
+    );
+    I.waitInUrl('from=now-12h&to=now', 30);
+    await qanActions.verifySelectedFilters(filters);
+    await dashboardPage.verifyTimeRange(timeRange);
   },
 );

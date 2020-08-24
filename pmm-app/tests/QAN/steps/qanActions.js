@@ -285,7 +285,8 @@ module.exports = {
   },
 
   async getPagesCount() {
-    const pagesCount = '//ul[@data-qa="qan-pagination"]//li[contains(@class,"ant-pagination-item")][last()]//a';
+    const pagesCount =
+      '//ul[@data-qa="qan-pagination"]//li[contains(@class,"ant-pagination-item")][last()]//a';
     const pages = await I.grabTextFrom(pagesCount);
 
     return pages;
@@ -424,5 +425,17 @@ module.exports = {
     const resultsCount = (await I.grabTextFrom(qanPage.fields.countOfItems)).split(' ');
 
     return resultsCount[2];
+  },
+
+  async verifySelectedFilters(filters) {
+    I.click(qanPage.fields.showSelected);
+    const getFilter = await I.grabTextFrom('span.checkbox-container__label-text');
+    for (let i = 0; i <= filters.length; i++) {
+      assert.equal(
+        filters[i],
+        getFilter[i],
+        `Get filter: ${filters[i]} is not same as expected filter: ${getFilter[i]}`,
+      );
+    }
   },
 };
