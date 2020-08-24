@@ -1,5 +1,5 @@
-import { ActionResult } from './Details.types';
-import DetailsService from './Details.service';
+import { ActionResult } from './Actions.types';
+import { ActionsService } from './Actions.service';
 
 export const useActionResult = async (actionId): Promise<ActionResult> => {
   let intervalId;
@@ -26,7 +26,7 @@ export const useActionResult = async (actionId): Promise<ActionResult> => {
       counter -= 1;
 
       try {
-        const requestResult = await DetailsService.getActionResult({
+        const requestResult = await ActionsService.getActionResult({
           action_id: actionId,
         });
 

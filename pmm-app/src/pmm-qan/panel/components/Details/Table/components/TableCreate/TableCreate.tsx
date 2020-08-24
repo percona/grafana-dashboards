@@ -3,9 +3,10 @@ import React, {
 } from 'react';
 import Highlight from 'react-highlight.js';
 import { Overlay } from 'shared/components/Elements/Overlay/Overlay';
-import { ActionResult, Databases } from '../../../Details.types';
+import { useActionResult } from 'shared/components/Actions/Actions.hooks';
+import { ActionResult } from 'shared/components/Actions/Actions.types';
+import { Databases } from '../../../Details.types';
 import { mysqlMethods, postgresqlMethods } from '../../../database-models';
-import { useActionResult } from '../../../Details.tools';
 import { TableProps } from '../Table.types';
 
 export const TableCreate: FC<TableProps> = ({

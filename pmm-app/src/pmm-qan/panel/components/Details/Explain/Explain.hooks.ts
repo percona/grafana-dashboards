@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
+import { useActionResult } from 'shared/components/Actions/Actions.hooks';
 import { mongodbMethods, mysqlMethods } from '../database-models';
-import { useActionResult } from '../Details.tools';
 import { Databases } from '../Details.types';
 
 const actionResult = {

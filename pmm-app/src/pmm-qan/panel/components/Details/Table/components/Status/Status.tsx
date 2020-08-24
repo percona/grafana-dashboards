@@ -2,10 +2,11 @@ import React, {
   FC, useCallback, useEffect, useState
 } from 'react';
 import { Spin, Table } from 'antd';
-import { ActionResult, Databases } from '../../../Details.types';
+import { useActionResult } from 'shared/components/Actions/Actions.hooks';
+import { ActionResult } from 'shared/components/Actions/Actions.types';
+import { Databases } from '../../../Details.types';
 import { mysqlMethods } from '../../../database-models';
 import { processTableData } from '../../TableContainer.tools';
-import { useActionResult } from '../../../Details.tools';
 import { Messages } from '../../../Details.messages';
 import { TableProps } from '../Table.types';
 
