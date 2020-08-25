@@ -4,8 +4,6 @@ import React from 'react';
 
 jest.mock('antd/es/input/Search', () => () => <></>);
 
-jest.mock('react-scrollbar', () => () => <div />);
-
 jest.mock('shared/components/helpers/notification-manager', () => () => ({}));
 
 // const MOCK_FILTERS = {
