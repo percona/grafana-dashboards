@@ -35,7 +35,6 @@ export const styles = {
   getContainerWrapper: (size) => css`
     width: ${(size || 1500) - 260}px;
     height: 100%;
-    overflow-y: scroll;
     position: relative;
   `,
 };
