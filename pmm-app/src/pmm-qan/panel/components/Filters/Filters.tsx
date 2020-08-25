@@ -14,13 +14,9 @@ import { useFilters, useFiltersContainerHeight, useInitialFilterValues } from '.
 import { getSelectedCheckboxes } from './Filters.tools';
 import { FiltersContainerProps } from './Filters.types';
 
-export const FiltersContainer = ({
-  contextActions,
-  form,
-  labels,
-  filters,
-  disabled,
-}: FiltersContainerProps) => {
+const FiltersContainer: FC<FiltersContainerProps> = ({
+  contextActions, form, filters, disabled
+}) => {
   const filtersWrapperRef = useRef<HTMLDivElement>(null);
 
   const height = useFiltersContainerHeight(FILTERS_BODY_HEIGHT, filtersWrapperRef);
@@ -64,7 +60,7 @@ export const FiltersContainer = ({
       </div>
       <Scrollbar className={styles.getFiltersWrapper(height)}>
         <Input
-          suffix={<Filter />}
+          suffix={<Filter fill="#c6c6c6" />}
           placeholder="Filter by..."
           onChange={(e) => {
             setFilter(e.target.value);
@@ -74,23 +70,16 @@ export const FiltersContainer = ({
           className={styles.filtersField}
           data-qa="filters-search-field"
         />
-        {FILTERS_GROUPS.filter((group) => filters[group.dataKey]).map((group) => {
-          const { name, dataKey } = group;
-
-          return (
-            <CheckboxGroup
-              key={name}
-              {...{
-                name,
-                items: filters[dataKey].name,
-                group: dataKey,
-                showAll,
-                filter,
-                labels,
-              }}
-            />
-          );
-        })}
+        {FILTERS_GROUPS.filter((group) => filters[group.dataKey]).map(({ name, dataKey }) => (
+          <CheckboxGroup
+            key={name}
+            name={name}
+            items={filters[dataKey].name}
+            group={dataKey}
+            showAll={showAll}
+            filter={filter}
+          />
+        ))}
       </Scrollbar>
     </div>
   );
