@@ -116,10 +116,7 @@ const AddRemoteInstance = (props) => {
   const {
     instance: { type, credentials },
   } = props;
-  const { instanceType, remoteInstanceCredentials, discoverName } = getInstanceData(
-    type,
-    credentials
-  );
+  const { instanceType, remoteInstanceCredentials, discoverName } = getInstanceData(type, credentials);
   const [loading, setLoading] = useState<boolean>(false);
   const initialValues = { ...remoteInstanceCredentials };
 
@@ -190,7 +187,7 @@ const AddRemoteInstance = (props) => {
       validate={validateInstanceForm}
       render={({ form, handleSubmit }) => (
         <form onSubmit={handleSubmit} className="add-instance-form app-theme-dark">
-          <h5>{`Add remote ${instanceType} Instance`}</h5>
+          <h4>{`Add remote ${instanceType} Instance`}</h4>
           <div className="add-instance-panel">
             <h6>Main details</h6>
             <span />
