@@ -2,7 +2,7 @@ import { Tooltip } from 'antd';
 import React from 'react';
 import './QueryTooltip.scss';
 import sqlFormatter from 'sql-formatter';
-import { HighlightWrapper } from '../HighlightWrapper/HighlightWrapper';
+import { HighlightWrapper } from '../../../../pmm-qan/panel/components/HighlightWrapper/HighlightWrapper';
 
 interface QueryTooltipProps {
   query: string;

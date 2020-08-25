@@ -2,7 +2,7 @@ import React from 'react';
 import sqlFormatter from 'sql-formatter';
 import { ReactJSON } from 'shared/components/Elements/ReactJSON/ReactJSON';
 import { Databases } from '../Details.types';
-import { HighlightWrapper } from '../../../../../shared/components/Elements/HighlightWrapper/HighlightWrapper';
+import { HighlightWrapper } from '../../HighlightWrapper/HighlightWrapper';
 
 export const getExample = (databaseType) => (example: any): any => {
   if (databaseType === Databases.mongodb) {

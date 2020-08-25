@@ -7,7 +7,6 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
   const parameters = getThemeParameters(theme);
 
   const selectedRowColor = selectThemeVariant(
-    // @ts-ignore
     { light: 'deepskyblue', dark: '#234682' },
     theme.type,
   );

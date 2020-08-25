@@ -13,7 +13,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
     justify-content: space-between;
     align-items: center;
     word-break: keep-all;
-            color: ${parameters.mainTextColor} !important;
+    color: ${parameters.mainTextColor} !important;
   `,
     metricTooltip: css`
     text-align: center;
@@ -39,7 +39,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
   `,
     metricData: css`
     white-space: pre;
-        color: ${parameters.mainTextColor} !important;
+    color: ${parameters.mainTextColor} !important;
   `,
     sparkline: css`
     margin-left: 5px;

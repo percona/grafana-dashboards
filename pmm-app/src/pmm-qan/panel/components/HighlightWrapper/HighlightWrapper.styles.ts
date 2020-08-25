@@ -5,7 +5,6 @@ import { GrafanaTheme } from '@grafana/data';
 
 export const getStyles = stylesFactory((theme: GrafanaTheme) => {
   const mainHighlightColor = selectThemeVariant(
-    // @ts-ignore
     { light: theme.colors.text, dark: '#e6e1dc' },
     theme.type,
   );

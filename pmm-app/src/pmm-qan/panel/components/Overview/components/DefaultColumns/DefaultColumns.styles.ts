@@ -5,13 +5,11 @@ import { GrafanaTheme } from '@grafana/data';
 
 export const getStyles = stylesFactory((theme: GrafanaTheme) => {
   const metricTextColor = selectThemeVariant(
-    // @ts-ignore
     { light: '#202226', dark: 'rgba(32, 215, 255, 0.8)' },
     theme.type,
   );
 
   const totalTextColor = selectThemeVariant(
-    // @ts-ignore
     { light: 'red', dark: '#8AA4FF' },
     theme.type,
   );

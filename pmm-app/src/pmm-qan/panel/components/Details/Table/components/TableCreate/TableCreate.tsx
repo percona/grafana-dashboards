@@ -4,7 +4,7 @@ import React, {
 import { Overlay } from 'shared/components/Elements/Overlay/Overlay';
 import { ActionResult, getActionResult } from 'shared/components/Actions';
 import { Databases } from '../../../Details.types';
-import { HighlightWrapper } from 'shared/components/Elements/HighlightWrapper/HighlightWrapper';
+import { HighlightWrapper } from 'pmm-qan/panel/components/HighlightWrapper/HighlightWrapper';
 import { ActionResult, Databases } from '../../../Details.types';
 import { mysqlMethods, postgresqlMethods } from '../../../database-models';
 import { TableProps } from '../Table.types';

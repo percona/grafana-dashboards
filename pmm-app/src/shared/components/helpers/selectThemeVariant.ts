@@ -14,7 +14,6 @@ interface Themes {
 }
 export const getThemeParameters = (theme): Themes => {
   const mainTextColor = selectThemeVariant(
-    // @ts-ignore
     { light: theme.colors.text, dark: 'rgba(255, 255, 255, 0.8)' },
     theme.type,
   ) as string;
