@@ -1,4 +1,4 @@
-import { ActionResult } from 'shared/components/Actions/Actions.types';
+import { ActionResult } from 'shared/components/Actions';
 
 export type DatabasesType = 'mysql' | 'postgresql' | 'mongodb' | undefined;
 

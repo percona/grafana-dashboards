@@ -59,7 +59,7 @@ describe('Validate email', () => {
     expect(validators.validateEmail('test@example.org')).toBeUndefined();
     expect(validators.validateEmail('test@example')).toBeUndefined();
     expect(validators.validateEmail('someone@127.0.0.1')).toBeUndefined();
-    expect(validators.validateEmail("!#$%&'*+/=?^_`{|}~.-@com.com")).toBeUndefined();
+    expect(validators.validateEmail('!#$%&\'*+/=?^_`{|}~.-@com.com')).toBeUndefined();
     expect(validators.validateEmail('te..st@example.com')).toBeUndefined();
   });
 

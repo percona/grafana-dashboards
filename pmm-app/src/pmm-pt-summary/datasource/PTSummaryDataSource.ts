@@ -6,8 +6,7 @@ import {
   DataSourceInstanceSettings,
 } from '@grafana/data';
 import { getTemplateSrv } from '@grafana/runtime';
-import { useActionResult } from 'shared/components/Actions/Actions.hooks';
-import { ActionResult } from 'shared/components/Actions/Actions.types';
+import { ActionResult, getActionResult } from 'shared/components/Actions';
 import { PTSummaryService } from './PTSummary.service';
 import { PTSummaryResponse } from './PTSummary.types';
 
@@ -18,9 +17,9 @@ export class PTSummaryDataSource extends DataSourceApi {
   }
 
   async query(): Promise<DataQueryResponse> {
-    return PTSummaryService.getPTSummary({ node_id: getTemplateSrv().replace('$node_id') })
-      .then(async (response: PTSummaryResponse) => {
-        const result: ActionResult = await useActionResult(response.action_id);
+    return PTSummaryService.getPTSummary({ node_id: getTemplateSrv().replace('$node_id') }).then(
+      async (response: PTSummaryResponse) => {
+        const result: ActionResult = await getActionResult(response.action_id);
 
         return {
           data: [
@@ -29,13 +28,14 @@ export class PTSummaryDataSource extends DataSourceApi {
                 {
                   name: 'summary',
                   values: [result.error ? result.error : result.value],
-                  type: FieldType.string
-                }
-              ]
-            })
-          ]
+                  type: FieldType.string,
+                },
+              ],
+            }),
+          ],
         };
-      });
+      },
+    );
   }
 
   async testDatasource() {

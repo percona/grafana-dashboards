@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useActionResult } from 'shared/components/Actions/Actions.hooks';
+import { getActionResult } from 'shared/components/Actions/Actions.utils';
 import { mongodbMethods, mysqlMethods } from '../database-models';
 import { Databases } from '../Details.types';
 
@@ -33,15 +33,15 @@ export const useExplains = (examples, databaseType): any[] => {
           });
           const jsonExplainActionId = await mysqlMethods.getExplainJSON({ example: notEmptyExample[0] });
 
-          const jsonResult = await useActionResult(jsonExplainActionId);
-          const classicResult = await useActionResult(traditionalExplainActionId);
+          const jsonResult = await getActionResult(jsonExplainActionId);
+          const classicResult = await getActionResult(traditionalExplainActionId);
 
           setJsonExplain(jsonResult);
           setClassicExplain(classicResult);
         } else if (databaseType === Databases.mongodb) {
           const jsonExplainActionId = await mongodbMethods.getExplainJSON({ example: notEmptyExample[0] });
 
-          const jsonResult = await useActionResult(jsonExplainActionId);
+          const jsonResult = await getActionResult(jsonExplainActionId);
 
           setJsonExplain(jsonResult);
         }

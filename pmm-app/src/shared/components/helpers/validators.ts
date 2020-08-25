@@ -29,8 +29,8 @@ export const validators = {
 
   validateKeyValue: (value) => {
     if (
-      value &&
-      !value
+      value
+      && !value
         .split(/[\n\s]/)
         .filter(Boolean)
         .every((element) => /^[a-z0-9]+:[a-z0-9]+$/.test(element))
