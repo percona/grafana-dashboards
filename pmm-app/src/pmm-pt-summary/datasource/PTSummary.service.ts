@@ -1,7 +1,7 @@
-import { apiRequestQAN } from 'shared/components/helpers/api';
+import { apiRequestManagement } from 'shared/components/helpers/api';
 
 export const PTSummaryService = {
   async getPTSummary(body) {
-    return apiRequestQAN.post<any, any>('/ObjectDetails/GetMetrics', body);
+    return apiRequestManagement.post<any, any>('/Actions/StartPTSummary', body);
   }
 };

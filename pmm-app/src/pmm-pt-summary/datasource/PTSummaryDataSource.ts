@@ -5,7 +5,11 @@ import {
   FieldType,
   DataSourceInstanceSettings,
 } from '@grafana/data';
+import { getTemplateSrv } from '@grafana/runtime';
+import { useActionResult } from 'shared/components/Actions/Actions.hooks';
+import { ActionResult } from 'shared/components/Actions/Actions.types';
 import { PTSummaryService } from './PTSummary.service';
+import { PTSummaryResponse } from './PTSummary.types';
 
 /* eslint-disable no-useless-constructor, class-methods-use-this */
 export class PTSummaryDataSource extends DataSourceApi {
@@ -14,32 +18,24 @@ export class PTSummaryDataSource extends DataSourceApi {
   }
 
   async query(): Promise<DataQueryResponse> {
-    const body = {
-      filter_by: '3781167706683981963',
-      group_by: 'queryid',
-      labels: [
-        {
-          key: 'database',
-          value: ['All', 'postgres']
-        }
-      ],
-      period_start_from: '2020-08-10T05:39:14.349Z',
-      period_start_to: '2020-09-10T17:39:14+00:00',
-      tables: [],
-      totals: false
-    };
+    return PTSummaryService.getPTSummary({ node_id: getTemplateSrv().replace('$node_id') })
+      .then(async (response: PTSummaryResponse) => {
+        const result: ActionResult = await useActionResult(response.action_id);
 
-    // TODO: call correct BE and add response interface
-    return PTSummaryService.getPTSummary(body)
-      .then((response: any) => ({
-        data: [
-          new MutableDataFrame({
-            fields: [
-              { name: 'summary', values: [response.fingerprint], type: FieldType.string }
-            ]
-          })
-        ]
-      }));
+        return {
+          data: [
+            new MutableDataFrame({
+              fields: [
+                {
+                  name: 'summary',
+                  values: [result.error ? result.error : result.value],
+                  type: FieldType.string
+                }
+              ]
+            })
+          ]
+        };
+      });
   }
 
   async testDatasource() {
