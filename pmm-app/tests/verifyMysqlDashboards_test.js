@@ -5,7 +5,7 @@ Feature('Test Dashboards inside the MySQL Folder');
 Before(async (I) => {
   I.Authorize();
 });
-/*
+
 Scenario(
   // eslint-disable-next-line max-len
   'Open the MySQL Overview Dashboard and verify Metrics are present and graphs are displayed @not-ui-pipeline @nightly @not-pr-pipeline',
@@ -63,7 +63,7 @@ Scenario(
     await dashboardPage.verifyThereAreNoGraphsWithoutData(1);
   },
 );
-*/
+
 Scenario(
   'PMM-T396 - Verify that parameters are passed from MySQL User Details dashboard to QAN @not-pr-pipeline',
   async (I, dashboardPage, qanActions, adminPage) => {
