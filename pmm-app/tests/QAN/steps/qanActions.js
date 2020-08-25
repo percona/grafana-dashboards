@@ -434,7 +434,7 @@ module.exports = {
       assert.equal(
         filters[i],
         getFilter[i],
-        `Get filter: ${filters[i]} is not same as expected filter: ${getFilter[i]}`,
+        `Got filter: ${filters[i]} is not same as expected filter: ${getFilter[i]}`,
       );
     }
   },
