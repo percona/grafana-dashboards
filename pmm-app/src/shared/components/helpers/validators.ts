@@ -1,4 +1,6 @@
-const validators = {
+import { Validator, VResult } from './validator.types';
+
+export const validators = {
   validatePort: (value) => {
     const portNumber = Number.parseInt(value, 10);
     const MIN_PORT_NUMBER = 0;
@@ -8,15 +10,7 @@ const validators = {
       return undefined;
     }
 
-    return 'Port should be a number and between the range of 0 and 65535';
-  },
-
-  validateRange: (value, from, to) => {
-    if (!value) {
-      return '';
-    }
-
-    return value >= from && value <= to ? undefined : `Value should be in range from ${from} to ${to}`;
+    return 'Port should be a number and between 0 and 65535';
   },
 
   range: (from, to) => (value) => {
@@ -24,7 +18,7 @@ const validators = {
       return undefined;
     }
 
-    return value >= from && value <= to ? undefined : `Value should be in range from ${from} to ${to}`;
+    return value >= from && value <= to ? undefined : `Value should be in the range from ${from} to ${to}`;
   },
 
   validateEmail: (value: string) => {
@@ -35,8 +29,8 @@ const validators = {
 
   validateKeyValue: (value) => {
     if (
-      value
-      && !value
+      value &&
+      !value
         .split(/[\n\s]/)
         .filter(Boolean)
         .every((element) => /^[a-z0-9]+:[a-z0-9]+$/.test(element))
@@ -47,13 +41,27 @@ const validators = {
     return undefined;
   },
 
+  /**
+   * NOTE: This validator is only appliccable to `string | object`.
+   * number | boolean should have their own ones.
+   */
   required: (value) => (value ? undefined : 'Required field'),
 
   requiredTrue: (value: boolean) => (value === true ? undefined : 'Required field'),
 
-  compose: (...validators) => (value) => validators.reduce(
-    (error, validator) => error || validator(value), undefined
-  ),
+  compose: (...validators: Validator[]) => (value: any, values?: Record<string, any>): VResult => {
+    let result: string | undefined;
+
+    // eslint-disable-next-line no-restricted-syntax
+    for (const validator of validators) {
+      result = validator(value, values);
+      if (result !== undefined) {
+        break;
+      }
+    }
+
+    return result;
+  },
 };
 
 export default validators;
