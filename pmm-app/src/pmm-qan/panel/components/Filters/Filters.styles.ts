@@ -3,10 +3,10 @@ import { css } from 'emotion';
 export const styles = {
   getFiltersWrapper: (height) => css`
     border: 1px solid rgb(40, 40, 40);
+    height: ${height}px !important;
     padding: 5px 16px !important;
-    overflow-y: scroll;
-    height: ${height}px;
   `,
+  filtersContentArea: css``,
   filtersField: css`
     width: 100%;
     border: 1px solid rgba(255, 255, 255, 0.8) !important;

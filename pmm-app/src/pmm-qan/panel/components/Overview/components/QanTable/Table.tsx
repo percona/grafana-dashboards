@@ -13,8 +13,10 @@ import {
 import { Spinner, useTheme } from '@grafana/ui';
 import { cx } from 'emotion';
 import useWindowSize from 'shared/components/hooks/WindowSize.hooks';
+import { Scrollbar } from 'shared/components/Elements/Scrollbar/Scrollbar';
 import { getStyles } from './Table.styles';
 import { getMainColumnWidth, getAllColumnsWidth } from '../DefaultColumns/DefaultColumns';
+import { NAVIGATION_HEIGHT } from './Table.constants';
 
 interface TableProps {
   rowSelection?: boolean;
@@ -52,12 +54,13 @@ export const Table: FC<TableProps> = ({
   const changeMainColumnWidth = useCallback(() => {
     setTimeout(() => {
       const width = getMainColumnWidth(columns.length);
+      const allColumnsWidth = getAllColumnsWidth(width, columns.length);
 
       document.querySelectorAll('.table-body .tr>div:nth-child(2)').forEach((element) => {
-        (element as HTMLElement).style.width = `${width}px`;
+        (element as HTMLElement).style['min-width'] = `${width}px`;
       });
       document.querySelectorAll('.table-body .tr').forEach((element) => {
-        (element as HTMLElement).style.width = `${getAllColumnsWidth(width, columns.length)}px`;
+        (element as HTMLElement).style['min-width'] = `${allColumnsWidth}px`;
       });
     }, 150);
   }, [columns]);
@@ -106,7 +109,7 @@ export const Table: FC<TableProps> = ({
         ...columns,
       ]);
     },
-    useBlockLayout
+    useBlockLayout,
   );
 
   useEffect(() => {
@@ -159,7 +162,11 @@ export const Table: FC<TableProps> = ({
                       <div className={styles.headerContent}>
                         <div className="header-wrapper">{column.render('Header')}</div>
                         {column.sortable ? (
-                          <a className={styles.sortBy} {...column.getSortByToggleProps()} data-qa="sort-by-control">
+                          <a
+                            className={styles.sortBy}
+                            {...column.getSortByToggleProps()}
+                            data-qa="sort-by-control"
+                          >
                             <span className={`sort-by ${sorted}`} />
                           </a>
                         ) : null}
@@ -197,7 +204,7 @@ export const Table: FC<TableProps> = ({
         </>
       );
     },
-    [prepareRow, rows, rowClassName]
+    [prepareRow, rows, rowClassName],
   );
 
   return (
@@ -216,9 +223,16 @@ export const Table: FC<TableProps> = ({
           ) : null}
           {rows.length && !loading ? (
             <div {...getTableProps()} className="table">
-              <div {...getTableBodyProps()} className={cx('table-body', styles.tableBody(scroll.y))}>
-                {rows.map(RenderRow)}
+              <div
+                {...getTableBodyProps()}
+                className={cx('table-body')}
+                style={{ height: scroll.y - NAVIGATION_HEIGHT }}
+              >
+                <Scrollbar forceVisible="x" style={{ maxHeight: scroll.y - NAVIGATION_HEIGHT }}>
+                  {rows.map(RenderRow)}
+                </Scrollbar>
               </div>
+
             </div>
           ) : null}
         </div>

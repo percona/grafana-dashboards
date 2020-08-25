@@ -53,15 +53,30 @@ const validators = {
 
     return undefined;
   },
-  password: (usernameField) => (value, values) => {
-    const passwordRegexp = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})');
-    const notIncludesUsername = new RegExp(`^((?!${values[usernameField]}).)*$`, 'i');
+  containBothCases: (value) => {
+    const casesRegexp = new RegExp('^(?=.*[a-z])(?=.*[A-Z])');
 
-    if (passwordRegexp.test(value) && notIncludesUsername.test(value)) {
+    if (casesRegexp.test(value)) {
       return undefined;
     }
 
-    return 'Password must contain at least 8 characters, including UPPER/lower case and numbers, must not contain username';
+    return 'Must include upper and lower cases';
+  },
+  containNumbers: (value) => {
+    const numbersRegexp = new RegExp('^(?=.*[0-9])');
+
+    if (numbersRegexp.test(value)) {
+      return undefined;
+    }
+
+    return 'Must include numbers';
+  },
+  minLength: (numberOfCharacters: number) => (value) => {
+    if (value.length >= numberOfCharacters) {
+      return undefined;
+    }
+
+    return `Must contain at least ${numberOfCharacters} characters`;
   },
   required: (value) => (value ? undefined : 'Required field'),
 
