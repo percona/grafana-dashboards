@@ -129,8 +129,8 @@ module.exports = {
   },
 
   waitForNewQANPageLoaded() {
-    I.waitForElement(qanPage.fields.newQANPanelContent, 30);
-    I.waitForElement(qanPage.fields.querySelector, 30);
+    I.waitForElement(qanPage.fields.newQANPanelContent, 60);
+    I.waitForElement(qanPage.fields.querySelector, 60);
   },
 
   applyFilterNewQAN(filterName) {
@@ -429,13 +429,14 @@ module.exports = {
 
   async verifySelectedFilters(filters) {
     I.click(qanPage.fields.showSelected);
-    const getFilter = await I.grabTextFrom('span.checkbox-container__label-text');
-    for (let i = 0; i <= filters.length; i++) {
-      assert.equal(
-        filters[i],
-        getFilter[i],
-        `Got filter: ${filters[i]} is not same as expected filter: ${getFilter[i]}`,
-      );
+    I.waitForVisible(qanPage.fields.filterName, 20);
+    const getFilter = await I.grabTextFrom(qanPage.fields.filterName);
+    for (let i = 0; i <= filters.length - 1; i++) {
+      if (getFilter[i].includes(filters[i])) {
+        //do nothing
+      } else {
+        assert.fail(`The filter: ${filters[i]} have not be found!`);
+      }
     }
   },
 };

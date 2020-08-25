@@ -541,7 +541,6 @@ module.exports = {
     collapsedDashboardRow: '//div[@class="dashboard-row dashboard-row--collapsed"]/a',
     annotationMarker: '(//div[contains(@class,"events_marker")])',
     clearSelection: '//a[@ng-click="vm.clearSelections()"]',
-    Last12HoursValue: "//span[contains(text(), 'Last 12 hours')]",
     Last2Days: "//span[contains(text(), 'Last 2 days')]",
     timeRangePickerButton: '.btn.navbar-button.navbar-button--tight',
     rootUser: "//div[contains(text(), 'root')]",
@@ -682,12 +681,7 @@ module.exports = {
     I.click(filterNameSelector);
   },
 
-  async verifyTimeRange(timeRange) {
-    const timeRangeGrabbed = await I.grabTextFrom(this.fields.timeRangePickerButton);
-    assert.equal(
-      timeRangeGrabbed,
-      timeRange,
-      `Grabbed time range: ${timeRangeGrabbed} is not equal to expected time Range: ${timeRange}`,
-    );
+  async getTimeRange() {
+    return await I.grabTextFrom(this.fields.timeRangePickerButton);
   },
 };
