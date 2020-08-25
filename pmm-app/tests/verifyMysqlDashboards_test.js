@@ -83,7 +83,7 @@ Scenario(
     I.switchToNextTab(1);
     qanActions.waitForNewQANPageLoaded();
     I.waitInUrl(
-      '/graph/d/pmm-qan/pmm-query-analytics?var-service_name=ps_5.7_0.0.0.0_1&var-username=root',
+      '/graph/d/pmm-qan/pmm-query-analytics?var-service_name=ps_5.7__1&var-username=root',
       30,
     );
     I.waitInUrl('from=now-12h&to=now', 30);
