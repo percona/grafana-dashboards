@@ -279,13 +279,14 @@ Scenario(
     const serviceName = 'ps_5.7';
 
     qanActions.waitForNewQANPageLoaded();
-    //change to 2 days for apply ps_5.7 value in filter
+    // change to 2 days for apply ps_5.7 value in filter
     I.click(qanPage.elements.timeRangePickerButton);
     I.click(dashboardPage.fields.Last2Days);
     const countBefore = await qanActions.getCountOfItems();
     const percentageBefore = await qanActions.getPercentage('Service Type', serviceType);
 
     const countOfFilters = await I.grabNumberOfVisibleElements(qanPage.fields.filterCheckboxes);
+
     qanActions.applyFilterNewQAN(serviceType);
     const countAfter = await qanActions.getCountOfItems();
 

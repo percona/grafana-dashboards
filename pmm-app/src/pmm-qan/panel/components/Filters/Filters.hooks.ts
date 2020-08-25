@@ -1,4 +1,6 @@
-import { useContext, useEffect, useState } from 'react';
+import {
+  useContext, useEffect, useState, RefObject
+} from 'react';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
 import useWindowSize from 'shared/components/hooks/WindowSize.hooks';
 import FiltersService from './Filters.service';
@@ -21,11 +23,11 @@ export const useFilters = () => {
         const result = await FiltersService.getQueryOverviewFiltersList(labels, from, to, columns[0]);
 
         setFilters(result);
-        setLoading(false);
       } catch (e) {
-        setLoading(false);
         setError(true);
         // TODO: add error handling
+      } finally {
+        setLoading(false);
       }
     })();
   }, [labels, from, to, columns]);
@@ -61,21 +63,18 @@ export const useInitialFilterValues = () => {
   return initialValues;
 };
 
-export const useFiltersContainerHeight = (initialValue, ref) => {
-  const windowSize = useWindowSize();
+export const useFiltersContainerHeight = (initialValue: number, ref: RefObject<HTMLDivElement>) => {
+  const [, winHeight] = useWindowSize();
   const [height, setHeight] = useState(initialValue);
 
   useEffect(() => {
-    const filtersWrapperElement = ref.current && ref.current.getBoundingClientRect();
+    const filtersWrapperElement = ref.current?.getBoundingClientRect();
     const filtersHeight = filtersWrapperElement
-      ? windowSize[1]
-        - filtersWrapperElement.y
-        - FILTERS_HEADER_SIZE
-        - FILTERS_MARGIN_BOTTOM
+      ? winHeight - filtersWrapperElement.y - FILTERS_HEADER_SIZE - FILTERS_MARGIN_BOTTOM
       : FILTERS_BODY_HEIGHT;
 
     setHeight(Math.max(filtersHeight, FILTERS_BODY_HEIGHT));
-  }, [windowSize[1]]);
+  }, [winHeight]);
 
   return height;
 };
