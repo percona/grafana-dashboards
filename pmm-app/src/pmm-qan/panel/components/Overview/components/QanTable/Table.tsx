@@ -16,6 +16,7 @@ import useWindowSize from 'shared/components/hooks/WindowSize.hooks';
 import { Scrollbar } from 'shared/components/Elements/Scrollbar/Scrollbar';
 import { getStyles } from './Table.styles';
 import { getMainColumnWidth, getAllColumnsWidth } from '../DefaultColumns/DefaultColumns';
+import { NAVIGATION_HEIGHT } from './Table.constants';
 
 interface TableProps {
   rowSelection?: boolean;
@@ -225,9 +226,9 @@ export const Table: FC<TableProps> = ({
               <div
                 {...getTableBodyProps()}
                 className={cx('table-body')}
-                style={{ height: scroll.y - 70 }}
+                style={{ height: scroll.y - NAVIGATION_HEIGHT }}
               >
-                <Scrollbar forceVisible="x" style={{ maxHeight: scroll.y - 70 }}>
+                <Scrollbar forceVisible="x" style={{ maxHeight: scroll.y - NAVIGATION_HEIGHT }}>
                   {rows.map(RenderRow)}
                 </Scrollbar>
               </div>
