@@ -2,7 +2,7 @@ import React from 'react';
 import sqlFormatter from 'sql-formatter';
 import { ReactJSON } from 'shared/components/Elements/ReactJSON/ReactJSON';
 import { Databases } from '../Details.types';
-import { HighlightWrapper } from '../../HighlightWrapper/HighlightWrapper';
+import { Highlight } from '../../Highlight/Highlight';
 
 export const getExample = (databaseType) => (example: any): any => {
   if (databaseType === Databases.mongodb) {
@@ -10,8 +10,8 @@ export const getExample = (databaseType) => (example: any): any => {
   }
 
   return (
-    <HighlightWrapper key={example || ''} language="sql">
+    <Highlight key={example || ''} language="sql">
       {sqlFormatter.format(example || '')}
-    </HighlightWrapper>
+    </Highlight>
   );
 };
