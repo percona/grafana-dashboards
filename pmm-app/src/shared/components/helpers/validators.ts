@@ -21,14 +21,6 @@ export const validators = {
     return message;
   },
 
-  validateRange: (value, from, to) => {
-    if (!value) {
-      return '';
-    }
-
-    return value >= from && value <= to ? undefined : `Value should be in range from ${from} to ${to}`;
-  },
-
   range: (from, to) => (value) => {
     if (!value) {
       return undefined;
@@ -45,8 +37,8 @@ export const validators = {
 
   validateKeyValue: (value) => {
     if (
-      value
-      && !value
+      value &&
+      !value
         .split(/[\n\s]/)
         .filter(Boolean)
         .every((element) => /^[a-z0-9]+:[a-z0-9]+$/.test(element))
