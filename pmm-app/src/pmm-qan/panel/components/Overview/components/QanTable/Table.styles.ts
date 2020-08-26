@@ -86,8 +86,8 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
         z-index: 1;
       }
       .th:first-child {
-        position: -webkit-sticky; /* for Safari */
-        position: sticky;
+        display: flex !important;
+        justify-content: center !important;
         left: 0;
         z-index: 3;
       }
@@ -122,7 +122,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       align-items: center;
 
       .header-wrapper {
-        width: 80%;
+        width: 100%;
       }
     `,
     tableWrapper: css`

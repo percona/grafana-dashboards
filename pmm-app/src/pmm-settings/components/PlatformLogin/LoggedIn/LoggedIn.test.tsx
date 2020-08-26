@@ -6,8 +6,6 @@ import { PlatformLoginService } from '../PlatformLogin.service';
 
 jest.mock('shared/components/helpers/notification-manager');
 
-jest.mock('shared/components/helpers/notification-manager');
-
 describe('LoggedIn::', () => {
   it('Should show the passed email correctly', () => {
     const testEmail = 'test@email';
