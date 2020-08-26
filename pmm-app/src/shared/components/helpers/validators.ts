@@ -11,6 +11,13 @@ const validators = {
     return 'Port should be a number and between the range of 0 and 65535';
   },
 
+  matches: (field, message) => (value, values) => {
+    if (value === values[field]) {
+      return undefined;
+    }
+
+    return message;
+  },
   validateRange: (value, from, to) => {
     if (!value) {
       return '';
@@ -46,13 +53,37 @@ const validators = {
 
     return undefined;
   },
+  containBothCases: (value) => {
+    const casesRegexp = new RegExp('^(?=.*[a-z])(?=.*[A-Z])');
 
+    if (casesRegexp.test(value)) {
+      return undefined;
+    }
+
+    return 'Must include upper and lower cases';
+  },
+  containNumbers: (value) => {
+    const numbersRegexp = new RegExp('^(?=.*[0-9])');
+
+    if (numbersRegexp.test(value)) {
+      return undefined;
+    }
+
+    return 'Must include numbers';
+  },
+  minLength: (numberOfCharacters: number) => (value) => {
+    if (value.length >= numberOfCharacters) {
+      return undefined;
+    }
+
+    return `Must contain at least ${numberOfCharacters} characters`;
+  },
   required: (value) => (value ? undefined : 'Required field'),
 
   requiredTrue: (value: boolean) => (value === true ? undefined : 'Required field'),
 
-  compose: (...validators) => (value) => validators.reduce(
-    (error, validator) => error || validator(value), undefined
+  compose: (...validators) => (value, values) => validators.reduce(
+    (error, validator) => error || validator(value, values), undefined
   ),
 };
 
