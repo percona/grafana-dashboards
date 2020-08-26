@@ -13,6 +13,21 @@ export const validators = {
     return 'Port should be a number and between 0 and 65535';
   },
 
+  matches: (field, message) => (value, values) => {
+    if (value === values[field]) {
+      return undefined;
+    }
+
+    return message;
+  },
+  validateRange: (value, from, to) => {
+    if (!value) {
+      return '';
+    }
+
+    return value >= from && value <= to ? undefined : `Value should be in range from ${from} to ${to}`;
+  },
+
   range: (from, to) => (value) => {
     if (!value) {
       return undefined;
@@ -40,11 +55,35 @@ export const validators = {
 
     return undefined;
   },
+  
+  containBothCases: (value) => {
+    const casesRegexp = new RegExp('^(?=.*[a-z])(?=.*[A-Z])');
 
-  /**
-   * NOTE: This validator is only appliccable to `string | object`.
-   * number | boolean should have their own ones.
-   */
+    if (casesRegexp.test(value)) {
+      return undefined;
+    }
+
+    return 'Must include upper and lower cases';
+  },
+  
+  containNumbers: (value) => {
+    const numbersRegexp = new RegExp('^(?=.*[0-9])');
+
+    if (numbersRegexp.test(value)) {
+      return undefined;
+    }
+
+    return 'Must include numbers';
+  },
+  
+  minLength: (numberOfCharacters: number) => (value) => {
+    if (value.length >= numberOfCharacters) {
+      return undefined;
+    }
+
+    return `Must contain at least ${numberOfCharacters} characters`;
+  },
+
   required: (value) => (value ? undefined : 'Required field'),
 
   requiredTrue: (value: boolean) => (value === true ? undefined : 'Required field'),
