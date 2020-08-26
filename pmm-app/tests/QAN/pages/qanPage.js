@@ -64,7 +64,8 @@ module.exports = {
     showSelectedDisabled: '//button[@data-qa="qan-filters-show-selected" and @disabled ]',
     table: '//table//tr[2]',
     tableRow: 'div.tr',
-    noQueries: '//h1[contains(text(), \'No queries available for this combination of filters\')]',
+    noQueries: "//h1[contains(text(), 'No queries available for this combination of filters')]",
+    filterName: 'span.checkbox-container__label-text',
   },
 
   metricValueLocatorOverviewTable(column, row) {
