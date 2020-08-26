@@ -3,20 +3,20 @@ import React, {
 } from 'react';
 import {
   Column,
+  HeaderGroup,
   TableOptions,
   TableState,
   useBlockLayout,
   useRowSelect,
   useSortBy,
   useTable,
-  HeaderGroup,
 } from 'react-table';
 import { Spinner, useTheme } from '@grafana/ui';
 import { cx } from 'emotion';
 import useWindowSize from 'shared/components/hooks/WindowSize.hooks';
 import { Scrollbar } from 'shared/components/Elements/Scrollbar/Scrollbar';
 import { getStyles } from './Table.styles';
-import { getMainColumnWidth, getAllColumnsWidth } from '../DefaultColumns/DefaultColumns';
+import { getAllColumnsWidth, getMainColumnWidth } from '../DefaultColumns/DefaultColumns';
 import { NAVIGATION_HEIGHT } from './Table.constants';
 
 interface TableProps {
@@ -133,7 +133,7 @@ export const Table: FC<TableProps> = ({
 
   const RenderHeader = (headerGroup: HeaderGroup) => (
     <div {...headerGroup.getHeaderGroupProps()} className={cx('tr', styles.headerRow)}>
-      {headerGroup.headers.map((column: any) => {
+      {headerGroup.headers.map((column: any, index) => {
         const { HeaderAccessor } = column;
 
         column.Header = () => HeaderAccessor();

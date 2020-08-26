@@ -16,7 +16,7 @@ import { FiltersContainerProps } from './Filters.types';
 import { getStyles } from './Filters.styles';
 
 export const FiltersContainer: FC<FiltersContainerProps> = ({
-  contextActions, form, labels, filters, disabled
+  contextActions, form, filters, disabled
 }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
@@ -92,7 +92,7 @@ export const FiltersContainer: FC<FiltersContainerProps> = ({
 export const Filters: FC = () => {
   const {
     contextActions,
-    panelState: { labels = {}, loadingDetails },
+    panelState: { loadingDetails },
   } = useContext(QueryAnalyticsProvider);
   const { filters, loading } = useFilters();
   const initialValues = useInitialFilterValues();
@@ -108,7 +108,6 @@ export const Filters: FC = () => {
               <FiltersContainer
                 contextActions={contextActions}
                 form={form}
-                labels={labels}
                 filters={filters}
                 disabled={loadingDetails}
               />
@@ -117,6 +116,6 @@ export const Filters: FC = () => {
         )}
       />
     ),
-    [contextActions, filters, loading, loadingDetails, initialValues, labels],
+    [contextActions, filters, loading, loadingDetails, initialValues],
   );
 };

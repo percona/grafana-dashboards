@@ -1,11 +1,11 @@
 import React, { FC, useContext } from 'react';
 import { Select } from 'antd';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
-import { Search } from '../Search/Search';
-import { styles } from './Dimension.styles';
 import { useTheme } from '@grafana/ui';
-import { DIMENSIONS_OPTIONS } from './Dimension.constants';
+import { Search } from '../Search/Search';
 import { getStyles } from './Dimension.styles';
+import { DIMENSIONS_OPTIONS } from './Dimension.constants';
+
 
 const { Option } = Select;
 

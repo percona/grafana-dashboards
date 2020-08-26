@@ -5,7 +5,6 @@ import { Button, Divider, Tabs } from 'antd';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
 import { useTheme } from '@grafana/ui';
 import { cx } from 'emotion';
-import { Scrollbar } from 'shared/components/Elements/Scrollbar/Scrollbar';
 import Explain from './Explain/Explain';
 import Example from './Example/Example';
 import Metrics from './Metrics/Metrics';
@@ -62,59 +61,48 @@ export const DetailsSection: FC = () => {
   useEffect(() => setLoadingDetails(loading || metricsLoading), [loading, metricsLoading]);
 
   return (
-    <div className={cx(styles.detailsGrid,'query-analytics-details')} data-qa="query-analytics-details">
-      <Scrollbar className={styles.scrollbarArea}>
-        <div className="details-tabs">
-          <Divider className={styles.zeroMargin} />
-          <Tabs
-            activeKey={activeTab}
-            onChange={(newTab) => {
-              changeActiveTab(newTab);
-              setActiveTab(newTab);
-            }}
-            tabPosition="top"
-            destroyInactiveTabPane
-            tabBarExtraContent={(
-              <Button type="default" size="small" onClick={closeDetails}>
-                {Messages.closeDetails}
-              </Button>
-            )}
-          >
-            <TabPane tab={<span>{Messages.tabs.details.tab}</span>} key={TabKeys.details}>
-              <Metrics
+    <div className={cx(styles.detailsGrid, 'query-analytics-details')} data-qa="query-analytics-details">
+      <div className="details-tabs">
+        <Divider className={styles.zeroMargin} />
+        <Tabs
+          activeKey={activeTab}
+          onChange={(newTab) => {
+            changeActiveTab(newTab);
+            setActiveTab(newTab);
+          }}
+          tabPosition="top"
+          destroyInactiveTabPane
+          tabBarExtraContent={(
+            <Button type="default" size="small" onClick={closeDetails}>
+              {Messages.closeDetails}
+            </Button>
+          )}
+        >
+          <TabPane tab={<span>{Messages.tabs.details.tab}</span>} key={TabKeys.details}>
+            <Metrics databaseType={databaseType} totals={totals} metrics={metrics} loading={metricsLoading} />
+          </TabPane>
+          {showExamplesTab ? (
+            <TabPane tab={<span>{Messages.tabs.examples.tab}</span>} key={TabKeys.examples}>
+              <Example
+                fingerprint={fingerprint}
                 databaseType={databaseType}
-                totals={totals}
-                metrics={metrics}
-                loading={metricsLoading}
+                examples={examples}
+                loading={loading || metricsLoading}
               />
             </TabPane>
-            {showExamplesTab ? (
-              <TabPane tab={<span>{Messages.tabs.examples.tab}</span>} key={TabKeys.examples}>
-                <Example
-                  fingerprint={fingerprint}
-                  databaseType={databaseType}
-                  examples={examples}
-                  loading={loading || metricsLoading}
-                />
-              </TabPane>
-            ) : null}
-            {showExplainTab ? (
-              <TabPane
-                tab={<span>{Messages.tabs.explains.tab}</span>}
-                key={TabKeys.explain}
-                disabled={totals}
-              >
-                <Explain examples={examples} databaseType={databaseType} />
-              </TabPane>
-            ) : null}
-            {showTablesTab ? (
-              <TabPane tab={<span>{Messages.tabs.tables.tab}</span>} key={TabKeys.tables} disabled={totals}>
-                <TableCreateContainer databaseType={databaseType} examples={examples} />
-              </TabPane>
-            ) : null}
-          </Tabs>
-        </div>
-      </Scrollbar>
+          ) : null}
+          {showExplainTab ? (
+            <TabPane tab={<span>{Messages.tabs.explains.tab}</span>} key={TabKeys.explain} disabled={totals}>
+              <Explain examples={examples} databaseType={databaseType} />
+            </TabPane>
+          ) : null}
+          {showTablesTab ? (
+            <TabPane tab={<span>{Messages.tabs.tables.tab}</span>} key={TabKeys.tables} disabled={totals}>
+              <TableCreateContainer databaseType={databaseType} examples={examples} />
+            </TabPane>
+          ) : null}
+        </Tabs>
+      </div>
     </div>
   );
 };

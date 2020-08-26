@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Field, Form } from 'react-final-form';
 import {
-  useTheme, Input, Button, Icon
+  Button, Icon, Input, useTheme
 } from '@grafana/ui';
 import { Messages } from 'pmm-qan/panel/QueryAnalytics.messages';
 import { getStyles } from './Search.styles';

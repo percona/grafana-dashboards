@@ -1,5 +1,5 @@
 import {
-  useContext, useEffect, useState, RefObject
+  RefObject, useContext, useEffect, useState
 } from 'react';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
 import useWindowSize from 'shared/components/hooks/WindowSize.hooks';
