@@ -285,8 +285,7 @@ module.exports = {
   },
 
   async getPageCount() {
-    const pageCount =
-      '//ul[@data-qa="qan-pagination"]//li[contains(@class,"ant-pagination-item")][last()]//a';
+    const pageCount = '//ul[@data-qa="qan-pagination"]//li[contains(@class,"ant-pagination-item")][last()]//a';
     const pages = await I.grabTextFrom(pageCount);
 
     return pages;
@@ -431,6 +430,7 @@ module.exports = {
     I.click(qanPage.fields.showSelected);
     I.waitForVisible(qanPage.fields.filterName, 20);
     const getFilter = await I.grabTextFrom(qanPage.fields.filterName);
+
     for (let i = 0; i <= filters.length - 1; i++) {
       if (!getFilter[i].includes(filters[i])) {
         assert.fail(`The filter '${filters[i]}' has not been found!`);

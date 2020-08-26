@@ -20,6 +20,7 @@ export const validators = {
 
     return message;
   },
+
   validateRange: (value, from, to) => {
     if (!value) {
       return '';
@@ -55,7 +56,7 @@ export const validators = {
 
     return undefined;
   },
-  
+
   containBothCases: (value) => {
     const casesRegexp = new RegExp('^(?=.*[a-z])(?=.*[A-Z])');
 
@@ -65,7 +66,7 @@ export const validators = {
 
     return 'Must include upper and lower cases';
   },
-  
+
   containNumbers: (value) => {
     const numbersRegexp = new RegExp('^(?=.*[0-9])');
 
@@ -75,7 +76,7 @@ export const validators = {
 
     return 'Must include numbers';
   },
-  
+
   minLength: (numberOfCharacters: number) => (value) => {
     if (value.length >= numberOfCharacters) {
       return undefined;
