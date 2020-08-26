@@ -106,12 +106,52 @@ describe('Validate range test', () => {
   });
 });
 
+describe('Validate containCases', () => {
+  it('Validator should return undefined if the passed value is valid', () => {
+    expect(validators.containBothCases('Test')).toBeUndefined();
+  });
+
+  it('Validator should return undefined if the passed value is invalid', () => {
+    expect(validators.containBothCases('test')).toEqual('Must include upper and lower cases');
+    expect(validators.containBothCases('TEST')).toEqual('Must include upper and lower cases');
+    expect(validators.containBothCases('111')).toEqual('Must include upper and lower cases');
+  });
+});
+
+describe('Validate containNumbers', () => {
+  it('Validator should return undefined if the passed value is valid', () => {
+    expect(validators.containNumbers('1')).toBeUndefined();
+    expect(validators.containNumbers('Test1')).toBeUndefined();
+  });
+
+  it('Validator should return undefined if the passed value is invalid', () => {
+    expect(validators.containNumbers('test')).toEqual('Must include numbers');
+    expect(validators.containNumbers('')).toEqual('Must include numbers');
+  });
+});
+
+describe('Validate min length', () => {
+  it('Validator should return undefined if the passed value is valid', () => {
+    const testedLength = 8;
+
+    expect(validators.minLength(testedLength)('12345678')).toBeUndefined();
+    expect(validators.minLength(testedLength)('123456789')).toBeUndefined();
+  });
+
+  it('Validator should return undefined if the passed value is invalid', () => {
+    const testedLength = 8;
+
+    expect(validators.minLength(testedLength)('1234567')).toEqual(`Must contain at least ${testedLength} characters`);
+    expect(validators.minLength(testedLength)('0')).toEqual(`Must contain at least ${testedLength} characters`);
+  });
+});
+
 describe('validators compose', () => {
   it('return correct validation error when value is undefined', () => {
     const rangeValidator = validators.range(0, 100);
     const validate = validators.compose(rangeValidator, validators.required);
 
-    expect(validate(undefined)).toEqual('Required field');
+    expect(validate(undefined, {})).toEqual('Required field');
   });
 
   it('return correct validation error when value is in the middle of range', () => {
@@ -121,6 +161,6 @@ describe('validators compose', () => {
     const rangeValidator = validators.range(from, to);
     const validate = validators.compose(rangeValidator, validators.required);
 
-    expect(validate(120)).toEqual(errorMessage);
+    expect(validate(120, {})).toEqual(errorMessage);
   });
 });
