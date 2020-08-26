@@ -287,7 +287,7 @@ module.exports = {
   async getPageCount() {
     const pageCount =
       '//ul[@data-qa="qan-pagination"]//li[contains(@class,"ant-pagination-item")][last()]//a';
-    const pages = await I.grabTextFrom(pagesCount);
+    const pages = await I.grabTextFrom(pageCount);
 
     return pages;
   },
