@@ -44,6 +44,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => ({
   `,
   form: css`
     max-width: 300px;
+    min-width: 300px;
     width: 100%;
   `,
   submitButton: css`
@@ -52,5 +53,6 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => ({
   `,
   signInButton: css`
     ${centeredButton}
+    margin-bottom: ${theme.spacing.formInputMargin};
   `,
 }));
