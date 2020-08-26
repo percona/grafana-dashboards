@@ -100,7 +100,7 @@ export const Overview: FC = () => {
               onSortChange={onSortChange}
               rowNumber={(index) => <div>{index === 0 ? '' : (pageNumber - 1) * pageSize + index}</div>}
               orderBy={orderBy}
-              noData={<h1>No queries available for this combination of filters</h1>}
+              noData={<h1>No matching results</h1>}
               loading={loading}
               disabled={loadingDetails}
             />
