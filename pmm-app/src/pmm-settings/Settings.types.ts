@@ -8,7 +8,7 @@ export interface Settings {
   alertManagerUrl: string;
   alertManagerRules: string;
   sttEnabled: boolean;
-  saasUserEmail?: string;
+  platformEmail?: string;
 }
 
 export interface MetricsResolutions {
@@ -22,5 +22,5 @@ export enum TabKeys {
   advanced = 'advanced-settings',
   ssh = 'ssh-key',
   alertManager = 'am-integration',
-  signUp = 'signUp',
+  perconaPlatform = 'percona-platform',
 }
