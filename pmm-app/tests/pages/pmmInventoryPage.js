@@ -112,11 +112,11 @@ module.exports = {
 
   serviceExists(serviceName, deleted) {
     const serviceLocator = `${this.fields.serviceIdLocatorPrefix}${serviceName}")]`;
-
+    I.waitForElement(this.fields.inventoryTable, 30);
     if (deleted) {
-      I.waitForInvisible(serviceLocator, 30);
+      I.dontSeeElement(serviceLocator);
     } else {
-      I.waitForVisible(serviceLocator, 30);
+      I.seeElement(serviceLocator);
     }
   },
 
