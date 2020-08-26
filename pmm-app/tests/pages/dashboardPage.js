@@ -541,7 +541,7 @@ module.exports = {
     collapsedDashboardRow: '//div[@class="dashboard-row dashboard-row--collapsed"]/a',
     annotationMarker: '(//div[contains(@class,"events_marker")])',
     clearSelection: '//a[@ng-click="vm.clearSelections()"]',
-    Last2Days: '//span[contains(text(), \'Last 2 days\')]'
+    Last2Days: '//span[contains(text(), \'Last 2 days\')]',
     timeRangePickerButton: '.btn.navbar-button.navbar-button--tight',
     rootUser: "//div[contains(text(), 'root')]",
     dataLinkForRoot: "//div[contains(text(), 'Data links')]/..//a",

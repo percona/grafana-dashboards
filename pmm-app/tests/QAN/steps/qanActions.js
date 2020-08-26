@@ -278,14 +278,14 @@ module.exports = {
 
   async verifyPagesAndCount(itemsPerPage) {
     const count = await this.getCountOfItems();
-    const lastpage = await this.getPagesCount();
+    const lastpage = await this.getPageCount();
     const result = count / lastpage;
 
     assert.equal(Math.ceil(result / 25) * 25, itemsPerPage, 'Pages do not match with total count');
   },
 
-  async getPagesCount() {
-    const pagesCount =
+  async getPageCount() {
+    const pageCount =
       '//ul[@data-qa="qan-pagination"]//li[contains(@class,"ant-pagination-item")][last()]//a';
     const pages = await I.grabTextFrom(pagesCount);
 
@@ -432,10 +432,8 @@ module.exports = {
     I.waitForVisible(qanPage.fields.filterName, 20);
     const getFilter = await I.grabTextFrom(qanPage.fields.filterName);
     for (let i = 0; i <= filters.length - 1; i++) {
-      if (getFilter[i].includes(filters[i])) {
-        //do nothing
-      } else {
-        assert.fail(`The filter: ${filters[i]} have not be found!`);
+      if (!getFilter[i].includes(filters[i])) {
+        assert.fail(`The filter '${filters[i]}' has not been found!`);
       }
     }
   },
