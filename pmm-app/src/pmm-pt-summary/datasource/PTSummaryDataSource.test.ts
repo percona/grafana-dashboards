@@ -28,7 +28,6 @@ describe('PTSummaryDatasource::', () => {
         }),
       ],
     };
-    // const mockResponse = new Promise((resolve) => resolve({ value: 'Test data' }));
     const instance = new PTSummaryDataSource({} as any);
 
     PTSummaryService.getPTSummary = jest.fn().mockResolvedValueOnce({ value: 'Test data' });
