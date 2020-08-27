@@ -17,31 +17,35 @@ export class PTSummaryDataSource extends DataSourceApi {
   }
 
   async query(): Promise<DataQueryResponse> {
-    return PTSummaryService.getPTSummary({ node_id: getTemplateSrv().replace('$node_id') }).then(
-      async (response) => {
+    return PTSummaryService.getPTSummary({ node_id: getTemplateSrv().replace('$node_id') })
+      .then(async (response) => {
         const result = await getActionResult((response as PTSummaryResponse).action_id);
 
-        return {
-          data: [
-            new MutableDataFrame({
-              fields: [
-                {
-                  name: 'summary',
-                  values: [result.error ? result.error : result.value],
-                  type: FieldType.string,
-                },
-              ],
-            }),
-          ],
-        };
-      },
-    );
+        return this.newDataFrame(result.error ? result.error : result.value);
+      })
+      .catch((error) => this.newDataFrame(error.response.data.message));
   }
 
   async testDatasource() {
     return {
       status: 'success',
       message: 'Success',
+    };
+  }
+
+  newDataFrame(value: string) {
+    return {
+      data: [
+        new MutableDataFrame({
+          fields: [
+            {
+              name: 'summary',
+              values: [value],
+              type: FieldType.string,
+            }
+          ],
+        }),
+      ]
     };
   }
 }
