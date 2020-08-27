@@ -543,8 +543,8 @@ module.exports = {
     clearSelection: '//a[@ng-click="vm.clearSelections()"]',
     Last2Days: '//span[contains(text(), \'Last 2 days\')]',
     timeRangePickerButton: '.btn.navbar-button.navbar-button--tight',
-    rootUser: "//div[contains(text(), 'root')]",
-    dataLinkForRoot: "//div[contains(text(), 'Data links')]/..//a",
+    rootUser: '//div[contains(text(), \'root\')]',
+    dataLinkForRoot: '//div[contains(text(), \'Data links\')]/..//a',
   },
 
   annotationLocator(annotationNumber) {
