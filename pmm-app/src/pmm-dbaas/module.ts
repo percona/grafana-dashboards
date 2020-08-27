@@ -1,4 +1,4 @@
 import { PanelPlugin } from '@grafana/data';
-import DBAASPanel from 'pmm-dbaas/panel/DBAAS';
+import { DBaaSPanel } from './DBaaS';
 
-export const plugin = new PanelPlugin(DBAASPanel);
+export const plugin = new PanelPlugin(DBaaSPanel);
