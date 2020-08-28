@@ -5,7 +5,6 @@ import { Overlay } from 'shared/components/Elements/Overlay/Overlay';
 import { Highlight } from 'pmm-qan/panel/components/Highlight/Highlight';
 import { ActionResult, getActionResult } from 'shared/components/Actions';
 import { Databases } from '../../../Details.types';
-import { ActionResult, Databases } from '../../../Details.types';
 import { mysqlMethods, postgresqlMethods } from '../../../database-models';
 import { TableProps } from '../Table.types';
 
