@@ -19,8 +19,8 @@ export const Modal: FC<ModalWindow> = (props) => {
   const theme = useTheme();
   const styles = getStyles(theme);
 
-  if (closeOnEscape) {
-    useEffect(() => {
+  useEffect(() => {
+    if (closeOnEscape) {
       const escapeHandler = (e) => {
         if (e.key === 'Escape') {
           onClose();
@@ -29,11 +29,11 @@ export const Modal: FC<ModalWindow> = (props) => {
 
       document.addEventListener('keydown', escapeHandler);
 
-      return () => {
-        document.removeEventListener('keydown', escapeHandler);
-      };
-    });
-  }
+      return () => document.removeEventListener('keydown', escapeHandler);
+    }
+
+    return undefined;
+  });
 
 
   return isVisible
