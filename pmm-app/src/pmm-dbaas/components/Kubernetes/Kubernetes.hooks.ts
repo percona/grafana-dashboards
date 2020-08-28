@@ -55,6 +55,19 @@ export const useKubernetes = (): [Kubernetes[], DeleteKubernetesAction, AddKuber
     }
   };
 
+  const addKubernetes = async (kubernetesToAdd: NewKubernetesCluster) => {
+    try {
+      setLoading(true);
+
+      await KubernetesService.addKubernetes(kubernetesToAdd);
+      showSuccessNotification({ message: Messages.kubernetes.messages.clusterAdded });
+    } catch (e) {
+      console.error(e);
+    } finally {
+      getKubernetes();
+    }
+  };
+
   useEffect(() => {
     getKubernetes();
   }, []);
