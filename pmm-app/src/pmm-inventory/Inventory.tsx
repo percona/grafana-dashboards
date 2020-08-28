@@ -18,6 +18,7 @@ export const InventoryPanel = () => {
     <div className={styles.inventoryWrapper}>
       <TabsBar>
         {tabs.map((tab, index) => (
+          // @ts-ignore
           <Tab
             key={index}
             label={tab.label}
