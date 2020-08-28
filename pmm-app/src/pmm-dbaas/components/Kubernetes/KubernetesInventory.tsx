@@ -132,6 +132,31 @@ export const KubernetesInventory: FC = () => {
           </Button>
         </HorizontalGroup>
       </Modal>
+      {/*<Modal*/}
+      {/*  title={Messages.kubernetes.deleteModal.title}*/}
+      {/*  isOpen={modalVisible}*/}
+      {/*  onDismiss={() => setModalVisible(false)}*/}
+      {/*>*/}
+      {/*  <h4 className={styles.deleteModalContent}>*/}
+      {/*    {Messages.kubernetes.deleteModal.getConfirmMessage(selected.length)}*/}
+      {/*  </h4>*/}
+      {/*  <HorizontalGroup justify="space-between" spacing="md">*/}
+      {/*    <Button variant="secondary" size="md" onClick={() => setModalVisible(false)} data-qa="cancel-delete-kubernetes-button">*/}
+      {/*      {Messages.kubernetes.deleteModal.cancel}*/}
+      {/*    </Button>*/}
+      {/*    <Button*/}
+      {/*      variant="destructive"*/}
+      {/*      size="md"*/}
+      {/*      onClick={() => {*/}
+      {/*        deleteKubernetes(selected.map((row) => row.original));*/}
+      {/*        setModalVisible(false);*/}
+      {/*      }}*/}
+      {/*       data-qa="delete-kubernetes-button" */}
+      {/*    >*/}
+      {/*      {Messages.kubernetes.deleteModal.confirm}*/}
+      {/*    </Button>*/}
+      {/*  </HorizontalGroup>*/}
+      {/*</Modal>*/}
       <Table
         columns={columns}
         data={kubernetes}
