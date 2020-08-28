@@ -131,14 +131,17 @@ export const Services = () => {
           )}
         />
       </Modal>
-      <Table
-        columns={SERVICES_COLUMNS}
-        data={data}
-        rowSelection
-        onRowSelection={(selected) => setSelectedRows(selected)}
-        noData={<h1>No services Available</h1>}
-        loading={loading}
-      />
+      <div className={styles.tableInnerWrapper} data-qa="table-inner-wrapper">
+        <Table
+          className={styles.table}
+          columns={SERVICES_COLUMNS}
+          data={data}
+          rowSelection
+          onRowSelection={(selected) => setSelectedRows(selected)}
+          noData={<h1>No services Available</h1>}
+          loading={loading}
+        />
+      </div>
     </div>
   );
 };
