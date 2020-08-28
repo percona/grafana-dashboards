@@ -8,9 +8,9 @@ module.exports = {
     inventoryTable: '//table',
     inventoryTableRows: '//table//tr',
     inventoryTableColumn: '//table//td',
-    agentsLink: '//div[@id="inventory-wrapper"]//li[contains(text(),"Agents")]',
-    nodesLink: '//div[@id="inventory-wrapper"]//li[contains(text(),"Nodes")]',
-    pmmServicesSelector: '//div[@id="inventory-wrapper"]//li[contains(text(),"Services")]',
+    agentsLink: '//li[contains(text(),"Agents")]',
+    nodesLink: '//li[contains(text(),"Nodes")]',
+    pmmServicesSelector: '//li[contains(text(),"Services")]',
     agentsLinkOld: '//a[contains(text(), "Agents")]',
     nodesLinkOld: '//a[contains(text(), "Nodes")]',
     pmmAgentLocator: '//table//td[contains(text(), "PMM Agent")]',
@@ -19,6 +19,7 @@ module.exports = {
     proceedButton: '//span[contains(text(), "Proceed")]',
     forceModeCheckbox: 'div[data-qa="form-field-force"] span.checkbox-container__checkmark',
     tableCheckbox: 'div[data-qa="select-row"]',
+    tableRow: '//tr[@data-qa="table-row"]',
   },
 
   verifyOldMySQLRemoteServiceIsDisplayed(serviceName) {
@@ -206,5 +207,36 @@ module.exports = {
     );
 
     assert.equal(count, otherDetails, 'Check data!');
+  },
+
+  async getCellValue(rowNumber, columnNumber) {
+    const value = await I.grabTextFrom(`${this.fields.tableRow}[${rowNumber}]/td[${columnNumber}]`);
+
+    return value.toLowerCase();
+  },
+
+  async checkSort(columnNumber) {
+    I.waitForVisible(this.fields.tableRow, 20);
+    const rowCount = await I.grabNumberOfVisibleElements(this.fields.tableRow);
+    let tmp;
+
+    for (let i = 0; i < rowCount; i++) {
+      const cellValue = await this.getCellValue(i + 1, columnNumber);
+
+      if (i === 0) {
+        // Do nothing for the first run
+        tmp = cellValue;
+      } else {
+        if (tmp.localeCompare(cellValue) === 1) {
+          assert.fail(
+            `The array is not sorted correctly from a-z: value ${cellValue} should come after ${tmp}, not before`,
+          );
+          break;
+        }
+
+        // Update the tmp value for the next comparison
+        tmp = cellValue;
+      }
+    }
   },
 };

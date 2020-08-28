@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { TabsBar, TabContent, Tab } from '@grafana/ui';
 import { Agents, NodesTab, Services } from './Tabs';
+import * as styles from './Inventory.styles';
 
 export const InventoryPanel = () => {
   const [activeTab, setActiveTab] = useState('services');
@@ -14,7 +15,7 @@ export const InventoryPanel = () => {
   );
 
   return (
-    <div id="inventory-wrapper">
+    <div className={styles.inventoryWrapper}>
       <TabsBar>
         {tabs.map((tab, index) => (
           // @ts-ignore
@@ -28,11 +29,13 @@ export const InventoryPanel = () => {
           />
         ))}
       </TabsBar>
-      <TabContent>
-        {tabs[0].active && <Services />}
-        {tabs[1].active && <Agents />}
-        {tabs[2].active && <NodesTab />}
-      </TabContent>
+      <div className={styles.tabContentWrapper}>
+        <TabContent className={styles.tabContent}>
+          {tabs[0].active && <Services />}
+          {tabs[1].active && <Agents />}
+          {tabs[2].active && <NodesTab />}
+        </TabContent>
+      </div>
     </div>
   );
 };

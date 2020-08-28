@@ -125,6 +125,14 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
       ...state,
       fingerprint: value,
     }),
+    setSearch: ({ search }) => (state) => ({
+      ...state,
+      search
+    }),
+    setDimensionSearchText: ({ search }) => (state) => ({
+      ...state,
+      dimensionSearchText: search
+    })
   };
 
   const query = new URLSearchParams(window.location.search);

@@ -6,16 +6,15 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
   const backgroundColor = selectThemeVariant({ light: 'rgb(247, 247, 249)', dark: '#0b0c0e' }, theme.type);
   const borderColor = selectThemeVariant(
     { light: (theme.colors as any).gray85, dark: '#292929' },
-    theme.type
+    theme.type,
   );
   const headerBackground = selectThemeVariant({ light: 'rgb(247, 247, 249)', dark: '#202226' }, theme.type);
   const textColor = selectThemeVariant(
     { light: (theme.colors as any).gray85, dark: 'rgba(255, 255, 255, 0.8)' },
-    theme.type
+    theme.type,
   );
 
   return {
-    /* This will make the table scrollable when it gets too small */
     tableWrap: (size) => css`
       display: block;
       max-width: ${size.x ? `${size.x}px` : '100%'};
@@ -29,6 +28,10 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       border-collapse: separate; /* Don't collapse */
       border-spacing: 0;
 
+      .simplebar-mask {
+        margin-right: -21px !important;
+      }
+
       .table {
         /* Make sure the inner table is always as wide as needed */
         width: 100%;
@@ -41,6 +44,8 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
         }
         .tr {
           cursor: pointer;
+          border-right: 21px solid transparent;
+          box-sizing: content-box !important;
         }
         .th,
         .td {
@@ -72,7 +77,6 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
         position: sticky;
         left: 0;
         z-index: 1;
-        // outline: 1px solid ${borderColor};
       }
 
       .tr .td:nth-child(2) {
@@ -80,14 +84,12 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
         position: sticky;
         left: 40px;
         z-index: 1;
-        // outline: 1px solid ${borderColor};
       }
       .th:first-child {
-        position: -webkit-sticky; /* for Safari */
-        position: sticky;
+        display: flex !important;
+        justify-content: center !important;
         left: 0;
         z-index: 3;
-        // outline: 1px solid ${borderColor};
       }
       .th:nth-child(2) {
         position: -webkit-sticky; /* for Safari */
@@ -105,7 +107,6 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       height: ${height - 70}px;
       justify-content: center;
       align-items: center;
-      border: 1px solid ${borderColor};
     `,
     checkboxColumn: css`
       width: 20px;
@@ -121,7 +122,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       align-items: center;
 
       .header-wrapper {
-        width: 80%;
+        width: 100%;
       }
     `,
     tableWrapper: css`
@@ -164,6 +165,9 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       top: 0;
       z-index: 999;
     `,
+    getColumnsWidth: (width) => css`
+      min-width: ${width}
+    `,
     tableCell: css`
       display: flex !important;
       justify-content: flex-end !important;
@@ -175,10 +179,6 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       display: flex !important;
       align-items: center !important;
       justify-content: center !important;
-    `,
-    tableBody: (height) => css`
-      overflow: scroll;
-      height: ${height - 70}px;
     `,
     tableDisabled: css`
       opacity: 0.6;

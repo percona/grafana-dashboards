@@ -9,12 +9,15 @@ import {
   useRowSelect,
   useSortBy,
   useTable,
+  HeaderGroup,
 } from 'react-table';
 import { Spinner, useTheme } from '@grafana/ui';
 import { cx } from 'emotion';
 import useWindowSize from 'shared/components/hooks/WindowSize.hooks';
+import { Scrollbar } from 'shared/components/Elements/Scrollbar/Scrollbar';
 import { getStyles } from './Table.styles';
 import { getMainColumnWidth, getAllColumnsWidth } from '../DefaultColumns/DefaultColumns';
+import { NAVIGATION_HEIGHT } from './Table.constants';
 
 interface TableProps {
   rowSelection?: boolean;
@@ -52,12 +55,13 @@ export const Table: FC<TableProps> = ({
   const changeMainColumnWidth = useCallback(() => {
     setTimeout(() => {
       const width = getMainColumnWidth(columns.length);
+      const allColumnsWidth = getAllColumnsWidth(width, columns.length);
 
       document.querySelectorAll('.table-body .tr>div:nth-child(2)').forEach((element) => {
-        (element as HTMLElement).style.width = `${width}px`;
+        (element as HTMLElement).style['min-width'] = `${width}px`;
       });
       document.querySelectorAll('.table-body .tr').forEach((element) => {
-        (element as HTMLElement).style.width = `${getAllColumnsWidth(width, columns.length)}px`;
+        (element as HTMLElement).style['min-width'] = `${allColumnsWidth}px`;
       });
     }, 150);
   }, [columns]);
@@ -106,7 +110,7 @@ export const Table: FC<TableProps> = ({
         ...columns,
       ]);
     },
-    useBlockLayout
+    useBlockLayout,
   );
 
   useEffect(() => {
@@ -127,6 +131,38 @@ export const Table: FC<TableProps> = ({
     onSortChange((state as any).sortBy);
   }, [(state as any).sortBy]);
 
+  const RenderHeader = (headerGroup: HeaderGroup) => (
+    <div {...headerGroup.getHeaderGroupProps()} className={cx('tr', styles.headerRow)}>
+      {headerGroup.headers.map((column: any) => {
+        const { HeaderAccessor } = column;
+
+        column.Header = () => HeaderAccessor();
+        let sorted = '';
+
+        if (column.isSorted) {
+          if (column.isSortedDesc) {
+            sorted = 'desc';
+          } else {
+            sorted = 'asc';
+          }
+        }
+
+        return (
+          <div {...column.getHeaderProps()} className="th">
+            <div className={styles.headerContent}>
+              <div className="header-wrapper">{column.render('Header')}</div>
+              {column.sortable ? (
+                <a className={styles.sortBy} {...column.getSortByToggleProps()} data-qa="sort-by-control">
+                  <span className={`sort-by ${sorted}`} />
+                </a>
+              ) : null}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+
   const RenderRow = useCallback(
     ({ index, style }) => {
       const row = rows[index];
@@ -134,70 +170,33 @@ export const Table: FC<TableProps> = ({
       prepareRow(row);
 
       return (
-        <>
-          {index === 0
-            ? headerGroups.map((headerGroup) => (
-              <div {...headerGroup.getHeaderGroupProps()} className={cx('tr', styles.headerRow)}>
-                {headerGroup.headers.map((c, index) => {
-                  const column = c as any;
+        <div
+          {...row.getRowProps({
+            style,
+          })}
+          className={cx('tr', `tr-${row.index}`, rowClassName(row.original, row.index))}
+          onClick={() => {
+            const selectedColumn = document.querySelector(`.tr-${row.index}`);
+            const tableBody = document.querySelector('.table-wrapper .table-body');
 
-                  const { HeaderAccessor } = column;
+            if (selectedColumn && tableBody) {
+              setTimeout(() => {
+                tableBody.scroll(0, (selectedColumn as HTMLElement).offsetTop - 55);
+              });
+            }
 
-                  column.Header = () => HeaderAccessor();
-                  let sorted = '';
-
-                  if (column.isSorted) {
-                    if (column.isSortedDesc) {
-                      sorted = 'desc';
-                    } else {
-                      sorted = 'asc';
-                    }
-                  }
-
-                  return (
-                    <div {...column.getHeaderProps()} className={cx('th', { [styles.rowNumberCell]: index === 0 })}>
-                      <div className={styles.headerContent}>
-                        <div className="header-wrapper">{column.render('Header')}</div>
-                        {column.sortable ? (
-                          <a className={styles.sortBy} {...column.getSortByToggleProps()} data-qa="sort-by-control">
-                            <span className={`sort-by ${sorted}`} />
-                          </a>
-                        ) : null}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            ))
-            : null}
-          <div
-            {...row.getRowProps({
-              style,
-            })}
-            className={cx('tr', `tr-${row.index}`, rowClassName(row.original, row.index))}
-            onClick={() => {
-              const selectedColumn = document.querySelector(`.tr-${row.index}`);
-              const tableBody = document.querySelector('.table-wrapper .table-body');
-
-              if (selectedColumn && tableBody) {
-                setTimeout(() => {
-                  tableBody.scroll(0, (selectedColumn as HTMLElement).offsetTop - 55);
-                });
-              }
-
-              onRowClick(row);
-            }}
-          >
-            {row.cells.map((cell) => (
-              <div {...cell.getCellProps()} className={cx('td', styles.tableCell)}>
-                {cell.render('Cell')}
-              </div>
-            ))}
-          </div>
-        </>
+            onRowClick(row);
+          }}
+        >
+          {row.cells.map((cell) => (
+            <div {...cell.getCellProps()} className={cx('td', styles.tableCell)}>
+              {cell.render('Cell')}
+            </div>
+          ))}
+        </div>
       );
     },
-    [prepareRow, rows, rowClassName]
+    [prepareRow, rows, rowClassName],
   );
 
   return (
@@ -209,16 +208,24 @@ export const Table: FC<TableProps> = ({
               <Spinner />
             </div>
           ) : null}
-          {!rows.length && !loading ? (
-            <div data-qa="table-no-data" className={styles.empty(scroll.y)}>
-              {noData || <h1>No data</h1>}
-            </div>
-          ) : null}
-          {rows.length && !loading ? (
+          {!loading ? (
             <div {...getTableProps()} className="table">
-              <div {...getTableBodyProps()} className={cx('table-body', styles.tableBody(scroll.y))}>
-                {rows.map(RenderRow)}
+              <div
+                {...getTableBodyProps()}
+                className={cx('table-body')}
+                style={{ height: scroll.y - NAVIGATION_HEIGHT }}
+              >
+                <Scrollbar forceVisible="x" style={{ maxHeight: scroll.y - NAVIGATION_HEIGHT }}>
+                  {headerGroups.map(RenderHeader)}
+                  {!!rows.length && rows.map(RenderRow)}
+                  {!rows.length && (
+                    <div data-qa="table-no-data" className={styles.empty(scroll.y)}>
+                      {noData || <h1>No data</h1>}
+                    </div>
+                  )}
+                </Scrollbar>
               </div>
+
             </div>
           ) : null}
         </div>

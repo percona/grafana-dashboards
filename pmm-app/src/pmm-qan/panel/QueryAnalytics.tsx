@@ -45,7 +45,7 @@ const QueryAnalyticsPanel: FC = () => {
                 minHeight: querySelected ? '30%' : '100%',
                 maxHeight: querySelected ? '60%' : '100%',
               }}
-              pane2Style={{ minHeight: '20%', overflowY: 'scroll', zIndex: 999 }}
+              pane2Style={{ minHeight: '20%', zIndex: 999 }}
             >
               <Overview />
               <div>{querySelected ? <Details /> : null}</div>

@@ -133,14 +133,17 @@ export const NodesTab = () => {
           )}
         />
       </Modal>
-      <Table
-        columns={NODES_COLUMNS}
-        data={data}
-        rowSelection
-        onRowSelection={(selected) => setSelectedRows(selected)}
-        noData={<h1>No nodes Available</h1>}
-        loading={loading}
-      />
+      <div className={styles.tableInnerWrapper} data-qa="table-inner-wrapper">
+        <Table
+          className={styles.table}
+          columns={NODES_COLUMNS}
+          data={data}
+          rowSelection
+          onRowSelection={(selected) => setSelectedRows(selected)}
+          noData={<h1>No nodes Available</h1>}
+          loading={loading}
+        />
+      </div>
     </div>
   );
 };
