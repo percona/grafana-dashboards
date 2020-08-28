@@ -3,10 +3,15 @@ import { showSuccessNotification } from 'shared/components/helpers';
 import { Messages } from 'pmm-dbaas/DBaaS.messages';
 import { KubernetesService } from './Kubernetes.service';
 import {
-  Kubernetes, KubernetesAPI, KubernetesListAPI, DeleteKubernetesAction
+  Kubernetes,
+  KubernetesAPI,
+  KubernetesListAPI,
+  DeleteKubernetesAction,
+  NewKubernetesCluster,
+  AddKubernetesAction,
 } from './Kubernetes.types';
 
-export const useKubernetes = (): [Kubernetes[], DeleteKubernetesAction, boolean] => {
+export const useKubernetes = (): [Kubernetes[], DeleteKubernetesAction, AddKubernetesAction, boolean] => {
   const [kubernetes, setKubernetes] = useState<Kubernetes[]>([]);
   const [loading, setLoading] = useState(false);
   const { kubernetes: { deleteSuccess } } = Messages;
@@ -15,7 +20,7 @@ export const useKubernetes = (): [Kubernetes[], DeleteKubernetesAction, boolean]
     setLoading(true);
 
     try {
-      const results = await KubernetesService.getKubernetes() as KubernetesListAPI;
+      const results = (await KubernetesService.getKubernetes()) as KubernetesListAPI;
 
       setKubernetes(toModelList(results));
     } catch (e) {
@@ -37,11 +42,24 @@ export const useKubernetes = (): [Kubernetes[], DeleteKubernetesAction, boolean]
     }
   };
 
+  const addKubernetes = async (kubernetesToAdd: NewKubernetesCluster) => {
+    try {
+      setLoading(true);
+
+      await KubernetesService.addKubernetes(kubernetesToAdd);
+      showSuccessNotification({ message: Messages.kubernetes.messages.clusterAdded });
+    } catch (e) {
+      console.error(e);
+    } finally {
+      getKubernetes();
+    }
+  };
+
   useEffect(() => {
     getKubernetes();
   }, []);
 
-  return [kubernetes, deleteKubernetes, loading];
+  return [kubernetes, deleteKubernetes, addKubernetes, loading];
 };
 
 const toModelList = (response: KubernetesListAPI): Kubernetes[] => (
@@ -49,5 +67,5 @@ const toModelList = (response: KubernetesListAPI): Kubernetes[] => (
 );
 
 const toModel = (response: KubernetesAPI): Kubernetes => ({
-  kubernetesClusterName: response.kubernetes_cluster_name
+  kubernetesClusterName: response.kubernetes_cluster_name,
 });
