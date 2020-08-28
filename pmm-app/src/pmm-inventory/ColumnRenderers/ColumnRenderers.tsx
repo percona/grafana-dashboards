@@ -1,14 +1,15 @@
 import React from 'react';
 import { MAIN_COLUMN } from 'pmm-inventory/Inventory.constants';
 import { CustomLabel } from 'pmm-inventory/Inventory.types';
+import * as styles from './ColumnRenderers.styles';
 
 export const servicesDetailsRender = (element) => {
   const labels = Object.keys(element).filter((label) => !MAIN_COLUMN.includes(label));
 
   return (
-    <div className="other-details-wrapper">
-      {/* eslint-disable-next-line max-len */}
-      {labels.map((label, accessor) => (element[label] ? <span key={accessor}>{`${label}: ${element[label]}`}</span> : null))}
+    <div className={styles.detailsWrapper}>
+      {labels.map((label, accessor) => (
+        element[label] ? <span key={accessor}>{`${label}: ${element[label]}`}</span> : null))}
       {getCustomLabels(element.custom_labels)}
     </div>
   );
@@ -19,9 +20,9 @@ export const agentsDetailsRender = (element) => {
   const labels = Object.keys(element).filter((label) => !mainColumns.includes(label));
 
   return (
-    <div className="other-details-wrapper">
-      {/* eslint-disable-next-line max-len */}
-      {labels.map((label, key) => (element[label] ? <span key={key}>{`${label}: ${element[label]}`}</span> : null))}
+    <div className={styles.detailsWrapper}>
+      {labels.map((label, key) => (
+        element[label] ? <span key={key}>{`${label}: ${element[label]}`}</span> : null))}
       {element.username ? <span>password: ******</span> : null}
       {element.service_ids && element.service_ids.length ? (
         /* TODO(lunaticusgreen): all map renders need a key! */
@@ -41,9 +42,9 @@ export const nodesDetailsRender = (element) => {
   const labels = Object.keys(element).filter((label) => !mainColumns.includes(label));
 
   return (
-    <div className="other-details-wrapper">
-      {/* eslint-disable-next-line max-len */}
-      {labels.map((label, key) => (element[label] ? <span key={key}>{`${label}: ${element[label]}`}</span> : null))}
+    <div className={styles.detailsWrapper}>
+      {labels.map((label, key) => (
+        element[label] ? <span key={key}>{`${label}: ${element[label]}`}</span> : null))}
       {getCustomLabels(element.custom_labels)}
     </div>
   );
