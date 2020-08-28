@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, ReactNode } from 'react';
 
 import { IconButton, useTheme } from '@grafana/ui';
 import { getStyles } from './Modal.styles';
@@ -8,9 +8,8 @@ interface ModalWindow {
   closeOnClickaway?: boolean;
   closeOnEscape?: boolean;
   isVisible: boolean;
-  title: FC | string;
+  title: ReactNode | string;
 }
-
 
 export const Modal: FC<ModalWindow> = (props) => {
   const {
@@ -35,22 +34,30 @@ export const Modal: FC<ModalWindow> = (props) => {
     return undefined;
   });
 
-
-  return isVisible
-    ? (
-      <div className="modal-wrapper">
-        <div className={styles.background} onClick={closeOnClickaway ? onClose : undefined} data-qa="modal-background" />
-        <div className={styles.body} data-qa="modal-body">
-          <div className={styles.modalHeader}>
-            {title}
-            <div className={styles.modalHeaderClose}>
-              <IconButton surface="header" data-qa="modal-close-button" name="times" size="lg" onClick={onClose} />
-            </div>
-          </div>
-          <div className={styles.content} data-qa="modal-content">
-            {children}
+  return isVisible ? (
+    <div className="modal-wrapper">
+      <div
+        className={styles.background}
+        onClick={closeOnClickaway ? onClose : undefined}
+        data-qa="modal-background"
+      />
+      <div className={styles.body} data-qa="modal-body">
+        <div className={styles.modalHeader}>
+          {title}
+          <div className={styles.modalHeaderClose}>
+            <IconButton
+              surface="header"
+              data-qa="modal-close-button"
+              name="times"
+              size="lg"
+              onClick={onClose}
+            />
           </div>
         </div>
+        <div className={styles.content} data-qa="modal-content">
+          {children}
+        </div>
       </div>
-    ) : null;
+    </div>
+  ) : null;
 };
