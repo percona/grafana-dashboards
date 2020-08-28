@@ -5,6 +5,7 @@ export const Messages = {
   },
   kubernetes: {
     deleteAction: 'Delete',
+    addAction: 'Add new K8s Cluster',
     deleteModal: {
       cancel: 'Cancel',
       confirm: 'Proceed',
@@ -13,11 +14,22 @@ export const Messages = {
       ),
       title: 'Confirm action'
     },
+    addModal: {
+      title: 'Add kubernetes cluster',
+      confirm: 'Add',
+      fields: {
+        clusterName: 'Kubernetes Cluster Name',
+        kubeConfig: 'Kubeconfig file'
+      },
+    },
     getDeletionStatus: (deleted: number, total: number) => (
       `${deleted} of ${total} clusters successfully deleted`
     ),
     table: {
       nameColumn: 'Kubernetes Cluster Name'
     },
+    messages: {
+      clusterAdded: 'Cluster was successfully added',
+    }
   }
 };
