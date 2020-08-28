@@ -11,9 +11,15 @@ import { getStyles } from '../PlatformLogin.styles';
 import { PlatformLoginService } from '../PlatformLogin.service';
 import { PRIVACY_POLICY_URL, TERMS_OF_SERVICE_URL } from '../PlatformLogin.constants';
 
+const passwordValidators = validators.compose(
+  validators.required,
+  validators.containBothCases,
+  validators.containNumbers,
+  validators.minLength(8),
+);
+
 export const SignUp: FC<LoginFormProps> = ({ changeMode, getSettings }) => {
-  const theme = useTheme();
-  const styles = getStyles(theme);
+  const styles = getStyles(useTheme());
 
   const handleSignUpFormSubmit = async (credentials: Credentials) => {
     try {
@@ -27,7 +33,7 @@ export const SignUp: FC<LoginFormProps> = ({ changeMode, getSettings }) => {
     }
   };
 
-  const CheckboxLabel = () => (
+  const CheckboxLabel: FC = () => (
     <span data-qa="sign-up-agreement-checkbox-label" className={styles.checkboxLabel}>
       {`${Messages.agreementFirstPart} `}
       <LinkButton className={styles.link} variant="link" href={TERMS_OF_SERVICE_URL}>
@@ -41,10 +47,7 @@ export const SignUp: FC<LoginFormProps> = ({ changeMode, getSettings }) => {
   );
 
   const SignUpForm: FC<FormRenderProps<Credentials>> = ({
-    pristine,
-    submitting,
-    valid,
-    handleSubmit,
+    pristine, submitting, valid, handleSubmit
   }) => (
     <form data-qa="sign-up-form" className={styles.form} onSubmit={handleSubmit}>
       <legend className={styles.legend}>{Messages.signUp}</legend>
@@ -53,10 +56,7 @@ export const SignUp: FC<LoginFormProps> = ({ changeMode, getSettings }) => {
         name="email"
         label={Messages.emailLabel}
         component={InputFieldAdapter}
-        validate={validators.compose(
-          validators.required,
-          validators.validateEmail,
-        )}
+        validate={validators.compose(validators.required, validators.validateEmail)}
       />
       <Field
         data-qa="sign-up-password-input"
@@ -64,12 +64,7 @@ export const SignUp: FC<LoginFormProps> = ({ changeMode, getSettings }) => {
         label={Messages.passwordLabel}
         type="password"
         component={InputFieldAdapter}
-        validate={validators.compose(
-          validators.required,
-          validators.containBothCases,
-          validators.containNumbers,
-          validators.minLength(8)
-        )}
+        validate={passwordValidators}
         autoComplete="on"
       />
       <Field
