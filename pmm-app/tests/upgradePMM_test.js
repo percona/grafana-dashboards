@@ -3,7 +3,6 @@ const assert = require('assert');
 const serviceNames = {
   mysql: 'mysql_upgrade_service',
   postgresql: 'postgres_upgrade_service',
-  mongodb: 'mongodb_upgrade_service',
   proxysql: 'proxysql_upgrade_service',
   rds: 'mysql_rds_uprgade_service',
 };
@@ -104,6 +103,7 @@ Scenario(
   'PMM-T262 Open PMM Settings page and verify DATA_RETENTION value is set to 2 days after upgrade @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
   async (I, pmmSettingsPage) => {
     const dataRetention = '2';
+    const sectionNameToExpand = pmmSettingsPage.sectionTabsList.advanced;
 
     I.amOnPage(pmmSettingsPage.url);
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
@@ -140,7 +140,8 @@ Scenario(
   },
 );
 
-Scenario(
+//Temp 
+xScenario(
   'Verify QAN has specific filters for Remote Instances after Upgrade (UI) @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
   async (I, qanPage, addInstanceAPI) => {
     I.amOnPage(qanPage.url);
