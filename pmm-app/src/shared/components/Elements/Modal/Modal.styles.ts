@@ -40,7 +40,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => ({
       padding-left: ${theme.spacing.d};
   `,
   content: css`
-      padding: ${theme.spacing.d}px;
+      padding: 16px;
       overflow: auto;
       width: 100%;
       max-height: calc(90vh - ${theme.spacing.d});
