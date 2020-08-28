@@ -10,6 +10,7 @@ import { useOverviewTable } from './Overview.hooks';
 import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE, PAGE_SIZE_OPTIONS } from '../../QueryAnalytics.constants';
 import { Table } from './components/QanTable';
 import { getStyles } from '../../QueryAnalytics.styles';
+import { Messages } from './Overview.messages';
 
 export const Overview: FC = () => {
   const theme = useTheme();
@@ -100,7 +101,7 @@ export const Overview: FC = () => {
               onSortChange={onSortChange}
               rowNumber={(index) => <div>{index === 0 ? '' : (pageNumber - 1) * pageSize + index}</div>}
               orderBy={orderBy}
-              noData={<h1>No matching results</h1>}
+              noData={<h1>{Messages.table.noData}</h1>}
               loading={loading}
               disabled={loadingDetails}
             />
