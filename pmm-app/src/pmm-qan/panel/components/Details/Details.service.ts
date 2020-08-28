@@ -1,7 +1,4 @@
-import {
-  apiRequestManagement,
-  apiRequestQAN,
-} from 'shared/components/helpers/api';
+import { apiRequestQAN } from 'shared/components/helpers/api';
 import { getLabelQueryParams } from 'pmm-qan/panel/QueryAnalytics.tools';
 
 
@@ -20,9 +17,6 @@ const getExample = async ({
   return apiRequestQAN.post<any, any>('/ObjectDetails/GetQueryExample', data);
 };
 
-const getActionResult = (body) => apiRequestManagement.post<any, any>('/Actions/Get', body);
-
 export default {
   getExample,
-  getActionResult
 };
