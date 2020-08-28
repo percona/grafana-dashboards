@@ -586,6 +586,9 @@ module.exports = {
   },
 
   async verifyThereAreNoGraphsWithoutData(acceptableNoDataCount = 0) {
+    if(acceptableNoDataCount===0){
+      I.waitForInvisible(this.fields.notAvailableDataPoints, 30);
+    }
     const numberOfNoDataElements = await I.grabNumberOfVisibleElements(this.fields.notAvailableDataPoints);
 
     console.log(`number of No Data elements is = ${numberOfNoDataElements}`);
