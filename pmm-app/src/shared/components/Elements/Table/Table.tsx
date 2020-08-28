@@ -3,6 +3,7 @@ import { Column, useRowSelect, useTable } from 'react-table';
 import { Spinner, useTheme } from '@grafana/ui';
 import { cx } from 'emotion';
 import { getStyles } from './Table.styles';
+import 'shared/components/Form/Checkbox/Checkbox.scss';
 
 interface TableProps {
   className?: string;
