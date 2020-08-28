@@ -4,6 +4,7 @@ import { Spinner, useTheme } from '@grafana/ui';
 import { cx } from 'emotion';
 import { getCheckboxStyles } from 'shared/components/Form/Checkbox/Checkbox.styles';
 import { getStyles } from './Table.styles';
+import 'shared/components/Form/Checkbox/Checkbox.scss';
 
 interface TableProps {
   className?: string;
