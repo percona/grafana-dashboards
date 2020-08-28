@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import {
-  Button, HorizontalGroup, Modal, useTheme
+  Button, HorizontalGroup, TextArea, useTheme
 } from '@grafana/ui';
 import { Table } from 'shared/components/Elements/Table/Table';
 import { Messages } from 'pmm-dbaas/DBaaS.messages';
@@ -9,6 +9,12 @@ import { KUBERNETES_COLUMNS } from './Kubernetes.constants';
 import { getStyles } from './Kubernetes.styles';
 import { useKubernetes } from './Kubernetes.hooks';
 import { Kubernetes } from './Kubernetes.types';
+import {Modal} from "../../../shared/components/Elements/Modal/Modal";
+import {styles} from "../../../pmm-inventory/Tabs/Tabs.styles";
+import {CheckboxField, FormElement} from "../../../shared/components/Form";
+import {Field, Form} from "react-final-form";
+import {InputFieldAdapter} from "../../../pmm-settings/components/PlatformLogin/FieldAdapters/FieldAdapters";
+import validators from "../../../shared/components/helpers/validators";
 
 export const KubernetesInventory: FC = () => {
   const theme = useTheme();
@@ -31,31 +37,68 @@ export const KubernetesInventory: FC = () => {
         >
           {Messages.kubernetes.deleteAction}
         </Button>
+        <Button
+          size="md"
+          onClick={() => setModalVisible(!modalVisible)}
+          icon="trash-alt"
+          variant="destructive"
+        >
+          {'add cluster'}
+        </Button>
       </div>
       <Modal
         title={Messages.kubernetes.deleteModal.title}
-        isOpen={modalVisible}
-        onDismiss={() => setModalVisible(false)}
+        isVisible={modalVisible}
+        onClose={() => setModalVisible(false)}
       >
-        <h4 className={styles.deleteModalContent}>
-          {Messages.kubernetes.deleteModal.getConfirmMessage(selected.length)}
-        </h4>
-        <HorizontalGroup justify="space-between" spacing="md">
-          <Button variant="secondary" size="md" onClick={() => setModalVisible(false)}>
-            {Messages.kubernetes.deleteModal.cancel}
-          </Button>
-          <Button
-            variant="destructive"
-            size="md"
-            onClick={() => {
-              deleteKubernetes(selected.map((row) => row.original));
-              setModalVisible(false);
-            }}
-          >
-            {Messages.kubernetes.deleteModal.confirm}
-          </Button>
-        </HorizontalGroup>
+        <Form
+          onSubmit={() => {}}
+          render={({ form, handleSubmit }) => (
+            <form onSubmit={handleSubmit}>
+              <>
+                <Field
+                  data-qa="sign-up-email-input"
+                  name="email"
+                  label={'Kubernetes Cluster Name'}
+                  component={InputFieldAdapter}
+                  validate={validators.compose(validators.required)}
+                />
+                <Field
+                  data-qa="sign-up-email-input"
+                  name="email"
+                  label={'Kubeconfig file'}
+                  component={InputFieldAdapter}
+                  validate={validators.compose(validators.required)}
+                />
+              </>
+            </form>
+          )}
+        />
       </Modal>
+      {/*<Modal*/}
+      {/*  title={Messages.kubernetes.deleteModal.title}*/}
+      {/*  isOpen={modalVisible}*/}
+      {/*  onDismiss={() => setModalVisible(false)}*/}
+      {/*>*/}
+      {/*  <h4 className={styles.deleteModalContent}>*/}
+      {/*    {Messages.kubernetes.deleteModal.getConfirmMessage(selected.length)}*/}
+      {/*  </h4>*/}
+      {/*  <HorizontalGroup justify="space-between" spacing="md">*/}
+      {/*    <Button variant="secondary" size="md" onClick={() => setModalVisible(false)}>*/}
+      {/*      {Messages.kubernetes.deleteModal.cancel}*/}
+      {/*    </Button>*/}
+      {/*    <Button*/}
+      {/*      variant="destructive"*/}
+      {/*      size="md"*/}
+      {/*      onClick={() => {*/}
+      {/*        deleteKubernetes(selected.map((row) => row.original));*/}
+      {/*        setModalVisible(false);*/}
+      {/*      }}*/}
+      {/*    >*/}
+      {/*      {Messages.kubernetes.deleteModal.confirm}*/}
+      {/*    </Button>*/}
+      {/*  </HorizontalGroup>*/}
+      {/*</Modal>*/}
       <Table
         columns={KUBERNETES_COLUMNS}
         data={kubernetes}

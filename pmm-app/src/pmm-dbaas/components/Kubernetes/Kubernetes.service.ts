@@ -8,6 +8,9 @@ export const KubernetesService = {
   deleteKubernetes(kubernetes: Kubernetes) {
     return apiRequestManagement.post<any, any>('/DBaaS/Kubernetes/Unregister', toAPI(kubernetes));
   },
+  addKubernetes(kubernetes: Kubernetes) {
+    return apiRequestManagement.post<any, any>('/DBaaS/Kubernetes/Register', toAPI(kubernetes));
+  },
 };
 
 const toAPI = (kubernetes: Kubernetes) => ({
