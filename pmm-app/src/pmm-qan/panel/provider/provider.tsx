@@ -12,19 +12,15 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
     // eslint-disable-next-line max-len
     setLabels: (value) => (state) => omit({ ...state, labels: setLabels(value), pageNumber: 1 }, ['queryId', 'querySelected']),
     resetLabels: () => (state) => omit({ ...state, labels: {}, pageNumber: 1 }, ['queryId', 'querySelected']),
-    selectTime: (value) => (state) => {
-      console.log('time selection', value);
-
-      return {
-        ...state,
+    selectTime: (value) => (state) => ({
+      ...state,
+      from: value[0],
+      to: value[1],
+      rawTime: {
         from: value[0],
         to: value[1],
-        rawTime: {
-          from: value[0],
-          to: value[1],
-        },
-      };
-    },
+      },
+    }),
     setActiveTab: (value) => (state) => ({ ...state, openDetailsTab: value }),
     highlightSparkline: (value) => (state) => ({ ...state, highlightedCoords: value }),
     setLoadingDetails: (value) => (state) => ({ ...state, loadingDetails: value }),
