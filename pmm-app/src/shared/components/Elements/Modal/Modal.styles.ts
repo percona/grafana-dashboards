@@ -20,8 +20,9 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => ({
       box-shadow: 0 0 20px ${theme.colors.dropdownShadow};
       background-clip: padding-box;
       outline: none;
-      width: 750px;
-      max-width: 100%;
+      max-width: 750px;
+      min-width: 400px;
+      width: 40%;
       left: 0;
       right: 0;
       margin-left: auto;
@@ -33,22 +34,22 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => ({
       background: ${theme.colors.bg2};
       border-bottom: 1px solid ${theme.colors.pageHeaderBorder};
       display: flex;
-      height: 42px;
+      height: 3em;
       align-items: center;
+      justify-content: space-between;
       padding-left: ${theme.spacing.d};
   `,
   content: css`
-      padding: calc(${theme.spacing.d} * 2);
+      padding: ${theme.spacing.d}px;
       overflow: auto;
       width: 100%;
-      max-height: calc(90vh - ${theme.spacing.d} * 2);
+      max-height: calc(90vh - ${theme.spacing.d});
   `,
   modalHeaderClose: css`
       height: 100%;
       display: flex;
       align-items: center;
-      flex-grow: 1;
       justify-content: flex-end;
-      padding-right: ${theme.spacing.sm};
+      margin-right: ${theme.spacing.sm};
     `,
 }));
