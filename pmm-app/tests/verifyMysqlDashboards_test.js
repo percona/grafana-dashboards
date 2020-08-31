@@ -86,6 +86,7 @@ Scenario(
     I.waitInUrl('from=now-12h&to=now', 30);
     await qanActions.verifySelectedFilters(filters);
     const timeRangeGrabbed = await dashboardPage.getTimeRange();
+
     assert.equal(
       timeRangeGrabbed.slice(0, timeRangeGrabbed.length - 1),
       timeRange,

@@ -1,9 +1,11 @@
-import React, { ReactNode, FC, useEffect } from 'react';
-import { useRowSelect, useTable, Column } from 'react-table';
+import React, { FC, ReactNode, useEffect } from 'react';
+import { Column, useRowSelect, useTable } from 'react-table';
 import { Spinner, useTheme } from '@grafana/ui';
+import { cx } from 'emotion';
 import { getStyles } from './Table.styles';
 
 interface TableProps {
+  className?: string;
   rowSelection?: boolean;
   onRowSelection?: (selected: any) => void;
   columns: Column[];
@@ -21,6 +23,7 @@ const TableCheckbox = (props) => (
 );
 
 export const Table: FC<TableProps> = ({
+  className,
   columns,
   rowSelection = false,
   onRowSelection,
@@ -69,7 +72,7 @@ export const Table: FC<TableProps> = ({
   }, [selectedFlatRows]);
 
   return (
-    <div className={styles.table}>
+    <div className={cx(styles.table, className)}>
       <div className={styles.tableWrap}>
         {loading ? (
           <div data-qa="table-loading" className={styles.empty}>

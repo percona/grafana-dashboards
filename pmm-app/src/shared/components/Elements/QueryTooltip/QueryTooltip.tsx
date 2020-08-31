@@ -1,8 +1,8 @@
 import { Tooltip } from 'antd';
-import Highlight from 'react-highlight.js';
 import React from 'react';
 import './QueryTooltip.scss';
 import sqlFormatter from 'sql-formatter';
+import { Highlight } from 'pmm-qan/panel/components/Highlight/Highlight';
 
 interface QueryTooltipProps {
   query: string;

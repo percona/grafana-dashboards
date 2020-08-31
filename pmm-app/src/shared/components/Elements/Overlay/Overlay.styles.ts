@@ -1,8 +1,9 @@
 import { css } from 'emotion';
 
 export const styles = {
-  overlayWrapper: css`
+  getOverlayWrapper: (size) => css`
     position: relative;
+    min-height: ${size * 2}px;
   `,
   spinner: css`
     left: 50%;

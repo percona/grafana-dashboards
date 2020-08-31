@@ -1,18 +1,14 @@
 import React, {
   FC, useCallback, useEffect, useState
 } from 'react';
-import Highlight from 'react-highlight.js';
 import { Overlay } from 'shared/components/Elements/Overlay/Overlay';
-import { ActionResult, Databases } from '../../../Details.types';
+import { Highlight } from 'pmm-qan/panel/components/Highlight/Highlight';
+import { ActionResult, getActionResult } from 'shared/components/Actions';
+import { Databases } from '../../../Details.types';
 import { mysqlMethods, postgresqlMethods } from '../../../database-models';
-import { useActionResult } from '../../../Details.tools';
 import { TableProps } from '../Table.types';
 
-export const TableCreate: FC<TableProps> = ({
-  tableName,
-  databaseType,
-  example
-}) => {
+export const TableCreate: FC<TableProps> = ({ tableName, databaseType, example }) => {
   const [showCreateTable, setShowCreateTable] = useState<ActionResult>({
     error: '',
     loading: true,
@@ -28,7 +24,7 @@ export const TableCreate: FC<TableProps> = ({
       id = await mysqlMethods.getShowCreateTables({ example, tableName });
     }
 
-    const result = await useActionResult(id);
+    const result = await getActionResult(id);
 
     setShowCreateTable(result);
   }, [databaseType]);

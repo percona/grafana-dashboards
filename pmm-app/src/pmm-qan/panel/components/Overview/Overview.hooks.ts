@@ -1,6 +1,4 @@
-import {
-  useContext, useEffect, useState
-} from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
 import OverviewService from './Overview.service';
 import { DataInterface } from './Overview.types';
