@@ -5,7 +5,11 @@ import { Messages } from './DBaaS.messages';
 import { TabKeys } from './DBaaS.types';
 
 const tabs = [
-  { label: Messages.tabs.kubernetes, key: TabKeys.kubernetes, component: <KubernetesInventory /> },
+  {
+    label: Messages.tabs.kubernetes,
+    key: TabKeys.kubernetes,
+    component: <KubernetesInventory key={TabKeys.kubernetes} />
+  },
 ];
 
 export const DBaaSPanel: FC = () => {
