@@ -216,7 +216,7 @@ module.exports = {
   },
 
   async verifyCountOfFilterLinks(expectedCount, before) {
-    I.waitForInvisible(qanPage.elements.spinner, 30);
+    I.waitForInvisible(qanPage.elements.spinner, 90);
     const count = await I.grabNumberOfVisibleElements(qanPage.fields.filterCheckboxes);
 
     if (!before) {
@@ -420,7 +420,8 @@ module.exports = {
   },
 
   async getCountOfItems() {
-    I.waitForInvisible(qanPage.elements.spinner, 30);
+    I.waitForVisible(qanPage.fields.tableRow, 60);
+    I.wait(5);
     const resultsCount = (await I.grabTextFrom(qanPage.fields.countOfItems)).split(' ');
 
     return resultsCount[2];
