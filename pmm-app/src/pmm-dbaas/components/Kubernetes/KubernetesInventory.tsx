@@ -28,6 +28,7 @@ export const KubernetesInventory: FC = () => {
           onClick={() => setModalVisible(!modalVisible)}
           icon="trash-alt"
           variant="destructive"
+          data-qa="open-delete-modal-button"
         >
           {Messages.kubernetes.deleteAction}
         </Button>
@@ -41,7 +42,12 @@ export const KubernetesInventory: FC = () => {
           {Messages.kubernetes.deleteModal.getConfirmMessage(selected.length)}
         </h4>
         <HorizontalGroup justify="space-between" spacing="md">
-          <Button variant="secondary" size="md" onClick={() => setModalVisible(false)}>
+          <Button
+            variant="secondary"
+            size="md"
+            onClick={() => setModalVisible(false)}
+            data-qa="cancel-delete-kubernetes-button"
+          >
             {Messages.kubernetes.deleteModal.cancel}
           </Button>
           <Button
@@ -51,6 +57,7 @@ export const KubernetesInventory: FC = () => {
               deleteKubernetes(selected.map((row) => row.original));
               setModalVisible(false);
             }}
+            data-qa="delete-kubernetes-button"
           >
             {Messages.kubernetes.deleteModal.confirm}
           </Button>
