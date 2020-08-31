@@ -139,11 +139,11 @@ module.exports = {
     I.fillField(qanPage.fields.filterBy, filterName);
     const filterToAplly = `//span[contains(@class, 'checkbox-container__label-text') and contains(text(), '${filterName}')]`;
 
-    I.waitForVisible(filterToAplly, 20);
+    I.waitForVisible(filterToAplly, 60);
     I.click(filterToAplly);
     pmmSettingsPage.customClearField(qanPage.fields.filterBy);
     // Wait For Results count to be changed so we are sure filter was applied.
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 10; i++) {
       I.wait(1);
       const newResultsCount = this.getCountOfItems();
 
@@ -181,7 +181,7 @@ module.exports = {
   },
 
   async verifyFiltersSection(filterSection, expectedCount) {
-    const seeFiltersFor = `//span[contains(text(), '${filterSection}')]/parent::p/following-sibling::div/span/label[contains(@class, 'checkbox-container checkbox-container--main')]`;
+    const seeFiltersFor = `//span[contains(text(), '${filterSection}')]/parent::p/following-sibling::div/span/label`;
 
     I.fillField(qanPage.fields.filterBy, filterSection);
     I.waitForVisible(`//span[contains(text(), '${filterSection}')]`, 30);
