@@ -176,7 +176,7 @@ module.exports = {
     assert.notEqual(
       countAfter,
       countBefore,
-      `After applying Filter value ${countBefore} should not be equal to ${countAfter}`,
+      `After applying a Filter, count of queries should not be equal to ${countAfter}`,
     );
   },
 
@@ -271,6 +271,7 @@ module.exports = {
   },
 
   async verifyRowCount(rowCount) {
+    I.waitForVisible(qanPage.fields.querySelector, 30);
     const count = await I.grabNumberOfVisibleElements(qanPage.fields.tableRow);
 
     assert.equal(count, rowCount, `Row count should be ${rowCount} instead of ${count}`);
@@ -421,7 +422,7 @@ module.exports = {
   },
 
   async getCountOfItems() {
-    I.waitForInvisible(qanPage.elements.spinner, 30);
+    I.waitForVisible(qanPage.fields.querySelector, 30);
     const resultsCount = (await I.grabTextFrom(qanPage.fields.countOfItems)).split(' ');
 
     return resultsCount[2];
@@ -434,6 +435,17 @@ module.exports = {
     for (let i = 0; i <= filters.length - 1; i++) {
       if (!getFilter[i].includes(filters[i])) {
         assert.fail(`The filter '${filters[i]}' has not been found!`);
+      }
+    }
+  },
+  // Wait For Results count to be changed
+  async waitForNewItemsCount(originalCount) {
+    for (let i = 0; i < 5; i++) {
+      I.wait(1);
+      const count = this.getCountOfItems();
+
+      if (count !== originalCount) {
+        return count
       }
     }
   },

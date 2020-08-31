@@ -16,7 +16,7 @@ module.exports = {
   fields: {
     addColumnNewQAN: '//span[contains(text(), "Add column")]',
     addColumnSelector: '.add-columns-selector',
-    countOfItems: '//span[@data-qa="qan-total-items"]',
+    countOfItems: '$qan-total-items',
     detailsSectionTab: '//div[@role="tab"]',
     disabledResetAll: '//button[@data-qa="qan-filters-reset-all" and @disabled ]',
     resetAllButton: '//button[@data-qa="qan-filters-reset-all"]',
@@ -52,7 +52,7 @@ module.exports = {
     previousPage: '.ant-pagination-prev',
     qps: '//tr[@data-row-key="num_queries"]//td[2]//span[1]',
     queryCountDetail: '//tr[@data-row-key="num_queries"]//td[3]//span[1]',
-    querySelector: 'div.tr-3',
+    querySelector: 'div.tr-1',
     queryTime: 'div.tr-3 > div:nth-child(5)',
     queryTimeDetail: '//tr[@data-row-key="query_time"]//td[4]//span[1]',
     removeColumnButton: '//div[text()="Remove column"]',

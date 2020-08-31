@@ -46,6 +46,7 @@ exports.config = {
     qanPage: './tests/QAN/pages/qanPage.js',
     remoteInstancesPage: './tests/pages/remoteInstancesPage.js',
     settingsAPI: './tests/pages/api/settingsAPI.js',
+    qanFilters: './tests/QAN/pages/qanFiltersFragment.js',
   },
   multiple: {
     parallel: {
