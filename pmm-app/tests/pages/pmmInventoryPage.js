@@ -106,7 +106,7 @@ module.exports = {
   selectService(serviceName) {
     const serviceLocator = `${this.fields.serviceIdLocatorPrefix}${serviceName}")]/preceding-sibling::td/div[@data-qa="select-row"]`;
 
-    I.waitForVisible(serviceLocator, 30);
+    I.waitForVisible(serviceLocator, 60);
     I.click(serviceLocator);
   },
 
