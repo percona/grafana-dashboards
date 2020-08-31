@@ -1,4 +1,4 @@
-import React, { ReactNode, FC } from 'react';
+import React, { FC, ReactNode } from 'react';
 import { useTheme } from '@grafana/ui';
 import { getStyles } from './TabsVertical.styles';
 
