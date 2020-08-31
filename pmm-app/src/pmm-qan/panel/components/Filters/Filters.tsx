@@ -7,16 +7,20 @@ import { cx } from 'emotion';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
 import { Filter } from 'shared/components/Elements/Icons/Filter';
 import { Scrollbar } from 'shared/components/Elements/Scrollbar/Scrollbar';
+import { useTheme } from '@grafana/ui';
 import { CheckboxGroup } from './components/CheckboxGroup/CheckboxGroup';
 import { FILTERS_BODY_HEIGHT, FILTERS_GROUPS } from './Filters.constants';
-import { styles } from './Filters.styles';
 import { useFilters, useFiltersContainerHeight, useInitialFilterValues } from './Filters.hooks';
 import { getSelectedCheckboxes } from './Filters.tools';
 import { FiltersContainerProps } from './Filters.types';
+import { getStyles } from './Filters.styles';
 
-const FiltersContainer: FC<FiltersContainerProps> = ({
+export const FiltersContainer: FC<FiltersContainerProps> = ({
   contextActions, form, filters, disabled
 }) => {
+  const theme = useTheme();
+  const styles = getStyles(theme);
+
   const filtersWrapperRef = useRef<HTMLDivElement>(null);
 
   const height = useFiltersContainerHeight(FILTERS_BODY_HEIGHT, filtersWrapperRef);
@@ -88,7 +92,7 @@ const FiltersContainer: FC<FiltersContainerProps> = ({
 export const Filters: FC = () => {
   const {
     contextActions,
-    panelState: { labels = {}, loadingDetails },
+    panelState: { loadingDetails },
   } = useContext(QueryAnalyticsProvider);
   const { filters, loading } = useFilters();
   const initialValues = useInitialFilterValues();
@@ -104,7 +108,6 @@ export const Filters: FC = () => {
               <FiltersContainer
                 contextActions={contextActions}
                 form={form}
-                labels={labels}
                 filters={filters}
                 disabled={loadingDetails}
               />
@@ -113,6 +116,6 @@ export const Filters: FC = () => {
         )}
       />
     ),
-    [contextActions, filters, loading, loadingDetails, initialValues, labels],
+    [contextActions, filters, loading, loadingDetails, initialValues],
   );
 };

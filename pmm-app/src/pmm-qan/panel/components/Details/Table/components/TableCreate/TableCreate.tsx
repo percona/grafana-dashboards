@@ -1,8 +1,8 @@
 import React, {
   FC, useCallback, useEffect, useState
 } from 'react';
-import Highlight from 'react-highlight.js';
 import { Overlay } from 'shared/components/Elements/Overlay/Overlay';
+import { Highlight } from 'pmm-qan/panel/components/Highlight/Highlight';
 import { ActionResult, getActionResult } from 'shared/components/Actions';
 import { Databases } from '../../../Details.types';
 import { mysqlMethods, postgresqlMethods } from '../../../database-models';
@@ -36,7 +36,9 @@ export const TableCreate: FC<TableProps> = ({ tableName, databaseType, example }
   return (
     <Overlay isPending={showCreateTable.loading}>
       {showCreateTable.error ? <pre>{showCreateTable.error}</pre> : null}
-      {!showCreateTable.error ? <Highlight language="sql">{showCreateTable.value}</Highlight> : null}
+      {!showCreateTable.error ? (
+        <Highlight language="sql">{showCreateTable.value}</Highlight>
+      ) : null}
     </Overlay>
   );
 };
