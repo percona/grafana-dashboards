@@ -2,8 +2,8 @@ import React, { FC, ReactNode, useEffect } from 'react';
 import { Column, useRowSelect, useTable } from 'react-table';
 import { Spinner, useTheme } from '@grafana/ui';
 import { cx } from 'emotion';
+import { getCheckboxStyles } from 'shared/components/Form/Checkbox/Checkbox.styles';
 import { getStyles } from './Table.styles';
-import 'shared/components/Form/Checkbox/Checkbox.scss';
 
 interface TableProps {
   className?: string;
@@ -16,12 +16,17 @@ interface TableProps {
   rowKey?: (rec: any) => any;
 }
 
-const TableCheckbox = (props) => (
-  <label className="checkbox-container checkbox-container--main no-gap">
-    <input type="checkbox" {...props} indeterminate="false" />
-    <span className="checkbox-container__checkmark" />
-  </label>
-);
+const TableCheckbox = (props) => {
+  const theme = useTheme();
+  const styles = getCheckboxStyles(theme);
+
+  return (
+    <label className={cx(styles.checkboxContainer, 'checkbox-container--main', 'no-gap')}>
+      <input type="checkbox" {...props} indeterminate="false" />
+      <span className="checkbox-container__checkmark" />
+    </label>
+  );
+};
 
 export const Table: FC<TableProps> = ({
   className,

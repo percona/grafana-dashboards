@@ -8,3 +8,6 @@ export const kubernetesStub = [
 ];
 
 export const deleteActionStub = jest.fn();
+export const addActionStub = jest.fn(() => {
+  kubernetesStub.push({ kubernetesClusterName: 'test' });
+});
