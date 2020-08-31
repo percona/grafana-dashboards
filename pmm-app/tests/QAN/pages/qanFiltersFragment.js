@@ -1,4 +1,5 @@
 const assert = require('assert');
+
 const { I } = inject();
 
 module.exports = {
@@ -18,11 +19,11 @@ module.exports = {
     filterBy: '$filters-search-field',
     filterCheckboxes: '.checkbox-container__checkmark',
   },
-  buttons:{
+  buttons: {
     resetAllButton: '$qan-filters-reset-all',
     showSelected: '$qan-filters-show-selected',
   },
-  elements:{
+  elements: {
     spinner: 'i.fa-spinner',
   },
   requests: {
@@ -30,14 +31,14 @@ module.exports = {
     getFiltersPath: '/v0/qan/Filters/Get',
   },
 
-  getFilterSectionLocator: filterSectionName => `//span[contains(text(), '${filterSectionName}')]`,
+  getFilterSectionLocator: (filterSectionName) => `//span[contains(text(), '${filterSectionName}')]`,
 
-  getFilterGroupLocator: filterName => `//div[@class='filter-group__title']//span[contains(text(), '${filterName}')]`,
+  getFilterGroupLocator: (filterName) => `//div[@class='filter-group__title']//span[contains(text(), '${filterName}')]`,
 
-  getFilterGroupCountSelector: groupName => `//span[contains(text(), '${groupName}')]/following-sibling::span[contains(text(), 'Show all')]`,
+  getFilterGroupCountSelector: (groupName) => `//span[contains(text(), '${groupName}')]/following-sibling::span[contains(text(), 'Show all')]`,
 
-  getFilterLocator : filterValue => `//span[@class='checkbox-container__label-text' and contains(text(), '${filterValue}')]` +
-    `/../span[@class='checkbox-container__checkmark']`,
+  getFilterLocator: (filterValue) => `//span[@class="checkbox-container__label-text" and contains(text(), "${filterValue}")]`
+    + `/../span[@class="checkbox-container__checkmark"]`,
 
   async getPercentage(filterType, filter) {
     return await I.grabTextFrom(
@@ -47,6 +48,7 @@ module.exports = {
 
   async getCountOfFilters(groupName) {
     const showAllLink = this.getFilterGroupCountSelector(groupName);
+
     return (await I.grabTextFrom(showAllLink)).slice(10, 12);
   },
 
@@ -75,8 +77,8 @@ module.exports = {
   },
 
   async verifySectionItemsCount(filterSection, expectedCount) {
-    const sectionLocator = `//span[contains(text(), '${filterSection}')]/ancestor::p/following-sibling::` +
-      `div//span[contains(@class, 'checkbox-container__checkmark')]`;
+    const sectionLocator = `//span[contains(text(), '${filterSection}')]/ancestor::p/following-sibling::`
+      + 'div//span[contains(@class, "checkbox-container__checkmark")]';
 
     I.fillField(this.fields.filterBy, filterSection);
     I.waitForVisible(`//span[contains(text(), '${filterSection}')]`, 30);

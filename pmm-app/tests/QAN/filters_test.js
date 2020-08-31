@@ -250,6 +250,7 @@ Scenario(
 
     qanActions.waitForNewQANPageLoaded();
     let count = qanActions.getCountOfItems();
+
     qanFilters.applyFilterInSection(section, db1);
     count = await qanActions.waitForNewItemsCount(count);
     qanFilters.applyFilterInSection(section, db2);
