@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import { KubernetesInventory } from './KubernetesInventory';
-import { kubernetesStub, deleteActionStub } from './__mocks__/kubernetesStubs'
+import { kubernetesStub, deleteActionStub } from './__mocks__/kubernetesStubs';
 
 jest.mock('shared/components/helpers/notification-manager');
 jest.mock('./Kubernetes.hooks');
