@@ -1,10 +1,10 @@
 import { css } from 'emotion';
 import { GrafanaTheme } from '@grafana/data';
 import { selectThemeVariant, stylesFactory } from '@grafana/ui';
-import { getThemeParameters } from 'shared/components/helpers/selectThemeVariant';
+import { getPmmTheme } from 'shared/components/helpers/getPmmTheme';
 
 export const getStyles = stylesFactory((theme: GrafanaTheme) => {
-  const parameters = getThemeParameters(theme);
+  const parameters = getPmmTheme(theme);
 
   const selectedRowColor = selectThemeVariant(
     { light: 'deepskyblue', dark: '#234682' },
@@ -75,7 +75,6 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
         position: sticky;
         left: 0;
         z-index: 1;
-        // outline: 1px solid ${parameters.table.borderColor};
       }
 
       .tr .td:nth-child(2) {
@@ -83,14 +82,12 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
         position: sticky;
         left: 40px;
         z-index: 1;
-        // outline: 1px solid ${parameters.table.borderColor};
       }
       .th:first-child {
         display: flex !important;
         justify-content: center !important;
         left: 0;
         z-index: 3;
-        // outline: 1px solid ${parameters.table.borderColor};
       }
       .th:nth-child(2) {
         position: -webkit-sticky; /* for Safari */
@@ -166,9 +163,6 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       position: sticky;
       top: 0;
       z-index: 999;
-    `,
-    getColumnsWidth: (width) => css`
-      min-width: ${width}
     `,
     tableCell: css`
       display: flex !important;

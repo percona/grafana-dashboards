@@ -1,7 +1,7 @@
 import { selectThemeVariant } from '@grafana/ui';
 
 
-interface TableThemes {
+interface TableTheme {
   backgroundColor: string;
   borderColor: string;
   headerBackground: string;
@@ -10,9 +10,9 @@ interface TableThemes {
 
 interface Themes {
   mainTextColor: string;
-  table: TableThemes;
+  table: TableTheme;
 }
-export const getThemeParameters = (theme): Themes => {
+export const getPmmTheme = (theme): Themes => {
   const mainTextColor = selectThemeVariant(
     { light: theme.colors.text, dark: 'rgba(255, 255, 255, 0.8)' },
     theme.type,

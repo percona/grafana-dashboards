@@ -1,10 +1,10 @@
 import { stylesFactory } from '@grafana/ui';
 import { GrafanaTheme } from '@grafana/data';
 import { css } from 'emotion';
-import { getThemeParameters } from 'shared/components/helpers/selectThemeVariant';
+import { getPmmTheme } from 'shared/components/helpers/getPmmTheme';
 
 export const getCheckboxStyles = stylesFactory((theme: GrafanaTheme) => {
-  const parameters = getThemeParameters(theme);
+  const parameters = getPmmTheme(theme);
 
   return {
     checkboxContainer: css`

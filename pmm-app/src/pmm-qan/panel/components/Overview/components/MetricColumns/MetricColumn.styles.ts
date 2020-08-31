@@ -1,10 +1,10 @@
 import { css } from 'emotion';
 import { stylesFactory } from '@grafana/ui';
 import { GrafanaTheme } from '@grafana/data';
-import { getThemeParameters } from 'shared/components/helpers/selectThemeVariant';
+import { getPmmTheme } from 'shared/components/helpers/getPmmTheme';
 
 export const getStyles = stylesFactory((theme: GrafanaTheme) => {
-  const parameters = getThemeParameters(theme);
+  const parameters = getPmmTheme(theme);
 
   return {
     tooltipHeader: css`
