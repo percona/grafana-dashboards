@@ -1,10 +1,6 @@
-export type DatabasesType = 'mysql' | 'postgresql' | 'mongodb' | undefined;
+import { ActionResult } from 'shared/components/Actions';
 
-export interface ActionResult {
-  error: string;
-  loading: boolean;
-  value: any;
-}
+export type DatabasesType = 'mysql' | 'postgresql' | 'mongodb' | undefined;
 
 export interface DetailsState {
   examples?: any;

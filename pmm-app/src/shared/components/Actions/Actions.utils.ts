@@ -1,9 +1,16 @@
-import { ActionResult } from './Details.types';
-import DetailsService from './Details.service';
+import { ActionResult } from './Actions.types';
+import { ActionsService } from './Actions.service';
 
-export const useActionResult = async (actionId): Promise<ActionResult> => {
-  let intervalId;
-  // 5 seconds
+const INTERVAL = 500;
+const NO_RESULT = {
+  loading: false,
+  value: null,
+  error: '',
+};
+
+export const getActionResult = async (actionId: string): Promise<ActionResult> => {
+  let intervalId: NodeJS.Timeout;
+  // Total duration: 5 seconds = INTERVAL * counter
   let counter = 10;
 
   return new Promise((resolve) => {
@@ -14,11 +21,7 @@ export const useActionResult = async (actionId): Promise<ActionResult> => {
     const getData = async () => {
       if (!counter) {
         clearInterval(intervalId);
-        resolve({
-          loading: false,
-          value: null,
-          error: '',
-        });
+        resolve(NO_RESULT);
 
         return;
       }
@@ -26,10 +29,15 @@ export const useActionResult = async (actionId): Promise<ActionResult> => {
       counter -= 1;
 
       try {
-        const requestResult = await DetailsService.getActionResult({
+        const requestResult = await ActionsService.getActionResult({
           action_id: actionId,
         });
 
+        /**
+         * TODO: this needs investigation. Potentially, another request would be fired
+         * in case if it takes the BE longer than 500ms to respond
+         */
+        //
         if (requestResult.done) {
           clearInterval(intervalId);
           if (requestResult.error) {
@@ -48,14 +56,10 @@ export const useActionResult = async (actionId): Promise<ActionResult> => {
         }
       } catch (e) {
         clearInterval(intervalId);
-        resolve({
-          loading: false,
-          value: null,
-          error: '',
-        });
+        resolve(NO_RESULT);
       }
     };
 
-    intervalId = setInterval(getData, 500);
+    intervalId = setInterval(getData, INTERVAL);
   });
 };

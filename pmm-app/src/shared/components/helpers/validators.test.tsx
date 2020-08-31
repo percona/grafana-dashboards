@@ -2,9 +2,7 @@ import validators from './validators';
 
 describe('validatePort test', () => {
   it('return error string when value is 0', () => {
-    expect(validators.validatePort(0)).toEqual(
-      'Port should be a number and between the range of 0 and 65535',
-    );
+    expect(validators.validatePort(0)).toEqual('Port should be a number and between 0 and 65535');
   });
 
   it('return empty string when value in the middle of range', () => {
@@ -12,13 +10,13 @@ describe('validatePort test', () => {
   });
 
   it('return correct error message when value is not in range', () => {
-    const errorMessage = 'Port should be a number and between the range of 0 and 65535';
+    const errorMessage = 'Port should be a number and between 0 and 65535';
 
     expect(validators.validatePort(65536)).toEqual(errorMessage);
   });
 
   it('return correct error message when value is invalid', () => {
-    const errorMessage = 'Port should be a number and between the range of 0 and 65535';
+    const errorMessage = 'Port should be a number and between 0 and 65535';
 
     expect(validators.validatePort('portnumber')).toEqual(errorMessage);
   });
@@ -99,7 +97,7 @@ describe('Validate range test', () => {
   it('return error message when value not in range', () => {
     const from = 0;
     const to = 100;
-    const errorMessage = `Value should be in range from ${from} to ${to}`;
+    const errorMessage = `Value should be in the range from ${from} to ${to}`;
     const rangeValidator = validators.range(from, to);
 
     expect(rangeValidator(110)).toEqual(errorMessage);
@@ -157,7 +155,7 @@ describe('validators compose', () => {
   it('return correct validation error when value is in the middle of range', () => {
     const from = 0;
     const to = 100;
-    const errorMessage = `Value should be in range from ${from} to ${to}`;
+    const errorMessage = `Value should be in the range from ${from} to ${to}`;
     const rangeValidator = validators.range(from, to);
     const validate = validators.compose(rangeValidator, validators.required);
 
