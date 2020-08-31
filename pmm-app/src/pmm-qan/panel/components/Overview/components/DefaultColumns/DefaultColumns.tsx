@@ -2,6 +2,7 @@
 import React from 'react';
 import { QueryTooltip } from 'shared/components/Elements/QueryTooltip/QueryTooltip';
 import { Info } from 'shared/components/Elements/Icons/Info';
+import { useTheme } from '@grafana/ui';
 import {
   COLUMN_WIDTH,
   FIXED_COLUMN_WIDTH,
@@ -9,8 +10,8 @@ import {
   ROW_NUMBER_COLUMN_WIDTH,
   SCROLLBAR_WIDTH,
 } from '../../Overview.constants';
-import { mainMetric, metricWrapper, tooltipIcon } from './DefaultColumns.styles';
 import { Dimension } from '../Dimension/Dimension';
+import { getStyles } from './DefaultColumns.styles';
 
 // eslint-disable-next-line max-len
 const getAllColumns = (columns) => (columns - 1) * FIXED_COLUMN_WIDTH + COLUMN_WIDTH * 1.8 + ROW_NUMBER_COLUMN_WIDTH;
@@ -34,18 +35,23 @@ export const getAllColumnsWidth = (mainColumnWidth, columns) => {
   return Math.max(getAllColumns(columns) + mainColumnWidth - FIXED_COLUMN_WIDTH, width) - SCROLLBAR_WIDTH;
 };
 
-const dimensionColumnRender = (record, index) => (
-  <div className={metricWrapper}>
-    <div className={mainMetric(index === 0)}>
-      {index === 0 ? 'TOTAL' : record.fingerprint || record.dimension || 'N/A'}
+const dimensionColumnRender = (record, index) => {
+  const theme = useTheme();
+  const styles = getStyles(theme);
+
+  return (
+    <div className={styles.metricWrapper}>
+      <div className={styles.getMainMetric(index === 0)}>
+        {index === 0 ? 'TOTAL' : record.fingerprint || record.dimension || 'N/A'}
+      </div>
+      {index !== 0 && record.fingerprint ? (
+        <QueryTooltip query={record.fingerprint} queryId={record.dimension}>
+          <Info className={styles.tooltipIcon} />
+        </QueryTooltip>
+      ) : null}
     </div>
-    {index !== 0 && record.fingerprint ? (
-      <QueryTooltip query={record.fingerprint} queryId={record.dimension}>
-        <Info className={tooltipIcon} />
-      </QueryTooltip>
-    ) : null}
-  </div>
-);
+  );
+};
 
 export const getDefaultColumns = () => [
   {
