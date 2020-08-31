@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { omit } from 'lodash';
+import { omit, isEqual } from 'lodash';
 import { parseURL, refreshGrafanaVariables, setLabels } from './provider.tools';
 import { QueryAnalyticsContext } from './provider.types';
 
@@ -12,19 +12,15 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
     // eslint-disable-next-line max-len
     setLabels: (value) => (state) => omit({ ...state, labels: setLabels(value), pageNumber: 1 }, ['queryId', 'querySelected']),
     resetLabels: () => (state) => omit({ ...state, labels: {}, pageNumber: 1 }, ['queryId', 'querySelected']),
-    selectTime: (value) => (state) => {
-      console.log('time selection', value);
-
-      return {
-        ...state,
+    selectTime: (value) => (state) => ({
+      ...state,
+      from: value[0],
+      to: value[1],
+      rawTime: {
         from: value[0],
         to: value[1],
-        rawTime: {
-          from: value[0],
-          to: value[1],
-        },
-      };
-    },
+      },
+    }),
     setActiveTab: (value) => (state) => ({ ...state, openDetailsTab: value }),
     highlightSparkline: (value) => (state) => ({ ...state, highlightedCoords: value }),
     setLoadingDetails: (value) => (state) => ({ ...state, loadingDetails: value }),
@@ -161,37 +157,34 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
 
   const [from, setFrom] = useState(timeRange.raw.from);
   const [to, setTo] = useState(timeRange.raw.to);
+  const [previousState, setPreviousState] = useState(panelState);
 
   useEffect(() => {
+    const newState = {
+      ...panelState,
+      from: timeRange.from.utc().format('YYYY-MM-DDTHH:mm:ssZ'),
+      to: timeRange.to.utc().format('YYYY-MM-DDTHH:mm:ssZ'),
+      rawTime: {
+        from: timeRange.raw.from,
+        to: timeRange.raw.to,
+      },
+    };
+
     if (from === timeRange.raw.from && to === timeRange.raw.to) {
-      const newState = {
-        ...panelState,
-        from: timeRange.from.utc().format('YYYY-MM-DDTHH:mm:ssZ'),
-        to: timeRange.to.utc().format('YYYY-MM-DDTHH:mm:ssZ'),
-        rawTime: {
-          from: timeRange.raw.from,
-          to: timeRange.raw.to,
-        },
-      };
+      const oldState = omit(previousState, ['from', 'to', 'rawTime']);
+      const updatedState = omit(panelState, ['from', 'to', 'rawTime']);
 
-      setContext(newState);
+      if (isEqual(oldState, updatedState)) {
+        setContext(newState);
+      }
     } else {
-      const newState = {
-        ...panelState,
-        from: timeRange.from.utc().format('YYYY-MM-DDTHH:mm:ssZ'),
-        to: timeRange.to.utc().format('YYYY-MM-DDTHH:mm:ssZ'),
-        rawTime: {
-          from: timeRange.raw.from,
-          to: timeRange.raw.to,
-        },
-      };
-
       newState.pageNumber = 1;
       delete newState.queryId;
       delete newState.querySelected;
       setContext(newState);
     }
 
+    setPreviousState(newState);
     setFrom(timeRange.raw.from);
     setTo(timeRange.raw.to);
   }, [timeRange, from, to]);
