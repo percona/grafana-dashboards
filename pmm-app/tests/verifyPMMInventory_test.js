@@ -126,7 +126,7 @@ Scenario(
     const agentType = 'PMM Agent';
 
     I.amOnPage(pmmInventoryPage.url);
-    I.waitForVisible(pmmInventoryPage.fields.agentsLink, 20);
+    I.waitForVisible(pmmInventoryPage.fields.agentsLink, 60);
     I.click(pmmInventoryPage.fields.agentsLink);
     pmmInventoryPage.selectAgentByID(agentID);
     pmmInventoryPage.deleteWithForceOpt();

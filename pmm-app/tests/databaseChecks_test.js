@@ -55,7 +55,7 @@ Scenario(
     await settingsAPI.apiEnableSTT();
     I.amOnPage(homePage.url);
     I.waitForVisible(homePage.fields.checksPanelSelector, 30);
-    I.waitForVisible(homePage.fields.sttFailedChecksPanelSelector, 30);
+    I.waitForVisible(homePage.fields.sttFailedChecksPanelSelector, 60);
     I.doubleClick(homePage.fields.sttFailedChecksPanelSelector);
     await databaseChecksPage.verifyDatabaseChecksPageOpened();
   },
