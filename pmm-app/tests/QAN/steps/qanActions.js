@@ -18,9 +18,11 @@ module.exports = {
   },
 
   changeGroupBy(groupBy = 'Client Host') {
+    const groupByLabel = `//ul/li[@label='${groupBy}']`;
     I.waitForElement(qanPage.fields.groupBySelector, 30);
     I.forceClick(qanPage.fields.groupBySelector);
-    I.click(`//ul/li[@label='${groupBy}']`);
+    I.waitForVisible(groupByLabel, 30);
+    I.click(groupByLabel);
   },
 
   verifyGroupByIs(groupBy) {
