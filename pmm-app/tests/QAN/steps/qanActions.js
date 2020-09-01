@@ -271,6 +271,7 @@ module.exports = {
   },
 
   async verifyRowCount(rowCount) {
+    I.waitForVisible(qanPage.fields.tableRow, 60);
     const count = await I.grabNumberOfVisibleElements(qanPage.fields.tableRow);
 
     assert.equal(count, rowCount, `Row count should be ${rowCount} instead of ${count}`);
@@ -285,7 +286,8 @@ module.exports = {
   },
 
   async getPageCount() {
-    const pageCount = '//ul[@data-qa="qan-pagination"]//li[contains(@class,"ant-pagination-item")][last()]//a';
+    const pageCount =
+      '//ul[@data-qa="qan-pagination"]//li[contains(@class,"ant-pagination-item")][last()]//a';
     const pages = await I.grabTextFrom(pageCount);
 
     return pages;
