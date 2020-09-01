@@ -7,60 +7,63 @@ Before(async (I, qanPage) => {
 
 Scenario(
   'PMM-T146 Verify user is able to see  chart tooltip for time related metric  @not-pr-pipeline @qan',
-  async (I, qanPage, qanActions) => {
+  async (I, qanOverview) => {
     const ROW_NUMBER = 1;
     const QUERY_TIME_COLUMN_NUMBER = 3;
 
-    qanActions.showTooltip(ROW_NUMBER, QUERY_TIME_COLUMN_NUMBER);
-    I.seeElement(qanPage.elements.latencyChart);
+    qanOverview.showTooltip(ROW_NUMBER, QUERY_TIME_COLUMN_NUMBER);
+    I.seeElement(qanOverview.elements.latencyChart);
   },
 );
 
 Scenario(
   'PMM-T151 Verify that hovering over a non-time metric displays a tooltip without a graph @not-pr-pipeline @qan',
-  async (I, qanPage, qanActions) => {
+  async (I, qanOverview) => {
     const ROW_NUMBER = 1;
     const QUERY_COUNT_COLUMN_NUMBER = 2;
 
-    qanActions.showTooltip(ROW_NUMBER, QUERY_COUNT_COLUMN_NUMBER);
-    I.dontSeeElement(qanPage.elements.latencyChart);
+    qanOverview.showTooltip(ROW_NUMBER, QUERY_COUNT_COLUMN_NUMBER);
+    I.dontSeeElement(qanOverview.elements.latencyChart);
   },
 );
 
-// Need to be removed from Skipped when better locator for Sorting buttons implemented
-xScenario(
+Scenario(
   'Open the QAN Dashboard and check that sorting works correctly after sorting by another column. @not-pr-pipeline @qan',
-  async (qanActions) => {
-    qanActions.changeSorting(3, 'up');
-    qanActions.verifySortingIs(3, 'up');
-    qanActions.changeSorting(1, 'down');
-    qanActions.verifySortingIs(1, 'down');
-    qanActions.verifySortingIs(3, '');
+  async (qanOverview) => {
+    qanOverview.changeSorting(2);
+    qanOverview.verifySorting(2, 'asc');
+    qanOverview.changeSorting(1);
+    qanOverview.verifySorting(1, 'asc');
+    qanOverview.changeSorting(1);
+    qanOverview.verifySorting(1, 'desc');
+    qanOverview.verifySorting(2);
   },
 );
 
-// Need to be removed from Skipped when better locator for Sorting buttons implemented
-xScenario(
+Scenario(
   'PMM-T156 Verify that by default, queries are sorted by Load, from max to min @not-pr-pipeline @qan',
-  async (qanActions) => {
+  async (qanActions, qanOverview) => {
     qanActions.waitForNewQANPageLoaded();
-    qanActions.verifySortingIs(1, 'down');
+    qanOverview.verifySorting(1, 'asc');
   },
 );
 
 Scenario(
   'PMM-T183 Verify that "Group by" in the overview table can be changed @not-pr-pipeline @qan',
-  async (qanActions) => {
-    qanActions.changeGroupBy('Database');
-    qanActions.verifyGroupByIs('Database');
+  async (qanOverview) => {
+    qanOverview.changeGroupBy('Database');
+    qanOverview.verifyGroupByIs('Database');
   },
 );
 
 Scenario(
   'PMM-T187 Verify that the selected row in the overview table is highlighted @not-pr-pipeline @qan',
-  async (qanActions) => {
-    qanActions.selectRow('2');
-    qanActions.verifyRowIsSelected('2');
+  async (I, qanActions, qanOverview) => {
+    qanActions.waitForNewQANPageLoaded();
+    qanOverview.selectRow('2');
+    I.seeCssPropertiesOnElements(`.selected-overview-row > div`, {
+      'background-color': 'rgb(35, 70, 130)',
+    });
   },
 );
 

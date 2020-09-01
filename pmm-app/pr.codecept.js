@@ -44,6 +44,7 @@ exports.config = {
     pmmInventoryPage: './tests/pages/pmmInventoryPage.js',
     pmmSettingsPage: './tests/pages/pmmSettingsPage.js',
     qanActions: './tests/QAN/steps/qanActions.js',
+    qanOverview: './tests/QAN/pages/qanOverviewFragment.js',
     qanPage: './tests/QAN/pages/qanPage.js',
     remoteInstancesPage: './tests/pages/remoteInstancesPage.js',
     settingsAPI: './tests/pages/api/settingsAPI.js',
