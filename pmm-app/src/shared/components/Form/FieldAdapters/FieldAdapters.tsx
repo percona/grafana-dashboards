@@ -40,6 +40,7 @@ export const TextAreaAdapter = ({
         <TextArea
           {...input}
           {...props}
+          rows={8}
           title={meta.touched ? meta.error : ''}
           className={cx(className, { invalid: meta.touched && meta.error })}
         />
