@@ -110,6 +110,7 @@ Scenario(
     I.amOnPage(url);
     I.waitForElement(qanPage.fields.newQANAddColumn, 30);
     I.waitForElement(qanPage.getColumn(metricName), 30);
+    I.waitForElement(qanPage.getColumn('Load'), 30);
     I.seeElement(qanPage.getColumn('Load'));
     I.seeElement(qanPage.getColumn(metricName));
   },

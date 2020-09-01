@@ -84,6 +84,7 @@ module.exports = {
   async getNodeId(serviceName) {
     const nodeIdLocator = `${this.fields.serviceIdLocatorPrefix + serviceName}")]/../td[5]`;
 
+    I.waitForVisible(nodeIdLocator, 60);
     return await I.grabTextFrom(nodeIdLocator);
   },
 
