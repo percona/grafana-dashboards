@@ -50,7 +50,7 @@ export const useKubernetes = (): [Kubernetes[], DeleteKubernetesAction, boolean]
 };
 
 const toModelList = (response: KubernetesListAPI): Kubernetes[] => (
-  response.kubernetes_clusters ? response.kubernetes_clusters.map(toModel) : []
+  (response.kubernetes_clusters ?? []).map(toModel)
 );
 
 const toModel = (response: KubernetesAPI): Kubernetes => ({
