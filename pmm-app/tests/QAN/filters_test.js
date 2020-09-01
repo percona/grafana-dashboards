@@ -273,15 +273,16 @@ Scenario(
 
 Scenario(
   'PMM-T221 - Verify that all filter options are always visible (but some disabled) after selecting an item and % value is changed @not-pr-pipeline @qan',
-  async (I, qanPage, qanActions, pmmSettingsPage, dashboardPage) => {
+  async (I, qanPage, qanActions, pmmSettingsPage, adminPage) => {
     const serviceType = 'mysql';
     const environment = 'pgsql-dev';
     const serviceName = 'ps_5.7';
+    const timeRange = 'Last 2 days';
 
     qanActions.waitForNewQANPageLoaded();
     // change to 2 days for apply ps_5.7 value in filter
-    I.click(qanPage.elements.timeRangePickerButton);
-    I.click(dashboardPage.fields.Last2Days);
+    I.waitForVisible(qanPage.elements.timeRangePickerButton, 30);
+    adminPage.applyTimeRange(timeRange);
     const countBefore = await qanActions.getCountOfItems();
     const percentageBefore = await qanActions.getPercentage('Service Type', serviceType);
 
