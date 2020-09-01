@@ -5,6 +5,7 @@ import { Button, Divider, Tabs } from 'antd';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
 import { useTheme } from '@grafana/ui';
 import { cx } from 'emotion';
+import { Scrollbar } from 'shared/components/Elements/Scrollbar/Scrollbar';
 import Explain from './Explain/Explain';
 import Example from './Example/Example';
 import Metrics from './Metrics/Metrics';
@@ -15,7 +16,6 @@ import { useMetricsDetails } from './Metrics/Metrics.hooks';
 import { Messages } from './Details.messages';
 import { Databases } from './Details.types';
 import { getStyles } from './Details.styles';
-import { Scrollbar } from '../../../../shared/components/Elements/Scrollbar/Scrollbar';
 
 const { TabPane } = Tabs;
 
