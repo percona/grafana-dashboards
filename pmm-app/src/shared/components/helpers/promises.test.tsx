@@ -38,15 +38,17 @@ describe('processPromiseResults::', () => {
     expect(results.length).toBe(1);
   });
   it('should return two rejected promises with value', async () => {
+    const error1 = new Error('rejected 1');
+    const error2 = new Error('rejected 2');
     const requests = [
-      Promise.reject('rejected 1'),
-      Promise.reject('rejected 2'),
+      Promise.reject(error1),
+      Promise.reject(error2),
     ];
     const results = await processPromiseResults(requests);
     const rejected = results.filter(filterRejected) as RejectedPromiseResult[];
 
-    expect(rejected[0].reason).toBe('rejected 1');
-    expect(rejected[1].reason).toBe('rejected 2');
+    expect(rejected[0].reason).toEqual(error1);
+    expect(rejected[1].reason).toBe(error2);
     expect(results.length).toBe(2);
   });
   it('should return array empty array', async () => {
