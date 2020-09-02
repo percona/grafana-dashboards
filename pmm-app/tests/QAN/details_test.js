@@ -22,8 +22,6 @@ Scenario(
     qanActions.waitForNewQANPageLoaded();
     qanActions.applyFilterNewQAN('mysql');
     I.waitForElement(qanPage.fields.querySelector, 30);
-
-    I.moveCursorTo(qanPage.fields.querySelector);
     I.click(qanPage.fields.querySelector);
     I.waitForVisible(qanPage.getColumn('Lock Time'), 30);
     await qanActions.verifyAvqQueryCount();
