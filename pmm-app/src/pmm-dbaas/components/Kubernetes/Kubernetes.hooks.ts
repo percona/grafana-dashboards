@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { filterFulfilled, processPromiseResults } from 'shared/components/helpers/promises';
 import { showSuccessNotification } from 'shared/components/helpers';
 import { Messages } from 'pmm-dbaas/DBaaS.messages';
 import { KubernetesService } from './Kubernetes.service';
@@ -10,7 +9,7 @@ import {
 export const useKubernetes = (): [Kubernetes[], DeleteKubernetesAction, boolean] => {
   const [kubernetes, setKubernetes] = useState<Kubernetes[]>([]);
   const [loading, setLoading] = useState(false);
-  const { kubernetes: { getDeletionStatus } } = Messages;
+  const { kubernetes: { deleteSuccess } } = Messages;
 
   const getKubernetes = async () => {
     setLoading(true);
@@ -26,15 +25,11 @@ export const useKubernetes = (): [Kubernetes[], DeleteKubernetesAction, boolean]
     }
   };
 
-  const deleteKubernetes = async (kubernetesToDelete: Kubernetes[]) => {
+  const deleteKubernetes = async (kubernetesToDelete: Kubernetes) => {
     try {
       setLoading(true);
-
-      const requests = kubernetesToDelete.map((k) => KubernetesService.deleteKubernetes(k));
-      const results = await processPromiseResults(requests);
-      const successfullyDeleted = results.filter(filterFulfilled).length;
-
-      showSuccessNotification({ message: getDeletionStatus(successfullyDeleted, kubernetesToDelete.length) });
+      await KubernetesService.deleteKubernetes(kubernetesToDelete);
+      showSuccessNotification({ message: deleteSuccess });
     } catch (e) {
       console.error(e);
     } finally {

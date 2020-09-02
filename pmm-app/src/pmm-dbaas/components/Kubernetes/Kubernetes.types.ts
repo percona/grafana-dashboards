@@ -10,4 +10,4 @@ export interface Kubernetes {
   kubernetesClusterName: string;
 }
 
-export type DeleteKubernetesAction = (kubernetesToDelete: Kubernetes[]) => void;
+export type DeleteKubernetesAction = (kubernetesToDelete: Kubernetes) => void;
