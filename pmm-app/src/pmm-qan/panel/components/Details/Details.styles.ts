@@ -8,9 +8,12 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
   const parameters = getPmmTheme(theme);
 
   return {
+    scrollArea: css`
+      height: 100%;
+    `,
     zeroMargin: css`
-    margin: 0 !important;
-  `,
+      margin: 0 !important;
+    `,
     detailsGrid: css`
       background-color: ${parameters.table.backgroundColor};
       display: grid;
