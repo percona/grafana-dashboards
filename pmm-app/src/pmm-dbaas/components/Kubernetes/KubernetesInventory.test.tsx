@@ -13,21 +13,23 @@ describe('KubernetesInventory::', () => {
 
     expect(rows.length).toBe(kubernetesStub.length + 1);
   });
-  it('disables delete button if no cluster selected', () => {
+  it('cancels delete cluster', () => {
     const root = mount(<KubernetesInventory />);
-    const openDeleteModalButton = root.find('[data-qa="open-delete-modal-button"]').find('button');
+    const openDeleteModalButton = root.find('[data-qa="open-delete-modal-button"]').find('button').at(0);
 
     openDeleteModalButton.simulate('click');
 
-    expect(openDeleteModalButton.prop('disabled')).toBeTruthy();
+    const cancelButton = root.find('[data-qa="cancel-delete-kubernetes-button"]').find('button');
+
+    cancelButton.simulate('click');
+
+    expect(root.find('tr').length).toBe(kubernetesStub.length + 1);
     expect(deleteActionStub).toHaveBeenCalledTimes(0);
   });
-  xit('deletes cluster correctly', () => {
+  it('deletes cluster correctly', () => {
     const root = mount(<KubernetesInventory />);
-    const clusterCheckbox = root.find('[data-qa="select-row"]').at(0);
-    const openDeleteModalButton = root.find('[data-qa="open-delete-modal-button"]').find('button');
+    const openDeleteModalButton = root.find('[data-qa="open-delete-modal-button"]').find('button').at(0);
 
-    clusterCheckbox.simulate('click');
     openDeleteModalButton.simulate('click');
 
     const deleteButton = root.find('[data-qa="delete-kubernetes-button"]').find('button');

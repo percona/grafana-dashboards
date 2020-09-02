@@ -1,5 +1,3 @@
-import pluralize from 'pluralize';
-
 export const Messages = {
   tabs: {
     manageDB: 'Manage DB Cluster',
@@ -10,16 +8,13 @@ export const Messages = {
     deleteModal: {
       cancel: 'Cancel',
       confirm: 'Proceed',
-      getConfirmMessage: (selected: number) => (
-        `Are you sure that you want to permanently delete ${pluralize('cluster', selected, true)}?`
-      ),
+      confirmMessage: 'Are you sure that you want to permanently delete this cluster?',
       title: 'Confirm action'
     },
-    getDeletionStatus: (deleted: number, total: number) => (
-      `${deleted} of ${pluralize('cluster', total, true)} successfully deleted`
-    ),
+    deleteSuccess: 'Cluster successfully deleted',
     table: {
-      nameColumn: 'Kubernetes Cluster Name'
+      nameColumn: 'Kubernetes Cluster Name',
+      actionsColumn: 'Actions'
     },
   }
 };
