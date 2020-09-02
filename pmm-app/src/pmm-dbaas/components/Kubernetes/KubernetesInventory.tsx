@@ -1,11 +1,9 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import {
   Button, HorizontalGroup, Modal, useTheme
 } from '@grafana/ui';
 import { Table } from 'shared/components/Elements/Table/Table';
 import { Messages } from 'pmm-dbaas/DBaaS.messages';
-import { SelectedTableRows } from 'shared/components/Elements/Table';
-import { KUBERNETES_COLUMNS } from './Kubernetes.constants';
 import { getStyles } from './Kubernetes.styles';
 import { useKubernetes } from './Kubernetes.hooks';
 import { Kubernetes } from './Kubernetes.types';
@@ -13,33 +11,44 @@ import { Kubernetes } from './Kubernetes.types';
 export const KubernetesInventory: FC = () => {
   const theme = useTheme();
   const styles = getStyles(theme);
-  const [selected, setSelectedRows] = useState<Array<SelectedTableRows<Kubernetes>>>([]);
+  const [kubernetesToDelete, setKubernetesToDelete] = useState<Kubernetes>({ kubernetesClusterName: '' });
   const [kubernetes, deleteKubernetes, loading] = useKubernetes();
   const [modalVisible, setModalVisible] = useState(false);
-
-  useEffect(() => setSelectedRows([]), [kubernetes]);
+  const columns = [
+    {
+      Header: Messages.kubernetes.table.nameColumn,
+      accessor: 'kubernetesClusterName',
+    },
+    {
+      Header: Messages.kubernetes.table.actionsColumn,
+      accessor: (element) => (
+        <div className={styles.actionsColumn}>
+          <Button
+            size="md"
+            onClick={() => {
+              setKubernetesToDelete(element);
+              setModalVisible(!modalVisible);
+            }}
+            icon="trash-alt"
+            variant="destructive"
+            data-qa="open-delete-modal-button"
+          >
+            {Messages.kubernetes.deleteAction}
+          </Button>
+        </div>
+      )
+    }
+  ];
 
   return (
     <div className={styles.tableWrapper}>
-      <div className={styles.actionPanel}>
-        <Button
-          size="md"
-          disabled={selected.length === 0}
-          onClick={() => setModalVisible(!modalVisible)}
-          icon="trash-alt"
-          variant="destructive"
-          data-qa="open-delete-modal-button"
-        >
-          {Messages.kubernetes.deleteAction}
-        </Button>
-      </div>
       <Modal
         title={Messages.kubernetes.deleteModal.title}
         isOpen={modalVisible}
         onDismiss={() => setModalVisible(false)}
       >
         <h4 className={styles.deleteModalContent}>
-          {Messages.kubernetes.deleteModal.getConfirmMessage(selected.length)}
+          {Messages.kubernetes.deleteModal.confirmMessage}
         </h4>
         <HorizontalGroup justify="space-between" spacing="md">
           <Button
@@ -54,7 +63,7 @@ export const KubernetesInventory: FC = () => {
             variant="destructive"
             size="md"
             onClick={() => {
-              deleteKubernetes(selected.map((row) => row.original));
+              deleteKubernetes(kubernetesToDelete);
               setModalVisible(false);
             }}
             data-qa="delete-kubernetes-button"
@@ -64,10 +73,8 @@ export const KubernetesInventory: FC = () => {
         </HorizontalGroup>
       </Modal>
       <Table
-        columns={KUBERNETES_COLUMNS}
+        columns={columns}
         data={kubernetes}
-        rowSelection
-        onRowSelection={(selected) => setSelectedRows(selected)}
         loading={loading}
       />
     </div>

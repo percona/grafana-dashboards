@@ -8,6 +8,10 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => ({
     justify-content: flex-end;
     margin-bottom: ${theme.spacing.sm};
   `,
+  actionsColumn: css`
+    display: flex;
+    justify-content: center;
+  `,
   tableWrapper: css`
     padding: ${theme.spacing.md};
   `,
