@@ -14,7 +14,7 @@ export const Messages = {
     },
     deleteSuccess: 'Cluster successfully deleted',
     addModal: {
-      title: 'Add kubernetes cluster',
+      title: 'Add Kubernetes cluster',
       confirm: 'Add',
       fields: {
         clusterName: 'Kubernetes Cluster Name',
