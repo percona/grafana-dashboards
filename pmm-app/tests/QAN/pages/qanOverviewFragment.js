@@ -118,7 +118,7 @@ module.exports = {
       if (sortOrder === 'down') {
         assert.ok(metricValue >= nextMetricValue, `Ascending Sort of ${metricName} is wrong`);
       } else {
-        assert.ok(metricValue <= nextMetricValue, `Ascending Sort of ${metricName} is wrong`);
+        assert.ok(metricValue <= nextMetricValue, `Descending Sort of ${metricName} is wrong`);
       }
     }
   },
