@@ -18,11 +18,9 @@ module.exports = {
     groupBy: '$group-by',
     latencyChart: '.latency-chart-container',
     metricTooltip: '.ant-tooltip-content',
-    newMetricDropdown: '.ant-select-dropdown-menu-item',
+    newMetricDropdown: '.add-columns-selector-dropdown',
     noDataIcon: 'div.ant-empty-image',
     querySelector: 'div.tr-1',
-    rowQueryCount: 'div.tr-3 > div:nth-child(4)',
-    rowQueryTime: 'div.tr-3 > div:nth-child(5)',
     spinner: '$table-loading',
     tableRow: 'div.tr',
     tooltip: '.overview-column-tooltip',
@@ -49,6 +47,21 @@ module.exports = {
     const resultsCount = (await I.grabTextFrom(this.elements.countOfItems)).split(' ');
 
     return resultsCount[2];
+  },
+
+  changeMetric(columnName, metricName) {
+    const newMetric = this.getColumnLocator(metricName);
+    const metricInDropdown = this.getMetricLocatorInDropdown(metricName);
+    const oldMetric = this.getColumnLocator(columnName);
+
+    I.waitForElement(oldMetric, 30);
+    I.doubleClick(oldMetric);
+    I.waitForElement(this.fields.columnSearchField, 10);
+    I.fillField(this.fields.columnSearchField, metricName);
+    I.click(metricInDropdown);
+    I.waitForElement(newMetric, 30);
+    I.seeElement(newMetric);
+    I.dontSeeElement(oldMetric);
   },
 
   addSpecificColumn(columnName) {
@@ -103,17 +116,9 @@ module.exports = {
       }
 
       if (sortOrder === 'down') {
-        assert.equal(
-          metricValue >= nextMetricValue,
-          true,
-          `Descending Sort of ${metricName} is Wrong Please check`,
-        );
+        assert.ok(metricValue >= nextMetricValue, `Ascending Sort of ${metricName} is wrong`);
       } else {
-        assert.equal(
-          metricValue <= nextMetricValue,
-          true,
-          `Ascending Sort of ${metricName} is Wrong Please check`,
-        );
+        assert.ok(metricValue <= nextMetricValue, `Ascending Sort of ${metricName} is wrong`);
       }
     }
   },
@@ -143,6 +148,6 @@ module.exports = {
   async verifyTooltipValue(value) {
     const tooltip = await I.grabTextFrom(this.elements.tooltipQPSValue);
 
-    assert.ok(tooltip.includes(value), 'The tooltip has wrong value');
+    assert.ok(tooltip.includes(value), 'The tooltip has wrong value ' + value);
   },
 };

@@ -51,6 +51,7 @@ Scenario(
 Scenario(
   'PMM-T183 Verify that "Group by" in the overview table can be changed @not-pr-pipeline @qan',
   async (qanOverview) => {
+    qanOverview.waitForOverviewLoaded();
     qanOverview.changeGroupBy('Database');
     qanOverview.verifyGroupByIs('Database');
   },
@@ -73,19 +74,11 @@ Scenario(
     const metricName = 'Query Count with errors';
     const urlString = 'num_queries_with_errors';
     const newMetric = qanOverview.getColumnLocator(metricName);
-    const metricInDropdown = qanOverview.getMetricLocatorInDropdown(metricName);
     const oldMetric = qanOverview.getColumnLocator('Load');
 
     qanOverview.waitForOverviewLoaded();
     I.waitForElement(qanOverview.buttons.addColumn, 30);
-    I.waitForElement(oldMetric, 30);
-    I.doubleClick(oldMetric);
-    I.waitForElement(qanOverview.elements.newMetricDropdown, 30);
-    I.fillField(qanOverview.fields.columnSearchField, metricName);
-    I.click(metricInDropdown);
-    I.waitForElement(newMetric, 30);
-    I.seeElement(newMetric);
-    I.dontSeeElement(oldMetric);
+    qanOverview.changeMetric('Load', metricName);
     I.seeInCurrentUrl(urlString);
     const url = await I.grabCurrentUrl();
 
@@ -218,7 +211,7 @@ Scenario(
   },
 );
 
-Scenario.only(
+Scenario(
   'PMM-T179 - Verify user is able to hover sparkline buckets and see correct tooltip @not-pr-pipeline @qan',
   async (I, qanOverview) => {
     const firstCell = qanOverview.getCellValueLocator(3, 2);
@@ -233,28 +226,23 @@ Scenario.only(
     const queryTime = await I.grabTextFrom(secondCell);
 
     I.moveCursorTo(secondCell);
-    I.waitForVisible(qanOverview.elements.tooltip, 20);
+    I.waitForVisible(qanOverview.elements.latencyChart, 20);
     await qanOverview.verifyTooltipValue(`Per query : ${queryTime}`);
   },
 );
 
 Scenario(
   'PMM-T204 - Verify small and N/A values on sparkline @not-pr-pipeline @qan',
-  async (I, qanPage, qanActions, qanOverview, qanFilters) => {
-    const newMetric = 'Innodb Queue Wait';
+  async (I, qanPage, qanActions, qanOverview) => {
     const firstCell = qanOverview.getCellValueLocator(3, 1);
     const secondCell = qanOverview.getCellValueLocator(3, 3);
-    const oldMetric = qanOverview.getColumnLocator('Query Time');
 
     qanOverview.waitForOverviewLoaded();
     qanOverview.changeSorting(1);
     qanOverview.verifySorting(1, 'desc');
     I.moveCursorTo(firstCell);
     I.waitForVisible(qanOverview.elements.tooltipQPSValue, 10);
-    I.forceClick(oldMetric);
-    I.fillField(qanOverview.fields.columnSearchField, newMetric);
-    I.click(qanOverview.getMetricLocatorInDropdown(newMetric));
-    I.waitForElement(qanOverview.getColumnLocator(newMetric), 30);
+    qanOverview.changeMetric('Query Time', 'Innodb Queue Wait');
     qanOverview.waitForOverviewLoaded();
     I.moveCursorTo(secondCell);
     I.dontSeeElement(qanOverview.elements.tooltip);
