@@ -178,7 +178,7 @@ module.exports = {
     assert.notEqual(
       countAfter,
       countBefore,
-      `After applying Filter value ${countBefore} should not be equal to ${countAfter}`,
+      `After applying a Filter, count of queries should not be equal to ${countAfter}`,
     );
   },
 
@@ -288,11 +288,8 @@ module.exports = {
   },
 
   async getPageCount() {
-    const pageCount =
-      '//ul[@data-qa="qan-pagination"]//li[contains(@class,"ant-pagination-item")][last()]//a';
-    const pages = await I.grabTextFrom(pageCount);
-
-    return pages;
+    const pageCount = '//ul[@data-qa="qan-pagination"]//li[contains(@class,"ant-pagination-item")][last()]//a';
+    return await I.grabTextFrom(pageCount);
   },
 
   addSpecificColumn(columnName) {
@@ -441,5 +438,18 @@ module.exports = {
         assert.fail(`The filter '${filters[i]}' has not been found!`);
       }
     }
+  },
+  // Wait For Results count to be changed
+  async waitForNewItemsCount(originalCount) {
+    for (let i = 0; i < 5; i++) {
+      I.wait(1);
+      const count = this.getCountOfItems();
+
+      if (count !== originalCount) {
+        return count;
+      }
+    }
+
+    return false;
   },
 };

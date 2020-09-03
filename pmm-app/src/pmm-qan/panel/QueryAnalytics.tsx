@@ -52,7 +52,7 @@ const QueryAnalyticsPanel: FC = () => {
               pane2Style={{ minHeight: '20%', zIndex: 999 }}
             >
               <Overview />
-              <div>{querySelected ? <Details /> : null}</div>
+              <div className={styles.detailsWrapper}>{querySelected ? <Details /> : null}</div>
             </SplitPane>
           </div>
         </div>
