@@ -1,6 +1,6 @@
 const assert = require('assert');
 
-const { I, qanActions } = inject();
+const { I } = inject();
 
 module.exports = {
   root: '.query-analytics-data',
@@ -142,7 +142,7 @@ module.exports = {
 
     I.waitForElement(rowSelector, 60);
     I.forceClick(rowSelector);
-    qanActions.waitForNewQANPageLoaded();
+    this.waitForOverviewLoaded();
   },
 
   async verifyTooltipValue(value) {

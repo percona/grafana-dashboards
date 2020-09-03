@@ -1,4 +1,4 @@
-Feature('Test QAN details section');
+Feature('QAN details section');
 
 Before((I, qanPage) => {
   I.Authorize();
@@ -6,25 +6,29 @@ Before((I, qanPage) => {
 });
 
 Scenario(
-  'Open the QAN Dashboard and select row @qan @not-pr-pipeline',
-  async (I, adminPage, qanPage, qanActions) => {
-    qanActions.selectTableRow(4);
-    I.see('Query');
-    I.see('Details', qanPage.fields.detailsSectionTab);
-    I.see('Example', qanPage.fields.detailsSectionTab);
-    I.see('Explain', qanPage.fields.detailsSectionTab);
-  },
-);
+  'Verify Details section tabs @qan @not-pr-pipeline',
+  async (I, qanDetails, qanOverview) => {
+    qanOverview.selectRow(4);
+    await within(qanDetails.root, () => {
+      I.see('Details', qanDetails.getTabLocator('Details'));
+      I.see('Example', qanDetails.getTabLocator('Example'));
+      I.see('Explain', qanDetails.getTabLocator('Explain'));
+      I.see('Tables', qanDetails.getTabLocator('Tables'));
+      I.seeElement(qanDetails.buttons.close);
+    });
+  });
 
 Scenario(
   'PMM-T223 - Verify time metrics are AVG per query (not per second) @qan @not-pr-pipeline',
-  async (I, qanPage, qanActions) => {
-    qanActions.waitForNewQANPageLoaded();
-    qanActions.applyFilterNewQAN('mysql');
-    I.waitForElement(qanPage.fields.querySelector, 30);
-    I.click(qanPage.fields.querySelector);
-    I.waitForVisible(qanPage.getColumn('Lock Time'), 30);
-    await qanActions.verifyAvqQueryCount();
-    await qanActions.verifyAvgQueryTime();
+  async (I, qanOverview, qanFilters, qanDetails) => {
+    const cellValue = qanDetails.getMetricsCellLocator('Query Time', 3);
+
+    qanOverview.waitForOverviewLoaded();
+    qanFilters.applyFilter('mysql');
+    I.waitForElement(qanOverview.elements.querySelector, 30);
+    qanOverview.selectRow(1);
+    I.waitForVisible(cellValue, 30);
+    await qanDetails.verifyAvqQueryCount();
+    await qanDetails.verifyAvgQueryTime();
   },
 );
