@@ -362,9 +362,9 @@ module.exports = {
   async verifyMetricsSorted(metricName, metricColumnOrder, sortOrder = 'down') {
     const resultRowCounts = await I.grabNumberOfVisibleElements(qanPage.fields.tableRow);
 
-    for (let i = 2; i < resultRowCounts; i++) {
-      let [metricValue] = this.metricValueLocatorOverviewTable(metricColumnOrder, i);
-      let [metricValueSecond] = this.metricValueLocatorOverviewTable(metricColumnOrder, i + 1);
+    for (let i = 1; i < resultRowCounts; i++) {
+      let [metricValue] = qanPage.metricValueLocatorOverviewTable(metricColumnOrder, i);
+      let [metricValueSecond] = qanPage.metricValueLocatorOverviewTable(metricColumnOrder, i + 1);
 
       if (metricValue.indexOf('<') > -1) {
         [, metricValue] = metricValue.split('<');
