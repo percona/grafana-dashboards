@@ -70,7 +70,9 @@ export const KubernetesInventory: FC = () => {
             addKubernetes(values);
             setAddModalVisible(false);
           }}
-          render={({ form, handleSubmit }) => (
+          render={({
+            form, handleSubmit, valid, pristine
+          }) => (
             <form onSubmit={handleSubmit}>
               <>
                 <Field
@@ -93,6 +95,7 @@ export const KubernetesInventory: FC = () => {
                     data-qa="kubernetes-add-cluster-button"
                     size="md"
                     variant="primary"
+                    disabled={!valid || pristine}
                   >
                     {Messages.kubernetes.addModal.confirm}
                   </Button>
@@ -124,31 +127,6 @@ export const KubernetesInventory: FC = () => {
             size="md"
             onClick={() => {
               deleteKubernetes(kubernetesToDelete);
-              setDeleteModalVisible(false);
-            }}
-            data-qa="delete-kubernetes-button"
-          >
-            {Messages.kubernetes.deleteModal.confirm}
-          </Button>
-        </HorizontalGroup>
-      </Modal>
-      <Modal
-        title={Messages.kubernetes.deleteModal.title}
-        isVisible={deleteModalVisible}
-        onClose={() => setDeleteModalVisible(false)}
-      >
-        <h4 className={styles.deleteModalContent}>
-          {Messages.kubernetes.deleteModal.getConfirmMessage(selected.length)}
-        </h4>
-        <HorizontalGroup justify="space-between" spacing="md">
-          <Button variant="secondary" size="md" onClick={() => setDeleteModalVisible(false)} data-qa="cancel-delete-kubernetes-button">
-            {Messages.kubernetes.deleteModal.cancel}
-          </Button>
-          <Button
-            variant="destructive"
-            size="md"
-            onClick={() => {
-              deleteKubernetes(selected.map((row) => row.original));
               setDeleteModalVisible(false);
             }}
             data-qa="delete-kubernetes-button"
