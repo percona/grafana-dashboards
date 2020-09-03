@@ -53,7 +53,7 @@ module.exports = {
   },
 
   waitForFiltersToLoad() {
-    I.waitForVisible(this.getFilterGroupLocator(this.filterGroups[8]), 30);
+    I.waitForInvisible(this.elements.spinner, 30);
   },
 
   applyFilter(filterName) {
