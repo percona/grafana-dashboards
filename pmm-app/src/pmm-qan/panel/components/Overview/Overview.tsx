@@ -1,16 +1,21 @@
 import { Pagination } from 'antd';
 import React, {
-  useCallback, useContext, useEffect, useState, useRef, FC, useMemo
+  FC, useCallback, useContext, useEffect, useMemo, useRef, useState
 } from 'react';
 import './Overview.scss';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
 import 'shared/components/Elements/Spinner/Spinner';
+import { useTheme } from '@grafana/ui';
 import { useOverviewTable } from './Overview.hooks';
-import { styles } from '../../QueryAnalytics.styles';
 import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE, PAGE_SIZE_OPTIONS } from '../../QueryAnalytics.constants';
 import { Table } from './components/QanTable';
+import { getStyles } from '../../QueryAnalytics.styles';
+import { Messages } from './Overview.messages';
 
 export const Overview: FC = () => {
+  const theme = useTheme();
+  const styles = getStyles(theme);
+
   const [total, setTotal] = useState(30);
   const [overviewMetricsList, loading] = useOverviewTable(setTotal);
   const [height, setHeight] = useState(400);
@@ -96,7 +101,7 @@ export const Overview: FC = () => {
               onSortChange={onSortChange}
               rowNumber={(index) => <div>{index === 0 ? '' : (pageNumber - 1) * pageSize + index}</div>}
               orderBy={orderBy}
-              noData={<h1>No queries available for this combination of filters</h1>}
+              noData={<h1>{Messages.table.noData}</h1>}
               loading={loading}
               disabled={loadingDetails}
             />

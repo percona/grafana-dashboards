@@ -1,4 +1,4 @@
-import { stylesFactory, selectThemeVariant } from '@grafana/ui';
+import { selectThemeVariant, stylesFactory } from '@grafana/ui';
 import { GrafanaTheme } from '@grafana/data';
 import { css } from 'emotion';
 
@@ -36,7 +36,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
     radioButtonActive: css`
       background: ${palette.greenBase};
       border: ${theme.border.width.sm} solid ${colors.pageHeaderBorder};
-      color: ${palette.white};      
+      color: ${palette.white};
       label: active;
       &:hover {
         color: ${palette.white};

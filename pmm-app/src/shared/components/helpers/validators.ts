@@ -1,4 +1,6 @@
-const validators = {
+import { Validator, VResult } from './validator.types';
+
+export const validators = {
   validatePort: (value) => {
     const portNumber = Number.parseInt(value, 10);
     const MIN_PORT_NUMBER = 0;
@@ -8,15 +10,15 @@ const validators = {
       return undefined;
     }
 
-    return 'Port should be a number and between the range of 0 and 65535';
+    return 'Port should be a number and between 0 and 65535';
   },
 
-  validateRange: (value, from, to) => {
-    if (!value) {
-      return '';
+  matches: (field, message) => (value, values) => {
+    if (value === values[field]) {
+      return undefined;
     }
 
-    return value >= from && value <= to ? undefined : `Value should be in range from ${from} to ${to}`;
+    return message;
   },
 
   range: (from, to) => (value) => {
@@ -24,7 +26,7 @@ const validators = {
       return undefined;
     }
 
-    return value >= from && value <= to ? undefined : `Value should be in range from ${from} to ${to}`;
+    return value >= from && value <= to ? undefined : `Value should be in the range from ${from} to ${to}`;
   },
 
   validateEmail: (value: string) => {
@@ -47,13 +49,51 @@ const validators = {
     return undefined;
   },
 
+  containBothCases: (value) => {
+    const casesRegexp = new RegExp('^(?=.*[a-z])(?=.*[A-Z])');
+
+    if (casesRegexp.test(value)) {
+      return undefined;
+    }
+
+    return 'Must include upper and lower cases';
+  },
+
+  containNumbers: (value) => {
+    const numbersRegexp = new RegExp('^(?=.*[0-9])');
+
+    if (numbersRegexp.test(value)) {
+      return undefined;
+    }
+
+    return 'Must include numbers';
+  },
+
+  minLength: (numberOfCharacters: number) => (value) => {
+    if (value.length >= numberOfCharacters) {
+      return undefined;
+    }
+
+    return `Must contain at least ${numberOfCharacters} characters`;
+  },
+
   required: (value) => (value ? undefined : 'Required field'),
 
   requiredTrue: (value: boolean) => (value === true ? undefined : 'Required field'),
 
-  compose: (...validators) => (value) => validators.reduce(
-    (error, validator) => error || validator(value), undefined
-  ),
+  compose: (...validators: Validator[]) => (value: any, values?: Record<string, any>): VResult => {
+    let result: string | undefined;
+
+    // eslint-disable-next-line no-restricted-syntax
+    for (const validator of validators) {
+      result = validator(value, values);
+      if (result !== undefined) {
+        break;
+      }
+    }
+
+    return result;
+  },
 };
 
 export default validators;

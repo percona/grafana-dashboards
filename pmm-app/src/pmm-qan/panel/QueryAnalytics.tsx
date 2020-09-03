@@ -2,16 +2,20 @@ import React, {
   FC, useContext, useEffect, useRef, useState
 } from 'react';
 import SplitPane from 'react-split-pane';
+import { useTheme } from '@grafana/ui';
 import { QueryAnalyticsProvider, UrlParametersProvider } from './provider/provider';
 import {
-  Overview, Filters, Details, ManageColumns
+  Details, Filters, ManageColumns, Overview
 } from './components';
-import { styles } from './QueryAnalytics.styles';
 import 'shared/styles.scss';
 import 'shared/style.less';
 import './qan.scss';
+import { getStyles } from './QueryAnalytics.styles';
 
 const QueryAnalyticsPanel: FC = () => {
+  const theme = useTheme();
+  const styles = getStyles(theme);
+
   const {
     panelState: { querySelected },
   } = useContext(QueryAnalyticsProvider);
@@ -48,7 +52,7 @@ const QueryAnalyticsPanel: FC = () => {
               pane2Style={{ minHeight: '20%', zIndex: 999 }}
             >
               <Overview />
-              <div>{querySelected ? <Details /> : null}</div>
+              <div className={styles.detailsWrapper}>{querySelected ? <Details /> : null}</div>
             </SplitPane>
           </div>
         </div>

@@ -5,34 +5,46 @@ import { cx } from 'emotion';
 import { METRIC_CATALOGUE } from 'pmm-qan/panel/QueryAnalytics.constants';
 import { humanize } from 'shared/components/helpers/Humanization';
 import { Latency, Sparkline, TotalPercentage } from 'shared/components/Elements/Charts';
+import { useTheme } from '@grafana/ui';
 import { COLUMN_WIDTH, FIXED_COLUMN_WIDTH } from '../../Overview.constants';
 import { ManageColumns } from '../../../ManageColumns/ManageColumns';
-import { styles } from './MetricColumn.styles';
 import './MetricColumns.scss';
+import { getStyles } from './MetricColumn.styles';
 
-const TimeMetric = ({ value, percentage, cnt }) => (
-  <div className={styles.metricStyle}>
-    <span className={cx('summarize', styles.summarize(value))}>
-      {value === undefined && cnt > 0 ? `${humanize.transform(0, 'time')}` : null}
-      {(value === undefined && cnt === undefined) || value === null || value === 'NaN' ? 'N/A' : null}
-      {value && value !== 'NaN' ? `${humanize.transform(value, 'time')}` : null}
-    </span>
-    {value === undefined || value === null || value === 'NaN' ? null : <TotalPercentage width={percentage} />}
-  </div>
-);
+
+const TimeMetric = ({ value, percentage, cnt }) => {
+  const theme = useTheme();
+  const styles = getStyles(theme);
+
+  return (
+    <div className={styles.metricStyle}>
+      <span className={cx('summarize', styles.summarize(value))}>
+        {value === undefined && cnt > 0 ? `${humanize.transform(0, 'time')}` : null}
+        {(value === undefined && cnt === undefined) || value === null || value === 'NaN' ? 'N/A' : null}
+        {value && value !== 'NaN' ? `${humanize.transform(value, 'time')}` : null}
+      </span>
+      {value === undefined || value === null || value === 'NaN' ? null : <TotalPercentage width={percentage} />}
+    </div>
+  );
+};
 
 const NonTimeMetric = ({
   value, units, percentage, cnt
-}) => (
-  <div className={styles.metricStyle}>
-    <span className={cx('summarize', styles.summarize(value))}>
-      {value === undefined && cnt > 0 ? `0 ${units}` : null}
-      {(value === undefined && cnt === undefined) || value === null || value === 'NaN' ? 'N/A' : null}
-      {value && value !== 'NaN' ? `${humanize.transform(value, 'number')} ${units}` : null}
-    </span>
-    {value === undefined || value === null || value === 'NaN' ? null : <TotalPercentage width={percentage} />}
-  </div>
-);
+}) => {
+  const theme = useTheme();
+  const styles = getStyles(theme);
+
+  return (
+    <div className={styles.metricStyle}>
+      <span className={cx('summarize', styles.summarize(value))}>
+        {value === undefined && cnt > 0 ? `0 ${units}` : null}
+        {(value === undefined && cnt === undefined) || value === null || value === 'NaN' ? 'N/A' : null}
+        {value && value !== 'NaN' ? `${humanize.transform(value, 'number')} ${units}` : null}
+      </span>
+      {value === undefined || value === null || value === 'NaN' ? null : <TotalPercentage width={percentage} />}
+    </div>
+  );
+};
 
 const getSorting = (orderBy, metricName) => {
   if (orderBy === metricName) {
@@ -56,6 +68,9 @@ const metricColumnRender = ({
     (stats.sum_per_sec / totalValues.metrics[metricName].stats.sum_per_sec)
     * 100
   ).toFixed(2);
+
+  const theme = useTheme();
+  const styles = getStyles(theme);
 
   const MetricTooltip = () => {
     const tooltipData = [

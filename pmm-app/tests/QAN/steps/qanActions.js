@@ -129,8 +129,8 @@ module.exports = {
   },
 
   waitForNewQANPageLoaded() {
-    I.waitForElement(qanPage.fields.newQANPanelContent, 30);
-    I.waitForElement(qanPage.fields.querySelector, 30);
+    I.waitForElement(qanPage.fields.newQANPanelContent, 60);
+    I.waitForElement(qanPage.fields.querySelector, 60);
   },
 
   applyFilterNewQAN(filterName) {
@@ -176,7 +176,7 @@ module.exports = {
     assert.notEqual(
       countAfter,
       countBefore,
-      `After applying Filter value ${countBefore} should not be equal to ${countAfter}`,
+      `After applying a Filter, count of queries should not be equal to ${countAfter}`,
     );
   },
 
@@ -271,6 +271,7 @@ module.exports = {
   },
 
   async verifyRowCount(rowCount) {
+    I.waitForVisible(qanPage.fields.querySelector, 30);
     const count = await I.grabNumberOfVisibleElements(qanPage.fields.tableRow);
 
     assert.equal(count, rowCount, `Row count should be ${rowCount} instead of ${count}`);
@@ -278,17 +279,15 @@ module.exports = {
 
   async verifyPagesAndCount(itemsPerPage) {
     const count = await this.getCountOfItems();
-    const lastpage = await this.getPagesCount();
+    const lastpage = await this.getPageCount();
     const result = count / lastpage;
 
     assert.equal(Math.ceil(result / 25) * 25, itemsPerPage, 'Pages do not match with total count');
   },
 
-  async getPagesCount() {
-    const pagesCount = '//ul[@data-qa="qan-pagination"]//li[contains(@class,"ant-pagination-item")][last()]//a';
-    const pages = await I.grabTextFrom(pagesCount);
-
-    return pages;
+  async getPageCount() {
+    const pageCount = '//ul[@data-qa="qan-pagination"]//li[contains(@class,"ant-pagination-item")][last()]//a';
+    return await I.grabTextFrom(pageCount);
   },
 
   addSpecificColumn(columnName) {
@@ -420,9 +419,34 @@ module.exports = {
   },
 
   async getCountOfItems() {
-    I.waitForInvisible(qanPage.elements.spinner, 30);
+    I.waitForVisible(qanPage.fields.querySelector, 30);
     const resultsCount = (await I.grabTextFrom(qanPage.fields.countOfItems)).split(' ');
 
     return resultsCount[2];
+  },
+
+  async verifySelectedFilters(filters) {
+    I.click(qanPage.fields.showSelected);
+    I.waitForVisible(qanPage.fields.filterName, 20);
+    const getFilter = await I.grabTextFrom(qanPage.fields.filterName);
+
+    for (let i = 0; i <= filters.length - 1; i++) {
+      if (!getFilter[i].includes(filters[i])) {
+        assert.fail(`The filter '${filters[i]}' has not been found!`);
+      }
+    }
+  },
+  // Wait For Results count to be changed
+  async waitForNewItemsCount(originalCount) {
+    for (let i = 0; i < 5; i++) {
+      I.wait(1);
+      const count = this.getCountOfItems();
+
+      if (count !== originalCount) {
+        return count;
+      }
+    }
+
+    return false;
   },
 };

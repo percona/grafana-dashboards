@@ -1,6 +1,6 @@
 import { shallow } from 'enzyme';
 import React from 'react';
-import { TimeDistribution, getMetricDistribution } from './TimeDistribution';
+import { getMetricDistribution, TimeDistribution } from './TimeDistribution';
 
 const MOCK_METRICS = [
   {

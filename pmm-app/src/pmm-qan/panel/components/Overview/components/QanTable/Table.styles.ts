@@ -1,25 +1,23 @@
 import { css } from 'emotion';
 import { GrafanaTheme } from '@grafana/data';
 import { selectThemeVariant, stylesFactory } from '@grafana/ui';
+import { getPmmTheme } from 'shared/components/helpers/getPmmTheme';
 
 export const getStyles = stylesFactory((theme: GrafanaTheme) => {
-  const backgroundColor = selectThemeVariant({ light: 'rgb(247, 247, 249)', dark: '#0b0c0e' }, theme.type);
-  const borderColor = selectThemeVariant(
-    { light: (theme.colors as any).gray85, dark: '#292929' },
+  const parameters = getPmmTheme(theme);
+
+  const selectedRowColor = selectThemeVariant(
+    { light: 'deepskyblue', dark: '#234682' },
     theme.type,
   );
-  const headerBackground = selectThemeVariant({ light: 'rgb(247, 247, 249)', dark: '#202226' }, theme.type);
-  const textColor = selectThemeVariant(
-    { light: (theme.colors as any).gray85, dark: 'rgba(255, 255, 255, 0.8)' },
-    theme.type,
-  );
+
 
   return {
     tableWrap: (size) => css`
       display: block;
       max-width: ${size.x ? `${size.x}px` : '100%'};
       max-height: ${size.y ? `${size.y}px` : 'auto'};
-      border: 1px solid ${borderColor};
+      border: 1px solid ${parameters.table.borderColor};
     `,
     table: css`
       /* This is required to make the table full-width */
@@ -39,7 +37,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
 
         .selected-overview-row {
           .td {
-            background-color: #234682;
+            background-color: ${selectedRowColor};
           }
         }
         .tr {
@@ -49,12 +47,12 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
         }
         .th,
         .td {
-          background-color: ${backgroundColor};
+          background-color: ${parameters.table.backgroundColor};
           margin: 0;
           padding: 3px;
-          border-bottom: 1px solid ${borderColor};
-          border-right: 1px solid ${borderColor};
-          color: ${textColor};
+          border-bottom: 1px solid ${parameters.table.borderColor};
+          border-right: 1px solid ${parameters.table.borderColor};
+          color: ${parameters.table.textColor};
           display: flex;
           justify-content: space-between;
 
@@ -64,7 +62,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
         }
 
         .th {
-          background-color: ${headerBackground};
+          background-color: ${parameters.table.headerBackground};
           position: -webkit-sticky; /* for Safari */
           position: sticky;
           top: 0;
@@ -107,6 +105,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       height: ${height - 70}px;
       justify-content: center;
       align-items: center;
+      border: 1px solid ${parameters.table.borderColor};
     `,
     checkboxColumn: css`
       width: 20px;
@@ -164,9 +163,6 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       position: sticky;
       top: 0;
       z-index: 999;
-    `,
-    getColumnsWidth: (width) => css`
-      min-width: ${width}
     `,
     tableCell: css`
       display: flex !important;

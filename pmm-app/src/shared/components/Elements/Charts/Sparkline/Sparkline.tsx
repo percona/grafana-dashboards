@@ -1,5 +1,5 @@
 import React, {
-  useEffect, useRef, useState, RefObject, MutableRefObject
+  MutableRefObject, RefObject, useEffect, useRef, useState
 } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { scaleLinear } from 'd3';
@@ -8,11 +8,7 @@ import ReactTooltip from 'react-tooltip';
 import { humanize } from '../../../helpers/Humanization';
 import { PolygonChartInterface } from './Sparkline.types';
 import {
-  findXRange,
-  findYRange,
-  getAdditionalPoint,
-  getMetricSparklineKey,
-  isMetricExists,
+  findXRange, findYRange, getAdditionalPoint, getMetricSparklineKey, isMetricExists
 } from './Sparkline.tools';
 import { styles } from './Sparkline.styles';
 
