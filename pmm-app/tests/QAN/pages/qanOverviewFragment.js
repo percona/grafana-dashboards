@@ -42,6 +42,20 @@ module.exports = {
     I.waitForVisible(this.elements.querySelector, 60);
   },
 
+  // Wait For Results count to be changed
+  async waitForNewItemsCount(originalCount) {
+    for (let i = 0; i < 5; i++) {
+      I.wait(1);
+      const count = this.getCountOfItems();
+
+      if (count !== originalCount) {
+        return count;
+      }
+    }
+
+    return false;
+  },
+
   async getCountOfItems() {
     I.waitForVisible(this.elements.querySelector, 30);
     const resultsCount = (await I.grabTextFrom(this.elements.countOfItems)).split(' ');

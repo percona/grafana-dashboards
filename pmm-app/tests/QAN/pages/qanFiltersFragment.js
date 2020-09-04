@@ -20,11 +20,12 @@ module.exports = {
     filterCheckboxes: '.checkbox-container__checkmark',
   },
   buttons: {
-    resetAllButton: '$qan-filters-reset-all',
+    resetAll: '$qan-filters-reset-all',
     showSelected: '$qan-filters-show-selected',
   },
   elements: {
     spinner: 'i.fa-spinner',
+    disabledResetAll: '//button[@data-qa="qan-filters-reset-all" and @disabled ]',
   },
   requests: {
     getReportPath: '/v0/qan/GetReport',

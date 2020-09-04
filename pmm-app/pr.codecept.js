@@ -47,7 +47,7 @@ exports.config = {
     qanDetails: './tests/QAN/pages/qanDetailsFragment.js',
     qanFilters: './tests/QAN/pages/qanFiltersFragment.js',
     qanOverview: './tests/QAN/pages/qanOverviewFragment.js',
-    qanPage: './tests/QAN/pages/qanPage.js',
+    qanCommon: './tests/QAN/pages/qanCommonPage.js',
     remoteInstancesPage: './tests/pages/remoteInstancesPage.js',
     settingsAPI: './tests/pages/api/settingsAPI.js',
   },
