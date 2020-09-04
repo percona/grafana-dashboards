@@ -131,6 +131,23 @@ Scenario(
 );
 
 Scenario(
+  'PMM-T424 Verify PT Summary Panel is available after Upgrade @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
+  async (I, adminPage, dashboardPage) => {
+    const filter = 'Node Name';
+
+    I.amOnPage(dashboardPage.nodeSummaryDashboard.url);
+    dashboardPage.waitPTSummaryInformation();
+    dashboardPage.waitForDashboardOpened();
+    await dashboardPage.applyFilter(filter, 'pmm-server');
+    await dashboardPage.waitPTSummaryInformation();
+
+    I.waitForElement(dashboardPage.nodeSummaryDashboard.ptSummaryDetail.reportContainer, 30);
+    I.waitForText(dashboardPage.nodeSummaryDashboard.ptSummaryDetail.ptHeaderText, 60);
+    I.see(dashboardPage.nodeSummaryDashboard.ptSummaryDetail.ptHeaderText);
+  }
+);
+
+Scenario(
   'Verify Agents are RUNNING after Upgrade (UI) [critical] @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
   async (I, adminPage, pmmInventoryPage) => {
     for (const service of Object.values(serviceNames)) {
