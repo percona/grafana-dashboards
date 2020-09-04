@@ -104,10 +104,11 @@ Scenario(
   'PMM-T262 Open PMM Settings page and verify DATA_RETENTION value is set to 2 days after upgrade @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
   async (I, pmmSettingsPage) => {
     const dataRetention = '2';
+    const sectionNameToExpand = pmmSettingsPage.sectionTabsList.advanced;
 
     I.amOnPage(pmmSettingsPage.url);
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
-    await pmmSettingsPage.expandSection('Advanced settings', pmmSettingsPage.fields.advancedButton);
+    await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.advancedButton);
     const dataRetentionActualValue = await I.grabValueFrom(pmmSettingsPage.fields.dataRetentionInput);
 
     assert.equal(
