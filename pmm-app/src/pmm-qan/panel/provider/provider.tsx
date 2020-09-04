@@ -160,17 +160,22 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
   const [previousState, setPreviousState] = useState(panelState);
 
   useEffect(() => {
+    const getAbsoluteTime = (timeValue) => (timeValue.toISOString ? timeValue.toISOString() : timeValue);
+
+    const newFrom = getAbsoluteTime(timeRange.raw.from);
+    const newTo = getAbsoluteTime(timeRange.raw.to);
+
     const newState = {
       ...panelState,
       from: timeRange.from.utc().format('YYYY-MM-DDTHH:mm:ssZ'),
       to: timeRange.to.utc().format('YYYY-MM-DDTHH:mm:ssZ'),
       rawTime: {
-        from: timeRange.raw.from,
-        to: timeRange.raw.to,
+        from: newFrom,
+        to: newTo,
       },
     };
 
-    if (from === timeRange.raw.from && to === timeRange.raw.to) {
+    if (from === newFrom && to === newTo) {
       const oldState = omit(previousState, ['from', 'to', 'rawTime']);
       const updatedState = omit(panelState, ['from', 'to', 'rawTime']);
 
@@ -185,8 +190,8 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
     }
 
     setPreviousState(newState);
-    setFrom(timeRange.raw.from);
-    setTo(timeRange.raw.to);
+    setFrom(newFrom);
+    setTo(newTo);
   }, [timeRange, from, to]);
 
   const wrapAction = (key) => (...value) => setContext(actions[key](...value));

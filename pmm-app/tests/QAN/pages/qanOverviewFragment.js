@@ -27,15 +27,15 @@ module.exports = {
     tooltipQPSValue: '$qps',
   },
 
-  getRowLocator: rowNumber => `div.tr-${rowNumber}`,
+  getRowLocator: (rowNumber) => `div.tr-${rowNumber}`,
 
-  getColumnLocator: columnName => `//span[contains(text(), '${columnName}')]`,
+  getColumnLocator: (columnName) => `//span[contains(text(), '${columnName}')]`,
 
-  getMetricLocatorInDropdown: name => `//li[@label='${name}']`,
+  getMetricLocatorInDropdown: (name) => `//li[@label='${name}']`,
 
   getCellValueLocator: (rowNumber, columnNumber) => `div.tr-${rowNumber} > div:nth-child(${columnNumber + 2}) span > div > span`,
 
-  getMetricSortingLocator: columnNumber => `(//a[@data-qa='sort-by-control'])[${columnNumber}]`,
+  getMetricSortingLocator: (columnNumber) => `(//a[@data-qa='sort-by-control'])[${columnNumber}]`,
 
   waitForOverviewLoaded() {
     I.waitForVisible(this.root, 60);
@@ -92,12 +92,13 @@ module.exports = {
 
     if (!sortDirection) {
       I.waitForVisible(`${sortingBlockSelector}/span`, 30);
-      I.seeAttributesOnElements(`${sortingBlockSelector}/span`, {class: `sort-by `});
-      return
+      I.seeAttributesOnElements(`${sortingBlockSelector}/span`, { class: 'sort-by ' });
+
+      return;
     }
 
     I.waitForVisible(`${sortingBlockSelector}/span`, 30);
-    I.seeAttributesOnElements(`${sortingBlockSelector}/span`, {class: `sort-by ${sortDirection}`});
+    I.seeAttributesOnElements(`${sortingBlockSelector}/span`, { class: `sort-by ${sortDirection}` });
   },
 
   async verifyMetricsSorted(metricName, columnNumber, sortOrder = 'down') {
@@ -148,6 +149,6 @@ module.exports = {
   async verifyTooltipValue(value) {
     const tooltip = await I.grabTextFrom(this.elements.tooltipQPSValue);
 
-    assert.ok(tooltip.includes(value), 'The tooltip has wrong value ' + value);
+    assert.ok(tooltip.includes(value), `The tooltip has wrong value ${value}`);
   },
 };
