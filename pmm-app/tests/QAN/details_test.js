@@ -8,15 +8,16 @@ Before((I, qanPage) => {
 Scenario(
   'Verify Details section tabs @qan @not-pr-pipeline',
   async (I, qanDetails, qanOverview) => {
-    qanOverview.selectRow(4);
+    qanOverview.selectRow(1);
     await within(qanDetails.root, () => {
+      I.waitForVisible(qanDetails.buttons.close, 30);
       I.see('Details', qanDetails.getTabLocator('Details'));
       I.see('Example', qanDetails.getTabLocator('Example'));
       I.see('Explain', qanDetails.getTabLocator('Explain'));
       I.see('Tables', qanDetails.getTabLocator('Tables'));
-      I.seeElement(qanDetails.buttons.close);
     });
-  });
+  }
+);
 
 Scenario(
   'PMM-T223 - Verify time metrics are AVG per query (not per second) @qan @not-pr-pipeline',

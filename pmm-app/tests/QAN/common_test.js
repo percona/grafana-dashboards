@@ -43,4 +43,3 @@ Scenario(
     assert.ok(overviewValue === detailsValue, 'Query Time value in Overview and Detail should match');
   },
 );
-
