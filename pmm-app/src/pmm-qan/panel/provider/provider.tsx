@@ -160,7 +160,7 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
   const [previousState, setPreviousState] = useState(panelState);
 
   useEffect(() => {
-    const getAbsoluteTime = (timeValue) => (timeValue.toISOString ? timeValue.toISOString() : timeValue);
+    const getAbsoluteTime = (timeValue) => (timeValue.valueOf ? timeValue.valueOf() : timeValue);
 
     const newFrom = getAbsoluteTime(timeRange.raw.from);
     const newTo = getAbsoluteTime(timeRange.raw.to);
