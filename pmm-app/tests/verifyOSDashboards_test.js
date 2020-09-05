@@ -1,3 +1,10 @@
+const assert = require('assert');
+
+const nodes = new DataTable(['node-type', 'name']);
+
+nodes.add(['pmm-server', 'pmm-server']);
+nodes.add(['pmm-client', 'ip']);
+
 Feature('Test Dashboards inside the OS Folder');
 
 Before(async (I) => {
@@ -35,7 +42,7 @@ Scenario(
   async (I, dashboardPage) => {
     const annotationTitle = 'pmm-annotate-without-tags';
 
-    I.amOnPage(`${dashboardPage.nodeSummaryDashboard.url}`);
+    I.amOnPage(`${dashboardPage.processDetailsDashboard.url}`);
     dashboardPage.waitForDashboardOpened();
     dashboardPage.verifyAnnotationsLoaded('pmm-annotate-without-tags', 1);
     I.seeElement(dashboardPage.annotationText(annotationTitle));
@@ -50,12 +57,37 @@ Scenario(
     const annotationTag2 = 'pmm-testing-tag2';
     const defaultAnnotation = 'pmm_annotation';
 
-    I.amOnPage(`${dashboardPage.nodeSummaryDashboard.url}`);
+    I.amOnPage(`${dashboardPage.processDetailsDashboard.url}`);
     dashboardPage.waitForDashboardOpened();
     dashboardPage.verifyAnnotationsLoaded('pmm-annotate-tags', 2);
     I.seeElement(dashboardPage.annotationText(annotationTitle2));
     I.seeElement(dashboardPage.annotationTagText(annotationTag1));
     I.seeElement(dashboardPage.annotationTagText(annotationTag2));
     I.seeElement(dashboardPage.annotationTagText(defaultAnnotation));
+  }
+);
+
+Data(nodes).Scenario(
+  'PMM-T418 PMM-T419 Verify the pt-summary on Node Summary dashboard @not-ui-pipeline @nightly @not-pr-pipeline',
+  async (I, dashboardPage, current) => {
+    const filter = 'Node Name';
+    const releaseInfo = 'CentOS Linux release 7.8.2003 (Core)';
+
+    I.amOnPage(dashboardPage.nodeSummaryDashboard.url);
+    await dashboardPage.waitPTSummaryInformation();
+    dashboardPage.waitForDashboardOpened();
+    await dashboardPage.applyFilter(filter, current.name);
+    await dashboardPage.waitPTSummaryInformation();
+
+    I.waitForElement(dashboardPage.nodeSummaryDashboard.ptSummaryDetail.reportContainer, 30);
+    I.waitForText(dashboardPage.nodeSummaryDashboard.ptSummaryDetail.ptHeaderText, 60);
+
+    // eslint-disable-next-line max-len
+    const ptSummaryText = await I.grabTextFrom(dashboardPage.nodeSummaryDashboard.ptSummaryDetail.reportContainer);
+    const getFilterValue = await dashboardPage.getExactFilterValue(filter);
+
+    assert.equal((current.name === 'pmm-server') ? ptSummaryText.indexOf(releaseInfo) >= 0 : ptSummaryText.indexOf(releaseInfo) === -1,
+      true,
+      `PT Summary is not changing for Node ${current.name} while filter applied was ${getFilterValue}`);
   }
 );
