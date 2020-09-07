@@ -1,8 +1,7 @@
 import { css } from 'emotion';
-import { stylesFactory } from '@grafana/ui';
 import { GrafanaTheme } from '@grafana/data';
 
-export const getStyles = stylesFactory((theme: GrafanaTheme) => ({
+export const getStyles = (theme: GrafanaTheme) => ({
   actionPanel: css`
     display: flex;
     justify-content: flex-end;
@@ -18,4 +17,4 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => ({
   deleteModalContent: css`
     margin-bottom: ${theme.spacing.xl};
   `,
-}));
+});
