@@ -19,4 +19,3 @@ Scenario(
     I.waitForVisible(qanPage.getColumn('Lock Time'), 30);
   },
 );
-
