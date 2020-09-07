@@ -79,7 +79,6 @@ Scenario(
     I.click(dashboardPage.fields.rootUser);
     I.waitForVisible(dashboardPage.fields.dataLinkForRoot);
     I.click(dashboardPage.fields.dataLinkForRoot);
-    I.wait(5);
     I.switchToNextTab(1);
     qanActions.waitForNewQANPageLoaded();
     I.waitInUrl('/graph/d/pmm-qan/pmm-query-analytics?var-service_name=ps_5.7__1&var-username=root', 30);
