@@ -5,7 +5,7 @@ Before(async (I) => {
 });
 
 Scenario(
-  'Open the PostgreSQL Instance Summary Dashboard and verify Metrics are present and graphs are displayed @not-pr-pipeline',
+  'Open the PostgreSQL Instance Summary Dashboard and verify Metrics are present and graphs are displayed @not-ui-pipeline @nightly @not-pr-pipeline',
   async (I, dashboardPage, adminPage) => {
     I.amOnPage(dashboardPage.postgresqlInstanceSummaryDashboard.url);
     dashboardPage.waitForDashboardOpened();
@@ -20,7 +20,7 @@ Scenario(
 );
 
 Scenario(
-  'PMM-T394 - PostgreSQL Instance Overview Dashboard metrics @not-pr-pipeline',
+  'PMM-T394 - PostgreSQL Instance Overview Dashboard metrics @not-ui-pipeline @nightly @not-pr-pipeline',
   async (I, dashboardPage, adminPage) => {
     I.amOnPage(dashboardPage.postgresqlInstanceOverviewDashboard.url);
     dashboardPage.waitForDashboardOpened();
