@@ -62,7 +62,7 @@ Scenario(
   async (I, qanActions, qanOverview) => {
     qanActions.waitForNewQANPageLoaded();
     qanOverview.selectRow('2');
-    I.seeCssPropertiesOnElements(`.selected-overview-row > div`, {
+    I.seeCssPropertiesOnElements('.selected-overview-row > div', {
       'background-color': 'rgb(35, 70, 130)',
     });
   },
@@ -70,7 +70,7 @@ Scenario(
 
 Scenario(
   'PMM-T133, PMM-T132, PMM-T100 Check Changing Main Metric, PMM-T203 Verify user is able to search for columns by typing @not-pr-pipeline @qan',
-  async (I , qanOverview) => {
+  async (I, qanOverview) => {
     const metricName = 'Query Count with errors';
     const urlString = 'num_queries_with_errors';
     const newMetric = qanOverview.getColumnLocator(metricName);
@@ -140,17 +140,17 @@ Scenario(
 Scenario(
   'PMM-T219 - Verify that user is able to scroll up/down and resize the overview table @not-pr-pipeline @qan',
   async (I, qanPage, qanOverview) => {
-      const columnsToAdd = [
-          'Bytes Sent',
-          'Reading Blocks Time',
-          'Local Blocks Read',
-          'Local Blocks Dirtied',
-          'Temp Blocks Read',
-          'Local Blocks Written',
-          'Full Scan',
-      ];
+    const columnsToAdd = [
+      'Bytes Sent',
+      'Reading Blocks Time',
+      'Local Blocks Read',
+      'Local Blocks Dirtied',
+      'Temp Blocks Read',
+      'Local Blocks Written',
+      'Full Scan',
+    ];
 
-      qanOverview.waitForOverviewLoaded();
+    qanOverview.waitForOverviewLoaded();
 
     for (const i in columnsToAdd) {
       I.click(qanOverview.buttons.addColumn);
@@ -173,12 +173,12 @@ Scenario(
 Scenario(
   'PMM-T215 - Verify that buttons in QAN are disabled and visible on the screen @not-pr-pipeline @qan',
   async (I, qanPage, qanActions, qanFilters, qanOverview) => {
-      qanFilters.waitForFiltersToLoad();
-      qanOverview.waitForOverviewLoaded();
+    qanFilters.waitForFiltersToLoad();
+    qanOverview.waitForOverviewLoaded();
     I.seeAttributesOnElements(qanOverview.buttons.previousPage, { 'aria-disabled': 'true' });
     I.seeAttributesOnElements(qanOverview.buttons.nextPage, { 'aria-disabled': 'false' });
-    I.seeAttributesOnElements(qanFilters.buttons.resetAllButton, {'disabled': true});
-    I.seeAttributesOnElements(qanFilters.buttons.showSelected, {'disabled' : true});
+    I.seeAttributesOnElements(qanFilters.buttons.resetAllButton, { disabled: true });
+    I.seeAttributesOnElements(qanFilters.buttons.showSelected, { disabled: true });
     const count = await qanOverview.getCountOfItems();
 
     if (count > 100) {
@@ -189,24 +189,24 @@ Scenario(
 
 Scenario(
   'PMM-T156 Verify Queries are sorted by Load by Default Sorting from Max to Min, verify Sorting for Metrics works @not-pr-pipeline @qan',
-  async ( qanOverview) => {
-      qanOverview.waitForOverviewLoaded();
-      qanOverview.verifySorting(1, 'asc');
+  async (qanOverview) => {
+    qanOverview.waitForOverviewLoaded();
+    qanOverview.verifySorting(1, 'asc');
     await qanOverview.verifyMetricsSorted('Load', 3, 'down');
-      qanOverview.changeSorting(1);
-      qanOverview.verifySorting(1, 'desc');
+    qanOverview.changeSorting(1);
+    qanOverview.verifySorting(1, 'desc');
     await qanOverview.verifyMetricsSorted('Load', 3, 'up');
-      qanOverview.changeSorting(2);
-      qanOverview.verifySorting(2, 'asc');
+    qanOverview.changeSorting(2);
+    qanOverview.verifySorting(2, 'asc');
     await qanOverview.verifyMetricsSorted('Query Count', 4, 'down');
-      qanOverview.changeSorting(2);
-      qanOverview.verifySorting(2, 'desc');
+    qanOverview.changeSorting(2);
+    qanOverview.verifySorting(2, 'desc');
     await qanOverview.verifyMetricsSorted('Query Count', 4, 'up');
-      qanOverview.changeSorting(3);
-      qanOverview.verifySorting(3, 'asc');
+    qanOverview.changeSorting(3);
+    qanOverview.verifySorting(3, 'asc');
     await qanOverview.verifyMetricsSorted('Query Time', 5, 'down');
-      qanOverview.changeSorting(3);
-      qanOverview.verifySorting(3, 'desc');
+    qanOverview.changeSorting(3);
+    qanOverview.verifySorting(3, 'desc');
     await qanOverview.verifyMetricsSorted('Query Time', 5, 'up');
   },
 );

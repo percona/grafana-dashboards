@@ -38,7 +38,7 @@ module.exports = {
   getFilterGroupCountSelector: (groupName) => `//span[contains(text(), '${groupName}')]/following-sibling::span[contains(text(), 'Show all')]`,
 
   getFilterLocator: (filterValue) => `//span[@class="checkbox-container__label-text" and contains(text(), "${filterValue}")]`
-    + `/../span[@class="checkbox-container__checkmark"]`,
+    + '/../span[@class="checkbox-container__checkmark"]',
 
   async getPercentage(filterType, filter) {
     return await I.grabTextFrom(
