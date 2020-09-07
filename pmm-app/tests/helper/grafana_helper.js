@@ -22,6 +22,32 @@ class Grafana extends Helper {
     );
   }
 
+  /**
+   * Mock Response of a Request from Server
+   *
+   * example Usage: await I.mockServer(endPoint, responseBody);
+   *
+   * @param requestToBeMocked       Request end point which needs to be routed and mocked.
+   * @param responseBody            Response we want to Mock for the API call.
+   * for example: Add Remote Instance, Access Inventory List
+   * @returns {Promise<void>}
+   */
+  async mockServer(requestToBeMocked, responseBody) {
+    const { browserContext } = this.helpers.Playwright;
+    const existingPages = await browserContext.pages();
+    const mainPage = existingPages[0];
+
+    mainPage.route(requestToBeMocked, async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify([
+          responseBody
+        ])
+      });
+    });
+  }
+
   // eslint-disable-next-line no-underscore-dangle, class-methods-use-this
   async _before(test) {
     const allure = codeceptjs.container.plugins('allure');
