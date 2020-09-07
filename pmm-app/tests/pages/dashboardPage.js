@@ -704,5 +704,16 @@ module.exports = {
     await I.waitForResponse((response) => response.url().endsWith('v1/management/Actions/Get') && response.status() === 200, { timeout: 60000 });
 
     return await response.json();
+  },
+
+  async waitAndSwitchTabs(ammountOfTabs) {
+    for (let i = 0; i <= 10; i++) {
+      const numberOfTabs = await I.grabNumberOfTabs();
+
+      if (numberOfTabs === ammountOfTabs) {
+        I.switchToNextTab(1);
+        break;
+      }
+    }
   }
 };

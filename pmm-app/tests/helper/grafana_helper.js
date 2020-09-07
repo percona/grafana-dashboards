@@ -48,6 +48,13 @@ class Grafana extends Helper {
     });
   }
 
+  async grabNumberOfTabs() {
+    const { browserContext } = this.helpers.Playwright;
+    const existingPages = await browserContext.pages();
+
+    return existingPages.length;
+  }
+
   // eslint-disable-next-line no-underscore-dangle, class-methods-use-this
   async _before(test) {
     const allure = codeceptjs.container.plugins('allure');
