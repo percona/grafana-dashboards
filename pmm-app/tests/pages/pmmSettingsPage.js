@@ -122,14 +122,17 @@ module.exports = {
     signUpPassword: '[data-qa="sign-up-password-input"]',
     signUpAgreementLabel: '[data-qa="sign-up-agreement-checkbox-label"]',
     signUpButton: '[data-qa="sign-up-submit-button"]',
-    singInButton: '[data-qa="sign-in-to-sign-up-button"]',
+    singInToSignUpButton: '[data-qa="sign-in-to-sign-up-button"]',
     signUpBackToLogin: '[data-qa="sign-up-to-sign-in-button"]',
     downloadServerDiagnostics: '[data-qa="diagnostics-button"]',
     diagnosticsTooltip:
-      "//span[contains(text(), 'You can download server logs to make the problem detection simpler. Please include this file if you are submitting a bug report!')]",
-    diagnosticsInfo: '//div[data-qa="diagnostics-label"]/div/div',
+      "//div[contains(text(), 'You can download server logs to make the problem detection simpler. Please include this file if you are submitting a bug report.')]",
+    diagnosticsInfo: '//div[@data-qa="diagnostics-label"]/div/div',
     termsOfService: '//span[contains(text(), "Terms of Service")]',
     privacyPolicy: '//span[contains(text(), "Privacy Policy")]',
+    signInEmail: '[data-qa="sign-in-email-input"]',
+    signInPassword: '[data-qa="sign-in-password-input"]',
+    loginButton: '[data-qa="sign-in-submit-button"]',
   },
 
   async waitForPmmSettingsPageLoaded() {
