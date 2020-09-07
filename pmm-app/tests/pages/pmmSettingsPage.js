@@ -7,35 +7,35 @@ module.exports = {
   url: 'graph/d/pmm-settings/pmm-settings',
   prometheusAlertUrl: '/prometheus/alerts',
   diagnosticsText:
-    'You can download server logs to make the problem detection simpler. '
-    + 'Please include this file if you are submitting a bug report.',
+    'You can download server logs to make the problem detection simpler. ' +
+    'Please include this file if you are submitting a bug report.',
   alertManager: {
     ip: process.env.VM_IP,
     service: ':9093/#/alerts',
     rule:
-      'groups:\n'
-      + '  - name: AutoTestAlerts\n'
-      + '    rules:\n'
-      + '    - alert: InstanceDown\n'
-      + '      expr: up == 0\n'
-      + '      for: 20s\n'
-      + '      labels:\n'
-      + '        severity: critical\n'
-      + '      annotations:\n'
-      + '        summary: "Instance {{ $labels.instance }} down"\n'
-      + '        description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 20 seconds."',
+      'groups:\n' +
+      '  - name: AutoTestAlerts\n' +
+      '    rules:\n' +
+      '    - alert: InstanceDown\n' +
+      '      expr: up == 0\n' +
+      '      for: 20s\n' +
+      '      labels:\n' +
+      '        severity: critical\n' +
+      '      annotations:\n' +
+      '        summary: "Instance {{ $labels.instance }} down"\n' +
+      '        description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 20 seconds."',
     editRule:
-      'groups:\n'
-      + '  - name: AutoTestAlertsEdited\n'
-      + '    rules:\n'
-      + '    - alert: InstanceDown\n'
-      + '      expr: up == 0\n'
-      + '      for: 60s\n'
-      + '      labels:\n'
-      + '        severity: critical\n'
-      + '      annotations:\n'
-      + '        summary: "Instance {{ $labels.instance }} down"\n'
-      + '        description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than {{ sec }} seconds."',
+      'groups:\n' +
+      '  - name: AutoTestAlertsEdited\n' +
+      '    rules:\n' +
+      '    - alert: InstanceDown\n' +
+      '      expr: up == 0\n' +
+      '      for: 60s\n' +
+      '      labels:\n' +
+      '        severity: critical\n' +
+      '      annotations:\n' +
+      '        summary: "Instance {{ $labels.instance }} down"\n' +
+      '        description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than {{ sec }} seconds."',
     ruleName: 'AutoTestAlerts',
     editRuleName: 'AutoTestAlertsEdited',
   },
@@ -55,7 +55,7 @@ module.exports = {
     metrics: 'Metrics Resolution',
     advanced: 'Advanced Settings',
     ssh: 'SSH Key',
-    alertmanager: 'Alertmanager Integration'
+    alertmanager: 'Alertmanager Integration',
   },
   sectionButtonText: {
     applyChanges: 'Apply changes',
@@ -116,7 +116,20 @@ module.exports = {
     tooltipSelector: '.popper__background',
     validationMessage: 'span.error-message',
     tabsSection: '[data-qa="settings-tabs"]',
-    tabContent: '[data-qa="settings-tab-content"]'
+    tabContent: '[data-qa="settings-tab-content"]',
+    perconaPlatformLink: "//li[contains(text(), 'Percona Platform')]",
+    signUpEmail: '[data-qa="sign-up-email-input"]',
+    signUpPassword: '[data-qa="sign-up-password-input"]',
+    signUpAgreementLabel: '[data-qa="sign-up-agreement-checkbox-label"]',
+    signUpButton: '[data-qa="sign-up-submit-button"]',
+    singInButton: '[data-qa="sign-in-to-sign-up-button"]',
+    signUpBackToLogin: '[data-qa="sign-up-to-sign-in-button"]',
+    downloadServerDiagnostics: '[data-qa="diagnostics-button"]',
+    diagnosticsTooltip:
+      "//span[contains(text(), 'You can download server logs to make the problem detection simpler. Please include this file if you are submitting a bug report!')]",
+    diagnosticsInfo: '//div[data-qa="diagnostics-label"]/div/div',
+    termsOfService: '//span[contains(text(), "Terms of Service")]',
+    privacyPolicy: '//span[contains(text(), "Privacy Policy")]',
   },
 
   async waitForPmmSettingsPageLoaded() {
