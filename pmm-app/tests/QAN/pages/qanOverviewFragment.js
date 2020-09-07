@@ -9,9 +9,6 @@ module.exports = {
   },
   buttons: {
     addColumn: '//span[contains(text(), "Add column")]',
-    previousPage: '.ant-pagination-prev',
-    nextPage: '.ant-pagination-next',
-    ellipsis: '.ant-pagination-item-ellipsis',
   },
   elements: {
     countOfItems: '$qan-total-items',
@@ -36,6 +33,8 @@ module.exports = {
   getCellValueLocator: (rowNumber, columnNumber) => `div.tr-${rowNumber} > div:nth-child(${columnNumber + 2}) span > div > span`,
 
   getMetricSortingLocator: (columnNumber) => `(//a[@data-qa='sort-by-control'])[${columnNumber}]`,
+
+  getGroupByOptionLocator: (option) => `//ul/li[@label='${option}']`,
 
   waitForOverviewLoaded() {
     I.waitForVisible(this.root, 60);
@@ -138,11 +137,17 @@ module.exports = {
     }
   },
 
-  changeGroupBy(groupBy = 'Client Host') {
-    const locator = `//ul/li[@label='${groupBy}']`;
+  async changeGroupBy(groupBy = 'Client Host') {
+    const locator = this.getGroupByOptionLocator(groupBy);
 
     I.waitForElement(this.elements.groupBy, 30);
     I.click(this.elements.groupBy);
+    // For some reason dropdown is not opened sometimes
+    I.wait(1);
+    const dropdownOpened = await I.grabNumberOfVisibleElements(locator);
+
+    if (!dropdownOpened) I.click(this.elements.groupBy);
+
     I.waitForVisible(locator, 30);
     I.click(locator);
   },
@@ -158,6 +163,13 @@ module.exports = {
     I.waitForElement(rowSelector, 60);
     I.forceClick(rowSelector);
     this.waitForOverviewLoaded();
+  },
+
+  async verifyRowCount(rowCount) {
+    I.waitForVisible(this.elements.querySelector, 30);
+    const count = await I.grabNumberOfVisibleElements(this.elements.tableRow);
+
+    assert.ok(count === rowCount, `Row count should be ${rowCount} instead of ${count}`);
   },
 
   async verifyTooltipValue(value) {

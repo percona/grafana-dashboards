@@ -8,8 +8,9 @@ module.exports = {
   buttons: {
     close: '//div[@role="tablist"]//button/span[text()="Close"]',
   },
-  elements: {},
-  requests: {},
+  elements: {
+    resizer: 'span.Resizer.horizontal',
+  },
 
   getFilterSectionLocator: (filterSectionName) => `//span[contains(text(), '${filterSectionName}')]`,
 

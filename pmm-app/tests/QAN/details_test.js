@@ -1,4 +1,4 @@
-Feature('QAN details section');
+Feature('QAN details');
 
 Before((I, qanPage) => {
   I.Authorize();

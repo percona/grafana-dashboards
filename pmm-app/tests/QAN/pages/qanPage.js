@@ -87,10 +87,6 @@ module.exports = {
     tableRowSelector: '.ant-table-scroll .ant-table-tbody tr:first-of-type .overview-main-column div',
     timeRangePickerButton: '.navbar-button--tight',
   },
-  requests: {
-    getReportPath: '/v0/qan/GetReport',
-    getFiltersPath: '/v0/qan/Filters/Get',
-  },
   filterGroupLocator(filterName) {
     return `//div[@class='filter-group__title']//span[contains(text(), '${filterName}')]`;
   },

@@ -2,9 +2,9 @@ const assert = require('assert');
 
 Feature('QAN filters');
 
-Before((I, qanCommon, qanOverview) => {
+Before((I, qanPage, qanOverview) => {
   I.Authorize();
-  I.amOnPage(qanCommon.url);
+  I.amOnPage(qanPage.url);
   qanOverview.waitForOverviewLoaded();
 });
 
@@ -94,7 +94,7 @@ Scenario(
 
 Scenario(
   'PMM-T123 - Verify User is able to search for DB types, Env and Cluster @not-pr-pipeline @qan',
-  async (I, qanActions, qanOverview, qanFilters) => {
+  async (I, qanOverview, qanFilters) => {
     const filters = ['postgres', 'mysql', 'pmm-server', 'postgresql', 'mongodb', 'ps-dev', 'ps-dev-cluster', 'pgsql-repl1'];
 
     I.waitForElement(qanFilters.fields.filterBy, 30);
@@ -148,7 +148,7 @@ Scenario(
 
 Scenario(
   'PMM-T190 - Verify user is able to see n/a filter @not-pr-pipeline @qan',
-  async (I, qanActions, qanFilters) => {
+  async (I, qanFilters) => {
     I.fillField(qanFilters.fields.filterBy, 'n/a');
     await qanFilters.verifyCountOfFilterLinks(0, true);
   },
@@ -179,7 +179,7 @@ Scenario(
 
 Scenario(
   'PMM-T221 - Verify that all filter options are always visible (but some disabled) after selecting an item and % value is changed @not-pr-pipeline @qan',
-  async (I, qanCommon, adminPage, qanOverview, qanFilters) => {
+  async (I, adminPage, qanOverview, qanFilters) => {
     const serviceType = 'mysql';
     const environment = 'pgsql-dev';
     const serviceName = 'ps_5.7';
