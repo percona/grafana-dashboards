@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import {
-  Button, HorizontalGroup, Modal, useTheme
+  Button, HorizontalGroup, Modal, useStyles
 } from '@grafana/ui';
 import { Table } from 'shared/components/Elements/Table/Table';
 import { Messages } from 'pmm-dbaas/DBaaS.messages';
@@ -9,8 +9,7 @@ import { useKubernetes } from './Kubernetes.hooks';
 import { Kubernetes } from './Kubernetes.types';
 
 export const KubernetesInventory: FC = () => {
-  const theme = useTheme();
-  const styles = getStyles(theme);
+  const styles = useStyles(getStyles);
   const [kubernetesToDelete, setKubernetesToDelete] = useState<Kubernetes>({ kubernetesClusterName: '' });
   const [kubernetes, deleteKubernetes, loading] = useKubernetes();
   const [modalVisible, setModalVisible] = useState(false);
