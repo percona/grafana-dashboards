@@ -1,5 +1,5 @@
-const page = require('./pages/pmmSettingsPage');
 const assert = require('assert');
+const page = require('./pages/pmmSettingsPage');
 
 const validationValues = ['text ', '2147483648', '-1', '<script>alert(test);</script>'];
 
@@ -151,8 +151,7 @@ xScenario(
 Scenario(
   'PMM-T415 - Verify Percona Platform (Sign up) elements on PMM Settings Page @not-pr-pipeline',
   async (I, pmmSettingsPage) => {
-    const label =
-      'Check here to indicate that you have read and agree to the \nTerms of Service\n and \nPrivacy Policy';
+    const label = 'Check here to indicate that you have read and agree to the \nTerms of Service\n and \nPrivacy Policy';
 
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     I.waitForElement(pmmSettingsPage.fields.perconaPlatformLink, 30);
@@ -162,7 +161,8 @@ Scenario(
     I.waitForElement(pmmSettingsPage.fields.signUpEmail, 30);
     I.waitForElement(pmmSettingsPage.fields.signUpPassword, 30);
     const agreementLabel = await I.grabTextFrom(pmmSettingsPage.fields.signUpAgreementLabel);
-    assert.equal(agreementLabel, label, '"' + agreementLabel + '"' + ': This is not correct agreement label');
+
+    assert.equal(agreementLabel, label, `${agreementLabel}: This is not correct agreement label`);
     I.waitForElement(pmmSettingsPage.fields.signUpButton, 30);
     I.waitForElement(pmmSettingsPage.fields.signUpBackToLogin, 30);
     I.waitForElement(pmmSettingsPage.fields.downloadServerDiagnostics, 30);
