@@ -6,10 +6,6 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
   const backgroundColor = selectThemeVariant({ light: 'rgb(247, 247, 249)', dark: '#161719' }, theme.type);
   const borderColor = selectThemeVariant({ light: theme.palette.gray85, dark: '#292929' }, theme.type);
   const headerBackground = selectThemeVariant({ light: 'rgb(247, 247, 249)', dark: '#3D3D3D' }, theme.type);
-  const textColor = selectThemeVariant(
-    { light: theme.palette.gray85, dark: 'rgba(255, 255, 255, 0.8)' },
-    theme.type
-  );
 
   return {
     /* This will make the table scrollable when it gets too small */
@@ -44,7 +40,6 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
           padding: 0.5rem;
           border-bottom: 1px solid ${borderColor};
           border-right: 1px solid ${borderColor};
-          color: ${textColor};
 
           :last-child {
             border-right: 0;
