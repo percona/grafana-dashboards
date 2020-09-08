@@ -92,7 +92,8 @@ Scenario(
   },
 );
 
-Scenario(
+// Skipping because of a random failings
+xScenario(
   'PMM-T123 - Verify User is able to search for DB types, Env and Cluster @not-pr-pipeline @qan',
   async (I, qanOverview, qanFilters) => {
     const filters = ['postgres', 'mysql', 'pmm-server', 'postgresql', 'mongodb', 'ps-dev', 'ps-dev-cluster', 'pgsql-repl1'];

@@ -1,6 +1,6 @@
 const assert = require('assert');
 
-const { I } = inject();
+const { I, qanFilters } = inject();
 
 module.exports = {
   root: '.query-analytics-data',
@@ -68,7 +68,11 @@ module.exports = {
     const oldMetric = this.getColumnLocator(columnName);
 
     I.waitForElement(oldMetric, 30);
-    I.doubleClick(oldMetric);
+    I.waitForVisible(qanFilters.elements.filterName, 30);
+
+    // Hardcoded wait because of random failings
+    I.wait(3);
+    I.click(oldMetric);
     I.waitForElement(this.fields.columnSearchField, 10);
     I.fillField(this.fields.columnSearchField, metricName);
     I.click(metricInDropdown);
