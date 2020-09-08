@@ -7,35 +7,37 @@ module.exports = {
   url: 'graph/d/pmm-settings/pmm-settings',
   prometheusAlertUrl: '/prometheus/alerts',
   diagnosticsText:
-    'You can download server logs to make the problem detection simpler. '
-    + 'Please include this file if you are submitting a bug report.',
+    'You can download server logs to make the problem detection simpler. ' +
+    'Please include this file if you are submitting a bug report.',
+  agreementText:
+    'Check here to indicate that you have read and agree to the \nTerms of Service\n and \nPrivacy Policy',
   alertManager: {
     ip: process.env.VM_IP,
     service: ':9093/#/alerts',
     rule:
-      'groups:\n'
-      + '  - name: AutoTestAlerts\n'
-      + '    rules:\n'
-      + '    - alert: InstanceDown\n'
-      + '      expr: up == 0\n'
-      + '      for: 20s\n'
-      + '      labels:\n'
-      + '        severity: critical\n'
-      + '      annotations:\n'
-      + '        summary: "Instance {{ $labels.instance }} down"\n'
-      + '        description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 20 seconds."',
+      'groups:\n' +
+      '  - name: AutoTestAlerts\n' +
+      '    rules:\n' +
+      '    - alert: InstanceDown\n' +
+      '      expr: up == 0\n' +
+      '      for: 20s\n' +
+      '      labels:\n' +
+      '        severity: critical\n' +
+      '      annotations:\n' +
+      '        summary: "Instance {{ $labels.instance }} down"\n' +
+      '        description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 20 seconds."',
     editRule:
-      'groups:\n'
-      + '  - name: AutoTestAlertsEdited\n'
-      + '    rules:\n'
-      + '    - alert: InstanceDown\n'
-      + '      expr: up == 0\n'
-      + '      for: 60s\n'
-      + '      labels:\n'
-      + '        severity: critical\n'
-      + '      annotations:\n'
-      + '        summary: "Instance {{ $labels.instance }} down"\n'
-      + '        description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than {{ sec }} seconds."',
+      'groups:\n' +
+      '  - name: AutoTestAlertsEdited\n' +
+      '    rules:\n' +
+      '    - alert: InstanceDown\n' +
+      '      expr: up == 0\n' +
+      '      for: 60s\n' +
+      '      labels:\n' +
+      '        severity: critical\n' +
+      '      annotations:\n' +
+      '        summary: "Instance {{ $labels.instance }} down"\n' +
+      '        description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than {{ sec }} seconds."',
     ruleName: 'AutoTestAlerts',
     editRuleName: 'AutoTestAlertsEdited',
   },
@@ -55,7 +57,7 @@ module.exports = {
     metrics: 'Metrics Resolution',
     advanced: 'Advanced Settings',
     ssh: 'SSH Key',
-    alertmanager: 'Alertmanager Integration'
+    alertmanager: 'Alertmanager Integration',
   },
   sectionButtonText: {
     applyChanges: 'Apply changes',
@@ -72,51 +74,64 @@ module.exports = {
   },
 
   fields: {
-    advancedLabel: '[data-qa="advanced-label"]',
-    advancedButton: '[data-qa="advanced-button"]',
+    advancedLabel: '$advanced-label',
+    advancedButton: '$advanced-button',
     addAlertRuleButton: '//span[text()="Apply Alertmanager settings"]/parent::button',
-    alertRulesInput: '[data-qa="alertmanager-rules"]',
-    alertURLInput: '[data-qa="alertmanager-url"]',
+    alertRulesInput: '$alertmanager-rules',
+    alertURLInput: '$alertmanager-url',
     alertingRules: locateLabel('form-field-alerting-rules'),
-    alertmanagerUrlLabel: '[data-qa="alertmanager-url-label"]',
-    alertmanagerRulesLabel: '[data-qa="alertmanager-rules-label"]',
-    alertmanagerButton: '[data-qa="alertmanager-button"]',
+    alertmanagerUrlLabel: '$alertmanager-url-label',
+    alertmanagerRulesLabel: '$alertmanager-rules-label',
+    alertmanagerButton: '$alertmanager-button',
     amUrlLabel: locateLabel('form-field-am-url'),
     applyButton: '//button[@type="submit"]',
     callHomeSwitch: '//button[@class="toggle-field ant-switch ant-switch-checked"]',
     checkForUpdatesLabel: '//div[@data-qa="advanced-updates"]//div//span',
     checkForUpdatesSwitch: '//div[@data-qa="advanced-updates"]//div[2]//input',
-    dataRetentionInput: '[data-qa="advanced-retention-input"]',
+    dataRetentionInput: '$advanced-retention-input',
     dataRetentionLabel: locateLabel('form-field-data-retention'),
-    diagnosticsButton: '[data-qa="diagnostics-button"]',
-    diagnosticsLabel: '[data-qa="diagnostics-label"]',
+    diagnosticsButton: '$diagnostics-button',
+    diagnosticsLabel: '$diagnostics-label',
     downloadLogsButton: '//a[@class="ant-btn" and @href="/logs.zip"]',
+    diagnosticsInfo: '//div[@data-qa="diagnostics-label"]/div/div',
     iframe: '//div[@class="panel-content"]//iframe',
-    metricsResolutionButton: '[data-qa="metrics-resolution-button"]',
+    metricsResolutionButton: '$metrics-resolution-button',
     metricsResolution: '//div[@data-qa="metrics-resolution-radio-button-group"]/label[text()="',
-    metricsResolutionLabel: '[data-qa="metrics-resolution-label"]',
-    metricsResolutionRadio: '[data-qa="metrics-resolution-radio-button-group"]',
-    lowInput: '[data-qa="metrics-resolution-lr-input"]',
-    mediumInput: '[data-qa="metrics-resolution-mr-input"]',
-    highInput: '[data-qa="metrics-resolution-hr-input"]',
+    metricsResolutionLabel: '$metrics-resolution-label',
+    metricsResolutionRadio: '$metrics-resolution-radio-button-group',
+    loginButton: '$sign-in-submit-button',
+    lowInput: '$metrics-resolution-lr-input',
+    mediumInput: '$metrics-resolution-mr-input',
+    highInput: '$metrics-resolution-hr-input',
     popUpTitle: '//div[@class="alert-title"]',
+    perconaPlatformLink: "//li[contains(text(), 'Percona Platform')]",
+    privacyPolicy: '//span[contains(text(), "Privacy Policy")]',
     sectionHeader: '//div[@class="ant-collapse-header"]',
     selectedResolution: 'span.ant-slider-mark-text-active',
-    sshKeyInput: '[data-qa="ssh-key"]',
+    signInEmail: '$sign-in-email-input',
+    signInPassword: '$sign-in-password-input',
+    sshKeyInput: '$ssh-key',
     sshKeyLabel: locateLabel('ssh-key-label'),
-    sshKeyButton: '[data-qa="ssh-key-button"]',
+    sshKeyButton: '$ssh-key-button',
     sttLabel: '//div[@data-qa="advanced-stt"]//div//span',
     sttLabelTooltipSelector: '//div[@data-qa="advanced-stt"]//div//div//div//div',
     sttSwitchSelectorInput: '//div[@data-qa="advanced-stt"]//div[2]//input',
     sttSwitchSelector: '//div[@data-qa="advanced-stt"]//div[2]//label',
     subSectionHeader: '//following-sibling::div//div[@class="ant-collapse-header"]',
+    signUpEmail: '$sign-up-email-input',
+    signUpPassword: '$sign-up-password-input',
+    signUpAgreementLabel: '$sign-up-agreement-checkbox-label',
+    signUpButton: '$sign-up-submit-button',
+    singInToSignUpButton: '$sign-in-to-sign-up-button',
+    signUpBackToLogin: '$sign-up-to-sign-in-button',
     telemetrySwitchSelectorInput: '//div[@data-qa="advanced-telemetry"]//div[2]//input',
     telemetrySwitchSelector: '//div[@data-qa="advanced-telemetry"]//div[2]//label',
     telemetryLabel: '//div[@data-qa="advanced-telemetry"]//div//span',
     tooltipSelector: '.popper__background',
+    tabsSection: '$settings-tabs',
+    tabContent: '$settings-tab-content',
+    termsOfService: '//span[contains(text(), "Terms of Service")]',
     validationMessage: 'span.error-message',
-    tabsSection: '[data-qa="settings-tabs"]',
-    tabContent: '[data-qa="settings-tab-content"]'
   },
 
   async waitForPmmSettingsPageLoaded() {
@@ -216,16 +231,6 @@ module.exports = {
         I.dontSeeCheckboxIsChecked(switchSelector);
         break;
       default:
-    }
-  },
-
-  async verifySwitchStateIs(switchSelector, enabled = true) {
-    const className = await I.grabAttributeFrom(switchSelector, 'class');
-
-    if (enabled) {
-      assert.equal(className.includes('disabled'), false, 'Switch should be enabled');
-    } else {
-      assert.equal(className.includes('disabled'), true, 'Switch should be disabled');
     }
   },
 };
