@@ -149,7 +149,7 @@ xScenario(
 );
 
 Scenario(
-  'PMM-T415 - Verify Percona Platform (Sign up) elements on PMM Settings Page @not-pr-pipeline',
+  'PMM-T415 - Verify Percona Platform (Sign up) elements on PMM Settings Page',
   async (I, pmmSettingsPage) => {
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     I.waitForElement(pmmSettingsPage.fields.perconaPlatformLink, 30);
@@ -177,7 +177,7 @@ Scenario(
 );
 
 Scenario(
-  'PMM-T398 - Verify Percona Platform (Login) elements on PMM Settings Page @not-pr-pipeline',
+  'PMM-T398 - Verify Percona Platform (Login) elements on PMM Settings Page',
   async (I, pmmSettingsPage) => {
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     I.waitForElement(pmmSettingsPage.fields.perconaPlatformLink, 30);
