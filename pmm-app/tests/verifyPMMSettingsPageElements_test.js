@@ -151,7 +151,8 @@ xScenario(
 Scenario(
   'PMM-T415 - Verify Percona Platform (Sign up) elements on PMM Settings Page @not-pr-pipeline',
   async (I, pmmSettingsPage) => {
-    const label = 'Check here to indicate that you have read and agree to the \nTerms of Service\n and \nPrivacy Policy';
+    const label =
+      'Check here to indicate that you have read and agree to the \nTerms of Service\n and \nPrivacy Policy';
 
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     I.waitForElement(pmmSettingsPage.fields.perconaPlatformLink, 30);
@@ -165,7 +166,7 @@ Scenario(
     assert.equal(agreementLabel, label, `${agreementLabel}: This is not correct agreement label`);
     I.waitForElement(pmmSettingsPage.fields.signUpButton, 30);
     I.waitForElement(pmmSettingsPage.fields.signUpBackToLogin, 30);
-    I.waitForElement(pmmSettingsPage.fields.downloadServerDiagnostics, 30);
+    I.waitForElement(pmmSettingsPage.fields.diagnosticsButton, 30);
     I.waitForVisible(pmmSettingsPage.fields.diagnosticsInfo, 30);
     I.moveCursorTo(pmmSettingsPage.fields.diagnosticsInfo);
     I.waitForVisible(pmmSettingsPage.fields.diagnosticsTooltip, 30);
@@ -184,7 +185,7 @@ Scenario(
     I.waitForElement(pmmSettingsPage.fields.signInPassword, 30);
     I.waitForElement(pmmSettingsPage.fields.loginButton, 30);
     I.waitForElement(pmmSettingsPage.fields.singInToSignUpButton, 30);
-    I.waitForElement(pmmSettingsPage.fields.downloadServerDiagnostics, 30);
+    I.waitForElement(pmmSettingsPage.fields.diagnosticsButton, 30);
     I.waitForVisible(pmmSettingsPage.fields.diagnosticsInfo, 30);
     I.moveCursorTo(pmmSettingsPage.fields.diagnosticsInfo);
     I.waitForVisible(pmmSettingsPage.fields.diagnosticsTooltip, 30);
