@@ -233,14 +233,4 @@ module.exports = {
       default:
     }
   },
-
-  async verifySwitchStateIs(switchSelector, enabled = true) {
-    const className = await I.grabAttributeFrom(switchSelector, 'class');
-
-    if (enabled) {
-      assert.equal(className.includes('disabled'), false, 'Switch should be enabled');
-    } else {
-      assert.equal(className.includes('disabled'), true, 'Switch should be disabled');
-    }
-  },
 };

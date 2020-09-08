@@ -112,7 +112,7 @@ Scenario('Verify validation for invalid Alertmanager Rule', async (I, pmmSetting
 });
 
 // Skip, need to investigate will roll back
-xScenario(
+Scenario(
   'PMM-T254 Verify validation for STT and Telemetry switches',
   async (I, pmmSettingsPage, settingsAPI) => {
     await settingsAPI.apiDisableSTT();
@@ -121,19 +121,15 @@ xScenario(
 
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
     await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.advancedButton);
-    pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.telemetrySwitchSelector, 'on');
+    pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.telemetrySwitchSelectorInput, 'on');
     pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelectorInput, 'off');
     I.click(pmmSettingsPage.fields.telemetrySwitchSelector);
     pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.telemetrySwitchSelectorInput, 'off');
-    await pmmSettingsPage.verifySwitchStateIs(pmmSettingsPage.fields.sttSwitchSelector, false);
     I.click(pmmSettingsPage.fields.telemetrySwitchSelector);
     pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.telemetrySwitchSelectorInput, 'on');
-    await pmmSettingsPage.verifySwitchStateIs(pmmSettingsPage.fields.sttSwitchSelector, true);
     I.click(pmmSettingsPage.fields.sttSwitchSelector);
     pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.sttSwitchSelectorInput, 'on');
-    await pmmSettingsPage.verifySwitchStateIs(pmmSettingsPage.fields.sttSwitchSelector, true);
     pmmSettingsPage.verifySwitch(pmmSettingsPage.fields.telemetrySwitchSelectorInput, 'on');
-    await pmmSettingsPage.verifySwitchStateIs(pmmSettingsPage.fields.telemetrySwitchSelector, false);
   },
 ).retry(2);
 
