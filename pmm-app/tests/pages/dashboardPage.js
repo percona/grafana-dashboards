@@ -699,9 +699,9 @@ module.exports = {
   },
 
   async waitPTSummaryInformation() {
-    const response = await I.waitForResponse((response) => response.url().endsWith('v1/management/Actions/StartPTSummary') && response.status() === 200, { timeout: 60000 });
+    const response = await I.waitForResponse((response) => response.url().endsWith('v1/management/Actions/StartPTSummary') && response.status() === 200, { timeout: 60 });
 
-    await I.waitForResponse((response) => response.url().endsWith('v1/management/Actions/Get') && response.status() === 200, { timeout: 60000 });
+    await I.waitForResponse((response) => response.url().endsWith('v1/management/Actions/Get') && response.status() === 200, { timeout: 60 });
 
     return await response.json();
   },
