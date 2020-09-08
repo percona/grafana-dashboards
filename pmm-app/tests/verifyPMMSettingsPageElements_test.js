@@ -155,11 +155,9 @@ Scenario(
     I.waitForElement(pmmSettingsPage.fields.signUpEmail, 30);
     I.waitForElement(pmmSettingsPage.fields.signUpPassword, 30);
     const agreementLabel = await I.grabTextFrom(pmmSettingsPage.fields.signUpAgreementLabel);
-
     assert.ok(
-      agreementLabel,
-      pmmSettingsPage.agreementText,
-      `${agreementLabel}: This is not correct agreement label`,
+      agreementLabel === pmmSettingsPage.agreementText,
+      '${agreementLabel}: This is not correct agreement label',
     );
     I.waitForElement(pmmSettingsPage.fields.signUpButton, 30);
     I.waitForElement(pmmSettingsPage.fields.signUpBackToLogin, 30);
