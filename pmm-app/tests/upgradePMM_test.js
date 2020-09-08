@@ -34,14 +34,15 @@ Scenario(
   'PMM-T289 Verify Whats New link is presented on Update Widget @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
   async (I, homePage) => {
     const versions = getVersions();
+    const locators = homePage.getLocators(versions.current);
 
     I.amOnPage(homePage.url);
     // Whats New Link is added for the latest version hours before the release,
     // hence we need to skip checking on that, rest it should be available and checked.
     if (versions.majorVersionDiff >= 1 && versions.patchVersionDiff >= 0) {
-      I.waitForElement(homePage.fields.whatsNewLink, 30);
-      I.seeElement(homePage.fields.whatsNewLink);
-      const link = await I.grabAttributeFrom(homePage.fields.whatsNewLink, 'href');
+      I.waitForElement(locators.whatsNewLink, 30);
+      I.seeElement(locators.whatsNewLink);
+      const link = await I.grabAttributeFrom(locators.whatsNewLink, 'href');
 
       assert.equal(link.indexOf('https://per.co.na/pmm/') > -1, true, 'Whats New Link has an unexpected URL');
     }
