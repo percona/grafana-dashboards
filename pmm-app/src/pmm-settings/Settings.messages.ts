@@ -14,7 +14,9 @@ export const Messages = {
     updatesTooltip: 'Option to check new versions and ability to update PMM from UI.',
     sttLabel: 'Security Threat Tool',
     sttLink: `${GUI_DOC_URL}#security-threat-tool`,
-    sttTooltip: 'Enable Security Threat Tool and get updated checks from Percona.'
+    sttTooltip: 'Enable Security Threat Tool and get updated checks from Percona.',
+    dbaasLabel: 'DBaaS',
+    dbaasTooltip: 'Read-only option to show if DBaaS features are enabled.'
   },
   alertmanager: {
     action: 'Apply Alertmanager settings',
