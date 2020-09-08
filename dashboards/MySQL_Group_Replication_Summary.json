@@ -367,7 +367,7 @@
             ],
             "crosshairColor": "#8F070C",
             "datasource": null,
-            "description": "",
+            "description": "Notice: Collected for MySQL 8.x",
             "display": "timeline",
             "expandFromQueryS": 0,
             "extendLastValue": true,
@@ -725,43 +725,39 @@
                 "x": 0,
                 "y": 24
             },
-            "id": 1025,
+            "id": 1046,
             "panels": [
                 {
                     "aliasColors": {},
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "Prometheus",
+                    "datasource": null,
                     "decimals": 2,
-                    "description": "Number of transactions that members have received from the group and applied.",
-                    "editable": true,
-                    "error": false,
+                    "description": "Lag in seconds from when the LAST transaction is COMMITTED in the Primary and the time on local Replica.\n\nNotice: Collected for MySQL 8.x",
                     "fieldConfig": {
                         "defaults": {
-                            "custom": {},
-                            "links": []
+                            "custom": {}
                         },
                         "overrides": []
                     },
                     "fill": 2,
                     "fillGradient": 0,
-                    "grid": {},
                     "gridPos": {
                         "h": 8,
-                        "w": 12,
+                        "w": 24,
                         "x": 0,
                         "y": 25
                     },
                     "hiddenSeries": false,
-                    "id": 1033,
+                    "id": 1050,
                     "legend": {
                         "alignAsTable": true,
                         "avg": true,
                         "current": false,
                         "max": true,
                         "min": true,
-                        "rightSide": false,
+                        "rightSide": true,
                         "show": true,
                         "sort": "avg",
                         "sortDesc": true,
@@ -770,12 +766,10 @@
                     },
                     "lines": true,
                     "linewidth": 2,
-                    "links": [],
                     "nullPointMode": "null",
-                    "paceLength": 10,
                     "percentage": false,
                     "pluginVersion": "7.1.3",
-                    "pointradius": 5,
+                    "pointradius": 2,
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
@@ -784,28 +778,20 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "calculatedInterval": "2m",
-                            "datasourceErrors": {},
-                            "errors": {},
-                            "expr": "avg by (service_name) (rate(mysql_perf_schema_transactions_remote_applied_total{replication_set=~\"$replication_set\"}[$interval]) or irate(mysql_perf_schema_transactions_remote_applied_total{replication_set=~\"$replication_set\"}[5m]))",
-                            "format": "time_series",
+                            "expr": "max by (service_name) (max_over_time(mysql_perf_schema_replication_group_worker_lag_in_seconds{replication_set=~\"$replication_set\"}[$interval]) or max_over_time(mysql_perf_schema_replication_group_worker_lag_in_seconds{replication_set=~\"$replication_set\"}[5m]))",
                             "interval": "$interval",
-                            "intervalFactor": 1,
                             "legendFormat": "{{service_name}}",
-                            "metric": "",
-                            "refId": "A",
-                            "step": 300
+                            "refId": "A"
                         }
                     ],
                     "thresholds": [],
                     "timeFrom": null,
                     "timeRegions": [],
                     "timeShift": null,
-                    "title": "Applied Transactions ",
+                    "title": "Replication Lag",
                     "tooltip": {
-                        "msResolution": false,
                         "shared": true,
-                        "sort": 5,
+                        "sort": 0,
                         "value_type": "individual"
                     },
                     "type": "graph",
@@ -818,21 +804,23 @@
                     },
                     "yaxes": [
                         {
-                            "$$hashKey": "object:1326",
-                            "decimals": 2,
-                            "format": "short",
+                            "$$hashKey": "object:679",
+                            "decimals": null,
+                            "format": "s",
+                            "label": null,
                             "logBase": 1,
                             "max": null,
-                            "min": 0,
+                            "min": "0",
                             "show": true
                         },
                         {
-                            "$$hashKey": "object:1327",
+                            "$$hashKey": "object:680",
                             "format": "short",
+                            "label": null,
                             "logBase": 1,
                             "max": null,
-                            "min": 0,
-                            "show": false
+                            "min": null,
+                            "show": true
                         }
                     ],
                     "yaxis": {
@@ -845,36 +833,31 @@
                     "bars": false,
                     "dashLength": 10,
                     "dashes": false,
-                    "datasource": "Prometheus",
+                    "datasource": null,
                     "decimals": 2,
-                    "description": "Number of transactions which originated on members and were sent to the group.",
-                    "editable": true,
-                    "error": false,
+                    "description": "Time difference from the moment the transaction is COMMITTED on the Primary and the time \ntransaction ENTER the local queue on the Replica.\n\nNotice: Collected for MySQL 8.x",
                     "fieldConfig": {
                         "defaults": {
-                            "custom": {},
-                            "links": []
+                            "custom": {}
                         },
                         "overrides": []
                     },
                     "fill": 2,
                     "fillGradient": 0,
-                    "grid": {},
                     "gridPos": {
                         "h": 8,
                         "w": 12,
-                        "x": 12,
-                        "y": 25
+                        "x": 0,
+                        "y": 33
                     },
                     "hiddenSeries": false,
-                    "id": 1034,
+                    "id": 1052,
                     "legend": {
                         "alignAsTable": true,
                         "avg": true,
                         "current": false,
                         "max": true,
                         "min": true,
-                        "rightSide": false,
                         "show": true,
                         "sort": "avg",
                         "sortDesc": true,
@@ -883,12 +866,10 @@
                     },
                     "lines": true,
                     "linewidth": 2,
-                    "links": [],
                     "nullPointMode": "null",
-                    "paceLength": 10,
                     "percentage": false,
                     "pluginVersion": "7.1.3",
-                    "pointradius": 5,
+                    "pointradius": 2,
                     "points": false,
                     "renderer": "flot",
                     "seriesOverrides": [],
@@ -897,28 +878,20 @@
                     "steppedLine": false,
                     "targets": [
                         {
-                            "calculatedInterval": "2m",
-                            "datasourceErrors": {},
-                            "errors": {},
-                            "expr": "avg by (service_name) (rate(mysql_perf_schema_transactions_local_proposed_total{replication_set=~\"$replication_set\"}[$interval]) or irate(mysql_perf_schema_transactions_local_proposed_total{replication_set=~\"$replication_set\"}[5m]))",
-                            "format": "time_series",
+                            "expr": "max by (service_name) (max_over_time(mysql_perf_schema_replication_group_worker_transport_time_seconds{replication_set=~\"$replication_set\"}[$interval]) or max_over_time(mysql_perf_schema_replication_group_worker_transport_time_seconds{replication_set=~\"$replication_set\"}[5m])) < 20202020",
                             "interval": "$interval",
-                            "intervalFactor": 1,
                             "legendFormat": "{{service_name}}",
-                            "metric": "",
-                            "refId": "A",
-                            "step": 300
+                            "refId": "A"
                         }
                     ],
                     "thresholds": [],
                     "timeFrom": null,
                     "timeRegions": [],
                     "timeShift": null,
-                    "title": "Sent Transactions ",
+                    "title": "Transport Time",
                     "tooltip": {
-                        "msResolution": false,
                         "shared": true,
-                        "sort": 5,
+                        "sort": 0,
                         "value_type": "individual"
                     },
                     "type": "graph",
@@ -931,27 +904,479 @@
                     },
                     "yaxes": [
                         {
-                            "$$hashKey": "object:1326",
-                            "decimals": 2,
-                            "format": "short",
+                            "$$hashKey": "object:679",
+                            "decimals": null,
+                            "format": "s",
+                            "label": null,
                             "logBase": 1,
                             "max": null,
-                            "min": 0,
+                            "min": "0",
                             "show": true
                         },
                         {
-                            "$$hashKey": "object:1327",
+                            "$$hashKey": "object:680",
                             "format": "short",
+                            "label": null,
                             "logBase": 1,
                             "max": null,
-                            "min": 0,
-                            "show": false
+                            "min": null,
+                            "show": true
                         }
                     ],
                     "yaxis": {
                         "align": false,
                         "alignLevel": null
                     }
+                },
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": null,
+                    "decimals": 2,
+                    "description": "Time difference from the moment the transaction has being COMMITTED on the Primary and the time transaction exit the queue to be apply in the local Replica.\n\nNotice: Collected for MySQL 8.x",
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {}
+                        },
+                        "overrides": []
+                    },
+                    "fill": 2,
+                    "fillGradient": 0,
+                    "gridPos": {
+                        "h": 8,
+                        "w": 12,
+                        "x": 12,
+                        "y": 33
+                    },
+                    "hiddenSeries": false,
+                    "id": 1051,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pluginVersion": "7.1.3",
+                    "pointradius": 2,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "expr": "max by (service_name) (max_over_time(mysql_perf_schema_replication_group_worker_rep_delay_seconds{replication_set=~\"$replication_set\"}[$interval]) or max_over_time(mysql_perf_schema_replication_group_worker_rep_delay_seconds{replication_set=~\"$replication_set\"}[5m]))  < 20202020",
+                            "interval": "$interval",
+                            "legendFormat": "{{service_name}}",
+                            "refId": "A"
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeRegions": [],
+                    "timeShift": null,
+                    "title": "Replication Delay",
+                    "tooltip": {
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "$$hashKey": "object:679",
+                            "decimals": null,
+                            "format": "s",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": "0",
+                            "show": true
+                        },
+                        {
+                            "$$hashKey": "object:680",
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        }
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
+                },
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": null,
+                    "decimals": 2,
+                    "description": "Time pass to apply the transaction on the local node.\n\nNotice: Collected for MySQL 8.x",
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {}
+                        },
+                        "overrides": []
+                    },
+                    "fill": 2,
+                    "fillGradient": 0,
+                    "gridPos": {
+                        "h": 8,
+                        "w": 12,
+                        "x": 0,
+                        "y": 41
+                    },
+                    "hiddenSeries": false,
+                    "id": 1054,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pluginVersion": "7.1.3",
+                    "pointradius": 2,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "expr": "max by (service_name) (max_over_time(mysql_perf_schema_replication_group_worker_apply_time_seconds{replication_set=~\"$replication_set\"}[$interval]) or max_over_time(mysql_perf_schema_replication_group_worker_apply_time_seconds{replication_set=~\"$replication_set\"}[5m]))",
+                            "interval": "$interval",
+                            "legendFormat": "{{service_name}}",
+                            "refId": "A"
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeRegions": [],
+                    "timeShift": null,
+                    "title": "Transaction Apply Time",
+                    "tooltip": {
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "$$hashKey": "object:679",
+                            "decimals": null,
+                            "format": "s",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": "0",
+                            "show": true
+                        },
+                        {
+                            "$$hashKey": "object:680",
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        }
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
+                },
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": null,
+                    "decimals": 2,
+                    "description": "Time spent by transaction inside the local queue in the Replica. \n\nNotice: Collected for MySQL 8.x",
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {}
+                        },
+                        "overrides": []
+                    },
+                    "fill": 2,
+                    "fillGradient": 0,
+                    "gridPos": {
+                        "h": 8,
+                        "w": 12,
+                        "x": 12,
+                        "y": 41
+                    },
+                    "hiddenSeries": false,
+                    "id": 1053,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pluginVersion": "7.1.3",
+                    "pointradius": 2,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "expr": "max by (service_name) (max_over_time(mysql_perf_schema_replication_group_worker_time_RL_seconds{replication_set=~\"$replication_set\"}[$interval]) or max_over_time(mysql_perf_schema_replication_group_worker_time_RL_seconds{replication_set=~\"$replication_set\"}[5m]))",
+                            "interval": "$interval",
+                            "legendFormat": "{{service_name}}",
+                            "refId": "A"
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeRegions": [],
+                    "timeShift": null,
+                    "title": "Transaction Time Inside the Local Queue",
+                    "tooltip": {
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "$$hashKey": "object:679",
+                            "decimals": null,
+                            "format": "s",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": "0",
+                            "show": true
+                        },
+                        {
+                            "$$hashKey": "object:680",
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        }
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
+                }
+            ],
+            "title": "Replication Delay Details",
+            "type": "row"
+        },
+        {
+            "collapsed": true,
+            "datasource": null,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 25
+            },
+            "id": 1025,
+            "panels": [
+                {
+                    "datasource": null,
+                    "description": "Notice: Transaction IDs are collected for MySQL 8.x",
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {
+                                "align": null
+                            },
+                            "mappings": [],
+                            "thresholds": {
+                                "mode": "absolute",
+                                "steps": [
+                                    {
+                                        "color": "green",
+                                        "value": null
+                                    },
+                                    {
+                                        "color": "red",
+                                        "value": 80
+                                    }
+                                ]
+                            }
+                        },
+                        "overrides": [
+                            {
+                                "matcher": {
+                                    "id": "byName",
+                                    "options": "IO Thread"
+                                },
+                                "properties": [
+                                    {
+                                        "id": "custom.width",
+                                        "value": 128
+                                    }
+                                ]
+                            },
+                            {
+                                "matcher": {
+                                    "id": "byName",
+                                    "options": "SQL Thread"
+                                },
+                                "properties": [
+                                    {
+                                        "id": "custom.width",
+                                        "value": 124
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "gridPos": {
+                        "h": 6,
+                        "w": 24,
+                        "x": 0,
+                        "y": 26
+                    },
+                    "id": 1048,
+                    "options": {
+                        "showHeader": true,
+                        "sortBy": []
+                    },
+                    "pluginVersion": "7.1.3",
+                    "targets": [
+                        {
+                            "expr": "avg_over_time(mysql_perf_schema_replication_group_worker_rep_delay_seconds{replication_set=~\"$replication_set\"}[$interval]) or avg_over_time(mysql_perf_schema_replication_group_worker_5_info{replication_set=~\"$replication_set\"}[$interval])",
+                            "format": "table",
+                            "instant": true,
+                            "interval": "$interval",
+                            "legendFormat": "{{service_name}}",
+                            "refId": "A"
+                        }
+                    ],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Transactions Details",
+                    "transformations": [
+                        {
+                            "id": "organize",
+                            "options": {
+                                "excludeByName": {
+                                    "Time": true,
+                                    "Value": true,
+                                    "agent_id": true,
+                                    "agent_type": true,
+                                    "channel_name": true,
+                                    "cluster": true,
+                                    "environment": true,
+                                    "instance": true,
+                                    "job": true,
+                                    "machine_id": true,
+                                    "node_id": true,
+                                    "node_name": true,
+                                    "node_type": true,
+                                    "replication_set": true,
+                                    "service_id": true,
+                                    "service_type": true
+                                },
+                                "indexByName": {
+                                    "IO_thread": 2,
+                                    "SQL_thread": 3,
+                                    "Time": 1,
+                                    "Value": 20,
+                                    "agent_id": 4,
+                                    "agent_type": 5,
+                                    "channel_name": 6,
+                                    "cluster": 7,
+                                    "environment": 8,
+                                    "instance": 9,
+                                    "job": 10,
+                                    "last_applied_transaction": 11,
+                                    "last_queued_transaction": 12,
+                                    "machine_id": 13,
+                                    "node_id": 14,
+                                    "node_name": 15,
+                                    "node_type": 16,
+                                    "replication_set": 17,
+                                    "service_id": 18,
+                                    "service_name": 0,
+                                    "service_type": 19
+                                },
+                                "renameByName": {
+                                    "IO_thread": "IO Thread",
+                                    "SQL_thread": "SQL Thread",
+                                    "Time": "",
+                                    "agent_id": "",
+                                    "last_applied_transaction": "Last Applied Transaction",
+                                    "last_queued_transaction": "Last Queued Transaction",
+                                    "machine_id": "",
+                                    "service_name": "Service Name"
+                                }
+                            }
+                        }
+                    ],
+                    "type": "table"
                 },
                 {
                     "aliasColors": {},
@@ -977,7 +1402,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 33
+                        "y": 32
                     },
                     "hiddenSeries": false,
                     "id": 1030,
@@ -1073,119 +1498,6 @@
                     "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 2,
-                    "description": "Number of transactions which originated on members and were rolled back by the group.",
-                    "editable": true,
-                    "error": false,
-                    "fieldConfig": {
-                        "defaults": {
-                            "custom": {},
-                            "links": []
-                        },
-                        "overrides": []
-                    },
-                    "fill": 2,
-                    "fillGradient": 0,
-                    "grid": {},
-                    "gridPos": {
-                        "h": 8,
-                        "w": 12,
-                        "x": 12,
-                        "y": 33
-                    },
-                    "hiddenSeries": false,
-                    "id": 1035,
-                    "legend": {
-                        "alignAsTable": true,
-                        "avg": true,
-                        "current": false,
-                        "max": true,
-                        "min": true,
-                        "rightSide": false,
-                        "show": true,
-                        "sort": "avg",
-                        "sortDesc": true,
-                        "total": false,
-                        "values": true
-                    },
-                    "lines": true,
-                    "linewidth": 2,
-                    "links": [],
-                    "nullPointMode": "null",
-                    "paceLength": 10,
-                    "percentage": false,
-                    "pluginVersion": "7.1.3",
-                    "pointradius": 5,
-                    "points": false,
-                    "renderer": "flot",
-                    "seriesOverrides": [],
-                    "spaceLength": 10,
-                    "stack": false,
-                    "steppedLine": false,
-                    "targets": [
-                        {
-                            "calculatedInterval": "2m",
-                            "datasourceErrors": {},
-                            "errors": {},
-                            "expr": "avg by (service_name) (rate(mysql_perf_schema_transactions_local_rollback_total{replication_set=~\"$replication_set\"}[$interval]) or irate(mysql_perf_schema_transactions_local_rollback_total{replication_set=~\"$replication_set\"}[5m]))",
-                            "format": "time_series",
-                            "interval": "$interval",
-                            "intervalFactor": 1,
-                            "legendFormat": "{{service_name}}",
-                            "metric": "",
-                            "refId": "A",
-                            "step": 300
-                        }
-                    ],
-                    "thresholds": [],
-                    "timeFrom": null,
-                    "timeRegions": [],
-                    "timeShift": null,
-                    "title": "Rolled Back Transactions ",
-                    "tooltip": {
-                        "msResolution": false,
-                        "shared": true,
-                        "sort": 5,
-                        "value_type": "individual"
-                    },
-                    "type": "graph",
-                    "xaxis": {
-                        "buckets": null,
-                        "mode": "time",
-                        "name": null,
-                        "show": true,
-                        "values": []
-                    },
-                    "yaxes": [
-                        {
-                            "$$hashKey": "object:1326",
-                            "decimals": 2,
-                            "format": "short",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": true
-                        },
-                        {
-                            "$$hashKey": "object:1327",
-                            "format": "short",
-                            "logBase": 1,
-                            "max": null,
-                            "min": 0,
-                            "show": false
-                        }
-                    ],
-                    "yaxis": {
-                        "align": false,
-                        "alignLevel": null
-                    }
-                },
-                {
-                    "aliasColors": {},
-                    "bars": false,
-                    "dashLength": 10,
-                    "dashes": false,
-                    "datasource": "Prometheus",
-                    "decimals": 2,
                     "description": "Number of transaction rows which can be used for certification, but have not been garbage collected. Can be thought of as the current size of the conflict detection database against which each transaction is certified.",
                     "editable": true,
                     "error": false,
@@ -1202,8 +1514,8 @@
                     "gridPos": {
                         "h": 8,
                         "w": 12,
-                        "x": 0,
-                        "y": 41
+                        "x": 12,
+                        "y": 32
                     },
                     "hiddenSeries": false,
                     "id": 1019,
@@ -1299,7 +1611,7 @@
                     "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 2,
-                    "description": "The number of transactions in the queue pending conflict detection checks. Once the transactions have been checked for conflicts, if they pass the check, they are queued to be applied as well.",
+                    "description": "Number of transactions that members have received from the group and applied.\n\nNotice: Collected for MySQL 8.x",
                     "editable": true,
                     "error": false,
                     "fieldConfig": {
@@ -1315,11 +1627,11 @@
                     "gridPos": {
                         "h": 8,
                         "w": 12,
-                        "x": 12,
-                        "y": 41
+                        "x": 0,
+                        "y": 40
                     },
                     "hiddenSeries": false,
-                    "id": 1031,
+                    "id": 1033,
                     "legend": {
                         "alignAsTable": true,
                         "avg": true,
@@ -1352,7 +1664,7 @@
                             "calculatedInterval": "2m",
                             "datasourceErrors": {},
                             "errors": {},
-                            "expr": "avg by (service_name) (mysql_perf_schema_transactions_in_queue{replication_set=~\"$replication_set\"} or mysql_perf_schema_5_transactions_in_queue{replication_set=~\"$replication_set\"})",
+                            "expr": "avg by (service_name) (rate(mysql_perf_schema_transactions_remote_applied_total{replication_set=~\"$replication_set\"}[$interval]) or irate(mysql_perf_schema_transactions_remote_applied_total{replication_set=~\"$replication_set\"}[5m]))",
                             "format": "time_series",
                             "interval": "$interval",
                             "intervalFactor": 1,
@@ -1366,7 +1678,7 @@
                     "timeFrom": null,
                     "timeRegions": [],
                     "timeShift": null,
-                    "title": "Transactions in the Queue for Checking",
+                    "title": "Applied Transactions ",
                     "tooltip": {
                         "msResolution": false,
                         "shared": true,
@@ -1383,7 +1695,7 @@
                     },
                     "yaxes": [
                         {
-                            "$$hashKey": "object:638",
+                            "$$hashKey": "object:1326",
                             "decimals": 2,
                             "format": "short",
                             "logBase": 1,
@@ -1392,7 +1704,7 @@
                             "show": true
                         },
                         {
-                            "$$hashKey": "object:639",
+                            "$$hashKey": "object:1327",
                             "format": "short",
                             "logBase": 1,
                             "max": null,
@@ -1412,7 +1724,120 @@
                     "dashes": false,
                     "datasource": "Prometheus",
                     "decimals": 2,
-                    "description": "The number of transactions that members have received from the replication group which are waiting to be applied.",
+                    "description": "Number of transactions which originated on members and were sent to the group.\n\nNotice: Collected for MySQL 8.x",
+                    "editable": true,
+                    "error": false,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {},
+                            "links": []
+                        },
+                        "overrides": []
+                    },
+                    "fill": 2,
+                    "fillGradient": 0,
+                    "grid": {},
+                    "gridPos": {
+                        "h": 8,
+                        "w": 12,
+                        "x": 12,
+                        "y": 40
+                    },
+                    "hiddenSeries": false,
+                    "id": 1034,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "rightSide": false,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "paceLength": 10,
+                    "percentage": false,
+                    "pluginVersion": "7.1.3",
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "avg by (service_name) (rate(mysql_perf_schema_transactions_local_proposed_total{replication_set=~\"$replication_set\"}[$interval]) or irate(mysql_perf_schema_transactions_local_proposed_total{replication_set=~\"$replication_set\"}[5m]))",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "{{service_name}}",
+                            "metric": "",
+                            "refId": "A",
+                            "step": 300
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeRegions": [],
+                    "timeShift": null,
+                    "title": "Sent Transactions ",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 5,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "$$hashKey": "object:1326",
+                            "decimals": 2,
+                            "format": "short",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        },
+                        {
+                            "$$hashKey": "object:1327",
+                            "format": "short",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": false
+                        }
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
+                },
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": 2,
+                    "description": "The number of transactions that members have received from the replication group which are waiting to be applied.\n\nNotice: Collected for MySQL 8.x",
                     "editable": true,
                     "error": false,
                     "fieldConfig": {
@@ -1429,7 +1854,7 @@
                         "h": 8,
                         "w": 12,
                         "x": 0,
-                        "y": 49
+                        "y": 48
                     },
                     "hiddenSeries": false,
                     "id": 16,
@@ -1517,6 +1942,232 @@
                         "align": false,
                         "alignLevel": null
                     }
+                },
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": 2,
+                    "description": "Number of transactions which originated on members and were rolled back by the group.\n\nNotice: Collected for MySQL 8.x",
+                    "editable": true,
+                    "error": false,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {},
+                            "links": []
+                        },
+                        "overrides": []
+                    },
+                    "fill": 2,
+                    "fillGradient": 0,
+                    "grid": {},
+                    "gridPos": {
+                        "h": 8,
+                        "w": 12,
+                        "x": 12,
+                        "y": 48
+                    },
+                    "hiddenSeries": false,
+                    "id": 1035,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "rightSide": false,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "paceLength": 10,
+                    "percentage": false,
+                    "pluginVersion": "7.1.3",
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "avg by (service_name) (rate(mysql_perf_schema_transactions_local_rollback_total{replication_set=~\"$replication_set\"}[$interval]) or irate(mysql_perf_schema_transactions_local_rollback_total{replication_set=~\"$replication_set\"}[5m]))",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "{{service_name}}",
+                            "metric": "",
+                            "refId": "A",
+                            "step": 300
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeRegions": [],
+                    "timeShift": null,
+                    "title": "Rolled Back Transactions ",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 5,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "$$hashKey": "object:1326",
+                            "decimals": 2,
+                            "format": "short",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        },
+                        {
+                            "$$hashKey": "object:1327",
+                            "format": "short",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": false
+                        }
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
+                },
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": 2,
+                    "description": "The number of transactions in the queue pending conflict detection checks. Once the transactions have been checked for conflicts, if they pass the check, they are queued to be applied as well.",
+                    "editable": true,
+                    "error": false,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {},
+                            "links": []
+                        },
+                        "overrides": []
+                    },
+                    "fill": 2,
+                    "fillGradient": 0,
+                    "grid": {},
+                    "gridPos": {
+                        "h": 8,
+                        "w": 12,
+                        "x": 0,
+                        "y": 56
+                    },
+                    "hiddenSeries": false,
+                    "id": 1031,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "rightSide": false,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "paceLength": 10,
+                    "percentage": false,
+                    "pluginVersion": "7.1.3",
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "calculatedInterval": "2m",
+                            "datasourceErrors": {},
+                            "errors": {},
+                            "expr": "avg by (service_name) (mysql_perf_schema_transactions_in_queue{replication_set=~\"$replication_set\"} or mysql_perf_schema_5_transactions_in_queue{replication_set=~\"$replication_set\"})",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "{{service_name}}",
+                            "metric": "",
+                            "refId": "A",
+                            "step": 300
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeRegions": [],
+                    "timeShift": null,
+                    "title": "Transactions in the Queue for Checking",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 5,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "$$hashKey": "object:638",
+                            "decimals": 2,
+                            "format": "short",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        },
+                        {
+                            "$$hashKey": "object:639",
+                            "format": "short",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": false
+                        }
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
                 }
             ],
             "title": "Transactions",
@@ -1529,7 +2180,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 25
+                "y": 26
             },
             "id": 1021,
             "panels": [
@@ -1557,7 +2208,7 @@
                         "h": 9,
                         "w": 24,
                         "x": 0,
-                        "y": 26
+                        "y": 65
                     },
                     "hiddenSeries": false,
                     "id": 1027,
