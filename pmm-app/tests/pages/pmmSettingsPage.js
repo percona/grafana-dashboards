@@ -9,6 +9,8 @@ module.exports = {
   diagnosticsText:
     'You can download server logs to make the problem detection simpler. ' +
     'Please include this file if you are submitting a bug report.',
+  agreementText:
+    'Check here to indicate that you have read and agree to the \nTerms of Service\n and \nPrivacy Policy',
   alertManager: {
     ip: process.env.VM_IP,
     service: ':9093/#/alerts',
