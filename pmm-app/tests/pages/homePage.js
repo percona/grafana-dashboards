@@ -16,7 +16,6 @@ module.exports = {
     dashboardHeaderText: 'Percona Monitoring and Management',
     dashboardHeaderLocator: '//div[contains(@class, "dashboard-header")]',
     oldLastCheckSelector: '#pmm-update-widget > .last-check-wrapper p',
-    whatsNewLink: 'a.text-primary.pmm-link',
     sttDisabledFailedChecksPanelSelector: '$db-check-panel-settings-link',
     sttFailedChecksPanelSelector: '$db-check-panel-has-checks',
     checksPanelSelector: '$db-check-panel-home',
@@ -37,6 +36,7 @@ module.exports = {
         currentVersion: '#current_version > span',
         inProgressMessage: 'Update in progress',
         successUpgradeMessage: 'Successfully updated',
+        whatsNewLink: 'a.text-primary.pmm-link',
       },
       latest: {
         checkUpdateButton: '$update-last-check-button',
@@ -49,6 +49,7 @@ module.exports = {
         availableVersion: '$update-latest-version',
         inProgressMessage: 'Upgrade in progress',
         successUpgradeMessage: 'PMM has been successfully upgraded to version',
+        whatsNewLink: '//a[@rel="noreferrer"]',
       },
     },
   },
