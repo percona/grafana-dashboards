@@ -94,7 +94,6 @@ module.exports = {
     diagnosticsLabel: '[data-qa="diagnostics-label"]',
     downloadLogsButton: '//a[@class="ant-btn" and @href="/logs.zip"]',
     diagnosticsInfo: '//div[@data-qa="diagnostics-label"]/div/div',
-    diagnosticsTooltip: `//div[contains(text(), 'You can download server logs to make the problem detection simpler. Please include this file if you are submitting a bug report.')]`,
     iframe: '//div[@class="panel-content"]//iframe',
     metricsResolutionButton: '[data-qa="metrics-resolution-button"]',
     metricsResolution: '//div[@data-qa="metrics-resolution-radio-button-group"]/label[text()="',

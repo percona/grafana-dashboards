@@ -170,7 +170,7 @@ Scenario(
     I.waitForElement(pmmSettingsPage.fields.diagnosticsButton, 30);
     I.waitForVisible(pmmSettingsPage.fields.diagnosticsInfo, 30);
     I.moveCursorTo(pmmSettingsPage.fields.diagnosticsInfo);
-    I.waitForVisible(pmmSettingsPage.fields.diagnosticsTooltip, 30);
+    I.waitForText(pmmSettingsPage.diagnosticsText, 30);
     I.waitForElement(pmmSettingsPage.fields.termsOfService);
     I.waitForElement(pmmSettingsPage.fields.privacyPolicy);
   },
@@ -189,6 +189,6 @@ Scenario(
     I.waitForElement(pmmSettingsPage.fields.diagnosticsButton, 30);
     I.waitForVisible(pmmSettingsPage.fields.diagnosticsInfo, 30);
     I.moveCursorTo(pmmSettingsPage.fields.diagnosticsInfo);
-    I.waitForVisible(pmmSettingsPage.fields.diagnosticsTooltip, 30);
+    I.waitForText(pmmSettingsPage.diagnosticsText, 30);
   },
 );
