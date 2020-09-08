@@ -32,9 +32,9 @@ module.exports = {
 
   getCellValueLocator: (rowNumber, columnNumber) => `div.tr-${rowNumber} > div:nth-child(${columnNumber + 2}) span > div > span`,
 
-  getMetricSortingLocator: (columnNumber) => `(//a[@data-qa='sort-by-control'])[${columnNumber}]`,
+  getMetricSortingLocator: columnNumber => `(//a[@data-qa='sort-by-control'])[${columnNumber}]`,
 
-  getGroupByOptionLocator: (option) => `//ul/li[@label='${option}']`,
+  getGroupByOptionLocator: option => `//ul/li[@label='${option}']`,
 
   waitForOverviewLoaded() {
     I.waitForVisible(this.root, 60);

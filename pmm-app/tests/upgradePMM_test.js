@@ -104,10 +104,11 @@ Scenario(
   'PMM-T262 Open PMM Settings page and verify DATA_RETENTION value is set to 2 days after upgrade @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
   async (I, pmmSettingsPage) => {
     const dataRetention = '2';
+    const sectionNameToExpand = pmmSettingsPage.sectionTabsList.advanced;
 
     I.amOnPage(pmmSettingsPage.url);
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
-    await pmmSettingsPage.expandSection('Advanced settings', pmmSettingsPage.fields.advancedButton);
+    await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.advancedButton);
     const dataRetentionActualValue = await I.grabValueFrom(pmmSettingsPage.fields.dataRetentionInput);
 
     assert.equal(
@@ -128,6 +129,23 @@ Scenario(
 
     assert.ok(newsItems > 1, 'News Panel is empty');
   },
+);
+
+Scenario(
+  'PMM-T424 Verify PT Summary Panel is available after Upgrade @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
+  async (I, adminPage, dashboardPage) => {
+    const filter = 'Node Name';
+
+    I.amOnPage(dashboardPage.nodeSummaryDashboard.url);
+    dashboardPage.waitPTSummaryInformation();
+    dashboardPage.waitForDashboardOpened();
+    await dashboardPage.applyFilter(filter, 'pmm-server');
+    await dashboardPage.waitPTSummaryInformation();
+
+    I.waitForElement(dashboardPage.nodeSummaryDashboard.ptSummaryDetail.reportContainer, 30);
+    I.waitForText(dashboardPage.nodeSummaryDashboard.ptSummaryDetail.ptHeaderText, 60);
+    I.see(dashboardPage.nodeSummaryDashboard.ptSummaryDetail.ptHeaderText);
+  }
 );
 
 Scenario(
