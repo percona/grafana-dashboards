@@ -63,7 +63,7 @@ Scenario(
   async (I, homePage, inventoryAPI, addInstanceAPI) => {
     // Adding instances for monitoring
     for (const type of Object.values(addInstanceAPI.instanceTypes)) {
-      if (!type.mongodb) await addInstanceAPI.apiAddInstance(type, serviceNames[type.toLowerCase()]);
+      if (type !== 'MongoDB') await addInstanceAPI.apiAddInstance(type, serviceNames[type.toLowerCase()]);
     }
 
     // Checking that instances are RUNNING
@@ -162,7 +162,7 @@ Scenario(
   'Verify QAN has specific filters for Remote Instances after Upgrade (UI) @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
   async (I, qanPage, qanFilters, addInstanceAPI) => {
     I.amOnPage(qanPage.url);
-    qanFilters.waitForFiltersLoad();
+    qanFilters.waitForFiltersToLoad();
     await qanFilters.expandAllFilters();
 
     // Checking that Cluster filters are still in QAN after Upgrade
