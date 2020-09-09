@@ -63,12 +63,12 @@ Scenario(
   async (I, homePage, inventoryAPI, addInstanceAPI) => {
     // Adding instances for monitoring
     for (const type of Object.values(addInstanceAPI.instanceTypes)) {
-      await addInstanceAPI.apiAddInstance(type, serviceNames[type.toLowerCase()]);
+      if (!type.mongodb) await addInstanceAPI.apiAddInstance(type, serviceNames[type.toLowerCase()]);
     }
 
     // Checking that instances are RUNNING
     for (const service of Object.values(inventoryAPI.services)) {
-      await inventoryAPI.verifyServiceExistsAndHasRunningStatus(service, serviceNames[service.service]);
+      if (service.service !== 'mongodb') await inventoryAPI.verifyServiceExistsAndHasRunningStatus(service, serviceNames[service.service]);
     }
   },
 );
@@ -87,7 +87,7 @@ Scenario(
   'Verify Agents are RUNNING after Upgrade (API) [critical] @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
   async (I, inventoryAPI) => {
     for (const service of Object.values(inventoryAPI.services)) {
-      await inventoryAPI.verifyServiceExistsAndHasRunningStatus(service, serviceNames[service.service]);
+      if (service.service !== 'mongodb') await inventoryAPI.verifyServiceExistsAndHasRunningStatus(service, serviceNames[service.service]);
     }
   },
 );
