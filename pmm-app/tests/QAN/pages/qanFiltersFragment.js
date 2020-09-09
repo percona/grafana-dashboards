@@ -20,11 +20,14 @@ module.exports = {
     filterCheckboxes: '.checkbox-container__checkmark',
   },
   buttons: {
-    resetAllButton: '$qan-filters-reset-all',
+    resetAll: '$qan-filters-reset-all',
     showSelected: '$qan-filters-show-selected',
   },
   elements: {
     spinner: 'i.fa-spinner',
+    disabledResetAll: '//button[@data-qa="qan-filters-reset-all" and @disabled ]',
+    environmentLabel: '//span[contains(text(), "Environment")]',
+    filterName: 'span.checkbox-container__label-text',
   },
   requests: {
     getReportPath: '/v0/qan/GetReport',
@@ -56,12 +59,27 @@ module.exports = {
     I.waitForInvisible(this.elements.spinner, 30);
   },
 
+  async expandAllFilters() {
+    for (let i = 0; i < 4; i++) {
+      const numOfElementsFilterCount = await I.grabNumberOfVisibleElements(
+        this.getFilterGroupCountSelector(this.filterGroups[i]),
+      );
+
+      if (numOfElementsFilterCount === '1') {
+        I.click(this.getFilterGroupCountSelector(this.filterGroups[i]));
+        I.waitForVisible(
+          `//section[@class='aside__filter-group']//span[contains(text(), '${this.filterGroups[i]}')]/../button[contains(text(), 'Show top 5')]`, 30
+        );
+      }
+    }
+  },
+
   applyFilter(filterName) {
     const filterToApply = `//span[contains(@class, 'checkbox-container__label-text') and contains(text(), '${filterName}')]`;
 
     I.fillField(this.fields.filterBy, filterName);
     I.waitForVisible(filterToApply, 20);
-    I.click(filterToApply);
+    I.forceClick(filterToApply);
     I.click(this.fields.filterBy);
     I.clearField(this.fields.filterBy);
     // workaround for clearing the field completely
@@ -117,5 +135,15 @@ module.exports = {
     const filterLocator = `//span[contains(text(), '${groupName}')]/parent::p/following-sibling::div//input[contains(@name, '${filter}') and @disabled]`;
 
     I.waitForVisible(filterLocator, 20);
+  },
+
+  async verifySelectedFilters(filters) {
+    I.click(this.buttons.showSelected);
+    I.waitForVisible(this.elements.filterName, 20);
+    const currentFilters = await I.grabTextFrom(this.elements.filterName);
+
+    for (let i = 0; i <= filters.length - 1; i++) {
+      assert.ok(currentFilters[i].includes(filters[i]), `The filter '${filters[i]}' has not been found!`);
+    }
   },
 };
