@@ -3,7 +3,6 @@ const assert = require('assert');
 const serviceNames = {
   mysql: 'mysql_upgrade_service',
   postgresql: 'postgres_upgrade_service',
-  mongodb: 'mongodb_upgrade_service',
   proxysql: 'proxysql_upgrade_service',
   rds: 'mysql_rds_uprgade_service',
 };
