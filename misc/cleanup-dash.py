@@ -400,7 +400,7 @@ def add_annotation(dashboard):
     if user_input:
         if user_input == 'Yes':
             active_variables = [tag]
-            for templating in copy.deepcopy(dashboard['templating']['list']):
+            for templating in dashboard['templating']['list']:
                 if templating['type'] == "query" and templating['hide'] == 0:
                     active_variables.append('$' + templating['name'])
 
