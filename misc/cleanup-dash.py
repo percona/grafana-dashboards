@@ -399,6 +399,11 @@ def add_annotation(dashboard):
     user_input = raw_input(prompt)
     if user_input:
         if user_input == 'Yes':
+            active_variables = [tag]
+            for templating in copy.deepcopy(dashboard['templating']['list']):
+                if templating['type'] == "query" and templating['hide'] == 0:
+                    active_variables.append('$' + templating['name'])
+
             for annotation in copy.deepcopy(dashboard['annotations']['list']):
                 dashboard['annotations']['list'].remove(annotation)
             add_item = {
@@ -411,7 +416,7 @@ def add_annotation(dashboard):
                 'matchAny': True,
                 'name': "PMM Annotations",
                 'showIn': 0,
-                'tags': [ tag, '$node_name', '$service_name'],
+                'tags': active_variables,
                 'type': "tags"
             }
             dashboard['annotations']['list'].append(add_item)
