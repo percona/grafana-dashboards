@@ -1,3 +1,5 @@
+const { quantile } = require('d3');
+
 Feature('Test the functionality inside DBaas page');
 
 Before(async (I) => {
@@ -23,4 +25,11 @@ Scenario('PMM-T426 - Verify adding new Kubernetes cluster@not-pr-pipeline', asyn
   I.click(dbaasPage.fields.kubernetesAddButton);
   I.see(dbaasPage.positiveAlertText);
   dbaasPage.checkAddedCluster(clusterName);
+});
+
+Scenario('PMM-T427 - Verify submitting blank Add kubernetes cluster form', async (I, dbaasPage) => {
+  I.amOnPage(dbaasPage.url);
+  I.waitForVisible(dbaasPage.fields.addKubernetesClusterButton, 30);
+  I.click(dbaasPage.fields.addKubernetesClusterButton);
+  I.seeElement(dbaasPage.fields.disabledAddButton);
 });

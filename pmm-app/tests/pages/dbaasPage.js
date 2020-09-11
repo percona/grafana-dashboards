@@ -7,6 +7,7 @@ module.exports = {
     addKubernetesClusterButton: "//span[contains(text(), 'Add new Kubernetes Cluster')]",
     modalWindow: '$modal-body',
     closeButton: '$modal-close-button',
+    disabledAddButton: '//button[@data-qa="kubernetes-add-cluster-button" and @disabled]',
     kubernetesClusterNameInput: '$kubernetes-cluster-name-field',
     kubeconfigFileInput: '$kubernetes-kubeconfig-field',
     kubernetesAddButton: '$kubernetes-add-cluster-button',
