@@ -2653,201 +2653,202 @@
                 "y": 26
             },
             "id": 389,
-            "panels": [],
+            "panels": [
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "Prometheus",
+                    "decimals": 0,
+                    "description": "***System Memory***: Total Memory for the system.\\\n***InnoDB Buffer Pool Size***: \nInnoDB maintains a storage area called the buffer pool for caching data and indexes in memory.  Knowing how the InnoDB buffer pool works, and taking advantage of it to keep frequently accessed data in memory, is one of the most important aspects of MySQL tuning. The goal is to keep the working set in memory. In most cases, this should be between 60%-90% of available memory on a dedicated database host, but depends on many factors.\\\n***TokuDB Cache Size***: Similar in function to the InnoDB Buffer Pool,  TokuDB will allocate 50% of the installed RAM for its own cache.\\\n***Key Buffer Size***: Index blocks for MYISAM tables are buffered and are shared by all threads. key_buffer_size is the size of the buffer used for index blocks.\\\n***Adaptive Hash Index Size***: When InnoDB notices that some index values are being accessed very frequently, it builds a hash index for them in memory on top of B-Tree indexes.\\\n ***Query Cache Size***: The query cache stores the text of a SELECT statement together with the corresponding result that was sent to the client. The query cache has huge scalability problems in that only one thread can do an operation in the query cache at the same time.\\\n***InnoDB Dictionary Size***: The data dictionary is InnoDB \u2018s internal catalog of tables. InnoDB stores the data dictionary on disk, and loads entries into memory while the server is running.\\\n***InnoDB Log Buffer Size***: The MySQL InnoDB log buffer allows transactions to run without having to write the log to disk before the transactions commit.",
+                    "editable": true,
+                    "error": false,
+                    "fieldConfig": {
+                        "defaults": {
+                            "custom": {}
+                        },
+                        "overrides": []
+                    },
+                    "fill": 6,
+                    "fillGradient": 0,
+                    "grid": {},
+                    "gridPos": {
+                        "h": 8,
+                        "w": 24,
+                        "x": 0,
+                        "y": 27
+                    },
+                    "hiddenSeries": false,
+                    "id": 50,
+                    "interval": "",
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "hideEmpty": true,
+                        "hideZero": true,
+                        "max": true,
+                        "min": true,
+                        "rightSide": false,
+                        "show": true,
+                        "sort": "avg",
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 2,
+                    "links": [
+                        {
+                            "title": "Detailed descriptions about metrics",
+                            "url": "https://www.percona.com/doc/percona-monitoring-and-management/dashboard.mysql-overview.html#mysql-internal-memory-overview"
+                        }
+                    ],
+                    "maxPerRow": 12,
+                    "nullPointMode": "null",
+                    "paceLength": 10,
+                    "percentage": false,
+                    "pluginVersion": "7.1.3",
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "repeat": "service_name",
+                    "repeatDirection": "h",
+                    "seriesOverrides": [
+                        {
+                            "alias": "System Memory",
+                            "fill": 0,
+                            "stack": false
+                        }
+                    ],
+                    "spaceLength": 10,
+                    "stack": true,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "expr": "avg by (service_name) (mysql_global_variables_innodb_buffer_pool_size{service_name=~\"$service_name\"})",
+                            "format": "time_series",
+                            "hide": false,
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "InnoDB Buffer Pool Size",
+                            "refId": "A",
+                            "step": 20
+                        },
+                        {
+                            "expr": "avg by (service_name) (max_over_time(mysql_global_variables_innodb_log_buffer_size{service_name=~\"$service_name\"}[$interval]) or \nmax_over_time(mysql_global_variables_innodb_log_buffer_size{service_name=~\"$service_name\"}[5m]))",
+                            "format": "time_series",
+                            "hide": false,
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "InnoDB Log Buffer Size",
+                            "refId": "D",
+                            "step": 20
+                        },
+                        {
+                            "expr": "avg by (service_name) (max_over_time(mysql_global_variables_innodb_additional_mem_pool_size{service_name=~\"$service_name\"}[$interval]) or \nmax_over_time(mysql_global_variables_innodb_additional_mem_pool_size{service_name=~\"$service_name\"}[5m]))",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "InnoDB Additional Memory Pool Size",
+                            "refId": "H",
+                            "step": 40
+                        },
+                        {
+                            "expr": "avg by (service_name) (max_over_time(mysql_global_status_innodb_mem_dictionary{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_innodb_mem_dictionary{service_name=~\"$service_name\"}[5m]))",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "InnoDB Dictionary Size",
+                            "refId": "F",
+                            "step": 20
+                        },
+                        {
+                            "expr": "avg by (service_name) (max_over_time(mysql_global_variables_key_buffer_size{service_name=~\"$service_name\"}[$interval]) or \nmax_over_time(mysql_global_variables_key_buffer_size{service_name=~\"$service_name\"}[5m]))",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Key Buffer Size",
+                            "refId": "B",
+                            "step": 20
+                        },
+                        {
+                            "expr": "avg by (service_name) (max_over_time(mysql_global_variables_query_cache_size{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_variables_query_cache_size{service_name=~\"$service_name\"}[5m]))",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Query Cache Size",
+                            "refId": "C",
+                            "step": 20
+                        },
+                        {
+                            "expr": "avg by (service_name) (max_over_time(mysql_global_status_innodb_mem_adaptive_hash{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_innodb_mem_adaptive_hash{service_name=~\"$service_name\"}[5m]))",
+                            "format": "time_series",
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "Adaptive Hash Index Size",
+                            "refId": "E",
+                            "step": 20
+                        },
+                        {
+                            "expr": "avg by (service_name) (max_over_time(mysql_global_variables_tokudb_cache_size{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_variables_tokudb_cache_size{service_name=~\"$service_name\"}[5m]))",
+                            "format": "time_series",
+                            "hide": false,
+                            "interval": "$interval",
+                            "intervalFactor": 1,
+                            "legendFormat": "TokuDB Cache Size",
+                            "refId": "I",
+                            "step": 20
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeRegions": [],
+                    "timeShift": null,
+                    "title": "$service_name - MySQL Internal Memory Overview",
+                    "tooltip": {
+                        "msResolution": false,
+                        "shared": true,
+                        "sort": 5,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "decimals": 2,
+                            "format": "bytes",
+                            "label": "",
+                            "logBase": 1,
+                            "max": null,
+                            "min": 0,
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": false
+                        }
+                    ],
+                    "yaxis": {
+                        "align": false,
+                        "alignLevel": null
+                    }
+                }
+            ],
             "repeat": null,
             "title": "Memory",
             "type": "row"
-        },
-        {
-            "aliasColors": {},
-            "bars": false,
-            "dashLength": 10,
-            "dashes": false,
-            "datasource": "Prometheus",
-            "decimals": 0,
-            "description": "***System Memory***: Total Memory for the system.\\\n***InnoDB Buffer Pool Size***: \nInnoDB maintains a storage area called the buffer pool for caching data and indexes in memory.  Knowing how the InnoDB buffer pool works, and taking advantage of it to keep frequently accessed data in memory, is one of the most important aspects of MySQL tuning. The goal is to keep the working set in memory. In most cases, this should be between 60%-90% of available memory on a dedicated database host, but depends on many factors.\\\n***TokuDB Cache Size***: Similar in function to the InnoDB Buffer Pool,  TokuDB will allocate 50% of the installed RAM for its own cache.\\\n***Key Buffer Size***: Index blocks for MYISAM tables are buffered and are shared by all threads. key_buffer_size is the size of the buffer used for index blocks.\\\n***Adaptive Hash Index Size***: When InnoDB notices that some index values are being accessed very frequently, it builds a hash index for them in memory on top of B-Tree indexes.\\\n ***Query Cache Size***: The query cache stores the text of a SELECT statement together with the corresponding result that was sent to the client. The query cache has huge scalability problems in that only one thread can do an operation in the query cache at the same time.\\\n***InnoDB Dictionary Size***: The data dictionary is InnoDB \u2018s internal catalog of tables. InnoDB stores the data dictionary on disk, and loads entries into memory while the server is running.\\\n***InnoDB Log Buffer Size***: The MySQL InnoDB log buffer allows transactions to run without having to write the log to disk before the transactions commit.",
-            "editable": true,
-            "error": false,
-            "fieldConfig": {
-                "defaults": {
-                    "custom": {}
-                },
-                "overrides": []
-            },
-            "fill": 6,
-            "fillGradient": 0,
-            "grid": {},
-            "gridPos": {
-                "h": 8,
-                "w": 24,
-                "x": 0,
-                "y": 27
-            },
-            "hiddenSeries": false,
-            "id": 50,
-            "interval": "",
-            "legend": {
-                "alignAsTable": true,
-                "avg": true,
-                "current": false,
-                "hideEmpty": true,
-                "hideZero": true,
-                "max": true,
-                "min": true,
-                "rightSide": false,
-                "show": true,
-                "sort": "avg",
-                "sortDesc": true,
-                "total": false,
-                "values": true
-            },
-            "lines": true,
-            "linewidth": 2,
-            "links": [
-                {
-                    "title": "Detailed descriptions about metrics",
-                    "url": "https://www.percona.com/doc/percona-monitoring-and-management/dashboard.mysql-overview.html#mysql-internal-memory-overview"
-                }
-            ],
-            "maxPerRow": 12,
-            "nullPointMode": "null",
-            "paceLength": 10,
-            "percentage": false,
-            "pluginVersion": "7.1.3",
-            "pointradius": 5,
-            "points": false,
-            "renderer": "flot",
-            "repeat": "service_name",
-            "repeatDirection": "h",
-            "seriesOverrides": [
-                {
-                    "alias": "System Memory",
-                    "fill": 0,
-                    "stack": false
-                }
-            ],
-            "spaceLength": 10,
-            "stack": true,
-            "steppedLine": false,
-            "targets": [
-                {
-                    "expr": "avg by (service_name) (mysql_global_variables_innodb_buffer_pool_size{service_name=~\"$service_name\"})",
-                    "format": "time_series",
-                    "hide": false,
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "InnoDB Buffer Pool Size",
-                    "refId": "A",
-                    "step": 20
-                },
-                {
-                    "expr": "avg by (service_name) (max_over_time(mysql_global_variables_innodb_log_buffer_size{service_name=~\"$service_name\"}[$interval]) or \nmax_over_time(mysql_global_variables_innodb_log_buffer_size{service_name=~\"$service_name\"}[5m]))",
-                    "format": "time_series",
-                    "hide": false,
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "InnoDB Log Buffer Size",
-                    "refId": "D",
-                    "step": 20
-                },
-                {
-                    "expr": "avg by (service_name) (max_over_time(mysql_global_variables_innodb_additional_mem_pool_size{service_name=~\"$service_name\"}[$interval]) or \nmax_over_time(mysql_global_variables_innodb_additional_mem_pool_size{service_name=~\"$service_name\"}[5m]))",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "InnoDB Additional Memory Pool Size",
-                    "refId": "H",
-                    "step": 40
-                },
-                {
-                    "expr": "avg by (service_name) (max_over_time(mysql_global_status_innodb_mem_dictionary{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_innodb_mem_dictionary{service_name=~\"$service_name\"}[5m]))",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "InnoDB Dictionary Size",
-                    "refId": "F",
-                    "step": 20
-                },
-                {
-                    "expr": "avg by (service_name) (max_over_time(mysql_global_variables_key_buffer_size{service_name=~\"$service_name\"}[$interval]) or \nmax_over_time(mysql_global_variables_key_buffer_size{service_name=~\"$service_name\"}[5m]))",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Key Buffer Size",
-                    "refId": "B",
-                    "step": 20
-                },
-                {
-                    "expr": "avg by (service_name) (max_over_time(mysql_global_variables_query_cache_size{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_variables_query_cache_size{service_name=~\"$service_name\"}[5m]))",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Query Cache Size",
-                    "refId": "C",
-                    "step": 20
-                },
-                {
-                    "expr": "avg by (service_name) (max_over_time(mysql_global_status_innodb_mem_adaptive_hash{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_status_innodb_mem_adaptive_hash{service_name=~\"$service_name\"}[5m]))",
-                    "format": "time_series",
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "Adaptive Hash Index Size",
-                    "refId": "E",
-                    "step": 20
-                },
-                {
-                    "expr": "avg by (service_name) (max_over_time(mysql_global_variables_tokudb_cache_size{service_name=~\"$service_name\"}[$interval]) or\nmax_over_time(mysql_global_variables_tokudb_cache_size{service_name=~\"$service_name\"}[5m]))",
-                    "format": "time_series",
-                    "hide": false,
-                    "interval": "$interval",
-                    "intervalFactor": 1,
-                    "legendFormat": "TokuDB Cache Size",
-                    "refId": "I",
-                    "step": 20
-                }
-            ],
-            "thresholds": [],
-            "timeFrom": null,
-            "timeRegions": [],
-            "timeShift": null,
-            "title": "$service_name - MySQL Internal Memory Overview",
-            "tooltip": {
-                "msResolution": false,
-                "shared": true,
-                "sort": 5,
-                "value_type": "individual"
-            },
-            "type": "graph",
-            "xaxis": {
-                "buckets": null,
-                "mode": "time",
-                "name": null,
-                "show": true,
-                "values": []
-            },
-            "yaxes": [
-                {
-                    "decimals": 2,
-                    "format": "bytes",
-                    "label": "",
-                    "logBase": 1,
-                    "max": null,
-                    "min": 0,
-                    "show": true
-                },
-                {
-                    "format": "short",
-                    "label": null,
-                    "logBase": 1,
-                    "max": null,
-                    "min": null,
-                    "show": false
-                }
-            ],
-            "yaxis": {
-                "align": false,
-                "alignLevel": null
-            }
         },
         {
             "collapsed": true,
@@ -2856,7 +2857,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 35
+                "y": 27
             },
             "id": 390,
             "panels": [
@@ -3596,7 +3597,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 36
+                "y": 28
             },
             "id": 391,
             "panels": [
@@ -3869,7 +3870,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 37
+                "y": 29
             },
             "id": 392,
             "panels": [
@@ -4135,7 +4136,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 38
+                "y": 30
             },
             "id": 393,
             "panels": [
@@ -4447,7 +4448,7 @@
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 39
+                "y": 31
             },
             "id": 394,
             "panels": [
