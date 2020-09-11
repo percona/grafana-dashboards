@@ -1,7 +1,7 @@
 export const Messages = {
-  title: 'PMM Server Account',
+  title: 'Percona Platform Account',
   info: 'You are logged in as',
-  signOut: 'Sign out',
+  signOut: 'Logout',
   signOutSucceeded: 'Signed out successfully',
   errors: {
     signOutFailed: 'There was a problem during the sign out process, please try again',
