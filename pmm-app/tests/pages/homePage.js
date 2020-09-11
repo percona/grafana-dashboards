@@ -1,7 +1,8 @@
 const { I } = inject();
 const assert = require('assert');
 // The original regex source is https://regexlib.com/REDetails.aspx?regexp_id=5055
-const lastCheckRegex = /^(?:(((Jan?|Ma(r?|y)|Jul(y)?|Aug?|Oct?|Dec?) 31)|((Jan?|Ma(r?|y)|Apr?|Ju((ly?)|(ne?))|Aug?|Oct?|(Sep(t)?|Nov|Dec)?) (0?[1-9]|([12]\d)|30))|(Feb? (0?[1-9]|1\d|2[0-8]|(29(?=, ))))),) (?:[0-1]?[0-9]|[2][1-4]):[0-5]?[0-9]?\s??$/gim;
+// eslint-disable-next-line no-useless-escape
+const lastCheckRegex = /^(?:(((Jan(uary)?|Ma(r(ch)?|y)|Jul(y)?|Aug(ust)?|Oct(ober)?|Dec(ember)?)\ 31)|((Jan(uary)?|Ma(r(ch)?|y)|Apr(il)?|Ju((ly?)|(ne?))|Aug(ust)?|Oct(ober)?|(Sept|Nov|Dec)(ember)?) (0?[1-9]|([12]\d)|30))|(Feb(ruary)? (0?[1-9]|1\d|2[0-8]|(29(?=, ))))),) (?:[0-1]?[0-9]|[2][1-4]):[0-5]?[0-9]?\s??$/gim;
 
 module.exports = {
   // insert your locators and methods here

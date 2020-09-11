@@ -36,14 +36,14 @@ Scenario(
 // Skipping the tests because QAN does not get any data right after instance was added for monitoring
 xScenario(
   'Verify QAN Filters contain AWS RDS MySQL 5.6 after it was added for monitoring @not-ui-pipeline @nightly @not-pr-pipeline',
-  async (I, qanPage, remoteInstancesPage) => {
+  async (I, qanPage, remoteInstancesPage, qanOverview, qanFilters) => {
     const filters = remoteInstancesPage.rds;
 
     I.amOnPage(qanPage.url);
-    qanPage.waitForFiltersLoad();
-    await qanPage.expandAllFilter();
+    qanFilters.waitForFiltersLoad();
+    await qanFilters.expandAllFilter();
     for (const filter of Object.values(filters)) {
-      const name = qanPage.getFilterLocator(filter);
+      const name = qanFilters.getFilterLocator(filter);
 
       I.waitForVisible(name, 30);
       I.seeElement(name);
