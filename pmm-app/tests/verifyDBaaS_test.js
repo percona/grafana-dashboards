@@ -1,4 +1,6 @@
 const { quantile } = require('d3');
+const { isAssertionExpression } = require('typescript');
+const assert = require('assert');
 
 Feature('Test the functionality inside DBaas page');
 
@@ -28,8 +30,18 @@ Scenario('PMM-T426 - Verify adding new Kubernetes cluster@not-pr-pipeline', asyn
 });
 
 Scenario('PMM-T427 - Verify submitting blank Add kubernetes cluster form', async (I, dbaasPage) => {
+  const clusterName = 'Kubernetes_Testing_Cluster';
+
   I.amOnPage(dbaasPage.url);
   I.waitForVisible(dbaasPage.fields.addKubernetesClusterButton, 30);
   I.click(dbaasPage.fields.addKubernetesClusterButton);
   I.seeElement(dbaasPage.fields.disabledAddButton);
+  I.click(dbaasPage.fields.kubernetesClusterNameInput);
+  I.click(dbaasPage.fields.kubeconfigFileInput);
+  I.click(dbaasPage.fields.kubernetesClusterNameInput);
+  const count = await I.grabNumberOfVisibleElements(dbaasPage.fields.requiredField);
+  assert.ok(count === 2, `Count of error messages is ${count} but should be 2`);
+  I.fillField(dbaasPage.fields.kubernetesClusterNameInput, clusterName);
+  I.fillField(dbaasPage.fields.kubeconfigFileInput, 'Kubernetes_Config_Test');
+  I.dontSeeElement(dbaasPage.fields.disabledAddButton);
 });

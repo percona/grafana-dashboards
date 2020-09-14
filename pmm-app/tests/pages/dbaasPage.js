@@ -11,6 +11,7 @@ module.exports = {
     kubernetesClusterNameInput: '$kubernetes-cluster-name-field',
     kubeconfigFileInput: '$kubernetes-kubeconfig-field',
     kubernetesAddButton: '$kubernetes-add-cluster-button',
+    requiredField: "//div[contains(text(), 'Required field')]",
   },
 
   checkAddedCluster(cluserName) {
