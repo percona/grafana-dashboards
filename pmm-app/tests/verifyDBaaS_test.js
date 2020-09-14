@@ -1,5 +1,3 @@
-const { quantile } = require('d3');
-const { isAssertionExpression } = require('typescript');
 const assert = require('assert');
 
 Feature('Test the functionality inside DBaaS page');
