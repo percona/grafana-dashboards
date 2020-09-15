@@ -7,6 +7,7 @@ module.exports = {
   deletedAlertMessage: 'Cluster successfully deleted',
   fields: {
     addKubernetesClusterButton: "//span[contains(text(), 'Add new Kubernetes Cluster')]",
+    addKubernetesClusterButtonInTable: "//div[@data-qa='table-no-data']//span[contains(text(), 'Add new Kubernetes Cluster')]",
     modalWindow: '$modal-body',
     closeButton: '$modal-close-button',
     disabledAddButton: '//button[@data-qa="kubernetes-add-cluster-button" and @disabled]',
