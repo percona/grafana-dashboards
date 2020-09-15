@@ -17,9 +17,13 @@ module.exports = {
     proceedButton: '$delete-kubernetes-button',
   },
 
-  checkAddedCluster(cluserName) {
+  checkCluster(cluserName, deleted) {
     const clusterLocator = `//td[contains(text(), '${cluserName}')]`;
-    I.waitForVisible(clusterLocator, 20);
+    if (deleted) {
+      I.dontSeeElement(clusterLocator);
+    } else {
+      I.waitForVisible(clusterLocator, 30);
+    }
   },
 
   seeErrorForAddedCluster(clusterName) {

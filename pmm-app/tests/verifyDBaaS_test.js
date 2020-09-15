@@ -23,12 +23,13 @@ Scenario(
     //need add close by clicking out of the modal window
     dbaasPage.addKubernetesCluster(clusterName, 'Kubernetes_Config_Test');
     I.waitForText(dbaasPage.addedAlertMessage, 10);
-    dbaasPage.checkAddedCluster(clusterName);
+    dbaasPage.checkCluster(clusterName, false);
     //PMM-T428 - starting here
     dbaasPage.addKubernetesCluster(clusterName, 'Kubernetes_Config_Test');
     dbaasPage.seeErrorForAddedCluster(clusterName);
     //PMM-T431 - starting here
     dbaasPage.deleteCluster(clusterName);
+    dbaasPage.checkCluster(clusterName, true);
   },
 );
 
