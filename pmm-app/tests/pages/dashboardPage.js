@@ -112,10 +112,14 @@ module.exports = {
       'Scrape Durations',
     ],
   },
+  processDetailsDashboard: {
+    url: 'graph/d/node-cpu-process/processes-details?from=now-30m&to=now',
+  },
   nodeSummaryDashboard: {
     url: 'graph/d/node-instance-summary/node-summary?orgId=1&refresh=1m&from=now-30m&to=now',
     metrics: [
       'System Uptime',
+      'System Summary',
       'Virtual CPUs',
       'Load Average',
       'RAM',
@@ -136,6 +140,11 @@ module.exports = {
       'Local Network Errors',
       'TCP Retransmission',
     ],
+    ptSummaryDetail: {
+      reportContainer: '//pre',
+      ptHeaderText: '# Percona Toolkit System Summary Report ######################',
+      remoteNodeText: 'No pmm-agent running on this node'
+    },
   },
   prometheusExporterOverviewDashboard: {
     url: 'graph/d/prometheus-overview/prometheus-exporters-overview?orgId=1&refresh=1m&from=now-5m&to=now',
@@ -547,6 +556,10 @@ module.exports = {
     dataLinkForRoot: '//div[contains(text(), "Data links")]/..//a',
   },
 
+  async getExactFilterValue(filterName) {
+    return await I.grabAttributeFrom(`//label[contains(@aria-label, ${filterName})]/..//a`, 'title');
+  },
+
   annotationLocator(annotationNumber) {
     return `(//div[contains(@class,'events_marker')])[${annotationNumber}]`;
   },
@@ -684,4 +697,23 @@ module.exports = {
   async getTimeRange() {
     return await I.grabTextFrom(this.fields.timeRangePickerButton);
   },
+
+  async waitPTSummaryInformation() {
+    const response = await I.waitForResponse((response) => response.url().endsWith('v1/management/Actions/StartPTSummary') && response.status() === 200, { timeout: 60 });
+
+    await I.waitForResponse((response) => response.url().endsWith('v1/management/Actions/Get') && response.status() === 200, { timeout: 60 });
+
+    return await response.json();
+  },
+
+  async waitAndSwitchTabs(ammountOfTabs) {
+    for (let i = 0; i <= 10; i++) {
+      const numberOfTabs = await I.grabNumberOfTabs();
+
+      if (numberOfTabs === ammountOfTabs) {
+        I.switchToNextTab(1);
+        break;
+      }
+    }
+  }
 };

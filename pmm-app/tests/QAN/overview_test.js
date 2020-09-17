@@ -1,8 +1,9 @@
-Feature('Test QAN overview');
+Feature('QAN overview');
 
-Before(async (I, qanPage) => {
+Before(async (I, qanPage, qanOverview) => {
   await I.Authorize();
   I.amOnPage(qanPage.url);
+  qanOverview.waitForOverviewLoaded();
 });
 
 Scenario(
@@ -42,27 +43,26 @@ Scenario(
 
 Scenario(
   'PMM-T156 Verify that by default, queries are sorted by Load, from max to min @not-pr-pipeline @qan',
-  async (qanActions, qanOverview) => {
-    qanActions.waitForNewQANPageLoaded();
+  async (qanOverview) => {
+    qanOverview.waitForOverviewLoaded();
     qanOverview.verifySorting(1, 'asc');
   },
 );
 
 Scenario(
   'PMM-T183 Verify that "Group by" in the overview table can be changed @not-pr-pipeline @qan',
-  async (qanOverview) => {
-    qanOverview.waitForOverviewLoaded();
-    qanOverview.changeGroupBy('Database');
+  async (I, qanOverview) => {
+    I.waitForText('Query', 30, qanOverview.elements.groupBy);
+    await qanOverview.changeGroupBy('Database');
     qanOverview.verifyGroupByIs('Database');
   },
 );
 
 Scenario(
   'PMM-T187 Verify that the selected row in the overview table is highlighted @not-pr-pipeline @qan',
-  async (I, qanActions, qanOverview) => {
-    qanActions.waitForNewQANPageLoaded();
+  async (I, qanOverview) => {
     qanOverview.selectRow('2');
-    I.seeCssPropertiesOnElements(`.selected-overview-row > div`, {
+    I.seeCssPropertiesOnElements('.selected-overview-row > div', {
       'background-color': 'rgb(35, 70, 130)',
     });
   },
@@ -70,13 +70,12 @@ Scenario(
 
 Scenario(
   'PMM-T133, PMM-T132, PMM-T100 Check Changing Main Metric, PMM-T203 Verify user is able to search for columns by typing @not-pr-pipeline @qan',
-  async (I , qanOverview) => {
+  async (I, qanOverview) => {
     const metricName = 'Query Count with errors';
     const urlString = 'num_queries_with_errors';
     const newMetric = qanOverview.getColumnLocator(metricName);
     const oldMetric = qanOverview.getColumnLocator('Load');
 
-    qanOverview.waitForOverviewLoaded();
     I.waitForElement(qanOverview.buttons.addColumn, 30);
     qanOverview.changeMetric('Load', metricName);
     I.seeInCurrentUrl(urlString);
@@ -98,7 +97,6 @@ Scenario(
     const metricInDropdown = qanOverview.getMetricLocatorInDropdown(metricName);
     const oldMetric = qanOverview.getColumnLocator('Load');
 
-    qanOverview.waitForOverviewLoaded();
     I.waitForElement(qanOverview.buttons.addColumn, 30);
     I.waitForElement(oldMetric, 30);
     I.doubleClick(qanOverview.buttons.addColumn);
@@ -127,7 +125,6 @@ Scenario(
     const columnName = 'Load';
     const column = qanOverview.getColumnLocator(columnName);
 
-    qanOverview.waitForOverviewLoaded();
     I.waitForVisible(column, 30);
     I.seeElement(column);
     I.click(qanOverview.buttons.addColumn);
@@ -139,18 +136,16 @@ Scenario(
 
 Scenario(
   'PMM-T219 - Verify that user is able to scroll up/down and resize the overview table @not-pr-pipeline @qan',
-  async (I, qanPage, qanOverview) => {
-      const columnsToAdd = [
-          'Bytes Sent',
-          'Reading Blocks Time',
-          'Local Blocks Read',
-          'Local Blocks Dirtied',
-          'Temp Blocks Read',
-          'Local Blocks Written',
-          'Full Scan',
-      ];
-
-      qanOverview.waitForOverviewLoaded();
+  async (I, qanOverview, qanDetails) => {
+    const columnsToAdd = [
+      'Bytes Sent',
+      'Reading Blocks Time',
+      'Local Blocks Read',
+      'Local Blocks Dirtied',
+      'Temp Blocks Read',
+      'Local Blocks Written',
+      'Full Scan',
+    ];
 
     for (const i in columnsToAdd) {
       I.click(qanOverview.buttons.addColumn);
@@ -164,49 +159,31 @@ Scenario(
     I.click(qanOverview.elements.querySelector);
     I.scrollTo(qanOverview.getRowLocator(10));
     I.waitForVisible(qanOverview.getColumnLocator('Query Time'), 30);
-    I.waitForVisible(qanPage.fields.resizer, 30);
-    I.dragAndDrop(qanPage.fields.resizer, qanOverview.getColumnLocator('Query Time'));
+    I.waitForVisible(qanDetails.elements.resizer, 30);
+    I.dragAndDrop(qanDetails.elements.resizer, qanOverview.getColumnLocator('Query Time'));
     I.scrollTo(qanOverview.getColumnLocator('Query Time'));
   },
 );
 
 Scenario(
-  'PMM-T215 - Verify that buttons in QAN are disabled and visible on the screen @not-pr-pipeline @qan',
-  async (I, qanPage, qanActions, qanFilters, qanOverview) => {
-      qanFilters.waitForFiltersToLoad();
-      qanOverview.waitForOverviewLoaded();
-    I.seeAttributesOnElements(qanOverview.buttons.previousPage, { 'aria-disabled': 'true' });
-    I.seeAttributesOnElements(qanOverview.buttons.nextPage, { 'aria-disabled': 'false' });
-    I.seeAttributesOnElements(qanFilters.buttons.resetAllButton, {'disabled': true});
-    I.seeAttributesOnElements(qanFilters.buttons.showSelected, {'disabled' : true});
-    const count = await qanOverview.getCountOfItems();
-
-    if (count > 100) {
-      I.seeElement(qanOverview.buttons.ellipsis);
-    }
-  },
-);
-
-Scenario(
   'PMM-T156 Verify Queries are sorted by Load by Default Sorting from Max to Min, verify Sorting for Metrics works @not-pr-pipeline @qan',
-  async ( qanOverview) => {
-      qanOverview.waitForOverviewLoaded();
-      qanOverview.verifySorting(1, 'asc');
+  async (qanOverview) => {
+    qanOverview.verifySorting(1, 'asc');
     await qanOverview.verifyMetricsSorted('Load', 3, 'down');
-      qanOverview.changeSorting(1);
-      qanOverview.verifySorting(1, 'desc');
+    qanOverview.changeSorting(1);
+    qanOverview.verifySorting(1, 'desc');
     await qanOverview.verifyMetricsSorted('Load', 3, 'up');
-      qanOverview.changeSorting(2);
-      qanOverview.verifySorting(2, 'asc');
+    qanOverview.changeSorting(2);
+    qanOverview.verifySorting(2, 'asc');
     await qanOverview.verifyMetricsSorted('Query Count', 4, 'down');
-      qanOverview.changeSorting(2);
-      qanOverview.verifySorting(2, 'desc');
+    qanOverview.changeSorting(2);
+    qanOverview.verifySorting(2, 'desc');
     await qanOverview.verifyMetricsSorted('Query Count', 4, 'up');
-      qanOverview.changeSorting(3);
-      qanOverview.verifySorting(3, 'asc');
+    qanOverview.changeSorting(3);
+    qanOverview.verifySorting(3, 'asc');
     await qanOverview.verifyMetricsSorted('Query Time', 5, 'down');
-      qanOverview.changeSorting(3);
-      qanOverview.verifySorting(3, 'desc');
+    qanOverview.changeSorting(3);
+    qanOverview.verifySorting(3, 'desc');
     await qanOverview.verifyMetricsSorted('Query Time', 5, 'up');
   },
 );
@@ -217,7 +194,6 @@ Scenario(
     const firstCell = qanOverview.getCellValueLocator(3, 2);
     const secondCell = qanOverview.getCellValueLocator(3, 3);
 
-    qanOverview.waitForOverviewLoaded();
     const [queryCount] = (await I.grabTextFrom(firstCell)).split(' ');
 
     I.moveCursorTo(firstCell);
@@ -233,11 +209,10 @@ Scenario(
 
 Scenario(
   'PMM-T204 - Verify small and N/A values on sparkline @not-pr-pipeline @qan',
-  async (I, qanPage, qanActions, qanOverview) => {
+  async (I, qanOverview) => {
     const firstCell = qanOverview.getCellValueLocator(3, 1);
     const secondCell = qanOverview.getCellValueLocator(3, 3);
 
-    qanOverview.waitForOverviewLoaded();
     qanOverview.changeSorting(1);
     qanOverview.verifySorting(1, 'desc');
     I.moveCursorTo(firstCell);

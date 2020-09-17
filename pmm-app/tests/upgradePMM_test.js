@@ -3,7 +3,6 @@ const assert = require('assert');
 const serviceNames = {
   mysql: 'mysql_upgrade_service',
   postgresql: 'postgres_upgrade_service',
-  mongodb: 'mongodb_upgrade_service',
   proxysql: 'proxysql_upgrade_service',
   rds: 'mysql_rds_uprgade_service',
 };
@@ -34,14 +33,15 @@ Scenario(
   'PMM-T289 Verify Whats New link is presented on Update Widget @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
   async (I, homePage) => {
     const versions = getVersions();
+    const locators = homePage.getLocators(versions.current);
 
     I.amOnPage(homePage.url);
     // Whats New Link is added for the latest version hours before the release,
     // hence we need to skip checking on that, rest it should be available and checked.
     if (versions.majorVersionDiff >= 1 && versions.patchVersionDiff >= 0) {
-      I.waitForElement(homePage.fields.whatsNewLink, 30);
-      I.seeElement(homePage.fields.whatsNewLink);
-      const link = await I.grabAttributeFrom(homePage.fields.whatsNewLink, 'href');
+      I.waitForElement(locators.whatsNewLink, 30);
+      I.seeElement(locators.whatsNewLink);
+      const link = await I.grabAttributeFrom(locators.whatsNewLink, 'href');
 
       assert.equal(link.indexOf('https://per.co.na/pmm/') > -1, true, 'Whats New Link has an unexpected URL');
     }
@@ -63,12 +63,12 @@ Scenario(
   async (I, homePage, inventoryAPI, addInstanceAPI) => {
     // Adding instances for monitoring
     for (const type of Object.values(addInstanceAPI.instanceTypes)) {
-      await addInstanceAPI.apiAddInstance(type, serviceNames[type.toLowerCase()]);
+      if (type !== 'MongoDB') await addInstanceAPI.apiAddInstance(type, serviceNames[type.toLowerCase()]);
     }
 
     // Checking that instances are RUNNING
     for (const service of Object.values(inventoryAPI.services)) {
-      await inventoryAPI.verifyServiceExistsAndHasRunningStatus(service, serviceNames[service.service]);
+      if (service.service !== 'mongodb') await inventoryAPI.verifyServiceExistsAndHasRunningStatus(service, serviceNames[service.service]);
     }
   },
 );
@@ -87,7 +87,7 @@ Scenario(
   'Verify Agents are RUNNING after Upgrade (API) [critical] @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
   async (I, inventoryAPI) => {
     for (const service of Object.values(inventoryAPI.services)) {
-      await inventoryAPI.verifyServiceExistsAndHasRunningStatus(service, serviceNames[service.service]);
+      if (service.service !== 'mongodb') await inventoryAPI.verifyServiceExistsAndHasRunningStatus(service, serviceNames[service.service]);
     }
   },
 );
@@ -104,10 +104,11 @@ Scenario(
   'PMM-T262 Open PMM Settings page and verify DATA_RETENTION value is set to 2 days after upgrade @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
   async (I, pmmSettingsPage) => {
     const dataRetention = '2';
+    const sectionNameToExpand = pmmSettingsPage.sectionTabsList.advanced;
 
     I.amOnPage(pmmSettingsPage.url);
     await pmmSettingsPage.waitForPmmSettingsPageLoaded();
-    await pmmSettingsPage.expandSection('Advanced settings', pmmSettingsPage.fields.advancedButton);
+    await pmmSettingsPage.expandSection(sectionNameToExpand, pmmSettingsPage.fields.advancedButton);
     const dataRetentionActualValue = await I.grabValueFrom(pmmSettingsPage.fields.dataRetentionInput);
 
     assert.equal(
@@ -131,6 +132,23 @@ Scenario(
 );
 
 Scenario(
+  'PMM-T424 Verify PT Summary Panel is available after Upgrade @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
+  async (I, adminPage, dashboardPage) => {
+    const filter = 'Node Name';
+
+    I.amOnPage(dashboardPage.nodeSummaryDashboard.url);
+    dashboardPage.waitPTSummaryInformation();
+    dashboardPage.waitForDashboardOpened();
+    await dashboardPage.applyFilter(filter, 'pmm-server');
+    await dashboardPage.waitPTSummaryInformation();
+
+    I.waitForElement(dashboardPage.nodeSummaryDashboard.ptSummaryDetail.reportContainer, 30);
+    I.waitForText(dashboardPage.nodeSummaryDashboard.ptSummaryDetail.ptHeaderText, 60);
+    I.see(dashboardPage.nodeSummaryDashboard.ptSummaryDetail.ptHeaderText);
+  }
+);
+
+Scenario(
   'Verify Agents are RUNNING after Upgrade (UI) [critical] @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
   async (I, adminPage, pmmInventoryPage) => {
     for (const service of Object.values(serviceNames)) {
@@ -142,16 +160,16 @@ Scenario(
 
 Scenario(
   'Verify QAN has specific filters for Remote Instances after Upgrade (UI) @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
-  async (I, qanPage, addInstanceAPI) => {
+  async (I, qanPage, qanFilters, addInstanceAPI) => {
     I.amOnPage(qanPage.url);
-    qanPage.waitForFiltersLoad();
-    await qanPage.expandAllFilter();
+    qanFilters.waitForFiltersToLoad();
+    await qanFilters.expandAllFilters();
 
     // Checking that Cluster filters are still in QAN after Upgrade
     for (const name of Object.values(addInstanceAPI.clusterNames)) {
       // For now we can't see the cluster names in QAN for ProxySQL and MongoDB
       if (name !== addInstanceAPI.clusterNames.proxysql && name !== addInstanceAPI.clusterNames.mongodb) {
-        const filter = qanPage.getFilterLocator(name);
+        const filter = qanFilters.getFilterLocator(name);
 
         I.waitForVisible(filter, 30);
         I.seeElement(filter);
