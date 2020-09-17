@@ -2,14 +2,19 @@ import React, { FC, useState } from 'react';
 import { Divider } from 'antd';
 import { CheckboxField } from 'shared/components/Form/Checkbox/Checkbox';
 import { humanize } from 'shared/components/helpers/Humanization';
-import { useTheme } from '@grafana/ui';
+import { useTheme, Icon } from '@grafana/ui';
 import { getStyles } from './CheckboxGroup.styles';
 import { TOP_LIMIT } from './CheckboxGroup.constants';
 import { CheckboxGroupProps } from './CheckboxGroup.types';
 
 
 export const CheckboxGroup: FC<CheckboxGroupProps> = ({
-  name, items, group, showAll, filter: searchFilterBy,
+  name,
+  items,
+  group,
+  showAll,
+  filter: searchFilterBy,
+  getDashboardURL,
 }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
@@ -59,6 +64,17 @@ export const CheckboxGroup: FC<CheckboxGroupProps> = ({
               disabled={!valueExists}
             />
           </span>
+          {getDashboardURL && (
+            <span className={styles.dashboardLink}>
+              <a
+                href={getDashboardURL(item.value)}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <Icon name="graph-bar" />
+              </a>
+            </span>
+          )}
           <span className={styles.percentage}>
             <span>{valueExists ? humanize.transform(item.main_metric_percent, 'percent') : null}</span>
           </span>

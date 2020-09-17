@@ -11,9 +11,9 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
   return {
     label: css`
     display: grid;
-    grid-template-areas: 'filtername percentagearea';
+    grid-template-areas: 'filtername dashboardlink percentagearea';
     grid-template-rows: 30px;
-    grid-template-columns: 150px auto;
+    grid-template-columns: 130px auto;
     grid-gap: 10px;
     height: auto;
     margin: 0;
@@ -27,6 +27,15 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
     justify-content: flex-end;
     color: ${parameters.mainTextColor};
   `,
+    dashboardLink: css`
+      grid-area: dashboardlink;
+      a {
+        color: ${theme.colors.text} !important;
+        &:hover {
+          color: ${theme.colors.linkHover} !important;
+        }
+      }
+    `,
     filterHeaderWrapper: css`
     display: flex;
     justify-items: space-between;
