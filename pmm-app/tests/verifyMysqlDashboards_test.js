@@ -106,5 +106,7 @@ Scenario(
     await dashboardPage.expandEachDashboardRow();
     adminPage.performPageUp(5);
     dashboardPage.verifyMetricsExistence(dashboardPage.groupReplicationDashboard.metrics);
+    await dashboardPage.verifyThereAreNoGraphsWithNA();
+    await dashboardPage.verifyThereAreNoGraphsWithoutData(3);
   },
 );
