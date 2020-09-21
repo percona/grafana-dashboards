@@ -11,7 +11,7 @@ Before((I, qanPage, qanOverview) => {
 Scenario(
   'PMM-T175 - Verify user is able to apply filter that has dots in label @not-pr-pipeline @qan',
   async (I, qanOverview, qanFilters) => {
-    const serviceName = 'ps_5.7';
+    const serviceName = 'ps_8.0';
 
     const countBefore = await qanOverview.getCountOfItems();
 
@@ -158,7 +158,7 @@ Scenario(
 Scenario(
   'PMM-T390 - Verify that we show info message when empty result is returned @not-pr-pipeline @qan',
   async (I, qanOverview, qanFilters) => {
-    const serviceName = 'ps_5.7';
+    const serviceName = 'ps_8.0';
     const db1 = 'postgres';
     const db2 = 'n/a';
     const section = 'Database';
@@ -183,9 +183,9 @@ Scenario(
   async (I, adminPage, qanOverview, qanFilters) => {
     const serviceType = 'mysql';
     const environment = 'pgsql-dev';
-    const serviceName = 'ps_5.7';
+    const serviceName = 'ps_8.0';
 
-    // change to 2 days for apply ps_5.7 value in filter
+    // change to 2 days for apply ps_8.0 value in filter
     adminPage.applyTimeRange('Last 2 days');
     qanOverview.waitForOverviewLoaded();
     const countBefore = await qanOverview.getCountOfItems();

@@ -134,7 +134,7 @@ Scenario(
   },
 );
 
-Scenario(
+xScenario(
   'PMM-T219 - Verify that user is able to scroll up/down and resize the overview table @not-pr-pipeline @qan',
   async (I, qanOverview, qanDetails) => {
     const columnsToAdd = [
