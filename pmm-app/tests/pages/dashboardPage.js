@@ -557,7 +557,7 @@ module.exports = {
   },
 
   async getExactFilterValue(filterName) {
-    return await I.grabAttributeFrom(`//label[contains(@aria-label, ${filterName})]/..//a`, 'title');
+    return await I.grabAttributeFrom(`//label[contains(@aria-label, '${filterName}')]/..//a`, 'title');
   },
 
   annotationLocator(annotationNumber) {

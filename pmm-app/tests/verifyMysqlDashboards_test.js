@@ -12,7 +12,7 @@ Scenario(
   async (I, adminPage, dashboardPage) => {
     I.amOnPage(dashboardPage.mysqlInstanceSummaryDashboard.url);
     dashboardPage.waitForDashboardOpened();
-    await dashboardPage.applyFilter('Service Name', 'ps_5.7');
+    await dashboardPage.applyFilter('Service Name', 'ps_8.0');
     await dashboardPage.expandEachDashboardRow();
     I.click(adminPage.fields.metricTitle);
     adminPage.peformPageDown(5);
@@ -67,21 +67,21 @@ Scenario(
 Scenario(
   'PMM-T396 - Verify that parameters are passed from MySQL User Details dashboard to QAN @not-pr-pipeline',
   async (I, dashboardPage, qanFilters, qanOverview, adminPage) => {
-    const filters = ['ps_5.7', 'root'];
+    const filters = ['ps_8.0', 'root'];
     const timeRange = 'Last 12 hours';
 
     I.amOnPage(dashboardPage.mysqlUserDetailsDashboard.url);
     dashboardPage.waitForDashboardOpened();
     I.waitForVisible(dashboardPage.fields.timeRangePickerButton, 20);
     adminPage.applyTimeRange(timeRange);
-    await dashboardPage.applyFilter('Service Name', 'ps_5.7');
+    await dashboardPage.applyFilter('Service Name', 'ps_8.0');
     I.waitForVisible(dashboardPage.fields.rootUser, 20);
     I.click(dashboardPage.fields.rootUser);
     I.waitForVisible(dashboardPage.fields.dataLinkForRoot);
     I.click(dashboardPage.fields.dataLinkForRoot);
     await dashboardPage.waitAndSwitchTabs(2);
     qanOverview.waitForOverviewLoaded();
-    I.waitInUrl('/graph/d/pmm-qan/pmm-query-analytics?var-service_name=ps_5.7__1&var-username=root', 30);
+    I.waitInUrl('&var-username=root', 30);
     I.waitInUrl('from=now-12h&to=now', 30);
     await qanFilters.verifySelectedFilters(filters);
     const timeRangeGrabbed = await dashboardPage.getTimeRange();
