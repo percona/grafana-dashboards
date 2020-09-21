@@ -53,6 +53,7 @@ export const CheckboxGroup: FC<CheckboxGroupProps> = ({
     .filter(searchFilter)
     .map((item) => {
       const valueExists = item.main_metric_percent !== undefined;
+      const dashboardURL = getDashboardURL ? getDashboardURL(item.value) : '';
 
       return (
         <div className={styles.label} key={`${group}:${item.value || ''}`}>
@@ -64,10 +65,10 @@ export const CheckboxGroup: FC<CheckboxGroupProps> = ({
               disabled={!valueExists}
             />
           </span>
-          {getDashboardURL && (
+          {dashboardURL && (
             <span className={styles.dashboardLink}>
               <a
-                href={getDashboardURL(item.value)}
+                href={dashboardURL}
                 target="_blank"
                 rel="noreferrer"
               >

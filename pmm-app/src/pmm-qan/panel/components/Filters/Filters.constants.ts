@@ -25,7 +25,7 @@ export const FILTERS_GROUPS = [
         dashboardURL = `mongodb-cluster-summary/mongodb-cluster-summary?var-cluster=${value}`;
       }
 
-      return `${subURL}${dashboardURL}`;
+      return dashboardURL ? `${subURL}${dashboardURL}` : '';
     },
   },
   {
@@ -41,7 +41,7 @@ export const FILTERS_GROUPS = [
         dashboardURL = `mongodb-replicaset-summary/mongodb-replset-summary?var-replset=${value}`;
       }
 
-      return `${subURL}${dashboardURL}`;
+      return dashboardURL ? `${subURL}${dashboardURL}` : '';
     },
   },
   {
@@ -65,8 +65,9 @@ export const FILTERS_GROUPS = [
     getDashboardURL: (value: string) => {
       const serviceType = getServiceType(value, 'service_name');
 
-      // eslint-disable-next-line max-len
-      return `${subURL}${serviceType}-instance-summary/${serviceType}-instance-summary?var-service_name=${value}`;
+      return serviceType
+        ? `${subURL}${serviceType}-instance-summary/${serviceType}-instance-summary?var-service_name=${value}`
+        : '';
     },
   },
   {
