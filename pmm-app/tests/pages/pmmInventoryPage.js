@@ -207,7 +207,7 @@ module.exports = {
     );
 
     assert.ok(otherDetails === 4, 'PMM Agent on PMM Server should still be running');
-    assert.ok(countBefore > countAfter, 'Some PMM Agent should have been deleted');
+    assert.ok(countBefore > countAfter, `Some PMM Agents should have been deleted, before deleting ${countBefore} and after deleting ${countAfter}`);
   },
 
   async getCellValue(rowNumber, columnNumber) {
