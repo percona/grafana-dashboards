@@ -17,7 +17,7 @@ export const getServiceType = (value: string, name: string): string | undefined 
     const matches = opt.value.match(`${name}="(.*?)"`);
     const currentValue = matches?.length > 1 ? matches[1] : '';
 
-    if (currentValue === value) {
+    if (currentValue && currentValue === value) {
       // eslint-disable-next-line prefer-destructuring
       serviceType = opt.value.match('service_type="(.*?)"')[1];
     }
