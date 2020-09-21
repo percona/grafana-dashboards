@@ -200,13 +200,14 @@ module.exports = {
     return await I.grabNumberOfVisibleElements('//table//tr/td/div[@data-qa="select-row"]');
   },
 
-  async checkAllNotDeletedAgents(text) {
-    const count = await this.getCountOfItems();
+  async checkAllNotDeletedAgents(countBefore) {
+    const countAfter = await this.getCountOfItems();
     const otherDetails = await I.grabNumberOfVisibleElements(
-      `//table//tr/td[4]//span[contains(text(), "${text}")]`,
+      '//table//tr/td[4]//span[contains(text(), "pmm-server")]',
     );
 
-    assert.equal(count, otherDetails, 'Check data!');
+    assert.ok(otherDetails === 4, 'PMM Agent on PMM Server should still be running');
+    assert.ok(countBefore > countAfter, 'Some PMM Agent should have been deleted');
   },
 
   async getCellValue(rowNumber, columnNumber) {
