@@ -128,7 +128,7 @@ Scenario(
     I.amOnPage(pmmInventoryPage.url);
     I.waitForVisible(pmmInventoryPage.fields.agentsLink, 20);
     I.click(pmmInventoryPage.fields.agentsLink);
-    const countBefore = pmmInventoryPage.getCountOfItems();
+    const countBefore = await pmmInventoryPage.getCountOfItems();
     pmmInventoryPage.selectAgentByID(agentID);
     pmmInventoryPage.deleteWithForceOpt();
     pmmInventoryPage.existsByid(agentID, false);
