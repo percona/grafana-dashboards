@@ -9,6 +9,7 @@ export interface Settings {
   alertManagerRules: string;
   sttEnabled: boolean;
   platformEmail?: string;
+  dbaasEnabled?: boolean;
 }
 
 export interface MetricsResolutions {
