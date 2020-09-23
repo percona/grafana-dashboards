@@ -3,5 +3,6 @@ export interface CheckboxGroupProps {
   name: string;
   showAll: boolean;
   group: string;
-  items: any[]
+  items: any[];
+  getDashboardURL?: (value: string) => string;
 }
