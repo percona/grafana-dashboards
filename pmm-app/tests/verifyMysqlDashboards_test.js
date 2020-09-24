@@ -96,3 +96,7 @@ Scenario(
     );
   },
 );
+
+Scenario('PMM-T348 - PXC/Galera Node Summary dashboard @not-pr-pipeline', async (I, dashboardPage) => {
+  I.amOnPage(dashboardPage.mysqlPXCGaleraNodeSummaryDashboard.url);
+});

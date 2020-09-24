@@ -143,7 +143,7 @@ module.exports = {
     ptSummaryDetail: {
       reportContainer: '//pre',
       ptHeaderText: '# Percona Toolkit System Summary Report ######################',
-      remoteNodeText: 'No pmm-agent running on this node'
+      remoteNodeText: 'No pmm-agent running on this node',
     },
   },
   prometheusExporterOverviewDashboard: {
@@ -531,10 +531,32 @@ module.exports = {
     serviceName:
       '//label[contains(text(), "Service Name")]/following-sibling::value-select-dropdown/descendant::a[@class="variable-value-link"]',
     urlWithRDSFilter:
-      'graph/d/mysql-instance-overview/mysql-instances-overview?orgId=1&'
-      + 'from=now-5m&to=now&refresh=1m&var-interval=$__auto_interval_interval&var-region=All&'
-      + 'var-environment=All&var-cluster=rds56-cluster&var-replication_set=All&var-az=&'
-      + 'var-node_type=All&var-node_model=&var-database=All&var-service_type=All&var-schema=All',
+      'graph/d/mysql-instance-overview/mysql-instances-overview?orgId=1&' +
+      'from=now-5m&to=now&refresh=1m&var-interval=$__auto_interval_interval&var-region=All&' +
+      'var-environment=All&var-cluster=rds56-cluster&var-replication_set=All&var-az=&' +
+      'var-node_type=All&var-node_model=&var-database=All&var-service_type=All&var-schema=All',
+  },
+  mysqlPXCGaleraNodeSummaryDashboard: {
+    url: 'graph/d/pxc-node-summary/pxc-galera-node-summary?orgId=1&refresh=1m',
+    metrics: [
+      'Ready to Accept Queries',
+      'Local State',
+      'Desync Mode',
+      'Cluster Status',
+      'gcache Size',
+      'FC(normal traffic)',
+      'Galera Replication Latency',
+      'Galera Replication Queues',
+      'Galera Cluster Size',
+      'Galera Flow Control',
+      'Galera Parallelization Efficiency',
+      'Galera Writing Conflicts',
+      'Available Downtime before SST Required',
+      'Galera Writeset Count',
+      'Galera Writeset Size',
+      'Galera Writeset Traffic',
+      'Galera Network Usage Hourly',
+    ],
   },
 
   fields: {
@@ -699,9 +721,16 @@ module.exports = {
   },
 
   async waitPTSummaryInformation() {
-    const response = await I.waitForResponse((response) => response.url().endsWith('v1/management/Actions/StartPTSummary') && response.status() === 200, { timeout: 60 });
+    const response = await I.waitForResponse(
+      (response) =>
+        response.url().endsWith('v1/management/Actions/StartPTSummary') && response.status() === 200,
+      { timeout: 60 },
+    );
 
-    await I.waitForResponse((response) => response.url().endsWith('v1/management/Actions/Get') && response.status() === 200, { timeout: 60 });
+    await I.waitForResponse(
+      (response) => response.url().endsWith('v1/management/Actions/Get') && response.status() === 200,
+      { timeout: 60 },
+    );
 
     return await response.json();
   },
@@ -715,5 +744,5 @@ module.exports = {
         break;
       }
     }
-  }
+  },
 };
