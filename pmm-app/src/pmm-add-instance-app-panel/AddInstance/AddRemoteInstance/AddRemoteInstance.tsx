@@ -63,6 +63,9 @@ const getAdditionalOptions = (type, remoteInstanceCredentials) => {
         <>
           <CheckboxField label="Use Pg Stat Statements" name="qan_postgresql_pgstatements_agent" />
           <span className="description" />
+
+          <CheckboxField label="Use PG Stat Monitor" name="qan_postgresql_pgstatmonitor_agent" />
+          <span className="description" />
         </>
       );
     case 'MySQL':
