@@ -97,6 +97,15 @@ Scenario(
   },
 );
 
-Scenario('PMM-T348 - PXC/Galera Node Summary dashboard @not-pr-pipeline', async (I, dashboardPage) => {
-  I.amOnPage(dashboardPage.mysqlPXCGaleraNodeSummaryDashboard.url);
-});
+Scenario(
+  'PMM-T348 - PXC/Galera Node Summary dashboard @not-pr-pipeline',
+  async (I, dashboardPage, adminPage) => {
+    I.amOnPage(dashboardPage.mysqlPXCGaleraNodeSummaryDashboard.url);
+    dashboardPage.waitForDashboardOpened();
+    await dashboardPage.applyFilter('Service Name', 'pxc_node_8.0');
+    adminPage.peformPageDown(5);
+    dashboardPage.verifyMetricsExistence(dashboardPage.mysqlPXCGaleraNodeSummaryDashboard.metrics);
+    await dashboardPage.verifyThereAreNoGraphsWithNA();
+    await dashboardPage.verifyThereAreNoGraphsWithoutData(1);
+  },
+);

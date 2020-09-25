@@ -544,7 +544,7 @@ module.exports = {
       'Desync Mode',
       'Cluster Status',
       'gcache Size',
-      'FC(normal traffic)',
+      'FC (normal traffic)',
       'Galera Replication Latency',
       'Galera Replication Queues',
       'Galera Cluster Size',
