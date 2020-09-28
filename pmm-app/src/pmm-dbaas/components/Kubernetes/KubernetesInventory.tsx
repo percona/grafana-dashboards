@@ -6,7 +6,7 @@ import { TextInputField, validators } from '@percona/platform-core';
 import { Table } from 'shared/components/Elements/Table/Table';
 import { Messages } from 'pmm-dbaas/DBaaS.messages';
 import { Field, Form } from 'react-final-form';
-import { InputFieldAdapter, TextAreaAdapter } from 'shared/components/Form/FieldAdapters/FieldAdapters';
+import { TextAreaAdapter } from 'shared/components/Form/FieldAdapters/FieldAdapters';
 import { Modal } from 'shared/components/Elements/Modal/Modal';
 import { getStyles } from './Kubernetes.styles';
 import { Kubernetes, NewKubernetesCluster, KubernetesProps } from './Kubernetes.types';

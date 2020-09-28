@@ -16,23 +16,23 @@ export const DBaaSPanel: FC = () => {
         label: Messages.tabs.kubernetes,
         key: TabKeys.kubernetes,
         component:
-          <KubernetesInventory
-            key={TabKeys.kubernetes}
-            kubernetes={kubernetes}
-            deleteKubernetes={deleteKubernetes}
-            addKubernetes={addKubernetes}
-            loading={kubernetesLoading}
-          />
+  <KubernetesInventory
+    key={TabKeys.kubernetes}
+    kubernetes={kubernetes}
+    deleteKubernetes={deleteKubernetes}
+    addKubernetes={addKubernetes}
+    loading={kubernetesLoading}
+  />
       },
       {
         label: Messages.tabs.xtradb,
         key: TabKeys.xtradb,
         disabled: kubernetes.length === 0,
         component:
-          <XtraDB
-            key={TabKeys.xtradb}
-            kubernetes={kubernetes}
-          />
+  <XtraDB
+    key={TabKeys.xtradb}
+    kubernetes={kubernetes}
+  />
       },
     ],
     [kubernetes, kubernetesLoading]
