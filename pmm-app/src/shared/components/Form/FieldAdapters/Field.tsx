@@ -16,7 +16,7 @@ export interface FieldProps {
 
 export const getFieldStyles = stylesFactory((theme: GrafanaTheme) => ({
   label: css`
-      font-size: ${theme.typography.size.sm};
+      font-size: ${theme.typography.size.md};
       font-weight: ${theme.typography.weight.semibold};
       line-height: 1.25;
       margin: ${theme.spacing.formLabelMargin};
