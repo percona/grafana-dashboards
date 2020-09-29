@@ -1,26 +1,25 @@
-import React, { FC, ReactNode, useEffect } from 'react';
-import { Column, useRowSelect, useTable } from 'react-table';
+import React, { FC, useEffect } from 'react';
+import { useRowSelect, useTable } from 'react-table';
 import { Spinner, useTheme } from '@grafana/ui';
 import { cx } from 'emotion';
+import { getCheckboxStyles } from 'shared/components/Form/Checkbox/Checkbox.styles';
 import { getStyles } from './Table.styles';
+import { TableCheckboxProps, TableProps } from './Table.types';
 
-interface TableProps {
-  className?: string;
-  rowSelection?: boolean;
-  onRowSelection?: (selected: any) => void;
-  columns: Column[];
-  data: object[];
-  noData?: ReactNode;
-  loading?: boolean;
-  rowKey?: (rec: any) => any;
-}
+const TableCheckbox = (props: TableCheckboxProps) => {
+  const theme = useTheme();
+  const styles = getCheckboxStyles(theme);
+  const {
+    checked, onChange, style, title
+  } = props;
 
-const TableCheckbox = (props) => (
-  <label className="checkbox-container checkbox-container--main no-gap">
-    <input type="checkbox" {...props} indeterminate="false" />
-    <span className="checkbox-container__checkmark" />
-  </label>
-);
+  return (
+    <label className={cx(styles.checkboxContainer, 'checkbox-container--main', 'no-gap')}>
+      <input type="checkbox" checked={checked} onChange={onChange} style={style} title={title} />
+      <span className="checkbox-container__checkmark" />
+    </label>
+  );
+};
 
 export const Table: FC<TableProps> = ({
   className,

@@ -124,3 +124,17 @@ Scenario(
     await dashboardPage.verifyThereAreNoGraphsWithoutData(0);
   },
 );
+
+Scenario(
+  'Verify metrics on Group Replication Summary Dashboard @not-pr-pipeline @not-ui-pipeline @nightly',
+  async (I, dashboardPage, adminPage) => {
+    I.amOnPage(dashboardPage.groupReplicationDashboard.url);
+    dashboardPage.waitForDashboardOpened();
+    adminPage.peformPageDown(5);
+    await dashboardPage.expandEachDashboardRow();
+    adminPage.performPageUp(5);
+    dashboardPage.verifyMetricsExistence(dashboardPage.groupReplicationDashboard.metrics);
+    await dashboardPage.verifyThereAreNoGraphsWithNA();
+    await dashboardPage.verifyThereAreNoGraphsWithoutData(3);
+  },
+);

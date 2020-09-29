@@ -536,6 +536,26 @@ module.exports = {
       'var-environment=All&var-cluster=rds56-cluster&var-replication_set=All&var-az=&' +
       'var-node_type=All&var-node_model=&var-database=All&var-service_type=All&var-schema=All',
   },
+  groupReplicationDashboard: {
+    url: 'graph/d/mysql-group-replicaset-summary/mysql-group-replication-summary?orgId=1&refresh=1m',
+    metrics: [
+      'Group Replication Service States',
+      'PRIMARY Service',
+      'Replication Group Members',
+      'Replication Lag',
+      'Transport Time',
+      'Replication Delay',
+      'Transaction Apply Time',
+      'Transaction Time Inside the Local Queue',
+      'Transactions Details',
+      'Checked Transactions',
+      'Transactions Row Validating',
+      'Applied Transactions',
+      'Rolled Back Transactions',
+      'Transactions in the Queue for Checking',
+      'Detected Conflicts',
+    ],
+  },
   mysqlPXCGaleraNodeSummaryDashboard: {
     url: 'graph/d/pxc-node-summary/pxc-galera-node-summary?orgId=1&refresh=1m',
     metrics: [
