@@ -13,8 +13,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => ({
   `,
   input: css`
     input {
-      /* make it consistent with platform-core input height 
-      remove once using only platform-core components */
+      /* TODO: remove once using only platform-core components */
       min-height: 37px;
     }
   `,
