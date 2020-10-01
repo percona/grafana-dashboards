@@ -10,3 +10,4 @@ export const kubernetesOptionsStub = [
 ];
 
 export const setVisibleStub = jest.fn();
+export const onXtraDBAddedStub = jest.fn();

@@ -6,21 +6,35 @@ import { AddClusterButton } from '../AddClusterButton/AddClusterButton';
 import { getStyles } from './XtraDB.styles';
 import { XtraDBProps } from './XtraDB.types';
 import { AddXtraDBModal } from './AddXtraDBModal/AddXtraDBModal';
+import { useXtraDBClusters } from './XtraDB.hooks';
+import { clusterStatusRender, actionsRender } from './ColumnRenderers/ColumnRenderers';
 
 export const XtraDB: FC<XtraDBProps> = ({ kubernetes }) => {
   const styles = useStyles(getStyles);
   const [addModalVisible, setAddModalVisible] = useState(false);
+  const [xtraDBClusters, getXtraDBClusters, loading] = useXtraDBClusters(kubernetes);
   const columns = [
     {
       Header: Messages.xtradb.table.nameColumn,
-      accessor: 'name',
+      accessor: 'clusterName',
+    },
+    {
+      Header: Messages.xtradb.table.databaseTypeColumn,
+      accessor: 'databaseType',
+    },
+    {
+      Header: Messages.xtradb.table.clusterStatusColumn,
+      accessor: clusterStatusRender,
+    },
+    {
+      Header: Messages.xtradb.table.actionsColumn,
+      accessor: actionsRender,
     }
   ];
   const kubernetesOptions = kubernetes.map(({ kubernetesClusterName }) => ({
     value: kubernetesClusterName,
     label: kubernetesClusterName,
   }));
-
   const AddNewClusterButton = () => (
     <AddClusterButton
       label={Messages.xtradb.addAction}
@@ -38,11 +52,12 @@ export const XtraDB: FC<XtraDBProps> = ({ kubernetes }) => {
         kubernetesOptions={kubernetesOptions}
         isVisible={addModalVisible}
         setVisible={setAddModalVisible}
+        onXtraDBAdded={getXtraDBClusters}
       />
       <Table
         columns={columns}
-        data={[]}
-        loading={false}
+        data={xtraDBClusters}
+        loading={loading}
         noData={<AddNewClusterButton />}
       />
     </div>

@@ -13,14 +13,17 @@ import { XtraDBCluster } from '../XtraDB.types';
 export const AddXtraDBModal: FC<AddXtraDBModalProps> = ({
   kubernetesOptions,
   isVisible,
-  setVisible
+  setVisible,
+  onXtraDBAdded
 }) => {
   const [loading, setLoading] = useState(false);
   const addXtraDBCluster = async (xtraDBCluster: XtraDBCluster) => {
     try {
       setLoading(true);
+
       await XtraDBService.addXtraDBCluster(xtraDBCluster);
       setVisible(false);
+      onXtraDBAdded();
     } catch (e) {
       console.error(e);
     } finally {
