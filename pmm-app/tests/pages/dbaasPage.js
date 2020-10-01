@@ -13,7 +13,7 @@ module.exports = {
     closeButton: '$modal-close-button',
     disabledAddButton: '//button[@data-qa="kubernetes-add-cluster-button" and @disabled]',
     kubernetesClusterNameInput: '$name-text-input',
-    kubeconfigFileInput: '$kubernetes-kubeconfig-field',
+    kubeconfigFileInput: '$kubeConfig-textarea-input',
     kubernetesAddButton: '$kubernetes-add-cluster-button',
     requiredField: '//div[contains(text(), \'Required field\')]',
     proceedButton: '$delete-kubernetes-button',

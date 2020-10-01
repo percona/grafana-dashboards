@@ -2,11 +2,10 @@ import React, { FC, useCallback, useState } from 'react';
 import {
   Button, HorizontalGroup, useStyles
 } from '@grafana/ui';
-import { TextInputField, validators } from '@percona/platform-core';
+import { TextInputField, TextareaInputField, validators } from '@percona/platform-core';
 import { Table } from 'shared/components/Elements/Table/Table';
 import { Messages } from 'pmm-dbaas/DBaaS.messages';
-import { Field, Form, FormRenderProps } from 'react-final-form';
-import { TextAreaAdapter } from 'shared/components/Form/FieldAdapters/FieldAdapters';
+import { Form, FormRenderProps } from 'react-final-form';
 import { Modal } from 'shared/components/Elements/Modal/Modal';
 import { getStyles } from './Kubernetes.styles';
 import { Kubernetes, NewKubernetesCluster, KubernetesProps } from './Kubernetes.types';
@@ -22,6 +21,7 @@ export const KubernetesInventory: FC<KubernetesProps> = ({
   const [kubernetesToDelete, setKubernetesToDelete] = useState<Kubernetes>({ kubernetesClusterName: '' });
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [addModalVisible, setAddModalVisible] = useState(false);
+  const { required } = validators;
   const columns = [
     {
       Header: Messages.kubernetes.table.nameColumn,
@@ -79,14 +79,12 @@ export const KubernetesInventory: FC<KubernetesProps> = ({
                 <TextInputField
                   name="name"
                   label={Messages.kubernetes.addModal.fields.clusterName}
-                  validators={[validators.required]}
+                  validators={[required]}
                 />
-                <Field
-                  data-qa="kubernetes-kubeconfig-field"
+                <TextareaInputField
                   name="kubeConfig"
                   label={Messages.kubernetes.addModal.fields.kubeConfig}
-                  component={TextAreaAdapter}
-                  validate={validators.compose(validators.required)}
+                  validators={[required]}
                 />
 
                 <HorizontalGroup justify="center" spacing="md">

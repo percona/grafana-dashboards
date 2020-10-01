@@ -81,7 +81,7 @@ export const SelectFieldAdapter = ({
           {...input}
           {...props}
           options={options}
-          className={cx(className, styles.input)}
+          className={cx(styles.input, className)}
           invalid={meta.touched && meta.error}
         />
         <div data-qa="select-field-error-message" className={styles.errorMessage}>{meta.touched && meta.error}</div>
