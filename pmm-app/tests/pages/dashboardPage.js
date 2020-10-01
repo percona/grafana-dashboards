@@ -735,7 +735,7 @@ module.exports = {
   },
 
   waitForDashboardOpened() {
-    I.waitForElement(this.fields.metricTitle, 30);
+    I.waitForElement(this.fields.metricTitle, 60);
   },
 
   expandFilters(filterType) {
