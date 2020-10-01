@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useCallback } from 'react';
 import { useStyles } from '@grafana/ui';
 import { Table } from 'shared/components/Elements/Table/Table';
 import { Messages } from 'pmm-dbaas/DBaaS.messages';
@@ -35,13 +35,13 @@ export const XtraDB: FC<XtraDBProps> = ({ kubernetes }) => {
     value: kubernetesClusterName,
     label: kubernetesClusterName,
   }));
-  const AddNewClusterButton = () => (
+  const AddNewClusterButton = useCallback(() => (
     <AddClusterButton
       label={Messages.xtradb.addAction}
       action={() => setAddModalVisible(!addModalVisible)}
       data-qa="xtradb-add-cluster-button"
     />
-  );
+  ), [addModalVisible]);
 
   return (
     <div className={styles.tableWrapper}>

@@ -37,7 +37,7 @@ export const Messages = {
       fields: {
         clusterName: 'Cluster Name',
         kubernetesCluster: 'Kubernetes Cluster',
-        databaseType: 'Database Type'
+        databaseType: 'Database Type',
       },
     },
     table: {
@@ -50,5 +50,5 @@ export const Messages = {
         suspended: 'Suspended'
       }
     },
-  }
+  },
 };
