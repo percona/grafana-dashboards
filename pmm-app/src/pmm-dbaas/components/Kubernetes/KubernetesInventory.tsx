@@ -1,11 +1,11 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import {
   Button, HorizontalGroup, useStyles
 } from '@grafana/ui';
 import { TextInputField, validators } from '@percona/platform-core';
 import { Table } from 'shared/components/Elements/Table/Table';
 import { Messages } from 'pmm-dbaas/DBaaS.messages';
-import { Field, Form } from 'react-final-form';
+import { Field, Form, FormRenderProps } from 'react-final-form';
 import { TextAreaAdapter } from 'shared/components/Form/FieldAdapters/FieldAdapters';
 import { Modal } from 'shared/components/Elements/Modal/Modal';
 import { getStyles } from './Kubernetes.styles';
@@ -48,13 +48,13 @@ export const KubernetesInventory: FC<KubernetesProps> = ({
     }
   ];
 
-  const AddNewClusterButton = () => (
+  const AddNewClusterButton = useCallback(() => (
     <AddClusterButton
       label={Messages.kubernetes.addAction}
       action={() => setAddModalVisible(!addModalVisible)}
       data-qa="kubernetes-new-cluster-button"
     />
-  );
+  ), [addModalVisible]);
 
   return (
     <div className={styles.tableWrapper}>
@@ -73,7 +73,7 @@ export const KubernetesInventory: FC<KubernetesProps> = ({
           }}
           render={({
             handleSubmit, valid, pristine
-          }) => (
+          }: FormRenderProps<NewKubernetesCluster>) => (
             <form onSubmit={handleSubmit}>
               <>
                 <TextInputField

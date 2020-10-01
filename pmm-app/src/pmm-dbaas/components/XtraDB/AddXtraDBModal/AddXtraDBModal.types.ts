@@ -5,3 +5,9 @@ export interface AddXtraDBModalProps {
   isVisible: boolean;
   setVisible: (value: boolean) => void;
 }
+
+export interface AddXtraDBModalRenderProps {
+  name: string;
+  kubernetesCluster: SelectableValue;
+  databaseType: SelectableValue;
+}

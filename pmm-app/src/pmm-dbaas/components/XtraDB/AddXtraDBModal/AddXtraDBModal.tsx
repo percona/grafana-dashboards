@@ -1,12 +1,12 @@
 import React, { FC, useState } from 'react';
-import { Field, Form } from 'react-final-form';
+import { Field, Form, FormRenderProps } from 'react-final-form';
 import { HorizontalGroup } from '@grafana/ui';
 import { LoaderButton, TextInputField, validators } from '@percona/platform-core';
 import { Modal } from 'shared/components/Elements/Modal/Modal';
 import { SelectFieldAdapter } from 'shared/components/Form/FieldAdapters/FieldAdapters';
 import { Messages } from 'pmm-dbaas/DBaaS.messages';
 import { DATABASE_OPTIONS } from '../XtraDB.constants';
-import { AddXtraDBModalProps } from './AddXtraDBModal.types';
+import { AddXtraDBModalProps, AddXtraDBModalRenderProps } from './AddXtraDBModal.types';
 import { XtraDBService } from '../XtraDB.service';
 import { XtraDBCluster } from '../XtraDB.types';
 
@@ -48,7 +48,7 @@ export const AddXtraDBModal: FC<AddXtraDBModalProps> = ({
         }}
         render={({
           handleSubmit, valid, pristine
-        }) => (
+        }: FormRenderProps<AddXtraDBModalRenderProps>) => (
           <form data-qa="xtradb-add-form" onSubmit={handleSubmit}>
             <TextInputField
               name="name"
