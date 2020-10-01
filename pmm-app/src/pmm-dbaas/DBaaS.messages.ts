@@ -37,11 +37,11 @@ export const Messages = {
       fields: {
         clusterName: 'Cluster Name',
         kubernetesCluster: 'Kubernetes Cluster',
-        databaseType: 'Database Type'
+        databaseType: 'Database Type',
       },
     },
     table: {
       nameColumn: 'Name',
     },
-  }
+  },
 };

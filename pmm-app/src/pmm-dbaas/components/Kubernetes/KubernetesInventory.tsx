@@ -16,7 +16,7 @@ export const KubernetesInventory: FC<KubernetesProps> = ({
   kubernetes,
   deleteKubernetes,
   addKubernetes,
-  loading
+  loading,
 }) => {
   const styles = useStyles(getStyles);
   const [kubernetesToDelete, setKubernetesToDelete] = useState<Kubernetes>({ kubernetesClusterName: '' });
