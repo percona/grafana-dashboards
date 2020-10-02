@@ -553,6 +553,51 @@ module.exports = {
       'Detected Conflicts',
     ],
   },
+  mysqlPXCGaleraNodeSummaryDashboard: {
+    url: 'graph/d/pxc-node-summary/pxc-galera-node-summary?orgId=1&refresh=1m',
+    metrics: [
+      'Ready to Accept Queries',
+      'Local State',
+      'Desync Mode',
+      'Cluster Status',
+      'gcache Size',
+      'FC (normal traffic)',
+      'Galera Replication Latency',
+      'Galera Replication Queues',
+      'Galera Cluster Size',
+      'Galera Flow Control',
+      'Galera Parallelization Efficiency',
+      'Galera Writing Conflicts',
+      'Available Downtime before SST Required',
+      'Galera Writeset Count',
+      'Galera Writeset Size',
+      'Galera Writeset Traffic',
+      'Galera Network Usage Hourly',
+    ],
+  },
+  mysqlPXCGaleraNodesSummaryDashboard: {
+    url: 'graph/d/pxc-nodes-compare/pxc-galera-nodes-compare?orgId=1&refresh=1m',
+    metrics: [
+      'Ready to Accept Queries',
+      'Local State',
+      'Desync Mode',
+      'Cluster Status',
+      'gcache Size',
+      'FC (normal traffic)',
+    ],
+    tabs: [
+      'Galera Replication Latency',
+      'Galera Replication Queues',
+      'Galera Flow Control',
+      'Galera Writing Conflicts',
+      'Galera Writeset Count',
+      'Galera Writeset Traffic',
+      'Galera Parallelization Efficiency',
+      'Available Downtime before SST Required',
+      'Galera Writeset Size',
+      'Galera Network Usage Hourly',
+    ],
+  },
 
   fields: {
     notAvailableMetrics: '//span[contains(text(), "N/A")]',
@@ -602,8 +647,18 @@ module.exports = {
     }
   },
 
+  verifyTabExistence(tabs) {
+    for (const i in tabs) {
+      I.seeElement(this.tabLocator(tabs[i]));
+    }
+  },
+
   graphsLocator(metricName) {
     return `//span[contains(text(), '${metricName}')]`;
+  },
+
+  tabLocator(tabName) {
+    return `//a[contains(text(), '${tabName}')]`;
   },
 
   async verifyThereAreNoGraphsWithNA(acceptableNACount = 0) {
@@ -677,7 +732,7 @@ module.exports = {
   },
 
   waitForDashboardOpened() {
-    I.waitForElement(this.fields.metricTitle, 30);
+    I.waitForElement(this.fields.metricTitle, 60);
   },
 
   expandFilters(filterType) {
