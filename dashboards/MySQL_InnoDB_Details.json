@@ -12574,7 +12574,13 @@
                     "pointradius": 5,
                     "points": false,
                     "renderer": "flot",
-                    "seriesOverrides": [],
+                    "seriesOverrides": [
+                        {
+                            "$$hashKey": "object:792",
+                            "alias": "Sync Flushing",
+                            "color": "#E02F44"
+                        }
+                    ],
                     "spaceLength": 10,
                     "stack": true,
                     "steppedLine": true,
@@ -12610,6 +12616,12 @@
                             "interval": "$interval",
                             "legendFormat": "Background Flushing",
                             "refId": "C"
+                        },
+                        {
+                            "expr": "avg by (service_name) ((rate(mysql_info_schema_innodb_metrics_buffer_buffer_flush_sync_total_pages{service_name=~\"$service_name\"}[$interval]) or irate(mysql_info_schema_innodb_metrics_buffer_buffer_flush_sync_total_pages{service_name=~\"$service_name\"}[5m])))",
+                            "interval": "$interval",
+                            "legendFormat": "Sync Flushing",
+                            "refId": "D"
                         }
                     ],
                     "thresholds": [],
