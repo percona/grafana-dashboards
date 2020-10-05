@@ -37,6 +37,7 @@ exports.config = {
     amiInstanceSetupPage: './tests/pages/amiInstanceSetupPage.js',
     dashboardPage: './tests/pages/dashboardPage.js',
     databaseChecksPage: './tests/pages/databaseChecksPage.js',
+    dbaasPage: './tests/pages/dbaasPage.js',
     homePage: './tests/pages/homePage.js',
     inventoryAPI: './tests/pages/api/inventoryAPI.js',
     mysqlTableDetailsPage: './tests/pages/mysqlTableDetailsPage.js',

@@ -74,7 +74,11 @@ export const FiltersContainer: FC<FiltersContainerProps> = ({
           className={styles.filtersField}
           data-qa="filters-search-field"
         />
-        {FILTERS_GROUPS.filter((group) => filters[group.dataKey]).map(({ name, dataKey }) => (
+        {FILTERS_GROUPS.filter((group) => filters[group.dataKey]).map(({
+          name,
+          dataKey,
+          getDashboardURL
+        }) => (
           <CheckboxGroup
             key={name}
             name={name}
@@ -82,6 +86,7 @@ export const FiltersContainer: FC<FiltersContainerProps> = ({
             group={dataKey}
             showAll={showAll}
             filter={filter}
+            getDashboardURL={getDashboardURL}
           />
         ))}
       </Scrollbar>

@@ -21,6 +21,7 @@ export const Advanced: FC<AdvancedProps> = ({
   telemetryEnabled,
   updatesDisabled,
   sttEnabled,
+  dbaasEnabled,
   updateSettings
 }) => {
   const theme = useTheme();
@@ -40,14 +41,17 @@ export const Advanced: FC<AdvancedProps> = ({
       updatesTooltip,
       sttLabel,
       sttLink,
-      sttTooltip
+      sttTooltip,
+      dbaasLabel,
+      dbaasTooltip
     }, tooltipLinkText
   } = Messages;
   const initialValues = {
     retention: transformSecondsToDays(dataRetention),
     telemetry: telemetryEnabled,
     updates: !updatesDisabled,
-    stt: sttEnabled
+    stt: sttEnabled,
+    dbaas: dbaasEnabled
   };
   const [loading, setLoading] = useState(false);
   const retentionValidators = validators.compose(
@@ -134,6 +138,16 @@ export const Advanced: FC<AdvancedProps> = ({
               className={cx({ [styles.switchDisabled]: !values.telemetry })}
               disabled={!values.telemetry}
               dataQa="advanced-stt"
+              component={SwitchRow}
+            />
+            <Field
+              name="dbaas"
+              type="checkbox"
+              label={dbaasLabel}
+              tooltip={dbaasTooltip}
+              className={styles.switchDisabled}
+              disabled
+              dataQa="advanced-dbaas"
               component={SwitchRow}
             />
             <Button
