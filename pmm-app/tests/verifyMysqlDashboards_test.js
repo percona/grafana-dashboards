@@ -100,20 +100,21 @@ Scenario(
 Scenario(
   'PMM-T348 - PXC/Galera Node Summary dashboard @not-pr-pipeline @not-ui-pipeline @nightly',
   async (I, dashboardPage, adminPage) => {
-    I.amOnPage(dashboardPage.mysqlPXCGaleraNodeSummaryDashboard.url + '&from=now-15m&to=now');
+    I.amOnPage(dashboardPage.mysqlPXCGaleraNodeSummaryDashboard.url + '&from=now-5m&to=now');
     dashboardPage.waitForDashboardOpened();
     await dashboardPage.applyFilter('Service Name', 'pxc_node_8.0');
     adminPage.peformPageDown(5);
     dashboardPage.verifyMetricsExistence(dashboardPage.mysqlPXCGaleraNodeSummaryDashboard.metrics);
     await dashboardPage.verifyThereAreNoGraphsWithNA();
-    await dashboardPage.verifyThereAreNoGraphsWithoutData(0);
+    //Galera Network Usage Hourly expected to have No Data
+    await dashboardPage.verifyThereAreNoGraphsWithoutData(1);
   },
 );
 
 Scenario(
   'PMM-T349 - PXC/Galera Nodes Compare dashboard @not-pr-pipeline @not-ui-pipeline @nightly',
   async (I, dashboardPage, adminPage) => {
-    I.amOnPage(dashboardPage.mysqlPXCGaleraNodesSummaryDashboard.url + '&from=now-15m&to=now');
+    I.amOnPage(dashboardPage.mysqlPXCGaleraNodesSummaryDashboard.url);
     dashboardPage.waitForDashboardOpened();
     adminPage.peformPageDown(5);
     await dashboardPage.expandEachDashboardRow();
