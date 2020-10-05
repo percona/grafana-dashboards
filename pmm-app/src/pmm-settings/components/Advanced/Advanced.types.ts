@@ -5,5 +5,6 @@ export interface AdvancedProps {
   telemetryEnabled: boolean;
   sttEnabled: boolean;
   updatesDisabled: boolean;
+  dbaasEnabled?: boolean;
   updateSettings: (body: any, callback: LoadingCallback) => void;
 }

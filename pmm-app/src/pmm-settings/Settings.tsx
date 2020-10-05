@@ -97,6 +97,7 @@ export const SettingsPanel: FC = () => {
                   telemetryEnabled={!!settings.telemetryEnabled}
                   updatesDisabled={!!settings.updatesDisabled}
                   sttEnabled={!!settings.sttEnabled}
+                  dbaasEnabled={!!settings.dbaasEnabled}
                   updateSettings={updateSettings}
                 />
                 )}
