@@ -673,6 +673,9 @@ module.exports = {
   },
 
   async verifyThereAreNoGraphsWithoutData(acceptableNoDataCount = 0) {
+    //if tests will still fail need to be fixed here
+    await this.waitForGraphsLoaded();
+
     const numberOfNoDataElements = await I.grabNumberOfVisibleElements(this.fields.notAvailableDataPoints);
 
     console.log(`number of No Data elements is = ${numberOfNoDataElements}`);
@@ -794,5 +797,14 @@ module.exports = {
         break;
       }
     }
+  },
+
+  //this is a testing fuction for UI tests job
+  async waitForGraphsLoaded() {
+    const response = await I.waitForResponse(
+      (response) => response.url().endsWith('v1/query_range') && response.status() === 200,
+      { timeout: 60 },
+    );
+    return await response.json();
   },
 };
