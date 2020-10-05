@@ -11,6 +11,7 @@ import { RadioButtonGroup } from 'shared/components/Form/Radio/RadioButtonGroup'
 import AddRemoteInstanceService from './AddRemoteInstanceService';
 import { trackingOptions } from '../AddInstance.constants';
 import { TrackingOptions } from '../AddInstance.types';
+import { Messages } from '../AddInstance.messages';
 
 interface InstanceData {
   instanceType?: string;
@@ -74,7 +75,7 @@ const PostgreSQLAdditionalOptions = ({ mutators }) => {
           setTrackingType(value);
         }}
       />
-      <span className="description">Stat tracking options</span>
+      <span className="description">{Messages.form.trackingOptions}</span>
     </>
   );
 };
