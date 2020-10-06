@@ -7,7 +7,19 @@ export const XtraDBService = {
     return apiRequestManagement.post<any, any>('/DBaaS/XtraDBClusters/List', kubernetes);
   },
   addXtraDBCluster(xtradbCluster: XtraDBCluster) {
-    return apiRequestManagement.post<XtraDBClusterAPI, any>('/DBaaS/XtraDBCluster/Create', toAPI(xtradbCluster));
+    return apiRequestManagement.post<XtraDBClusterAPI, any>(
+      '/DBaaS/XtraDBCluster/Create',
+      toAPI(xtradbCluster),
+    );
+  },
+  deleteXtraDBClusters(xtradbCluster) {
+    const toAPI = (cluster) => {
+      return {
+        kubernetes_cluster_name: cluster.clusterName,
+      };
+    };
+
+    return apiRequestManagement.post<any, any>('/DBaaS/XtraDBClusters/Delete', toAPI(xtradbCluster));
   },
 };
 
@@ -19,20 +31,20 @@ export const toAPI = (xtradbCluster: XtraDBCluster): XtraDBClusterAPI => ({
     pxc: {
       compute_resources: {
         cpu_m: 3,
-        memory_bytes: 3072
-      }
+        memory_bytes: 3072,
+      },
     },
     proxysql: {
       compute_resources: {
         cpu_m: 1,
-        memory_bytes: 1024
-      }
-    }
-  }
+        memory_bytes: 1024,
+      },
+    },
+  },
 });
 
 export const toModel = (xtradbCluster: XtraDBClusterAPI, databaseType: string): XtraDBCluster => ({
   kubernetesClusterName: '',
   clusterName: xtradbCluster.name,
-  databaseType
+  databaseType,
 });
