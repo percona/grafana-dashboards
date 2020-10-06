@@ -1,6 +1,6 @@
 interface Action {
   title: string;
-  action: (item?: any) => undefined;
+  action: () => void;
 }
 
 export interface MultipleActionsProps {

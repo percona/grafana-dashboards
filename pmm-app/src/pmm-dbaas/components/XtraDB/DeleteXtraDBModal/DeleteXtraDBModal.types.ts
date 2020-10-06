@@ -1,7 +1,7 @@
 import { XtraDBCluster } from '../XtraDB.types';
 
 export interface DeleteXtraDBModalProps {
-  selectedCluster: XtraDBCluster[];
+  selectedCluster?: XtraDBCluster;
   isVisible: boolean;
   setVisible: (value: boolean) => void;
   onClusterDeleted: () => void;

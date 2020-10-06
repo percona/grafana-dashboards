@@ -4,7 +4,7 @@ import { Table } from 'shared/components/Elements/Table/Table';
 import { Messages } from 'pmm-dbaas/DBaaS.messages';
 import { AddClusterButton } from '../AddClusterButton/AddClusterButton';
 import { getStyles } from './XtraDB.styles';
-import { XtraDBProps } from './XtraDB.types';
+import { XtraDBCluster, XtraDBProps } from './XtraDB.types';
 import { AddXtraDBModal } from './AddXtraDBModal/AddXtraDBModal';
 import { useXtraDBClusters } from './XtraDB.hooks';
 import { clusterStatusRender } from './ColumnRenderers/ColumnRenderers';
@@ -15,7 +15,7 @@ export const XtraDB: FC<XtraDBProps> = ({ kubernetes }) => {
   const styles = useStyles(getStyles);
   const [addModalVisible, setAddModalVisible] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
-  const [selectedCluster, setSelectedCluster] = useState(false);
+  const [selectedCluster, setSelectedCluster] = useState<XtraDBCluster>();
   const [xtraDBClusters, getXtraDBClusters, loading] = useXtraDBClusters(kubernetes);
   const ActionsButton = ({ item }) => {
     const actions = [
