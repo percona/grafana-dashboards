@@ -5,7 +5,7 @@ module.exports = {
   // insert your locators and methods here
   // setting locators
   nodesCompareDashboard: {
-    url: 'graph/d/node-instance-compare/nodes-compare?orgId=1&refresh=5m&from=now-5m&to=now',
+    url: 'graph/d/node-instance-compare/nodes-compare?orgId=1&refresh=5m&from=now-1m&to=now',
     metrics: [
       'System Info',
       'System Uptime',
@@ -34,7 +34,7 @@ module.exports = {
   },
   advancedDataExplorationDashboard: {
     url:
-      'graph/d/prometheus-advanced/advanced-data-exploration?orgId=1&refresh=5m&var-metric=go_gc_duration_seconds',
+      'graph/d/prometheus-advanced/advanced-data-exploration?orgId=1&refresh=1m&var-metric=go_gc_duration_seconds',
     metrics: [
       'View Actual Metric Values (Gauge)',
       'View Metric Rate of Change (Counter)',
@@ -91,7 +91,7 @@ module.exports = {
     ],
   },
   prometheusExporterStatusDashboard: {
-    url: 'graph/d/prometheus-status/prometheus-exporter-status?orgId=1&refresh=5m&from=now-5m&to=now',
+    url: 'graph/d/prometheus-status/prometheus-exporter-status?orgId=1&refresh=1m&from=now-5m&to=now',
     metrics: [
       'CPU Usage',
       'Memory Usage',
@@ -116,7 +116,7 @@ module.exports = {
     url: 'graph/d/node-cpu-process/processes-details?from=now-30m&to=now',
   },
   nodeSummaryDashboard: {
-    url: 'graph/d/node-instance-summary/node-summary?orgId=1&refresh=5m&from=now-30m&to=now',
+    url: 'graph/d/node-instance-summary/node-summary?orgId=1&refresh=1m&from=now-30m&to=now',
     metrics: [
       'System Uptime',
       'System Summary',
@@ -147,7 +147,7 @@ module.exports = {
     },
   },
   prometheusExporterOverviewDashboard: {
-    url: 'graph/d/prometheus-overview/prometheus-exporters-overview?orgId=1&refresh=5m&from=now-5m&to=now',
+    url: 'graph/d/prometheus-overview/prometheus-exporters-overview?orgId=1&refresh=1m&from=now-5m&to=now',
     metrics: [
       'Avg CPU Usage per Node',
       'Avg Memory Usage per Node',
@@ -367,7 +367,7 @@ module.exports = {
     ],
   },
   mysqlInstanceSummaryDashboard: {
-    url: 'graph/d/mysql-instance-summary/mysql-instance-summary?orgId=1&refresh=5m&from=now-5m&to=now',
+    url: 'graph/d/mysql-instance-summary/mysql-instance-summary?orgId=1&refresh=1m&from=now-5m&to=now',
     metrics: [
       'MySQL Uptime',
       'Current QPS',
@@ -400,7 +400,7 @@ module.exports = {
     ],
   },
   mysqlUserDetailsDashboard: {
-    url: 'graph/d/mysql-user/mysql-user-details?orgId=1&refresh=5m&from=now-5m&to=now',
+    url: 'graph/d/mysql-user/mysql-user-details?orgId=1&refresh=1m&from=now-5m&to=now',
     metrics: [
       'Active Users',
       'Lost Connections',
@@ -456,7 +456,7 @@ module.exports = {
     ],
   },
   mongoDbInstanceOverview: {
-    url: 'graph/d/mongodb-instance-overview/mongodb-instances-overview?orgId=1&refresh=5m',
+    url: 'graph/d/mongodb-instance-overview/mongodb-instances-overview?orgId=1&refresh=1m',
   },
   homeDashboard: {
     metrics: [
@@ -474,7 +474,7 @@ module.exports = {
     ],
   },
   mySQLInstanceOverview: {
-    url: 'graph/d/mysql-instance-overview/mysql-instances-overview?orgId=1&from=now-2m&to=now&refresh=5m',
+    url: 'graph/d/mysql-instance-overview/mysql-instances-overview?orgId=1&from=now-2m&to=now&refresh=1m',
     metrics: [
       'Services',
       'Min MySQL Uptime',
@@ -534,7 +534,7 @@ module.exports = {
       'var-node_type=All&var-node_model=&var-database=All&var-service_type=All&var-schema=All',
   },
   groupReplicationDashboard: {
-    url: 'graph/d/mysql-group-replicaset-summary/mysql-group-replication-summary?orgId=1&refresh=5m',
+    url: 'graph/d/mysql-group-replicaset-summary/mysql-group-replication-summary?orgId=1&refresh=1m',
     metrics: [
       'Group Replication Service States',
       'PRIMARY Service',
@@ -554,7 +554,7 @@ module.exports = {
     ],
   },
   mysqlPXCGaleraNodeSummaryDashboard: {
-    url: 'graph/d/pxc-node-summary/pxc-galera-node-summary?orgId=1&refresh=5m',
+    url: 'graph/d/pxc-node-summary/pxc-galera-node-summary?orgId=1&refresh=1m',
     metrics: [
       'Ready to Accept Queries',
       'Local State',
@@ -576,7 +576,7 @@ module.exports = {
     ],
   },
   mysqlPXCGaleraNodesSummaryDashboard: {
-    url: 'graph/d/pxc-nodes-compare/pxc-galera-nodes-compare?orgId=1&refresh=5m',
+    url: 'graph/d/pxc-nodes-compare/pxc-galera-nodes-compare?orgId=1&refresh=1m',
     metrics: [
       'Ready to Accept Queries',
       'Local State',
