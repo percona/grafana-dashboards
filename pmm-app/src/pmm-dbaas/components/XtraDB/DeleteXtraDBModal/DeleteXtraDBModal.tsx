@@ -45,7 +45,10 @@ export const DeleteXtraDBModal: FC<DeleteXtraDBModalProps> = ({
           variant="destructive"
           size="md"
           onClick={() => {
-            deleteXtraDBCluster(selectedCluster);
+            if (selectedCluster) {
+              deleteXtraDBCluster(selectedCluster);
+            }
+
             setVisible(false);
           }}
           data-qa="delete-xtradbcluster-button"

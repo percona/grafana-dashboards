@@ -12,7 +12,7 @@ export const XtraDBService = {
       toAPI(xtradbCluster),
     );
   },
-  deleteXtraDBClusters(xtradbCluster) {
+  deleteXtraDBClusters(xtradbCluster: XtraDBCluster) {
     const toAPI = (cluster) => ({
       name: cluster.clusterName,
     });
