@@ -22,7 +22,6 @@ export const DeleteXtraDBModal: FC<AddXtraDBModalProps> = ({
       onClusterDeleted();
     } catch (e) {
       console.error(e);
-    } finally {
     }
   };
 
