@@ -2,12 +2,12 @@ import React, { FC } from 'react';
 import { Button, HorizontalGroup, useStyles } from '@grafana/ui';
 import { Modal } from 'shared/components/Elements/Modal/Modal';
 import { Messages } from 'pmm-dbaas/DBaaS.messages';
-import { AddXtraDBModalProps } from './AddXtraDBModal.types';
+import { DeleteXtraDBModalProps } from './DeleteXtraDBModal.types';
 import { XtraDBService } from '../XtraDB.service';
 import { XtraDBCluster } from '../XtraDB.types';
 import { getStyles } from './DeleteXtraDBModal.styles';
 
-export const DeleteXtraDBModal: FC<AddXtraDBModalProps> = ({
+export const DeleteXtraDBModal: FC<DeleteXtraDBModalProps> = ({
   isVisible,
   setVisible,
   onClusterDeleted,

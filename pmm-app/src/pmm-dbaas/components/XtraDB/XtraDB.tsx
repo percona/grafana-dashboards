@@ -20,7 +20,7 @@ export const XtraDB: FC<XtraDBProps> = ({ kubernetes }) => {
   const ActionsButton = ({ item }) => {
     const actions = [
       {
-        title: 'Delete cluster',
+        title: Messages.xtradb.table.actions.deleteCluster,
         action: () => {
           setSelectedCluster(item);
           setDeleteModalVisible(true);

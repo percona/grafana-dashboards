@@ -1,10 +1,13 @@
 import React, { FC, useState } from 'react';
-import { Icon } from '@grafana/ui';
-import { styles } from './MultipleActions.styles';
+import { Icon, useTheme } from '@grafana/ui';
+import { cx } from 'emotion';
 import { MultipleActionsProps } from './MultipleActions.types';
+import { getStyles } from './MultipleActions.styles';
 
 export const MultipleActions: FC<MultipleActionsProps> = ({ actions }) => {
   const [menuOpened, openMenu] = useState(false);
+  const theme = useTheme();
+  const styles = getStyles(theme);
 
   const showMenu = (event) => {
     if (menuOpened) {
@@ -25,27 +28,30 @@ export const MultipleActions: FC<MultipleActionsProps> = ({ actions }) => {
   };
 
   return (
-    <div className={styles.wrapper}>
-      <button onClick={showMenu} className={menuOpened ? 'show-menu menu-open' : 'show-menu'}>
+    <div>
+      <button type="button" onClick={showMenu} className={cx(styles.showMenu, { [styles.showMenuOpen]: menuOpened })}>
         <Icon name="ellipsis-v" />
       </button>
 
-      {menuOpened ? (
-        <div className="menu">
-          {actions.map((action) => (
-            <button
-              className="menu-item"
-              onClick={() => {
-                action.action();
-                openMenu(false);
-                document.removeEventListener('click', closeMenu);
-              }}
-            >
-              <nobr>{action.title}</nobr>
-            </button>
-          ))}
-        </div>
-      ) : null}
+      <div className={styles.menuWrapper}>
+        {menuOpened ? (
+          <div className={styles.menu}>
+            {actions.map((action) => (
+              <button
+                type="button"
+                className={styles.menuItem}
+                onClick={() => {
+                  action.action();
+                  openMenu(false);
+                  document.removeEventListener('click', closeMenu);
+                }}
+              >
+                <span className={styles.action}>{action.title}</span>
+              </button>
+            ))}
+          </div>
+        ) : null}
+      </div>
     </div>
   );
 };
