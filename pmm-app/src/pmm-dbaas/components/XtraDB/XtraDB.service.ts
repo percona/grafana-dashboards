@@ -13,8 +13,9 @@ export const XtraDBService = {
     );
   },
   deleteXtraDBClusters(xtradbCluster: XtraDBCluster) {
-    const toAPI = (cluster) => ({
+    const toAPI = (cluster: XtraDBCluster) => ({
       name: cluster.clusterName,
+      kubernetes_cluster_name: xtradbCluster.kubernetesClusterName
     });
 
     return apiRequestManagement.post<any, any>('/DBaaS/XtraDBCluster/Delete', toAPI(xtradbCluster));
