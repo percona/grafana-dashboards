@@ -4,6 +4,7 @@ export interface AddXtraDBModalProps {
   kubernetesOptions: SelectableValue[];
   isVisible: boolean;
   setVisible: (value: boolean) => void;
+  onXtraDBAdded: () => void;
 }
 
 export interface AddXtraDBModalRenderProps {

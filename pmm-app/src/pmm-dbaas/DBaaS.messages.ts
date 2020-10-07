@@ -42,6 +42,13 @@ export const Messages = {
     },
     table: {
       nameColumn: 'Name',
+      databaseTypeColumn: 'Database Type',
+      clusterStatusColumn: 'Cluster Status',
+      actionsColumn: 'Actions',
+      status: {
+        active: 'Active',
+        suspended: 'Suspended'
+      }
     },
   },
 };

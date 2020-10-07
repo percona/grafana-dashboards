@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import { AddXtraDBModal } from './AddXtraDBModal';
-import { kubernetesOptionsStub, setVisibleStub } from './__mocks__/addXtraDBModalStubs';
+import { kubernetesOptionsStub, setVisibleStub, onXtraDBAddedStub } from './__mocks__/addXtraDBModalStubs';
 
 jest.mock('shared/components/helpers/notification-manager');
 
@@ -12,6 +12,7 @@ describe('AddXtraDBModal::', () => {
         kubernetesOptions={kubernetesOptionsStub}
         isVisible
         setVisible={setVisibleStub}
+        onXtraDBAdded={onXtraDBAddedStub}
       />
     );
 
@@ -28,6 +29,7 @@ describe('AddXtraDBModal::', () => {
         kubernetesOptions={kubernetesOptionsStub}
         isVisible
         setVisible={setVisibleStub}
+        onXtraDBAdded={onXtraDBAddedStub}
       />
     );
     const button = root.find('[data-qa="xtradb-create-cluster-button"]').find('button');

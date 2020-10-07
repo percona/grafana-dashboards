@@ -14,14 +14,17 @@ export const AddXtraDBModal: FC<AddXtraDBModalProps> = ({
   kubernetesOptions,
   isVisible,
   setVisible,
+  onXtraDBAdded,
 }) => {
   const [loading, setLoading] = useState(false);
   const { required } = validators;
   const addXtraDBCluster = async (xtraDBCluster: XtraDBCluster) => {
     try {
       setLoading(true);
+
       await XtraDBService.addXtraDBCluster(xtraDBCluster);
       setVisible(false);
+      onXtraDBAdded();
     } catch (e) {
       console.error(e);
     } finally {

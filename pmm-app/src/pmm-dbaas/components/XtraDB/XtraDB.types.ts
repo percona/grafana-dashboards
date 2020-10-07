@@ -1,6 +1,7 @@
 import { Kubernetes } from '../Kubernetes/Kubernetes.types';
 
 export type AddXtraDBAction = (xtradbCluster: XtraDBCluster) => void;
+export type GetXtraDBClustersAction = () => void;
 
 export interface XtraDBProps {
   kubernetes: Kubernetes[];
