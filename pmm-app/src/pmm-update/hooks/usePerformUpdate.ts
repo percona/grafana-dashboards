@@ -49,7 +49,8 @@ export const usePerformUpdate = (): UpdateStatus => {
 
           return `${previousOutput}${logLines.join('\n')}\n`;
         });
-        newLogOffset = logOffset + log_offset ?? 0;
+        newLogOffset = log_offset ?? 0;
+
         newErrorsCount = 0;
         newIsUpdated = done ?? false;
       } catch (e) {
