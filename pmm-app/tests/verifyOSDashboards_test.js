@@ -73,7 +73,7 @@ Data(nodes).Scenario(
     I.amOnPage(dashboardPage.nodeSummaryDashboard.url);
     await dashboardPage.waitPTSummaryInformation();
     dashboardPage.waitForDashboardOpened();
-    await dashboardPage.applyFilter(filter, current.name);
+
     await dashboardPage.waitPTSummaryInformation();
 
     I.waitForElement(dashboardPage.nodeSummaryDashboard.ptSummaryDetail.reportContainer, 30);
