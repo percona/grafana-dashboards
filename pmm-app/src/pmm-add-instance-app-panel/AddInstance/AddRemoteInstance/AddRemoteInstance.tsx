@@ -69,7 +69,7 @@ const PostgreSQLAdditionalOptions = ({ mutators }) => {
         options={trackingOptions}
         selected={trackingType}
         name="tracking"
-        dataQa="metrics-resolution-radio-button-group"
+        dataQa="tracking-options-radio-button-group"
         onChange={(value) => {
           mutators.changePGTracking(value);
           setTrackingType(value);
