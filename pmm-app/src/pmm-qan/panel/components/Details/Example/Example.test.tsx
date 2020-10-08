@@ -20,15 +20,25 @@ describe('Example tab page render test', () => {
     expect(component.find('pre').text()).toContain('Sorry, no examples found for this query');
   });
 
-  it('Component renders with fingerprint for postgresql', () => {
+  it('Component renders classic example for mysql', () => {
     const props = {
       databaseType: 'postgresql' as DatabasesType,
-      examples: [],
+      examples: [
+        {
+          example: 'SELECT SUM(K) FROM sbtest1 WHERE id BETWEEN 91131 AND 91230',
+          example_format: 'EXAMPLE',
+          example_type: 'RANDOM',
+          service_id: '/service_id/98f52fef-043b-47dc-9086-82c96581ff4d',
+          service_type: 'postgresql',
+        },
+      ],
       fingerprint: 'test fingerprint',
     };
-    const component = mount(<Example {...props} />);
+    const component = mount(
+      <Example databaseType={props.databaseType} examples={props.examples} fingerprint={props.fingerprint} />
+    );
 
-    expect(component.find('.sql').text()).toContain('test fingerprint');
+    expect(component.find('.sql').text()).toEqual(sqlFormatter.format(props.examples[0].example));
   });
 
   it('Component renders json example for mongodb', () => {
