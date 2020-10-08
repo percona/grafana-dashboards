@@ -7,13 +7,15 @@ enum PageSizes {
   high = '100',
 }
 
+enum Databases {
+  postgresql= 'postgresql',
+  mysql = 'mysql',
+  mongodb = 'mongodb',
+}
+
 export const PAGE_SIZE_OPTIONS = [PageSizes.low, PageSizes.medium, PageSizes.high];
 export const DEFAULT_PAGE_NUMBER = 1;
 export const DEFAULT_PAGE_SIZE = +PageSizes.low;
-export const MIN_SPLIT_SIZE = 300;
-// percent
-export const SPACE_DISTRIBUTION_OVERVIEW = 40;
-export const SPACE_DISTRIBUTION_DETAILS = 60;
 export const DEFAULT_COLUMNS = ['load', 'num_queries', 'query_time'];
 export const FILTERS_NAMES = [
   'environment',
@@ -49,7 +51,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Bytes Sent',
     tooltipText: 'The number of bytes sent to all clients',
     simpleName: 'bytes_sent',
-    serviceTypes: ['mysql'],
+    serviceTypes: [Databases.mysql],
     metricRelation: (data) => {
       const mainMetric = get(data, ['bytes_sent', 'sum']);
       const divider = get(data, ['rows_sent', 'sum']);
@@ -74,7 +76,7 @@ export const METRIC_CATALOGUE = {
     tooltipText:
       'Total time the statement spent reading blocks (if track_io_timing is enabled, otherwise zero)',
     simpleName: 'blk_read_time',
-    serviceTypes: ['postgresql'],
+    serviceTypes: [Databases.postgresql],
     metricRelation: () => '',
     units: Units.PER_SEC,
     pipeTypes: {
@@ -90,7 +92,7 @@ export const METRIC_CATALOGUE = {
     tooltipText:
       'Total time the statement spent writing blocks (if track_io_timing is enabled, otherwise zero)',
     simpleName: 'blk_write_time',
-    serviceTypes: ['postgresql'],
+    serviceTypes: [Databases.postgresql],
     metricRelation: () => '',
     units: Units.PER_SEC,
     pipeTypes: {
@@ -105,7 +107,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Local Blocks Dirtied',
     tooltipText: 'Total number of local blocks dirtied by the statement',
     simpleName: 'local_blks_dirtied',
-    serviceTypes: ['postgresql'],
+    serviceTypes: [Databases.postgresql],
     metricRelation: () => '',
     units: Units.NONE,
     pipeTypes: {
@@ -120,7 +122,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Local Block Cache Hits',
     tooltipText: 'Total number of local block cache hits by the statement',
     simpleName: 'local_blks_hit',
-    serviceTypes: ['postgresql'],
+    serviceTypes: [Databases.postgresql],
     metricRelation: () => '',
     units: Units.NONE,
     pipeTypes: {
@@ -135,7 +137,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Local Blocks Read',
     tooltipText: 'Total number of local blocks read by the statement',
     simpleName: 'local_blks_read',
-    serviceTypes: ['postgresql'],
+    serviceTypes: [Databases.postgresql],
     metricRelation: () => '',
     units: Units.NONE,
     pipeTypes: {
@@ -150,7 +152,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Local Blocks Written',
     tooltipText: 'Total number of local blocks written by the statement',
     simpleName: 'local_blks_written',
-    serviceTypes: ['postgresql'],
+    serviceTypes: [Databases.postgresql],
     metricRelation: () => '',
     units: Units.NONE,
     pipeTypes: {
@@ -165,7 +167,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Shared Blocks Dirtied',
     tooltipText: 'Total number of shared blocks dirtied by the statement',
     simpleName: 'shared_blks_dirtied',
-    serviceTypes: ['postgresql'],
+    serviceTypes: [Databases.postgresql],
     metricRelation: () => '',
     units: Units.NONE,
     pipeTypes: {
@@ -180,7 +182,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Shared Block Cache Hits',
     tooltipText: 'Total number of shared block cache hits by the statement',
     simpleName: 'shared_blks_hit',
-    serviceTypes: ['postgresql'],
+    serviceTypes: [Databases.postgresql],
     metricRelation: () => '',
     units: Units.NONE,
     pipeTypes: {
@@ -195,7 +197,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Shared Blocks Read',
     tooltipText: 'Total number of shared blocks read by the statement',
     simpleName: 'shared_blks_read',
-    serviceTypes: ['postgresql'],
+    serviceTypes: [Databases.postgresql],
     metricRelation: () => '',
     units: Units.NONE,
     pipeTypes: {
@@ -210,7 +212,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Shared Blocks Written',
     tooltipText: 'Total number of shared blocks written by the statement',
     simpleName: 'shared_blks_written',
-    serviceTypes: ['postgresql'],
+    serviceTypes: [Databases.postgresql],
     metricRelation: () => '',
     units: Units.NONE,
     pipeTypes: {
@@ -225,7 +227,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Temp Blocks Read',
     tooltipText: 'Total number of temp blocks read by the statement',
     simpleName: 'temp_blks_read',
-    serviceTypes: ['postgresql'],
+    serviceTypes: [Databases.postgresql],
     metricRelation: () => '',
     units: Units.NONE,
     pipeTypes: {
@@ -240,7 +242,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Temp Blocks Written',
     tooltipText: 'Total number of temp blocks written by the statement',
     simpleName: 'temp_blks_written',
-    serviceTypes: ['postgresql'],
+    serviceTypes: [Databases.postgresql],
     metricRelation: () => '',
     units: Units.NONE,
     pipeTypes: {
@@ -270,7 +272,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Query Count with errors',
     tooltipText: 'Total number of queries with errors',
     simpleName: 'num_queries_with_errors',
-    serviceTypes: ['mysql'],
+    serviceTypes: [Databases.mysql],
     metricRelation: () => '',
     units: Units.QPS,
     pipeTypes: {
@@ -285,7 +287,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Query Count with warnings',
     tooltipText: 'Total number of queries with warnings',
     simpleName: 'num_queries_with_warnings',
-    serviceTypes: ['mysql'],
+    serviceTypes: [Databases.mysql],
     metricRelation: () => '',
     units: Units.QPS,
     pipeTypes: {
@@ -300,7 +302,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Docs scanned',
     tooltipText: 'Number of scanned documents',
     simpleName: 'docs_scanned',
-    serviceTypes: ['mongodb'],
+    serviceTypes: [Databases.mongodb],
     metricRelation: (data) => {
       const mainMetric = get(data, ['docs_scanned', 'sum']);
       const divider = get(data, ['docs_returned', 'sum']);
@@ -324,7 +326,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Docs Returned',
     tooltipText: 'Number of returned documents',
     simpleName: 'docs_returned',
-    serviceTypes: ['mongodb'],
+    serviceTypes: [Databases.mongodb],
     metricRelation: () => '',
     units: Units.NONE,
     pipeTypes: {
@@ -339,7 +341,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Filesort',
     tooltipText: 'The query used a filesort',
     simpleName: 'filesort',
-    serviceTypes: ['mysql'],
+    serviceTypes: [Databases.mysql],
     metricRelation: (data) => {
       const mainMetric = get(data, ['filesort', 'sum']);
       const divider = get(data, ['num_queries', 'sum']);
@@ -363,7 +365,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Filesort on Disk',
     tooltipText: 'A filesort was performed on disk',
     simpleName: 'filesort_on_disk',
-    serviceTypes: ['mysql'],
+    serviceTypes: [Databases.mysql],
     metricRelation: (data) => {
       const mainMetric = get(data, ['filesort_on_disk', 'sum']);
       const divider = get(data, ['num_queries', 'sum']);
@@ -387,7 +389,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Full Join',
     tooltipText: 'The query performed a full join (a join without indexes)',
     simpleName: 'full_join',
-    serviceTypes: ['mysql'],
+    serviceTypes: [Databases.mysql],
     metricRelation: (data) => {
       const mainMetric = get(data, ['full_join', 'sum']);
       const divider = get(data, ['num_queries', 'sum']);
@@ -411,7 +413,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Full Scan',
     tooltipText: 'The query performed a full table scan',
     simpleName: 'full_scan',
-    serviceTypes: ['mysql'],
+    serviceTypes: [Databases.mysql],
     metricRelation: (data) => {
       const mainMetric = get(data, ['full_scan', 'sum']);
       const divider = get(data, ['num_queries', 'sum']);
@@ -435,7 +437,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Innodb Read Bytes',
     tooltipText: 'Total page read operations scheduled',
     simpleName: 'innodb_io_r_bytes',
-    serviceTypes: ['mysql'],
+    serviceTypes: [Databases.mysql],
     metricRelation: (data) => {
       const mainMetric = get(data, ['innodb_io_r_bytes', 'sum']);
       const divider = get(data, ['innodb_io_r_ops', 'sum']);
@@ -459,7 +461,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Innodb IO Read Ops',
     tooltipText: 'Number of page read operations scheduled',
     simpleName: 'innodb_io_r_ops',
-    serviceTypes: ['mysql'],
+    serviceTypes: [Databases.mysql],
     metricRelation: () => '',
     units: Units.PER_SEC,
     pipeTypes: {
@@ -474,7 +476,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Innodb IO Read Wait',
     tooltipText: 'Time for InnoDB to read the data from storage',
     simpleName: 'innodb_io_r_wait',
-    serviceTypes: ['mysql'],
+    serviceTypes: [Databases.mysql],
     metricRelation: (data) => {
       const mainMetric = get(data, ['innodb_io_r_wait', 'avg']);
       const divider = get(data, ['query_time', 'avg']);
@@ -498,7 +500,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Innodb Pages Distinct',
     tooltipText: 'Approximate number of unique pages the query accessed',
     simpleName: 'innodb_pages_distinct',
-    serviceTypes: ['mysql'],
+    serviceTypes: [Databases.mysql],
     metricRelation: () => '',
     units: Units.NONE,
     pipeTypes: {
@@ -513,7 +515,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Innodb Queue Wait',
     tooltipText: 'Time the query spent either waiting to enter the InnoDB queue, or in it pending execution',
     simpleName: 'innodb_queue_wait',
-    serviceTypes: ['mysql'],
+    serviceTypes: [Databases.mysql],
     metricRelation: (data) => {
       const mainMetric = get(data, ['innodb_queue_wait', 'avg']);
       const divider = get(data, ['query_time', 'avg']);
@@ -537,7 +539,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Innodb Rec Lock Wait',
     tooltipText: 'Time the query waited for row locks',
     simpleName: 'innodb_rec_lock_wait',
-    serviceTypes: ['mysql'],
+    serviceTypes: [Databases.mysql],
     metricRelation: (data) => {
       const mainMetric = get(data, ['innodb_rec_lock_wait', 'avg']);
       const divider = get(data, ['query_time', 'avg']);
@@ -576,7 +578,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Lock Time',
     tooltipText: 'Time to acquire locks',
     simpleName: 'lock_time',
-    serviceTypes: ['mysql'],
+    serviceTypes: [Databases.mysql],
     metricRelation: (data) => {
       const mainMetric = get(data, ['lock_time', 'avg']);
       const divider = get(data, ['query_time', 'avg']);
@@ -600,7 +602,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Merge Passes',
     tooltipText: 'Number of merge passes the sort algorithm performed',
     simpleName: 'merge_passes',
-    serviceTypes: ['mysql'],
+    serviceTypes: [Databases.mysql],
     metricRelation: (data) => {
       const mainMetric = get(data, ['merge_passes', 'sum']);
       const divider = get(data, ['filesort', 'sum']);
@@ -624,7 +626,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'No Good Index Used',
     tooltipText: 'Number of queries without a good index',
     simpleName: 'no_good_index_used',
-    serviceTypes: ['mysql'],
+    serviceTypes: [Databases.mysql],
     metricRelation: () => '',
     units: Units.NONE,
     pipeTypes: {
@@ -639,7 +641,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'No index used',
     tooltipText: 'Number of queries without an index',
     simpleName: 'no_index_used',
-    serviceTypes: ['mysql'],
+    serviceTypes: [Databases.mysql],
     metricRelation: () => '',
     units: Units.NONE,
     pipeTypes: {
@@ -654,7 +656,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Query Cache Hit',
     tooltipText: 'Query Cache hits',
     simpleName: 'qc_hit',
-    serviceTypes: ['mysql'],
+    serviceTypes: [Databases.mysql],
     metricRelation: (data) => {
       const mainMetric = get(data, ['qc_hit', 'sum']);
       const divider = get(data, ['num_queries', 'sum']);
@@ -678,7 +680,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Query Length',
     tooltipText: 'Shows how long the query is',
     simpleName: 'query_length',
-    serviceTypes: ['mysql'],
+    serviceTypes: [Databases.mysql],
     metricRelation: () => '',
     units: Units.PER_SEC,
     pipeTypes: {
@@ -708,7 +710,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Response Length',
     tooltipText: 'Response length of the query result',
     simpleName: 'response_length',
-    serviceTypes: ['mongodb'],
+    serviceTypes: [Databases.mongodb],
     metricRelation: (data) => {
       const mainMetric = get(data, ['response_length', 'sum']);
       const divider = get(data, ['docs_returned', 'sum']);
@@ -732,7 +734,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Rows Affected',
     tooltipText: 'Number of rows changed by UPDATE, DELETE, or INSERT',
     simpleName: 'rows_affected',
-    serviceTypes: ['mysql'],
+    serviceTypes: [Databases.mysql],
     metricRelation: () => '',
     units: Units.PER_SEC,
     pipeTypes: {
@@ -747,7 +749,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Rows Examined',
     tooltipText: 'Number of rows scanned by SELECT',
     simpleName: 'rows_examined',
-    serviceTypes: ['mysql'],
+    serviceTypes: [Databases.mysql],
     metricRelation: (data) => {
       const mainMetric = get(data, ['rows_examined', 'sum']);
       const divider = get(data, ['rows_sent', 'sum']);
@@ -771,7 +773,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Rows Read',
     tooltipText: 'Number of rows read from tables',
     simpleName: 'rows_read',
-    serviceTypes: ['mysql'],
+    serviceTypes: [Databases.mysql],
     metricRelation: () => '',
     units: Units.PER_SEC,
     pipeTypes: {
@@ -786,7 +788,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Rows Sent',
     tooltipText: 'Number of rows sent to the client',
     simpleName: 'rows_sent',
-    serviceTypes: ['mysql', 'postgresql'],
+    serviceTypes: [Databases.mysql, Databases.postgresql],
     metricRelation: () => '',
     units: Units.PER_SEC,
     pipeTypes: {
@@ -801,7 +803,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Select Full Range Join',
     tooltipText: 'Number of joins using a range search on a reference table',
     simpleName: 'select_full_range_join',
-    serviceTypes: ['mysql'],
+    serviceTypes: [Databases.mysql],
     metricRelation: () => '',
     units: Units.NONE,
     pipeTypes: {
@@ -816,7 +818,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Sort Range',
     tooltipText: 'Number of sorts using ranges',
     simpleName: 'sort_range',
-    serviceTypes: ['mysql'],
+    serviceTypes: [Databases.mysql],
     metricRelation: () => '',
     units: Units.NONE,
     pipeTypes: {
@@ -831,7 +833,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Select Range',
     tooltipText: 'Number of joins using ranges on the first table',
     simpleName: 'select_range',
-    serviceTypes: ['mysql'],
+    serviceTypes: [Databases.mysql],
     metricRelation: () => '',
     units: Units.NONE,
     pipeTypes: {
@@ -846,7 +848,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Select Range Check',
     tooltipText: 'The number of joins without keys that check for key usage after each row',
     simpleName: 'select_range_check',
-    serviceTypes: ['mysql'],
+    serviceTypes: [Databases.mysql],
     metricRelation: () => '',
     units: Units.NONE,
     pipeTypes: {
@@ -861,7 +863,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Sort Rows',
     tooltipText: 'The number of sorted rows',
     simpleName: 'sort_rows',
-    serviceTypes: ['mysql'],
+    serviceTypes: [Databases.mysql],
     metricRelation: () => '',
     units: Units.PER_SEC,
     pipeTypes: {
@@ -876,7 +878,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Sort Scan',
     tooltipText: 'The number of sorts performed when scanning the table',
     simpleName: 'sort_scan',
-    serviceTypes: ['mysql'],
+    serviceTypes: [Databases.mysql],
     metricRelation: () => '',
     units: Units.PER_SEC,
     pipeTypes: {
@@ -891,7 +893,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Tmp Disk Tables',
     tooltipText: 'The number of temporary tables created on disk for the query',
     simpleName: 'tmp_disk_tables',
-    serviceTypes: ['mysql'],
+    serviceTypes: [Databases.mysql],
     metricRelation: (data) => {
       const mainMetric = get(data, ['tmp_disk_tables', 'sum']);
       const divider = get(data, ['tmp_table_on_disk', 'sum']);
@@ -915,7 +917,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Tmp Table',
     tooltipText: 'The query created an implicit internal temporary table',
     simpleName: 'tmp_table',
-    serviceTypes: ['mysql'],
+    serviceTypes: [Databases.mysql],
     metricRelation: (data) => {
       const mainMetric = get(data, ['tmp_table', 'sum']);
       const divider = get(data, ['num_queries', 'sum']);
@@ -939,7 +941,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Tmp Table on Disk',
     tooltipText: 'The query\'s temporary table was stored on disk',
     simpleName: 'tmp_table_on_disk',
-    serviceTypes: ['mysql'],
+    serviceTypes: [Databases.mysql],
     metricRelation: (data) => {
       const mainMetric = get(data, ['tmp_table_on_disk', 'sum']);
       const divider = get(data, ['num_queries', 'sum']);
@@ -963,7 +965,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Tmp Table Sizes',
     tooltipText: 'Total size for all temporary tables used in the query',
     simpleName: 'tmp_table_sizes',
-    serviceTypes: ['mysql'],
+    serviceTypes: [Databases.mysql],
     metricRelation: (data) => {
       const mainMetric = get(data, ['tmp_table_sizes', 'sum']);
       const divider = get(data, ['tmp_table_on_disk', 'sum']);
@@ -987,7 +989,7 @@ export const METRIC_CATALOGUE = {
     humanizeName: 'Tmp Tables',
     tooltipText: 'Number of temporary tables created on memory for the query',
     simpleName: 'tmp_tables',
-    serviceTypes: ['mysql'],
+    serviceTypes: [Databases.mysql],
     metricRelation: (data) => {
       const mainMetric = get(data, ['tmp_tables', 'sum']);
       const divider = get(data, ['tmp_table', 'sum']);
@@ -1005,6 +1007,36 @@ export const METRIC_CATALOGUE = {
       subSumPipe: 'percent',
       sparklineType: 'number',
       perQueryStatsPipe: 'number',
+    },
+  },
+  cpu_user_time: {
+    humanizeName: 'User CPU time',
+    tooltipText: 'Time spent in user space',
+    simpleName: 'cpu_user_time',
+    serviceTypes: [Databases.postgresql],
+    metricRelation: () => '',
+    units: Units.AVG_LOAD,
+    pipeTypes: {
+      ratePipe: 'number',
+      sumPipe: 'time',
+      subSumPipe: 'percent',
+      sparklineType: 'number',
+      perQueryStatsPipe: 'time',
+    },
+  },
+  cpu_sys_time: {
+    humanizeName: 'System CPU time',
+    tooltipText: 'Time spent in kernel space',
+    simpleName: 'cpu_sys_time',
+    serviceTypes: [Databases.postgresql],
+    metricRelation: () => '',
+    units: Units.AVG_LOAD,
+    pipeTypes: {
+      ratePipe: 'number',
+      sumPipe: 'time',
+      subSumPipe: 'percent',
+      sparklineType: 'number',
+      perQueryStatsPipe: 'time',
     },
   },
 };

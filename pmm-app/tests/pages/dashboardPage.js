@@ -143,7 +143,7 @@ module.exports = {
     ptSummaryDetail: {
       reportContainer: '//pre',
       ptHeaderText: '# Percona Toolkit System Summary Report ######################',
-      remoteNodeText: 'No pmm-agent running on this node'
+      remoteNodeText: 'No pmm-agent running on this node',
     },
   },
   prometheusExporterOverviewDashboard: {
@@ -354,7 +354,6 @@ module.exports = {
       'Cursors Per Shard',
       'Replication Lag by Set',
       'Oplog Range by Set',
-      'Collection Lock Time',
       'Amount of Collections in Shards',
       'Size of Collections in Shards',
       'QPS of Mongos Service',
@@ -393,8 +392,6 @@ module.exports = {
       'MySQL Transaction Handlers',
       'Process States',
       'Top Process States Hourly',
-      'MySQL Query Cache Memory',
-      'MySQL Query Cache Activity',
       'MySQL File Openings',
       'MySQL Open Files',
       'MySQL Table Open Cache Status',
@@ -531,10 +528,75 @@ module.exports = {
     serviceName:
       '//label[contains(text(), "Service Name")]/following-sibling::value-select-dropdown/descendant::a[@class="variable-value-link"]',
     urlWithRDSFilter:
-      'graph/d/mysql-instance-overview/mysql-instances-overview?orgId=1&'
-      + 'from=now-5m&to=now&refresh=1m&var-interval=$__auto_interval_interval&var-region=All&'
-      + 'var-environment=All&var-cluster=rds56-cluster&var-replication_set=All&var-az=&'
-      + 'var-node_type=All&var-node_model=&var-database=All&var-service_type=All&var-schema=All',
+      'graph/d/mysql-instance-overview/mysql-instances-overview?orgId=1&' +
+      'from=now-5m&to=now&refresh=1m&var-interval=$__auto_interval_interval&var-region=All&' +
+      'var-environment=All&var-cluster=rds56-cluster&var-replication_set=All&var-az=&' +
+      'var-node_type=All&var-node_model=&var-database=All&var-service_type=All&var-schema=All',
+  },
+  groupReplicationDashboard: {
+    url: 'graph/d/mysql-group-replicaset-summary/mysql-group-replication-summary?orgId=1&refresh=1m',
+    metrics: [
+      'Group Replication Service States',
+      'PRIMARY Service',
+      'Replication Group Members',
+      'Replication Lag',
+      'Transport Time',
+      'Replication Delay',
+      'Transaction Apply Time',
+      'Transaction Time Inside the Local Queue',
+      'Transactions Details',
+      'Checked Transactions',
+      'Transactions Row Validating',
+      'Applied Transactions',
+      'Rolled Back Transactions',
+      'Transactions in the Queue for Checking',
+      'Detected Conflicts',
+    ],
+  },
+  mysqlPXCGaleraNodeSummaryDashboard: {
+    url: 'graph/d/pxc-node-summary/pxc-galera-node-summary?orgId=1&refresh=1m',
+    metrics: [
+      'Ready to Accept Queries',
+      'Local State',
+      'Desync Mode',
+      'Cluster Status',
+      'gcache Size',
+      'FC (normal traffic)',
+      'Galera Replication Latency',
+      'Galera Replication Queues',
+      'Galera Cluster Size',
+      'Galera Flow Control',
+      'Galera Parallelization Efficiency',
+      'Galera Writing Conflicts',
+      'Available Downtime before SST Required',
+      'Galera Writeset Count',
+      'Galera Writeset Size',
+      'Galera Writeset Traffic',
+      'Galera Network Usage Hourly',
+    ],
+  },
+  mysqlPXCGaleraNodesSummaryDashboard: {
+    url: 'graph/d/pxc-nodes-compare/pxc-galera-nodes-compare?orgId=1&refresh=1m',
+    metrics: [
+      'Ready to Accept Queries',
+      'Local State',
+      'Desync Mode',
+      'Cluster Status',
+      'gcache Size',
+      'FC (normal traffic)',
+    ],
+    tabs: [
+      'Galera Replication Latency',
+      'Galera Replication Queues',
+      'Galera Flow Control',
+      'Galera Writing Conflicts',
+      'Galera Writeset Count',
+      'Galera Writeset Traffic',
+      'Galera Parallelization Efficiency',
+      'Available Downtime before SST Required',
+      'Galera Writeset Size',
+      'Galera Network Usage Hourly',
+    ],
   },
 
   fields: {
@@ -585,8 +647,18 @@ module.exports = {
     }
   },
 
+  verifyTabExistence(tabs) {
+    for (const i in tabs) {
+      I.seeElement(this.tabLocator(tabs[i]));
+    }
+  },
+
   graphsLocator(metricName) {
     return `//span[contains(text(), '${metricName}')]`;
+  },
+
+  tabLocator(tabName) {
+    return `//a[contains(text(), '${tabName}')]`;
   },
 
   async verifyThereAreNoGraphsWithNA(acceptableNACount = 0) {
@@ -660,7 +732,7 @@ module.exports = {
   },
 
   waitForDashboardOpened() {
-    I.waitForElement(this.fields.metricTitle, 30);
+    I.waitForElement(this.fields.metricTitle, 60);
   },
 
   expandFilters(filterType) {
@@ -699,9 +771,16 @@ module.exports = {
   },
 
   async waitPTSummaryInformation() {
-    const response = await I.waitForResponse((response) => response.url().endsWith('v1/management/Actions/StartPTSummary') && response.status() === 200, { timeout: 60 });
+    const response = await I.waitForResponse(
+      (response) =>
+        response.url().endsWith('v1/management/Actions/StartPTSummary') && response.status() === 200,
+      { timeout: 60 },
+    );
 
-    await I.waitForResponse((response) => response.url().endsWith('v1/management/Actions/Get') && response.status() === 200, { timeout: 60 });
+    await I.waitForResponse(
+      (response) => response.url().endsWith('v1/management/Actions/Get') && response.status() === 200,
+      { timeout: 60 },
+    );
 
     return await response.json();
   },
@@ -715,5 +794,5 @@ module.exports = {
         break;
       }
     }
-  }
+  },
 };

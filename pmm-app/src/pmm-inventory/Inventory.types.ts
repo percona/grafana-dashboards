@@ -17,6 +17,7 @@ export enum InventoryType {
   qanMysql_perfschema_agent = 'qan_mysql_perfschema_agent',
   qanMysql_slowlog_agent = 'qan_mysql_slowlog_agent',
   qanPostgresql_pgstatements_agent = 'qan_postgresql_pgstatements_agent',
+  qanPostgresql_pgstatmonitor_agent = 'qan_postgresql_pgstatmonitor_agent',
   rdsExporter = 'rdsExporter',
   remote = 'remote',
   remote_rds = 'remote_rds',
