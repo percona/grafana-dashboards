@@ -32,7 +32,7 @@ export const useXtraDBClusters = (
         }
       });
 
-      setXtraDBClusters(clusters);
+      setXtraDBClusters([{}, {}, {}]);
     } catch (e) {
       console.error(e);
     } finally {

@@ -19,6 +19,11 @@ export interface XtraDBClusterAPI {
   params: XtraDBClusterParamsAPI;
 }
 
+export interface DeleteXtraDBClusterAPI {
+  kubernetes_cluster_name: string;
+  name: string;
+}
+
 interface XtraDBClusterParamsAPI {
   cluster_size: number;
   pxc: XtraDBClusterContainerAPI;

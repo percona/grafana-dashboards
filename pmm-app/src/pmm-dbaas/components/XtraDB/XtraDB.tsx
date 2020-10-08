@@ -1,4 +1,6 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, {
+  FC, useCallback, useMemo, useState
+} from 'react';
 import { useStyles } from '@grafana/ui';
 import { Table } from 'shared/components/Elements/Table/Table';
 import { Messages } from 'pmm-dbaas/DBaaS.messages';
@@ -17,38 +19,45 @@ export const XtraDB: FC<XtraDBProps> = ({ kubernetes }) => {
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [selectedCluster, setSelectedCluster] = useState<XtraDBCluster>();
   const [xtraDBClusters, getXtraDBClusters, loading] = useXtraDBClusters(kubernetes);
-  const ActionsButton = ({ item }) => {
-    const actions = [
-      {
-        title: Messages.xtradb.table.actions.deleteCluster,
-        action: () => {
-          setSelectedCluster(item);
-          setDeleteModalVisible(true);
+
+  const ActionsButton = useMemo(
+    () => ({ item }) => {
+      const actions = [
+        {
+          title: Messages.xtradb.table.actions.deleteCluster,
+          action: () => {
+            setSelectedCluster(item);
+            setDeleteModalVisible(true);
+          },
         },
+      ];
+
+      return <MultipleActions actions={actions} />;
+    },
+    [],
+  );
+
+  const columns = useMemo(
+    () => [
+      {
+        Header: Messages.xtradb.table.nameColumn,
+        accessor: 'clusterName',
       },
-    ];
-
-    return <MultipleActions actions={actions} />;
-  };
-
-  const columns = [
-    {
-      Header: Messages.xtradb.table.nameColumn,
-      accessor: 'clusterName',
-    },
-    {
-      Header: Messages.xtradb.table.databaseTypeColumn,
-      accessor: 'databaseType',
-    },
-    {
-      Header: Messages.xtradb.table.clusterStatusColumn,
-      accessor: clusterStatusRender,
-    },
-    {
-      Header: Messages.xtradb.table.actionsColumn,
-      accessor: (item) => <ActionsButton item={item} />,
-    },
-  ];
+      {
+        Header: Messages.xtradb.table.databaseTypeColumn,
+        accessor: 'databaseType',
+      },
+      {
+        Header: Messages.xtradb.table.clusterStatusColumn,
+        accessor: clusterStatusRender,
+      },
+      {
+        Header: Messages.xtradb.table.actionsColumn,
+        accessor: (item) => <ActionsButton item={item} />,
+      },
+    ],
+    [],
+  );
 
   const kubernetesOptions = kubernetes.map(({ kubernetesClusterName }) => ({
     value: kubernetesClusterName,

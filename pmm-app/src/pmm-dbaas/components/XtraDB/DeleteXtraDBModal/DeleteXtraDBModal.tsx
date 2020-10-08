@@ -1,10 +1,9 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 import { Button, HorizontalGroup, useStyles } from '@grafana/ui';
 import { Modal } from 'shared/components/Elements/Modal/Modal';
 import { Messages } from 'pmm-dbaas/DBaaS.messages';
 import { DeleteXtraDBModalProps } from './DeleteXtraDBModal.types';
 import { XtraDBService } from '../XtraDB.service';
-import { XtraDBCluster } from '../XtraDB.types';
 import { getStyles } from './DeleteXtraDBModal.styles';
 
 export const DeleteXtraDBModal: FC<DeleteXtraDBModalProps> = ({
@@ -15,15 +14,21 @@ export const DeleteXtraDBModal: FC<DeleteXtraDBModalProps> = ({
 }) => {
   const styles = useStyles(getStyles);
 
-  const deleteXtraDBCluster = async (xtraDBCluster: XtraDBCluster) => {
+  const deleteXtraDBCluster = useCallback(async () => {
+    if (!selectedCluster) {
+      setVisible(false);
+
+      return;
+    }
+
     try {
-      await XtraDBService.deleteXtraDBClusters(xtraDBCluster);
+      await XtraDBService.deleteXtraDBClusters(selectedCluster);
       setVisible(false);
       onClusterDeleted();
     } catch (e) {
       console.error(e);
     }
-  };
+  }, [selectedCluster]);
 
   return (
     <Modal
@@ -44,13 +49,7 @@ export const DeleteXtraDBModal: FC<DeleteXtraDBModalProps> = ({
         <Button
           variant="destructive"
           size="md"
-          onClick={() => {
-            if (selectedCluster) {
-              deleteXtraDBCluster(selectedCluster);
-            }
-
-            setVisible(false);
-          }}
+          onClick={deleteXtraDBCluster}
           data-qa="delete-xtradbcluster-button"
         >
           {Messages.kubernetes.deleteModal.confirm}

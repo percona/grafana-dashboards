@@ -1,10 +1,10 @@
 import { apiRequestManagement } from 'shared/components/helpers/api';
 import { Kubernetes } from '../Kubernetes/Kubernetes.types';
-import { XtraDBCluster, XtraDBClusterAPI } from './XtraDB.types';
+import { XtraDBCluster, XtraDBClusterAPI, DeleteXtraDBClusterAPI } from './XtraDB.types';
 
 export const XtraDBService = {
   getXtraDBClusters(kubernetes: Kubernetes) {
-    return apiRequestManagement.post<any, any>('/DBaaS/XtraDBClusters/List', kubernetes);
+    return apiRequestManagement.post<any, Kubernetes>('/DBaaS/XtraDBClusters/List', kubernetes);
   },
   addXtraDBCluster(xtradbCluster: XtraDBCluster) {
     return apiRequestManagement.post<XtraDBClusterAPI, any>(
@@ -13,12 +13,15 @@ export const XtraDBService = {
     );
   },
   deleteXtraDBClusters(xtradbCluster: XtraDBCluster) {
-    const toAPI = (cluster: XtraDBCluster) => ({
+    const toAPI = (cluster: XtraDBCluster): DeleteXtraDBClusterAPI => ({
       name: cluster.clusterName,
       kubernetes_cluster_name: xtradbCluster.kubernetesClusterName,
     });
 
-    return apiRequestManagement.post<any, any>('/DBaaS/XtraDBCluster/Delete', toAPI(xtradbCluster));
+    return apiRequestManagement.post<any, DeleteXtraDBClusterAPI>(
+      '/DBaaS/XtraDBCluster/Delete',
+      toAPI(xtradbCluster),
+    );
   },
 };
 

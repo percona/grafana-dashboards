@@ -13,7 +13,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => ({
     background: ${theme.colors.dropdownBg};
     border-radius: ${theme.border.radius.sm};
     overflow: hidden;
-    box-shadow: 0px 0px 5.8125px rgba (37, 40, 43, 0.12);
+    box-shadow: 0px 0px 6px rgba(37, 40, 43, 0.12);
     padding-top: ${theme.spacing.sm};
     padding-bottom: ${theme.spacing.sm};
     min-width: 150px;
