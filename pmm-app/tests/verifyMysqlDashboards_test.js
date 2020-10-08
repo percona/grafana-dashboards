@@ -18,7 +18,7 @@ Scenario(
     adminPage.peformPageDown(5);
     dashboardPage.verifyMetricsExistence(dashboardPage.mysqlInstanceSummaryDashboard.metrics);
     await dashboardPage.verifyThereAreNoGraphsWithNA();
-    await dashboardPage.verifyThereAreNoGraphsWithoutData(3);
+    await dashboardPage.verifyThereAreNoGraphsWithoutData(5);
   },
 );
 
@@ -80,9 +80,10 @@ Scenario(
     I.waitForVisible(dashboardPage.fields.dataLinkForRoot);
     I.click(dashboardPage.fields.dataLinkForRoot);
     await dashboardPage.waitAndSwitchTabs(2);
-    qanOverview.waitForOverviewLoaded();
+    I.waitForVisible(qanFilters.buttons.showSelected, 60);
     I.waitInUrl('&var-username=root', 30);
     I.waitInUrl('from=now-12h&to=now', 30);
+    I.waitForVisible(qanFilters.buttons.showSelected, 60);
     await qanFilters.verifySelectedFilters(filters);
     const timeRangeGrabbed = await dashboardPage.getTimeRange();
 
@@ -106,7 +107,7 @@ Scenario(
     adminPage.peformPageDown(5);
     dashboardPage.verifyMetricsExistence(dashboardPage.mysqlPXCGaleraNodeSummaryDashboard.metrics);
     await dashboardPage.verifyThereAreNoGraphsWithNA();
-    await dashboardPage.verifyThereAreNoGraphsWithoutData(0);
+    await dashboardPage.verifyThereAreNoGraphsWithoutData(1);
   },
 );
 
@@ -121,7 +122,7 @@ Scenario(
     dashboardPage.verifyMetricsExistence(dashboardPage.mysqlPXCGaleraNodesSummaryDashboard.metrics);
     dashboardPage.verifyTabExistence(dashboardPage.mysqlPXCGaleraNodesSummaryDashboard.tabs);
     await dashboardPage.verifyThereAreNoGraphsWithNA();
-    await dashboardPage.verifyThereAreNoGraphsWithoutData(0);
+    await dashboardPage.verifyThereAreNoGraphsWithoutData(3);
   },
 );
 
