@@ -20,7 +20,7 @@ describe('Example tab page render test', () => {
     expect(component.find('pre').text()).toContain('Sorry, no examples found for this query');
   });
 
-  it('Component renders classic example for mysql', () => {
+  it('Component renders classic example for postgresql', () => {
     const props = {
       databaseType: 'postgresql' as DatabasesType,
       examples: [
