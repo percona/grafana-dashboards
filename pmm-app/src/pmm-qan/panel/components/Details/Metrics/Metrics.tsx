@@ -112,7 +112,7 @@ const Metrics: FC<MetricsProps> = ({
         defaultActiveKey={[MetricsTabs.distribution, MetricsTabs.metrics]}
         className={styles.collapse}
       >
-        {databaseType === Databases.mysql ? (
+        {databaseType !== Databases.mongodb ? (
           <Panel header={MetricsTabs.distribution} key={MetricsTabs.distribution} className={styles.panel}>
             <TimeDistribution data={metrics} />
           </Panel>

@@ -98,6 +98,7 @@ export const inventoryTypes = {
   qan_mysql_perfschema_agent: 'QAN MySQL Perfschema Agent',
   qan_mysql_slowlog_agent: 'QAN MySQL Slowlog Agent',
   qan_postgresql_pgstatements_agent: 'QAN PostgreSQL PgStatements Agent',
+  qan_postgresql_pgstatmonitor_agent: 'QAN PostgreSQL Pgstatmonitor Agent',
   rds_exporter: 'RDS exporter',
   remote_rds: 'Remote Amazon RDS',
   remote: 'Remote',
