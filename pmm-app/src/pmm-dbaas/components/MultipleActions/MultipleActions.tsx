@@ -1,4 +1,4 @@
-import React, { FC, useRef, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { Icon, useTheme } from '@grafana/ui';
 import { cx } from 'emotion';
 import { MultipleActionsProps } from './MultipleActions.types';
@@ -8,7 +8,6 @@ export const MultipleActions: FC<MultipleActionsProps> = ({ actions }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const theme = useTheme();
   const styles = getStyles(theme);
-  const buttonRef = useRef<HTMLButtonElement>(null);
 
   const showMenu = (event) => {
     if (menuOpen) {
@@ -45,7 +44,6 @@ export const MultipleActions: FC<MultipleActionsProps> = ({ actions }) => {
               <button
                 type="button"
                 className={styles.menuItem}
-                ref={buttonRef}
                 onClick={(event) => {
                   action.action();
                   closeMenu(event);
