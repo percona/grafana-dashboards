@@ -75,10 +75,11 @@ const PostgreSQLAdditionalOptions = ({ mutators }) => {
           setTrackingType(value);
         }}
       />
-      <span className="description">{Messages.form.trackingOptions}</span>
+      <span className="description">{Messages.form.labels.trackingOptions}</span>
     </>
   );
 };
+
 const getAdditionalOptions = (type, remoteInstanceCredentials, mutators) => {
   switch (type) {
     case 'PostgreSQL':
