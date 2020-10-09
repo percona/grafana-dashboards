@@ -56,7 +56,6 @@ module.exports = {
     skipTLSL: '//input[@name="tls_skip_verify"]/following-sibling::span[2]',
     startMonitoring: '/following-sibling::td/a',
     usePerformanceSchema2: '//input[@name="qan_mysql_perfschema"]/following-sibling::span[2]',
-    usePgStatStatements: '//label[@for="qan_postgresql_pgstatements_agent"]',
     usePgStatMonitor: '//label[@for="qan_postgresql_pgstatmonitor_agent"]',
     usePgStatStatements: '//input[@name="qan_postgresql_pgstatements_agent"]',
     useQANMongoDBProfiler: '//input[@name="qan_mongodb_profiler"]',
