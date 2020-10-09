@@ -57,7 +57,7 @@ module.exports = {
     startMonitoring: '/following-sibling::td/a',
     usePerformanceSchema2: '//input[@name="qan_mysql_perfschema"]/following-sibling::span[2]',
     usePgStatMonitor: '//label[@for="qan_postgresql_pgstatmonitor_agent"]',
-    usePgStatStatements: '//input[@name="qan_postgresql_pgstatements_agent"]',
+    usePgStatStatements: '//label[@for="qan_postgresql_pgstatements_agent"]',
     useQANMongoDBProfiler: '//input[@name="qan_mongodb_profiler"]',
     useTLS: '//input[@name="tls"]',
     userName: '//input[contains(@placeholder, "Username")]',
