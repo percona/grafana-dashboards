@@ -142,9 +142,8 @@ Scenario(
     await dashboardPage.applyFilter(filter, 'pmm-server');
     await dashboardPage.waitPTSummaryInformation();
 
-    I.waitForElement(dashboardPage.nodeSummaryDashboard.ptSummaryDetail.reportContainer, 30);
-    I.waitForText(dashboardPage.nodeSummaryDashboard.ptSummaryDetail.ptHeaderText, 60);
-    I.see(dashboardPage.nodeSummaryDashboard.ptSummaryDetail.ptHeaderText);
+    I.waitForElement(dashboardPage.nodeSummaryDashboard.ptSummaryDetail.reportContainer, 60);
+    I.seeElement(dashboardPage.nodeSummaryDashboard.ptSummaryDetail.reportContainer);
   }
 );
 
