@@ -1,4 +1,4 @@
-import React, { FC, useState, SyntheticEvent } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import { Icon, useTheme } from '@grafana/ui';
 import { cx } from 'emotion';
 import { MultipleActionsProps } from './MultipleActions.types';
@@ -8,53 +8,39 @@ export const MultipleActions: FC<MultipleActionsProps> = ({ actions }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const theme = useTheme();
   const styles = getStyles(theme);
+  const toggleMenu = () => setMenuOpen((value) => !value);
 
-  const showMenu = (event: SyntheticEvent) => {
-    event.preventDefault();
+  const Menu = () => {
+    useEffect(() => {
+      document.addEventListener('click', toggleMenu);
 
-    if (menuOpen) {
-      closeMenu();
+      return () => {
+        document.removeEventListener('click', toggleMenu);
+      };
+    }, []);
 
-      return;
-    }
-
-    setMenuOpen(true);
-    document.addEventListener('click', closeMenu);
-  };
-
-  const closeMenu = () => {
-    setMenuOpen(false);
-    document.removeEventListener('click', closeMenu);
+    return (
+      <div className={styles.menu}>
+        {actions.map((action) => (
+          <button type="button" className={styles.menuItem} onClick={action.action}>
+            <span className={styles.action}>{action.title}</span>
+          </button>
+        ))}
+      </div>
+    );
   };
 
   return (
     <div>
       <button
         type="button"
-        onClick={showMenu}
+        onClick={toggleMenu}
         className={cx(styles.showMenu, { [styles.showMenuOpen]: menuOpen })}
       >
         <Icon name="ellipsis-v" />
       </button>
 
-      <div className={styles.menuWrapper}>
-        {menuOpen ? (
-          <div className={styles.menu}>
-            {actions.map((action) => (
-              <button
-                type="button"
-                className={styles.menuItem}
-                onClick={(event) => {
-                  action.action();
-                  closeMenu(event);
-                }}
-              >
-                <span className={styles.action}>{action.title}</span>
-              </button>
-            ))}
-          </div>
-        ) : null}
-      </div>
+      <div className={styles.menuWrapper}>{menuOpen ? <Menu /> : null}</div>
     </div>
   );
 };
