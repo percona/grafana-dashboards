@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, SyntheticEvent } from 'react';
 import { Icon, useTheme } from '@grafana/ui';
 import { cx } from 'emotion';
 import { MultipleActionsProps } from './MultipleActions.types';
@@ -9,20 +9,20 @@ export const MultipleActions: FC<MultipleActionsProps> = ({ actions }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
 
-  const showMenu = (event) => {
+  const showMenu = (event: SyntheticEvent) => {
+    event.preventDefault();
+
     if (menuOpen) {
-      closeMenu(event);
+      closeMenu();
 
       return;
     }
 
-    event.preventDefault();
     setMenuOpen(true);
     document.addEventListener('click', closeMenu);
   };
 
-  const closeMenu = (event) => {
-    event.preventDefault();
+  const closeMenu = () => {
     setMenuOpen(false);
     document.removeEventListener('click', closeMenu);
   };
