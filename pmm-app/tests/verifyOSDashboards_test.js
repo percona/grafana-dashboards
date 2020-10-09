@@ -73,6 +73,6 @@ Data(nodes).Scenario(
     dashboardPage.waitForDashboardOpened();
     await dashboardPage.waitPTSummaryInformation();
     I.waitForElement(dashboardPage.nodeSummaryDashboard.ptSummaryDetail.reportContainer, 30);
-    I.see(dashboardPage.nodeSummaryDashboard.ptSummaryDetail.reportContainer);
+    I.seeElement(dashboardPage.nodeSummaryDashboard.ptSummaryDetail.reportContainer);
   }
 );
