@@ -8,19 +8,19 @@ export const usePerformUpdate = (): UpdateStatus => {
   const [updateFailed, setUpdateFailed] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [output, setOutput] = useState('');
-  const [isUpdated, setIsUpdated] = useState(false);
+  const [isUpdateFinished, setIsUpdateFinished] = useState(false);
   const [timeoutId, setTimeoutId] = useState<number>();
 
-  const [authToken, logOffset, initializationFailed, launchUpdate] = useInitializeUpdate();
+  const [authToken, initialLogOffset, initializationFailed, launchUpdate] = useInitializeUpdate();
 
   useEffect(() => {
-    if (!authToken || typeof logOffset === 'undefined') {
+    if (!authToken || typeof initialLogOffset === 'undefined') {
       return;
     }
 
     const updateStatus = async (logOffset: number, errorsCount = 0, isUpdated = false) => {
       if (isUpdated) {
-        setIsUpdated(isUpdated);
+        setIsUpdateFinished(isUpdated);
 
         return;
       }
@@ -49,7 +49,7 @@ export const usePerformUpdate = (): UpdateStatus => {
 
           return `${previousOutput}${logLines.join('\n')}\n`;
         });
-        newLogOffset = logOffset + log_offset ?? 0;
+        newLogOffset = log_offset ?? 0;
         newErrorsCount = 0;
         newIsUpdated = done ?? false;
       } catch (e) {
@@ -62,17 +62,17 @@ export const usePerformUpdate = (): UpdateStatus => {
       }
     };
 
-    updateStatus(logOffset, 0);
+    updateStatus(initialLogOffset, 0);
 
     // eslint-disable-next-line consistent-return
     return () => {
       clearTimeout(timeoutId);
     };
-  }, [authToken, logOffset]);
+  }, [authToken, initialLogOffset]);
 
   useEffect(() => {
     setUpdateFailed(initializationFailed);
   }, [initializationFailed]);
 
-  return [output, errorMessage, isUpdated, updateFailed, launchUpdate];
+  return [output, errorMessage, isUpdateFinished, updateFailed, launchUpdate];
 };
