@@ -116,7 +116,7 @@ module.exports = {
     url: 'graph/d/node-cpu-process/processes-details?from=now-30m&to=now',
   },
   nodeSummaryDashboard: {
-    url: 'graph/d/node-instance-summary/node-summary?orgId=1&refresh=1m&from=now-30m&to=now',
+    url: 'graph/d/node-instance-summary/node-summary?orgId=1&refresh=5m',
     metrics: [
       'System Uptime',
       'System Summary',
@@ -528,10 +528,10 @@ module.exports = {
     serviceName:
       '//label[contains(text(), "Service Name")]/following-sibling::value-select-dropdown/descendant::a[@class="variable-value-link"]',
     urlWithRDSFilter:
-      'graph/d/mysql-instance-overview/mysql-instances-overview?orgId=1&' +
-      'from=now-5m&to=now&refresh=1m&var-interval=$__auto_interval_interval&var-region=All&' +
-      'var-environment=All&var-cluster=rds56-cluster&var-replication_set=All&var-az=&' +
-      'var-node_type=All&var-node_model=&var-database=All&var-service_type=All&var-schema=All',
+      'graph/d/mysql-instance-overview/mysql-instances-overview?orgId=1&'
+      + 'from=now-5m&to=now&refresh=1m&var-interval=$__auto_interval_interval&var-region=All&'
+      + 'var-environment=All&var-cluster=rds56-cluster&var-replication_set=All&var-az=&'
+      + 'var-node_type=All&var-node_model=&var-database=All&var-service_type=All&var-schema=All',
   },
   groupReplicationDashboard: {
     url: 'graph/d/mysql-group-replicaset-summary/mysql-group-replication-summary?orgId=1&refresh=1m',
@@ -772,8 +772,7 @@ module.exports = {
 
   async waitPTSummaryInformation() {
     const response = await I.waitForResponse(
-      (response) =>
-        response.url().endsWith('v1/management/Actions/StartPTSummary') && response.status() === 200,
+      (response) => response.url().endsWith('v1/management/Actions/StartPTSummary') && response.status() === 200,
       { timeout: 60 },
     );
 
