@@ -29,7 +29,7 @@ export const InputField = ({
   readonly,
   validate,
   className,
-  dataQa
+  dataQa,
 }: InputFieldInterface) => {
   const { input, meta } = useField(name, { validate });
 

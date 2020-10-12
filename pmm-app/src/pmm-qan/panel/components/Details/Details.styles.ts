@@ -50,6 +50,6 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
         grid-area: details-tabs;
         margin-top: 10px;
       }
-    `
+    `,
   };
 });

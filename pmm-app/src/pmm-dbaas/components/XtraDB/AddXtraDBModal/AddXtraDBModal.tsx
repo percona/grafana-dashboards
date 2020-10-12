@@ -42,16 +42,16 @@ export const AddXtraDBModal: FC<AddXtraDBModalProps> = ({
         onSubmit={({
           name,
           kubernetesCluster,
-          databaseType
+          databaseType,
         }) => {
           addXtraDBCluster({
             kubernetesClusterName: kubernetesCluster.value,
             clusterName: name,
-            databaseType: databaseType.value
+            databaseType: databaseType.value,
           });
         }}
         render={({
-          handleSubmit, valid, pristine, submitting
+          handleSubmit, valid, pristine, submitting,
         }: FormRenderProps<AddXtraDBModalRenderProps>) => (
           <form data-qa="xtradb-add-form" onSubmit={handleSubmit}>
             <TextInputField

@@ -31,7 +31,7 @@ const getModel = (item: ServicesList) => {
       const type = inventoryTypes[agent.type] || '';
 
       return getParams(arrItem, type);
-    }
+    },
   ));
 };
 
@@ -41,7 +41,7 @@ const getServiceModel = (item: InventoryList) => {
   return orderBy(
     [].concat(...createParams),
     [(service: Model) => (service.service_name || '').toLowerCase()],
-    ['asc']
+    ['asc'],
   );
 };
 
@@ -51,7 +51,7 @@ const getNodeModel = (item: InventoryList) => {
   return orderBy(
     [].concat(...createParams),
     [(node: Model) => (node.node_name || '').toLowerCase()],
-    ['asc']
+    ['asc'],
   );
 };
 

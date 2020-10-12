@@ -1,6 +1,6 @@
 import { apiRequestManagement } from 'shared/components/helpers/api';
 import {
-  Kubernetes, KubernetesListAPI, NewKubernetesCluster, NewKubernetesClusterAPI
+  Kubernetes, KubernetesListAPI, NewKubernetesCluster, NewKubernetesClusterAPI,
 } from './Kubernetes.types';
 
 export const KubernetesService = {
@@ -16,12 +16,12 @@ export const KubernetesService = {
 };
 
 const toAPI = (kubernetes: Kubernetes) => ({
-  kubernetes_cluster_name: kubernetes.kubernetesClusterName
+  kubernetes_cluster_name: kubernetes.kubernetesClusterName,
 });
 
 const newClusterToApi = (newCluster: NewKubernetesCluster): NewKubernetesClusterAPI => ({
   kubernetes_cluster_name: newCluster.name,
   kube_auth: {
-    kubeconfig: newCluster.kubeConfig
-  }
+    kubeconfig: newCluster.kubeConfig,
+  },
 });

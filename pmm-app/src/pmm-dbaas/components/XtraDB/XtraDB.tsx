@@ -29,7 +29,7 @@ export const XtraDB: FC<XtraDBProps> = ({ kubernetes }) => {
     {
       Header: Messages.xtradb.table.actionsColumn,
       accessor: actionsRender,
-    }
+    },
   ];
   const kubernetesOptions = kubernetes.map(({ kubernetesClusterName }) => ({
     value: kubernetesClusterName,

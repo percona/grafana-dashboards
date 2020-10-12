@@ -72,7 +72,7 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
 
   render() {
     const {
-      isSttEnabled, failedChecks, isLoading, hasNoAccess
+      isSttEnabled, failedChecks, isLoading, hasNoAccess,
     } = this.state;
 
     return (

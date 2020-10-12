@@ -9,7 +9,7 @@ describe('AddClusterButton::', () => {
       <AddClusterButton
         label="test"
         action={action}
-      />
+      />,
     );
     const button = root.find('button');
 

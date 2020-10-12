@@ -1,6 +1,6 @@
 import React, { FC, useCallback, useState } from 'react';
 import {
-  Button, HorizontalGroup, useStyles
+  Button, HorizontalGroup, useStyles,
 } from '@grafana/ui';
 import { TextInputField, TextareaInputField, validators } from '@percona/platform-core';
 import { Table } from 'shared/components/Elements/Table/Table';
@@ -44,8 +44,8 @@ export const KubernetesInventory: FC<KubernetesProps> = ({
             {Messages.kubernetes.deleteAction}
           </Button>
         </div>
-      )
-    }
+      ),
+    },
   ];
 
   const AddNewClusterButton = useCallback(() => (
@@ -72,7 +72,7 @@ export const KubernetesInventory: FC<KubernetesProps> = ({
             setAddModalVisible(false);
           }}
           render={({
-            handleSubmit, valid, pristine
+            handleSubmit, valid, pristine,
           }: FormRenderProps<NewKubernetesCluster>) => (
             <form onSubmit={handleSubmit}>
               <>

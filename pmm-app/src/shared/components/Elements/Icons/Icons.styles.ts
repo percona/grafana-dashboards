@@ -15,6 +15,6 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
        polygon, circle {
         fill: ${iconsFill}
       }
-  `
+  `,
   };
 });

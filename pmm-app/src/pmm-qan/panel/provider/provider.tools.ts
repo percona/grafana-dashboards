@@ -28,7 +28,7 @@ interface GrafanaVariables {
 }
 export const refreshGrafanaVariables = (state) => {
   const {
-    labels, columns, groupBy, queryId, orderBy, rawTime, dimensionSearchText
+    labels, columns, groupBy, queryId, orderBy, rawTime, dimensionSearchText,
   } = state;
 
   const variablesQuery: GrafanaVariables = {};
@@ -77,7 +77,7 @@ export const refreshGrafanaVariables = (state) => {
   }
 
   getLocationSrv().update({
-    query: variablesQuery
+    query: variablesQuery,
   });
 };
 
@@ -96,7 +96,7 @@ export const parseURL = (query) => ({
   querySelected: !!query.get('filter_by') || query.get('query_selected') === 'true',
   groupBy: query.get('group_by') || 'queryid',
   openDetailsTab: query.get('details_tab') || 'details',
-  dimensionSearchText: query.get('dimensionSearchText') || ''
+  dimensionSearchText: query.get('dimensionSearchText') || '',
 });
 export const setLabels = (filters) => Object.keys(filters)
   .filter((filter) => filters[filter])

@@ -47,7 +47,7 @@ export const SignUp: FC<LoginFormProps> = ({ changeMode, getSettings }) => {
   );
 
   const SignUpForm: FC<FormRenderProps<Credentials>> = ({
-    pristine, submitting, valid, handleSubmit
+    pristine, submitting, valid, handleSubmit,
   }) => (
     <form data-qa="sign-up-form" className={styles.form} onSubmit={handleSubmit}>
       <legend className={styles.legend}>{Messages.signUp}</legend>

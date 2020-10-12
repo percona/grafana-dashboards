@@ -20,7 +20,7 @@ export const RadioButtonGroup: FC<RadioButtonGroupProps> = ({
   options,
   className,
   dataQa,
-  onChange
+  onChange,
 }) => {
   const theme = useTheme();
   const styles = getStyles(theme);

@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import { Field, Form } from 'react-final-form';
 import {
-  Button, Input, Spinner, TextArea, useTheme
+  Button, Input, Spinner, TextArea, useTheme,
 } from '@grafana/ui';
 import { cx } from 'emotion';
 import { getSettingsStyles } from 'pmm-settings/Settings.styles';
@@ -13,7 +13,7 @@ import { AlertManagerProps } from './AlertManager.types';
 export const AlertManager: FC<AlertManagerProps> = ({
   alertManagerUrl,
   alertManagerRules,
-  updateSettings
+  updateSettings,
 }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
@@ -26,20 +26,20 @@ export const AlertManager: FC<AlertManagerProps> = ({
       rulesTooltip,
       urlLabel,
       urlLink,
-      urlTooltip
+      urlTooltip,
     },
-    tooltipLinkText
+    tooltipLinkText,
   } = Messages;
   const [loading, setLoading] = useState(false);
   const initialValues = {
     url: alertManagerUrl,
-    rules: alertManagerRules
+    rules: alertManagerRules,
   };
   const isEqual = (a: string, b: string) => ((!a && !b) || a === b);
   const applyChanges = ({ url, rules }) => {
     const body: any = {
       alert_manager_url: url,
-      alert_manager_rules: rules
+      alert_manager_rules: rules,
     };
 
     if (!url) {

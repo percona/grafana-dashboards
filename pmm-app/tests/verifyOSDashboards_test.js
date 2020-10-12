@@ -20,7 +20,7 @@ Scenario(
     dashboardPage.verifyMetricsExistence(dashboardPage.nodeSummaryDashboard.metrics);
     await dashboardPage.verifyThereAreNoGraphsWithNA();
     await dashboardPage.verifyThereAreNoGraphsWithoutData(1);
-  }
+  },
 );
 
 Scenario(
@@ -32,7 +32,7 @@ Scenario(
     dashboardPage.verifyMetricsExistence(dashboardPage.nodesCompareDashboard.metrics);
     await dashboardPage.verifyThereAreNoGraphsWithNA(1);
     await dashboardPage.verifyThereAreNoGraphsWithoutData(19);
-  }
+  },
 );
 
 Scenario(
@@ -44,7 +44,7 @@ Scenario(
     dashboardPage.waitForDashboardOpened();
     dashboardPage.verifyAnnotationsLoaded('pmm-annotate-without-tags', 1);
     I.seeElement(dashboardPage.annotationText(annotationTitle));
-  }
+  },
 );
 
 Scenario(
@@ -62,7 +62,7 @@ Scenario(
     I.seeElement(dashboardPage.annotationTagText(annotationTag1));
     I.seeElement(dashboardPage.annotationTagText(annotationTag2));
     I.seeElement(dashboardPage.annotationTagText(defaultAnnotation));
-  }
+  },
 );
 
 Data(nodes).Scenario(
@@ -74,5 +74,5 @@ Data(nodes).Scenario(
     await dashboardPage.waitPTSummaryInformation();
     I.waitForElement(dashboardPage.nodeSummaryDashboard.ptSummaryDetail.reportContainer, 30);
     I.seeElement(dashboardPage.nodeSummaryDashboard.ptSummaryDetail.reportContainer);
-  }
+  },
 );

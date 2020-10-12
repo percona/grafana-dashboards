@@ -109,6 +109,6 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       margin-top: 16px;
       text-align: center;
     }
-  `
+  `,
   };
 });

@@ -5,7 +5,7 @@ module.exports = {
   async apiEnableSTT() {
     const body = {
       enable_stt: true,
-      enable_telemetry: true
+      enable_telemetry: true,
     };
     const headers = { Authorization: `Basic ${await I.getAuth()}` };
 
@@ -15,7 +15,7 @@ module.exports = {
   async apiDisableSTT() {
     const body = {
       disable_stt: true,
-      enable_telemetry: true
+      enable_telemetry: true,
     };
     const headers = { Authorization: `Basic ${await I.getAuth()}` };
 
@@ -28,10 +28,10 @@ module.exports = {
       metrics_resolutions: {
         hr: '5s',
         mr: '10s',
-        lr: '60s'
+        lr: '60s',
       },
       enable_telemetry: true,
-      disable_stt: true
+      disable_stt: true,
     };
     const headers = { Authorization: `Basic ${await I.getAuth()}` };
 

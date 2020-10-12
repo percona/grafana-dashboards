@@ -21,5 +21,5 @@ export const getStyles = stylesFactory(() => ({
     .ant-tooltip-arrow:before {
       background-color: #3274d9;
     }
-    `
+    `,
 }));
