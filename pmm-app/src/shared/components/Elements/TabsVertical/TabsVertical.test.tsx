@@ -9,7 +9,7 @@ describe('TabsVertical::', () => {
       <TabsVertical dataQa="tabs-vertical-list">
         <div>1</div>
         <div>2</div>
-      </TabsVertical>
+      </TabsVertical>,
     );
 
     expect(root.find('[data-qa="tabs-vertical-list"]').children().length).toEqual(2);

@@ -27,7 +27,7 @@ export const useVersionDetails = (initialForceUpdate = false): CurrentOrNextVers
   const [isUpdateAvailable, setIsUpdateAvailable] = useState(false);
   const [data, errorMessage, isLoading, getVersionDetails] = useApiCall<GetUpdatesResponse | void, boolean>(
     getCurrentVersion,
-    initialForceUpdate
+    initialForceUpdate,
   );
 
   useEffect(() => {
@@ -36,7 +36,7 @@ export const useVersionDetails = (initialForceUpdate = false): CurrentOrNextVers
     }
 
     const {
-      last_check, latest, latest_news_url, installed, update_available
+      last_check, latest, latest_news_url, installed, update_available,
     } = data;
     const { full_version: latestFullVersion, timestamp: latestTimestamp, version: latestVersion } = latest;
     const {
@@ -63,7 +63,7 @@ export const useVersionDetails = (initialForceUpdate = false): CurrentOrNextVers
 
   return [
     {
-      installedVersionDetails, lastCheckDate, nextVersionDetails, isUpdateAvailable
+      installedVersionDetails, lastCheckDate, nextVersionDetails, isUpdateAvailable,
     },
     errorMessage,
     isLoading,

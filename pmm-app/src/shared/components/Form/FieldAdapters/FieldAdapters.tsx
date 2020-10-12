@@ -1,7 +1,7 @@
 import React from 'react';
 import { cx } from 'emotion';
 import {
-  Input, Select, TextArea, useTheme
+  Input, Select, TextArea, useTheme,
 } from '@grafana/ui';
 import { getStyles } from './FieldAdapters.styles';
 // TODO (nicolalamacchia): use Grafana's components once migration to Grafana v7 is complete

@@ -1,5 +1,5 @@
 import React, {
-  FC, useContext, useEffect, useState
+  FC, useContext, useEffect, useState,
 } from 'react';
 import { Button, Divider, Tabs } from 'antd';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
@@ -25,7 +25,7 @@ export const DetailsSection: FC = () => {
   const {
     contextActions: { closeDetails, setActiveTab, setLoadingDetails },
     panelState: {
-      queryId, groupBy, fingerprint, totals, openDetailsTab
+      queryId, groupBy, fingerprint, totals, openDetailsTab,
     },
   } = useContext(QueryAnalyticsProvider);
 

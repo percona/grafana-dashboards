@@ -21,7 +21,7 @@ export const DBaaSPanel: FC = () => {
           deleteKubernetes={deleteKubernetes}
           addKubernetes={addKubernetes}
           loading={kubernetesLoading}
-        />
+        />,
       },
       {
         label: Messages.tabs.xtradb,
@@ -30,10 +30,10 @@ export const DBaaSPanel: FC = () => {
         component: <XtraDB
           key={TabKeys.xtradb}
           kubernetes={kubernetes}
-        />
+        />,
       },
     ],
-    [kubernetes, kubernetesLoading]
+    [kubernetes, kubernetesLoading],
   );
 
   return (

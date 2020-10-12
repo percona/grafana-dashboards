@@ -71,8 +71,7 @@ module.exports = {
       if (numOfElementsFilterCount === '1') {
         I.click(this.getFilterGroupCountSelector(this.filterGroups[i]));
         I.waitForVisible(
-          `//section[@class='aside__filter-group']//span[contains(text(), '${this.filterGroups[i]}')]/../button[contains(text(), 'Show top 5')]`,
-          30,
+          `//section[@class='aside__filter-group']//span[contains(text(), '${this.filterGroups[i]}')]/../button[contains(text(), 'Show top 5')]`, 30,
         );
       }
     }

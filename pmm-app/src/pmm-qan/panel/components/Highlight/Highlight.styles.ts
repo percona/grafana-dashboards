@@ -92,6 +92,6 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       .hljs-link {
         text-decoration: underline;
       }
-    `
+    `,
   };
 });

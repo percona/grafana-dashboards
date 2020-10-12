@@ -37,5 +37,5 @@ export default {
     });
 
     return markCheckedLabels(labels, paramLabels);
-  }
+  },
 };

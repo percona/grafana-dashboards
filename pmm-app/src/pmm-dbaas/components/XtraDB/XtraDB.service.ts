@@ -19,20 +19,20 @@ export const toAPI = (xtradbCluster: XtraDBCluster): XtraDBClusterAPI => ({
     pxc: {
       compute_resources: {
         cpu_m: 3,
-        memory_bytes: 3072
-      }
+        memory_bytes: 3072,
+      },
     },
     proxysql: {
       compute_resources: {
         cpu_m: 1,
-        memory_bytes: 1024
-      }
-    }
-  }
+        memory_bytes: 1024,
+      },
+    },
+  },
 });
 
 export const toModel = (xtradbCluster: XtraDBClusterAPI, databaseType: string): XtraDBCluster => ({
   kubernetesClusterName: '',
   clusterName: xtradbCluster.name,
-  databaseType
+  databaseType,
 });

@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import { cx } from 'emotion';
 import { Field, Form } from 'react-final-form';
 import {
-  Button, Spinner, TextArea, useTheme
+  Button, Spinner, TextArea, useTheme,
 } from '@grafana/ui';
 import { getSettingsStyles } from 'pmm-settings/Settings.styles';
 import { Messages } from 'pmm-settings/Settings.messages';
@@ -19,8 +19,8 @@ export const SSHKey: FC<SSHKeyProps> = ({ sshKey, updateSettings }) => {
       action,
       label,
       link,
-      tooltip
-    }, tooltipLinkText
+      tooltip,
+    }, tooltipLinkText,
   } = Messages;
   const [loading, setLoading] = useState(false);
   const isEqual = (a: string, b: string) => (!(a && !b) || a === b);

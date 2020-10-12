@@ -11,7 +11,7 @@ export const InventoryPanel = () => {
       { label: 'Agents', key: 'agents', active: activeTab === 'agents' },
       { label: 'Nodes', key: 'nodes', active: activeTab === 'nodes' },
     ],
-    [activeTab]
+    [activeTab],
   );
 
   return (

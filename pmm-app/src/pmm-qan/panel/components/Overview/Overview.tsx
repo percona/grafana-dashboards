@@ -1,6 +1,6 @@
 import { Pagination } from 'antd';
 import React, {
-  FC, useCallback, useContext, useEffect, useMemo, useRef, useState
+  FC, useCallback, useContext, useEffect, useMemo, useRef, useState,
 } from 'react';
 import './Overview.scss';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
@@ -24,7 +24,7 @@ export const Overview: FC = () => {
   const {
     contextActions,
     panelState: {
-      queryId, querySelected, totals, pageNumber, pageSize, orderBy, loadingDetails
+      queryId, querySelected, totals, pageNumber, pageSize, orderBy, loadingDetails,
     },
   } = useContext(QueryAnalyticsProvider);
   const tableWrapperRef = useRef<HTMLDivElement>(null);
@@ -71,7 +71,7 @@ export const Overview: FC = () => {
 
       return '';
     },
-    [querySelected, totals, queryId]
+    [querySelected, totals, queryId],
   );
 
   const onSortChange = useCallback(
@@ -82,7 +82,7 @@ export const Overview: FC = () => {
 
       contextActions.changeSort(data[0].desc ? data[0].id : `-${data[0].id}`);
     },
-    [contextActions.changeSort]
+    [contextActions.changeSort],
   );
 
   return (
@@ -107,7 +107,7 @@ export const Overview: FC = () => {
             />
           </div>
         ),
-        [overviewMetricsList, loading, loadingDetails, height, getRowClassName]
+        [overviewMetricsList, loading, loadingDetails, height, getRowClassName],
       )}
       {overviewMetricsList.rows.length > 1 ? (
         <div className={styles.overviewFooter}>

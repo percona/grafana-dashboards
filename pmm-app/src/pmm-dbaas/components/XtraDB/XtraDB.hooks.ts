@@ -25,7 +25,7 @@ export const useXtraDBClusters = (kubernetes: Kubernetes[]): [
         .filter(filterFulfilled)
         .map((r) => ((r as FulfilledPromiseResult).value.clusters)
           .map(
-            (cluster) => clusters.push(toModel(cluster, DATABASE_LABELS.mysql))
+            (cluster) => clusters.push(toModel(cluster, DATABASE_LABELS.mysql)),
           ));
 
       setXtraDBClusters(clusters);

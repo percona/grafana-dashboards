@@ -19,7 +19,7 @@ interface SelectFieldInterface {
   defaultValue?: any;
 }
 export const SelectField = ({
-  name, options, style, defaultValue, dataQa
+  name, options, style, defaultValue, dataQa,
 }: SelectFieldInterface) => {
   const { input } = useField(name);
 

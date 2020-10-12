@@ -14,7 +14,7 @@ interface TextAreaFieldInterface {
   className?: any;
 }
 export const TextAreaField = ({
-  name, placeholder, style, className, dataQa
+  name, placeholder, style, className, dataQa,
 }: TextAreaFieldInterface) => {
   const { input, meta } = useField(name);
 
