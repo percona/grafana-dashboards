@@ -16,7 +16,7 @@ Scenario(
       I.see('Explain', qanDetails.getTabLocator('Explain'));
       I.see('Tables', qanDetails.getTabLocator('Tables'));
     });
-  }
+  },
 );
 
 Scenario(

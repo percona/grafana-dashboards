@@ -1,5 +1,5 @@
 import {
-  RefObject, useContext, useEffect, useState
+  RefObject, useContext, useEffect, useState,
 } from 'react';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
 import useWindowSize from 'shared/components/hooks/WindowSize.hooks';
@@ -12,7 +12,7 @@ export const useFilters = () => {
   const [loading, setLoading] = useState(false);
   const {
     panelState: {
-      labels = {}, from, to, columns
+      labels = {}, from, to, columns,
     },
   } = useContext(QueryAnalyticsProvider);
 

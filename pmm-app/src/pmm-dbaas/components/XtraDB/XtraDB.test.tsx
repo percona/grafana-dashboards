@@ -9,7 +9,7 @@ jest.mock('./XtraDB.hooks');
 describe('XtraDB::', () => {
   it('renders correctly without clusters', () => {
     const root = mount(
-      <XtraDB kubernetes={[]} />
+      <XtraDB kubernetes={[]} />,
     );
 
     expect(root.find('[data-qa="xtradb-add-cluster-button"]').find('button').length).toBe(2);
@@ -17,7 +17,7 @@ describe('XtraDB::', () => {
   });
   it('renders correctly with clusters', () => {
     const root = mount(
-      <XtraDB kubernetes={kubernetesStub} />
+      <XtraDB kubernetes={kubernetesStub} />,
     );
 
     expect(root.find('[data-qa="xtradb-add-cluster-button"]').find('button').length).toBe(1);
@@ -25,7 +25,7 @@ describe('XtraDB::', () => {
   });
   it('renders correctly with active state', () => {
     const root = mount(
-      <XtraDB kubernetes={kubernetesStub} />
+      <XtraDB kubernetes={kubernetesStub} />,
     );
 
     expect(root.find('[data-qa="cluster-status-active"]').at(0).prop('className')).toContain('active');

@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import { Field, Form } from 'react-final-form';
 import { cx } from 'emotion';
 import {
-  Button, Spinner, useTheme
+  Button, Spinner, useTheme,
 } from '@grafana/ui';
 import { getSettingsStyles } from 'pmm-settings/Settings.styles';
 import { Messages } from 'pmm-settings/Settings.messages';
@@ -22,7 +22,7 @@ export const Advanced: FC<AdvancedProps> = ({
   updatesDisabled,
   sttEnabled,
   dbaasEnabled,
-  updateSettings
+  updateSettings,
 }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
@@ -43,20 +43,20 @@ export const Advanced: FC<AdvancedProps> = ({
       sttLink,
       sttTooltip,
       dbaasLabel,
-      dbaasTooltip
-    }, tooltipLinkText
+      dbaasTooltip,
+    }, tooltipLinkText,
   } = Messages;
   const initialValues = {
     retention: transformSecondsToDays(dataRetention),
     telemetry: telemetryEnabled,
     updates: !updatesDisabled,
     stt: sttEnabled,
-    dbaas: dbaasEnabled
+    dbaas: dbaasEnabled,
   };
   const [loading, setLoading] = useState(false);
   const retentionValidators = validators.compose(
     validators.required,
-    validators.range(MIN_DAYS, MAX_DAYS)
+    validators.range(MIN_DAYS, MAX_DAYS),
   );
   const applyChanges = ({ retention, telemetry, stt }) => {
     const body = {
@@ -64,7 +64,7 @@ export const Advanced: FC<AdvancedProps> = ({
       disable_telemetry: !telemetry,
       enable_telemetry: telemetry,
       disable_stt: !stt,
-      enable_stt: stt
+      enable_stt: stt,
     };
 
     updateSettings(body, setLoading);
@@ -76,7 +76,7 @@ export const Advanced: FC<AdvancedProps> = ({
         onSubmit={applyChanges}
         initialValues={initialValues}
         render={({
-          values, handleSubmit, valid, pristine
+          values, handleSubmit, valid, pristine,
         }) => (
           <form onSubmit={handleSubmit}>
             <div className={styles.advancedRow}>

@@ -13,7 +13,7 @@ describe('AddXtraDBModal::', () => {
         isVisible
         setVisible={setVisibleStub}
         onXtraDBAdded={onXtraDBAddedStub}
-      />
+      />,
     );
 
     expect(root.find('form')).toBeTruthy();
@@ -30,7 +30,7 @@ describe('AddXtraDBModal::', () => {
         isVisible
         setVisible={setVisibleStub}
         onXtraDBAdded={onXtraDBAddedStub}
-      />
+      />,
     );
     const button = root.find('[data-qa="xtradb-create-cluster-button"]').find('button');
 

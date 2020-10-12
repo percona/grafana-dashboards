@@ -6,7 +6,7 @@ import { Databases, DatabasesType } from './Details.types';
 export const useDetails = (): [boolean, any, DatabasesType] => {
   const {
     panelState: {
-      queryId, groupBy, from, to, labels
+      queryId, groupBy, from, to, labels,
     },
   } = useContext(QueryAnalyticsProvider);
   const [loading, setLoading] = useState<boolean>(false);

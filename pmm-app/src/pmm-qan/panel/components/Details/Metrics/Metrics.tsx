@@ -13,7 +13,7 @@ import { getStyles } from './Metrics.styles';
 const { Panel } = Collapse;
 
 const Metrics: FC<MetricsProps> = ({
-  databaseType, totals, metrics, loading
+  databaseType, totals, metrics, loading,
 }) => {
   const theme = useTheme();
   const styles = getStyles(theme);

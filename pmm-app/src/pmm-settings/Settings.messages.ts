@@ -16,7 +16,7 @@ export const Messages = {
     sttLink: `${GUI_DOC_URL}#security-threat-tool`,
     sttTooltip: 'Enable Security Threat Tool and get updated checks from Percona.',
     dbaasLabel: 'DBaaS',
-    dbaasTooltip: 'Read-only option to show if DBaaS features are enabled.'
+    dbaasTooltip: 'Read-only option to show if DBaaS features are enabled.',
   },
   alertmanager: {
     action: 'Apply Alertmanager settings',
@@ -25,7 +25,7 @@ export const Messages = {
     rulesTooltip: 'Alerting rules in the YAML configuration format.',
     urlLabel: 'Alertmanager URL',
     urlLink: `${GUI_DOC_URL}#prometheus-alertmanager-integration`,
-    urlTooltip: 'The URL of the external Alertmanager to use.'
+    urlTooltip: 'The URL of the external Alertmanager to use.',
   },
   diagnostics: {
     action: 'Download server diagnostics',
@@ -45,18 +45,18 @@ export const Messages = {
     intervals: {
       low: 'Low',
       medium: 'Medium',
-      high: 'High'
+      high: 'High',
     },
-    tooltip: 'This setting defines how frequently the data will be collected.'
+    tooltip: 'This setting defines how frequently the data will be collected.',
   },
   ssh: {
     action: 'Apply SSH key',
     label: 'SSH key',
     link: `${GUI_DOC_URL}#ssh-key-details`,
-    tooltip: 'Public SSH key to let you login into the server using SSH.'
+    tooltip: 'Public SSH key to let you login into the server using SSH.',
   },
   service: {
-    success: 'Settings updated'
+    success: 'Settings updated',
   },
   tabs: {
     metrics: 'Metrics Resolution',
@@ -65,5 +65,5 @@ export const Messages = {
     alertManager: 'Alertmanager Integration',
     perconaPlatform: 'Percona Platform',
   },
-  tooltipLinkText: 'Read more'
+  tooltipLinkText: 'Read more',
 };

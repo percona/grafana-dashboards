@@ -46,7 +46,7 @@ describe('Inventory tables', () => {
         rowKey={(rec) => rec.agent_id}
         columns={AGENTS_COLUMNS}
         loading={false}
-      />
+      />,
     );
 
     // length is 5 because header is also tr
@@ -72,7 +72,7 @@ describe('Inventory tables', () => {
         rowKey={(rec) => rec.service_id}
         columns={SERVICES_COLUMNS}
         loading={false}
-      />
+      />,
     );
 
     // length is 2 because header is also tr
@@ -93,7 +93,7 @@ describe('Inventory tables', () => {
         rowKey={(rec) => rec.node_id}
         columns={NODES_COLUMNS}
         loading={false}
-      />
+      />,
     );
 
     // length is 3 because header is also tr

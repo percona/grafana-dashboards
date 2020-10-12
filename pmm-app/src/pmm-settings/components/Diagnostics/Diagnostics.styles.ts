@@ -20,5 +20,5 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => ({
       svg {
         margin-right: ${theme.spacing.sm};
       }
-    `
+    `,
 }));
