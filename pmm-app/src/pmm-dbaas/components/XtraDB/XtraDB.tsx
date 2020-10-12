@@ -1,5 +1,5 @@
 import React, {
-  FC, useCallback, useMemo, useState
+  FC, useCallback, useMemo, useState,
 } from 'react';
 import { useStyles } from '@grafana/ui';
 import { Table } from 'shared/components/Elements/Table/Table';
