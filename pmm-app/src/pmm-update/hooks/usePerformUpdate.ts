@@ -8,23 +8,24 @@ export const usePerformUpdate = (): UpdateStatus => {
   const [updateFailed, setUpdateFailed] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [output, setOutput] = useState('');
-  const [isUpdateFinished, setIsUpdateFinished] = useState(false);
+  const [updateFinished, setUpdateFinished] = useState(false);
   const [timeoutId, setTimeoutId] = useState<number>();
 
   const [authToken, initialLogOffset, initializationFailed, launchUpdate] = useInitializeUpdate();
 
   useEffect(() => {
-    if (!authToken || typeof initialLogOffset === 'undefined') {
+    if (!authToken || initialLogOffset === undefined) {
       return;
     }
 
     const updateStatus = async (logOffset: number, errorsCount = 0, isUpdated = false) => {
       if (isUpdated) {
-        setIsUpdateFinished(isUpdated);
+        setUpdateFinished(isUpdated);
 
         return;
       }
 
+      // Set the errorCount high enough to make it possible for the user to find the error
       if (errorsCount > 600 || initializationFailed) {
         setUpdateFailed(true);
 
@@ -74,5 +75,5 @@ export const usePerformUpdate = (): UpdateStatus => {
     setUpdateFailed(initializationFailed);
   }, [initializationFailed]);
 
-  return [output, errorMessage, isUpdateFinished, updateFailed, launchUpdate];
+  return [output, errorMessage, updateFinished, updateFailed, launchUpdate];
 };
