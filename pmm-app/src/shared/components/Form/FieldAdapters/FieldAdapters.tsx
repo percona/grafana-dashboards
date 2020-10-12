@@ -1,6 +1,8 @@
 import React from 'react';
 import { cx } from 'emotion';
-import { Input, TextArea, useTheme } from '@grafana/ui';
+import {
+  Input, Select, TextArea, useTheme,
+} from '@grafana/ui';
 import { getStyles } from './FieldAdapters.styles';
 // TODO (nicolalamacchia): use Grafana's components once migration to Grafana v7 is complete
 import { Checkbox } from './Checkbox';
@@ -61,6 +63,28 @@ export const CheckboxFieldAdapter = ({
       <div className={cx(className, { invalid: meta.touched && meta.error })}>
         <Checkbox {...input} {...props} />
         <div data-qa="checkbox-field-error-message" className={styles.errorMessage}>{meta.touched && meta.error}</div>
+      </div>
+    </Field>
+  );
+};
+
+export const SelectFieldAdapter = ({
+  input, className, options, label, meta, dataQa, ...props
+}) => {
+  const theme = useTheme();
+  const styles = getStyles(theme);
+
+  return (
+    <Field label={label}>
+      <div data-qa={dataQa}>
+        <Select
+          {...input}
+          {...props}
+          options={options}
+          className={cx(styles.input, className)}
+          invalid={meta.touched && meta.error}
+        />
+        <div data-qa="select-field-error-message" className={styles.errorMessage}>{meta.touched && meta.error}</div>
       </div>
     </Field>
   );

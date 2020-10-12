@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import {
-  LoadingState, PanelEditorProps, TimeRange, dateTime
+  LoadingState, PanelEditorProps, TimeRange, dateTime,
 } from '@grafana/data';
 
 import { CheckPanelOptions } from './types';

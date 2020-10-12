@@ -5,5 +5,5 @@ export const styles = {
     .simplebar-scrollbar::before {
       background: white !important;
     }
-  `
+  `,
 };

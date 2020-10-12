@@ -35,8 +35,8 @@ describe('SilenceAlertButton::', () => {
 
     window.grafanaBootData = {
       user: {
-        name: 'test_user'
-      }
+        name: 'test_user',
+      },
     };
 
     const fakeFetchAlerts = jest.fn();
@@ -46,7 +46,7 @@ describe('SilenceAlertButton::', () => {
     const root = mount(
       <AlertsReloadContext.Provider value={{ fetchAlerts: fakeFetchAlerts }}>
         <SilenceAlertButton labels={labels} />
-      </AlertsReloadContext.Provider>
+      </AlertsReloadContext.Provider>,
     );
 
     const wrapper = root.find(SilenceAlertButton);
@@ -75,8 +75,8 @@ describe('SilenceAlertButton::', () => {
 
     window.grafanaBootData = {
       user: {
-        name: 'test_user'
-      }
+        name: 'test_user',
+      },
     };
 
     const originalConsoleError = console.error;

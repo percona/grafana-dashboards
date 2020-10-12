@@ -11,7 +11,7 @@ interface QueryTooltipProps {
   children: any;
 }
 export const QueryTooltip = ({
-  query, queryId, children, show = true
+  query, queryId, children, show = true,
 }: QueryTooltipProps) => (show ? (
   <Tooltip
     placement="left"

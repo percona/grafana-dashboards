@@ -14,7 +14,7 @@ export const SwitchRow: FC<SwitchRowProps> = ({
   disabled,
   className,
   dataQa,
-  input
+  input,
 }) => {
   const theme = useTheme();
   const settingsStyles = getSettingsStyles(theme);

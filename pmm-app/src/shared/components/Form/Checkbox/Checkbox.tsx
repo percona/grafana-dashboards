@@ -14,7 +14,7 @@ interface CheckboxFieldInterface {
 }
 
 export const CheckboxField = ({
-  name, label, required, disabled, dataQa
+  name, label, required, disabled, dataQa,
 }: CheckboxFieldInterface) => {
   const field = useField(name, { type: 'checkbox' });
   const theme = useTheme();

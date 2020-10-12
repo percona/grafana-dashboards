@@ -55,7 +55,7 @@ const HorizontalFieldLayout = ({ label, tooltip, element }) => (
 );
 
 const VerticalFieldLayout = ({
-  label, tooltip, alignLabel, element
+  label, tooltip, alignLabel, element,
 }) => (
   <>
     <Row align="middle" className={style.verticalFieldLabelRow}>
@@ -72,7 +72,7 @@ const VerticalFieldLayout = ({
 
 export const FormElement = (props) => {
   const {
-    dataQa, type, errors, alignLabel
+    dataQa, type, errors, alignLabel,
   } = props;
 
   return (
