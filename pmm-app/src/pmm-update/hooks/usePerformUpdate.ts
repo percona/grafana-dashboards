@@ -18,13 +18,7 @@ export const usePerformUpdate = (): UpdateStatus => {
       return;
     }
 
-    const updateStatus = async (logOffset: number, errorsCount = 0, isUpdated = false) => {
-      if (isUpdated) {
-        setUpdateFinished(isUpdated);
-
-        return;
-      }
-
+    const updateStatus = async (logOffset: number, errorsCount = 0) => {
       // Set the errorCount high enough to make it possible for the user to find the error
       if (errorsCount > 600 || initializationFailed) {
         setUpdateFailed(true);
@@ -34,7 +28,7 @@ export const usePerformUpdate = (): UpdateStatus => {
 
       let newErrorsCount = errorsCount;
       let newLogOffset = logOffset;
-      let newIsUpdated: boolean = isUpdated;
+      let newIsUpdated: boolean = false;
 
       try {
         const response = await getUpdateStatus({ auth_token: authToken, log_offset: logOffset });
@@ -57,8 +51,12 @@ export const usePerformUpdate = (): UpdateStatus => {
         newErrorsCount += 1;
         setErrorMessage(e.message);
       } finally {
-        const timeout = setTimeout(updateStatus, 500, newLogOffset, newErrorsCount, newIsUpdated);
+        if (newIsUpdated) {
+          setUpdateFinished(newIsUpdated);
+          return;
+        }
 
+        const timeout = setTimeout(updateStatus, 500, newLogOffset, newErrorsCount);
         setTimeoutId(timeout);
       }
     };
