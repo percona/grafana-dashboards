@@ -20,5 +20,5 @@ export const getMetrics = async ({
 
 
 export default {
-  getMetrics
+  getMetrics,
 };

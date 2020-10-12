@@ -10,7 +10,7 @@ export const Messages = {
       cancel: 'Cancel',
       confirm: 'Proceed',
       confirmMessage: 'Are you sure that you want to permanently delete this cluster?',
-      title: 'Confirm action'
+      title: 'Confirm action',
     },
     deleteSuccess: 'Cluster successfully deleted',
     addModal: {
@@ -18,16 +18,16 @@ export const Messages = {
       confirm: 'Add',
       fields: {
         clusterName: 'Kubernetes Cluster Name',
-        kubeConfig: 'Kubeconfig file'
+        kubeConfig: 'Kubeconfig file',
       },
     },
     table: {
       nameColumn: 'Kubernetes Cluster Name',
-      actionsColumn: 'Actions'
+      actionsColumn: 'Actions',
     },
     messages: {
       clusterAdded: 'Cluster was successfully added',
-    }
+    },
   },
   xtradb: {
     addAction: 'Create DB Cluster',
@@ -47,8 +47,8 @@ export const Messages = {
       actionsColumn: 'Actions',
       status: {
         active: 'Active',
-        suspended: 'Suspended'
-      }
+        suspended: 'Suspended',
+      },
     },
   },
 };

@@ -42,10 +42,10 @@ export class PTSummaryDataSource extends DataSourceApi {
               name: 'summary',
               values: [value],
               type: FieldType.string,
-            }
+            },
           ],
         }),
-      ]
+      ],
     };
   }
 }

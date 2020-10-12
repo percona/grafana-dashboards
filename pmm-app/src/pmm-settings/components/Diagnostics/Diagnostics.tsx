@@ -3,7 +3,7 @@ import {
   Icon,
   LinkButton,
   Tooltip,
-  useTheme
+  useTheme,
 } from '@grafana/ui';
 import { Messages } from 'pmm-settings/Settings.messages';
 import { getSettingsStyles } from 'pmm-settings/Settings.styles';

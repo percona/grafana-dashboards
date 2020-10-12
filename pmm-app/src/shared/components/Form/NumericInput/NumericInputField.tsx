@@ -19,7 +19,7 @@ export const NumericInputField: FC<NumericInputFieldProps> = ({
   disabled,
   dataQa,
   input,
-  meta
+  meta,
 }) => {
   const theme = useTheme();
   const styles = getStyles(theme);

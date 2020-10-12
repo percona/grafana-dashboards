@@ -20,7 +20,7 @@ describe('NumericInputField::', () => {
     const wrapper = mount(
       <NumericInputField
         meta={{ error: 'Required field' } as any}
-      />
+      />,
     );
 
     expect(wrapper.text()).toContain('Required field');

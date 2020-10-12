@@ -3,14 +3,14 @@ import {
   filterFulfilled,
   filterRejected,
   FulfilledPromiseResult,
-  RejectedPromiseResult
+  RejectedPromiseResult,
 } from './promises';
 
 describe('processPromiseResults::', () => {
   it('should return array of fulfilled promise results', async () => {
     const requests = [
       Promise.resolve(),
-      Promise.resolve()
+      Promise.resolve(),
     ];
     const results = await processPromiseResults(requests);
 
@@ -20,7 +20,7 @@ describe('processPromiseResults::', () => {
     const requests = [
       Promise.reject(),
       Promise.resolve(),
-      Promise.reject()
+      Promise.reject(),
     ];
     const results = await processPromiseResults(requests);
 
@@ -29,7 +29,7 @@ describe('processPromiseResults::', () => {
   });
   it('should return one fulfilled promise with value', async () => {
     const requests = [
-      Promise.resolve('done')
+      Promise.resolve('done'),
     ];
     const results = await processPromiseResults(requests);
     const fulfilled = results.filter(filterFulfilled);

@@ -2,7 +2,7 @@ import React, {
   FC,
   useEffect,
   useMemo,
-  useState
+  useState,
 } from 'react';
 import {
   Spinner,
@@ -13,7 +13,7 @@ import {
 import { cx } from 'emotion';
 import { TabsVertical } from 'shared/components/Elements/TabsVertical/TabsVertical';
 import {
-  PlatformLogin, Diagnostics, MetricsResolution, SSHKey, AlertManager, Advanced
+  PlatformLogin, Diagnostics, MetricsResolution, SSHKey, AlertManager, Advanced,
 } from 'pmm-settings/components';
 import { SettingsService, LoadingCallback } from './Settings.service';
 import { Settings, TabKeys } from './Settings.types';
@@ -41,7 +41,7 @@ export const SettingsPanel: FC = () => {
       { label: alertManager, key: TabKeys.alertManager, active: activeTab === TabKeys.alertManager },
       { label: perconaPlatform, key: TabKeys.perconaPlatform, active: activeTab === TabKeys.perconaPlatform },
     ],
-    [activeTab]
+    [activeTab],
   );
   const [settings, setSettings] = useState<Settings>();
   const [loading, setLoading] = useState(true);

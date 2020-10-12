@@ -22,7 +22,7 @@ export const getPmmTheme = (theme): Themes => {
   const backgroundColor = selectThemeVariant({ light: '#f7f8fa', dark: '#0b0c0e' }, theme.type) as string;
   const borderColor = selectThemeVariant(
     { light: mainTextColor, dark: '#292929' },
-    theme.type
+    theme.type,
   ) as string;
   const headerBackground = selectThemeVariant({ light: '#dedfe1', dark: '#202226' }, theme.type) as string;
 
@@ -33,7 +33,7 @@ export const getPmmTheme = (theme): Themes => {
       backgroundColor,
       borderColor,
       headerBackground,
-      textColor: mainTextColor
-    }
+      textColor: mainTextColor,
+    },
   };
 };

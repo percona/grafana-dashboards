@@ -14,7 +14,7 @@ describe('KubernetesInventory::', () => {
         addKubernetes={addActionStub}
         deleteKubernetes={deleteActionStub}
         loading={false}
-      />
+      />,
     );
     const rows = root.find('tr');
 
@@ -27,7 +27,7 @@ describe('KubernetesInventory::', () => {
         addKubernetes={addActionStub}
         deleteKubernetes={deleteActionStub}
         loading={false}
-      />
+      />,
     );
     const openDeleteModalButton = root.find('[data-qa="open-delete-modal-button"]').find('button').at(0);
 
@@ -47,7 +47,7 @@ describe('KubernetesInventory::', () => {
         addKubernetes={addActionStub}
         deleteKubernetes={deleteActionStub}
         loading={false}
-      />
+      />,
     );
     const openDeleteModalButton = root.find('[data-qa="open-delete-modal-button"]').find('button').at(0);
 

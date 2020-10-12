@@ -17,6 +17,6 @@ export const makeSilencePayload = (labels: Labels) => {
     endsAt: tomorrowUTCISO,
     createdBy: window.grafanaBootData.user.name,
     comment: '',
-    id: ''
+    id: '',
   });
 };

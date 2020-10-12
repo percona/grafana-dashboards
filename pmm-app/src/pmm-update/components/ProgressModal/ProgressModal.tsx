@@ -1,8 +1,8 @@
 import React, {
-  useCallback, useLayoutEffect, useRef, useState, FC
+  useCallback, useLayoutEffect, useRef, useState, FC,
 } from 'react';
 import {
-  ClipboardButton, Icon, Button, Modal
+  ClipboardButton, Icon, Button, Modal,
 } from '@grafana/ui';
 
 

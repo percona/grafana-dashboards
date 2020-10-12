@@ -1,11 +1,11 @@
 import React, {
-  FC, useContext, useEffect, useRef, useState
+  FC, useContext, useEffect, useRef, useState,
 } from 'react';
 import SplitPane from 'react-split-pane';
 import { useTheme } from '@grafana/ui';
 import { QueryAnalyticsProvider, UrlParametersProvider } from './provider/provider';
 import {
-  Details, Filters, ManageColumns, Overview
+  Details, Filters, ManageColumns, Overview,
 } from './components';
 import 'shared/styles.scss';
 import 'shared/style.less';

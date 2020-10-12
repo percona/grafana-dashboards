@@ -1,5 +1,5 @@
 import React, {
-  useEffect, useRef, useState
+  useEffect, useRef, useState,
 } from 'react';
 import * as d3 from 'd3';
 import { scaleLog } from 'd3';
@@ -40,7 +40,7 @@ export const Latency = (props) => {
       .nice();
 
     const {
-      min = 0, max = 0, avg = 0, p99 = 0
+      min = 0, max = 0, avg = 0, p99 = 0,
     } = data;
     const minStr = `⌜ Min: ${humanize.transform(min, measurement)}`;
     const maxStr = `⌟ Max: ${humanize.transform(max, measurement)}`;
