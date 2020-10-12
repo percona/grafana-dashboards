@@ -1,4 +1,5 @@
 const assert = require('assert');
+const dashboardPage = require('../pages/dashboardPage');
 
 Feature('QAN filters');
 
@@ -218,60 +219,60 @@ Scenario(
 
 Scenario(
   'PMM-T436 - Verify short-cut navigation from filters to related dashboards - Cluster @qan',
-  async (I, qanFilters) => {
+  async (I, qanFilters, dashboardPage) => {
     const mongoLink = '/graph/d/mongodb-cluster-summary/mongodb-cluster-summary';
-    const cluster = 'cluster=mongodb_cluster';
+    const header = 'MongoDB Cluster Summary';
 
     qanFilters.navigateByShortCut(mongoLink);
     //wait for open new tab
     I.wait(2);
     I.switchToNextTab(1);
     I.waitInUrl(mongoLink, 30);
-    I.waitInUrl(cluster, 30);
+    await dashboardPage.checkNavigationBar(header);
   },
 );
 
 Scenario(
   'PMM-T436 - Verify short-cut navigation from filters to related dashboards - Replication Set @qan',
-  async (I, qanFilters) => {
+  async (I, qanFilters, dashboardPage) => {
     const replicationSetLink = '/graph/d/mysql-replicaset-summary/mysql-replication-summary';
-    const replicationSet = 'replication_set=pxc-repl';
+    const header = 'MySQL Replication Summary';
 
     qanFilters.navigateByShortCut(replicationSetLink);
     //wait for open new tab
     I.wait(2);
     I.switchToNextTab(1);
     I.waitInUrl(replicationSetLink, 30);
-    I.waitInUrl(replicationSet, 30);
+    await dashboardPage.checkNavigationBar(header);
   },
 );
 
 Scenario(
   'PMM-T436 - Verify short-cut navigation from filters to related dashboards - Node Name @qan',
-  async (I, qanFilters) => {
+  async (I, qanFilters, dashboardPage) => {
     const nodeLink = '/graph/d/node-instance-summary/node-summary?var-node_name=pmm-server';
-    const nodeName = 'node_name=pmm-server';
+    const header = 'Node Summary';
 
     qanFilters.navigateByShortCut(nodeLink);
     //wait for open new tab
     I.wait(2);
     I.switchToNextTab(1);
     I.waitInUrl(nodeLink, 30);
-    I.waitInUrl(nodeName, 30);
+    await dashboardPage.checkNavigationBar(header);
   },
 );
 
 Scenario(
   'PMM-T436 - Verify short-cut navigation from filters to related dashboards - Service Name @qan',
-  async (I, qanFilters) => {
+  async (I, qanFilters, dashboardPage) => {
     const serviceNameLink = '/graph/d/mongodb-instance-summary/mongodb-instance-summary';
-    const serviceName = 'service_name=mongodb_inst_rpl1_1_0.0.0.0';
+    const header = 'MongoDB Instance Summary';
 
     qanFilters.navigateByShortCut(serviceNameLink);
     //wait for open new tab
     I.wait(2);
     I.switchToNextTab(1);
     I.waitInUrl(serviceNameLink, 30);
-    I.waitInUrl(serviceName, 30);
+    await dashboardPage.checkNavigationBar(header);
   },
 );
