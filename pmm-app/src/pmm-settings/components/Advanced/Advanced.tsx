@@ -140,16 +140,18 @@ export const Advanced: FC<AdvancedProps> = ({
               dataQa="advanced-stt"
               component={SwitchRow}
             />
-            <Field
-              name="dbaas"
-              type="checkbox"
-              label={dbaasLabel}
-              tooltip={dbaasTooltip}
-              className={styles.switchDisabled}
-              disabled
-              dataQa="advanced-dbaas"
-              component={SwitchRow}
-            />
+            {dbaasEnabled && (
+              <Field
+                name="dbaas"
+                type="checkbox"
+                label={dbaasLabel}
+                tooltip={dbaasTooltip}
+                className={styles.switchDisabled}
+                disabled
+                dataQa="advanced-dbaas"
+                component={SwitchRow}
+              />
+            )}
             <Button
               className={settingsStyles.actionButton}
               type="submit"

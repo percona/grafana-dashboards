@@ -1,7 +1,7 @@
 export const Messages = {
   tabs: {
-    manageDB: 'Manage DB Cluster',
-    kubernetes: 'Kubernetes Cluster Inventory',
+    xtradb: 'DB Cluster',
+    kubernetes: 'Kubernetes Cluster',
   },
   kubernetes: {
     deleteAction: 'Delete',
@@ -28,5 +28,27 @@ export const Messages = {
     messages: {
       clusterAdded: 'Cluster was successfully added',
     }
-  }
+  },
+  xtradb: {
+    addAction: 'Create DB Cluster',
+    addModal: {
+      title: 'Create Cluster',
+      confirm: 'Create Cluster',
+      fields: {
+        clusterName: 'Cluster Name',
+        kubernetesCluster: 'Kubernetes Cluster',
+        databaseType: 'Database Type',
+      },
+    },
+    table: {
+      nameColumn: 'Name',
+      databaseTypeColumn: 'Database Type',
+      clusterStatusColumn: 'Cluster Status',
+      actionsColumn: 'Actions',
+      status: {
+        active: 'Active',
+        suspended: 'Suspended'
+      }
+    },
+  },
 };
