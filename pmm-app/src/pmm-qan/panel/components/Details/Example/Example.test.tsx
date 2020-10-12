@@ -13,7 +13,6 @@ describe('Example tab page render test', () => {
     const props = {
       databaseType: 'mongodb' as DatabasesType,
       examples: [],
-      fingerprint: 'test fingerprint',
     };
     const component = mount(<Example {...props} />);
 
@@ -32,10 +31,9 @@ describe('Example tab page render test', () => {
           service_type: 'postgresql',
         },
       ],
-      fingerprint: 'test fingerprint',
     };
     const component = mount(
-      <Example databaseType={props.databaseType} examples={props.examples} fingerprint={props.fingerprint} />
+      <Example databaseType={props.databaseType} examples={props.examples} />,
     );
 
     expect(component.find('.sql').text()).toEqual(sqlFormatter.format(props.examples[0].example));
@@ -55,7 +53,6 @@ describe('Example tab page render test', () => {
           tables: ['system.version'],
         },
       ],
-      fingerprint: 'test fingerprint',
     };
     const innerExample = '{&quot;ns&quot;:&quot;admin.system.version&quot;,&quot;op&quot;:&quot;command&quot;,&quot;command&quot;:{&quot;collStats&quot;:&quot;system.version&quot;,&quot;scale&quot;:{&quot;$numberInt&quot;:&quot;1&quot;},&quot;lsid&quot;:{&quot;id&quot;:{&quot;$binary&quot;:{&quot;base64&quot;:&quot;7bcIiWGnQ7eH3G+AfVMdEA==&quot;,&quot;subType&quot;:&quot;04&quot;}}},&quot;$clusterTime&quot;:{&quot;clusterTime&quot;:{&quot;$timestamp&quot;:{&quot;t&quot;:1588860655,&quot;i&quot;:1}},&quot;signature&quot;:{&quot;hash&quot;:{&quot;$binary&quot;:{&quot;base64&quot;:&quot;AAAAAAAAAAAAAAAAAAAAAAAAAAA=&quot;,&quot;subType&quot;:&quot;00&quot;}},&quot;keyId&quot;:{&quot;$numberLong&quot;:&quot;0&quot;}}},&quot;$db&quot;:&quot;admin&quot;,&quot;$readPreference&quot;:{&quot;mode&quot;:&quot;primaryPreferred&quot;}}}';
     const component = mount(<Example {...props} />);
@@ -76,10 +73,9 @@ describe('Example tab page render test', () => {
           schema: 'innodb',
         },
       ],
-      fingerprint: 'test fingerprint',
     };
     const component = mount(
-      <Example databaseType={props.databaseType} examples={props.examples} fingerprint={props.fingerprint} />,
+      <Example databaseType={props.databaseType} examples={props.examples} />,
     );
 
     expect(component.find('.sql').text()).toEqual(sqlFormatter.format(props.examples[0].example));

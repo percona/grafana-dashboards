@@ -25,7 +25,7 @@ export const DetailsSection: FC = () => {
   const {
     contextActions: { closeDetails, setActiveTab, setLoadingDetails },
     panelState: {
-      queryId, groupBy, fingerprint, totals, openDetailsTab,
+      queryId, groupBy, totals, openDetailsTab,
     },
   } = useContext(QueryAnalyticsProvider);
 
@@ -91,7 +91,6 @@ export const DetailsSection: FC = () => {
             {showExamplesTab ? (
               <TabPane tab={<span>{Messages.tabs.examples.tab}</span>} key={TabKeys.examples}>
                 <Example
-                  fingerprint={fingerprint}
                   databaseType={databaseType}
                   examples={examples}
                   loading={loading || metricsLoading}
