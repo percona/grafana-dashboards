@@ -38,7 +38,7 @@ Scenario(
     I.waitForVisible(homePage.fields.checksPanelSelector, 30);
     I.waitForVisible(homePage.fields.noAccessRightsSelector, 30);
     I.see('Insufficient access rights.', homePage.fields.noAccessRightsSelector);
-  }
+  },
 );
 
 Scenario(
@@ -49,7 +49,7 @@ Scenario(
     I.amOnPage(homePage.url);
     I.waitForVisible(homePage.fields.checksPanelSelector, 30);
     I.dontSeeElement(homePage.fields.noAccessRightsSelector);
-  }
+  },
 );
 
 Scenario(
@@ -61,7 +61,7 @@ Scenario(
     I.waitForVisible(databaseChecksPage.fields.dbCheckPanelSelector, 30);
     I.waitForVisible(databaseChecksPage.fields.noAccessRightsSelector, 30);
     I.see('Insufficient access rights.', databaseChecksPage.fields.noAccessRightsSelector);
-  }
+  },
 );
 
 Scenario(
@@ -72,7 +72,7 @@ Scenario(
     I.amOnPage(databaseChecksPage.url);
     I.waitForVisible(databaseChecksPage.fields.dbCheckPanelSelector, 30);
     I.dontSeeElement(databaseChecksPage.fields.noAccessRightsSelector);
-  }
+  },
 );
 
 Scenario(
@@ -84,7 +84,7 @@ Scenario(
     I.waitForVisible(homePage.fields.checksPanelSelector, 30);
     I.waitForVisible(homePage.fields.noAccessRightsSelector, 30);
     I.see('Insufficient access rights.', homePage.fields.noAccessRightsSelector);
-  }
+  },
 );
 
 Scenario(
@@ -95,7 +95,7 @@ Scenario(
     I.amOnPage(homePage.url);
     I.waitForVisible(homePage.fields.checksPanelSelector, 30);
     I.dontSeeElement(homePage.fields.noAccessRightsSelector);
-  }
+  },
 );
 
 Scenario(
@@ -107,7 +107,7 @@ Scenario(
     I.waitForVisible(databaseChecksPage.fields.dbCheckPanelSelector, 30);
     I.waitForVisible(databaseChecksPage.fields.noAccessRightsSelector, 30);
     I.see('Insufficient access rights.', databaseChecksPage.fields.noAccessRightsSelector);
-  }
+  },
 );
 
 Scenario(
@@ -118,5 +118,5 @@ Scenario(
     I.amOnPage(databaseChecksPage.url);
     I.waitForVisible(databaseChecksPage.fields.dbCheckPanelSelector, 30);
     I.dontSeeElement(databaseChecksPage.fields.noAccessRightsSelector);
-  }
+  },
 );

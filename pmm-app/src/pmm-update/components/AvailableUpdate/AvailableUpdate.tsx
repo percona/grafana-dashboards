@@ -10,7 +10,7 @@ export const AvailableUpdate: FC<AvailableUpdateProps> = ({ nextVersionDetails }
   const [showFullVersion, handleToggleShowFullVersion] = useToggleOnAltClick(false);
 
   const {
-    nextVersionDate, nextVersion, nextFullVersion, newsLink
+    nextVersionDate, nextVersion, nextFullVersion, newsLink,
   } = nextVersionDetails;
 
   return (

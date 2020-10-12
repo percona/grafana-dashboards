@@ -8,7 +8,7 @@ export const TIME_METRICS = [
   'innodb_rec_lock_wait',
   // PG metrics
   'cpu_user_time',
-  'cpu_sys_time'
+  'cpu_sys_time',
 ];
 
 export const METRICS_COLORS = {

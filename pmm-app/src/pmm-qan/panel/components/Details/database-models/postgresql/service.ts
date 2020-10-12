@@ -6,5 +6,5 @@ export default {
   },
   getShowCreateTablePostgreSQL(body) {
     return apiRequestManagement.post<any, any>('/Actions/StartPostgreSQLShowCreateTable', body);
-  }
+  },
 };

@@ -6,7 +6,7 @@ export const kubernetesOptionsStub = [
   {
     value: 'Test Cluster 2',
     label: 'Test Cluster 2',
-  }
+  },
 ];
 
 export const setVisibleStub = jest.fn();

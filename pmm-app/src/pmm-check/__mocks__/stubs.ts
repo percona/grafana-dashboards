@@ -30,7 +30,7 @@ export const activeCheckStub: ActiveCheck[] = [
           severity: 'notice',
           stt_check: '1',
         },
-      }
+      },
     ],
     failed: [1, 0, 1],
     key: '0',

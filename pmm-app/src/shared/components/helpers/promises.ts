@@ -16,14 +16,14 @@ export const processPromiseResults = (requests: Array<Promise<any>>): Promise<Pr
       (value): FulfilledPromiseResult => ({
         status: 'fulfilled',
         value,
-      })
+      }),
     )
     .catch(
       (reason): RejectedPromiseResult => ({
         status: 'rejected',
         reason,
-      })
-    ))
+      }),
+    )),
 );
 
 export const filterFulfilled = ({ status }: { status: PromiseResult['status'] }) => status === 'fulfilled';

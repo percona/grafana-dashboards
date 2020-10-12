@@ -11,12 +11,12 @@ describe('CheckPanel::', () => {
       wrapper
         .find(Button)
         .find(Spinner)
-        .length
+        .length,
     ).toEqual(0);
     expect(
       wrapper
         .find(Button)
-        .text()
+        .text(),
     ).toEqual('Test text');
 
     wrapper.unmount();
@@ -29,12 +29,12 @@ describe('CheckPanel::', () => {
       wrapper
         .find(Button)
         .find(Spinner)
-        .length
+        .length,
     ).toEqual(1);
     expect(
       wrapper
         .find(Button)
-        .text()
+        .text(),
     ).not.toContain('Test text');
 
     wrapper.unmount();

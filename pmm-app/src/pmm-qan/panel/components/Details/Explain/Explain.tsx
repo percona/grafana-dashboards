@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Collapse, Table } from 'antd';
 import { ReactJSON } from 'shared/components/Elements/ReactJSON/ReactJSON';
 import { Overlay } from 'shared/components/Elements/Overlay/Overlay';
@@ -15,7 +14,7 @@ const { Panel } = Collapse;
 
 const Explain: FC<ExplainProps> = ({
   databaseType,
-  examples
+  examples,
 }) => {
   const [data, setData] = useState<ClassicExplain>({ columns: [], rows: [] });
   const [jsonExplain, classicExplain] = useExplains(examples, databaseType);

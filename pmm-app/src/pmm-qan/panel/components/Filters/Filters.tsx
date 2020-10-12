@@ -1,5 +1,5 @@
 import React, {
-  FC, useContext, useEffect, useMemo, useRef, useState
+  FC, useContext, useEffect, useMemo, useRef, useState,
 } from 'react';
 import { Button, Input, Spin } from 'antd';
 import { Form } from 'react-final-form';
@@ -16,7 +16,7 @@ import { FiltersContainerProps } from './Filters.types';
 import { getStyles } from './Filters.styles';
 
 export const FiltersContainer: FC<FiltersContainerProps> = ({
-  contextActions, form, filters, disabled
+  contextActions, form, filters, disabled,
 }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
@@ -77,7 +77,7 @@ export const FiltersContainer: FC<FiltersContainerProps> = ({
         {FILTERS_GROUPS.filter((group) => filters[group.dataKey]).map(({
           name,
           dataKey,
-          getDashboardURL
+          getDashboardURL,
         }) => (
           <CheckboxGroup
             key={name}

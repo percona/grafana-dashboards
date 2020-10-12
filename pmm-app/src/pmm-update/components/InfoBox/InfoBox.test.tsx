@@ -13,13 +13,13 @@ describe('InfoBox::', () => {
       wrapper
         .find('section > p')
         .at(0)
-        .text()
+        .text(),
     ).toEqual(Messages.noUpdates);
     expect(
       wrapper
         .find('section > p')
         .at(1)
-        .text()
+        .text(),
     ).toEqual(Messages.updatesNotice);
 
     wrapper.unmount();
@@ -33,7 +33,7 @@ describe('InfoBox::', () => {
       wrapper
         .find('section > p')
         .at(0)
-        .text()
+        .text(),
     ).toEqual(Messages.upToDate);
 
     wrapper.unmount();

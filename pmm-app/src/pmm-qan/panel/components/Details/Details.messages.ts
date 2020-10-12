@@ -10,8 +10,8 @@ export const Messages = {
       tab: 'Details',
       sections: {
         timeDistribution: 'Query time distribution',
-        metrics: 'Metrics'
-      }
+        metrics: 'Metrics',
+      },
     },
     examples: {
       tab: 'Examples',
@@ -25,7 +25,7 @@ export const Messages = {
         table: 'Table',
         indexes: 'Indexes',
         status: 'Status',
-      }
-    }
-  }
+      },
+    },
+  },
 };
