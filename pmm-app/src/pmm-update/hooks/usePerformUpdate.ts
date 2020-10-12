@@ -28,7 +28,7 @@ export const usePerformUpdate = (): UpdateStatus => {
 
       let newErrorsCount = errorsCount;
       let newLogOffset = logOffset;
-      let newIsUpdated: boolean = false;
+      let newIsUpdated = false;
 
       try {
         const response = await getUpdateStatus({ auth_token: authToken, log_offset: logOffset });
@@ -53,11 +53,11 @@ export const usePerformUpdate = (): UpdateStatus => {
       } finally {
         if (newIsUpdated) {
           setUpdateFinished(newIsUpdated);
-          return;
-        }
+        } else {
+          const timeout = setTimeout(updateStatus, 500, newLogOffset, newErrorsCount);
 
-        const timeout = setTimeout(updateStatus, 500, newLogOffset, newErrorsCount);
-        setTimeoutId(timeout);
+          setTimeoutId(timeout);
+        }
       }
     };
 
