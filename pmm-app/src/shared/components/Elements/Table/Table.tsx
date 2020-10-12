@@ -10,7 +10,7 @@ const TableCheckbox = (props: TableCheckboxProps) => {
   const theme = useTheme();
   const styles = getCheckboxStyles(theme);
   const {
-    checked, onChange, style, title
+    checked, onChange, style, title,
   } = props;
 
   return (
@@ -35,7 +35,7 @@ export const Table: FC<TableProps> = ({
   const styles = getStyles(theme);
   const {
     // @ts-ignore
-    getTableProps, getTableBodyProps, headerGroups, rows, prepareRow, selectedFlatRows
+    getTableProps, getTableBodyProps, headerGroups, rows, prepareRow, selectedFlatRows,
   } = useTable(
     {
       columns,
@@ -61,7 +61,7 @@ export const Table: FC<TableProps> = ({
           ...columns,
         ]);
       }
-    }
+    },
   );
 
   useEffect(() => {

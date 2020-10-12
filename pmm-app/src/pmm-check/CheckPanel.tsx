@@ -100,7 +100,7 @@ export class CheckPanel extends PureComponent<CheckPanelProps, CheckPanelState> 
       options: { title },
     } = this.props;
     const {
-      dataSource, isSttEnabled, isLoading, hasNoAccess, isRunChecksRequestPending
+      dataSource, isSttEnabled, isLoading, hasNoAccess, isRunChecksRequestPending,
     } = this.state;
 
     return (

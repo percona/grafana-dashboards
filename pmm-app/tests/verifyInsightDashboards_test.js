@@ -13,7 +13,7 @@ Scenario(
     dashboardPage.verifyMetricsExistence(dashboardPage.advancedDataExplorationDashboard.metrics);
     await dashboardPage.verifyThereAreNoGraphsWithNA();
     await dashboardPage.verifyThereAreNoGraphsWithoutData(1);
-  }
+  },
 );
 
 Scenario(
@@ -25,7 +25,7 @@ Scenario(
     dashboardPage.verifyMetricsExistence(dashboardPage.prometheusDashboard.metrics);
     await dashboardPage.verifyThereAreNoGraphsWithNA(9);
     await dashboardPage.verifyThereAreNoGraphsWithoutData(1);
-  }
+  },
 );
 
 Scenario(
@@ -41,7 +41,7 @@ Scenario(
     dashboardPage.verifyMetricsExistence(dashboardPage.prometheusExporterStatusDashboard.metrics);
     await dashboardPage.verifyThereAreNoGraphsWithNA(4);
     await dashboardPage.verifyThereAreNoGraphsWithoutData(14);
-  }
+  },
 );
 
 // Need to Skip to avoid false positive, investigate and fix
@@ -57,5 +57,5 @@ xScenario(
     dashboardPage.verifyMetricsExistence(dashboardPage.prometheusExporterOverviewDashboard.metrics);
     await dashboardPage.verifyThereAreNoGraphsWithNA(6);
     await dashboardPage.verifyThereAreNoGraphsWithoutData();
-  }
+  },
 );

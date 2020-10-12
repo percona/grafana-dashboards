@@ -17,5 +17,5 @@ export const getStyles = (theme: GrafanaTheme) => ({
     background-color: ${theme.colors.formSwitchBgActive};
     label: active;
     opacity: 1;
-  `
+  `,
 });

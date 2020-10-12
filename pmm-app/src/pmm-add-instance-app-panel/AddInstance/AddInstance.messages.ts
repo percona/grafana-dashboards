@@ -6,7 +6,7 @@ export const Messages = {
       pgMonitor: 'PG Stat Monitor',
     },
     labels: {
-      trackingOptions: 'Stat tracking options'
-    }
+      trackingOptions: 'Stat tracking options',
+    },
   },
 };

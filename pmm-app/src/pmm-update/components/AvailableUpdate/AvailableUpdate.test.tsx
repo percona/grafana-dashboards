@@ -12,7 +12,7 @@ const newsLink = '';
 const nextVersionDate = '23 Jun';
 
 const nextVersionDetails = {
-  nextVersionDate, nextVersion, nextFullVersion, newsLink
+  nextVersionDate, nextVersion, nextFullVersion, newsLink,
 };
 
 describe('AvailableUpdate::', () => {
@@ -33,7 +33,7 @@ describe('AvailableUpdate::', () => {
       wrapper
         ?.find('section > p')
         .at(1)
-        .text()
+        .text(),
     ).toEqual(`${nextVersion} (${nextVersionDate})`);
   });
 
@@ -58,7 +58,7 @@ describe('AvailableUpdate::', () => {
       wrapper
         ?.find('section > p')
         .at(1)
-        .text()
+        .text(),
     ).toEqual(`${nextFullVersion} (${nextVersionDate})`);
   });
 });

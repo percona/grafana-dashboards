@@ -6,7 +6,7 @@ import { Messages } from '../Details.messages';
 import { Databases } from '../Details.types';
 
 const Example: FC<ExampleInterface> = ({
-  fingerprint, databaseType, examples, loading
+  fingerprint, databaseType, examples, loading,
 }) => {
   const isExample = examples && examples.filter((example) => example.example).length;
   const isPostgresql = databaseType === Databases.postgresql;

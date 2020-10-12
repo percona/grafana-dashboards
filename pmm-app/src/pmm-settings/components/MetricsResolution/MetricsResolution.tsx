@@ -12,7 +12,7 @@ import {
   resolutionsOptions,
   defaultResolutions,
   resolutionMin,
-  resolutionMax
+  resolutionMax,
 } from './MetricsResolution.constants';
 import { getStyles } from './MetricsResolution.styles';
 import { getResolutionValue, removeUnits, addUnits } from './MetricsResolution.utils';
@@ -35,14 +35,14 @@ export const MetricsResolution: FC<MetricsResolutionProps> = ({ metricsResolutio
       intervals: {
         low,
         medium,
-        high
-      }
+        high,
+      },
     },
     tooltipLinkText,
   } = Messages;
   const changeResolutions = (state: any, changeValue: any, newResolutions: MetricsResolutions) => {
     Object.entries(newResolutions).forEach(
-      ([key, value]) => changeValue(state, MetricsResolutionIntervals[key], () => value)
+      ([key, value]) => changeValue(state, MetricsResolutionIntervals[key], () => value),
     );
   };
   const setNewResolutions = ([newResolution], state: any, { changeValue }) => {
@@ -63,7 +63,7 @@ export const MetricsResolution: FC<MetricsResolutionProps> = ({ metricsResolutio
   };
   const resolutionValidators = validators.compose(
     validators.required,
-    validators.range(resolutionMin, resolutionMax)
+    validators.range(resolutionMin, resolutionMax),
   );
   const applyChanges = (values: MetricsResolutions) => {
     updateSettings({ metrics_resolutions: addUnits(values) }, setLoading);
@@ -76,7 +76,7 @@ export const MetricsResolution: FC<MetricsResolutionProps> = ({ metricsResolutio
         onSubmit={applyChanges}
         initialValues={initialResolutions}
         render={({
-          form, handleSubmit, valid, pristine
+          form, handleSubmit, valid, pristine,
         }) => (
           <form onSubmit={handleSubmit}>
             <div

@@ -7,9 +7,9 @@ describe('PTSummaryPanel::', () => {
     const props: any = {
       data: {
         series: [
-          { values: { summary: { buffer: ['Test data'] } } }
+          { values: { summary: { buffer: ['Test data'] } } },
         ],
-      }
+      },
     };
     const root = mount(<PTSummaryPanel {...props} />);
 
@@ -19,8 +19,8 @@ describe('PTSummaryPanel::', () => {
   it('Renders correctly without data', () => {
     const props: any = {
       data: {
-        series: []
-      }
+        series: [],
+      },
     };
     const root = mount(<PTSummaryPanel {...props} />);
 

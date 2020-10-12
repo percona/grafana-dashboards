@@ -2,7 +2,7 @@ import React from 'react';
 import { useField } from 'react-final-form';
 
 export const PasswordField = ({
-  name, placeholder = '', required = false, dataQa = ''
+  name, placeholder = '', required = false, dataQa = '',
 }) => {
   const { input } = useField(name);
 
