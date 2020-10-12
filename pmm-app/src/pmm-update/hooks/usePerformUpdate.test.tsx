@@ -143,4 +143,57 @@ describe('usePerformUpdate', () => {
 
     wrapper?.unmount();
   });
+
+  it('should increase logOffset value only with values received from server', async () => {
+    let wrapper: ReturnType<typeof mount> | undefined;
+
+    const mockedGetUpdateStatus = getUpdateStatus as jest.Mock;
+
+    mockedGetUpdateStatus.mockImplementationOnce(() => ({
+      done: false,
+      log_offset: 1500,
+      log_lines: ['test'],
+    })).mockImplementationOnce(() => ({
+      done: false,
+      log_offset: 3000,
+      log_lines: ['test'],
+    })).mockImplementationOnce(() => ({
+      done: false,
+      log_offset: 6000,
+      log_lines: ['test'],
+    }));
+
+    jest.useFakeTimers();
+
+    await act(async () => {
+      wrapper = mount(<HookWrapper hook={() => usePerformUpdate()} />);
+    });
+
+    await act(async () => {
+      jest.runAllTimers();
+    });
+    wrapper?.update();
+
+    await act(async () => {
+      jest.runAllTimers();
+    });
+    wrapper?.update();
+
+    expect(mockedGetUpdateStatus.mock.calls.length).toBe(3);
+
+    expect(mockedGetUpdateStatus.mock.calls[0][0].log_offset).toBe(0);
+    expect(mockedGetUpdateStatus.mock.calls[1][0].log_offset).toBe(1500);
+    expect(mockedGetUpdateStatus.mock.calls[2][0].log_offset).toBe(3000);
+
+    const [output, errorMessage, isUpdated, updateFailed] = wrapper?.find('div').prop('data-hook');
+
+    expect(output).toEqual('test\ntest\ntest\n');
+    expect(errorMessage).toEqual('');
+    expect(isUpdated).toEqual(false);
+    expect(updateFailed).toEqual(false);
+
+    wrapper?.unmount();
+
+    jest.useRealTimers();
+  });
 });
