@@ -57,7 +57,7 @@ Scenario(
     I.waitForVisible(qanFilters.elements.disabledResetAll, 30);
     const countAfterReset = await qanOverview.getCountOfItems();
 
-    assert.ok(countAfterReset >= countBefore, 'Query count wasn\'t expected to change');
+    assert.ok(countAfterReset >= countBefore, "Query count wasn't expected to change");
   },
 );
 
@@ -96,7 +96,16 @@ Scenario(
 xScenario(
   'PMM-T123 - Verify User is able to search for DB types, Env and Cluster @not-pr-pipeline @qan',
   async (I, qanOverview, qanFilters) => {
-    const filters = ['postgres', 'mysql', 'pmm-server', 'postgresql', 'mongodb', 'ps-dev', 'ps-dev-cluster', 'pgsql-repl1'];
+    const filters = [
+      'postgres',
+      'mysql',
+      'pmm-server',
+      'postgresql',
+      'mongodb',
+      'ps-dev',
+      'ps-dev-cluster',
+      'pgsql-repl1',
+    ];
 
     I.waitForElement(qanFilters.fields.filterBy, 30);
     const countBefore = await qanOverview.getCountOfItems();
@@ -147,13 +156,10 @@ Scenario(
   },
 );
 
-Scenario(
-  'PMM-T190 - Verify user is able to see n/a filter @not-pr-pipeline @qan',
-  async (I, qanFilters) => {
-    I.fillField(qanFilters.fields.filterBy, 'n/a');
-    await qanFilters.verifyCountOfFilterLinks(0, true);
-  },
-);
+Scenario('PMM-T190 - Verify user is able to see n/a filter @not-pr-pipeline @qan', async (I, qanFilters) => {
+  I.fillField(qanFilters.fields.filterBy, 'n/a');
+  await qanFilters.verifyCountOfFilterLinks(0, true);
+});
 
 Scenario(
   'PMM-T390 - Verify that we show info message when empty result is returned @not-pr-pipeline @qan',
@@ -203,17 +209,53 @@ Scenario(
     qanFilters.applyFilter(serviceName);
     const percentageAfter = await qanFilters.getPercentage('Service Type', serviceType);
 
-    assert.ok(percentageAfter !== percentageBefore, 'Percentage for filter Service Type was expected to change');
+    assert.ok(
+      percentageAfter !== percentageBefore,
+      'Percentage for filter Service Type was expected to change',
+    );
   },
 );
 
 Scenario(
-  'PMM-T436 - Verify short-cut navigation from filters to related dashboards @qan',
+  'PMM-T436 - Verify short-cut navigation from filters to related dashboards - Cluster @qan',
   async (I, qanFilters) => {
     const mongoLink = '/graph/d/mongodb-cluster-summary/mongodb-cluster-summary';
 
     qanFilters.navigateByShortCut(mongoLink);
     I.switchToNextTab(1);
-    I.waitInUrl(mongoLink,30);
+    I.waitInUrl(mongoLink, 30);
+  },
+);
+
+Scenario(
+  'PMM-T436 - Verify short-cut navigation from filters to related dashboards - Replication Set @qan',
+  async (I, qanFilters) => {
+    const replicationSetLink = '/graph/d/mysql-replicaset-summary/mysql-replication-summary';
+
+    qanFilters.navigateByShortCut(replicationSetLink);
+    I.switchToNextTab(1);
+    I.waitInUrl(replicationSetLink, 30);
+  },
+);
+
+Scenario(
+  'PMM-T436 - Verify short-cut navigation from filters to related dashboards - Node Name @qan',
+  async (I, qanFilters) => {
+    const nodeLink = '/graph/d/node-instance-summary/node-summary';
+
+    qanFilters.navigateByShortCut(nodeLink);
+    I.switchToNextTab(1);
+    I.waitInUrl(nodeLink, 30);
+  },
+);
+
+Scenario(
+  'PMM-T436 - Verify short-cut navigation from filters to related dashboards - Service Name @qan',
+  async (I, qanFilters) => {
+    const serviceNameLink = '/graph/d/mongodb-instance-summary/mongodb-instance-summary';
+
+    qanFilters.navigateByShortCut(serviceNameLink);
+    I.switchToNextTab(1);
+    I.waitInUrl(serviceNameLink, 30);
   },
 );
