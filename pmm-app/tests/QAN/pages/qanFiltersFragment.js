@@ -36,12 +36,15 @@ module.exports = {
 
   getFilterSectionLocator: (filterSectionName) => `//span[contains(text(), '${filterSectionName}')]`,
 
-  getFilterGroupLocator: (filterName) => `//div[@class='filter-group__title']//span[contains(text(), '${filterName}')]`,
+  getFilterGroupLocator: (filterName) =>
+    `//div[@class='filter-group__title']//span[contains(text(), '${filterName}')]`,
 
-  getFilterGroupCountSelector: (groupName) => `//span[contains(text(), '${groupName}')]/following-sibling::span[contains(text(), 'Show all')]`,
+  getFilterGroupCountSelector: (groupName) =>
+    `//span[contains(text(), '${groupName}')]/following-sibling::span[contains(text(), 'Show all')]`,
 
-  getFilterLocator: (filterValue) => `//span[@class="checkbox-container__label-text" and contains(text(), "${filterValue}")]`
-    + '/../span[@class="checkbox-container__checkmark"]',
+  getFilterLocator: (filterValue) =>
+    `//span[@class="checkbox-container__label-text" and contains(text(), "${filterValue}")]` +
+    '/../span[@class="checkbox-container__checkmark"]',
 
   async getPercentage(filterType, filter) {
     return await I.grabTextFrom(
@@ -68,7 +71,8 @@ module.exports = {
       if (numOfElementsFilterCount === '1') {
         I.click(this.getFilterGroupCountSelector(this.filterGroups[i]));
         I.waitForVisible(
-          `//section[@class='aside__filter-group']//span[contains(text(), '${this.filterGroups[i]}')]/../button[contains(text(), 'Show top 5')]`, 30
+          `//section[@class='aside__filter-group']//span[contains(text(), '${this.filterGroups[i]}')]/../button[contains(text(), 'Show top 5')]`,
+          30,
         );
       }
     }
@@ -95,8 +99,9 @@ module.exports = {
   },
 
   async verifySectionItemsCount(filterSection, expectedCount) {
-    const sectionLocator = `//span[contains(text(), '${filterSection}')]/ancestor::p/following-sibling::`
-      + 'div//span[contains(@class, "checkbox-container__checkmark")]';
+    const sectionLocator =
+      `//span[contains(text(), '${filterSection}')]/ancestor::p/following-sibling::` +
+      'div//span[contains(@class, "checkbox-container__checkmark")]';
 
     I.fillField(this.fields.filterBy, filterSection);
     I.waitForVisible(`//span[contains(text(), '${filterSection}')]`, 30);
@@ -145,5 +150,11 @@ module.exports = {
     for (let i = 0; i <= filters.length - 1; i++) {
       assert.ok(currentFilters[i].includes(filters[i]), `The filter '${filters[i]}' has not been found!`);
     }
+  },
+
+  navigateByShortCut(href) {
+    const shortCutLocator = `//a[contains(@href,'${href}')]`;
+    I.waitForVisible(shortCutLocator, 30);
+    I.click(shortCutLocator);
   },
 };

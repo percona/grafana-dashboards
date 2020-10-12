@@ -206,3 +206,14 @@ Scenario(
     assert.ok(percentageAfter !== percentageBefore, 'Percentage for filter Service Type was expected to change');
   },
 );
+
+Scenario(
+  'PMM-T436 - Verify short-cut navigation from filters to related dashboards @qan',
+  async (I, qanFilters) => {
+    const mongoLink = '/graph/d/mongodb-cluster-summary/mongodb-cluster-summary';
+
+    qanFilters.navigateByShortCut(mongoLink);
+    I.switchToNextTab(1);
+    I.waitInUrl(mongoLink,30);
+  },
+);
