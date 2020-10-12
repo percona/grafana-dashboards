@@ -1,8 +1,5 @@
 import { useState, useEffect } from 'react';
-import {
-  processPromiseResults,
-  FulfilledPromiseResult,
-} from 'shared/components/helpers/promises';
+import { processPromiseResults, FulfilledPromiseResult } from 'shared/components/helpers/promises';
 import { DATABASE_LABELS } from 'shared/core';
 import { Kubernetes } from '../Kubernetes/Kubernetes.types';
 import { XtraDBCluster, GetXtraDBClustersAction } from './XtraDB.types';
@@ -18,7 +15,6 @@ export const useXtraDBClusters = (
     setLoading(true);
 
     try {
-      const clusters: XtraDBCluster[] = [];
       const requests = kubernetes.map(XtraDBService.getXtraDBClusters);
       const results = await processPromiseResults(requests);
 
@@ -26,13 +22,15 @@ export const useXtraDBClusters = (
         if (r.status === 'fulfilled') {
           const resultClusters = (r as FulfilledPromiseResult).value.clusters;
 
-          resultClusters.forEach((cluster) => {
+          const clusterModelList: XtraDBCluster[] = resultClusters.reduce((clusters, cluster) => {
             clusters.push(toModel(cluster, kubernetes[index].kubernetesClusterName, DATABASE_LABELS.mysql));
-          });
+
+            return clusters;
+          }, []);
+
+          setXtraDBClusters(clusterModelList);
         }
       });
-
-      setXtraDBClusters(clusters);
     } catch (e) {
       console.error(e);
     } finally {

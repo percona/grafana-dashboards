@@ -1,4 +1,6 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, {
+  FC, useState, useEffect, useCallback
+} from 'react';
 import { Icon, useTheme } from '@grafana/ui';
 import { cx } from 'emotion';
 import { MultipleActionsProps } from './MultipleActions.types';
@@ -8,7 +10,7 @@ export const MultipleActions: FC<MultipleActionsProps> = ({ actions }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const theme = useTheme();
   const styles = getStyles(theme);
-  const toggleMenu = () => setMenuOpen((value) => !value);
+  const toggleMenu = useCallback(() => setMenuOpen((value) => !value), []);
 
   const Menu = () => {
     useEffect(() => {

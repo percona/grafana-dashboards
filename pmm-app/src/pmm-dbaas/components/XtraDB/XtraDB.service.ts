@@ -25,7 +25,7 @@ export const XtraDBService = {
   },
 };
 
-export const toAPI = (xtradbCluster: XtraDBCluster): XtraDBClusterAPI => ({
+const toAPI = (xtradbCluster: XtraDBCluster): XtraDBClusterAPI => ({
   kubernetes_cluster_name: xtradbCluster.kubernetesClusterName,
   name: xtradbCluster.clusterName,
   params: {
