@@ -37,13 +37,13 @@ describe('ProgressModalHeader::', () => {
       wrapper
         .find('h4')
         .at(0)
-        .text()
+        .text(),
     ).toEqual(Messages.updateFailed);
     expect(
       wrapper
         .find('h4')
         .at(1)
-        .text()
+        .text(),
     ).toEqual(errorMessage);
 
     wrapper.unmount();

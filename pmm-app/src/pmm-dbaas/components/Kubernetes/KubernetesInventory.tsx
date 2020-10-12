@@ -1,23 +1,27 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import {
-  Button, HorizontalGroup, useStyles
+  Button, HorizontalGroup, useStyles,
 } from '@grafana/ui';
+import { TextInputField, TextareaInputField, validators } from '@percona/platform-core';
 import { Table } from 'shared/components/Elements/Table/Table';
 import { Messages } from 'pmm-dbaas/DBaaS.messages';
-import { Field, Form } from 'react-final-form';
-import { InputFieldAdapter, TextAreaAdapter } from 'shared/components/Form/FieldAdapters/FieldAdapters';
+import { Form, FormRenderProps } from 'react-final-form';
 import { Modal } from 'shared/components/Elements/Modal/Modal';
-import validators from 'shared/components/helpers/validators';
 import { getStyles } from './Kubernetes.styles';
-import { useKubernetes } from './Kubernetes.hooks';
-import { Kubernetes, NewKubernetesCluster } from './Kubernetes.types';
+import { Kubernetes, NewKubernetesCluster, KubernetesProps } from './Kubernetes.types';
+import { AddClusterButton } from '../AddClusterButton/AddClusterButton';
 
-export const KubernetesInventory: FC = () => {
+export const KubernetesInventory: FC<KubernetesProps> = ({
+  kubernetes,
+  deleteKubernetes,
+  addKubernetes,
+  loading,
+}) => {
   const styles = useStyles(getStyles);
   const [kubernetesToDelete, setKubernetesToDelete] = useState<Kubernetes>({ kubernetesClusterName: '' });
-  const [kubernetes, deleteKubernetes, addKubernetes, loading] = useKubernetes();
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [addModalVisible, setAddModalVisible] = useState(false);
+  const { required } = validators;
   const columns = [
     {
       Header: Messages.kubernetes.table.nameColumn,
@@ -40,20 +44,17 @@ export const KubernetesInventory: FC = () => {
             {Messages.kubernetes.deleteAction}
           </Button>
         </div>
-      )
-    }
+      ),
+    },
   ];
 
-  const AddNewClusterButton = () => (
-    <Button
-      size="md"
-      onClick={() => setAddModalVisible(!addModalVisible)}
-      icon="plus-square"
-      variant="link"
-    >
-      {Messages.kubernetes.addAction}
-    </Button>
-  );
+  const AddNewClusterButton = useCallback(() => (
+    <AddClusterButton
+      label={Messages.kubernetes.addAction}
+      action={() => setAddModalVisible(!addModalVisible)}
+      data-qa="kubernetes-new-cluster-button"
+    />
+  ), [addModalVisible]);
 
   return (
     <div className={styles.tableWrapper}>
@@ -71,23 +72,19 @@ export const KubernetesInventory: FC = () => {
             setAddModalVisible(false);
           }}
           render={({
-            form, handleSubmit, valid, pristine
-          }) => (
+            handleSubmit, valid, pristine,
+          }: FormRenderProps<NewKubernetesCluster>) => (
             <form onSubmit={handleSubmit}>
               <>
-                <Field
-                  data-qa="kubernetes-cluster-name-field"
+                <TextInputField
                   name="name"
                   label={Messages.kubernetes.addModal.fields.clusterName}
-                  component={InputFieldAdapter}
-                  validate={validators.compose(validators.required)}
+                  validators={[required]}
                 />
-                <Field
-                  data-qa="kubernetes-kubeconfig-field"
+                <TextareaInputField
                   name="kubeConfig"
                   label={Messages.kubernetes.addModal.fields.kubeConfig}
-                  component={TextAreaAdapter}
-                  validate={validators.compose(validators.required)}
+                  validators={[required]}
                 />
 
                 <HorizontalGroup justify="center" spacing="md">

@@ -123,12 +123,12 @@ export const UrlParametersProvider = ({ timeRange, children }) => {
     }),
     setSearch: ({ search }) => (state) => ({
       ...state,
-      search
+      search,
     }),
     setDimensionSearchText: ({ search }) => (state) => ({
       ...state,
-      dimensionSearchText: search
-    })
+      dimensionSearchText: search,
+    }),
   };
 
   const query = new URLSearchParams(window.location.search);

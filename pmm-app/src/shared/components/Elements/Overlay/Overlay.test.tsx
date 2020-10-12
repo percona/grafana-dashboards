@@ -9,7 +9,7 @@ describe('Overlay::', () => {
       <Overlay isPending={false}>
         <p>Child 1</p>
         <p>Child 2</p>
-      </Overlay>
+      </Overlay>,
     );
     const wrapper = root.find('[data-qa="pmm-overlay-wrapper"]');
 
@@ -20,7 +20,7 @@ describe('Overlay::', () => {
     const root = mount(
       <Overlay isPending>
         <p>Test</p>
-      </Overlay>
+      </Overlay>,
     );
     const wrapper = root.find('[data-qa="pmm-overlay-wrapper"]');
 
@@ -32,7 +32,7 @@ describe('Overlay::', () => {
     const root = mount(
       <Overlay isPending={false}>
         <p>Test</p>
-      </Overlay>
+      </Overlay>,
     );
 
     expect(root.find('i').exists()).toBeFalsy();

@@ -46,7 +46,7 @@ export const processMetrics = (metricsCatalogue, metrics) => {
 
   return Object.entries(data)
     .filter(
-      (metricData) => Object.keys(metricData[1] as any[]).length
+      (metricData) => Object.keys(metricData[1] as any[]).length,
     )
     .filter(
       (metricData) => {
@@ -55,7 +55,7 @@ export const processMetrics = (metricsCatalogue, metrics) => {
         const notSum = metricStorage.sum === undefined;
 
         return !(notZeroCount && notSum);
-      }
+      },
 
     )
     .sort(sortDetails)

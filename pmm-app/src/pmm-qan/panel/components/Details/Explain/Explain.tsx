@@ -15,7 +15,7 @@ const { Panel } = Collapse;
 
 const Explain: FC<ExplainProps> = ({
   databaseType,
-  examples
+  examples,
 }) => {
   const [data, setData] = useState<ClassicExplain>({ columns: [], rows: [] });
   const [jsonExplain, classicExplain] = useExplains(examples, databaseType);

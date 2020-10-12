@@ -33,6 +33,6 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
     `,
     tooltipIcon: css`
   margin-left: auto;
-`
+`,
   };
 });

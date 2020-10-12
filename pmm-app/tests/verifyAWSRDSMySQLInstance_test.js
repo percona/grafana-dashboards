@@ -20,7 +20,7 @@ Scenario(
     pmmInventoryPage.verifyRemoteServiceIsDisplayed(instanceIdToMonitor);
     await pmmInventoryPage.verifyAgentHasStatusRunning(instanceIdToMonitor);
     await pmmInventoryPage.verifyMetricsFlags(instanceIdToMonitor);
-  }
+  },
 );
 
 Scenario(
@@ -31,7 +31,7 @@ Scenario(
     I.amOnPage(pmmInventoryPage.url);
     pmmInventoryPage.verifyRemoteServiceIsDisplayed(serviceName);
     await pmmInventoryPage.verifyAgentHasStatusRunning(serviceName);
-  }
+  },
 );
 // Skipping the tests because QAN does not get any data right after instance was added for monitoring
 xScenario(
@@ -48,7 +48,7 @@ xScenario(
       I.waitForVisible(name, 30);
       I.seeElement(name);
     }
-  }
+  },
 );
 
 Scenario(
@@ -59,7 +59,7 @@ Scenario(
     await dashboardPage.expandEachDashboardRow();
     await dashboardPage.verifyThereAreNoGraphsWithNA();
     await dashboardPage.verifyThereAreNoGraphsWithoutData(3);
-  }
+  },
 );
 
 Scenario(
@@ -76,5 +76,5 @@ Scenario(
         I.seeElement(locate('span').withText(filters[key]));
       });
     }
-  }
+  },
 );

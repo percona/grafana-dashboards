@@ -79,7 +79,7 @@ describe('Example tab page render test', () => {
       fingerprint: 'test fingerprint',
     };
     const component = mount(
-      <Example databaseType={props.databaseType} examples={props.examples} fingerprint={props.fingerprint} />
+      <Example databaseType={props.databaseType} examples={props.examples} fingerprint={props.fingerprint} />,
     );
 
     expect(component.find('.sql').text()).toEqual(sqlFormatter.format(props.examples[0].example));

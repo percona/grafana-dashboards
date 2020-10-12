@@ -6,8 +6,8 @@ const TEST_USER = 'testUser';
 
 window.grafanaBootData = {
   user: {
-    name: TEST_USER
-  }
+    name: TEST_USER,
+  },
 };
 
 describe('SilenceAlertButton.utils::', () => {
@@ -23,7 +23,7 @@ describe('SilenceAlertButton.utils::', () => {
       { name: 'node_type', value: 'generic', isRegex: false },
       { name: 'service_name', value: 'sandbox-mysql.acme.com', isRegex: false },
       { name: 'severity', value: 'error', isRegex: false },
-      { name: 'stt_check', value: '1', isRegex: false }
+      { name: 'stt_check', value: '1', isRegex: false },
     ];
 
     const realDateNow = Date.now;

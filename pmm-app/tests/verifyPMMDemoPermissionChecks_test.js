@@ -8,7 +8,7 @@ Scenario(
     pmmDemoPage.verifyCopyrightsAndLegal();
     I.amOnPage(pmmDemoPage.url + pmmDemoPage.mongoDBDashbordUrl);
     pmmDemoPage.verifyCopyrightsAndLegal();
-  }
+  },
 );
 
 Scenario(
@@ -16,7 +16,7 @@ Scenario(
   async (I, pmmDemoPage, pmmSettingsPage) => {
     I.amOnPage(pmmDemoPage.url + pmmSettingsPage.url);
     I.waitForVisible(pmmDemoPage.fields.accessDenied, 30);
-  }
+  },
 );
 
 Scenario(
@@ -24,7 +24,7 @@ Scenario(
   async (I, pmmDemoPage, pmmInventoryPage) => {
     I.amOnPage(pmmDemoPage.url + pmmInventoryPage.url);
     I.waitForVisible(pmmDemoPage.fields.accessDenied, 30);
-  }
+  },
 );
 
 Scenario(
@@ -36,7 +36,7 @@ Scenario(
     I.waitForVisible(pmmDemoPage.fields.failedSecurityChecks, 30);
     I.waitForVisible(pmmDemoPage.fields.dbCheckPanelNoAccess, 30);
     await pmmDemoPage.checkDBPanelText(text);
-  }
+  },
 );
 
 Scenario(
@@ -47,7 +47,7 @@ Scenario(
     I.amOnPage(pmmDemoPage.url + databaseChecksPage.url);
     I.waitForVisible(pmmDemoPage.fields.dbCheckPanelNoAccess, 30);
     await pmmDemoPage.checkDBPanelText(text);
-  }
+  },
 );
 
 // Need to skip for update to be available on pmmdemo
@@ -56,5 +56,5 @@ xScenario(
   async (I, adminPage, homePage, pmmDemoPage) => {
     I.amOnPage(pmmDemoPage.url + homePage.url);
     await homePage.verifyPostUpdateWidgetIsPresent();
-  }
+  },
 );

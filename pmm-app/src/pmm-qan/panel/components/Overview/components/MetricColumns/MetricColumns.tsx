@@ -29,7 +29,7 @@ const TimeMetric = ({ value, percentage, cnt }) => {
 };
 
 const NonTimeMetric = ({
-  value, units, percentage, cnt
+  value, units, percentage, cnt,
 }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
@@ -59,7 +59,7 @@ const getSorting = (orderBy, metricName) => {
 };
 
 const metricColumnRender = ({
-  metricName, metric, totalValues, columnIndex
+  metricName, metric, totalValues, columnIndex,
 }) => (item, index) => {
   const { stats } = item.metrics[metricName];
   const isTimeMetric = metricName.endsWith('_time');

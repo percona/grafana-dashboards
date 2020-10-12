@@ -7,7 +7,11 @@ import { CheckboxField } from 'shared/components/Form/Checkbox/Checkbox';
 
 import { PasswordField } from 'shared/components/Form/Password/Password';
 import Validators from 'shared/components/helpers/validators';
+import { RadioButtonGroup } from 'shared/components/Form/Radio/RadioButtonGroup';
 import AddRemoteInstanceService from './AddRemoteInstanceService';
+import { trackingOptions } from '../AddInstance.constants';
+import { TrackingOptions } from '../AddInstance.types';
+import { Messages } from '../AddInstance.messages';
 
 interface InstanceData {
   instanceType?: string;
@@ -56,15 +60,30 @@ export const getInstanceData = (instanceType, credentials) => {
   return instance;
 };
 
-const getAdditionalOptions = (type, remoteInstanceCredentials) => {
+const PostgreSQLAdditionalOptions = ({ mutators }) => {
+  const [trackingType, setTrackingType] = useState<string>(TrackingOptions.none);
+
+  return (
+    <>
+      <RadioButtonGroup
+        options={trackingOptions}
+        selected={trackingType}
+        name="tracking"
+        dataQa="tracking-options-radio-button-group"
+        onChange={(value) => {
+          mutators.changePGTracking(value);
+          setTrackingType(value);
+        }}
+      />
+      <span className="description">{Messages.form.labels.trackingOptions}</span>
+    </>
+  );
+};
+
+const getAdditionalOptions = (type, remoteInstanceCredentials, mutators) => {
   switch (type) {
     case 'PostgreSQL':
-      return (
-        <>
-          <CheckboxField label="Use Pg Stat Statements" name="qan_postgresql_pgstatements_agent" />
-          <span className="description" />
-        </>
-      );
+      return <PostgreSQLAdditionalOptions mutators={mutators} />;
     case 'MySQL':
       if (remoteInstanceCredentials.isRDS) {
         return (
@@ -120,6 +139,10 @@ const AddRemoteInstance = (props) => {
   const [loading, setLoading] = useState<boolean>(false);
   const initialValues = { ...remoteInstanceCredentials };
 
+  const changePGTracking = ([newResolution], state: any, { changeValue }) => {
+    changeValue(state, 'tracking', () => newResolution);
+  };
+
   if (instanceType === 'MySQL') {
     initialValues.qan_mysql_perfschema = true;
   }
@@ -142,6 +165,19 @@ const AddRemoteInstance = (props) => {
           return acc;
         }, {});
     }
+
+    switch (data.tracking) {
+      case TrackingOptions.pgStatements:
+        data.qan_postgresql_pgstatements_agent = true;
+        break;
+      case TrackingOptions.pgMonitor:
+        data.qan_postgresql_pgstatmonitor_agent = true;
+        break;
+      default:
+        delete data.tracking;
+    }
+
+    delete data.tracking;
 
     if (!data.service_name) {
       data.service_name = data.address;
@@ -182,6 +218,7 @@ const AddRemoteInstance = (props) => {
 
   return (
     <FormFinal
+      mutators={{ changePGTracking }}
       onSubmit={onSubmit}
       initialValues={initialValues}
       validate={validateInstanceForm}
@@ -258,7 +295,7 @@ key2:value2"
               dataQa="add-account-username"
             />
             <span className="description" />
-            {getAdditionalOptions(instanceType, remoteInstanceCredentials)}
+            {getAdditionalOptions(instanceType, remoteInstanceCredentials, form.mutators)}
           </div>
 
           <div className="add-instance-form__submit-block">

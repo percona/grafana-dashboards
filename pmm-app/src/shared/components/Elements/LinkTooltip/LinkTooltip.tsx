@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import {
-  Icon, IconName, Tooltip, useTheme
+  Icon, IconName, Tooltip, useTheme,
 } from '@grafana/ui';
 import { getStyles } from './LinkTooltip.styles';
 
@@ -20,7 +20,7 @@ export const LinkTooltip: FC<LinkTooltipProps> = ({
   linkText,
   icon,
   dataQa,
-  target = '_blank'
+  target = '_blank',
 }) => {
   const theme = useTheme();
   const styles = getStyles(theme);

@@ -1,8 +1,8 @@
 import React, {
-  useCallback, useContext, useEffect, useState
+  useCallback, useContext, useEffect, useState,
 } from 'react';
 import {
-  Divider, Icon, Select, Tooltip
+  Divider, Icon, Select, Tooltip,
 } from 'antd';
 import { cx } from 'emotion';
 import { useTheme } from '@grafana/ui';
@@ -19,7 +19,7 @@ export const ManageColumns = (props) => {
   const styles = getStyles(theme);
 
   const {
-    onlyAdd, currentMetric, placeholder, width, mainMetric
+    onlyAdd, currentMetric, placeholder, width, mainMetric,
   } = props;
   const {
     contextActions,
@@ -29,12 +29,12 @@ export const ManageColumns = (props) => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const extraSelectProps = {
     dropdownAlign: { overflow: { adjustX: true } },
-    getPopupContainer: (trigger) => trigger.closest('.panel-content')
+    getPopupContainer: (trigger) => trigger.closest('.panel-content'),
   };
 
   useEffect(() => {
     setAvailableColumns(
-      Object.values(METRIC_CATALOGUE).filter((metric) => !columns.find((item) => item === metric.simpleName))
+      Object.values(METRIC_CATALOGUE).filter((metric) => !columns.find((item) => item === metric.simpleName)),
     );
   }, [columns]);
 
@@ -49,7 +49,7 @@ export const ManageColumns = (props) => {
         });
       }
     },
-    [currentMetric, onlyAdd]
+    [currentMetric, onlyAdd],
   );
 
   const removeColumn = useCallback(() => contextActions.removeColumn(currentMetric), [currentMetric]);

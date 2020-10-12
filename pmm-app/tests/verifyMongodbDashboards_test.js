@@ -13,7 +13,7 @@ Scenario(
     await dashboardPage.verifyMetricsExistence(dashboardPage.mongodbOverviewDashboard.metrics);
     await dashboardPage.verifyThereAreNoGraphsWithNA();
     await dashboardPage.verifyThereAreNoGraphsWithoutData();
-  }
+  },
 );
 
 Scenario(
@@ -27,5 +27,5 @@ Scenario(
     dashboardPage.verifyMetricsExistence(dashboardPage.mongoDbClusterSummaryDashboard.metrics);
     await dashboardPage.verifyThereAreNoGraphsWithNA();
     await dashboardPage.verifyThereAreNoGraphsWithoutData(12);
-  }
+  },
 );
