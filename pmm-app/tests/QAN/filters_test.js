@@ -223,6 +223,7 @@ Scenario(
     const mongoLink = '/graph/d/mongodb-cluster-summary/mongodb-cluster-summary';
     const header = 'MongoDB Cluster Summary';
 
+    I.fillField(qanFilters.fields.filterBy, 'mongodb');
     qanFilters.navigateByShortCut(mongoLink);
     //wait for open new tab
     I.wait(2);
@@ -238,6 +239,7 @@ Scenario(
     const replicationSetLink = '/graph/d/mysql-replicaset-summary/mysql-replication-summary';
     const header = 'MySQL Replication Summary';
 
+    I.fillField(qanFilters.fields.filterBy, 'ps-repl1');
     qanFilters.navigateByShortCut(replicationSetLink);
     //wait for open new tab
     I.wait(2);
@@ -253,6 +255,7 @@ Scenario(
     const nodeLink = '/graph/d/node-instance-summary/node-summary?var-node_name=pmm-server';
     const header = 'Node Summary';
 
+    I.fillField(qanFilters.fields.filterBy, 'pmm-server');
     qanFilters.navigateByShortCut(nodeLink);
     //wait for open new tab
     I.wait(2);
@@ -268,6 +271,7 @@ Scenario(
     const serviceNameLink = '/graph/d/mongodb-instance-summary/mongodb-instance-summary';
     const header = 'MongoDB Instance Summary';
 
+    I.fillField(qanFilters.fields.filterBy, 'mongodb');
     qanFilters.navigateByShortCut(serviceNameLink);
     //wait for open new tab
     I.wait(2);
