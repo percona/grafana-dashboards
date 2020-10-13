@@ -1,5 +1,5 @@
 import React, {
-  FC, useState, useEffect, useCallback
+  FC, useState, useEffect, useCallback,
 } from 'react';
 import { Icon, useTheme } from '@grafana/ui';
 import { cx } from 'emotion';
