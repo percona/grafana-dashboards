@@ -7,7 +7,6 @@ import { getStyles } from './CheckboxGroup.styles';
 import { TOP_LIMIT } from './CheckboxGroup.constants';
 import { CheckboxGroupProps } from './CheckboxGroup.types';
 
-
 export const CheckboxGroup: FC<CheckboxGroupProps> = ({
   name,
   items,
@@ -42,7 +41,7 @@ export const CheckboxGroup: FC<CheckboxGroupProps> = ({
     );
   };
 
-  const itemsList = (showTop ? filteredData.slice(0, TOP_LIMIT) : filteredData)
+  const itemsList = filteredData
     .filter((item, index, list) => {
       if (showAll && !item.value && list.length === 1) {
         return false;
@@ -50,40 +49,37 @@ export const CheckboxGroup: FC<CheckboxGroupProps> = ({
 
       return true;
     })
-    .filter(searchFilter)
-    .map((item) => {
-      const valueExists = item.main_metric_percent !== undefined;
-      const dashboardURL = getDashboardURL ? getDashboardURL(item.value) : '';
+    .filter(searchFilter);
 
-      return (
-        <div className={styles.label} key={`${group}:${item.value || ''}`}>
-          <span className={styles.filterName}>
-            <CheckboxField
-              // TODO: using '--' because final form think that it is a nested fields
-              name={`${group}:${item.value ? item.value.replace(/\./gi, '--') : 'na'}`}
-              label={item.value || 'n/a'}
-              disabled={!valueExists}
-            />
-          </span>
-          {dashboardURL && (
-            <span className={styles.dashboardLink}>
-              <a
-                href={dashboardURL}
-                target="_blank"
-                rel="noreferrer"
-              >
-                <Icon name="graph-bar" />
-              </a>
-            </span>
-          )}
-          <span className={styles.percentage}>
-            <span>{valueExists ? humanize.transform(item.main_metric_percent, 'percent') : null}</span>
-          </span>
-        </div>
-      );
-    });
+  const filteredList = (showTop ? itemsList.slice(0, TOP_LIMIT) : itemsList).map((item) => {
+    const valueExists = item.main_metric_percent !== undefined;
+    const dashboardURL = getDashboardURL ? getDashboardURL(item.value) : '';
 
-  return itemsList.length ? (
+    return (
+      <div className={styles.label} key={`${group}:${item.value || ''}`}>
+        <span className={styles.filterName}>
+          <CheckboxField
+            // TODO: using '--' because final form think that it is a nested fields
+            name={`${group}:${item.value ? item.value.replace(/\./gi, '--') : 'na'}`}
+            label={item.value || 'n/a'}
+            disabled={!valueExists}
+          />
+        </span>
+        {dashboardURL && (
+          <span className={styles.dashboardLink}>
+            <a href={dashboardURL} target="_blank" rel="noreferrer">
+              <Icon name="graph-bar" />
+            </a>
+          </span>
+        )}
+        <span className={styles.percentage}>
+          <span>{valueExists ? humanize.transform(item.main_metric_percent, 'percent') : null}</span>
+        </span>
+      </div>
+    );
+  });
+
+  return filteredList.length ? (
     <div>
       <p className={styles.filterHeaderWrapper}>
         <span className={styles.filterHeader}>{name}</span>
@@ -96,7 +92,7 @@ export const CheckboxGroup: FC<CheckboxGroupProps> = ({
         )}
       </p>
       <Divider className={styles.divider} />
-      {itemsList}
+      {filteredList}
     </div>
   ) : null;
 };
