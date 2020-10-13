@@ -46,7 +46,7 @@ export const Messages = {
       clusterStatusColumn: 'Cluster Status',
       actionsColumn: 'Actions',
       actions: {
-        deleteCluster: 'Delete cluster',
+        deleteCluster: 'Delete',
       },
       status: {
         active: 'Active',

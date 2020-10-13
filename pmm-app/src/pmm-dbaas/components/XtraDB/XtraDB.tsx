@@ -1,7 +1,7 @@
 import React, {
   FC, useCallback, useMemo, useState,
 } from 'react';
-import { useStyles } from '@grafana/ui';
+import { Button, useStyles } from '@grafana/ui';
 import { Table } from 'shared/components/Elements/Table/Table';
 import { Messages } from 'pmm-dbaas/DBaaS.messages';
 import { AddClusterButton } from '../AddClusterButton/AddClusterButton';
@@ -10,7 +10,6 @@ import { XtraDBCluster, XtraDBProps } from './XtraDB.types';
 import { AddXtraDBModal } from './AddXtraDBModal/AddXtraDBModal';
 import { useXtraDBClusters } from './XtraDB.hooks';
 import { clusterStatusRender } from './ColumnRenderers/ColumnRenderers';
-import { MultipleActions } from '../MultipleActions/MultipleActions';
 import { DeleteXtraDBModal } from './DeleteXtraDBModal/DeleteXtraDBModal';
 
 export const XtraDB: FC<XtraDBProps> = ({ kubernetes }) => {
@@ -19,23 +18,6 @@ export const XtraDB: FC<XtraDBProps> = ({ kubernetes }) => {
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [selectedCluster, setSelectedCluster] = useState<XtraDBCluster>();
   const [xtraDBClusters, getXtraDBClusters, loading] = useXtraDBClusters(kubernetes);
-
-  const ActionsButton = useMemo(
-    () => ({ item }) => {
-      const actions = [
-        {
-          title: Messages.xtradb.table.actions.deleteCluster,
-          action: () => {
-            setSelectedCluster(item);
-            setDeleteModalVisible(true);
-          },
-        },
-      ];
-
-      return <MultipleActions actions={actions} />;
-    },
-    [],
-  );
 
   const columns = useMemo(
     () => [
@@ -53,7 +35,22 @@ export const XtraDB: FC<XtraDBProps> = ({ kubernetes }) => {
       },
       {
         Header: Messages.xtradb.table.actionsColumn,
-        accessor: (item) => <ActionsButton item={item} />,
+        accessor: (element) => (
+          <div className={styles.actionsColumn}>
+            <Button
+              size="md"
+              onClick={() => {
+                setSelectedCluster(element);
+                setDeleteModalVisible(true);
+              }}
+              icon="trash-alt"
+              variant="destructive"
+              data-qa="open-delete-modal-button"
+            >
+              {Messages.xtradb.table.actions.deleteCluster}
+            </Button>
+          </div>
+        ),
       },
     ],
     [],
