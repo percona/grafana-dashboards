@@ -18,19 +18,19 @@ export const useXtraDBClusters = (
       const requests = kubernetes.map(XtraDBService.getXtraDBClusters);
       const results = await processPromiseResults(requests);
 
-      results.forEach((r, index) => {
+      const clustersList: XtraDBCluster[] = results.reduce((clusters: XtraDBCluster[], r, index) => {
         if (r.status === 'fulfilled') {
           const resultClusters = (r as FulfilledPromiseResult).value.clusters;
 
-          const clusterModelList: XtraDBCluster[] = resultClusters.reduce((clusters, cluster) => {
+          resultClusters.forEach((cluster) => {
             clusters.push(toModel(cluster, kubernetes[index].kubernetesClusterName, DATABASE_LABELS.mysql));
-
-            return clusters;
-          }, []);
-
-          setXtraDBClusters(clusterModelList);
+          });
         }
-      });
+
+        return clusters;
+      }, []);
+
+      setXtraDBClusters(clustersList);
     } catch (e) {
       console.error(e);
     } finally {
