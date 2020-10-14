@@ -26,7 +26,7 @@ export const useXtraDBClusters = (
         const clusters: XtraDBClusterPayload[] = (r as FulfilledPromiseResult).value?.clusters ?? [];
 
         const resultClusters = clusters.map(
-          (cluster) => toModel(cluster, kubernetes[index].kubernetesClusterName, DATABASE_LABELS.mysql)
+          (cluster) => toModel(cluster, kubernetes[index].kubernetesClusterName, DATABASE_LABELS.mysql),
         );
 
         return acc.concat(resultClusters);
