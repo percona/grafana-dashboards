@@ -13,7 +13,7 @@ export interface XtraDBCluster {
   databaseType: string;
 }
 
-export interface XtraDBClusterAPI {
+export interface XtraDBClusterPayload {
   kubernetes_cluster_name: string;
   name: string;
   params: XtraDBClusterParamsAPI;

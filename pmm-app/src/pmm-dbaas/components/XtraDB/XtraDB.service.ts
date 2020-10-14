@@ -1,13 +1,13 @@
 import { apiRequestManagement } from 'shared/components/helpers/api';
 import { Kubernetes } from '../Kubernetes/Kubernetes.types';
-import { XtraDBCluster, XtraDBClusterAPI, DeleteXtraDBClusterAPI } from './XtraDB.types';
+import { XtraDBCluster, XtraDBClusterPayload, DeleteXtraDBClusterAPI } from './XtraDB.types';
 
 export const XtraDBService = {
   getXtraDBClusters(kubernetes: Kubernetes) {
     return apiRequestManagement.post<any, Kubernetes>('/DBaaS/XtraDBClusters/List', kubernetes);
   },
   addXtraDBCluster(xtradbCluster: XtraDBCluster) {
-    return apiRequestManagement.post<XtraDBClusterAPI, any>(
+    return apiRequestManagement.post<XtraDBClusterPayload, any>(
       '/DBaaS/XtraDBCluster/Create',
       toAPI(xtradbCluster),
     );
@@ -25,7 +25,7 @@ export const XtraDBService = {
   },
 };
 
-const toAPI = (xtradbCluster: XtraDBCluster): XtraDBClusterAPI => ({
+const toAPI = (xtradbCluster: XtraDBCluster): XtraDBClusterPayload => ({
   kubernetes_cluster_name: xtradbCluster.kubernetesClusterName,
   name: xtradbCluster.clusterName,
   params: {
@@ -46,11 +46,11 @@ const toAPI = (xtradbCluster: XtraDBCluster): XtraDBClusterAPI => ({
 });
 
 export const toModel = (
-  xtradbCluster: XtraDBClusterAPI,
+  xtradbCluster: XtraDBClusterPayload,
   kubernetesClusterName: string,
   databaseType: string,
 ): XtraDBCluster => ({
-  kubernetesClusterName,
   clusterName: xtradbCluster.name,
+  kubernetesClusterName,
   databaseType,
 });
