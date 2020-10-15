@@ -1,5 +1,4 @@
 const assert = require('assert');
-const dashboardPage = require('../pages/dashboardPage');
 
 Feature('QAN filters');
 
@@ -58,7 +57,7 @@ Scenario(
     I.waitForVisible(qanFilters.elements.disabledResetAll, 30);
     const countAfterReset = await qanOverview.getCountOfItems();
 
-    assert.ok(countAfterReset >= countBefore, "Query count wasn't expected to change");
+    assert.ok(countAfterReset >= countBefore, 'Query count wasn\'t expected to change');
   },
 );
 
@@ -225,7 +224,7 @@ Scenario(
 
     I.fillField(qanFilters.fields.filterBy, 'mongodb');
     qanFilters.navigateByShortCut(mongoLink);
-    //wait for open new tab
+    // wait for open new tab
     I.wait(2);
     I.switchToNextTab(1);
     I.waitInUrl(mongoLink, 30);
@@ -241,7 +240,7 @@ Scenario(
 
     I.fillField(qanFilters.fields.filterBy, 'ps-repl1');
     qanFilters.navigateByShortCut(replicationSetLink);
-    //wait for open new tab
+    // wait for open new tab
     I.wait(2);
     I.switchToNextTab(1);
     I.waitInUrl(replicationSetLink, 30);
@@ -257,7 +256,7 @@ Scenario(
 
     I.fillField(qanFilters.fields.filterBy, 'pmm-server');
     qanFilters.navigateByShortCut(nodeLink);
-    //wait for open new tab
+    // wait for open new tab
     I.wait(2);
     I.switchToNextTab(1);
     I.waitInUrl(nodeLink, 30);
@@ -273,7 +272,7 @@ Scenario(
 
     I.fillField(qanFilters.fields.filterBy, 'mongodb');
     qanFilters.navigateByShortCut(serviceNameLink);
-    //wait for open new tab
+    // wait for open new tab
     I.wait(2);
     I.switchToNextTab(1);
     I.waitInUrl(serviceNameLink, 30);
