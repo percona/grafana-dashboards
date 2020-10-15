@@ -38,6 +38,25 @@ export const Messages = {
         clusterName: 'Cluster Name',
         kubernetesCluster: 'Kubernetes Cluster',
         databaseType: 'Database Type',
+        topology: 'Topology',
+        nodes: 'Number of Nodes',
+        resources: 'Resources per Node',
+        memory: 'Memory (GB)',
+        cpu: 'CPU',
+      },
+      steps: {
+        basicOptions: 'Basic Options',
+        advancedOptions: 'Advanced Options',
+      },
+      topology: {
+        cluster: 'Cluster',
+        single: 'Single Node',
+      },
+      resources: {
+        small: 'Small',
+        medium: 'Medium',
+        large: 'Large',
+        custom: 'Custom',
       },
     },
     table: {

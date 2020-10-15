@@ -11,6 +11,9 @@ export interface XtraDBCluster {
   clusterName: string;
   kubernetesClusterName: string;
   databaseType: string;
+  clusterSize: number;
+  memory: number;
+  cpu: number;
 }
 
 export interface XtraDBClusterAPI {

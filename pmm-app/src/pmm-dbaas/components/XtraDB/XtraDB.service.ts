@@ -15,11 +15,11 @@ export const toAPI = (xtradbCluster: XtraDBCluster): XtraDBClusterAPI => ({
   kubernetes_cluster_name: xtradbCluster.kubernetesClusterName,
   name: xtradbCluster.clusterName,
   params: {
-    cluster_size: 3,
+    cluster_size: xtradbCluster.clusterSize,
     pxc: {
       compute_resources: {
-        cpu_m: 3,
-        memory_bytes: 3072,
+        cpu_m: xtradbCluster.cpu,
+        memory_bytes: xtradbCluster.memory * 1024,
       },
     },
     proxysql: {
@@ -35,4 +35,7 @@ export const toModel = (xtradbCluster: XtraDBClusterAPI, databaseType: string): 
   kubernetesClusterName: '',
   clusterName: xtradbCluster.name,
   databaseType,
+  clusterSize: xtradbCluster.params.cluster_size,
+  memory: xtradbCluster.params.pxc.compute_resources.memory_bytes,
+  cpu: xtradbCluster.params.pxc.compute_resources.cpu_m,
 });
