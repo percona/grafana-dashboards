@@ -104,6 +104,28 @@ describe('Validate range test', () => {
   });
 });
 
+describe('Validate min test', () => {
+  it('return undefined when is equal to min', () => {
+    const minValidator = validators.min(3);
+
+    expect(minValidator(3)).toEqual(undefined);
+  });
+
+  it('return undefined when value is greater than min', () => {
+    const minValidator = validators.min(100);
+
+    expect(minValidator(100)).toEqual(undefined);
+  });
+
+  it('return error message when value is less than min', () => {
+    const from = 3;
+    const errorMessage = `Value should be greater or equal to ${from}`;
+    const minValidator = validators.min(from);
+
+    expect(minValidator(2)).toEqual(errorMessage);
+  });
+});
+
 describe('Validate containCases', () => {
   it('Validator should return undefined if the passed value is valid', () => {
     expect(validators.containBothCases('Test')).toBeUndefined();

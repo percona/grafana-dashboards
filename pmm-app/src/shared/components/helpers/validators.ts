@@ -29,6 +29,14 @@ export const validators = {
     return value >= from && value <= to ? undefined : `Value should be in the range from ${from} to ${to}`;
   },
 
+  min: (from) => (value) => {
+    if (!value) {
+      return undefined;
+    }
+
+    return value >= from ? undefined : `Value should be greater or equal to ${from}`;
+  },
+
   validateEmail: (value: string) => {
     const emailRe = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
