@@ -4,9 +4,10 @@ import {
   Input, Select, TextArea, useTheme,
 } from '@grafana/ui';
 import { getStyles } from './FieldAdapters.styles';
-// TODO (nicolalamacchia): use Grafana's components once migration to Grafana v7 is complete
+// TODO: replace with components from platform-core
 import { Checkbox } from './Checkbox';
 import { Field } from './Field';
+import { RadioButtonGroup } from '../Radio/RadioButtonGroup';
 
 export const InputFieldAdapter = ({
   input, className, label, meta, ...props
@@ -86,6 +87,32 @@ export const SelectFieldAdapter = ({
         />
         <div data-qa="select-field-error-message" className={styles.errorMessage}>{meta.touched && meta.error}</div>
       </div>
+    </Field>
+  );
+};
+
+export const RadioButtonGroupAdapter = ({
+  input, options, selected, label, meta, dataQa, ...props
+}) => {
+  const theme = useTheme();
+  const styles = getStyles(theme);
+
+  return (
+    <Field label={label}>
+      <>
+        <RadioButtonGroup
+          {...input}
+          {...props}
+          options={options}
+          value={input.value || selected}
+          dataQa={dataQa}
+        />
+        {meta.touched && meta.error && (
+          <div data-qa="radio-field-error-message" className={styles.errorMessage}>
+            {meta.touched && meta.error}
+          </div>
+        )}
+      </>
     </Field>
   );
 };
