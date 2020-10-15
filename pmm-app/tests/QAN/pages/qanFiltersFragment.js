@@ -52,6 +52,15 @@ module.exports = {
     );
   },
 
+  checkLink(section, filter, visibility) {
+    const locator = ` //span[contains(text(), '${section}')]/parent::p/following-sibling::div//span[contains(@class, 'checkbox-container__label-text') and contains(text(), '${filter}')]/ancestor::span/following-sibling::span/a`;
+    if (visibility) {
+      I.waitForElement(locator, 30);
+    } else {
+      I.dontSeeElement(locator);
+    }
+  },
+
   async getCountOfFilters(groupName) {
     const showAllLink = this.getFilterGroupCountSelector(groupName);
 
@@ -71,7 +80,8 @@ module.exports = {
       if (numOfElementsFilterCount === '1') {
         I.click(this.getFilterGroupCountSelector(this.filterGroups[i]));
         I.waitForVisible(
-          `//section[@class='aside__filter-group']//span[contains(text(), '${this.filterGroups[i]}')]/../button[contains(text(), 'Show top 5')]`, 30,
+          `//section[@class='aside__filter-group']//span[contains(text(), '${this.filterGroups[i]}')]/../button[contains(text(), 'Show top 5')]`,
+          30,
         );
       }
     }

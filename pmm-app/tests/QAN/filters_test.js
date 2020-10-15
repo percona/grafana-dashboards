@@ -280,3 +280,10 @@ Scenario(
     await dashboardPage.checkNavigationBar(header);
   },
 );
+
+Scenario('PMM-T437 - Verify short-cut navigation for n/a items @qan', async (I, qanFilters) => {
+  qanFilters.checkLink('Cluster', 'ps-dev-cluster', true);
+  I.fillField(qanFilters.fields.filterBy, 'n/a');
+  qanFilters.checkLink('Cluster', 'n/a', false);
+  qanFilters.checkLink('Replication Set', 'n/a', false);
+});
