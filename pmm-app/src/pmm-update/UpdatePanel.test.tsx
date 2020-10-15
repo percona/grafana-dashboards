@@ -69,7 +69,7 @@ describe('UpdatePanel::', () => {
 
     expect(mockedUseVersionDetails).toBeCalledTimes(1);
 
-    wrapper?.unmount();
+    wrapper.unmount();
   });
 
   test('the modal is closed by default', () => {
@@ -96,11 +96,11 @@ describe('UpdatePanel::', () => {
 
     const wrapper = shallow(<UpdatePanel />);
 
-    wrapper?.find(Button).simulate('click');
+    wrapper.find(Button).simulate('click');
 
     expect(fakeLaunchUpdate).toBeCalledTimes(1);
 
-    wrapper?.unmount();
+    wrapper.unmount();
   });
 
   it('should show InfoBox with the upToDate prop if !isUpdateAvailable && !isDefaultView', () => {

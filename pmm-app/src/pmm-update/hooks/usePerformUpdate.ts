@@ -9,16 +9,19 @@ export const usePerformUpdate = (): UpdateStatus => {
   const [errorMessage, setErrorMessage] = useState('');
   const [output, setOutput] = useState('');
   const [updateFinished, setUpdateFinished] = useState(false);
-  const [timeoutId, setTimeoutId] = useState<number>();
-
   const [authToken, initialLogOffset, initializationFailed, launchUpdate] = useInitializeUpdate();
+
+  let timeoutId: number;
 
   useEffect(() => {
     if (!authToken || initialLogOffset === undefined) {
       return;
     }
 
-    const updateStatus = async (logOffset: number, errorsCount = 0) => {
+    let logOffset = initialLogOffset;
+    let errorsCount = 0;
+
+    const updateStatus = async () => {
       // Set the errorCount high enough to make it possible for the user to find the error
       if (errorsCount > 600 || initializationFailed) {
         setUpdateFailed(true);
@@ -26,9 +29,7 @@ export const usePerformUpdate = (): UpdateStatus => {
         return;
       }
 
-      let newErrorsCount = errorsCount;
-      let newLogOffset = logOffset;
-      let newIsUpdated = false;
+      let isUpdated = false;
 
       try {
         const response = await getUpdateStatus({ auth_token: authToken, log_offset: logOffset });
@@ -39,34 +40,29 @@ export const usePerformUpdate = (): UpdateStatus => {
 
         const { done, log_offset, log_lines } = response;
 
-        setOutput((previousOutput) => {
-          const logLines = log_lines ?? [];
+        if (logOffset !== log_offset) {
+          logOffset = log_offset ?? 0;
+          setOutput((previousOutput) => `${previousOutput}${(log_lines ?? []).join('\n')}\n`);
+        }
 
-          return `${previousOutput}${logLines.join('\n')}\n`;
-        });
-        newLogOffset = log_offset ?? 0;
-        newErrorsCount = 0;
-        newIsUpdated = done ?? false;
+        isUpdated = done ?? false;
+        if (isUpdated) {
+          setUpdateFinished(true);
+        }
       } catch (e) {
-        newErrorsCount += 1;
+        errorsCount += 1;
         setErrorMessage(e.message);
       } finally {
-        if (newIsUpdated) {
-          setUpdateFinished(newIsUpdated);
-        } else {
-          const timeout = setTimeout(updateStatus, 500, newLogOffset, newErrorsCount);
-
-          setTimeoutId(timeout);
+        if (!isUpdated) {
+          timeoutId = window.setTimeout(updateStatus, 500);
         }
       }
     };
 
-    updateStatus(initialLogOffset, 0);
+    updateStatus();
 
     // eslint-disable-next-line consistent-return
-    return () => {
-      clearTimeout(timeoutId);
-    };
+    return () => clearTimeout(timeoutId);
   }, [authToken, initialLogOffset]);
 
   useEffect(() => {
