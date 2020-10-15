@@ -1,35 +1,32 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Icon, useTheme } from '@grafana/ui';
 import { getStyles } from './AddInstance.styles';
+import { instanceList } from './AddInstance.constants';
+import { Messages } from './AddInstance.messages';
+import { AddInstanceProps, SelectInstanceProps } from './AddInstance.types';
 
-const SelectInstance = (props) => {
+const SelectInstance: FC<SelectInstanceProps> = (props) => {
   const theme = useTheme();
   const styles = getStyles(theme);
 
+  const { type, selectInstanceType, title } = props;
+
   return (
-    <div className={styles.navigationButton} onClick={props.selectInstanceType(props.type)}>
+    <div className={styles.navigationButton} onClick={selectInstanceType(type)}>
       <Icon name="database" size={'xxxl'} />
-      <b className={styles.addInstanceTitle}>{props.title}</b>
-      <span className={styles.addInstance}>Add a remote instance</span>
+      <b className={styles.addInstanceTitle}>{title}</b>
+      <span className={styles.addInstance}>{Messages.titles.addInstance}</span>
     </div>
   );
 };
 
-const AddInstance = (props) => {
+const AddInstance: FC<AddInstanceProps> = (props) => {
   const theme = useTheme();
   const styles = getStyles(theme);
 
   const selectInstanceType = (type) => () => {
     props.onSelectInstanceType({ type });
   };
-
-  const instanceList = [
-    { type: 'rds', title: 'AWS RDS MySQL or Aurora MySQL' },
-    { type: 'postgresql', title: 'PostgreSQL' },
-    { type: 'mysql', title: 'MySQL' },
-    { type: 'mongodb', title: 'MongoDB' },
-    { type: 'proxysql', title: 'ProxySQL' },
-  ];
 
   return (
     <section className={styles.content}>

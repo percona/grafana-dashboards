@@ -1,12 +1,10 @@
 export const Messages = {
-  form: {
-    trackingOptions: {
-      none: 'Don\'t track',
-      pgStatements: 'PG Stat Statements',
-      pgMonitor: 'PG Stat Monitor',
-    },
-    labels: {
-      trackingOptions: 'Stat tracking options',
-    },
+  titles: {
+    rds: 'AWS RDS MySQL or Aurora MySQL',
+    postgresql: 'PostgreSQL',
+    mysql: 'MySQL',
+    mongodb: 'MongoDB',
+    proxysql: 'ProxySQL',
+    addInstance: 'Add a remote instance',
   },
 };
