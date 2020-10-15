@@ -1,4 +1,4 @@
-import { Messages } from './AddInstance.messages';
+import { Messages } from '../AddInstance/AddInstance.messages';
 import { TrackingOptions } from './AddInstance.types';
 
 export const trackingOptions = [

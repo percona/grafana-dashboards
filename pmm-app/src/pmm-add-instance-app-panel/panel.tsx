@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { Button } from 'antd';
 import { createBrowserHistory } from 'history';
 import { Router, Route } from 'react-router-dom';
-import AddRemoteInstance from './AddInstance/AddRemoteInstance/AddRemoteInstance';
-import DiscoveryPanel from './DiscoveryPanel/DiscoveryPanel';
-import AddInstance from './AddInstance/AddInstance';
+import AddRemoteInstance from './components/AddRemoteInstance/AddRemoteInstance';
+import DiscoveryPanel from './components/DiscoveryPanel/DiscoveryPanel';
+import AddInstance from './components/AddInstance/AddInstance';
 import './panel.scss';
 import '../shared/style.less';
 import '../shared/styles.scss';
@@ -27,7 +27,7 @@ const AddInstancePanel = () => {
   };
 
   return (
-    <div className="app-theme-dark content-wrapper antd add-instance-panel" id="antd">
+    <div className="app-theme-dark content-wrapper add-instance-panel">
       {!selectedInstance.type ? <AddInstance onSelectInstanceType={setSelectedInstance} /> : null}
       {selectedInstance.type && (
         <>

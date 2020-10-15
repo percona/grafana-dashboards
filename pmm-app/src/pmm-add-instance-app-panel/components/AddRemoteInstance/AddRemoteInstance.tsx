@@ -9,9 +9,9 @@ import { PasswordField } from 'shared/components/Form/Password/Password';
 import Validators from 'shared/components/helpers/validators';
 import { RadioButtonGroup } from 'shared/components/Form/Radio/RadioButtonGroup';
 import AddRemoteInstanceService from './AddRemoteInstanceService';
-import { trackingOptions } from '../AddInstance.constants';
-import { TrackingOptions } from '../AddInstance.types';
-import { Messages } from '../AddInstance.messages';
+import { trackingOptions } from './AddInstance.constants';
+import { TrackingOptions } from './AddInstance.types';
+import { Messages } from '../../components/AddInstance/AddInstance.messages';
 
 interface InstanceData {
   instanceType?: string;
