@@ -5,5 +5,5 @@ export interface SelectInstanceProps {
 }
 
 export interface AddInstanceProps {
-  onSelectInstanceType: (string) => void;
+  onSelectInstanceType: (any) => void;
 }

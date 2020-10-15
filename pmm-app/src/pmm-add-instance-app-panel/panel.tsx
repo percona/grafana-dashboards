@@ -31,7 +31,7 @@ const AddInstancePanel = () => {
       {!selectedInstance.type ? <AddInstance onSelectInstanceType={setSelectedInstance} /> : null}
       {selectedInstance.type && (
         <>
-          <div id={'antd'} className={'add-instance-navigation-link'}>
+          <div id="antd" className="add-instance-navigation-link">
             <Button type="link" onClick={() => setSelectedInstance({ type: '' })}>
               Return to instance select menu
             </Button>

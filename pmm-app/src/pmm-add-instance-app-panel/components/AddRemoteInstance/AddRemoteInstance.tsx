@@ -217,7 +217,7 @@ const AddRemoteInstance = (props) => {
   };
 
   return (
-    <div id={'antd'}>
+    <div id="antd" className="add-remote-instance-wrapper">
       <FormFinal
         mutators={{ changePGTracking }}
         onSubmit={onSubmit}
