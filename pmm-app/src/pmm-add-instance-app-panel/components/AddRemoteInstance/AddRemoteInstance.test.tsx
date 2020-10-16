@@ -1,4 +1,4 @@
-import { getInstanceData } from './AddRemoteInstance';
+import {getInstanceData} from "./AddRemoteInstance.tools";
 
 jest.mock('shared/components/helpers/notification-manager');
 

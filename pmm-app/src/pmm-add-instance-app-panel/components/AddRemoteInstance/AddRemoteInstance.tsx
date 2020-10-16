@@ -1,123 +1,24 @@
 import React, { useState } from 'react';
 import './AddRemoteInstance.scss';
-import { Form as FormFinal } from 'react-final-form';
+import { Field, Form as FormFinal } from 'react-final-form';
 import { InputField } from 'shared/components/Form/Input/Input';
 import { TextAreaField } from 'shared/components/Form/TextArea/TextArea';
 import { CheckboxField } from 'shared/components/Form/Checkbox/Checkbox';
 
 import { PasswordField } from 'shared/components/Form/Password/Password';
 import Validators from 'shared/components/helpers/validators';
-import { RadioButtonGroup } from 'shared/components/Form/Radio/RadioButtonGroup';
 import AddRemoteInstanceService from './AddRemoteInstanceService';
-import { trackingOptions } from './AddRemoteInstance.constants';
 import { TrackingOptions } from './AddRemoteInstance.types';
-import { Messages } from './AddRemoteInstance.messages';
 import { StepProgress } from '@percona/platform-core';
-
-interface InstanceData {
-  instanceType?: string;
-  defaultPort?: number;
-  remoteInstanceCredentials?: any;
-  discoverName?: string;
-}
-
-export const extractCredentials = (credentials) => ({
-  service_name: !credentials.isRDS ? credentials.address : credentials.instance_id,
-  port: credentials.port,
-  address: credentials.address,
-  isRDS: credentials.isRDS,
-  region: credentials.region,
-  aws_access_key: credentials.aws_access_key,
-  aws_secret_key: credentials.aws_secret_key,
-  instance_id: credentials.instance_id,
-  az: credentials.az,
-});
-export const getInstanceData = (instanceType, credentials) => {
-  const instance: InstanceData = {};
-
-  instance.remoteInstanceCredentials = credentials ? extractCredentials(credentials) : {};
-  switch (instanceType) {
-    case 'postgresql':
-      instance.instanceType = 'PostgreSQL';
-      instance.remoteInstanceCredentials.port = instance.remoteInstanceCredentials.port || 5432;
-      break;
-    case 'mysql':
-      instance.instanceType = 'MySQL';
-      instance.discoverName = 'DISCOVER_RDS_MYSQL';
-      instance.remoteInstanceCredentials.port = instance.remoteInstanceCredentials.port || 3306;
-      break;
-    case 'mongodb':
-      instance.instanceType = 'MongoDB';
-      instance.remoteInstanceCredentials.port = instance.remoteInstanceCredentials.port || 27017;
-      break;
-    case 'proxysql':
-      instance.instanceType = 'ProxySQL';
-      instance.remoteInstanceCredentials.port = instance.remoteInstanceCredentials.port || 6032;
-      break;
-    default:
-      console.error('Not implemented');
-  }
-
-  return instance;
-};
-
-const PostgreSQLAdditionalOptions = ({ mutators }) => {
-  const [trackingType, setTrackingType] = useState<string>(TrackingOptions.none);
-
-  return (
-    <>
-      <RadioButtonGroup
-        options={trackingOptions}
-        selected={trackingType}
-        name="tracking"
-        dataQa="tracking-options-radio-button-group"
-        onChange={(value) => {
-          mutators.changePGTracking(value);
-          setTrackingType(value);
-        }}
-      />
-      <span className="description">{Messages.form.labels.trackingOptions}</span>
-    </>
-  );
-};
-
-const getAdditionalOptions = (type, remoteInstanceCredentials, mutators) => {
-  switch (type) {
-    case 'PostgreSQL':
-      return <PostgreSQLAdditionalOptions mutators={mutators} />;
-    case 'MySQL':
-      if (remoteInstanceCredentials.isRDS) {
-        return (
-          <>
-            <CheckboxField label="Use performance schema" name="qan_mysql_perfschema" />
-            <span className="description" />
-
-            <CheckboxField label="Disable Basic Metrics" name="disable_basic_metrics" />
-            <span className="description" />
-
-            <CheckboxField label="Disable Enhanced Metrics" name="disable_enhanced_metrics" />
-            <span className="description" />
-          </>
-        );
-      }
-
-      return (
-        <>
-          <CheckboxField label="Use performance schema" name="qan_mysql_perfschema" />
-          <span className="description" />
-        </>
-      );
-    case 'MongoDB':
-      return (
-        <>
-          <CheckboxField label="Use QAN MongoDB Profiler" name="qan_mongodb_profiler" />
-          <span className="description" />
-        </>
-      );
-    default:
-      return null;
-  }
-};
+import { getAdditionalOptions, getInstanceData } from './AddRemoteInstance.tools';
+import { LinkTooltip } from '../../../shared/components/Elements/LinkTooltip/LinkTooltip';
+import { Input, TextArea, useTheme } from '@grafana/ui';
+import {
+  MetricsResolutionIntervals,
+  MetricsResolutionPresets,
+} from '../../../pmm-settings/components/MetricsResolution/MetricsResolution.types';
+import { NumericInputField } from '../../../shared/components/Form';
+import { getStyles } from './AddRemoteInstance.styles';
 
 const validateInstanceForm = (values) => {
   const errors = {} as any;
@@ -216,106 +117,303 @@ const AddRemoteInstance = (props) => {
       setLoading(false);
     }
   };
-  const steps = [
-    {
-      title: 'Main details',
-      fields: ['name', 'kubernetesCluster', 'databaseType'],
-      render: () => (
-        <div className="add-instance-form">
-          <div className="add-instance-panel">
-            <InputField
+
+  const AddInstanceForm = (props) => {
+    const theme = useTheme();
+    const styles = getStyles(theme);
+
+    const { form } = props;
+    const steps = [
+      {
+        title: 'Main details',
+        fields: ['name', 'kubernetesCluster', 'databaseType'],
+        render: () => (
+          <div className="add-instance-form" style={{ width: '50%' }}>
+            <div className={styles.label} data-qa="alertmanager-url-label">
+              <span>{'Hostname'}</span>
+              <LinkTooltip tooltipText={'Public DNS hostname of your instance'} icon="info-circle" />
+            </div>
+            <Field
               name="address"
-              placeholder="Hostname"
-              required
-              readonly={remoteInstanceCredentials.isRDS}
+              isEqual={() => {}}
+              render={({ input }) => (
+                <Input
+                  {...input}
+                  // className={styles.input}
+                  data-qa="alertmanager-url"
+                />
+              )}
             />
-            <span className="description">Public DNS hostname of your instance</span>
-            <InputField name="service_name" placeholder="Service name (default: Hostname)" />
-            <span className="description">Service name to use.</span>
-            <InputField
+
+            <div className={styles.label} data-qa="alertmanager-url-label">
+              <span>{'Service name'}</span>
+              <LinkTooltip tooltipText={'31231313'} icon="info-circle" />
+            </div>
+            <Field
+              name="service_name"
+              isEqual={() => {}}
+              style={{ marginBottom: '10px' }}
+              render={({ input }) => (
+                <Input
+                  {...input}
+                  // className={styles.input}
+                  data-qa="alertmanager-url"
+                />
+              )}
+            />
+
+            <div className={styles.label} data-qa="alertmanager-url-label">
+              <span>{'Port'}</span>
+              <LinkTooltip tooltipText={'Port your service is listening on'} icon="info-circle" />
+            </div>
+            <Field
               name="port"
-              placeholder={`Port (default: ${remoteInstanceCredentials.port} )`}
-              required
-              readonly={remoteInstanceCredentials.isRDS}
+              isEqual={() => {}}
+              disabled={remoteInstanceCredentials.isRDS}
+              render={({ input }) => (
+                <Input
+                  {...input}
+                  // className={styles.input}
+                  data-qa="alertmanager-url"
+                />
+              )}
             />
-            <span className="description">Port your service is listening on</span>
+
+            <div style={{ display: 'flex', marginTop: '40px' }} data-qa="alertmanager-url-label">
+              <span>{'Username'}</span>
+              <LinkTooltip tooltipText={'Your database user name'} icon="info-circle" />
+            </div>
+            <Field
+              name="username"
+              isEqual={() => {}}
+              render={({ input }) => (
+                <Input
+                  {...input}
+                  // className={styles.input}
+                  data-qa="alertmanager-url"
+                />
+              )}
+            />
+
+            <div className={styles.label} data-qa="alertmanager-url-label">
+              <span>{'Password'}</span>
+              <LinkTooltip tooltipText={'Your database password'} icon="info-circle" />
+            </div>
+            <Field
+              name="password"
+              isEqual={() => {}}
+              render={({ input }) => (
+                <Input
+                  {...input}
+                  // className={styles.input}
+                  data-qa="alertmanager-url"
+                />
+              )}
+            />
+
+            {/*    old code */}
+            {/*<div className="add-instance-panel">*/}
+            {/*  <InputField*/}
+            {/*    name="address"*/}
+            {/*    placeholder="Hostname"*/}
+            {/*    required*/}
+            {/*    readonly={remoteInstanceCredentials.isRDS}*/}
+            {/*  />*/}
+            {/*  <span className="description">Public DNS hostname of your instance</span>*/}
+            {/*  <InputField name="service_name" placeholder="Service name (default: Hostname)" />*/}
+            {/*  <span className="description">Service name to use.</span>*/}
+            {/*  <InputField*/}
+            {/*    name="port"*/}
+            {/*    placeholder={`Port (default: ${remoteInstanceCredentials.port} )`}*/}
+            {/*    required*/}
+            {/*    readonly={remoteInstanceCredentials.isRDS}*/}
+            {/*  />*/}
+            {/*  <span className="description">Port your service is listening on</span>*/}
+            {/*</div>*/}
+            {/*<div className="add-instance-panel">*/}
+            {/*  <InputField name="username" placeholder="Username" required />*/}
+            {/*  <span className="description">Your database user name</span>*/}
+
+            {/*  <PasswordField name="password" placeholder="Password" required />*/}
+            {/*  <span className="description">Your database password</span>*/}
+            {/*</div>*/}
           </div>
-          <div className="add-instance-panel">
-            <InputField name="username" placeholder="Username" required />
-            <span className="description">Your database user name</span>
+        ),
+      },
+      {
+        title: 'Labels',
+        fields: ['topology', 'nodes', 'databaseType'],
+        render: (renderProps) => (
+          <div className="add-instance-form" style={{ width: '50%' }}>
+            <div className={styles.label} data-qa="alertmanager-url-label">
+              <span>{'Environment'}</span>
+              {/*<LinkTooltip tooltipText={'Public DNS hostname of your instance'} icon="info-circle" />*/}
+            </div>
+            <Field
+              name="environment"
+              isEqual={() => {}}
+              render={({ input }) => (
+                <Input
+                  {...input}
+                  // className={styles.input}
+                  data-qa="alertmanager-url"
+                />
+              )}
+            />
 
-            <PasswordField name="password" placeholder="Password" required />
-            <span className="description">Your database password</span>
-          </div>
-        </div>
-      ),
-    },
-    {
-      title: 'Labels',
-      fields: ['topology', 'nodes', 'databaseType'],
-      render: (renderProps) => (
-        <div className="add-instance-form">
-          <div className="add-instance-panel">
-            <InputField name="environment" placeholder="Environment" />
-            <span className="description" />
-
-            <InputField name="region" required={initialValues.isRDS} placeholder="Region" />
-            <span className="description">Region</span>
-
-            <InputField name="az" placeholder="Availability Zone" />
-            <span className="description">Availability Zone</span>
-
-            <InputField name="replication_set" placeholder="Replication set" />
-            <span className="description" />
-
-            <InputField name="cluster" placeholder="Cluster" />
-            <span className="description" />
-
-            <TextAreaField
+            <div className={styles.label} data-qa="alertmanager-url-label">
+              <span>{'Region'}</span>
+              {/*<LinkTooltip tooltipText={'Public DNS hostname of your instance'} icon="info-circle" />*/}
+            </div>
+            <Field
+              name="region"
+              isEqual={() => {}}
+              render={({ input }) => (
+                <Input
+                  {...input}
+                  // className={styles.input}
+                  data-qa="alertmanager-url"
+                />
+              )}
+            />
+            <div className={styles.label} data-qa="alertmanager-url-label">
+              <span>{'Availability Zone'}</span>
+              {/*<LinkTooltip tooltipText={'Public DNS hostname of your instance'} icon="info-circle" />*/}
+            </div>
+            <Field
+              name="az"
+              isEqual={() => {}}
+              render={({ input }) => (
+                <Input
+                  {...input}
+                  // className={styles.input}
+                  data-qa="alertmanager-url"
+                />
+              )}
+            />
+            <div className={styles.label} data-qa="alertmanager-url-label">
+              <span>{'Replication set'}</span>
+              {/*<LinkTooltip tooltipText={'Public DNS hostname of your instance'} icon="info-circle" />*/}
+            </div>
+            <Field
+              name="replication_set"
+              isEqual={() => {}}
+              render={({ input }) => (
+                <Input
+                  {...input}
+                  // className={styles.input}
+                  data-qa="alertmanager-url"
+                  required={initialValues.isRDS}
+                />
+              )}
+            />
+            <div className={styles.label} data-qa="alertmanager-url-label">
+              <span>{'Cluster'}</span>
+              {/*<LinkTooltip tooltipText={'Public DNS hostname of your instance'} icon="info-circle" />*/}
+            </div>
+            <Field
+              name="cluster"
+              isEqual={() => {}}
+              render={({ input }) => (
+                <Input
+                  {...input}
+                  // className={styles.input}
+                  data-qa="alertmanager-url"
+                />
+              )}
+            />
+            <div className={styles.label} data-qa="alertmanager-url-label">
+              <span>{'Custom labels'}</span>
+              {/*<LinkTooltip tooltipText={'Public DNS hostname of your instance'} icon="info-circle" />*/}
+            </div>
+            <Field
               name="custom_labels"
-              placeholder="Custom labels
-Format:
-key1:value1
-key2:value2"
+              render={({ input }) => (
+                <TextArea {...input} data-qa="alertmanager-rules" />
+              )}
             />
-            <span className="description" />
+
+            {/* old code */}
+            {/*            <div className="add-instance-panel">*/}
+            {/*              <InputField name="environment" placeholder="Environment" />*/}
+            {/*              <span className="description" />*/}
+
+            {/*              <InputField name="region" required={initialValues.isRDS} placeholder="Region" />*/}
+            {/*              <span className="description">Region</span>*/}
+
+            {/*              <InputField name="az" placeholder="Availability Zone" />*/}
+            {/*              <span className="description">Availability Zone</span>*/}
+
+            {/*              <InputField name="replication_set" placeholder="Replication set" />*/}
+            {/*              <span className="description" />*/}
+
+            {/*              <InputField name="cluster" placeholder="Cluster" />*/}
+            {/*              <span className="description" />*/}
+
+            {/*              <TextAreaField*/}
+            {/*                name="custom_labels"*/}
+            {/*                placeholder="Custom labels*/}
+            {/*Format:*/}
+            {/*key1:value1*/}
+            {/*key2:value2"*/}
+            {/*              />*/}
+            {/*              <span className="description" />*/}
+            {/*            </div>*/}
           </div>
-        </div>
-      ),
-    },
-    {
-      title: 'Labels',
-      fields: ['topology', 'nodes', 'databaseType'],
-      render: (renderProps) => (
-        <div className="add-instance-form">
-          <div className="add-instance-panel">
-            <h6>Additional options</h6>
-            <span />
-            <CheckboxField label="Skip connection check" name="skip_connection_check" />
+        ),
+      },
+      {
+        title: 'Labels',
+        fields: ['topology', 'nodes', 'databaseType'],
+        render: (renderProps) => (
+          <div className="add-instance-form" style={{ width: '50%' }}>
+            <div className="add-instance-panel">
+              <h6>Additional options</h6>
+              <span />
+              <CheckboxField label="Skip connection check" name="skip_connection_check" />
 
-            <span className="description" />
+              <span className="description" />
 
-            <CheckboxField label="Use TLS for database connections" name="tls" />
+              <CheckboxField label="Use TLS for database connections" name="tls" />
 
-            <span className="description" />
-            <CheckboxField
-              label="Skip TLS certificate and hostname validation"
-              name="tls_skip_verify"
-              dataQa="add-account-username"
-            />
-            <span className="description" />
-            {getAdditionalOptions(instanceType, remoteInstanceCredentials, form.mutators)}
+              <span className="description" />
+              <CheckboxField
+                label="Skip TLS certificate and hostname validation"
+                name="tls_skip_verify"
+                dataQa="add-account-username"
+              />
+              <span className="description" />
+              {getAdditionalOptions(instanceType, remoteInstanceCredentials, form.mutators)}
+            </div>
+
+            <div className="add-instance-form__submit-block">
+              <button type="submit" className="button button--dark" id="addInstance" disabled={loading}>
+                Add service
+              </button>
+            </div>
           </div>
+        ),
+      },
+    ];
 
-          <div className="add-instance-form__submit-block">
-            <button type="submit" className="button button--dark" id="addInstance" disabled={loading}>
-              Add service
-            </button>
-          </div>
-        </div>
-      ),
-    },
-  ];
+    return (
+      <>
+        <h4>{`Add remote ${instanceType} Instance`}</h4>
+        <StepProgress
+          steps={steps}
+          initialValues={{
+            topology: 'cluster',
+            nodes: 3,
+            resources: 'small',
+            memory: 1,
+          }}
+          onSubmit={({ name, kubernetesCluster, databaseType }) => {
+            console.log(123);
+          }}
+        />
+      </>
+    );
+  };
 
   return (
     <div id="antd" className="add-remote-instance-wrapper">
@@ -326,121 +424,7 @@ key2:value2"
         validate={validateInstanceForm}
         render={({ form, handleSubmit }) => (
           <form onSubmit={handleSubmit} className="add-instance-form app-theme-dark">
-            <h4>{`Add remote ${instanceType} Instance`}</h4>
-            <StepProgress
-              steps={[
-                {
-                  title: 'Main details',
-                  fields: ['username', 'kubernetesCluster', 'databaseType'],
-                  render: () => (
-                    <div className="add-instance-form">
-                      <div className="add-instance-panel">
-                        <InputField
-                          name="address"
-                          placeholder="Hostname"
-                          required
-                          readonly={remoteInstanceCredentials.isRDS}
-                        />
-                        <span className="description">Public DNS hostname of your instance</span>
-                        <InputField name="service_name" placeholder="Service name (default: Hostname)" />
-                        <span className="description">Service name to use.</span>
-                        <InputField
-                          name="port"
-                          placeholder={`Port (default: ${remoteInstanceCredentials.port} )`}
-                          required
-                          readonly={remoteInstanceCredentials.isRDS}
-                        />
-                        <span className="description">Port your service is listening on</span>
-                      </div>
-                      <div className="add-instance-panel">
-                        <InputField name="username" placeholder="Username" required />
-                        <span className="description">Your database user name</span>
-
-                        <PasswordField name="password" placeholder="Password" required />
-                        <span className="description">Your database password</span>
-                      </div>
-                    </div>
-                  ),
-                },
-                {
-                  title: 'Labels',
-                  fields: ['topology', 'nodes', 'databaseType'],
-                  render: (renderProps) => (
-                    <div className="add-instance-form">
-                      <div className="add-instance-panel">
-                        <InputField name="environment" placeholder="Environment" />
-                        <span className="description" />
-
-                        <InputField name="region" required={initialValues.isRDS} placeholder="Region" />
-                        <span className="description">Region</span>
-
-                        <InputField name="az" placeholder="Availability Zone" />
-                        <span className="description">Availability Zone</span>
-
-                        <InputField name="replication_set" placeholder="Replication set" />
-                        <span className="description" />
-
-                        <InputField name="cluster" placeholder="Cluster" />
-                        <span className="description" />
-
-                        <TextAreaField
-                          name="custom_labels"
-                          placeholder="Custom labels
-Format:
-key1:value1
-key2:value2"
-                        />
-                        <span className="description" />
-                      </div>
-                    </div>
-                  ),
-                },
-                {
-                  title: 'Additional options',
-                  fields: ['topology', 'nodes', 'databaseType'],
-                  render: (renderProps) => (
-                    <div className="add-instance-form">
-                      <div className="add-instance-panel">
-                        <CheckboxField label="Skip connection check" name="skip_connection_check" />
-
-                        <span className="description" />
-
-                        <CheckboxField label="Use TLS for database connections" name="tls" />
-
-                        <span className="description" />
-                        <CheckboxField
-                          label="Skip TLS certificate and hostname validation"
-                          name="tls_skip_verify"
-                          dataQa="add-account-username"
-                        />
-                        <span className="description" />
-                        {getAdditionalOptions(instanceType, remoteInstanceCredentials, form.mutators)}
-                      </div>
-
-                      <div className="add-instance-form__submit-block">
-                        <button
-                          type="submit"
-                          className="button button--dark"
-                          id="addInstance"
-                          disabled={loading}
-                        >
-                          Add service
-                        </button>
-                      </div>
-                    </div>
-                  ),
-                },
-              ]}
-              initialValues={{
-                topology: 'cluster',
-                nodes: 3,
-                resources: 'small',
-                memory: 1,
-              }}
-              onSubmit={({ name, kubernetesCluster, databaseType }) => {
-                console.log(123);
-              }}
-            />
+            <AddInstanceForm form={form} />
           </form>
         )}
       />
