@@ -4,18 +4,18 @@ export const Messages = {
     kubernetes: 'Kubernetes Cluster',
   },
   kubernetes: {
-    deleteAction: 'Delete',
-    addAction: 'Add new Kubernetes Cluster',
+    deleteAction: 'Unregister',
+    addAction: 'Register new Kubernetes Cluster',
     deleteModal: {
       cancel: 'Cancel',
       confirm: 'Proceed',
-      confirmMessage: 'Are you sure that you want to permanently delete this cluster?',
+      confirmMessage: 'Are you sure that you want to unregister this cluster?',
       title: 'Confirm action',
     },
-    deleteSuccess: 'Cluster successfully deleted',
+    deleteSuccess: 'Cluster successfully unregistered',
     addModal: {
-      title: 'Add Kubernetes cluster',
-      confirm: 'Add',
+      title: 'Register Kubernetes Cluster',
+      confirm: 'Register',
       fields: {
         clusterName: 'Kubernetes Cluster Name',
         kubeConfig: 'Kubeconfig file',
@@ -26,7 +26,7 @@ export const Messages = {
       actionsColumn: 'Actions',
     },
     messages: {
-      clusterAdded: 'Cluster was successfully added',
+      clusterAdded: 'Cluster was successfully registered',
     },
   },
   xtradb: {
