@@ -3,12 +3,10 @@ import { GrafanaTheme } from '@grafana/data';
 import { css } from 'emotion';
 
 export const getStyles = stylesFactory((theme: GrafanaTheme) => ({
-  label: css`
-    display: flex;
-    margin-top: ${theme.spacing.xs};
-    svg {
-      margin-left: ${theme.spacing.xs};
-    }
+  formWrapper: css`
+    background-color: transparent !important;
+    max-width: 1000px;
+    width: 1000px;
   `,
   navigationPanel: css`
     display: flex;
