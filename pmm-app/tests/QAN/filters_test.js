@@ -57,7 +57,7 @@ Scenario(
     I.waitForVisible(qanFilters.elements.disabledResetAll, 30);
     const countAfterReset = await qanOverview.getCountOfItems();
 
-    assert.ok(countAfterReset >= countBefore, 'Query count wasn\'t expected to change');
+    assert.ok(countAfterReset >= countBefore, "Query count wasn't expected to change");
   },
 );
 
@@ -251,15 +251,18 @@ Scenario(
 Scenario(
   'PMM-T436 - Verify short-cut navigation from filters to related dashboards - Node Name @qan',
   async (I, qanFilters, dashboardPage) => {
-    const nodeLink = '/graph/d/node-instance-summary/node-summary?var-node_name=pmm-server';
+    const shortCut = '/graph/d/node-instance-summary/node-summary?var-node_name=pmm-server';
+    const nodeNameLink = 'node_name=pmm-server';
+    const link = '/graph/d/node-instance-summary/node-summary';
     const header = 'Node Summary';
 
     I.fillField(qanFilters.fields.filterBy, 'pmm-server');
-    qanFilters.navigateByShortCut(nodeLink);
+    qanFilters.navigateByShortCut(shortCut);
     // wait for open new tab
     I.wait(2);
     I.switchToNextTab(1);
-    I.waitInUrl(nodeLink, 30);
+    I.waitInUrl(link, 30);
+    I.waitInUrl(nodeNameLink, 30);
     await dashboardPage.checkNavigationBar(header);
   },
 );
