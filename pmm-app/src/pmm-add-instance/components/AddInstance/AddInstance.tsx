@@ -20,7 +20,6 @@ export const SelectInstance: FC<SelectInstanceProps> = (props) => {
       type="button"
     >
       <Database />
-      <Database />
       <b className={styles.addInstanceTitle}>{title}</b>
       <span className={styles.addInstance}>{Messages.titles.addInstance}</span>
     </button>
