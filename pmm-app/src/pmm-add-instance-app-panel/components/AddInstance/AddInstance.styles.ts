@@ -14,7 +14,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => ({
     height: 170px;
     text-align: center;
     background-color: transparent;
-    border: 1px dashed ${theme.colors.border2};
+    border: ${theme.border.width.sm} dashed ${theme.colors.border2};
 
     :hover {
       cursor: pointer;
