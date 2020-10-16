@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
-import { Icon, useTheme } from '@grafana/ui';
+import { useTheme } from '@grafana/ui';
+import { Database } from 'shared/components/Elements/Icons/Database';
 import { getStyles } from './AddInstance.styles';
 import { instanceList } from './AddInstance.constants';
 import { Messages } from './AddInstance.messages';
@@ -18,7 +19,8 @@ export const SelectInstance: FC<SelectInstanceProps> = (props) => {
       onClick={selectInstanceType(type)}
       type="button"
     >
-      <Icon name="database" size="xxxl" />
+      <Database />
+      <Database />
       <b className={styles.addInstanceTitle}>{title}</b>
       <span className={styles.addInstance}>{Messages.titles.addInstance}</span>
     </button>

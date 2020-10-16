@@ -13,8 +13,8 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       justify-content: center;
       margin: ${spacing.sm};
       border-radius: ${border.radius.md};
-      width: 240px;
-      height: 170px;
+      width: 230px;
+      height: 160px;
       text-align: center;
       background-color: transparent;
       border: ${border.width.sm} dashed ${colors.border2};
