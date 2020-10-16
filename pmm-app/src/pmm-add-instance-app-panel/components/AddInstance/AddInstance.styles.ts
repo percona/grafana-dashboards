@@ -19,7 +19,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => ({
     :hover {
       cursor: pointer;
       background-color: ${theme.colors.dropdownOptionHoverBg};
-      border: 1px solid ${theme.colors.border2};
+      border: ${theme.border.width.sm} solid ${theme.colors.border2};
     }
   `,
   navigationPanel: css`
