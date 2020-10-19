@@ -5,7 +5,7 @@ import {
   TextInputField,
   validators,
 } from '@percona/platform-core';
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import { Button, useTheme } from '@grafana/ui';
 import { RadioButtonGroup } from 'shared/components/Form/Radio/RadioButtonGroup';
 import { Messages } from '../AddRemoteInstance.messages';
@@ -13,7 +13,11 @@ import { TrackingOptions } from '../AddRemoteInstance.types';
 import { trackingOptions } from './AddRemoteInstance.constants';
 import { getStyles } from './FormParts.styles';
 
-export const MainDetailsFormPart = ({ remoteInstanceCredentials }) => {
+// TODO: add credentials interface
+interface MainDetailsFormPartProps {
+  remoteInstanceCredentials: any;
+}
+export const MainDetailsFormPart: FC<MainDetailsFormPartProps> = ({ remoteInstanceCredentials }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
 
@@ -53,7 +57,7 @@ export const MainDetailsFormPart = ({ remoteInstanceCredentials }) => {
     </div>
   );
 };
-export const LabelsFormPart = () => {
+export const LabelsFormPart: FC<void> = () => {
   const theme = useTheme();
   const styles = getStyles(theme);
 
@@ -84,7 +88,18 @@ export const LabelsFormPart = () => {
   );
 };
 
-export const AdditionalOptionsFormPart = ({ instanceType, loading, remoteInstanceCredentials, form }) => {
+interface AdditionalOptionsFormPartProps {
+  instanceType: string;
+  loading: boolean;
+  remoteInstanceCredentials: any;
+  form: any;
+}
+export const AdditionalOptionsFormPart: FC<AdditionalOptionsFormPartProps> = ({
+  instanceType,
+  loading,
+  remoteInstanceCredentials,
+  form,
+}) => {
   const theme = useTheme();
   const styles = getStyles(theme);
 
@@ -106,7 +121,10 @@ export const AdditionalOptionsFormPart = ({ instanceType, loading, remoteInstanc
   );
 };
 
-export const PostgreSQLAdditionalOptions = ({ mutators }) => {
+interface PostgreSQLAdditionalOptionsProps {
+  mutators: any;
+}
+export const PostgreSQLAdditionalOptions: FC<PostgreSQLAdditionalOptionsProps> = ({ mutators }) => {
   const [trackingType, setTrackingType] = useState<string>(TrackingOptions.none);
 
   return (

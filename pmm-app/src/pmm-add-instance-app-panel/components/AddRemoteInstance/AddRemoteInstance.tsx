@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {FC, useState} from 'react';
 import { Form as FormFinal } from 'react-final-form';
 import { StepProgress } from '@percona/platform-core';
 import { useTheme } from '@grafana/ui';
@@ -8,7 +8,14 @@ import { getStyles } from './AddRemoteInstance.styles';
 import { Messages } from './AddRemoteInstance.messages';
 import { AdditionalOptionsFormPart, LabelsFormPart, MainDetailsFormPart } from './FormParts/FormParts';
 
-const AddRemoteInstance = (props) => {
+interface Instance {
+  type: string;
+  credentials: any;
+}
+interface AddRemoteInstance {
+  instance: Instance
+}
+const AddRemoteInstance: FC<AddRemoteInstance> = (props) => {
   const theme = useTheme();
   const styles = getStyles(theme);
 
