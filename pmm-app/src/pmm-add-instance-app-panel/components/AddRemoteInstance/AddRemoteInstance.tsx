@@ -6,7 +6,7 @@ import AddRemoteInstanceService, { toPayload } from './AddRemoteInstance.service
 import { getInstanceData, validateInstanceForm } from './AddRemoteInstance.tools';
 import { getStyles } from './AddRemoteInstance.styles';
 import { Messages } from './AddRemoteInstance.messages';
-import { AdditionalOptionsFormPart, LabelsFormPart, MainDetailsFormPart } from './FormParts';
+import { AdditionalOptionsFormPart, LabelsFormPart, MainDetailsFormPart } from './FormParts/FormParts';
 
 const AddRemoteInstance = (props) => {
   const theme = useTheme();
