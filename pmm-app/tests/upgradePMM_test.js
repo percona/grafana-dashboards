@@ -19,6 +19,7 @@ function getVersions() {
     majorVersionDiff,
     patchVersionDiff,
     current,
+    dockerMinor,
   };
 }
 
@@ -33,7 +34,7 @@ Scenario(
   'PMM-T289 Verify Whats New link is presented on Update Widget @pmm-upgrade @not-ui-pipeline @not-pr-pipeline',
   async (I, homePage) => {
     const versions = getVersions();
-    const locators = homePage.getLocators(versions.current);
+    const locators = homePage.getLocators(versions.dockerMinor);
 
     I.amOnPage(homePage.url);
     // Whats New Link is added for the latest version hours before the release,
@@ -54,7 +55,7 @@ Scenario(
     const versions = getVersions();
 
     I.amOnPage(homePage.url);
-    await homePage.verifyPreUpdateWidgetIsPresent(versions.current);
+    await homePage.verifyPreUpdateWidgetIsPresent(versions.dockerMinor);
   },
 );
 
@@ -79,7 +80,7 @@ Scenario(
     const versions = getVersions();
 
     I.amOnPage(homePage.url);
-    await homePage.upgradePMM(versions.current);
+    await homePage.upgradePMM(versions.dockerMinor);
   },
 );
 
