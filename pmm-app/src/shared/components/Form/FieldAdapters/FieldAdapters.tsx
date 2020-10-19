@@ -107,11 +107,9 @@ export const RadioButtonGroupAdapter = ({
           value={input.value || selected}
           dataQa={dataQa}
         />
-        {meta.touched && meta.error && (
-          <div data-qa="radio-field-error-message" className={styles.errorMessage}>
-            {meta.touched && meta.error}
-          </div>
-        )}
+        <div data-qa="radio-field-error-message" className={styles.errorMessage}>
+          {meta.touched && meta.error}
+        </div>
       </>
     </Field>
   );

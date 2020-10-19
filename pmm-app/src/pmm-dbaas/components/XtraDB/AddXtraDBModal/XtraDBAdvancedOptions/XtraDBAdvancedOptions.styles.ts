@@ -15,10 +15,11 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       }
     `,
     createButton: css`
+      margin-top: ${spacing.md};
       margin-right: ${spacing.xl};
     `,
     nodesWrapper: css`
-      margin-bottom: ${spacing.sm};
+      margin-bottom: ${spacing.md};
       width: 60px;
       div, label {
         white-space: nowrap;
