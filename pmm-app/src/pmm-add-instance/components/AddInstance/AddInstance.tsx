@@ -6,11 +6,9 @@ import { instanceList } from './AddInstance.constants';
 import { Messages } from './AddInstance.messages';
 import { AddInstanceProps, SelectInstanceProps } from './AddInstance.types';
 
-export const SelectInstance: FC<SelectInstanceProps> = (props) => {
+export const SelectInstance: FC<SelectInstanceProps> = ({ type, selectInstanceType, title }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
-
-  const { type, selectInstanceType, title } = props;
 
   return (
     <button
@@ -26,11 +24,10 @@ export const SelectInstance: FC<SelectInstanceProps> = (props) => {
   );
 };
 
-const AddInstance: FC<AddInstanceProps> = (props) => {
+const AddInstance: FC<AddInstanceProps> = ({ onSelectInstanceType }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
 
-  const { onSelectInstanceType } = props;
   const selectInstanceType = (type) => () => onSelectInstanceType({ type });
 
   return (
