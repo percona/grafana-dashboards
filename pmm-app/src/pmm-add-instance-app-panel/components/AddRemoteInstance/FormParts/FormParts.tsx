@@ -6,11 +6,11 @@ import {
   validators,
 } from '@percona/platform-core';
 import React, { useState } from 'react';
+import { Button, useTheme } from '@grafana/ui';
+import { RadioButtonGroup } from 'shared/components/Form/Radio/RadioButtonGroup';
 import { Messages } from '../AddRemoteInstance.messages';
 import { TrackingOptions } from '../AddRemoteInstance.types';
-import { RadioButtonGroup } from 'shared/components/Form/Radio/RadioButtonGroup';
-import { trackingOptions } from '../AddRemoteInstance.constants';
-import { useTheme } from '@grafana/ui';
+import { trackingOptions } from './AddRemoteInstance.constants';
 import { getStyles } from './FormParts.styles';
 
 export const MainDetailsFormPart = ({ remoteInstanceCredentials }) => {
@@ -98,9 +98,9 @@ export const AdditionalOptionsFormPart = ({ instanceType, loading, remoteInstanc
       </div>
 
       <div>
-        <button type="submit" className="button button--dark" id="addInstance" disabled={loading}>
+        <Button id="addInstance" disabled={loading} style={{ marginTop: '30px' }}>
           Add service
-        </button>
+        </Button>
       </div>
     </div>
   );
@@ -110,7 +110,8 @@ export const PostgreSQLAdditionalOptions = ({ mutators }) => {
   const [trackingType, setTrackingType] = useState<string>(TrackingOptions.none);
 
   return (
-    <>
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <span className="description">{Messages.form.labels.trackingOptions}</span>
       <RadioButtonGroup
         options={trackingOptions}
         selected={trackingType}
@@ -121,10 +122,10 @@ export const PostgreSQLAdditionalOptions = ({ mutators }) => {
           setTrackingType(value);
         }}
       />
-      <span className="description">{Messages.form.labels.trackingOptions}</span>
-    </>
+    </div>
   );
 };
+
 export const getAdditionalOptions = (type, remoteInstanceCredentials, mutators) => {
   switch (type) {
     case 'PostgreSQL':
