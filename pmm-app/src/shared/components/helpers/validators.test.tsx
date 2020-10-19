@@ -124,6 +124,14 @@ describe('Validate min test', () => {
 
     expect(minValidator(2)).toEqual(errorMessage);
   });
+
+  it('return error message when value is zero and min is greater', () => {
+    const from = 3;
+    const errorMessage = `Value should be greater or equal to ${from}`;
+    const minValidator = validators.min(from);
+
+    expect(minValidator(0)).toEqual(errorMessage);
+  });
 });
 
 describe('Validate containCases', () => {

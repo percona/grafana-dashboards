@@ -30,7 +30,7 @@ export const validators = {
   },
 
   min: (from) => (value) => {
-    if (!value) {
+    if (!value && value !== 0) {
       return undefined;
     }
 
