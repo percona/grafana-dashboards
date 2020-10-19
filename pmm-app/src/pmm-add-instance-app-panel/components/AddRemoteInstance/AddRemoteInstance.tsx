@@ -106,7 +106,7 @@ const AddRemoteInstance = (props) => {
   const getSteps = (form) => {
     return [
       {
-        title: 'Main details',
+        title: Messages.form.titles.mainDetails,
         fields: ['address', 'port', 'username', 'password'],
         render: () => (
           <div className="" style={{ width: '50%' }}>
@@ -145,40 +145,30 @@ const AddRemoteInstance = (props) => {
         ),
       },
       {
-        title: 'Labels',
+        title: Messages.form.titles.labels,
         fields: ['topology', 'nodes', 'databaseType'],
-        render: (renderProps) => (
+        render: () => (
           <div className="" style={{ width: '50%' }}>
             <TextInputField
               name="environment"
               label={Messages.form.labels.labels.environment}
               placeholder={'Environment'}
-              // validators={[validators.required]}
             />
-            <TextInputField
-              name="region"
-              label={Messages.form.labels.labels.region}
-              placeholder={'Region'}
-              // validators={[validators.required]}
-            />
+            <TextInputField name="region" label={Messages.form.labels.labels.region} placeholder={'Region'} />
             <TextInputField
               name="az"
               label={Messages.form.labels.labels.az}
               placeholder={'Availability Zone'}
-              // validators={[validators.required]}
             />
             <TextInputField
               name="replication_set"
               label={Messages.form.labels.labels.replicationSet}
               placeholder={'Replication set'}
-              // validators={[validators.required]}
-              // required={initialValues.isRDS}
             />
             <TextInputField
               name="cluster"
               label={Messages.form.labels.labels.cluster}
               placeholder={'Cluster'}
-              // validators={[validators.required]}
             />
             <TextareaInputField
               name="custom_labels"
@@ -187,25 +177,19 @@ const AddRemoteInstance = (props) => {
       Format:
       key1:value1
       key2:value2"
-              // validators={[validators.required]}
             />
           </div>
         ),
       },
       {
-        title: 'Additional options',
-        fields: ['topology', 'nodes', 'databaseType'],
-        render: (renderProps) => (
+        title: Messages.form.titles.additionalOptions,
+        fields: [],
+        render: () => (
           <div className="" style={{ width: '50%' }}>
             <div className="add-instance-panel" style={{ alignItems: 'flex-start' }}>
               <CheckboxField label="Skip connection check" name="skip_connection_check" />
-
               <CheckboxField label="Use TLS for database connections" name="tls" />
-              <CheckboxField
-                label="Skip TLS certificate and hostname validation"
-                name="tls_skip_verify"
-                dataQa="tls_skip_verify"
-              />
+              <CheckboxField label="Skip TLS certificate and hostname validation" name="tls_skip_verify" />
               {getAdditionalOptions(instanceType, remoteInstanceCredentials, form.mutators)}
             </div>
 
