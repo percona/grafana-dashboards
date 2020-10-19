@@ -616,7 +616,7 @@ module.exports = {
     timeRangePickerButton: '.btn.navbar-button.navbar-button--tight',
     rootUser: '//div[contains(text(), "root")]',
     dataLinkForRoot: '//div[contains(text(), "Data links")]/..//a',
-    navbarLocator: '//div[@class="navbar-page-btn"]',
+    navbarLocator: '.navbar-page-btn',
   },
 
   async checkNavigationBar(text) {
