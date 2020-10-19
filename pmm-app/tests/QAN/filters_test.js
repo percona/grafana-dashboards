@@ -226,7 +226,7 @@ Scenario(
     qanFilters.navigateByShortCut(mongoLink);
     // wait for open new tab
     I.wait(2);
-    I.switchToNextTab(1);
+    await dashboardPage.waitAndSwitchTabs(2);
     I.waitInUrl(mongoLink, 30);
     await dashboardPage.checkNavigationBar(header);
   },
@@ -242,7 +242,7 @@ Scenario(
     qanFilters.navigateByShortCut(replicationSetLink);
     // wait for open new tab
     I.wait(2);
-    I.switchToNextTab(1);
+    await dashboardPage.waitAndSwitchTabs(2);
     I.waitInUrl(replicationSetLink, 30);
     await dashboardPage.checkNavigationBar(header);
   },
@@ -260,7 +260,7 @@ Scenario(
     qanFilters.navigateByShortCut(shortCut);
     // wait for open new tab
     I.wait(2);
-    I.switchToNextTab(1);
+    await dashboardPage.waitAndSwitchTabs(2);
     I.waitInUrl(link, 30);
     I.waitInUrl(nodeNameLink, 30);
     await dashboardPage.checkNavigationBar(header);
@@ -277,7 +277,7 @@ Scenario(
     qanFilters.navigateByShortCut(serviceNameLink);
     // wait for open new tab
     I.wait(2);
-    I.switchToNextTab(1);
+    await dashboardPage.waitAndSwitchTabs(2);
     I.waitInUrl(serviceNameLink, 30);
     await dashboardPage.checkNavigationBar(header);
   },
