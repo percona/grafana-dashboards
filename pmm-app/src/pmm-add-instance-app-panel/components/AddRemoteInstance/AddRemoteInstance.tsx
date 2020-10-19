@@ -1,34 +1,19 @@
 import React, { useState } from 'react';
 import { Form as FormFinal } from 'react-final-form';
-// import { CheckboxField } from 'shared/components/Form/Checkbox/Checkbox';
 import {
+  CheckboxField,
+  PasswordInputField,
   StepProgress,
   TextareaInputField,
   TextInputField,
-  PasswordInputField,
   validators,
-  CheckboxField,
 } from '@percona/platform-core';
-import Validators from 'shared/components/helpers/validators';
 import AddRemoteInstanceService from './AddRemoteInstance.service';
 import { TrackingOptions } from './AddRemoteInstance.types';
-import { getAdditionalOptions, getInstanceData } from './AddRemoteInstance.tools';
+import { getAdditionalOptions, getInstanceData, validateInstanceForm } from './AddRemoteInstance.tools';
 import { useTheme } from '@grafana/ui';
 import { getStyles } from './AddRemoteInstance.styles';
 
-const validateInstanceForm = (values) => {
-  const errors = {} as any;
-
-  errors.port = values.port ? Validators.validatePort(values.port) : '';
-  errors.custom_labels = values.custom_labels ? Validators.validateKeyValue(values.custom_labels) : '';
-  Object.keys(errors).forEach((errorKey) => {
-    if (!errors[errorKey]) {
-      delete errors[errorKey];
-    }
-  });
-
-  return errors;
-};
 const AddRemoteInstance = (props) => {
   const theme = useTheme();
   const styles = getStyles(theme);
@@ -117,12 +102,8 @@ const AddRemoteInstance = (props) => {
     }
   };
 
-  const AddInstanceForm = (props) => {
-    const theme = useTheme();
-    const styles = getStyles(theme);
-
-    const { form } = props;
-    const steps = [
+  const getSteps = (form) => {
+    return [
       {
         title: 'Main details',
         fields: ['address', 'port', 'username', 'password'],
@@ -218,17 +199,12 @@ const AddRemoteInstance = (props) => {
             <div className="add-instance-panel" style={{ alignItems: 'flex-start' }}>
               <CheckboxField label="Skip connection check" name="skip_connection_check" />
 
-              <span className="description" />
-
               <CheckboxField label="Use TLS for database connections" name="tls" />
-
-              <span className="description" />
               <CheckboxField
                 label="Skip TLS certificate and hostname validation"
                 name="tls_skip_verify"
                 dataQa="add-account-username"
               />
-              <span className="description" />
               {getAdditionalOptions(instanceType, remoteInstanceCredentials, form.mutators)}
             </div>
 
@@ -241,26 +217,10 @@ const AddRemoteInstance = (props) => {
         ),
       },
     ];
-
-    return (
-      <>
-        <h4>{`Add remote ${instanceType} Instance`}</h4>
-        <StepProgress
-          steps={steps}
-          initialValues={{
-            topology: 'cluster',
-            nodes: 3,
-            resources: 'small',
-            memory: 1,
-          }}
-          onSubmit={props.onSubmit}
-        />
-      </>
-    );
   };
 
   return (
-    <div id="antd" className={styles.formWrapper}>
+    <div className={styles.formWrapper}>
       <FormFinal
         mutators={{ changePGTracking }}
         onSubmit={onSubmit}
@@ -268,7 +228,8 @@ const AddRemoteInstance = (props) => {
         validate={validateInstanceForm}
         render={({ form, handleSubmit }) => (
           <form onSubmit={handleSubmit}>
-            <AddInstanceForm form={form} onSubmit={handleSubmit} />
+            <h4>{`Add remote ${instanceType} Instance`}</h4>
+            <StepProgress steps={getSteps(form)} initialValues={initialValues} onSubmit={handleSubmit} />
           </form>
         )}
       />

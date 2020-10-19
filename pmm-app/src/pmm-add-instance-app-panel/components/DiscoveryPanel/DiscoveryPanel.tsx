@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import './DiscoveryPanel.scss';
-import { Spin } from 'antd';
 import DiscoveryService from './Discovery.service';
 import CredentialsForm from './CredentialsForm';
 import InstancesTable from './InstancesTable';
+import { Spinner } from '@grafana/ui';
 
 interface DiscoverySearchPanelInterface {
   onSelectInstance: (instanceData: any) => void;
@@ -40,7 +40,7 @@ const DiscoveryPanel = ({ onSelectInstance }: DiscoverySearchPanelInterface) => 
       <div className="form-wrapper" id="antd">
         <CredentialsForm onSetCredentials={setCredentials} />
         <div className="spinner-wrapper" style={{ width: '100%' }}>
-          {loading && <Spin size="large" />}
+          {loading && <Spinner />}
         </div>
         {!loading && (
           <InstancesTable

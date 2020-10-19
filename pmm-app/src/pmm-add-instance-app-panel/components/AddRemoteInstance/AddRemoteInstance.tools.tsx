@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
-import { InstanceData, TrackingOptions } from './AddRemoteInstance.types';
-import { RadioButtonGroup } from '../../../shared/components/Form/Radio/RadioButtonGroup';
-import { trackingOptions } from './AddRemoteInstance.constants';
-import { Messages } from './AddRemoteInstance.messages';
-import { CheckboxField } from '../../../shared/components/Form';
+import React, {useState} from 'react';
+import {InstanceData, TrackingOptions} from './AddRemoteInstance.types';
+import {RadioButtonGroup} from '../../../shared/components/Form/Radio/RadioButtonGroup';
+import {trackingOptions} from './AddRemoteInstance.constants';
+import {Messages} from './AddRemoteInstance.messages';
+import {CheckboxField} from '../../../shared/components/Form';
+import Validators from "../../../shared/components/helpers/validators";
 
 export const extractCredentials = (credentials) => ({
   service_name: !credentials.isRDS ? credentials.address : credentials.instance_id,
@@ -99,4 +100,17 @@ export const getAdditionalOptions = (type, remoteInstanceCredentials, mutators) 
     default:
       return null;
   }
+};
+export const validateInstanceForm = (values) => {
+  const errors = {} as any;
+
+  errors.port = values.port ? Validators.validatePort(values.port) : '';
+  errors.custom_labels = values.custom_labels ? Validators.validateKeyValue(values.custom_labels) : '';
+  Object.keys(errors).forEach((errorKey) => {
+    if (!errors[errorKey]) {
+      delete errors[errorKey];
+    }
+  });
+
+  return errors;
 };

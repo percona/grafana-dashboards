@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
-import { Button } from 'antd';
 import { createBrowserHistory } from 'history';
 import { Router, Route } from 'react-router-dom';
 import AddRemoteInstance from './components/AddRemoteInstance/AddRemoteInstance';
 import DiscoveryPanel from './components/DiscoveryPanel/DiscoveryPanel';
 import AddInstance from './components/AddInstance/AddInstance';
 import './panel.scss';
-import '../shared/style.less';
-import '../shared/styles.scss';
 
 const history = createBrowserHistory();
 const AddInstancePanel = () => {
@@ -27,14 +24,14 @@ const AddInstancePanel = () => {
   };
 
   return (
-    <div className="app-theme-dark content-wrapper add-instance-panel">
+    <div className="flex-column padding">
       {!selectedInstance.type ? <AddInstance onSelectInstanceType={setSelectedInstance} /> : null}
       {selectedInstance.type && (
         <>
-          <div id="antd" className="add-instance-navigation-link">
-            <Button type="link" onClick={() => setSelectedInstance({ type: '' })}>
+          <div className="flex-column">
+            <button type="link" onClick={() => setSelectedInstance({ type: '' })}>
               Return to instance select menu
-            </Button>
+            </button>
           </div>
           {selectedInstance.type === 'rds' ? (
             <DiscoveryPanel onSelectInstance={setSelectedInstance} />
