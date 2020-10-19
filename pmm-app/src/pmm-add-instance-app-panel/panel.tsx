@@ -6,11 +6,13 @@ import DiscoveryPanel from './components/DiscoveryPanel/DiscoveryPanel';
 import AddInstance from './components/AddInstance/AddInstance';
 import './panel.scss';
 
+const availableInstanceTypes = ['rds', 'postgresql', 'mysql', 'proxysql', 'mongodb', 'proxysql'];
 const history = createBrowserHistory();
+
 const AddInstancePanel = () => {
+
   const urlParams = new URLSearchParams(window.location.search);
   const instanceType = urlParams.get('instance_type') || '';
-  const availableInstanceTypes = ['rds', 'postgresql', 'mysql', 'proxysql', 'mongodb', 'proxysql'];
   const [selectedInstance, selectInstance] = useState({
     type: availableInstanceTypes.includes(instanceType) ? instanceType : '',
   });

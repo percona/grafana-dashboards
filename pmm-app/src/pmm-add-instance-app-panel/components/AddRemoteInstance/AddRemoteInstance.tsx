@@ -13,6 +13,7 @@ import { TrackingOptions } from './AddRemoteInstance.types';
 import { getAdditionalOptions, getInstanceData, validateInstanceForm } from './AddRemoteInstance.tools';
 import { useTheme } from '@grafana/ui';
 import { getStyles } from './AddRemoteInstance.styles';
+import { Messages } from './AddRemoteInstance.messages';
 
 const AddRemoteInstance = (props) => {
   const theme = useTheme();
@@ -111,32 +112,32 @@ const AddRemoteInstance = (props) => {
           <div className="" style={{ width: '50%' }}>
             <TextInputField
               name="address"
-              label={'Hostname'}
+              label={Messages.form.labels.mainDetails.address}
               placeholder={'Hostname'}
               validators={[validators.required]}
               disabled={remoteInstanceCredentials.isRDS}
             />
             <TextInputField
               name="service_name"
-              label={'Service name'}
+              label={Messages.form.labels.mainDetails.serviceName}
               placeholder={'Service name (default: Hostname)'}
             />
             <TextInputField
               name="port"
-              label={'Port'}
+              label={Messages.form.labels.mainDetails.port}
               placeholder={`Port (default: ${remoteInstanceCredentials.port} )`}
               validators={[validators.required]}
             />
             <TextInputField
               name="username"
-              label={'Username'}
+              label={Messages.form.labels.mainDetails.username}
               placeholder={'Username'}
               validators={[validators.required]}
               disabled={remoteInstanceCredentials.isRDS}
             />
             <PasswordInputField
               name="password"
-              label={'Password'}
+              label={Messages.form.labels.mainDetails.password}
               placeholder={'Password'}
               validators={[validators.required]}
             />
@@ -150,38 +151,38 @@ const AddRemoteInstance = (props) => {
           <div className="" style={{ width: '50%' }}>
             <TextInputField
               name="environment"
-              label={'Environment'}
+              label={Messages.form.labels.labels.environment}
               placeholder={'Environment'}
               // validators={[validators.required]}
             />
             <TextInputField
               name="region"
-              label={'Region'}
+              label={Messages.form.labels.labels.region}
               placeholder={'Region'}
               // validators={[validators.required]}
             />
             <TextInputField
               name="az"
-              label={'Availability Zone'}
+              label={Messages.form.labels.labels.az}
               placeholder={'Availability Zone'}
               // validators={[validators.required]}
             />
             <TextInputField
               name="replication_set"
-              label={'Replication set'}
+              label={Messages.form.labels.labels.replicationSet}
               placeholder={'Replication set'}
               // validators={[validators.required]}
               // required={initialValues.isRDS}
             />
             <TextInputField
               name="cluster"
-              label={'Cluster'}
+              label={Messages.form.labels.labels.cluster}
               placeholder={'Cluster'}
               // validators={[validators.required]}
             />
             <TextareaInputField
               name="custom_labels"
-              label={'Custom labels'}
+              label={Messages.form.labels.labels.customLabels}
               placeholder="Custom labels
       Format:
       key1:value1
@@ -203,12 +204,12 @@ const AddRemoteInstance = (props) => {
               <CheckboxField
                 label="Skip TLS certificate and hostname validation"
                 name="tls_skip_verify"
-                dataQa="add-account-username"
+                dataQa="tls_skip_verify"
               />
               {getAdditionalOptions(instanceType, remoteInstanceCredentials, form.mutators)}
             </div>
 
-            <div className="__submit-block">
+            <div>
               <button type="submit" className="button button--dark" id="addInstance" disabled={loading}>
                 Add service
               </button>
