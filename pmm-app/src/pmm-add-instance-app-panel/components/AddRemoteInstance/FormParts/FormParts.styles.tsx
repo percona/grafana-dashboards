@@ -6,4 +6,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => ({
   groupWrapper: css`
     width: 50%;
   `,
+  addServiceButton: css`
+    margin-top: 30px;
+  `
 }));

@@ -27,14 +27,14 @@ export const MainDetailsFormPart: FC<MainDetailsFormPartProps> = ({ remoteInstan
       <TextInputField
         name="address"
         label={Messages.form.labels.mainDetails.address}
-        placeholder="Hostname"
+        placeholder={Messages.form.placeholders.mainDetails.address}
         validators={[validators.required]}
         disabled={remoteInstanceCredentials.isRDS}
       />
       <TextInputField
         name="service_name"
         label={Messages.form.labels.mainDetails.serviceName}
-        placeholder="Service name (default: Hostname)"
+        placeholder={Messages.form.placeholders.mainDetails.serviceName}
       />
       <TextInputField
         name="port"
@@ -45,14 +45,14 @@ export const MainDetailsFormPart: FC<MainDetailsFormPartProps> = ({ remoteInstan
       <TextInputField
         name="username"
         label={Messages.form.labels.mainDetails.username}
-        placeholder="Username"
+        placeholder={Messages.form.placeholders.mainDetails.username}
         validators={[validators.required]}
         disabled={remoteInstanceCredentials.isRDS}
       />
       <PasswordInputField
         name="password"
         label={Messages.form.labels.mainDetails.password}
-        placeholder="Password"
+        placeholder={Messages.form.placeholders.mainDetails.password}
         validators={[validators.required]}
       />
     </div>
@@ -67,23 +67,32 @@ export const LabelsFormPart: FC<any> = () => {
       <TextInputField
         name="environment"
         label={Messages.form.labels.labels.environment}
-        placeholder="Environment"
+        placeholder={Messages.form.placeholders.labels.environment}
       />
-      <TextInputField name="region" label={Messages.form.labels.labels.region} placeholder="Region" />
-      <TextInputField name="az" label={Messages.form.labels.labels.az} placeholder="Availability Zone" />
+      <TextInputField
+        name="region"
+        label={Messages.form.labels.labels.region}
+        placeholder={Messages.form.placeholders.labels.region}
+      />
+      <TextInputField
+        name="az"
+        label={Messages.form.labels.labels.az}
+        placeholder={Messages.form.placeholders.labels.az}
+      />
       <TextInputField
         name="replication_set"
         label={Messages.form.labels.labels.replicationSet}
-        placeholder="Replication set"
+        placeholder={Messages.form.placeholders.labels.replicationSet}
       />
-      <TextInputField name="cluster" label={Messages.form.labels.labels.cluster} placeholder="Cluster" />
+      <TextInputField
+        name="cluster"
+        label={Messages.form.labels.labels.cluster}
+        placeholder={Messages.form.placeholders.labels.cluster}
+      />
       <TextareaInputField
         name="custom_labels"
         label={Messages.form.labels.labels.customLabels}
-        placeholder="Custom labels
-      Format:
-      key1:value1
-      key2:value2"
+        placeholder={Messages.form.placeholders.labels.customLabels}
       />
     </div>
   );
@@ -101,14 +110,17 @@ export const AdditionalOptionsFormPart: FC<AdditionalOptionsFormPartProps> = ({
   return (
     <div className={styles.groupWrapper}>
       <div>
-        <CheckboxField label="Skip connection check" name="skip_connection_check" />
-        <CheckboxField label="Use TLS for database connections" name="tls" />
-        <CheckboxField label="Skip TLS certificate and hostname validation" name="tls_skip_verify" />
+        <CheckboxField
+          label={Messages.form.labels.additionalOptions.skipConnectionCheck}
+          name="skip_connection_check"
+        />
+        <CheckboxField label={Messages.form.labels.additionalOptions.tls} name="tls" />
+        <CheckboxField label={Messages.form.labels.additionalOptions.tlsSkipVerify} name="tls_skip_verify" />
         {getAdditionalOptions(instanceType, remoteInstanceCredentials, form.mutators)}
       </div>
 
       <div>
-        <Button id="addInstance" disabled={loading} style={{ marginTop: '30px' }}>
+        <Button id="addInstance" disabled={loading} className={styles.addServiceButton}>
           Add service
         </Button>
       </div>
@@ -143,16 +155,20 @@ export const getAdditionalOptions = (type, remoteInstanceCredentials, mutators) 
     case 'MySQL':
       return (
         <>
-          <CheckboxField label="Use performance schema" name="qan_mysql_perfschema" />
-          <span className="description" />
-
+          <CheckboxField
+            label={Messages.form.labels.additionalOptions.qanMysqlPerfschema}
+            name="qan_mysql_perfschema"
+          />
           {remoteInstanceCredentials.isRDS ? (
             <>
-              <CheckboxField label="Disable Basic Metrics" name="disable_basic_metrics" />
-              <span className="description" />
-
-              <CheckboxField label="Disable Enhanced Metrics" name="disable_enhanced_metrics" />
-              <span className="description" />
+              <CheckboxField
+                label={Messages.form.labels.additionalOptions.disableBasicMetrics}
+                name="disable_basic_metrics"
+              />
+              <CheckboxField
+                label={Messages.form.labels.additionalOptions.disableEnchancedMetrics}
+                name="disable_enhanced_metrics"
+              />
             </>
           ) : null}
         </>
@@ -160,8 +176,10 @@ export const getAdditionalOptions = (type, remoteInstanceCredentials, mutators) 
     case 'MongoDB':
       return (
         <>
-          <CheckboxField label="Use QAN MongoDB Profiler" name="qan_mongodb_profiler" />
-          <span className="description" />
+          <CheckboxField
+            label={Messages.form.labels.additionalOptions.qanMongodbProfiler}
+            name="qan_mongodb_profiler"
+          />
         </>
       );
     default:
