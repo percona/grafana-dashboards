@@ -4,6 +4,8 @@ import DiscoveryService from './Discovery.service';
 import CredentialsForm from './CredentialsForm';
 import InstancesTable from './InstancesTable';
 import { Spinner } from '@grafana/ui';
+import 'shared/styles.scss';
+import 'shared/style.less';
 
 interface DiscoverySearchPanelInterface {
   onSelectInstance: (instanceData: any) => void;

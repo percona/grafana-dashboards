@@ -7,7 +7,7 @@ import {
   MainDetailsFormPart,
 } from './FormParts';
 import { Form } from 'react-final-form';
-import { trackingOptions } from './AddRemoteInstance.constants';
+import { trackingOptions } from './FormParts.constants';
 
 describe('MainDetailsFormPart ::', () => {
   it('should disable fields with sat isRDS flag', async () => {

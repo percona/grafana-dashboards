@@ -10,3 +10,12 @@ export interface InstanceData {
   remoteInstanceCredentials?: any;
   discoverName?: string;
 }
+
+interface Instance {
+  type: string;
+  credentials: any;
+}
+
+export interface AddRemoteInstanceProps {
+  instance: Instance
+}

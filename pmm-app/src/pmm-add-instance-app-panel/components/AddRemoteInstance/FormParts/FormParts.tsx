@@ -8,15 +8,16 @@ import {
 import React, { FC, useState } from 'react';
 import { Button, useTheme } from '@grafana/ui';
 import { RadioButtonGroup } from 'shared/components/Form/Radio/RadioButtonGroup';
-import { Messages } from '../AddRemoteInstance.messages';
+import { Messages } from './FormParts.messages';
 import { TrackingOptions } from '../AddRemoteInstance.types';
-import { trackingOptions } from './AddRemoteInstance.constants';
+import { trackingOptions } from './FormParts.constants';
 import { getStyles } from './FormParts.styles';
+import {
+  AdditionalOptionsFormPartProps,
+  MainDetailsFormPartProps,
+  PostgreSQLAdditionalOptionsProps,
+} from './FormParts.types';
 
-// TODO: add credentials interface
-interface MainDetailsFormPartProps {
-  remoteInstanceCredentials: any;
-}
 export const MainDetailsFormPart: FC<MainDetailsFormPartProps> = ({ remoteInstanceCredentials }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
@@ -57,7 +58,7 @@ export const MainDetailsFormPart: FC<MainDetailsFormPartProps> = ({ remoteInstan
     </div>
   );
 };
-export const LabelsFormPart: FC<void> = () => {
+export const LabelsFormPart: FC<any> = () => {
   const theme = useTheme();
   const styles = getStyles(theme);
 
@@ -88,12 +89,6 @@ export const LabelsFormPart: FC<void> = () => {
   );
 };
 
-interface AdditionalOptionsFormPartProps {
-  instanceType: string;
-  loading: boolean;
-  remoteInstanceCredentials: any;
-  form: any;
-}
 export const AdditionalOptionsFormPart: FC<AdditionalOptionsFormPartProps> = ({
   instanceType,
   loading,
@@ -121,9 +116,6 @@ export const AdditionalOptionsFormPart: FC<AdditionalOptionsFormPartProps> = ({
   );
 };
 
-interface PostgreSQLAdditionalOptionsProps {
-  mutators: any;
-}
 export const PostgreSQLAdditionalOptions: FC<PostgreSQLAdditionalOptionsProps> = ({ mutators }) => {
   const [trackingType, setTrackingType] = useState<string>(TrackingOptions.none);
 
@@ -149,25 +141,20 @@ export const getAdditionalOptions = (type, remoteInstanceCredentials, mutators) 
     case 'PostgreSQL':
       return <PostgreSQLAdditionalOptions mutators={mutators} />;
     case 'MySQL':
-      if (remoteInstanceCredentials.isRDS) {
-        return (
-          <>
-            <CheckboxField label="Use performance schema" name="qan_mysql_perfschema" />
-            <span className="description" />
-
-            <CheckboxField label="Disable Basic Metrics" name="disable_basic_metrics" />
-            <span className="description" />
-
-            <CheckboxField label="Disable Enhanced Metrics" name="disable_enhanced_metrics" />
-            <span className="description" />
-          </>
-        );
-      }
-
       return (
         <>
           <CheckboxField label="Use performance schema" name="qan_mysql_perfschema" />
           <span className="description" />
+
+          {remoteInstanceCredentials.isRDS ? (
+            <>
+              <CheckboxField label="Disable Basic Metrics" name="disable_basic_metrics" />
+              <span className="description" />
+
+              <CheckboxField label="Disable Enhanced Metrics" name="disable_enhanced_metrics" />
+              <span className="description" />
+            </>
+          ) : null}
         </>
       );
     case 'MongoDB':

@@ -10,23 +10,23 @@ export const Messages = {
       labels: 'Labels',
       additionalOptions: 'Additional options',
     },
-    labels: {
-      trackingOptions: 'Stat tracking options',
-      mainDetails: {
-        address: 'Hostname',
-        serviceName: 'Service name',
-        port: 'Port',
-        username: 'Username',
-        password: 'Password',
-      },
-      labels: {
-        environment: 'Environment',
-        region: 'Region',
-        az: 'Availability Zone',
-        replicationSet: 'Replication set',
-        cluster: 'Cluster',
-        customLabels: 'Custom labels',
-      },
-    },
+    // labels: {
+    //   trackingOptions: 'Stat tracking options',
+    //   mainDetails: {
+    //     address: 'Hostname',
+    //     serviceName: 'Service name',
+    //     port: 'Port',
+    //     username: 'Username',
+    //     password: 'Password',
+    //   },
+    //   labels: {
+    //     environment: 'Environment',
+    //     region: 'Region',
+    //     az: 'Availability Zone',
+    //     replicationSet: 'Replication set',
+    //     cluster: 'Cluster',
+    //     customLabels: 'Custom labels',
+    //   },
+    // },
   },
 };
