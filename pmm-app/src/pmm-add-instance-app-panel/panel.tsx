@@ -5,12 +5,12 @@ import AddRemoteInstance from './components/AddRemoteInstance/AddRemoteInstance'
 import DiscoveryPanel from './components/DiscoveryPanel/DiscoveryPanel';
 import AddInstance from './components/AddInstance/AddInstance';
 import './panel.scss';
+import { Button } from '@grafana/ui';
 
 const availableInstanceTypes = ['rds', 'postgresql', 'mysql', 'proxysql', 'mongodb', 'proxysql'];
 const history = createBrowserHistory();
 
 const AddInstancePanel = () => {
-
   const urlParams = new URLSearchParams(window.location.search);
   const instanceType = urlParams.get('instance_type') || '';
   const [selectedInstance, selectInstance] = useState({
@@ -31,9 +31,10 @@ const AddInstancePanel = () => {
       {selectedInstance.type && (
         <>
           <div className="flex-column">
-            <button type="link" onClick={() => setSelectedInstance({ type: '' })}>
+            {/* eslint-disable-next-line react/jsx-no-undef */}
+            <Button variant="link" onClick={() => setSelectedInstance({ type: '' })}>
               Return to instance select menu
-            </button>
+            </Button>
           </div>
           {selectedInstance.type === 'rds' ? (
             <DiscoveryPanel onSelectInstance={setSelectedInstance} />
