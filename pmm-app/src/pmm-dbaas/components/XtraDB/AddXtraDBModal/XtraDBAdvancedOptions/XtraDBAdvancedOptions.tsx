@@ -52,6 +52,9 @@ export const XtraDBAdvancedOptions: FC<FormRenderProps> = ({
 
     change(AddXtraDBFields.resources, value);
   }, [resources, memory, cpu, customMemory, customCPU]);
+  const parsePositiveInt = useCallback(
+    (value) => (value > 0 && Number.isInteger(+value) ? value : undefined), [],
+  );
 
   return (
     <>
@@ -91,12 +94,14 @@ export const XtraDBAdvancedOptions: FC<FormRenderProps> = ({
           label={Messages.xtradb.addModal.fields.memory}
           validators={resourcesValidators}
           disabled={resources !== XtraDBResources.custom}
+          parse={parsePositiveInt}
         />
         <NumberInputField
           name={AddXtraDBFields.cpu}
           label={Messages.xtradb.addModal.fields.cpu}
           validators={resourcesValidators}
           disabled={resources !== XtraDBResources.custom}
+          parse={parsePositiveInt}
         />
       </div>
       <HorizontalGroup justify="center" spacing="md">
