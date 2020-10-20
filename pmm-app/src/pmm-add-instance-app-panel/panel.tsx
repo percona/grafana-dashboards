@@ -1,16 +1,20 @@
 import React, { useState } from 'react';
 import { createBrowserHistory } from 'history';
 import { Router, Route } from 'react-router-dom';
+import { Button, useTheme } from '@grafana/ui';
+import { cx } from 'emotion';
 import AddRemoteInstance from './components/AddRemoteInstance/AddRemoteInstance';
 import Discovery from './components/Discovery/Discovery';
 import AddInstance from './components/AddInstance/AddInstance';
-import './panel.scss';
-import { Button } from '@grafana/ui';
+import { getStyles } from './panel.styles';
 
 const availableInstanceTypes = ['rds', 'postgresql', 'mysql', 'proxysql', 'mongodb', 'proxysql'];
 const history = createBrowserHistory();
 
 const AddInstancePanel = () => {
+  const theme = useTheme();
+  const styles = getStyles(theme);
+
   const urlParams = new URLSearchParams(window.location.search);
   const instanceType = urlParams.get('instance_type') || '';
   const [selectedInstance, selectInstance] = useState({
@@ -25,24 +29,24 @@ const AddInstancePanel = () => {
     history.push(url.pathname + url.search);
   };
 
-  return (
-    <div className="flex-column padding">
-      {!selectedInstance.type ? <AddInstance onSelectInstanceType={setSelectedInstance} /> : null}
-      {selectedInstance.type && (
-        <>
-          <div className="flex-column">
-            {/* eslint-disable-next-line react/jsx-no-undef */}
-            <Button variant="link" onClick={() => setSelectedInstance({ type: '' })}>
-              Return to instance select menu
-            </Button>
-          </div>
-          {selectedInstance.type === 'rds' ? (
-            <Discovery onSelectInstance={setSelectedInstance} />
-          ) : (
-            <AddRemoteInstance instance={selectedInstance} />
-          )}
-        </>
+  const InstanceForm = () => (
+    <>
+      <div className={styles.content}>
+        <Button variant="link" onClick={() => setSelectedInstance({ type: '' })}>
+          Return to instance select menu
+        </Button>
+      </div>
+      {selectedInstance.type === 'rds' ? (
+        <Discovery onSelectInstance={setSelectedInstance} />
+      ) : (
+        <AddRemoteInstance instance={selectedInstance} />
       )}
+    </>
+  );
+
+  return (
+    <div className={cx(styles.content, styles.contentPadding)}>
+      {!selectedInstance.type ? <AddInstance onSelectInstanceType={setSelectedInstance} /> : <InstanceForm />}
     </div>
   );
 };
