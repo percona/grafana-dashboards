@@ -8,6 +8,7 @@ import {
 import React, { FC, useState } from 'react';
 import { Button, useTheme } from '@grafana/ui';
 import { RadioButtonGroup } from 'shared/components/Form/Radio/RadioButtonGroup';
+import Validators from 'shared/components/helpers/validators';
 import { Messages } from './FormParts.messages';
 import { TrackingOptions } from '../AddRemoteInstance.types';
 import { trackingOptions } from './FormParts.constants';
@@ -40,7 +41,7 @@ export const MainDetailsFormPart: FC<MainDetailsFormPartProps> = ({ remoteInstan
         name="port"
         label={Messages.form.labels.mainDetails.port}
         placeholder={`Port (default: ${remoteInstanceCredentials.port} )`}
-        validators={[validators.required]}
+        validators={[validators.required, Validators.validatePort]}
       />
       <TextInputField
         name="username"
@@ -93,6 +94,7 @@ export const LabelsFormPart: FC<any> = () => {
         name="custom_labels"
         label={Messages.form.labels.labels.customLabels}
         placeholder={Messages.form.placeholders.labels.customLabels}
+        validators={[validators.required, Validators.validateKeyValue]}
       />
     </div>
   );

@@ -4,7 +4,7 @@ export interface MainDetailsFormPartProps {
 }
 
 export interface AdditionalOptionsFormPartProps {
-  instanceType: string;
+  instanceType?: string;
   loading: boolean;
   remoteInstanceCredentials: any;
   form: any;

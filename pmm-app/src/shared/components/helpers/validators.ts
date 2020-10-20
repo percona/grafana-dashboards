@@ -2,11 +2,11 @@ import { Validator, VResult } from './validator.types';
 
 export const validators = {
   validatePort: (value) => {
-    const portNumber = Number.parseInt(value, 10);
+    const portNumber = Number(value);
     const MIN_PORT_NUMBER = 0;
     const MAX_PORT_NUMBER = 65535;
 
-    if (portNumber > MIN_PORT_NUMBER && portNumber < MAX_PORT_NUMBER) {
+    if (portNumber > MIN_PORT_NUMBER && portNumber < MAX_PORT_NUMBER && Number.isFinite(portNumber)) {
       return undefined;
     }
 
@@ -37,8 +37,8 @@ export const validators = {
 
   validateKeyValue: (value) => {
     if (
-      value
-      && !value
+      value &&
+      !value
         .split(/[\n\s]/)
         .filter(Boolean)
         .every((element) => /^[a-z0-9]+:[a-z0-9]+$/.test(element))

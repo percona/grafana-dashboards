@@ -1,20 +1,19 @@
-import Validators from 'shared/components/helpers/validators';
 import { InstanceData } from './AddRemoteInstance.types';
-
-export const extractCredentials = (credentials) => ({
-  service_name: !credentials.isRDS ? credentials.address : credentials.instance_id,
-  port: credentials.port,
-  address: credentials.address,
-  isRDS: credentials.isRDS,
-  region: credentials.region,
-  aws_access_key: credentials.aws_access_key,
-  aws_secret_key: credentials.aws_secret_key,
-  instance_id: credentials.instance_id,
-  az: credentials.az,
-});
 
 export const getInstanceData = (instanceType, credentials) => {
   const instance: InstanceData = {};
+
+  const extractCredentials = (credentials) => ({
+    service_name: !credentials.isRDS ? credentials.address : credentials.instance_id,
+    port: credentials.port,
+    address: credentials.address,
+    isRDS: credentials.isRDS,
+    region: credentials.region,
+    aws_access_key: credentials.aws_access_key,
+    aws_secret_key: credentials.aws_secret_key,
+    instance_id: credentials.instance_id,
+    az: credentials.az,
+  });
 
   instance.remoteInstanceCredentials = credentials ? extractCredentials(credentials) : {};
   switch (instanceType) {
@@ -40,17 +39,4 @@ export const getInstanceData = (instanceType, credentials) => {
   }
 
   return instance;
-};
-export const validateInstanceForm = (values) => {
-  const errors = {} as any;
-
-  errors.port = values.port ? Validators.validatePort(values.port) : '';
-  errors.custom_labels = values.custom_labels ? Validators.validateKeyValue(values.custom_labels) : '';
-  Object.keys(errors).forEach((errorKey) => {
-    if (!errors[errorKey]) {
-      delete errors[errorKey];
-    }
-  });
-
-  return errors;
 };
