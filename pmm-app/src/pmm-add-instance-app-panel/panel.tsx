@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { createBrowserHistory } from 'history';
 import { Router, Route } from 'react-router-dom';
 import AddRemoteInstance from './components/AddRemoteInstance/AddRemoteInstance';
-import DiscoveryPanel from './components/DiscoveryPanel/DiscoveryPanel';
+import Discovery from './components/Discovery/Discovery';
 import AddInstance from './components/AddInstance/AddInstance';
 import './panel.scss';
 import { Button } from '@grafana/ui';
@@ -37,7 +37,7 @@ const AddInstancePanel = () => {
             </Button>
           </div>
           {selectedInstance.type === 'rds' ? (
-            <DiscoveryPanel onSelectInstance={setSelectedInstance} />
+            <Discovery onSelectInstance={setSelectedInstance} />
           ) : (
             <AddRemoteInstance instance={selectedInstance} />
           )}

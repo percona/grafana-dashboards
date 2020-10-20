@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Table } from 'shared/components/Elements/Table/Table';
 import { styles } from './InstancesTable.styles';
 
@@ -15,8 +15,8 @@ const getEngineType = (type) => {
   }
 };
 
-const InstancesTable = (props) => {
-  const { instances, onSelectInstance, credentials } = props;
+const InstancesTable: FC<any> = (props) => {
+  const { instances, onSelectInstance, credentials, loading } = props;
   const columns = [
     {
       Header: 'Region',
@@ -28,8 +28,8 @@ const InstancesTable = (props) => {
     },
     {
       Header: 'Engine',
-      // eslint-disable-next-line max-len
-      accessor: (element) => (element.engine ? `${getEngineType(element.engine)}  ${element.engine_version}` : 'nothing'),
+      accessor: (element) =>
+        element.engine ? `${getEngineType(element.engine)}  ${element.engine_version}` : 'nothing',
     },
     {
       Header: 'Instance ID',
@@ -66,11 +66,11 @@ const InstancesTable = (props) => {
     },
   ];
 
-  return instances && instances.length ? (
+  return (
     <div className={styles.tableWrapper}>
-      <Table columns={columns} data={instances} />
+      <Table columns={columns} data={instances} loading={loading} />
     </div>
-  ) : null;
+  );
 };
 
 export default InstancesTable;
