@@ -5,6 +5,7 @@ import { getStyles } from './AddInstance.styles';
 import { instanceList } from './AddInstance.constants';
 import { Messages } from './AddInstance.messages';
 import { AddInstanceProps, SelectInstanceProps } from './AddInstance.types';
+import { OverflowTooltip } from '../../../shared/components/Elements/OverflowTooltip/OverflowTooptip';
 
 export const SelectInstance: FC<SelectInstanceProps> = ({ type, selectInstanceType, title }) => {
   const theme = useTheme();
@@ -18,7 +19,9 @@ export const SelectInstance: FC<SelectInstanceProps> = ({ type, selectInstanceTy
       type="button"
     >
       <Database />
-      <b className={styles.addInstanceTitle}>{title}</b>
+      <b className={styles.addInstanceTitle}>
+        <OverflowTooltip>{title}</OverflowTooltip>
+      </b>
       <span className={styles.addInstance}>{Messages.titles.addInstance}</span>
     </button>
   );
