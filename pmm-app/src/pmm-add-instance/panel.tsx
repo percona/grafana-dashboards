@@ -4,7 +4,7 @@ import { createBrowserHistory } from 'history';
 import { Router, Route } from 'react-router-dom';
 import AddRemoteInstance from './components/AddRemoteInstance/AddRemoteInstance';
 import DiscoveryPanel from './components/DiscoveryPanel/DiscoveryPanel';
-import AddInstance from './components/AddInstance/AddInstance';
+import { AddInstance } from './components/AddInstance/AddInstance';
 import './panel.scss';
 import '../shared/style.less';
 import '../shared/styles.scss';

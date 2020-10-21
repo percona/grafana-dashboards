@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
 import { useTheme } from '@grafana/ui';
 import { Database } from 'shared/components/Elements/Icons/Database';
+import { OverflowTooltip } from 'shared/components/Elements/OverflowTooltip/OverflowTooptip';
 import { getStyles } from './AddInstance.styles';
 import { instanceList } from './AddInstance.constants';
 import { Messages } from './AddInstance.messages';
 import { AddInstanceProps, SelectInstanceProps } from './AddInstance.types';
-import { OverflowTooltip } from 'shared/components/Elements/OverflowTooltip/OverflowTooptip';
 
 export const SelectInstance: FC<SelectInstanceProps> = ({ type, selectInstanceType, title }) => {
   const theme = useTheme();
@@ -27,7 +27,7 @@ export const SelectInstance: FC<SelectInstanceProps> = ({ type, selectInstanceTy
   );
 };
 
-const AddInstance: FC<AddInstanceProps> = ({ onSelectInstanceType }) => {
+export const AddInstance: FC<AddInstanceProps> = ({ onSelectInstanceType }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
 
@@ -49,5 +49,3 @@ const AddInstance: FC<AddInstanceProps> = ({ onSelectInstanceType }) => {
     </section>
   );
 };
-
-export default AddInstance;
