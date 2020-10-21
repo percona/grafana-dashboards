@@ -4,7 +4,7 @@ import React, { FC } from 'react';
 import { useTheme } from '@grafana/ui';
 import { getStyles } from './Icons.styles';
 
-export const Database: FC = (props) => {
+export const Database: FC = () => {
   const theme = useTheme();
   const styles = getStyles(theme);
 
@@ -15,7 +15,6 @@ export const Database: FC = (props) => {
       viewBox="0 0 31 38"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      {...props}
       className={styles.icon}
     >
       <path
