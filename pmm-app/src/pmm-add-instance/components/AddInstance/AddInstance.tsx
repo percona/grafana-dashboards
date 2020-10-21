@@ -27,7 +27,7 @@ export const SelectInstance: FC<SelectInstanceProps> = ({ type, selectInstanceTy
   );
 };
 
-const AddInstance: FC<AddInstanceProps> = ({ onSelectInstanceType }) => {
+export const AddInstance: FC<AddInstanceProps> = ({ onSelectInstanceType }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
 
@@ -49,5 +49,3 @@ const AddInstance: FC<AddInstanceProps> = ({ onSelectInstanceType }) => {
     </section>
   );
 };
-
-export default AddInstance;
