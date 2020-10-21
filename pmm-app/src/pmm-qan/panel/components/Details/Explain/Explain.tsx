@@ -29,8 +29,8 @@ const Explain: FC<ExplainProps> = ({ databaseType, examples }) => {
       >
         {databaseType !== Databases.mongodb ? (
           <Panel header={ExplainTabs.classic} key={ExplainTabs.classic} className={styles.panel}>
-            <Scrollbar>
-              <Overlay isPending={classicExplain.loading}>
+            <Overlay isPending={classicExplain.loading}>
+              <Scrollbar>
                 {classicExplain.error ? <pre>{classicExplain.error}</pre> : null}
                 {!classicExplain.error && data.rows.length ? (
                   <Table
@@ -42,20 +42,20 @@ const Explain: FC<ExplainProps> = ({ databaseType, examples }) => {
                   />
                 ) : null}
                 {!classicExplain.error && !data.rows.length ? <pre>{Messages.noClassicExplain}</pre> : null}
-              </Overlay>
-            </Scrollbar>
+              </Scrollbar>
+            </Overlay>
           </Panel>
         ) : null}
         <Panel header={ExplainTabs.json} key={ExplainTabs.json} className={styles.panel}>
-          <Scrollbar>
-            <Overlay isPending={jsonExplain.loading}>
+          <Overlay isPending={jsonExplain.loading}>
+            <Scrollbar>
               {jsonExplain.error ? <pre>{jsonExplain.error}</pre> : null}
               {!jsonExplain.error && jsonExplain.value ? (
                 <ReactJSON json={JSON.parse(jsonExplain.value)} />
               ) : null}
               {!jsonExplain.error && !jsonExplain.value ? <pre>{Messages.noJsonExplain}</pre> : null}
-            </Overlay>
-          </Scrollbar>
+            </Scrollbar>
+          </Overlay>
         </Panel>
       </Collapse>
     </div>
