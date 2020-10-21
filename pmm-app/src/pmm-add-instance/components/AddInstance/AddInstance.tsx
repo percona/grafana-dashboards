@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import { useTheme } from '@grafana/ui';
 import { Database } from 'shared/components/Elements/Icons/Database';
-import { OverflowTooltip } from 'shared/components/Elements/OverflowTooltip/OverflowTooptip';
 import { getStyles } from './AddInstance.styles';
 import { instanceList } from './AddInstance.constants';
 import { Messages } from './AddInstance.messages';
@@ -19,9 +18,9 @@ export const SelectInstance: FC<SelectInstanceProps> = ({ type, selectInstanceTy
       type="button"
     >
       <Database />
-      <b className={styles.addInstanceTitle}>
-        <OverflowTooltip>{title}</OverflowTooltip>
-      </b>
+      <span className={styles.addInstanceTitle}>
+        {title}
+      </span>
       <span className={styles.addInstance}>{Messages.titles.addInstance}</span>
     </button>
   );
@@ -35,7 +34,6 @@ export const AddInstance: FC<AddInstanceProps> = ({ onSelectInstanceType }) => {
 
   return (
     <section className={styles.content}>
-      <h3>Add instance</h3>
       <nav className={styles.navigationPanel}>
         {instanceList.map((item) => (
           <SelectInstance

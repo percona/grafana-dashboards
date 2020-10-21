@@ -5,14 +5,14 @@ import {
 import { AddInstance, SelectInstance } from './AddInstance';
 import { instanceList } from './AddInstance.constants';
 
-describe('AddInstance page:: ', () => {
-  it('should render with correct amount of links correct', () => {
+describe('AddInstance page::', () => {
+  it('should render a given number of links', () => {
     const wrapper: ShallowWrapper = shallow(<AddInstance onSelectInstanceType={() => {}} />);
 
     expect(wrapper.find(SelectInstance).length).toEqual(instanceList.length);
   });
 
-  it('should invoke callback with right key', () => {
+  it('should invoke a callback with a proper instance type', () => {
     const onSelectInstanceType = jest.fn();
 
     const wrapper: ReactWrapper = mount(<AddInstance onSelectInstanceType={onSelectInstanceType} />);

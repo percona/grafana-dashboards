@@ -9,8 +9,9 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
     navigationButton: css`
       display: flex;
       flex-direction: column;
+      justify-content: flex-end;
       align-items: center;
-      justify-content: center;
+      padding-bottom: 1.2em;
       margin: ${spacing.sm};
       border-radius: ${border.radius.md};
       width: 230px;
@@ -28,7 +29,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
     navigationPanel: css`
       display: flex;
       flex-direction: row;
-      justify-content: start;
+      justify-content: center;
       flex-wrap: wrap;
       max-width: 800px;
       width: 100%;
@@ -38,17 +39,18 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
       display: flex;
       flex-direction: column;
       align-items: center;
+      margin-top: 2em;
     `,
     addInstance: css`
       margin-top: ${spacing.sm};
+      font-size: 13px;
     `,
     addInstanceTitle: css`
       margin-top: ${spacing.sm};
-      text-overflow: ellipsis;
       overflow: hidden;
+      line-height: 1.3em;
       width: 65%;
-      height: 1.5em;
-      white-space: nowrap;
+      height: 3em;
     `,
   };
 });
