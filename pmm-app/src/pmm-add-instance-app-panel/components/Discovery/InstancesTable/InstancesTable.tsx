@@ -16,7 +16,9 @@ const getEngineType = (type) => {
 };
 
 const InstancesTable: FC<any> = (props) => {
-  const { instances, onSelectInstance, credentials, loading } = props;
+  const {
+    instances, onSelectInstance, credentials, loading,
+  } = props;
   const columns = [
     {
       Header: 'Region',
@@ -28,8 +30,7 @@ const InstancesTable: FC<any> = (props) => {
     },
     {
       Header: 'Engine',
-      accessor: (element) =>
-        element.engine ? `${getEngineType(element.engine)}  ${element.engine_version}` : 'nothing',
+      accessor: (element) => (element.engine ? `${getEngineType(element.engine)}  ${element.engine_version}` : 'nothing'),
     },
     {
       Header: 'Instance ID',

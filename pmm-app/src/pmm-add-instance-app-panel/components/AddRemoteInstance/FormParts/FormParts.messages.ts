@@ -1,7 +1,7 @@
 export const Messages = {
   form: {
     trackingOptions: {
-      none: "Don't track",
+      none: 'Don\'t track',
       pgStatements: 'PG Stat Statements',
       pgMonitor: 'PG Stat Monitor',
     },
@@ -45,7 +45,7 @@ export const Messages = {
         az: 'Availability Zone',
         replicationSet: 'Replication set',
         cluster: 'Cluster',
-        customLabels: '"Custom labels\n' + '      Format:\n' + '      key1:value1\n' + '      key2:value2"',
+        customLabels: '"Custom labels\n Format:\n      key1:value1\n      key2:value2"',
       },
       additionalOptions: {},
     },

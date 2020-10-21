@@ -79,7 +79,7 @@ const AddRemoteInstance: FC<AddRemoteInstanceProps> = ({ instance: { type, crede
       ];
 
       return (
-        <form onSubmit={handleSubmit} data-qa={'add-remote-instance-form'}>
+        <form onSubmit={handleSubmit} data-qa="add-remote-instance-form">
           <h4>{`Add remote ${instanceType} Instance`}</h4>
           <StepProgress steps={steps} initialValues={initialValues} onSubmit={handleSubmit} />
         </form>

@@ -22,6 +22,7 @@ const Discovery: FC<DiscoverySearchPanelInterface> = ({ onSelectInstance }) => {
       try {
         const result = await DiscoveryService.discoveryRDS(credentials);
 
+        console.log(result);
         // setInstances(result.rds_instances);
       } catch (e) {
         console.error(e);

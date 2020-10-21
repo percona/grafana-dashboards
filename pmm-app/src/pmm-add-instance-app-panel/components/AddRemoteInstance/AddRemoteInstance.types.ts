@@ -17,5 +17,5 @@ interface Instance {
 }
 
 export interface AddRemoteInstanceProps {
-  instance: Instance
+  instance: Instance;
 }

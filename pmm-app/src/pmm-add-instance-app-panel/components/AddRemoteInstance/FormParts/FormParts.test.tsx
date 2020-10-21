@@ -1,12 +1,12 @@
 import React from 'react';
-import { mount, ReactWrapper } from 'enzyme';
+import { mount } from 'enzyme';
+import { Form } from 'react-final-form';
 import {
   AdditionalOptionsFormPart,
   getAdditionalOptions,
   LabelsFormPart,
   MainDetailsFormPart,
 } from './FormParts';
-import { Form } from 'react-final-form';
 import { trackingOptions } from './FormParts.constants';
 
 describe('MainDetailsFormPart ::', () => {
@@ -19,6 +19,7 @@ describe('MainDetailsFormPart ::', () => {
     );
 
     const fields = root.find('input');
+
     expect(fields.length).toBe(5);
     expect(root.find('input[name="address"]').prop('disabled')).toBeTruthy();
     expect(root.find('input[name="service_name"]').prop('disabled')).toBeFalsy();
@@ -36,6 +37,7 @@ describe('MainDetailsFormPart ::', () => {
     );
 
     const fields = root.find('input');
+
     expect(fields.length).toBe(5);
     expect(root.find('input[name="address"]').prop('disabled')).toBeFalsy();
     expect(root.find('input[name="service_name"]').prop('disabled')).toBeFalsy();
@@ -51,6 +53,7 @@ describe('LabelsFormPart ::', () => {
 
     const fields = root.find('input');
     const textArea = root.find('textarea');
+
     expect(fields.length).toBe(5);
     expect(textArea.length).toBe(1);
   });
