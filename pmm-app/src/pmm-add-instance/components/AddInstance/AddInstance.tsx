@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
 import { useTheme } from '@grafana/ui';
 import { Database } from 'shared/components/Elements/Icons/Database';
+import { OverflowTooltip } from 'shared/components/Elements/OverflowTooltip/OverflowTooptip';
 import { getStyles } from './AddInstance.styles';
 import { instanceList } from './AddInstance.constants';
 import { Messages } from './AddInstance.messages';
 import { AddInstanceProps, SelectInstanceProps } from './AddInstance.types';
-import { OverflowTooltip } from 'shared/components/Elements/OverflowTooltip/OverflowTooptip';
 
 export const SelectInstance: FC<SelectInstanceProps> = ({ type, selectInstanceType, title }) => {
   const theme = useTheme();
