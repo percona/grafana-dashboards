@@ -7,8 +7,14 @@ export interface AddXtraDBModalProps {
   onXtraDBAdded: () => void;
 }
 
-export interface AddXtraDBModalRenderProps {
-  name: string;
-  kubernetesCluster: SelectableValue;
-  databaseType: SelectableValue;
+export enum AddXtraDBFields {
+  name = 'name',
+  kubernetesCluster = 'kubernetesCluster',
+  databaseType = 'databaseType',
+  topology = 'topology',
+  nodes = 'nodes',
+  single = 'single',
+  resources = 'resources',
+  memory = 'memory',
+  cpu = 'cpu',
 }
