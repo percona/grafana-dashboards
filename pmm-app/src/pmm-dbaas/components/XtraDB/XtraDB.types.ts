@@ -16,10 +16,15 @@ export interface XtraDBCluster {
   cpu: number;
 }
 
-export interface XtraDBClusterAPI {
+export interface XtraDBClusterPayload {
   kubernetes_cluster_name: string;
   name: string;
   params: XtraDBClusterParamsAPI;
+}
+
+export interface DeleteXtraDBClusterAPI {
+  kubernetes_cluster_name: string;
+  name: string;
 }
 
 interface XtraDBClusterParamsAPI {
