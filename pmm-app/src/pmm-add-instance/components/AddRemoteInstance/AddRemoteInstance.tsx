@@ -9,9 +9,9 @@ import { PasswordField } from 'shared/components/Form/Password/Password';
 import Validators from 'shared/components/helpers/validators';
 import { RadioButtonGroup } from 'shared/components/Form/Radio/RadioButtonGroup';
 import AddRemoteInstanceService from './AddRemoteInstanceService';
-import { trackingOptions } from '../AddInstance.constants';
-import { TrackingOptions } from '../AddInstance.types';
-import { Messages } from '../AddInstance.messages';
+import { trackingOptions } from './AddRemoteInstance.constants';
+import { TrackingOptions } from './AddRemoteInstance.types';
+import { Messages } from './AddRemoteInstance.messages';
 
 interface InstanceData {
   instanceType?: string;
@@ -217,95 +217,97 @@ const AddRemoteInstance = (props) => {
   };
 
   return (
-    <FormFinal
-      mutators={{ changePGTracking }}
-      onSubmit={onSubmit}
-      initialValues={initialValues}
-      validate={validateInstanceForm}
-      render={({ form, handleSubmit }) => (
-        <form onSubmit={handleSubmit} className="add-instance-form app-theme-dark">
-          <h4>{`Add remote ${instanceType} Instance`}</h4>
-          <div className="add-instance-panel">
-            <h6>Main details</h6>
-            <span />
-            <InputField
-              name="address"
-              placeholder="Hostname"
-              required
-              readonly={remoteInstanceCredentials.isRDS}
-            />
-            <span className="description">Public DNS hostname of your instance</span>
-            <InputField name="service_name" placeholder="Service name (default: Hostname)" />
-            <span className="description">Service name to use.</span>
-            <InputField
-              name="port"
-              placeholder={`Port (default: ${remoteInstanceCredentials.port} )`}
-              required
-              readonly={remoteInstanceCredentials.isRDS}
-            />
-            <span className="description">Port your service is listening on</span>
-          </div>
-          <div className="add-instance-panel">
-            <InputField name="username" placeholder="Username" required />
-            <span className="description">Your database user name</span>
+    <div id="antd" className="add-remote-instance-wrapper">
+      <FormFinal
+        mutators={{ changePGTracking }}
+        onSubmit={onSubmit}
+        initialValues={initialValues}
+        validate={validateInstanceForm}
+        render={({ form, handleSubmit }) => (
+          <form onSubmit={handleSubmit} className="add-instance-form app-theme-dark">
+            <h4>{`Add remote ${instanceType} Instance`}</h4>
+            <div className="add-instance-panel">
+              <h6>Main details</h6>
+              <span />
+              <InputField
+                name="address"
+                placeholder="Hostname"
+                required
+                readonly={remoteInstanceCredentials.isRDS}
+              />
+              <span className="description">Public DNS hostname of your instance</span>
+              <InputField name="service_name" placeholder="Service name (default: Hostname)" />
+              <span className="description">Service name to use.</span>
+              <InputField
+                name="port"
+                placeholder={`Port (default: ${remoteInstanceCredentials.port} )`}
+                required
+                readonly={remoteInstanceCredentials.isRDS}
+              />
+              <span className="description">Port your service is listening on</span>
+            </div>
+            <div className="add-instance-panel">
+              <InputField name="username" placeholder="Username" required />
+              <span className="description">Your database user name</span>
 
-            <PasswordField name="password" placeholder="Password" required />
-            <span className="description">Your database password</span>
-          </div>
-          <div className="add-instance-panel">
-            <h6>Labels</h6>
-            <span />
-            <InputField name="environment" placeholder="Environment" />
-            <span className="description" />
+              <PasswordField name="password" placeholder="Password" required />
+              <span className="description">Your database password</span>
+            </div>
+            <div className="add-instance-panel">
+              <h6>Labels</h6>
+              <span />
+              <InputField name="environment" placeholder="Environment" />
+              <span className="description" />
 
-            <InputField name="region" required={initialValues.isRDS} placeholder="Region" />
-            <span className="description">Region</span>
+              <InputField name="region" required={initialValues.isRDS} placeholder="Region" />
+              <span className="description">Region</span>
 
-            <InputField name="az" placeholder="Availability Zone" />
-            <span className="description">Availability Zone</span>
+              <InputField name="az" placeholder="Availability Zone" />
+              <span className="description">Availability Zone</span>
 
-            <InputField name="replication_set" placeholder="Replication set" />
-            <span className="description" />
+              <InputField name="replication_set" placeholder="Replication set" />
+              <span className="description" />
 
-            <InputField name="cluster" placeholder="Cluster" />
-            <span className="description" />
+              <InputField name="cluster" placeholder="Cluster" />
+              <span className="description" />
 
-            <TextAreaField
-              name="custom_labels"
-              placeholder="Custom labels
+              <TextAreaField
+                name="custom_labels"
+                placeholder="Custom labels
 Format:
 key1:value1
 key2:value2"
-            />
-            <span className="description" />
-          </div>
-          <div className="add-instance-panel">
-            <h6>Additional options</h6>
-            <span />
-            <CheckboxField label="Skip connection check" name="skip_connection_check" />
+              />
+              <span className="description" />
+            </div>
+            <div className="add-instance-panel">
+              <h6>Additional options</h6>
+              <span />
+              <CheckboxField label="Skip connection check" name="skip_connection_check" />
 
-            <span className="description" />
+              <span className="description" />
 
-            <CheckboxField label="Use TLS for database connections" name="tls" />
+              <CheckboxField label="Use TLS for database connections" name="tls" />
 
-            <span className="description" />
-            <CheckboxField
-              label="Skip TLS certificate and hostname validation"
-              name="tls_skip_verify"
-              dataQa="add-account-username"
-            />
-            <span className="description" />
-            {getAdditionalOptions(instanceType, remoteInstanceCredentials, form.mutators)}
-          </div>
+              <span className="description" />
+              <CheckboxField
+                label="Skip TLS certificate and hostname validation"
+                name="tls_skip_verify"
+                dataQa="add-account-username"
+              />
+              <span className="description" />
+              {getAdditionalOptions(instanceType, remoteInstanceCredentials, form.mutators)}
+            </div>
 
-          <div className="add-instance-form__submit-block">
-            <button type="submit" className="button button--dark" id="addInstance" disabled={loading}>
-              Add service
-            </button>
-          </div>
-        </form>
-      )}
-    />
+            <div className="add-instance-form__submit-block">
+              <button type="submit" className="button button--dark" id="addInstance" disabled={loading}>
+                Add service
+              </button>
+            </div>
+          </form>
+        )}
+      />
+    </div>
   );
 };
 
