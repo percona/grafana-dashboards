@@ -5,7 +5,7 @@ import { Button, Input, Spin } from 'antd';
 import { Form } from 'react-final-form';
 import { cx } from 'emotion';
 import { QueryAnalyticsProvider } from 'pmm-qan/panel/provider/provider';
-import { Filter } from 'shared/components/Elements/Icons/Filter';
+import { Filter } from 'shared/components/Elements/Icons';
 import { Scrollbar } from 'shared/components/Elements/Scrollbar/Scrollbar';
 import { useTheme } from '@grafana/ui';
 import { CheckboxGroup } from './components/CheckboxGroup/CheckboxGroup';
@@ -74,21 +74,19 @@ export const FiltersContainer: FC<FiltersContainerProps> = ({
           className={styles.filtersField}
           data-qa="filters-search-field"
         />
-        {FILTERS_GROUPS.filter((group) => filters[group.dataKey]).map(({
-          name,
-          dataKey,
-          getDashboardURL,
-        }) => (
-          <CheckboxGroup
-            key={name}
-            name={name}
-            items={filters[dataKey].name}
-            group={dataKey}
-            showAll={showAll}
-            filter={filter}
-            getDashboardURL={getDashboardURL}
-          />
-        ))}
+        {FILTERS_GROUPS.filter((group) => filters[group.dataKey]).map(
+          ({ name, dataKey, getDashboardURL }) => (
+            <CheckboxGroup
+              key={name}
+              name={name}
+              items={filters[dataKey].name}
+              group={dataKey}
+              showAll={showAll}
+              filter={filter}
+              getDashboardURL={getDashboardURL}
+            />
+          ),
+        )}
       </Scrollbar>
     </div>
   );

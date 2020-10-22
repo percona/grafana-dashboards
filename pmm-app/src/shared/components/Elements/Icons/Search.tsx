@@ -1,21 +1,23 @@
 /* eslint max-len: 0 */
-import React from 'react';
+import React, { FC } from 'react';
 import { useTheme } from '@grafana/ui';
+import { cx } from 'emotion';
 import { getStyles } from './Icons.styles';
+import { SvgProps } from './Icons.types';
 
-export const Search = (props) => {
+export const Search: FC<SvgProps> = ({ className, ...rest }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
 
   return (
     <svg
-      {...props}
       width="14"
       height="15"
       viewBox="0 0 14 15"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={styles.icon}
+      className={cx(className, styles.icon)}
+      {...rest}
     >
       <path
         fillRule="evenodd"
