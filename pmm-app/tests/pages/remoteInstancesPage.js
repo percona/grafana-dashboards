@@ -64,9 +64,8 @@ module.exports = {
   },
 
   waitUntilRemoteInstancesPageLoaded() {
-    I.waitForText(this.fields.remoteInstanceTitle, 60, this.fields.remoteInstanceTitleLocator);
-    I.seeInTitle(this.fields.pageHeaderText);
-    I.see(this.fields.remoteInstanceTitle, this.fields.remoteInstanceTitleLocator);
+    I.waitForElement(this.fields.addMySqlRemote, 30);
+    I.seeElement(this.fields.addMySqlRemote);
 
     return this;
   },
