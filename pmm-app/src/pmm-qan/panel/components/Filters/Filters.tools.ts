@@ -4,7 +4,7 @@ import { FILTERS_GROUPS } from './Filters.constants';
 export const getSelectedCheckboxes = (filters) => FILTERS_GROUPS.map((group) => filters[group.dataKey])
   .filter(Boolean)
   .map((item) => item.name)
-  .flat()
+  .reduce((acc, item) => acc.concat(item), [])
   .some((item) => item.checked);
 
 export const getServiceType = (value: string, name: string): string | undefined => {
