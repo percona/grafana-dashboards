@@ -1,15 +1,13 @@
 import { useState, useEffect } from 'react';
-import { processPromiseResults, filterFulfilled, FulfilledPromiseResult } from 'shared/components/helpers/promises';
+import { processPromiseResults, FulfilledPromiseResult } from 'shared/components/helpers/promises';
 import { DATABASE_LABELS } from 'shared/core';
 import { Kubernetes } from '../Kubernetes/Kubernetes.types';
-import { XtraDBCluster, GetXtraDBClustersAction } from './XtraDB.types';
+import { XtraDBCluster, GetXtraDBClustersAction, XtraDBClusterPayload } from './XtraDB.types';
 import { XtraDBService, toModel } from './XtraDB.service';
 
-export const useXtraDBClusters = (kubernetes: Kubernetes[]): [
-  XtraDBCluster[],
-  GetXtraDBClustersAction,
-  boolean
-] => {
+export const useXtraDBClusters = (
+  kubernetes: Kubernetes[],
+): [XtraDBCluster[], GetXtraDBClustersAction, boolean] => {
   const [xtraDBClusters, setXtraDBClusters] = useState<XtraDBCluster[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -17,18 +15,24 @@ export const useXtraDBClusters = (kubernetes: Kubernetes[]): [
     setLoading(true);
 
     try {
-      const clusters: XtraDBCluster[] = [];
       const requests = kubernetes.map(XtraDBService.getXtraDBClusters);
       const results = await processPromiseResults(requests);
 
-      results
-        .filter(filterFulfilled)
-        .map((r) => ((r as FulfilledPromiseResult).value.clusters)
-          .map(
-            (cluster) => clusters.push(toModel(cluster, DATABASE_LABELS.mysql)),
-          ));
+      const clustersList: XtraDBCluster[] = results.reduce((acc: XtraDBCluster[], r, index) => {
+        if (r.status !== 'fulfilled') {
+          return acc;
+        }
 
-      setXtraDBClusters(clusters);
+        const clusters: XtraDBClusterPayload[] = (r as FulfilledPromiseResult).value?.clusters ?? [];
+
+        const resultClusters = clusters.map(
+          (cluster) => toModel(cluster, kubernetes[index].kubernetesClusterName, DATABASE_LABELS.mysql),
+        );
+
+        return acc.concat(resultClusters);
+      }, []);
+
+      setXtraDBClusters(clustersList);
     } catch (e) {
       console.error(e);
     } finally {

@@ -64,6 +64,9 @@ export const Messages = {
       databaseTypeColumn: 'Database Type',
       clusterStatusColumn: 'Cluster Status',
       actionsColumn: 'Actions',
+      actions: {
+        deleteCluster: 'Delete',
+      },
       status: {
         active: 'Active',
         suspended: 'Suspended',
