@@ -1,3 +1,6 @@
+import { FC } from 'react';
+import { RouteComponentProps } from 'react-router-dom'
+
 export interface CheckPanelOptions {
   title?: string;
 }
@@ -16,16 +19,20 @@ export enum Severity {
   notice = 'notice',
 }
 
-export type SeverityMap = Record<Severity, string>;
-
-export type FailedChecks = [number, number, number];
-
-export interface ActiveCheck {
-  key: string;
-  name: string;
-  failed: FailedChecks;
-  details: Array<{ description: string, labels: { [key: string]: string }}>;
+export enum TabKeys {
+  allChecks = "allChecks",
+  failedChecks = "failedChecks",
 }
+
+export interface TabEntry {
+  label: string,
+  key: TabKeys,
+  component: React.ReactNode,
+}
+
+export type CheckPanelProps = { component: FC } & RouteComponentProps;
+
+export type SeverityMap = Record<Severity, string>;
 
 export interface Alert {
   annotations: {
