@@ -3,6 +3,7 @@ import { useTheme } from '@grafana/ui';
 import { Messages } from 'pmm-dbaas/DBaaS.messages';
 import { Status } from '../Status/Status';
 import { getStyles } from './ColumnRenderers.styles';
+import { XtraDBClusterConnection } from '../XtraDBClusterConnection/XtraDBClusterConnection';
 
 export const clusterStatusRender = () => {
   const theme = useTheme();
@@ -24,6 +25,6 @@ export const clusterStatusRender = () => {
   );
 };
 
-export const actionsRender = () => {
-  // TODO: add DB cluster actions here
-};
+export const connectionRender = (xtraDBCluster) => (
+  <XtraDBClusterConnection xtraDBCluster={xtraDBCluster} />
+);

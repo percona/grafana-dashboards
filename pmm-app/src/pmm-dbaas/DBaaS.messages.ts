@@ -62,8 +62,15 @@ export const Messages = {
     table: {
       nameColumn: 'Name',
       databaseTypeColumn: 'Database Type',
+      connectionColumn: 'Connection',
       clusterStatusColumn: 'Cluster Status',
       actionsColumn: 'Actions',
+      connection: {
+        host: 'Host',
+        port: 'Port',
+        username: 'Username',
+        password: 'Password',
+      },
       actions: {
         deleteCluster: 'Delete',
       },

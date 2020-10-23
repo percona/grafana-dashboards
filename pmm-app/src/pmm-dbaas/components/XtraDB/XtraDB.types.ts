@@ -16,6 +16,14 @@ export interface XtraDBCluster {
   cpu: number;
 }
 
+export interface XtraDBClusterConnection {
+  host: string;
+  name: string;
+  password: string;
+  port: number;
+  username: string;
+}
+
 export interface XtraDBClusterPayload {
   kubernetes_cluster_name: string;
   name: string;

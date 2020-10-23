@@ -1,6 +1,12 @@
+import { omit } from 'lodash';
 import { apiRequestManagement } from 'shared/components/helpers/api';
 import { Kubernetes } from '../Kubernetes/Kubernetes.types';
-import { XtraDBCluster, XtraDBClusterPayload, DeleteXtraDBClusterAPI } from './XtraDB.types';
+import {
+  XtraDBCluster,
+  XtraDBClusterPayload,
+  DeleteXtraDBClusterAPI,
+  XtraDBClusterConnection,
+} from './XtraDB.types';
 
 export const XtraDBService = {
   getXtraDBClusters(kubernetes: Kubernetes) {
@@ -21,6 +27,12 @@ export const XtraDBService = {
     return apiRequestManagement.post<any, DeleteXtraDBClusterAPI>(
       '/DBaaS/XtraDBCluster/Delete',
       toAPI(xtradbCluster),
+    );
+  },
+  showXtraDBCluster(xtradbCluster: XtraDBCluster) {
+    return apiRequestManagement.post<XtraDBClusterConnection, any>(
+      '/DBaaS/XtraDBClusters/Show',
+      omit(toAPI(xtradbCluster), ['params']),
     );
   },
 };
@@ -54,6 +66,6 @@ export const toModel = (
   kubernetesClusterName,
   databaseType,
   clusterSize: xtradbCluster.params.cluster_size,
-  memory: xtradbCluster.params.pxc.compute_resources.memory_bytes,
-  cpu: xtradbCluster.params.pxc.compute_resources.cpu_m,
+  memory: xtradbCluster.params.pxc?.compute_resources?.memory_bytes,
+  cpu: xtradbCluster.params.pxc?.compute_resources?.cpu_m,
 });

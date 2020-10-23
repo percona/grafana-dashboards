@@ -1,5 +1,5 @@
 import { Databases } from 'shared/core';
-import { XtraDBCluster } from '../XtraDB.types';
+import { XtraDBCluster, XtraDBClusterConnection } from '../XtraDB.types';
 
 
 export const xtraDBClustersStub: XtraDBCluster[] = [
@@ -20,5 +20,13 @@ export const xtraDBClustersStub: XtraDBCluster[] = [
     cpu: 4,
   },
 ];
+
+export const xtraDBClusterConnectionStub: XtraDBClusterConnection = {
+  host: 'dbcluster-proxysql',
+  name: 'dbcluster',
+  password: '1234',
+  port: 3000,
+  username: 'root',
+};
 
 export const getXtraDBClustersActionStub = jest.fn();
