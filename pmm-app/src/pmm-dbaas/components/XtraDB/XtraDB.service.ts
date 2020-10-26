@@ -44,14 +44,14 @@ const toAPI = (xtradbCluster: XtraDBCluster): XtraDBClusterPayload => ({
     cluster_size: xtradbCluster.clusterSize,
     pxc: {
       compute_resources: {
-        cpu_m: xtradbCluster.cpu,
-        memory_bytes: xtradbCluster.memory * 1024,
+        cpu_m: xtradbCluster.cpu * 1000,
+        memory_bytes: xtradbCluster.memory * 10 ** 9,
       },
     },
     proxysql: {
       compute_resources: {
-        cpu_m: 1,
-        memory_bytes: 1024,
+        cpu_m: 1000,
+        memory_bytes: 1 * 10 ** 9,
       },
     },
   },
@@ -68,4 +68,6 @@ export const toModel = (
   clusterSize: xtradbCluster.params.cluster_size,
   memory: xtradbCluster.params.pxc?.compute_resources?.memory_bytes,
   cpu: xtradbCluster.params.pxc?.compute_resources?.cpu_m,
+  status: xtradbCluster.state,
+  errorMessage: xtradbCluster.operation?.message,
 });

@@ -1,27 +1,17 @@
 import React from 'react';
-import { useTheme } from '@grafana/ui';
 import { Messages } from 'pmm-dbaas/DBaaS.messages';
-import { Status } from '../Status/Status';
-import { getStyles } from './ColumnRenderers.styles';
 import { XtraDBClusterConnection } from '../XtraDBClusterConnection/XtraDBClusterConnection';
+import { XtraDBClusterStatus } from '../XtraDBClusterStatus/XtraDBClusterStatus';
+import { XtraDBClusterStatus as Status } from '../XtraDB.types';
 
-export const clusterStatusRender = () => {
-  const theme = useTheme();
-  const styles = getStyles(theme);
+export const clusterStatusRender = (xtraDBCluster) => {
+  const { status, errorMessage } = xtraDBCluster;
 
   return (
-    <div className={styles.clusterStatusWrapper}>
-      <Status
-        label={Messages.xtradb.table.status.active}
-        active
-        dataQa="cluster-status-active"
-      />
-      <Status
-        label={Messages.xtradb.table.status.suspended}
-        active={false}
-        dataQa="cluster-status-suspended"
-      />
-    </div>
+    <XtraDBClusterStatus
+      status={status || Status.failed}
+      errorMessage={errorMessage || Messages.xtradb.table.status.errorMessage}
+    />
   );
 };
 

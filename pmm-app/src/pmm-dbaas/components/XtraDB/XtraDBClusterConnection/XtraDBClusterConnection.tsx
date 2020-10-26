@@ -3,13 +3,14 @@ import { Spinner, useStyles } from '@grafana/ui';
 import { Messages } from 'pmm-dbaas/DBaaS.messages';
 import { XtraDBService } from '../XtraDB.service';
 import { XtraDBClusterConnectionProps } from './XtraDBClusterConnection.types';
-import { XtraDBClusterConnection as ConnectionParams } from '../XtraDB.types';
+import { XtraDBClusterConnection as ConnectionParams, XtraDBClusterStatus } from '../XtraDB.types';
 import { INITIAL_CONNECTION } from './XtraDBClusterConnection.constants';
 import { getStyles } from './XtraDBClusterConnection.styles';
 import {
   XtraDBClusterConnectionPassword,
 } from './XtraDBClusterConnectionPassword/XtraDBClusterConnectionPassword';
 import { XtraDBClusterConnectionItem } from './XtraDBClusterConnectionItem/XtraDBClusterConnectionItem';
+import { isClusterChanging } from '../XtraDB.utils';
 
 export const XtraDBClusterConnection: FC<XtraDBClusterConnectionProps> = ({
   xtraDBCluster,
@@ -23,6 +24,7 @@ export const XtraDBClusterConnection: FC<XtraDBClusterConnectionProps> = ({
     port,
     username,
   } = connection;
+  const { status } = xtraDBCluster;
   const getClusterConnection = async () => {
     try {
       setLoading(true);
@@ -40,28 +42,39 @@ export const XtraDBClusterConnection: FC<XtraDBClusterConnectionProps> = ({
 
   return (
     <>
-      {!loading ? (
+      {!loading && !isClusterChanging(xtraDBCluster) ? (
         <div className={styles.connectionWrapper}>
-          <XtraDBClusterConnectionItem
-            label={Messages.xtradb.table.connection.host}
-            value={host}
-            dataQa="cluster-connection-host"
-          />
-          <XtraDBClusterConnectionItem
-            label={Messages.xtradb.table.connection.port}
-            value={port}
-            dataQa="cluster-connection-port"
-          />
-          <XtraDBClusterConnectionItem
-            label={Messages.xtradb.table.connection.username}
-            value={username}
-            dataQa="cluster-connection-username"
-          />
-          <XtraDBClusterConnectionPassword
-            label={Messages.xtradb.table.connection.password}
-            password={password}
-            dataQa="cluster-connection-password"
-          />
+          {status && status === XtraDBClusterStatus.ready ? (
+            <>
+              <XtraDBClusterConnectionItem
+                label={Messages.xtradb.table.connection.host}
+                value={host}
+                dataQa="cluster-connection-host"
+              />
+              <XtraDBClusterConnectionItem
+                label={Messages.xtradb.table.connection.port}
+                value={port}
+                dataQa="cluster-connection-port"
+              />
+              <XtraDBClusterConnectionItem
+                label={Messages.xtradb.table.connection.username}
+                value={username}
+                dataQa="cluster-connection-username"
+              />
+              <XtraDBClusterConnectionPassword
+                label={Messages.xtradb.table.connection.password}
+                password={password}
+                dataQa="cluster-connection-password"
+              />
+            </>
+          ) : (
+            <span
+              className={styles.connectionFailed}
+              data-qa="cluster-connection-failed"
+            >
+              -
+            </span>
+          )}
         </div>
       ) : (
         <div

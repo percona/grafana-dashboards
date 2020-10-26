@@ -13,4 +13,8 @@ export const getStyles = ({
     display: flex;
     justify-content: center;
   `,
+  connectionFailed: css`
+    display: flex;
+    justify-content: center;
+  `,
 });

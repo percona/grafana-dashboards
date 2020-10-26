@@ -1,3 +1,5 @@
+import { XtraDBClusterStatus } from './components/XtraDB/XtraDB.types';
+
 export const Messages = {
   tabs: {
     xtradb: 'DB Cluster',
@@ -75,8 +77,12 @@ export const Messages = {
         deleteCluster: 'Delete',
       },
       status: {
-        active: 'Active',
-        suspended: 'Suspended',
+        [XtraDBClusterStatus.changing]: 'Pending',
+        [XtraDBClusterStatus.deleting]: 'Deleting',
+        [XtraDBClusterStatus.failed]: 'Failed',
+        [XtraDBClusterStatus.invalid]: 'Invalid',
+        [XtraDBClusterStatus.ready]: 'Active',
+        errorMessage: 'Cluster creation failed',
       },
     },
   },
