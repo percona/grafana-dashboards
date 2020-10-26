@@ -1,5 +1,5 @@
-import { Messages } from './AddRemoteInstance.messages';
-import { TrackingOptions } from './AddRemoteInstance.types';
+import { Messages } from '../AddRemoteInstance.messages';
+import { TrackingOptions } from '../AddRemoteInstance.types';
 
 export const trackingOptions = [
   { key: TrackingOptions.none, value: Messages.form.trackingOptions.none },
