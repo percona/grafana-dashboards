@@ -6,7 +6,7 @@ jest.mock('shared/components/helpers/notification-manager');
 
 describe('Add remote instance:: ', () => {
   it('should render correct', () => {
-    const type = 'AddInstance';
+    const type = 'mysql';
 
     const root = mount(<AddRemoteInstance instance={{ type, credentials: {} }} />);
 
