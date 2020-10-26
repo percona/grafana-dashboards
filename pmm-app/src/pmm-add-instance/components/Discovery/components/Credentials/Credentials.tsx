@@ -1,7 +1,7 @@
 import { Form as FormFinal } from 'react-final-form';
 import React, { FC, useCallback } from 'react';
 import { TextInputField, validators } from '@percona/platform-core';
-import { Button, useTheme } from '@grafana/ui';
+import { Button } from '@grafana/ui';
 import { getStyles } from './Credentials.styles';
 import { SECURITY_CREDENTIALS_DOC_LINK } from './Credentials.constants';
 import { Messages } from './Credentials.messages';

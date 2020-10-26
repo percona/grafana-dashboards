@@ -1,8 +1,3 @@
-export interface RemoteInstanceCredentials {
-  port: number;
-  isRDS: boolean;
-}
-
 export interface MainDetailsFormPartProps {
   remoteInstanceCredentials: any;
 }
@@ -10,7 +5,7 @@ export interface MainDetailsFormPartProps {
 export interface AdditionalOptionsFormPartProps {
   instanceType?: string;
   loading: boolean;
-  remoteInstanceCredentials: RemoteInstanceCredentials;
+  remoteInstanceCredentials: any;
   form: any;
 }
 
