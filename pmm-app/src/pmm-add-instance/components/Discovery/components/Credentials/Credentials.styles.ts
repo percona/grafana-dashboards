@@ -9,10 +9,10 @@ export const getStyles = stylesFactory(() => ({
   `,
   searchPanel: css`
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     width: 100%;
   `,
   credentialsField: css`
-    width: 45%;
+    width: 42%;
   `,
 }));

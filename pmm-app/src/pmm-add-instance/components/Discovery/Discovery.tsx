@@ -1,14 +1,11 @@
-import React, { useEffect, useState, FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import DiscoveryService from './Discovery.service';
-import Credentials from './Credentials/Credentials';
-import InstancesTable from './InstancesTable/InstancesTable';
+import Credentials from './components/Credentials/Credentials';
+import Instances from './components/Instances/Instances';
 import { getStyles } from './Discovery.styles';
+import { DiscoverySearchPanelProps } from './Discovery.types';
 
-interface DiscoverySearchPanelInterface {
-  onSelectInstance: (instanceData: any) => void;
-}
-
-const Discovery: FC<DiscoverySearchPanelInterface> = ({ onSelectInstance }) => {
+const Discovery: FC<DiscoverySearchPanelProps> = ({ onSelectInstance }) => {
   const styles = getStyles();
 
   const [instances, setInstances] = useState([] as any);
@@ -20,13 +17,11 @@ const Discovery: FC<DiscoverySearchPanelInterface> = ({ onSelectInstance }) => {
       try {
         const result = await DiscoveryService.discoveryRDS(credentials);
 
-        console.log(result);
-        // setInstances(result.rds_instances);
+        setInstances(result.rds_instances);
       } catch (e) {
         console.error(e);
       } finally {
         startLoading(false);
-        setInstances([{ address: 'da:123' }, { address: 'da:123' }]);
       }
     };
 
@@ -40,7 +35,7 @@ const Discovery: FC<DiscoverySearchPanelInterface> = ({ onSelectInstance }) => {
     <>
       <div className={styles.content}>
         <Credentials onSetCredentials={setCredentials} />
-        <InstancesTable
+        <Instances
           instances={instances}
           onSelectInstance={onSelectInstance}
           credentials={credentials}
