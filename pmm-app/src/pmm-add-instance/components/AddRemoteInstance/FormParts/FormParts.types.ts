@@ -1,4 +1,8 @@
-// TODO: add credentials interface
+export interface RemoteInstanceCredentials {
+  port: number;
+  isRDS: boolean;
+}
+
 export interface MainDetailsFormPartProps {
   remoteInstanceCredentials: any;
 }
@@ -6,7 +10,7 @@ export interface MainDetailsFormPartProps {
 export interface AdditionalOptionsFormPartProps {
   instanceType?: string;
   loading: boolean;
-  remoteInstanceCredentials: any;
+  remoteInstanceCredentials: RemoteInstanceCredentials;
   form: any;
 }
 
