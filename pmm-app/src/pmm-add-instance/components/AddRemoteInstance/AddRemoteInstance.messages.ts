@@ -5,8 +5,10 @@ export const Messages = {
       pgStatements: 'PG Stat Statements',
       pgMonitor: 'PG Stat Monitor',
     },
-    labels: {
-      trackingOptions: 'Stat tracking options',
+    titles: {
+      mainDetails: 'Main details',
+      labels: 'Labels',
+      additionalOptions: 'Additional options',
     },
   },
 };

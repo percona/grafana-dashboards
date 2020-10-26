@@ -1,311 +1,100 @@
-import React, { useState } from 'react';
-import './AddRemoteInstance.scss';
+import React, { FC, useCallback, useState } from 'react';
 import { Form as FormFinal } from 'react-final-form';
-import { InputField } from 'shared/components/Form/Input/Input';
-import { TextAreaField } from 'shared/components/Form/TextArea/TextArea';
-import { CheckboxField } from 'shared/components/Form/Checkbox/Checkbox';
-
-import { PasswordField } from 'shared/components/Form/Password/Password';
-import Validators from 'shared/components/helpers/validators';
-import { RadioButtonGroup } from 'shared/components/Form/Radio/RadioButtonGroup';
-import AddRemoteInstanceService from './AddRemoteInstanceService';
-import { trackingOptions } from './AddRemoteInstance.constants';
-import { TrackingOptions } from './AddRemoteInstance.types';
+import { StepProgress } from '@percona/platform-core';
+import { useTheme } from '@grafana/ui';
+import AddRemoteInstanceService, { toPayload } from './AddRemoteInstance.service';
+import { getInstanceData } from './AddRemoteInstance.tools';
+import { getStyles } from './AddRemoteInstance.styles';
 import { Messages } from './AddRemoteInstance.messages';
+import { AdditionalOptionsFormPart, LabelsFormPart, MainDetailsFormPart } from './FormParts/FormParts';
+import { AddRemoteInstanceProps } from './AddRemoteInstance.types';
 
-interface InstanceData {
-  instanceType?: string;
-  defaultPort?: number;
-  remoteInstanceCredentials?: any;
-  discoverName?: string;
-}
+const AddRemoteInstance: FC<AddRemoteInstanceProps> = ({ instance: { type, credentials } }) => {
+  const theme = useTheme();
+  const styles = getStyles(theme);
 
-export const extractCredentials = (credentials) => ({
-  service_name: !credentials.isRDS ? credentials.address : credentials.instance_id,
-  port: credentials.port,
-  address: credentials.address,
-  isRDS: credentials.isRDS,
-  region: credentials.region,
-  aws_access_key: credentials.aws_access_key,
-  aws_secret_key: credentials.aws_secret_key,
-  instance_id: credentials.instance_id,
-  az: credentials.az,
-});
-export const getInstanceData = (instanceType, credentials) => {
-  const instance: InstanceData = {};
-
-  instance.remoteInstanceCredentials = credentials ? extractCredentials(credentials) : {};
-  switch (instanceType) {
-    case 'postgresql':
-      instance.instanceType = 'PostgreSQL';
-      instance.remoteInstanceCredentials.port = instance.remoteInstanceCredentials.port || 5432;
-      break;
-    case 'mysql':
-      instance.instanceType = 'MySQL';
-      instance.discoverName = 'DISCOVER_RDS_MYSQL';
-      instance.remoteInstanceCredentials.port = instance.remoteInstanceCredentials.port || 3306;
-      break;
-    case 'mongodb':
-      instance.instanceType = 'MongoDB';
-      instance.remoteInstanceCredentials.port = instance.remoteInstanceCredentials.port || 27017;
-      break;
-    case 'proxysql':
-      instance.instanceType = 'ProxySQL';
-      instance.remoteInstanceCredentials.port = instance.remoteInstanceCredentials.port || 6032;
-      break;
-    default:
-      console.error('Not implemented');
-  }
-
-  return instance;
-};
-
-const PostgreSQLAdditionalOptions = ({ mutators }) => {
-  const [trackingType, setTrackingType] = useState<string>(TrackingOptions.none);
-
-  return (
-    <>
-      <RadioButtonGroup
-        options={trackingOptions}
-        selected={trackingType}
-        name="tracking"
-        dataQa="tracking-options-radio-button-group"
-        onChange={(value) => {
-          mutators.changePGTracking(value);
-          setTrackingType(value);
-        }}
-      />
-      <span className="description">{Messages.form.labels.trackingOptions}</span>
-    </>
-  );
-};
-
-const getAdditionalOptions = (type, remoteInstanceCredentials, mutators) => {
-  switch (type) {
-    case 'PostgreSQL':
-      return <PostgreSQLAdditionalOptions mutators={mutators} />;
-    case 'MySQL':
-      if (remoteInstanceCredentials.isRDS) {
-        return (
-          <>
-            <CheckboxField label="Use performance schema" name="qan_mysql_perfschema" />
-            <span className="description" />
-
-            <CheckboxField label="Disable Basic Metrics" name="disable_basic_metrics" />
-            <span className="description" />
-
-            <CheckboxField label="Disable Enhanced Metrics" name="disable_enhanced_metrics" />
-            <span className="description" />
-          </>
-        );
-      }
-
-      return (
-        <>
-          <CheckboxField label="Use performance schema" name="qan_mysql_perfschema" />
-          <span className="description" />
-        </>
-      );
-    case 'MongoDB':
-      return (
-        <>
-          <CheckboxField label="Use QAN MongoDB Profiler" name="qan_mongodb_profiler" />
-          <span className="description" />
-        </>
-      );
-    default:
-      return null;
-  }
-};
-
-const validateInstanceForm = (values) => {
-  const errors = {} as any;
-
-  errors.port = values.port ? Validators.validatePort(values.port) : '';
-  errors.custom_labels = values.custom_labels ? Validators.validateKeyValue(values.custom_labels) : '';
-  Object.keys(errors).forEach((errorKey) => {
-    if (!errors[errorKey]) {
-      delete errors[errorKey];
-    }
-  });
-
-  return errors;
-};
-const AddRemoteInstance = (props) => {
-  const {
-    instance: { type, credentials },
-  } = props;
   const { instanceType, remoteInstanceCredentials, discoverName } = getInstanceData(type, credentials);
   const [loading, setLoading] = useState<boolean>(false);
   const initialValues = { ...remoteInstanceCredentials };
-
-  const changePGTracking = ([newResolution], state: any, { changeValue }) => {
-    changeValue(state, 'tracking', () => newResolution);
-  };
 
   if (instanceType === 'MySQL') {
     initialValues.qan_mysql_perfschema = true;
   }
 
-  const onSubmit = async (values) => {
-    const currentUrl = `${window.parent.location}`;
-    const newURL = `${currentUrl.split('/graph/d/').shift()}/graph/d/pmm-inventory/`;
+  const changePGTracking = useCallback(([newResolution], state: any, { changeValue }) => {
+    changeValue(state, 'tracking', () => newResolution);
+  }, []);
 
-    const data = { ...values };
+  const onSubmit = useCallback(
+    async (values) => {
+      const currentUrl = `${window.parent.location}`;
+      const newURL = `${currentUrl.split('/graph/d/').shift()}/graph/d/pmm-inventory/`;
 
-    if (values.custom_labels) {
-      data.custom_labels = data.custom_labels
-        .split(/[\n\s]/)
-        .filter(Boolean)
-        .reduce((acc, val) => {
-          const [key, value] = val.split(':');
+      const data = toPayload(values, discoverName);
 
-          acc[key] = value;
+      try {
+        setLoading(true);
 
-          return acc;
-        }, {});
-    }
+        if (values.isRDS) {
+          await AddRemoteInstanceService.addRDS(data);
+        } else {
+          await AddRemoteInstanceService.addRemote(instanceType, data);
+        }
 
-    switch (data.tracking) {
-      case TrackingOptions.pgStatements:
-        data.qan_postgresql_pgstatements_agent = true;
-        break;
-      case TrackingOptions.pgMonitor:
-        data.qan_postgresql_pgstatmonitor_agent = true;
-        break;
-      default:
-        delete data.tracking;
-    }
-
-    delete data.tracking;
-
-    if (!data.service_name) {
-      data.service_name = data.address;
-    }
-
-    if (data.add_node === undefined) {
-      data.add_node = {
-        node_name: data.service_name,
-        node_type: 'REMOTE_NODE',
-      };
-    }
-
-    if (discoverName) {
-      data.engine = discoverName;
-    }
-
-    if (data.pmm_agent_id === undefined || data.pmm_agent_id === '') {
-      data.pmm_agent_id = 'pmm-server'; // set default value for pmm agent id
-    }
-
-    setLoading(true);
-
-    try {
-      if (values.isRDS) {
-        data.rds_exporter = true;
-        await AddRemoteInstanceService.addRDS(data);
-      } else {
-        // remove rds fields from data
-        await AddRemoteInstanceService.addRemote(instanceType, data);
+        window.location.assign(newURL);
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setLoading(false);
       }
+    },
+    [instanceType],
+  );
 
-      setLoading(false);
-      window.location.assign(newURL);
-    } catch (e) {
-      setLoading(false);
-    }
-  };
+  const formRender = useCallback(
+    ({ form, handleSubmit }) => {
+      const steps = [
+        {
+          title: Messages.form.titles.mainDetails,
+          fields: ['address', 'port', 'username', 'password'],
+          render: () => <MainDetailsFormPart remoteInstanceCredentials={remoteInstanceCredentials} />,
+        },
+        {
+          title: Messages.form.titles.labels,
+          fields: ['topology', 'nodes', 'databaseType'],
+          render: () => <LabelsFormPart />,
+        },
+        {
+          title: Messages.form.titles.additionalOptions,
+          fields: [],
+          render: () => (
+            <AdditionalOptionsFormPart
+              remoteInstanceCredentials={remoteInstanceCredentials}
+              loading={loading}
+              form={form}
+              instanceType={instanceType}
+            />
+          ),
+        },
+      ];
+
+      return (
+        <form onSubmit={handleSubmit} data-qa="add-remote-instance-form">
+          <h4>{`Add remote ${instanceType} Instance`}</h4>
+          <StepProgress steps={steps} initialValues={initialValues} onSubmit={handleSubmit} />
+        </form>
+      );
+    },
+    [remoteInstanceCredentials, instanceType, loading, initialValues],
+  );
 
   return (
-    <div id="antd" className="add-remote-instance-wrapper">
+    <div className={styles.formWrapper}>
       <FormFinal
         mutators={{ changePGTracking }}
         onSubmit={onSubmit}
         initialValues={initialValues}
-        validate={validateInstanceForm}
-        render={({ form, handleSubmit }) => (
-          <form onSubmit={handleSubmit} className="add-instance-form app-theme-dark">
-            <h4>{`Add remote ${instanceType} Instance`}</h4>
-            <div className="add-instance-panel">
-              <h6>Main details</h6>
-              <span />
-              <InputField
-                name="address"
-                placeholder="Hostname"
-                required
-                readonly={remoteInstanceCredentials.isRDS}
-              />
-              <span className="description">Public DNS hostname of your instance</span>
-              <InputField name="service_name" placeholder="Service name (default: Hostname)" />
-              <span className="description">Service name to use.</span>
-              <InputField
-                name="port"
-                placeholder={`Port (default: ${remoteInstanceCredentials.port} )`}
-                required
-                readonly={remoteInstanceCredentials.isRDS}
-              />
-              <span className="description">Port your service is listening on</span>
-            </div>
-            <div className="add-instance-panel">
-              <InputField name="username" placeholder="Username" required />
-              <span className="description">Your database user name</span>
-
-              <PasswordField name="password" placeholder="Password" required />
-              <span className="description">Your database password</span>
-            </div>
-            <div className="add-instance-panel">
-              <h6>Labels</h6>
-              <span />
-              <InputField name="environment" placeholder="Environment" />
-              <span className="description" />
-
-              <InputField name="region" required={initialValues.isRDS} placeholder="Region" />
-              <span className="description">Region</span>
-
-              <InputField name="az" placeholder="Availability Zone" />
-              <span className="description">Availability Zone</span>
-
-              <InputField name="replication_set" placeholder="Replication set" />
-              <span className="description" />
-
-              <InputField name="cluster" placeholder="Cluster" />
-              <span className="description" />
-
-              <TextAreaField
-                name="custom_labels"
-                placeholder="Custom labels
-Format:
-key1:value1
-key2:value2"
-              />
-              <span className="description" />
-            </div>
-            <div className="add-instance-panel">
-              <h6>Additional options</h6>
-              <span />
-              <CheckboxField label="Skip connection check" name="skip_connection_check" />
-
-              <span className="description" />
-
-              <CheckboxField label="Use TLS for database connections" name="tls" />
-
-              <span className="description" />
-              <CheckboxField
-                label="Skip TLS certificate and hostname validation"
-                name="tls_skip_verify"
-                dataQa="add-account-username"
-              />
-              <span className="description" />
-              {getAdditionalOptions(instanceType, remoteInstanceCredentials, form.mutators)}
-            </div>
-
-            <div className="add-instance-form__submit-block">
-              <button type="submit" className="button button--dark" id="addInstance" disabled={loading}>
-                Add service
-              </button>
-            </div>
-          </form>
-        )}
+        render={formRender}
       />
     </div>
   );

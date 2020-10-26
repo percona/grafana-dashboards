@@ -1,19 +1,21 @@
 import React, { useState } from 'react';
-import { Button } from 'antd';
 import { createBrowserHistory } from 'history';
 import { Router, Route } from 'react-router-dom';
+import { Button } from '@grafana/ui';
+import { cx } from 'emotion';
 import AddRemoteInstance from './components/AddRemoteInstance/AddRemoteInstance';
-import DiscoveryPanel from './components/DiscoveryPanel/DiscoveryPanel';
-import { AddInstance } from './components/AddInstance/AddInstance';
-import './panel.scss';
-import '../shared/style.less';
-import '../shared/styles.scss';
+import Discovery from './components/Discovery/Discovery';
+import {AddInstance} from './components/AddInstance/AddInstance';
+import { getStyles } from './panel.styles';
 
+const availableInstanceTypes = ['rds', 'postgresql', 'mysql', 'proxysql', 'mongodb', 'proxysql'];
 const history = createBrowserHistory();
+
 const AddInstancePanel = () => {
+  const styles = getStyles();
+
   const urlParams = new URLSearchParams(window.location.search);
   const instanceType = urlParams.get('instance_type') || '';
-  const availableInstanceTypes = ['rds', 'postgresql', 'mysql', 'proxysql', 'mongodb', 'proxysql'];
   const [selectedInstance, selectInstance] = useState({
     type: availableInstanceTypes.includes(instanceType) ? instanceType : '',
   });
@@ -26,23 +28,24 @@ const AddInstancePanel = () => {
     history.push(url.pathname + url.search);
   };
 
-  return (
-    <div className="app-theme-dark content-wrapper add-instance-panel">
-      {!selectedInstance.type ? <AddInstance onSelectInstanceType={setSelectedInstance} /> : null}
-      {selectedInstance.type && (
-        <>
-          <div id="antd" className="add-instance-navigation-link">
-            <Button type="link" onClick={() => setSelectedInstance({ type: '' })}>
-              Return to instance select menu
-            </Button>
-          </div>
-          {selectedInstance.type === 'rds' ? (
-            <DiscoveryPanel onSelectInstance={setSelectedInstance} />
-          ) : (
-            <AddRemoteInstance instance={selectedInstance} />
-          )}
-        </>
+  const InstanceForm = () => (
+    <>
+      <div className={styles.content}>
+        <Button variant="link" onClick={() => setSelectedInstance({ type: '' })}>
+          Return to instance select menu
+        </Button>
+      </div>
+      {selectedInstance.type === 'rds' ? (
+        <Discovery onSelectInstance={setSelectedInstance} />
+      ) : (
+        <AddRemoteInstance instance={selectedInstance} />
       )}
+    </>
+  );
+
+  return (
+    <div className={cx(styles.content, styles.contentPadding)}>
+      {!selectedInstance.type ? <AddInstance onSelectInstanceType={setSelectedInstance} /> : <InstanceForm />}
     </div>
   );
 };
