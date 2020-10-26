@@ -68,7 +68,7 @@ export const CheckboxGroup: FC<CheckboxGroupProps> = ({
             disabled={!valueExists}
           />
         </span>
-        {dashboardURL && (
+        {dashboardURL && item.value && (
           <span className={styles.dashboardLink}>
             <a href={dashboardURL} target="_blank" rel="noreferrer">
               <Icon name="graph-bar" />
