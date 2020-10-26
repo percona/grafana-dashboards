@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createBrowserHistory } from 'history';
 import { Router, Route } from 'react-router-dom';
 import { Button } from '@grafana/ui';
 import { cx } from 'emotion';
 import AddRemoteInstance from './components/AddRemoteInstance/AddRemoteInstance';
 import Discovery from './components/Discovery/Discovery';
-import {AddInstance} from './components/AddInstance/AddInstance';
+import { AddInstance } from './components/AddInstance/AddInstance';
 import { getStyles } from './panel.styles';
 
 const availableInstanceTypes = ['rds', 'postgresql', 'mysql', 'proxysql', 'mongodb', 'proxysql'];
@@ -20,23 +20,22 @@ const AddInstancePanel = () => {
     type: availableInstanceTypes.includes(instanceType) ? instanceType : '',
   });
 
-  const setSelectedInstance = (instance) => {
+  useEffect(() => {
     const url = new URL((window.location as unknown) as string);
 
-    url.searchParams.set('instance_type', instance.type);
-    selectInstance(instance);
+    url.searchParams.set('instance_type', selectedInstance.type);
     history.push(url.pathname + url.search);
-  };
+  }, [selectedInstance]);
 
   const InstanceForm = () => (
     <>
       <div className={styles.content}>
-        <Button variant="link" onClick={() => setSelectedInstance({ type: '' })}>
+        <Button variant="link" onClick={() => selectInstance({ type: '' })}>
           Return to instance select menu
         </Button>
       </div>
       {selectedInstance.type === 'rds' ? (
-        <Discovery onSelectInstance={setSelectedInstance} />
+        <Discovery onSelectInstance={selectInstance} />
       ) : (
         <AddRemoteInstance instance={selectedInstance} />
       )}
@@ -45,7 +44,7 @@ const AddInstancePanel = () => {
 
   return (
     <div className={cx(styles.content, styles.contentPadding)}>
-      {!selectedInstance.type ? <AddInstance onSelectInstanceType={setSelectedInstance} /> : <InstanceForm />}
+      {!selectedInstance.type ? <AddInstance onSelectInstanceType={selectInstance} /> : <InstanceForm />}
     </div>
   );
 };
