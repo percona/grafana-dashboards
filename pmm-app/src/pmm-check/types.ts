@@ -19,6 +19,24 @@ export enum Severity {
   notice = 'notice',
 }
 
+export type FailedChecks = [number, number, number];
+
+export interface ActiveCheck {
+  key: string;
+  name: string;
+  failed: FailedChecks;
+  details: Array<{ description: string, labels: { [key: string]: string }}>;
+}
+
+export interface CheckDetails {
+  name: string;
+  disabled: boolean;
+}
+
+export interface AllChecks {
+  checks: CheckDetails[];
+}
+
 export enum TabKeys {
   allChecks = "allChecks",
   failedChecks = "failedChecks",

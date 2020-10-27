@@ -2,7 +2,8 @@ import React, { FC, useEffect, useState } from 'react';
 import { Table } from 'pmm-check/components';
 import { showSuccessNotification } from 'shared/components/helpers';
 import { ButtonWithSpinner } from 'shared/components/Form';
-import { ActiveCheck,  FailedChecksProps } from './types';
+import { FailedChecksProps } from './types'
+import { ActiveCheck } from 'pmm-check/types';
 import { COLUMNS } from 'pmm-check/CheckPanel.constants';
 import { AlertsReloadContext } from 'pmm-check/Check.context';
 import { CheckService } from 'pmm-check/Check.service';
