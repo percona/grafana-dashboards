@@ -11,8 +11,6 @@ const originalConsoleError = jest.fn();
 
 const dataQa = (label: string) => `[data-qa="${label}"]`;
 
-const ROOT_SELECTOR = dataQa('db-checks-all-checks-wrapper');
-
 const runAllPromises = () => new Promise(setImmediate);
 
 describe('AllChecksTab::', () => {
@@ -39,16 +37,11 @@ describe('AllChecksTab::', () => {
   it('should render a spinner at startup, while loading', async () => {
     const wrapper: ReactWrapper<{}, {}, any> = mount(<AllChecksTab />);
 
-    let root: ReactWrapper<{}, typeof AllChecksTab> = wrapper.find(ROOT_SELECTOR) as ReactWrapper<{}, typeof AllChecksTab>;
-
-    expect(root.find(dataQa('db-checks-all-checks-spinner'))).toHaveLength(1);
-
     await runAllPromises();
 
     wrapper.update();
-    root = wrapper.find(ROOT_SELECTOR);
 
-    expect(root.find(dataQa('db-checks-all-checks-spinner'))).toHaveLength(0);
+    expect(wrapper.find(dataQa('db-checks-all-checks-spinner'))).toHaveLength(0);
 
     wrapper.unmount();
   });
@@ -72,23 +65,18 @@ describe('AllChecksTab::', () => {
 
     const wrapper: ReactWrapper<{}, {}, any> = mount(<AllChecksTab />);
 
-    let root: ReactWrapper<{}, typeof AllChecksTab> = wrapper.find(ROOT_SELECTOR) as ReactWrapper<{}, typeof AllChecksTab>;
-
-    expect(root.find(dataQa('db-checks-all-checks-spinner'))).toHaveLength(1);
-
     await runAllPromises();
 
     wrapper.update();
-    root = wrapper.find(ROOT_SELECTOR);
 
     const tbody = dataQa('db-checks-all-checks-tbody');
 
-    expect(root.find(dataQa('db-checks-all-checks-table'))).toHaveLength(1);
-    expect(root.find(dataQa('db-checks-all-checks-thead'))).toHaveLength(1);
-    expect(root.find(tbody)).toHaveLength(1);
-    expect(root.find(tbody).find('tr > td')).toHaveLength(2);
-    expect(root.find(tbody).find('tr > td').at(0).text()).toBe('test enabled');
-    expect(root.find(tbody).find('tr > td').at(1).text()).toBe('test disabled');
+    expect(wrapper.find(dataQa('db-checks-all-checks-table'))).toHaveLength(1);
+    expect(wrapper.find(dataQa('db-checks-all-checks-thead'))).toHaveLength(1);
+    expect(wrapper.find(tbody)).toHaveLength(1);
+    expect(wrapper.find(tbody).find('tr > td')).toHaveLength(2);
+    expect(wrapper.find(tbody).find('tr > td').at(0).text()).toBe('test enabled');
+    expect(wrapper.find(tbody).find('tr > td').at(1).text()).toBe('test disabled');
 
     wrapper.unmount();
   });
