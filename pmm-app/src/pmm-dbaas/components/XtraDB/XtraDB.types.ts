@@ -11,12 +11,20 @@ export interface XtraDBCluster {
   clusterName: string;
   kubernetesClusterName: string;
   databaseType: string;
+  clusterSize: number;
+  memory: number;
+  cpu: number;
 }
 
-export interface XtraDBClusterAPI {
+export interface XtraDBClusterPayload {
   kubernetes_cluster_name: string;
   name: string;
   params: XtraDBClusterParamsAPI;
+}
+
+export interface DeleteXtraDBClusterAPI {
+  kubernetes_cluster_name: string;
+  name: string;
 }
 
 interface XtraDBClusterParamsAPI {
