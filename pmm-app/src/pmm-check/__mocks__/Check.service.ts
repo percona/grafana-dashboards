@@ -2,7 +2,7 @@ import {
   SEVERITIES_ORDER,
 } from 'pmm-check/CheckPanel.constants';
 import {
-  ActiveCheck, Alert, FailedChecks, Settings, SilenceResponse,
+  ActiveCheck, Alert, CheckDetails, FailedChecks, Settings, SilenceResponse,
 } from 'pmm-check/types';
 
 import { alertsStub } from './stubs';
@@ -26,6 +26,9 @@ export const CheckService = {
   async getSettings(): Promise<Settings | {}> {
     return {};
   },
+  async getAllChecks(): Promise<CheckDetails[] | undefined> {
+    return [];
+  }
 };
 
 export const processData = (data: Alert[]): ActiveCheck[] => {
