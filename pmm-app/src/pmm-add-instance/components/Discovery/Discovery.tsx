@@ -5,7 +5,7 @@ import Instances from './components/Instances/Instances';
 import { getStyles } from './Discovery.styles';
 import { DiscoverySearchPanelProps } from './Discovery.types';
 
-const Discovery: FC<DiscoverySearchPanelProps> = ({ onSelectInstance }) => {
+const Discovery: FC<DiscoverySearchPanelProps> = ({ selectInstance }) => {
   const styles = getStyles();
 
   const [instances, setInstances] = useState([] as any);
@@ -37,7 +37,7 @@ const Discovery: FC<DiscoverySearchPanelProps> = ({ onSelectInstance }) => {
         <Credentials onSetCredentials={setCredentials} />
         <Instances
           instances={instances}
-          onSelectInstance={onSelectInstance}
+          selectInstance={selectInstance}
           credentials={credentials}
           loading={loading}
         />

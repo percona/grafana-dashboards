@@ -1,3 +1,3 @@
 export interface DiscoverySearchPanelProps {
-  onSelectInstance: (instanceData: any) => void;
+  selectInstance: (instanceData: any) => void;
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { createBrowserHistory } from 'history';
 import { Router, Route } from 'react-router-dom';
 import { Button } from '@grafana/ui';
@@ -27,19 +27,22 @@ const AddInstancePanel = () => {
     history.push(url.pathname + url.search);
   }, [selectedInstance]);
 
-  const InstanceForm = () => (
-    <>
-      <div className={styles.content}>
-        <Button variant="link" onClick={() => selectInstance({ type: '' })}>
-          Return to instance select menu
-        </Button>
-      </div>
-      {selectedInstance.type === 'rds' ? (
-        <Discovery onSelectInstance={selectInstance} />
-      ) : (
-        <AddRemoteInstance instance={selectedInstance} />
-      )}
-    </>
+  const InstanceForm = useMemo(
+    () => () => (
+      <>
+        <div className={styles.content}>
+          <Button variant="link" onClick={() => selectInstance({ type: '' })}>
+            Return to menu
+          </Button>
+        </div>
+        {selectedInstance.type === 'rds' ? (
+          <Discovery selectInstance={selectInstance} />
+        ) : (
+          <AddRemoteInstance instance={selectedInstance} selectInstance={selectInstance} />
+        )}
+      </>
+    ),
+    [selectedInstance],
   );
 
   return (

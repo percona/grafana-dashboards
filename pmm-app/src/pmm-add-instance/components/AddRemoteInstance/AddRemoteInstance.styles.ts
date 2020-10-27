@@ -33,4 +33,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => ({
     height: 1.5em;
     white-space: nowrap;
   `,
+  addRemoteInstanceTitle: css`
+    text-align: center;
+  `,
 }));

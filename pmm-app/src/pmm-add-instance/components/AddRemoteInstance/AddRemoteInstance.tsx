@@ -1,13 +1,16 @@
 import React, { FC, useCallback, useState } from 'react';
 import { Form as FormFinal } from 'react-final-form';
-import { useTheme } from '@grafana/ui';
+import { Button, useTheme } from '@grafana/ui';
 import AddRemoteInstanceService, { toPayload } from './AddRemoteInstance.service';
 import { getInstanceData } from './AddRemoteInstance.tools';
 import { getStyles } from './AddRemoteInstance.styles';
 import { AddRemoteInstanceProps } from './AddRemoteInstance.types';
 import { AdditionalOptions, Labels, MainDetails } from './FormParts';
 
-const AddRemoteInstance: FC<AddRemoteInstanceProps> = ({ instance: { type, credentials } }) => {
+const AddRemoteInstance: FC<AddRemoteInstanceProps> = ({
+  instance: { type, credentials },
+  selectInstance,
+}) => {
   const theme = useTheme();
   const styles = getStyles(theme);
 
@@ -18,10 +21,6 @@ const AddRemoteInstance: FC<AddRemoteInstanceProps> = ({ instance: { type, crede
   if (instanceType === 'MySQL') {
     initialValues.qan_mysql_perfschema = true;
   }
-
-  const changePGTracking = useCallback(([newResolution], state: any, { changeValue }) => {
-    changeValue(state, 'tracking', () => newResolution);
-  }, []);
 
   const onSubmit = useCallback(
     async (values) => {
@@ -49,30 +48,37 @@ const AddRemoteInstance: FC<AddRemoteInstanceProps> = ({ instance: { type, crede
     [instanceType],
   );
 
-  const formRender = useCallback(
-    ({ form, handleSubmit }) => (
-      <form onSubmit={handleSubmit} data-qa="add-remote-instance-form">
-        <h4>{`Add remote ${instanceType} Instance`}</h4>
-        <MainDetails remoteInstanceCredentials={remoteInstanceCredentials} />
-        <Labels />
-        <AdditionalOptions
-          remoteInstanceCredentials={remoteInstanceCredentials}
-          loading={loading}
-          form={form}
-          instanceType={instanceType}
-        />
-      </form>
-    ),
-    [remoteInstanceCredentials, instanceType, loading, initialValues],
-  );
-
   return (
     <div className={styles.formWrapper}>
       <FormFinal
-        mutators={{ changePGTracking }}
         onSubmit={onSubmit}
         initialValues={initialValues}
-        render={formRender}
+        render={({ handleSubmit }) => (
+          <form onSubmit={handleSubmit} data-qa="add-remote-instance-form">
+            <h4 className={styles.addRemoteInstanceTitle}>{`Add remote ${instanceType} Instance`}</h4>
+            <MainDetails remoteInstanceCredentials={remoteInstanceCredentials} />
+            <Labels />
+            <AdditionalOptions
+              remoteInstanceCredentials={remoteInstanceCredentials}
+              loading={loading}
+              instanceType={instanceType}
+            />
+            <div style={{ marginTop: '40px', marginBottom: '40px' }}>
+              <Button id="addInstance" disabled={loading}>
+                Add service
+              </Button>
+              <Button
+                variant="secondary"
+                id="addInstance"
+                onClick={() => selectInstance({ type: '' })}
+                disabled={loading}
+                style={{ marginLeft: '20px' }}
+              >
+                Return to menu
+              </Button>
+            </div>
+          </form>
+        )}
       />
     </div>
   );

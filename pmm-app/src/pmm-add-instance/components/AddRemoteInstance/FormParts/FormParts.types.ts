@@ -6,9 +6,6 @@ export interface AdditionalOptionsFormPartProps {
   instanceType?: string;
   loading: boolean;
   remoteInstanceCredentials: any;
-  form: any;
 }
 
-export interface PostgreSQLAdditionalOptionsProps {
-  mutators: any;
-}
+export interface PostgreSQLAdditionalOptionsProps {}
