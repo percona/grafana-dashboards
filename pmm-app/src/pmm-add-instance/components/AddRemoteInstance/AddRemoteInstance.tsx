@@ -63,16 +63,15 @@ const AddRemoteInstance: FC<AddRemoteInstanceProps> = ({
               loading={loading}
               instanceType={instanceType}
             />
-            <div style={{ marginTop: '40px', marginBottom: '40px' }}>
+            <div className={styles.addRemoteInstanceButtons}>
               <Button id="addInstance" disabled={loading}>
                 Add service
               </Button>
               <Button
                 variant="secondary"
-                id="addInstance"
                 onClick={() => selectInstance({ type: '' })}
                 disabled={loading}
-                style={{ marginLeft: '20px' }}
+                className={styles.returnButton}
               >
                 Return to menu
               </Button>
