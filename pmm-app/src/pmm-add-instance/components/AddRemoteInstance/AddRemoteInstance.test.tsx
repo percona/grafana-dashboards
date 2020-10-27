@@ -8,7 +8,7 @@ describe('Add remote instance:: ', () => {
   it('should render correct', () => {
     const type = 'mysql';
 
-    const root = mount(<AddRemoteInstance instance={{ type, credentials: {} }} />);
+    const root = mount(<AddRemoteInstance instance={{ type, credentials: {} }} selectInstance={jest.fn()} />);
 
     root.find('form[data-qa="add-remote-instance-form"]').simulate('submit');
   });

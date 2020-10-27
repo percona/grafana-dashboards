@@ -1,5 +1,5 @@
 export enum TrackingOptions {
-  none = '',
+  none = 'TEST',
   pgStatements = 'qan_postgresql_pgstatements_agent',
   pgMonitor = 'qan_postgresql_pgstatmonitor_agent',
 }
@@ -18,4 +18,5 @@ interface Instance {
 
 export interface AddRemoteInstanceProps {
   instance: Instance;
+  selectInstance: (any) => void;
 }

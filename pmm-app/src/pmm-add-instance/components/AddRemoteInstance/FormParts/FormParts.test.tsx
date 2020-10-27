@@ -62,7 +62,6 @@ describe('AdditionalOptionsFormPart ::', () => {
     const remoteInstanceCredentials = {
       isRDS: false,
     };
-    const mutators = { changePGTracking: jest.fn() };
 
     const root = mount(
       <Form
@@ -71,7 +70,6 @@ describe('AdditionalOptionsFormPart ::', () => {
           <AdditionalOptionsFormPart
             instanceType={type}
             remoteInstanceCredentials={remoteInstanceCredentials}
-            form={{ mutators }}
             loading={false}
           />
         )}
@@ -81,7 +79,6 @@ describe('AdditionalOptionsFormPart ::', () => {
     expect(root.find('input[name="skip_connection_check"]').length).toBe(1);
     expect(root.find('input[name="tls"]').length).toBe(1);
     expect(root.find('input[name="tls_skip_verify"]').length).toBe(1);
-    expect(root.find('button').prop('disabled')).toBeFalsy();
   });
 });
 
@@ -91,12 +88,11 @@ describe('getAdditionalOptions ::', () => {
     const remoteInstanceCredentials = {
       isRDS: false,
     };
-    const mutators = { changePGTracking: jest.fn() };
 
     const root = mount(
       <Form
         onSubmit={jest.fn()}
-        render={() => getAdditionalOptions(type, remoteInstanceCredentials, mutators)}
+        render={() => getAdditionalOptions(type, remoteInstanceCredentials)}
       />,
     );
     const fields = root.find('input');
@@ -110,12 +106,11 @@ describe('getAdditionalOptions ::', () => {
     const remoteInstanceCredentials = {
       isRDS: false,
     };
-    const mutators = { changePGTracking: jest.fn() };
 
     const root = mount(
       <Form
         onSubmit={jest.fn()}
-        render={() => getAdditionalOptions(type, remoteInstanceCredentials, mutators)}
+        render={() => getAdditionalOptions(type, remoteInstanceCredentials)}
       />,
     );
     const fields = root.find('input');
@@ -129,12 +124,11 @@ describe('getAdditionalOptions ::', () => {
     const remoteInstanceCredentials = {
       isRDS: true,
     };
-    const mutators = { changePGTracking: jest.fn() };
 
     const root = mount(
       <Form
         onSubmit={jest.fn()}
-        render={() => getAdditionalOptions(type, remoteInstanceCredentials, mutators)}
+        render={() => getAdditionalOptions(type, remoteInstanceCredentials)}
       />,
     );
     const fields = root.find('input');
@@ -150,12 +144,11 @@ describe('getAdditionalOptions ::', () => {
     const remoteInstanceCredentials = {
       isRDS: true,
     };
-    const mutators = { changePGTracking: jest.fn() };
 
     const root = mount(
       <Form
         onSubmit={jest.fn()}
-        render={() => getAdditionalOptions(type, remoteInstanceCredentials, mutators)}
+        render={() => getAdditionalOptions(type, remoteInstanceCredentials)}
       />,
     );
     const fields = root.find('input');

@@ -18,9 +18,7 @@ export const SelectInstance: FC<SelectInstanceProps> = ({ type, selectInstanceTy
       type="button"
     >
       <Database />
-      <span className={styles.addInstanceTitle}>
-        {title}
-      </span>
+      <span className={styles.addInstanceTitle}>{title}</span>
       <span className={styles.addInstance}>{Messages.titles.addInstance}</span>
     </button>
   );
