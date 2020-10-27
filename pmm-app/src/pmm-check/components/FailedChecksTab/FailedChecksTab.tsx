@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { Table } from 'pmm-check/components';
 import { showSuccessNotification } from 'shared/components/helpers';
 import { ButtonWithSpinner } from 'shared/components/Form';
-import { FailedChecksProps } from './types'
+import { FailedChecksTabProps } from './types'
 import { ActiveCheck } from 'pmm-check/types';
 import { COLUMNS } from 'pmm-check/CheckPanel.constants';
 import { AlertsReloadContext } from 'pmm-check/Check.context';
@@ -11,7 +11,7 @@ import { Spinner } from '@grafana/ui';
 import { Messages } from './FailedChecksTab.messages';
 import * as styles from './FailedChecksTab.styles';
 
-export const FailedChecksTab: FC<FailedChecksProps> = ({hasNoAccess, isSttEnabled}) => {
+export const FailedChecksTab: FC<FailedChecksTabProps> = ({hasNoAccess, isSttEnabled}) => {
   const [fetchAlertsPending, setFetchAlertsPending] = useState(false);
   const [runChecksPending, setRunChecksPending] = useState(false);
   const [dataSource, setDataSource] = useState<ActiveCheck[] | undefined>();
@@ -46,10 +46,7 @@ export const FailedChecksTab: FC<FailedChecksProps> = ({hasNoAccess, isSttEnable
   }
 
   useEffect(() => {
-    const alerts = async () => {
-    await fetchAlerts();
-    }
-    alerts();
+    fetchAlerts();
   }, []);
 
   return (
@@ -68,7 +65,7 @@ export const FailedChecksTab: FC<FailedChecksProps> = ({hasNoAccess, isSttEnable
       </div>
       <AlertsReloadContext.Provider value={{ fetchAlerts }}>
         {fetchAlertsPending ? (
-          <div className={styles.spinner}>
+          <div className={styles.spinner} data-qa="db-checks-failed-checks-spinner">
             <Spinner />
           </div>
         ) : (
