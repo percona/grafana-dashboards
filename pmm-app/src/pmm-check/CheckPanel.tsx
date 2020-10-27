@@ -2,7 +2,7 @@ import React, { FC, useEffect, useMemo, useState } from 'react';
 import { createBrowserHistory } from 'history';
 import { Spinner, TabsBar, TabContent, Tab } from '@grafana/ui';
 import { Router, Route } from 'react-router-dom';
-import { Settings, TabKeys, TabEntry, CheckPanelProps } from './types';
+import { Settings, TabKeys, TabEntry } from './types';
 import { CheckService } from './Check.service';
 import * as styles from './CheckPanel.styles';
 import { Messages } from './CheckPanel.messages';
@@ -25,9 +25,7 @@ export const CheckPanel: FC = () => {
       setHasNoAccess(false);
 
     } catch (err) {
-      if (err.response?.status === 401) {
-        setHasNoAccess(true);
-      }
+      setHasNoAccess(err.response?.status === 401);
 
       console.error(err);
     } finally {
@@ -36,10 +34,7 @@ export const CheckPanel: FC = () => {
   };
 
   useEffect(() => {
-    const settings = async () => {
-      await getSettings();
-    }
-    settings();
+    getSettings();
   }, [])
 
   const tabs = useMemo<TabEntry[]>(() => [
@@ -64,29 +59,29 @@ export const CheckPanel: FC = () => {
         </div>
       ) : (
         <>
-            <TabsBar className={styles.tabBar} data-qa="db-check-tabs-bar">
-              {tabs.map((tab) => (
-                <Tab
-                  key={tab.key}
-                  label={tab.label}
-                  active={tab.key === activeTab}
-                  onChangeTab={() => setActiveTab(tab.key)}
-                />
-              ))}
-            </TabsBar>
-            <TabContent className={styles.tabContent} data-qa="db-check-tab-content">
-              {tabs.map((tab) => tab.key === activeTab && tab.component)}
-            </TabContent>
+          <TabsBar className={styles.tabBar} data-qa="db-check-tabs-bar">
+            {tabs.map((tab) => (
+              <Tab
+                key={tab.key}
+                label={tab.label}
+                active={tab.key === activeTab}
+                onChangeTab={() => setActiveTab(tab.key)}
+              />
+            ))}
+          </TabsBar>
+          <TabContent className={styles.tabContent} data-qa="db-check-tab-content">
+            {tabs.map((tab) => tab.key === activeTab && tab.component)}
+          </TabContent>
         </>
       )}
     </div>
   );
 };
 
-export const CheckPanelRouter: FC<CheckPanelProps> = (props) => (
+export const CheckPanelRouter: FC = () => (
   <Router history={history}>
     <Route>
-      <CheckPanel {...props} />
+      <CheckPanel />
     </Route>
   </Router>
 );
