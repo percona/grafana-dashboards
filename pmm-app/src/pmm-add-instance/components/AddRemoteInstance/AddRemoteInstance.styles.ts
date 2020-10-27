@@ -36,4 +36,11 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => ({
   addRemoteInstanceTitle: css`
     text-align: center;
   `,
+  addRemoteInstanceButtons: css`
+    margin-top: ${theme.spacing.md};
+    margin-bottom: ${theme.spacing.md};
+  `,
+  returnButton: css`
+    margin-left: ${theme.spacing.md};
+  `,
 }));
