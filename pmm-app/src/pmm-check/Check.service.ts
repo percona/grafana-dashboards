@@ -4,6 +4,8 @@ import {
   ActiveCheck,
   Alert,
   AlertRequestParams,
+  AllChecks,
+  CheckDetails,
   FailedChecks,
   Settings,
   SilenceBody,
@@ -39,6 +41,11 @@ export const CheckService = {
   },
   runDbChecks(): Promise<void | {}> {
     return apiRequest.post<{}, {}>('/v1/management/SecurityChecks/Start', {});
+  },
+  async getAllChecks(): Promise<CheckDetails[] | undefined> {
+    const response = await apiRequest.post<AllChecks, {}>('/v1/management/SecurityChecks/List', {});
+
+    return response ? response.checks : undefined;
   },
 };
 
