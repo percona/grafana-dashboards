@@ -217,7 +217,7 @@ Scenario(
 );
 
 Scenario(
-  'PMM-T436 - Verify short-cut navigation from filters to related dashboards - Cluster @qan',
+  'PMM-T436 - Verify short-cut navigation from filters to related dashboards - Cluster @qan @not-pr-pipeline',
   async (I, qanFilters, dashboardPage) => {
     const mongoLink = '/graph/d/mongodb-cluster-summary/mongodb-cluster-summary';
     const header = 'MongoDB Cluster Summary';
@@ -233,7 +233,7 @@ Scenario(
 );
 
 Scenario(
-  'PMM-T436 - Verify short-cut navigation from filters to related dashboards - Replication Set @qan',
+  'PMM-T436 - Verify short-cut navigation from filters to related dashboards - Replication Set @qan @not-pr-pipeline',
   async (I, qanFilters, dashboardPage) => {
     const replicationSetLink = '/graph/d/mysql-replicaset-summary/mysql-replication-summary';
     const header = 'MySQL Replication Summary';
@@ -249,7 +249,7 @@ Scenario(
 );
 
 Scenario(
-  'PMM-T436 - Verify short-cut navigation from filters to related dashboards - Node Name @qan',
+  'PMM-T436 - Verify short-cut navigation from filters to related dashboards - Node Name @qan @not-pr-pipeline',
   async (I, qanFilters, dashboardPage) => {
     const shortCut = '/graph/d/node-instance-summary/node-summary?var-node_name=pmm-server';
     const nodeNameLink = 'node_name=pmm-server';
@@ -268,7 +268,7 @@ Scenario(
 );
 
 Scenario(
-  'PMM-T436 - Verify short-cut navigation from filters to related dashboards - Service Name @qan',
+  'PMM-T436 - Verify short-cut navigation from filters to related dashboards - Service Name @qan @not-pr-pipeline',
   async (I, qanFilters, dashboardPage) => {
     const serviceNameLink = '/graph/d/mongodb-instance-summary/mongodb-instance-summary';
     const header = 'MongoDB Instance Summary';
@@ -283,7 +283,7 @@ Scenario(
   },
 );
 
-Scenario('PMM-T437 - Verify short-cut navigation for n/a items @qan', async (I, qanFilters) => {
+Scenario('PMM-T437 - Verify short-cut navigation for n/a items @qan @not-pr-pipeline', async (I, qanFilters) => {
   qanFilters.checkLink('Cluster', 'ps-dev-cluster', true);
   I.fillField(qanFilters.fields.filterBy, 'n/a');
   qanFilters.checkLink('Cluster', 'n/a', false);
