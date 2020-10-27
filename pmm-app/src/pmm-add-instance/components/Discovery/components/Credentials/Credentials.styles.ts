@@ -15,4 +15,7 @@ export const getStyles = stylesFactory(() => ({
   credentialsField: css`
     width: 42%;
   `,
+  credentialsSubmit: css`
+    margin-top: 2px;
+  `,
 }));

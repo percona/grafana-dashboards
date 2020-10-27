@@ -1,13 +1,10 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import { Form } from 'react-final-form';
-import {
-  AdditionalOptionsFormPart,
-  getAdditionalOptions,
-  LabelsFormPart,
-  MainDetailsFormPart,
-} from './FormParts';
 import { trackingOptions } from './FormParts.constants';
+import { AdditionalOptionsFormPart, getAdditionalOptions } from './AdditionalOptions/AdditionalOptions';
+import { LabelsFormPart } from './Labels/Labels';
+import { MainDetailsFormPart } from './MainDetails/MainDetails';
 
 describe('MainDetailsFormPart ::', () => {
   it('should disable fields with sat isRDS flag', async () => {

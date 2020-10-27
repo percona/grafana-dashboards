@@ -32,7 +32,7 @@ const Credentials: FC<CredentialsProps> = ({ onSetCredentials }) => {
               validators={[validators.required]}
               fieldClassName={styles.credentialsField}
             />
-            <Button type="submit">{Messages.form.submitButton}</Button>
+            <Button type="submit" data-qa={'credentials-search-button'} className={styles.credentialsSubmit}>{Messages.form.submitButton}</Button>
           </div>
           <div>
             <a href={SECURITY_CREDENTIALS_DOC_LINK}>{Messages.form.credentialsDocLink}</a>
