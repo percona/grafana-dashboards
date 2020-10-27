@@ -6,11 +6,11 @@ import { Settings, TabKeys, TabEntry, CheckPanelProps } from './types';
 import { CheckService } from './Check.service';
 import * as styles from './CheckPanel.styles';
 import { Messages } from './CheckPanel.messages';
-import { FailedChecksTab } from './components';
+import { AllChecksTab, FailedChecksTab } from './components';
 
 const history = createBrowserHistory();
 
-export const CheckPanel: FC<CheckPanelProps> = () => {
+export const CheckPanel: FC = () => {
   const [activeTab, setActiveTab] = useState(TabKeys.failedChecks);
   const [hasNoAccess, setHasNoAccess] = useState(false);
   const [isSttEnabled, setIsSttEnabled] = useState(false);
@@ -51,7 +51,7 @@ export const CheckPanel: FC<CheckPanelProps> = () => {
     {
       label: Messages.allChecksTitle,
       key: TabKeys.allChecks,
-      component: <FailedChecksTab hasNoAccess={hasNoAccess} isSttEnabled={isSttEnabled} />
+      component: <AllChecksTab />
     },
   ],
   [hasNoAccess, isSttEnabled]);
@@ -64,7 +64,7 @@ export const CheckPanel: FC<CheckPanelProps> = () => {
         </div>
       ) : (
         <>
-            <TabsBar>
+            <TabsBar className={styles.tabBar} data-qa="db-check-tabs-bar">
               {tabs.map((tab) => (
                 <Tab
                   key={tab.key}
@@ -74,7 +74,7 @@ export const CheckPanel: FC<CheckPanelProps> = () => {
                 />
               ))}
             </TabsBar>
-            <TabContent>
+            <TabContent className={styles.tabContent} data-qa="db-check-tab-content">
               {tabs.map((tab) => tab.key === activeTab && tab.component)}
             </TabContent>
         </>
