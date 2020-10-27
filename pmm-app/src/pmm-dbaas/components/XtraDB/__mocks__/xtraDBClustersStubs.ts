@@ -23,7 +23,6 @@ export const xtraDBClustersStub: XtraDBCluster[] = [
 
 export const xtraDBClusterConnectionStub: XtraDBClusterConnection = {
   host: 'dbcluster-proxysql',
-  name: 'dbcluster',
   password: '1234',
   port: 3000,
   username: 'root',

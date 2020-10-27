@@ -3,7 +3,11 @@ import { Spinner, useStyles } from '@grafana/ui';
 import { Messages } from 'pmm-dbaas/DBaaS.messages';
 import { XtraDBService } from '../XtraDB.service';
 import { XtraDBClusterConnectionProps } from './XtraDBClusterConnection.types';
-import { XtraDBClusterConnection as ConnectionParams, XtraDBClusterStatus } from '../XtraDB.types';
+import {
+  XtraDBClusterConnection as ConnectionParams,
+  XtraDBClusterStatus,
+  XtraDBClusterConnectionAPI,
+} from '../XtraDB.types';
 import { INITIAL_CONNECTION } from './XtraDBClusterConnection.constants';
 import { getStyles } from './XtraDBClusterConnection.styles';
 import {
@@ -28,7 +32,9 @@ export const XtraDBClusterConnection: FC<XtraDBClusterConnectionProps> = ({
   const getClusterConnection = async () => {
     try {
       setLoading(true);
-      setConnection(await XtraDBService.showXtraDBCluster(xtraDBCluster) as ConnectionParams);
+      const connection = await XtraDBService.getXtraDBCluster(xtraDBCluster) as XtraDBClusterConnectionAPI;
+
+      setConnection(connection.connection_credentials);
     } catch (e) {
       console.error(e);
     } finally {

@@ -28,7 +28,6 @@ export enum XtraDBClusterStatus {
 
 export interface XtraDBClusterConnection {
   host: string;
-  name: string;
   password: string;
   port: number;
   username: string;
@@ -65,4 +64,8 @@ interface XtraDBComputeResourcesAPI {
 interface XtraDBClusterOperationAPI {
   progress: number;
   message: string;
+}
+
+export interface XtraDBClusterConnectionAPI {
+  connection_credentials: XtraDBClusterConnection;
 }

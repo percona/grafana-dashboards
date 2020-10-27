@@ -5,7 +5,7 @@ import {
   XtraDBCluster,
   XtraDBClusterPayload,
   DeleteXtraDBClusterAPI,
-  XtraDBClusterConnection,
+  XtraDBClusterConnectionAPI,
 } from './XtraDB.types';
 
 export const XtraDBService = {
@@ -29,9 +29,9 @@ export const XtraDBService = {
       toAPI(xtradbCluster),
     );
   },
-  showXtraDBCluster(xtradbCluster: XtraDBCluster) {
-    return apiRequestManagement.post<XtraDBClusterConnection, any>(
-      '/DBaaS/XtraDBClusters/Show',
+  getXtraDBCluster(xtradbCluster: XtraDBCluster) {
+    return apiRequestManagement.post<XtraDBClusterConnectionAPI, any>(
+      '/DBaaS/XtraDBClusters/Get',
       omit(toAPI(xtradbCluster), ['params']),
     );
   },
@@ -50,8 +50,8 @@ const toAPI = (xtradbCluster: XtraDBCluster): XtraDBClusterPayload => ({
     },
     proxysql: {
       compute_resources: {
-        cpu_m: 1000,
-        memory_bytes: 1 * 10 ** 9,
+        cpu_m: 0,
+        memory_bytes: 0,
       },
     },
   },
