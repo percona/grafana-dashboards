@@ -1,13 +1,11 @@
 import React, { FC, useCallback, useState } from 'react';
 import { Form as FormFinal } from 'react-final-form';
-import { StepProgress } from '@percona/platform-core';
 import { useTheme } from '@grafana/ui';
 import AddRemoteInstanceService, { toPayload } from './AddRemoteInstance.service';
 import { getInstanceData } from './AddRemoteInstance.tools';
 import { getStyles } from './AddRemoteInstance.styles';
-import { Messages } from './AddRemoteInstance.messages';
-import { AdditionalOptionsFormPart, LabelsFormPart, MainDetailsFormPart } from './FormParts/FormParts';
 import { AddRemoteInstanceProps } from './AddRemoteInstance.types';
+import { AdditionalOptions, Labels, MainDetails } from './FormParts';
 
 const AddRemoteInstance: FC<AddRemoteInstanceProps> = ({ instance: { type, credentials } }) => {
   const theme = useTheme();
@@ -52,39 +50,19 @@ const AddRemoteInstance: FC<AddRemoteInstanceProps> = ({ instance: { type, crede
   );
 
   const formRender = useCallback(
-    ({ form, handleSubmit }) => {
-      const steps = [
-        {
-          title: Messages.form.titles.mainDetails,
-          fields: ['address', 'port', 'username', 'password'],
-          render: () => <MainDetailsFormPart remoteInstanceCredentials={remoteInstanceCredentials} />,
-        },
-        {
-          title: Messages.form.titles.labels,
-          fields: ['topology', 'nodes', 'databaseType'],
-          render: () => <LabelsFormPart />,
-        },
-        {
-          title: Messages.form.titles.additionalOptions,
-          fields: [],
-          render: () => (
-            <AdditionalOptionsFormPart
-              remoteInstanceCredentials={remoteInstanceCredentials}
-              loading={loading}
-              form={form}
-              instanceType={instanceType}
-            />
-          ),
-        },
-      ];
-
-      return (
-        <form onSubmit={handleSubmit} data-qa="add-remote-instance-form">
-          <h4>{`Add remote ${instanceType} Instance`}</h4>
-          <StepProgress steps={steps} initialValues={initialValues} onSubmit={handleSubmit} />
-        </form>
-      );
-    },
+    ({ form, handleSubmit }) => (
+      <form onSubmit={handleSubmit} data-qa="add-remote-instance-form">
+        <h4>{`Add remote ${instanceType} Instance`}</h4>
+        <MainDetails remoteInstanceCredentials={remoteInstanceCredentials} />
+        <Labels />
+        <AdditionalOptions
+          remoteInstanceCredentials={remoteInstanceCredentials}
+          loading={loading}
+          form={form}
+          instanceType={instanceType}
+        />
+      </form>
+    ),
     [remoteInstanceCredentials, instanceType, loading, initialValues],
   );
 

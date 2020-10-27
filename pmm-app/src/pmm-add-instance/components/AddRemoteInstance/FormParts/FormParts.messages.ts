@@ -49,5 +49,10 @@ export const Messages = {
       },
       additionalOptions: {},
     },
+    titles: {
+      mainDetails: 'Main details',
+      labels: 'Labels',
+      additionalOptions: 'Additional options',
+    },
   },
 };
