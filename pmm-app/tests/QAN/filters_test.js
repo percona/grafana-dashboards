@@ -217,7 +217,7 @@ Scenario(
 );
 
 Scenario(
-  'PMM-T436 - Verify short-cut navigation from filters to related dashboards - Cluster @qan',
+  'PMM-T436 - Verify short-cut navigation from filters to related dashboards - Cluster @qan @not-pr-pipeline',
   async (I, qanFilters, dashboardPage) => {
     const mongoLink = '/graph/d/mongodb-cluster-summary/mongodb-cluster-summary';
     const header = 'MongoDB Cluster Summary';
