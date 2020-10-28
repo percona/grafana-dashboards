@@ -1,11 +1,13 @@
+import { RemoteInstanceCredentials } from 'pmm-add-instance/panel.types';
+
 export interface MainDetailsFormPartProps {
-  remoteInstanceCredentials: any;
+  remoteInstanceCredentials: RemoteInstanceCredentials;
 }
 
 export interface AdditionalOptionsFormPartProps {
   instanceType?: string;
   loading: boolean;
-  remoteInstanceCredentials: any;
+  remoteInstanceCredentials: RemoteInstanceCredentials;
 }
 
 export interface PostgreSQLAdditionalOptionsProps {}

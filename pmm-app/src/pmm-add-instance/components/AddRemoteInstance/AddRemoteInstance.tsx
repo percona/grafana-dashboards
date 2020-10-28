@@ -7,6 +7,7 @@ import { getInstanceData } from './AddRemoteInstance.tools';
 import { getStyles } from './AddRemoteInstance.styles';
 import { AddRemoteInstanceProps } from './AddRemoteInstance.types';
 import { AdditionalOptions, Labels, MainDetails } from './FormParts';
+import { Messages } from './AddRemoteInstance.messages';
 
 const AddRemoteInstance: FC<AddRemoteInstanceProps> = ({
   instance: { type, credentials },
@@ -17,7 +18,7 @@ const AddRemoteInstance: FC<AddRemoteInstanceProps> = ({
 
   const { instanceType, remoteInstanceCredentials, discoverName } = getInstanceData(type, credentials);
   const [loading, setLoading] = useState<boolean>(false);
-  const initialValues = { ...remoteInstanceCredentials };
+  const initialValues: any = { ...remoteInstanceCredentials };
 
   if (instanceType === DATABASE_LABELS[Databases.mysql]) {
     initialValues.qan_mysql_perfschema = true;
@@ -66,7 +67,7 @@ const AddRemoteInstance: FC<AddRemoteInstanceProps> = ({
             />
             <div className={styles.addRemoteInstanceButtons}>
               <Button id="addInstance" disabled={loading}>
-                Add service
+                {Messages.form.buttons.addService}
               </Button>
               <Button
                 variant="secondary"
@@ -74,7 +75,7 @@ const AddRemoteInstance: FC<AddRemoteInstanceProps> = ({
                 disabled={loading}
                 className={styles.returnButton}
               >
-                Return to menu
+                {Messages.form.buttons.toMenu}
               </Button>
             </div>
           </form>
