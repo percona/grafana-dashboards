@@ -616,6 +616,14 @@ module.exports = {
     timeRangePickerButton: '.btn.navbar-button.navbar-button--tight',
     rootUser: '//div[contains(text(), "root")]',
     dataLinkForRoot: '//div[contains(text(), "Data links")]/..//a',
+    navbarLocator: '.navbar-page-btn',
+  },
+
+  async checkNavigationBar(text) {
+    I.waitForVisible(this.fields.navbarLocator, 30);
+    const navbarText = await I.grabTextFrom(this.fields.navbarLocator);
+
+    assert.ok(navbarText.includes(text));
   },
 
   async getExactFilterValue(filterName) {
