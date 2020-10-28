@@ -2,16 +2,16 @@ import React, { FC, useEffect, useState } from 'react';
 import { Table } from 'pmm-check/components';
 import { showSuccessNotification } from 'shared/components/helpers';
 import { ButtonWithSpinner } from 'shared/components/Form';
-import { FailedChecksTabProps } from './types'
 import { ActiveCheck } from 'pmm-check/types';
 import { COLUMNS } from 'pmm-check/CheckPanel.constants';
 import { AlertsReloadContext } from 'pmm-check/Check.context';
 import { CheckService } from 'pmm-check/Check.service';
 import { Spinner } from '@grafana/ui';
+import { FailedChecksTabProps } from './types';
 import { Messages } from './FailedChecksTab.messages';
 import * as styles from './FailedChecksTab.styles';
 
-export const FailedChecksTab: FC<FailedChecksTabProps> = ({hasNoAccess, isSttEnabled}) => {
+export const FailedChecksTab: FC<FailedChecksTabProps> = ({ hasNoAccess, isSttEnabled }) => {
   const [fetchAlertsPending, setFetchAlertsPending] = useState(false);
   const [runChecksPending, setRunChecksPending] = useState(false);
   const [dataSource, setDataSource] = useState<ActiveCheck[] | undefined>();
@@ -28,7 +28,7 @@ export const FailedChecksTab: FC<FailedChecksTabProps> = ({hasNoAccess, isSttEna
     } finally {
       setFetchAlertsPending(false);
     }
-  }
+  };
 
   const handleRunChecksClick = async () => {
     setRunChecksPending(true);
@@ -43,7 +43,7 @@ export const FailedChecksTab: FC<FailedChecksTabProps> = ({hasNoAccess, isSttEna
       await fetchAlerts();
       showSuccessNotification({ message: 'Done running DB checks. The latest results are displayed.' });
     }, 10000);
-  }
+  };
 
   useEffect(() => {
     fetchAlerts();
@@ -79,4 +79,4 @@ export const FailedChecksTab: FC<FailedChecksTabProps> = ({hasNoAccess, isSttEna
       </AlertsReloadContext.Provider>
     </>
   );
-}
+};

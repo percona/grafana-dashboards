@@ -2,13 +2,13 @@ import React, { FC, useEffect, useState } from 'react';
 import { cx } from 'emotion';
 import { CheckDetails } from 'pmm-check/types';
 import { CheckService } from 'pmm-check/Check.service';
-import { Spinner } from '@grafana/ui';
-import { Messages } from './AllChecksTab.messages';
+import { Spinner, useTheme } from '@grafana/ui';
 // TODO: make a table shared style
 import { getStyles as getTableStyles } from 'pmm-check/components/Table/Table.styles';
 import * as checkPanelStyles from 'pmm-check/CheckPanel.styles';
+import { Messages } from './AllChecksTab.messages';
 import * as styles from './AllChecksTab.styles';
-import { useTheme } from '@grafana/ui';
+
 
 export const AllChecksTab: FC = () => {
   const [fetchChecksPending, setFetchChecksPending] = useState(false);
@@ -28,7 +28,7 @@ export const AllChecksTab: FC = () => {
     } finally {
       setFetchChecksPending(false);
     }
-  }
+  };
 
   useEffect(() => {
     fetchChecks();
@@ -49,7 +49,7 @@ export const AllChecksTab: FC = () => {
             </tr>
           </thead>
           <tbody data-qa="db-checks-all-checks-tbody">
-            {checks?.map(check => (
+            {checks?.map((check) => (
               <tr key={check.name}>
                 <td>{check.name}</td>
                 <td>{check.description}</td>
@@ -60,4 +60,4 @@ export const AllChecksTab: FC = () => {
       )}
     </div>
   );
-}
+};

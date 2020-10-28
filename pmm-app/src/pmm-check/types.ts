@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { RouteComponentProps } from 'react-router-dom'
+import { RouteComponentProps } from 'react-router-dom';
 
 export interface CheckPanelOptions {
   title?: string;
@@ -39,8 +39,8 @@ export interface AllChecks {
 }
 
 export enum TabKeys {
-  allChecks = "allChecks",
-  failedChecks = "failedChecks",
+  allChecks = 'allChecks',
+  failedChecks = 'failedChecks',
 }
 
 export interface TabEntry {

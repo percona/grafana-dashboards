@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
-import { AllChecksTab } from './AllChecksTab';
 import { CheckService } from 'pmm-check/Check.service';
+import { AllChecksTab } from './AllChecksTab';
 
 jest.mock('shared/components/helpers/notification-manager');
 

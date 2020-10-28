@@ -1,6 +1,10 @@
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, {
+  FC, useEffect, useMemo, useState,
+} from 'react';
 import { createBrowserHistory } from 'history';
-import { Spinner, TabsBar, TabContent, Tab } from '@grafana/ui';
+import {
+  Spinner, TabsBar, TabContent, Tab,
+} from '@grafana/ui';
 import { Router, Route } from 'react-router-dom';
 import { Settings, TabKeys, TabEntry } from './types';
 import { CheckService } from './Check.service';
@@ -23,7 +27,6 @@ export const CheckPanel: FC = () => {
 
       setIsSttEnabled(!!resp.settings?.stt_enabled);
       setHasNoAccess(false);
-
     } catch (err) {
       setHasNoAccess(err.response?.status === 401);
 
@@ -35,18 +38,18 @@ export const CheckPanel: FC = () => {
 
   useEffect(() => {
     getSettings();
-  }, [])
+  }, []);
 
   const tabs = useMemo<TabEntry[]>(() => [
     {
       label: Messages.failedChecksTitle,
       key: TabKeys.failedChecks,
-      component: <FailedChecksTab hasNoAccess={hasNoAccess} isSttEnabled={isSttEnabled} />
+      component: <FailedChecksTab hasNoAccess={hasNoAccess} isSttEnabled={isSttEnabled} />,
     },
     {
       label: Messages.allChecksTitle,
       key: TabKeys.allChecks,
-      component: <AllChecksTab />
+      component: <AllChecksTab />,
     },
   ],
   [hasNoAccess, isSttEnabled]);
