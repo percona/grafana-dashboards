@@ -14,7 +14,7 @@ module.exports = {
     'mongo',
     10,
     'ps',
-    2,
+    5,
     'pg',
     1,
     'pmm-server',
