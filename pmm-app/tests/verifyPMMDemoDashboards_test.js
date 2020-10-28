@@ -112,7 +112,7 @@ Scenario(
       I.click(adminPage.fields.metricTitle);
       adminPage.peformPageDown(5);
       await dashboardPage.verifyThereAreNoGraphsWithNA();
-      await dashboardPage.verifyThereAreNoGraphsWithoutData(1);
+      await dashboardPage.verifyThereAreNoGraphsWithoutData(3);
     }
   },
 );
