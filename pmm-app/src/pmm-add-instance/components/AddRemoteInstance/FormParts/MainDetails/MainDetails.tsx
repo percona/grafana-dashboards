@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
 import { PasswordInputField, TextInputField, validators } from '@percona/platform-core';
+import Validators from 'shared/components/helpers/validators';
 import { MainDetailsFormPartProps } from '../FormParts.types';
 import { getStyles } from '../FormParts.styles';
 import { Messages } from '../FormParts.messages';
-import Validators from '../../../../../shared/components/helpers/validators';
 
 export const MainDetailsFormPart: FC<MainDetailsFormPartProps> = ({ remoteInstanceCredentials }) => {
   const styles = getStyles();

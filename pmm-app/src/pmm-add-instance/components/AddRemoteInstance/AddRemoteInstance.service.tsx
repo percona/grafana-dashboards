@@ -1,4 +1,5 @@
 import { apiRequestManagement } from 'shared/components/helpers/api';
+import { DATABASE_LABELS, Databases } from 'shared/core';
 import { TrackingOptions } from './AddRemoteInstance.types';
 
 class AddRemoteInstanceService {
@@ -24,14 +25,14 @@ class AddRemoteInstanceService {
 
   static addRemote(type, data) {
     switch (type) {
-      case 'MongoDB':
+      case DATABASE_LABELS[Databases.mongodb]:
         return AddRemoteInstanceService.addMongodb(data);
-      case 'MySQL':
+      case DATABASE_LABELS[Databases.mysql]:
         return AddRemoteInstanceService.addMysql(data);
-      case 'ProxySQL':
-        return AddRemoteInstanceService.addProxysql(data);
-      case 'PostgreSQL':
+      case DATABASE_LABELS[Databases.postgresql]:
         return AddRemoteInstanceService.addPostgresql(data);
+      case DATABASE_LABELS[Databases.proxysql]:
+        return AddRemoteInstanceService.addProxysql(data);
       default:
         throw new Error('Unknown instance type');
     }

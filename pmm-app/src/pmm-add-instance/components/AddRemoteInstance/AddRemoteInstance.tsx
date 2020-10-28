@@ -1,6 +1,7 @@
 import React, { FC, useCallback, useState } from 'react';
 import { Form as FormFinal } from 'react-final-form';
 import { Button, useTheme } from '@grafana/ui';
+import { DATABASE_LABELS, Databases } from 'shared/core';
 import AddRemoteInstanceService, { toPayload } from './AddRemoteInstance.service';
 import { getInstanceData } from './AddRemoteInstance.tools';
 import { getStyles } from './AddRemoteInstance.styles';
@@ -18,7 +19,7 @@ const AddRemoteInstance: FC<AddRemoteInstanceProps> = ({
   const [loading, setLoading] = useState<boolean>(false);
   const initialValues = { ...remoteInstanceCredentials };
 
-  if (instanceType === 'MySQL') {
+  if (instanceType === DATABASE_LABELS[Databases.mysql]) {
     initialValues.qan_mysql_perfschema = true;
   }
 

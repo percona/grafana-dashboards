@@ -1,12 +1,13 @@
 import { Button } from '@grafana/ui';
 import React from 'react';
+import { DATABASE_LABELS, Databases } from 'shared/core';
 
 const getEngineType = (type) => {
   switch (type) {
     case 'DISCOVER_RDS_MYSQL':
-      return 'MySQL';
+      return DATABASE_LABELS[Databases.mysql];
     case 'DISCOVER_RDS_POSTGRES':
-      return 'PostgreSQL';
+      return DATABASE_LABELS[Databases.postgresql];
     case 'DISCOVER_RDS_INVALID':
       return 'Unknown type';
     default:
