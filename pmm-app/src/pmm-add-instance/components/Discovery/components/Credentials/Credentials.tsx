@@ -1,14 +1,15 @@
 import { Form as FormFinal } from 'react-final-form';
 import React, { FC, useCallback } from 'react';
 import { TextInputField, validators } from '@percona/platform-core';
-import { Button } from '@grafana/ui';
+import { Button, useTheme } from '@grafana/ui';
 import { getStyles } from './Credentials.styles';
 import { SECURITY_CREDENTIALS_DOC_LINK } from './Credentials.constants';
 import { Messages } from './Credentials.messages';
 import { CredentialsProps, CredentialsForm } from './Credentials.types';
 
 const Credentials: FC<CredentialsProps> = ({ onSetCredentials }) => {
-  const styles = getStyles();
+  const theme = useTheme();
+  const styles = getStyles(theme);
 
   const onSubmit = useCallback((values: CredentialsForm) => {
     onSetCredentials({ ...values });

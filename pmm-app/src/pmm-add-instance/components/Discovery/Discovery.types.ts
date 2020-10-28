@@ -2,7 +2,7 @@ export interface DiscoverySearchPanelProps {
   selectInstance: (instanceData: any) => void;
 }
 
-interface Instance {
+export interface Instance {
   region: string;
   az: string;
   instance_id: string;

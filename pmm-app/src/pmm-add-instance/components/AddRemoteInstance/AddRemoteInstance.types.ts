@@ -1,3 +1,5 @@
+import { RemoteInstanceCredentials } from 'pmm-add-instance/panel.types';
+
 export enum TrackingOptions {
   none = '',
   pgStatements = 'qan_postgresql_pgstatements_agent',
@@ -7,7 +9,7 @@ export enum TrackingOptions {
 export interface InstanceData {
   instanceType?: string;
   defaultPort?: number;
-  remoteInstanceCredentials?: any;
+  remoteInstanceCredentials: RemoteInstanceCredentials;
   discoverName?: string;
 }
 
@@ -18,5 +20,5 @@ interface Instance {
 
 export interface AddRemoteInstanceProps {
   instance: Instance;
-  selectInstance: (any) => void;
+  selectInstance: (Instance) => void;
 }

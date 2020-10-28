@@ -1,22 +1,29 @@
 import { DATABASE_LABELS, Databases } from 'shared/core';
 import { InstanceData } from './AddRemoteInstance.types';
 
-export const getInstanceData = (instanceType, credentials) => {
-  const instance: InstanceData = {};
+export const getInstanceData = (instanceType, credentials): InstanceData => {
+  const extractCredentials = (credentials): InstanceData => {
+    if (!credentials) {
+      return { remoteInstanceCredentials: {} };
+    }
 
-  const extractCredentials = (credentials) => ({
-    service_name: !credentials.isRDS ? credentials.address : credentials.instance_id,
-    port: credentials.port,
-    address: credentials.address,
-    isRDS: credentials.isRDS,
-    region: credentials.region,
-    aws_access_key: credentials.aws_access_key,
-    aws_secret_key: credentials.aws_secret_key,
-    instance_id: credentials.instance_id,
-    az: credentials.az,
-  });
+    return {
+      remoteInstanceCredentials: {
+        service_name: !credentials.isRDS ? credentials.address : credentials.instance_id,
+        port: credentials.port,
+        address: credentials.address,
+        isRDS: credentials.isRDS,
+        region: credentials.region,
+        aws_access_key: credentials.aws_access_key,
+        aws_secret_key: credentials.aws_secret_key,
+        instance_id: credentials.instance_id,
+        az: credentials.az,
+      },
+    };
+  };
 
-  instance.remoteInstanceCredentials = credentials ? extractCredentials(credentials) : {};
+  const instance = extractCredentials(credentials);
+
   switch (instanceType) {
     case Databases.postgresql:
       instance.instanceType = DATABASE_LABELS[Databases.postgresql];

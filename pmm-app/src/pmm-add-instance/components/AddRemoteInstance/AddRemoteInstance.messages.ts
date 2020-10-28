@@ -5,5 +5,9 @@ export const Messages = {
       pgStatements: 'PG Stat Statements',
       pgMonitor: 'PG Stat Monitor',
     },
+    buttons: {
+      addService: 'Add service',
+      toMenu: 'Return to menu',
+    },
   },
 };

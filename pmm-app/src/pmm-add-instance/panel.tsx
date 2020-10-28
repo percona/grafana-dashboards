@@ -7,6 +7,7 @@ import AddRemoteInstance from './components/AddRemoteInstance/AddRemoteInstance'
 import Discovery from './components/Discovery/Discovery';
 import { AddInstance } from './components/AddInstance/AddInstance';
 import { getStyles } from './panel.styles';
+import { Messages } from './components/AddRemoteInstance/AddRemoteInstance.messages';
 
 const availableInstanceTypes = ['rds', 'postgresql', 'mysql', 'proxysql', 'mongodb', 'proxysql'];
 const history = createBrowserHistory();
@@ -32,7 +33,7 @@ const AddInstancePanel = () => {
       <>
         <div className={styles.content}>
           <Button variant="link" onClick={() => selectInstance({ type: '' })}>
-            Return to menu
+            {Messages.form.buttons.toMenu}
           </Button>
         </div>
         {selectedInstance.type === 'rds' ? (
