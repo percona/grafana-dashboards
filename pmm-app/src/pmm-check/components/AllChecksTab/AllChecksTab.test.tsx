@@ -59,8 +59,8 @@ describe('AllChecksTab::', () => {
 
   it('should render a table', async () => {
     jest.spyOn(CheckService, 'getAllChecks').mockImplementation(() => Promise.resolve([
-      { name: 'test enabled', disabled: false },
-      { name: 'test disabled', disabled: true },
+      { name: 'test enabled', description: 'test enabled description', disabled: false },
+      { name: 'test disabled', description: 'test disabled description', disabled: true },
     ]));
 
     const wrapper: ReactWrapper<{}, {}, any> = mount(<AllChecksTab />);
@@ -74,9 +74,11 @@ describe('AllChecksTab::', () => {
     expect(wrapper.find(dataQa('db-checks-all-checks-table'))).toHaveLength(1);
     expect(wrapper.find(dataQa('db-checks-all-checks-thead'))).toHaveLength(1);
     expect(wrapper.find(tbody)).toHaveLength(1);
-    expect(wrapper.find(tbody).find('tr > td')).toHaveLength(2);
+    expect(wrapper.find(tbody).find('tr > td')).toHaveLength(4);
     expect(wrapper.find(tbody).find('tr > td').at(0).text()).toBe('test enabled');
-    expect(wrapper.find(tbody).find('tr > td').at(1).text()).toBe('test disabled');
+    expect(wrapper.find(tbody).find('tr > td').at(1).text()).toBe('test enabled description');
+    expect(wrapper.find(tbody).find('tr > td').at(2).text()).toBe('test disabled');
+    expect(wrapper.find(tbody).find('tr > td').at(3).text()).toBe('test disabled description');
 
     wrapper.unmount();
   });

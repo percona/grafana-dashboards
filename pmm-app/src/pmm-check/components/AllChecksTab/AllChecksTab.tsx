@@ -1,11 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { cx } from 'emotion';
-import { Table } from 'pmm-check/components';
-import { showSuccessNotification } from 'shared/components/helpers';
-import { ButtonWithSpinner } from 'shared/components/Form';
 import { CheckDetails } from 'pmm-check/types';
-import { COLUMNS } from 'pmm-check/CheckPanel.constants';
-import { AlertsReloadContext } from 'pmm-check/Check.context';
 import { CheckService } from 'pmm-check/Check.service';
 import { Spinner } from '@grafana/ui';
 import { Messages } from './AllChecksTab.messages';
@@ -50,12 +45,14 @@ export const AllChecksTab: FC = () => {
           <thead data-qa="db-checks-all-checks-thead">
             <tr>
               <th>{Messages.name}</th>
+              <th>{Messages.description}</th>
             </tr>
           </thead>
           <tbody data-qa="db-checks-all-checks-tbody">
             {checks?.map(check => (
-              <tr>
+              <tr key={check.name}>
                 <td>{check.name}</td>
+                <td>{check.description}</td>
               </tr>
             ))}
           </tbody>

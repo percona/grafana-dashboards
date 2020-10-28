@@ -1,3 +1,4 @@
 export const Messages = {
-  name: 'Check Name',
+  name: 'Name',
+  description: 'Description',
 };

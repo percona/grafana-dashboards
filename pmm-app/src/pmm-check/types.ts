@@ -30,6 +30,7 @@ export interface ActiveCheck {
 
 export interface CheckDetails {
   name: string;
+  description: string;
   disabled: boolean;
 }
 
