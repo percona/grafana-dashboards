@@ -1,3 +1,4 @@
+import { DATABASE_LABELS, Databases } from 'shared/core';
 import { InstanceData } from './AddRemoteInstance.types';
 
 export const getInstanceData = (instanceType, credentials) => {
@@ -17,21 +18,21 @@ export const getInstanceData = (instanceType, credentials) => {
 
   instance.remoteInstanceCredentials = credentials ? extractCredentials(credentials) : {};
   switch (instanceType) {
-    case 'postgresql':
-      instance.instanceType = 'PostgreSQL';
+    case Databases.postgresql:
+      instance.instanceType = DATABASE_LABELS[Databases.postgresql];
       instance.remoteInstanceCredentials.port = instance.remoteInstanceCredentials.port || 5432;
       break;
-    case 'mysql':
-      instance.instanceType = 'MySQL';
+    case Databases.mysql:
+      instance.instanceType = DATABASE_LABELS[Databases.mysql];
       instance.discoverName = 'DISCOVER_RDS_MYSQL';
       instance.remoteInstanceCredentials.port = instance.remoteInstanceCredentials.port || 3306;
       break;
-    case 'mongodb':
-      instance.instanceType = 'MongoDB';
+    case Databases.mongodb:
+      instance.instanceType = DATABASE_LABELS[Databases.mongodb];
       instance.remoteInstanceCredentials.port = instance.remoteInstanceCredentials.port || 27017;
       break;
-    case 'proxysql':
-      instance.instanceType = 'ProxySQL';
+    case Databases.proxysql:
+      instance.instanceType = DATABASE_LABELS[Databases.proxysql];
       instance.remoteInstanceCredentials.port = instance.remoteInstanceCredentials.port || 6032;
       break;
     default:

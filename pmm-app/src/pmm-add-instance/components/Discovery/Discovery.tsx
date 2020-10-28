@@ -17,7 +17,9 @@ const Discovery: FC<DiscoverySearchPanelProps> = ({ selectInstance }) => {
       try {
         const result = await DiscoveryService.discoveryRDS(credentials);
 
-        setInstances(result.rds_instances);
+        if (result) {
+          setInstances(result.rds_instances);
+        }
       } catch (e) {
         console.error(e);
       } finally {

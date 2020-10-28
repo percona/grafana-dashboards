@@ -1,10 +1,11 @@
 import { stylesFactory } from '@grafana/ui';
 import { css } from 'emotion';
+import { GrafanaTheme } from '@grafana/data';
 
-export const getStyles = stylesFactory(() => ({
+export const getStyles = stylesFactory((theme: GrafanaTheme) => ({
   instanceForm: css`
     padding: 0px;
-    margin-bottom: 10px;
+    margin-bottom: ${theme.spacing.sm};
     width: 800px;
   `,
   searchPanel: css`

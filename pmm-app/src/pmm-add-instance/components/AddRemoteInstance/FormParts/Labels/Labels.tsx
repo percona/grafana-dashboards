@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
 import { TextareaInputField, TextInputField, validators } from '@percona/platform-core';
+import Validators from 'shared/components/helpers/validators';
 import { getStyles } from '../FormParts.styles';
 import { Messages } from '../FormParts.messages';
-import Validators from '../../../../../shared/components/helpers/validators';
 
-export const LabelsFormPart: FC<any> = () => {
+export const LabelsFormPart: FC = () => {
   const styles = getStyles();
 
   return (

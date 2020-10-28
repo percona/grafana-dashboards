@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { CheckboxField } from '@percona/platform-core';
 import { Field } from 'react-final-form';
 import { RadioButtonGroupAdapter } from 'shared/components/Form/FieldAdapters/FieldAdapters';
+import { DATABASE_LABELS, Databases } from 'shared/core';
 import { AdditionalOptionsFormPartProps, PostgreSQLAdditionalOptionsProps } from '../FormParts.types';
 import { getStyles } from '../FormParts.styles';
 import { Messages } from '../FormParts.messages';
@@ -39,9 +40,9 @@ export const PostgreSQLAdditionalOptions: FC<PostgreSQLAdditionalOptionsProps> =
 );
 export const getAdditionalOptions = (type, remoteInstanceCredentials) => {
   switch (type) {
-    case 'PostgreSQL':
+    case DATABASE_LABELS[Databases.postgresql]:
       return <PostgreSQLAdditionalOptions />;
-    case 'MySQL':
+    case DATABASE_LABELS[Databases.mysql]:
       return (
         <>
           <CheckboxField
@@ -62,7 +63,7 @@ export const getAdditionalOptions = (type, remoteInstanceCredentials) => {
           ) : null}
         </>
       );
-    case 'MongoDB':
+    case DATABASE_LABELS[Databases.mongodb]:
       return (
         <>
           <CheckboxField
