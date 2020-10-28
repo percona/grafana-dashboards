@@ -5,6 +5,7 @@ import {
   Alert,
   AlertRequestParams,
   AllChecks,
+  ChangeCheckBody,
   CheckDetails,
   FailedChecks,
   Settings,
@@ -46,6 +47,9 @@ export const CheckService = {
     const response = await apiRequest.post<AllChecks, {}>('/v1/management/SecurityChecks/List', {});
 
     return response ? response.checks : undefined;
+  },
+  changeCheck(body: ChangeCheckBody): Promise<void | {}> {
+    return apiRequest.post<{}, ChangeCheckBody>('/v1/management/SecurityChecks/Change', body);
   },
 };
 

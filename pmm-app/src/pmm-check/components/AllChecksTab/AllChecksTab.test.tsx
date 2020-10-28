@@ -59,8 +59,8 @@ describe('AllChecksTab::', () => {
 
   it('should render a table', async () => {
     jest.spyOn(CheckService, 'getAllChecks').mockImplementation(() => Promise.resolve([
-      { name: 'test enabled', description: 'test enabled description', disabled: false },
-      { name: 'test disabled', description: 'test disabled description', disabled: true },
+      { name: 'test enabled', description: 'test enabled description', enabled: true },
+      { name: 'test disabled', description: 'test disabled description', enabled: false },
     ]));
 
     const wrapper: ReactWrapper<{}, {}, any> = mount(<AllChecksTab />);

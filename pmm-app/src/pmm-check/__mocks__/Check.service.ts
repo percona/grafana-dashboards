@@ -29,6 +29,9 @@ export const CheckService = {
   async getAllChecks(): Promise<CheckDetails[] | undefined> {
     return [];
   },
+  async changeCheck(): Promise<void | {}> {
+    return {};
+  },
 };
 
 export const processData = (data: Alert[]): ActiveCheck[] => {

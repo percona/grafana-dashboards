@@ -1,5 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { cx } from 'emotion';
+import { ButtonWithSpinner } from 'shared/components/Form';
 import { CheckDetails } from 'pmm-check/types';
 import { CheckService } from 'pmm-check/Check.service';
 import { Spinner, useTheme } from '@grafana/ui';
@@ -9,12 +10,24 @@ import * as checkPanelStyles from 'pmm-check/CheckPanel.styles';
 import { Messages } from './AllChecksTab.messages';
 import * as styles from './AllChecksTab.styles';
 
-
 export const AllChecksTab: FC = () => {
+  const [changeCheckPending, setChangeCheckPending] = useState(false);
   const [fetchChecksPending, setFetchChecksPending] = useState(false);
   const [checks, setChecks] = useState<CheckDetails[] | undefined>();
   const theme = useTheme();
   const tableStyles = getTableStyles(theme);
+
+  const changeCheck = async (checkName, enabled) => {
+    setChangeCheckPending(true);
+    const action = enabled ? 'enable' : 'disable';
+    try {
+      await CheckService.changeCheck({ name: checkName, [action]: true });
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setChangeCheckPending(false);
+    }
+  };
 
   const fetchChecks = async (): Promise<void> => {
     setFetchChecksPending(true);
@@ -46,6 +59,7 @@ export const AllChecksTab: FC = () => {
             <tr>
               <th>{Messages.name}</th>
               <th>{Messages.description}</th>
+              <th>{Messages.actions}</th>
             </tr>
           </thead>
           <tbody data-qa="db-checks-all-checks-tbody">
@@ -53,6 +67,11 @@ export const AllChecksTab: FC = () => {
               <tr key={check.name}>
                 <td>{check.name}</td>
                 <td>{check.description}</td>
+                <td>
+                  <ButtonWithSpinner variant="secondary" size="sm" isLoading={changeCheckPending} onClick={() => changeCheck(check.name, check.enabled === true)}>
+                    {check.enabled ? Messages.disable : Messages.enable}
+                  </ButtonWithSpinner>
+                </td>
               </tr>
             ))}
           </tbody>

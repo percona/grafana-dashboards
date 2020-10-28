@@ -31,11 +31,17 @@ export interface ActiveCheck {
 export interface CheckDetails {
   name: string;
   description: string;
-  disabled: boolean;
+  enabled: boolean;
 }
 
 export interface AllChecks {
   checks: CheckDetails[];
+}
+
+export interface ChangeCheckBody {
+  name: string;
+  enabled?: boolean;
+  disabled?: boolean;
 }
 
 export enum TabKeys {
