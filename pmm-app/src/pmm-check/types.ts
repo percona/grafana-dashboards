@@ -40,8 +40,8 @@ export interface AllChecks {
 
 export interface ChangeCheckBody {
   name: string;
-  enabled?: boolean;
-  disabled?: boolean;
+  enable?: boolean;
+  disable?: boolean;
 }
 
 export enum TabKeys {
