@@ -1,13 +1,8 @@
 import React, { FC, useState } from 'react';
 import { ButtonWithSpinner } from 'shared/components/Form';
-import { CheckDetails } from 'pmm-check/types';
 import { CheckService } from 'pmm-check/Check.service';
 import { Messages } from './AllChecksTab.messages';
-
-interface CheckTableRowProps {
-  check: CheckDetails;
-  onSuccess: (check: CheckDetails) => void;
-}
+import { CheckTableRowProps } from './types';
 
 export const CheckTableRow: FC<CheckTableRowProps> = ({ check, onSuccess }) => {
   const [changeCheckPending, setChangeCheckPending] = useState(false);
@@ -15,7 +10,7 @@ export const CheckTableRow: FC<CheckTableRowProps> = ({ check, onSuccess }) => {
 
   const changeCheck = async () => {
     setChangeCheckPending(true);
-    const action = enabled ? 'disabled' : 'enabled';
+    const action = enabled ? 'disable' : 'enable';
 
     try {
       await CheckService.changeCheck({ name, [action]: true });
