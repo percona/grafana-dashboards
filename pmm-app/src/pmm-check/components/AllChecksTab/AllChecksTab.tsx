@@ -3,7 +3,7 @@ import { cx } from 'emotion';
 import { CheckDetails } from 'pmm-check/types';
 import { CheckService } from 'pmm-check/Check.service';
 import { Spinner, useTheme } from '@grafana/ui';
-// TODO: make a table shared style
+// TODO: make a shared table style
 import { getStyles as getTableStyles } from 'pmm-check/components/Table/Table.styles';
 import * as checkPanelStyles from 'pmm-check/CheckPanel.styles';
 import { Messages } from './AllChecksTab.messages';
