@@ -27,8 +27,6 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => ({
   `,
   addInstanceTitle: css`
     margin-top: ${theme.spacing.sm};
-    text-overflow: ellipsis;
-    overflow: hidden;
     width: 65%;
     height: 1.5em;
     white-space: nowrap;

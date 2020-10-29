@@ -29,7 +29,7 @@ const AddRemoteInstance: FC<AddRemoteInstanceProps> = ({
   const onSubmit = useCallback(
     async (values) => {
       const currentUrl = `${window.parent.location}`;
-      const newURL = `${currentUrl.split('/graph/d/').shift()}/graph/d/pmm-inventory/`;
+      const newURL = `${currentUrl.split('/graph/d/')[0]}/graph/d/pmm-inventory/`;
 
       const data = toPayload(values, discoverName);
 
