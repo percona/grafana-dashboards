@@ -9,6 +9,7 @@ import { getStyles as getTableStyles } from 'pmm-check/components/Table/Table.st
 import * as checkPanelStyles from 'pmm-check/CheckPanel.styles';
 import { Messages } from './AllChecksTab.messages';
 import * as styles from './AllChecksTab.styles';
+import { ChangeCheck, FetchChecks } from './types';
 
 export const AllChecksTab: FC = () => {
   const [changeCheckPending, setChangeCheckPending] = useState(false);
@@ -17,9 +18,10 @@ export const AllChecksTab: FC = () => {
   const theme = useTheme();
   const tableStyles = getTableStyles(theme);
 
-  const changeCheck = async (checkName, enabled) => {
+  const changeCheck: ChangeCheck = async (checkName, enabled) => {
     setChangeCheckPending(true);
     const action = enabled ? 'enable' : 'disable';
+
     try {
       await CheckService.changeCheck({ name: checkName, [action]: true });
     } catch (e) {
@@ -29,7 +31,7 @@ export const AllChecksTab: FC = () => {
     }
   };
 
-  const fetchChecks = async (): Promise<void> => {
+  const fetchChecks: FetchChecks = async () => {
     setFetchChecksPending(true);
 
     try {
