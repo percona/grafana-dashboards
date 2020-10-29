@@ -2,6 +2,7 @@ import React from 'react';
 import { ReactWrapper, mount } from 'enzyme';
 import { CheckService } from 'pmm-check/Check.service';
 import { AllChecksTab } from './AllChecksTab';
+import { Messages } from './AllChecksTab.messages';
 
 jest.mock('shared/components/helpers/notification-manager');
 
@@ -72,11 +73,15 @@ describe('AllChecksTab::', () => {
     expect(wrapper.find(dataQa('db-checks-all-checks-table'))).toHaveLength(1);
     expect(wrapper.find(dataQa('db-checks-all-checks-thead'))).toHaveLength(1);
     expect(wrapper.find(tbody)).toHaveLength(1);
-    expect(wrapper.find(tbody).find('tr > td')).toHaveLength(4);
+    expect(wrapper.find(tbody).find('tr > td')).toHaveLength(8);
     expect(wrapper.find(tbody).find('tr > td').at(0).text()).toBe('test enabled');
     expect(wrapper.find(tbody).find('tr > td').at(1).text()).toBe('test enabled description');
-    expect(wrapper.find(tbody).find('tr > td').at(2).text()).toBe('test disabled');
-    expect(wrapper.find(tbody).find('tr > td').at(3).text()).toBe('test disabled description');
+    expect(wrapper.find(tbody).find('tr > td').at(2).text()).toBe(Messages.enabled);
+    expect(wrapper.find(tbody).find('tr > td').at(3).text()).toBe(Messages.disable);
+    expect(wrapper.find(tbody).find('tr > td').at(4).text()).toBe('test disabled');
+    expect(wrapper.find(tbody).find('tr > td').at(5).text()).toBe('test disabled description');
+    expect(wrapper.find(tbody).find('tr > td').at(6).text()).toBe(Messages.disabled);
+    expect(wrapper.find(tbody).find('tr > td').at(7).text()).toBe(Messages.enable);
 
     wrapper.unmount();
   });
