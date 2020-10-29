@@ -1,14 +1,13 @@
-import React, { FC, useState } from 'react';
-import { Field, Form, FormRenderProps } from 'react-final-form';
-import { HorizontalGroup } from '@grafana/ui';
-import { LoaderButton, TextInputField, validators } from '@percona/platform-core';
+import React, { FC, useMemo } from 'react';
+import { StepProgress } from '@percona/platform-core';
 import { Modal } from 'shared/components/Elements/Modal/Modal';
-import { SelectFieldAdapter } from 'shared/components/Form/FieldAdapters/FieldAdapters';
 import { Messages } from 'pmm-dbaas/DBaaS.messages';
-import { DATABASE_OPTIONS } from '../XtraDB.constants';
-import { AddXtraDBModalProps, AddXtraDBModalRenderProps } from './AddXtraDBModal.types';
+import { AddXtraDBModalProps, AddXtraDBFields } from './AddXtraDBModal.types';
 import { XtraDBService } from '../XtraDB.service';
-import { XtraDBCluster } from '../XtraDB.types';
+import { XtraDBClusterBasicOptions } from './XtraDBClusterBasicOptions/XtraDBClusterBasicOptions';
+import { XtraDBAdvancedOptions } from './XtraDBAdvancedOptions/XtraDBAdvancedOptions';
+import { INITIAL_VALUES } from './XtraDBAdvancedOptions/XtraDBAdvancedOptions.constants';
+import { XtraDBTopology } from './XtraDBAdvancedOptions/XtraDBAdvancedOptions.types';
 
 export const AddXtraDBModal: FC<AddXtraDBModalProps> = ({
   kubernetesOptions,
@@ -16,19 +15,56 @@ export const AddXtraDBModal: FC<AddXtraDBModalProps> = ({
   setVisible,
   onXtraDBAdded,
 }) => {
-  const [loading, setLoading] = useState(false);
-  const { required } = validators;
-  const addXtraDBCluster = async (xtraDBCluster: XtraDBCluster) => {
+  const steps = useMemo(() => [
+    {
+      title: Messages.xtradb.addModal.steps.basicOptions,
+      fields: [
+        AddXtraDBFields.name,
+        AddXtraDBFields.kubernetesCluster,
+        AddXtraDBFields.databaseType,
+      ],
+      render: () => (
+        <XtraDBClusterBasicOptions kubernetesOptions={kubernetesOptions} />
+      ),
+      dataQa: 'xtradb-basic-options-step',
+    },
+    {
+      title: Messages.xtradb.addModal.steps.advancedOptions,
+      fields: [
+        AddXtraDBFields.topology,
+        AddXtraDBFields.nodes,
+        AddXtraDBFields.memory,
+        AddXtraDBFields.cpu,
+      ],
+      render: (renderProps) => (
+        <XtraDBAdvancedOptions {...renderProps} />
+      ),
+      dataQa: 'xtradb-advanced-options-step',
+    },
+  ], [kubernetesOptions]);
+  const onSubmit = async ({
+    name,
+    kubernetesCluster,
+    databaseType,
+    topology,
+    nodes,
+    single,
+    memory,
+    cpu,
+  }: Record<string, any>) => {
     try {
-      setLoading(true);
-
-      await XtraDBService.addXtraDBCluster(xtraDBCluster);
+      await XtraDBService.addXtraDBCluster({
+        kubernetesClusterName: kubernetesCluster.value,
+        clusterName: name,
+        databaseType: databaseType.value,
+        clusterSize: topology === XtraDBTopology.cluster ? nodes : single,
+        cpu,
+        memory,
+      });
       setVisible(false);
       onXtraDBAdded();
     } catch (e) {
       console.error(e);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -38,56 +74,10 @@ export const AddXtraDBModal: FC<AddXtraDBModalProps> = ({
       isVisible={isVisible}
       onClose={() => setVisible(false)}
     >
-      <Form
-        onSubmit={({
-          name,
-          kubernetesCluster,
-          databaseType,
-        }) => {
-          addXtraDBCluster({
-            kubernetesClusterName: kubernetesCluster.value,
-            clusterName: name,
-            databaseType: databaseType.value,
-          });
-        }}
-        render={({
-          handleSubmit, valid, pristine, submitting,
-        }: FormRenderProps<AddXtraDBModalRenderProps>) => (
-          <form data-qa="xtradb-add-form" onSubmit={handleSubmit}>
-            <TextInputField
-              name="name"
-              label={Messages.xtradb.addModal.fields.clusterName}
-              validators={[required]}
-            />
-            <Field
-              dataQa="xtradb-kubernetes-cluster-field"
-              name="kubernetesCluster"
-              label={Messages.xtradb.addModal.fields.kubernetesCluster}
-              options={kubernetesOptions}
-              component={SelectFieldAdapter}
-              validate={validators.compose(required)}
-            />
-            <Field
-              dataQa="xtradb-database-type-field"
-              name="databaseType"
-              label={Messages.xtradb.addModal.fields.databaseType}
-              options={DATABASE_OPTIONS}
-              component={SelectFieldAdapter}
-              validate={validators.compose(required)}
-            />
-            <HorizontalGroup justify="center" spacing="md">
-              <LoaderButton
-                data-qa="xtradb-create-cluster-button"
-                size="md"
-                variant="primary"
-                disabled={!valid || pristine || submitting}
-                loading={loading}
-              >
-                {Messages.xtradb.addModal.confirm}
-              </LoaderButton>
-            </HorizontalGroup>
-          </form>
-        )}
+      <StepProgress
+        steps={steps}
+        initialValues={INITIAL_VALUES}
+        onSubmit={onSubmit}
       />
     </Modal>
   );
