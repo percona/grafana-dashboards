@@ -24,6 +24,14 @@ export const AllChecksTab: FC = () => {
 
     try {
       await CheckService.changeCheck({ name: checkName, [action]: true });
+
+      // update the UI to show the new value
+      setChecks(oldChecks => oldChecks?.map(c => {
+        if (c.name !== checkName) {
+          return c;
+        }
+        return { ...c, enabled };
+      }));
     } catch (e) {
       console.error(e);
     } finally {
@@ -70,7 +78,12 @@ export const AllChecksTab: FC = () => {
                 <td>{check.name}</td>
                 <td>{check.description}</td>
                 <td>
-                  <ButtonWithSpinner variant="secondary" size="sm" isLoading={changeCheckPending} onClick={() => changeCheck(check.name, check.enabled === true)}>
+                  <ButtonWithSpinner
+                    variant="secondary"
+                    size="sm"
+                    isLoading={changeCheckPending}
+                    onClick={() => changeCheck(check.name, check.enabled === true)}
+                  >
                     {check.enabled ? Messages.disable : Messages.enable}
                   </ButtonWithSpinner>
                 </td>
