@@ -9,8 +9,9 @@ import { getStyles } from './XtraDB.styles';
 import { XtraDBCluster, XtraDBProps } from './XtraDB.types';
 import { AddXtraDBModal } from './AddXtraDBModal/AddXtraDBModal';
 import { useXtraDBClusters } from './XtraDB.hooks';
-import { clusterStatusRender } from './ColumnRenderers/ColumnRenderers';
+import { clusterStatusRender, connectionRender } from './ColumnRenderers/ColumnRenderers';
 import { DeleteXtraDBModal } from './DeleteXtraDBModal/DeleteXtraDBModal';
+import { isClusterChanging } from './XtraDB.utils';
 
 export const XtraDB: FC<XtraDBProps> = ({ kubernetes }) => {
   const styles = useStyles(getStyles);
@@ -30,6 +31,10 @@ export const XtraDB: FC<XtraDBProps> = ({ kubernetes }) => {
         accessor: 'databaseType',
       },
       {
+        Header: Messages.xtradb.table.connectionColumn,
+        accessor: connectionRender,
+      },
+      {
         Header: Messages.xtradb.table.clusterStatusColumn,
         accessor: clusterStatusRender,
       },
@@ -46,6 +51,7 @@ export const XtraDB: FC<XtraDBProps> = ({ kubernetes }) => {
               icon="trash-alt"
               variant="destructive"
               data-qa="open-delete-modal-button"
+              disabled={isClusterChanging(element)}
             >
               {Messages.xtradb.table.actions.deleteCluster}
             </Button>
