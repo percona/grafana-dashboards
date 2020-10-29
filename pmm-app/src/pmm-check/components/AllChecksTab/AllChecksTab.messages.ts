@@ -1,7 +1,10 @@
 export const Messages = {
-  name: 'Name',
-  description: 'Description',
   actions: 'Actions',
-  enable: 'Enable',
+  description: 'Description',
   disable: 'Disable',
+  disabled: 'Disabled',
+  enable: 'Enable',
+  enabled: 'Enabled',
+  name: 'Name',
+  status: 'Status',
 };

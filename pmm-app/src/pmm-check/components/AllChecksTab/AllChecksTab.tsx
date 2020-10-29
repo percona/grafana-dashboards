@@ -1,6 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
 import { cx } from 'emotion';
-import { ButtonWithSpinner } from 'shared/components/Form';
 import { CheckDetails } from 'pmm-check/types';
 import { CheckService } from 'pmm-check/Check.service';
 import { Spinner, useTheme } from '@grafana/ui';
@@ -9,34 +8,25 @@ import { getStyles as getTableStyles } from 'pmm-check/components/Table/Table.st
 import * as checkPanelStyles from 'pmm-check/CheckPanel.styles';
 import { Messages } from './AllChecksTab.messages';
 import * as styles from './AllChecksTab.styles';
-import { ChangeCheck, FetchChecks } from './types';
+import { FetchChecks } from './types';
+import { CheckTableRow } from './CheckTableRow';
 
 export const AllChecksTab: FC = () => {
-  const [changeCheckPending, setChangeCheckPending] = useState(false);
   const [fetchChecksPending, setFetchChecksPending] = useState(false);
   const [checks, setChecks] = useState<CheckDetails[] | undefined>();
   const theme = useTheme();
   const tableStyles = getTableStyles(theme);
 
-  const changeCheck: ChangeCheck = async (checkName, enabled) => {
-    setChangeCheckPending(true);
-    const action = enabled ? 'enable' : 'disable';
+  const updateUI = (check: CheckDetails) => {
+    const { name, enabled } = check;
 
-    try {
-      await CheckService.changeCheck({ name: checkName, [action]: true });
+    setChecks((oldChecks) => oldChecks?.map((c) => {
+      if (c.name !== name) {
+        return c;
+      }
 
-      // update the UI to show the new value
-      setChecks(oldChecks => oldChecks?.map(c => {
-        if (c.name !== checkName) {
-          return c;
-        }
-        return { ...c, enabled };
-      }));
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setChangeCheckPending(false);
-    }
+      return { ...c, enabled };
+    }));
   };
 
   const fetchChecks: FetchChecks = async () => {
@@ -64,30 +54,24 @@ export const AllChecksTab: FC = () => {
           <Spinner />
         </div>
       ) : (
-        <table className={cx(tableStyles.table, styles.table)} data-qa="db-checks-all-checks-table">
+        <table className={tableStyles.table} data-qa="db-checks-all-checks-table">
+          <colgroup>
+            <col className={styles.nameColumn} />
+            <col />
+            <col className={styles.statusColumn} />
+            <col className={styles.actionsColumn} />
+          </colgroup>
           <thead data-qa="db-checks-all-checks-thead">
             <tr>
               <th>{Messages.name}</th>
               <th>{Messages.description}</th>
+              <th>{Messages.status}</th>
               <th>{Messages.actions}</th>
             </tr>
           </thead>
           <tbody data-qa="db-checks-all-checks-tbody">
             {checks?.map((check) => (
-              <tr key={check.name}>
-                <td>{check.name}</td>
-                <td>{check.description}</td>
-                <td>
-                  <ButtonWithSpinner
-                    variant="secondary"
-                    size="sm"
-                    isLoading={changeCheckPending}
-                    onClick={() => changeCheck(check.name, check.enabled === true)}
-                  >
-                    {check.enabled ? Messages.disable : Messages.enable}
-                  </ButtonWithSpinner>
-                </td>
-              </tr>
+              <CheckTableRow check={check} onSuccess={updateUI} />
             ))}
           </tbody>
         </table>

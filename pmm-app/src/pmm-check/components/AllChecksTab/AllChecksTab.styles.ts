@@ -9,6 +9,14 @@ export const wrapper = css`
   height: 100%;
 `;
 
-export const table = css`
-  width: 600px;
+export const nameColumn = css`
+  width: 250px;
+`;
+
+export const statusColumn = css`
+  width: 100px;
+`;
+
+export const actionsColumn = css`
+  width: 150px;
 `;
