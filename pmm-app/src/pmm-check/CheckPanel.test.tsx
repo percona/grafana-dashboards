@@ -11,6 +11,7 @@ const originalConsoleError = jest.fn();
 
 const dataQa = (label: string) => `[data-qa="${label}"]`;
 
+// immediately resolves all promises: allows to run expectations after a promise
 const runAllPromises = () => new Promise(setImmediate);
 
 describe('CheckPanel::', () => {
@@ -37,11 +38,12 @@ describe('CheckPanel::', () => {
   it('should render a spinner at startup, while loading', async () => {
     const wrapper: ReactWrapper<{}, {}, any> = mount(<CheckPanelRouter />);
 
-    await runAllPromises();
+    expect(wrapper.find(dataQa('db-check-spinner'))).toHaveLength(1);
 
+    await runAllPromises();
     wrapper.update();
 
-    expect(wrapper.find(dataQa('db-checks-all-checks-spinner'))).toHaveLength(0);
+    expect(wrapper.find(dataQa('db-check-spinner'))).toHaveLength(0);
 
     wrapper.unmount();
   });

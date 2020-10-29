@@ -57,7 +57,7 @@ export const CheckPanel: FC = () => {
   return (
     <div className={styles.panel} data-qa="db-check-panel">
       {getSettingsPending ? (
-        <div className={styles.spinner}>
+        <div className={styles.spinner} data-qa="db-check-spinner">
           <Spinner />
         </div>
       ) : (
