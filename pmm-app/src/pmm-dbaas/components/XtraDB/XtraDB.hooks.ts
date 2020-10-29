@@ -4,15 +4,21 @@ import { DATABASE_LABELS } from 'shared/core';
 import { Kubernetes } from '../Kubernetes/Kubernetes.types';
 import { XtraDBCluster, GetXtraDBClustersAction, XtraDBClusterPayload } from './XtraDB.types';
 import { XtraDBService, toModel } from './XtraDB.service';
+import { isClusterChanging } from './XtraDB.utils';
+
+const RECHECK_INTERVAL = 30000;
 
 export const useXtraDBClusters = (
   kubernetes: Kubernetes[],
 ): [XtraDBCluster[], GetXtraDBClustersAction, boolean] => {
   const [xtraDBClusters, setXtraDBClusters] = useState<XtraDBCluster[]>([]);
   const [loading, setLoading] = useState(false);
+  let timer: NodeJS.Timeout;
 
-  const getXtraDBClusters = async () => {
-    setLoading(true);
+  const getXtraDBClusters = async (triggerLoading = true) => {
+    if (triggerLoading) {
+      setLoading(true);
+    }
 
     try {
       const requests = kubernetes.map(XtraDBService.getXtraDBClusters);
@@ -43,6 +49,18 @@ export const useXtraDBClusters = (
   useEffect(() => {
     getXtraDBClusters();
   }, []);
+
+  useEffect(() => {
+    // clear timer to prevent parallel requests when get is called from outside hook
+    if (timer) {
+      clearTimeout(timer);
+    }
+
+    // if there are clusters changing, recheck
+    if (xtraDBClusters.find((cluster) => isClusterChanging(cluster))) {
+      timer = setTimeout(() => getXtraDBClusters(false), RECHECK_INTERVAL);
+    }
+  }, [xtraDBClusters]);
 
   return [xtraDBClusters, getXtraDBClusters, loading];
 };
