@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { TextareaInputField, TextInputField, validators } from '@percona/platform-core';
 import Validators from 'shared/components/helpers/validators';
 import { getStyles } from '../FormParts.styles';
@@ -6,6 +6,8 @@ import { Messages } from '../FormParts.messages';
 
 export const LabelsFormPart: FC = () => {
   const styles = getStyles();
+
+  const customLabelsValidators = useMemo(() => [validators.required, Validators.validateKeyValue], []);
 
   return (
     <div className={styles.groupWrapper}>
@@ -39,7 +41,7 @@ export const LabelsFormPart: FC = () => {
         name="custom_labels"
         label={Messages.form.labels.labels.customLabels}
         placeholder={Messages.form.placeholders.labels.customLabels}
-        validators={[validators.required, Validators.validateKeyValue]}
+        validators={customLabelsValidators}
       />
     </div>
   );

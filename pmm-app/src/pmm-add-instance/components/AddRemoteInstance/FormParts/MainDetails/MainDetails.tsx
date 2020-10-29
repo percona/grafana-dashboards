@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { PasswordInputField, TextInputField, validators } from '@percona/platform-core';
 import Validators from 'shared/components/helpers/validators';
 import { MainDetailsFormPartProps } from '../FormParts.types';
@@ -7,6 +7,8 @@ import { Messages } from '../FormParts.messages';
 
 export const MainDetailsFormPart: FC<MainDetailsFormPartProps> = ({ remoteInstanceCredentials }) => {
   const styles = getStyles();
+
+  const portValidators = useMemo(() => [validators.required, Validators.validatePort], []);
 
   return (
     <div className={styles.groupWrapper}>
@@ -27,7 +29,7 @@ export const MainDetailsFormPart: FC<MainDetailsFormPartProps> = ({ remoteInstan
         name="port"
         label={Messages.form.labels.mainDetails.port}
         placeholder={`Port (default: ${remoteInstanceCredentials.port} )`}
-        validators={[validators.required, Validators.validatePort]}
+        validators={portValidators}
       />
       <TextInputField
         name="username"
