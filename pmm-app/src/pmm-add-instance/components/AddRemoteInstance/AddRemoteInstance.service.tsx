@@ -65,7 +65,7 @@ export const toPayload = (values, discoverName) => {
       data.qan_postgresql_pgstatmonitor_agent = true;
       break;
     default:
-      delete data.tracking;
+      break;
   }
 
   delete data.tracking;
@@ -86,7 +86,8 @@ export const toPayload = (values, discoverName) => {
   }
 
   if (data.pmm_agent_id === undefined || data.pmm_agent_id === '') {
-    data.pmm_agent_id = 'pmm-server'; // set default value for pmm agent id
+    // set default value for pmm agent id
+    data.pmm_agent_id = 'pmm-server';
   }
 
   if (values.isRDS) {

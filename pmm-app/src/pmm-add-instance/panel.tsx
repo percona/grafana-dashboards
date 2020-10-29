@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { createBrowserHistory } from 'history';
-import { Router, Route } from 'react-router-dom';
+import { Router, Route, useLocation } from 'react-router-dom';
 import { Button } from '@grafana/ui';
 import { cx } from 'emotion';
 import AddRemoteInstance from './components/AddRemoteInstance/AddRemoteInstance';
@@ -14,7 +14,7 @@ const history = createBrowserHistory();
 
 const AddInstancePanel = () => {
   const styles = getStyles();
-
+  const location = useLocation();
   const urlParams = new URLSearchParams(window.location.search);
   const instanceType = urlParams.get('instance_type') || '';
   const [selectedInstance, selectInstance] = useState({
@@ -22,7 +22,8 @@ const AddInstancePanel = () => {
   });
 
   useEffect(() => {
-    const url = new URL((window.location as unknown) as string);
+    console.log(location)
+    const url = new URL(location);
 
     url.searchParams.set('instance_type', selectedInstance.type);
     history.push(url.pathname + url.search);
