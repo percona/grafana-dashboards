@@ -54,7 +54,7 @@ export const CheckboxGroup: FC<CheckboxGroupProps> = ({
 
   const filteredList = (showTop ? itemsList.slice(0, TOP_LIMIT) : itemsList).map((item) => {
     const valueExists = item.main_metric_percent !== undefined;
-    const dashboardURL = getDashboardURL
+    const dashboardURL = getDashboardURL && getDashboardURL(item.value)
       ? `${getDashboardURL(item.value)}&from=${rawTime.from}&to=${rawTime.to}`
       : '';
 
