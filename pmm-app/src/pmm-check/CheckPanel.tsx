@@ -3,10 +3,10 @@ import React, {
 } from 'react';
 import { createBrowserHistory } from 'history';
 import {
-  Spinner, TabsBar, TabContent, Tab,
+  Spinner, Tab, TabContent, TabsBar,
 } from '@grafana/ui';
-import { Router, Route } from 'react-router-dom';
-import { Settings, TabKeys, TabEntry } from './types';
+import { Route, Router } from 'react-router-dom';
+import { Settings, TabEntry, TabKeys } from './types';
 import { CheckService } from './Check.service';
 import * as styles from './CheckPanel.styles';
 import { Messages } from './CheckPanel.messages';

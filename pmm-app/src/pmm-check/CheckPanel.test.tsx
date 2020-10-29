@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount, ReactWrapper } from 'enzyme';
+import { ReactWrapper, mount } from 'enzyme';
 import { CheckPanelRouter } from './CheckPanel';
 import { CheckService } from './Check.service';
 
