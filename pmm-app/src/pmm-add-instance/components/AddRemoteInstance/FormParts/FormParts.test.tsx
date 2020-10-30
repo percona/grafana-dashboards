@@ -6,6 +6,10 @@ import { AdditionalOptionsFormPart, getAdditionalOptions } from './AdditionalOpt
 import { LabelsFormPart } from './Labels/Labels';
 import { MainDetailsFormPart } from './MainDetails/MainDetails';
 
+const form = {
+  change: jest.fn(),
+};
+
 describe('MainDetailsFormPart ::', () => {
   it('should disable fields with sat isRDS flag', async () => {
     const root = mount(
@@ -71,6 +75,7 @@ describe('AdditionalOptionsFormPart ::', () => {
             instanceType={type}
             remoteInstanceCredentials={remoteInstanceCredentials}
             loading={false}
+            form={form}
           />
         )}
       />,
@@ -92,7 +97,7 @@ describe('getAdditionalOptions ::', () => {
     const root = mount(
       <Form
         onSubmit={jest.fn()}
-        render={() => getAdditionalOptions(type, remoteInstanceCredentials)}
+        render={() => getAdditionalOptions(type, remoteInstanceCredentials, form)}
       />,
     );
     const fields = root.find('input');
@@ -110,13 +115,13 @@ describe('getAdditionalOptions ::', () => {
     const root = mount(
       <Form
         onSubmit={jest.fn()}
-        render={() => getAdditionalOptions(type, remoteInstanceCredentials)}
+        render={() => getAdditionalOptions(type, remoteInstanceCredentials, form)}
       />,
     );
     const fields = root.find('input');
 
     expect(root.find('input[name="qan_mysql_perfschema"]').length).toBe(1);
-    expect(fields.length).toBe(1);
+    expect(fields.length).toBe(5);
   });
 
   it('should render correct for RDS MySQL', async () => {
@@ -128,7 +133,7 @@ describe('getAdditionalOptions ::', () => {
     const root = mount(
       <Form
         onSubmit={jest.fn()}
-        render={() => getAdditionalOptions(type, remoteInstanceCredentials)}
+        render={() => getAdditionalOptions(type, remoteInstanceCredentials, form)}
       />,
     );
     const fields = root.find('input');
@@ -136,7 +141,7 @@ describe('getAdditionalOptions ::', () => {
     expect(root.find('input[name="qan_mysql_perfschema"]').length).toBe(1);
     expect(root.find('input[name="disable_basic_metrics"]').length).toBe(1);
     expect(root.find('input[name="disable_enhanced_metrics"]').length).toBe(1);
-    expect(fields.length).toBe(3);
+    expect(fields.length).toBe(7);
   });
 
   it('should render correct for PostgreSQL', async () => {
@@ -148,7 +153,7 @@ describe('getAdditionalOptions ::', () => {
     const root = mount(
       <Form
         onSubmit={jest.fn()}
-        render={() => getAdditionalOptions(type, remoteInstanceCredentials)}
+        render={() => getAdditionalOptions(type, remoteInstanceCredentials, form)}
       />,
     );
     const fields = root.find('input');

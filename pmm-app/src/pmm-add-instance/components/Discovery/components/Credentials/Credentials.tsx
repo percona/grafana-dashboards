@@ -5,7 +5,7 @@ import { Button, useTheme } from '@grafana/ui';
 import { getStyles } from './Credentials.styles';
 import { SECURITY_CREDENTIALS_DOC_LINK } from './Credentials.constants';
 import { Messages } from './Credentials.messages';
-import { CredentialsProps, CredentialsForm } from './Credentials.types';
+import { CredentialsForm, CredentialsProps } from './Credentials.types';
 
 const Credentials: FC<CredentialsProps> = ({ onSetCredentials }) => {
   const theme = useTheme();
