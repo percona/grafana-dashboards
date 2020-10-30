@@ -1,4 +1,6 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, {
+  FC, useCallback, useMemo, useState,
+} from 'react';
 import { Form as FormFinal } from 'react-final-form';
 import { Button, useTheme } from '@grafana/ui';
 import { DATABASE_LABELS, Databases } from 'shared/core';
@@ -20,7 +22,7 @@ const AddRemoteInstance: FC<AddRemoteInstanceProps> = ({
 
   const { instanceType, remoteInstanceCredentials, discoverName } = getInstanceData(type, credentials);
   const [loading, setLoading] = useState<boolean>(false);
-  const initialValues: any = { ...remoteInstanceCredentials };
+  const initialValues: any = { ...remoteInstanceCredentials, tracking: 'qan_postgresql_pgstatements_agent' };
 
   if (instanceType === DATABASE_LABELS[Databases.mysql]) {
     initialValues.qan_mysql_perfschema = true;
@@ -52,21 +54,31 @@ const AddRemoteInstance: FC<AddRemoteInstanceProps> = ({
     [instanceType],
   );
 
+  const formParts = useMemo(
+    () => (form) => (
+      <>
+        <MainDetails remoteInstanceCredentials={remoteInstanceCredentials} />
+        <Labels />
+        <AdditionalOptions
+          remoteInstanceCredentials={remoteInstanceCredentials}
+          loading={loading}
+          instanceType={instanceType}
+          form={form}
+        />
+      </>
+    ),
+    [],
+  );
+
   return (
     <div className={styles.formWrapper}>
       <FormFinal
         onSubmit={onSubmit}
         initialValues={initialValues}
-        render={({ handleSubmit }) => (
+        render={({ form, handleSubmit }) => (
           <form onSubmit={handleSubmit} data-qa="add-remote-instance-form">
             <h4 className={styles.addRemoteInstanceTitle}>{`Add remote ${instanceType} Instance`}</h4>
-            <MainDetails remoteInstanceCredentials={remoteInstanceCredentials} />
-            <Labels />
-            <AdditionalOptions
-              remoteInstanceCredentials={remoteInstanceCredentials}
-              loading={loading}
-              instanceType={instanceType}
-            />
+            {formParts(form)}
             <div className={styles.addRemoteInstanceButtons}>
               <Button id="addInstance" disabled={loading}>
                 {Messages.form.buttons.addService}

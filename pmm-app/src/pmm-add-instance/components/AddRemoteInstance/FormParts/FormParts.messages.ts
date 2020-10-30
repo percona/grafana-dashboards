@@ -30,6 +30,7 @@ export const Messages = {
         qanMongodbProfiler: 'Use QAN MongoDB Profiler',
         disableBasicMetrics: 'Disable Basic Metrics',
         disableEnchancedMetrics: 'Disable Enhanced Metrics',
+        tablestatOptions: 'Table statistics limit',
       },
     },
     placeholders: {

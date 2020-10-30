@@ -8,6 +8,7 @@ export interface AdditionalOptionsFormPartProps {
   instanceType?: string;
   loading: boolean;
   remoteInstanceCredentials: RemoteInstanceCredentials;
+  form: any;
 }
 
 export interface PostgreSQLAdditionalOptionsProps {}
