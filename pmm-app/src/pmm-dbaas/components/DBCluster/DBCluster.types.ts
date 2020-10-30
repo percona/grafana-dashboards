@@ -20,11 +20,11 @@ export interface DBCluster {
 }
 
 export enum DBClusterStatus {
-  invalid = 'XTRA_DB_CLUSTER_STATE_INVALID',
-  changing = 'XTRA_DB_CLUSTER_STATE_CHANGING',
-  ready = 'XTRA_DB_CLUSTER_STATE_READY',
-  failed = 'XTRA_DB_CLUSTER_STATE_FAILED',
-  deleting = 'XTRA_DB_CLUSTER_STATE_DELETING',
+  invalid = 'DB_CLUSTER_STATE_INVALID',
+  changing = 'DB_CLUSTER_STATE_CHANGING',
+  ready = 'DB_CLUSTER_STATE_READY',
+  failed = 'DB_CLUSTER_STATE_FAILED',
+  deleting = 'DB_CLUSTER_STATE_DELETING',
 }
 
 export interface DBClusterConnection {

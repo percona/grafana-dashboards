@@ -7,8 +7,18 @@ import {
   DBClusterPayload,
   DeleteDBClusterAPI,
   DBClusterConnectionAPI,
+  DBClusterStatus,
 } from './DBCluster.types';
 import { DBClusterService } from './DBCluster.service';
+import { getClusterStatus } from './DBCluster.utils';
+
+const DBCLUSTER_STATUS_MAP = {
+  'XTRA_DB_CLUSTER_STATE_INVALID': DBClusterStatus.invalid,
+  'XTRA_DB_CLUSTER_STATE_CHANGING': DBClusterStatus.changing,
+  'XTRA_DB_CLUSTER_STATE_READY': DBClusterStatus.ready,
+  'XTRA_DB_CLUSTER_STATE_FAILED': DBClusterStatus.failed,
+  'XTRA_DB_CLUSTER_STATE_DELETING': DBClusterStatus.deleting,
+};
 
 export class XtraDBService extends DBClusterService {
   getDBClusters(kubernetes: Kubernetes): Promise<DBClusterPayload> {
@@ -53,7 +63,7 @@ export class XtraDBService extends DBClusterService {
       clusterSize: dbCluster.params.cluster_size,
       memory: dbCluster.params.pxc?.compute_resources?.memory_bytes || 0,
       cpu: dbCluster.params.pxc?.compute_resources?.cpu_m || 0,
-      status: dbCluster.state,
+      status: getClusterStatus(dbCluster.state, DBCLUSTER_STATUS_MAP),
       errorMessage: dbCluster.operation?.message,
     };
   }

@@ -7,8 +7,18 @@ import {
   DBClusterPayload,
   DeleteDBClusterAPI,
   DBClusterConnectionAPI,
+  DBClusterStatus,
 } from './DBCluster.types';
 import { DBClusterService } from './DBCluster.service';
+import { getClusterStatus } from './DBCluster.utils';
+
+const DBCLUSTER_STATUS_MAP = {
+  'PSMDB_CLUSTER_STATE_INVALID': DBClusterStatus.invalid,
+  'PSMDB_CLUSTER_STATE_CHANGING': DBClusterStatus.changing,
+  'PSMDB_CLUSTER_STATE_READY': DBClusterStatus.ready,
+  'PSMDB_CLUSTER_STATE_FAILED': DBClusterStatus.failed,
+  'PSMDB_CLUSTER_STATE_DELETING': DBClusterStatus.deleting,
+};
 
 export class PSMDBService extends DBClusterService {
   getDBClusters(kubernetes: Kubernetes): Promise<DBClusterPayload> {
@@ -53,7 +63,7 @@ export class PSMDBService extends DBClusterService {
       clusterSize: dbCluster.params.cluster_size,
       memory: dbCluster.params.replicaset?.compute_resources?.memory_bytes || 0,
       cpu: dbCluster.params.replicaset?.compute_resources?.cpu_m || 0,
-      status: dbCluster.state,
+      status: getClusterStatus(dbCluster.state, DBCLUSTER_STATUS_MAP),
       errorMessage: dbCluster.operation?.message,
     };
   }

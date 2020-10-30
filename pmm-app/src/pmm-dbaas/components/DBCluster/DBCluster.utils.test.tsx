@@ -1,6 +1,14 @@
-import { isClusterChanging } from './DBCluster.utils';
+import { isClusterChanging, getClusterStatus } from './DBCluster.utils';
 import { dbClustersStub } from './__mocks__/dbClustersStubs';
 import { DBClusterStatus } from './DBCluster.types';
+
+const DBCLUSTER_STATUS_MAP = {
+  'XTRA_DB_CLUSTER_STATE_INVALID': DBClusterStatus.invalid,
+  'XTRA_DB_CLUSTER_STATE_CHANGING': DBClusterStatus.changing,
+  'XTRA_DB_CLUSTER_STATE_READY': DBClusterStatus.ready,
+  'XTRA_DB_CLUSTER_STATE_FAILED': DBClusterStatus.failed,
+  'XTRA_DB_CLUSTER_STATE_DELETING': DBClusterStatus.deleting,
+};
 
 describe('DBCluster.utils::', () => {
   it('returns true if cluster is changing', () => {
@@ -41,5 +49,25 @@ describe('DBCluster.utils::', () => {
     });
 
     expect(result).toBeFalsy();
+  });
+  it('returns invalid status when receives XTRA_DB_CLUSTER_STATE_INVALID', () => {
+    const result = getClusterStatus('XTRA_DB_CLUSTER_STATE_INVALID', DBCLUSTER_STATUS_MAP);
+
+    expect(result).toBe(DBClusterStatus.invalid);
+  });
+  it('returns ready status when receives XTRA_DB_CLUSTER_STATE_READY', () => {
+    const result = getClusterStatus('XTRA_DB_CLUSTER_STATE_READY', DBCLUSTER_STATUS_MAP);
+
+    expect(result).toBe(DBClusterStatus.ready);
+  });
+  it('returns failed status when receives undefined', () => {
+    const result = getClusterStatus(undefined, DBCLUSTER_STATUS_MAP);
+
+    expect(result).toBe(DBClusterStatus.failed);
+  });
+  it('returns failed status when status doesnt exist', () => {
+    const result = getClusterStatus('XTRA_DB_CLUSTER_STATE_UNKNOWN', DBCLUSTER_STATUS_MAP);
+
+    expect(result).toBe(DBClusterStatus.failed);
   });
 });
