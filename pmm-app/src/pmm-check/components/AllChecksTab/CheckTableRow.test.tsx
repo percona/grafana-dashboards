@@ -120,36 +120,4 @@ describe('CheckTableRow::', () => {
     spy.mockClear();
     wrapper.unmount();
   });
-
-  // it('should render a table', async () => {
-  //   jest.spyOn(CheckService, 'getAllChecks').mockImplementation(() => Promise.resolve([
-  //     { name: 'test enabled', description: 'test enabled description', enabled: true },
-  //     { name: 'test disabled', description: 'test disabled description', enabled: false },
-  //   ]));
-
-  //   const wrapper: ReactWrapper<{}, {}, any> = mount(
-  //     <CheckTableRow check={TEST_CHECK} onSuccess={fakeOnSuccess} />,
-  //   );
-
-  //   await runAllPromises();
-
-  //   wrapper.update();
-
-  //   const tbody = dataQa('db-checks-all-checks-tbody');
-
-  //   expect(wrapper.find(dataQa('db-checks-all-checks-table'))).toHaveLength(1);
-  //   expect(wrapper.find(dataQa('db-checks-all-checks-thead'))).toHaveLength(1);
-  //   expect(wrapper.find(tbody)).toHaveLength(1);
-  //   expect(wrapper.find(tbody).find('tr > td')).toHaveLength(8);
-  //   expect(wrapper.find(tbody).find('tr > td').at(0).text()).toBe('test enabled');
-  //   expect(wrapper.find(tbody).find('tr > td').at(1).text()).toBe('test enabled description');
-  //   expect(wrapper.find(tbody).find('tr > td').at(2).text()).toBe(Messages.enabled);
-  //   expect(wrapper.find(tbody).find('tr > td').at(3).text()).toBe(Messages.disable);
-  //   expect(wrapper.find(tbody).find('tr > td').at(4).text()).toBe('test disabled');
-  //   expect(wrapper.find(tbody).find('tr > td').at(5).text()).toBe('test disabled description');
-  //   expect(wrapper.find(tbody).find('tr > td').at(6).text()).toBe(Messages.disabled);
-  //   expect(wrapper.find(tbody).find('tr > td').at(7).text()).toBe(Messages.enable);
-
-  //   wrapper.unmount();
-  // });
 });
