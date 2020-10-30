@@ -7,7 +7,7 @@ jest.mock('shared/components/helpers/notification-manager');
 
 jest.mock('./Check.service');
 
-const originalConsoleError = jest.fn();
+const originalConsoleError = console.error;
 
 const dataQa = (label: string) => `[data-qa="${label}"]`;
 

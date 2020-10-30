@@ -5,7 +5,7 @@ import { AllChecksTab } from './AllChecksTab';
 
 jest.mock('shared/components/helpers/notification-manager');
 
-const originalConsoleError = jest.fn();
+const originalConsoleError = console.error;
 
 const dataQa = (label: string) => `[data-qa="${label}"]`;
 
