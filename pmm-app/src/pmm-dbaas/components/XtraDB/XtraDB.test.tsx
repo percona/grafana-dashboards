@@ -23,11 +23,11 @@ describe('XtraDB::', () => {
     expect(root.find('[data-qa="xtradb-add-cluster-button"]').find('button').length).toBe(1);
     expect(root.find('tr').length).toBe(3);
   });
-  it('renders correctly with active state', () => {
+  it('renders correctly with failed status', () => {
     const root = mount(
       <XtraDB kubernetes={kubernetesStub} />,
     );
 
-    expect(root.find('[data-qa="cluster-status-active"]').at(0).prop('className')).toContain('active');
+    expect(root.find('[data-qa="cluster-status-failed"]').at(0).prop('className')).toContain('failed');
   });
 });

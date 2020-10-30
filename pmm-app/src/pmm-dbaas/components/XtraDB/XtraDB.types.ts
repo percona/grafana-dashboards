@@ -14,11 +14,30 @@ export interface XtraDBCluster {
   clusterSize: number;
   memory: number;
   cpu: number;
+  status?: XtraDBClusterStatus;
+  errorMessage?: string;
+}
+
+export enum XtraDBClusterStatus {
+  invalid = 'XTRA_DB_CLUSTER_STATE_INVALID',
+  changing = 'XTRA_DB_CLUSTER_STATE_CHANGING',
+  ready = 'XTRA_DB_CLUSTER_STATE_READY',
+  failed = 'XTRA_DB_CLUSTER_STATE_FAILED',
+  deleting = 'XTRA_DB_CLUSTER_STATE_DELETING',
+}
+
+export interface XtraDBClusterConnection {
+  host: string;
+  password: string;
+  port: number;
+  username: string;
 }
 
 export interface XtraDBClusterPayload {
   kubernetes_cluster_name: string;
   name: string;
+  state?: XtraDBClusterStatus;
+  operation?: XtraDBClusterOperationAPI;
   params: XtraDBClusterParamsAPI;
 }
 
@@ -40,4 +59,13 @@ interface XtraDBClusterContainerAPI {
 interface XtraDBComputeResourcesAPI {
   cpu_m: number;
   memory_bytes: number;
+}
+
+interface XtraDBClusterOperationAPI {
+  progress: number;
+  message: string;
+}
+
+export interface XtraDBClusterConnectionAPI {
+  connection_credentials: XtraDBClusterConnection;
 }
