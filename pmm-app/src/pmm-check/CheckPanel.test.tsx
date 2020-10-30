@@ -11,7 +11,7 @@ const originalConsoleError = jest.fn();
 
 const dataQa = (label: string) => `[data-qa="${label}"]`;
 
-// immediately resolves all promises: allows to run expectations after a promise
+// immediately resolves all pending promises: allows to run expectations after a promise
 const runAllPromises = () => new Promise(setImmediate);
 
 describe('CheckPanel::', () => {
