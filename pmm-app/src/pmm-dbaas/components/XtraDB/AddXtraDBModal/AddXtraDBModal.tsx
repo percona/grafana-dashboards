@@ -3,11 +3,12 @@ import { StepProgress } from '@percona/platform-core';
 import { Modal } from 'shared/components/Elements/Modal/Modal';
 import { Messages } from 'pmm-dbaas/DBaaS.messages';
 import { AddXtraDBModalProps, AddXtraDBFields } from './AddXtraDBModal.types';
-import { XtraDBService } from '../XtraDB.service';
 import { XtraDBClusterBasicOptions } from './XtraDBClusterBasicOptions/XtraDBClusterBasicOptions';
 import { XtraDBAdvancedOptions } from './XtraDBAdvancedOptions/XtraDBAdvancedOptions';
 import { INITIAL_VALUES } from './XtraDBAdvancedOptions/XtraDBAdvancedOptions.constants';
 import { XtraDBTopology } from './XtraDBAdvancedOptions/XtraDBAdvancedOptions.types';
+import { DBClusterServiceFactory } from '../DBClusterService.factory';
+import { styles } from './AddXtraDBModal.styles';
 
 export const AddXtraDBModal: FC<AddXtraDBModalProps> = ({
   kubernetesOptions,
@@ -23,8 +24,11 @@ export const AddXtraDBModal: FC<AddXtraDBModalProps> = ({
         AddXtraDBFields.kubernetesCluster,
         AddXtraDBFields.databaseType,
       ],
-      render: () => (
-        <XtraDBClusterBasicOptions kubernetesOptions={kubernetesOptions} />
+      render: ({ form }) => (
+        <XtraDBClusterBasicOptions
+          kubernetesOptions={kubernetesOptions}
+          form={form}
+        />
       ),
       dataQa: 'xtradb-basic-options-step',
     },
@@ -53,7 +57,9 @@ export const AddXtraDBModal: FC<AddXtraDBModalProps> = ({
     cpu,
   }: Record<string, any>) => {
     try {
-      await XtraDBService.addXtraDBCluster({
+      const dbClusterService = DBClusterServiceFactory.newDBClusterService(databaseType.value);
+
+      await dbClusterService.addDBCluster({
         kubernetesClusterName: kubernetesCluster.value,
         clusterName: name,
         databaseType: databaseType.value,
@@ -74,11 +80,13 @@ export const AddXtraDBModal: FC<AddXtraDBModalProps> = ({
       isVisible={isVisible}
       onClose={() => setVisible(false)}
     >
-      <StepProgress
-        steps={steps}
-        initialValues={INITIAL_VALUES}
-        onSubmit={onSubmit}
-      />
+      <div className={styles.stepProgressWrapper}>
+        <StepProgress
+          steps={steps}
+          initialValues={INITIAL_VALUES}
+          onSubmit={onSubmit}
+        />
+      </div>
     </Modal>
   );
 };

@@ -3,8 +3,8 @@ import { Button, HorizontalGroup, useStyles } from '@grafana/ui';
 import { Modal } from 'shared/components/Elements/Modal/Modal';
 import { Messages } from 'pmm-dbaas/DBaaS.messages';
 import { DeleteXtraDBModalProps } from './DeleteXtraDBModal.types';
-import { XtraDBService } from '../XtraDB.service';
 import { getStyles } from './DeleteXtraDBModal.styles';
+import { DBClusterServiceFactory } from '../DBClusterService.factory';
 
 export const DeleteXtraDBModal: FC<DeleteXtraDBModalProps> = ({
   isVisible,
@@ -22,7 +22,9 @@ export const DeleteXtraDBModal: FC<DeleteXtraDBModalProps> = ({
     }
 
     try {
-      await XtraDBService.deleteXtraDBClusters(selectedCluster);
+      const dbClusterService = DBClusterServiceFactory.newDBClusterService(selectedCluster?.databaseType);
+
+      await dbClusterService.deleteDBClusters(selectedCluster);
       setVisible(false);
       onClusterDeleted();
     } catch (e) {

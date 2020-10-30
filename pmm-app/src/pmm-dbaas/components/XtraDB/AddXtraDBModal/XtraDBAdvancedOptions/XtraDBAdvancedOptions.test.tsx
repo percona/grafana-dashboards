@@ -1,6 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import { Form, FormRenderProps } from 'react-final-form';
+import { Databases } from 'shared/core';
 import { XtraDBAdvancedOptions } from './XtraDBAdvancedOptions';
 import { AddXtraDBFields } from '../AddXtraDBModal.types';
 import { XtraDBResources, XtraDBTopology } from './XtraDBAdvancedOptions.types';
@@ -100,5 +101,37 @@ describe('XtraDBAdvancedOptions::', () => {
     const button = root.find('[data-qa="xtradb-create-cluster-button"]').find('button');
 
     expect(button.prop('disabled')).toBeFalsy();
+  });
+  it('should disabled single node topology when database is MongoDB', () => {
+    const root = mount(<Form
+      initialValues={{
+        [AddXtraDBFields.databaseType]: {
+          value: Databases.mongodb,
+          key: Databases.mongodb,
+        },
+      }}
+      onSubmit={jest.fn()}
+      render={(renderProps: FormRenderProps) => <XtraDBAdvancedOptions {...renderProps} />}
+    />);
+    const topology = root.find('[data-qa="xtradb-topology-field"]');
+    const singleLabel = topology.find('label').at(1);
+
+    expect(singleLabel.prop('className')).toContain('disabled');
+  });
+  it('should enable single node topology when database is MySQL', () => {
+    const root = mount(<Form
+      initialValues={{
+        [AddXtraDBFields.databaseType]: {
+          value: Databases.mysql,
+          key: Databases.mysql,
+        },
+      }}
+      onSubmit={jest.fn()}
+      render={(renderProps: FormRenderProps) => <XtraDBAdvancedOptions {...renderProps} />}
+    />);
+    const topology = root.find('[data-qa="xtradb-topology-field"]');
+    const singleLabel = topology.find('label').at(1);
+
+    expect(singleLabel.prop('className')).not.toContain('disabled');
   });
 });

@@ -1,7 +1,11 @@
 import { xtraDBClusterConnectionStub } from './xtraDBClustersStubs';
 
-export const XtraDBService = {
+export class XtraDBService {
   showXtraDBCluster() {
     return xtraDBClusterConnectionStub;
-  },
-};
+  }
+
+  getDBCluster() {
+    return { connection_credentials: xtraDBClusterConnectionStub };
+  }
+}

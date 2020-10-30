@@ -1,7 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Spinner, useStyles } from '@grafana/ui';
 import { Messages } from 'pmm-dbaas/DBaaS.messages';
-import { XtraDBService } from '../XtraDB.service';
 import { XtraDBClusterConnectionProps } from './XtraDBClusterConnection.types';
 import {
   XtraDBClusterConnection as ConnectionParams,
@@ -15,6 +14,7 @@ import {
 } from './XtraDBClusterConnectionPassword/XtraDBClusterConnectionPassword';
 import { XtraDBClusterConnectionItem } from './XtraDBClusterConnectionItem/XtraDBClusterConnectionItem';
 import { isClusterChanging } from '../XtraDB.utils';
+import { DBClusterServiceFactory } from '../DBClusterService.factory';
 
 export const XtraDBClusterConnection: FC<XtraDBClusterConnectionProps> = ({
   xtraDBCluster,
@@ -28,11 +28,12 @@ export const XtraDBClusterConnection: FC<XtraDBClusterConnectionProps> = ({
     port,
     username,
   } = connection;
-  const { status } = xtraDBCluster;
+  const { status, databaseType } = xtraDBCluster;
   const getClusterConnection = async () => {
     try {
       setLoading(true);
-      const connection = await XtraDBService.getXtraDBCluster(xtraDBCluster) as XtraDBClusterConnectionAPI;
+      const dbClusterService = DBClusterServiceFactory.newDBClusterService(databaseType);
+      const connection = await dbClusterService.getDBCluster(xtraDBCluster) as XtraDBClusterConnectionAPI;
 
       setConnection(connection.connection_credentials);
     } catch (e) {

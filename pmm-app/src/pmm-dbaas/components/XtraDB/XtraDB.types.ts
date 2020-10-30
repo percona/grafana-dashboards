@@ -1,3 +1,4 @@
+import { Databases } from 'shared/core';
 import { Kubernetes } from '../Kubernetes/Kubernetes.types';
 
 export type AddXtraDBAction = (xtradbCluster: XtraDBCluster) => void;
@@ -10,7 +11,7 @@ export interface XtraDBProps {
 export interface XtraDBCluster {
   clusterName: string;
   kubernetesClusterName: string;
-  databaseType: string;
+  databaseType: Databases;
   clusterSize: number;
   memory: number;
   cpu: number;
@@ -48,8 +49,9 @@ export interface DeleteXtraDBClusterAPI {
 
 interface XtraDBClusterParamsAPI {
   cluster_size: number;
-  pxc: XtraDBClusterContainerAPI;
-  proxysql: XtraDBClusterContainerAPI;
+  pxc?: XtraDBClusterContainerAPI;
+  proxysql?: XtraDBClusterContainerAPI;
+  replicaset?: XtraDBClusterContainerAPI;
 }
 
 interface XtraDBClusterContainerAPI {

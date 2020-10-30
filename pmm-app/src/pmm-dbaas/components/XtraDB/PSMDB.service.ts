@@ -10,14 +10,14 @@ import {
 } from './XtraDB.types';
 import { DBClusterService } from './DBCluster.service';
 
-export class XtraDBService extends DBClusterService {
+export class PSMDBService extends DBClusterService {
   getDBClusters(kubernetes: Kubernetes): Promise<XtraDBClusterPayload> {
-    return apiRequestManagement.post<any, Kubernetes>('/DBaaS/XtraDBClusters/List', kubernetes);
+    return apiRequestManagement.post<any, Kubernetes>('/DBaaS/PSMDBClusters/List', kubernetes);
   }
 
   addDBCluster(xtradbCluster: XtraDBCluster): Promise<void | XtraDBClusterPayload> {
     return apiRequestManagement.post<XtraDBClusterPayload, any>(
-      '/DBaaS/XtraDBCluster/Create',
+      '/DBaaS/PSMDBCluster/Create',
       toAPI(xtradbCluster),
     );
   }
@@ -29,14 +29,14 @@ export class XtraDBService extends DBClusterService {
     });
 
     return apiRequestManagement.post<any, DeleteXtraDBClusterAPI>(
-      '/DBaaS/XtraDBCluster/Delete',
+      '/DBaaS/PSMDBCluster/Delete',
       toAPI(xtradbCluster),
     );
   }
 
   getDBCluster(xtradbCluster: XtraDBCluster): Promise<void | XtraDBClusterConnectionAPI> {
     return apiRequestManagement.post<XtraDBClusterConnectionAPI, any>(
-      '/DBaaS/XtraDBClusters/Get',
+      '/DBaaS/PSMDBClusters/Get',
       omit(toAPI(xtradbCluster), ['params']),
     );
   }
@@ -51,29 +51,23 @@ export class XtraDBService extends DBClusterService {
       kubernetesClusterName,
       databaseType,
       clusterSize: xtradbCluster.params.cluster_size,
-      memory: xtradbCluster.params.pxc?.compute_resources?.memory_bytes || 0,
-      cpu: xtradbCluster.params.pxc?.compute_resources?.cpu_m || 0,
+      memory: xtradbCluster.params.replicaset?.compute_resources?.memory_bytes || 0,
+      cpu: xtradbCluster.params.replicaset?.compute_resources?.cpu_m || 0,
       status: xtradbCluster.state,
       errorMessage: xtradbCluster.operation?.message,
     };
   }
 }
 
-const toAPI = (xtradbCluster: XtraDBCluster): XtraDBClusterPayload => ({
+const toAPI = (xtradbCluster: XtraDBCluster) => ({
   kubernetes_cluster_name: xtradbCluster.kubernetesClusterName,
   name: xtradbCluster.clusterName,
   params: {
     cluster_size: xtradbCluster.clusterSize,
-    pxc: {
+    replicaset: {
       compute_resources: {
         cpu_m: xtradbCluster.cpu * 1000,
         memory_bytes: xtradbCluster.memory * 10 ** 9,
-      },
-    },
-    proxysql: {
-      compute_resources: {
-        cpu_m: 0,
-        memory_bytes: 0,
       },
     },
   },

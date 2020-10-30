@@ -9,7 +9,11 @@ import { getStyles } from './XtraDB.styles';
 import { XtraDBCluster, XtraDBProps } from './XtraDB.types';
 import { AddXtraDBModal } from './AddXtraDBModal/AddXtraDBModal';
 import { useXtraDBClusters } from './XtraDB.hooks';
-import { clusterStatusRender, connectionRender } from './ColumnRenderers/ColumnRenderers';
+import {
+  clusterStatusRender,
+  connectionRender,
+  databaseTypeRender,
+} from './ColumnRenderers/ColumnRenderers';
 import { DeleteXtraDBModal } from './DeleteXtraDBModal/DeleteXtraDBModal';
 import { isClusterChanging } from './XtraDB.utils';
 
@@ -28,7 +32,7 @@ export const XtraDB: FC<XtraDBProps> = ({ kubernetes }) => {
       },
       {
         Header: Messages.xtradb.table.databaseTypeColumn,
-        accessor: 'databaseType',
+        accessor: databaseTypeRender,
       },
       {
         Header: Messages.xtradb.table.connectionColumn,

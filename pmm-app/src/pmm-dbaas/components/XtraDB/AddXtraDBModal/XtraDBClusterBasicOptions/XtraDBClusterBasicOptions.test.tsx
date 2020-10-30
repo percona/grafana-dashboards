@@ -1,14 +1,16 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
-import { Form } from 'react-final-form';
+import { mount } from 'enzyme';
+import { Form, FormRenderProps } from 'react-final-form';
 import { XtraDBClusterBasicOptions } from './XtraDBClusterBasicOptions';
 import { AddXtraDBFields } from '../AddXtraDBModal.types';
 
 describe('XtraDBClusterBasicOptions::', () => {
   it('renders correctly', () => {
-    const root = shallow(<Form
+    const root = mount(<Form
       onSubmit={jest.fn()}
-      render={() => <XtraDBClusterBasicOptions kubernetesOptions={[]} />}
+      render={({ form }: FormRenderProps) => (
+        <XtraDBClusterBasicOptions kubernetesOptions={[]} form={form} />
+      )}
     />);
 
     expect(root.find('[data-qa="name-text-input"]')).toBeTruthy();
@@ -21,7 +23,9 @@ describe('XtraDBClusterBasicOptions::', () => {
         [AddXtraDBFields.name]: 'dbcluster',
       }}
       onSubmit={jest.fn()}
-      render={() => <XtraDBClusterBasicOptions kubernetesOptions={[]} />}
+      render={({ form }: FormRenderProps) => (
+        <XtraDBClusterBasicOptions kubernetesOptions={[]} form={form} />
+      )}
     />);
     const name = root.find('[data-qa="name-text-input"]');
 

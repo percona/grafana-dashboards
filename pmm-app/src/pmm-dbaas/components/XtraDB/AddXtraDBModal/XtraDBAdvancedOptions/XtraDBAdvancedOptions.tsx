@@ -1,16 +1,20 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, {
+  FC, useCallback, useState, useMemo,
+} from 'react';
 import { Field, FormRenderProps } from 'react-final-form';
 import { HorizontalGroup, useStyles } from '@grafana/ui';
 import { LoaderButton, NumberInputField } from '@percona/platform-core';
 import validators from 'shared/components/helpers/validators';
 import { RadioButtonGroupAdapter } from 'shared/components/Form/FieldAdapters/FieldAdapters';
 import { Messages } from 'pmm-dbaas/DBaaS.messages';
+import { Databases } from 'shared/core';
 import {
   TOPOLOGY_OPTIONS,
   RESOURCES_OPTIONS,
   DEFAULT_SIZES,
   MIN_NODES,
   MIN_RESOURCES,
+  TOPOLOGIES_DISABLED,
 } from './XtraDBAdvancedOptions.constants';
 import { getStyles } from './XtraDBAdvancedOptions.styles';
 import { AddXtraDBFields } from '../AddXtraDBModal.types';
@@ -35,6 +39,7 @@ export const XtraDBAdvancedOptions: FC<FormRenderProps> = ({
     resources,
     memory,
     cpu,
+    databaseType,
   } = values;
   const onChangeCustom = useCallback((value: string) => {
     if (resources === XtraDBResources.custom) {
@@ -55,6 +60,9 @@ export const XtraDBAdvancedOptions: FC<FormRenderProps> = ({
   const parsePositiveInt = useCallback(
     (value) => (value > 0 && Number.isInteger(+value) ? value : undefined), [],
   );
+  const topologiesDisabled = useMemo(() => (
+    databaseType?.value !== Databases.mysql ? TOPOLOGIES_DISABLED : []
+  ), [databaseType]);
 
   return (
     <>
@@ -63,6 +71,7 @@ export const XtraDBAdvancedOptions: FC<FormRenderProps> = ({
         name={AddXtraDBFields.topology}
         label={Messages.xtradb.addModal.fields.topology}
         options={TOPOLOGY_OPTIONS}
+        disabledOptions={topologiesDisabled}
         component={RadioButtonGroupAdapter}
       />
       <div className={styles.nodesWrapper}>

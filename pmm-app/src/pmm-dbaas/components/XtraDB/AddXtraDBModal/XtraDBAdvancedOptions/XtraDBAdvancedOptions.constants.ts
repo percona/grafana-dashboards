@@ -14,6 +14,8 @@ export const RESOURCES_OPTIONS: SelectableValue[] = [
   { key: XtraDBResources.custom, value: Messages.xtradb.addModal.resources.custom },
 ];
 
+export const TOPOLOGIES_DISABLED = [XtraDBTopology.single];
+
 export const DEFAULT_SIZES = {
   small: {
     memory: 2,

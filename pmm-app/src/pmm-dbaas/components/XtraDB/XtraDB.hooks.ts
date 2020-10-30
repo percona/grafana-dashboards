@@ -1,12 +1,16 @@
 import { useState, useEffect } from 'react';
 import { processPromiseResults, FulfilledPromiseResult } from 'shared/components/helpers/promises';
-import { DATABASE_LABELS } from 'shared/core';
+import { Databases } from 'shared/core';
 import { Kubernetes } from '../Kubernetes/Kubernetes.types';
 import { XtraDBCluster, GetXtraDBClustersAction, XtraDBClusterPayload } from './XtraDB.types';
-import { XtraDBService, toModel } from './XtraDB.service';
 import { isClusterChanging } from './XtraDB.utils';
+import { DBClusterServiceFactory } from './DBClusterService.factory';
 
 const RECHECK_INTERVAL = 30000;
+const DATABASES = [
+  Databases.mysql,
+  Databases.mongodb,
+];
 
 export const useXtraDBClusters = (
   kubernetes: Kubernetes[],
@@ -21,22 +25,9 @@ export const useXtraDBClusters = (
     }
 
     try {
-      const requests = kubernetes.map(XtraDBService.getXtraDBClusters);
-      const results = await processPromiseResults(requests);
-
-      const clustersList: XtraDBCluster[] = results.reduce((acc: XtraDBCluster[], r, index) => {
-        if (r.status !== 'fulfilled') {
-          return acc;
-        }
-
-        const clusters: XtraDBClusterPayload[] = (r as FulfilledPromiseResult).value?.clusters ?? [];
-
-        const resultClusters = clusters.map(
-          (cluster) => toModel(cluster, kubernetes[index].kubernetesClusterName, DATABASE_LABELS.mysql),
-        );
-
-        return acc.concat(resultClusters);
-      }, []);
+      const requests = DATABASES.map((database) => getDBClusters(kubernetes, database));
+      const results = await Promise.all(requests);
+      const clustersList = results.reduce((acc, r) => acc.concat(r), []);
 
       setXtraDBClusters(clustersList);
     } catch (e) {
@@ -63,4 +54,30 @@ export const useXtraDBClusters = (
   }, [xtraDBClusters]);
 
   return [xtraDBClusters, getXtraDBClusters, loading];
+};
+
+const getDBClusters = async (kubernetes: Kubernetes[], databaseType: Databases): Promise<XtraDBCluster[]> => {
+  const dbClusterService = DBClusterServiceFactory.newDBClusterService(databaseType);
+  const requests = kubernetes.map(dbClusterService.getDBClusters);
+  const results = await processPromiseResults(requests);
+
+  const clustersList: XtraDBCluster[] = results.reduce((acc: XtraDBCluster[], r, index) => {
+    if (r.status !== 'fulfilled') {
+      return acc;
+    }
+
+    const clusters: XtraDBClusterPayload[] = (r as FulfilledPromiseResult).value?.clusters ?? [];
+
+    const resultClusters = clusters.map(
+      (cluster) => dbClusterService.toModel(
+        cluster,
+        kubernetes[index].kubernetesClusterName,
+        databaseType,
+      ),
+    );
+
+    return acc.concat(resultClusters);
+  }, []);
+
+  return clustersList;
 };
