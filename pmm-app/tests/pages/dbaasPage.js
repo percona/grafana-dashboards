@@ -6,9 +6,9 @@ module.exports = {
   confirmDeleteText: 'Are you sure that you want to permanently delete this cluster?',
   deletedAlertMessage: 'Cluster successfully deleted',
   fields: {
-    addKubernetesClusterButton: '//span[contains(text(), \'Add new Kubernetes Cluster\')]',
+    addKubernetesClusterButton: '$kubernetes-new-cluster-button',
     addKubernetesClusterButtonInTable:
-      '//div[@data-qa=\'table-no-data\']//span[contains(text(), \'Add new Kubernetes Cluster\')]',
+      '//div[@data-qa=\'table-no-data\']//span[contains(text(), \'Register new Kubernetes Cluster\')]',
     modalWindow: '$modal-body',
     closeButton: '$modal-close-button',
     disabledAddButton: '//button[@data-qa="kubernetes-add-cluster-button" and @disabled]',

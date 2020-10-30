@@ -1,6 +1,12 @@
+import { omit } from 'lodash';
 import { apiRequestManagement } from 'shared/components/helpers/api';
 import { Kubernetes } from '../Kubernetes/Kubernetes.types';
-import { XtraDBCluster, XtraDBClusterPayload, DeleteXtraDBClusterAPI } from './XtraDB.types';
+import {
+  XtraDBCluster,
+  XtraDBClusterPayload,
+  DeleteXtraDBClusterAPI,
+  XtraDBClusterConnectionAPI,
+} from './XtraDB.types';
 
 export const XtraDBService = {
   getXtraDBClusters(kubernetes: Kubernetes) {
@@ -23,6 +29,12 @@ export const XtraDBService = {
       toAPI(xtradbCluster),
     );
   },
+  getXtraDBCluster(xtradbCluster: XtraDBCluster) {
+    return apiRequestManagement.post<XtraDBClusterConnectionAPI, any>(
+      '/DBaaS/XtraDBClusters/Get',
+      omit(toAPI(xtradbCluster), ['params']),
+    );
+  },
 };
 
 const toAPI = (xtradbCluster: XtraDBCluster): XtraDBClusterPayload => ({
@@ -32,14 +44,14 @@ const toAPI = (xtradbCluster: XtraDBCluster): XtraDBClusterPayload => ({
     cluster_size: xtradbCluster.clusterSize,
     pxc: {
       compute_resources: {
-        cpu_m: xtradbCluster.cpu,
-        memory_bytes: xtradbCluster.memory * 1024,
+        cpu_m: xtradbCluster.cpu * 1000,
+        memory_bytes: xtradbCluster.memory * 10 ** 9,
       },
     },
     proxysql: {
       compute_resources: {
-        cpu_m: 1,
-        memory_bytes: 1024,
+        cpu_m: 0,
+        memory_bytes: 0,
       },
     },
   },
@@ -54,6 +66,8 @@ export const toModel = (
   kubernetesClusterName,
   databaseType,
   clusterSize: xtradbCluster.params.cluster_size,
-  memory: xtradbCluster.params.pxc.compute_resources.memory_bytes,
-  cpu: xtradbCluster.params.pxc.compute_resources.cpu_m,
+  memory: xtradbCluster.params.pxc?.compute_resources?.memory_bytes,
+  cpu: xtradbCluster.params.pxc?.compute_resources?.cpu_m,
+  status: xtradbCluster.state,
+  errorMessage: xtradbCluster.operation?.message,
 });
