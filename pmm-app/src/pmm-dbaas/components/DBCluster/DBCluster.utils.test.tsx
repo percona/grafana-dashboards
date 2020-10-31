@@ -3,11 +3,11 @@ import { dbClustersStub } from './__mocks__/dbClustersStubs';
 import { DBClusterStatus } from './DBCluster.types';
 
 const DBCLUSTER_STATUS_MAP = {
-  'XTRA_DB_CLUSTER_STATE_INVALID': DBClusterStatus.invalid,
-  'XTRA_DB_CLUSTER_STATE_CHANGING': DBClusterStatus.changing,
-  'XTRA_DB_CLUSTER_STATE_READY': DBClusterStatus.ready,
-  'XTRA_DB_CLUSTER_STATE_FAILED': DBClusterStatus.failed,
-  'XTRA_DB_CLUSTER_STATE_DELETING': DBClusterStatus.deleting,
+  [DBClusterStatus.invalid]: 'XTRA_DB_CLUSTER_STATE_INVALID',
+  [DBClusterStatus.changing]: 'XTRA_DB_CLUSTER_STATE_CHANGING',
+  [DBClusterStatus.ready]: 'XTRA_DB_CLUSTER_STATE_READY',
+  [DBClusterStatus.failed]: 'XTRA_DB_CLUSTER_STATE_FAILED',
+  [DBClusterStatus.deleting]: 'XTRA_DB_CLUSTER_STATE_DELETING',
 };
 
 describe('DBCluster.utils::', () => {

@@ -27,6 +27,10 @@ export enum DBClusterStatus {
   deleting = 'DB_CLUSTER_STATE_DELETING',
 }
 
+export type DBClusterStatusMap = {
+  [key in DBClusterStatus]: string;
+};
+
 export interface DBClusterConnection {
   host: string;
   password: string;

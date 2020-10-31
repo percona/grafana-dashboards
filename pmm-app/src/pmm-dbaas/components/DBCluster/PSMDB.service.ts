@@ -13,11 +13,11 @@ import { DBClusterService } from './DBCluster.service';
 import { getClusterStatus } from './DBCluster.utils';
 
 const DBCLUSTER_STATUS_MAP = {
-  'PSMDB_CLUSTER_STATE_INVALID': DBClusterStatus.invalid,
-  'PSMDB_CLUSTER_STATE_CHANGING': DBClusterStatus.changing,
-  'PSMDB_CLUSTER_STATE_READY': DBClusterStatus.ready,
-  'PSMDB_CLUSTER_STATE_FAILED': DBClusterStatus.failed,
-  'PSMDB_CLUSTER_STATE_DELETING': DBClusterStatus.deleting,
+  [DBClusterStatus.invalid]: 'PSMDB_CLUSTER_STATE_INVALID',
+  [DBClusterStatus.changing]: 'PSMDB_CLUSTER_STATE_CHANGING',
+  [DBClusterStatus.ready]: 'PSMDB_CLUSTER_STATE_READY',
+  [DBClusterStatus.failed]: 'PSMDB_CLUSTER_STATE_FAILED',
+  [DBClusterStatus.deleting]: 'PSMDB_CLUSTER_STATE_DELETING',
 };
 
 export class PSMDBService extends DBClusterService {
