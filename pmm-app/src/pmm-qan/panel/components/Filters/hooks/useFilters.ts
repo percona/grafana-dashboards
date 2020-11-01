@@ -1,6 +1,6 @@
-import {useContext, useEffect, useState} from "react";
-import {QueryAnalyticsProvider} from "../../../provider/provider";
-import FiltersService from "../Filters.service";
+import { useContext, useEffect, useState } from 'react';
+import { QueryAnalyticsProvider } from '../../../provider/provider';
+import FiltersService from '../Filters.service';
 
 export const useFilters = () => {
   const [filters, setFilters] = useState({});
@@ -28,5 +28,5 @@ export const useFilters = () => {
     })();
   }, [labels, from, to, columns]);
 
-  return {filters, loading, error};
+  return { filters, loading, error };
 };

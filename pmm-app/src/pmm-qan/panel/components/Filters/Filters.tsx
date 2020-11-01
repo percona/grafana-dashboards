@@ -1,4 +1,6 @@
-import React, { FC, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import React, {
+  FC, useContext, useEffect, useMemo, useRef, useState,
+} from 'react';
 import { Button, Input, Spin } from 'antd';
 import { Form } from 'react-final-form';
 import { cx } from 'emotion';
@@ -16,8 +18,6 @@ import { useInitialFilterValues } from './hooks/useInitialFilterValues';
 import { useFiltersContainerHeight } from './hooks/useFiltersContainerHeight';
 
 export const FiltersContainer: FC<FiltersContainerProps> = ({
-  contextActions,
-  form,
   filters,
   disabled,
   rawTime,
@@ -38,64 +38,56 @@ export const FiltersContainer: FC<FiltersContainerProps> = ({
     }
   }, [selectedCheckboxes]);
 
-  const ShowAllButton = () => {
-    return (
-      <Button
-        type="link"
-        className={styles.showAllButton}
-        onClick={() => showSetAll(!showAll)}
-        disabled={!selectedCheckboxes}
-        data-qa="qan-filters-show-selected"
-      >
-        {showAll ? 'Show Selected' : 'Show All'}
-      </Button>
-    );
-  };
+  const ShowAllButton = () => (
+    <Button
+      type="link"
+      className={styles.showAllButton}
+      onClick={() => showSetAll(!showAll)}
+      disabled={!selectedCheckboxes}
+      data-qa="qan-filters-show-selected"
+    >
+      {showAll ? 'Show Selected' : 'Show All'}
+    </Button>
+  );
 
-  const ResetButton = () => {
-    return (
-      <Button
-        type="link"
-        htmlType={'reset'}
-        className={styles.resetButton}
-        data-qa="qan-filters-reset-all"
-        onClick={() => {
-          setFilter('');
-          showSetAll(true);
-        }}
-        disabled={!selectedCheckboxes}
-      >
-        Reset All
-      </Button>
-    );
-  };
+  const ResetButton = () => (
+    <Button
+      type="link"
+      htmlType="reset"
+      className={styles.resetButton}
+      data-qa="qan-filters-reset-all"
+      onClick={() => {
+        setFilter('');
+        showSetAll(true);
+      }}
+      disabled={!selectedCheckboxes}
+    >
+      Reset All
+    </Button>
+  );
 
-  const FiltersHeader = () => {
-    return (
-      <div className={styles.filtersHeader}>
-        <h5 className={styles.title}>Filters</h5>
-        <ShowAllButton />
-        <ResetButton />
-      </div>
-    );
-  };
+  const FiltersHeader = () => (
+    <div className={styles.filtersHeader}>
+      <h5 className={styles.title}>Filters</h5>
+      <ShowAllButton />
+      <ResetButton />
+    </div>
+  );
 
   const FilterInput = useMemo(
-    () => ({ filter }) => {
-      return (
-        <Input
-          suffix={<Filter fill="#c6c6c6" />}
-          placeholder="Filter by..."
-          onChange={(e) => {
-            setFilter(e.target.value);
-            e.stopPropagation();
-          }}
-          value={filter}
-          className={styles.filtersField}
-          data-qa="filters-search-field"
-        />
-      );
-    },
+    () => ({ filter }) => (
+      <Input
+        suffix={<Filter fill="#c6c6c6" />}
+        placeholder="Filter by..."
+        onChange={(e) => {
+          setFilter(e.target.value);
+          e.stopPropagation();
+        }}
+        value={filter}
+        className={styles.filtersField}
+        data-qa="filters-search-field"
+      />
+    ),
     [],
   );
 

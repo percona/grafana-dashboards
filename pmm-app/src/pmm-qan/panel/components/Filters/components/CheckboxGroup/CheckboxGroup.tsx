@@ -31,14 +31,14 @@ export const CheckboxGroup: FC<CheckboxGroupProps> = ({
   const searchFilter = (item) => {
     if (!item.value) {
       return (
-        'n/a'.includes(searchFilterBy.toLowerCase()) ||
-        name.toLowerCase().includes(searchFilterBy.toLowerCase())
+        'n/a'.includes(searchFilterBy.toLowerCase())
+        || name.toLowerCase().includes(searchFilterBy.toLowerCase())
       );
     }
 
     return (
-      item.value.toLowerCase().includes(searchFilterBy.toLowerCase()) ||
-      name.toLowerCase().includes(searchFilterBy.toLowerCase())
+      item.value.toLowerCase().includes(searchFilterBy.toLowerCase())
+      || name.toLowerCase().includes(searchFilterBy.toLowerCase())
     );
   };
 
@@ -112,7 +112,7 @@ export const CheckboxGroup: FC<CheckboxGroupProps> = ({
       {showTop && hiddenSelectedFilters.length && filteredList.length >= TOP_LIMIT ? (
         <>
           <p className={styles.notTopWrapper}>
-            <span className={styles.notTopHeader}>{'Not in top 5, but selected'}</span>
+            <span className={styles.notTopHeader}>Not in top 5, but selected</span>
           </p>
           {hiddenSelectedFilters.map((item) => (
             <FilterCheckbox item={item} />

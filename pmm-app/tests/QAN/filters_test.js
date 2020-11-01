@@ -57,7 +57,7 @@ Scenario(
     I.waitForVisible(qanFilters.elements.disabledResetAll, 30);
     const countAfterReset = await qanOverview.getCountOfItems();
 
-    assert.ok(countAfterReset >= countBefore, "Query count wasn't expected to change");
+    assert.ok(countAfterReset >= countBefore, 'Query count wasn\'t expected to change');
   },
 );
 

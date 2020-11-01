@@ -1,11 +1,11 @@
-import {useContext, useEffect, useState} from "react";
-import {QueryAnalyticsProvider} from "../../../provider/provider";
+import { useContext, useEffect, useState } from 'react';
+import { QueryAnalyticsProvider } from '../../../provider/provider';
 
 export const useInitialFilterValues = () => {
   const [initialValues, setInitialValues] = useState({});
 
   const {
-    panelState: {labels = {}},
+    panelState: { labels = {} },
   } = useContext(QueryAnalyticsProvider);
 
   useEffect(() => {

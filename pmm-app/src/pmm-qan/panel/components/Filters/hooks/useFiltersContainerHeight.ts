@@ -1,6 +1,6 @@
-import {RefObject, useEffect, useState} from "react";
-import useWindowSize from "../../../../../shared/components/hooks/WindowSize.hooks";
-import {FILTERS_BODY_HEIGHT, FILTERS_HEADER_SIZE, FILTERS_MARGIN_BOTTOM} from "../Filters.constants";
+import { RefObject, useEffect, useState } from 'react';
+import useWindowSize from '../../../../../shared/components/hooks/WindowSize.hooks';
+import { FILTERS_BODY_HEIGHT, FILTERS_HEADER_SIZE, FILTERS_MARGIN_BOTTOM } from '../Filters.constants';
 
 export const useFiltersContainerHeight = (initialValue: number, ref: RefObject<HTMLDivElement>) => {
   const [, winHeight] = useWindowSize();
