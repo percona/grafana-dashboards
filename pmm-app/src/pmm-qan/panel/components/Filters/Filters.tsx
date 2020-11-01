@@ -140,7 +140,6 @@ export const Filters: FC = () => {
               }}
             >
               <FiltersContainer
-                form={form}
                 filters={filters}
                 disabled={loadingDetails}
                 rawTime={rawTime}
