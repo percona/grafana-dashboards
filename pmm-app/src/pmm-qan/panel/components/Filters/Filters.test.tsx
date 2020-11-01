@@ -181,6 +181,13 @@ const MOCK_FILTERS = {
 
 describe('Filters test', () => {
   it('Renders correct with right props', () => {
+    jest.spyOn(React, 'useContext').mockImplementation(() => ({
+      panelState: {
+        groupBy: 'queryid',
+        loadingDetails: false,
+      },
+    }));
+
     const root = mount(
       <Filters
         groups={FILTERS_GROUPS}
