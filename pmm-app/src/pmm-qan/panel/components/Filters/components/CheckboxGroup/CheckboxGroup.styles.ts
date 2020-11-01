@@ -48,6 +48,25 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
     font-size: 16px;
     color: ${parameters.mainTextColor};
   `,
+    notTopWrapper: css`
+    display: flex;
+    justify-items: space-between;
+    margin-bottom: 0 !important;
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
+  `,
+    notTopHeader: css`
+    margin-right: auto;
+    font-weight: 400;
+    font-size: 12px;
+    color: ${parameters.mainTextColor};
+  `,
+    notTopdivider: css`
+    margin-top: 3px !important;
+    margin-bottom: 3px !important;
+    height: 1px !important;
+    background-color: #3d3d3d !important;
+  `,
     divider: css`
     margin-top: 3px !important;
     margin-bottom: 12px !important;

@@ -80,27 +80,30 @@ export const FiltersContainer: FC<FiltersContainerProps> = ({
     );
   };
 
-  const FilterInput = () => {
-    return (
-      <Input
-        suffix={<Filter fill="#c6c6c6" />}
-        placeholder="Filter by..."
-        onChange={(e) => {
-          setFilter(e.target.value);
-          e.stopPropagation();
-        }}
-        value={filter}
-        className={styles.filtersField}
-        data-qa="filters-search-field"
-      />
-    );
-  };
+  const FilterInput = useMemo(
+    () => ({ filter }) => {
+      return (
+        <Input
+          suffix={<Filter fill="#c6c6c6" />}
+          placeholder="Filter by..."
+          onChange={(e) => {
+            setFilter(e.target.value);
+            e.stopPropagation();
+          }}
+          value={filter}
+          className={styles.filtersField}
+          data-qa="filters-search-field"
+        />
+      );
+    },
+    [],
+  );
 
   return (
     <div ref={filtersWrapperRef} className={cx({ [styles.filtersDisabled]: disabled })}>
       <FiltersHeader />
       <Scrollbar className={styles.getFiltersWrapper(height)}>
-        <FilterInput />
+        <FilterInput filter={filter} />
         {FILTERS_GROUPS.filter((group) => filters[group.dataKey]).map(
           ({ name, dataKey, getDashboardURL }) => (
             <CheckboxGroup

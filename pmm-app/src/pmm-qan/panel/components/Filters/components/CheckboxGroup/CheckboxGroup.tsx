@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 import { Divider } from 'antd';
 import { CheckboxField } from 'shared/components/Form/Checkbox/Checkbox';
 import { humanize } from 'shared/components/helpers/Humanization';
@@ -31,14 +31,14 @@ export const CheckboxGroup: FC<CheckboxGroupProps> = ({
   const searchFilter = (item) => {
     if (!item.value) {
       return (
-        'n/a'.includes(searchFilterBy.toLowerCase())
-        || name.toLowerCase().includes(searchFilterBy.toLowerCase())
+        'n/a'.includes(searchFilterBy.toLowerCase()) ||
+        name.toLowerCase().includes(searchFilterBy.toLowerCase())
       );
     }
 
     return (
-      item.value.toLowerCase().includes(searchFilterBy.toLowerCase())
-      || name.toLowerCase().includes(searchFilterBy.toLowerCase())
+      item.value.toLowerCase().includes(searchFilterBy.toLowerCase()) ||
+      name.toLowerCase().includes(searchFilterBy.toLowerCase())
     );
   };
 
@@ -52,35 +52,45 @@ export const CheckboxGroup: FC<CheckboxGroupProps> = ({
     })
     .filter(searchFilter);
 
-  const filteredList = (showTop ? itemsList.slice(0, TOP_LIMIT) : itemsList).map((item) => {
-    const valueExists = item.main_metric_percent !== undefined;
-    const dashboardURL = getDashboardURL && getDashboardURL(item.value)
-      ? `${getDashboardURL(item.value)}&from=${rawTime.from}&to=${rawTime.to}`
-      : '';
+  const FilterCheckbox = useMemo(
+    () => ({ item }) => {
+      const valueExists = item.main_metric_percent !== undefined;
+      const dashboardURL = getDashboardURL && getDashboardURL(item.value)
+        ? `${getDashboardURL(item.value)}&from=${rawTime.from}&to=${rawTime.to}`
+        : '';
 
-    return (
-      <div className={styles.label} key={`${group}:${item.value || ''}`}>
-        <span className={styles.filterName}>
-          <CheckboxField
-            // TODO: using '--' because final form think that it is a nested fields
-            name={`${group}:${item.value ? item.value.replace(/\./gi, '--') : 'na'}`}
-            label={item.value || 'n/a'}
-            disabled={!valueExists}
-          />
-        </span>
-        {dashboardURL && item.value && (
-          <span className={styles.dashboardLink}>
-            <a href={dashboardURL} target="_blank" rel="noreferrer">
-              <Icon name="graph-bar" />
-            </a>
+      return (
+        <div className={styles.label} key={`${group}:${item.value || ''}`}>
+          <span className={styles.filterName}>
+            <CheckboxField
+              // TODO: using '--' because final form think that it is a nested fields
+              name={`${group}:${item.value ? item.value.replace(/\./gi, '--') : 'na'}`}
+              label={item.value || 'n/a'}
+              disabled={!valueExists}
+            />
           </span>
-        )}
-        <span className={styles.percentage}>
-          <span>{valueExists ? humanize.transform(item.main_metric_percent, 'percent') : null}</span>
-        </span>
-      </div>
-    );
-  });
+          {dashboardURL && item.value && (
+            <span className={styles.dashboardLink}>
+              <a href={dashboardURL} target="_blank" rel="noreferrer">
+                <Icon name="graph-bar" />
+              </a>
+            </span>
+          )}
+          <span className={styles.percentage}>
+            <span>{valueExists ? humanize.transform(item.main_metric_percent, 'percent') : null}</span>
+          </span>
+        </div>
+      );
+    },
+    [group],
+  );
+
+  const filteredList = showTop ? itemsList.slice(0, TOP_LIMIT) : itemsList;
+
+  const hiddenSelectedFilters = items
+    .slice(TOP_LIMIT, items.length)
+    .filter(({ checked }) => checked)
+    .filter(searchFilter);
 
   return filteredList.length ? (
     <div>
@@ -95,7 +105,20 @@ export const CheckboxGroup: FC<CheckboxGroupProps> = ({
         )}
       </p>
       <Divider className={styles.divider} />
-      {filteredList}
+      {filteredList.map((item) => (
+        <FilterCheckbox item={item} />
+      ))}
+
+      {showTop && hiddenSelectedFilters.length && filteredList.length >= TOP_LIMIT ? (
+        <>
+          <p className={styles.notTopWrapper}>
+            <span className={styles.notTopHeader}>{'Not in top 5, but selected'}</span>
+          </p>
+          {hiddenSelectedFilters.map((item) => (
+            <FilterCheckbox item={item} />
+          ))}
+        </>
+      ) : null}
     </div>
   ) : null;
 };
