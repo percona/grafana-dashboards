@@ -46,17 +46,17 @@ export const PostgreSQLAdditionalOptions: FC<PostgreSQLAdditionalOptionsProps> =
   </>
 );
 
+const getTablestatValues = (type) => {
+  switch (type) {
+    case TablestatOptions.disabled:
+      return -1;
+    default:
+      return 1000;
+  }
+};
+
 const MySQLOptions = ({ form }) => {
   const [selectedValue, setSelectedValue] = useState<string>(TablestatOptions.disabled);
-
-  const getTablestatValues = (type) => {
-    switch (type) {
-      case TablestatOptions.disabled:
-        return -1;
-      default:
-        return 1000;
-    }
-  };
 
   return (
     <>
