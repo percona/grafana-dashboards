@@ -16,12 +16,9 @@ import { getStyles } from './Filters.styles';
 import { useFilters } from './hooks/useFilters';
 import { useInitialFilterValues } from './hooks/useInitialFilterValues';
 import { useFiltersContainerHeight } from './hooks/useFiltersContainerHeight';
+import { Messages } from './Filters.messages';
 
-export const FiltersContainer: FC<FiltersContainerProps> = ({
-  filters,
-  disabled,
-  rawTime,
-}) => {
+export const FiltersContainer: FC<FiltersContainerProps> = ({ filters, disabled, rawTime }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
 
@@ -46,7 +43,7 @@ export const FiltersContainer: FC<FiltersContainerProps> = ({
       disabled={!selectedCheckboxes}
       data-qa="qan-filters-show-selected"
     >
-      {showAll ? 'Show Selected' : 'Show All'}
+      {showAll ? Messages.buttons.showSelected : Messages.buttons.showAll}
     </Button>
   );
 
@@ -62,7 +59,7 @@ export const FiltersContainer: FC<FiltersContainerProps> = ({
       }}
       disabled={!selectedCheckboxes}
     >
-      Reset All
+      {Messages.buttons.reset}
     </Button>
   );
 
@@ -139,11 +136,7 @@ export const Filters: FC = () => {
                 contextActions.resetLabels();
               }}
             >
-              <FiltersContainer
-                filters={filters}
-                disabled={loadingDetails}
-                rawTime={rawTime}
-              />
+              <FiltersContainer filters={filters} disabled={loadingDetails} rawTime={rawTime} />
             </form>
           </Spin>
         )}
