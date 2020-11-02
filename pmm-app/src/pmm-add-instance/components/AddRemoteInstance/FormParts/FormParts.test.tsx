@@ -25,7 +25,7 @@ describe('MainDetailsFormPart ::', () => {
     expect(root.find('input[name="address"]').prop('disabled')).toBeTruthy();
     expect(root.find('input[name="service_name"]').prop('disabled')).toBeFalsy();
     expect(root.find('input[name="port"]').prop('disabled')).toBeFalsy();
-    expect(root.find('input[name="username"]').prop('disabled')).toBeTruthy();
+    expect(root.find('input[name="username"]').prop('disabled')).toBeFalsy();
     expect(root.find('input[name="password"]').prop('disabled')).toBeFalsy();
   });
 
