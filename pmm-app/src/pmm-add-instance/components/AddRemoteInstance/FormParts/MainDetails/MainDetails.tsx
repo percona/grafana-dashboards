@@ -48,7 +48,6 @@ export const MainDetailsFormPart: FC<MainDetailsFormPartProps> = ({ remoteInstan
         name="username"
         placeholder={Messages.form.placeholders.mainDetails.username}
         validators={[validators.required]}
-        disabled={remoteInstanceCredentials.isRDS}
       />
       <div className={styles.labelWrapper} data-qa="password-label">
         <span>{Messages.form.labels.mainDetails.password}</span>
