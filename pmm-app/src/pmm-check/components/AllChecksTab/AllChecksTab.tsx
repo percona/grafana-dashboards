@@ -20,12 +20,12 @@ export const AllChecksTab: FC = () => {
   const updateUI = (check: CheckDetails) => {
     const { name, enabled } = check;
 
-    setChecks((oldChecks) => oldChecks?.map((c) => {
-      if (c.name !== name) {
-        return c;
+    setChecks((oldChecks) => oldChecks?.map((oldCheck) => {
+      if (oldCheck.name !== name) {
+        return oldCheck;
       }
 
-      return { ...c, enabled };
+      return { ...oldCheck, enabled };
     }));
   };
 
