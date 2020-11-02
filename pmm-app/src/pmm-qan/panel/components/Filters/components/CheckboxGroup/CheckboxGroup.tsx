@@ -6,6 +6,7 @@ import { useTheme, Icon } from '@grafana/ui';
 import { getStyles } from './CheckboxGroup.styles';
 import { TOP_LIMIT } from './CheckboxGroup.constants';
 import { CheckboxGroupProps } from './CheckboxGroup.types';
+import { Messages } from './CheckboxGroup.messages';
 
 export const CheckboxGroup: FC<CheckboxGroupProps> = ({
   name,
@@ -112,7 +113,7 @@ export const CheckboxGroup: FC<CheckboxGroupProps> = ({
       {showTop && hiddenSelectedFilters.length && filteredList.length >= TOP_LIMIT ? (
         <>
           <p className={styles.notTopWrapper}>
-            <span className={styles.notTopHeader}>Not in top 5, but selected</span>
+            <span className={styles.notTopHeader}>{Messages.titles.additionalSelectedSection}</span>
           </p>
           {hiddenSelectedFilters.map((item) => (
             <FilterCheckbox item={item} />
