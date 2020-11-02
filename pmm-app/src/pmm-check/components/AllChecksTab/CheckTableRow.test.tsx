@@ -14,13 +14,13 @@ const runAllPromises = () => new Promise(setImmediate);
 const TEST_CHECK = {
   name: 'test',
   description: 'test description',
-  enabled: true,
+  disabled: false,
 };
 
 const TEST_CHECK_DISABLED = {
   name: 'test disabled',
   description: 'test disabled description',
-  enabled: false,
+  disabled: true,
 };
 
 const fakeOnSuccess = jest.fn();
@@ -72,7 +72,7 @@ describe('CheckTableRow::', () => {
     wrapper.find(ButtonWithSpinner).simulate('click');
 
     expect(spy).toBeCalledTimes(1);
-    expect(spy).toBeCalledWith({ name: TEST_CHECK.name, disable: true });
+    expect(spy).toBeCalledWith({ params: [{ name: TEST_CHECK.name, disable: true }] });
 
     wrapper = mount(
       <CheckTableRow check={TEST_CHECK_DISABLED} onSuccess={fakeOnSuccess} />,
@@ -81,7 +81,7 @@ describe('CheckTableRow::', () => {
     wrapper.find(ButtonWithSpinner).simulate('click');
 
     expect(spy).toBeCalledTimes(2);
-    expect(spy).toBeCalledWith({ name: TEST_CHECK_DISABLED.name, enable: true });
+    expect(spy).toBeCalledWith({ params: [{ name: TEST_CHECK_DISABLED.name, enable: true }] });
 
     spy.mockClear();
     wrapper.unmount();

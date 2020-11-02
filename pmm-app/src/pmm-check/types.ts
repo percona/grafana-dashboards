@@ -30,8 +30,8 @@ export interface ActiveCheck {
 
 export interface CheckDetails {
   name: string;
-  description: string;
-  enabled: boolean;
+  description?: string;
+  disabled?: boolean;
 }
 
 export interface AllChecks {
@@ -39,9 +39,11 @@ export interface AllChecks {
 }
 
 export interface ChangeCheckBody {
-  name: string;
-  enable?: boolean;
-  disable?: boolean;
+  params: Array<{
+    name: string;
+    enable?: boolean;
+    disable?: boolean;
+  }>;
 }
 
 export enum TabKeys {

@@ -6,16 +6,16 @@ import { CheckTableRowProps } from './types';
 
 export const CheckTableRow: FC<CheckTableRowProps> = ({ check, onSuccess }) => {
   const [changeCheckPending, setChangeCheckPending] = useState(false);
-  const { name, description, enabled } = check;
+  const { name, description, disabled } = check;
 
   const changeCheck = async () => {
     setChangeCheckPending(true);
-    const action = enabled ? 'disable' : 'enable';
+    const action = disabled ? 'enable' : 'disable';
 
     try {
-      await CheckService.changeCheck({ name, [action]: true });
+      await CheckService.changeCheck({ params: [{ name, [action]: true }] });
 
-      onSuccess({ ...check, enabled: !enabled });
+      onSuccess({ ...check, disabled: !disabled });
     } catch (e) {
       console.error(e);
     } finally {
@@ -27,15 +27,15 @@ export const CheckTableRow: FC<CheckTableRowProps> = ({ check, onSuccess }) => {
     <tr key={name}>
       <td>{name}</td>
       <td>{description}</td>
-      <td>{enabled ? Messages.enabled : Messages.disabled}</td>
+      <td>{disabled ? Messages.disabled : Messages.enabled}</td>
       <td>
         <ButtonWithSpinner
-          variant={enabled ? 'destructive' : 'primary'}
+          variant={disabled ? 'primary' : 'destructive'}
           size="sm"
           isLoading={changeCheckPending}
           onClick={changeCheck}
         >
-          {enabled ? Messages.disable : Messages.enable}
+          {disabled ? Messages.enable : Messages.disable}
         </ButtonWithSpinner>
       </td>
     </tr>

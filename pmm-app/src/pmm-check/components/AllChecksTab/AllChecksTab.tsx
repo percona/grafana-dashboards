@@ -18,14 +18,14 @@ export const AllChecksTab: FC = () => {
   const tableStyles = getTableStyles(theme);
 
   const updateUI = (check: CheckDetails) => {
-    const { name, enabled } = check;
+    const { name, disabled } = check;
 
     setChecks((oldChecks) => oldChecks?.map((oldCheck) => {
       if (oldCheck.name !== name) {
         return oldCheck;
       }
 
-      return { ...oldCheck, enabled };
+      return { ...oldCheck, disabled };
     }));
   };
 
