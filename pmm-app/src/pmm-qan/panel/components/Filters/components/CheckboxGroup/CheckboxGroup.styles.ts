@@ -13,7 +13,7 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
     display: grid;
     grid-template-areas: 'filtername dashboardlink percentagearea';
     grid-template-rows: 30px;
-    grid-template-columns: 130px auto;
+    grid-template-columns: 130px 20px 40px;
     grid-gap: 10px;
     height: auto;
     margin: 0;
