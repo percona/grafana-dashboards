@@ -1,6 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import { Form } from 'react-final-form';
+import { FormApi } from 'final-form';
 import { trackingOptions } from './FormParts.constants';
 import { AdditionalOptionsFormPart, getAdditionalOptions } from './AdditionalOptions/AdditionalOptions';
 import { LabelsFormPart } from './Labels/Labels';
@@ -75,7 +76,7 @@ describe('AdditionalOptionsFormPart ::', () => {
             instanceType={type}
             remoteInstanceCredentials={remoteInstanceCredentials}
             loading={false}
-            form={form}
+            form={(form as unknown) as FormApi}
           />
         )}
       />,
