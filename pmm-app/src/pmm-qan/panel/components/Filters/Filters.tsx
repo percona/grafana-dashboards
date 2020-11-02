@@ -16,7 +16,11 @@ import { FiltersContainerProps } from './Filters.types';
 import { getStyles } from './Filters.styles';
 
 export const FiltersContainer: FC<FiltersContainerProps> = ({
-  contextActions, form, filters, disabled,
+  contextActions,
+  form,
+  filters,
+  disabled,
+  rawTime,
 }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
@@ -74,21 +78,20 @@ export const FiltersContainer: FC<FiltersContainerProps> = ({
           className={styles.filtersField}
           data-qa="filters-search-field"
         />
-        {FILTERS_GROUPS.filter((group) => filters[group.dataKey]).map(({
-          name,
-          dataKey,
-          getDashboardURL,
-        }) => (
-          <CheckboxGroup
-            key={name}
-            name={name}
-            items={filters[dataKey].name}
-            group={dataKey}
-            showAll={showAll}
-            filter={filter}
-            getDashboardURL={getDashboardURL}
-          />
-        ))}
+        {FILTERS_GROUPS.filter((group) => filters[group.dataKey]).map(
+          ({ name, dataKey, getDashboardURL }) => (
+            <CheckboxGroup
+              key={name}
+              name={name}
+              items={filters[dataKey].name}
+              group={dataKey}
+              showAll={showAll}
+              filter={filter}
+              getDashboardURL={getDashboardURL}
+              rawTime={rawTime}
+            />
+          ),
+        )}
       </Scrollbar>
     </div>
   );
@@ -97,7 +100,7 @@ export const FiltersContainer: FC<FiltersContainerProps> = ({
 export const Filters: FC = () => {
   const {
     contextActions,
-    panelState: { loadingDetails },
+    panelState: { loadingDetails, rawTime },
   } = useContext(QueryAnalyticsProvider);
   const { filters, loading } = useFilters();
   const initialValues = useInitialFilterValues();
@@ -115,12 +118,13 @@ export const Filters: FC = () => {
                 form={form}
                 filters={filters}
                 disabled={loadingDetails}
+                rawTime={rawTime}
               />
             </form>
           </Spin>
         )}
       />
     ),
-    [contextActions, filters, loading, loadingDetails, initialValues],
+    [contextActions, filters, loading, loadingDetails, initialValues, rawTime],
   );
 };
