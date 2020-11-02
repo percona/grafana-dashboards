@@ -1,3 +1,5 @@
+import { RawTimeRange } from '@grafana/data';
+
 export interface CheckboxGroupProps {
   filter: string;
   name: string;
@@ -5,4 +7,5 @@ export interface CheckboxGroupProps {
   group: string;
   items: any[];
   getDashboardURL?: (value: string) => string;
+  rawTime: RawTimeRange;
 }

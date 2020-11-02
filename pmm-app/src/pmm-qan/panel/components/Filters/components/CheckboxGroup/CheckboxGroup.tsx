@@ -14,6 +14,7 @@ export const CheckboxGroup: FC<CheckboxGroupProps> = ({
   showAll,
   filter: searchFilterBy,
   getDashboardURL,
+  rawTime,
 }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
@@ -53,7 +54,9 @@ export const CheckboxGroup: FC<CheckboxGroupProps> = ({
 
   const filteredList = (showTop ? itemsList.slice(0, TOP_LIMIT) : itemsList).map((item) => {
     const valueExists = item.main_metric_percent !== undefined;
-    const dashboardURL = getDashboardURL ? getDashboardURL(item.value) : '';
+    const dashboardURL = getDashboardURL && getDashboardURL(item.value)
+      ? `${getDashboardURL(item.value)}&from=${rawTime.from}&to=${rawTime.to}`
+      : '';
 
     return (
       <div className={styles.label} key={`${group}:${item.value || ''}`}>
@@ -65,7 +68,7 @@ export const CheckboxGroup: FC<CheckboxGroupProps> = ({
             disabled={!valueExists}
           />
         </span>
-        {dashboardURL && (
+        {dashboardURL && item.value && (
           <span className={styles.dashboardLink}>
             <a href={dashboardURL} target="_blank" rel="noreferrer">
               <Icon name="graph-bar" />
