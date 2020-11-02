@@ -874,7 +874,7 @@
                     "calculatedInterval": "2m",
                     "datasourceErrors": {},
                     "errors": {},
-                    "expr": "avg by (service_name) (\n(max_over_time(mysql_slave_status_seconds_behind_master{service_name=~\"$service_name\"}[$interval]) or max_over_time(mysql_slave_status_seconds_behind_master{service_name=~\"$service_name\"}[5m])) - (max_over_time(mysql_slave_status_sql_delay{service_name=~\"$service_name\"}[$interval]) or max_over_time(mysql_slave_status_sql_delay{service_name=~\"$service_name\"}[$interval]))\n)",
+                    "expr": "clamp_min(avg by (service_name) (\n(max_over_time(mysql_slave_status_seconds_behind_master{service_name=~\"$service_name\"}[$interval]) or max_over_time(mysql_slave_status_seconds_behind_master{service_name=~\"$service_name\"}[5m])) - (max_over_time(mysql_slave_status_sql_delay{service_name=~\"$service_name\"}[$interval]) or max_over_time(mysql_slave_status_sql_delay{service_name=~\"$service_name\"}[$interval]))\n),0)",
                     "format": "time_series",
                     "interval": "$interval",
                     "intervalFactor": 1,
