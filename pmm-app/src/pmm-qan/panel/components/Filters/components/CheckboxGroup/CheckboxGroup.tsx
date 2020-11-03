@@ -83,7 +83,7 @@ export const CheckboxGroup: FC<CheckboxGroupProps> = ({
         </div>
       );
     },
-    [group],
+    [group, rawTime],
   );
 
   const filteredList = showTop ? itemsList.slice(0, TOP_LIMIT) : itemsList;
