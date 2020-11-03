@@ -3,15 +3,15 @@ import { DBClusterService } from './DBCluster.service';
 import { XtraDBService } from './XtraDB.service';
 import { PSMDBService } from './PSMDB.service';
 
+const SERVICE_MAP = {
+  [Databases.mysql]: new XtraDBService(),
+  [Databases.mongodb]: new PSMDBService(),
+};
+
 export class DBClusterServiceFactory {
   static newDBClusterService(type: Databases): DBClusterService {
-    switch (type) {
-      case Databases.mysql:
-        return new XtraDBService();
-      case Databases.mongodb:
-        return new PSMDBService();
-      default:
-        return new XtraDBService();
-    }
+    const service = SERVICE_MAP[type];
+
+    return service || SERVICE_MAP[Databases.mysql];
   }
 }
