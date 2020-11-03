@@ -45,6 +45,7 @@ export const Messages = {
         resources: 'Resources per Node',
         memory: 'Memory (GB)',
         cpu: 'CPU',
+        disk: 'Disk (GB)',
       },
       steps: {
         basicOptions: 'Basic Options',

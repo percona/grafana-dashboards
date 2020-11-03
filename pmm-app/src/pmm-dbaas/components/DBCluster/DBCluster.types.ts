@@ -15,6 +15,7 @@ export interface DBCluster {
   clusterSize: number;
   memory: number;
   cpu: number;
+  disk: number;
   status?: DBClusterStatus;
   errorMessage?: string;
 }
@@ -65,6 +66,7 @@ interface DBClusterContainerAPI {
 interface DBClusterComputeResourcesAPI {
   cpu_m: number;
   memory_bytes: number;
+  disk_size: number;
 }
 
 interface DBClusterOperationAPI {

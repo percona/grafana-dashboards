@@ -1,13 +1,13 @@
 import { SelectableValue } from '@grafana/data';
 
-export interface AddDBClusterModalProps {
+export interface EditDBClusterModalProps {
   kubernetesOptions: SelectableValue[];
   isVisible: boolean;
   setVisible: (value: boolean) => void;
   onDBClusterAdded: () => void;
 }
 
-export enum AddDBClusterFields {
+export enum EditDBClusterFields {
   name = 'name',
   kubernetesCluster = 'kubernetesCluster',
   databaseType = 'databaseType',
@@ -17,5 +17,4 @@ export enum AddDBClusterFields {
   resources = 'resources',
   memory = 'memory',
   cpu = 'cpu',
-  disk = 'disk',
 }
