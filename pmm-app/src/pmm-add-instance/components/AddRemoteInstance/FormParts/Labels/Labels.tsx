@@ -13,7 +13,7 @@ export const LabelsFormPart: FC = () => {
 
   return (
     <div className={styles.groupWrapper}>
-      <h5>{Messages.form.titles.labels}</h5>
+      <h4 className={styles.sectionHeader}>{Messages.form.titles.labels}</h4>
       <TextInputField
         name="environment"
         label={Messages.form.labels.labels.environment}

@@ -8,6 +8,10 @@ export const getStyles = stylesFactory((theme) => ({
   addServiceButton: css`
     margin-top: 30px;
   `,
+  sectionHeader: css`
+    margin-top: 15px;
+    margin-bottom: 15px;
+  `,
   // Temporary solution, will be removed after tooltip labels will be added to platform inputs
   labelWrapper: css`
     display: flex;

@@ -20,7 +20,7 @@ export const AdditionalOptionsFormPart: FC<AdditionalOptionsFormPartProps> = ({
 
   return (
     <div className={styles.groupWrapper}>
-      <h5>{Messages.form.titles.additionalOptions}</h5>
+      <h4 className={styles.sectionHeader}>{Messages.form.titles.additionalOptions}</h4>
       <div>
         <CheckboxField
           label={Messages.form.labels.additionalOptions.skipConnectionCheck}
