@@ -42,5 +42,10 @@ export const getStyles = stylesFactory((theme: GrafanaTheme) => {
         color: ${palette.white};
       }
     `,
+    radioButtonDisabled: css`
+      label: disabled;
+      opacity: 0.6;
+      pointer-events: none;
+    `,
   };
 });

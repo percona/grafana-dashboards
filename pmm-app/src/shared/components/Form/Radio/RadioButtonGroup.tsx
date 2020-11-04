@@ -9,6 +9,7 @@ export interface RadioButtonGroupProps {
   selected: string;
   name: string;
   options: SelectableValue[];
+  disabledOptions?: string[];
   value?: string;
   className?: string;
   dataQa?: string;
@@ -19,6 +20,7 @@ export const RadioButtonGroup: FC<RadioButtonGroupProps> = ({
   selected,
   name,
   options,
+  disabledOptions = [],
   value,
   className,
   dataQa,
@@ -38,6 +40,7 @@ export const RadioButtonGroup: FC<RadioButtonGroupProps> = ({
           id={key}
           name={name}
           active={isActive(key)}
+          disabled={disabledOptions.includes(key)}
           onChange={(key) => onChange(key)}
         >
           {value}
