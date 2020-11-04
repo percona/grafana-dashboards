@@ -27,4 +27,10 @@ describe('RadioButtonGroup::', () => {
     expect(wrapper.childAt(0).find('label').text()).toEqual(options[0].value);
     expect(wrapper.childAt(1).find('label').prop('className')).toContain('active');
   });
+  it('Renders correctly with disabled options', () => {
+    const root = mount(<RadioButtonGroup {...testProps} disabledOptions={['option1']} />);
+    const wrapper = root.find('[data-qa="radio-button-group"]');
+
+    expect(wrapper.childAt(0).find('label').prop('className')).toContain('disabled');
+  });
 });

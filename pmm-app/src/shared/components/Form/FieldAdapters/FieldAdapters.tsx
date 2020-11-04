@@ -92,7 +92,7 @@ export const SelectFieldAdapter = ({
 };
 
 export const RadioButtonGroupAdapter = ({
-  input, options, selected, label, meta, dataQa, ...props
+  input, options, disabledOptions, selected, label, meta, dataQa, ...props
 }) => {
   const theme = useTheme();
   const styles = getStyles(theme);
@@ -104,6 +104,7 @@ export const RadioButtonGroupAdapter = ({
           {...input}
           {...props}
           options={options}
+          disabledOptions={disabledOptions}
           value={input.value || selected}
           dataQa={dataQa}
         />
