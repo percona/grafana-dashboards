@@ -1,8 +1,8 @@
-import { XtraDBClusterStatus } from './components/XtraDB/XtraDB.types';
+import { DBClusterStatus } from './components/DBCluster/DBCluster.types';
 
 export const Messages = {
   tabs: {
-    xtradb: 'DB Cluster',
+    dbcluster: 'DB Cluster',
     kubernetes: 'Kubernetes Cluster',
   },
   kubernetes: {
@@ -31,7 +31,7 @@ export const Messages = {
       clusterAdded: 'Cluster was successfully registered',
     },
   },
-  xtradb: {
+  dbcluster: {
     addAction: 'Create DB Cluster',
     addModal: {
       title: 'Create Cluster',
@@ -77,11 +77,11 @@ export const Messages = {
         deleteCluster: 'Delete',
       },
       status: {
-        [XtraDBClusterStatus.changing]: 'Pending',
-        [XtraDBClusterStatus.deleting]: 'Deleting',
-        [XtraDBClusterStatus.failed]: 'Failed',
-        [XtraDBClusterStatus.invalid]: 'Invalid',
-        [XtraDBClusterStatus.ready]: 'Active',
+        [DBClusterStatus.changing]: 'Pending',
+        [DBClusterStatus.deleting]: 'Deleting',
+        [DBClusterStatus.failed]: 'Failed',
+        [DBClusterStatus.invalid]: 'Invalid',
+        [DBClusterStatus.ready]: 'Active',
         errorMessage: 'Cluster creation failed',
       },
     },
