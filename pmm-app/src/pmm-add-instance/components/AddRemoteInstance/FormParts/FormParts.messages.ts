@@ -49,6 +49,19 @@ export const Messages = {
       },
       additionalOptions: {},
     },
+    tooltips: {
+      mainDetails: {
+        address: 'Public DNS hostname of your instance',
+        serviceName: 'Service name to use',
+        port: 'Port your service is listening on',
+        username: 'Your database user name',
+        password: 'Your database password',
+      },
+      labels: {
+        region: 'Region',
+        az: 'Availability Zone',
+      },
+    },
     titles: {
       mainDetails: 'Main details',
       labels: 'Labels',

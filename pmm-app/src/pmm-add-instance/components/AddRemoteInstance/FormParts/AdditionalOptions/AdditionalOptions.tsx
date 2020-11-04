@@ -3,6 +3,7 @@ import { CheckboxField } from '@percona/platform-core';
 import { Field } from 'react-final-form';
 import { RadioButtonGroupAdapter } from 'shared/components/Form/FieldAdapters/FieldAdapters';
 import { DATABASE_LABELS, Databases } from 'shared/core';
+import { useTheme } from '@grafana/ui';
 import { AdditionalOptionsFormPartProps, PostgreSQLAdditionalOptionsProps } from '../FormParts.types';
 import { getStyles } from '../FormParts.styles';
 import { Messages } from '../FormParts.messages';
@@ -12,7 +13,8 @@ export const AdditionalOptionsFormPart: FC<AdditionalOptionsFormPartProps> = ({
   instanceType,
   remoteInstanceCredentials,
 }) => {
-  const styles = getStyles();
+  const theme = useTheme();
+  const styles = getStyles(theme);
 
   return (
     <div className={styles.groupWrapper}>

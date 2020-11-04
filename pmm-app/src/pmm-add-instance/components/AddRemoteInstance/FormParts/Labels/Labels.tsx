@@ -1,12 +1,14 @@
 import React, { FC, useMemo } from 'react';
 import { TextareaInputField, TextInputField, validators } from '@percona/platform-core';
 import Validators from 'shared/components/helpers/validators';
+import { useTheme } from '@grafana/ui';
+import { LinkTooltip } from 'shared/components/Elements/LinkTooltip/LinkTooltip';
 import { getStyles } from '../FormParts.styles';
 import { Messages } from '../FormParts.messages';
 
 export const LabelsFormPart: FC = () => {
-  const styles = getStyles();
-
+  const theme = useTheme();
+  const styles = getStyles(theme);
   const customLabelsValidators = useMemo(() => [validators.required, Validators.validateKeyValue], []);
 
   return (
@@ -17,14 +19,20 @@ export const LabelsFormPart: FC = () => {
         label={Messages.form.labels.labels.environment}
         placeholder={Messages.form.placeholders.labels.environment}
       />
+      <div className={styles.labelWrapper} data-qa="username-label">
+        <span>{Messages.form.labels.labels.region}</span>
+        <LinkTooltip tooltipText={Messages.form.tooltips.labels.region} icon="info-circle" />
+      </div>
       <TextInputField
         name="region"
-        label={Messages.form.labels.labels.region}
         placeholder={Messages.form.placeholders.labels.region}
       />
+      <div className={styles.labelWrapper} data-qa="username-label">
+        <span>{Messages.form.labels.labels.az}</span>
+        <LinkTooltip tooltipText={Messages.form.tooltips.labels.az} icon="info-circle" />
+      </div>
       <TextInputField
         name="az"
-        label={Messages.form.labels.labels.az}
         placeholder={Messages.form.placeholders.labels.az}
       />
       <TextInputField
