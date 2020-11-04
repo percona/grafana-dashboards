@@ -1,5 +1,5 @@
 import React, { FC, useMemo } from 'react';
-import { TextareaInputField, TextInputField } from '@percona/platform-core';
+import { TextareaInputField, TextInputField, validators } from '@percona/platform-core';
 import Validators from 'shared/components/helpers/validators';
 import { useTheme } from '@grafana/ui';
 import { LinkTooltip } from 'shared/components/Elements/LinkTooltip/LinkTooltip';
