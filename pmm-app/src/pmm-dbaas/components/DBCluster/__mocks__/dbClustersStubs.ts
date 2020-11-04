@@ -1,7 +1,6 @@
 import { Databases } from 'shared/core';
 import { DBCluster, DBClusterConnection, DBClusterStatus } from '../DBCluster.types';
 
-
 export const dbClustersStub: DBCluster[] = [
   {
     kubernetesClusterName: 'Kubernetes Cluster 1',
@@ -10,6 +9,7 @@ export const dbClustersStub: DBCluster[] = [
     clusterSize: 3,
     memory: 1024,
     cpu: 1,
+    disk: 25,
   },
   {
     kubernetesClusterName: 'Kubernetes Cluster 2',
@@ -18,6 +18,7 @@ export const dbClustersStub: DBCluster[] = [
     clusterSize: 7,
     memory: 2048,
     cpu: 4,
+    disk: 25,
   },
   {
     kubernetesClusterName: 'Kubernetes Cluster 1',
@@ -26,6 +27,7 @@ export const dbClustersStub: DBCluster[] = [
     clusterSize: 3,
     memory: 0,
     cpu: 0,
+    disk: 25,
     status: DBClusterStatus.ready,
   },
 ];

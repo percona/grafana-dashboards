@@ -8,14 +8,6 @@ import {
 
 export const KubernetesService = {
   getKubernetes() {
-    console.log(123);
-    return {
-      kubernetes_clusters: [
-        { kubernetes_cluster_name: 'test1' },
-        { kubernetes_cluster_name: 'test1' },
-        { kubernetes_cluster_name: 'test1' },
-      ],
-    };
     return apiRequestManagement.post<KubernetesListAPI, any>('/DBaaS/Kubernetes/List', {});
   },
   deleteKubernetes(kubernetes: Kubernetes) {

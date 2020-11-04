@@ -30,6 +30,7 @@ export const DBClusterAdvancedOptions: FC<FormRenderProps> = ({
   const styles = useStyles(getStyles);
   const [customMemory, setCustomMemory] = useState(DEFAULT_SIZES.small.memory);
   const [customCPU, setCustomCPU] = useState(DEFAULT_SIZES.small.cpu);
+  const [customDisk, setCustomDisk] = useState(DEFAULT_SIZES.small.disk);
   const { required, min } = validators;
   const { change } = form;
   const nodesValidators = [required, min(MIN_NODES)];
@@ -40,11 +41,13 @@ export const DBClusterAdvancedOptions: FC<FormRenderProps> = ({
     memory,
     cpu,
     databaseType,
+    disk,
   } = values;
   const onChangeCustom = useCallback((value: string) => {
     if (resources === DBClusterResources.custom) {
       setCustomMemory(memory);
       setCustomCPU(cpu);
+      setCustomDisk(disk);
     }
 
     if (value !== DBClusterResources.custom) {
@@ -54,6 +57,7 @@ export const DBClusterAdvancedOptions: FC<FormRenderProps> = ({
     } else {
       change(AddDBClusterFields.cpu, customCPU);
       change(AddDBClusterFields.memory, customMemory);
+      change(AddDBClusterFields.disk, customDisk);
     }
 
     change(AddDBClusterFields.resources, value);

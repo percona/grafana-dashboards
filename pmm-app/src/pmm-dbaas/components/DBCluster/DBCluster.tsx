@@ -16,12 +16,10 @@ import {
 } from './ColumnRenderers/ColumnRenderers';
 import { DeleteDBClusterModal } from './DeleteDBClusterModal/DeleteDBClusterModal';
 import { isClusterChanging } from './DBCluster.utils';
-import {EditDBClusterModal} from "./EditDBClusterModal/EditDBClusterModal";
 
 export const DBCluster: FC<DBClusterProps> = ({ kubernetes }) => {
   const styles = useStyles(getStyles);
   const [addModalVisible, setAddModalVisible] = useState(false);
-  const [editModalVisible, setEditModalVisible] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [selectedCluster, setSelectedCluster] = useState<Cluster>();
   const [dbClusters, getDBClusters, loading] = useDBClusters(kubernetes);
@@ -83,34 +81,15 @@ export const DBCluster: FC<DBClusterProps> = ({ kubernetes }) => {
     [addModalVisible],
   );
 
-  const EditClusterButton = useCallback(
-    () => (
-      <AddClusterButton
-        label={'Edit cluster'}
-        action={() => setEditModalVisible(!editModalVisible)}
-        data-qa="dbcluster-add-cluster-button"
-      />
-    ),
-    [editModalVisible],
-  );
-
-
   return (
     <div className={styles.tableWrapper}>
       <div className={styles.actionPanel}>
         <AddNewClusterButton />
-        <EditClusterButton />
       </div>
       <AddDBClusterModal
         kubernetesOptions={kubernetesOptions}
         isVisible={addModalVisible}
         setVisible={setAddModalVisible}
-        onDBClusterAdded={getDBClusters}
-      />
-      <EditDBClusterModal
-        kubernetesOptions={kubernetesOptions}
-        isVisible={editModalVisible}
-        setVisible={setEditModalVisible}
         onDBClusterAdded={getDBClusters}
       />
       <DeleteDBClusterModal

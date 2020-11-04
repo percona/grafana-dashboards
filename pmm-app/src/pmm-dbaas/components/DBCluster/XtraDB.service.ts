@@ -79,14 +79,16 @@ const toAPI = (dbCluster: DBCluster): DBClusterPayload => ({
       compute_resources: {
         cpu_m: dbCluster.cpu * 1000,
         memory_bytes: dbCluster.memory * 10 ** 9,
-        disk_size: dbCluster.disk
+        // disk_size units - Gigabytes
+        disk_size: Number(dbCluster.disk),
       },
     },
     proxysql: {
       compute_resources: {
         cpu_m: 0,
         memory_bytes: 0,
-        disk_size: dbCluster.disk
+        // disk_size units - Gigabytes
+        disk_size: Number(dbCluster.disk),
       },
     },
   },
