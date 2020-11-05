@@ -114,7 +114,7 @@ module.exports = {
     }
 
     if (before) {
-      assert.ok(count < expectedCount, `The value ${count} should smaller than ${expectedCount}`);
+      assert.ok(count !== expectedCount, `The value: ${count} different than: ${expectedCount}`);
     }
   },
 
