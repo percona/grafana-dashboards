@@ -1,6 +1,6 @@
 import { Form as FormFinal } from 'react-final-form';
 import React, { FC, useCallback } from 'react';
-import { TextInputField, validators } from '@percona/platform-core';
+import { TextInputField, validators, PasswordInputField } from '@percona/platform-core';
 import { Button, useTheme } from '@grafana/ui';
 import { getStyles } from './Credentials.styles';
 import { SECURITY_CREDENTIALS_DOC_LINK } from './Credentials.constants';
@@ -27,7 +27,7 @@ const Credentials: FC<CredentialsProps> = ({ onSetCredentials }) => {
               validators={[validators.required]}
               fieldClassName={styles.credentialsField}
             />
-            <TextInputField
+            <PasswordInputField
               name={Messages.form.fields.awsSecretKey.name}
               placeholder={Messages.form.fields.awsSecretKey.placeholder}
               validators={[validators.required]}
