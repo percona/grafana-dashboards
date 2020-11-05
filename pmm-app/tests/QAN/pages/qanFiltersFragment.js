@@ -68,7 +68,8 @@ module.exports = {
       if (numOfElementsFilterCount === '1') {
         I.click(this.getFilterGroupCountSelector(this.filterGroups[i]));
         I.waitForVisible(
-          `//section[@class='aside__filter-group']//span[contains(text(), '${this.filterGroups[i]}')]/../button[contains(text(), 'Show top 5')]`, 30,
+          `//section[@class='aside__filter-group']//span[contains(text(), '${this.filterGroups[i]}')]/../button[contains(text(), 'Show top 5')]`,
+          30,
         );
       }
     }
@@ -109,11 +110,11 @@ module.exports = {
     const count = await I.grabNumberOfVisibleElements(this.fields.filterCheckboxes);
 
     if (!before) {
-      assert.equal(count, expectedCount, `The value ${expectedCount} should be equal to ${count}`);
+      assert.ok(count >= expectedCount, `The value ${count} should be same or bigger than ${expectedCount}`);
     }
 
     if (before) {
-      assert.notEqual(count, expectedCount, `The value ${expectedCount} should not be equal to ${count}`);
+      assert.ok(count < expectedCount, `The value ${count} should smaller than ${expectedCount}`);
     }
   },
 
