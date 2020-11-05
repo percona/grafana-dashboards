@@ -38,7 +38,13 @@ const Credentials: FC<CredentialsProps> = ({ onSetCredentials }) => {
             </Button>
           </div>
           <div>
-            <a href={SECURITY_CREDENTIALS_DOC_LINK}>{Messages.form.credentialsDocLink}</a>
+            <Button
+              type="button"
+              variant="link"
+              onClick={() => window.open(SECURITY_CREDENTIALS_DOC_LINK, '_blank')}
+            >
+              {Messages.form.credentialsDocLink}
+            </Button>
           </div>
         </form>
       )}
