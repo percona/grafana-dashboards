@@ -18,14 +18,19 @@ import { useInitialFilterValues } from './hooks/useInitialFilterValues';
 import { useFiltersContainerHeight } from './hooks/useFiltersContainerHeight';
 import { Messages } from './Filters.messages';
 
-export const FiltersContainer: FC<FiltersContainerProps> = ({ filters, disabled, rawTime }) => {
+export const FiltersContainer: FC<FiltersContainerProps> = ({
+  filters,
+  disabled,
+  rawTime,
+  filter,
+  onFilterChange,
+}) => {
   const theme = useTheme();
   const styles = getStyles(theme);
 
   const filtersWrapperRef = useRef<HTMLDivElement>(null);
 
   const height = useFiltersContainerHeight(FILTERS_BODY_HEIGHT, filtersWrapperRef);
-  const [filter, setFilter] = useState('');
   const [showAll, showSetAll] = useState(true);
   const selectedCheckboxes = getSelectedCheckboxes(filters);
 
@@ -53,10 +58,6 @@ export const FiltersContainer: FC<FiltersContainerProps> = ({ filters, disabled,
       htmlType="reset"
       className={styles.resetButton}
       data-qa="qan-filters-reset-all"
-      onClick={() => {
-        setFilter('');
-        showSetAll(true);
-      }}
       disabled={!selectedCheckboxes}
     >
       {Messages.buttons.reset}
@@ -77,7 +78,7 @@ export const FiltersContainer: FC<FiltersContainerProps> = ({ filters, disabled,
         suffix={<Filter fill="#c6c6c6" />}
         placeholder="Filter by..."
         onChange={(e) => {
-          setFilter(e.target.value);
+          onFilterChange(e.target.value);
           e.stopPropagation();
         }}
         value={filter}
@@ -118,6 +119,7 @@ export const Filters: FC = () => {
     panelState: { loadingDetails, rawTime },
   } = useContext(QueryAnalyticsProvider);
   const { filters, loading } = useFilters();
+  const [filter, setFilter] = useState('');
   const initialValues = useInitialFilterValues();
 
   return useMemo(
@@ -134,14 +136,21 @@ export const Filters: FC = () => {
               }}
               onReset={() => {
                 contextActions.resetLabels();
+                setFilter('');
               }}
             >
-              <FiltersContainer filters={filters} disabled={loadingDetails} rawTime={rawTime} />
+              <FiltersContainer
+                filters={filters}
+                disabled={loadingDetails}
+                rawTime={rawTime}
+                onFilterChange={setFilter}
+                filter={filter}
+              />
             </form>
           </Spin>
         )}
       />
     ),
-    [contextActions, filters, loading, loadingDetails, initialValues, rawTime],
+    [contextActions, filters, loading, loadingDetails, initialValues, rawTime, filter],
   );
 };
