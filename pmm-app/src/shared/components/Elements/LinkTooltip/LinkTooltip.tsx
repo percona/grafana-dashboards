@@ -4,11 +4,10 @@ import {
 } from '@grafana/ui';
 import { getStyles } from './LinkTooltip.styles';
 
-
 export interface LinkTooltipProps {
   tooltipText: string;
-  link: string;
-  linkText: string;
+  link?: string;
+  linkText?: string;
   icon: IconName;
   dataQa?: string;
   target?: string;
@@ -30,7 +29,11 @@ export const LinkTooltip: FC<LinkTooltipProps> = ({
       content={(
         <div className={styles.contentWrapper}>
           <span>{tooltipText}</span>
-          <a className={styles.link} href={link} target={target}>{linkText}</a>
+          {link && linkText && (
+            <a className={styles.link} href={link} target={target}>
+              {linkText}
+            </a>
+          )}
         </div>
       )}
       data-qa={dataQa}

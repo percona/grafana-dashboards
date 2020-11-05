@@ -1,48 +1,57 @@
-import React, { useState } from 'react';
-import { Button } from 'antd';
+import React, { useEffect, useMemo, useState } from 'react';
 import { createBrowserHistory } from 'history';
-import { Router, Route } from 'react-router-dom';
+import { Route, Router, useLocation } from 'react-router-dom';
+import { Button } from '@grafana/ui';
+import { cx } from 'emotion';
 import AddRemoteInstance from './components/AddRemoteInstance/AddRemoteInstance';
-import DiscoveryPanel from './components/DiscoveryPanel/DiscoveryPanel';
+import Discovery from './components/Discovery/Discovery';
 import { AddInstance } from './components/AddInstance/AddInstance';
-import './panel.scss';
-import '../shared/style.less';
-import '../shared/styles.scss';
+import { getStyles } from './panel.styles';
+import { Messages } from './components/AddRemoteInstance/AddRemoteInstance.messages';
 
+const availableInstanceTypes = ['rds', 'postgresql', 'mysql', 'proxysql', 'mongodb', 'proxysql'];
 const history = createBrowserHistory();
+
 const AddInstancePanel = () => {
+  const styles = getStyles();
+  const location = useLocation();
   const urlParams = new URLSearchParams(window.location.search);
   const instanceType = urlParams.get('instance_type') || '';
-  const availableInstanceTypes = ['rds', 'postgresql', 'mysql', 'proxysql', 'mongodb', 'proxysql'];
   const [selectedInstance, selectInstance] = useState({
     type: availableInstanceTypes.includes(instanceType) ? instanceType : '',
   });
 
-  const setSelectedInstance = (instance) => {
-    const url = new URL((window.location as unknown) as string);
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
 
-    url.searchParams.set('instance_type', instance.type);
-    selectInstance(instance);
-    history.push(url.pathname + url.search);
-  };
+    searchParams.set('instance_type', selectedInstance.type);
+    history.push({
+      pathname: location.pathname,
+      search: searchParams.toString(),
+    });
+  }, [selectedInstance]);
+
+  const InstanceForm = useMemo(
+    () => () => (
+      <>
+        <div className={styles.content}>
+          <Button variant="link" onClick={() => selectInstance({ type: '' })}>
+            {Messages.form.buttons.toMenu}
+          </Button>
+        </div>
+        {selectedInstance.type === 'rds' ? (
+          <Discovery selectInstance={selectInstance} />
+        ) : (
+          <AddRemoteInstance instance={selectedInstance} selectInstance={selectInstance} />
+        )}
+      </>
+    ),
+    [selectedInstance],
+  );
 
   return (
-    <div className="app-theme-dark content-wrapper add-instance-panel">
-      {!selectedInstance.type ? <AddInstance onSelectInstanceType={setSelectedInstance} /> : null}
-      {selectedInstance.type && (
-        <>
-          <div id="antd" className="add-instance-navigation-link">
-            <Button type="link" onClick={() => setSelectedInstance({ type: '' })}>
-              Return to instance select menu
-            </Button>
-          </div>
-          {selectedInstance.type === 'rds' ? (
-            <DiscoveryPanel onSelectInstance={setSelectedInstance} />
-          ) : (
-            <AddRemoteInstance instance={selectedInstance} />
-          )}
-        </>
-      )}
+    <div className={cx(styles.content, styles.contentPadding)}>
+      {!selectedInstance.type ? <AddInstance onSelectInstanceType={selectInstance} /> : <InstanceForm />}
     </div>
   );
 };

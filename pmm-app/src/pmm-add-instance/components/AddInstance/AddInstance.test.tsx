@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  shallow, mount, ShallowWrapper, ReactWrapper,
+  mount, ReactWrapper, shallow, ShallowWrapper,
 } from 'enzyme';
 import { AddInstance, SelectInstance } from './AddInstance';
 import { instanceList } from './AddInstance.constants';
