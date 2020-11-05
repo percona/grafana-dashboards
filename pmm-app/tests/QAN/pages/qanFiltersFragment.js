@@ -49,6 +49,16 @@ module.exports = {
     );
   },
 
+  checkLink(section, filter, visibility) {
+    const locator = `//span[contains(text(), '${section}')]/parent::p/following-sibling::div//span[contains(@class, 'checkbox-container__label-text') and contains(text(), '${filter}')]/ancestor::span/following-sibling::span/a`;
+
+    if (visibility) {
+      I.waitForElement(locator, 30);
+    } else {
+      I.dontSeeElement(locator);
+    }
+  },
+
   async getCountOfFilters(groupName) {
     const showAllLink = this.getFilterGroupCountSelector(groupName);
 
@@ -146,5 +156,12 @@ module.exports = {
     for (let i = 0; i <= filters.length - 1; i++) {
       assert.ok(currentFilters[i].includes(filters[i]), `The filter '${filters[i]}' has not been found!`);
     }
+  },
+
+  navigateByShortCut(href) {
+    const shortCutLocator = `//a[contains(@href,'${href}')]`;
+
+    I.waitForVisible(shortCutLocator, 30);
+    I.click(shortCutLocator);
   },
 };

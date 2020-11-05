@@ -73,8 +73,10 @@ export const humanize = {
       case 'percent':
         if (metricValue !== 0 && metricValue < 0.0001) {
           res = '<0.01%';
-        } else {
+        } else if (Number.isInteger(metricValue)) {
           res = numeral(metricValue).format('0.[00]%');
+        } else {
+          res = numeral(metricValue).format('0.00%');
         }
 
         break;
