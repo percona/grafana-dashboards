@@ -1,7 +1,7 @@
 import { RemoteInstanceCredentials } from 'pmm-add-instance/panel.types';
 
 export enum TrackingOptions {
-  none = '',
+  none = 'none',
   pgStatements = 'qan_postgresql_pgstatements_agent',
   pgMonitor = 'qan_postgresql_pgstatmonitor_agent',
 }

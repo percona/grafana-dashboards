@@ -15,7 +15,7 @@ export const MainDetailsFormPart: FC<MainDetailsFormPartProps> = ({ remoteInstan
 
   return (
     <div className={styles.groupWrapper}>
-      <h5>{Messages.form.titles.mainDetails}</h5>
+      <h4 className={styles.sectionHeader}>{Messages.form.titles.mainDetails}</h4>
       <div className={styles.labelWrapper} data-qa="address-label">
         <span>{Messages.form.labels.mainDetails.address}</span>
         <LinkTooltip tooltipText={Messages.form.tooltips.mainDetails.address} icon="info-circle" />
@@ -48,7 +48,6 @@ export const MainDetailsFormPart: FC<MainDetailsFormPartProps> = ({ remoteInstan
         name="username"
         placeholder={Messages.form.placeholders.mainDetails.username}
         validators={[validators.required]}
-        disabled={remoteInstanceCredentials.isRDS}
       />
       <div className={styles.labelWrapper} data-qa="password-label">
         <span>{Messages.form.labels.mainDetails.password}</span>
