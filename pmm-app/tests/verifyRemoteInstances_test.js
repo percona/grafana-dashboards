@@ -1,3 +1,4 @@
+const assert = require('assert');
 const page = require('./pages/remoteInstancesPage');
 
 const instances = new DataTable(['name']);
@@ -34,5 +35,22 @@ Data(instances.filter((instance) => instance.name !== 'mongodb')).Scenario(
     I.amOnPage(pmmInventoryPage.url);
     pmmInventoryPage.verifyRemoteServiceIsDisplayed(serviceName);
     await pmmInventoryPage.verifyAgentHasStatusRunning(serviceName);
+  },
+);
+
+Scenario(
+  'TableStats UI Default table Options for Remote MySQL & AWS-RDS Instance',
+  async (I, remoteInstancesPage, adminPage) => {
+    I.amOnPage(remoteInstancesPage.url);
+    remoteInstancesPage.waitUntilRemoteInstancesPageLoaded();
+    remoteInstancesPage.openAddRemotePage('mysql');
+    I.click(adminPage.fields.metricTitle);
+    adminPage.peformPageDown(1);
+    I.waitForVisible(remoteInstancesPage.fields.tableStatsGroupTableLimit, 30);
+    assert.strictEqual('-1', await remoteInstancesPage.getTableLimitFieldValue(), 'Count for Disabled Table Stats dont Match, was expecting -1');
+    I.click(remoteInstancesPage.tableStatsLimitRadioButtonLocator('default'));
+    assert.strictEqual('1000', await remoteInstancesPage.getTableLimitFieldValue(), 'Count for Default Table Stats dont Match, was expecting 1000');
+    I.click(remoteInstancesPage.tableStatsLimitRadioButtonLocator('custom'));
+    assert.strictEqual('1000', await remoteInstancesPage.getTableLimitFieldValue(), 'Count for Custom Table Stats dont Match, was expecting 1000');
   },
 );
