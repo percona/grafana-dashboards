@@ -4,6 +4,7 @@
 ---
   
 ## Grafana dashboards for MySQL and MongoDB monitoring using Prometheus [![Build Status](https://travis-ci.org/percona/grafana-dashboards.svg?branch=master)](https://travis-ci.org/percona/grafana-dashboards)[![CLA assistant](https://cla-assistant.percona.com/readme/badge/percona/grafana-dashboards)](https://cla-assistant.percona.com/percona/grafana-dashboards)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fpercona%2Fgrafana-dashboards.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fpercona%2Fgrafana-dashboards?ref=badge_shield)
 
 This is a set of Grafana dashboards for database and system monitoring using Prometheus datasource.
  
@@ -191,3 +192,7 @@ As a general rule of thumb, please try to create bug reports that are:
 - *Unique.* Do not duplicate existing tickets.
 - *Scoped to a Single Bug.* One bug per report.
 
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fpercona%2Fgrafana-dashboards.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fpercona%2Fgrafana-dashboards?ref=badge_large)
