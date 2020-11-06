@@ -21,7 +21,7 @@ export const DBClusterName: FC<DBClusterNameProps> = ({
       <a
         href={dashboardURL}
         target="_blank"
-        rel="noreferrer"
+        rel="noreferrer noopener"
         className={styles.dashboardIcon}
       >
         <Icon name="graph-bar" />
