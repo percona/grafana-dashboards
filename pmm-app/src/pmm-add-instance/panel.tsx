@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { createBrowserHistory } from 'history';
-import { Route, Router, useLocation } from 'react-router-dom';
+import {
+  BrowserRouter as Router, Route, useLocation, useHistory,
+} from 'react-router-dom';
 import { Button } from '@grafana/ui';
 import { cx } from 'emotion';
 import AddRemoteInstance from './components/AddRemoteInstance/AddRemoteInstance';
@@ -10,10 +11,10 @@ import { getStyles } from './panel.styles';
 import { Messages } from './components/AddRemoteInstance/AddRemoteInstance.messages';
 
 const availableInstanceTypes = ['rds', 'postgresql', 'mysql', 'proxysql', 'mongodb', 'proxysql'];
-const history = createBrowserHistory();
 
 const AddInstancePanel = () => {
   const styles = getStyles();
+  const history = useHistory();
   const location = useLocation();
   const urlParams = new URLSearchParams(window.location.search);
   const instanceType = urlParams.get('instance_type') || '';
@@ -57,7 +58,7 @@ const AddInstancePanel = () => {
 };
 
 const AddPanel = () => (
-  <Router history={history}>
+  <Router>
     <Route path="*" component={AddInstancePanel} />
   </Router>
 );

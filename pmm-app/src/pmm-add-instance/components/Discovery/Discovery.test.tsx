@@ -10,8 +10,8 @@ describe('Discovery instance:: ', () => {
 
     const root = mount(<Discovery selectInstance={selectInstance} />);
 
-    expect(root.find('#input-aws_access_key-id').length).toBe(1);
-    expect(root.find('#input-aws_secret_key-id').length).toBe(1);
+    expect(root.find('input[data-qa="aws_access_key-text-input"]').length).toBe(1);
+    expect(root.find('input[data-qa="aws_secret_key-text-input"]').length).toBe(1);
     expect(root.find('button[data-qa="credentials-search-button"]').length).toBe(1);
   });
 });

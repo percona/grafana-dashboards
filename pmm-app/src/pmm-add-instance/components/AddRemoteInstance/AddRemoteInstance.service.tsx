@@ -85,7 +85,7 @@ export const toPayload = (values, discoverName) => {
     data.engine = discoverName;
   }
 
-  if (data.pmm_agent_id === undefined || data.pmm_agent_id === '') {
+  if (!data.pmm_agent_id) {
     // set default value for pmm agent id
     data.pmm_agent_id = 'pmm-server';
   }
