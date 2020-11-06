@@ -10,6 +10,7 @@ export interface Settings {
   sttEnabled: boolean;
   platformEmail?: string;
   dbaasEnabled?: boolean;
+  publicAddress?: string;
 }
 
 export interface MetricsResolutions {
