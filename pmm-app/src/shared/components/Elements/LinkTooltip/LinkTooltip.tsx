@@ -7,8 +7,8 @@ import { getStyles } from './LinkTooltip.styles';
 
 export interface LinkTooltipProps {
   tooltipText: string;
-  link: string;
-  linkText: string;
+  link?: string;
+  linkText?: string;
   icon: IconName;
   dataQa?: string;
   target?: string;
